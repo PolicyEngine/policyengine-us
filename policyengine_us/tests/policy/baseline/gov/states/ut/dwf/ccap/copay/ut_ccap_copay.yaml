@@ -392,3 +392,71 @@
     # October 1, 2026 edition: size 4, group 16, more than two children
     # -> 580 (up from 558 in the April 2026 edition).
     ut_ccap_copay: 580
+
+- name: Case 17, October 2026 table, a structurally impossible size 2 two-child cell uses the padded one-child value.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 2_000  # group 2 (1,803.01-2,140)
+        # The October 2026 edition prints 0 in the impossible size 2
+        # multi-child cells (where the April edition printed n/a); the
+        # child count group is forced directly to reach the padded cell.
+        ut_ccap_child_count_group: TWO
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # As in Case 11, the padded two-child column repeats the one-child
+    # value on the October 2026 layer: size 2, group 2 -> 18.
+    ut_ccap_copay: 18
+
+- name: Case 18, October 2026 table, size 12 in income group 16 with three or more children.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+      person12:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        ut_ccap_countable_income: 12_800  # group 16 (12,432.01-13,006)
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: UT
+  output:
+    # The far corner of the October 2026 table: size 12, group 16, more
+    # than two children -> 870 (up from 837 in the April 2026 edition).
+    ut_ccap_copay: 870

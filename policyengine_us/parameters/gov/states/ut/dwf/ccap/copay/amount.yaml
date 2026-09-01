@@ -9,13 +9,15 @@ description: Utah sets these monthly child care copayment amounts under the Chil
 # more), countable income group (1 through 16, classified with
 # copay/income_limits), and the number of children receiving the subsidy
 # (one, two, or more than two). Group 1 (income at or below 100% of the
-# federal poverty level) has no copayment (R986-700-707(5)(a)). The
-# published table marks child-count columns that exceed the possible
-# number of children in the household size as n/a (household size 2: two
-# or more children; size 3: more than two), which the October 2026
-# edition prints as 0 instead; in both layers these cells repeat the
-# largest published column for that row so every lookup is defined, and
-# they never bind in practice.
+# federal poverty level) has no copayment (R986-700-707(5)(a)).
+#
+# Child-count columns that exceed the possible number of children in the
+# household size (household size 2: two or more children; size 3: more
+# than two) are printed as n/a in the April 2026 edition and as 0 in the
+# October 2026 edition. Neither the n/a nor the 0 is stored: in both
+# layers these structurally impossible cells repeat the row's largest
+# published column so every lookup is defined; they can never bind (a
+# two-person household cannot have two subsidized children).
 metadata:
   unit: currency-USD
   period: month
@@ -30,7 +32,9 @@ metadata:
     - Children receiving subsidy
   reference:
     - title: Utah DWS Table 4 - Child Care Income Eligibility and Co-Payment (effective April 1, 2026)
-      href: https://jobs.utah.gov/Infosource/eligibilitymanual/Tables,_Appendicies,_and_Charts/Tables,_Appendicies,_and_Charts/Table_4_-_Child_Care_Income_Eligibility_and_Co-Payment.htm
+      # Archived capture of the Infosource page, which Utah
+      # overwrites in place at each reissue of Table 4.
+      href: http://web.archive.org/web/20260901174900/https://jobs.utah.gov/Infosource/eligibilitymanual/Tables,_Appendicies,_and_Charts/Tables,_Appendicies,_and_Charts/Table_4_-_Child_Care_Income_Eligibility_and_Co-Payment.htm
     - title: Utah DWS Table 4 - Child Care Income Eligibility and Co-Payment (effective October 1, 2026)
       href: https://jobs.utah.gov/occ/provider/table1026.pdf#page=1
     - title: Utah Admin. Code R986-700-707(1)

@@ -314,3 +314,124 @@
         state_code: UT
   output:
     ut_ccap_income_group: 3
+
+- name: Case 15, October 2026 table, size 4 at the group 15 upper bound stays in group 15.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 8_288  # inclusive group 15 upper bound
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 15
+
+- name: Case 16, October 2026 table, size 4 just above the group 15 bound moves to group 16.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 8_289  # group 16 (8,288.01-8,670)
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 16
+
+# The October 2026 size 10 group 16 upper bound is encoded as published
+# (12,846) although the surrounding sizes suggest 12,486 was intended;
+# the group 16 bound only separates group 15 from group 16, so the
+# classification below is identical under either reading (see the
+# income_limits.yaml header comment).
+- name: Case 17, October 2026 table, size 10 at the group 15 upper bound stays in group 15.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        ut_ccap_countable_income: 11_935  # inclusive group 15 upper bound
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 15
+
+- name: Case 18, October 2026 table, size 10 just above the group 15 bound moves to group 16.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        ut_ccap_countable_income: 11_936  # group 16 (11,935.01-12,846 as published)
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 16
