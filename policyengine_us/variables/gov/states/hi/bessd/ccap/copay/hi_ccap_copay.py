@@ -21,6 +21,10 @@ class hi_ccap_copay(Variable):
         # once per family (HAR 17-798.3-14). Before then, it was the
         # tier multiplied by the department's maximum rate allowable,
         # per child in care (HAR 17-798.2-14(b)(4)).
+        # Chapter 17-798.3 does not redefine "monthly gross income", so
+        # the base is the same countable income used for the tier: the
+        # HAR 17-798.2-10 sources net of the 17-798.2-11(8) minor-student
+        # earnings exclusion.
         countable_income = spm_unit("hi_ccap_countable_income", period)
         maximum_monthly_rate = add(spm_unit, period, ["hi_ccap_maximum_monthly_rate"])
         base = where(p.income_based_in_effect, countable_income, maximum_monthly_rate)

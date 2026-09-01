@@ -13,8 +13,12 @@ metadata:
     # payment provisions of chapter 17-798.2; its section -14 multiplies
     # the co-payment tier by the family unit's monthly gross income,
     # where the superseded 17-798.2-14(b)(4) multiplied it by the
-    # department's maximum rate allowable.
-    - title: HAR 17-798.3-14
+    # department's maximum rate allowable. Monthly formulas read this
+    # parameter as of the first day of the month, so the model applies
+    # the income-based method from September 2021 onward; August 2021,
+    # which straddles the effective date, still uses the maximum-rate
+    # method.
+    - title: HAR 17-798.3-14, co-payment tier multiplied by the family unit's monthly gross income (eff. 2021-08-06)
       href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=35
-    - title: HAR 17-798.2-14(b)(4)
+    - title: HAR 17-798.2-14(b)(4), co-payment tier multiplied by the department's maximum rate allowable (superseded)
       href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=29
