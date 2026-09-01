@@ -5,6 +5,14 @@ values:
     - dividend_income
     - rental_income
     - passive_partnership_s_corp_income
+    # Income from estates and trusts (Schedule E Part III) keeps its character
+    # in the beneficiary's hands (§§ 652(b), 662(b)) and enters Form 8960
+    # line 4a with the rest of Schedule 1 line 5. The model has no
+    # passive/non-passive split for estate_income, so all of it is treated as
+    # net investment income under § 1411(c)(1)(A)(ii) with no line 4b
+    # adjustment. This overstates the base for the rare beneficiary who
+    # materially participates in a trade or business held by the trust.
+    - estate_income
     - loss_limited_net_capital_gains
     - non_sch_d_capital_gains
     # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
@@ -14,3 +22,7 @@ metadata:
   reference:
     - title: Instructions for Form 8960, Net Investment Income Tax
       href: https://www.irs.gov/pub/irs-pdf/i8960.pdf
+    - title: 26 U.S. Code § 1411(c)(1)(A)(ii) - Net investment income from passive activities
+      href: https://www.law.cornell.edu/uscode/text/26/1411#c_1_A_ii
+    - title: 26 U.S. Code § 662(b) - Character of amounts distributed to beneficiaries
+      href: https://www.law.cornell.edu/uscode/text/26/662#b

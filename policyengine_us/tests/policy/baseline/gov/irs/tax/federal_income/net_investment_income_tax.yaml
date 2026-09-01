@@ -66,3 +66,36 @@
     filing_status: SINGLE
   output:
     net_investment_income_tax: 26_600
+
+- name: Estate and trust income above the AGI threshold
+  # All estate_income is treated as net investment income (no passive split).
+  period: 2024
+  input:
+    adjusted_gross_income: 230_000
+    estate_income: 30_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    # 3.8% of min(30,000 NII, 30,000 excess AGI)
+    net_investment_income_tax: 1_140
+
+- name: Estate and trust income below the AGI threshold
+  period: 2024
+  input:
+    adjusted_gross_income: 199_000
+    estate_income: 50_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 50_000
+    net_investment_income_tax: 0
+
+- name: Estate and trust losses reduce net investment income
+  period: 2024
+  input:
+    adjusted_gross_income: 250_000
+    taxable_interest_income: 40_000
+    estate_income: -10_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    net_investment_income_tax: 1_140
