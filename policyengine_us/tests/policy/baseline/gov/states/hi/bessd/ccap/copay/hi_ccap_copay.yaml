@@ -186,8 +186,8 @@
 # first on the gross-income method. HI 2021 FPG family of 2 =
 # 20,040/year = 1,670/month, so 4,666.67 is 2.79 x FPG -> 9% tier.
 
-- name: Case 7, August 2021 still uses the maximum-rate method.
-  period: 2021-08
+- name: Case 7, August 2021 still uses the maximum-rate method and September 2021 is the first month on the gross-income method.
+  period: 2021
   absolute_error_margin: 0.01
   input:
     people:
@@ -211,40 +211,15 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # The toggle is still false on August 1, 2021:
-    # copay = 795 (max rate) x 0.09 = 71.55
-    hi_ccap_copay_rate: 0.09
-    hi_ccap_copay: 71.55
-
-- name: Case 8, September 2021 is the first month on the gross-income method.
-  period: 2021-09
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.79 -> 9%
-        immigration_status: CITIZEN
-      person2:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 30
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # The toggle is true on September 1, 2021:
-    # copay = 4,666.67 (gross income) x 0.09 = 420.00
-    hi_ccap_copay_rate: 0.09
-    hi_ccap_copay: 420
+    # The toggle is still false on August 1, 2021 and true on September 1:
+    # August copay = 795 (max rate) x 0.09 = 71.55
+    # September copay = 4,666.67 (gross income) x 0.09 = 420.00
+    hi_ccap_copay_rate:
+      2021-08: 0.09
+      2021-09: 0.09
+    hi_ccap_copay:
+      2021-08: 71.55
+      2021-09: 420
 
 # Two children in care: the old method summed each child's maximum rate
 # before applying the tier; the new method charges the tier on the family's
@@ -253,7 +228,7 @@
 # 2,105/month (ratio 2.61); 2022 = 26,490/year = 2,207.50/month
 # (ratio 2.49). Both years land in the 9% tier.
 
-- name: Case 9, before August 2021 two children sum their maximum rates.
+- name: Case 8, before August 2021 two children sum their maximum rates.
   period: 2021-01
   absolute_error_margin: 0.01
   input:
@@ -289,7 +264,7 @@
     hi_ccap_copay_rate: 0.09
     hi_ccap_copay: 227.52
 
-- name: Case 10, from the 2021 rule change two children still pay the tier on income once.
+- name: Case 9, from the 2021 rule change two children still pay the tier on income once.
   period: 2022-01
   absolute_error_margin: 0.01
   input:
