@@ -8,3 +8,59 @@
     state_code: MA
   output:
     ma_ccfa_family_child_care_reimbursement: 49.39
+
+# FY2026 rates effective July 1, 2025 (advisory CCFA-26-03).
+- name: Case 2, region 1, 2 years old, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 2
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 49.64
+
+- name: Case 3, region 3, 1 year old, FY2026 targeted increase to the under-2 rate.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 1
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 59.94
+
+- name: Case 4, metro region, 1 year old, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 1
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 88.98
+
+- name: Case 5, metro region, 3 years old, FY2026 targeted increase to the over-2 rate.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 3
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 57.43
+
+- name: Case 6, region 3, 3 years old, FY2026 targeted increase to the over-2 rate.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 3
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 50.01

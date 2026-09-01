@@ -8,52 +8,71 @@ metadata:
     - ma_ccfa_child_age_category
     - ma_ccfa_schedule_type
   reference:
+    - title: FY 2026 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=1
+    - title: CCFA-26-02 Center-Based Child Care Financial Assistance Reimbursement Rates for Fiscal Year 2026
+      href: https://www.mass.gov/doc/eecccfa-26-02center-based-fy26-rate-increaseadvisory/download
     - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
     - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download
 
+# 2025-07-01 values are FY2026 rates per advisory CCFA-26-02 (a 0.5%
+# cost-of-living adjustment). EEC implemented the increase on April 1,
+# 2026, retroactive to July 1, 2025.
 WESTERN_CENTRAL_AND_SOUTHEAST:
   SCHOOL_AGE:
     BEFORE_ONLY:
       2023-07-01: 11.57
       2024-07-01: 11.74
+      2025-07-01: 11.8
     AFTER_ONLY:
       2023-07-01: 24.32
       2024-07-01: 24.68
+      2025-07-01: 24.8
     BEFORE_AND_AFTER:
       2023-07-01: 35.89
       2024-07-01: 36.43
+      2025-07-01: 36.6
     FULL_DAY:
       2023-07-01: 48.96
       2024-07-01: 49.69
+      2025-07-01: 49.94
 
 NORTHEAST:
   SCHOOL_AGE:
     BEFORE_ONLY:
       2023-07-01: 12.29
       2024-07-01: 12.74
+      2025-07-01: 12.8
     AFTER_ONLY:
       2023-07-01: 27.18
       2024-07-01: 27.58
+      2025-07-01: 27.72
     BEFORE_AND_AFTER:
       2023-07-01: 39.47
       2024-07-01: 40.06
+      2025-07-01: 40.52
     FULL_DAY:
       2023-07-01: 50.62
       2024-07-01: 51.38
+      2025-07-01: 51.64
 
 METRO_AND_BOSTON_METRO:
   SCHOOL_AGE:
     BEFORE_ONLY:
       2023-07-01: 12.62
       2024-07-01: 12.81
+      2025-07-01: 12.87
     AFTER_ONLY:
       2023-07-01: 27.89
       2024-07-01: 28.31
+      2025-07-01: 28.45
     BEFORE_AND_AFTER:
       2023-07-01: 40.51
       2024-07-01: 41.12
+      2025-07-01: 41.32
     FULL_DAY:
       2023-07-01: 52.03
       2024-07-01: 52.81
+      2025-07-01: 53.07

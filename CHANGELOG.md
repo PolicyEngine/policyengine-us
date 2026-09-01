@@ -1,3 +1,26 @@
+## [1.821.9] - 2026-09-01
+
+### Changed
+
+- - Update New Jersey CCAP maximum payment rates to CC-230 (03/26), effective April 1, 2026, and add the intermediate CC-230 (07/24) rates effective August 1, 2024.
+  - Update Massachusetts CCFA daily reimbursement rates to FY2026, effective July 1, 2025, and correct the FY2025 Western, Central & Southeast preschool rate.
+- Add the July 1, 2025 and July 1, 2026 editions of Iowa's Child Care Assistance family co-pay fee charts, including the elimination of sliding-fee level BB and the 2026 CCA Plus income-ceiling caps.
+
+
+## [1.821.8] - 2026-09-01
+
+### Fixed
+
+- Indexed the Washington Working Families Tax Credit maximum qualifying income and investment-income limit to the current-year federal EITC figures instead of freezing them at 2022 values.
+
+
+## [1.821.7] - 2026-09-01
+
+### Fixed
+
+- Removed the Montana property tax rebate from the state non-refundable credit list so it no longer reduces Montana income tax.
+
+
 ## [1.821.6] - 2026-08-31
 
 ### Fixed
