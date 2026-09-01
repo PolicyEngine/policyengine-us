@@ -46,10 +46,14 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         # wa_working_families_tax_credit child_count.
         # RCW 82.08.0206(2)(d) pins WFTC to the federal EITC rules as in
         # effect on June 9, 2022; this snapshot date is a statutory literal.
-        frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
-        frozen_investment_income_eligible = (
+        # The investment-income limit is an inflation-indexed dollar amount
+        # (26 U.S.C. 32(j), inside the pinned June 9, 2022 Code), so it tracks
+        # the current tax year -- matching Washington DOR's published limits --
+        # even though the WFTC's structural rules stay on the frozen snapshot.
+        eitc = parameters(period).gov.irs.credits.eitc
+        investment_income_eligible = (
             tax_unit("eitc_relevant_investment_income", period)
-            <= frozen_eitc.phase_out.max_investment_income
+            <= eitc.phase_out.max_investment_income
         )
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
@@ -66,7 +70,7 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
             expansion_in_effect
             & filer_meets_min_age
             & income_eligible
-            & frozen_investment_income_eligible
+            & investment_income_eligible
             & filers_have_tin
             & is_filer
             & takes_up_eitc

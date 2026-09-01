@@ -32,6 +32,14 @@ class wa_working_families_tax_credit(Variable):
         # date-valued types, so the date appears here rather than in the
         # parameter tree.
         frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
+        # The June 9, 2022 Internal Revenue Code still contains the EITC
+        # inflation-adjustment provisions (26 U.S.C. 32(j)), so the
+        # inflation-indexed dollar amounts (the investment-income limit here,
+        # and the maximum qualifying income) track the current tax year, while
+        # the structural rules (age band, disabled-dependent waiver,
+        # separate-filer rule) stay on the frozen snapshot. Washington DOR
+        # publishes the current-year federal investment-income limit each year.
+        eitc = parameters(period).gov.irs.credits.eitc
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
@@ -64,9 +72,9 @@ class wa_working_families_tax_credit(Variable):
         federal_demographic_eligible = calculate_eitc_demographic_eligibility(
             tax_unit, period, frozen_eitc, federal_child_count
         )
-        frozen_investment_income_eligible = (
+        investment_income_eligible = (
             tax_unit("eitc_relevant_investment_income", period)
-            <= frozen_eitc.phase_out.max_investment_income
+            <= eitc.phase_out.max_investment_income
         )
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
@@ -85,7 +93,7 @@ class wa_working_families_tax_credit(Variable):
             baseline_income_eligible
             & federal_demographic_eligible
             & federal_identification_eligible
-            & frozen_investment_income_eligible
+            & investment_income_eligible
             & eitc_filing_status_eligible(
                 tax_unit,
                 period,
@@ -107,7 +115,7 @@ class wa_working_families_tax_credit(Variable):
             state_only_income_eligible
             & demographic_eligible
             & filer_has_tin
-            & frozen_investment_income_eligible
+            & investment_income_eligible
             & is_filer
             & takes_up_eitc
         )
