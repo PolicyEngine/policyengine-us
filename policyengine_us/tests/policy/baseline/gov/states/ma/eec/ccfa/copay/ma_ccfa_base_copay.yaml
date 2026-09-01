@@ -42,8 +42,8 @@
     state_code: MA
   output:
     ma_ccfa_copay_level: 3
-    ma_ccfa_base_copay: 13.2
-    # (2000 - 20440 / 12) * 0.0445
+    ma_ccfa_base_copay: 13.22
+    # (2000 - 1703) * 0.0445
 
 - name: Case 5, family of 2, $3500 income, fee level 10 charges 7.6 percent.
   period: 2025-01
@@ -54,12 +54,12 @@
     state_code: MA
   output:
     ma_ccfa_copay_level: 10
-    ma_ccfa_base_copay: 136.55
-    # (3500 - 20440 / 12) * 0.076
+    ma_ccfa_base_copay: 136.57
+    # (3500 - 1703) * 0.076
 
 # === FY2026 Parent Fee Table, effective October 1, 2025: wider income
-# brackets on the 2025 poverty guidelines (family of 2 FPG 21,150/year
-# = 1,762.50/month, chart level-1 ceiling 1,763). ===
+# brackets on the 2025 poverty guidelines (family of 2 fee level 1
+# ceiling 1,763, bracket width $231 per level). ===
 
 - name: Case 6, FY2026 chart worked example, family of 2 with $1850 income.
   period: 2026-01
@@ -70,10 +70,11 @@
     state_code: MA
   output:
     ma_ccfa_copay_level: 2
-    ma_ccfa_base_copay: 3.5
-    # The chart's step-4 example: subtract the FPG (1,763) from 1,850 and
-    # multiply the result by 4 percent (the model uses the exact FPG of
-    # 1,762.50, giving 87.50 * 0.04 = 3.50).
+    ma_ccfa_base_copay: 3.48
+    # The chart's step-4 example: subtract the FPG (1,763) from 1,850
+    # and multiply the result by 4 percent: 87 * 0.04 = 3.48 (the
+    # chart's printed result of 2.28 is an arithmetic slip in the
+    # source; its stated calculation gives 3.48).
 
 - name: Case 7, FY2026 brackets place $2450 for a family of 2 in fee level 4.
   period: 2026-01
@@ -83,11 +84,11 @@
     ma_ccfa_countable_income: 2_450
     state_code: MA
   output:
-    # FY2026 level 4 spans 2,226-2,456; under the FY2025 increments this
-    # income would have landed in level 5.
+    # FY2026 level 4 spans 2,226-2,456; under the FY2025 bracket widths
+    # this income would have landed in level 5.
     ma_ccfa_copay_level: 4
-    ma_ccfa_base_copay: 33.69
-    # (2450 - 21150 / 12) * 0.049
+    ma_ccfa_base_copay: 33.66
+    # (2450 - 1763) * 0.049
 
 - name: Case 8, FY2026 family of 7, $5000 income.
   period: 2026-01
@@ -97,8 +98,8 @@
     ma_ccfa_countable_income: 5_000
     state_code: MA
   output:
-    # Family of 7 FPG = 48,650/year = 4,054.17/month; FY2026 level 4
-    # spans 4,931-5,368.
+    # Family of 7 fee level 1 ceiling 4,054; FY2026 level 4 spans
+    # 4,931-5,368.
     ma_ccfa_copay_level: 4
     ma_ccfa_base_copay: 46.35
-    # (5000 - 48650 / 12) * 0.049
+    # (5000 - 4054) * 0.049
