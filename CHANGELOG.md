@@ -1,3 +1,10 @@
+## [1.821.8] - 2026-09-01
+
+### Fixed
+
+- Indexed the Washington Working Families Tax Credit maximum qualifying income and investment-income limit to the current-year federal EITC figures instead of freezing them at 2022 values.
+
+
 ## [1.821.7] - 2026-09-01
 
 ### Fixed
