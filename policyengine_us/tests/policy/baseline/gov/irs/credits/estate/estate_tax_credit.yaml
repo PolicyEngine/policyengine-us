@@ -1,3 +1,8 @@
+# The unified credit is the § 2001(c) tentative tax on the basic exclusion
+# amount (§ 2010(c)(1)), not the exclusion amount itself. The § 2001(c)
+# schedule reaches $345,800 at $1,000,000 and is 40% above that, so the credit
+# is 345,800 + 0.4 * (basic exclusion amount - 1,000,000) in every year below.
+
 - name: Not deceased
   period: 2022
   input:
@@ -5,30 +10,42 @@
   output:
     estate_tax_credit: 0
 
-- name: Died 2011
-  period: 2011
-  input:
-    is_deceased: true
-  output:
-    estate_tax_credit: 5_000_000
-
 - name: Died 2017
   period: 2017
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 5_490_000
+    # Basic exclusion $5,490,000: 345,800 + 0.4 * 4,490,000
+    estate_tax_credit: 2_141_800
 
 - name: Died 2018
   period: 2018
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 11_180_000
+    # Basic exclusion $11,180,000: 345,800 + 0.4 * 10,180,000
+    estate_tax_credit: 4_417_800
 
 - name: Died 2024
   period: 2024
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 13_610_000
+    # Basic exclusion $13,610,000: 345,800 + 0.4 * 12,610,000
+    estate_tax_credit: 5_389_800
+
+- name: Died 2025
+  period: 2025
+  input:
+    is_deceased: true
+  output:
+    # Basic exclusion $13,990,000: 345,800 + 0.4 * 12,990,000
+    estate_tax_credit: 5_541_800
+
+- name: Died 2026
+  period: 2026
+  input:
+    is_deceased: true
+  output:
+    # Basic exclusion $15,000,000 (OBBBA): 345,800 + 0.4 * 14,000,000
+    estate_tax_credit: 5_945_800

@@ -13,3 +13,61 @@
     estate_tax_credit: 10_000_000
   output:
     estate_tax: 0
+
+# Integration cases from taxable estate through the unified credit.
+# Tentative tax on $20,000,000 is 345,800 + 0.4 * 19,000,000 = 7,945,800.
+
+- name: 2024 death, $20M taxable estate
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 20_000_000
+  output:
+    estate_tax_before_credits: 7_945_800
+    # Tentative tax on the $13,610,000 basic exclusion amount.
+    estate_tax_credit: 5_389_800
+    estate_tax: 2_556_000
+
+- name: 2024 death, taxable estate equal to the basic exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 13_610_000
+  output:
+    estate_tax_before_credits: 5_389_800
+    estate_tax_credit: 5_389_800
+    estate_tax: 0
+
+- name: 2024 death, taxable estate below the basic exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 5_000_000
+  output:
+    # 345,800 + 0.4 * 4,000,000
+    estate_tax_before_credits: 1_945_800
+    estate_tax_credit: 5_389_800
+    # The credit cannot exceed the tax (§ 2010(d)).
+    estate_tax: 0
+
+- name: 2026 death, taxable estate equal to the $15M basic exclusion amount
+  period: 2026
+  input:
+    is_deceased: true
+    taxable_estate_value: 15_000_000
+  output:
+    # 345,800 + 0.4 * 14,000,000
+    estate_tax_before_credits: 5_945_800
+    estate_tax_credit: 5_945_800
+    estate_tax: 0
+
+- name: 2026 death, $20M taxable estate
+  period: 2026
+  input:
+    is_deceased: true
+    taxable_estate_value: 20_000_000
+  output:
+    estate_tax_before_credits: 7_945_800
+    estate_tax_credit: 5_945_800
+    # Tax on $20M less tax on $15M: 7,945,800 - 5,945,800.
+    estate_tax: 2_000_000

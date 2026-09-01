@@ -1,0 +1,1 @@
+Compute the federal estate tax credit as the § 2001(c) tentative tax on the basic exclusion amount (§ 2010(c)(1)) instead of returning the exclusion amount itself, which zeroed the estate tax on every taxable estate below roughly $34 million.

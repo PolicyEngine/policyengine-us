@@ -6,8 +6,15 @@ class estate_tax(Variable):
     entity = Person
     label = "Estate tax"
     unit = USD
+    documentation = (
+        "Federal estate tax: the § 2001(c) tentative tax on the taxable estate "
+        "less the § 2010 unified credit, floored at zero (§ 2010(d))."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/2001#b_1"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/2001#b_1",
+        "https://www.law.cornell.edu/uscode/text/26/2010#d",
+    )
 
     def formula(person, period, parameters):
         estate_tax_before_credits = person("estate_tax_before_credits", period)
