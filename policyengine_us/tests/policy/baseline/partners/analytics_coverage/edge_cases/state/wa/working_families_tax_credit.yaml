@@ -1,7 +1,7 @@
 # WA Working Families Tax Credit (RCW 82.08.0206), pinned to the federal
 # EITC rules as in effect 2022-06-09. 2026 maximum amounts (2025 statutory
-# values uprated by gov.irs.uprating, no rounding applied at runtime):
-# 0 kids $342.59, 1 kid $674.96, 2 kids $1,017.55, 3+ kids $1,360.14;
+# values uprated by gov.irs.uprating and rounded to the nearest $5):
+# 0 kids $345, 1 kid $675, 2 kids $1,020, 3+ kids $1,360;
 # $50 minimum. Income ceiling = the current-year federal EITC maximum AGI
 # (indexed each year, e.g. $19,539.74 childless / $51,593.38 head-of-household
 # one child in 2026); the credit phases from the maximum down to $50 over the
@@ -82,8 +82,8 @@
       tax_unit:
         # Income $20,000 is well below the 2026 one-child joint phase-out
         # start, so the credit is the full 2026 maximum: $660 (2025) x 1.02266
-        # uprating = 674.96.
-        wa_working_families_tax_credit: 674.96
+        # uprating = 674.96, rounded to the nearest $5 = $675.
+        wa_working_families_tax_credit: 675
         adjusted_gross_income: 20_000.0
 - name: wa_wftc_childless_mid_phase_out (wa)
   period: 2026
@@ -128,9 +128,9 @@
     tax_units:
       tax_unit:
         # 2026 childless ceiling $19,539.74; phase-out starts $2,500 below at
-        # $17,039.74; rate = (342.59 - 50)/2,500 = 0.11704;
-        # 342.59 - (18,000 - 17,039.74) x 0.11704 = 230.21.
-        wa_working_families_tax_credit: 230.21
+        # $17,039.74; rate = (345 - 50)/2,500 = 0.118;
+        # 345 - (18,000 - 17,039.74) x 0.118 = 231.69.
+        wa_working_families_tax_credit: 231.69
         adjusted_gross_income: 18_000.0
 - name: wa_wftc_1_child_min_amount_near_ceiling (wa)
   period: 2026
@@ -192,7 +192,8 @@
     tax_units:
       tax_unit:
         # 2026 head-of-household one-child ceiling $51,593.38; income $51,590
-        # sits just below it, in the $50 statutory minimum region
+        # sits just below it; the rounded $675 maximum phases down to $50.42
+        # in the $50 statutory minimum region
         # (RCW 82.08.0206(3)(c)).
         wa_working_families_tax_credit: 50.42
         adjusted_gross_income: 51_590.0
@@ -369,8 +370,8 @@
       tax_unit:
         # WA-specific state-only path: an ITIN filer (no SSN, has TIN)
         # fails the federal EITC identification test (eitc = 0) but
-        # qualifies for the WFTC with 1 TIN-holding child -> full 674.96.
-        wa_working_families_tax_credit: 674.96
+        # qualifies for the WFTC with 1 TIN-holding child -> full $675.
+        wa_working_families_tax_credit: 675
         eitc: 0.0
         adjusted_gross_income: 20_000.0
 - name: wa_wftc_3_children_max_amount (wa)
@@ -481,8 +482,8 @@
   output:
     tax_units:
       tax_unit:
-        # Top child bracket: 3+ kids 2026 maximum = 1,330 x 1.02266
-        # uprating = 1,360.14; income 20,000 is well below the 2026 joint
-        # three-child phase-out start, so the full maximum applies.
-        wa_working_families_tax_credit: 1_360.14
+        # Top child bracket: 3+ kids 2026 maximum = 1,330 x 1.02266,
+        # rounded to the nearest $5 = 1,360; income 20,000 is below the 2026
+        # joint three-child phase-out start, so the full maximum applies.
+        wa_working_families_tax_credit: 1_360
         adjusted_gross_income: 20_000.0
