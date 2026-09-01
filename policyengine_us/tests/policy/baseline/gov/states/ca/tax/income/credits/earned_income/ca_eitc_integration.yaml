@@ -6,6 +6,9 @@
     state_code: CA
     eitc_child_count: 3
     earned_income: 8_000
+    # AGI equals earned income so the worksheet's earned-income/AGI credit
+    # comparison isolates the table value.
+    adjusted_gross_income: 8_000
   output:
     ca_eitc: 3_051
 
@@ -17,6 +20,7 @@
     state_code: CA
     eitc_child_count: 1
     earned_income: 6_400
+    adjusted_gross_income: 6_400
   output:
     ca_eitc: 1_843
 
@@ -28,6 +32,7 @@
     state_code: CA
     eitc_child_count: 0
     earned_income: 9_951
+    adjusted_gross_income: 9_951
   output:
     #ca_eitc_second_phase_out_start: 8_201 # First bracket.
     ca_eitc: 184
@@ -365,3 +370,120 @@
         state_fips: 6
   output:
     ca_eitc: 0
+
+- name: CalEITC takes the smaller of the earned-income and AGI credits (taxsim 1161).
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 52
+      spouse:
+        age: 48
+        employment_income: 8_839.21
+        taxable_interest_income: 1_343.24
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    families:
+      family:
+        members: [head, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+  output:
+    # Earned income $8,839 and federal AGI $10,182 (the $1,343 interest lifts AGI
+    # above earnings); both fall in the CalEITC phase-out, so the AGI-based
+    # credit is smaller. Form 3514 worksheet line 6 takes the smaller: ~$859
+    # (the TaxAct Form 540 line 75 table value is $861), not the $1,247 the
+    # earned-income credit alone would give.
+    ca_eitc: 858.78
+
+- name: CalEITC with federal AGI below earned income uses earnings for the AGI lookup (positive AGI).
+  # Regression for PR #9363. Earned income $10,000 (employment_income) but
+  # federal AGI forced to $2,000 (held input, below earnings). Per RTC 17052(a)
+  # / IRC 32(a)(2)(B) the AGI branch runs on "adjusted gross income (or, if
+  # greater, the earned income)", so when AGI <= earnings the AGI lookup uses
+  # earnings and the min_() is a no-op (worksheet line 5 blank). The credit
+  # equals the earned-income credit at $10,000 (2023, 1 child), NOT a smaller
+  # or negative AGI-based amount. Pre-fix the unconditional AGI lookup on
+  # $2,000 undershot; this case FAILS on the old branch, PASSES with the fix.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: 2_000
+    families:
+      family:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+  output:
+    ca_eitc: 911.51
+
+- name: CalEITC with negative federal AGI uses earnings for the AGI lookup (no negative credit).
+  # Regression for PR #9363. Earned income $10,000 (employment_income) but
+  # federal AGI forced to -$5,000 (held input). Pre-fix the unconditional AGI
+  # lookup on a negative AGI drove the credit negative; the max_(earned, agi)
+  # fix makes the AGI branch run on earnings so the min_() is a no-op and the
+  # credit equals the earned-income credit at $10,000 (2023, 1 child). FAILS
+  # on the old branch, PASSES with the fix.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: -5_000
+    families:
+      family:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+  output:
+    ca_eitc: 911.51
