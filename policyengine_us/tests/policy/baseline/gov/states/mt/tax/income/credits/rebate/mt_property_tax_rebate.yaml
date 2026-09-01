@@ -6,10 +6,18 @@
   output:
     mt_property_tax_rebate: 600
 
-- name: Property tax less than rebate amount
+- name: Property tax greater than rebate amount
   period: 2023
   input:
     real_estate_taxes: 676
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 675
+
+- name: Property tax equal to rebate amount
+  period: 2023
+  input:
+    real_estate_taxes: 675
     state_code: MT
   output:
     mt_property_tax_rebate: 675

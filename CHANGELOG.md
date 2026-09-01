@@ -1,3 +1,31 @@
+## [1.821.8] - 2026-09-01
+
+### Fixed
+
+- Indexed the Washington Working Families Tax Credit maximum qualifying income and investment-income limit to the current-year federal EITC figures instead of freezing them at 2022 values.
+
+
+## [1.821.7] - 2026-09-01
+
+### Fixed
+
+- Removed the Montana property tax rebate from the state non-refundable credit list so it no longer reduces Montana income tax.
+
+
+## [1.821.6] - 2026-08-31
+
+### Fixed
+
+- Use the shared childcare_attending_days_per_month and childcare_days_per_week inputs in the CalWORKs child care time coefficient instead of CA-only day and week counts that defaulted every California child care payment to zero.
+
+
+## [1.821.5] - 2026-08-31
+
+### Fixed
+
+- Rename `co_pension_subtraction_indv_eligible..py` and `generate_age_curves.py.py` to remove the duplicated file extensions.
+
+
 ## [1.821.4] - 2026-08-26
 
 ### Fixed

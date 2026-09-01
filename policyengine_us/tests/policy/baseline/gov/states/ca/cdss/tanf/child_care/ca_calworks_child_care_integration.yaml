@@ -70,3 +70,54 @@
         state_code: CA
   output:
     ca_calworks_child_care_eligible: true
+
+# The following cases exercise the default (weekly) billing path without
+# pinning ca_calworks_child_care_time_category.
+- name: Default weekly billing pays the weekly ceiling for every week of the month when shared childcare attendance inputs are set.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        earned_income: 12_000
+      child:
+        age: 3
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ca_tanf: 100
+        spm_unit_pre_subsidy_childcare_expenses: 14_400
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Part-time weekly child care center ceiling of 227.58 for a
+    # three-year-old, times 52 / 12 weeks per month = 986.18, below the
+    # 1,200 monthly expense cap.
+    ca_calworks_child_care: 986.18
+
+- name: Without any childcare attendance inputs the default weekly billing pays zero.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        earned_income: 12_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ca_tanf: 100
+        spm_unit_pre_subsidy_childcare_expenses: 14_400
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_calworks_child_care: 0
