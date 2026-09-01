@@ -18,10 +18,11 @@ brackets:
      2025-01-01: 3_560
      2026-01-01: 30_000
    metadata:
-      uprating: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 10
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 10
    rate:
      1994-01-01: 0.03
      2026-01-01: 0.0521
@@ -34,10 +35,11 @@ brackets:
      2025-01-01: 17_830
      2026-01-01: .inf
    metadata:
-      uprating: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 10
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 10
    rate:
      1994-01-01: 0.04
      2022-01-01: 0.065
