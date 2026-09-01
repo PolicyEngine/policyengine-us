@@ -9,3 +9,39 @@
     state_code: MA
   output:
     ma_ccfa_center_based_school_age_reimbursement: 49.69
+
+- name: Case 2, region 1, school age, full day, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_school_age_reimbursement: 49.94
+
+- name: Case 3, region 3, school age, before and after school, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_schedule_type: BEFORE_AND_AFTER
+    state_code: MA
+  output:
+    ma_ccfa_center_based_school_age_reimbursement: 40.52
+
+- name: Case 4, metro region, school age, full day, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_school_age_reimbursement: 53.07
