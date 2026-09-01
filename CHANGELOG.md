@@ -1,3 +1,15 @@
+## [1.821.10] - 2026-09-01
+
+### Changed
+
+- Utah CCAP copayment amounts and income group limits from the Table 4 edition effective October 1, 2026.
+
+### Fixed
+
+- Applied the federal-AGI comparison to the CalEITC, taking the smaller of the credit figured on California earned income and on federal AGI.
+- Remove the child immigration status test from Oregon ERDC from May 2024 (OAR 414-175-0021 sunset) and from Vermont CCFAP from July 2024 (Act 76 rollout), matching the states' rule changes.
+
+
 ## [1.821.9] - 2026-09-01
 
 ### Changed
