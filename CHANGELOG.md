@@ -1,3 +1,10 @@
+## [1.821.11] - 2026-09-02
+
+### Fixed
+
+- Massachusetts CCFA parent fees: correct the level 3 (4.45 percent) and level 10 (7.6 percent) fee percentages to match the published Parent Fee Table, store the fee-level income bracket widths as the dollar amounts printed in the chart, add the FY2026 widths effective October 2025, and switch the chart's poverty guideline anchor at each fiscal year's October start.
+
+
 ## [1.821.10] - 2026-09-01
 
 ### Changed
