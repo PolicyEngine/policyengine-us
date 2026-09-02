@@ -6,6 +6,7 @@ description: Minnesota provides this food portion of the Transitional Standard u
 # the final benefit because PolicyEngine models SNAP separately.
 
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   breakdown:

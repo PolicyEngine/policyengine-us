@@ -7,6 +7,7 @@ description: Mississippi provides these maximum weekly payment rates for special
 # FY2025-2027 adopted special-needs dollar rates are not publicly available — a
 # limitation we don't track at the moment.
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: Mississippi CCPP special-needs family home weekly rates

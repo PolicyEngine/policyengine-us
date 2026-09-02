@@ -135,6 +135,7 @@ SURVIVING_SPOUSE: # Same as joint
         type: downwards
         interval: 50
 metadata:
+  propagate_metadata_to_children: true
   label: Itemized deductions applicable amount
   period: year
   unit: currency-USD

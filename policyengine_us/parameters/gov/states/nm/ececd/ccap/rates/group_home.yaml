@@ -7,6 +7,7 @@ description: New Mexico provides these full-time monthly reimbursement rates for
 # full-time base rates are stored here; the NMAC schedule's separate Part-Time
 # and Wrap-Around columns and the "Enhanced Rate" tables are not modeled.
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: New Mexico CCAP licensed group home monthly rates

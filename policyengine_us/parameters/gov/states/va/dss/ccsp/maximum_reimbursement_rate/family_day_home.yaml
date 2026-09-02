@@ -9,6 +9,7 @@ description: Virginia sets this daily maximum reimbursement rate for family day 
 # vary by age group and is indexed on both dimensions in `center.yaml`.
 
 metadata:
+  propagate_metadata_to_children: true
   period: day
   unit: currency-USD
   label: Virginia CCSP family day home daily maximum reimbursement rate

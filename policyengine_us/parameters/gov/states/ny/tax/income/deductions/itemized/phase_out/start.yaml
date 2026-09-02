@@ -65,6 +65,7 @@ HEAD_OF_HOUSEHOLD:
         type: nearest
         interval: 50
 metadata:
+  propagate_metadata_to_children: true
   label: New York itemized deduction AGI phase out threshold
   breakdown:
     - filing_status
