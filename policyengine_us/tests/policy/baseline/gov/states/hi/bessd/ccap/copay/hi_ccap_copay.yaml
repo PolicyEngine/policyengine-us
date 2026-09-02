@@ -294,7 +294,7 @@
         members: [person1, person2, person3]
         state_code: HI
   output:
-    # Same household and rates as Case 9, but the rates no longer enter:
+    # Same household and rates as Case 8, but the rates no longer enter:
     # copay = 5,500 (gross income) x 0.09 = 495.00, not 227.52
     hi_ccap_maximum_monthly_rate: [0, 1_733, 795]
     hi_ccap_copay_rate: 0.09
