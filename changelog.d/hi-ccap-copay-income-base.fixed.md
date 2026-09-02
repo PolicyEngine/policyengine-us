@@ -1,1 +1,0 @@
-Hawaii CCAP co-payments follow HAR 17-798.3-14 beginning August 2021, applying the sliding-scale tier to the family's monthly gross income; the prior HAR 17-798.2-14(b)(4) provider-rate method is preserved for earlier periods.
