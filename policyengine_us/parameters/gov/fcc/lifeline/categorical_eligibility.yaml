@@ -6,6 +6,7 @@ values:
     - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - ssi
     - receives_ssi # Reported SSI receipt, for people the model gives a $0 payment.
+    - receives_housing_assistance # Federal Public Housing Assistance (Section 8 vouchers, public housing, project-based rental assistance), reported receipt.
     # Also not implemented:
     # - Veterans and Survivors Pension Benefit
 metadata:
