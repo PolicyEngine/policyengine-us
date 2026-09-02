@@ -1,0 +1,52 @@
+description: Massachusetts sets fee levels using this monthly income bracket width per household size under the Child Care Financial Assistance program.
+metadata:
+  period: month
+  unit: currency-USD
+  label: Massachusetts CCFA monthly income bracket width
+  breakdown:
+    - range(2, 13)
+  breakdown_labels:
+    - Household size
+  reference:
+    - title: EEC Financial Assistance Parent Fee Table FY2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025/download
+    - title: EEC Financial Assistance Parent Fee Table FY2026
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2026/download
+# The FY2024 chart (effective 2023-10-01) could not be located; the
+# 2023-10-01 layer carries the FY2025 values.
+# Fee level 1 covers income up to the federal poverty guideline; each
+# subsequent level covers this additional amount of monthly income (the
+# constant difference between consecutive bracket ceilings in the chart).
+2:
+  2023-10-01: 218
+  2025-10-01: 231
+3:
+  2023-10-01: 268
+  2025-10-01: 283
+4:
+  2023-10-01: 317
+  2025-10-01: 336
+5:
+  2023-10-01: 367
+  2025-10-01: 389
+6:
+  2023-10-01: 417
+  2025-10-01: 442
+7:
+  2023-10-01: 412
+  2025-10-01: 438
+8:
+  2023-10-01: 408
+  2025-10-01: 434
+9:
+  2023-10-01: 404
+  2025-10-01: 430
+10:
+  2023-10-01: 400
+  2025-10-01: 426
+11:
+  2023-10-01: 396
+  2025-10-01: 422
+12:
+  2023-10-01: 391
+  2025-10-01: 418
