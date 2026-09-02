@@ -4,10 +4,16 @@ from policyengine_us.model_api import *
 class ky_files_separately(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Married couple file separately on the Kentucky tax return"
+    label = "Married couple files separately on the Kentucky tax return"
     definition_period = YEAR
     reference = (
-        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
+        # Filing Status 2 (combined-separate) description (file p. 11).
+        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11",
+        # Line 19 combined-return credit application (file p. 12).
+        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=12",
+        # KRS 141.0205(2) prescribes the post-election application of the
+        # nonrefundable personal tax credits used to compare the paths.
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57934",
     )
     defined_for = StateCode.KY
 

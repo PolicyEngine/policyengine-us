@@ -17,6 +17,11 @@ def ky_income_tax_after_non_refundable_credits_for_path(
     (personal, family size 141.066, tuition 141.069, dependent care 141.067):
     https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57934
 
+    KRS 141.0205 subsection (1) business-incentive credits precede, and (2)(e) the
+    income-gap credit (2021 only) and (2)(f) the Education Opportunity Account
+    credit follow, these four (2)(a)-(d) credits; none of those are modeled, so
+    (a)-(d) is the complete ordered set for the modeled credits.
+
     This helper does not read ``ky_files_separately``, so the combined-separate
     election can compare the two paths without a circular dependency.
     """

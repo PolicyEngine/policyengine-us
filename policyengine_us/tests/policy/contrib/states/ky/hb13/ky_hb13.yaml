@@ -419,3 +419,7 @@
     # Joint: p1=250k*3.5%+50k*6%=11750, p2=0, total=11750
     # ky_files_separately = (11250 < 11750) = True
     ky_files_separately: true
+    # No non-refundable credits apply (FSTC rate forced to 0, high earners have no
+    # personal credit), so ky_income_tax equals the elected separate total.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax: 11_250

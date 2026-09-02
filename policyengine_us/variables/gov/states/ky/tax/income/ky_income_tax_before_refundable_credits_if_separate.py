@@ -21,6 +21,8 @@ class ky_income_tax_before_refundable_credits_if_separate(Variable):
         # credits" prescribes the personal -> family size -> tuition ->
         # dependent care order the helper applies.
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57934",
+        # 2025 Form 740 (tests run at 2025): same combined-return structure.
+        "https://revenue.ky.gov/Forms/740%20(2025).pdf",
     )
     defined_for = StateCode.KY
 
