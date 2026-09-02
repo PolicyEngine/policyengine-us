@@ -1,1 +1,1 @@
-Propagate units and periods from breakdown parameters to their value-bearing children.
+Propagate units and periods from container parameters to their value-bearing children.
