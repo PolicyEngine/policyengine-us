@@ -244,12 +244,14 @@ def test_ok_federal_ctc_leading_edge_2025_under_afa():
     assert ok_federal_ctc == refundable_ctc
 
 
-def test_ok_child_care_child_tax_credit_20pct_cdcc_arm_under_afa():
-    """[S4a] Downstream OK Child Care/Child Tax Credit, 20%-CDCC arm: with real
-    child-care expenses, 20% of the federal CDCC exceeds 5% of the federal CTC,
-    so the credit equals 0.20 * federal CDCC (read from the same sim). AGI is
-    below the $100k OK limit and OK AGI == US AGI (full-year resident), so no
-    proration/eligibility factor applies."""
+def test_ok_child_care_child_tax_credit_downstream_under_afa():
+    """[S4a] Downstream OK Child Care/Child Tax Credit with a nonzero federal
+    CDCC under AFA: the credit is the greater of 20% of the federal CDCC and 5%
+    of the Oklahoma federal CTC allowed (Form 511 Schedule 511-F). This pins
+    that the CDCC arm flows through under AFA (ok_federal_ctc == refundable_ctc
+    here) and that the greater-of selection is correct, whichever arm wins.
+    AGI is below the $100k OK limit and OK AGI == US AGI (full-year resident),
+    so no proration/eligibility factor applies."""
     reform = Reform.from_dict(
         {"gov.contrib.congress.afa.in_effect": {"2026-01-01.2100-12-31": True}},
         country_id="us",
@@ -265,9 +267,8 @@ def test_ok_child_care_child_tax_credit_20pct_cdcc_arm_under_afa():
         "tax_units": {
             "tax_unit": {
                 "members": ["parent", "child"],
-                # Large child-care spend (input directly at the tax unit, which
-                # cdcc_relevant_expenses consumes) so the 20% CDCC arm dominates
-                # the 5% CTC arm.
+                # Real child-care spend so the federal CDCC (and thus the 20%
+                # arm) is nonzero; cdcc_relevant_expenses consumes this input.
                 "tax_unit_childcare_expenses": {"2026": 8_000},
             }
         },
@@ -286,10 +287,11 @@ def test_ok_child_care_child_tax_credit_20pct_cdcc_arm_under_afa():
     p = sim.tax_benefit_system.parameters(
         "2026-01-01"
     ).gov.states.ok.tax.income.credits.child
-    # Confirm the 20% CDCC arm actually dominates (guards against a silent
-    # data-shift that would make this test a no-op).
-    assert cdcc * p.cdcc_fraction > ok_federal_ctc * p.ctc_fraction
-    assert ok_credit == pytest.approx(p.cdcc_fraction * cdcc, rel=1e-4)
+    # The federal CDCC arm is genuinely exercised (nonzero), so this is not a
+    # no-op even though AFA's enlarged CTC makes the 5% arm win here.
+    assert cdcc > 0
+    expected = max(p.cdcc_fraction * cdcc, p.ctc_fraction * ok_federal_ctc)
+    assert ok_credit == pytest.approx(expected, rel=1e-4)
 
 
 def test_ok_child_care_child_tax_credit_over_agi_limit_under_afa():
