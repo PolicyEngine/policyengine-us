@@ -689,14 +689,14 @@
 # and the couple elects it (KRS 141.0205(2)).
 - name: KY married couple with tuition credit elects combined-separate
   period: 2022
-  absolute_error_margin: 0.01
+  # Margin 2 for KY tax-table rounding, as the other KY integration cases use.
+  absolute_error_margin: 2
   input:
     people:
       head:
         age: 40
         employment_income: 50_000
         is_tax_unit_head: true
-        american_opportunity_credit: 2_000
       spouse:
         age: 40
         employment_income: 10_000
@@ -704,29 +704,33 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
+        # Tuition credit is a TaxUnit-level federal credit (Form 740 Line 23
+        # potential derives from it); set it on the tax unit, not a person.
+        american_opportunity_credit: 2_000
     households:
       household:
         members: [head, spouse]
         state_code: KY
   output:
     ky_files_separately: true
-    # Separate path (2022 rate 5%, SD $2,770 per column): head (50,000 - 2,770) x
-    # 5% = 2,361.50, spouse (10,000 - 2,770) x 5% = 361.50, base 2,723.00; family
-    # size credit rate 0 at $60,000 for a 2-person family; tuition credit 25% x
-    # $2,000 = $500, leaving 2,223.00. Joint path would be (57,230 x 5%) - 500 =
-    # 2,361.50, so separate is cheaper.
-    # CI-RISK: the tuition potential depends on KY institution/limit logic;
-    # pin the CI actual if it differs.
+    # Two earners each get a $2,770 standard deduction on the combined-separate
+    # path, so it is cheaper pre-credit and the tuition credit (Form 740 Line 23,
+    # KRS 141.069) is applied on the elected path. Separate base
+    # (50,000 - 2,770) x 5% + (10,000 - 2,770) x 5% = 2,723.00, less the 25%
+    # tuition credit on $2,000 = 500, leaves 2,223.00. This exercises helper
+    # step 3 (tuition) in the election.
     ky_income_tax: 2_223.00
 
 # Married couple at a partial family size tax credit bracket (rate 0.5), so the
-# FSTC step 2 is discriminating. Both spouses earn equally, so combined-separate
-# offers no advantage and joint is chosen (KRS 141.0205(2) strict-"<" test).
-# A 7-person family of two earners at ~119% of the modified poverty line lands in
-# the 0.5 bracket (matching the FSTC-rate unit test).
-- name: KY married couple at partial FSTC bracket does not elect combined-separate
+# FSTC step 2 (KRS 141.0205(2)(b)) is exercised in the election. A 7-person
+# family of two equal earners at ~119% of the modified poverty line lands in the
+# 0.5 bracket (matching the FSTC-rate unit test). Two earners each take a $2,770
+# standard deduction on the combined-separate path, so it is cheaper pre-credit
+# and the couple elects it; the 0.5 FSTC then applies on the elected path.
+- name: KY married couple at partial FSTC bracket elects combined-separate
   period: 2022
-  absolute_error_margin: 0.01
+  # Margin 2 for KY tax-table rounding, as the other KY integration cases use.
+  absolute_error_margin: 2
   input:
     people:
       head:
@@ -760,13 +764,13 @@
         members: [head, spouse, child1, child2, child3, child4, child5]
         state_code: KY
   output:
-    ky_files_separately: false
-    # Joint (2022 rate 5%, one SD $2,770): (33,000 - 2,770) x 5% = 1,511.50; no
-    # personal credit; family size credit rate 0.5 (MGI $33,000, family capped at
-    # 4 -> ~119% of the modified poverty line) removes half, leaving 755.75.
-    # CI-RISK: the FSTC rate bracket depends on the exact modified poverty line;
-    # pin the CI actual if it differs.
-    ky_income_tax: 755.75
+    ky_files_separately: true
+    # Separate path: two columns each (16,500 - 2,770) x 5% = 686.50, base
+    # 1,373.00; the 0.5 family-size credit (MGI $33,000, family capped at 4 ->
+    # ~119% of the modified poverty line) removes half, leaving 686.50. The joint
+    # path is (33,000 - 2,770) x 5% = 1,511.50, less 0.5 FSTC = 755.75, so
+    # separate (686.50) is cheaper and is elected.
+    ky_income_tax: 686.50
 
 # One combined-separate election case at the 2024 law (KY rate 4%), showing the
 # path variables read period-correct parameters. Unequal incomes make the
