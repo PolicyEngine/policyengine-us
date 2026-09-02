@@ -5,7 +5,6 @@ simulation under the AFA raised ValueError. The formula now treats an
 absent non-refundable CTC as fully refundable — this test locks that in
 through the same Reform.from_dict path production traffic uses."""
 
-import numpy as np
 import pytest
 
 from policyengine_core.reforms import Reform
@@ -102,30 +101,80 @@ def test_ok_federal_ctc_zero_ctc_guard_path_under_afa():
     assert ok_federal_ctc == 0
 
 
-# [S3] The three CTC-restructuring contrib reforms all remove
-# non_refundable_ctc from the federal non-refundable credit list (AFA and
-# ECPA via list-rebuild, FISC via neutralize_variable), which is exactly the
-# fragility ok_federal_ctc's .index() call used to hit. Oklahoma is the only
-# state that indexes the federal credit list, so smoke-test each flag: the
-# Oklahoma credit must COMPUTE (no crash) and be finite and non-negative.
-CTC_RESTRUCTURE_FLAGS = [
-    "gov.contrib.congress.afa.in_effect",
-    "gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act.in_effect",
-    "gov.contrib.congress.golden.fisc_act.in_effect",
-]
+# [A1] Only AFA removes non_refundable_ctc from the federal non-refundable
+# credit PARAMETER LIST (gov.irs.credits.non_refundable), so only AFA fires
+# ok_federal_ctc's fully-refundable guard (return refundable_ctc). The other
+# two CTC-restructuring reforms leave the parameter list intact, so the guard
+# is INERT and the ordered-allocation (.index()) branch runs:
+#   - AFA  -> list rebuilt WITHOUT non_refundable_ctc -> guard FIRES;
+#            ok_federal_ctc == refundable_ctc.
+#   - ECPA -> filters non_refundable_ctc only inside its overridden
+#            income_tax_non_refundable_credits variable; the parameter list
+#            still contains non_refundable_ctc -> guard INERT, .index() branch
+#            runs -> positive baseline-style CTC.
+#   - FISC -> neutralizes both refundable_ctc and non_refundable_ctc but
+#            leaves the parameter list intact -> guard INERT, .index() branch
+#            runs against two zeroed components -> ok_federal_ctc == 0.
+# Oklahoma is the only state that indexes the federal credit list, so each
+# flag is a per-branch regression check (below), not just a no-crash smoke.
 
 
-@pytest.mark.parametrize("in_effect_flag", CTC_RESTRUCTURE_FLAGS)
-def test_ok_federal_ctc_computes_under_ctc_restructuring_reforms(in_effect_flag):
-    reform = Reform.from_dict(
+def _reform_for(in_effect_flag):
+    return Reform.from_dict(
         {in_effect_flag: {"2026-01-01.2100-12-31": True}},
         country_id="us",
     )
+
+
+AFA_FLAG = "gov.contrib.congress.afa.in_effect"
+ECPA_FLAG = "gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act.in_effect"
+FISC_FLAG = "gov.contrib.congress.golden.fisc_act.in_effect"
+
+
+def _check_afa(sim):
+    # Guard FIRES: non_refundable_ctc removed from the parameter list, so the
+    # Oklahoma credit allowed collapses to the refundable CTC.
+    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
+    refundable_ctc = sim.calculate("refundable_ctc", 2026)[0]
+    assert ok_federal_ctc == refundable_ctc
+
+
+def _check_ecpa(sim):
+    # Guard INERT (.index() branch): ECPA keeps non_refundable_ctc in the
+    # parameter list, so ok_federal_ctc takes the ordered-allocation branch and
+    # returns a positive baseline-style CTC. A passing assertion here is NOT an
+    # endorsement of the ECPA-interaction value — that phantom baseline-style
+    # CTC is pre-existing behavior; the guard fix does not touch this branch.
+    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
+    assert ok_federal_ctc > 0
+
+
+def _check_fisc(sim):
+    # Guard INERT (.index() branch): FISC leaves the parameter list intact but
+    # neutralizes both refundable_ctc and non_refundable_ctc, so the ordered-
+    # allocation branch sums two zeroed components to 0.
+    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
+    assert ok_federal_ctc == 0
+
+
+# [A2] (flag, per-branch check) table replacing the weak isfinite/>=0 smoke.
+CTC_RESTRUCTURE_CHECKS = [
+    (AFA_FLAG, _check_afa),
+    (ECPA_FLAG, _check_ecpa),
+    (FISC_FLAG, _check_fisc),
+]
+
+
+@pytest.mark.parametrize("in_effect_flag,check", CTC_RESTRUCTURE_CHECKS)
+def test_ok_federal_ctc_computes_under_ctc_restructuring_reforms(in_effect_flag, check):
+    """[A2] Per-flag regression: AFA fires the guard (ok_federal_ctc ==
+    refundable_ctc); ECPA and FISC leave the guard inert and run the ordered-
+    allocation branch (ECPA -> positive phantom baseline-style CTC, pre-existing
+    behavior and not an endorsement; FISC -> 0 from two neutralized CTC vars)."""
+    reform = _reform_for(in_effect_flag)
     situation = _ok_situation("2026", 30_000, with_child=True)
     sim = Simulation(situation=situation, reform=reform)
-    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
-    assert np.isfinite(ok_federal_ctc)
-    assert ok_federal_ctc >= 0
+    check(sim)
 
 
 def test_ok_federal_ctc_computes_after_afa_2039_cliff():
@@ -144,24 +193,119 @@ def test_ok_federal_ctc_computes_after_afa_2039_cliff():
         country_id="us",
     )
     situation = _ok_situation("2040", 30_000, with_child=True)
-    sim = Simulation(situation=situation, reform=reform)
-    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2040)[0]
-    assert np.isfinite(ok_federal_ctc)
-    assert ok_federal_ctc >= 0
+    afa_sim = Simulation(situation=situation, reform=reform)
+    afa_ok_federal_ctc = afa_sim.calculate("ok_federal_ctc", 2040)[0]
+    # [S2] Post-cliff (2040 > AFA's 2039 stop) the parameter list is unmodified,
+    # so the guard is inert and AFA must produce exactly the baseline result.
+    # Compare against the SAME household with no reform — no hardcoded value.
+    baseline_sim = Simulation(situation=_ok_situation("2040", 30_000, with_child=True))
+    baseline_ok_federal_ctc = baseline_sim.calculate("ok_federal_ctc", 2040)[0]
+    assert afa_ok_federal_ctc == baseline_ok_federal_ctc
 
 
 def test_ok_federal_ctc_high_income_guard_branch_under_afa():
-    """[S5] High-income OK household under AFA: the fully-refundable CTC is
-    reduced/phased while still on the guard branch (non_refundable_ctc absent
-    from the list). Assert the guard invariant relationally — the Oklahoma
-    credit allowed equals the refundable CTC read from the same simulation —
-    regardless of how far the phase-out has run (0 is a valid result)."""
+    """[A3] OK household with AGI INSIDE the AFA phase-out range but still
+    carrying a residual credit (single filer, one child under age 6, AGI
+    ~$150k — above the $112,500 SINGLE lower threshold but below full phase-out,
+    so the AFA CTC is partially reduced yet non-zero). Assert BOTH that a
+    residual refundable CTC survives AND the guard invariant holds
+    (ok_federal_ctc == refundable_ctc). Requiring refundable_ctc > 0
+    distinguishes the guard branch from a trivial 0 == 0 pass at full
+    phase-out."""
     reform = Reform.from_dict(
         {"gov.contrib.congress.afa.in_effect": {"2026-01-01.2100-12-31": True}},
         country_id="us",
     )
-    situation = _ok_situation("2026", 400_000, with_child=True)
+    situation = _ok_situation("2026", 150_000, with_child=True)
     sim = Simulation(situation=situation, reform=reform)
     ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
     refundable_ctc = sim.calculate("refundable_ctc", 2026)[0]
+    assert refundable_ctc > 0
     assert ok_federal_ctc == pytest.approx(refundable_ctc)
+
+
+def test_ok_federal_ctc_leading_edge_2025_under_afa():
+    """[S3] 2025 leading edge: AFA's modify_parameters removes
+    non_refundable_ctc from the parameter list starting 2025-01-01, so at 2025
+    (the first modify_parameters year) the guard already fires and the Oklahoma
+    credit collapses to refundable_ctc — the same invariant as 2026+."""
+    # Enable the reform from 2025 so its modify_parameters (start 2025-01-01) is
+    # exercised at its leading edge.
+    reform = Reform.from_dict(
+        {"gov.contrib.congress.afa.in_effect": {"2025-01-01.2100-12-31": True}},
+        country_id="us",
+    )
+    situation = _ok_situation("2025", 30_000, with_child=True)
+    sim = Simulation(situation=situation, reform=reform)
+    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2025)[0]
+    refundable_ctc = sim.calculate("refundable_ctc", 2025)[0]
+    # Guard fires at the 2025 leading edge (param removal active): the credit
+    # allowed equals the refundable CTC. Correct by construction, no hardcode.
+    assert ok_federal_ctc == refundable_ctc
+
+
+def test_ok_child_care_child_tax_credit_20pct_cdcc_arm_under_afa():
+    """[S4a] Downstream OK Child Care/Child Tax Credit, 20%-CDCC arm: with real
+    child-care expenses, 20% of the federal CDCC exceeds 5% of the federal CTC,
+    so the credit equals 0.20 * federal CDCC (read from the same sim). AGI is
+    below the $100k OK limit and OK AGI == US AGI (full-year resident), so no
+    proration/eligibility factor applies."""
+    reform = Reform.from_dict(
+        {"gov.contrib.congress.afa.in_effect": {"2026-01-01.2100-12-31": True}},
+        country_id="us",
+    )
+    situation = {
+        "people": {
+            "parent": {
+                "age": {"2026": 35},
+                "employment_income": {"2026": 60_000},
+            },
+            "child": {"age": {"2026": 4}},
+        },
+        "tax_units": {
+            "tax_unit": {
+                "members": ["parent", "child"],
+                # Large child-care spend (input directly at the tax unit, which
+                # cdcc_relevant_expenses consumes) so the 20% CDCC arm dominates
+                # the 5% CTC arm.
+                "tax_unit_childcare_expenses": {"2026": 8_000},
+            }
+        },
+        "spm_units": {"spm_unit": {"members": ["parent", "child"]}},
+        "households": {
+            "household": {
+                "members": ["parent", "child"],
+                "state_name": {"2026": "OK"},
+            }
+        },
+    }
+    sim = Simulation(situation=situation, reform=reform)
+    cdcc = sim.calculate("cdcc", 2026)[0]
+    ok_federal_ctc = sim.calculate("ok_federal_ctc", 2026)[0]
+    ok_credit = sim.calculate("ok_child_care_child_tax_credit", 2026)[0]
+    p = sim.tax_benefit_system.parameters(
+        "2026-01-01"
+    ).gov.states.ok.tax.income.credits.child
+    # Confirm the 20% CDCC arm actually dominates (guards against a silent
+    # data-shift that would make this test a no-op).
+    assert cdcc * p.cdcc_fraction > ok_federal_ctc * p.ctc_fraction
+    assert ok_credit == pytest.approx(p.cdcc_fraction * cdcc, rel=1e-4)
+
+
+def test_ok_child_care_child_tax_credit_over_agi_limit_under_afa():
+    """[S4b] Downstream OK Child Care/Child Tax Credit is $0 when federal AGI
+    exceeds the $100k Oklahoma eligibility limit, even under AFA."""
+    reform = Reform.from_dict(
+        {"gov.contrib.congress.afa.in_effect": {"2026-01-01.2100-12-31": True}},
+        country_id="us",
+    )
+    situation = _ok_situation("2026", 150_000, with_child=True)
+    sim = Simulation(situation=situation, reform=reform)
+    us_agi = sim.calculate("adjusted_gross_income", 2026)[0]
+    p = sim.tax_benefit_system.parameters(
+        "2026-01-01"
+    ).gov.states.ok.tax.income.credits.child
+    # Confirm the household is genuinely over the OK AGI eligibility limit.
+    assert us_agi > p.agi_limit
+    ok_credit = sim.calculate("ok_child_care_child_tax_credit", 2026)[0]
+    assert ok_credit == 0

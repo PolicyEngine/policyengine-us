@@ -1,1 +1,0 @@
-Fixed Oklahoma's federal CTC computation so it no longer crashes under reforms that make the CTC fully refundable (such as the American Family Act contrib), which remove the non-refundable CTC from the federal credit list; the credit allowed for the Oklahoma Child Care/Child Tax Credit is then the refundable CTC.

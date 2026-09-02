@@ -9,6 +9,8 @@ class ok_federal_ctc(Variable):
     definition_period = YEAR
     defined_for = StateCode.OK
     reference = (
+        # 68 O.S. Sec. 2357(B)(2) (Oklahoma Child Care/Child Tax Credit).
+        "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92568",
         # 2025 Form 511 packet, pages 11 and 25.
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=11",
     )
@@ -21,11 +23,13 @@ class ok_federal_ctc(Variable):
     def formula(tax_unit, period, parameters):
         non_refundable_credits = parameters(period).gov.irs.credits.non_refundable
         refundable_ctc = tax_unit("refundable_ctc", period)
-        # Reforms that make the CTC fully refundable (e.g. the American
-        # Family Act contrib) remove non_refundable_ctc from the federal
-        # non-refundable credit list entirely; the whole federal CTC then
-        # flows through the refundable side, and there is no non-refundable
-        # portion to allocate against liability.
+        # NOTE: Fully-refundable-CTC reforms (e.g. the American Family Act
+        # contrib) drop non_refundable_ctc from the federal list, so there is
+        # no non-refundable portion and the whole CTC flows through refundable.
+        # Under AFA the $500 ODC is split into a separate non_refundable
+        # other_dependent_credit entry, so returning refundable_ctc here
+        # deliberately excludes that applied ODC (a conservative counterfactual
+        # choice); the baseline keeps the ODC inside ctc, so it is unaffected.
         if "non_refundable_ctc" not in non_refundable_credits:
             return refundable_ctc
         ctc_index = non_refundable_credits.index("non_refundable_ctc")
