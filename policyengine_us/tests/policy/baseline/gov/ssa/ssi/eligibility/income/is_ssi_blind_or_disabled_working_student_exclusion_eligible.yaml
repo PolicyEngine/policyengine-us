@@ -38,3 +38,15 @@
     is_full_time_student: true
   output:
     is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+
+- name: Eligible student earning above the SGA threshold keeps the exclusion
+  period: 2026
+  input:
+    is_blind: false
+    is_disabled: false
+    meets_ssi_disability_criteria: true
+    employment_income: 30_000
+    age: 20
+    is_full_time_student: true
+  output:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
