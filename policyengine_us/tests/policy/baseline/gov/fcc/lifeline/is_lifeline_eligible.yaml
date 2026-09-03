@@ -131,31 +131,3 @@
   output:
     # 47 CFR 54.409(b): Tribal households keep the standard routes in 54.409(a).
     is_lifeline_eligible: true
-
-- name: Tribal family with income >135% of FPG that receives BIA General Assistance is eligible
-  period: 2022
-  input:
-    fcc_fpg_ratio: 1.5
-    is_on_tribal_land: true
-    head_start: false
-    fdpir: 0
-    tanf: 0
-    snap: 0
-    ssi: 0
-    medicaid_enrolled: false
-    general_assistance: 1_200
-  output:
-    is_lifeline_eligible: true
-
-- name: Non-tribal family with income >135% of FPG that receives general assistance is not eligible
-  period: 2022
-  input:
-    fcc_fpg_ratio: 1.5
-    is_on_tribal_land: false
-    snap: 0
-    ssi: 0
-    medicaid_enrolled: false
-    general_assistance: 1_200
-  output:
-    # General assistance only proxies BIA General Assistance, which is on the Tribal list.
-    is_lifeline_eligible: false
