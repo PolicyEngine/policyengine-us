@@ -1,0 +1,1 @@
+- Activate the Arizona limited utility allowance from benefit month January 2023 (per the DES FAA6.J manual) and the Arkansas basic utility allowance from FY2023 (per the FNS SUA tables) - the values were already maintained but the activation flag was off - and add Arizona's FY2027 LUA amounts.

@@ -47,3 +47,169 @@
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: SUA
+
+# Missouri excludes telephone from its LUA (the Non-Heating/Cooling
+# Standard) under the 7 CFR 273.9(d)(6)(iii)(A)(3) state option, so a
+# phone bill does not count toward the two-utility LUA qualification
+# (MO DSS manual 1115.035.25.15).
+- name: Missouri phone bill does not count toward the LUA qualification
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Phone plus one other utility leaves only one LUA-qualifying bill.
+    snap_utility_allowance_type: IUA
+
+- name: Missouri with two non-phone utilities plus a phone bill qualifies for the LUA
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 3
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Wisconsin phone bill counts toward the LUA qualification
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: WI
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Wisconsin's LUA qualifying list is "phone, water, sewer, electric,
+    # cooking fuel, or trash" (FoodShare Handbook 4.6.7), so phone plus one
+    # other utility still qualifies.
+    snap_utility_allowance_type: LUA
+
+# The Arizona LUA begins with benefit month January 2023 (DES FAA6.J) and
+# the Arkansas BUA carries its first published amount in FY2023 (FNS SUA
+# tables); before then, two-utility households fall back to the individual
+# standards.
+- name: Arizona household with two non-heating utilities qualifies for the LUA in 2026
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Arkansas household with two non-heating utilities qualifies for the BUA in 2026
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Arkansas household with two non-heating utilities receives individual standards before FY2023
+  period: 2021
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: Arizona two-utility household receives individual standards in 2022, before the LUA begins
+  period: 2022
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # The DES FAA6.J archived amounts page: "LUA is effective the benefit
+    # month of 01/2023" (the SUA fallback Arizona applied in late 2022 is
+    # not modeled).
+    snap_utility_allowance_type: IUA
+
+- name: Arizona two-utility household qualifies for the LUA from January 2023
+  period: 2023-01
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Missouri two non-phone utilities without a phone bill qualify for the LUA
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # The phone exclusion only bites when a phone bill exists.
+    snap_utility_allowance_type: LUA
+
+- name: Missouri phone-only household receives the individual standards
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 1
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Zero LUA-qualifying bills, but the phone bill still routes to the IUA.
+    snap_utility_allowance_type: IUA
+
+- name: Missouri heating household with a phone bill receives the SUA
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: true
+  output:
+    # The SUA takes precedence over the LUA test.
+    snap_utility_allowance_type: SUA
+
+- name: Alaska Central sub-region phone plus one utility receives the individual standards
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: AK_C
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Alaska has no LUA, so the sub-region only exercises the
+    # includes_phone lookup for a non-state region key.
+    snap_utility_allowance_type: IUA
+
+- name: Arkansas two-utility household receives individual standards in January 2022, before the BUA is published
+  period: 2022-01
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: Arkansas two-utility household qualifies for the BUA in January 2023
+  period: 2023-01
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA

@@ -1,0 +1,1 @@
+- Add the 7 CFR 273.9(d)(6)(iii)(A)(3) state option for the SNAP limited utility allowance to exclude telephone costs: in states that exclude telephone (Missouri), a phone bill no longer counts toward the two-utility LUA qualification and the telephone standard is added on top of the LUA.
