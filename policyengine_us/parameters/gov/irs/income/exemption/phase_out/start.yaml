@@ -4,6 +4,7 @@ metadata:
   breakdown:
     - filing_status
   unit: currency-USD
+  # This parent uprating remains inactive pending selective propagation in PolicyEngine/policyengine-core#537.
   uprating: gov.irs.uprating
   reference:
     - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(3)(B)

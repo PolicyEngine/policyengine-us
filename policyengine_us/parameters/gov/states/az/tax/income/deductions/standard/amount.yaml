@@ -17,6 +17,7 @@ metadata:
   - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
     href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=43
   # Arizona standard deduction is uprated mirroring federal standard deduction
+  # This parent uprating remains inactive pending selective propagation in PolicyEngine/policyengine-core#537.
   uprating: gov.irs.uprating
 
 JOINT:

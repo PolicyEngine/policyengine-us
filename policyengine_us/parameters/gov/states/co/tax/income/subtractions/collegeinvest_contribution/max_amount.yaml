@@ -5,6 +5,7 @@ metadata:
   label: Colorado CollegeInvest contribution subtraction max amount
   breakdown:
     - filing_status
+  # This parent uprating remains inactive pending selective propagation in PolicyEngine/policyengine-core#537.
   uprating:
     parameter: gov.irs.uprating
     rounding:
