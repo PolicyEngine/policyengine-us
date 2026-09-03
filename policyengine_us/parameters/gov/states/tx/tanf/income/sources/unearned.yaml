@@ -1,20 +1,41 @@
 description: Texas counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
-  # Regulations state all income other than its defined earned income sources is counted as unearned income.
-  # We list them here to avoid a circular reference.
+  # 1 TAC 372.401(a) defines unearned income as all income other than the
+  # defined earned income sources, and Texas Works Handbook A-1320 states that
+  # income not specifically listed in the handbook must be counted. We list
+  # the sources here to avoid a circular reference.
   2010-01-01:
+    # A-1324.16 Retirement, Survivors and Disability Insurance
     - social_security
+    - survivor_benefits
     - disability_benefits
     - workers_compensation
+    # A-1324.19 Unemployment compensation
     - unemployment_compensation
+    # A-1324.20 Veterans benefits
+    - veterans_benefits
+    # A-1324.23 Railroad retirement; other pensions counted under the A-1320 catch-all
+    - pension_income
     - retirement_distributions
     - alimony_income
+    # A-1325.1 Dividends and royalties (royalties included in rental income)
     - dividend_income
     - interest_income
+    # A-1323.4.2 Rental income is unearned unless the person manages the
+    # property at least 20 hours a week; we treat all rental income as unearned
+    - rental_income
     - farm_operations_income
     - farm_rent_income
     - capital_gains
     - miscellaneous_income
+    # A-1326.1 Cash gifts and contributions count as unearned income; the
+    # exemption for need-based nonprofit contributions up to $300 per quarter
+    # is not modeled
+    - financial_assistance
+    - gi_cash_assistance
+    # Cash assistance from other programs is counted under the A-1320 catch-all
+    - general_assistance
+    # A-1326.2 Child support (the $75 disregard is applied downstream)
     - child_support_received
 
 metadata:
@@ -23,6 +44,6 @@ metadata:
   label: Texas TANF unearned income sources
   reference:
     - title: Texas Works Handbook - A-1320 Types of Income
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1320-types-income
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1320-types-income
     - title: 1 Tex. Admin. Code § 372.401 (a) - Income
       href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-401
