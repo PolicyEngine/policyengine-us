@@ -1,0 +1,1 @@
+Missouri MHABD: deny the 209(b) SSI-recipient Medicaid pathway to non-blind, non-aged earners above the substantial gainful activity threshold per DSS Manual § 0840.010.35, and test the Appendix J income standard against the individual or couple poverty guideline instead of the tax unit's, so a disabled child in a family faces the individual standard.

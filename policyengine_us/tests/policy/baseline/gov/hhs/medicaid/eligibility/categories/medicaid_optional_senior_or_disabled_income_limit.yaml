@@ -3,6 +3,8 @@
 # 85% (DSS Manual § 0805.015.45; current dollars in MHABD Appendix J).
 # Missouri publishes the standards as monthly dollar amounts, rounding
 # the percentage of the monthly guideline up to the next whole dollar.
+# The guideline is the one-person or couple figure (2025: $15,650 and
+# $21,150), so a tax_unit_fpg override has no effect in Missouri.
 - name: Missouri blind single person gets the 100% FPL blind standard
   period: 2025
   input:
@@ -12,14 +14,13 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 20_000
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # ceil(1.00 x 20,000 / 12) = 1,667 monthly
-    medicaid_optional_senior_or_disabled_income_limit: [20_004]
+    # ceil(1.00 x 15,650 / 12) = 1,305 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [15_660]
 
 - name: Missouri non-blind single person gets the 85% FPL standard
   period: 2025
@@ -30,14 +31,13 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 20_000
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # ceil(0.85 x 20,000 / 12) = 1,417 monthly
-    medicaid_optional_senior_or_disabled_income_limit: [17_004]
+    # ceil(0.85 x 15,650 / 12) = 1,109 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [13_308]
 
 # The blind override is per person, so within one joint unit the blind
 # spouse gets the 100% standard while the other keeps the couple limit.
@@ -46,6 +46,7 @@
   input:
     people:
       person1:
+        age: 68
         is_blind: true
       person2:
         age: 70
@@ -53,14 +54,13 @@
       tax_unit:
         members: [person1, person2]
         tax_unit_is_joint: true
-        tax_unit_fpg: 20_000
     households:
       household:
         members: [person1, person2]
         state_code: MO
   output:
-    # ceil([1.00, 0.85] x 20,000 / 12) = [1,667, 1,417] monthly
-    medicaid_optional_senior_or_disabled_income_limit: [20_004, 17_004]
+    # ceil([1.00, 0.85] x 21,150 / 12) = [1,763, 1,499] monthly
+    medicaid_optional_senior_or_disabled_income_limit: [21_156, 17_988]
 
 # Appendix J standards effective 04-01-2026: $1,131 and $1,533 monthly
 # for aged or disabled, $1,330 and $1,804 for blind. These derive from
@@ -151,3 +151,32 @@
   output:
     # Florida's ordinary individual percentage, 0.88 x 20,000
     medicaid_optional_senior_or_disabled_income_limit: [17_600]
+
+# The standard follows the applicant's marital status, not the tax unit's
+# size: a disabled child in a family of four is tested against the
+# individual standard while the married parents get the couple standard.
+- name: Missouri disabled child in a family of four gets the individual standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_disabled: true
+      person2:
+        age: 40
+      person3:
+        age: 39
+      person4:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    # child: ceil(0.85 x 15,960 / 12) = 1,131 monthly
+    # parents: ceil(0.85 x 21,640 / 12) = 1,533 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 18_396, 18_396, 13_572]

@@ -15,6 +15,7 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicaid.gov/resources-for-states/downloads/macpro-ig-more-restrictive-requirements-1902f-209bstates.pdf#page=3",
         "https://www.govinfo.gov/link/cfr/42/435?link-type=pdf&sectionnum=121&year=mostrecent",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0840-000-00/0840-010-00/0840-010-35/",
     )
 
     def formula(person, period, parameters):
@@ -33,11 +34,27 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
             & person("is_child", period)
             & ~person("is_blind", period)
         )
+        # Missouri denies spend-down and non-spend-down MHABD coverage to a
+        # person whose earnings exceed the substantial gainful activity
+        # threshold (DSS MHABD Manual § 0840.010.35). The test belongs to
+        # the permanent-and-total-disability category: the blind category
+        # is vision-based and the aged category has no SGA test, so the
+        # screen exempts the blind (already inside ssi_engaged_in_sga) and
+        # the aged. Reported SSI receipt is taken at face value, so this
+        # gate is what stops an asserted recipient earning above SGA. A
+        # section 1619(a) continuing recipient who works above SGA cannot
+        # be distinguished from a new applicant and is over-excluded.
+        is_excluded_sga_earner = (
+            p.applies_sga_screen[state].astype(bool)
+            & person("ssi_engaged_in_sga", period)
+            & ~person("is_ssi_aged", period)
+        )
 
         return (
             receives_ssi
             & is_209b_state
             & ~is_excluded_nonblind_child
+            & ~is_excluded_sga_earner
             & person("is_209b_ssi_recipient_income_eligible_for_medicaid", period)
             & person("is_optional_senior_or_disabled_asset_eligible", period)
         )

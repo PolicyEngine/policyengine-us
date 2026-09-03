@@ -35,7 +35,6 @@
   input:
     state_code: MO
     is_blind: true
-    tax_unit_fpg: 15_000
     medicaid_optional_senior_or_disabled_countable_income: 20_000
     medicaid_medically_needy_medical_expenses: 5_500
   output:
@@ -45,7 +44,6 @@
   period: 2026
   input:
     state_code: MO
-    tax_unit_fpg: 15_000
     medicaid_optional_senior_or_disabled_countable_income: 20_000
     medicaid_medically_needy_medical_expenses: 5_500
   output:

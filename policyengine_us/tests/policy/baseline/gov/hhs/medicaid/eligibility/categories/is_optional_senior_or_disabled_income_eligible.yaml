@@ -84,7 +84,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -101,7 +100,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -115,11 +113,10 @@
     people:
       person1:
         is_blind: true
-        medicaid_optional_senior_or_disabled_countable_income: 15_100
+        medicaid_optional_senior_or_disabled_countable_income: 15_700
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -135,11 +132,10 @@
     people:
       person1:
         is_blind: true
-        medicaid_optional_senior_or_disabled_countable_income: 15_000
+        medicaid_optional_senior_or_disabled_countable_income: 15_660
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -152,11 +148,10 @@
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 12_750
+        medicaid_optional_senior_or_disabled_countable_income: 13_308
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]

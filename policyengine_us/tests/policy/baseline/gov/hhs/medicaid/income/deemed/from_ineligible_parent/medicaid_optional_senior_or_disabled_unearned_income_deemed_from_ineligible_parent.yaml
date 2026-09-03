@@ -18,3 +18,68 @@
         state_code: CT
   output:
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [6_006, 0]
+
+# Missouri MHDC deems only a natural or adoptive parent's income, never a
+# stepparent's (DSS MHABD Manual § 0805.020.15), and divides the deemed
+# amount equally among the disabled children applying. Parent status
+# comes from is_parent, so the stepparent is simply not a deeming source.
+- name: Case 2, Missouri deems the natural parent's income but not the stepparent's.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_disabled: true
+      person2:
+        age: 35
+        is_parent: true
+        ssi_earned_income: 48_000
+      person3:
+        age: 38
+        is_parent: false
+        ssi_earned_income: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Mother only: (4,000 - 65) / 2 = 1,967.50; - 20 = 1,947.50; floor 1,947
+    # x 12 = 23,364; less the one-parent allowance 994 x 12 = 11,928
+    # -> 11,436. The stepfather's 120,000 is not deemed.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [11_436, 0, 0]
+
+- name: Case 3, Missouri splits deemed parental income equally between two disabled children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_ssi_disabled: true
+      person2:
+        age: 12
+        is_ssi_disabled: true
+      person3:
+        age: 40
+        is_parent: true
+        ssi_earned_income: 45_000
+      person4:
+        age: 39
+        is_parent: true
+        ssi_earned_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    # Both parents: (6,250 - 65) / 2 = 3,092.50; - 20 = 3,072.50; floor
+    # 3,072 x 12 = 36,864; less the two-parent allowance 1,491 x 12 =
+    # 17,892 -> 18,972, split equally -> 9,486 each.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [9_486, 9_486, 0, 0]
