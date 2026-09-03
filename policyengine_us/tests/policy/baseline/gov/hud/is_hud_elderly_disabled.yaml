@@ -63,3 +63,23 @@
         members: [parent, dependent]
   output:
     is_hud_elderly_disabled_family: false
+
+# 42 U.S.C. 1437a(b)(3)(E): the SSA disability standard qualifies alongside
+# the generic disability flag.
+- name: A one-person non-elderly family meeting the SSI disability test.
+  period: 2022
+  input:
+    age: 48
+    is_disabled: false
+    is_ssi_disabled: true
+  output:
+    is_hud_elderly_disabled_family: true
+
+- name: A one-person non-elderly family receiving SSDI.
+  period: 2022
+  input:
+    age: 48
+    is_disabled: false
+    social_security_disability: 12_000
+  output:
+    is_hud_elderly_disabled_family: true

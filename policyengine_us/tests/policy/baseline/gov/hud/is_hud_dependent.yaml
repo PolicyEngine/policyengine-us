@@ -127,3 +127,47 @@
     # Both are disabled adults filing separately; only the oldest is
     # excluded as the family head, so the younger one is a dependent.
     is_hud_dependent: [false, true]
+
+- name: A non-head adult meeting the SSI disability test is a HUD dependent (42 U.S.C. 1437a(b)(3)(E)).
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 40
+        is_disabled: false
+        is_ssi_disabled: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, true]
+
+- name: A non-head adult receiving SSDI is a HUD dependent (42 U.S.C. 1437a(b)(3)(E)).
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 40
+        is_disabled: false
+        social_security_disability: 12_000
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, true]
