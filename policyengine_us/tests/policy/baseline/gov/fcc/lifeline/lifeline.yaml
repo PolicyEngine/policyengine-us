@@ -140,3 +140,43 @@
     state_code: KS
   output:
     lifeline: 9.25 * 12 + 3 * 12
+
+- name: Single adult above 135% of FPG who reports housing assistance receives the full amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        phone_cost: 600
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    is_lifeline_eligible: true
+    lifeline: 9.25 * 12
+
+- name: Single adult above 135% of FPG without housing assistance is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: false
+        phone_cost: 600
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    is_lifeline_eligible: false
+    lifeline: 0

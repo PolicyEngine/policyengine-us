@@ -88,7 +88,11 @@ AZ:
   2017-10-01: 0
   2018-10-01: 0
   2019-10-01: 0
-  2020-10-01: 41
+  # The DES manual's archived FAA6.J page for 10/01/20-09/30/21 lists only
+  # the SUA and a $41 Telephone Utility Allowance -- Arizona had no LUA
+  # until benefit month 01/2023, so the $41 previously recorded here was
+  # the TUA misfiled.
+  2020-10-01: 0
   2021-10-01: 0
   2022-10-01: 0
   2023-10-01: 150
@@ -696,6 +700,8 @@ metadata:
     href: https://snapqcdata.net/sites/default/files/2022-12/FY%202020%20SNAP%20QC%20Technical%20Documentation.pdf#page=175
   - title: FY 2021 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2024-05/FY%202021%20Tech%20Doc.pdf#page=138
+  - title: AZ DES CNAP manual FAA6.J Standards, Fees, and Amounts, 09 Utility Allowance Current Amount (archived 10/01/2020 page under Previous Years; no LUA, $41 Telephone Utility Allowance)
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA6/Utility_Allowance_Current_Amount.html
   breakdown:
   - snap_utility_region
   uprating: gov.usda.snap.uprating

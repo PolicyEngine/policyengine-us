@@ -17,11 +17,20 @@ class ma_liheap(Variable):
         )
         # Heat-in-rent is a direct subsidy — no expense cap.
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        # Deprecated adapter: households without a canonical heating_type
+        # keep MA's pre-canonical arbitration exactly (person-level total,
+        # else the per-fuel bill matching the MA heating type — including
+        # the post-subsidy electricity_expense — else
+        # heating_cooling_expense). electricity_expense equals
+        # pre_subsidy_electricity_expense outside California today (the
+        # subsidy list is CA-only), so the canonical path differs from this
+        # one only in its dependency graph, not in value.
+        canonical_type = spm_unit("heating_type", period)
+        unspecified = canonical_type == canonical_type.possible_values.UNSPECIFIED
         heating_person = add(spm_unit, period, ["heating_expense_person"])
-        # Legacy fallback: partners may still send the pre-PR-#7986 per-fuel inputs.
         heating_type = spm_unit("ma_liheap_heating_type", period)
         types = heating_type.possible_values
-        legacy_expense = select(
+        legacy_fuel_expense = select(
             [
                 heating_type == types.ELECTRICITY,
                 heating_type == types.NATURAL_GAS,
@@ -36,8 +45,9 @@ class ma_liheap(Variable):
             ],
             default=spm_unit("heating_cooling_expense", period),
         )
+        legacy_expense = where(heating_person > 0, heating_person, legacy_fuel_expense)
         actual_expense_amount = where(
-            heating_person > 0, heating_person, legacy_expense
+            unspecified, legacy_expense, spm_unit("heating_expense", period)
         )
         return where(
             heat_in_rent,

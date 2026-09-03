@@ -1,3 +1,28 @@
+## [1.822.2] - 2026-09-03
+
+### Fixed
+
+- Count reported Federal Public Housing Assistance receipt toward Lifeline categorical eligibility per 47 CFR 54.409(a)(2), and let households on Tribal lands qualify through the standard programs as well as the Tribal-specific list per 54.409(b), for both Lifeline and ACP.
+
+
+## [1.822.1] - 2026-09-03
+
+### Changed
+
+- Consolidated the heating expense inputs under a canonical `heating_type` enum (default `UNSPECIFIED`) with a pure derived `heating_expense`, new `wood_expense` and `other_heating_fuel_expense` inputs, DC/IL/MA LIHEAP adapters that keep their pre-canonical arbitration for `UNSPECIFIED` households (except that DC now honours `heat_expense_included_in_rent` and MA excludes homes without heating from the HECS supplement), and deprecation of `heating_expense_person` and `heating_cooling_expense` as heating-amount inputs.
+
+
+## [1.822.0] - 2026-09-03
+
+### Added
+
+- - Add the 7 CFR 273.9(d)(6)(iii)(A)(3) state option for the SNAP limited utility allowance to exclude telephone costs: in states that exclude telephone (Missouri), a phone bill no longer counts toward the two-utility LUA qualification and the telephone standard is added on top of the LUA.
+
+### Fixed
+
+- - Activate the Arizona limited utility allowance from benefit month January 2023 (per the DES FAA6.J manual) and the Arkansas basic utility allowance from FY2023 (per the FNS SUA tables) - the values were already maintained but the activation flag was off - and add Arizona's FY2027 LUA amounts.
+
+
 ## [1.821.13] - 2026-09-03
 
 ### Fixed

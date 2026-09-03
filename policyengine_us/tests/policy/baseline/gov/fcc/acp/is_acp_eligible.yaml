@@ -172,3 +172,37 @@
     wic: 0
   output:
     is_acp_eligible: true
+
+- name: Tribal family enrolled in Medicaid is eligible if income is above 200% of FPG, through the standard Lifeline programs
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ssi: 0
+    medicaid_enrolled: true
+    head_start: 0
+    fdpir: 0
+    tanf: 0
+    ebb: 0
+    pell_grant: 0
+    is_on_tribal_land: true
+    fcc_fpg_ratio: 2.1
+    wic: 0
+  output:
+    # 47 CFR 54.409(b): Tribal households keep the standard routes in 54.409(a).
+    is_acp_eligible: true
+
+- name: Family reporting Federal Public Housing Assistance receipt is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ssi: 0
+    medicaid_enrolled: false
+    receives_housing_assistance: true
+    ebb: 0
+    pell_grant: 0
+    fcc_fpg_ratio: 2.1
+    wic: 0
+  output:
+    is_acp_eligible: true
