@@ -129,7 +129,10 @@
     meets_snap_parent_exception: [false, false]
 
 # Two-parent household cases - requires child under 6 only
-- name: Two-parent household with child under 6 meets exception
+# Each child under six exempts only one adult (Texas Works Handbook
+# B-412(7); North Carolina FNS 235.04(E)); the claim goes to the first
+# parent listed when neither is a student.
+- name: Two-parent household with child under 6 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -148,7 +151,7 @@
       spm_unit:
         members: [parent1, parent2, child]
   output:
-    meets_snap_parent_exception: [true, true, false]
+    meets_snap_parent_exception: [true, false, false]
 
 - name: Two-parent household with child exactly 6 does not meet exception
   period: 2024
@@ -256,7 +259,7 @@
   output:
     meets_snap_parent_exception: [false, false, false]
 
-- name: Two-parent household with multiple children - youngest under 6 meets exception
+- name: Two-parent household with multiple children - one under 6 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -277,7 +280,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2]
   output:
-    meets_snap_parent_exception: [true, true, false, false]
+    meets_snap_parent_exception: [true, false, false, false]
 
 - name: Two-parent household with multiple children - all over 6 does not meet exception
   period: 2024
@@ -323,7 +326,7 @@
     meets_snap_parent_exception: [true, false]
 
 # Edge case - two-parent household with child at exactly the boundary
-- name: Two-parent household with child exactly 5 meets exception
+- name: Two-parent household with child exactly 5 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -342,11 +345,11 @@
       spm_unit:
         members: [parent1, parent2, child]
   output:
-    meets_snap_parent_exception: [true, true, false]
+    meets_snap_parent_exception: [true, false, false]
 
 # Missouri lets only one adult in the SNAP household claim the care of a
-# child under six (DSS SNAP Manual § 1135.025.00). The claim goes to the
-# parent who is a higher-education student; the federal rule has no cap.
+# child under six, however many young children live there (DSS SNAP
+# Manual § 1135.025.00). The claim goes to the parent who is a student.
 - name: Missouri two-parent household lets only one adult claim the child-care exception
   period: 2024
   input:
@@ -400,7 +403,39 @@
   output:
     meets_snap_parent_exception: [false, true, false]
 
-- name: Kansas two-parent household lets both adults claim the child-care exception
+- name: Missouri keeps the cap at one adult even with two children under six
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child1:
+        age: 4
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+
+# Texas caps the claim per child, not per household: two children under six
+# let both parents qualify (Texas Works Handbook B-412(7); North Carolina
+# FNS 235.04(E) says the same).
+- name: Texas two-parent household with one child under six lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -423,6 +458,35 @@
     households:
       household:
         members: [parent1, parent2, child]
-        state_code: KS
+        state_code: TX
   output:
-    meets_snap_parent_exception: [true, true, false]
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Texas two-parent household with two children under six lets both adults claim the exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child1:
+        age: 4
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, true, false, false]

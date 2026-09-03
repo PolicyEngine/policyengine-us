@@ -1,1 +1,1 @@
-Missouri SNAP: only one adult in the household may claim the student exemption for caring for a child under six per DSS SNAP Manual § 1135.025.00, behind a state-level parameter that leaves every other state uncapped.
+SNAP student child-care exception: each child under six exempts only one adult, per state manuals (Texas Works Handbook B-412(7), North Carolina FNS 235.04(E), Washington EA-Z Student Status); Missouri and Illinois cap the claim at one adult per household (MO DSS SNAP Manual § 1135.025.00, IL WAG 03-04-03-b) behind a state-level parameter.

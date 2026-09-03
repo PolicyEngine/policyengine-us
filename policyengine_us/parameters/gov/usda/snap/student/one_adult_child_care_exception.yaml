@@ -1,18 +1,26 @@
-description: Only one adult in the household may claim the student exemption for caring for a dependent child under age six in these states under the Supplemental Nutrition Assistance Program.
+description: Only one adult in the SNAP household may claim the student exemption for caring for a dependent child under age six, regardless of how many such children live in the household, in these states under the Supplemental Nutrition Assistance Program.
 metadata:
   unit: bool
   period: year
-  label: SNAP student child care exception one-adult limit
+  label: SNAP student child care exception one-adult-per-household limit
   breakdown:
     - state_code
   reference:
     - title: Missouri DSS SNAP Manual § 1135.025.00 - Students ("only one adult in the household may claim this responsibility")
       href: https://dssmanuals.mo.gov/food-stamps/1135-000-00/1135-025-00/
+    - title: Illinois IDHS WAG 03-04-03-b - Eligible Students of Higher Education ("only one adult may claim this exemption")
+      href: https://www.dhs.state.il.us/page.aspx?item=13276
     - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
       href: https://www.law.cornell.edu/cfr/text/7/273.5
-# Federal rule 7 CFR 273.5(b)(8) carries no such cap; Missouri's manual
-# adds it. The manual gives no effective date, so the value starts with
-# the sibling student parameters. Other states are unverified defaults.
+# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. Most state
+# manuals let one adult claim each child under six (see
+# meets_snap_parent_exception); that per-child cap applies in every state
+# and is not what this parameter controls. Missouri and Illinois word the
+# cap as one adult per household, so a second child under six does not
+# free a second claim there. States checked and left false: CA, CO, CT,
+# DC, GA, KS, MA, NC, TX, WA. Others are unverified defaults. The manuals
+# give no effective date, so values start with the sibling student
+# parameters.
 AK:
   2005-01-01: false
 AL:
@@ -42,7 +50,7 @@ IA:
 ID:
   2005-01-01: false
 IL:
-  2005-01-01: false
+  2005-01-01: true
 IN:
   2005-01-01: false
 KS:
