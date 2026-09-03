@@ -8,6 +8,7 @@ class heating_expense(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Annual home heating expense: the fuel bill matching the household's primary heating type (mixed-fuel households are represented by their primary fuel's bill). Zero is a valid value. UNSPECIFIED and NONE heating types have no bill here; UNSPECIFIED households are handled by each program's deprecated legacy adapter instead."
+    reference = "https://data.census.gov/table/ACSDT1Y2023.B25040"
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("heating_type", period)

@@ -19,8 +19,11 @@ class dc_liheap_payment(Variable):
         types = heating_type.possible_values
 
         # Deprecated adapter: households without a canonical heating_type
-        # keep DC's pre-canonical arbitration exactly (person-level total,
-        # else the per-fuel bill matching the DC heating type).
+        # keep DC's pre-canonical expense arbitration (person-level total,
+        # else the per-fuel bill matching the DC heating type). One declared
+        # change on this path: DC never read heat_expense_included_in_rent
+        # before, and dc_liheap_heating_type now selects the heat-in-rent
+        # row from it whether or not heating_type is known.
         canonical_type = spm_unit("heating_type", period)
         unspecified = canonical_type == canonical_type.possible_values.UNSPECIFIED
         heating_person = add(spm_unit, period, ["heating_expense_person"])

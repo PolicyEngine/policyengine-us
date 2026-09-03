@@ -143,3 +143,12 @@
     pre_subsidy_electricity_expense: 900
   output:
     heating_expense: 1_000
+
+- name: Monthly reads divide the annual bill by twelve.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    heating_expense: 100

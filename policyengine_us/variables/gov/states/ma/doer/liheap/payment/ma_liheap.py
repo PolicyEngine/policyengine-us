@@ -21,7 +21,10 @@ class ma_liheap(Variable):
         # keep MA's pre-canonical arbitration exactly (person-level total,
         # else the per-fuel bill matching the MA heating type — including
         # the post-subsidy electricity_expense — else
-        # heating_cooling_expense).
+        # heating_cooling_expense). electricity_expense equals
+        # pre_subsidy_electricity_expense outside California today (the
+        # subsidy list is CA-only), so the canonical path differs from this
+        # one only in its dependency graph, not in value.
         canonical_type = spm_unit("heating_type", period)
         unspecified = canonical_type == canonical_type.possible_values.UNSPECIFIED
         heating_person = add(spm_unit, period, ["heating_expense_person"])
