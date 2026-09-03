@@ -1,5 +1,6 @@
 description: States spends this amount on Medicaid for expansion population adults.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Medicaid spending for expansion adult enrollees

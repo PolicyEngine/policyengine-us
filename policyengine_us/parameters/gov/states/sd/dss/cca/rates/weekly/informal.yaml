@@ -3,6 +3,7 @@ description: South Dakota provides these weekly maximum reimbursement rates for 
 # Informal, in-home, and relative provider rates are flat statewide: they do not
 # vary by region or age group, only by level of service.
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: South Dakota CCA informal provider weekly rates

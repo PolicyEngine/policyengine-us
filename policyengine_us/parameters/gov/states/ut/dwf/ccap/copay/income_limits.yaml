@@ -27,6 +27,7 @@ description: Utah sets these monthly countable income upper limits for each copa
 # reviews, and open child care at group 16 between review cycles); that
 # structure is not yet modeled in ut_ccap_income_eligible.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   label: Utah CCAP copayment income group upper limits

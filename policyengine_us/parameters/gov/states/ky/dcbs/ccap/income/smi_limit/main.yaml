@@ -21,6 +21,7 @@ description: Kentucky limits gross monthly income to this amount, by family size
   2023-10-01: 8_559
   2025-10-01: 9_866
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   label: Kentucky CCAP 85% SMI monthly income limit

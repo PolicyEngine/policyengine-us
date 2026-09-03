@@ -8,6 +8,7 @@ description: Wisconsin caps the hourly subsidy rate for licensed group child car
 # Tribal-agency rows of the table are not transcribed (PolicyEngine has no
 # tribal geography).
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: hour
   label: Wisconsin Shares licensed group hourly maximum rate

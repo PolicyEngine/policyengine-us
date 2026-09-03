@@ -9,6 +9,7 @@ description: Wisconsin caps the monthly subsidy for full-time licensed family ch
 # Tribal-agency rows of the table are not transcribed (PolicyEngine has no
 # tribal geography).
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   label: Wisconsin Shares licensed family full-time monthly maximum rate

@@ -1,5 +1,6 @@
 description: States spends this amount on Medicaid for the disabled.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Medicaid spending for disabled enrollees

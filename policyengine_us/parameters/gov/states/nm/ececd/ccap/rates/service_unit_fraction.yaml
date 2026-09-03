@@ -3,6 +3,7 @@ description: New Mexico multiplies the full-time provider rate by this fraction 
 # 100% of the full-time rate, Part time 1 (8-29 hrs/wk) 75%, Part time 2
 # (split custody, 8-19 hrs/wk) 50%, and Part time 3 (7 or fewer hrs/wk) 25%.
 metadata:
+  propagate_metadata_to_children: true
   unit: /1
   period: year
   label: New Mexico CCAP service unit fraction

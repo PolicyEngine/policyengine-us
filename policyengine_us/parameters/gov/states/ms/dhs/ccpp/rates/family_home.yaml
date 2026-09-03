@@ -12,6 +12,7 @@ description: Mississippi provides these maximum weekly payment rates for registe
 # limitation we don't track at the moment. Special-needs children are paid the flat
 # all-ages special-needs rate (see special_needs_home).
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: Mississippi CCPP family home weekly rates

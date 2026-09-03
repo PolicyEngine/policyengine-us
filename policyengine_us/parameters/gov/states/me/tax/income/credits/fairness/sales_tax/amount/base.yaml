@@ -61,6 +61,7 @@ SURVIVING_SPOUSE:
         interval: 5
 
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   reference:
     # Legal specifies inflation unadjusted amounts

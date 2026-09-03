@@ -1,5 +1,6 @@
 description: Household-paid premium and cost-sharing collections that offset gross Medicaid-expansion CHIP expenditures in each state, from the CMS-21 M-CHIP cost-sharing offset line items. Populated as M-CHIP figures are researched; zero placeholder otherwise.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Medicaid-expansion CHIP household-paid cost-sharing offsets by state
