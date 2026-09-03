@@ -107,6 +107,48 @@ def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
         )
 
 
+def extend_wa_millionaires_standard_deduction(
+    parameters: ParameterNode,
+    end_year: int,
+) -> None:
+    """Project Washington's millionaires tax standard deduction.
+
+    ESSB 6346, section 316, adjusts the deduction each odd-numbered October,
+    beginning in 2029, using the latest CPI-W available on October 1 and its
+    value 12 months earlier. The result is rounded to the nearest $1,000,
+    cannot decrease, and applies in the following tax year.
+    """
+    ROUNDING_INTERVAL = 1_000
+    deduction = parameters.gov.states.wa.tax.income.millionaires_tax.deductions.standard
+    cpi_w = parameters.gov.bls.cpi.cpi_w
+    current_amount = deduction("2028-01-01")
+
+    for adjustment_year in range(2029, end_year, 2):
+        determination_date = instant(f"{adjustment_year}-10-01")
+        latest_cpi_instant = max(
+            instant(value.instant_str)
+            for value in cpi_w.values_list
+            if instant(value.instant_str) <= determination_date
+        )
+        prior_cpi_instant = latest_cpi_instant.offset(-1, YEAR)
+        inflation_factor = cpi_w(latest_cpi_instant) / cpi_w(prior_cpi_instant)
+        proposed_amount = (
+            round(current_amount * inflation_factor / ROUNDING_INTERVAL)
+            * ROUNDING_INTERVAL
+        )
+        current_amount = max(current_amount, proposed_amount)
+        effective_year = adjustment_year + 1
+        deduction.update(
+            start=instant(f"{effective_year}-01-01"),
+            value=float(current_amount),
+        )
+
+    deduction.update(
+        start=instant(f"{end_year}-01-01"),
+        value=deduction(f"{end_year}-01-01"),
+    )
+
+
 def extend_parameter_values(
     parameter: Parameter,
     last_projected_year: int,
@@ -430,6 +472,11 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=2,
         period_day=1,
     )
+
+    # Washington's millionaires tax deduction uses an odd-year October
+    # adjustment schedule. Must run after the CPI-W extension above so the
+    # determination dates are available through the projection horizon.
+    extend_wa_millionaires_standard_deduction(parameters, end_year=END_YEAR)
 
     # ACA benchmark premium uprating (January values, last actual 2026).
     # The published 2026 actual is 25.8% above 2025; keep long-run growth
