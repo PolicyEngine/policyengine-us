@@ -1,3 +1,18 @@
+## [1.821.13] - 2026-09-03
+
+### Fixed
+
+- Fixed the Oklahoma federal CTC crash under reforms that make the child tax credit fully refundable.
+- Kentucky combined-separate filing is now elected on tax after non-refundable credits, so it no longer wastes personal tax credits.
+
+
+## [1.821.12] - 2026-09-02
+
+### Fixed
+
+- Hawaii CCAP co-payments follow HAR 17-798.3-14 beginning August 2021, applying the sliding-scale tier to the family's monthly gross income; the prior HAR 17-798.2-14(b)(4) provider-rate method is preserved for earlier periods.
+
+
 ## [1.821.11] - 2026-09-02
 
 ### Fixed
