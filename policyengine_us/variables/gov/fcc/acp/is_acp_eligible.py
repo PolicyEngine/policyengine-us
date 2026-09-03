@@ -28,10 +28,10 @@ class is_acp_eligible(Variable):
         tribal_lifeline_programs = add(
             spm_unit, period, fcc.lifeline.tribal_categorical_eligibility
         )
-        lifeline_categorically_eligible = np.where(
-            is_on_tribal_land,
-            tribal_lifeline_programs > 0,
-            non_tribal_lifeline_programs > 0,
+        # 47 CFR 54.409(b): the Tribal list adds to, not replaces, the
+        # standard Lifeline programs.
+        lifeline_categorically_eligible = (non_tribal_lifeline_programs > 0) | (
+            is_on_tribal_land & (tribal_lifeline_programs > 0)
         )
 
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit
