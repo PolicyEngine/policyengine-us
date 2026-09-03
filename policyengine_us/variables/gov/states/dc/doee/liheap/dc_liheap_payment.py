@@ -16,11 +16,18 @@ class dc_liheap_payment(Variable):
         heating_type = spm_unit("dc_liheap_heating_type", period)
         income_level = spm_unit("dc_liheap_income_level", period)
         capped_size = clip(spm_unit("spm_unit_size", period), 1, 4)
-        heating_person = add(spm_unit, period, ["heating_expense_person"])
         types = heating_type.possible_values
 
-        # Legacy fallback: partners may still send the pre-PR-#7986 per-fuel inputs.
-        legacy_expense = select(
+        # Deprecated adapter: households without a canonical heating_type
+        # keep DC's pre-canonical expense arbitration (person-level total,
+        # else the per-fuel bill matching the DC heating type). One declared
+        # change on this path: DC never read heat_expense_included_in_rent
+        # before, and dc_liheap_heating_type now selects the heat-in-rent
+        # row from it whether or not heating_type is known.
+        canonical_type = spm_unit("heating_type", period)
+        unspecified = canonical_type == canonical_type.possible_values.UNSPECIFIED
+        heating_person = add(spm_unit, period, ["heating_expense_person"])
+        legacy_fuel_expense = select(
             [
                 heating_type == types.ELECTRICITY,
                 heating_type == types.GAS,
@@ -33,7 +40,10 @@ class dc_liheap_payment(Variable):
             ],
             default=0,
         )
-        heating_expenses = where(heating_person > 0, heating_person, legacy_expense)
+        legacy_expense = where(heating_person > 0, heating_person, legacy_fuel_expense)
+        heating_expenses = where(
+            unspecified, legacy_expense, spm_unit("heating_expense", period)
+        )
 
         # Heat-in-rent is a direct subsidy — no expense cap.
         matrix_amount = select(
