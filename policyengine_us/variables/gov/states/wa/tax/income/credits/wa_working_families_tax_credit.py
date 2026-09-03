@@ -85,7 +85,7 @@ class wa_working_families_tax_credit(Variable):
         is_filer = eitc_filing_requirement_met(tax_unit, period)
         takes_up_eitc = tax_unit("takes_up_eitc", period)
         baseline_income_eligible = (earnings > 0) & (
-            higher_income <= maximum_qualifying_income
+            higher_income < maximum_qualifying_income
         )
 
         # Baseline eligibility: filers who qualify under the frozen 2022 IRC.
@@ -109,7 +109,7 @@ class wa_working_families_tax_credit(Variable):
             | (child_count > federal_child_count)
         )
         state_only_income_eligible = (earnings > 0) & (
-            higher_income <= maximum_qualifying_income
+            higher_income < maximum_qualifying_income
         )
         state_only_eitc_eligible = needs_state_only_path & (
             state_only_income_eligible
@@ -120,7 +120,7 @@ class wa_working_families_tax_credit(Variable):
             & takes_up_eitc
         )
 
-        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
+        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2028)
         age_expansion_eligible = tax_unit(
             "wa_working_families_tax_credit_age_expansion_eligible", period
         )
@@ -134,15 +134,18 @@ class wa_working_families_tax_credit(Variable):
         max_amount = p.amount.calc(wftc_child_count)
         # WFTC phases out at a certain amount below maximum qualifying income.
         # Before ESSB 6346, this is the frozen federal EITC maximum AGI.
-        # From 2029 onward, it is the greater of that amount and the cash
+        # From 2028 onward, it is the greater of that amount and the cash
         # assistance need standard for the tax household size.
         phase_out_start_reduction = p.phase_out.start_below_eitc.calc(wftc_child_count)
         phase_out_start = maximum_qualifying_income - phase_out_start_reduction
-        # The phase-out rates are hard-coded in the legal code, but HB 1888
-        # (2021-22) and ESSB 6346 instruct DOR to revise them so the minimum
-        # amount is reached at the applicable maximum qualifying income.
-        # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
-        phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
+        # WAC 458-20-285(10)(d) reduces the credit by (maximum amount /
+        # phase-out band) for each dollar of income above the phase-out start,
+        # so the credit reaches zero at the maximum qualifying income. For the
+        # 2022 base amounts this matches DOR's published per-dollar rates
+        # ($0.12 for 0-1 children, $0.18 for 2, $0.24 for 3+). The $50 statutory
+        # minimum (RCW 82.08.0206(3)(c)) then floors any positive reduced amount.
+        # https://apps.leg.wa.gov/wac/default.aspx?cite=458-20-285
+        phase_out_rate = max_amount / phase_out_start_reduction
         # RCW 82.08.0206(3)(b) measures the reduction against the federal
         # phase-out income (the greater of earned income or AGI) -- the same
         # measure used for the maximum-qualifying-income ceiling above -- not

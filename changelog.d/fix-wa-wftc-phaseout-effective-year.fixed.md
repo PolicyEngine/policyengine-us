@@ -1,0 +1,1 @@
+Corrected the Washington Working Families Tax Credit phase-out rate to maximum amount divided by the phase-out band (WAC 458-20-285), made the maximum qualifying income ceiling strict, and moved the ESSB 6346 expansion to its statutory effective tax year 2028.

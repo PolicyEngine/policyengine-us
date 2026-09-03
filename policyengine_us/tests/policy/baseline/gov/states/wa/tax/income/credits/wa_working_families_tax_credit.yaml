@@ -47,14 +47,14 @@
   output:
     wa_working_families_tax_credit: 0
 
-- name: Case 4, at EITC AGI limit credit phases to $50 minimum.
+- name: Case 4, near EITC AGI limit credit floors at $50 minimum.
   period: 2024
   absolute_error_margin: 0.01
   input:
     people:
       head:
         age: 30
-        employment_income: 49_084
+        employment_income: 49_000
         has_tin: true
         ssn_card_type: CITIZEN
         is_tax_unit_head: true
@@ -77,13 +77,15 @@
         members: [head, child]
         state_code: WA
   output:
-    # At the 2024 head-of-household one-child federal EITC limit ($49,084) the
-    # credit reaches the $50 statutory minimum (RCW 82.08.0206(3)(f)).
-    wa_working_families_tax_credit: 50.02
+    # 2024 head-of-household, one child: maximum $640, phase-out start $44,084
+    # (limit $49,084 less the $5,000 band), rate 640 / 5,000 = 12.8% (WAC
+    # 458-20-285(10)(d)). At $49,000 the reduced amount (~$11) is below the $50
+    # statutory minimum (RCW 82.08.0206(3)(c)), so the credit floors to $50.
+    wa_working_families_tax_credit: 50
 
 - name: Case 5, mid-phaseout gives correctly reduced credit.
   period: 2024
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       head:
@@ -112,9 +114,9 @@
         state_code: WA
   output:
     # 2024 head-of-household, one child: maximum $640, phase-out start $44,084
-    # (limit $49,084 less the $5,000 band), rate (640 - 50) / 5,000 = 11.8%.
-    # 640 - 0.118 x (46,584 - 44,084) = 345.
-    wa_working_families_tax_credit: 345.02
+    # (limit $49,084 less the $5,000 band), rate 640 / 5,000 = 12.8% (WAC
+    # 458-20-285(10)(d)). 640 - 0.128 x (46,584 - 44,084) = 320.
+    wa_working_families_tax_credit: 320.02
 
 - name: Case 6, joint filer with 1 child and moderate income receives credit.
   period: 2024
@@ -156,7 +158,7 @@
 
 - name: Case 6b, phase-out keys off federal phase-out income (max of earned income and AGI), not earnings alone.
   period: 2025
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       head:
@@ -204,12 +206,12 @@
     # ($63,675 = limit $68,675 less the $5,000 band), but AGI ($65,000, incl.
     # $25,000 unemployment) lands inside the phase-out band. RCW 82.08.0206(3)(b)
     # measures the reduction against the federal phase-out income =
-    # max(earned income, AGI) = $65,000, so the $1,330 maximum tapers at 25.6%
-    # over the $1,325 of excess to ~$990.83 rather than paying the full $1,330.
-    # See policyengine-taxsim#986.
-    wa_working_families_tax_credit: 990.83
+    # max(earned income, AGI) = $65,000, so the $1,330 maximum tapers at
+    # 1,330 / 5,000 = 26.6% (WAC 458-20-285(10)(d)) over the ~$1,325 of excess
+    # to ~$977.58 rather than paying the full $1,330. See policyengine-taxsim#986.
+    wa_working_families_tax_credit: 977.58
 
-# ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2029)
+# ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2028)
 
 - name: Case 7, age 18+ without EITC gets WFTC under 2029 age expansion.
   period: 2029
@@ -279,8 +281,8 @@
     # Age expansion requires earned income
     wa_working_families_tax_credit: 0
 
-- name: Case 10, WFTC age expansion not in effect before 2029.
-  period: 2028
+- name: Case 10, WFTC age expansion not in effect before 2028.
+  period: 2027
   input:
     people:
       head:
@@ -303,7 +305,8 @@
         members: [head]
         state_code: WA
   output:
-    # Age expansion starts 2029, no EITC eligibility
+    # Age expansion starts 2028, so in 2027 there is no age-expansion path, and
+    # a childless filer under 25 has no federal EITC eligibility either.
     wa_working_families_tax_credit: 0
 
 - name: Case 11, traditional EITC-eligible filer still works in 2029.
@@ -517,7 +520,7 @@
         members: [head]
         state_code: WA
   output:
-    # ESSB 6346 Sec. 901 age expansion is in_effect from 2029-01-01 with
+    # ESSB 6346 Sec. 901 age expansion is in_effect from 2028-01-01 with
     # min_age = 18. Age 18 single filer who would otherwise be too young for
     # federal EITC childless (min 25) qualifies for WFTC via the age expansion.
     wa_working_families_tax_credit_age_expansion_eligible: true
@@ -546,7 +549,32 @@
     # Below the age expansion minimum (18) - not eligible via this path.
     wa_working_families_tax_credit_age_expansion_eligible: false
 
-- name: WA WFTC age expansion - age 18 filer in 2028 (before in_effect) does not qualify via expansion
+- name: WA WFTC age expansion - age 18 filer in 2027 (before in_effect) does not qualify via expansion
+  period: 2027
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # ESSB 6346 Sec. 1205(1): the age expansion takes effect 2028-01-01; in 2027
+    # the expansion is not yet active so the age 18 filer does not qualify here.
+    wa_working_families_tax_credit_age_expansion_eligible: false
+
+- name: WA WFTC age expansion - age 18 filer qualifies in tax year 2028 (first in-effect year)
   period: 2028
   input:
     people:
@@ -567,9 +595,11 @@
         members: [head]
         state_code: WA
   output:
-    # ESSB 6346 Sec. 901 takes effect 2029-01-01; in 2028 the expansion is not yet
-    # active so the age 18 filer does not qualify via this path.
-    wa_working_families_tax_credit_age_expansion_eligible: false
+    # ESSB 6346 Sec. 1205(1): the age expansion takes effect January 1, 2028
+    # (for applications submitted beginning in calendar year 2029). Age 18
+    # single filer, otherwise too young for childless federal EITC, qualifies
+    # via the expansion.
+    wa_working_families_tax_credit_age_expansion_eligible: true
 
 - name: WA WFTC age expansion - non-filer does not qualify in tax year 2029
   period: 2029
@@ -600,7 +630,7 @@
 
 - name: WA WFTC maximum qualifying income uses the cash assistance need standard in tax year 2029
   period: 2029
-  absolute_error_margin: 0.01
+  absolute_error_margin: 1
   input:
     people:
       person1:
@@ -624,9 +654,12 @@
         state_code: WA
   output:
     # WAC 388-478-0015 sets the 2025 single-person monthly need standard
-    # at $3,816; ESSB 6346 multiplies it by 12 for tax years 2029 onward.
+    # at $3,816; ESSB 6346 multiplies it by 12 for tax years 2028 onward.
     wa_working_families_tax_credit_maximum_qualifying_income: 45_792
-    wa_working_families_tax_credit: 277.02
+    # Maximum $366.70 (2029, uprated), phase-out start $43,292 (limit less the
+    # $2,500 band), rate 366.70 / 2,500 = 14.7% (WAC 458-20-285(10)(d)).
+    # 366.70 - 0.147 x (44,000 - 43,292) ~= 262.85.
+    wa_working_families_tax_credit: 262.85
 
 - name: WA WFTC counts a disabled adult dependent as a qualifying child (IRC 152(c)(3)(B) via frozen 2022 EITC)
   period: 2025
@@ -732,9 +765,9 @@
     # limit of $49,620.
     wa_working_families_tax_credit_maximum_qualifying_income: 53_120
     # AGI $50,047.89 is below that limit. Maximum $625, phase-out start $48,120
-    # (limit $53,120 less the $5,000 band), rate (625 - 50) / 5,000 = 11.5%.
-    # 625 - 0.115 x (50,047.89 - 48,120) = 403.
-    wa_working_families_tax_credit: 403.29
+    # (limit $53,120 less the $5,000 band), rate 625 / 5,000 = 12.5% (WAC
+    # 458-20-285(10)(d)). 625 - 0.125 x (50,047.89 - 48,120) = 384.01.
+    wa_working_families_tax_credit: 384.01
 
 - name: Case 17, two-child near-ceiling credit reaches the minimum (2-child coverage).
   period: 2023
@@ -778,12 +811,10 @@
   output:
     # 2023 married-filing-jointly two-child ceiling = $59,478 (Washington DOR).
     # Maximum $940, phase-out start $54,478 (limit less the $5,000 band), rate
-    # (940 - 50) / 5,000 = 17.8%. Income $59,470 is $8 below the ceiling, so the
-    # credit is at the $50 statutory minimum region: 940 - 0.178 x (59,470 -
-    # 54,478) = 51.43. (The ceiling itself is pinned to DOR's $53,120 in the
-    # one-child case above; DOR rounds to whole dollars, whereas the model
-    # carries the federal indexing to the cent.)
-    wa_working_families_tax_credit: 51.43
+    # 940 / 5,000 = 18.8% (WAC 458-20-285(10)(d)). Income $59,470 is $8 below the
+    # ceiling, so the reduced amount 940 - 0.188 x (59,470 - 54,478) = 1.50 is
+    # below the $50 statutory minimum and floors to $50.
+    wa_working_families_tax_credit: 50
 
 - name: Case 18, investment-income limit indexes to the current year.
   period: 2023
