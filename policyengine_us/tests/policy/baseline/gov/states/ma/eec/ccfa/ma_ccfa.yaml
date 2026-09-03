@@ -265,7 +265,9 @@
   output:
     ma_ccfa_eligible: true
     ma_ccfa_income_eligible: true
-    ma_ccfa_total_copay: 363.16
+    ma_ccfa_total_copay: 363.12
+    # Fee level 12 (8.5%) on income above the chart FPG of 2,152:
+    # (5000 - 2152) * 0.085 * 1.5 = 363.12
     # monthly expense $1,600 < monthly max ~$2,074.38 -> capped = $1,600
-    # benefit = max(1600 - 363.16, 0) = $1,236.84
-    ma_ccfa: 1_236.84
+    # benefit = max(1600 - 363.12, 0) = $1,236.88
+    ma_ccfa: 1_236.88

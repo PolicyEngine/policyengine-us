@@ -66,11 +66,14 @@
   output:
     # Computed end to end from raw inputs rather than setting ut_ccap
     # directly. Each month: countable income 3,000 - 100 (one earner)
-    # - 100 (medical) = 2,800 -> size 2 group 5 (2,722.01-3,041), one
-    # child -> copay 109; cap: licensed center three year old = 900;
-    # min(1,000, 900) - 109 = 791. Annual: 791 x 12 = 9,492, which the
+    # - 100 (medical) = 2,800; cap: licensed center three year old = 900.
+    # January-September (April 2026 table): size 2 group 5
+    # (2,722.01-3,041), one child -> copay 109; min(1,000, 900) - 109
+    # = 791. October-December (October 2026 table): the uprated bounds
+    # place 2,800 in group 4 (2,477.01-2,814) -> copay 74;
+    # 900 - 74 = 826. Annual: 9 x 791 + 3 x 826 = 9,597, which the
     # ut_child_care_subsidies aggregator passes into the federal
     # child_care_subsidies total (child_care_subsidy_programs.yaml).
-    ut_ccap: 9_492
-    ut_child_care_subsidies: 9_492
-    child_care_subsidies: 9_492
+    ut_ccap: 9_597
+    ut_child_care_subsidies: 9_597
+    child_care_subsidies: 9_597

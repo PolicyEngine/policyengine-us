@@ -6,19 +6,30 @@ metadata:
   breakdown:
     - ma_ccfa_region
   reference:
+    - title: FY 2026 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=4
+    - title: CCFA-26-03 Family Child Care Financial Assistance Reimbursement Rates for Fiscal Year 2026
+      href: https://www.mass.gov/doc/eecccfa-26-03fcc-fy26-rate-increaseadvisory/download
     - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download#page=3
     - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download#page=3
 
+# 2025-07-01 values are FY2026 rates per advisory CCFA-26-03: a 0.5%
+# cost-of-living adjustment plus a targeted increase to the Northeast
+# under-age-2 rate. EEC implemented the increase on April 1, 2026,
+# retroactive to July 1, 2025.
 WESTERN_CENTRAL_AND_SOUTHEAST:
   2023-07-01: 58.45
   2024-07-01: 59.03
+  2025-07-01: 59.33
 
 NORTHEAST:
   2023-07-01: 58.45
   2024-07-01: 59.03
+  2025-07-01: 59.94
 
 METRO_AND_BOSTON_METRO:
   2023-07-01: 87.66
   2024-07-01: 88.54
+  2025-07-01: 88.98

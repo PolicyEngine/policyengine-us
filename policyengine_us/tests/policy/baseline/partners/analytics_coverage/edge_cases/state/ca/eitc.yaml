@@ -228,9 +228,11 @@
     tax_units:
       tax_unit:
         # Investment income $4,923 is at/below the 2026 uprated limit
-        # ($4,923.10), so eligibility holds; the credit still uses earned
-        # income only: 257 x (32,901 - 15,000) / 27,320.06 = 168.39.
-        ca_eitc: 168.39
+        # ($4,923.10), so eligibility holds. The $4,923 of capital gains lifts
+        # AGI ($19,923) above earned income ($15,000), so the FTB 3514
+        # worksheet's smaller-of earned-income/AGI credit is the AGI one:
+        # 257 x (32,901 - 19,923) / 27,320.06 = 122.08.
+        ca_eitc: 122.08
         ca_eitc_eligible: true
         adjusted_gross_income: 19_923.0
 - name: ca_eitc_investment_income_above_limit_4924_ineligible (ca)
