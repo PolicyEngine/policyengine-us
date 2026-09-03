@@ -13,6 +13,9 @@ values:
     - pension_income
     - unemployment_compensation
     - gi_cash_assistance
+    # Cash assistance from other public programs, such as general assistance
+    # or refugee cash assistance, is unearned income.
+    - general_assistance
     - social_security
 
 metadata:

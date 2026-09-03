@@ -1,0 +1,30 @@
+- name: General assistance counts as TANF unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 2,400 / 12 = 200
+    tanf_gross_unearned_income: 200
+
+- name: Earned income does not count as TANF unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: 0

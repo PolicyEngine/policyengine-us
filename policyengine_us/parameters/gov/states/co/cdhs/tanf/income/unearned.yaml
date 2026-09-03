@@ -13,6 +13,7 @@ values:
     - social_security
     - workers_compensation
     - disability_benefits
+    # general_assistance is exempt under 9 CCR 2503-6, Section 3.605.4(A)(7)
 metadata:
   unit: list
   period: month

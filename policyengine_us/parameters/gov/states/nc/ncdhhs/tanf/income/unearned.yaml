@@ -12,6 +12,7 @@ values:
     - unemployment_compensation
     - gi_cash_assistance
     - social_security
+    # general_assistance is not counted per the WF-114 income chart (page 11)
 metadata:
   unit: list
   period: year

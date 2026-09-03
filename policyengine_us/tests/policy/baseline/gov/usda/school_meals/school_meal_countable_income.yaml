@@ -39,3 +39,11 @@
     child_support_received: 3_000
   output:
     school_meal_countable_income: 13_000
+
+- name: Includes general assistance.
+  period: 2026
+  input:
+    employment_income: 10_000
+    general_assistance: 3_000
+  output:
+    school_meal_countable_income: 13_000

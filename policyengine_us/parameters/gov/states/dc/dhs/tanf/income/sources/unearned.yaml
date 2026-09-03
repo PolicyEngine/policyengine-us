@@ -11,6 +11,8 @@ values:
     - pension_income
     - unemployment_compensation
     - gi_cash_assistance
+    # D.C. Code 4-205.05(4) counts District and federal public assistance payments
+    - general_assistance
     - social_security
 
 metadata:

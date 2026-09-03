@@ -19,6 +19,9 @@ values:
     - illicit_income
     - taxable_retirement_distributions
     - miscellaneous_income
+    # Section 7.1 defines unearned income as any income not defined as earned
+    # income, and the income chart does not exclude general assistance
+    - general_assistance
 metadata:
   unit: list
   period: month 
