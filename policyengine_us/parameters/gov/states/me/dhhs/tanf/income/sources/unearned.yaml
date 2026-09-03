@@ -16,11 +16,10 @@ values:
     - miscellaneous_income
     - pension_income
     - unemployment_compensation
+    - gi_cash_assistance
     - social_security
-    # Chapter III, Section B(2)(d) excludes General Assistance, Emergency
-    # Assistance, and other supplemental assistance from public or private
-    # agencies that helps the assistance unit meet basic needs, so
-    # general_assistance and gi_cash_assistance are not counted
+    # Chapter III, Section B(2)(d) excludes General Assistance, so
+    # general_assistance is not counted
 
 metadata:
   unit: list

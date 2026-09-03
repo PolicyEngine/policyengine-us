@@ -31,7 +31,8 @@
         members: [person1]
         state_code: ME
   output:
-    me_tanf_gross_unearned_income: 0
+    # general_assistance excluded; gi_cash_assistance 1,200 / 12 = 100
+    me_tanf_gross_unearned_income: 100
 
 - name: Case 3, earned income does not count as unearned income.
   period: 2025-01

@@ -1,1 +1,1 @@
-Count general assistance as unearned income in WIC, school meals, and the DC, Illinois, Montana, and South Carolina TANF income lists, and give Maine TANF its own unearned income list that excludes general assistance.
+Count general assistance as unearned income in WIC, school meals, and the DC, Illinois, and Montana TANF income lists, and give Maine TANF its own unearned income list that excludes general assistance.
