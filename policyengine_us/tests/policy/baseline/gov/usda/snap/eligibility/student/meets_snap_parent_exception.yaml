@@ -343,3 +343,86 @@
         members: [parent1, parent2, child]
   output:
     meets_snap_parent_exception: [true, true, false]
+
+# Missouri lets only one adult in the SNAP household claim the care of a
+# child under six (DSS SNAP Manual § 1135.025.00). The claim goes to the
+# parent who is a higher-education student; the federal rule has no cap.
+- name: Missouri two-parent household lets only one adult claim the child-care exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Missouri gives the single child-care claim to the parent who is a student
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+- name: Kansas two-parent household lets both adults claim the child-care exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: KS
+  output:
+    meets_snap_parent_exception: [true, true, false]
