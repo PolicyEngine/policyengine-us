@@ -5,9 +5,9 @@ values:
     - fdpir
     - tanf
     - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
-    # Also not implemented:
-    # - Tribal programs:
-    #   - Bureau of Indian Affairs general assistance
+    # Bureau of Indian Affairs General Assistance (25 CFR 20.300-20.303), a cash aid program of last resort for Indians in a BIA service area.
+    # The model has no BIA-specific variable, so agency cash aid reported by a household on Tribal land stands in for it.
+    - general_assistance
 metadata:
   period: month
   unit: list
