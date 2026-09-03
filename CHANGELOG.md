@@ -1,3 +1,11 @@
+## [1.821.13] - 2026-09-03
+
+### Fixed
+
+- Fixed the Oklahoma federal CTC crash under reforms that make the child tax credit fully refundable.
+- Kentucky combined-separate filing is now elected on tax after non-refundable credits, so it no longer wastes personal tax credits.
+
+
 ## [1.821.12] - 2026-09-02
 
 ### Fixed

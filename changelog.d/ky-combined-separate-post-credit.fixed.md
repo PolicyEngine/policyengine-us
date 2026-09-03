@@ -1,1 +1,0 @@
-Kentucky combined-separate filing is now elected on tax after non-refundable credits, so it no longer wastes personal tax credits.
