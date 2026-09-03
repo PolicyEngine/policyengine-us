@@ -1,4 +1,4 @@
-description: Massachusetts uses these fee percentages by fee level under the Child Care Financial Assistance program.
+description: Massachusetts charges this share of monthly income above the poverty guideline as the parent fee at each fee level under the Child Care Financial Assistance program.
 metadata:
   period: month
   unit: /1
@@ -9,7 +9,12 @@ metadata:
     - Fee level
   reference:
     - title: EEC Financial Assistance Parent Fee Table FY2025
-      href: https://www.mass.gov/doc/parent-fee-chart-fy2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025/download
+    - title: EEC Financial Assistance Parent Fee Table FY2026
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2026/download
+# The FY2024 chart (effective 2023-10-01) could not be located; the
+# 2023-10-01 layer carries the FY2025 values, which the FY2026 chart
+# repeats unchanged.
 
 0:
   2023-10-01: 1 # Not used (fee level starts at 1)
@@ -18,7 +23,7 @@ metadata:
 2:
   2023-10-01: 0.04
 3:
-  2023-10-01: 0.045
+  2023-10-01: 0.0445
 4:
   2023-10-01: 0.049
 5:
@@ -32,7 +37,7 @@ metadata:
 9:
   2023-10-01: 0.0715
 10:
-  2023-10-01: 0.075
+  2023-10-01: 0.076
 11:
   2023-10-01: 0.0805
 12:

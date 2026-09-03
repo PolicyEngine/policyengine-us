@@ -1,43 +1,62 @@
-- name: Hourly child care service time coefficient equals to hours per day times days per month.
+- name: Hourly time coefficient equals hours per day times attending days per month.
   period: 2023-01
   input:
     ca_calworks_child_care_time_category: HOURLY
     childcare_hours_per_day: 5
-    ca_calworks_child_care_days_per_month: 10
-    ca_calworks_child_care_weeks_per_month: 1
+    childcare_attending_days_per_month: 10
+    childcare_days_per_week: 3
     state_code: CA
   output:
     ca_calworks_child_care_time_coefficient: 50
 
-- name: Hourly child care service time coefficient equals to days per month.
+- name: Daily time coefficient equals attending days per month.
   period: 2023-01
   input:
     ca_calworks_child_care_time_category: DAILY
     childcare_hours_per_day: 5
-    ca_calworks_child_care_days_per_month: 10
-    ca_calworks_child_care_weeks_per_month: 1
+    childcare_attending_days_per_month: 10
+    childcare_days_per_week: 3
     state_code: CA
   output:
     ca_calworks_child_care_time_coefficient: 10
 
-- name: Hourly child care service time coefficient equals to days per month.
+- name: Weekly time coefficient covers every week of the month when weekly attendance is reported.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    ca_calworks_child_care_time_category: WEEKLY
+    childcare_days_per_week: 2
+    state_code: CA
+  output:
+    # 52 weeks / 12 months.
+    ca_calworks_child_care_time_coefficient: 4.33
+
+- name: Weekly time coefficient also applies when only monthly attending days are reported.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    ca_calworks_child_care_time_category: WEEKLY
+    childcare_attending_days_per_month: 10
+    state_code: CA
+  output:
+    # 52 weeks / 12 months.
+    ca_calworks_child_care_time_coefficient: 4.33
+
+- name: Weekly time coefficient is zero when no attendance is reported.
   period: 2023-01
   input:
     ca_calworks_child_care_time_category: WEEKLY
-    childcare_hours_per_day: 5
-    ca_calworks_child_care_days_per_month: 10
-    ca_calworks_child_care_weeks_per_month: 2
     state_code: CA
   output:
-    ca_calworks_child_care_time_coefficient: 2
+    ca_calworks_child_care_time_coefficient: 0
 
-- name: Hourly child care service time coefficient equals to days per month.
+- name: Monthly time coefficient is one.
   period: 2023-01
   input:
     ca_calworks_child_care_time_category: MONTHLY
     childcare_hours_per_day: 5
-    ca_calworks_child_care_days_per_month: 10
-    ca_calworks_child_care_weeks_per_month: 2
+    childcare_attending_days_per_month: 10
+    childcare_days_per_week: 3
     state_code: CA
   output:
     ca_calworks_child_care_time_coefficient: 1

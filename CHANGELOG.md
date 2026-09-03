@@ -1,3 +1,74 @@
+## [1.821.13] - 2026-09-03
+
+### Fixed
+
+- Fixed the Oklahoma federal CTC crash under reforms that make the child tax credit fully refundable.
+- Kentucky combined-separate filing is now elected on tax after non-refundable credits, so it no longer wastes personal tax credits.
+
+
+## [1.821.12] - 2026-09-02
+
+### Fixed
+
+- Hawaii CCAP co-payments follow HAR 17-798.3-14 beginning August 2021, applying the sliding-scale tier to the family's monthly gross income; the prior HAR 17-798.2-14(b)(4) provider-rate method is preserved for earlier periods.
+
+
+## [1.821.11] - 2026-09-02
+
+### Fixed
+
+- Massachusetts CCFA parent fees: correct the level 3 (4.45 percent) and level 10 (7.6 percent) fee percentages to match the published Parent Fee Table, store the fee-level income bracket widths as the dollar amounts printed in the chart, add the FY2026 widths effective October 2025, and switch the chart's poverty guideline anchor at each fiscal year's October start.
+
+
+## [1.821.10] - 2026-09-01
+
+### Changed
+
+- Utah CCAP copayment amounts and income group limits from the Table 4 edition effective October 1, 2026.
+
+### Fixed
+
+- Applied the federal-AGI comparison to the CalEITC, taking the smaller of the credit figured on California earned income and on federal AGI.
+- Remove the child immigration status test from Oregon ERDC from May 2024 (OAR 414-175-0021 sunset) and from Vermont CCFAP from July 2024 (Act 76 rollout), matching the states' rule changes.
+
+
+## [1.821.9] - 2026-09-01
+
+### Changed
+
+- - Update New Jersey CCAP maximum payment rates to CC-230 (03/26), effective April 1, 2026, and add the intermediate CC-230 (07/24) rates effective August 1, 2024.
+  - Update Massachusetts CCFA daily reimbursement rates to FY2026, effective July 1, 2025, and correct the FY2025 Western, Central & Southeast preschool rate.
+- Add the July 1, 2025 and July 1, 2026 editions of Iowa's Child Care Assistance family co-pay fee charts, including the elimination of sliding-fee level BB and the 2026 CCA Plus income-ceiling caps.
+
+
+## [1.821.8] - 2026-09-01
+
+### Fixed
+
+- Indexed the Washington Working Families Tax Credit maximum qualifying income and investment-income limit to the current-year federal EITC figures instead of freezing them at 2022 values.
+
+
+## [1.821.7] - 2026-09-01
+
+### Fixed
+
+- Removed the Montana property tax rebate from the state non-refundable credit list so it no longer reduces Montana income tax.
+
+
+## [1.821.6] - 2026-08-31
+
+### Fixed
+
+- Use the shared childcare_attending_days_per_month and childcare_days_per_week inputs in the CalWORKs child care time coefficient instead of CA-only day and week counts that defaulted every California child care payment to zero.
+
+
+## [1.821.5] - 2026-08-31
+
+### Fixed
+
+- Rename `co_pension_subtraction_indv_eligible..py` and `generate_age_curves.py.py` to remove the duplicated file extensions.
+
+
 ## [1.821.4] - 2026-08-26
 
 ### Fixed
