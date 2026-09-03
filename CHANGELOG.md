@@ -1,3 +1,10 @@
+## [1.822.2] - 2026-09-03
+
+### Fixed
+
+- Count reported Federal Public Housing Assistance receipt toward Lifeline categorical eligibility per 47 CFR 54.409(a)(2), and let households on Tribal lands qualify through the standard programs as well as the Tribal-specific list per 54.409(b), for both Lifeline and ACP.
+
+
 ## [1.822.1] - 2026-09-03
 
 ### Changed
