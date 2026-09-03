@@ -1,3 +1,14 @@
+## [1.822.0] - 2026-09-03
+
+### Added
+
+- - Add the 7 CFR 273.9(d)(6)(iii)(A)(3) state option for the SNAP limited utility allowance to exclude telephone costs: in states that exclude telephone (Missouri), a phone bill no longer counts toward the two-utility LUA qualification and the telephone standard is added on top of the LUA.
+
+### Fixed
+
+- - Activate the Arizona limited utility allowance from benefit month January 2023 (per the DES FAA6.J manual) and the Arkansas basic utility allowance from FY2023 (per the FNS SUA tables) - the values were already maintained but the activation flag was off - and add Arizona's FY2027 LUA amounts.
+
+
 ## [1.821.13] - 2026-09-03
 
 ### Fixed
