@@ -1,3 +1,10 @@
+## [1.822.3] - 2026-09-03
+
+### Fixed
+
+- Count general assistance as unearned income in WIC, school meals, and the DC, Illinois, and Montana TANF income lists, and give Maine TANF its own unearned income list that excludes general assistance.
+
+
 ## [1.822.2] - 2026-09-03
 
 ### Fixed
