@@ -7,7 +7,12 @@ class is_lifeline_eligible(Variable):
     label = "Eligible for Lifeline"
     documentation = "Eligible for Lifeline phone or broadband subsidy"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/47/54.409"
+    reference = [
+        # 47 CFR 54.409(a): income and program-based qualification.
+        "https://www.law.cornell.edu/cfr/text/47/54.409#a",
+        # 47 CFR 54.409(b): Tribal-specific programs add to the routes in (a).
+        "https://www.law.cornell.edu/cfr/text/47/54.409#b",
+    ]
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.fcc.lifeline

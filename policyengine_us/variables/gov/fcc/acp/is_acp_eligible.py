@@ -7,8 +7,12 @@ class is_acp_eligible(Variable):
     label = "Eligible for Affordable Connectivity Program"
     documentation = "Eligible for Affordable Connectivity Program"
     definition_period = YEAR
-    # 47 U.S.C §1752(a)(6).
-    reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
+    reference = [
+        # 47 U.S.C. 1752(a)(6): ACP qualification, including any Lifeline route.
+        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim",
+        # 47 CFR 54.409(b): Tribal-specific programs add to the standard Lifeline routes.
+        "https://www.law.cornell.edu/cfr/text/47/54.409#b",
+    ]
 
     def formula(spm_unit, period, parameters):
         fcc = parameters(period).gov.fcc
