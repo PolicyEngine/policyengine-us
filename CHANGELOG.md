@@ -1,3 +1,10 @@
+## [1.822.4] - 2026-09-03
+
+### Fixed
+
+- Propagate units and periods from container parameters to their value-bearing children.
+
+
 ## [1.822.3] - 2026-09-03
 
 ### Fixed
