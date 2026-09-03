@@ -33,7 +33,9 @@ values:
     # is not modeled
     - financial_assistance
     - gi_cash_assistance
-    # Cash assistance from other programs is counted under the A-1320 catch-all
+    # A-1324 counts government payments unless exempted; cash assistance from
+    # other programs such as general assistance or refugee cash assistance is not
+    # exempted
     - general_assistance
     # A-1326.2 Child support (the $75 disregard is applied downstream)
     - child_support_received
