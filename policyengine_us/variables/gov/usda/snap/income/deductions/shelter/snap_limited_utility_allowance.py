@@ -8,6 +8,9 @@ class snap_limited_utility_allowance(Variable):
     unit = USD
     documentation = "The limited utility allowance deduction for SNAP"
     definition_period = MONTH
+    reference = (
+        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(3)"
+    )
 
     def formula(spm_unit, period, parameters):
         utility = parameters(period).gov.usda.snap.income.deductions.utility
@@ -29,7 +32,7 @@ class snap_limited_utility_allowance(Variable):
         # telephone standard is added on top of the LUA for households with
         # phone costs.
         lua_includes_phone = p.includes_phone[region].astype(bool)
-        has_phone = spm_unit("phone_expense", period) > 0
+        has_phone = spm_unit("has_phone_expense", period)
         phone_standard = utility.single.phone[region]
 
         # change the state code to NC for the states that do not depend on household size to prevent key error

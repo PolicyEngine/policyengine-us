@@ -1,9 +1,17 @@
-description: Whether the SNAP limited utility allowance includes telephone costs in this utility region.
+description: Whether the limited utility allowance includes telephone costs in this utility region under the Supplemental Nutrition Assistance Program.
 # Under 7 CFR 273.9(d)(6)(iii)(A)(3), including telephone (and/or internet)
 # costs in the limited utility allowance is a state option. Where a state
 # excludes telephone (false), a phone bill does not count toward the
 # two-utility LUA qualification and the state's separate telephone standard
 # is added on top of the LUA for households with phone costs.
+# A false value therefore bundles two state choices: dropping the phone bill
+# from the two-utility count AND stacking the telephone standard on the LUA,
+# as Missouri does. A state that excluded telephone but barred stacking would
+# need a separate switch; no such state has been found.
+# Researched against state manuals (cited in PR #9357): AL, AR, AZ, DE, FL,
+# GA, IA, ID, IL, IN, KS, KY, LA, MO, MS, NC, ND, NE, NH, NJ, NM, NV, OH, OK,
+# SC, SD, TN, TX, UT, WI, WV, WY. All other regions keep the federal default
+# (true) pending research.
 AK_C:
   2010-01-01: true
 AK_N:
@@ -138,5 +146,9 @@ metadata:
   reference:
   - title: 7 CFR 273.9(d)(6)(iii)(A)(3)
     href: https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(3)
-  - title: MO DSS Food Stamps manual 1115.035.25.15, Telephone Standard
+  - title: MO DSS Food Stamps manual 1115.035.25.15, Mandatory Utility Standards (Non-Heating/Cooling Standard and Telephone Standard)
     href: https://dssmanuals.mo.gov/food-stamps/1115-000-00/1115-035-00/1115-035-25/1115-035-25-15/
+  - title: AZ DES CNAP manual FAA5.I.03.D, NA Utility Expenses and Allowances (telephone counts as one of the two LUA utilities)
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA5/NA_Utility_Expenses_and_Allowances.html
+  - title: AR SNAP Certification Manual 6622, Basic Utility Allowance (telephone costs included in the BUA)
+    href: https://humanservices.arkansas.gov/wp-content/uploads/Recent-Rules-Filing-SNAP-6000-Deductions.pdf#page=29

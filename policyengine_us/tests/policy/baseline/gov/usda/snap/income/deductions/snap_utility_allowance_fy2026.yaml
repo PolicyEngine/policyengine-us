@@ -451,3 +451,27 @@
     # North Carolina's five other single standards are $0, so the summed
     # individual allowance is the $42 phone standard alone.
     snap_utility_allowance: 42
+
+- name: Missouri household with water and phone bills receives the two single standards
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        water_expense: 480
+        phone_expense: 600
+    households:
+      household:
+        members: [person]
+        state_code: MO
+  output:
+    # Missouri excludes telephone from its two-utility standard, so water
+    # plus phone leaves one LUA-qualifying bill and routes to the IUA:
+    # water single standard $162 + telephone standard $81.
+    snap_utility_allowance_type: IUA
+    snap_limited_utility_allowance: 0
+    snap_utility_allowance: 243

@@ -235,12 +235,14 @@
     # Electricity single standard $162 + telephone standard $81 (FY2026).
     snap_individual_utility_allowance: 243
 
-- name: Missouri household with only a phone bill receives the telephone standard
-  period: 2026-01
+# FY2021 Arizona: the $41 on the DES FAA6.J archived 10/01/2020 page is the
+# Telephone Utility Allowance, not an LUA.
+- name: Arizona phone-only household receives the FY2021 telephone standard
+  period: 2021-01
   absolute_error_margin: 0.01
   input:
     snap_utility_allowance_type: IUA
-    snap_utility_region_str: MO
-    phone_expense: 600
+    snap_utility_region_str: AZ
+    phone_expense: 240
   output:
-    snap_individual_utility_allowance: 81
+    snap_individual_utility_allowance: 41

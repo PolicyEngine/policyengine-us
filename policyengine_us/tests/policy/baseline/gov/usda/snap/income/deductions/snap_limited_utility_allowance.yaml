@@ -140,9 +140,11 @@
     snap_utility_allowance_type: LUA
     snap_utility_region_str: MO
     water_expense: 480
+    trash_expense: 360
     phone_expense: 600
   output:
-    # NHCS $373 + telephone standard $81.
+    # Water and trash are the two LUA-qualifying utilities (phone does not
+    # count in Missouri); NHCS $373 + telephone standard $81.
     snap_limited_utility_allowance: 454
 
 - name: Missouri NHCS without phone costs has no telephone add-on
@@ -235,3 +237,30 @@
     snap_limited_utility_allowance:
       2026-09: 201
       2026-10: 208
+
+# FY2021 Arizona had no LUA; the $41 published that year was the Telephone
+# Utility Allowance (DES FAA6.J archived 10/01/2020 page; FNS QC FY2021
+# Table F.7).
+- name: Arizona two-utility household has no LUA amount in FY2021
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: AZ
+    spm_unit_size: 2
+    pre_subsidy_electricity_expense: 480
+    water_expense: 240
+  output:
+    snap_limited_utility_allowance: 0
+
+- name: Missouri telephone add-on does not leak onto the SUA path
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: MO
+    heating_cooling_expense: 2_400
+    phone_expense: 600
+  output:
+    # The LUA formula returns 0 for any allowance type other than LUA.
+    snap_limited_utility_allowance: 0

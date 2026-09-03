@@ -16,6 +16,9 @@ class snap_utility_allowance_type(Variable):
     default_value = SNAPUtilityAllowanceType.NONE
     documentation = "The type of utility allowance that is eligible for the SPM unit"
     definition_period = MONTH
+    reference = (
+        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(3)"
+    )
 
     def formula(spm_unit, period, parameters):
         distinct_utility_bills = spm_unit("count_distinct_utility_expenses", period)
@@ -28,7 +31,7 @@ class snap_utility_allowance_type(Variable):
         # is a state option; where the state excludes it, a phone bill does
         # not count toward the two-utility LUA qualification.
         lua_includes_phone = lua.includes_phone[region].astype(bool)
-        has_phone = spm_unit("phone_expense", period) > 0
+        has_phone = spm_unit("has_phone_expense", period)
         lua_qualifying_bills = distinct_utility_bills - (
             has_phone & ~lua_includes_phone
         )
