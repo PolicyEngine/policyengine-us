@@ -128,9 +128,11 @@
     tax_units:
       tax_unit:
         # 2026 childless ceiling $19,539.74; phase-out starts $2,500 below at
-        # $17,039.74; rate = (345 - 50)/2,500 = 0.118;
-        # 345 - (18,000 - 17,039.74) x 0.118 = 231.69.
-        wa_working_families_tax_credit: 231.69
+        # $17,039.74. Combined effect of #9371 (max uprated + rounded to the
+        # nearest $5 = 345) and this PR (rate = max / band per
+        # WAC 458-20-285(10)(d) = 345 / 2,500 = 0.138):
+        # 345 - (18,000 - 17,039.74) x 0.138 = 212.48.
+        wa_working_families_tax_credit: 212.48
         adjusted_gross_income: 18_000.0
 - name: wa_wftc_1_child_min_amount_near_ceiling (wa)
   period: 2026
@@ -192,10 +194,10 @@
     tax_units:
       tax_unit:
         # 2026 head-of-household one-child ceiling $51,593.38; income $51,590
-        # sits just below it; the rounded $675 maximum phases down to $50.42
-        # in the $50 statutory minimum region
-        # (RCW 82.08.0206(3)(c)).
-        wa_working_families_tax_credit: 50.42
+        # sits just below it. With the rounded $675 max (#9371) and the corrected
+        # max/band rate (this PR, WAC 458-20-285(10)(d)), the reduced amount
+        # falls to the $50 statutory minimum (RCW 82.08.0206(3)(c)).
+        wa_working_families_tax_credit: 50.00
         adjusted_gross_income: 51_590.0
 - name: wa_wftc_1_child_above_income_ceiling (wa)
   period: 2026
