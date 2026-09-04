@@ -64,3 +64,79 @@
     ok_federal_ctc: 4_400
   output:
     ok_refundable_child_care_child_tax_credit: 0
+
+- name: Case 5 - baseline caps the credit at liability (no reform; contrast to Case 2)
+  period: 2026
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 6_600
+    ok_income_tax_before_credits: 100
+    ok_ptc: 0
+    ok_stc: 0
+    ok_eitc: 0
+  output:
+    # Same inputs as Case 2 but WITHOUT the reform: the $330 credit is
+    # nonrefundable, capped at the $100 liability, so tax floors at $0 and
+    # nothing refunds -- the direct baseline contrast to Case 2's -230.
+    ok_child_care_child_tax_credit: 330
+    ok_income_tax: 0
+
+- name: Case 6 - credit fully absorbed by ample liability (reform; net unchanged)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 6_600
+    ok_income_tax_before_credits: 1_000
+    ok_ptc: 0
+    ok_stc: 0
+    ok_eitc: 0
+  output:
+    # Liability ($1,000) exceeds the $330 credit, so the whole credit is used
+    # against tax: 1,000 - 330 = 670. Refundability only matters when the
+    # credit exceeds liability, so net tax matches baseline Case 6b.
+    ok_income_tax: 670
+
+- name: Case 6b - same inputs without the reform give the same net tax (invariance control)
+  period: 2026
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 6_600
+    ok_income_tax_before_credits: 1_000
+    ok_ptc: 0
+    ok_stc: 0
+    ok_eitc: 0
+  output:
+    # Baseline: the $330 credit is nonrefundable but fully absorbed by the
+    # $1,000 liability (1,000 - 330 = 670) -- identical to Case 6.
+    ok_income_tax: 670
+
+- name: Case 7 - CDCC branch (20% of the federal CDCC) is paid refundably
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 3_000
+    ok_federal_ctc: 0
+    ok_income_tax_before_credits: 0
+    ok_ptc: 0
+    ok_stc: 0
+    ok_eitc: 0
+  output:
+    # Credit is the greater of 20% of the federal CDCC ($3,000 -> $600) or 5%
+    # of the federal CTC ($0), so the CDCC path yields $600, paid in full as a
+    # refund past the $0 liability.
+    ok_child_care_child_tax_credit: 600
+    ok_refundable_child_care_child_tax_credit: 600
+    ok_income_tax: -600
