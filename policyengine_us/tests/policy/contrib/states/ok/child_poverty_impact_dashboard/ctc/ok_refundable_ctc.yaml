@@ -1,0 +1,66 @@
+# The reform pays the Oklahoma Child Care/Child Tax Credit as a refundable
+# credit. The worksheet variable (ok_child_care_child_tax_credit) is already
+# uncapped in baseline — the liability limit is applied downstream — so these
+# tests drive the credit from its federal inputs (5% of the federal CTC in
+# 2026) and check that the full amount is paid regardless of liability.
+
+- name: Case 1 - OK credit is paid in full as a refund when reform active
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 4_400
+  output:
+    ok_child_care_child_tax_credit: 220  # 4,400 * 0.05
+    ok_refundable_child_care_child_tax_credit: 220
+    ok_non_refundable_credits: 0  # the credit left the nonrefundable bucket
+
+- name: Case 2 - liability no longer caps the credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 6_600
+    ok_income_tax_before_credits: 100
+    ok_ptc: 0
+    ok_stc: 0
+    ok_eitc: 0
+  output:
+    ok_child_care_child_tax_credit: 330  # 6,600 * 0.05
+    # Nonrefundable bucket is empty, so pre-refundable tax stays at 100...
+    ok_income_tax_before_refundable_credits: 100
+    # ...and the full credit refunds past it: 100 - 330 = -230.
+    ok_refundable_credits: 330
+    ok_income_tax: -230
+
+- name: Case 3 - baseline refundable credits still count
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: OK
+    adjusted_gross_income: 35_000
+    ok_agi: 35_000
+    cdcc: 0
+    ok_federal_ctc: 4_400
+    ok_ptc: 0
+    ok_stc: 120
+    ok_eitc: 50
+  output:
+    ok_refundable_credits: 390  # 120 + 50 + 220
+
+- name: Case 4 - no credit for non-OK residents
+  period: 2026
+  reforms: policyengine_us.reforms.states.ok.ctc.ok_refundable_ctc
+  input:
+    state_code: CA
+    adjusted_gross_income: 35_000
+    cdcc: 0
+    ok_federal_ctc: 4_400
+  output:
+    ok_refundable_child_care_child_tax_credit: 0

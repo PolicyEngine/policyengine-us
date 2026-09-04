@@ -343,6 +343,9 @@ from .states.ut.child_poverty_eitc import (
 from .states.sc.child_poverty_eitc import (
     create_sc_fully_refundable_eitc_reform,
 )
+from .states.ok.ctc import (
+    create_ok_refundable_ctc_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -564,6 +567,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     sc_fully_refundable_eitc = create_sc_fully_refundable_eitc_reform(
         parameters, period
     )
+    ok_refundable_ctc = create_ok_refundable_ctc_reform(parameters, period)
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
         parameters, period
     )
@@ -704,6 +708,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         oh_refundable_eitc,
         ut_fully_refundable_eitc,
         sc_fully_refundable_eitc,
+        ok_refundable_ctc,
         working_parents_tax_relief_act,
         refundable_credit_conversion,
     ]
