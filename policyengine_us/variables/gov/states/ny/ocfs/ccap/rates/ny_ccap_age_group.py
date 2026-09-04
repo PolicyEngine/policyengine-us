@@ -32,9 +32,8 @@ class ny_ccap_age_group(Variable):
         age = person("age", period)
         provider_type = person("childcare_provider_type_group", period)
         provider_types = provider_type.possible_values
-        # The center/home split is inlined rather than read from
-        # is_ccdf_home_based, which treats legally exempt group programs as
-        # home-based. 24-OCFS-LCM-22 counts them as center-based.
+        # 24-OCFS-LCM-22 counts legally exempt group programs as
+        # center-based for the age-group split.
         uses_center_age_groups = (provider_type == provider_types.DCC_SACC) | (
             provider_type == provider_types.LE_GC
         )
