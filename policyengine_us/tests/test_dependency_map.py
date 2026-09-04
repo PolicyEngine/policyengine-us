@@ -42,7 +42,9 @@ def test_ctc_tests_record_bracket_parameter_reads_and_variable_edges():
     assert not any(path.startswith("gov.abolitions.") for path in readers)
 
 
-def test_iter_yaml_tests_skips_reforms_and_inline_parameter_changes(tmp_path: Path):
+def test_iter_yaml_tests_skips_reforms_inline_changes_and_covered_outputs(
+    tmp_path: Path,
+):
     (tmp_path / "cases.yaml").write_text(
         """
 - name: plain
@@ -61,12 +63,22 @@ def test_iter_yaml_tests_skips_reforms_and_inline_parameter_changes(tmp_path: Pa
 - name: no output
   period: 2024
   input: {age: 30}
+- name: same output again
+  period: 2024
+  input: {age: 12}
+  output: {is_adult: false}
+- name: new output
+  period: 2024
+  input: {age: 12}
+  output: {is_adult: false, is_child: true}
 """
     )
 
     names = [test["name"] for _, test in iter_yaml_tests([tmp_path])]
+    every = [test["name"] for _, test in iter_yaml_tests([tmp_path], every_test=True)]
 
-    assert names == ["plain"]
+    assert names == ["plain", "new output"]
+    assert every == ["plain", "same output again", "new output"]
 
 
 def test_merge_edges_unions_both_sides():

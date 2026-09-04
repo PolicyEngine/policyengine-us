@@ -169,22 +169,34 @@ def collect_edges(simulation, readers=None, consumers=None) -> Edges:
     return readers, consumers
 
 
-def iter_yaml_tests(paths: Iterable[Path]):
-    """Yield (file, test) for every baseline test we can trace as-is."""
+def iter_yaml_tests(paths: Iterable[Path], every_test: bool = False):
+    """Yield (file, test) for the baseline tests worth tracing.
+
+    Tests in one file mostly vary inputs for the same outputs, and a traced
+    formula records the same edges whatever the inputs, so by default a
+    test is kept only when it names an output variable no earlier test in
+    the file did. That cuts the suite by roughly four fifths for a near
+    identical edge set; ``every_test`` traces them all.
+    """
     for path in paths:
         files = sorted(path.rglob("*.yaml")) if path.is_dir() else [path]
         for file in files:
             tests = yaml.safe_load(file.read_text()) or []
             if not isinstance(tests, list):
                 continue
+            covered: set[str] = set()
             for test in tests:
                 inputs = test.get("input") or {}
                 if test.get("reforms") or test.get("extensions"):
                     continue
                 if any("." in key for key in inputs):
                     continue  # inline parameter change: not the baseline system
-                if not test.get("output"):
+                outputs = test.get("output") or {}
+                if not outputs:
                     continue
+                if not every_test and covered >= set(outputs):
+                    continue
+                covered |= set(outputs)
                 yield file, test
 
 
@@ -192,12 +204,13 @@ def trace_yaml_tests(
     system,
     paths: Iterable[Path] = (DEFAULT_TESTS_ROOT,),
     progress: Progress | None = None,
+    every_test: bool = False,
 ) -> tuple[Edges, dict[str, int]]:
     install_tracer_patches()
     readers: dict[str, set[str]] = defaultdict(set)
     consumers: dict[str, set[str]] = defaultdict(set)
     stats = {"tests": 0, "failed": 0}
-    for index, (file, test) in enumerate(iter_yaml_tests(paths)):
+    for index, (file, test) in enumerate(iter_yaml_tests(paths, every_test)):
         period = test.get("period")
         try:
             builder = SimulationBuilder()
@@ -268,6 +281,7 @@ def merge_edges(*edge_sets: Edges) -> Edges:
 def build_dependency_map(
     population: str = "tests",
     tests_root: Path = DEFAULT_TESTS_ROOT,
+    every_test: bool = False,
     households: int = 2000,
     year: int = 2026,
     progress: Progress | None = None,
@@ -280,11 +294,12 @@ def build_dependency_map(
     started = time.time()
     if population in ("tests", "both"):
         edges, stats = trace_yaml_tests(
-            CountryTaxBenefitSystem(), [tests_root], progress
+            CountryTaxBenefitSystem(), [tests_root], progress, every_test
         )
         edge_sets.append(edges)
         populations["tests"] = {
             "root": tests_root.relative_to(PACKAGE_ROOT).as_posix(),
+            "everyTest": every_test,
             **stats,
         }
     if population in ("microdata", "both"):
@@ -331,6 +346,11 @@ def main(argv: list[str] | None = None) -> int:
         default="tests",
     )
     parser.add_argument("--tests-root", type=Path, default=DEFAULT_TESTS_ROOT)
+    parser.add_argument(
+        "--every-test",
+        action="store_true",
+        help="trace every test instead of one per newly covered output variable",
+    )
     parser.add_argument("--households", type=int, default=2000)
     parser.add_argument("--year", type=int, default=2026)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
@@ -342,6 +362,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = build_dependency_map(
         population=args.population,
         tests_root=args.tests_root,
+        every_test=args.every_test,
         households=args.households,
         year=args.year,
         progress=progress,
