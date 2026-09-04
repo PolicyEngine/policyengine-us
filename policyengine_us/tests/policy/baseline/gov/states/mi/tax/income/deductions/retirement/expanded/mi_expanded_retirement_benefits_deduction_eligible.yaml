@@ -29,3 +29,36 @@
     state_code: MI
   output: 
     mi_expanded_retirement_benefits_deduction_eligible: false
+
+- name: 2026 filer who is below the expanded retirement benefits deduction age threshold
+  period: 2026
+  input:
+    older_spouse_birth_year: 1945
+    state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction_eligible: false
+
+- name: 2026 filer who is at the lower expanded retirement benefits deduction age threshold
+  period: 2026
+  input:
+    older_spouse_birth_year: 1946
+    state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction_eligible: true
+
+- name: 2026 filer born in 1967 (previously ineligible in 2025, now eligible)
+  period: 2026
+  input:
+    older_spouse_birth_year: 1967
+    state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction_eligible: true
+
+- name: 2026 filer born in 1970 (eligible under fully phased-in rules)
+  period: 2026
+  input:
+    older_spouse_birth_year: 1970
+    state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction_eligible: true
+
