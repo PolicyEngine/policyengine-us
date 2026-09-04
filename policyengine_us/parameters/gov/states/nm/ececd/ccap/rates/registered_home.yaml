@@ -9,6 +9,7 @@ description: New Mexico provides these full-time monthly reimbursement rates for
 # rates are stored here; the schedule's separate Part-Time and Wrap-Around
 # columns are not modeled.
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: New Mexico CCAP registered home monthly rates

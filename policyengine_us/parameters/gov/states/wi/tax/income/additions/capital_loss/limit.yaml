@@ -1,5 +1,6 @@
 description: Wisconsin limits capital losses to this amount, based on filing status.
 metadata:
+  propagate_metadata_to_children: true
   label: Wisconsin capital loss limit
   breakdown:
     - filing_status

@@ -109,6 +109,7 @@ description: Illinois provides this amount as a cash payment to households with 
     2025-10-01: 370
 
 metadata:
+  propagate_metadata_to_children: true
   period: year
   unit: currency-USD
   label: Illinois LIHEAP cash payment (heat in rent)

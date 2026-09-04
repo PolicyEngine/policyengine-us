@@ -10,6 +10,7 @@ HEAD_OF_HOUSEHOLD:
 SURVIVING_SPOUSE:
   0000-01-01: 150_000
 metadata:
+  propagate_metadata_to_children: true
   label: CTC phase-out threshold (ARPA)
   breakdown:
     - filing_status

@@ -36,10 +36,11 @@ brackets:
       values:
         2014-01-01: 0
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.009 
       2019-01-01: 0
@@ -55,10 +56,11 @@ brackets:
         2025-01-01: 5_600
         2026-01-01: 5_600
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.025
       2015-01-01: 0.024
@@ -75,10 +77,11 @@ brackets:
         2025-01-01: 11_200
         2026-01-01: 11_200
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.035
       2015-01-01: 0.034
@@ -96,10 +99,11 @@ brackets:
         2025-01-01: 16_000
         2026-01-01: 16_000
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.045
       2015-01-01: 0.044
@@ -117,10 +121,11 @@ brackets:
         2025-01-01: 26_400
         2026-01-01: 26_400
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.06
       2019-01-01: 0.05
@@ -137,10 +142,11 @@ brackets:
         2021-01-01: 39_700
         2022-01-01: .inf
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.07
       2019-01-01: 0.06
@@ -153,10 +159,11 @@ brackets:
         2020-01-01: 82_001
         2021-01-01: .inf
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: .inf
       2019-01-01: 0.069

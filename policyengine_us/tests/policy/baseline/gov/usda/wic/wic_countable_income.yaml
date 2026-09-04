@@ -34,3 +34,29 @@
         members: [p1]
   output:
     wic_countable_income: 10_000
+
+- name: WIC countable income includes general assistance.
+  period: 2026
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+        general_assistance: 3_000
+    spm_units:
+      spm_unit:
+        members: [p1]
+  output:
+    wic_countable_income: 13_000
+
+- name: WIC countable income without general assistance is the other income only.
+  period: 2026
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [p1]
+  output:
+    wic_countable_income: 10_000
