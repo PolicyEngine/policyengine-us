@@ -4,9 +4,10 @@
 # *_before_lsr / *_before_response input keys that production's Simulation
 # wrapper backfills (issue #8802). Outputs re-pinned to current model values
 # under the corrected inputs.
-# Sanity check (signature_5) - wa_working_families_tax_credit = $1,017.55 = the
-# 2-child WFTC maximum credit (p.amount.calc(2) = 1017.55), unreduced because the
-# $48,000 income is below the phase-out start (federal EITC here = $3,769.50).
+# Sanity check (signature_5) - wa_working_families_tax_credit = $1,020 = the
+# rounded 2-child WFTC maximum credit (p.amount.calc(2) = 1020), unreduced
+# because the $48,000 income is below the phase-out start (federal EITC here =
+# $3,769.50).
 # Genuine WA amount, previously pinned $0 under the California default.
 - name: signature_5 (35 reqs, +4 dupes)
   period: 2026
@@ -136,7 +137,7 @@
     tax_units:
       tax_unit:
         eitc: 3769.5
-        wa_working_families_tax_credit: 1017.55
+        wa_working_families_tax_credit: 1020
     people:
       head:
         is_disabled: false
@@ -278,7 +279,7 @@
     tax_units:
       tax_unit:
         eitc: 3769.5
-        wa_working_families_tax_credit: 1017.55
+        wa_working_families_tax_credit: 1020
     spm_units:
       spm_unit:
         lifeline: 111.0
@@ -420,7 +421,7 @@
     tax_units:
       tax_unit:
         eitc: 3769.5
-        wa_working_families_tax_credit: 1017.55
+        wa_working_families_tax_credit: 1020
     spm_units:
       spm_unit:
         lifeline: 111.0
@@ -558,7 +559,7 @@
     tax_units:
       tax_unit:
         eitc: 3769.5
-        wa_working_families_tax_credit: 1017.55
+        wa_working_families_tax_credit: 1020
     spm_units:
       spm_unit:
         lifeline: 111.0

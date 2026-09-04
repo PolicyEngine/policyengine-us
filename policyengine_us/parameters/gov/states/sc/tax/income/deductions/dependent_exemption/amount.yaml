@@ -10,10 +10,11 @@ values:
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
-  rounding:
-    type: downwards
-    interval: 10
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 10
   label: South Carolina dependent exemption amount
   reference:
     # 12-6-1140(13) defines the dependent exemption amount; 12-6-1160 sets the
