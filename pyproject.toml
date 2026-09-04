@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.scripts]
-policyengine-us = "policyengine_us:main"
+policyengine-us = "policyengine_us.cli:main"
 
 [build-system]
 requires = ["hatchling"]

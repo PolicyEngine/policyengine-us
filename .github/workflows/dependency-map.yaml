@@ -1,0 +1,67 @@
+# Trace the parameter -> variable dependency map for each released version
+# and publish it as a GitHub release asset, so downstream tools (the app's
+# validation matching, the calibration dashboard's model-coverage page) can
+# fetch the map that matches the model version they run against.
+#
+# Runs on the same version-bump commit that triggers the PyPI publish, but as
+# its own workflow: a tracing failure never blocks a release. The release is
+# created with GITHUB_TOKEN, which deliberately does not trigger other
+# workflows.
+name: Dependency map
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      population:
+        description: "tests, microdata, or both"
+        default: tests
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  trace:
+    name: Trace and publish
+    runs-on: ubuntu-latest
+    if: |
+      github.repository == 'PolicyEngine/policyengine-us'
+      && (github.event_name == 'workflow_dispatch'
+          || github.event.head_commit.message == 'Update PolicyEngine US')
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(python -c "import re; print(re.search(r'version = \"(.+?)\"', open('pyproject.toml').read()).group(1))")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Trace the dependency map
+        run: |
+          uv run policyengine-us dependency-map \
+            --population "${{ github.event.inputs.population || 'tests' }}" \
+            --output dependency-map.json
+          gzip -k -9 dependency-map.json
+          ls -la dependency-map.json dependency-map.json.gz
+      - name: Publish as a release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if ! gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release create "$VERSION" \
+              --target "$GITHUB_SHA" \
+              --title "policyengine-us $VERSION" \
+              --notes "Dependency map traced from policyengine-us $VERSION. See policyengine_us/tools/dependency_map.py."
+          fi
+          gh release upload "$VERSION" dependency-map.json.gz --clobber
