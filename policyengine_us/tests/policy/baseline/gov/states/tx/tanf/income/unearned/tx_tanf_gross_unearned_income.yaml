@@ -1,0 +1,53 @@
+- name: Case 1, cash gifts and contributions from outside the household count as unearned income (A-1326.1).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    financial_assistance: 2_400
+    state_code: TX
+  output:
+    # 2,400 / 12 = 200 per month
+    tx_tanf_gross_unearned_income: 200
+
+- name: Case 2, guaranteed income payments and general assistance count under the A-1320 catch-all.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    gi_cash_assistance: 1_200
+    general_assistance: 1_800
+    state_code: TX
+  output:
+    # (1,200 + 1,800) / 12 = 250 per month
+    tx_tanf_gross_unearned_income: 250
+
+- name: Case 3, veterans benefits, rental income, pensions, and survivor benefits count as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    veterans_benefits: 6_000
+    rental_income: 2_400
+    pension_income: 3_600
+    survivor_benefits: 1_200
+    state_code: TX
+  output:
+    # 500 + 200 + 300 + 100 = 1,100 per month
+    tx_tanf_gross_unearned_income: 1_100
+
+- name: Case 4, earned income is not unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    employment_income: 12_000
+    self_employment_income: 6_000
+    state_code: TX
+  output:
+    tx_tanf_gross_unearned_income: 0
+
+- name: Case 5, Supplemental Security Income and TANF are not counted.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    ssi: 11_000
+    tanf: 3_000
+    state_code: TX
+  output:
+    tx_tanf_gross_unearned_income: 0
