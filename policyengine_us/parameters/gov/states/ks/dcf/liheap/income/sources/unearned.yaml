@@ -1,0 +1,34 @@
+description: Kansas counts these unearned income sources in gross household income under the Low Income Energy Assistance Program.
+values:
+  2024-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    # SSA benefits are counted gross, including the Medicare deduction.
+    - social_security
+    - ssi
+    - pension_income
+    - general_assistance
+    - ks_tanf
+    - rental_income
+    - alimony_income
+    - child_support_received
+    # Plan counts "insurance payments made directly to the insured".
+    - workers_compensation
+    - veterans_benefits
+    # Not counted (plan boxes unchecked): loans, savings balances, one-time
+    # lump sums, WIA and work-study income, interest, dividends and
+    # royalties, insurance payments for repayment of a bill, retirement
+    # account balances, tax refunds, VISTA stipends, foster care payments,
+    # AmeriCorps payments and reimbursements.
+
+metadata:
+  unit: list
+  period: year
+  label: Kansas LIEAP countable unearned income sources
+  reference:
+    - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (countable income sources)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=6
+    - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (income sources not counted)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=7
+    - title: KEESM 13320 Household Definition (income of all household members living together is used)
+      href: https://content.dcf.ks.gov/ees/keesm/current/keesm13300.htm

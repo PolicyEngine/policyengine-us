@@ -789,7 +789,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -810,6 +810,11 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: KS
+        status: complete
+        name: Kansas LIEAP
+        full_name: Kansas Low Income Energy Assistance Program
+        variable: ks_liheap
       - state: TX
         status: in_progress
         name: Texas CEAP

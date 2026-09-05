@@ -1,0 +1,104 @@
+# Kansas LIEAP countable earned income per person (KS LIHEAP State Plan FY2026
+# 1.8-1.9, #page=6-7): gross wages and self-employment income are counted,
+# except the earned income of a child under 18. KEESM 13320: a member who is
+# or turns 18 in the application month has countable income.
+
+- name: Case 1, adult wages are counted in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: 24_000
+
+- name: Case 2, wages and self-employment income are both earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+        self_employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 15,000 + 4,000
+    ks_liheap_countable_earned_income: 19_000
+
+- name: Case 3, a 17-year-old's wages are excluded while the parent's count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 18_000
+      person2:
+        age: 17
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: [18_000, 0]
+
+- name: Case 4, an 18-year-old's wages are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 18_000
+      person2:
+        age: 18
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: [18_000, 5_000]
+
+- name: Case 5, unearned income is not part of earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        pension_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: 0
