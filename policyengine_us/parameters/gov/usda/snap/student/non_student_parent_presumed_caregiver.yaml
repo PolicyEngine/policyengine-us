@@ -1,0 +1,131 @@
+description: The Department of Agriculture presumes that a parent who is neither a student nor working provides the care of a dependent child under age six, so a student parent in the same household cannot claim the Supplemental Nutrition Assistance Program student exemption for that care, in these states.
+metadata:
+  unit: bool
+  period: year
+  label: SNAP student child care exception non-student parent presumed caregiver
+  propagate_metadata_to_children: true
+  breakdown:
+    - state_code
+  reference:
+    - title: Illinois IDHS WAG 03-04-03-b - Eligible Students of Higher Education
+      href: https://www.dhs.state.il.us/page.aspx?item=13276
+    - title: Washington EA-Z Manual - Student Status
+      href: https://www.dshs.wa.gov/esa/eligibility-z-manual-ea-z/student-status
+    - title: Alaska Food Stamp Manual 605-1 B - Students
+      href: http://dpaweb.hss.state.ak.us/manuals/fs/605/605-1_b.htm
+    - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
+      href: https://www.law.cornell.edu/cfr/text/7/273.5
+# IL: "the student must provide the majority of child care"; its example
+#     denies a full-time student whose unemployed spouse "is at home
+#     during the day with their year-old daughter."
+# WA: a student's claim is questionable "if the non-student parent in a
+#     two parent household is not employed."
+# AK: "it must be determined why the other parent cannot care for the
+#     child in place of the student parent."
+# We cannot observe who provides the care, so a non-student head or
+# spouse with no work hours is presumed to. Other states, including the
+# per-child cap states, carry no such presumption and stay false. The
+# manuals give no effective date, so values start with the sibling
+# student parameters.
+AK:
+  2005-01-01: true
+AL:
+  2005-01-01: false
+AR:
+  2005-01-01: false
+AZ:
+  2005-01-01: false
+CA:
+  2005-01-01: false
+CO:
+  2005-01-01: false
+CT:
+  2005-01-01: false
+DC:
+  2005-01-01: false
+DE:
+  2005-01-01: false
+FL:
+  2005-01-01: false
+GA:
+  2005-01-01: false
+HI:
+  2005-01-01: false
+IA:
+  2005-01-01: false
+ID:
+  2005-01-01: false
+IL:
+  2005-01-01: true
+IN:
+  2005-01-01: false
+KS:
+  2005-01-01: false
+KY:
+  2005-01-01: false
+LA:
+  2005-01-01: false
+MA:
+  2005-01-01: false
+MD:
+  2005-01-01: false
+ME:
+  2005-01-01: false
+MI:
+  2005-01-01: false
+MN:
+  2005-01-01: false
+MO:
+  2005-01-01: false
+MS:
+  2005-01-01: false
+MT:
+  2005-01-01: false
+NC:
+  2005-01-01: false
+ND:
+  2005-01-01: false
+NE:
+  2005-01-01: false
+NH:
+  2005-01-01: false
+NJ:
+  2005-01-01: false
+NM:
+  2005-01-01: false
+NV:
+  2005-01-01: false
+NY:
+  2005-01-01: false
+OH:
+  2005-01-01: false
+OK:
+  2005-01-01: false
+OR:
+  2005-01-01: false
+PA:
+  2005-01-01: false
+RI:
+  2005-01-01: false
+SC:
+  2005-01-01: false
+SD:
+  2005-01-01: false
+TN:
+  2005-01-01: false
+TX:
+  2005-01-01: false
+UT:
+  2005-01-01: false
+VA:
+  2005-01-01: false
+VT:
+  2005-01-01: false
+WA:
+  2005-01-01: true
+WI:
+  2005-01-01: false
+WV:
+  2005-01-01: false
+WY:
+  2005-01-01: false

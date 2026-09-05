@@ -129,7 +129,10 @@
     meets_snap_parent_exception: [false, false]
 
 # Two-parent household cases - requires child under 6 only
-- name: Two-parent household with child under 6 meets exception
+# The default test state (California) caps the claim at one adult per
+# child (Alameda CalFresh Handbook 63-04.05 § G); the claim goes to the
+# first parent listed when neither is a student.
+- name: Two-parent household with child under 6 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -148,7 +151,7 @@
       spm_unit:
         members: [parent1, parent2, child]
   output:
-    meets_snap_parent_exception: [true, true, false]
+    meets_snap_parent_exception: [true, false, false]
 
 - name: Two-parent household with child exactly 6 does not meet exception
   period: 2024
@@ -256,7 +259,7 @@
   output:
     meets_snap_parent_exception: [false, false, false]
 
-- name: Two-parent household with multiple children - youngest under 6 meets exception
+- name: Two-parent household with multiple children - one under 6 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -277,7 +280,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2]
   output:
-    meets_snap_parent_exception: [true, true, false, false]
+    meets_snap_parent_exception: [true, false, false, false]
 
 - name: Two-parent household with multiple children - all over 6 does not meet exception
   period: 2024
@@ -323,7 +326,7 @@
     meets_snap_parent_exception: [true, false]
 
 # Edge case - two-parent household with child at exactly the boundary
-- name: Two-parent household with child exactly 5 meets exception
+- name: Two-parent household with child exactly 5 lets one adult claim the exception
   period: 2024
   input:
     people:
@@ -342,4 +345,365 @@
       spm_unit:
         members: [parent1, parent2, child]
   output:
+    meets_snap_parent_exception: [true, false, false]
+
+# Missouri lets only one adult in the SNAP household claim the care of a
+# child under six, however many young children live there (DSS SNAP
+# Manual § 1135.025.00). The claim goes to the parent who is a student.
+- name: Missouri two-parent household lets only one adult claim the child-care exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Missouri gives the single child-care claim to the parent who is a student
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+- name: Missouri keeps the cap at one adult even with two children under six
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child1:
+        age: 4
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+
+# Texas caps the claim per child, not per household: two children under six
+# let both parents qualify (Texas Works Handbook B-412(7); North Carolina
+# FNS 235.04(E) says the same). The claim goes to the student who has no
+# other exception, whichever parent is listed first.
+# TANF is zeroed in the ordering cases: a zero-income family would be
+# computed as receiving TANF, which gives every parent the TANF exception
+# and would hide the ordering.
+- name: Texas two-parent household with one child under six lets one adult claim the exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Texas two-parent household with two children under six lets both adults claim the exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child1:
+        age: 4
+      child2:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, true, false, false]
+
+- name: Texas gives the single claim to the student without another exception when the working student is listed first
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 20
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+- name: Texas gives the single claim to the student without another exception when the working student is listed second
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 20
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+# States whose manuals restate the federal text without a cap, and states
+# not yet checked, keep the uncapped reading: every parent responsible for
+# a child under six qualifies.
+- name: DC two-parent household with one child under six lets both adults claim the exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: DC
+  output:
     meets_snap_parent_exception: [true, true, false]
+
+# Per-child claims stay within the child's tax unit: a student head of a
+# childless tax unit in the same SNAP household cannot take the claim.
+- name: Texas student grandparent in a separate childless tax unit does not displace the child's parent
+  period: 2024
+  input:
+    people:
+      grandparent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 45
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit1:
+        members: [grandparent]
+      tax_unit2:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+        tanf: 0
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+# Illinois presumes a non-student parent who is not working provides the
+# care (WAG 03-04-03-b example: an unemployed spouse at home defeats the
+# student's claim); a working non-student parent does not.
+- name: Illinois student parent loses the claim to a non-student parent who is not working
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IL
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+- name: Illinois student parent keeps the claim when the non-student parent works
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IL
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Texas carries no caregiver presumption so the student parent keeps the claim
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, false, false]

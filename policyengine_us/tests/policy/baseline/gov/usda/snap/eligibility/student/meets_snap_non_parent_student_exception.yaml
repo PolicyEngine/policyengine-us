@@ -1,0 +1,50 @@
+- name: Student with no exception
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    age: 20
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+  output:
+    meets_snap_non_parent_student_exception: false
+
+- name: Student under 18 meets the age exception
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    age: 17
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+  output:
+    meets_snap_non_parent_student_exception: true
+
+- name: Student working 20 hours per week meets the work exception
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    age: 20
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 20
+  output:
+    meets_snap_non_parent_student_exception: true
+
+- name: Disabled student meets the disability exception
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    age: 20
+    is_disabled: true
+    weekly_hours_worked_before_lsr: 0
+  output:
+    meets_snap_non_parent_student_exception: true
+
+- name: Student receiving TANF meets the TANF exception
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    age: 20
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    tanf_person: 500
+  output:
+    meets_snap_non_parent_student_exception: true
