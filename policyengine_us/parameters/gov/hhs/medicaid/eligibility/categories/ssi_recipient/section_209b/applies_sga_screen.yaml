@@ -1,0 +1,167 @@
+description: Medicaid denies this Section 209(b) SSI-recipient pathway to non-blind, non-aged people whose earnings exceed the substantial gainful activity threshold.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid 209(b) SSI-recipient pathway applies SGA screen
+  breakdown:
+    - state_code
+  reference:
+    - title: Missouri DSS December 1973 Eligibility Requirements Manual § 1060.005.00 - Verification of Disability
+      href: https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1060-000-00/1060-005-00/
+    - title: Missouri DSS MHABD Manual § 0840.010.35 - Change in Coverage, Spend Down and Ticket to Work
+      href: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0840-000-00/0840-010-00/0840-010-35/
+    - title: Missouri DSS December 1973 Eligibility Requirements Manual § 1060.005.12 - Submitting Information to MRT for Individuals Engaged in Substantial Gainful Activity
+      href: https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1060-000-00/1060-005-00/1060-005-12/
+    - title: Missouri DSS December 1973 Eligibility Requirements Manual, Appendix D - Substantial Gainful Activity
+      href: https://dssmanuals.mo.gov/december-1973-eligibility-requirements/substantial-gainful-activity/
+    - title: New Hampshire Medical Assistance Manual Part 209 - Aid to the Permanently and Totally Disabled (APTD)
+      href: https://www.dhhs.nh.gov/mam_htm/html/209_aid_to_the_permanently_and_totally_disabled_aptd_mam.htm
+    - title: New Hampshire DHHS SR 26-01 (January 2026) - New Substantial Gainful Activity (SGA) Income Ceiling
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm
+    - title: New Hampshire Admin. Rules He-W 504.02 - MEAD Medical Eligibility (SGA not considered)
+      href: https://regulations.justia.com/states/new-hampshire/he/subtitle-he-w/chapter-he-w-500/part-he-w-504/section-he-w-504-02
+    - title: 42 CFR 435.121 - Individuals in States using more restrictive requirements for Medicaid than the SSI requirements
+      href: https://www.law.cornell.edu/cfr/text/42/435.121
+    - title: Missouri DSS MHABD Manual § 0850.005.00 - Eligibility Requirements for MO HealthNet Based on Section 1619 Status
+      href: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0850-005-00/
+    - title: 42 U.S.C. § 1382h(a) - Section 1619(a) continuing SSI cash benefits above SGA
+      href: https://www.law.cornell.edu/uscode/text/42/1382h
+# Missouri accepts an SSA disability finding in place of its Medical
+# Review Team, but § 1060.005.00 adds: "An MRT decision is required if:
+# The individual's earned income exceeds the SGA", and § 0840.010.35
+# says MRT cases over SGA "are not eligible for Spend Down or Non-Spend
+# Down coverage". The screen sits under the permanent-and-total-disability
+# rules, so the model exempts the blind (vision-based category) and the
+# aged (no SGA test). The other 209(b) states were checked 2026-09-04;
+# six treat SSI receipt as proof of disability with no earnings screen:
+#   CT: HUSKY C coverage groups take SSI recipients as categorically
+#       disabled (DSS Medical Coverage Groups summary of UPM 2540).
+#   HI: HAR 17-1719-10.2(b)(1), proof of disability includes "eligibility
+#       for or receipt of SSI or RSDI benefits based on disability".
+#   IL: PM 03-08-01, "A person who receives Social Security disability
+#       benefits or SSI ... is considered disabled for AABD".
+#   MN: EPM 2.3.2.2, SSA certification of disability satisfies MA-ABD;
+#       SMRT screens only people who are not SSI-eligible.
+#   ND: NDAC 75-02-02.1-01, "Disabled" has the SSA meaning; the agency
+#       may not make an independent determination where SSA has.
+#   VA: M0310.112 B, individuals receiving SSI disability benefits meet
+#       the definition and are not referred to DDS.
+# NH is true: MAM Part 209 requires an APTD medical assistance applicant
+# to be unable to "engage in a substantial gainful employment activity";
+# the caseworker applies the SGA test and "If the net income exceeds
+# $1,690, the application must be denied" (2026), with no exception for
+# SSI recipients. SGA "applies to initial eligibility only" and does not
+# reach ongoing recipients or MEAD (He-W 504.02); we do not distinguish
+# new applicants from recipients, so the screen applies to both.
+# Computed SSI already fails is_ssi_disabled above SGA, so the screen only
+# reaches SSI receipt supplied as an input. A continuing recipient keeps
+# SSI cash above SGA under section 1619(a), and 42 CFR 435.121(b)(3) and
+# § 0850.005.00 keep 1619 recipients on MHABD, so the screen applies only
+# once countable income exhausts the SSI benefit rate, where no cash is
+# payable and the asserted receipt cannot be a 1619(a) continuation.
+# Section 1619(b) status (no cash, Medicaid retained) is not observed.
+# Section 1634 and SSI-criteria states must cover every SSI recipient
+# (42 CFR 435.120), so no earnings screen can apply there; the variable
+# is limited to 209(b) states and the other 43 values are inert.
+AK:
+  2024-01-01: false
+AL:
+  2024-01-01: false
+AR:
+  2024-01-01: false
+AZ:
+  2024-01-01: false
+CA:
+  2024-01-01: false
+CO:
+  2024-01-01: false
+CT:
+  2024-01-01: false
+DC:
+  2024-01-01: false
+DE:
+  2024-01-01: false
+FL:
+  2024-01-01: false
+GA:
+  2024-01-01: false
+HI:
+  2024-01-01: false
+IA:
+  2024-01-01: false
+ID:
+  2024-01-01: false
+IL:
+  2024-01-01: false
+IN:
+  2024-01-01: false
+KS:
+  2024-01-01: false
+KY:
+  2024-01-01: false
+LA:
+  2024-01-01: false
+MA:
+  2024-01-01: false
+MD:
+  2024-01-01: false
+ME:
+  2024-01-01: false
+MI:
+  2024-01-01: false
+MN:
+  2024-01-01: false
+MO:
+  2024-01-01: true
+MS:
+  2024-01-01: false
+MT:
+  2024-01-01: false
+NC:
+  2024-01-01: false
+ND:
+  2024-01-01: false
+NE:
+  2024-01-01: false
+NH:
+  2024-01-01: true
+NJ:
+  2024-01-01: false
+NM:
+  2024-01-01: false
+NV:
+  2024-01-01: false
+NY:
+  2024-01-01: false
+OH:
+  2024-01-01: false
+OK:
+  2024-01-01: false
+OR:
+  2024-01-01: false
+PA:
+  2024-01-01: false
+RI:
+  2024-01-01: false
+SC:
+  2024-01-01: false
+SD:
+  2024-01-01: false
+TN:
+  2024-01-01: false
+TX:
+  2024-01-01: false
+UT:
+  2024-01-01: false
+VA:
+  2024-01-01: false
+VT:
+  2024-01-01: false
+WA:
+  2024-01-01: false
+WI:
+  2024-01-01: false
+WV:
+  2024-01-01: false
+WY:
+  2024-01-01: false

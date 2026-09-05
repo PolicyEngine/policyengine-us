@@ -144,9 +144,10 @@
     state_code: MO
     ssi: 12_000
     is_optional_senior_or_disabled_income_eligible: false
-    tax_unit_fpg: 20_000
+    # 25,000 - 12,000 = 13,000, within the 2026 individual standard
+    # of ceil(0.85 x 15,960 / 12) = 1,131 monthly (13,572).
     medicaid_optional_senior_or_disabled_countable_income: 25_000
-    medicaid_medically_needy_medical_expenses: 9_000
+    medicaid_medically_needy_medical_expenses: 12_000
     is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_209b_ssi_recipient_for_medicaid: true
@@ -181,6 +182,163 @@
     state_code: CT
     ssi: 0
     receives_ssi: true
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+# Missouri denies MHABD to earners above the substantial gainful activity
+# threshold (DSS MHABD Manual § 0840.010.35; 2026 non-blind SGA $1,690 a
+# month). The screen belongs to the disability category, so the blind
+# and the aged are exempt, and other 209(b) states apply no screen. A
+# continuing recipient keeps SSI cash above SGA under section 1619(a)
+# and stays on MHABD (§ 0850.005.00), so the screen bites only once
+# countable income exhausts the SSI benefit rate: in 2026 that is
+# $994 x 12 = $11,928 of countable income, or about $2,073 a month of
+# wages after the $20 and $65 disregards and the 50% exclusion.
+- name: Case 18, Missouri non-blind adult SSI recipient earning above SGA is excluded.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 19, Missouri blind SSI recipient earning above SGA is not screened.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    is_blind: true
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 20, Missouri aged SSI recipient earning above SGA is not screened.
+  period: 2026
+  input:
+    state_code: MO
+    age: 66
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 21, Missouri SSI recipient earning exactly the SGA amount qualifies.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    # 1,690 x 12; SGA requires earnings above the threshold.
+    employment_income: 20_280
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 22a, Missouri section 1619(a) recipient earning above SGA keeps MHABD.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    # $1,700 a month exceeds SGA, but countable income of
+    # (20,400 - 1,020) / 2 = 9,690 is below the 11,928 benefit rate, so
+    # SSI cash continues under section 1619(a).
+    employment_income: 20_400
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 22b, Missouri SSI claimant whose wages exhaust the benefit rate is excluded.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    # $2,500 a month: countable income of (30,000 - 1,020) / 2 = 14,490
+    # exceeds the 11,928 benefit rate, so no SSI cash is payable and the
+    # asserted receipt cannot be a 1619(a) continuation.
+    employment_income: 30_000
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 22c, Missouri disabled student under 22 keeps SSI cash through the student earned income exclusion.
+  period: 2026
+  input:
+    state_code: MO
+    age: 20
+    is_full_time_college_student: true
+    is_disabled: true
+    # The 9,730 annual student exclusion leaves 20,270 of wages; after the
+    # standard exclusions, (20,270 / 12 - 85) / 2 x 12 = 9,625 is below the
+    # 11,928 benefit rate, so SSI cash continues under section 1619(a).
+    employment_income: 30_000
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+# New Hampshire applies the same SGA test to APTD medical assistance
+# applicants (MAM Part 209: "If the net income exceeds $1,690, the
+# application must be denied"); the aged are not APTD applicants.
+- name: Case 23, New Hampshire non-aged SSI recipient earning above SGA is excluded.
+  period: 2026
+  input:
+    state_code: NH
+    age: 40
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 23a, New Hampshire section 1619(a) recipient earning above SGA keeps coverage.
+  period: 2026
+  input:
+    state_code: NH
+    age: 40
+    employment_income: 20_400
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 23b, New Hampshire aged SSI recipient earning above SGA is not screened.
+  period: 2026
+  input:
+    state_code: NH
+    age: 70
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 22, Illinois SSI recipient earning above SGA is not screened.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    employment_income: 56_220
+    ssi: 12_000
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_asset_eligible: true
   output:

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class is_209b_ssi_recipient_for_medicaid(Variable):
@@ -15,6 +18,7 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicaid.gov/resources-for-states/downloads/macpro-ig-more-restrictive-requirements-1902f-209bstates.pdf#page=3",
         "https://www.govinfo.gov/link/cfr/42/435?link-type=pdf&sectionnum=121&year=mostrecent",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0840-000-00/0840-010-00/0840-010-35/",
     )
 
     def formula(person, period, parameters):
@@ -33,11 +37,39 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
             & person("is_child", period)
             & ~person("is_blind", period)
         )
+        # Some states screen the disability category for substantial
+        # gainful activity. Input SSI receipt above SGA is treated as a
+        # section 1619(a) continuation while SSI cash is still payable on
+        # income alone, so the screen applies only past that point.
+        is_sga_earner = person("ssi_engaged_in_sga", period) & ~person(
+            "is_ssi_aged", period
+        )
+        # ssi_countable_income is zero for anyone the model does not find
+        # SSI eligible, so apply the exclusions to own income directly.
+        ssi_benefit_rate = add(person, period, ["ssi_amount_if_eligible"])
+        earned_income = max_(
+            person("ssi_earned_income", period)
+            - person("ssi_blind_or_disabled_working_student_exclusion", period),
+            0,
+        )
+        own_countable_income = _apply_ssi_exclusions(
+            earned_income,
+            person("ssi_unearned_income", period),
+            parameters,
+            period,
+        )
+        would_receive_ssi_cash = ssi_benefit_rate > own_countable_income
+        is_excluded_sga_earner = (
+            p.applies_sga_screen[state].astype(bool)
+            & is_sga_earner
+            & ~would_receive_ssi_cash
+        )
 
         return (
             receives_ssi
             & is_209b_state
             & ~is_excluded_nonblind_child
+            & ~is_excluded_sga_earner
             & person("is_209b_ssi_recipient_income_eligible_for_medicaid", period)
             & person("is_optional_senior_or_disabled_asset_eligible", period)
         )
