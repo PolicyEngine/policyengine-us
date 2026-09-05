@@ -26,8 +26,15 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         # The countable-income measure does not add modeled SSI or state
         # supplement benefits, so apply the remaining 435.121 spenddown here.
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
-        tax_unit = person.tax_unit
-        income_after_spenddown = tax_unit.sum(personal_income - medical_expenses)
+        # Missouri budgets a married couple living together jointly,
+        # whatever their filing status (DSS Manual § 0805.015.05).
+        is_mo = person.household("state_code", period) == StateCode.MO
+        income_less_expenses = personal_income - medical_expenses
+        income_after_spenddown = where(
+            is_mo,
+            person.marital_unit.sum(income_less_expenses),
+            person.tax_unit.sum(income_less_expenses),
+        )
 
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period

@@ -235,3 +235,60 @@
         state_code: FL
   output:
     is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# Missouri budgets a married couple living together jointly (DSS Manual
+# § 0805.015.05): the couple standard applies to the couple's combined
+# countable income even when the spouses file separate returns.
+- name: Missouri married couple filing separately is tested on combined income against the couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 29,760 combined exceeds the 18,396 couple standard.
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Missouri unmarried adults in separate tax units are each tested on their own income
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Each 13,500 is under the 13,572 individual standard.
+    is_optional_senior_or_disabled_income_eligible: [true, true]

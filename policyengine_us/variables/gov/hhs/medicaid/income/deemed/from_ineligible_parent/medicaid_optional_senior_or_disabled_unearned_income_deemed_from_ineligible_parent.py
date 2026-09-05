@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent(
@@ -56,7 +59,18 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard.individual[
             state
         ]
-        net_parental_deemed_income = (
+        # Missouri deems parental income in the SSI order: the $20
+        # exclusion comes off before the $65 and the half (DSS Manual
+        # § 0805.020.15 steps 4-6), unlike its applicant budget.
+        net_parental_deemed_income = where(
+            state == "MO",
+            _apply_ssi_exclusions(
+                parental_earned_income,
+                parental_unearned_income,
+                parameters,
+                period,
+                general_exclusion=general_disregard,
+            ),
             _apply_medicaid_optional_senior_or_disabled_exclusions(
                 parental_earned_income,
                 parental_unearned_income,
@@ -64,7 +78,7 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
                 general_disregard,
                 parameters,
                 period,
-            )
+            ),
         )
         net_parental_deemed_income = max_(
             0, net_parental_deemed_income - parental_allocations

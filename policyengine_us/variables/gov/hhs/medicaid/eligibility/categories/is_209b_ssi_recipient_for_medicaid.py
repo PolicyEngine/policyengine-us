@@ -45,11 +45,15 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
             "is_ssi_aged", period
         )
         # ssi_countable_income is zero for anyone the model does not find
-        # SSI eligible, so apply the standard exclusions to the person's
-        # own income directly.
+        # SSI eligible, so apply the exclusions to own income directly.
         ssi_benefit_rate = add(person, period, ["ssi_amount_if_eligible"])
+        earned_income = max_(
+            person("ssi_earned_income", period)
+            - person("ssi_blind_or_disabled_working_student_exclusion", period),
+            0,
+        )
         own_countable_income = _apply_ssi_exclusions(
-            person("ssi_earned_income", period),
+            earned_income,
             person("ssi_unearned_income", period),
             parameters,
             period,

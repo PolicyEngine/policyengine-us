@@ -48,3 +48,31 @@
     medicaid_medically_needy_medical_expenses: 5_500
   output:
     is_209b_ssi_recipient_income_eligible_for_medicaid: false
+
+- name: Case 6, Missouri married couple filing separately spends down on combined income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+        medicaid_medically_needy_medical_expenses: 0
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 29,760 combined exceeds the 18,396 couple standard with no expenses.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [false, false]

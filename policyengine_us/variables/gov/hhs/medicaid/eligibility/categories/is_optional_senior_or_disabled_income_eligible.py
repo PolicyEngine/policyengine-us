@@ -22,7 +22,14 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         personal_income = person(
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
-        income = person.tax_unit.sum(personal_income)
+        # Missouri budgets a married couple living together jointly,
+        # whatever their filing status (DSS Manual § 0805.015.05).
+        is_mo = person.household("state_code", period) == StateCode.MO
+        income = where(
+            is_mo,
+            person.marital_unit.sum(personal_income),
+            person.tax_unit.sum(personal_income),
+        )
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

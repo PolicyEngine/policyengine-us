@@ -276,6 +276,23 @@
   output:
     is_209b_ssi_recipient_for_medicaid: false
 
+- name: Case 22c, Missouri disabled student under 22 keeps SSI cash through the student earned income exclusion.
+  period: 2026
+  input:
+    state_code: MO
+    age: 20
+    is_full_time_college_student: true
+    is_disabled: true
+    # The 9,730 annual student exclusion leaves 20,270 of wages; after the
+    # standard exclusions, (20,270 / 12 - 85) / 2 x 12 = 9,625 is below the
+    # 11,928 benefit rate, so SSI cash continues under section 1619(a).
+    employment_income: 30_000
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
 - name: Case 22, Illinois SSI recipient earning above SGA is not screened.
   period: 2026
   input:
