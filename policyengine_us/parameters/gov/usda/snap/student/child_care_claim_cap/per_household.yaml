@@ -2,7 +2,7 @@ description: Only one adult in the SNAP household may claim the student exemptio
 metadata:
   unit: bool
   period: year
-  label: SNAP student child care exception one-adult-per-household limit
+  label: SNAP student child care exception one-adult-per-household cap
   breakdown:
     - state_code
   reference:
@@ -12,15 +12,11 @@ metadata:
       href: https://www.dhs.state.il.us/page.aspx?item=13276
     - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
       href: https://www.law.cornell.edu/cfr/text/7/273.5
-# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. Most state
-# manuals let one adult claim each child under six (see
-# meets_snap_parent_exception); that per-child cap applies in every state
-# and is not what this parameter controls. Missouri and Illinois word the
-# cap as one adult per household, so a second child under six does not
-# free a second claim there. States checked and left false: CA, CO, CT,
-# DC, GA, KS, MA, NC, NY, TX, WA. Others are unverified defaults. The manuals
-# give no effective date, so values start with the sibling student
-# parameters.
+# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. Missouri and
+# Illinois word the cap as one adult per household, so a second child
+# under six does not free a second claim there. Most other checked states
+# cap the claim per child instead (see per_child.yaml). The manuals give
+# no effective date, so values start with the sibling student parameters.
 AK:
   2005-01-01: false
 AL:

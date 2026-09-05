@@ -1,0 +1,138 @@
+description: Each dependent child under age six lets only one adult in the SNAP household claim the student exemption for caring for that child, in these states under the Supplemental Nutrition Assistance Program.
+metadata:
+  unit: bool
+  period: year
+  label: SNAP student child care exception one-adult-per-child cap
+  breakdown:
+    - state_code
+  reference:
+    - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
+      href: https://www.law.cornell.edu/cfr/text/7/273.5
+    - title: Texas Works Handbook B-412(7) ("Both parents or caretakers cannot get student eligibility by caring for the same child")
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/b-410-students-higher-education
+    - title: North Carolina FNS 235.04(E) ("If there is only one child in the home, then only one parent can claim this exemption")
+      href: https://policies.ncdhhs.gov/wp-content/uploads/fss235-1.pdf#page=2
+    - title: Alameda County CalFresh Handbook 63-04.05 § G ("Only one parent can claim the exemption as the primary person responsible for the care of a dependent child under the age of six")
+      href: https://socialservices.alamedacountyca.gov/acssa-assets/PDF/CalFresh-Policies/CF_Handbook_63-04.05.pdf#page=8
+    - title: Kansas KEESM 2531(4) ("only one person may claim this eligibility criteria as the primary person responsible for the care of the dependent child")
+      href: https://content.dcf.ks.gov/ees/keesm/current/keesm2530.htm
+    - title: Colorado 10 CCR 2506-1-4.306 ("responsible for more than half of the physical care")
+      href: https://www.law.cornell.edu/regulations/colorado/10-CCR-2506-1-4.306
+    - title: Washington EA-Z Manual, Student Status ("One child can't make more than one student eligible")
+      href: https://www.dshs.wa.gov/esa/eligibility-z-manual-ea-z/student-status
+    - title: Connecticut DSS Eligible Student Criteria ("limited to one adult per child if 2 adults are responsible")
+      href: https://portaldir.ct.gov/dss/SNAP/EligibleStudentCriteria1.html
+    - title: Georgia PAMMS 3245 ("Only one parent in the AU can claim the status of a caretaker")
+      href: https://pamms.dhs.ga.gov/dfcs/snap/3245/
+    - title: Alaska Food Stamp Manual 605-1 B ("responsible for more than half of the care")
+      href: http://dpaweb.hss.state.ak.us/manuals/fs/605/605-1_b.htm
+# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. The states
+# listed above give each child under six to one adult, usually the one
+# providing most of the care, so two young children can free two claims.
+# Missouri and Illinois cap the claim per household instead (see
+# per_household.yaml). DC, MA, NY, and OH restate the federal text with
+# no cap and stay false; states not listed are unverified and keep the
+# uncapped federal reading. The manuals give no effective date, so values
+# start with the sibling student parameters.
+AK:
+  2005-01-01: true
+AL:
+  2005-01-01: false
+AR:
+  2005-01-01: false
+AZ:
+  2005-01-01: false
+CA:
+  2005-01-01: true
+CO:
+  2005-01-01: true
+CT:
+  2005-01-01: true
+DC:
+  2005-01-01: false
+DE:
+  2005-01-01: false
+FL:
+  2005-01-01: false
+GA:
+  2005-01-01: true
+HI:
+  2005-01-01: false
+IA:
+  2005-01-01: false
+ID:
+  2005-01-01: false
+IL:
+  2005-01-01: false
+IN:
+  2005-01-01: false
+KS:
+  2005-01-01: true
+KY:
+  2005-01-01: false
+LA:
+  2005-01-01: false
+MA:
+  2005-01-01: false
+MD:
+  2005-01-01: false
+ME:
+  2005-01-01: false
+MI:
+  2005-01-01: false
+MN:
+  2005-01-01: false
+MO:
+  2005-01-01: false
+MS:
+  2005-01-01: false
+MT:
+  2005-01-01: false
+NC:
+  2005-01-01: true
+ND:
+  2005-01-01: false
+NE:
+  2005-01-01: false
+NH:
+  2005-01-01: false
+NJ:
+  2005-01-01: false
+NM:
+  2005-01-01: false
+NV:
+  2005-01-01: false
+NY:
+  2005-01-01: false
+OH:
+  2005-01-01: false
+OK:
+  2005-01-01: false
+OR:
+  2005-01-01: false
+PA:
+  2005-01-01: false
+RI:
+  2005-01-01: false
+SC:
+  2005-01-01: false
+SD:
+  2005-01-01: false
+TN:
+  2005-01-01: false
+TX:
+  2005-01-01: true
+UT:
+  2005-01-01: false
+VA:
+  2005-01-01: false
+VT:
+  2005-01-01: false
+WA:
+  2005-01-01: true
+WI:
+  2005-01-01: false
+WV:
+  2005-01-01: false
+WY:
+  2005-01-01: false
