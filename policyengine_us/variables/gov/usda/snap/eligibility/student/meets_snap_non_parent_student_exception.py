@@ -12,6 +12,7 @@ class meets_snap_non_parent_student_exception(Variable):
         "incentive program, work hours or work-study, or TANF receipt."
     )
     definition_period = YEAR
+    defined_for = "is_snap_higher_ed_student"
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2015#e",
         "https://www.law.cornell.edu/cfr/text/7/273.5#b",

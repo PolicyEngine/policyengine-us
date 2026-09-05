@@ -585,3 +585,125 @@
         state_code: DC
   output:
     meets_snap_parent_exception: [true, true, false]
+
+# Per-child claims stay within the child's tax unit: a student head of a
+# childless tax unit in the same SNAP household cannot take the claim.
+- name: Texas student grandparent in a separate childless tax unit does not displace the child's parent
+  period: 2024
+  input:
+    people:
+      grandparent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 45
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit1:
+        members: [grandparent]
+      tax_unit2:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+        tanf: 0
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+# Illinois presumes a non-student parent who is not working provides the
+# care (WAG 03-04-03-b example: an unemployed spouse at home defeats the
+# student's claim); a working non-student parent does not.
+- name: Illinois student parent loses the claim to a non-student parent who is not working
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IL
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+- name: Illinois student parent keeps the claim when the non-student parent works
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IL
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Texas carries no caregiver presumption so the student parent keeps the claim
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        age: 32
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    meets_snap_parent_exception: [true, false, false]

@@ -1,27 +1,34 @@
-description: The Department of Agriculture lets only one adult per household claim the Supplemental Nutrition Assistance Program student exemption for caring for a dependent child under age six, however many such children live there, in these states.
+description: The Department of Agriculture presumes that a parent who is neither a student nor working provides the care of a dependent child under age six, so a student parent in the same household cannot claim the Supplemental Nutrition Assistance Program student exemption for that care, in these states.
 metadata:
   unit: bool
   period: year
-  label: SNAP student child care exception one-adult-per-household cap
+  label: SNAP student child care exception non-student parent presumed caregiver
   propagate_metadata_to_children: true
   breakdown:
     - state_code
   reference:
-    - title: Missouri DSS SNAP Manual § 1135.025.00 - Students
-      href: https://dssmanuals.mo.gov/food-stamps/1135-000-00/1135-025-00/
     - title: Illinois IDHS WAG 03-04-03-b - Eligible Students of Higher Education
       href: https://www.dhs.state.il.us/page.aspx?item=13276
+    - title: Washington EA-Z Manual - Student Status
+      href: https://www.dshs.wa.gov/esa/eligibility-z-manual-ea-z/student-status
+    - title: Alaska Food Stamp Manual 605-1 B - Students
+      href: http://dpaweb.hss.state.ak.us/manuals/fs/605/605-1_b.htm
     - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
       href: https://www.law.cornell.edu/cfr/text/7/273.5
-# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. Missouri
-# ("only one adult in the household may claim this responsibility") and
-# Illinois ("only one adult may claim this exemption") cap the claim per
-# household, so a second child under six does not free a second claim.
-# Most other checked states cap it per child (per_child.yaml). The
+# IL: "the student must provide the majority of child care"; its example
+#     denies a full-time student whose unemployed spouse "is at home
+#     during the day with their year-old daughter."
+# WA: a student's claim is questionable "if the non-student parent in a
+#     two parent household is not employed."
+# AK: "it must be determined why the other parent cannot care for the
+#     child in place of the student parent."
+# We cannot observe who provides the care, so a non-student head or
+# spouse with no work hours is presumed to. Other states, including the
+# per-child cap states, carry no such presumption and stay false. The
 # manuals give no effective date, so values start with the sibling
 # student parameters.
 AK:
-  2005-01-01: false
+  2005-01-01: true
 AL:
   2005-01-01: false
 AR:
@@ -69,7 +76,7 @@ MI:
 MN:
   2005-01-01: false
 MO:
-  2005-01-01: true
+  2005-01-01: false
 MS:
   2005-01-01: false
 MT:
@@ -115,7 +122,7 @@ VA:
 VT:
   2005-01-01: false
 WA:
-  2005-01-01: false
+  2005-01-01: true
 WI:
   2005-01-01: false
 WV:

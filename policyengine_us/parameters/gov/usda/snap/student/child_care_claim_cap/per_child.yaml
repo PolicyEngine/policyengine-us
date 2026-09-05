@@ -1,39 +1,56 @@
-description: Each dependent child under age six lets only one adult in the SNAP household claim the student exemption for caring for that child, in these states under the Supplemental Nutrition Assistance Program.
+description: The Department of Agriculture lets only one adult claim the Supplemental Nutrition Assistance Program student exemption for caring for each dependent child under age six in these states.
 metadata:
   unit: bool
   period: year
   label: SNAP student child care exception one-adult-per-child cap
+  propagate_metadata_to_children: true
   breakdown:
     - state_code
   reference:
     - title: 7 CFR 273.5(b)(8) - Students, care of a dependent household member under the age of 6
       href: https://www.law.cornell.edu/cfr/text/7/273.5
-    - title: Texas Works Handbook B-412(7) ("Both parents or caretakers cannot get student eligibility by caring for the same child")
+    - title: Texas Works Handbook B-412(7) - Students in Higher Education
       href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/b-410-students-higher-education
-    - title: North Carolina FNS 235.04(E) ("If there is only one child in the home, then only one parent can claim this exemption")
+    - title: North Carolina FNS Manual 235.04(E) - Student Exemptions
       href: https://policies.ncdhhs.gov/wp-content/uploads/fss235-1.pdf#page=2
-    - title: Alameda County CalFresh Handbook 63-04.05 § G ("Only one parent can claim the exemption as the primary person responsible for the care of a dependent child under the age of six")
-      href: https://socialservices.alamedacountyca.gov/acssa-assets/PDF/CalFresh-Policies/CF_Handbook_63-04.05.pdf#page=8
-    - title: Kansas KEESM 2531(4) ("only one person may claim this eligibility criteria as the primary person responsible for the care of the dependent child")
+    - title: Alameda County CalFresh Handbook 63-04.05 § G - Parental Control for a Child Under Age Six
+      href: https://socialservices.alamedacountyca.gov/acssa-assets/PDF/CalFresh-Policies/CF_Handbook_63-04.05.pdf#page=9
+    - title: Kansas KEESM 2531(4) - Student Eligibility Criteria
       href: https://content.dcf.ks.gov/ees/keesm/current/keesm2530.htm
-    - title: Colorado 10 CCR 2506-1-4.306 ("responsible for more than half of the physical care")
+    - title: Colorado 10 CCR 2506-1-4.306 - Students
       href: https://www.law.cornell.edu/regulations/colorado/10-CCR-2506-1-4.306
-    - title: Washington EA-Z Manual, Student Status ("One child can't make more than one student eligible")
+    - title: Washington EA-Z Manual - Student Status
       href: https://www.dshs.wa.gov/esa/eligibility-z-manual-ea-z/student-status
-    - title: Connecticut DSS Eligible Student Criteria ("limited to one adult per child if 2 adults are responsible")
+    - title: Connecticut DSS - Eligible Student Criteria
       href: https://portaldir.ct.gov/dss/SNAP/EligibleStudentCriteria1.html
-    - title: Georgia PAMMS 3245 ("Only one parent in the AU can claim the status of a caretaker")
+    - title: Georgia PAMMS 3245 - Students
       href: https://pamms.dhs.ga.gov/dfcs/snap/3245/
-    - title: Alaska Food Stamp Manual 605-1 B ("responsible for more than half of the care")
+    - title: Alaska Food Stamp Manual 605-1 B - Students
       href: http://dpaweb.hss.state.ak.us/manuals/fs/605/605-1_b.htm
-# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. The states
-# listed above give each child under six to one adult, usually the one
-# providing most of the care, so two young children can free two claims.
-# Missouri and Illinois cap the claim per household instead (see
-# per_household.yaml). DC, MA, NY, and OH restate the federal text with
-# no cap and stay false; states not listed are unverified and keep the
-# uncapped federal reading. The manuals give no effective date, so values
-# start with the sibling student parameters.
+# Federal rule 7 CFR 273.5(b)(8) is silent on shared care. These states
+# give each child under six to one adult, usually the one providing most
+# of the care, so two young children can free two claims:
+#   TX: "Both parents or caretakers cannot get student eligibility by
+#       caring for the same child."
+#   NC: "If there is only one child in the home, then only one parent can
+#       claim this exemption."
+#   CA: county handbook, not statewide guidance: "Only one parent can
+#       claim the exemption as the primary person responsible for the
+#       care of a dependent child under the age of six"; multiple
+#       children decided case by case, modeled as one claim per child.
+#   KS: "only one person may claim this eligibility criteria as the
+#       primary person responsible for the care of the dependent child."
+#   CO, WA, AK: "more than half of the care" of the child; WA adds "One
+#       child can't make more than one student eligible."
+#   CT: "limited to one adult per child if 2 adults are responsible."
+#   GA: "Only one parent in the AU can claim the status of a caretaker
+#       responsible for a dependent child"; could also be read as one
+#       adult per assistance unit, modeled per child.
+# Missouri and Illinois cap the claim per household (per_household.yaml).
+# DC, MA, NY, and OH restate the federal text with no cap and stay false;
+# states not listed are unverified and keep the uncapped reading. The
+# manuals give no effective date, so values start with the sibling
+# student parameters.
 AK:
   2005-01-01: true
 AL:
