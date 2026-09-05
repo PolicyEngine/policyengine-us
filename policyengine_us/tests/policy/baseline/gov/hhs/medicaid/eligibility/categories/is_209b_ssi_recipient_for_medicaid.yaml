@@ -190,7 +190,12 @@
 # Missouri denies MHABD to earners above the substantial gainful activity
 # threshold (DSS MHABD Manual § 0840.010.35; 2026 non-blind SGA $1,690 a
 # month). The screen belongs to the disability category, so the blind
-# and the aged are exempt, and other 209(b) states apply no screen.
+# and the aged are exempt, and other 209(b) states apply no screen. A
+# continuing recipient keeps SSI cash above SGA under section 1619(a)
+# and stays on MHABD (§ 0850.005.00), so the screen bites only once
+# countable income exhausts the SSI benefit rate: in 2026 that is
+# $994 x 12 = $11,928 of countable income, or about $2,073 a month of
+# wages after the $20 and $65 disregards and the 50% exclusion.
 - name: Case 18, Missouri non-blind adult SSI recipient earning above SGA is excluded.
   period: 2026
   input:
@@ -240,6 +245,36 @@
     is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 22a, Missouri section 1619(a) recipient earning above SGA keeps MHABD.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    # $1,700 a month exceeds SGA, but countable income of
+    # (20,400 - 1,020) / 2 = 9,690 is below the 11,928 benefit rate, so
+    # SSI cash continues under section 1619(a).
+    employment_income: 20_400
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 22b, Missouri SSI claimant whose wages exhaust the benefit rate is excluded.
+  period: 2026
+  input:
+    state_code: MO
+    age: 40
+    # $2,500 a month: countable income of (30,000 - 1,020) / 2 = 14,490
+    # exceeds the 11,928 benefit rate, so no SSI cash is payable and the
+    # asserted receipt cannot be a 1619(a) continuation.
+    employment_income: 30_000
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
 
 - name: Case 22, Illinois SSI recipient earning above SGA is not screened.
   period: 2026

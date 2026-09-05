@@ -172,6 +172,13 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         tax_unit_is_joint: true
+    marital_units:
+      parents:
+        members: [person2, person3]
+      child1:
+        members: [person1]
+      child2:
+        members: [person4]
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -180,3 +187,50 @@
     # child: ceil(0.85 x 15,960 / 12) = 1,131 monthly
     # parents: ceil(0.85 x 21,640 / 12) = 1,533 monthly
     medicaid_optional_senior_or_disabled_income_limit: [13_572, 18_396, 18_396, 13_572]
+
+# The couple standard follows marriage (§ 0805.015.45: "single individuals
+# and married couples"), not the couple's filing status.
+- name: Missouri married couple filing separately still gets the couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+
+- name: Missouri unmarried adults sharing a tax unit get the individual standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 13_572]

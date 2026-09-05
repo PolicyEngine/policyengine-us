@@ -44,17 +44,10 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
             limit_pct,
         )
         tax_unit_fpg = tax_unit("tax_unit_fpg", period)
-        # Missouri publishes its MHABD standards as dollar amounts in
-        # Appendix J for an individual and for a couple, so the standard
-        # follows the applicant's marital status rather than the tax unit's
-        # size: a married applicant living with a spouse is tested against
-        # the couple standard, and anyone else, including a disabled child
-        # in a family, against the individual standard. Each is the
-        # percentage of the monthly poverty guideline for that unit size
-        # rounded up to the next whole dollar (e.g., $1,131 for one aged or
-        # disabled person and $1,804 for a blind couple in 2026).
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        mo_is_couple = is_joint & is_head_or_spouse
+        # Missouri publishes dollar standards for an individual and for a
+        # married couple (Appendix J), each the percentage of that unit's
+        # monthly poverty guideline rounded up to the next whole dollar.
+        mo_is_couple = person.marital_unit.nb_persons() == 2
         state_group = person.household("state_group_str", period)
         mo_fpg = fpg(where(mo_is_couple, 2, 1), state_group, period, parameters)
         mo_monthly_limit = np.ceil(limit_pct * mo_fpg / MONTHS_IN_YEAR)

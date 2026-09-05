@@ -12,10 +12,21 @@ metadata:
       href: https://dssmanuals.mo.gov/december-1973-eligibility-requirements/substantial-gainful-activity/
     - title: 42 CFR 435.121 - Individuals in States using more restrictive requirements for Medicaid than the SSI requirements
       href: https://www.law.cornell.edu/cfr/text/42/435.121
+    - title: Missouri DSS MHABD Manual § 0850.005.00 - Eligibility Requirements for MO HealthNet Based on Section 1619 Status
+      href: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0850-005-00/
+    - title: 42 U.S.C. § 1382h(a) - Section 1619(a) continuing SSI cash benefits above SGA
+      href: https://www.law.cornell.edu/uscode/text/42/1382h
 # Only Missouri's manual has been verified. The screen sits under
 # Missouri's permanent-and-total-disability chapter, so the model exempts
 # the blind (vision-based category) and the aged (no SGA test). The other
 # seven 209(b) states are unverified defaults.
+# Computed SSI already fails is_ssi_disabled above SGA, so the screen only
+# reaches SSI receipt supplied as an input. A continuing recipient keeps
+# SSI cash above SGA under section 1619(a), and 42 CFR 435.121(b)(3) and
+# § 0850.005.00 keep 1619 recipients on MHABD, so the screen applies only
+# once countable income exhausts the SSI benefit rate, where no cash is
+# payable and the asserted receipt cannot be a 1619(a) continuation.
+# Section 1619(b) status (no cash, Medicaid retained) is not observed.
 AK:
   2024-01-01: false
 AL:
