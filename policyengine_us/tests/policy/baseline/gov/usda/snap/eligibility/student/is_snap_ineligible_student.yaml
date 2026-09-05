@@ -192,6 +192,7 @@
 # With one child under six in a per-child cap state, the child-care claim
 # goes to the student who has no other exception, so both student parents
 # stay eligible whichever one is listed first.
+# TANF is zeroed so the TANF exception does not cover both parents.
 - name: Two student parents with one young child are both eligible when the working student is listed first
   period: 2024
   input:
@@ -214,6 +215,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
+        tanf: 0
     households:
       household:
         members: [parent1, parent2, child]
@@ -243,6 +245,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
+        tanf: 0
     households:
       household:
         members: [parent1, parent2, child]

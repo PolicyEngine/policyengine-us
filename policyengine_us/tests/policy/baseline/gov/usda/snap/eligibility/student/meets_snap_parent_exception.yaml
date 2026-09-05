@@ -396,6 +396,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
+        tanf: 0
     households:
       household:
         members: [parent1, parent2, child]
@@ -436,6 +437,9 @@
 # let both parents qualify (Texas Works Handbook B-412(7); North Carolina
 # FNS 235.04(E) says the same). The claim goes to the student who has no
 # other exception, whichever parent is listed first.
+# TANF is zeroed in the ordering cases: a zero-income family would be
+# computed as receiving TANF, which gives every parent the TANF exception
+# and would hide the ordering.
 - name: Texas two-parent household with one child under six lets one adult claim the exception
   period: 2024
   input:
@@ -514,6 +518,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
+        tanf: 0
     households:
       household:
         members: [parent1, parent2, child]
@@ -543,6 +548,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
+        tanf: 0
     households:
       household:
         members: [parent1, parent2, child]
