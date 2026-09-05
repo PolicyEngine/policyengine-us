@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class is_209b_ssi_recipient_for_medicaid(Variable):
@@ -41,9 +44,17 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
         is_sga_earner = person("ssi_engaged_in_sga", period) & ~person(
             "is_ssi_aged", period
         )
+        # ssi_countable_income is zero for anyone the model does not find
+        # SSI eligible, so apply the standard exclusions to the person's
+        # own income directly.
         ssi_benefit_rate = add(person, period, ["ssi_amount_if_eligible"])
-        ssi_countable_income = person("ssi_countable_income", period)
-        would_receive_ssi_cash = ssi_benefit_rate > ssi_countable_income
+        own_countable_income = _apply_ssi_exclusions(
+            person("ssi_earned_income", period),
+            person("ssi_unearned_income", period),
+            parameters,
+            period,
+        )
+        would_receive_ssi_cash = ssi_benefit_rate > own_countable_income
         is_excluded_sga_earner = (
             p.applies_sga_screen[state].astype(bool)
             & is_sga_earner
