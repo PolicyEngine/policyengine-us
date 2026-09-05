@@ -286,3 +286,21 @@
         state_code: TX
   output:
     is_snap_abawd_exempt: true
+
+- name: Case 17, reported SSI recipient without the generic disability flag is exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true

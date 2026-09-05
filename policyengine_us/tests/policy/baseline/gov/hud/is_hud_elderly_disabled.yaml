@@ -83,3 +83,12 @@
     social_security_disability: 12_000
   output:
     is_hud_elderly_disabled_family: true
+
+- name: A one-person non-elderly family with zero SSDI and no other disability status.
+  period: 2022
+  input:
+    age: 48
+    is_disabled: false
+    social_security_disability: 0
+  output:
+    is_hud_elderly_disabled_family: false

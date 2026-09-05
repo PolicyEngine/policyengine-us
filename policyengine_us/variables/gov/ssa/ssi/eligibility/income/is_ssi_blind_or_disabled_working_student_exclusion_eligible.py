@@ -7,16 +7,21 @@ class is_ssi_blind_or_disabled_working_student_exclusion_eligible(Variable):
     label = "Eligible for SSI blind or disabled working student earned income exclusion"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1112#c_3"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/20/416.1112#c_3",
+        "https://www.law.cornell.edu/uscode/text/42/1382c#a_3",
+    )
 
     def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student
-        # "Blind or disabled" takes SSA's own meaning here: the exclusion
-        # applies to a blind or disabled SSI claimant (20 CFR 416.1112(c)(3)),
-        # so the SSI disability criteria govern rather than the generic
-        # disability flag. The substantial gainful activity screen is left
+        # 20 CFR 416.1112(c)(3) itself sets only the age and student
+        # conditions; the blind-or-disabled precondition comes from the
+        # enclosing SSI context, where "blind or disabled" carries the
+        # section 1614 meaning (42 U.S.C. 1382c(a)(2)-(3)). So the SSI
+        # disability criteria govern rather than the generic disability
+        # flag. The substantial gainful activity screen is left
         # out: it is an initial-entitlement test, and section 1619(a)
         # recipients keep SSI status while earning above SGA, so the
         # exclusion (also used by MSP and Medicaid income methodologies)

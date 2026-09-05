@@ -9,6 +9,7 @@ class medicaid_work_requirement_eligible(Variable):
     reference = (
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf",
+        "https://www.law.cornell.edu/uscode/text/42/1382c#a_3",
     )
 
     def formula(person, period, parameters):

@@ -1,10 +1,11 @@
-description: Benefit receipt that qualifies individuals as elderly or disabled members for SNAP.
+description: Benefit receipt that qualifies individuals as elderly or disabled members under the Supplemental Nutrition Assistance Program.
 
 values:
   2021-01-01:
     # 7 CFR 271.2 defines "elderly or disabled member" by benefit receipt
     # ("receives supplemental security income benefits ... or disability or
     # blindness payments"), not by meeting the disability criteria alone.
+    # Amount entries (ssi, social_security_disability) count when positive.
     - receives_ssi
     - ssi
     - social_security_disability

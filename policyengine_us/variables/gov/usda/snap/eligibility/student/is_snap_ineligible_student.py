@@ -7,7 +7,10 @@ class is_snap_ineligible_student(Variable):
     label = "Is an ineligible student for SNAP"
     definition_period = YEAR
     defined_for = "is_snap_higher_ed_student"
-    reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/7/2015#e",
+        "https://www.law.cornell.edu/cfr/text/7/273.24#c_2",
+    )
 
     def formula(person, period, parameters):
         # Base rule: Students enrolled at least half-time in higher education
@@ -23,8 +26,9 @@ class is_snap_ineligible_student(Variable):
         # would make the ~ below a bitwise negation instead of a logical one.
         meets_age_exception = p.age_threshold.calc(age).astype(bool)
 
-        # Exception 2: Not physically or mentally fit (disabled); receipt of
-        # disability benefits establishes unfitness (7 CFR 273.7(b)(1)(ii)),
+        # Exception 2: Not physically or mentally fit (disabled). 7 CFR
+        # 273.24(c)(2)(i) treats receipt of disability benefits as
+        # establishing unfitness for employment, applied here by analogy,
         # so the USDA receipt-based definition also qualifies.
         meets_disability_exception = person("is_disabled", period) | person(
             "is_usda_disabled", period

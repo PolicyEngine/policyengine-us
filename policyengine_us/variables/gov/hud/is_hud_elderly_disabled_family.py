@@ -7,7 +7,10 @@ class is_hud_elderly_disabled_family(Variable):
     label = "HUD elderly or disabled family"
     documentation = "Whether an SPM unit is deemed elderly or disabled for HUD purposes"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/24/5.611",
+        "https://www.law.cornell.edu/uscode/text/42/1437a#b_3_E",
+    )
 
     def formula(spm_unit, period, parameters):
         hud = parameters(period).gov.hud
@@ -16,7 +19,9 @@ class is_hud_elderly_disabled_family(Variable):
         # 42 U.S.C. 1437a(b)(3)(E) defines a person with disabilities to
         # include anyone with a disability as defined in section 223 of the
         # Social Security Act (the SSDI standard), so the SSI/SSDI paths
-        # qualify alongside the generic disability flag.
+        # qualify alongside the generic disability flag. SSDI receipt is a
+        # modeling proxy for the section 223 definition: the statute turns
+        # on the impairment, not on receipt.
         disabled = (
             person("is_disabled", period)
             | person("is_ssi_disabled", period)
