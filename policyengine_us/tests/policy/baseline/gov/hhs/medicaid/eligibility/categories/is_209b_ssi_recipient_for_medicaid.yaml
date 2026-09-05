@@ -293,6 +293,45 @@
   output:
     is_209b_ssi_recipient_for_medicaid: true
 
+# New Hampshire applies the same SGA test to APTD medical assistance
+# applicants (MAM Part 209: "If the net income exceeds $1,690, the
+# application must be denied"); the aged are not APTD applicants.
+- name: Case 23, New Hampshire non-aged SSI recipient earning above SGA is excluded.
+  period: 2026
+  input:
+    state_code: NH
+    age: 40
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 23a, New Hampshire section 1619(a) recipient earning above SGA keeps coverage.
+  period: 2026
+  input:
+    state_code: NH
+    age: 40
+    employment_income: 20_400
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 23b, New Hampshire aged SSI recipient earning above SGA is not screened.
+  period: 2026
+  input:
+    state_code: NH
+    age: 70
+    employment_income: 56_220
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
 - name: Case 22, Illinois SSI recipient earning above SGA is not screened.
   period: 2026
   input:
