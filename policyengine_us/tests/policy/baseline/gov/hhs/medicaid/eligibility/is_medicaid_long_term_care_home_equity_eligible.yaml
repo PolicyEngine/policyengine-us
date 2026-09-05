@@ -295,3 +295,63 @@
     home_equity: 1_217_001
   output:
     is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 19, resident adult child meeting the section 1614 SSI disability test triggers the family exception.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_disabled: false
+        is_ssi_disabled: true
+        is_related_to_head_or_spouse: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [true, false]
+    is_medicaid_long_term_care_home_equity_eligible: [true, true]
+
+- name: Case 20, resident adult child not meeting the SSI disability test does not trigger the family exception.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_disabled: false
+        is_ssi_disabled: false
+        is_related_to_head_or_spouse: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [false, false]
+    is_medicaid_long_term_care_home_equity_eligible: [false, true]

@@ -24,6 +24,7 @@ class meets_snap_general_work_requirements(Variable):
         "https://www.law.cornell.edu/cfr/text/7/273.7#a_1",
         "https://www.law.cornell.edu/cfr/text/7/273.7#b_1",
         "https://www.law.cornell.edu/cfr/text/7/273.7#f_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.24#c_2",
         "https://www.law.cornell.edu/cfr/text/7/273.7#j",
     )
 
@@ -37,8 +38,14 @@ class meets_snap_general_work_requirements(Variable):
         # Exemptions under 7 CFR 273.7(b)(1):
         # Under 16 or 60 years of age or older are exempted
         worked_exempted_age = p.age_threshold.exempted.calc(age)
-        # Unable to work due to a physical or mental limitation
-        is_disabled = person("is_disabled", period)
+        # Unable to work due to a physical or mental limitation. 7 CFR
+        # 273.7(b)(1)(ii) leaves the unfitness determination to the State
+        # agency; 7 CFR 273.24(c)(2)(i) treats receipt of temporary or
+        # permanent disability benefits as establishing unfitness, applied
+        # here by analogy, so the USDA receipt-based definition also exempts.
+        is_disabled = person("is_disabled", period) | person(
+            "is_usda_disabled", period.this_year
+        )
         # Taking care of a child under six or an incapacitated person
         is_dependent = person("is_tax_unit_dependent", period)
         is_child = age < p.age_threshold.caring_dependent_child

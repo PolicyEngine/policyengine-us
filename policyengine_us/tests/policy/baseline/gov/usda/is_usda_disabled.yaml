@@ -1,20 +1,69 @@
-- name: People without any disability flags are not USDA disabled
+# 7 CFR 271.2 "elderly or disabled member" item (2): the person must
+# *receive* SSI (any category) or disability/blindness payments. Meeting the
+# SSI disability criteria without receiving SSI does not qualify.
+
+- name: Case 1, people without any disability flags are not USDA disabled.
   period: 2021
   input:
     age: 30
   output:
     is_usda_disabled: false
 
-- name: SSI disabled people are USDA disabled
+- name: Case 2, reported SSI receipt qualifies.
   period: 2021
   input:
-    is_ssi_disabled: true
+    age: 30
+    receives_ssi: true
   output:
     is_usda_disabled: true
 
-- name: People receiving SSDI are USDA disabled
+- name: Case 3, a reported SSI amount supplied as the ssi input qualifies.
   period: 2021
   input:
+    age: 30
+    ssi: 6_000
+  output:
+    is_usda_disabled: true
+
+- name: Case 4, modeled SSI receipt by a person meeting the SSI disability test qualifies.
+  period: 2021
+  input:
+    age: 30
+    is_ssi_disabled: true
+    employment_income: 0
+  output:
+    is_usda_disabled: true
+
+- name: Case 5, meeting the SSI disability test without receiving SSI does not qualify.
+  period: 2021
+  input:
+    age: 30
+    is_ssi_disabled: true
+    employment_income: 100_000
+  output:
+    ssi: 0
+    is_usda_disabled: false
+
+- name: Case 6, blind SSI recipients qualify.
+  period: 2021
+  input:
+    age: 30
+    is_blind: true
+  output:
+    is_usda_disabled: true
+
+- name: Case 7, aged SSI recipients qualify through SSI receipt and are also USDA elderly.
+  period: 2021
+  input:
+    age: 66
+  output:
+    is_usda_disabled: true
+    is_usda_elderly: true
+
+- name: Case 8, people receiving SSDI are USDA disabled.
+  period: 2021
+  input:
+    age: 30
     social_security_disability: 100
   output:
     is_usda_disabled: true

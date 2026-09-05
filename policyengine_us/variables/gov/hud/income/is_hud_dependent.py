@@ -6,7 +6,10 @@ class is_hud_dependent(Variable):
     entity = Person
     label = "HUD dependent"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/24/5.603"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/24/5.603",
+        "https://www.law.cornell.edu/uscode/text/42/1437a#b_3_E",
+    )
 
     def formula(person, period, parameters):
         is_household_head = person("is_household_head", period)
@@ -23,9 +26,16 @@ class is_hud_dependent(Variable):
             & ~is_head
         )
         is_hud_head_or_spouse = is_head | is_head_spouse
+        # The "person with disabilities" definition (42 U.S.C. 1437a(b)(3)(E))
+        # includes the section 223 SSA disability standard, so the SSI/SSDI
+        # paths qualify alongside the generic disability flag. SSDI receipt
+        # is a modeling proxy for the section 223 definition: the statute
+        # turns on the impairment, not on receipt.
         meets_dependent_condition = (
             person("is_child", period)
             | person("is_disabled", period)
+            | person("is_ssi_disabled", period)
+            | (person("social_security_disability", period) > 0)
             | person("is_full_time_student", period)
         )
         is_foster = person("is_in_foster_care", period)
