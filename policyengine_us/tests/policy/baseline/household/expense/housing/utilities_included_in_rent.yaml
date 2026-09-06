@@ -1,0 +1,20 @@
+- name: Case 1, by default the tenant pays utilities, so none are included in rent.
+  period: 2026
+  output:
+    tenant_pays_utilities: true
+    utilities_included_in_rent: false
+
+- name: Case 2, a tenant who does not pay utilities has them included in rent.
+  period: 2026
+  input:
+    tenant_pays_utilities: false
+  output:
+    utilities_included_in_rent: true
+
+- name: Case 3, a direct value overrides the derivation.
+  period: 2026
+  input:
+    tenant_pays_utilities: false
+    utilities_included_in_rent: false
+  output:
+    utilities_included_in_rent: false

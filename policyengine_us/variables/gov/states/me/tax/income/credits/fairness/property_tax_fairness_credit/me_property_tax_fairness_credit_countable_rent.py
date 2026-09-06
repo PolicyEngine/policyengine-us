@@ -13,10 +13,10 @@ class me_property_tax_fairness_credit_countable_rent(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
         rent = add(tax_unit, period, ["rent"])
-        # utilities_included_in_rent is a TaxUnit boolean (it lives in the
-        # household/ folder but is defined on the TaxUnit entity), used here as a
-        # proxy for Schedule PTFC/STFC line 5b (does rent paid include heat,
-        # utilities, furniture, or similar items?).
+        # utilities_included_in_rent is a TaxUnit boolean derived from the
+        # household-level tenant_pays_utilities input (and still settable
+        # directly), used here as a proxy for Schedule PTFC/STFC line 5b (does
+        # rent paid include heat, utilities, furniture, or similar items?).
         # Related sibling flag: heat_expense_included_in_rent (an SPMUnit bool used
         # by MA/IL LIHEAP) overlaps line 5b, but it is NOT OR'd into this gate. A
         # heat-only household (heat_expense_included_in_rent: true /
