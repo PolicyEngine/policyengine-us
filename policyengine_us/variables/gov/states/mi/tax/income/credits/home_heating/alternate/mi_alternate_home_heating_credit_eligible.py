@@ -13,11 +13,15 @@ class mi_alternate_home_heating_credit_eligible(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        utilities_not_included_in_rent = ~tax_unit("utilities_included_in_rent", period)
+        # MI-1040CR-7 lines 40-43: heat included with rent bars the alternate
+        # credit.
+        heat_not_in_rent = ~tax_unit(
+            "mi_home_heating_credit_heat_included_in_rent", period
+        )
         household_resources = tax_unit("mi_household_resources", period)
         exemptions = tax_unit("mi_exemptions_count", period)
 
         p = parameters(period).gov.states.mi.tax.income.credits.home_heating.alternate
         resource_cap = p.household_resources.cap.calc(exemptions)
         resource_eligible = household_resources < resource_cap
-        return utilities_not_included_in_rent & resource_eligible
+        return heat_not_in_rent & resource_eligible

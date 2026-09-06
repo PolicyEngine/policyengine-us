@@ -28,10 +28,10 @@ class mi_standard_home_heating_credit(Variable):
         reduced_household_resources = household_resources * p.standard.reduction_rate
         # Line 40
         reduced_base = max_(increased_base - reduced_household_resources, 0)
-        # Line 41
-        utilities_included_in_rent = tax_unit("utilities_included_in_rent", period)
+        # Line 39: heating costs included in rent halve the standard credit.
+        heat_in_rent = tax_unit("mi_home_heating_credit_heat_included_in_rent", period)
         return where(
-            utilities_included_in_rent,
+            heat_in_rent,
             reduced_base * p.standard.included_heating_cost_rate,
             reduced_base,
         )

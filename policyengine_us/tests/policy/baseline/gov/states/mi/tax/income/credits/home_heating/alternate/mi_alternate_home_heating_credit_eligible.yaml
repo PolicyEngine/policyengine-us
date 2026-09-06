@@ -37,3 +37,15 @@
     state_code: MI
   output: # 27_700 >= 27_700
     mi_alternate_home_heating_credit_eligible: false
+
+- name: Ineligible for alternate home heating credit as heat is included in rent
+  period: 2022
+  input:
+    heat_expense_included_in_rent: true
+    utilities_included_in_rent: false
+    mi_household_resources: 1_000
+    mi_exemptions_count: 2
+    state_code: MI
+  output:
+    # MI-1040CR-7 lines 40-43: heat included with rent bars the alternate credit.
+    mi_alternate_home_heating_credit_eligible: false

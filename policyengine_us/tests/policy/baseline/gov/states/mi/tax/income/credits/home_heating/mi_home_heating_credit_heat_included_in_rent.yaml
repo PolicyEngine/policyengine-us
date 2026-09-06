@@ -1,0 +1,34 @@
+# MCL 206.527a(1)(c)(i) and MI-1040CR-7 lines 10 and 39: the fact is whether
+# heating costs are included in the claimant's rent.
+- name: Case 1, heat included in rent.
+  period: 2022
+  input:
+    state_code: MI
+    heat_expense_included_in_rent: true
+  output:
+    mi_home_heating_credit_heat_included_in_rent: true
+
+- name: Case 2, all utilities included in rent implies heat is included.
+  period: 2022
+  input:
+    state_code: MI
+    utilities_included_in_rent: true
+  output:
+    mi_home_heating_credit_heat_included_in_rent: true
+
+- name: Case 3, neither flag set.
+  period: 2022
+  input:
+    state_code: MI
+    heat_expense_included_in_rent: false
+    utilities_included_in_rent: false
+  output:
+    mi_home_heating_credit_heat_included_in_rent: false
+
+- name: Case 4, not computed outside Michigan.
+  period: 2022
+  input:
+    state_code: TX
+    heat_expense_included_in_rent: true
+  output:
+    mi_home_heating_credit_heat_included_in_rent: false

@@ -1,0 +1,118 @@
+# The Michigan home heating credit is claimed per tax unit (MCL 206.527a(11):
+# one credit per household, where a household is the claimant and spouse), and
+# single adults sharing a home may each claim (MI-1040CR-7 instructions,
+# "Shared Housing"), so the dwelling's heating bill is split evenly across the
+# tax units in the SPM unit.
+- name: Case 1, legacy person-level heating costs sum within the tax unit.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 600
+      person2:
+        age: 28
+        heating_expense_person: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    heating_expenses: 1_000
+
+- name: Case 2, a known heating type reads the primary fuel bill.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: 1_200
+
+- name: Case 3, two single adults sharing a home split the bill evenly.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [600, 600]
+
+- name: Case 4, a known heating type ignores the legacy person-level input.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 900
+  output:
+    heating_expenses: 900
+
+- name: Case 5, a home without heating has no heating cost even with the legacy input set.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+  output:
+    heating_expenses: 0
+
+- name: Case 6, a per-fuel bill alone is not read when the heating type is unspecified.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        gas_expense: 1_200
+  output:
+    heating_expenses: 0
