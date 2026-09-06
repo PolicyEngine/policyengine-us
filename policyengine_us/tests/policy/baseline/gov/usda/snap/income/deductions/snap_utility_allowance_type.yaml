@@ -213,3 +213,62 @@
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: LUA
+
+# End-to-end cases through has_heating_cooling_expense and
+# count_distinct_utility_expenses from the canonical heating inputs
+# (7 CFR 273.9(d)(6)(iii)(D)). Colorado has an LUA from October 2021.
+- name: Fuel oil heat with a fuel oil bill receives the SUA
+  period: 2026
+  input:
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 1_500
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: Gas heat included in rent with gas and electricity bills receives the LUA
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    pre_subsidy_electricity_expense: 900
+    heat_expense_included_in_rent: true
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    # Heat in rent is not a separately incurred heating cost; the gas and
+    # electricity bills are two non-heating utilities.
+    snap_utility_allowance_type: LUA
+
+- name: A home without heating that pays for cooling receives the SUA
+  period: 2026
+  input:
+    heating_type: NONE
+    has_cooling_expense: true
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: Legacy heating_cooling_expense with heat in rent still receives the SUA
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+    heat_expense_included_in_rent: true
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    # Pre-canonical households never read the heat-in-rent flag here.
+    snap_utility_allowance_type: SUA
+
+- name: Gas and electricity bills without a heating type receive the LUA, not the SUA
+  period: 2026
+  input:
+    gas_expense: 1_200
+    pre_subsidy_electricity_expense: 900
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    # Per-fuel bills alone do not say which fuel heats the home.
+    snap_utility_allowance_type: LUA
