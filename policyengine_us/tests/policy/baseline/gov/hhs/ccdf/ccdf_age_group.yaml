@@ -43,3 +43,38 @@
     age: 10
   output:
     ccdf_age_group: SCHOOL_AGE
+
+# Everyone in the simulation gets an age group, not only eligible children.
+# Ages at or above the CCDF age limit (13) fall through to SCHOOL_AGE; without
+# an explicit select default they used to become an integer 0 that could not
+# be encoded as a CCDFAgeGroup, crashing every household with an adult in it.
+- name: Age 13, the CCDF age limit, still resolves to school age
+  period: 2026
+  input:
+    age: 13
+  output:
+    ccdf_age_group: SCHOOL_AGE
+
+- name: Adult resolves to school age rather than an unencodable value
+  period: 2026
+  input:
+    age: 35
+  output:
+    ccdf_age_group: SCHOOL_AGE
+
+- name: Household with two adults and a preschooler, adults listed first
+  period: 2026
+  input:
+    people:
+      worker:
+        age: 35
+      home:
+        age: 33
+      kid:
+        age: 3
+    households:
+      household:
+        members: [worker, home, kid]
+        state_code: VA
+  output:
+    ccdf_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOLER]

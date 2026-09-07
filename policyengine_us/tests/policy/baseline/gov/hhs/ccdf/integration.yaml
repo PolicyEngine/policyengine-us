@@ -1,0 +1,91 @@
+# Integration tests for the federal CCDF subsidy chain on whole households.
+# Every person in a simulation is assigned a ccdf_age_group and a
+# ccdf_market_rate, so the chain must compute cleanly for adults, not only for
+# eligible children. These cases run the full path from ages, childcare hours,
+# and geography through ccdf_age_group, ccdf_market_rate, is_ccdf_eligible,
+# spm_unit_total_ccdf_copay, and spm_unit_ccdf_subsidy. Adults are listed
+# before the child in both cases; that ordering is the one that used to raise
+# "Invalid value(s) ['0', 'CCDFAgeGroup.PRESCHOOLER']" from the enum encoder.
+
+- name: Two-adult Virginia household with a preschooler and no childcare hours computes without error
+  period: 2026
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 45_000
+      home:
+        age: 33
+        employment_income: 0
+      kid:
+        age: 3
+    marital_units:
+      marital_unit:
+        members: [worker, home]
+      kid_marital_unit:
+        members: [kid]
+    tax_units:
+      tax_unit:
+        members: [worker, home, kid]
+    spm_units:
+      spm_unit:
+        members: [worker, home, kid]
+    households:
+      household:
+        members: [worker, home, kid]
+        state_code: VA
+  output:
+    ccdf_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOLER]
+    is_ccdf_age_eligible: [false, false, true]
+    # No childcare hours, so the market rate annualizes to zero for everyone.
+    ccdf_market_rate: [0, 0, 0]
+    spm_unit_ccdf_subsidy: 0
+
+- name: Two-adult Nassau County household with a preschooler in full-time center care
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 45_000
+      home:
+        age: 33
+        employment_income: 0
+      kid:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+    marital_units:
+      marital_unit:
+        members: [worker, home]
+      kid_marital_unit:
+        members: [kid]
+    tax_units:
+      tax_unit:
+        members: [worker, home, kid]
+    spm_units:
+      spm_unit:
+        members: [worker, home, kid]
+        # meets_ccdf_activity_test is a pure input; nothing derives it from hours.
+        meets_ccdf_activity_test: true
+        # Pinned so the copay does not move with poverty guideline updates.
+        spm_unit_fpg: 27_320
+    households:
+      household:
+        members: [worker, home, kid]
+        state_code: NY
+        county: NASSAU_COUNTY_NY
+  output:
+    ccdf_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOLER]
+    # 40 hours per week of care is the weekly duration; the adults have no
+    # hours and fall to the hourly duration with zero periods.
+    ccdf_duration_of_care: [HOURLY, HOURLY, WEEKLY]
+    ccdf_county_cluster: 1
+    # Cluster 1, DCC_SACC, weekly, preschooler: 310 per week x 52 weeks = 16,120.
+    ccdf_market_rate: [0, 0, 16_120]
+    is_ccdf_eligible: [false, false, true]
+    # Income above the pinned poverty guideline times the Nassau County share.
+    spm_unit_total_ccdf_copay: (45_000 - 27_320) * 0.2
+    # Market rate less the copay.
+    spm_unit_ccdf_subsidy: 310 * 52 - (45_000 - 27_320) * 0.2

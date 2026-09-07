@@ -23,17 +23,21 @@ class ccdf_age_group(Variable):
     def formula(person, period, parameters):
         age = person("age", period)
         home_based = person("is_ccdf_home_based", period)
+        # Every person in the simulation gets an age group, including adults.
+        # Without an explicit default, numpy's select fills unmatched rows
+        # (age >= 13) with the integer 0, which cannot be encoded as a
+        # CCDFAgeGroup. Anyone past the school-age bracket stays SCHOOL_AGE;
+        # is_ccdf_age_eligible screens them out of the subsidy.
         return select(
             [
                 ((age < 1.5) & ~home_based) | ((age < 2) & home_based),
                 ((age < 2) & ~home_based) | ((age < 3) & home_based),
                 age < 6,
-                age < 13,
             ],
             [
                 CCDFAgeGroup.INFANT,
                 CCDFAgeGroup.TODDLER,
                 CCDFAgeGroup.PRESCHOOLER,
-                CCDFAgeGroup.SCHOOL_AGE,
             ],
+            default=CCDFAgeGroup.SCHOOL_AGE,
         )
