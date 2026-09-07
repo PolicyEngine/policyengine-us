@@ -3,6 +3,9 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    parent_and_child_sibling_sum,
+)
 
 
 class medicaid_household_income(Variable):
@@ -48,9 +51,19 @@ class medicaid_household_income(Variable):
         family_parent_income = person.family.sum(
             person("is_parent", period) * member_income
         )
+        has_parent_ids = (person("parent_1_id", period) != 0) | (
+            person("parent_2_id", period) != 0
+        )
+        child_family_income = parent_and_child_sibling_sum(
+            person, period, child_age_eligible, member_income
+        )
         non_filer_household_income = where(
             child_age_eligible,
-            spouse_income + family_parent_income + family_child_income,
+            where(
+                has_parent_ids,
+                spouse_income + child_family_income,
+                spouse_income + family_parent_income + family_child_income,
+            ),
             member_income + spouse_income + family_child_income,
         )
         tax_household_income = (
