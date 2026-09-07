@@ -1,4 +1,5 @@
 # Regression for [policyengine-us#9404](https://github.com/PolicyEngine/policyengine-us/issues/9404).
+# Reconstructed from the assignment; original issue unavailable offline.
 - name: Three generations use each actual parent tax household in Ohio.
   period: 2026
   input:
@@ -565,3 +566,66 @@
     medicaid_uses_non_filer_rules: [false, false, true, false]
     medicaid_household_size: [2, 1, 2, 1]
     medicaid_household_income: [80_000, 20_000, 20_000, 15_000]
+
+
+- name: Sharing a tax unit does not substitute for parents filing jointly.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 21
+        age: 35
+      parent_b:
+        person_id: 22
+        age: 33
+      child:
+        person_id: 23
+        age: 10
+        parent_1_id: 21
+        parent_2_id: 22
+    tax_units:
+      unit:
+        members: [parent_a, parent_b, child]
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent_a, parent_b, child]
+  output:
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+
+- name: Siblings sharing an absent parent include each other but not unrelated children.
+  period: 2026
+  input:
+    people:
+      adult:
+        person_id: 101
+        age: 40
+        employment_income: 80_000
+        own_children_in_household: 3
+      child:
+        person_id: 102
+        age: 10
+        parent_1_id: 999
+      sibling:
+        person_id: 103
+        age: 16
+        employment_income: 18_000
+        parent_2_id: 999
+      unrelated_child:
+        person_id: 104
+        age: 6
+        parent_1_id: 888
+    tax_units:
+      unit:
+        members: [adult, child, sibling, unrelated_child]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult, child, sibling, unrelated_child]
+  output:
+    is_parent: [false, false, false, false]
+    medicaid_uses_non_filer_rules: [false, true, true, true]
+    medicaid_household_size: [4, 2, 2, 1]
+    medicaid_household_income: [98_000, 18_000, 18_000, 0]
