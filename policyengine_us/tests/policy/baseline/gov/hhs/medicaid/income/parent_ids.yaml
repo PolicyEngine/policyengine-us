@@ -1,0 +1,567 @@
+# Regression for [policyengine-us#9404](https://github.com/PolicyEngine/policyengine-us/issues/9404).
+- name: Three generations use each actual parent tax household in Ohio.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 101
+        age: 56
+        employment_income: 94_504
+        own_children_in_household: 4
+      parent_a:
+        person_id: 102
+        age: 30
+        employment_income: 23_334
+        own_children_in_household: 4
+        parent_1_id: 101
+      parent_b:
+        person_id: 103
+        age: 27
+        employment_income: 24_010
+        own_children_in_household: 1
+        parent_1_id: 101
+      teen_a:
+        person_id: 104
+        age: 17
+        parent_1_id: 101
+      teen_b:
+        person_id: 105
+        age: 16
+        parent_1_id: 101
+      child_a:
+        person_id: 106
+        age: 10
+        parent_1_id: 102
+      child_b:
+        person_id: 107
+        age: 8
+        parent_1_id: 102
+      child_c:
+        person_id: 108
+        age: 6
+        parent_1_id: 102
+      child_d:
+        person_id: 109
+        age: 4
+        parent_1_id: 102
+      child_e:
+        person_id: 110
+        age: 3
+        parent_1_id: 103
+    tax_units:
+      grandparent_unit:
+        members: [grandparent, teen_a, teen_b]
+      parent_a_unit:
+        members: [parent_a, child_a, child_b, child_c, child_d]
+      parent_b_unit:
+        members: [parent_b, child_e]
+    families:
+      family:
+        members: [grandparent, parent_a, parent_b, teen_a, teen_b, child_a, child_b, child_c, child_d, child_e]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      parent_a:
+        members: [parent_a]
+      parent_b:
+        members: [parent_b]
+      teen_a:
+        members: [teen_a]
+      teen_b:
+        members: [teen_b]
+      child_a:
+        members: [child_a]
+      child_b:
+        members: [child_b]
+      child_c:
+        members: [child_c]
+      child_d:
+        members: [child_d]
+      child_e:
+        members: [child_e]
+    households:
+      household:
+        members: [grandparent, parent_a, parent_b, teen_a, teen_b, child_a, child_b, child_c, child_d, child_e]
+        state_code: OH
+  output:
+    medicaid_household_size: [3, 5, 2, 3, 3, 5, 5, 5, 5, 2]
+    medicaid_household_income: [94_504, 23_334, 24_010, 94_504, 94_504, 23_334, 23_334, 23_334, 23_334, 24_010]
+    medicaid_uses_non_filer_rules: [false, false, false, false, false, false, false, false, false, false]
+    is_medicaid_eligible: [false, true, true, false, false, true, true, true, true, true]
+
+- name: Three generations with zero parent ids retain the legacy family proxy.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 101
+        age: 56
+        employment_income: 94_504
+        own_children_in_household: 4
+        parent_1_id: 0
+        parent_2_id: 0
+      parent_a:
+        person_id: 102
+        age: 30
+        employment_income: 23_334
+        own_children_in_household: 4
+        parent_1_id: 0
+        parent_2_id: 0
+      parent_b:
+        person_id: 103
+        age: 27
+        employment_income: 24_010
+        own_children_in_household: 1
+        parent_1_id: 0
+        parent_2_id: 0
+      teen_a:
+        person_id: 104
+        age: 17
+        parent_1_id: 0
+        parent_2_id: 0
+      teen_b:
+        person_id: 105
+        age: 16
+        parent_1_id: 0
+        parent_2_id: 0
+      child_a:
+        person_id: 106
+        age: 10
+        parent_1_id: 0
+        parent_2_id: 0
+      child_b:
+        person_id: 107
+        age: 8
+        parent_1_id: 0
+        parent_2_id: 0
+      child_c:
+        person_id: 108
+        age: 6
+        parent_1_id: 0
+        parent_2_id: 0
+      child_d:
+        person_id: 109
+        age: 4
+        parent_1_id: 0
+        parent_2_id: 0
+      child_e:
+        person_id: 110
+        age: 3
+        parent_1_id: 0
+        parent_2_id: 0
+    tax_units:
+      grandparent_unit:
+        members: [grandparent, teen_a, teen_b]
+      parent_a_unit:
+        members: [parent_a, child_a, child_b, child_c, child_d]
+      parent_b_unit:
+        members: [parent_b, child_e]
+    families:
+      family:
+        members: [grandparent, parent_a, parent_b, teen_a, teen_b, child_a, child_b, child_c, child_d, child_e]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      parent_a:
+        members: [parent_a]
+      parent_b:
+        members: [parent_b]
+      teen_a:
+        members: [teen_a]
+      teen_b:
+        members: [teen_b]
+      child_a:
+        members: [child_a]
+      child_b:
+        members: [child_b]
+      child_c:
+        members: [child_c]
+      child_d:
+        members: [child_d]
+      child_e:
+        members: [child_e]
+    households:
+      household:
+        members: [grandparent, parent_a, parent_b, teen_a, teen_b, child_a, child_b, child_c, child_d, child_e]
+        state_code: OH
+  output:
+    medicaid_household_size: [3, 5, 2, 10, 10, 10, 10, 10, 10, 10]
+    medicaid_household_income: [94_504, 23_334, 24_010, 141_848, 141_848, 141_848, 141_848, 141_848, 141_848, 141_848]
+    medicaid_uses_non_filer_rules: [false, false, false, true, true, true, true, true, true, true]
+    is_medicaid_eligible: [false, true, true, false, false, false, false, false, false, false]
+
+- name: Unmarried separate filers include both parents and half siblings but exclude cousins.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 11
+        age: 35
+        employment_income: 20_000
+      parent_b:
+        person_id: 12
+        age: 33
+        employment_income: 15_000
+      aunt:
+        person_id: 13
+        age: 30
+        employment_income: 80_000
+      child:
+        person_id: 14
+        age: 10
+        parent_1_id: 11
+        parent_2_id: 12
+      sibling:
+        person_id: 15
+        age: 12
+        employment_income: 1_000
+        parent_1_id: 12
+        parent_2_id: 11
+      half_sibling:
+        person_id: 16
+        age: 17
+        employment_income: 25_000
+        parent_2_id: 11
+      cousin:
+        person_id: 17
+        age: 16
+        employment_income: 30_000
+        parent_1_id: 13
+    tax_units:
+      parent_a_unit:
+        members: [parent_a, child, sibling, half_sibling]
+        tax_unit_is_filer: true
+      parent_b_unit:
+        members: [parent_b]
+        tax_unit_is_filer: true
+      aunt_unit:
+        members: [aunt, cousin]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent_a, parent_b, aunt, child, sibling, half_sibling, cousin]
+    marital_units:
+      parent_a:
+        members: [parent_a]
+      parent_b:
+        members: [parent_b]
+      aunt:
+        members: [aunt]
+      child:
+        members: [child]
+      sibling:
+        members: [sibling]
+      half_sibling:
+        members: [half_sibling]
+      cousin:
+        members: [cousin]
+    households:
+      household:
+        members: [parent_a, parent_b, aunt, child, sibling, half_sibling, cousin]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false, true, true, true, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false, true, true, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false, true, true, false, false]
+    medicaid_household_size: [4, 1, 2, 5, 5, 4, 2]
+    medicaid_household_income: [45_000, 15_000, 110_000, 60_000, 60_000, 45_000, 110_000]
+
+- name: Parents who are the head and spouse of one joint return do not trigger the exception.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 21
+        age: 35
+        employment_income: 20_000
+      parent_b:
+        person_id: 22
+        age: 33
+        employment_income: 15_000
+      child:
+        person_id: 23
+        age: 10
+        parent_1_id: 22
+        parent_2_id: 21
+    tax_units:
+      joint:
+        members: [parent_a, parent_b, child]
+        tax_unit_is_filer: true
+        filing_status: JOINT
+    families:
+      family:
+        members: [parent_a, parent_b, child]
+    marital_units:
+      parents:
+        members: [parent_a, parent_b]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_a, parent_b, child]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [35_000, 35_000, 35_000]
+
+- name: Dangling and duplicate ids cannot create a second co-resident parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 31
+        age: 35
+        employment_income: 20_000
+      one_resolving_parent:
+        person_id: 32
+        age: 10
+        parent_1_id: 31
+        parent_2_id: 999
+      duplicate_parent:
+        person_id: 33
+        age: 8
+        parent_1_id: 31
+        parent_2_id: 31
+      no_resolving_parent:
+        person_id: 34
+        age: 6
+        parent_1_id: 991
+        parent_2_id: 992
+    tax_units:
+      unit:
+        members: [parent, one_resolving_parent, duplicate_parent, no_resolving_parent]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent, one_resolving_parent, duplicate_parent, no_resolving_parent]
+    marital_units:
+      parent:
+        members: [parent]
+      one_resolving_parent:
+        members: [one_resolving_parent]
+      duplicate_parent:
+        members: [duplicate_parent]
+      no_resolving_parent:
+        members: [no_resolving_parent]
+    households:
+      household:
+        members: [parent, one_resolving_parent, duplicate_parent, no_resolving_parent]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, true, false]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false, true]
+    medicaid_household_size: [4, 4, 4, 1]
+    medicaid_household_income: [20_000, 20_000, 20_000, 0]
+
+- name: An identified parent in another household does not trigger the both-parent exception.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 41
+        age: 35
+        employment_income: 20_000
+      outside_parent:
+        person_id: 42
+        age: 33
+        employment_income: 15_000
+      child:
+        person_id: 43
+        age: 10
+        parent_1_id: 41
+        parent_2_id: 42
+      other_adult:
+        person_id: 44
+        age: 50
+        employment_income: 80_000
+        own_children_in_household: 1
+    tax_units:
+      parent_unit:
+        members: [parent, child]
+        tax_unit_is_filer: true
+      outside_unit:
+        members: [outside_parent]
+        tax_unit_is_filer: true
+      other_unit:
+        members: [other_adult]
+        tax_unit_is_filer: true
+    families:
+      home:
+        members: [parent, child, other_adult]
+      outside:
+        members: [outside_parent]
+    marital_units:
+      parent:
+        members: [parent]
+      outside_parent:
+        members: [outside_parent]
+      child:
+        members: [child]
+      other_adult:
+        members: [other_adult]
+    households:
+      home:
+        members: [parent, child, other_adult]
+        state_code: OH
+      outside:
+        members: [outside_parent]
+        state_code: OH
+  output:
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false, false]
+    medicaid_household_size: [2, 1, 2, 1]
+    medicaid_household_income: [20_000, 15_000, 20_000, 80_000]
+
+- name: A child claimed by an aunt uses the identified parent even across family groups.
+  period: 2026
+  input:
+    people:
+      aunt:
+        person_id: 51
+        age: 40
+        employment_income: 80_000
+        own_children_in_household: 1
+      parent:
+        person_id: 52
+        age: 30
+        employment_income: 20_000
+      child:
+        person_id: 53
+        age: 10
+        parent_2_id: 52
+    tax_units:
+      aunt_unit:
+        members: [aunt, child]
+        tax_unit_is_filer: true
+      parent_unit:
+        members: [parent]
+        tax_unit_is_filer: true
+    families:
+      aunt_family:
+        members: [aunt, child]
+      parent_family:
+        members: [parent]
+    marital_units:
+      aunt:
+        members: [aunt]
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [aunt, parent, child]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 1, 2]
+    medicaid_household_income: [80_000, 20_000, 20_000]
+
+- name: A parent who is the spouse on the claiming return is recognized.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 21
+        age: 35
+        employment_income: 20_000
+      parent_b:
+        person_id: 22
+        age: 33
+        employment_income: 15_000
+      child:
+        person_id: 23
+        age: 10
+        parent_1_id: 22
+        parent_2_id: 0
+    tax_units:
+      joint:
+        members: [parent_a, parent_b, child]
+        tax_unit_is_filer: true
+        filing_status: JOINT
+    families:
+      family:
+        members: [parent_a, parent_b, child]
+    marital_units:
+      parents:
+        members: [parent_a, parent_b]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_a, parent_b, child]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [35_000, 35_000, 35_000]
+
+- name: A non-filer child excludes an identified parent who lives in another household.
+  period: 2026
+  input:
+    people:
+      aunt:
+        person_id: 51
+        age: 40
+        employment_income: 80_000
+        own_children_in_household: 1
+      parent:
+        person_id: 52
+        age: 30
+        employment_income: 20_000
+      child:
+        person_id: 53
+        age: 10
+        parent_2_id: 52
+        parent_1_id: 54
+      outside_parent:
+        person_id: 54
+        age: 33
+        employment_income: 15_000
+    tax_units:
+      aunt_unit:
+        members: [aunt, child]
+        tax_unit_is_filer: true
+      parent_unit:
+        members: [parent]
+        tax_unit_is_filer: true
+      outside_unit:
+        members: [outside_parent]
+        tax_unit_is_filer: true
+    families:
+      aunt_family:
+        members: [aunt, child]
+      parent_family:
+        members: [parent]
+      outside_family:
+        members: [outside_parent]
+    marital_units:
+      aunt:
+        members: [aunt]
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      outside_parent:
+        members: [outside_parent]
+    households:
+      household:
+        members: [aunt, parent, child]
+        state_code: OH
+      outside_household:
+        members: [outside_parent]
+        state_code: OH
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true, false]
+    medicaid_household_size: [2, 1, 2, 1]
+    medicaid_household_income: [80_000, 20_000, 20_000, 15_000]
