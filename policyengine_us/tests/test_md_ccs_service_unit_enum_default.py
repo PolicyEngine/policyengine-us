@@ -73,10 +73,13 @@ def test_negative_hours_encode_as_unit_1_regardless_of_row_order():
 
 def test_nan_hours_encode_as_unit_1():
     # Core rejects NaN as a direct input, so drive the formula with a NaN
-    # array to cover the other value the bracket maps to 0 units.
-    sim = _simulation({"child": 0.0})
+    # array to cover the other value the bracket maps to 0 units. Seed the
+    # input with full-time hours so a failed injection would surface as
+    # UNIT_3 rather than pass by coincidence.
+    sim = _simulation({"child": 8.0})
     holder = sim.persons.get_holder("childcare_hours_per_day")
     holder.put_in_cache(np.array([np.nan]), make_period(2025), sim.branch_name)
+    assert np.isnan(sim.calculate("childcare_hours_per_day", 2025)).all()
     assert _encode(sim, _raw_formula_output(sim)) == ["UNIT_1"]
 
 

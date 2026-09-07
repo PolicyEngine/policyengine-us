@@ -26,11 +26,11 @@ class md_ccs_service_unit(Variable):
         units = p.unit_hours.calc(hours_per_day)
         # COMAR 13A.14.06.02B(59): one unit is 3 hours or less per day, two
         # units more than 3 but less than 6, three units 6 or more. The
-        # bracket returns 0 for negative or NaN hours, which no unit matches;
-        # without an explicit default numpy's select would fill those rows
-        # with the integer 0, which cannot be encoded as an MDCCSServiceUnit.
-        # Anything at or below the one-unit ceiling, including out-of-range
-        # hours, is one unit, matching how zero hours is already treated.
+        # bracket returns 0 for out-of-range hours (negative, NaN, infinite),
+        # which no unit matches; without an explicit default numpy's select
+        # would fill those rows with the integer 0, which cannot be encoded
+        # as an MDCCSServiceUnit. Unmatched values fall back to one unit as
+        # a defensive choice, consistent with how zero hours is treated.
         return select(
             [units == 3, units == 2],
             [MDCCSServiceUnit.UNIT_3, MDCCSServiceUnit.UNIT_2],
