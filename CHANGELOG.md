@@ -1,3 +1,16 @@
+## [1.824.5] - 2026-09-08
+
+### Fixed
+
+- Align federal disability gates with their governing legal definitions:
+  - SNAP elderly or disabled member (7 CFR 271.2): qualify by SSI receipt rather than the SSI disability criteria flag.
+  - SNAP work requirement, work registration, ABAWD, and student rules: recognize disability benefit receipt as unfitness for employment.
+  - SSI student earned income exclusion: use the SSI disability test rather than the generic disability flag.
+  - Medicaid work requirement and home equity family exception: recognize the Section 1614 SSI disability definition.
+  - HUD person-with-disabilities status: recognize the SSI and SSDI disability paths.
+- Correct Missouri TANF unearned income sources by excluding interest and counting omitted workers compensation, disability, strike, gambling, retirement, estate, and passive farm rental income.
+
+
 ## [1.824.4] - 2026-09-08
 
 ### Fixed
