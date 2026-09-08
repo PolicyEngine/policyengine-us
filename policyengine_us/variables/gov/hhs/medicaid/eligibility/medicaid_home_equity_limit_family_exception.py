@@ -22,6 +22,9 @@ class medicaid_home_equity_limit_family_exception(Variable):
             | person("is_blind", period)
             | person("is_disabled", period)
             | person("is_permanently_and_totally_disabled", period)
+            # 42 U.S.C. 1396p(f)(2)(A)(ii)(II) defines the child's disability
+            # by cross-reference to section 1614 (the SSI definition).
+            | person("is_ssi_disabled", period)
         )
         has_resident_child = (
             person.household.sum(qualifying_resident_child) > qualifying_resident_child
