@@ -36,3 +36,30 @@
     general_assistance: 2_400
   output:
     wy_power_gross_unearned_income: 0
+
+- name: Workers compensation is countable unearned income.
+  period: 2026-01
+  input:
+    state_code: WY
+    workers_compensation: 2400
+  output:
+    wy_power_gross_unearned_income: 200
+
+- name: Taxable and tax-exempt interest are excluded.
+  period: 2026-01
+  input:
+    state_code: WY
+    taxable_interest_income: 1200
+    tax_exempt_interest_income: 1200
+  output:
+    wy_power_gross_unearned_income: 0
+
+- name: Dividends and workers compensation count while interest is excluded.
+  period: 2026-01
+  input:
+    state_code: WY
+    workers_compensation: 2400
+    dividend_income: 2400
+    taxable_interest_income: 2400
+  output:
+    wy_power_gross_unearned_income: 400

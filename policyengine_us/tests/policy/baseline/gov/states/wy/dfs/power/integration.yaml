@@ -814,3 +814,44 @@
     wy_power_payment_standard: 847
     wy_power: 0
   absolute_error_margin: 0.01
+
+- name: Workers compensation reduces the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        workers_compensation: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: WY
+  output:
+    wy_power: 647
+
+- name: Interest does not reduce the monthly POWER benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        taxable_interest_income: 1200
+        tax_exempt_interest_income: 1200
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: WY
+  output:
+    wy_power: 847

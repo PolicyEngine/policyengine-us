@@ -1,1 +1,1 @@
-Count general assistance cash payments as unearned income for Wyoming POWER.
+Correct Wyoming POWER unearned income by counting general assistance and workers compensation and excluding interest.
