@@ -1,1 +1,1 @@
-Texas CEAP is marked complete in the program registry now that SSI categorical eligibility requires SSI receipt.
+Texas CEAP's registry note now lists its remaining income-counting gaps (net gambling winnings, the Medicare premium deduction from Social Security, means-tested veterans' pensions) instead of the SSI categorical-eligibility gap fixed in #9409; the entry stays partial.
