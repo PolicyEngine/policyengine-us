@@ -1,3 +1,10 @@
+## [1.824.3] - 2026-09-08
+
+### Fixed
+
+- Texas CEAP categorical eligibility through SSI now requires SSI receipt (a computed SSI payment or reported receipt) instead of is_ssi_eligible, which omits the SSI income test and qualified aged, blind, or disabled households at any income.
+
+
 ## [1.824.2] - 2026-09-08
 
 ### Fixed
