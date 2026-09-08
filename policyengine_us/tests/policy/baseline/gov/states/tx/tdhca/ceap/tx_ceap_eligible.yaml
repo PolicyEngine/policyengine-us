@@ -74,3 +74,29 @@
     is_snap_eligible: true
   output:
     tx_ceap_eligible: true
+
+- name: Case 8, aged household with low resources but income above the limit and no SSI payment is ineligible.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    age: 70
+    immigration_status: CITIZEN
+    employment_income: 100_000
+    ssi_countable_resources: 0
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    is_ssi_eligible: true
+    ssi: 0
+    tx_ceap_eligible: false
+
+- name: Case 9, household reporting SSI receipt above the income limit is categorically eligible.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    employment_income: 100_000
+    receives_ssi: true
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true

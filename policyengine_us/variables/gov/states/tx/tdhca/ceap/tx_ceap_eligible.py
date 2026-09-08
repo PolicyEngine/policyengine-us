@@ -35,8 +35,14 @@ class tx_ceap_eligible(Variable):
         # and FY 2024 State Plan Section 1.4
         tanf = spm_unit("is_tanf_enrolled", period.first_month)
         snap = spm_unit("is_snap_eligible", period)
+        # SSI categorical eligibility means receipt of SSI payments, so use
+        # the computed benefit or the reported-receipt flag. is_ssi_eligible
+        # omits the SSI income test and would qualify high-income households.
         person = spm_unit.members
-        ssi = spm_unit.any(person("is_ssi_eligible", period))
+        receives_ssi = (add(person, period, ["ssi"]) > 0) | person(
+            "receives_ssi", period.first_month
+        )
+        ssi = spm_unit.any(receives_ssi)
         categorically_eligible = tanf | snap | ssi
 
         return income_eligible | categorically_eligible
