@@ -44,11 +44,12 @@ class tx_ceap_eligible(Variable):
         # than requesting an annual aggregate, which would cache a summed value
         # under the annual key and change what other formulas read.
         first_month = period.first_month
-        reported_any_month = sum(
+        monthly_receipt = [
             person("receives_ssi", first_month.offset(month_offset))
             for month_offset in range(12)
-        )
-        receives_ssi = (add(person, period, ["ssi"]) > 0) | (reported_any_month > 0)
+        ]
+        reported_any_month = np.any(monthly_receipt, axis=0)
+        receives_ssi = (add(person, period, ["ssi"]) > 0) | reported_any_month
         ssi = spm_unit.any(receives_ssi)
         categorically_eligible = tanf | snap | ssi
 
