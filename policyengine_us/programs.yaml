@@ -823,12 +823,11 @@ programs:
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
       - state: TX
-        status: partial
+        status: complete
         name: Texas CEAP
         full_name: Texas Comprehensive Energy Assistance Program
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
-        notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI. Known gap - the SSI route uses is_ssi_eligible, which omits the SSI income test, so a household with an aged, blind, or disabled member who passes the resource and immigration tests qualifies at any income (policyengine-us#9408)
 
   # --- SSA programs ---
   - id: ssi
