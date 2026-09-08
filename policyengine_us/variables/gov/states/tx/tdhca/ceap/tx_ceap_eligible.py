@@ -40,10 +40,16 @@ class tx_ceap_eligible(Variable):
         # omits the SSI income test and would qualify high-income households.
         person = spm_unit.members
         # A payment or reported receipt in any month of the year qualifies.
-        # receives_ssi is a monthly flag, so sum it explicitly across the
-        # year; without the ADD option an annual request returns one month.
+        # receives_ssi is a monthly flag: read each month explicitly rather
+        # than requesting an annual aggregate, which would cache a summed value
+        # under the annual key and change what other formulas read.
+        first_month = period.first_month
+        reported_any_month = sum(
+            person("receives_ssi", first_month.offset(month_offset))
+            for month_offset in range(12)
+        )
         receives_ssi = (add(person, period, ["ssi"]) > 0) | (
-            add(person, period, ["receives_ssi"], options=[ADD]) > 0
+            reported_any_month > 0
         )
         ssi = spm_unit.any(receives_ssi)
         categorically_eligible = tanf | snap | ssi
