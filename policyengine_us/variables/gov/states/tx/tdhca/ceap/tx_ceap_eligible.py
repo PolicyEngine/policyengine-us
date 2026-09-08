@@ -39,8 +39,9 @@ class tx_ceap_eligible(Variable):
         # the computed benefit or the reported-receipt flag. is_ssi_eligible
         # omits the SSI income test and would qualify high-income households.
         person = spm_unit.members
-        receives_ssi = (add(person, period, ["ssi"]) > 0) | person(
-            "receives_ssi", period.first_month
+        # A payment or reported receipt in any month of the year qualifies.
+        receives_ssi = (add(person, period, ["ssi"]) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
         )
         ssi = spm_unit.any(receives_ssi)
         categorically_eligible = tanf | snap | ssi

@@ -100,3 +100,16 @@
     state_code: TX
   output:
     tx_ceap_eligible: true
+
+- name: Case 10, SSI receipt reported only from December still confers categorical eligibility for the year.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    employment_income: 100_000
+    receives_ssi:
+      2025-01: false
+      2025-12: true
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
