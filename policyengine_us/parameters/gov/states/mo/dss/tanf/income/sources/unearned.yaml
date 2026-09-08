@@ -1,0 +1,15 @@
+description: Missouri counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2010-07-01:
+    - tanf_gross_unearned_income
+    - workers_compensation
+
+metadata:
+  unit: list
+  period: month
+  label: Missouri TANF unearned income sources
+  reference:
+    - title: Missouri DSS Manual 0210.015.05 - Sources of Earned, Unearned, and Educational Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-05/
+  # Retain the shared TANF income baseline and add Missouri's workers
+  # compensation treatment without changing other states' income lists.
