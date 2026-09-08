@@ -1,3 +1,10 @@
+## [1.824.6] - 2026-09-08
+
+### Fixed
+
+- Correct Texas TANF unearned income sources by counting omitted cash assistance and recurring income and removing capital gains and active farming income.
+
+
 ## [1.824.5] - 2026-09-08
 
 ### Fixed
