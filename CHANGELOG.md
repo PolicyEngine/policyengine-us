@@ -1,3 +1,38 @@
+## [1.824.2] - 2026-09-08
+
+### Fixed
+
+- Model Missouri's SNAP student under-six caregiver exemption as limited to one adult per modeled SNAP household from 2025, prioritizing students without another exemption and preserving other states' existing behavior.
+
+
+## [1.824.1] - 2026-09-08
+
+### Fixed
+
+- Medicaid aged, blind, and disabled pathway: the income and asset tests use the individual or married couple as the unit (42 CFR 435.602) instead of the tax filing unit, so the limit is the individual or couple guideline and a couple's countable income is summed across the marital unit whatever their filing status; Missouri's MHABD standards are the published individual and couple dollar amounts (Appendix J), and Missouri deems parental income to a disabled child in the SSI exclusion order (DSS Manual § 0805.020.15); regression tests for stepparent exclusion and equal split of deemed parental income.
+
+
+## [1.824.0] - 2026-09-08
+
+### Added
+
+- Added a contrib reform that pays the Oklahoma Child Care/Child Tax Credit as a refundable credit.
+
+
+## [1.823.1] - 2026-09-08
+
+### Fixed
+
+- Update the program registry to match the code: CCDF now has a state implementation in all 50 states and DC (North Dakota and South Dakota move from in progress to partial with their remaining gaps documented) while the program stays partial because New York's payment differentials and other listed gaps remain unmodeled, Texas CEAP is partial with its SSI categorical-eligibility gap documented and Hawaii OSS is complete, both with their variables and parameter prefixes, and the state universal school meals entries carry an explicit status.
+
+
+## [1.823.0] - 2026-09-07
+
+### Removed
+
+- Remove the inert legacy New York encoding under gov/hhs/ccdf (market rates, county clusters, copay percentages, and their variables), which contributed zero dollars to every household.
+
+
 ## [1.822.5] - 2026-09-04
 
 ### Fixed

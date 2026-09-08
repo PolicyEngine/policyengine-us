@@ -10,12 +10,11 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
 
     def formula(person, period, parameters):
         #  Assets
+        # SSI financial responsibility rules (42 CFR 435.602): the unit is
+        # the individual or the married couple, not the tax filing unit.
         personal_assets = person("ssi_countable_resources", period)  # $
-        tax_unit = person.tax_unit
-        assets = tax_unit.sum(personal_assets)
-
-        #  state info
-        is_joint = tax_unit("tax_unit_is_joint", period)
+        assets = person.marital_unit.sum(personal_assets)
+        is_couple = person.marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
 
         #  Parameters
@@ -25,7 +24,7 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
 
         #  Asset limit
         asset_limit = where(
-            is_joint,
+            is_couple,
             p.assets.limit.couple[state],
             p.assets.limit.individual[state],
         )

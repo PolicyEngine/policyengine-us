@@ -81,38 +81,47 @@ programs:
     notes: Nationwide rules
     state_implementations:
       - state: CA
+        status: complete
         name: California universal meals
         effective: 2022-07-01
         reference: AB 130 (2021); Cal. Educ. Code § 49501.5
       - state: CO
+        status: complete
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
         reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
       - state: MA
+        status: complete
         name: Massachusetts universal meals
         effective: 2023-07-01
         reference: FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections
       - state: ME
+        status: complete
         name: Maine School Meals for All
         effective: 2022-07-01
         reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
       - state: MI
+        status: complete
         name: Michigan School Meals
         effective: 2023-07-01
         reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
       - state: MN
+        status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
         reference: HF 5 (2023); Minn. Stat. § 124D.111
       - state: NM
+        status: complete
         name: New Mexico Healthy Universal School Meals
         effective: 2023-07-01
         reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
       - state: NY
+        status: complete
         name: New York Universal Free School Meals
         effective: 2025-07-01
         reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
       - state: VT
+        status: complete
         name: Vermont Universal School Meals
         effective: 2023-07-01
         reference: Act 64 / H.165 (2023); 16 V.S.A. § 4017
@@ -460,7 +469,8 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VA, VT, WA, WI, WV, WY
+    coverage: US
+    notes: Every state and DC has a child care subsidy implementation; the program stays partial while New York's listed gaps remain
     state_implementations:
       - state: AK
         status: complete
@@ -716,11 +726,12 @@ programs:
         variable: ga_caps
         parameter_prefix: gov.states.ga.decal.caps
       - state: ND
-        status: in_progress
+        status: partial
         name: North Dakota CCAP
         full_name: North Dakota Child Care Assistance Program
         variable: nd_ccap
         parameter_prefix: gov.states.nd.dhs.ccap
+        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Not modeled - the CCAP Workforce Benefit income-limit and co-payment waiver for early-childhood workforce families, and the Diversion and Crossroads co-payment waivers
       - state: NM
         status: complete
         name: New Mexico CCAP
@@ -734,11 +745,12 @@ programs:
         variable: ok_ccs
         parameter_prefix: gov.states.ok.dhs.ccs
       - state: SD
-        status: in_progress
+        status: partial
         name: South Dakota CCA
         full_name: South Dakota Child Care Assistance
         variable: sd_cca
         parameter_prefix: gov.states.sd.dss.cca
+        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. The benefit is zero before August 2026 because the earlier hourly county-based schedule is not implemented. Not modeled - the court-supervision eligibility pathway for a child
       - state: UT
         status: complete
         name: Utah CCAP
@@ -811,9 +823,12 @@ programs:
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
       - state: TX
-        status: in_progress
+        status: partial
         name: Texas CEAP
         full_name: Texas Comprehensive Energy Assistance Program
+        variable: tx_ceap
+        parameter_prefix: gov.states.tx.tdhca.ceap
+        notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI. Known gap - the SSI route uses is_ssi_eligible, which omits the SSI income test, so a household with an aged, blind, or disabled member who passes the resource and immigration tests qualifies at any income (policyengine-us#9408)
 
   # --- SSA programs ---
   - id: ssi
@@ -883,9 +898,11 @@ programs:
         full_name: Georgia State Supplementary Payment
         variable: ga_ssp
       - state: HI
-        status: in_progress
+        status: complete
         name: Hawaii OSS
         full_name: Hawaii Optional State Supplementation
+        variable: hi_oss
+        parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
         status: in_progress
         name: Iowa SSP
