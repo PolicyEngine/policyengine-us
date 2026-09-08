@@ -62,14 +62,15 @@
     tx_tanf_gross_unearned_income: 0
     tx_tanf_gross_earned_income: 0
 
-- name: Active farming is earned income while passive farm rent is unearned.
+- name: Farm rent is counted while other farming inputs remain unmodeled.
   period: 2026-01
   input:
     state_code: TX
     farm_operations_income: 6_000
+    farm_income: 1_200
     farm_rent_income: 2_400
   output:
-    tx_tanf_gross_earned_income: 500
+    tx_tanf_gross_earned_income: 0
     tx_tanf_gross_unearned_income: 200
 
 - name: Military retirement and railroad payments supplement other pensions.

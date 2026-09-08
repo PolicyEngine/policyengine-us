@@ -1,1 +1,1 @@
-Correct Texas TANF income sources: count omitted cash assistance and recurring unearned income, exclude capital gains, and classify active farming as earned income.
+Correct Texas TANF unearned income sources by counting omitted cash assistance and recurring income and removing capital gains and active farming income.

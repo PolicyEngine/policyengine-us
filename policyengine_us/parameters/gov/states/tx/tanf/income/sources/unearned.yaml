@@ -20,9 +20,10 @@ values:
     # A-1325.1 and A-1326.6.
     - dividend_income
     - interest_income
-    # A-1323.4.2: passive property income. Active farming is in earned.yaml.
+    # A-1323.4.2: passive property income.
     - rental_income
     - farm_rent_income
+    # Active farming and Schedule J farm income are not modeled here.
     # A-1320: recurring estate income; A-1326.21 separately names life estates.
     - estate_income
     # A-1326.28: lottery winnings; other gambling income falls under A-1320.
