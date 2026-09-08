@@ -1,3 +1,10 @@
+## [1.824.4] - 2026-09-08
+
+### Fixed
+
+- Texas CEAP's registry note now lists its remaining income-counting gaps (net gambling winnings, the Medicare premium deduction from Social Security, means-tested veterans' pensions) instead of the SSI categorical-eligibility gap fixed in #9409; the entry stays partial.
+
+
 ## [1.824.3] - 2026-09-08
 
 ### Fixed
