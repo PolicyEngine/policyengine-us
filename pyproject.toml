@@ -24,7 +24,7 @@ dependencies = [
     # extension and is available on every supported Python version.
     "pandas>=3.0",
     "policyengine-core>=3.30.1",
-    "spm-calculator>=0.2.0",
+    "spm-calculator @ git+https://github.com/PolicyEngine/spm-calculator@9e6ae4798458771231613b994df2345dd1685214",
     "tables>=3.9",
     "tqdm>=4.67.1",
 ]
@@ -46,6 +46,9 @@ dev = [
     "build>=1.2.2.post1",
     "towncrier>=24.8.0",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]

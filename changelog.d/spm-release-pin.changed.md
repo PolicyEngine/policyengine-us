@@ -1,0 +1,1 @@
+Pin the reviewed SPM Calculator 0.5.0 development commit for reproducible threshold corrections, including the revised 2019–2024 series and published 2025 continuation. Preserve legacy housing-share constants and CPI-U extrapolation. Replace the Git pin with exactly 0.5.0 only during coordinated package promotion.

@@ -1,14 +1,14 @@
 """Regression tests for the spm_unit_spm_threshold formula.
 
 Verifies that:
-1. Historical published years (2015-2024) match the Census Bureau's
+1. Historical published years (2005-2025) match the Census Bureau's
    published Betson reference thresholds exactly (via spm-calculator).
 2. Post-published years uprate via PolicyEngine's ``gov.bls.cpi.cpi_u``
    parameter.
 3. Composition and tenure changes between periods flow through to the
    threshold while applying the unit-specific geographic adjustment.
 4. The Betson three-parameter equivalence scale is applied (a 2A2C
-   reference family at the renter national base equals 39430 in 2024).
+   reference family at the corrected renter national base equals 39219.893902 in 2024).
 """
 
 import numpy as np
@@ -56,7 +56,7 @@ def test_reference_threshold_matches_census_for_published_years():
 
 
 def test_reference_threshold_uprates_with_cpi_u_past_latest_published():
-    """Post-2024 reference threshold must equal the latest published
+    """Post-published reference threshold must equal the latest published
     value scaled by PolicyEngine's CPI-U ratio."""
     cpi_u = _cpi_u()
     latest = LATEST_PUBLISHED_SPM_THRESHOLD_YEAR
@@ -259,3 +259,23 @@ def test_prior_threshold_does_not_imply_geographic_adjustment():
     got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
     expected = current_base * equiv
     assert got == pytest.approx(expected, rel=1e-5)
+
+
+@pytest.mark.parametrize(
+    "year,tenure,expected",
+    [
+        (2024, SPMUnitTenureType.OWNER_WITH_MORTGAGE, 39230.994457),
+        (2024, SPMUnitTenureType.OWNER_WITHOUT_MORTGAGE, 32878.594848),
+        (2024, SPMUnitTenureType.RENTER, 39219.893902),
+        (2025, SPMUnitTenureType.OWNER_WITH_MORTGAGE, 41322.707394),
+        (2025, SPMUnitTenureType.OWNER_WITHOUT_MORTGAGE, 34325.997720),
+        (2025, SPMUnitTenureType.RENTER, 41700.555713),
+    ],
+)
+def test_reviewed_bls_correction_and_2025_continuation(year, tenure, expected):
+    # Literal workbook values, independent of the installed package's table.
+    # 2024 revised segment: https://www.bls.gov/pir/spm/spm_thresholds_2024_correction.htm
+    # 2025 continuation: https://www.bls.gov/pir/spmhome.htm
+    assert LATEST_PUBLISHED_SPM_THRESHOLD_YEAR == 2025
+    actual = _reference_threshold_array(np.array([tenure]), year, _cpi_u())[0]
+    assert actual == pytest.approx(expected, abs=0.000001, rel=0)
