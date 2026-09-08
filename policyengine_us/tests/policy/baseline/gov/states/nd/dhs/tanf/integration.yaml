@@ -1023,3 +1023,45 @@
     nd_tanf_income_eligible: false
     nd_tanf_eligible: false
     nd_tanf: 0
+
+- name: Workers compensation reduces the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        workers_compensation: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: ND
+  output:
+    nd_tanf: 539
+
+- name: Ordinary interest and dividends do not reduce the monthly TANF benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        taxable_interest_income: 1200
+        tax_exempt_interest_income: 1200
+        dividend_income: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: ND
+  output:
+    nd_tanf: 739

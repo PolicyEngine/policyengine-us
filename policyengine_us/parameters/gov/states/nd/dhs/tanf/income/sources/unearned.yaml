@@ -1,6 +1,5 @@
 description: North Dakota counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
-# Preserve the inherited baseline list and its start date; this corrects the
-# omitted general assistance source rather than introducing a new policy.
+# Preserve the inherited start date while correcting the modeled sources.
 values:
   2010-07-01:
     - veterans_benefits
@@ -9,11 +8,12 @@ values:
     - child_support_received
     - alimony_income
     - financial_assistance
-    - dividend_income
-    - interest_income
+    # Section 400-19-55-25 excludes ordinary investment interest/dividends.
     - miscellaneous_income
+    # Regular pension payments, including their interest, remain countable.
     - pension_income
     - unemployment_compensation
+    - workers_compensation
     - gi_cash_assistance
     - social_security
     # Direct GA cash is countable. Section 400-19-55-25 separately excludes

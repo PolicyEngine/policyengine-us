@@ -1,1 +1,1 @@
-Count general assistance cash payments as unearned income for North Dakota TANF.
+Correct North Dakota TANF unearned income by counting general assistance and workers compensation and excluding ordinary interest and dividends.
