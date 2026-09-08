@@ -1,0 +1,45 @@
+- name: Federal AGI includes state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+  output:
+    adjusted_gross_income: 52_000
+
+- name: California subtracts state and local tax refund income from AGI
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CA
+  output:
+    adjusted_gross_income: 52_000
+    ca_agi: 50_000
+
+- name: Utah subtracts state and local tax refund income from taxable income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: UT
+  output:
+    ut_state_tax_refund: 2_000
+
+- name: Idaho subtracts state and local tax refund income from AGI
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: ID
+  output:
+    adjusted_gross_income: 52_000
+    id_agi: 50_000
+
+- name: Indiana includes state and local tax refund income in deductions
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IN
+  output:
+    in_deductions: 2_000
