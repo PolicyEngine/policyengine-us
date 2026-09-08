@@ -1,1 +1,1 @@
-Count cash gifts and contributions, guaranteed income payments, general assistance, veterans benefits, rental income, pensions, and survivor benefits as Texas TANF unearned income per Texas Works Handbook A-1320.
+Correct Texas TANF income sources: count omitted cash assistance and recurring unearned income, exclude capital gains, and classify active farming as earned income.

@@ -51,3 +51,43 @@
     state_code: TX
   output:
     tx_tanf_gross_unearned_income: 0
+
+- name: Capital gains are exempt from TANF income under A-1326.19.
+  period: 2026-01
+  input:
+    state_code: TX
+    long_term_capital_gains: 12_000
+    short_term_capital_gains: 6_000
+  output:
+    tx_tanf_gross_unearned_income: 0
+    tx_tanf_gross_earned_income: 0
+
+- name: Active farming is earned income while passive farm rent is unearned.
+  period: 2026-01
+  input:
+    state_code: TX
+    farm_operations_income: 6_000
+    farm_rent_income: 2_400
+  output:
+    tx_tanf_gross_earned_income: 500
+    tx_tanf_gross_unearned_income: 200
+
+- name: Military retirement and railroad payments supplement other pensions.
+  period: 2026-01
+  input:
+    state_code: TX
+    pension_income: 2_400
+    military_retirement_pay: 3_600
+    railroad_benefits: 1_200
+  output:
+    tx_tanf_gross_unearned_income: 600
+
+- name: Lottery winnings and recurring estate and strike income are counted.
+  period: 2026-01
+  input:
+    state_code: TX
+    gambling_winnings: 1_200
+    estate_income: 600
+    strike_benefits: 600
+  output:
+    tx_tanf_gross_unearned_income: 200
