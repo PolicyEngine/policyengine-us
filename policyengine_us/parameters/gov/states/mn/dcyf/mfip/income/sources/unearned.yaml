@@ -1,6 +1,5 @@
 description: Minnesota counts these income sources as unearned income under the Minnesota Family Investment Program.
-# Preserve the inherited baseline list and its start date; this corrects the
-# omitted general assistance source rather than introducing a new policy.
+# Preserve the inherited start date while correcting the modeled sources.
 values:
   2010-07-01:
     - veterans_benefits
@@ -14,6 +13,7 @@ values:
     - miscellaneous_income
     - pension_income
     - unemployment_compensation
+    - workers_compensation
     - gi_cash_assistance
     - social_security
     # MFIP counts GA, RCA and cash benefits already issued (0017.12.03).

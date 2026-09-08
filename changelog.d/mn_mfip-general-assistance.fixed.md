@@ -1,1 +1,1 @@
-Count general assistance cash payments as unearned income for Minnesota MFIP.
+Count general assistance and workers compensation as Minnesota MFIP unearned income.

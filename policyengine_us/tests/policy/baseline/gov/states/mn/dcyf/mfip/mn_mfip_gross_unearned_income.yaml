@@ -36,3 +36,23 @@
     general_assistance: 2_400
   output:
     mn_mfip_gross_unearned_income: 0
+
+- name: Workers compensation is countable unearned income.
+  period: 2026-01
+  input:
+    state_code: MN
+    workers_compensation: 2400
+  output:
+    mn_mfip_gross_unearned_income: 200
+
+- name: Workers compensation adds to general assistance, interest, and dividends.
+  period: 2026-01
+  input:
+    state_code: MN
+    workers_compensation: 2400
+    general_assistance: 1200
+    taxable_interest_income: 600
+    tax_exempt_interest_income: 600
+    dividend_income: 1200
+  output:
+    mn_mfip_gross_unearned_income: 500

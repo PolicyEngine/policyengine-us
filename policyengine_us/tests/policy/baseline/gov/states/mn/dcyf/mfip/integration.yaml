@@ -356,3 +356,44 @@
     mn_mfip_resources_eligible: true
     mn_mfip_eligible: false
     mn_mfip: 0
+
+- name: Workers compensation reduces the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        workers_compensation: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: MN
+  output:
+    mn_mfip: 461
+
+- name: Interest and dividends continue to reduce the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        taxable_interest_income: 1200
+        dividend_income: 1200
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: MN
+  output:
+    mn_mfip: 461
