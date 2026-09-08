@@ -265,3 +265,68 @@
     mo_tanf_gross_unearned_income: 0
     mo_tanf_assistance_unit_size: 1
     mo_tanf: 135.68718
+
+- name: Taxable and tax-exempt interest are excluded from Missouri TANF income
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        taxable_interest_income: 1_200
+        tax_exempt_interest_income: 1_200
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.015.35.45 and IM-67 (May 22, 2003).
+    tanf_gross_unearned_income: [200, 0]
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_countable_income: 0
+    mo_tanf_eligible: true
+    mo_tanf: 234.08628
+
+- name: Interest is excluded while dividends and workers compensation count
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        taxable_interest_income: 1_200
+        tax_exempt_interest_income: 1_200
+        dividend_income: 600
+        workers_compensation: 1_800
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # The $200/month of interest is excluded; $50 in dividends and
+    # $150 in workers compensation remain countable under 0210.015.05.
+    tanf_gross_unearned_income: [250, 0]
+    mo_tanf_gross_unearned_income: 200
+    mo_tanf_countable_income: 200
+    mo_tanf_eligible: true
+    mo_tanf: 34.08628

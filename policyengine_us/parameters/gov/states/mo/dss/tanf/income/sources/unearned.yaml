@@ -1,7 +1,18 @@
 description: Missouri counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
   2010-07-01:
-    - tanf_gross_unearned_income
+    - veterans_benefits
+    - survivor_benefits
+    - rental_income
+    - child_support_received
+    - alimony_income
+    - financial_assistance
+    - dividend_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
     - workers_compensation
 
 metadata:
@@ -11,5 +22,9 @@ metadata:
   reference:
     - title: Missouri DSS Manual 0210.015.05 - Sources of Earned, Unearned, and Educational Income
       href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-05/
-  # Retain the shared TANF income baseline and add Missouri's workers
-  # compensation treatment without changing other states' income lists.
+    - title: Missouri DSS Manual 0210.015.35.45 - Interest Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-35-45/
+    - title: Missouri DSS IM-67 (May 22, 2003) - Income Exclusion, Interest
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_03/im67_03.html
+  # Interest income is excluded under 0210.015.35.45; dividends remain
+  # countable under 0210.015.05.
