@@ -1,20 +1,15 @@
-description: Connecticut counts these sources as qualifying pension, annuity, and IRA income under Sec. 12-701(a)(20)(B) and Form CT-1040 Pension and Annuity Worksheet.
+description: Connecticut counts these sources as qualifying pension and annuity income under Sec. 12-701(a)(20)(B)(xxi) and Form CT-1040 Line 48b.
 values:
   2019-01-01:
     - taxable_pension_income
     - taxable_401k_distributions
     - taxable_403b_distributions
-  2023-01-01:
-    - taxable_pension_income
-    - taxable_401k_distributions
-    - taxable_403b_distributions
-    - taxable_ira_distributions
 metadata:
   unit: list
   period: year
-  label: Connecticut qualifying pension, annuity, and retirement distribution sources
+  label: Connecticut qualifying pension and annuity sources
   reference:
-    - title: Connecticut General Statutes, Chapter 229, Sec. 12-701 (20)(B)(xxi)&(xxvi)
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-701(a)(20)(B)(xxi)
       href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
     - title: 2024 Form CT-1040 Instructions Line 48b, Pension and Annuity Worksheet
       href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=28
