@@ -37,6 +37,12 @@ from policyengine_us.data.dataset_schema import (
 )
 
 from typing import Annotated
+from spm_calculator.policyengine_adapter import build_policyengine_variables
+from policyengine_us.spm import (
+    SPMSimulationMixin,
+    clone_spm_system,
+    create_spm_provider,
+)
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -46,7 +52,7 @@ DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 # Certified Populace build (primary-source US microdata), pinned by build id.
 # Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
-DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-c86a631-6e1bcd0271a5-20260619T002242Z"
+DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -82,8 +88,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         start_instant: Annotated[
             str, "ISO date format YYYY-MM-DD"
         ] = DEFAULT_START_DATE,
+        spm: dict | None = None,
     ):
         super().__init__(entities, reform=reform)
+        self.spm_forecast_provider = create_spm_provider(spm)
+        self.add_variables(*build_policyengine_variables())
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
         self.parameters = set_irs_uprating_parameter(self.parameters)
@@ -125,6 +134,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
+    def clone(self):
+        return clone_spm_system(self)
+
 
 system = CountryTaxBenefitSystem()
 
@@ -158,7 +170,7 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
-class Simulation(CoreSimulation):
+class Simulation(SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
     defined against the base simulation class in the -core package.
@@ -183,6 +195,9 @@ class Simulation(CoreSimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
         )
         super().__init__(*args, **kwargs)
 
@@ -289,7 +304,7 @@ def _is_hdfstore_format(file_path):
         return False
 
 
-class Microsimulation(CoreMicrosimulation):
+class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
     defined against the base microsimulation class in the -core package.
@@ -316,6 +331,9 @@ class Microsimulation(CoreMicrosimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
         )
 
         dataset = kwargs.get("dataset")

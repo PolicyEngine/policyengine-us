@@ -47,6 +47,11 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
   input:
+    # Preserve the default SPM unit; isolate benefits from SPM measurement.
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        spm_unit_capped_housing_subsidy: 0
     gov.contrib.states.tx.rebate.in_effect: true
     people:
       person1:
@@ -84,6 +89,8 @@
         members: [person1]
     spm_units:
       spm_unit:
+        # Isolate benefit arithmetic from SPM measurement with no housing aid.
+        spm_unit_capped_housing_subsidy: 0
         members: [person1]
     households:
       household:
@@ -171,6 +178,8 @@
         members: [person1]
     spm_units:
       spm_unit:
+        # Isolate benefit arithmetic from SPM measurement with no housing aid.
+        spm_unit_capped_housing_subsidy: 0
         members: [person1]
     households:
       household:

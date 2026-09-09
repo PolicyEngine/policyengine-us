@@ -334,6 +334,8 @@
     spm_units:
       spm_unit:
         members: [person1]
+        # Isolate benefit arithmetic from SPM measurement with no housing aid.
+        spm_unit_capped_housing_subsidy: 0
         snap: 0  # zero cash benefits so the household total equals the CO subsidy
     households:
       household:
@@ -376,6 +378,8 @@
     spm_units:
       spm_unit:
         members: [person1]
+        # Isolate benefit arithmetic from SPM measurement with no housing aid.
+        spm_unit_capped_housing_subsidy: 0
         snap: 0  # zero cash benefits so the household total equals the CO subsidy
     households:
       household:

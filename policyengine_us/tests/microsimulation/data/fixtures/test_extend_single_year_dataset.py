@@ -262,7 +262,13 @@ def make_mock_super_init(system_module, captured=None):
         if captured is not None:
             captured[0] = ds
         self.dataset = ds
-        self.tax_benefit_system = system_module.system
+        self.tax_benefit_system = kwargs.get("tax_benefit_system", system_module.system)
+        self.populations = self.tax_benefit_system.instantiate_entities()
+        for population in self.populations.values():
+            population.simulation = self
+        self._user_input_keys = set()
+        self.branches = {}
+        self.baseline = None
         self.is_over_dataset = True
         self.input_variables = []
         self.get_holder = lambda name: MockHolder()
