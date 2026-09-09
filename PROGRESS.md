@@ -19,6 +19,10 @@ Implementing the automatic release lock guard from canonical source
   pass, including rollback after partial writes, graph drift, failed checks,
   unexpected check-time writes, and interruptions. Actual uv with cached PyPI
   metadata accepts a root-only bump and rejects a dependency version change.
+- A real uv review probe exposed ancestor workspace discovery despite
+  `--no-config --no-sources`. Added a failing regression, then rejected parent
+  workspaces before invoking uv. All 24 offline tests pass; the online probe is
+  separate and currently blocked by registry DNS on this lane.
 
 ## Next
 

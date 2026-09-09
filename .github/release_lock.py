@@ -225,12 +225,25 @@ def require_committed_files(root: Path) -> None:
             )
 
 
+def reject_parent_workspaces(root: Path) -> None:
+    """Prevent uv from checking or rewriting an ancestor's workspace lock."""
+    # --no-config and --no-sources do not disable workspace discovery. Refuse
+    # workspace ancestors even when they claim to exclude this checkout.
+    for parent in root.resolve().parents:
+        project_path = parent / "pyproject.toml"
+        if project_path.is_file() and "workspace" in load_toml(project_path).get(
+            "tool", {}
+        ).get("uv", {}):
+            raise ValueError("Release checkout must not be inside a uv workspace")
+
+
 def check_release_lock(
     root: Path = REPO_ROOT, *, refresh: bool = False, committed: bool = False
 ) -> None:
     """Check with uv, or transactionally refresh only the bumped root version."""
     if refresh and committed:
         raise ValueError("Use committed checks before the bump and refresh after it")
+    reject_parent_workspaces(root)
     if committed:
         require_committed_files(root)
     project = load_toml(root / "pyproject.toml")

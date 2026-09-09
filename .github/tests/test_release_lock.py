@@ -244,6 +244,19 @@ class RegistryValidationTests(RegistryFixture):
 
 
 class ReleaseTransactionTests(RegistryFixture):
+    def test_parent_workspace_cannot_redirect_the_lock_check(self):
+        child = self.root / "members" / "child"
+        child.mkdir(parents=True)
+        for name in ("pyproject.toml", "uv.lock"):
+            shutil.copyfile(FIXTURE / name, child / name)
+        (self.root / "pyproject.toml").write_text(
+            '[tool.uv.workspace]\nmembers = ["members/*"]\n'
+        )
+        with patch.object(release_lock.subprocess, "run") as run:
+            self.assert_rejected(release_lock.check_release_lock, child)
+        run.assert_not_called()
+        self.assertEqual((child / "uv.lock").read_bytes(), self.original)
+
     def test_check_uses_uv_lock_check_without_writing_lock(self):
         with patch.object(release_lock.subprocess, "run") as run:
             release_lock.check_release_lock(self.root)
