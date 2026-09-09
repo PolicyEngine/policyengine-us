@@ -1,3 +1,10 @@
+## [1.824.8] - 2026-09-09
+
+### Fixed
+
+- Revert incorrect 2025 Alabama standard deduction phase-out thresholds to statutory values.
+
+
 ## [1.824.7] - 2026-09-09
 
 ### Fixed
