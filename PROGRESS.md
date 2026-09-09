@@ -11,6 +11,10 @@ Implementing the automatic release lock guard from canonical source
 - Read repository instructions and PolicyEngine standards/model-development.
 - Confirmed versioning bumps the project without refreshing its lock.
 - Preserved the original canonical worktree and all package files.
+- Added regression tests before the helper; the first run fails because the
+  helper does not yet exist. Tests use a genuine two-package uv-generated lock
+  with cached PyPI metadata for idna 3.10 and cover artifact provenance,
+  committed-file checks, root-only refresh, and exact rollback.
 
 ## Next
 
