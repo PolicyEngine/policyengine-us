@@ -5,6 +5,8 @@
 Implemented the automatic release lock guard from canonical source
 `0ad481ae3e0ead67851018122615e2520a8e019c` (upstream base
 `b8ca61a23e1c7ca9f66181dee36d5d8bee89c916`) in a separate worktree.
+Implementation and local verification are complete. The final branch-transfer
+result and exact head are recorded in the requested external report.
 
 ## Done
 
@@ -33,11 +35,14 @@ Implemented the automatic release lock guard from canonical source
 - Verified all 17,286 protected tracked files are unchanged, including the
   complete country package, project metadata, and production lock. The original
   worktree remains clean at the original canonical commit.
+- Final focused test run passes 24 tests with the live-registry test explicitly
+  skipped locally and enabled in CI. Formatting, lint, and workflow validation
+  pass with only the two pre-existing actionlint diagnostics excluded. The
+  committed production lock check fails on the stale root version as expected.
 
 ## Next
 
-- Push the reviewed descendant to the existing PR branch and rebind source/tree
-  review to the new head.
+- Rebind source/tree review to the new head.
 - Repeat the normal-registry probe with network access and regenerate/review the
   production lock after calculator 1.0.0 is published. Re-run full PR CI and the
   versioning tree gate before release.
