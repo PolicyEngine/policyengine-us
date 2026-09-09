@@ -140,3 +140,16 @@
     taxable_pension_income: 10_000
   output:
     ct_pension_annuity_subtraction: 4_200
+
+- name: Single household with 401(k) and IRA distributions in 2024 below cliff
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    taxable_401k_distributions: 8_000
+    taxable_ira_distributions: 4_000
+  output:
+    ct_pension_annuity_subtraction: 12_000
+

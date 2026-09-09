@@ -15,13 +15,11 @@ class ms_retirement_income_exemption(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.ms.tax.income.adjustments
         excluded_income = add(
             person,
             period,
-            [
-                "taxable_social_security",
-                "taxable_pension_income",
-            ],
+            p.retirement_exemption_sources,
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return head_or_spouse * excluded_income

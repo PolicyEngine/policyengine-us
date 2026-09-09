@@ -16,10 +16,10 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
-        # Modeled after 2022 Michigan Pension Schedule (Form 4884) Section B
-        p = parameters(
+        p_all = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
+        ).gov.states.mi.tax.income.deductions.retirement_benefits
+        p = p_all.tier_three.ss_exempt.retired
         # Recipients should received retirement benefits from SSA exempt employment
         # and were retired before qualifying year
         ss_retired_eligible_people = tax_unit(
@@ -29,7 +29,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
+        uncapped_pension_income = add(person, period, p_all.sources)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Where one or two people in the household qualify determines the amount of deduction

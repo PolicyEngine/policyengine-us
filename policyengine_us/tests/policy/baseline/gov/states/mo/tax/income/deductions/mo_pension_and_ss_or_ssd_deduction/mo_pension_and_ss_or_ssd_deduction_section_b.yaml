@@ -105,3 +105,28 @@
     state_code: MO
   output:
     mo_pension_and_ss_or_ssd_deduction_section_b: 0
+
+- name: AGI below threshold, IRA distributions, single
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 20_000
+    tax_unit_taxable_social_security: 0
+    filing_status: SINGLE
+    taxable_ira_distributions: 5_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 5_000
+
+- name: AGI below threshold, 401(k) distributions, joint
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    tax_unit_taxable_social_security: 0
+    filing_status: JOINT
+    taxable_401k_distributions: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 6_000
+

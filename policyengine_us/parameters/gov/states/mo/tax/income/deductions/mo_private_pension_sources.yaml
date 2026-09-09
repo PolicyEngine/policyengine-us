@@ -1,0 +1,20 @@
+description: Missouri counts these income sources as private pension and retirement benefits for Form MO-A Part 3 Section B.
+values:
+  2007-01-01:
+    - taxable_private_pension_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+metadata:
+  unit: list
+  period: year
+  label: Missouri private pension and retirement deduction income sources
+  reference:
+    - title: Revisor of Missouri Title X TAXATION AND REVENUE Chapter 143.124
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+    - title: 2024 Form MO-A - Individual Income Tax Adjustments, Part 3 - Section B
+      href: https://dor.mo.gov/forms/MO-A_2024.pdf#page=3
+    - title: 2025 MO-1040 Book - Individual Income Tax Long Form
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=29
