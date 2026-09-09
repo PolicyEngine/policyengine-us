@@ -1,1 +1,1 @@
-Include state and local tax refund income (`salt_refund_income`) in federal gross income and subtract/deduct it in conforming states.
+Include state and local tax refund income (`salt_refund_income`) in federal gross income and subtract/deduct it in conforming states. Standardize state refund inputs on canonical `salt_refund_income` and deprecate `salt_refund_last_year`.

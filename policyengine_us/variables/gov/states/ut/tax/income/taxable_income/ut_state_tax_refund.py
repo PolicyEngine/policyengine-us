@@ -10,4 +10,4 @@ class ut_state_tax_refund(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    adds = ["salt_refund_last_year"]
+    adds = ["salt_refund_income"]

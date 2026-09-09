@@ -6,7 +6,11 @@ class salt_refund_last_year(Variable):
     entity = TaxUnit
     label = "SALT refund last year"
     unit = USD
-    documentation = "Total state and local tax refund income for the tax unit."
     definition_period = YEAR
+    documentation = (
+        "[DEPRECATED] Use salt_refund_income instead. Taxable state and local"
+        " tax refund income for the tax unit (Form 1040, Schedule 1, line 1 /"
+        " IRC § 111)."
+    )
 
     adds = ["salt_refund_income"]

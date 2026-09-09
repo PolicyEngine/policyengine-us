@@ -30,7 +30,7 @@ values:
     - ak_permanent_fund_dividend
     # Alimony from divorces executed before the TCJA cutoff (Schedule 1 line 2a).
     - taxable_alimony_income
-    # State and local income tax refunds (Schedule 1 line 1).
+    # Taxable state and local income tax refunds (Schedule 1 line 1 / IRC § 111).
     - salt_refund_income
 
 metadata:

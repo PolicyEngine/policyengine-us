@@ -43,3 +43,230 @@
     state_code: IN
   output:
     in_deductions: 2_000
+
+- name: Arizona subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: AZ
+  output:
+    az_subtractions: 2_000
+
+- name: Colorado subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CO
+  output:
+    co_subtractions: 2_000
+
+- name: Connecticut subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CT
+  output:
+    ct_agi_subtractions: 2_000
+
+- name: District of Columbia subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: DC
+  output:
+    dc_income_subtractions: 2_000
+
+- name: Delaware subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: DE
+  output:
+    de_subtractions: 2_000
+
+- name: Georgia subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: GA
+  output:
+    ga_subtractions: 2_000
+
+- name: Hawaii subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: HI
+  output:
+    hi_subtractions: 2_000
+
+- name: Iowa subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IA
+  output:
+    ia_subtractions_consolidated: 2_000
+
+- name: Illinois subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IL
+  output:
+    il_base_income_subtractions: 2_000
+
+- name: Kentucky subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: KY
+  output:
+    ky_subtractions: 2_000
+
+- name: Maryland subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MD
+  output:
+    md_total_subtractions: 2_000
+
+- name: Michigan subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MI
+  output:
+    mi_subtractions: 2_000
+
+- name: Minnesota subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MN
+  output:
+    mn_subtractions: 2_000
+
+- name: North Carolina deductions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    nc_standard_or_itemized_deductions: 0
+    state_code: NC
+  output:
+    nc_deductions: 2_000
+
+- name: North Dakota subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: ND
+  output:
+    nd_subtractions: 2_000
+
+- name: Nebraska subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: NE
+  output:
+    ne_agi_subtractions: 2_000
+
+- name: New York subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: NY
+  output:
+    ny_agi_subtractions: 2_000
+
+- name: Ohio deductions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: OH
+  output:
+    oh_deductions: 2_000
+
+- name: Oklahoma subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: OK
+  output:
+    ok_agi_subtractions: 2_000
+
+- name: Oregon subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    or_federal_tax_liability_subtraction: 0
+    state_code: OR
+  output:
+    or_income_subtractions: 2_000
+
+- name: Pennsylvania nontaxable income includes state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: PA
+  output:
+    pa_total_taxable_income: 50_000
+
+- name: Rhode Island subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: RI
+  output:
+    ri_subtractions: 2_000
+
+- name: Virginia subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: VA
+  output:
+    va_subtractions: 2_000
+
+- name: Vermont subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: VT
+  output:
+    vt_subtractions: 2_000
+
+- name: Wisconsin subtractions include state and local tax refund income
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: WI
+  output:
+    wi_income_subtractions: 2_000
