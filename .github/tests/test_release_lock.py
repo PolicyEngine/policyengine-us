@@ -79,6 +79,19 @@ class RegistryValidationTests(RegistryFixture):
                     release_lock.validate_registry_lock, self.project, lock
                 )
 
+    def test_exactly_one_root_is_required_and_it_cannot_have_artifacts(self):
+        missing = copy.deepcopy(self.lock)
+        missing["package"].pop()
+        duplicate = copy.deepcopy(self.lock)
+        duplicate["package"].append(copy.deepcopy(duplicate["package"][1]))
+        artifact = copy.deepcopy(self.lock)
+        artifact["package"][1]["wheels"] = artifact["package"][0]["wheels"]
+        for lock in (missing, duplicate, artifact):
+            with self.subTest(lock=lock):
+                self.assert_rejected(
+                    release_lock.validate_registry_lock, self.project, lock
+                )
+
     def test_registry_label_cannot_hide_local_or_alternate_package_sources(self):
         for source in (
             {"registry": "https://example.org/simple"},
@@ -252,6 +265,17 @@ class ReleaseTransactionTests(RegistryFixture):
             self.assert_rejected(release_lock.check_release_lock, self.root)
         self.assertEqual((self.root / "uv.lock").read_bytes(), self.original)
 
+    def test_successful_check_that_changes_lock_is_rejected_and_restored(self):
+        def mutate(command, **kwargs):
+            (self.root / "uv.lock").write_bytes(
+                self.original + b"\n# unexpected write\n"
+            )
+            return subprocess.CompletedProcess(command, 0)
+
+        with patch.object(release_lock.subprocess, "run", side_effect=mutate):
+            self.assert_rejected(release_lock.check_release_lock, self.root)
+        self.assertEqual((self.root / "uv.lock").read_bytes(), self.original)
+
     def test_refresh_allows_only_root_version_change_then_checks(self):
         self.bump_project()
         commands = []
@@ -317,6 +341,18 @@ class ReleaseTransactionTests(RegistryFixture):
             self.assert_rejected(
                 release_lock.check_release_lock, self.root, refresh=True
             )
+        self.assertEqual((self.root / "uv.lock").read_bytes(), self.original)
+
+    def test_interrupted_refresh_restores_a_deleted_previous_lock(self):
+        self.bump_project()
+
+        def interrupt(command, **kwargs):
+            (self.root / "uv.lock").unlink()
+            raise KeyboardInterrupt()
+
+        with patch.object(release_lock.subprocess, "run", side_effect=interrupt):
+            with self.assertRaises(KeyboardInterrupt):
+                release_lock.check_release_lock(self.root, refresh=True)
         self.assertEqual((self.root / "uv.lock").read_bytes(), self.original)
 
     def test_post_refresh_check_failure_restores_previous_lock_bytes(self):

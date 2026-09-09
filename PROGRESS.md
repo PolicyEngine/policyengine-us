@@ -15,6 +15,10 @@ Implementing the automatic release lock guard from canonical source
   helper does not yet exist. Tests use a genuine two-package uv-generated lock
   with cached PyPI metadata for idna 3.10 and cover artifact provenance,
   committed-file checks, root-only refresh, and exact rollback.
+- Implemented the standard-library helper and committed-file mode. Focused tests
+  pass, including rollback after partial writes, graph drift, failed checks,
+  unexpected check-time writes, and interruptions. Actual uv with cached PyPI
+  metadata accepts a root-only bump and rejects a dependency version change.
 
 ## Next
 
