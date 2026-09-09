@@ -179,7 +179,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        adjusted_gross_income: 115_000  # $5k over $110k threshold for surviving spouse
+        adjusted_gross_income: 80_000  # $5k over the $75k threshold for surviving spouse
         filing_status: SURVIVING_SPOUSE
     households:
       household:
