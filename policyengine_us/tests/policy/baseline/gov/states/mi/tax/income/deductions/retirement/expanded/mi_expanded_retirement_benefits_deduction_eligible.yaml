@@ -30,7 +30,7 @@
   output: 
     mi_expanded_retirement_benefits_deduction_eligible: false
 
-- name: 2026 filer who is below the expanded retirement benefits deduction age threshold
+- name: 2026 filer born in 1945 (suppressed in favor of more advantageous Tier 1 route)
   period: 2026
   input:
     older_spouse_birth_year: 1945
@@ -61,4 +61,3 @@
     state_code: MI
   output:
     mi_expanded_retirement_benefits_deduction_eligible: true
-
