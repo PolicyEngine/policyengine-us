@@ -141,7 +141,31 @@
   output:
     ct_pension_annuity_subtraction: 4_200
 
-- name: Single household with 401(k) and IRA distributions in 2024 below cliff
+- name: Single household with 401(k) and IRA distributions in 2022 (IRA not yet eligible)
+  period: 2022
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    taxable_401k_distributions: 8_000
+    taxable_ira_distributions: 4_000
+  output:
+    ct_pension_annuity_subtraction: 8_000
+
+- name: Single household with 401(k) and IRA distributions in 2023 (IRA 25 percent phase-in)
+  period: 2023
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    taxable_401k_distributions: 8_000
+    taxable_ira_distributions: 4_000
+  output:
+    ct_pension_annuity_subtraction: 9_000
+
+- name: Single household with 401(k) and IRA distributions in 2024 (IRA 50 percent phase-in)
   period: 2024
   input:
     state_code: CT
@@ -151,5 +175,17 @@
     taxable_401k_distributions: 8_000
     taxable_ira_distributions: 4_000
   output:
-    ct_pension_annuity_subtraction: 12_000
+    ct_pension_annuity_subtraction: 10_000
+
+- name: Single household with 401(k) and IRA distributions in 2025 (IRA 75 percent phase-in)
+  period: 2025
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    taxable_401k_distributions: 8_000
+    taxable_ira_distributions: 4_000
+  output:
+    ct_pension_annuity_subtraction: 11_000
 

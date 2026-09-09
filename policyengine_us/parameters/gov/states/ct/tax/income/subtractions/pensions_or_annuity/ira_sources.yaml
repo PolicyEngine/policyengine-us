@@ -1,0 +1,13 @@
+description: Connecticut counts these sources as qualifying non-Roth IRA distributions under Sec. 12-701(a)(20)(B)(xxvii)-(xxx) and Form CT-1040 Line 48a.
+values:
+  2019-01-01:
+    - taxable_ira_distributions
+metadata:
+  unit: list
+  period: year
+  label: Connecticut qualifying IRA distribution sources
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-701(a)(20)(B)(xxvii)-(xxx)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
+    - title: 2024 Form CT-1040 Instructions Line 48a, IRA Distribution Worksheet
+      href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=28
