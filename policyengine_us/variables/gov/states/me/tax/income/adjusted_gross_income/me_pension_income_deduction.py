@@ -18,7 +18,7 @@ class me_pension_income_deduction(Variable):
 
         # Per-person non-military pension deduction (Pension Income Deduction
         # Worksheet, lines P1-P5).
-        pension_income = person("pension_income", period)
+        pension_income = add(person, period, p.sources)
         gross_ss = person("social_security", period)
         ss_reduced_cap = max_(p.cap - gross_ss, 0)
         non_military_deduction = min_(pension_income, ss_reduced_cap)

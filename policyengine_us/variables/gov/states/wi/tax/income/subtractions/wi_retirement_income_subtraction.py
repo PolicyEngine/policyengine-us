@@ -21,7 +21,7 @@ class wi_retirement_income_subtraction(Variable):
         person = tax_unit.members
         age = person("age", period)
         age_eligible = age >= psri.min_age
-        retirement_income = person("taxable_pension_income", period)
+        retirement_income = add(person, period, psri.sources)
         head_or_spouse = ~person("is_tax_unit_dependent", period)
         uncapped_retinc = retirement_income * age_eligible * head_or_spouse
         capped_retinc = min_(psri.max_amount, uncapped_retinc)

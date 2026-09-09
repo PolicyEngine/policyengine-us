@@ -30,7 +30,7 @@ class ct_pension_annuity_subtraction(Variable):
         rate = where(is_joint, p.joint.calc(agi), p.non_joint.calc(agi))
 
         # Apply the rate to eligible pension income
-        pension_income = person("taxable_pension_income", period)
+        pension_income = add(person, period, p.sources)
         eligible_pension = pension_income * head_or_spouse
         total_pension = tax_unit.sum(eligible_pension)
 

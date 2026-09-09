@@ -1,0 +1,12 @@
+description: Income sources included in qualified income for the North Dakota marriage penalty credit.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - total_self_employment_income
+    - taxable_pension_income
+    - taxable_retirement_distributions
+metadata:
+  unit: /1
+  reference:
+    - title: North Dakota Form ND-1 Booklet, Schedule ND-1MP
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=16

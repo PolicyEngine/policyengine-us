@@ -27,4 +27,4 @@ class nj_eligible_pension_income(Variable):
         role_eligible = is_head | is_spouse
 
         eligible = demographic_eligible & role_eligible
-        return eligible * person("taxable_pension_income", period)
+        return eligible * add(person, period, p.sources)

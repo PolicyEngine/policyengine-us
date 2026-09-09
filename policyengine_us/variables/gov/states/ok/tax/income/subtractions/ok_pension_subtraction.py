@@ -30,9 +30,9 @@ class ok_pension_subtraction(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        # Get pension income for each person in the tax unit
-        pensions = tax_unit.members("taxable_pension_income", period)
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions
+        # Get pension and retirement income for each person in the tax unit
+        pensions = add(tax_unit.members, period, p.pension_sources)
         # Each person can subtract up to the pension limit
         # Sum across all tax unit members
         return tax_unit.sum(min_(p.pension_limit, pensions))
