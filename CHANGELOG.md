@@ -1,3 +1,12 @@
+## [1.824.7] - 2026-09-09
+
+### Fixed
+
+- Count general assistance and workers compensation as Minnesota MFIP unearned income.
+- Correct North Dakota TANF unearned income by counting general assistance and workers compensation and excluding ordinary interest and dividends.
+- Correct Wyoming POWER unearned income by counting general assistance and workers compensation and excluding interest.
+
+
 ## [1.824.6] - 2026-09-08
 
 ### Fixed
