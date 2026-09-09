@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class medicaid_optional_senior_or_disabled_income_limit(Variable):
@@ -17,16 +18,16 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
     )
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        is_joint = tax_unit("tax_unit_is_joint", period)
+        # Non-MAGI Medicaid follows the SSI financial responsibility rules
+        # (42 CFR 435.602): the unit is the individual, or the married
+        # couple living together, whatever their filing status.
+        is_couple = person.marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
-
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
-
         limit_pct = where(
-            is_joint,
+            is_couple,
             p.income.limit.couple[state],
             p.income.limit.individual[state],
         )
@@ -34,22 +35,16 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # higher share of the poverty guideline than eligibility based on
         # old age or permanent and total disability.
         mo_mhabd = parameters(period).gov.states.mo.dss.mhabd.income_limit
-        state_code = person.household("state_code", period)
-        is_mo = state_code == StateCode.MO
+        is_mo = person.household("state_code", period) == StateCode.MO
         is_blind = person("is_blind", period)
-        limit_pct = where(
-            is_mo & is_blind,
-            mo_mhabd.blind,
-            limit_pct,
-        )
-        fpg = tax_unit("tax_unit_fpg", period)
-        # Missouri publishes its MHABD standards as dollar amounts in
-        # Appendix J: the percentage of the monthly poverty guideline
-        # rounded up to the next whole dollar (e.g., $1,131 for one aged
-        # or disabled person and $1,804 for a blind couple in 2026).
-        mo_monthly_limit = np.ceil(limit_pct * fpg / MONTHS_IN_YEAR)
+        limit_pct = where(is_mo & is_blind, mo_mhabd.blind, limit_pct)
+        state_group = person.household("state_group_str", period)
+        unit_fpg = fpg(where(is_couple, 2, 1), state_group, period, parameters)
+        # Missouri publishes monthly dollar standards (Appendix J), each the
+        # percentage of the monthly guideline rounded up to the next dollar.
+        mo_monthly_limit = np.ceil(limit_pct * unit_fpg / MONTHS_IN_YEAR)
         return where(
             is_mo,
             mo_monthly_limit * MONTHS_IN_YEAR,
-            limit_pct * fpg,
+            limit_pct * unit_fpg,
         )
