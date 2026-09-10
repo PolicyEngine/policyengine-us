@@ -1,5 +1,7 @@
 # Initiative 195 brackets: 3.7% to $25k, 4.2% to $100k, 4.4% to $500k,
 # 7.4% to $750k, 7.9% to $1m, 8.4% above.
+# The in_effect switch defaults to false, so this case exercises the
+# baseline flat-tax path deliberately.
 - name: Flat tax applies when the reform is not in effect.
   period: 2027
   input:
@@ -29,6 +31,37 @@
     # 25,000 * 0.037 + 25,000 * 0.042 = 925 + 1,050 = 1,975.
     co_income_tax_before_non_refundable_credits: 1_975
 
+- name: Joint filers face the same brackets as single filers.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    filing_status: JOINT
+    co_taxable_income: 50_000
+  output:
+    # Same as the single-filer second-bracket case: 925 + 1,050 = 1,975.
+    co_income_tax_before_non_refundable_credits: 1_975
+
+- name: Income exactly at the second bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 100_000
+  output:
+    # 25,000 * 0.037 + 75,000 * 0.042 = 925 + 3,150 = 4,075.
+    co_income_tax_before_non_refundable_credits: 4_075
+
+- name: Income in the third bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 300_000
+  output:
+    # 925 + 3,150 + 200,000 * 0.044 = 925 + 3,150 + 8,800 = 12,875.
+    co_income_tax_before_non_refundable_credits: 12_875
+
 - name: Income in the fourth bracket.
   period: 2027
   input:
@@ -39,6 +72,17 @@
     # 925 + 75,000 * 0.042 + 400,000 * 0.044 + 100,000 * 0.074
     # = 925 + 3,150 + 17,600 + 7,400 = 29,075.
     co_income_tax_before_non_refundable_credits: 29_075
+
+- name: Income in the fifth bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 900_000
+  output:
+    # 925 + 3,150 + 17,600 + 250,000 * 0.074 + 150,000 * 0.079
+    # = 925 + 3,150 + 17,600 + 18,500 + 11,850 = 52,025.
+    co_income_tax_before_non_refundable_credits: 52_025
 
 - name: Income in the top bracket.
   period: 2027

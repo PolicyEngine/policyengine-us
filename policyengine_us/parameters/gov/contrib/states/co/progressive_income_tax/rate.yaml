@@ -1,3 +1,10 @@
+# Initiative 195 (C.R.S. 39-22-104 (1.8)) applies these graduated rates to
+# taxable years commencing on or after January 1, 2027. Unmodeled provisions:
+# (1.8)(b) taxes principal-residence gains above the IRC Section 121 exclusion
+# at a flat 4.4% rather than the graduated rates, so the model overstates tax
+# for filers above $500,000 with such gains; Section 4 applies a matching
+# schedule to C corporations and Section 5 directs excess revenue to the
+# Colorado's Future Fund, both outside the household model's scope.
 description: Colorado taxes personal income at these graduated rates under Initiative 195, regardless of filing status.
 
 brackets:
@@ -33,7 +40,9 @@ metadata:
   type: marginal_rate
   label: Colorado Initiative 195 graduated income tax rates
   reference:
-    - title: Colorado Proposed Initiative 2025-2026 195, Final Text, Section 3, C.R.S. 39-22-104 (1.8)(a)
+    - title: Colorado Proposed Initiative 2025-2026 195, Final Text, Section 3, C.R.S. 39-22-104 (1.8)(a)(I)-(III)
       href: https://www.sos.state.co.us/pubs/elections/Initiatives/titleBoard/filings/2025-2026/195Final.pdf#page=3
+    - title: Colorado Proposed Initiative 2025-2026 195, Final Text, Section 3, C.R.S. 39-22-104 (1.8)(a)(III)-(VI)
+      href: https://www.sos.state.co.us/pubs/elections/Initiatives/titleBoard/filings/2025-2026/195Final.pdf#page=4
     - title: The Colorado Sun, Initiative 195 tax calculator
       href: https://coloradosun.com/2026/09/03/colorado-initiative-195-graduated-income-tax-calculator/
