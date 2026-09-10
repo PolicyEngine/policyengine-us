@@ -7,7 +7,11 @@ class is_snap_ineligible_student(Variable):
     label = "Is an ineligible student for SNAP"
     definition_period = YEAR
     defined_for = "is_snap_higher_ed_student"
-    reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/7/2015#e",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#b_1_ii",
+        "https://www.law.cornell.edu/cfr/text/7/273.24#c_2_i",
+    )
 
     def formula(person, period, parameters):
         # Base rule: Students enrolled at least half-time in higher education

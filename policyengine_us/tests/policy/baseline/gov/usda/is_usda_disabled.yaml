@@ -67,3 +67,12 @@
     social_security_disability: 100
   output:
     is_usda_disabled: true
+
+- name: Case 9, monthly SSI receipt in a single month aggregates to a year-level USDA disabled status.
+  period: 2021
+  input:
+    age: 30
+    receives_ssi:
+      2021-01: true
+  output:
+    is_usda_disabled: true
