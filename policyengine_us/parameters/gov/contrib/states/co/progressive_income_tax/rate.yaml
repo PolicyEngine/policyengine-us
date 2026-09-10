@@ -1,0 +1,39 @@
+description: Colorado taxes personal income at these graduated rates under Initiative 195, regardless of filing status.
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0.037
+  - threshold:
+      0000-01-01: 25_000
+    rate:
+      0000-01-01: 0.042
+  - threshold:
+      0000-01-01: 100_000
+    rate:
+      0000-01-01: 0.044
+  - threshold:
+      0000-01-01: 500_000
+    rate:
+      0000-01-01: 0.074
+  - threshold:
+      0000-01-01: 750_000
+    rate:
+      0000-01-01: 0.079
+  - threshold:
+      0000-01-01: 1_000_000
+    rate:
+      0000-01-01: 0.084
+
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Colorado Initiative 195 graduated income tax rates
+  reference:
+    - title: Colorado Proposed Initiative 2025-2026 195, Results
+      href: https://www.sos.state.co.us/pubs/elections/Initiatives/titleBoard/results/2025-2026/195Results.html
+    - title: The Colorado Sun, Initiative 195 tax calculator
+      href: https://coloradosun.com/2026/09/03/colorado-initiative-195-graduated-income-tax-calculator/
