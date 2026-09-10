@@ -1,0 +1,56 @@
+- name: The dividend is inactive by default.
+  period: 2027
+  input:
+    age: 40
+  output:
+    trump_dividend: 0
+
+- name: An adult citizen receives the dividend when in effect.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+  output:
+    trump_dividend: 5_000
+
+- name: A 17-year-old citizen does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 17
+  output:
+    trump_dividend: 0
+
+- name: An 18-year-old citizen receives the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 18
+  output:
+    trump_dividend: 5_000
+
+- name: A non-citizen adult does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    trump_dividend: 0
+
+- name: Two adult citizens and a child receive two payments in total.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+      adult_two:
+        age: 38
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two, child]
+  output:
+    trump_dividend: [5_000, 5_000, 0]
