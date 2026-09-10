@@ -18,12 +18,5 @@ brackets:
   - threshold:
       2024-01-01: 65
     amount:
-      values:
-        2024-01-01: 5_500
-        2025-01-01: 5_660
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: nearest
-            interval: 10
+      2024-01-01: 5_500
+      2025-01-01: 5_660

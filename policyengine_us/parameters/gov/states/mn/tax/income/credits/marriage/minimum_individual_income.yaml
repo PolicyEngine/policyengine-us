@@ -9,11 +9,6 @@ metadata:
   period: year
   unit: currency-USD
   label: Minnesota marriage credit minimum individual income for eligibility
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 1_000
   reference:
   # The legal code states that the minimum income will defined by the commissioner of revenue each year
   # and published in the Minnesota Schedule M1MA instructions.

@@ -17,6 +17,8 @@ metadata:
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_book_gen_instr.pdf
   - title: 36 MRSA § 5403 (Maine annual adjustments for inflation)
     href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+  - title: 36 M.R.S. § 5124-C (Standard deduction amounts for tax year 2026)
+    href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
 SINGLE:
   values:
     2018-01-01: 12_000
@@ -27,6 +29,7 @@ SINGLE:
     2023-01-01: 13_850
     2024-01-01: 14_600
     2025-01-01: 15_000
+    2026-01-01: 15_300
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -43,6 +46,7 @@ JOINT:
     2023-01-01: 27_700
     2024-01-01: 29_200
     2025-01-01: 30_000
+    2026-01-01: 30_600
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -59,6 +63,7 @@ SEPARATE:
     2023-01-01: 13_850
     2024-01-01: 14_600
     2025-01-01: 15_000
+    2026-01-01: 15_300
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -75,6 +80,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 20_800
     2024-01-01: 21_900
     2025-01-01: 22_500
+    2026-01-01: 22_950
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -91,6 +97,7 @@ SURVIVING_SPOUSE:
     2023-01-01: 27_700
     2024-01-01: 29_200
     2025-01-01: 30_000
+    2026-01-01: 30_600
   metadata:
     uprating:
       parameter: gov.irs.uprating

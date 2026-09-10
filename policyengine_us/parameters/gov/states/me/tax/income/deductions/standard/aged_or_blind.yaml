@@ -13,6 +13,10 @@ metadata:
     href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
   - title: 36 MRSA § 5403 (Maine annual adjustments for inflation)
     href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+  - title: 36 M.R.S. § 5124-C(1-B)(B) (Maine conformity to IRC § 63(c)(3))
+    href: https://legislature.maine.gov/statutes/36/title36sec5124-C.html
+  - title: IRS Rev. Proc. 2025-32, Section 3.15 (2026 federal additional standard deduction)
+    href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 SINGLE:
   values:
     2018-01-01: 1_600
@@ -22,6 +26,7 @@ SINGLE:
     2023-01-01: 1_850
     2024-01-01: 1_950
     2025-01-01: 2_000
+    2026-01-01: 2_050
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -37,6 +42,7 @@ JOINT:
     2023-01-01: 1_500
     2024-01-01: 1_550
     2025-01-01: 1_600
+    2026-01-01: 1_650
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -52,6 +58,7 @@ SEPARATE:
     2023-01-01: 1_500
     2024-01-01: 1_550
     2025-01-01: 1_600
+    2026-01-01: 1_650
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -67,6 +74,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 1_850
     2024-01-01: 1_950
     2025-01-01: 2_000
+    2026-01-01: 2_050
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -82,6 +90,7 @@ SURVIVING_SPOUSE:
     2023-01-01: 1_500
     2024-01-01: 1_550
     2025-01-01: 1_600
+    2026-01-01: 1_650
   metadata:
     uprating:
       parameter: gov.irs.uprating

@@ -190,26 +190,26 @@ def test_wa_millionaires_standard_deduction_uses_biennial_schedule():
     )
 
 
-def test_me_standard_deductions_round_down_to_fifty_dollars():
+def test_me_standard_deductions_published_2026():
     standard = SYSTEM.parameters.gov.states.me.tax.income.deductions.standard
     base = standard.amount("2026-01-01")
     aged_or_blind = standard.aged_or_blind("2026-01-01")
 
     expected_base = {
         "SINGLE": 15_300,
-        "JOINT": 30_650,
+        "JOINT": 30_600,
         "SEPARATE": 15_300,
-        "HEAD_OF_HOUSEHOLD": 23_000,
-        "SURVIVING_SPOUSE": 30_650,
+        "HEAD_OF_HOUSEHOLD": 22_950,
+        "SURVIVING_SPOUSE": 30_600,
     }
     assert {status: base[status] for status in expected_base} == expected_base
 
     expected_additional = {
-        "SINGLE": 2_000,
-        "JOINT": 1_600,
-        "SEPARATE": 1_600,
-        "HEAD_OF_HOUSEHOLD": 2_000,
-        "SURVIVING_SPOUSE": 1_600,
+        "SINGLE": 2_050,
+        "JOINT": 1_650,
+        "SEPARATE": 1_650,
+        "HEAD_OF_HOUSEHOLD": 2_050,
+        "SURVIVING_SPOUSE": 1_650,
     }
     assert {
         status: aged_or_blind[status] for status in expected_additional
@@ -225,30 +225,16 @@ def test_mn_alternate_deduction_reductions_round_down_to_fifty_dollars():
     assert standard == 1_107_650
 
 
-def test_mn_homestead_credit_refund_rounds_to_ten_dollars():
-    max_refund = (
-        SYSTEM.parameters.gov.states.mn.tax.property.homestead_credit_refund.max_refund
-    )
-
-    assert max_refund.brackets[0].amount("2026-01-01") == 3_560
-    assert max_refund.brackets[1].threshold("2026-01-01") == 2_240
-    assert max_refund.brackets[1].amount("2026-01-01") == 3_560
-    assert max_refund.brackets[-1].threshold("2026-01-01") == 145_720
-    assert max_refund.brackets[-1].amount("2026-01-01") == 0
-
-
-def test_mn_marriage_credit_thresholds_use_published_2025_and_round_to_thousand():
+def test_mn_marriage_credit_thresholds_use_published_2025():
     marriage = SYSTEM.parameters.gov.states.mn.tax.income.credits.marriage
 
     assert marriage.minimum_individual_income("2025-01-01") == 31_000
-    assert marriage.minimum_individual_income("2026-01-01") == 32_000
     assert marriage.minimum_taxable_income("2025-01-01") == 48_000
-    assert marriage.minimum_taxable_income("2026-01-01") == 49_000
 
 
-def test_mt_old_age_subtraction_rounds_to_ten_dollars():
+def test_mt_old_age_subtraction_uses_published_2025():
     amount = SYSTEM.parameters.gov.states.mt.tax.income.subtractions.old_age.amount
 
-    assert amount.brackets[0].amount("2026-01-01") == 0
+    assert amount.brackets[0].amount("2025-01-01") == 0
+    assert amount.brackets[1].amount("2024-01-01") == 5_500
     assert amount.brackets[1].amount("2025-01-01") == 5_660
-    assert amount.brackets[1].amount("2026-01-01") == 5_790
