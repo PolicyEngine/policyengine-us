@@ -1,0 +1,65 @@
+- name: Case 1, general assistance is counted monthly and the federal baseline is unchanged.
+  period: 2026-01
+  input:
+    state_code: WY
+    general_assistance: 2_400
+  output:
+    wy_power_gross_unearned_income: 200
+    tanf_gross_unearned_income: 0
+
+- name: Case 2, existing unearned sources are preserved without general assistance.
+  period: 2026-01
+  input:
+    state_code: WY
+    general_assistance: 0
+    social_security: 3_600
+    child_support_received: 1_200
+    financial_assistance: 600
+  output:
+    wy_power_gross_unearned_income: 450
+    tanf_gross_unearned_income: 450
+
+- name: Case 3, earnings and SSI are excluded from gross unearned income.
+  period: 2026-01
+  input:
+    state_code: WY
+    employment_income_before_lsr: 12_000
+    ssi: 6_000
+    general_assistance: 2_400
+  output:
+    wy_power_gross_unearned_income: 200
+
+- name: Case 4, state gross unearned income is zero outside the state.
+  period: 2026-01
+  input:
+    state_code: ME
+    general_assistance: 2_400
+  output:
+    wy_power_gross_unearned_income: 0
+
+- name: Workers compensation is countable unearned income.
+  period: 2026-01
+  input:
+    state_code: WY
+    workers_compensation: 2400
+  output:
+    wy_power_gross_unearned_income: 200
+
+- name: Taxable and tax-exempt interest are excluded.
+  period: 2026-01
+  input:
+    state_code: WY
+    taxable_interest_income: 1200
+    tax_exempt_interest_income: 1200
+  output:
+    wy_power_gross_unearned_income: 0
+
+- name: Dividends and workers compensation count while interest is excluded.
+  period: 2026-01
+  input:
+    state_code: WY
+    workers_compensation: 2400
+    dividend_income: 2400
+    taxable_interest_income: 2400
+  output:
+    wy_power_gross_unearned_income: 400

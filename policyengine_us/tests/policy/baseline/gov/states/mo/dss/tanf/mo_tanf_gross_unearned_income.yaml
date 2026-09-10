@@ -50,3 +50,328 @@
     # DSS Manual 0210.005.10: excluded household members contribute
     # neither needs nor income.
     mo_tanf_gross_unearned_income: 500
+
+# Missouri DSS Manual 0210.015.05 counts workers compensation as unearned income.
+# Income inputs are annual amounts; TANF outputs below are monthly.
+
+- name: Workers compensation reduces the grant
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 2400
+        unemployment_compensation: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: [0.0, 0]
+    mo_tanf_gross_unearned_income: 200.0
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 34.08628
+
+- name: Unemployment remains countable
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 0
+        unemployment_compensation: 2400
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: [200.0, 0]
+    mo_tanf_gross_unearned_income: 200.0
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 34.08628
+
+- name: Mixed workers compensation and unemployment are counted once
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 1800
+        unemployment_compensation: 600
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: [50.0, 0]
+    mo_tanf_gross_unearned_income: 200.0
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 34.08628
+
+- name: No income receives the maximum grant
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 0
+        unemployment_compensation: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: [0.0, 0]
+    mo_tanf_gross_unearned_income: 0.0
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 234.08628
+
+- name: Workers compensation above the payment standard makes the unit ineligible
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 6000
+        unemployment_compensation: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    tanf_gross_unearned_income: [0.0, 0]
+    mo_tanf_gross_unearned_income: 500.0
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: false
+    mo_tanf: 0
+
+- name: Workers compensation of an excluded adult does not count
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation: 600
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      adult_child:
+        age: 20
+        workers_compensation: 2400
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+      adult_tax_unit:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: MO
+  output:
+    mo_tanf_is_assistance_unit_member: [true, true, false]
+    mo_tanf_gross_unearned_income: 50
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 184.08628
+
+- name: Workers compensation of an SSI recipient does not count
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        workers_compensation: 2400
+        receives_ssi: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_tanf_is_assistance_unit_member: [false, true]
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf: 135.68718
+
+- name: Taxable and tax-exempt interest are excluded from Missouri TANF income
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        taxable_interest_income: 1_200
+        tax_exempt_interest_income: 1_200
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.015.35.45 and IM-67 (May 22, 2003).
+    tanf_gross_unearned_income: [200, 0]
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_countable_income: 0
+    mo_tanf_eligible: true
+    mo_tanf: 234.08628
+
+- name: Interest is excluded while dividends and workers compensation count
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        taxable_interest_income: 1_200
+        tax_exempt_interest_income: 1_200
+        dividend_income: 600
+        workers_compensation: 1_800
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # The $200/month of interest is excluded; $50 in dividends and
+    # $150 in workers compensation remain countable under 0210.015.05.
+    tanf_gross_unearned_income: [250, 0]
+    mo_tanf_gross_unearned_income: 200
+    mo_tanf_countable_income: 200
+    mo_tanf_eligible: true
+    mo_tanf: 34.08628
+
+- name: Disability payments and strike benefits count alongside workers compensation
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_is_assistance_unit_member: true
+    disability_benefits: 1_200
+    strike_benefits: 600
+    workers_compensation: 600
+  output:
+    mo_tanf_gross_unearned_income: 200
+
+- name: Recurring retirement payments include pension, military, railroad and account distributions
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_is_assistance_unit_member: true
+    pension_income: 1_200
+    military_retirement_pay: 600
+    railroad_benefits: 600
+    retirement_distributions: 1_200
+  output:
+    mo_tanf_gross_unearned_income: 300
+
+- name: Gambling winnings and recurring estate and passive farm rental income count
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_is_assistance_unit_member: true
+    gambling_winnings: 1_200
+    estate_income: 600
+    farm_rent_income: 600
+  output:
+    mo_tanf_gross_unearned_income: 200
+
+- name: General Relief and interest do not count as unearned income
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_is_assistance_unit_member: true
+    general_assistance: 2_400
+    taxable_interest_income: 1_200
+    financial_assistance: 600
+  output:
+    mo_tanf_gross_unearned_income: 50

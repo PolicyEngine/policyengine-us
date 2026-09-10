@@ -754,3 +754,104 @@
 
     wy_power: 561
     # max(961 - 400, 0) = $561
+
+# General assistance is unearned cash income: $2,400/year = $200/month.
+# With no earnings, subtract it dollar for dollar from the existing cash benefit.
+# $24,000/year = $2,000/month exceeds the income limit.
+
+- name: Case 19, general assistance reduces the cash benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_power_shelter_qualified: true
+        spm_unit_cash_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_power_earned_income_disregard: 600
+    wy_power_countable_income: 200
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
+    wy_power_eligible: true
+    wy_power_payment_standard: 847
+    wy_power: 647
+  absolute_error_margin: 0.01
+
+- name: Case 20, general assistance makes the family income ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 24_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_power_shelter_qualified: true
+        spm_unit_cash_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_power_earned_income_disregard: 600
+    wy_power_countable_income: 2_000
+    wy_power_income_eligible: false
+    wy_power_resources_eligible: true
+    wy_power_eligible: false
+    wy_power_payment_standard: 847
+    wy_power: 0
+  absolute_error_margin: 0.01
+
+- name: Workers compensation reduces the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        workers_compensation: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: WY
+  output:
+    wy_power: 647
+
+- name: Interest does not reduce the monthly POWER benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        taxable_interest_income: 1200
+        tax_exempt_interest_income: 1200
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: WY
+  output:
+    wy_power: 847

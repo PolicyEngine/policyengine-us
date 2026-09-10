@@ -1,0 +1,29 @@
+description: Wyoming counts these income sources as unearned income under the Personal Opportunities With Employment Responsibilities program.
+# Preserve the inherited start date while correcting the modeled sources.
+values:
+  2010-07-01:
+    - veterans_benefits
+    - survivor_benefits
+    - rental_income
+    - child_support_received
+    - alimony_income
+    - financial_assistance
+    - dividend_income
+    # Section 901(J) excludes interest income; dividends remain countable.
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - gi_cash_assistance
+    - social_security
+    # Section 901(J) treats state, local and tribal GA as nonexempt income.
+    # Vendor payments for purposes not covered by POWER are separately exempt.
+    - general_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Wyoming POWER unearned income sources
+  reference:
+    - title: Wyoming SNAP and POWER Policy Manual, 901(J) - Income Table
+      href: https://dfs.wyo.gov/about/policy-manuals/snap-and-power-policy-manual/
