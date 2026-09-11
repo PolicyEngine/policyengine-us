@@ -1,0 +1,22 @@
+- name: Surviving spouse renter receives the standard rent deduction cap in 2024
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        rent: 10_000
+    tax_units:
+      tax_unit:
+        filing_status: SURVIVING_SPOUSE
+        members: [head]
+    households:
+      household:
+        state_code: MA
+        members: [head]
+  output:
+    # Massachusetts has no surviving spouse filing status; the filer receives
+    # the head of household rent deduction cap.
+    # Rent deduction: min(10,000 x 0.5, 4,000) = 4,000; no other deductions.
+    ma_part_b_taxable_income_deductions: 4_000
