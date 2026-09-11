@@ -39,8 +39,6 @@
     household_size: 3
     employment_income: 60_000 # ~240% of poverty line
     state_code: CA
-    # Isolate the income list from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
   output:
     ca_care_categorically_eligible: false
     ca_care_eligible: false
@@ -60,8 +58,6 @@
         age: 10
     spm_units:
       spm_unit:
-        # Isolate the income list from SPM measurement with no housing aid.
-        spm_unit_capped_housing_subsidy: 0
         members: [parent, child1, child2]
         pre_subsidy_electricity_expense: 100
     households:
@@ -89,8 +85,6 @@
         age: 30
     spm_units:
       spm_unit:
-        # Isolate the income list from SPM measurement with no housing aid.
-        spm_unit_capped_housing_subsidy: 0
         members: [adult1, adult2, adult3]
         pre_subsidy_electricity_expense: 100
     households:

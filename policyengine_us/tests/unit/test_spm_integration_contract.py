@@ -245,29 +245,58 @@ def test_county_location_requires_observed_input_instead_of_fixed_geography_id()
 
 @pytest.mark.parametrize("variable", ["household_net_income", "marginal_tax_rate"])
 @pytest.mark.parametrize("national", [False, True])
-def test_state_only_resource_consumers_require_geography_even_without_assistance(
+def test_resource_consumers_without_housing_assistance_never_touch_geography(
     variable, national
 ):
+    """A unit with nothing to cap must not need SPM geography or composition.
+
+    Partners request net income, benefits and marginal rates without any SPM
+    measurement, and most households carry no housing assistance; the cap
+    consults the canonical housing portion only for units that do.
+    """
     situation = household(earnings=50_000)
     situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: False}
     simulation = Simulation(
         situation=situation,
         spm={"geography_kind": "national"} if national else None,
     )
-    # Actual resource and MTR formulas must evaluate the canonical cap for every
-    # unit, including units whose actual housing assistance is zero.
     assert simulation.calculate("housing_assistance", YEAR)[0] == 0
-    if national:
-        result = simulation.calculate(variable, YEAR)
-        assert np.all(np.isfinite(result))
-        assert np.all(result > 0)
-        assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
-        assert str(YEAR) in simulation.spm_provenance()["years"]
-    else:
-        with pytest.raises(SPMInputError) as error:
-            simulation.calculate(variable, YEAR)
-        assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
-        assert error.value.to_dict()["code"] == "SPM_GEOGRAPHY_REQUIRED"
+    result = simulation.calculate(variable, YEAR)
+    assert np.all(np.isfinite(result))
+    assert np.all(result > 0)
+    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
+    # No measurement was looked up, so nothing was received.
+    assert simulation.spm_provenance()["years"] == {}
+
+
+@pytest.mark.parametrize("variable", ["household_net_income", "marginal_tax_rate"])
+def test_resource_consumers_with_housing_assistance_require_geography(variable):
+    """Once there is assistance to cap, the county requirement applies.
+
+    Earnings stay low so the tenant payment sits below the housing portion
+    and the cap binds on the assistance rather than on zero.
+    """
+    situation = household(earnings=6_000)
+    situation["spm_units"]["spm_unit"]["housing_assistance"] = {YEAR: 5_000}
+    with pytest.raises(SPMInputError) as error:
+        Simulation(situation=situation).calculate(variable, YEAR)
+    assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+    assert error.value.to_dict()["code"] == "SPM_GEOGRAPHY_REQUIRED"
+    national = Simulation(situation=situation, spm={"geography_kind": "national"})
+    result = national.calculate(variable, YEAR)
+    assert np.all(np.isfinite(result))
+    capped = national.calculate("spm_unit_capped_housing_subsidy", YEAR)[0]
+    assert 0 < capped <= 5_000
+    assert str(YEAR) in national.spm_provenance()["years"]
+
+
+def test_housing_cap_evaluates_only_assisted_units():
+    """In one population, unassisted units impose no county requirement."""
+    situation = household(earnings=50_000)
+    situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: False}
+    simulation = Simulation(situation=situation)
+    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
+    assert simulation.spm_provenance()["years"] == {}
 
 
 @pytest.mark.parametrize(

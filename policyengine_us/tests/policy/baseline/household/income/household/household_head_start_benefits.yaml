@@ -2,8 +2,6 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     gov.simulation.include_head_start_benefits_in_net_income: false
     head_start: 8_000
     early_head_start: 21_000
@@ -16,8 +14,6 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     gov.simulation.include_head_start_benefits_in_net_income: true
     head_start: 8_000
     early_head_start: 21_000
@@ -30,8 +26,6 @@
   period: 2023
   absolute_error_margin: 0.01
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     gov.simulation.include_head_start_benefits_in_net_income: true
     head_start: 8_000
     early_head_start: 21_000
@@ -46,8 +40,6 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     gov.simulation.include_head_start_benefits_in_net_income: true
     head_start: 8_000
     medicaid_cost: 500
@@ -62,8 +54,6 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     gov.simulation.include_health_benefits_in_net_income: true
     head_start: 8_000
     early_head_start: 21_000

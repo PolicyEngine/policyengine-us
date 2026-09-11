@@ -83,6 +83,61 @@ class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
         )
 
 
+def masked_policyengine_amount(unit, period, field, mask):
+    """Return canonical float64 amounts for the units selected by ``mask``.
+
+    The calculator's ``policyengine_amount`` evaluates every unit in the
+    population, so a resource formula that only needs the SPM housing portion
+    for units with housing assistance to cap would otherwise demand SPM
+    geography and composition from units that never use them. Evaluate the
+    selected units only, through the same provider path, so the county and
+    composition requirements, the typed errors and the receipts attach to
+    exactly the units whose result depends on the measurement. Unselected
+    units return 0.0 and record nothing.
+    """
+    import numpy as np
+
+    fields = (
+        "reference_threshold",
+        "unadjusted_threshold",
+        "geographic_factor",
+        "threshold",
+        "housing_portion",
+    )
+    if field not in fields:
+        raise ValueError(f"Unknown SPM amount field: {field}")
+    index = fields.index(field)
+    mask = np.asarray(mask, dtype=bool)
+    result = np.zeros(mask.shape, dtype=np.float64)
+    if not mask.any():
+        return result
+    bound = unit.simulation.tax_benefit_system.spm_forecast_provider
+    adults = np.asarray(unit("spm_measurement_adults", period))[mask]
+    children = np.asarray(unit("spm_measurement_children", period))[mask]
+    if np.any(adults < 1):
+        raise SPMInputError(
+            "SPM_COMPOSITION_REQUIRED",
+            "SPM unit has no classified adult: supply source-backed independence or household head/spouse structure",
+        )
+    tenures = np.asarray(unit("spm_unit_tenure_type", period).decode_to_str())[mask]
+    if bound.geography_kind == "county":
+        counties = np.asarray(unit.household("county_fips", period))[mask]
+    else:
+        counties = [None] * len(adults)
+    rows = [
+        bound._amounts(
+            int(period.start.year),
+            int(a),
+            int(k),
+            str(t).lower(),
+            None if c is None else (c.decode() if isinstance(c, bytes) else str(c)),
+        )
+        for a, k, t, c in zip(adults, children, tenures, counties)
+    ]
+    result[mask] = [row[index] for row in rows]
+    return result
+
+
 @lru_cache(maxsize=1)
 def _installed_forecast():
     """Verify the bundled immutable artifact once; never download data."""

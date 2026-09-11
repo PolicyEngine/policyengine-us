@@ -4,11 +4,6 @@
     people:
       person:
         employment_income: 50_000
-    spm_units:
-      spm_unit:
-        # Isolate the income list from SPM measurement with no housing aid.
-        spm_unit_capped_housing_subsidy: 0
-        members: [person]
     households:
       household:
         members: [person]
@@ -24,11 +19,6 @@
         employment_income: 50_000
         social_security: 15_000
         unemployment_compensation: 10_000
-    spm_units:
-      spm_unit:
-        # Isolate the income list from SPM measurement with no housing aid.
-        spm_unit_capped_housing_subsidy: 0
-        members: [person]
     households:
       household:
         members: [person]
@@ -44,11 +34,6 @@
         employment_income: 50_000
         alimony_income: 12_000
         child_support_received: 6_000
-    spm_units:
-      spm_unit:
-        # Isolate the income list from SPM measurement with no housing aid.
-        spm_unit_capped_housing_subsidy: 0
-        members: [person]
     households:
       household:
         members: [person]

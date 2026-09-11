@@ -63,8 +63,6 @@
 - name: CBO after-tax income uses federal taxes only and keeps negative income tax
   period: 2025
   input:
-    # Isolate benefit arithmetic from SPM measurement with no housing aid.
-    spm_unit_capped_housing_subsidy: 0
     age: 40
     is_medicare_eligible: false
     medicare_enrolled: false
