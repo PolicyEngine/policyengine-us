@@ -5,44 +5,51 @@ f12188229bb1f006c73c864c2a6b191f4e1513d0.
 
 ## State
 
-Working the five review items. Verified before editing:
+All five review items are addressed in code. One item is blocked on a human
+gate (below). CI-equivalent suites are being run locally the way `.github/
+workflows/pr.yaml` runs them.
+
+Verified before editing:
 
 - Worktree HEAD and `upstream/max/spm-canonical-final-20260909` both at f1218822.
 - The Populace tag in `DEFAULT_DATASET` is published. One real download
-  (`HF_HUB_OFFLINE` unset) resolves
-  `hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909`
-  to a file whose sha256 is
-  `6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84`, matching the
-  published H5 hash. Its `household.county_fips` column holds five-digit strings
-  (`23005`, `23019`, ...) and its `person` table carries
-  `is_spm_independent_minor_role`. So the no-argument `Microsimulation()` path
-  downloads its default, and the default-dataset tests stay real (no skip guard).
-- The legacy policyengine-us-data CPS files are further out of contract than the
-  review reported:
-  - `cps_2023.h5` stores the formula-owned column `spm_unit_spm_threshold`, so
-    `Microsimulation(dataset=...)` is rejected at load, before any geography
-    selection: `ValueError: Dataset supplies formula-owned SPM output
-    spm_unit_spm_threshold.`
-  - `cps_2023.h5` also stores `county_fips` as the CPS within-state integer code
-    (`5`, `0`, `0`, `0`, `1`, ...), as the review said.
-  - `enhanced_cps_2024.h5` stores real five-digit `county_fips` and no
-    formula-owned column, but 18 of its 43,134 SPM units are single-person units
-    whose only member is 15, 16 or 17 with no head/spouse flag, so
-    `spm_measurement_adults` is 0 and the calculator raises
-    `SPM_COMPOSITION_REQUIRED` regardless of geography selection.
-  - `cities/NYC.h5` stores `county_fips` as int32 real FIPS (36047, ...).
+  (`HF_HUB_OFFLINE` unset) resolves the default URI to a file whose sha256 is
+  `6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84`, matching
+  the published H5 hash. Its `household.county_fips` column holds five-digit
+  strings and its `person` table carries `is_spm_independent_minor_role`. The
+  default-dataset tests stay real, with no skip guard.
+- CI on f1218822 failed seven jobs, not the two the review predicted: Rest (the
+  60-minute timeout), Microsimulation, Household API Partners, Baseline
+  household, Baseline contrib-hhs, Baseline states-shard-2, and Contrib congress
+  (exit 143, runner shutdown during batch 6 - infrastructure, no assertion).
 
 ## Done
 
-- (nothing committed yet beyond this file)
+1. **High 2** - `share_spm_policy` in `policyengine_us/spm.py`: an ordinary
+   household simulation now shares the shipped parameter tree and variable
+   objects and keeps only its receipts and variable registry private. 20
+   sequential single-household simulations plus `household_net_income`: 109.8s
+   before, 5.9s after, 6.1s at `main`. This is also why the Rest job timed out.
+2. **High 1** - microsimulation tests realigned to the population input
+   contract; the legacy policyengine-us-data CPS files are asserted to fail
+   closed, and the shipped build carries the society-wide coverage. Five more
+   YAML files repaired with the zero-housing-subsidy input this PR already uses.
+3. **Lows** - country-level errors for an absent county (naming the two fixes a
+   caller has) and for an unresolved dataset build id (naming the URI).
+4. **Medium 5** - the absent-county message names the exact caller fix.
+
+## Blocked
+
+`policyengine_us/tests/policy/baseline/partners/analytics_coverage/edge_cases/
+state/ca/{care,fera}.yaml` fail with SPM_GEOGRAPHY_REQUIRED. CA CPUC countable
+income includes `spm_unit_capped_housing_subsidy`, and both fixtures name their
+county as `county_str: LOS_ANGELES_COUNTY_CA`, which the model never converts to
+`county_fips`. Editing a partner contract fixture needs the three-question
+`AskUserQuestion` gate in CLAUDE.md, which a non-interactive session cannot run,
+so these two files are untouched and reported for root's decision.
 
 ## Next
 
-1. High 2: share policy state on the plain household path instead of deep-cloning.
-2. High 1: realign the legacy-dataset microsimulation tests; keep default-dataset
-   tests real.
-3. Lows: country-level missing-tag download error; required-county error for
-   non-string county inputs.
-4. Medium 3: corrected PR body to the rollout out/ path.
-5. Run Rest, Microsimulation, Household API Partners and the affected YAML shards
-   the way CI does; record commands and exit codes.
+- Finish the local CI-equivalent runs and record exact commands and exit codes.
+- Write the corrected PR body to the rollout out/ path (root edits GitHub).
+- Push and watch `gh pr checks 9428`.
