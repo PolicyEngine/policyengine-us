@@ -1,5 +1,6 @@
 """Construction and dataset contracts that require the Python simulation API."""
 
+import hashlib
 import json
 
 import numpy as np
@@ -111,6 +112,81 @@ def test_reform_baseline_and_clones_calculate_original_tax(simulation_type):
                 assert holder.variable is clone.tax_benefit_system.variables[name]
                 assert holder.simulation is clone
         assert clone.tax_benefit_system.simulation is clone
+
+
+def _parameter_fingerprint(system):
+    """Digest every authored parameter value, so a shared-tree edit is visible."""
+    digest = hashlib.sha256()
+    for parameter in system.parameters.get_descendants():
+        values = getattr(parameter, "values_list", None)
+        if values is None:
+            continue
+        digest.update(parameter.name.encode())
+        for value_at_instant in values:
+            digest.update(
+                f"|{value_at_instant.instant_str}={value_at_instant.value}".encode()
+            )
+    return digest.hexdigest()
+
+
+def test_ordinary_simulation_shares_default_policy_state():
+    """A plain household simulation must not rebuild the shipped policy.
+
+    Core's TaxBenefitSystem.clone() rebuilds the parameter tree node by node and
+    empties both at-instant caches, and this country deep-copies every variable
+    on top, so cloning per request would make each household API call rebuild
+    the at-instant tree for every period it touches. Nothing distinguishes an
+    ordinary simulation's policy from the shared instance's, so it shares the
+    tree and reuses the variable objects, and only its receipts and its own
+    variable registry are private.
+    """
+    parameters_before = _parameter_fingerprint(system)
+    variables_before = {name: id(value) for name, value in system.variables.items()}
+    provider_before = system.spm_forecast_provider
+
+    simulation = Simulation(situation=single_person_situation())
+    policy = simulation.tax_benefit_system
+
+    # Same parameter tree and the same warm at-instant caches: no clone ran.
+    assert policy is not system
+    assert policy.parameters is system.parameters
+    assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
+    # Entities stay bound to the shared instance, exactly as before this change.
+    assert policy.entities is system.entities
+    # A private registry, holding the shared instance's own variable objects.
+    assert policy.variables is not system.variables
+    assert (
+        policy.variables["household_net_income"]
+        is system.variables["household_net_income"]
+    )
+    rebound = {
+        name
+        for name, variable in policy.variables.items()
+        if variable is not system.variables[name]
+    }
+    # Only the structural reform re-applied at this simulation's start instant
+    # rebinds a name, and it rebinds in the private registry.
+    assert len(rebound) < 10, sorted(rebound)
+
+    # Nothing reached the shared instance.
+    assert {name: id(value) for name, value in system.variables.items()} == (
+        variables_before
+    )
+    assert _parameter_fingerprint(system) == parameters_before
+    assert system.spm_forecast_provider is provider_before
+
+    # Receipts remain private per simulation.
+    simulation.calculate("spm_unit_spm_threshold", 2024)
+    assert set(simulation.spm_provenance()["years"]) == {"2024"}
+    assert system.spm_forecast_provider.provenance()["years"] == {}
+    later = Simulation(situation=single_person_situation())
+    assert later.spm_provenance()["years"] == {}
+    # The second simulation reads the at-instant tree the first one built.
+    assert system.parameters._at_instant_cache
+    assert (
+        later.tax_benefit_system.parameters._at_instant_cache
+        is system.parameters._at_instant_cache
+    )
 
 
 def test_applying_reform_to_calculated_clone_preserves_original_tax():

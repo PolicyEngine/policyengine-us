@@ -74,6 +74,35 @@ def spm_config(provider):
     }
 
 
+def share_spm_policy(system, *, copy_receipts=False):
+    """Isolate receipts and variable registration without rebuilding policy.
+
+    An ordinary simulation applies no user reform, so it needs private receipts
+    and a private variable registry, not a private copy of the policy itself.
+    Core's TaxBenefitSystem.clone() rebuilds the whole parameter tree node by
+    node and empties both at-instant caches, and this country then deep-copies
+    every variable object on top; doing that per household simulation throws
+    away the shared instance's warm parameter caches and lands on household API
+    request latency.
+
+    Share the parameter tree and its at-instant caches, and reuse the variable
+    objects. Every core operation that a reform performs on a variable
+    (add_variable, replace_variable, update_variable, neutralize_variable,
+    annualize_variable) rebinds ``variables[name]`` to a newly constructed
+    object rather than mutating the registered one, so a private dict is enough
+    to keep this simulation's registration - including the structural reform
+    re-applied at its own start instant - out of the shared instance.
+    ``test_ordinary_simulation_shares_default_policy_state`` enforces that
+    invariant against the shared instance itself.
+    """
+    policy = copy(system)
+    policy.variables = dict(system.variables)
+    policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
+        copy_receipts=copy_receipts
+    )
+    return policy
+
+
 def clone_spm_system(system, *, copy_receipts=True):
     """Clone policy state without reconstructing partially defined reforms.
 
@@ -154,9 +183,10 @@ class SPMSimulationMixin:
                     reform=reform, spm=config, start_instant=start_instant
                 )
             else:
-                chosen = clone_spm_system(
-                    self.default_tax_benefit_system_instance, copy_receipts=False
-                )
+                # No reform and no supplied system: nothing distinguishes this
+                # simulation's policy from the shared instance's, so keep its
+                # warm parameter caches instead of rebuilding them.
+                chosen = share_spm_policy(self.default_tax_benefit_system_instance)
         else:
             chosen = clone_spm_system(supplied, copy_receipts=False)
         # This is a new simulation, unlike clone() of an already calculated
