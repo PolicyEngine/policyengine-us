@@ -3,9 +3,10 @@ values:
   # The state plan expresses the band as "above 261 percent of the FPL up to and
   # including 317 percent of the FPL" before the MAGI conversion; DHCS publishes
   # the converted limits as 266 to 322 percent. The lower bound is not a separate
-  # parameter because every child at or below 266 percent is Medi-Cal eligible
-  # (gov.hhs.medicaid.eligibility.categories.*.income_limit.CA) and CCHIP only
-  # covers children who are not eligible for no-cost Medi-Cal.
+  # parameter because CCHIP only covers children who are not eligible for
+  # no-cost Medi-Cal, so the model's Medi-Cal child limit for California
+  # (gov.hhs.medicaid.eligibility.categories.*.income_limit.CA, 2.66) is the
+  # effective floor.
   2014-01-01: 3.22
 metadata:
   unit: /1
@@ -18,5 +19,5 @@ metadata:
       href: https://www.dhcs.ca.gov/wp-content/uploads/2025/10/SPA-24-0012-Approval.pdf#page=23
     - title: DHCS Medi-Cal Program Descriptions by Federal Poverty Level (CCHIP 266 to 322 percent FPL, Santa Clara, San Francisco, and San Mateo counties)
       href: https://www.dhcs.ca.gov/services/medi-cal-resources/medi-cal-eligibility-division/all-county-welfare-directors-medi-cal-eligibility-division-information-letters/program-descriptions-by-fpl-enclosure-3/
-    - title: CMS approval of California CHIP State Plan Amendment 20 (SPA CA-17-0045), CCHIP population above 261 percent up to and including 317 percent FPL effective January 1, 2014
+    - title: CMS approval of California CHIP State Plan Amendment 20, CCHIP population above 261 percent up to and including 317 percent FPL effective January 1, 2014
       href: https://www.medicaid.gov/sites/default/files/CHIP/Downloads/CA/CA-CHIPSPA-20.pdf#page=1
