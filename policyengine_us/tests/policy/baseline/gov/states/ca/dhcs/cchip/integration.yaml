@@ -1,0 +1,317 @@
+# California County Children's Health Initiative Program (CCHIP) end to end.
+# Married couple with one child, 2025. The three-person FPG is 26,650, so
+# 80,000 of employment income is 300 percent FPL (medicaid_income_level 3.0),
+# inside the CCHIP band (above the 266 percent Medi-Cal child limit, at or
+# below 322 percent). per_capita_chip is California separate-CHIP spending
+# divided by enrollment from the MACPAC calibration parameters.
+- name: Case 1, Santa Clara County child at 300 percent FPL gets CCHIP and loses ACA PTC eligibility.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [3, 3, 3]
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    is_chip_eligible: [false, false, true]
+    # 678,088,532 / 51,684 = 13,119.89
+    per_capita_chip: [0, 0, 13_119.89]
+    chip: [0, 0, 13_119.89]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 2, San Mateo County child at 300 percent FPL gets CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SAN_MATEO_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    chip: [0, 0, 13_119.89]
+
+- name: Case 3, San Francisco County child at 300 percent FPL gets CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    chip: [0, 0, 13_119.89]
+
+- name: Case 4, Los Angeles County child at 300 percent FPL gets no CHIP and keeps ACA PTC eligibility.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    medicaid_income_level: [3, 3, 3]
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]
+
+- name: Case 5, Santa Clara County child above 322 percent FPL gets no CHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 90,000 / 26,650 = 3.38 FPL
+        employment_income: 90_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [3.38, 3.38, 3.38]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]
+
+- name: Case 6, Santa Clara County child below 266 percent FPL gets Medi-Cal, not CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 60,000 / 26,650 = 2.25 FPL, at or below the 2.66 Medi-Cal child limit
+        employment_income: 60_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [2.25, 2.25, 2.25]
+    is_medicaid_eligible: [false, false, true]
+    medicaid_category: [NONE, NONE, OLDER_CHILD]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 7, pregnant spouse gets FCEP CHIP while the child gets CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        is_pregnant: true
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    # The pregnant person's household size counts the unborn child, so her
+    # income level is 80,000 / (4-person FPG) = 2.49, above the 2.13 Medi-Cal
+    # pregnancy limit and within the 3.22 FCEP limit.
+    medicaid_income_level: [3, 2.49, 3]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, PREGNANT_FCEP, CHILD_CCHIP]
+    chip: [0, 13_119.89, 13_119.89]
+    is_aca_ptc_eligible: [true, false, false]
+
+- name: Case 8, Santa Clara County child with employer coverage gets no CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+        has_esi: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
