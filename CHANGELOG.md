@@ -1,3 +1,11 @@
+## [1.825.0] - 2026-09-11
+
+### Added
+
+- Colorado Initiative 195 contributed reform, replacing the flat income tax with a graduated rate schedule.
+- Trump dividend contributed reform, providing a payment to citizens at or above a minimum age.
+
+
 ## [1.824.9] - 2026-09-11
 
 ### Fixed
