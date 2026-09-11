@@ -15,6 +15,11 @@ class ma_filing_status(Variable):
     default_value = MassachusettsFilingStatus.SINGLE
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax"
+    documentation = (
+        "Since Massachusetts doesn't have a filing status equivalent to the "
+        "federal qualifying widow(er) with dependent child, you can file as "
+        "head of household for 2 years after the year your spouse died."
+    )
     label = "Massachusetts filing status"
     defined_for = StateCode.MA
 
