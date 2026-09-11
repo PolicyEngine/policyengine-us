@@ -1730,7 +1730,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
-version = "1.824.8"
+version = "1.825.1"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -1763,7 +1763,7 @@ requires-dist = [
     { name = "policyengine-core", specifier = ">=3.30.1" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
-    { name = "spm-calculator", specifier = "==0.3.1" },
+    { name = "spm-calculator", specifier = "==1.0.0" },
     { name = "tables", specifier = ">=3.9" },
     { name = "towncrier", marker = "extra == 'dev'", specifier = ">=24.8.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
@@ -2443,7 +2443,7 @@ wheels = [
 
 [[package]]
 name = "spm-calculator"
-version = "0.3.1"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "census" },
@@ -2453,9 +2453,9 @@ dependencies = [
     { name = "requests" },
     { name = "us" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/54/3b/b805c7e3e18c5b5c00f61b60112f9690d084c910e2481bc020f35390d8fd/spm_calculator-0.3.1.tar.gz", hash = "sha256:41f2f4d00d8c03422a7d57b800052e7760b88e463a5884802f83ed58d35c18c1", size = 75945, upload-time = "2026-04-17T19:52:39.707Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c2/5e/3f28b212c401795990250bb3daec741f699a8c7dc2a23a3db7005df6feb6/spm_calculator-1.0.0.tar.gz", hash = "sha256:a99aac8c2c0bf81a9455105bbf872366f1ea9066a99cd793714881cd3db846dc", size = 7150825, upload-time = "2026-09-11T15:45:12.732Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/1b/29f705f8a96fc7f55f2c07dfcddbbae78efdc6f174d25d4a0560fc3f5cf9/spm_calculator-0.3.1-py3-none-any.whl", hash = "sha256:52c57ecc5a240ec941b0f2b0d93bc4fa437ef6250e233baed8e11916fa9c1150", size = 57826, upload-time = "2026-04-17T19:52:38.444Z" },
+    { url = "https://files.pythonhosted.org/packages/19/a0/c484f69a0ebf88a9b9fd0ac28176f8df66550f46714f1b0c5ec0b360824e/spm_calculator-1.0.0-py3-none-any.whl", hash = "sha256:e354937a5e1a4045d4966ed594a528d8b02866fabaac9bb5672017004b627305", size = 7395384, upload-time = "2026-09-11T15:45:10.492Z" },
 ]
 
 [[package]]
