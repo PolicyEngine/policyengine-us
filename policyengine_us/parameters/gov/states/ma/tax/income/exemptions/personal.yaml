@@ -8,11 +8,13 @@ SEPARATE:
   # Rises with inflation starting in 2004.
   # Values from 2015 to 2022 are from Tax Foundation.
   2015-01-01: 4_400
+# Massachusetts has no surviving spouse filing status; federal qualifying
+# surviving spouses generally file as head of household in Massachusetts.
 SURVIVING_SPOUSE:
-  2002-01-01: 3_300
+  2002-01-01: 5_100
   # Rises with inflation starting in 2004.
   # Values from 2015 to 2022 are from Tax Foundation.
-  2015-01-01: 4_400
+  2015-01-01: 6_800
 HEAD_OF_HOUSEHOLD:
   2002-01-01: 5_100
   # Rises with inflation starting in 2004.
@@ -33,6 +35,8 @@ metadata:
   reference:
     - title: "Taxable income: adjusted gross income less deductions and exemptions (b)(2)(A)"
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    - title: Filing Status on Massachusetts Personal Income Tax
+      href: https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax
     - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
       href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
     - title: Form 1 2022 | Massachusetts | Resident Income Tax (line 2)

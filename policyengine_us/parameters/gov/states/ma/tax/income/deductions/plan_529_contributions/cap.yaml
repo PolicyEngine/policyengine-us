@@ -11,11 +11,15 @@ metadata:
     href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
   - title: Massachusetts DOR 529 Deduction Information
     href: https://www.mass.gov/info-details/529-plan-deduction
+  - title: Filing Status on Massachusetts Personal Income Tax
+    href: https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax
 
 JOINT:
   2021-01-01: 2_000
+# Massachusetts has no surviving spouse filing status; federal qualifying
+# surviving spouses generally file as head of household in Massachusetts.
 SURVIVING_SPOUSE:
-  2021-01-01: 2_000
+  2021-01-01: 1_000
 SINGLE:
   2021-01-01: 1_000
 HEAD_OF_HOUSEHOLD:

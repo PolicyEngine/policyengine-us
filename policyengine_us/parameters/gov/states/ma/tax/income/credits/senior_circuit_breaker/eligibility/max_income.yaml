@@ -21,13 +21,15 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 86_000
   2024-01-01: 91_000
   2025-01-01: 94_000
+# Massachusetts has no surviving spouse filing status; federal qualifying
+# surviving spouses generally file as head of household in Massachusetts.
 SURVIVING_SPOUSE:
-  2001-01-01: 40_000
-  2021-01-01: 62_000
-  2022-01-01: 64_000
-  2023-01-01: 69_000
-  2024-01-01: 72_000
-  2025-01-01: 75_000
+  2001-01-01: 50_000
+  2021-01-01: 78_000
+  2022-01-01: 80_000
+  2023-01-01: 86_000
+  2024-01-01: 91_000
+  2025-01-01: 94_000
 SEPARATE:
   2001-01-01: 40_000
   2021-01-01: 62_000
@@ -52,6 +54,8 @@ metadata:
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
     - title: Massachusetts Senior Circuit Breaker Tax Credit | Mass.gov
       href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit
+    - title: Filing Status on Massachusetts Personal Income Tax
+      href: https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax
     - title: 2022 Schedule CB
       href: https://www.mass.gov/doc/2022-schedule-cb-circuit-breaker-credit/download
     - title: 2023 Schedule CB

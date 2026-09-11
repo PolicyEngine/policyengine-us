@@ -1,0 +1,1 @@
+Massachusetts Child and Family Tax Credit now counts disabled spouses from 2023 and excludes separate filers, and surviving spouse filers receive head of household treatment in Massachusetts filing-status parameters.

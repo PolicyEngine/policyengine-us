@@ -134,3 +134,79 @@
         members: [filer, disabled_dependent, elderly_dependent]
   output:
     ma_child_and_family_credit: 880
+
+- name: Disabled spouse qualifies in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) qualifying individual: 1 x 440 = 440.
+    ma_child_and_family_credit: 440
+
+- name: Disabled spouse does not qualify in 2022 under the predecessor credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # The pre-2023 credit for eligible dependents covered only
+    # IRC Section 152 dependents.
+    ma_child_and_family_credit: 0
+
+- name: Married filing separately cannot claim the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    ma_child_and_family_credit: 0
