@@ -110,6 +110,14 @@ def test_published_national_reference_is_exact_before_storage_cast():
     [
         (None, "SPM_GEOGRAPHY_REQUIRED"),
         ("", "SPM_GEOGRAPHY_REQUIRED"),
+        # County FIPS is a string input, so every non-string value reaches the
+        # forecast as a string. A CPS within-state code, a FIPS code that lost
+        # its leading zero to an integer column and a missing value are absent
+        # counties, not unavailable ones.
+        (5, "SPM_GEOGRAPHY_REQUIRED"),
+        (6037, "SPM_GEOGRAPHY_REQUIRED"),
+        ("6037", "SPM_GEOGRAPHY_REQUIRED"),
+        (float("nan"), "SPM_GEOGRAPHY_REQUIRED"),
         ("99999", "SPM_GEOGRAPHY_UNAVAILABLE"),
     ],
 )
@@ -119,6 +127,11 @@ def test_state_only_or_unknown_county_never_selects_national(county, code):
         simulation.calculate("spm_unit_spm_threshold", 2025)
     assert error.value.to_dict()["code"] == code
     assert simulation.spm_config["geography_kind"] == "county"
+    if code == "SPM_GEOGRAPHY_REQUIRED":
+        # The message has to name the caller's fix, not the artifact.
+        message = str(error.value)
+        assert "five-digit string" in message
+        assert 'geography_kind="national"' in message
 
 
 def test_explicit_national_and_serialized_round_trip():

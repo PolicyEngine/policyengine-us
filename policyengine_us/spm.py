@@ -5,6 +5,7 @@ input handling and policy resources. Geography is never inferred from a missing
 county: callers must explicitly select national or a particular metropolitan area.
 """
 
+import re
 from collections.abc import Mapping
 from copy import copy, deepcopy
 from functools import lru_cache
@@ -12,6 +13,7 @@ from inspect import signature
 
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
+from spm_calculator.errors import SPMInputError
 from spm_calculator.policyengine_adapter import (
     FORMULA_OWNED_INPUTS,
     PolicyEngineSPMProvider,
@@ -29,6 +31,56 @@ CONFIG_FIELDS = frozenset(
         "as_of",
     }
 )
+
+COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
+
+COUNTY_INPUT_FIX = (
+    'send county_fips as a five-digit string (for example "06037"), or select '
+    'geography_kind="national" in the spm configuration'
+)
+
+
+def is_county_fips(value):
+    """Accept only a five-digit county FIPS code.
+
+    Integers, pandas missing values and truncated codes all arrive here as
+    strings, because ``county_fips`` is a string variable and the model casts
+    every input to its own dtype. A within-state CPS code such as ``5`` and a
+    missing value such as ``nan`` are not county FIPS codes, so they must fail
+    as an absent county rather than as an unrecognised one.
+    """
+    if value is None:
+        return False
+    if isinstance(value, bytes):
+        value = value.decode()
+    return COUNTY_FIPS_PATTERN.fullmatch(str(value)) is not None
+
+
+class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
+    """Name the caller's fix when a county selection has no usable county.
+
+    The calculator reports an absent county only for ``None`` and the empty
+    string, and reports anything else as an unavailable county. A legacy
+    population file storing the CPS within-state integer code, or a household
+    request sending an integer or a missing value, would otherwise be told its
+    county assignment is unavailable, which points at the artifact instead of
+    at the input.
+    """
+
+    def calculate_unit(self, *, year, adults, children, tenure, county_fips=None):
+        if self.geography_kind == "county" and not is_county_fips(county_fips):
+            raise SPMInputError(
+                "SPM_GEOGRAPHY_REQUIRED",
+                f"County selection has no county FIPS input ({county_fips!r}): "
+                f"{COUNTY_INPUT_FIX}",
+            )
+        return super().calculate_unit(
+            year=year,
+            adults=adults,
+            children=children,
+            tenure=tenure,
+            county_fips=county_fips,
+        )
 
 
 @lru_cache(maxsize=1)
@@ -52,7 +104,7 @@ def create_spm_provider(config=None):
         raise ValueError(
             "The installed SPM forecast does not match forecast_content_sha256"
         )
-    return PolicyEngineSPMProvider(
+    return CountyRequiringSPMProvider(
         forecast=forecast,
         **{
             key: value

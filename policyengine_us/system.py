@@ -249,6 +249,25 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         _backfill_state_code_from_str(self)
 
 
+def _download_or_explain(dataset_str, download):
+    """Name the unresolved dataset URI instead of re-raising a Hub exception.
+
+    A build id that is not published yet, a renamed repository and an offline
+    cache miss all surface from ``huggingface_hub`` as transport-level errors
+    that never mention which dataset the model was asked for.
+    """
+    from huggingface_hub.errors import HfHubHTTPError, LocalEntryNotFoundError
+
+    try:
+        return download()
+    except (HfHubHTTPError, LocalEntryNotFoundError) as error:
+        raise FileNotFoundError(
+            f"Could not resolve the dataset {dataset_str!r}: {error}. "
+            "Check that the build id in the URI is published, or pass a "
+            "dataset= argument that is."
+        ) from error
+
+
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
@@ -263,11 +282,14 @@ def _resolve_dataset_path(dataset_str):
         version = None
         if "@" in repo_filename:
             repo_filename, version = repo_filename.rsplit("@", 1)
-        return hf_hub_download(
-            repo_id=f"{owner}/{repo}",
-            filename=repo_filename,
-            repo_type="dataset",
-            revision=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: hf_hub_download(
+                repo_id=f"{owner}/{repo}",
+                filename=repo_filename,
+                repo_type="dataset",
+                revision=version,
+            ),
         )
     if "hf://" in dataset_str:
         from policyengine_core.tools.hugging_face import (
@@ -276,10 +298,13 @@ def _resolve_dataset_path(dataset_str):
         )
 
         owner, repo, filename, version = parse_hf_url(dataset_str)
-        return download_huggingface_dataset(
-            repo=f"{owner}/{repo}",
-            repo_filename=filename,
-            version=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: download_huggingface_dataset(
+                repo=f"{owner}/{repo}",
+                repo_filename=filename,
+                version=version,
+            ),
         )
     elif Path(dataset_str).exists():
         return dataset_str

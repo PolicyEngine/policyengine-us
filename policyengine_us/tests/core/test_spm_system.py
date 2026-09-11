@@ -9,13 +9,14 @@ import pytest
 from policyengine_core.reforms import Reform
 from policyengine_core.periods import YEAR
 from policyengine_core.variables import Variable
+from spm_calculator.errors import SPMInputError
 from spm_calculator.policyengine_adapter import FORMULA_OWNED_INPUTS
 
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
 from policyengine_us.spm import create_spm_provider
-from policyengine_us.system import system
+from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path, system
 
 
 def single_person_situation():
@@ -328,6 +329,73 @@ def test_as_of_config_and_receipts_are_serializable():
     simulation.calculate("spm_unit_spm_threshold", 2035)
     assert json.loads(json.dumps(simulation.spm_config))["as_of"] == "2026-09-09"
     assert set(json.loads(json.dumps(simulation.spm_provenance()))["years"]) == {"2035"}
+
+
+class _HubResponse:
+    """The minimum a Hugging Face HTTP error reads off its response."""
+
+    headers = {}
+    request = None
+
+
+def _hub_failures():
+    from huggingface_hub.errors import (
+        LocalEntryNotFoundError,
+        RevisionNotFoundError,
+    )
+
+    return [
+        # What an unpublished build id actually produces: the Hub 404s and the
+        # download then reports that the file is not in the local cache either.
+        LocalEntryNotFoundError(
+            "An error happened while trying to locate the file on the Hub and "
+            "we cannot find the requested file"
+        ),
+        RevisionNotFoundError(
+            "404 Client Error: Revision Not Found", response=_HubResponse()
+        ),
+    ]
+
+
+@pytest.mark.parametrize("failure", _hub_failures(), ids=["offline", "revision"])
+def test_unresolved_dataset_build_names_the_uri_it_could_not_resolve(
+    failure, monkeypatch
+):
+    """A Hub failure must say which dataset the model was asked for.
+
+    Both of these otherwise reach the caller with no mention of the URI, so an
+    unpublished build id reads as a broken installation.
+    """
+    import huggingface_hub
+
+    def missing(*args, **kwargs):
+        raise failure
+
+    monkeypatch.setattr(huggingface_hub, "hf_hub_download", missing)
+    with pytest.raises(FileNotFoundError) as error:
+        _resolve_dataset_path(DEFAULT_DATASET)
+    message = str(error.value)
+    assert DEFAULT_DATASET in message
+    assert str(failure) in message
+    assert error.value.__cause__ is failure
+
+
+@pytest.mark.parametrize("simulation_type", [Simulation, Microsimulation])
+def test_integer_county_column_requires_county_fips_instead_of_reporting_unavailable(
+    simulation_type,
+):
+    """Legacy population files store the CPS within-state code as an integer."""
+    source = small_dataset()
+    source.household["county_fips"] = [5, 1]
+    simulation = simulation_type(dataset=source)
+    with pytest.raises(SPMInputError) as error:
+        simulation.calculate("spm_unit_spm_threshold", 2024)
+    assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+    assert "five-digit string" in str(error.value)
+    assert 'geography_kind="national"' in str(error.value)
+    # The same population computes once an SPM area is selected explicitly.
+    national = simulation_type(dataset=source, spm={"geography_kind": "national"})
+    assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
 
 
 def small_dataset():
