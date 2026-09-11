@@ -1,4 +1,18 @@
-- name: Case 1, pension income remains taxable before retirement.
+- name: Case 1, pension income remains taxable below PA's retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        taxable_pension_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_pension_income: 0
+
+- name: Case 2, pension income is excluded at PA's retirement age (59.5).
   period: 2026
   input:
     people:
@@ -10,9 +24,9 @@
         members: [person1]
         state_code: PA
   output:
-    pa_nontaxable_pension_income: 0
+    pa_nontaxable_pension_income: 10_000
 
-- name: Case 2, pension income is excluded after retirement.
+- name: Case 3, pension income is excluded well past retirement age.
   period: 2026
   input:
     people:
