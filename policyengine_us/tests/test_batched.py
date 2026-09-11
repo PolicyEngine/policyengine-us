@@ -166,6 +166,26 @@ def _format_rss(peak_rss_mb: Optional[float]) -> str:
     return f"{peak_rss_mb:.0f} MB" if peak_rss_mb is not None else "n/a"
 
 
+def subdir_batches(subdir: Path) -> List[List[str]]:
+    """One batch per subdir unless its distinct combos exceed the budget.
+
+    A proposal folder normally shares one subprocess so files that request
+    the same reform share one cached system. Once the folder's DISTINCT
+    combos exceed MAX_BATCH_COMBO_WEIGHT that shared subprocess is exactly
+    what exhausts the runner: congress/tlaib carries weight 8.25, peaked at
+    15.0 GB on the 16 GB runner at main (CI run 34637166889), and hung in
+    swap until killed at 18 GB on a branch adding per-combo memory. Pack
+    such a folder's files by combo weight instead.
+    """
+    files = sorted(subdir.rglob("*.yaml"))
+    combos: set = set()
+    for file in files:
+        combos |= set(file_reform_combos(file))
+    if combo_weight(frozenset(combos)) <= MAX_BATCH_COMBO_WEIGHT:
+        return [[str(subdir)]]
+    return pack_files_by_combo_weight(files)
+
+
 def split_into_batches(
     base_path: Path,
     num_batches: int,
@@ -201,7 +221,7 @@ def split_into_batches(
             if item.is_dir() and item.name not in exclude
         )
         root_files = sorted(base_path.glob("*.yaml"))
-        batches = [[str(s)] for s in subdirs]
+        batches = [batch for s in subdirs for batch in subdir_batches(s)]
         if root_files:
             batches.append([str(f) for f in root_files])
         return batches
