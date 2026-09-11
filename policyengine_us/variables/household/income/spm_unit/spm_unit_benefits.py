@@ -75,6 +75,7 @@ class spm_unit_benefits(Variable):
             "ak_energy_relief",
             # Contributed.
             "basic_income",
+            "trump_dividend",
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:

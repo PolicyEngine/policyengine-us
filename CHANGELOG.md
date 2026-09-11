@@ -1,3 +1,25 @@
+## [1.825.1] - 2026-09-11
+
+### Fixed
+
+- Pin the compatible SPM calculator so fresh installations retain the existing threshold calculation API.
+
+
+## [1.825.0] - 2026-09-11
+
+### Added
+
+- Colorado Initiative 195 contributed reform, replacing the flat income tax with a graduated rate schedule.
+- Trump dividend contributed reform, providing a payment to citizens at or above a minimum age.
+
+
+## [1.824.9] - 2026-09-11
+
+### Fixed
+
+- Fixed the New York Empire State child credit phase-out threshold for qualified surviving spouses to $75,000 for 2025-2027, matching the enacted S.3009-C text and the 2025 IT-213 instructions.
+
+
 ## [1.824.8] - 2026-09-09
 
 ### Fixed
