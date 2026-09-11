@@ -2,6 +2,8 @@
   absolute_error_margin: 0.0001
   period: 2021
   input:
+    # Isolate benefit arithmetic from SPM measurement with no housing aid.
+    spm_unit_capped_housing_subsidy: 0
     age: 40
     weekly_hours_worked_before_lsr: 40
     employment_income: 100_000
@@ -14,6 +16,8 @@
   absolute_error_margin: 0.01
   period: 2025
   input:
+    # Isolate benefit arithmetic from SPM measurement with no housing aid.
+    spm_unit_capped_housing_subsidy: 0
     age: 30
     weekly_hours_worked_before_lsr: 40
     state_fips: 54
@@ -26,6 +30,8 @@
   absolute_error_margin: 0.01
   period: 2025
   input:
+    # Isolate benefit arithmetic from SPM measurement with no housing aid.
+    spm_unit_capped_housing_subsidy: 0
     age: 30
     weekly_hours_worked_before_lsr: 40
     state_fips: 54
@@ -38,6 +44,8 @@
   absolute_error_margin: 0.01
   period: 2025
   input:
+    # Isolate benefit arithmetic from SPM measurement with no housing aid.
+    spm_unit_capped_housing_subsidy: 0
     age: 30
     weekly_hours_worked_before_lsr: 40
     state_fips: 15 # HI
@@ -50,6 +58,8 @@
   absolute_error_margin: 0.01
   period: 2025
   input:
+    # Isolate benefit arithmetic from SPM measurement with no housing aid.
+    spm_unit_capped_housing_subsidy: 0
     age: 30
     weekly_hours_worked_before_lsr: 40
     state_fips: 26 # MI
