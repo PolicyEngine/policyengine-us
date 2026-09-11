@@ -1,3 +1,10 @@
+## [1.825.1] - 2026-09-11
+
+### Fixed
+
+- Pin the compatible SPM calculator so fresh installations retain the existing threshold calculation API.
+
+
 ## [1.825.0] - 2026-09-11
 
 ### Added
