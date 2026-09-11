@@ -12,6 +12,15 @@ PolicyEngine US is a microsimulation model of the US state and federal tax and b
 PolicyEngine US supports Python 3.11 through 3.14 and requires pandas 3 or
 later. To install, run `pip install policyengine-us`.
 
+This release pins `spm-calculator==0.3.1` to preserve its SPM threshold API.
+Previously published country versions retain their original dependency metadata;
+when reproducing one of those versions, include the compatible calculator
+explicitly, for example:
+
+```bash
+uv pip install "policyengine-us==1.824.7" "spm-calculator==0.3.1"
+```
+
 To install PolicyEngine US as part of a certified PolicyEngine bundle, use the
 bundle installer published by `policyengine`, for example:
 
