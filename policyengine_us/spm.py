@@ -126,11 +126,12 @@ def spm_config(provider):
     }
 
 
-def share_spm_policy(system, *, copy_receipts=False):
+def share_spm_policy(system):
     """Isolate receipts and variable registration without rebuilding policy.
 
     An ordinary simulation applies no user reform, so it needs private receipts
     and a private variable registry, not a private copy of the policy itself.
+    It is also new rather than cloned, so no previous receipt belongs to it.
     Core's TaxBenefitSystem.clone() rebuilds the whole parameter tree node by
     node and empties both at-instant caches, and this country then deep-copies
     every variable object on top; doing that per household simulation throws
@@ -150,7 +151,7 @@ def share_spm_policy(system, *, copy_receipts=False):
     policy = copy(system)
     policy.variables = dict(system.variables)
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
-        copy_receipts=copy_receipts
+        copy_receipts=False
     )
     return policy
 
