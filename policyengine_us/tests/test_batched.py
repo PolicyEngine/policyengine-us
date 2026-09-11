@@ -204,7 +204,8 @@ def split_into_batches(
         exclude: List of directory names to exclude (for contrib tests)
         mode: Batching mode. "auto" (default) uses the per-path heuristics
             below. "per-subdir" runs each immediate subdir as its own batch
-            with loose yamls collected into a trailing batch. "per-file"
+            (packed by reform-combo weight when it exceeds the budget) with
+            loose yamls collected into a trailing batch. "per-file"
             runs every yaml (recursively) as its own batch.
     """
     if exclude is None:
@@ -804,7 +805,7 @@ def main():
         "--mode",
         choices=["auto", "per-subdir", "per-file"],
         default="auto",
-        help="Batching mode. 'per-subdir' = each immediate subdir is its own batch; 'per-file' = each yaml is its own batch.",
+        help="Batching mode. 'per-subdir' = each immediate subdir is its own batch, split by reform-combo weight when over budget; 'per-file' = each yaml is its own batch.",
     )
     parser.add_argument(
         "--workers",

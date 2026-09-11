@@ -21,8 +21,9 @@ counties raise `SPM_GEOGRAPHY_UNAVAILABLE`. There is no first-county, congressio
 district or national fallback in SPM measurement.
 
 These geography errors occur only when calculating an SPM measurement or a
-dependent resource, such as the housing-assistance cap. A state-only tax request
-can still run. SPM reads the input-only `county_fips` variable and ignores any
+dependent resource, such as the housing-assistance cap for units with housing
+assistance; units with none are capped at zero without consulting the
+measurement. A state-only tax request can still run. SPM reads the input-only `county_fips` variable and ignores any
 county inferred or cached by other tax or benefit formulas. Geography and
 composition errors are `SPMInputError` instances with `code` and `to_dict()`.
 

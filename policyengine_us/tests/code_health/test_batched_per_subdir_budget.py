@@ -4,8 +4,8 @@ The batcher's per-subdir mode gives each proposal folder its own subprocess.
 A folder whose distinct reform combos exceed MAX_BATCH_COMBO_WEIGHT must be
 packed by combo weight instead: policyengine-core caches one full system per
 combo for the life of the subprocess, and congress/tlaib (weight 8.25) peaked
-at 15.0 GB on the 16 GB CI runner before hanging in swap on a branch that
-adds per-combo memory.
+at 15.0 GB on the 16 GB CI runner at main, leaving no headroom; a branch run
+of the same batch produced no output for 39 minutes before CI killed it.
 """
 
 import importlib.util

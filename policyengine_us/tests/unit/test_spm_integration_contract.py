@@ -290,13 +290,85 @@ def test_resource_consumers_with_housing_assistance_require_geography(variable):
     assert str(YEAR) in national.spm_provenance()["years"]
 
 
-def test_housing_cap_evaluates_only_assisted_units():
-    """In one population, unassisted units impose no county requirement."""
-    situation = household(earnings=50_000)
-    situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: False}
-    simulation = Simulation(situation=situation)
-    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
-    assert simulation.spm_provenance()["years"] == {}
+def two_household_population(*, assisted_county):
+    """Household A has housing assistance to cap; household B has none and no county."""
+    return {
+        "people": {
+            "a": {
+                "age": {YEAR: 40},
+                "employment_income": {YEAR: 6_000},
+                "pre_subsidy_rent": {YEAR: 36_000},
+            },
+            "b": {
+                "age": {YEAR: 40},
+                "employment_income": {YEAR: 50_000},
+                "pre_subsidy_rent": {YEAR: 36_000},
+            },
+        },
+        "households": {
+            "household_a": {
+                "members": ["a"],
+                "state_code": {YEAR: "CA"},
+                "pha_payment_standard": {YEAR: 36_000},
+                **(
+                    {"county_fips": {YEAR: assisted_county}}
+                    if assisted_county is not None
+                    else {}
+                ),
+            },
+            "household_b": {
+                "members": ["b"],
+                "state_code": {YEAR: "CA"},
+                "pha_payment_standard": {YEAR: 36_000},
+            },
+        },
+        "spm_units": {
+            "unit_a": {
+                "members": ["a"],
+                "spm_unit_tenure_type": {YEAR: "RENTER"},
+                "housing_assistance": {YEAR: 5_000},
+            },
+            "unit_b": {
+                "members": ["b"],
+                "spm_unit_tenure_type": {YEAR: "RENTER"},
+                "receives_housing_assistance": {YEAR: False},
+            },
+        },
+    }
+
+
+def test_housing_cap_evaluates_only_assisted_units_in_a_mixed_population():
+    """Masked rows align: the assisted unit is capped, the other is zero and free.
+
+    Unit B has no county and no assistance, so it must impose no requirement
+    on the population while unit A, which has both, is capped normally.
+    """
+    simulation = Simulation(situation=two_household_population(assisted_county="06037"))
+    assert list(simulation.calculate("housing_assistance", YEAR)) == [5_000, 0]
+    capped = simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)
+    assert capped.dtype == np.float32
+    assert 0 < capped[0] <= 5_000
+    assert capped[1] == 0
+    net_income = simulation.calculate("household_net_income", YEAR)
+    assert np.all(np.isfinite(net_income)) and np.all(net_income > 0)
+    provenance = simulation.spm_provenance()
+    assert str(YEAR) in provenance["years"]
+    # Only the assisted unit's county reached the provider: one receipt, for
+    # unit A's Los Angeles County, resolved to its metropolitan area.
+    assert provenance["geography_kind"] == "county"
+    assert len(provenance["geographies"]) == 1
+    (receipt,) = provenance["geographies"]
+    assert receipt["year"] == YEAR
+    assert receipt["tenure"] == "renter"
+    assert receipt["geography"]["area_id"] == "31080"
+
+
+def test_assisted_unit_without_county_fails_closed_in_a_mixed_population():
+    """An unassisted neighbour does not relax the requirement for the assisted unit."""
+    simulation = Simulation(situation=two_household_population(assisted_county=None))
+    with pytest.raises(SPMInputError) as error:
+        simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)
+    assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
 
 
 @pytest.mark.parametrize(
