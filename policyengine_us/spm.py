@@ -240,8 +240,15 @@ class SPMSimulationMixin:
                 # simulation's policy from the shared instance's, so keep its
                 # warm parameter caches instead of rebuilding them.
                 chosen = share_spm_policy(self.default_tax_benefit_system_instance)
-        else:
+        elif reform is not None:
+            # Core applies the reform set to whatever system it is handed, so
+            # the caller's own system must not be the one it reforms.
             chosen = clone_spm_system(supplied, copy_receipts=False)
+        else:
+            # A caller that builds one system and runs many households through
+            # it - the household API among them - keeps that system's warm
+            # caches; only receipts and variable registration are private.
+            chosen = share_spm_policy(supplied)
         # This is a new simulation, unlike clone() of an already calculated
         # simulation, so no previous calculation receipt belongs to it.
         if config is not None:
@@ -251,9 +258,9 @@ class SPMSimulationMixin:
         # Core constructs a baseline branch for policy reforms. It must use the
         # same SPM selection while retaining baseline tax/benefit policy.
         if reform is not None:
-            baseline = clone_spm_system(
-                self.default_tax_benefit_system_instance, copy_receipts=False
-            )
+            # The baseline branch holds unreformed policy, which is the shared
+            # instance's own policy, so it shares rather than rebuilds it.
+            baseline = share_spm_policy(self.default_tax_benefit_system_instance)
             baseline.spm_forecast_provider = chosen.spm_forecast_provider.snapshot()
             self.default_tax_benefit_system_instance = baseline
         # Country dataset interception also needs to see positional datasets.
