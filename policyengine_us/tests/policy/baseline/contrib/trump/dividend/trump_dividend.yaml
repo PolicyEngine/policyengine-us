@@ -116,7 +116,7 @@
     household_benefits: 10_000
     adjusted_gross_income: 100_000
 
-- name: With the reform off by default, the dividend adds nothing to benefit aggregates.
+- name: With the reform off by default, the dividend adds nothing to benefit aggregates or adjusted gross income.
   period: 2027
   input:
     people:
@@ -132,3 +132,13 @@
     trump_dividend: [0, 0]
     spm_unit_benefits: 0
     household_benefits: 0
+    adjusted_gross_income: 100_000
+
+- name: An adult with citizen status set explicitly receives the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: CITIZEN
+  output:
+    trump_dividend: 5_000

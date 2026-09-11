@@ -6,7 +6,13 @@ class trump_dividend(Variable):
     entity = Person
     label = "Trump dividend"
     unit = USD
-    documentation = "Trump dividend payment for this person."
+    documentation = (
+        "Trump dividend payment for this person. By design the payment "
+        "is non-taxable (excluded from adjusted gross income and MAGI "
+        "bases) and does not enter SNAP or SSI countable income; it "
+        "flows only into the benefit aggregates, matching the "
+        "basic_income default non-taxable treatment."
+    )
     definition_period = YEAR
     defined_for = "trump_dividend_eligible"
 
