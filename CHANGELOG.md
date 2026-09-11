@@ -1,3 +1,10 @@
+## [1.825.2] - 2026-09-11
+
+### Fixed
+
+- Corrected the Washington Working Families Tax Credit phase-out rate to maximum amount divided by the phase-out band (WAC 458-20-285), rounded the reduced refund to the nearest dollar (RCW 82.08.0206(3)(b)), made the maximum qualifying income ceiling strict, and moved the ESSB 6346 expansion (including its minimum age) to the first tax year it covers (2028; ESSB 6346 Sec. 1205(2)).
+
+
 ## [1.825.1] - 2026-09-11
 
 ### Fixed
