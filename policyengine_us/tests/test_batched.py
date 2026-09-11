@@ -172,10 +172,11 @@ def subdir_batches(subdir: Path) -> List[List[str]]:
     A proposal folder normally shares one subprocess so files that request
     the same reform share one cached system. Once the folder's DISTINCT
     combos exceed MAX_BATCH_COMBO_WEIGHT that shared subprocess is exactly
-    what exhausts the runner: congress/tlaib carries weight 8.25, peaked at
-    15.0 GB on the 16 GB runner at main (CI run 34637166889), and hung in
-    swap until killed at 18 GB on a branch adding per-combo memory. Pack
-    such a folder's files by combo weight instead.
+    what exhausts the runner: congress/tlaib carries weight 8.25 and peaked
+    at 15.0 GB on the 16 GB runner at main (CI run 34637166889), leaving no
+    headroom, and a branch run of the same batch produced no output for 39
+    minutes before CI killed it. Pack such a folder's files by combo weight
+    instead.
     """
     files = sorted(subdir.rglob("*.yaml"))
     combos: set = set()
