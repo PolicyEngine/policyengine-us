@@ -21,15 +21,6 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 86_000
   2024-01-01: 91_000
   2025-01-01: 94_000
-# Massachusetts has no surviving spouse filing status; federal qualifying
-# surviving spouses generally file as head of household in Massachusetts.
-SURVIVING_SPOUSE:
-  2001-01-01: 50_000
-  2021-01-01: 78_000
-  2022-01-01: 80_000
-  2023-01-01: 86_000
-  2024-01-01: 91_000
-  2025-01-01: 94_000
 SEPARATE:
   2001-01-01: 40_000
   2021-01-01: 62_000
@@ -41,7 +32,7 @@ metadata:
   unit: currency-USD
   period: year
   breakdown:
-    - filing_status
+    - ma_filing_status
   label: Massachusetts Senior Circuit Breaker maximum income
   uprating:
     parameter: gov.irs.uprating

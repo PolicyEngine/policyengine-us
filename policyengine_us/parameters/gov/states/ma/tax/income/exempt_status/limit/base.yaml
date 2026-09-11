@@ -2,11 +2,6 @@ description: AGI limit to be exempt from state income tax. Joint or head-of-hous
 SINGLE:
   2020-01-01: 0
   2021-01-01: 8_000
-# Massachusetts has no surviving spouse filing status; federal qualifying
-# surviving spouses generally file as head of household in Massachusetts.
-SURVIVING_SPOUSE:
-  2020-01-01: 0
-  2021-01-01: 7_600
 SEPARATE:
   2020-01-01: 0
 JOINT:
@@ -27,5 +22,5 @@ metadata:
   unit: currency-USD
   period: year
   breakdown:
-  - filing_status
+  - ma_filing_status
   label: AGI addition to limit to be exempt from Massachusetts income tax.

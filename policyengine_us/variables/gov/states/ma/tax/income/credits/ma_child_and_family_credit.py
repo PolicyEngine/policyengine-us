@@ -30,6 +30,6 @@ class ma_child_and_family_credit(Variable):
         count_eligible = tax_unit.sum(eligible)
         capped_eligible = min_(count_eligible, p.dependent_cap)
         # Married taxpayers filing separately cannot claim the credit.
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
         return ~separate * capped_eligible * p.amount
