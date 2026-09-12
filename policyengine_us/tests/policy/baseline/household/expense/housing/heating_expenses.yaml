@@ -160,16 +160,17 @@
   output:
     heating_expenses: [1_200, 0]
 
-- name: Case 9, an exact claim-period amount overrides the annual primary-fuel approximation.
+- name: Case 9, the default approximation reads only the primary fuel, not secondary fuels.
   period: 2022
+  absolute_error_margin: 0.1
   input:
     heating_type: NATURAL_GAS
     gas_expense: 1_200
+    # A propane backup heater is not part of the default; callers set
+    # heating_expenses directly to the actual November-October total.
     bottled_gas_expense: 200
-    # Actual November-October costs, including secondary heating.
-    heating_expenses: 1_350
   output:
-    heating_expenses: 1_350
+    heating_expenses: 1_200
 
 - name: Case 10, legacy costs retain their unequal allocation across tax units.
   period: 2022
