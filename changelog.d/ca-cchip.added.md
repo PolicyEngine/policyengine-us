@@ -1,0 +1,1 @@
+Implements California's County Children's Health Initiative Program (CCHIP), the separate CHIP population for children in San Francisco, San Mateo, and Santa Clara counties with household income above the Medi-Cal limit and at or below 322 percent of the federal poverty guideline.
