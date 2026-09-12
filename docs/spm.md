@@ -110,7 +110,11 @@ household head/spouse primitives support household scenarios; the model never
 guesses those roles from age ordering. A person counts as an SPM adult at age 18,
 or at age 15 or above with `is_spm_independent_minor_role`. That role defaults to
 the input-only `is_household_head | is_household_spouse` and can be supplied from
-source data. A unit with no classified adult raises
+source data. `policyengine_us.spm.DATASET_SOURCE_INPUTS` explicitly declares
+this role as source-owned despite its household fallback formula. Population
+producers must supply the observed boolean; the declaration does not authorize
+filling missing source roles with the model's default value.
+A unit with no classified adult raises
 `SPM_COMPOSITION_REQUIRED`. Generic age-based adult/child counts and benefit
 eligibility are unchanged. The dataset loader rejects stored formula-owned SPM
 outputs; observed source results should use report-only column names. It does not

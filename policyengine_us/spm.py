@@ -48,6 +48,12 @@ DATASET_FORMULA_OWNED_INPUTS = FORMULA_OWNED_INPUTS | frozenset(
     }
 )
 
+# This source role has a head/spouse fallback for household situations. A
+# population producer must retain its observed boolean instead of treating the
+# fallback formula as ownership of the input. This declaration permits source
+# delivery; it does not permit synthesizing a default value when data are absent.
+DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
+
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
 COUNTY_INPUT_FIX = (
