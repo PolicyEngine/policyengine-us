@@ -91,18 +91,37 @@ hh_eitc = sim.calc("eitc", map_to="household")
 
 ## Available datasets
 
-PolicyEngine US provides datasets hosted on HuggingFace at `hf://policyengine/policyengine-us-data/`.
+### The default build
 
-### National datasets
+The default is the certified Populace build, pinned by build id and hosted as a
+HuggingFace *dataset* repository:
 
 ```python
-# Default: Enhanced CPS 2024 (includes imputed wealth and other enhancements)
+# Default: the certified Populace build named in DEFAULT_DATASET.
 sim = Microsimulation()
-# Equivalent to:
-sim = Microsimulation(dataset="hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5")
+```
 
-# Basic CPS 2023
-sim = Microsimulation(dataset="hf://policyengine/policyengine-us-data/cps_2023.h5")
+### Supplying another population
+
+A population file has to satisfy the SPM input contract: it supplies primitive
+inputs, including observed `county_fips` codes as five-digit strings and
+source-backed `is_spm_independent_minor_role` values, and it must not store
+formula-owned SPM outputs such as `spm_unit_spm_threshold`. Any observed Census
+measurement is retained under a separate report-only name.
+
+The legacy files under `hf://policyengine/policyengine-us-data/` predate that
+contract, so resource and poverty outputs are not available over them:
+
+- `cps_2023.h5` stores `spm_unit_spm_threshold`, so the loader rejects it.
+- `enhanced_cps_2024.h5` loads and computes tax variables, but carries no SPM
+  independence roles, so SPM units consisting of one 15-to-17-year-old classify
+  no measurement adult and every resource output over the file fails closed.
+
+A household simulation that has no county input can select an SPM area
+explicitly instead:
+
+```python
+sim = Microsimulation(dataset=..., spm={"geography_kind": "national"})
 ```
 
 ### Filtering by geography

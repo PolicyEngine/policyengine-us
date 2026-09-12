@@ -1,0 +1,144 @@
+- name: The dividend is inactive by default.
+  period: 2027
+  input:
+    age: 40
+  output:
+    trump_dividend: 0
+
+- name: An adult citizen receives the dividend when in effect.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+  output:
+    trump_dividend: 5_000
+
+- name: A 17-year-old citizen does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 17
+  output:
+    trump_dividend: 0
+
+- name: An 18-year-old citizen receives the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 18
+  output:
+    trump_dividend: 5_000
+
+- name: A non-citizen adult does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    trump_dividend: 0
+
+- name: An undocumented adult does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: UNDOCUMENTED
+  output:
+    trump_dividend: 0
+
+- name: A refugee adult does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: REFUGEE
+  output:
+    trump_dividend: 0
+
+- name: An infant citizen does not receive the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 0
+  output:
+    trump_dividend: 0
+
+- name: An adult citizen dependent receives the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      parent:
+        age: 45
+      student:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+  output:
+    trump_dividend: [5_000, 5_000]
+
+- name: Two adult citizens and a child receive two payments in total.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+      adult_two:
+        age: 38
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two, child]
+  output:
+    trump_dividend: [5_000, 5_000, 0]
+
+- name: The dividend flows into SPM unit and household benefits without entering adjusted gross income.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 100_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [5_000, 5_000]
+    spm_unit_benefits: 10_000
+    household_benefits: 10_000
+    adjusted_gross_income: 100_000
+
+- name: With the reform off by default, the dividend adds nothing to benefit aggregates or adjusted gross income.
+  period: 2027
+  input:
+    people:
+      adult_one:
+        age: 40
+        employment_income: 100_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [0, 0]
+    spm_unit_benefits: 0
+    household_benefits: 0
+    adjusted_gross_income: 100_000
+
+- name: An adult with citizen status set explicitly receives the dividend.
+  period: 2027
+  input:
+    gov.contrib.trump.dividend.in_effect: true
+    age: 40
+    immigration_status: CITIZEN
+  output:
+    trump_dividend: 5_000

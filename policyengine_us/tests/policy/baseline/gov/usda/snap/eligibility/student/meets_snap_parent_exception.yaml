@@ -343,3 +343,438 @@
         members: [parent1, parent2, child]
   output:
     meets_snap_parent_exception: [true, true, false]
+
+- name: Case 19, Missouri two-parent household lets only one adult claim the child-care exception.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Case 20, Missouri gives the single child-care claim to the parent who is a student.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        age: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [false, true, false]
+
+- name: Case 21, Missouri keeps the cap at one adult even with two children under six.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 32
+      person3:
+        age: 4
+      person4:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+
+- name: Case 31, Missouri three children under six still allow only one caregiver claim.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 1, is_tax_unit_head_or_spouse: false}
+      person4: {age: 3, is_tax_unit_head_or_spouse: false}
+      person5: {age: 5, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3, person4, person5]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4, person5], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4, person5], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false, false, false]
+    is_snap_ineligible_student: [false, true, false, false, false]
+
+- name: Case 32, Missouri two child-containing tax units still share one caregiver claim.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit1: {members: [person1, person3]}
+      tax_unit2: {members: [person2, person4]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+    is_snap_ineligible_student: [false, true, false, false]
+
+- name: Case 33, Missouri student with a work exception leaves the caregiver claim to the second student.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 20
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit1: {members: [person1, person3, person4]}
+      tax_unit2: {members: [person2]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [false, true, false, false]
+    is_snap_ineligible_student: [false, false, false, false]
+
+- name: Case 34, Missouri caregiver allocation is independent of the working student's position.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 20
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2, person3]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false]
+    is_snap_ineligible_student: [false, false, false]
+
+- name: Case 35, Missouri child exactly six does not provide the under-six exception.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 6, is_tax_unit_head_or_spouse: false}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: MO}
+  output:
+    meets_snap_parent_exception: [false, false, false]
+    is_snap_ineligible_student: [true, true, false]
+
+- name: Case 36, Missouri child just under six provides one caregiver exception.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 5.99, is_tax_unit_head_or_spouse: false}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false]
+    is_snap_ineligible_student: [false, true, false]
+
+- name: Case 37, Missouri childless students receive no caregiver exception.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+    spm_units:
+      spm_unit: {members: [person1, person2], tanf: 0}
+    households:
+      household: {members: [person1, person2], state_code: MO}
+  output:
+    meets_snap_parent_exception: [false, false]
+    is_snap_ineligible_student: [true, true]
+
+- name: Case 38, Missouri excluded adult cannot obtain a negative-rank caregiver claim.
+  period: 2025
+  input:
+    people:
+      person1: {age: 20, is_tax_unit_head_or_spouse: false, is_full_time_college_student: true}
+      person2: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [false, true, false, false]
+    is_snap_ineligible_student: [true, false, true, false]
+
+- name: Case 39, Missouri estimated caregiver does not lose the exception solely because a spouse is unemployed.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: MO}
+  output:
+    meets_snap_parent_exception: [false, true, false]
+    is_snap_ineligible_student: [false, false, false]
+
+- name: Case 41, Vectorized Missouri cap does not change Texas and DC baseline behavior.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+      person5: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person6: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person7: {age: 2, is_tax_unit_head_or_spouse: false}
+      person8: {age: 4, is_tax_unit_head_or_spouse: false}
+      person9: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person10: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person11: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3, person4]
+      tax_unit2:
+        members: [person5, person6, person7, person8]
+      tax_unit3:
+        members: [person9, person10, person11]
+    spm_units:
+      spm_unit1: {members: [person1, person2, person3, person4], tanf: 0}
+      spm_unit2: {members: [person5, person6, person7, person8], tanf: 0}
+      spm_unit3: {members: [person9, person10, person11], tanf: 0}
+    households:
+      household1: {members: [person1, person2, person3, person4], state_code: MO}
+      household2: {members: [person5, person6, person7, person8], state_code: TX}
+      household3: {members: [person9, person10, person11], state_code: DC}
+  output:
+    meets_snap_parent_exception: [true, false, false, false, true, true, false, false, true, true, false]
+    is_snap_ineligible_student: [false, true, false, false, false, false, false, false, false, false, false]
+
+# States without the cap keep the uncapped federal reading: both parents
+# claim the exception for one child under six.
+- name: Case 42, AK lets both student parents claim the exception for one young child.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: AK}
+  output:
+    meets_snap_parent_exception: [true, true, false]
+    is_snap_ineligible_student: [false, false, false]
+
+- name: Case 43, CO lets both student parents claim the exception for one young child.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: CO}
+  output:
+    meets_snap_parent_exception: [true, true, false]
+    is_snap_ineligible_student: [false, false, false]
+
+- name: Case 44, KS lets both student parents claim the exception for one young child.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: KS}
+  output:
+    meets_snap_parent_exception: [true, true, false]
+    is_snap_ineligible_student: [false, false, false]
+
+- name: Case 45, Missouri lets both parents claim the exception before the 2025 modeling start.
+  period: 2024
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3, person4]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, true, false, false]
+    is_snap_ineligible_student: [false, false, false, false]
+
+- name: Case 46, Missouri applies one caregiver claim from the 2025 modeling start.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3, person4]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+    is_snap_ineligible_student: [false, true, false, false]
+
+- name: Case 47, Missouri keeps one caregiver claim after the 2025 modeling start.
+  period: 2026
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 2, is_tax_unit_head_or_spouse: false}
+      person4: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3, person4]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3, person4], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3, person4], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false, false]
+    is_snap_ineligible_student: [false, true, false, false]
+
+# Exception 8 (single parent, full time, child under twelve) is unchanged
+# by the cap: with one parent the claim cannot be shared.
+- name: Case 48, Missouri single full-time student parent with a child aged 6 to 11 keeps exception 8 under the cap.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 8, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    spm_units:
+      spm_unit: {members: [person1, person2], tanf: 0}
+    households:
+      household: {members: [person1, person2], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false]
+    is_snap_ineligible_student: [false, false]
+
+- name: Case 49, Missouri lone parent of a child under six takes the single claim.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: false}
+      person2: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    spm_units:
+      spm_unit: {members: [person1, person2], tanf: 0}
+    households:
+      household: {members: [person1, person2], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false]
+
+# Mirror of Case 19 with the two equally placed students listed in the
+# other order: the tie-break follows member order, not age.
+- name: Case 50, Missouri tie between two students goes to whichever is listed first.
+  period: 2025
+  input:
+    people:
+      person1: {age: 32, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person2: {age: 30, is_tax_unit_head_or_spouse: true, is_full_time_college_student: true}
+      person3: {age: 4, is_tax_unit_head_or_spouse: false}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3]}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], tanf: 0}
+    households:
+      household: {members: [person1, person2, person3], state_code: MO}
+  output:
+    meets_snap_parent_exception: [true, false, false]

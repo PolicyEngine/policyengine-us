@@ -1,3 +1,143 @@
+## [2.0.2] - 2026-09-12
+
+### Fixed
+
+- Add surviving spouse 2025 boundary tests for Alabama standard deduction.
+
+
+## [2.0.1] - 2026-09-12
+
+### Fixed
+
+- Use a stable deduction order for person-level adjusted gross income and student loan interest modified adjusted gross income, preventing process-dependent floating-point results while preserving deduction membership and exclusions.
+
+
+## [2.0.0] - 2026-09-12
+
+### Breaking changes
+
+- Require county FIPS by default, or an explicit national or fixed SPM area selection, for SPM measurement, and for resource calculations (household net income, benefits, marginal tax rates) only where a unit's housing assistance is positive: the housing cap consults the canonical housing portion for assisted units alone, so partner and state-program outputs for the other units never depend on SPM geography. Replace country threshold extrapolation with spm-calculator 1.0.0's canonical 2022–2035 amounts; unavailable years fail. Population datasets must supply observed county inputs and source-backed SPM independence roles instead of stored formula-owned SPM outputs, which the loader now rejects; the legacy policyengine-us-data CPS files supply none of these, so resource and poverty outputs are no longer available over them. Preserve user reforms, isolate simulation receipts and bind cloned and baseline holders to their own policy variables.
+
+### Fixed
+
+- Prevent automatic releases from committing stale or non-PyPI dependency locks, and reject dependency drift when refreshing the package version.
+- Pin the uv release toolchain (0.12.13) in the workflows and commit the registry lock in that version's marker normalization, so the automatic version bump's lock refresh changes only the root version instead of failing closed.
+
+
+## [1.825.2] - 2026-09-11
+
+### Fixed
+
+- Corrected the Washington Working Families Tax Credit phase-out rate to maximum amount divided by the phase-out band (WAC 458-20-285), rounded the reduced refund to the nearest dollar (RCW 82.08.0206(3)(b)), made the maximum qualifying income ceiling strict, and moved the ESSB 6346 expansion (including its minimum age) to the first tax year it covers (2028; ESSB 6346 Sec. 1205(2)).
+
+
+## [1.825.1] - 2026-09-11
+
+### Fixed
+
+- Pin the compatible SPM calculator so fresh installations retain the existing threshold calculation API.
+
+
+## [1.825.0] - 2026-09-11
+
+### Added
+
+- Colorado Initiative 195 contributed reform, replacing the flat income tax with a graduated rate schedule.
+- Trump dividend contributed reform, providing a payment to citizens at or above a minimum age.
+
+
+## [1.824.9] - 2026-09-11
+
+### Fixed
+
+- Fixed the New York Empire State child credit phase-out threshold for qualified surviving spouses to $75,000 for 2025-2027, matching the enacted S.3009-C text and the 2025 IT-213 instructions.
+
+
+## [1.824.8] - 2026-09-09
+
+### Fixed
+
+- Revert incorrect 2025 Alabama standard deduction phase-out thresholds to statutory values.
+
+
+## [1.824.7] - 2026-09-09
+
+### Fixed
+
+- Count general assistance and workers compensation as Minnesota MFIP unearned income.
+- Correct North Dakota TANF unearned income by counting general assistance and workers compensation and excluding ordinary interest and dividends.
+- Correct Wyoming POWER unearned income by counting general assistance and workers compensation and excluding interest.
+
+
+## [1.824.6] - 2026-09-08
+
+### Fixed
+
+- Correct Texas TANF unearned income sources by counting omitted cash assistance and recurring income and removing capital gains and active farming income.
+
+
+## [1.824.5] - 2026-09-08
+
+### Fixed
+
+- Align federal disability gates with their governing legal definitions:
+  - SNAP elderly or disabled member (7 CFR 271.2): qualify by SSI receipt rather than the SSI disability criteria flag.
+  - SNAP work requirement, work registration, ABAWD, and student rules: recognize disability benefit receipt as unfitness for employment.
+  - SSI student earned income exclusion: use the SSI disability test rather than the generic disability flag.
+  - Medicaid work requirement and home equity family exception: recognize the Section 1614 SSI disability definition.
+  - HUD person-with-disabilities status: recognize the SSI and SSDI disability paths.
+- Correct Missouri TANF unearned income sources by excluding interest and counting omitted workers compensation, disability, strike, gambling, retirement, estate, and passive farm rental income.
+
+
+## [1.824.4] - 2026-09-08
+
+### Fixed
+
+- Texas CEAP's registry note now lists its remaining income-counting gaps (net gambling winnings, the Medicare premium deduction from Social Security, means-tested veterans' pensions) instead of the SSI categorical-eligibility gap fixed in #9409; the entry stays partial.
+
+
+## [1.824.3] - 2026-09-08
+
+### Fixed
+
+- Texas CEAP categorical eligibility through SSI now requires SSI receipt (a computed SSI payment or reported receipt) instead of is_ssi_eligible, which omits the SSI income test and qualified aged, blind, or disabled households at any income.
+
+
+## [1.824.2] - 2026-09-08
+
+### Fixed
+
+- Model Missouri's SNAP student under-six caregiver exemption as limited to one adult per modeled SNAP household from 2025, prioritizing students without another exemption and preserving other states' existing behavior.
+
+
+## [1.824.1] - 2026-09-08
+
+### Fixed
+
+- Medicaid aged, blind, and disabled pathway: the income and asset tests use the individual or married couple as the unit (42 CFR 435.602) instead of the tax filing unit, so the limit is the individual or couple guideline and a couple's countable income is summed across the marital unit whatever their filing status; Missouri's MHABD standards are the published individual and couple dollar amounts (Appendix J), and Missouri deems parental income to a disabled child in the SSI exclusion order (DSS Manual § 0805.020.15); regression tests for stepparent exclusion and equal split of deemed parental income.
+
+
+## [1.824.0] - 2026-09-08
+
+### Added
+
+- Added a contrib reform that pays the Oklahoma Child Care/Child Tax Credit as a refundable credit.
+
+
+## [1.823.1] - 2026-09-08
+
+### Fixed
+
+- Update the program registry to match the code: CCDF now has a state implementation in all 50 states and DC (North Dakota and South Dakota move from in progress to partial with their remaining gaps documented) while the program stays partial because New York's payment differentials and other listed gaps remain unmodeled, Texas CEAP is partial with its SSI categorical-eligibility gap documented and Hawaii OSS is complete, both with their variables and parameter prefixes, and the state universal school meals entries carry an explicit status.
+
+
+## [1.823.0] - 2026-09-07
+
+### Removed
+
+- Remove the inert legacy New York encoding under gov/hhs/ccdf (market rates, county clusters, copay percentages, and their variables), which contributed zero dollars to every household.
+
+
 ## [1.822.5] - 2026-09-04
 
 ### Fixed

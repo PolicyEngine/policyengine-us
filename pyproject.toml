@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.822.5"
+version = "2.0.2"
 description = "US federal and state tax-benefit microsimulation model."
 readme = "README.md"
 authors = [
@@ -24,7 +24,7 @@ dependencies = [
     # extension and is available on every supported Python version.
     "pandas>=3.0",
     "policyengine-core>=3.30.1",
-    "spm-calculator>=0.2.0",
+    "spm-calculator==1.0.0",
     "tables>=3.9",
     "tqdm>=4.67.1",
 ]
