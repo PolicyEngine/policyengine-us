@@ -198,7 +198,7 @@ def spm_config(provider):
 
 
 class _SimulationParameters(ParameterNode):
-    """Cache policy values without caching a simulation's tracing wrapper.
+    """Reuse child value caches without caching a simulation's root or tracer.
 
     Each simulation owns this root. Unreformed simulations share the authored
     children and their warm value caches; applying a reform first clones them.
@@ -207,11 +207,10 @@ class _SimulationParameters(ParameterNode):
     """
 
     def _get_at_instant(self, instant):
-        if instant not in self._at_instant_cache:
-            self._at_instant_cache[instant] = ParameterNodeAtInstant(
-                self.name, self, instant
-            )
-        node = self._at_instant_cache[instant]
+        # Child updates clear caches along their authored parent chain, which
+        # does not include this private view. Rebuild the small root each time
+        # so in-place updates are visible; expensive child nodes stay cached.
+        node = ParameterNodeAtInstant(self.name, self, instant)
         if self.trace:
             return TracingParameterNodeAtInstant(node, self.tracer, self.branch_name)
         return node
@@ -410,13 +409,17 @@ class SPMSimulationMixin:
         )
         supplied = arguments.arguments.get("tax_benefit_system")
         reform = arguments.arguments.get("reform")
-        # The country default already applied its structural reforms at this
-        # instant. Only this exact ordinary construction may reuse that work;
-        # supplied policies, user reforms and other instants still run detection.
-        source = self.default_tax_benefit_system_instance
+        # A prepared country system already applied structural reforms at its
+        # recorded instant. Reuse that work for pristine supplied systems too;
+        # modified/replaced parameters, user reforms and other instants still
+        # run detection.
+        source = (
+            supplied
+            if supplied is not None
+            else self.default_tax_benefit_system_instance
+        )
         self._spm_default_structure_ready = (
-            supplied is None
-            and reform is None
+            reform is None
             and start_instant == getattr(source, "_spm_structure_start_instant", None)
             and source.parameters is getattr(source, "_spm_structure_parameters", None)
             and not source.parameters.modified

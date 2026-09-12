@@ -9,7 +9,7 @@ from policyengine_core.parameters import ParameterNode
 from policyengine_core.periods import period
 from policyengine_core.tracers import FullTracer
 
-from policyengine_us import Simulation
+from policyengine_us import CountryTaxBenefitSystem, Simulation
 from policyengine_us.system import system
 
 
@@ -211,3 +211,53 @@ def test_structural_detection_reuses_only_matching_default(monkeypatch, start_in
     monkeypatch.setattr(module, "create_structural_reforms_from_parameters", record)
     Simulation(situation=earning_household(), start_instant=start_instant)
     assert calls == ([] if start_instant == "2024-01-01" else [start_instant])
+
+
+def test_supplied_prepared_system_retains_warm_policy_children():
+    source = CountryTaxBenefitSystem()
+    source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+    cached = dict(source.parameters.gov._at_instant_cache)
+    children = source.parameters.children
+    simulation = Simulation(tax_benefit_system=source, situation=earning_household())
+    assert simulation.tax_benefit_system.parameters.children is children
+    assert source.parameters.gov._at_instant_cache
+    for instant, node in cached.items():
+        assert (
+            simulation.tax_benefit_system.parameters.gov._at_instant_cache[instant]
+            is node
+        )
+
+
+def test_parameter_view_refreshes_after_in_place_leaf_update():
+    source = system.clone()
+    assert (
+        source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+        < 100_000
+    )
+    source.parameters.gov.irs.deductions.standard.amount.SINGLE.update(
+        period="2024", value=100_000
+    )
+    assert (
+        source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+        == 100_000
+    )
+
+
+def test_reform_can_read_updated_parameters_before_returning():
+    class ReadDuringUpdate(Reform):
+        def apply(self):
+            parameters = self.parameters
+            assert (
+                parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+                < 100_000
+            )
+            parameters.gov.irs.deductions.standard.amount.SINGLE.update(
+                period="2024", value=100_000
+            )
+            assert (
+                parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+                == 100_000
+            )
+
+    simulation = Simulation(situation=earning_household())
+    simulation.apply_reform(ReadDuringUpdate)
