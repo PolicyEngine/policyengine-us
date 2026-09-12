@@ -1,3 +1,15 @@
+## [2.0.0] - 2026-09-12
+
+### Breaking changes
+
+- Require county FIPS by default, or an explicit national or fixed SPM area selection, for SPM measurement, and for resource calculations (household net income, benefits, marginal tax rates) only where a unit's housing assistance is positive: the housing cap consults the canonical housing portion for assisted units alone, so partner and state-program outputs for the other units never depend on SPM geography. Replace country threshold extrapolation with spm-calculator 1.0.0's canonical 2022–2035 amounts; unavailable years fail. Population datasets must supply observed county inputs and source-backed SPM independence roles instead of stored formula-owned SPM outputs, which the loader now rejects; the legacy policyengine-us-data CPS files supply none of these, so resource and poverty outputs are no longer available over them. Preserve user reforms, isolate simulation receipts and bind cloned and baseline holders to their own policy variables.
+
+### Fixed
+
+- Prevent automatic releases from committing stale or non-PyPI dependency locks, and reject dependency drift when refreshing the package version.
+- Pin the uv release toolchain (0.12.13) in the workflows and commit the registry lock in that version's marker normalization, so the automatic version bump's lock refresh changes only the root version instead of failing closed.
+
+
 ## [1.825.2] - 2026-09-11
 
 ### Fixed

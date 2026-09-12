@@ -1,1 +1,0 @@
-Pin the uv release toolchain (0.12.13) in the workflows and commit the registry lock in that version's marker normalization, so the automatic version bump's lock refresh changes only the root version instead of failing closed.
