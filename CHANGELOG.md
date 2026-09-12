@@ -1,3 +1,10 @@
+## [2.0.2] - 2026-09-12
+
+### Fixed
+
+- Add surviving spouse 2025 boundary tests for Alabama standard deduction.
+
+
 ## [2.0.1] - 2026-09-12
 
 ### Fixed
