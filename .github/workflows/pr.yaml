@@ -22,6 +22,8 @@ jobs:
           version: "0.12.13"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
+      - name: Rehearse the release version refresh
+        run: python .github/release_lock.py --rehearse
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
