@@ -1,0 +1,326 @@
+# Verifies ia_ssa_living_arrangement priority ordering:
+# RCF > IHHRC > FLH > DP > BLIND > SMME > NONE
+#
+# Note: SMME requires income > 120% FPL (IAC 441—51.7(6)). 2025 FPL 1-person
+# (contiguous US) = $15,650; 120% = $18,780/year or $1,565/month.
+
+- name: Case 1, RCF resident who is also blind gets RCF category not BLIND.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        employment_income: 0
+        ia_ssa_living_arrangement_input: RESIDENTIAL_CARE_FACILITY
+        ia_ssa_rcf_cost_per_diem: 37.60
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # RCF outranks BLIND
+    ia_ssa_living_arrangement: [RCF]
+
+- name: Case 2, FLH resident who is also blind gets FLH category not BLIND.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 0
+        ia_ssa_living_arrangement_input: FAMILY_LIFE_HOME
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # FLH outranks BLIND
+    ia_ssa_living_arrangement: [FLH]
+
+- name: Case 3, aged person above 120% FPL with Medicaid and Part B gets SMME.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 24_000  # $2,000/mo, above 120% FPL
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # No other category applies; income above 120% FPL -> SMME
+    ia_ssa_living_arrangement: [SMME]
+
+- name: Case 4, person in no qualifying category gets NONE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        # Override federal medicare/medicaid defaults to exclude from SMME
+        ia_ssa_has_medicare_part_b: false
+        ia_ssa_has_full_medicaid: false
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_living_arrangement: [NONE]
+
+- name: Case 6, person needing IHHRC who is also blind gets IHHRC not BLIND.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 0
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
+        ia_ssa_ihhrc_cost_of_care: 400
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # IHHRC outranks BLIND
+    ia_ssa_living_arrangement: [IHHRC]
+
+- name: Case 7, person needing IHHRC with DP configuration gets IHHRC not DP.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
+        ia_ssa_ihhrc_cost_of_care: 400
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # IHHRC outranks DP
+    ia_ssa_living_arrangement: [IHHRC]
+
+- name: Case 8, person with DP configuration who is also blind gets DP not BLIND.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: BLIND_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # DP outranks BLIND
+    ia_ssa_living_arrangement: [DP]
+
+- name: Case 9, blind person with SMME-range income falls to SMME not BLIND.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        social_security_retirement: 24_000  # $2,000/mo -> countable $1,980
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Blind income gate (FBR $967 + $22 = $989). Countable $1,980 > $989 ->
+    # BLIND branch skipped. SMME income floor is 120% FPL ($1,565); $1,980 >
+    # $1,565 -> SMME applies. BLIND and SMME income ranges are disjoint, so
+    # priority ordering between them is academic.
+    ia_ssa_living_arrangement: [SMME]
+
+- name: Case 10, DP-configured person with over-DP-standard income falls through to SMME.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 24_000  # $2,000/mo -> countable $1,980
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # The 2025 AGED_OR_DISABLED_WITH_DEPENDENT DP standard is $1,470. Countable
+    # $1,980 > $1,470, so the DP recipient-income gate fails and the person
+    # falls through to SMME (income > 120% FPL of $1,565). DP and SMME income
+    # ranges are disjoint by construction — the priority cascade between them
+    # is academic.
+    ia_ssa_living_arrangement: [SMME]
+
+- name: Case 11, IHHRC person with SMME-eligible income gets IHHRC not SMME.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # Note: IHHRC income cap is $480.55/mo countable, so this needs to
+        # be low enough to qualify for IHHRC. But we also want Medicaid +
+        # Part B to test that IHHRC still wins over SMME. Use zero income
+        # so IHHRC wins even though SMME condition could apply.
+        employment_income: 0
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
+        ia_ssa_ihhrc_cost_of_care: 400
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # IHHRC outranks SMME (SMME not active here — income $0 below 120% FPL —
+    # but the priority order still applies even if SMME were active).
+    ia_ssa_living_arrangement: [IHHRC]
+
+- name: Case 12, blind person with DP configuration and over-income dependent falls to BLIND.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: BLIND_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 600  # > $503 2025 limit
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Dependent income $600 exceeds the $503 2025 dependent income limit, so
+    # the DP living-arrangement gate fails. Person is blind with $0 countable (< FBR +
+    # blind standard) -> falls through to BLIND category.
+    ia_ssa_living_arrangement: [BLIND]
+    ia_ssa: [22]

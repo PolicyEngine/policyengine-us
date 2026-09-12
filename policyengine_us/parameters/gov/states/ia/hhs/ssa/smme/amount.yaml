@@ -1,0 +1,21 @@
+description: Iowa provides this amount as the supplement for Medicare and Medicaid eligibles under the State Supplementary Assistance program.
+
+values:
+  # SMME was added by 2004 Iowa Acts ch. 1085 (§4) at Iowa Code 249.3(4) as a
+  # technical token payment whose purpose is to bring Medicare premium
+  # payments under federal financial participation. The $1 token amount has
+  # been published since at least 2017; carried back to the program's
+  # earliest in-model date.
+  2011-01-01: 1
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa SSA Medicare and Medicaid eligibles supplement amount
+  reference:
+    - title: Iowa Administrative Code 441—52.1(7)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.52.pdf#page=2
+    - title: Iowa Administrative Code 441—52.1(7), January 4, 2017 supplement
+      href: https://www.legis.iowa.gov/docs/aco/supplement/01-04-2017.pdf#page=120
+    - title: Iowa Administrative Code 441—52.1, March 28, 2018 rule update
+      href: https://www.legis.iowa.gov/docs/iac/rule/03-28-2018.441.52.1.pdf#page=3
