@@ -3,8 +3,9 @@ from policyengine_us.model_api import *
 # Incurrence variables that differ from the <type>_expense naming of the
 # utility_types parameter entries. Electricity uses pre-subsidy expenses to
 # avoid circular references since electricity subsidies depend on SNAP
-# enrollment; gas and fuel is one standard covering metered gas and every
-# deliverable or cooking fuel bill, so it reads the combined boolean.
+# enrollment; the state-set gas and fuel standard (the FNS SUA table's gas
+# and fuel column) covers metered gas and every deliverable or cooking fuel
+# bill, so it reads the combined boolean.
 EXPENSE_VARIABLE_OVERRIDES = {
     "electricity_expense": "pre_subsidy_electricity_expense",
     "gas_and_fuel_expense": "has_gas_and_fuel_expense",

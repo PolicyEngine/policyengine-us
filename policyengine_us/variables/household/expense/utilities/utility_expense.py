@@ -6,7 +6,14 @@ class utility_expense(Variable):
     entity = SPMUnit
     label = "Utility expenses"
     unit = USD
-    documentation = "Total utility bills the household pays separately from rent: electricity, every gas and fuel bill, water, sewage, trash, and telephone. Households whose heating_type is UNSPECIFIED also add the deprecated heating_cooling_expense input, as before the canonical heating inputs existed; a known heating type reads only the per-fuel bills, so the heating cost is never counted twice."
+    documentation = (
+        "Total utility bills the household pays separately from rent: electricity, "
+        "every gas and fuel bill, water, sewage, trash, and telephone. Households "
+        "whose heating_type is UNSPECIFIED also add the deprecated "
+        "heating_cooling_expense input, as before the canonical heating inputs "
+        "existed; a known heating type reads only the per-fuel bills, so the heating "
+        "cost is never counted twice."
+    )
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

@@ -5,7 +5,14 @@ class count_distinct_utility_expenses(Variable):
     value_type = int
     entity = SPMUnit
     label = "Number of distinct utility expenses"
-    documentation = "The number of distinct utility expenses the household pays, counted by the SNAP individual-standard categories: electricity, gas and fuel (one category for metered gas and every deliverable or cooking fuel), telephone, trash, water, and sewage. Households whose heating_type is UNSPECIFIED also count the deprecated heating_cooling_expense input as its own category; a known heating type never reads it."
+    documentation = (
+        "The number of distinct utility expenses the household pays, counted by the "
+        "SNAP individual-standard categories: electricity, gas and fuel (one category "
+        "for metered gas and every deliverable or cooking fuel), telephone, trash, "
+        "water, and sewage. Households whose heating_type is UNSPECIFIED also count "
+        "the deprecated heating_cooling_expense input as its own category; a known "
+        "heating type never reads it."
+    )
     definition_period = YEAR
     reference = (
         "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)"
