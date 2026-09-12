@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.entities import *
@@ -49,10 +50,12 @@ COUNTRY_DIR = Path(__file__).parent
 CURRENT_YEAR = 2024
 DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 
-# Certified Populace build (primary-source US microdata), pinned by build id.
-# Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
-# prefix handled in `_resolve_dataset_path`.
+# Microcosm primary-source microdata. Verify content as well as the historical
+# storage tag; model/runtime certification belongs to the release bundle.
 DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
+DEFAULT_DATASET_SHA256 = (
+    "6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84"
+)
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -133,6 +136,14 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
+        self._spm_structure_start_instant = start_instant
+        self._spm_structure_parameters = self.parameters
+        self.parameters.modified = False
+
+    def get_parameters_at_instant(self, instant):
+        # The parameter root already caches plain values. Caching its returned
+        # tracing wrapper again here would preserve the previous request tracer.
+        return self.parameters(instant) if self.parameters is not None else None
 
     def clone(self):
         return clone_spm_system(self)
@@ -201,11 +212,12 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         )
         super().__init__(*args, **kwargs)
 
-        reform = create_structural_reforms_from_parameters(
-            self.tax_benefit_system.parameters, start_instant
-        )
-        if reform is not None:
-            self.apply_reform(reform)
+        if not self._spm_default_structure_ready:
+            reform = create_structural_reforms_from_parameters(
+                self.tax_benefit_system.parameters, start_instant
+            )
+            if reform is not None:
+                self.apply_reform(reform)
 
         # Labor supply responses
 
@@ -282,7 +294,7 @@ def _resolve_dataset_path(dataset_str):
         version = None
         if "@" in repo_filename:
             repo_filename, version = repo_filename.rsplit("@", 1)
-        return _download_or_explain(
+        local_path = _download_or_explain(
             dataset_str,
             lambda: hf_hub_download(
                 repo_id=f"{owner}/{repo}",
@@ -291,6 +303,15 @@ def _resolve_dataset_path(dataset_str):
                 revision=version,
             ),
         )
+        if dataset_str == DEFAULT_DATASET:
+            with Path(local_path).open("rb") as source:
+                actual = hashlib.file_digest(source, "sha256").hexdigest()
+            if actual != DEFAULT_DATASET_SHA256:
+                raise ValueError(
+                    f"Default Microcosm dataset content mismatch for {dataset_str!r}: "
+                    f"expected SHA256 {DEFAULT_DATASET_SHA256}, got {actual}."
+                )
+        return local_path
     if "hf://" in dataset_str:
         from policyengine_core.tools.hugging_face import (
             parse_hf_url,
@@ -401,11 +422,12 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
 
         super().__init__(*args, **kwargs)
 
-        reform = create_structural_reforms_from_parameters(
-            self.tax_benefit_system.parameters, start_instant
-        )
-        if reform is not None:
-            self.apply_reform(reform)
+        if not self._spm_default_structure_ready:
+            reform = create_structural_reforms_from_parameters(
+                self.tax_benefit_system.parameters, start_instant
+            )
+            if reform is not None:
+                self.apply_reform(reform)
 
         # Labor supply responses
 
