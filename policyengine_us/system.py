@@ -37,6 +37,12 @@ from policyengine_us.data.dataset_schema import (
 )
 
 from typing import Annotated
+from spm_calculator.policyengine_adapter import build_policyengine_variables
+from policyengine_us.spm import (
+    SPMSimulationMixin,
+    clone_spm_system,
+    create_spm_provider,
+)
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -46,7 +52,7 @@ DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 # Certified Populace build (primary-source US microdata), pinned by build id.
 # Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
-DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-c86a631-6e1bcd0271a5-20260619T002242Z"
+DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -82,8 +88,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         start_instant: Annotated[
             str, "ISO date format YYYY-MM-DD"
         ] = DEFAULT_START_DATE,
+        spm: dict | None = None,
     ):
         super().__init__(entities, reform=reform)
+        self.spm_forecast_provider = create_spm_provider(spm)
+        self.add_variables(*build_policyengine_variables())
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
         self.parameters = set_irs_uprating_parameter(self.parameters)
@@ -125,6 +134,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
+    def clone(self):
+        return clone_spm_system(self)
+
 
 system = CountryTaxBenefitSystem()
 
@@ -158,7 +170,7 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
-class Simulation(CoreSimulation):
+class Simulation(SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
     defined against the base simulation class in the -core package.
@@ -183,6 +195,9 @@ class Simulation(CoreSimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
         )
         super().__init__(*args, **kwargs)
 
@@ -234,6 +249,25 @@ class Simulation(CoreSimulation):
         _backfill_state_code_from_str(self)
 
 
+def _download_or_explain(dataset_str, download):
+    """Name the unresolved dataset URI instead of re-raising a Hub exception.
+
+    A build id that is not published yet, a renamed repository and an offline
+    cache miss all surface from ``huggingface_hub`` as transport-level errors
+    that never mention which dataset the model was asked for.
+    """
+    from huggingface_hub.errors import HfHubHTTPError, LocalEntryNotFoundError
+
+    try:
+        return download()
+    except (HfHubHTTPError, LocalEntryNotFoundError) as error:
+        raise FileNotFoundError(
+            f"Could not resolve the dataset {dataset_str!r}: {error}. "
+            "Check that the build id in the URI is published, or pass a "
+            "dataset= argument that is."
+        ) from error
+
+
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
@@ -248,11 +282,14 @@ def _resolve_dataset_path(dataset_str):
         version = None
         if "@" in repo_filename:
             repo_filename, version = repo_filename.rsplit("@", 1)
-        return hf_hub_download(
-            repo_id=f"{owner}/{repo}",
-            filename=repo_filename,
-            repo_type="dataset",
-            revision=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: hf_hub_download(
+                repo_id=f"{owner}/{repo}",
+                filename=repo_filename,
+                repo_type="dataset",
+                revision=version,
+            ),
         )
     if "hf://" in dataset_str:
         from policyengine_core.tools.hugging_face import (
@@ -261,10 +298,13 @@ def _resolve_dataset_path(dataset_str):
         )
 
         owner, repo, filename, version = parse_hf_url(dataset_str)
-        return download_huggingface_dataset(
-            repo=f"{owner}/{repo}",
-            repo_filename=filename,
-            version=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: download_huggingface_dataset(
+                repo=f"{owner}/{repo}",
+                repo_filename=filename,
+                version=version,
+            ),
         )
     elif Path(dataset_str).exists():
         return dataset_str
@@ -289,7 +329,7 @@ def _is_hdfstore_format(file_path):
         return False
 
 
-class Microsimulation(CoreMicrosimulation):
+class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
     defined against the base microsimulation class in the -core package.
@@ -316,6 +356,9 @@ class Microsimulation(CoreMicrosimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
         )
 
         dataset = kwargs.get("dataset")

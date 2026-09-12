@@ -4,8 +4,10 @@
 # 0 kids $345, 1 kid $675, 2 kids $1,020, 3+ kids $1,360;
 # $50 minimum. Income ceiling = the current-year federal EITC maximum AGI
 # (indexed each year, e.g. $19,539.74 childless / $51,593.38 head-of-household
-# one child in 2026); the credit phases from the maximum down to $50 over the
-# last $2,500 (0 kids) / $5,000 (1+ kids) of income below that ceiling.
+# one child in 2026); the credit phases from the maximum down to $0 over the
+# last $2,500 (0 kids) / $5,000 (1+ kids) of income below that ceiling,
+# rounded to the nearest dollar (RCW 82.08.0206(3)(b)), with any positive
+# amount floored at the $50 statutory minimum (RCW 82.08.0206(3)(c)).
 - name: wa_wftc_joint_1_child_max_amount (wa)
   period: 2026
   absolute_error_margin: 0.1
@@ -128,9 +130,12 @@
     tax_units:
       tax_unit:
         # 2026 childless ceiling $19,539.74; phase-out starts $2,500 below at
-        # $17,039.74; rate = (345 - 50)/2,500 = 0.118;
-        # 345 - (18,000 - 17,039.74) x 0.118 = 231.69.
-        wa_working_families_tax_credit: 231.69
+        # $17,039.74. Combined effect of #9371 (max uprated + rounded to the
+        # nearest $5 = 345) and this PR (rate = max / band per ETA 3240 /
+        # WAC 458-20-285 Answer 10D = 345 / 2,500 = 0.138):
+        # 345 - (18,000 - 17,039.74) x 0.138 = 212.48, rounded to the nearest
+        # dollar (RCW 82.08.0206(3)(b)) = 212.
+        wa_working_families_tax_credit: 212
         adjusted_gross_income: 18_000.0
 - name: wa_wftc_1_child_min_amount_near_ceiling (wa)
   period: 2026
@@ -192,10 +197,11 @@
     tax_units:
       tax_unit:
         # 2026 head-of-household one-child ceiling $51,593.38; income $51,590
-        # sits just below it; the rounded $675 maximum phases down to $50.42
-        # in the $50 statutory minimum region
+        # sits just below it. With the rounded $675 max (#9371) and the corrected
+        # max/band rate (this PR, ETA 3240 / WAC 458-20-285 Answer 10D), the
+        # reduced amount falls to the $50 statutory minimum
         # (RCW 82.08.0206(3)(c)).
-        wa_working_families_tax_credit: 50.42
+        wa_working_families_tax_credit: 50
         adjusted_gross_income: 51_590.0
 - name: wa_wftc_1_child_above_income_ceiling (wa)
   period: 2026
@@ -261,7 +267,7 @@
         # below it).
         wa_working_families_tax_credit: 0.0
         adjusted_gross_income: 51_600.0
-- name: wa_wftc_age_18_before_2029_expansion (wa)
+- name: wa_wftc_age_18_before_2028_expansion (wa)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -304,7 +310,8 @@
     tax_units:
       tax_unit:
         # Demographic-route zero: frozen 2022 EITC childless age window is
-        # 25-64; the ESSB 6346 age-18 expansion is not in effect until 2029.
+        # 25-64; the ESSB 6346 age-18 expansion is not in effect until 2028
+        # (Sec. 1205(2): no refunds for any period before January 1, 2028).
         wa_working_families_tax_credit: 0.0
         adjusted_gross_income: 15_000.0
 - name: wa_wftc_itin_filer_state_only_path (wa)
