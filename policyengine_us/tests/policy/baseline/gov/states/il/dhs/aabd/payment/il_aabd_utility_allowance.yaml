@@ -49,3 +49,23 @@
     state_code: IL
   output:
     il_aabd_utility_allowance: 0
+
+- name: Case 6, size 1, area 1, gas expense higher than the metered gas allowance.
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    county_str: COOK_COUNTY_IL
+    gas_expense: 20 * 12
+    state_code: IL
+  output:
+    il_aabd_utility_allowance: 11.9
+
+- name: Case 7, the deprecated metered_gas_expense input is no longer read.
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    county_str: COOK_COUNTY_IL
+    metered_gas_expense: 20 * 12
+    state_code: IL
+  output:
+    il_aabd_utility_allowance: 0

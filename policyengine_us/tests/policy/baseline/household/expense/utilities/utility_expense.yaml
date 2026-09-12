@@ -1,0 +1,52 @@
+# Texas households so that electricity_expense carries no California
+# subsidy netting.
+- name: Case 1, legacy household adds heating_cooling_expense to the bills.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: TX
+    heating_cooling_expense: 600
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 300
+    water_expense: 240
+  output:
+    utility_expense: 2_340
+
+- name: Case 2, a known heating type ignores heating_cooling_expense so the gas heat is not counted twice.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: TX
+    heating_type: NATURAL_GAS
+    heating_cooling_expense: 600
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 300
+  output:
+    utility_expense: 1_500
+
+- name: Case 3, a home without heating still sums its fuel and phone bills.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: TX
+    heating_type: NONE
+    fuel_oil_expense: 500
+    phone_expense: 360
+  output:
+    utility_expense: 860
+
+- name: Case 4, every per-fuel column is summed.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: TX
+    heating_type: WOOD
+    wood_expense: 400
+    coal_expense: 100
+    other_heating_fuel_expense: 50
+    bottled_gas_expense: 200
+    cooking_fuel_expense: 60
+    sewage_expense: 120
+    trash_expense: 90
+  output:
+    utility_expense: 1_020

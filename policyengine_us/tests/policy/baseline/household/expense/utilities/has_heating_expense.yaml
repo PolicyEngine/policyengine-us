@@ -1,0 +1,50 @@
+# 7 CFR 273.9(d)(6)(iii)(D)(1): heating costs incurred separately from rent.
+- name: Case 1, primary fuel bill with heat not in rent.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    has_heating_expense: true
+
+- name: Case 2, heat included in rent.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    heat_expense_included_in_rent: true
+  output:
+    has_heating_expense: false
+
+- name: Case 3, a known type with no bill for its fuel.
+  period: 2026
+  input:
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 0
+  output:
+    has_heating_expense: false
+
+- name: Case 4, a home without heating.
+  period: 2026
+  input:
+    heating_type: NONE
+    gas_expense: 600
+  output:
+    has_heating_expense: false
+
+- name: Case 5, an unspecified type has no primary fuel bill.
+  period: 2026
+  input:
+    fuel_oil_expense: 400
+  output:
+    has_heating_expense: false
+
+- name: Case 6, the fact can be stated directly when the bill does not show it.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    fuel_oil_expense: 400
+    has_heating_expense: true
+  output:
+    has_heating_expense: true

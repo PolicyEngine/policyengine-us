@@ -1,12 +1,14 @@
 from policyengine_us.model_api import *
 
-# Expense input variables that differ from the <type>_expense naming of the
+# Incurrence variables that differ from the <type>_expense naming of the
 # utility_types parameter entries. Electricity uses pre-subsidy expenses to
 # avoid circular references since electricity subsidies depend on SNAP
-# enrollment.
+# enrollment; the state-set gas and fuel standard (the FNS SUA table's gas
+# and fuel column) covers metered gas and every deliverable or cooking fuel
+# bill, so it reads the combined boolean.
 EXPENSE_VARIABLE_OVERRIDES = {
     "electricity_expense": "pre_subsidy_electricity_expense",
-    "gas_and_fuel_expense": "gas_expense",
+    "gas_and_fuel_expense": "has_gas_and_fuel_expense",
 }
 
 
@@ -43,6 +45,8 @@ class snap_individual_utility_allowance(Variable):
         for expense in expense_types:
             util_name = expense.replace("_expense", "")
             expense_variable = EXPENSE_VARIABLE_OVERRIDES.get(expense, expense)
+            # The override may be a boolean incurrence variable; > 0 reads
+            # both a dollar amount and a boolean as "incurs the expense".
             incurs_expense = spm_unit(expense_variable, period) > 0
             flat_val = utility.single[util_name][region]
             if util_name in hh_size_utilities:

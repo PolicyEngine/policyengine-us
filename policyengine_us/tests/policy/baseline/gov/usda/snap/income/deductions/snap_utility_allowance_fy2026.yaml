@@ -475,3 +475,83 @@
     snap_utility_allowance_type: IUA
     snap_limited_utility_allowance: 0
     snap_utility_allowance: 243
+
+# Canonical heating inputs (heating_type plus the per-fuel bill) reaching a
+# dollar allowance without forcing snap_utility_allowance_type, one case per
+# incurrence path in 7 CFR 273.9(d)(6)(iii).
+- name: Alabama gas-heated household with a gas bill receives the FY2026 HCSUA from canonical inputs
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person]
+        state_code: AL
+  output:
+    # (D)(1): heating incurred separately from rent.
+    has_heating_expense: true
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 637
+
+- name: Idaho renter with heat in rent and electricity and trash bills receives the FY2026 LUA from canonical inputs
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 960
+        trash_expense: 360
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    # Heat in rent is not separately incurred; electricity and trash are
+    # two non-heating utilities (A)(3).
+    has_heating_expense: false
+    count_distinct_utility_expenses: 2
+    snap_utility_allowance_type: LUA
+    snap_utility_allowance: 133
+
+- name: Missouri home without heating that buys fuel oil for hot water receives the FY2026 gas and fuel standard and the matching shelter deduction
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NONE
+        fuel_oil_expense: 1_800
+        snap_net_income_pre_shelter: 200
+    households:
+      household:
+        members: [person]
+        state_code: MO
+  output:
+    # (A)(1): fuel oil alone incurs the single gas and fuel standard; one
+    # utility is short of Missouri's two-utility LUA.
+    has_heating_expense: false
+    has_gas_and_fuel_expense: true
+    count_distinct_utility_expenses: 1
+    snap_utility_allowance_type: IUA
+    snap_utility_allowance: 162
+    # No housing cost: 162 - 0.5 * 200 = 62, under the $744 cap.
+    snap_excess_shelter_expense_deduction: 62

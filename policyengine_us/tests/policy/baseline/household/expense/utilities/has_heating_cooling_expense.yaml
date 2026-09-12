@@ -1,0 +1,130 @@
+# 7 CFR 273.9(d)(6)(iii)(D)(1): the heating and cooling standard goes to
+# households that incur heating or cooling expenses separately from rent.
+- name: Case 1, legacy heating_cooling_expense signals incurrence for an UNSPECIFIED heating type.
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 2, no heating or cooling inputs at all.
+  period: 2026
+  input:
+    heating_cooling_expense: 0
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 3, natural gas heat with a gas bill incurs heating.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 4, natural gas heat included in rent does not incur heating even with a gas bill.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    heat_expense_included_in_rent: true
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 5, a home without heating that pays for cooling incurs cooling.
+  period: 2026
+  input:
+    heating_type: NONE
+    has_cooling_expense: true
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 6, electric heat in rent with an electricity bill and no cooling incurs neither.
+  period: 2026
+  input:
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 900
+    heat_expense_included_in_rent: true
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 7, a per-fuel bill alone does not signal heating when the heating type is unspecified.
+  period: 2026
+  input:
+    gas_expense: 1_200
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 8, the legacy adapter ignores heat_expense_included_in_rent as before.
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+    heat_expense_included_in_rent: true
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 9, a known heating type never reads the legacy input.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 0
+    heating_cooling_expense: 600
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 10, fuel oil heat with a fuel oil bill incurs heating.
+  period: 2026
+  input:
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 1_500
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 11, cooling alongside a known heating type in rent still qualifies.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    heat_expense_included_in_rent: true
+    has_cooling_expense: true
+  output:
+    has_heating_cooling_expense: true
+
+# A fuel bill cannot say what the fuel is used for (fuel oil and propane
+# both run water heaters), so heating that is not the primary fuel's bill
+# is stated through the has_heating_expense fact rather than inferred.
+- name: Case 12, free gathered wood with a purchased propane backup heater is not inferred from the propane bill.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    bottled_gas_expense: 300
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 13, the same household stating that it pays for heat qualifies.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    bottled_gas_expense: 300
+    has_heating_expense: true
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 14, free gathered wood with fuel oil bought only for hot water is not inferred from the oil bill.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    fuel_oil_expense: 400
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 15, a home without heating never incurs heating by default.
+  period: 2026
+  input:
+    heating_type: NONE
+    wood_expense: 200
+  output:
+    has_heating_cooling_expense: false
