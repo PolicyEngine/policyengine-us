@@ -1,0 +1,1 @@
+Use a stable deduction order for person-level adjusted gross income and student loan interest modified adjusted gross income, preventing process-dependent floating-point results while preserving deduction membership and exclusions.
