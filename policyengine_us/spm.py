@@ -10,9 +10,10 @@ from collections.abc import Mapping
 from copy import copy, deepcopy
 from functools import lru_cache
 from inspect import signature
-from weakref import WeakSet
+from weakref import WeakSet, ref
 
 from policyengine_core.parameters import ParameterNode, ParameterNodeAtInstant
+from policyengine_core.reforms import Reform
 from policyengine_core.tracers import TracingParameterNodeAtInstant
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
@@ -221,10 +222,46 @@ class _SimulationParameters(ParameterNode):
             return TracingParameterNodeAtInstant(node, self.tracer, self.branch_name)
         return node
 
+    def clone(self):
+        cloned = super().clone()
+        # Core clones this view for supplied Reform wrappers too. Child updates
+        # now reach the cloned root, never the original view's authored source.
+        cloned._spm_parameter_source = cloned
+        cloned._spm_cloned_from = ref(_parameter_source(self))
+        return cloned
+
+
+def _parameter_source(parameters):
+    return getattr(parameters, "_spm_parameter_source", parameters)
+
+
+def _has_prepared_structure(system, start_instant):
+    parameters = system.parameters
+    source = _parameter_source(parameters)
+    if (
+        start_instant != getattr(system, "_spm_structure_start_instant", None)
+        or parameters.modified
+        or source.modified
+    ):
+        return False
+    prepared = getattr(system, "_spm_structure_parameters", None)
+    if source is _parameter_source(prepared):
+        return True
+    # A variable-only Reform clones the prepared baseline's parameter view.
+    # Recognize that actual clone operation, not an arbitrary replacement root.
+    cloned_from = getattr(source, "_spm_cloned_from", None)
+    return (
+        isinstance(system, Reform)
+        and cloned_from is not None
+        and cloned_from() is _parameter_source(system.baseline.parameters)
+        and _has_prepared_structure(system.baseline, start_instant)
+    )
+
 
 def _parameter_view(parameters):
     view = object.__new__(_SimulationParameters)
     view.__dict__ = parameters.__dict__.copy()
+    view._spm_parameter_source = _parameter_source(parameters)
     view._at_instant_cache = {}
     view.trace = False
     view.tracer = None
@@ -287,6 +324,10 @@ def clone_spm_system(system, *, copy_receipts=True):
         memo[id(variable.entity)] = by_key[variable.entity.key]
     cloned.variables = deepcopy(system.variables, memo)
     cloned.parameters = _parameter_view(cloned.parameters)
+    if _has_prepared_structure(
+        system, getattr(system, "_spm_structure_start_instant", None)
+    ):
+        cloned._spm_structure_parameters = _parameter_source(cloned.parameters)
     cloned._spm_shared_parameters = False
     cloned._spm_policy_owners = WeakSet()
     cloned.spm_forecast_provider = system.spm_forecast_provider.snapshot(
@@ -349,6 +390,9 @@ class SPMSimulationMixin:
         parameters.trace = self.trace
         parameters.tracer = self.tracer
         parameters.branch_name = self.branch_name
+        # Supplied Reform instances retain Core's extra system-level cache.
+        # Its results can contain a previous tracer; child value caches remain warm.
+        self.tax_benefit_system._parameters_at_instant_cache.clear()
         return super()._calculate(variable_name, period)
 
     def apply_reform(self, reform):
@@ -424,11 +468,8 @@ class SPMSimulationMixin:
             if supplied is not None
             else self.default_tax_benefit_system_instance
         )
-        self._spm_default_structure_ready = (
-            reform is None
-            and start_instant == getattr(source, "_spm_structure_start_instant", None)
-            and source.parameters is getattr(source, "_spm_structure_parameters", None)
-            and not source.parameters.modified
+        self._spm_default_structure_ready = reform is None and _has_prepared_structure(
+            source, start_instant
         )
         if supplied is None:
             if reform is not None:

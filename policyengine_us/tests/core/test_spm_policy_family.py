@@ -6,10 +6,12 @@ import numpy as np
 import pytest
 from policyengine_core.reforms import Reform
 from policyengine_core.parameters import ParameterNode
-from policyengine_core.periods import period
+from policyengine_core.periods import YEAR, period
 from policyengine_core.tracers import FullTracer
+from policyengine_core.variables import Variable
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us.entities import Person
 from policyengine_us.system import system
 
 
@@ -72,8 +74,60 @@ def test_child_reform_updates_warm_parent_and_sibling(replace_root):
     )
 
 
-def test_cached_formula_trace_binds_replacement_tracer():
-    simulation = Simulation(situation=earning_household(), trace=True)
+class VariableOnlyReform(Reform):
+    def apply(self):
+        self.neutralize_variable("income_tax")
+
+
+@pytest.mark.parametrize("initial_trace", [False, True])
+def test_supplied_reform_system_lookup_binds_current_formula_tracer(initial_trace):
+    class parameter_lookup(Variable):
+        entity = Person
+        value_type = float
+        definition_period = YEAR
+        label = "Parameter lookup through supplied policy system"
+
+        def formula(person, period, parameters):
+            # A formula can use Core's public system lookup; a supplied Reform
+            # retains that method even though CountryTaxBenefitSystem overrides it.
+            policy = person.simulation.tax_benefit_system
+            amount = policy.get_parameters_at_instant(
+                period.start
+            ).gov.irs.deductions.standard.amount.SINGLE
+            return person.filled_array(amount)
+
+    source = VariableOnlyReform(system.clone())
+    source.add_variable(parameter_lookup)
+    simulation = Simulation(
+        tax_benefit_system=source,
+        situation=earning_household(),
+        trace=initial_trace,
+    )
+    before = simulation.calculate("parameter_lookup", 2024)
+    old_tracer = simulation.tracer
+    old_count = len(old_tracer.trees) if initial_trace else None
+    simulation.trace = True
+    simulation.tracer = FullTracer()
+    simulation.delete_arrays("parameter_lookup")
+    np.testing.assert_array_equal(
+        simulation.calculate("parameter_lookup", 2024), before
+    )
+    assert any(
+        parameter.name.endswith("gov.irs.deductions.standard.amount.SINGLE")
+        for parameter in simulation.tracer.trees[-1].parameters
+    )
+    if initial_trace:
+        assert len(old_tracer.trees) == old_count
+
+
+@pytest.mark.parametrize("reform_wrapper", [False, True])
+def test_cached_formula_trace_binds_replacement_tracer(reform_wrapper):
+    supplied = (
+        {"tax_benefit_system": VariableOnlyReform(system.clone())}
+        if reform_wrapper
+        else {}
+    )
+    simulation = Simulation(situation=earning_household(), trace=True, **supplied)
     simulation.calculate("spm_unit_fpg", 2024)
     old_tracer = simulation.tracer
     old_count = len(old_tracer.trees)
@@ -180,11 +234,26 @@ def test_reusing_detached_source_marks_all_shared_owners_for_copy_on_write():
         )
 
 
-def test_modified_replacement_default_applies_new_structure(monkeypatch):
-    source = system.clone()
+@pytest.mark.parametrize("clone_source", [False, True])
+def test_modified_replacement_default_applies_new_structure(monkeypatch, clone_source):
+    source = system.clone() if clone_source else CountryTaxBenefitSystem()
+    if not clone_source:
+        assert source.parameters is source._spm_structure_parameters
+        assert not source.parameters.modified
     source.parameters.gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax.update(
         period="2024", value=True
     )
+    if not clone_source:
+        assert source.parameters.modified
+    module = importlib.import_module("policyengine_us.system")
+    calls = []
+    original = module.create_structural_reforms_from_parameters
+
+    def record(parameters, instant):
+        calls.append(parameters)
+        return original(parameters, instant)
+
+    monkeypatch.setattr(module, "create_structural_reforms_from_parameters", record)
     baseline = Simulation(situation=earning_household())
     before = baseline.calculate("household_tax_before_refundable_credits", 2024)
     explicit = Simulation(tax_benefit_system=source, situation=earning_household())
@@ -196,6 +265,7 @@ def test_modified_replacement_default_applies_new_structure(monkeypatch):
         simulation.calculate("household_tax_before_refundable_credits", 2024),
         expected,
     )
+    assert len(calls) == 2
 
 
 @pytest.mark.parametrize("start_instant", ["2024-01-01", "2026-01-01"])
@@ -213,8 +283,17 @@ def test_structural_detection_reuses_only_matching_default(monkeypatch, start_in
     assert calls == ([] if start_instant == "2024-01-01" else [start_instant])
 
 
-def test_supplied_prepared_system_retains_warm_policy_children():
-    source = CountryTaxBenefitSystem()
+@pytest.mark.parametrize(
+    "clone_count,reform_wrapper", [(0, False), (1, False), (2, False), (1, True)]
+)
+def test_supplied_prepared_system_retains_warm_policy_children(
+    clone_count, reform_wrapper
+):
+    source = CountryTaxBenefitSystem() if not clone_count else system
+    for _ in range(clone_count):
+        source = source.clone()
+    if reform_wrapper:
+        source = VariableOnlyReform(source)
     source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
     cached = dict(source.parameters.gov._at_instant_cache)
     children = source.parameters.children
@@ -226,6 +305,51 @@ def test_supplied_prepared_system_retains_warm_policy_children():
             simulation.tax_benefit_system.parameters.gov._at_instant_cache[instant]
             is node
         )
+
+
+def test_empty_structural_detection_retains_supplied_warm_children(monkeypatch):
+    module = importlib.import_module("policyengine_us.reforms.reforms")
+    # The default MI factory always registers a variable reform. Suppress that
+    # one factory to exercise the supported no-active-structural-reform result.
+    monkeypatch.setattr(module, "create_mi_surtax_reform", lambda *args: None)
+    source = system.clone()
+    source.parameters.gov.irs.deductions.standard.amount.SINGLE.update(
+        period="2024", value=100_000
+    )
+    source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+    children = source.parameters.children
+    cached = dict(source.parameters.gov._at_instant_cache)
+    assert (
+        module.create_structural_reforms_from_parameters(
+            source.parameters, "2024-01-01"
+        )
+        is None
+    )
+    simulation = Simulation(tax_benefit_system=source, situation=earning_household())
+    assert simulation.tax_benefit_system.parameters.children is children
+    assert simulation.calculate("standard_deduction", 2024)[0] == 100_000
+    assert simulation.calculate("taxable_income", 2024)[0] == 0
+    for instant, node in cached.items():
+        assert source.parameters.gov._at_instant_cache[instant] is node
+
+
+def test_supplied_wrapper_replacement_root_requires_structural_detection(monkeypatch):
+    source = VariableOnlyReform(system.clone())
+    # An independently cloned, pristine root has no authenticated origin from
+    # this wrapper's baseline. A false modified flag alone cannot certify it.
+    source.parameters = system.parameters.clone()
+    assert not source.parameters.modified
+    module = importlib.import_module("policyengine_us.system")
+    calls = []
+    original = module.create_structural_reforms_from_parameters
+
+    def record(parameters, instant):
+        calls.append(instant)
+        return original(parameters, instant)
+
+    monkeypatch.setattr(module, "create_structural_reforms_from_parameters", record)
+    Simulation(tax_benefit_system=source, situation=earning_household())
+    assert calls == ["2024-01-01"]
 
 
 def test_parameter_view_refreshes_after_in_place_leaf_update():

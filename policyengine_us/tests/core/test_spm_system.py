@@ -577,8 +577,12 @@ def test_parameter_reform_updates_only_intentionally_shared_branches(reform_at_p
     )
 
 
-def test_trace_toggle_and_shared_branch_bind_current_tracer():
-    original = Simulation(situation=single_person_situation())
+@pytest.mark.parametrize("reform_wrapper", [False, True])
+def test_trace_toggle_and_shared_branch_bind_current_tracer(reform_wrapper):
+    supplied = (
+        {"tax_benefit_system": UserReform(system.clone())} if reform_wrapper else {}
+    )
+    original = Simulation(situation=single_person_situation(), **supplied)
     original.calculate("spm_unit_fpg", 2024)
     original.trace = True
     original.delete_arrays("spm_unit_fpg")

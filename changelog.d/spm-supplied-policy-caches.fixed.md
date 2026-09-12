@@ -1,0 +1,1 @@
+Preserve warm parameter caches for prepared policy clones and variable-only reform wrappers, while retaining structural reevaluation after parameter changes and binding formula parameter traces to the active simulation.
