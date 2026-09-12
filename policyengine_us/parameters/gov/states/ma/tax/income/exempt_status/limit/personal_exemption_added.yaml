@@ -5,17 +5,17 @@ JOINT:
   2020-01-01: true
 HEAD_OF_HOUSEHOLD:
   2020-01-01: true
-SURVIVING_SPOUSE:
-  2020-01-01: false
 SEPARATE:
   2020-01-01: false
 metadata:
   propagate_metadata_to_children: true
   reference:
-    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust 
+    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+    - title: Filing Status on Massachusetts Personal Income Tax
+      href: https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax
   unit: currency-USD
   period: year
   breakdown:
-  - filing_status
+  - ma_filing_status
   label: Massachusetts income tax exemption limit includes personal exemptions

@@ -359,7 +359,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.MA
 
         def formula(tax_unit, period, parameters):
-            filing_status = tax_unit("filing_status", period)
+            filing_status = tax_unit("ma_filing_status", period)
             tax = parameters(period).gov.states.ma.tax.income
             exempt_status = tax.exempt_status.limit
             personal_exemptions_added = (

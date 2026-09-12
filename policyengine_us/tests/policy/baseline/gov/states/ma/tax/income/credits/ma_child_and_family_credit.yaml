@@ -134,3 +134,214 @@
         members: [filer, disabled_dependent, elderly_dependent]
   output:
     ma_child_and_family_credit: 880
+
+- name: Disabled spouse qualifies in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) qualifying individual: 1 x 440 = 440.
+    ma_child_and_family_credit: 440
+
+- name: Disabled spouse does not qualify in 2022 under the predecessor credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # The pre-2023 credit for eligible dependents covered only
+    # IRC Section 152 dependents.
+    ma_child_and_family_credit: 0
+
+- name: Married filing separately cannot claim the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    ma_child_and_family_credit: 0
+
+- name: Disabled spouse qualifies at the gate flip year 2023
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Disabled-spouse gate turns on 2023-01-01: 1 x 310 (2023 amount) = 310.
+    ma_child_and_family_credit: 310
+
+- name: Disabled spouse does not qualify in the 2021 pre-gate window
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Disabled-spouse gate is off before 2023, so the spouse is not eligible.
+    ma_child_and_family_credit: 0
+
+- name: Disabled spouse in a separate unit cannot claim the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Married filing separately overrides an otherwise-eligible disabled spouse.
+    ma_child_and_family_credit: 0
+
+- name: Joint filer with one qualifying child claims the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # 1 qualifying child x 440 (2024 amount) = 440.
+    ma_child_and_family_credit: 440
+
+- name: Identical household filing separately zeroes the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # Same qualifying child as the joint case, but the ~separate gate zeroes the
+    # otherwise-440 base.
+    ma_child_and_family_credit: 0
