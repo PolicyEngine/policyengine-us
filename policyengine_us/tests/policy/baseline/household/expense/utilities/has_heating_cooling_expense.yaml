@@ -89,3 +89,42 @@
     has_cooling_expense: true
   output:
     has_heating_cooling_expense: true
+
+# A fuel bill cannot say what the fuel is used for (fuel oil and propane
+# both run water heaters), so heating that is not the primary fuel's bill
+# is stated through the has_heating_expense fact rather than inferred.
+- name: Case 12, free gathered wood with a purchased propane backup heater is not inferred from the propane bill.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    bottled_gas_expense: 300
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 13, the same household stating that it pays for heat qualifies.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    bottled_gas_expense: 300
+    has_heating_expense: true
+  output:
+    has_heating_cooling_expense: true
+
+- name: Case 14, free gathered wood with fuel oil bought only for hot water is not inferred from the oil bill.
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    fuel_oil_expense: 400
+  output:
+    has_heating_cooling_expense: false
+
+- name: Case 15, a home without heating never incurs heating by default.
+  period: 2026
+  input:
+    heating_type: NONE
+    wood_expense: 200
+  output:
+    has_heating_cooling_expense: false

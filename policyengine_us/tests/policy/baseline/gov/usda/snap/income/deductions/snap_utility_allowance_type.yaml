@@ -272,3 +272,27 @@
   output:
     # Per-fuel bills alone do not say which fuel heats the home.
     snap_utility_allowance_type: LUA
+
+- name: Free wood heat with a purchased propane backup receives the SUA when the household states it pays for heat
+  period: 2026
+  input:
+    heating_type: WOOD
+    wood_expense: 0
+    bottled_gas_expense: 300
+    has_heating_expense: true
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: A home without heating does not reach the LUA through a leftover legacy heating amount
+  period: 2026
+  input:
+    heating_type: NONE
+    heating_cooling_expense: 600
+    water_expense: 240
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    # One utility (water): individual standards, not the LUA.
+    snap_utility_allowance_type: IUA

@@ -5,15 +5,19 @@ class count_distinct_utility_expenses(Variable):
     value_type = int
     entity = SPMUnit
     label = "Number of distinct utility expenses"
-    documentation = "The number of distinct utility expenses the household pays, counted by the SNAP individual-standard categories: electricity, gas and fuel (one category for metered gas and every deliverable or cooking fuel), telephone, trash, water, and sewage. The deprecated heating_cooling_expense input still counts as its own category for unmigrated households."
+    documentation = "The number of distinct utility expenses the household pays, counted by the SNAP individual-standard categories: electricity, gas and fuel (one category for metered gas and every deliverable or cooking fuel), telephone, trash, water, and sewage. Households whose heating_type is UNSPECIFIED also count the deprecated heating_cooling_expense input as its own category; a known heating type never reads it."
     definition_period = YEAR
     reference = (
         "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)"
     )
 
     def formula(spm_unit, period, parameters):
+        heating_type = spm_unit("heating_type", period)
+        unspecified = heating_type == heating_type.possible_values.UNSPECIFIED
+        # Deprecated legacy adapter, read only for unmigrated households.
+        legacy_expense = spm_unit("heating_cooling_expense", period)
         has_expense = [
-            spm_unit("heating_cooling_expense", period) > 0,
+            unspecified & (legacy_expense > 0),
             # Use pre-subsidy expenses to avoid circular references
             # since electricity subsidies depend on SNAP enrollment.
             spm_unit("pre_subsidy_electricity_expense", period) > 0,

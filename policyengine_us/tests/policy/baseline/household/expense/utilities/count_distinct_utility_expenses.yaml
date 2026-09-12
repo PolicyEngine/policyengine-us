@@ -59,3 +59,22 @@
     water_expense: 240
   output:
     count_distinct_utility_expenses: 2
+
+# The deprecated heating_cooling_expense input is read only for households
+# whose heating_type is UNSPECIFIED.
+- name: A known heating type does not count a leftover legacy heating amount.
+  period: 2026
+  input:
+    heating_type: NONE
+    heating_cooling_expense: 600
+    water_expense: 240
+  output:
+    count_distinct_utility_expenses: 1
+
+- name: An unspecified heating type still counts the legacy heating amount.
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+    water_expense: 240
+  output:
+    count_distinct_utility_expenses: 2
