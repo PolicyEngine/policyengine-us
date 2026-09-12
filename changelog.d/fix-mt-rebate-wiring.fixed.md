@@ -1,0 +1,1 @@
+Correct the Montana 2021 income tax rebate's reported value outside its eligibility year: without the 2022 sunset the amount backdates forward, so the variable reported a phantom rebate in 2022 and later. Montana income tax is unaffected, as the non-refundable credit list already excludes the rebate from 2022.
