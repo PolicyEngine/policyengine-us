@@ -21,7 +21,7 @@ class adjusted_gross_income_person(Variable):
         ald_sum_person = add(person, period, person_ald_vars)
         # split other alds evenly between head and spouse
         all_alds = parameters(period).gov.irs.ald.deductions
-        other_alds = list(set(all_alds) - set(PERSON_ALDS))
+        other_alds = sorted(set(all_alds) - set(PERSON_ALDS))
         ald_sum_taxunit = add(person.tax_unit, period, other_alds)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)

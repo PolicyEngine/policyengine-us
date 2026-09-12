@@ -1,29 +1,81 @@
-- name: Housing subsidy is capped at the SPM housing need less tenant payment.
+# Canonical spm-calculator 1.0.0 forecast spm-rolling-2026-09-09 gives the
+# 2024 housing portion for a two-adult/two-child renter unit in county 06037:
+# 39_219.893902 * 0.4305200747 * 1.6 = 27_015.922643864185.
+# HUD inputs exercise the country benefit cap against this raw canonical amount.
+- name: Case 1, housing subsidy is capped at housing need less tenant payment.
   period: 2024
+  absolute_error_margin: 0.01
   input:
-    spm_unit_spm_threshold_housing_portion: 17_720
-    is_eligible_for_housing_assistance: true
-    hud_hap: 30_000
-    hud_ttp: 10_000
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: RENTER
+        is_eligible_for_housing_assistance: true
+        takes_up_housing_assistance_if_eligible: true
+        hud_hap: 30_000
+        hud_ttp: 10_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
   output:
-    spm_unit_capped_housing_subsidy: 7_720
+    housing_assistance: 30_000
+    spm_unit_capped_housing_subsidy: 17_015.922643864185
 
-- name: Housing subsidy is not reduced when below the SPM cap.
+- name: Case 2, housing subsidy below the SPM cap is retained.
   period: 2024
+  absolute_error_margin: 0.01
   input:
-    spm_unit_spm_threshold_housing_portion: 17_720
-    is_eligible_for_housing_assistance: true
-    hud_hap: 5_000
-    hud_ttp: 10_000
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: RENTER
+        is_eligible_for_housing_assistance: true
+        takes_up_housing_assistance_if_eligible: true
+        hud_hap: 5_000
+        hud_ttp: 10_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
   output:
+    housing_assistance: 5_000
     spm_unit_capped_housing_subsidy: 5_000
 
-- name: Housing subsidy cap floors at zero.
+- name: Case 3, tenant payment above canonical housing need floors the cap at zero.
   period: 2024
+  absolute_error_margin: 0.01
   input:
-    spm_unit_spm_threshold_housing_portion: 4_000
-    is_eligible_for_housing_assistance: true
-    hud_hap: 5_000
-    hud_ttp: 5_000
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: RENTER
+        is_eligible_for_housing_assistance: true
+        takes_up_housing_assistance_if_eligible: true
+        hud_hap: 5_000
+        hud_ttp: 30_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
   output:
+    housing_assistance: 5_000
     spm_unit_capped_housing_subsidy: 0

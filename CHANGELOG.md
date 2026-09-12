@@ -1,3 +1,58 @@
+## [2.0.2] - 2026-09-12
+
+### Fixed
+
+- Add surviving spouse 2025 boundary tests for Alabama standard deduction.
+
+
+## [2.0.1] - 2026-09-12
+
+### Fixed
+
+- Use a stable deduction order for person-level adjusted gross income and student loan interest modified adjusted gross income, preventing process-dependent floating-point results while preserving deduction membership and exclusions.
+
+
+## [2.0.0] - 2026-09-12
+
+### Breaking changes
+
+- Require county FIPS by default, or an explicit national or fixed SPM area selection, for SPM measurement, and for resource calculations (household net income, benefits, marginal tax rates) only where a unit's housing assistance is positive: the housing cap consults the canonical housing portion for assisted units alone, so partner and state-program outputs for the other units never depend on SPM geography. Replace country threshold extrapolation with spm-calculator 1.0.0's canonical 2022–2035 amounts; unavailable years fail. Population datasets must supply observed county inputs and source-backed SPM independence roles instead of stored formula-owned SPM outputs, which the loader now rejects; the legacy policyengine-us-data CPS files supply none of these, so resource and poverty outputs are no longer available over them. Preserve user reforms, isolate simulation receipts and bind cloned and baseline holders to their own policy variables.
+
+### Fixed
+
+- Prevent automatic releases from committing stale or non-PyPI dependency locks, and reject dependency drift when refreshing the package version.
+- Pin the uv release toolchain (0.12.13) in the workflows and commit the registry lock in that version's marker normalization, so the automatic version bump's lock refresh changes only the root version instead of failing closed.
+
+
+## [1.825.2] - 2026-09-11
+
+### Fixed
+
+- Corrected the Washington Working Families Tax Credit phase-out rate to maximum amount divided by the phase-out band (WAC 458-20-285), rounded the reduced refund to the nearest dollar (RCW 82.08.0206(3)(b)), made the maximum qualifying income ceiling strict, and moved the ESSB 6346 expansion (including its minimum age) to the first tax year it covers (2028; ESSB 6346 Sec. 1205(2)).
+
+
+## [1.825.1] - 2026-09-11
+
+### Fixed
+
+- Pin the compatible SPM calculator so fresh installations retain the existing threshold calculation API.
+
+
+## [1.825.0] - 2026-09-11
+
+### Added
+
+- Colorado Initiative 195 contributed reform, replacing the flat income tax with a graduated rate schedule.
+- Trump dividend contributed reform, providing a payment to citizens at or above a minimum age.
+
+
+## [1.824.9] - 2026-09-11
+
+### Fixed
+
+- Fixed the New York Empire State child credit phase-out threshold for qualified surviving spouses to $75,000 for 2025-2027, matching the enacted S.3009-C text and the 2025 IT-213 instructions.
+
+
 ## [1.824.8] - 2026-09-09
 
 ### Fixed

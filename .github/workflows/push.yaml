@@ -4,7 +4,43 @@ on:
     branches: [main]
 
 jobs:
+  ReleaseLock:
+    name: Check committed registry lock
+    if: |
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock
+        run: python .github/release_lock.py --committed
+  ReleaseLockTests:
+    name: Release lock guard tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Test guard without importing the country model
+        env:
+          RELEASE_LOCK_REAL_UV: "1"
+        run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
   Lint:
+    needs: ReleaseLock
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -13,11 +49,14 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Check formatting
-        run: uv run ruff format --check .
+        run: uv run --no-sync ruff format --check .
   versioning:
+    needs: ReleaseLockTests
     name: Update versioning
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -36,27 +75,56 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: 3.14
-      - name: Install dependencies
-        run: uv pip install towncrier --system
-      - name: Bump version and build changelog
+      - name: Check committed registry lock before bump
+        run: python .github/release_lock.py --committed
+      - name: Bump version once
+        run: python .github/bump_version.py
+      - name: Build changelog with isolated registry tooling
         run: |
-          python .github/bump_version.py
-          VERSION=$(python -c "import re; print(re.search(r'version = \"(.+?)\"', open('pyproject.toml').read()).group(1))")
-          towncrier build --yes --version "$VERSION"
+          python - <<'PYTHON'
+          import os
+          import subprocess
+          import sys
+          import tomllib
+          from pathlib import Path
+
+          version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
+          env = {
+              key: value
+              for key, value in os.environ.items()
+              if not key.startswith(("UV_", "PIP_"))
+          }
+          subprocess.run(
+              [
+                  "uv", "--no-config", "tool", "run", "--isolated",
+                  "--no-env-file", "--no-sources",
+                  "--default-index", "https://pypi.org/simple",
+                  "--python", sys.executable,
+                  "towncrier", "build", "--yes", "--version", version,
+              ],
+              env=env,
+              check=True,
+          )
+          PYTHON
+      - name: Refresh and check release version in registry lock
+        run: python .github/release_lock.py --refresh
       - name: Update changelog
         uses: EndBug/add-and-commit@v10
         with:
-          add: "."
+          add: "pyproject.toml uv.lock CHANGELOG.md changelog.d"
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
           message: Update PolicyEngine US
           github_token: ${{ steps.app-token.outputs.token }}
           fetch: false
   Baseline:
+    needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -103,14 +171,17 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Baseline YAML tests (${{ matrix.group }})
-        run: uv run ${{ matrix.cmd }}
+        run: uv run --no-sync ${{ matrix.cmd }}
   HouseholdAPIPartners:
+    needs: ReleaseLock
     name: Household API Partners
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -129,14 +200,17 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
-        run: uv run make test-yaml-no-structural-other-partners
+        run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
+    needs: ReleaseLock
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -177,17 +251,20 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Contrib YAML tests (${{ matrix.group }})
-        run: uv run make ${{ matrix.target }}
+        run: uv run --no-sync make ${{ matrix.target }}
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
-        run: uv run make test-policy-contrib-python
+        run: uv run --no-sync make test-policy-contrib-python
   Rest:
+    needs: ReleaseLock
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -206,17 +283,20 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Python tests (code_health, core, utilities, top-level)
-        run: uv run make test-other-python
+        run: uv run --no-sync make test-other-python
       - name: Run tests/variables YAML tests
         if: always()
-        run: uv run make test-yaml-variables
+        run: uv run --no-sync make test-yaml-variables
   Microsimulation:
+    needs: ReleaseLock
     name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -235,8 +315,10 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
@@ -244,13 +326,13 @@ jobs:
       # was OOM-killed at ~94% on run 28698452678 once microsimulation
       # peaks stacked on the accumulated python-test RSS.
       - name: Run microsimulation tests
-        run: uv run make test-microsimulation
+        run: uv run --no-sync make test-microsimulation
   Publish:
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [Baseline, HouseholdAPIPartners, Contrib, Rest, Microsimulation]
+    needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, Rest, Microsimulation]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -260,10 +342,14 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock before publication
+        run: python .github/release_lock.py --committed
       - name: Install package
-        run: uv pip install -e ".[dev]" --system
+        run: uv sync --locked --extra dev
       - name: Build package
-        run: make
+        run: uv run --no-sync make
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
