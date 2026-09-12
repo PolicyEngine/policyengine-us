@@ -188,3 +188,53 @@ def test_wa_millionaires_standard_deduction_uses_biennial_schedule():
         1_070_000,
         1_070_000,
     )
+
+
+def test_me_standard_deductions_published_2026():
+    standard = SYSTEM.parameters.gov.states.me.tax.income.deductions.standard
+    base = standard.amount("2026-01-01")
+    aged_or_blind = standard.aged_or_blind("2026-01-01")
+
+    expected_base = {
+        "SINGLE": 15_700,
+        "JOINT": 31_400,
+        "SEPARATE": 15_700,
+        "HEAD_OF_HOUSEHOLD": 23_550,
+        "SURVIVING_SPOUSE": 31_400,
+    }
+    assert {status: base[status] for status in expected_base} == expected_base
+
+    expected_additional = {
+        "SINGLE": 2_050,
+        "JOINT": 1_650,
+        "SEPARATE": 1_650,
+        "HEAD_OF_HOUSEHOLD": 2_050,
+        "SURVIVING_SPOUSE": 1_650,
+    }
+    assert {
+        status: aged_or_blind[status] for status in expected_additional
+    } == expected_additional
+
+
+def test_mn_alternate_deduction_reductions_round_down_to_fifty_dollars():
+    deductions = SYSTEM.parameters.gov.states.mn.tax.income.deductions
+    itemized = deductions.itemized.reduction.alternate.income_threshold("2026-01-01")
+    standard = deductions.standard.reduction.alternate.income_threshold("2026-01-01")
+
+    assert itemized == 1_107_750
+    assert standard == 1_107_750
+
+
+def test_mn_marriage_credit_thresholds_use_published_2025():
+    marriage = SYSTEM.parameters.gov.states.mn.tax.income.credits.marriage
+
+    assert marriage.minimum_individual_income("2025-01-01") == 31_000
+    assert marriage.minimum_taxable_income("2025-01-01") == 48_000
+
+
+def test_mt_old_age_subtraction_uses_published_2025():
+    amount = SYSTEM.parameters.gov.states.mt.tax.income.subtractions.old_age.amount
+
+    assert amount.brackets[0].amount("2025-01-01") == 0
+    assert amount.brackets[1].amount("2024-01-01") == 5_500
+    assert amount.brackets[1].amount("2025-01-01") == 5_660
