@@ -72,3 +72,25 @@
     non_sch_d_capital_gains: 5_000
   output:
     irs_gross_income: 5_000
+
+- name: IRS gross income includes state and local tax refund income.
+  period: 2024
+  input:
+    salt_refund_income: 1_000
+  output:
+    irs_gross_income: 1_000
+
+- name: IRS gross income excludes dependent state and local tax refund income.
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+      child:
+        is_tax_unit_dependent: true
+        salt_refund_income: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    irs_gross_income: [0, 0]

@@ -10,12 +10,14 @@ values:
     - ga_retirement_exclusion
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
+    - salt_refund_income
   2022-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
     - ga_military_retirement_exclusion
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
+    - salt_refund_income
   2026-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
@@ -24,12 +26,14 @@ values:
     - ga_investment_in_529_plan_deduction
     - ga_qualified_overtime_exclusion
     - ga_cash_tip_exclusion
+    - salt_refund_income
   2029-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
     - ga_military_retirement_exclusion
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
+    - salt_refund_income
 
 metadata:
   unit: list

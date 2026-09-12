@@ -11,6 +11,7 @@ values:
     - az_529a_able_account_subtraction # Line 34b
     - az_adoption_expense_subtraction # Other subtractions - Item D
     - az_families_tax_rebate_subtraction # Line 36, Item U
+    - salt_refund_income # Line 27
   2025-01-01:
     - us_govt_interest # Line 28
     - az_public_pension_exclusion # Line 29a
@@ -27,6 +28,7 @@ values:
     - overtime_income_deduction # MCTCP worksheet Line 3 (Sch 1-A Line 21)
     - auto_loan_interest_deduction # MCTCP worksheet Line 4 (Sch 1-A Line 30)
     - additional_senior_deduction # MCTCP worksheet Line 5 (Sch 1-A Line 37)
+    - salt_refund_income # Line 27
   # HB 4168 (2026): auto loan interest sunsets after TY2025 (43-1022(36));
   # adds child & dependent care and IRC 530A distribution subtractions.
   2026-01-01:
@@ -45,6 +47,7 @@ values:
     - additional_senior_deduction # 43-1022(35)
     - az_dependent_care_expense_subtraction # 43-1022(34)
     - az_530a_distribution_subtraction # 43-1022(33)
+    - salt_refund_income # Line 27
 metadata:
   unit: list
   period: year
