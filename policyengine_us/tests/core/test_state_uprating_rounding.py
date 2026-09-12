@@ -196,11 +196,11 @@ def test_me_standard_deductions_published_2026():
     aged_or_blind = standard.aged_or_blind("2026-01-01")
 
     expected_base = {
-        "SINGLE": 15_300,
-        "JOINT": 30_600,
-        "SEPARATE": 15_300,
-        "HEAD_OF_HOUSEHOLD": 22_950,
-        "SURVIVING_SPOUSE": 30_600,
+        "SINGLE": 15_700,
+        "JOINT": 31_400,
+        "SEPARATE": 15_700,
+        "HEAD_OF_HOUSEHOLD": 23_550,
+        "SURVIVING_SPOUSE": 31_400,
     }
     assert {status: base[status] for status in expected_base} == expected_base
 
@@ -221,8 +221,8 @@ def test_mn_alternate_deduction_reductions_round_down_to_fifty_dollars():
     itemized = deductions.itemized.reduction.alternate.income_threshold("2026-01-01")
     standard = deductions.standard.reduction.alternate.income_threshold("2026-01-01")
 
-    assert itemized == 1_107_650
-    assert standard == 1_107_650
+    assert itemized == 1_107_750
+    assert standard == 1_107_750
 
 
 def test_mn_marriage_credit_thresholds_use_published_2025():

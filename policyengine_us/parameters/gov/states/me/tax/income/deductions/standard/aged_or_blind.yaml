@@ -1,6 +1,11 @@
 description: Maine additional standard deduction per aged or blind box checked, by filing status. Because Maine conforms to the IRC as of December 31, 2024 (36 MRSA § 111) and did not adopt the One Big Beautiful Bill Act (OBBBA), the additional amount for 2025 remains at the pre-OBBBA federal projection rather than the OBBBA level.
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine additional standard deduction for aged or blind
   period: year
   unit: currency-USD
@@ -18,82 +23,47 @@ metadata:
   - title: IRS Rev. Proc. 2025-32, Section 3.15 (2026 federal additional standard deduction)
     href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 SINGLE:
-  values:
-    2018-01-01: 1_600
-    2019-01-01: 1_650
-    2021-01-01: 1_700
-    2022-01-01: 1_750
-    2023-01-01: 1_850
-    2024-01-01: 1_950
-    2025-01-01: 2_000
-    2026-01-01: 2_050
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+  2018-01-01: 1_600
+  2019-01-01: 1_650
+  2021-01-01: 1_700
+  2022-01-01: 1_750
+  2023-01-01: 1_850
+  2024-01-01: 1_950
+  2025-01-01: 2_000
+  2026-01-01: 2_050
 JOINT:
-  values:
-    2018-01-01: 1_300
-    2019-01-01: 1_300
-    2021-01-01: 1_350
-    2022-01-01: 1_400
-    2023-01-01: 1_500
-    2024-01-01: 1_550
-    2025-01-01: 1_600
-    2026-01-01: 1_650
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600
+  2026-01-01: 1_650
 SEPARATE:
-  values:
-    2018-01-01: 1_300
-    2019-01-01: 1_300
-    2021-01-01: 1_350
-    2022-01-01: 1_400
-    2023-01-01: 1_500
-    2024-01-01: 1_550
-    2025-01-01: 1_600
-    2026-01-01: 1_650
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600
+  2026-01-01: 1_650
 HEAD_OF_HOUSEHOLD:
-  values:
-    2018-01-01: 1_600
-    2019-01-01: 1_650
-    2021-01-01: 1_700
-    2022-01-01: 1_750
-    2023-01-01: 1_850
-    2024-01-01: 1_950
-    2025-01-01: 2_000
-    2026-01-01: 2_050
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+  2018-01-01: 1_600
+  2019-01-01: 1_650
+  2021-01-01: 1_700
+  2022-01-01: 1_750
+  2023-01-01: 1_850
+  2024-01-01: 1_950
+  2025-01-01: 2_000
+  2026-01-01: 2_050
 SURVIVING_SPOUSE:
-  values:
-    2018-01-01: 1_300
-    2019-01-01: 1_300
-    2021-01-01: 1_350
-    2022-01-01: 1_400
-    2023-01-01: 1_500
-    2024-01-01: 1_550
-    2025-01-01: 1_600
-    2026-01-01: 1_650
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600
+  2026-01-01: 1_650
