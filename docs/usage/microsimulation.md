@@ -110,12 +110,15 @@ formula-owned SPM outputs such as `spm_unit_spm_threshold`. Any observed Census
 measurement is retained under a separate report-only name.
 
 The legacy files under `hf://policyengine/policyengine-us-data/` predate that
-contract, so resource and poverty outputs are not available over them:
+contract. Their available calculations depend on the inputs each file supplies:
 
 - `cps_2023.h5` stores `spm_unit_spm_threshold`, so the loader rejects it.
 - `enhanced_cps_2024.h5` loads and computes tax variables, but carries no SPM
-  independence roles, so SPM units consisting of one 15-to-17-year-old classify
-  no measurement adult and every resource output over the file fails closed.
+  independence roles. SPM measurements fail for units without a classified
+  measurement adult, including units consisting of one 15-to-17-year-old.
+  Other tax, benefit and resource requests can compute if their formulas do not
+  require those measurements; loading the file does not establish that all SPM
+  outputs are supported.
 
 A household simulation that has no county input can select an SPM area
 explicitly instead:
@@ -205,13 +208,13 @@ When running microsimulations, verify that weights produce sensible population t
 ```python
 sim = Microsimulation()
 
-# Check population
-person_weight = sim.calc("person_weight", map_to="person")
-print(f"Total population: {person_weight.sum():,.0f}")
+# Count people using MicroSeries' automatic weights
+person_ids = sim.calc("person_id", map_to="person")
+print(f"Total population: {person_ids.count():,.0f}")
 
 # Check household count
-household_weight = sim.calc("household_weight")
-print(f"Total households: {household_weight.sum():,.0f}")
+household_ids = sim.calc("household_id", map_to="household")
+print(f"Total households: {household_ids.count():,.0f}")
 
 # Verify key aggregates against published statistics
 total_earnings = sim.calc("employment_income").sum()

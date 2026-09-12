@@ -1,14 +1,16 @@
 description: >-
-  Income sources counted toward CA CPUC CARE/FERA eligibility.
-  Total gross annual household income includes all taxable and
-  nontaxable revenues from all people living in the home, from
-  whatever sources derived, including, but not limited to, wages,
-  salaries, interest, dividends, spousal and child support payments,
-  public assistance payments, Social Security and pensions, housing
-  and military subsidies, rental income, income from self-employment
-  and all employment-related, non-cash income.
-# PG&E Form 01-9077, CARE/FERA Program Application.
+  California counts these income sources under the California Alternate
+  Rates for Energy and Family Electric Rate Assistance programs.
+# Housing subsidies are excluded by D.14-08-030, effective August 14, 2014.
+# PG&E confirmed in its June 2026 reply brief that its contrary application
+# wording does not describe its actual CARE/FERA income determination.
+# The decision names CARE/ESA; PG&E's filed CARE/FERA practice supports
+# applying this housing exclusion to the shared income definition.
+# Annual income calculations select the list at January 1: calendar 2014
+# retains the earlier list, and calendar 2015 first applies the exclusion.
 values:
+  # Preserve the earlier model's inclusion before this decision, using the
+  # actual benefit. The pre-2014 income rule has not been revalidated here.
   0000-01-01:
   # Wages, salaries
   - employment_income
@@ -36,8 +38,49 @@ values:
   - pension_income
   - retirement_distributions
   # Housing subsidies
-  - spm_unit_capped_housing_subsidy
-  # Military subsidies
+  - housing_assistance
+  # Veterans benefits and military service income. These broad inputs do not
+  # identify the separately excluded military subsidies.
+  - veterans_benefits
+  - military_service_income
+  # Rental income
+  - rental_income
+  - farm_rent_income
+  # Other income sources (from whatever sources derived)
+  - capital_gains
+  - unemployment_compensation
+  - miscellaneous_income
+  - gi_cash_assistance
+  - debt_relief
+  - illicit_income
+  2014-08-14:
+  # Wages, salaries
+  - employment_income
+  # Self-employment
+  - self_employment_income
+  - sstb_self_employment_income
+  - partnership_s_corp_income
+  - farm_operations_income
+  # Interest
+  - interest_income
+  # Dividends
+  - dividend_income
+  # Spousal support
+  - alimony_income
+  # Child support
+  - child_support_received
+  # Public assistance payments
+  - tanf
+  - ssi
+  - snap
+  - wic
+  # Social Security
+  - social_security
+  # Pensions
+  - pension_income
+  - retirement_distributions
+  # Veterans benefits and military service income. These broad inputs do not
+  # identify the separately excluded military subsidies.
   - veterans_benefits
   - military_service_income
   # Rental income
@@ -51,14 +94,25 @@ values:
   - debt_relief
   - illicit_income
 
-
 metadata:
   unit: list
   period: year
   label: CA CPUC CARE/FERA income sources
   reference:
-    - title: PG&E Form 01-9077, CARE/FERA Program Application
-      href: https://bha.berkeleyca.gov/sites/default/files/2022-04/PGE%20CARE%20FERA%20Application.pdf
+    - title: Statewide ESA Program Policy and Procedures Manual v1.4, Section 2.2.2
+      href: https://www.cpuc.ca.gov/-/media/cpuc-website/consumer-support/documents/20250418-statewide-esa-program-pp-manualv14.pdf#page=12
+    - title: Statewide ESA Program Policy and Procedures Manual v1.4, Table E-1
+      href: https://www.cpuc.ca.gov/-/media/cpuc-website/consumer-support/documents/20250418-statewide-esa-program-pp-manualv14.pdf#page=81
+    # Retain the form's general income categories; its housing/military
+    # subsidy wording is corrected by the decision and PG&E filing below.
+    - title: PG&E Form 01-9077, CARE/FERA Program Application, Income Definition
+      href: https://www.pge.com/tariffs/assets/pdf/tariffbook/GAS_FORMS_01-9077.pdf#page=2
+    - title: CPUC Decision 14-08-030, Section 6.2, Income Definition
+      href: https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=75
+    - title: CPUC Decision 14-08-030, Ordering Paragraph 40(3)
+      href: https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=124
+    - title: PG&E Reply Brief, June 5, 2026, Section B
+      href: https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M608/K305/608305628.PDF#page=10
     - title: CA PUC 739.1 (CARE)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
     - title: CA PUC 739.12 (FERA)

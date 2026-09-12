@@ -269,24 +269,38 @@ def test_resource_consumers_without_housing_assistance_never_touch_geography(
     assert simulation.spm_provenance()["years"] == {}
 
 
-@pytest.mark.parametrize("variable", ["household_net_income", "marginal_tax_rate"])
-def test_resource_consumers_with_housing_assistance_require_geography(variable):
-    """Once there is assistance to cap, the county requirement applies.
+@pytest.mark.parametrize(
+    "variable",
+    [
+        "household_benefits",
+        "household_net_income",
+        "marginal_tax_rate",
+        "cbo_household_means_tested_transfers",
+    ],
+)
+def test_general_income_with_housing_assistance_is_independent_of_spm(variable):
+    """Benefit aggregates use the actual HUD payment, not its SPM valuation."""
+    situation = household(earnings=24_000)
+    results = []
+    for config in [None, {"geography_kind": "national"}]:
+        simulation = Simulation(situation=situation, spm=config)
+        assert simulation.calculate("housing_assistance", YEAR)[0] > 0
+        results.append(simulation.calculate(variable, YEAR))
+        assert np.all(np.isfinite(results[-1]))
+        assert simulation.spm_provenance()["years"] == {}
+    np.testing.assert_array_equal(*results)
 
-    Earnings stay low so the tenant payment sits below the housing portion
-    and the cap binds on the assistance rather than on zero.
-    """
-    situation = household(earnings=6_000)
-    situation["spm_units"]["spm_unit"]["housing_assistance"] = {YEAR: 5_000}
+
+def test_spm_resources_with_housing_assistance_still_require_geography():
+    situation = household(earnings=24_000)
     with pytest.raises(SPMInputError) as error:
-        Simulation(situation=situation).calculate(variable, YEAR)
+        Simulation(situation=situation).calculate("spm_unit_net_income", YEAR)
     assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
-    assert error.value.to_dict()["code"] == "SPM_GEOGRAPHY_REQUIRED"
     national = Simulation(situation=situation, spm={"geography_kind": "national"})
-    result = national.calculate(variable, YEAR)
-    assert np.all(np.isfinite(result))
+    assistance = national.calculate("housing_assistance", YEAR)[0]
     capped = national.calculate("spm_unit_capped_housing_subsidy", YEAR)[0]
-    assert 0 < capped <= 5_000
+    assert 0 < capped < assistance
+    assert np.all(np.isfinite(national.calculate("spm_unit_net_income", YEAR)))
     assert str(YEAR) in national.spm_provenance()["years"]
 
 
