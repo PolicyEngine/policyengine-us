@@ -148,3 +148,28 @@
     # the $3,576 allowance (11,976 - 3,576 = 8,400), confirming the flow-through.
     hud_hap: 8_400
     housing_assistance: 8_400
+
+- name: Outside LA, the utility allowance flows into HAP by default when tenant_pays_utilities is not set (Denton County, TX).
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        county_fips: "48121"
+        bedrooms: 2
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+  output:
+    # Same household as the tenant_pays_utilities: true case above.
+    hud_utility_allowance: 298 * 12
+    hud_gross_rent: 12_000 + 298 * 12
+    hud_hap: 11_976
+    housing_assistance: 11_976

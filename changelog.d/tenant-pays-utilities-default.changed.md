@@ -1,0 +1,1 @@
+`tenant_pays_utilities` now defaults to true, so households in counties with an encoded HUD utility allowance schedule receive the allowance unless the input is set to false, and `utilities_included_in_rent` is derived as its inverse (still settable directly) so the Maine property tax fairness credit and the Michigan home heating credit read one utilities-responsibility fact.
