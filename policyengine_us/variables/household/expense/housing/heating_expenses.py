@@ -7,25 +7,26 @@ class heating_expenses(Variable):
     label = "Tax unit heating cost"
     unit = USD
     definition_period = YEAR
-    documentation = "The tax unit's share of the dwelling's annual heating cost, used by the Michigan home heating credit. Michigan allows one credit per claimant and spouse, and single adults sharing a home may each claim, so the SPM unit's heating_expense is split evenly across the tax units living there. Households whose heating_type is UNSPECIFIED keep the pre-canonical person-level sum of heating_expense_person."
+    documentation = "Heating costs attributed to this tax unit for the Michigan home heating credit. Set this amount directly to the claimant's actual costs billed from November 1 of the previous year through October 31 of the claim year, including secondary heating fuels. For a known heating type, the default approximates these costs using the SPM unit's primary-fuel bill only when it contains one tax unit. With multiple tax units, costs default to zero because the shared bill does not identify each claimant's share. UNSPECIFIED heating types retain the legacy sum of heating_expense_person."
     reference = (
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-527a",
-        "https://www.michigan.gov/taxes/iit/tax-guidance/credits-exemptions/home-heating-credit/home-heating-credit-and-shared-housing-situations",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf#page=5",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf#page=7",
     )
 
     def formula(tax_unit, period, parameters):
         spm_unit = tax_unit.spm_unit
         heating_type = spm_unit("heating_type", period)
         unspecified = heating_type == heating_type.possible_values.UNSPECIFIED
-        dwelling_heating_expense = spm_unit("heating_expense", period)
-        # Each tax unit has one head, so counting heads counts the tax units
-        # that share the dwelling.
-        spm_unit_tax_units = add(spm_unit, period, ["is_tax_unit_head"])
-        # Avoid an array divide-by-zero warning by not using where().
-        share = np.zeros_like(dwelling_heating_expense)
-        mask = spm_unit_tax_units > 0
-        share[mask] = dwelling_heating_expense[mask] / spm_unit_tax_units[mask]
+        shared_heating_expense = spm_unit("heating_expense", period)
+        # Count tax units in the SPM unit; these are not necessarily the
+        # eligible Michigan claimants or everyone sharing the dwelling.
+        tax_units_in_spm_unit = add(spm_unit, period, ["is_tax_unit_head"])
+        sole_tax_unit = tax_units_in_spm_unit == 1
+        # A shared bill is not any one claimant's cost; callers supply
+        # each claimant's share directly.
+        canonical = where(sole_tax_unit, shared_heating_expense, 0)
         # Deprecated legacy adapter for households that do not use the
         # canonical heating inputs.
         legacy = add(tax_unit, period, ["heating_expense_person"])
-        return where(unspecified, legacy, share)
+        return where(unspecified, legacy, canonical)

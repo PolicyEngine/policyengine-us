@@ -1,8 +1,5 @@
-# The Michigan home heating credit is claimed per tax unit (MCL 206.527a(11):
-# one credit per household, where a household is the claimant and spouse), and
-# single adults sharing a home may each claim (MI-1040CR-7 instructions,
-# "Shared Housing"), so the dwelling's heating bill is split evenly across the
-# tax units in the SPM unit.
+# Shared bills do not determine individual claimants' costs. Explicit
+# heating_expenses inputs carry each claimant's November-October amount.
 - name: Case 1, legacy person-level heating costs sum within the tax unit.
   period: 2022
   absolute_error_margin: 0.1
@@ -41,7 +38,7 @@
   output:
     heating_expenses: 1_200
 
-- name: Case 3, two single adults sharing a home split the bill evenly.
+- name: Case 3, a shared bill does not establish either tax unit's costs.
   period: 2022
   absolute_error_margin: 0.1
   input:
@@ -61,7 +58,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
   output:
-    heating_expenses: [600, 600]
+    heating_expenses: [0, 0]
 
 - name: Case 4, a known heating type ignores the legacy person-level input.
   period: 2022
@@ -116,3 +113,82 @@
         gas_expense: 1_200
   output:
     heating_expenses: 0
+
+- name: Case 7, claimants supply unequal shares of a heating bill.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        heating_expenses: 900
+      tax_unit2:
+        members: [person2]
+        heating_expenses: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [900, 300]
+
+- name: Case 8, a nonpaying tax unit receives no share of another claimant's bill.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 20
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        heating_expenses: 1_200
+      tax_unit2:
+        members: [person2]
+        heating_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [1_200, 0]
+
+- name: Case 9, an exact claim-period amount overrides the annual primary-fuel approximation.
+  period: 2022
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    bottled_gas_expense: 200
+    # Actual November-October costs, including secondary heating.
+    heating_expenses: 1_350
+  output:
+    heating_expenses: 1_350
+
+- name: Case 10, legacy costs retain their unequal allocation across tax units.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 900
+      person2:
+        age: 40
+        heating_expense_person: 300
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: UNSPECIFIED
+  output:
+    heating_expenses: [900, 300]

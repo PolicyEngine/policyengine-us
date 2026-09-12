@@ -5,7 +5,7 @@ class mi_home_heating_credit_heat_included_in_rent(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Heating costs are included in rent for the Michigan home heating credit"
-    documentation = "Whether the claimant's heating costs are included in rent. The standard credit is halved and the alternate credit is unavailable in that case. Read from heat_expense_included_in_rent; rent that covers all utilities (utilities_included_in_rent) necessarily covers heat."
+    documentation = "Whether the claimant's heating costs are included in rent at the time of filing. The standard credit is halved and the alternate credit is unavailable in that case. Defaults to the SPM unit's heat_expense_included_in_rent; set this fact directly when the claimant's arrangement differs. The broader utilities_included_in_rent input does not establish that heat is included."
     definition_period = YEAR
     defined_for = StateCode.MI
     reference = (
@@ -14,6 +14,4 @@ class mi_home_heating_credit_heat_included_in_rent(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        heat_in_rent = tax_unit.spm_unit("heat_expense_included_in_rent", period)
-        utilities_in_rent = tax_unit("utilities_included_in_rent", period)
-        return heat_in_rent | utilities_in_rent
+        return tax_unit.spm_unit("heat_expense_included_in_rent", period)
