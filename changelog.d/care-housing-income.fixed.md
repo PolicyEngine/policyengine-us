@@ -1,0 +1,1 @@
+Keep SPM housing subsidy valuation within SPM resources and use actual housing assistance for household benefits and CBO transfers. Exclude housing subsidies from California CARE/FERA income from the August 14, 2014 parameter date (2015 for annual calculations). Preserve earlier modeled housing inclusion using actual assistance; its historical policy basis was not revalidated.

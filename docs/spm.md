@@ -5,7 +5,9 @@ measurement amounts. It does not extrapolate thresholds with country CPI or inco
 parameters. Each supported year and scenario comes from the verified artifact.
 The installed 1.0.0 artifact covers 2022 through 2035; unavailable years fail.
 Taxes, benefits, resources and the housing-assistance cap
-remain country-model formulas. The cap uses the canonical housing amount before
+remain country-model formulas. General household benefits and CBO transfer
+aggregates count actual `housing_assistance`; only SPM resources count
+`spm_unit_capped_housing_subsidy`. The cap uses the canonical housing amount before
 the final model storage conversion.
 
 `Simulation`, `Microsimulation` and `CountryTaxBenefitSystem` accept a serializable
@@ -21,11 +23,25 @@ counties raise `SPM_GEOGRAPHY_UNAVAILABLE`. There is no first-county, congressio
 district or national fallback in SPM measurement.
 
 These geography errors occur only when calculating an SPM measurement or a
-dependent resource, such as the housing-assistance cap for units with housing
+dependent SPM resource, such as the housing-assistance cap for units with housing
 assistance; units with none are capped at zero without consulting the
 measurement. A state-only tax request can still run. SPM reads the input-only `county_fips` variable and ignores any
 county inferred or cached by other tax or benefit formulas. Geography and
 composition errors are `SPMInputError` instances with `code` and `to_dict()`.
+
+California CARE income excludes housing subsidies under
+[CPUC Decision 14-08-030, Section 6.2](https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=75)
+and [Ordering Paragraph 40(3)](https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=124).
+[PG&E's June 2026 reply brief](https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M608/K305/608305628.PDF#page=10)
+confirms that its CARE/FERA income determination excludes housing subsidies,
+despite contrary wording in its application. The shared CARE/FERA parameter
+records the decision's effective date, August 14, 2014. Annual calculations
+select the list at January 1, so calendar 2014 retains the earlier modeled
+inclusion and calendar 2015 first applies the exclusion. Before that transition,
+the model retains housing-subsidy inclusion using actual assistance; this update
+does not validate the earlier income rule's historical policy basis. CARE/FERA
+income never consults the SPM housing cap. The SPM resource calculation retains
+its housing cap.
 
 A caller can consciously select national measurement:
 

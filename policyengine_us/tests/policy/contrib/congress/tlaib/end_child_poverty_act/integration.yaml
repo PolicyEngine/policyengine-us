@@ -121,11 +121,12 @@
     residential_efficiency_electrification_rebate: 0
     unemployment_compensation: 0
     basic_income: 0
-    spm_unit_capped_housing_subsidy: 0
+    housing_assistance: 12_000
+    spm_unit_capped_housing_subsidy: 1_000
     household_state_benefits: 0
   output:
-    household_benefits: 1 + 2 + 3 + 4 + 5
-    spm_unit_benefits: 1 + 2 + 3 + 4 + 5
+    household_benefits: 1 + 2 + 3 + 4 + 5 + 12_000
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 1_000
 
 - name: End Child Poverty Act household benefits exclude housing subsidy if HUD is abolished.
   period: 2024
@@ -152,7 +153,9 @@
     residential_efficiency_electrification_rebate: 0
     unemployment_compensation: 0
     basic_income: 0
+    housing_assistance: 10
     spm_unit_capped_housing_subsidy: 10
     household_state_benefits: 0
   output:
     household_benefits: 0
+    spm_unit_benefits: 0
