@@ -7,4 +7,15 @@ class heating_expense_person(Variable):
     label = "Heating cost for each person"
     unit = USD
     definition_period = YEAR
-    documentation = "Deprecated: heating bills attach to the dwelling, not to people. Set heating_type and the matching per-fuel expense (e.g. gas_expense) instead; this input remains only as a fallback inside the DC, IL and MA LIHEAP adapters for households whose heating_type is UNSPECIFIED, and as the source of the tax-unit heating_expenses used by the Michigan home heating credit."
+    documentation = (
+        "Deprecated: set heating_type and the matching per-fuel expense "
+        "(e.g. gas_expense) for the dwelling's heating bill. For Michigan "
+        "claimant-specific costs, including shares of a bill and the "
+        "November-October billing period, set heating_expenses directly. "
+        "This input remains a fallback inside the DC, IL and MA LIHEAP "
+        "adapters and the tax-unit heating_expenses used by the Michigan "
+        "home heating credit, for households whose heating_type is UNSPECIFIED. "
+        "It is scheduled for removal with the other UNSPECIFIED-gated legacy "
+        "inputs once API partners send heating_type and the per-fuel expenses "
+        "(heating-input consolidation, issue #9284, stage 3)."
+    )

@@ -1,0 +1,195 @@
+# Shared bills do not determine individual claimants' costs. Explicit
+# heating_expenses inputs carry each claimant's November-October amount.
+- name: Case 1, legacy person-level heating costs sum within the tax unit.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 600
+      person2:
+        age: 28
+        heating_expense_person: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    heating_expenses: 1_000
+
+- name: Case 2, a known heating type reads the primary fuel bill.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: 1_200
+
+- name: Case 3, a shared bill does not establish either tax unit's costs.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [0, 0]
+
+- name: Case 4, a known heating type ignores the legacy person-level input.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 900
+  output:
+    heating_expenses: 900
+
+- name: Case 5, a home without heating has no heating cost even with the legacy input set.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+  output:
+    heating_expenses: 0
+
+- name: Case 6, a per-fuel bill alone is not read when the heating type is unspecified.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        gas_expense: 1_200
+  output:
+    heating_expenses: 0
+
+- name: Case 7, claimants supply unequal shares of a heating bill.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        heating_expenses: 900
+      tax_unit2:
+        members: [person2]
+        heating_expenses: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [900, 300]
+
+- name: Case 8, a nonpaying tax unit receives no share of another claimant's bill.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 20
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        heating_expenses: 1_200
+      tax_unit2:
+        members: [person2]
+        heating_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    heating_expenses: [1_200, 0]
+
+- name: Case 9, the default approximation reads only the primary fuel, not secondary fuels.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    # A propane backup heater is not part of the default; callers set
+    # heating_expenses directly to the actual November-October total.
+    bottled_gas_expense: 200
+  output:
+    heating_expenses: 1_200
+
+- name: Case 10, legacy costs retain their unequal allocation across tax units.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        heating_expense_person: 900
+      person2:
+        age: 40
+        heating_expense_person: 300
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: UNSPECIFIED
+  output:
+    heating_expenses: [900, 300]
