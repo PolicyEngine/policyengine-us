@@ -7,16 +7,51 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  ReleaseLock:
+    name: Check committed registry lock
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock
+        run: python .github/release_lock.py --committed
+  ReleaseLockTests:
+    name: Release lock guard tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Test guard without importing the country model
+        env:
+          RELEASE_LOCK_REAL_UV: "1"
+        run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
   Lint:
+    needs: ReleaseLock
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Check formatting
-        run: uv run ruff format --check .
+        run: uv run --no-sync ruff format --check .
   check-changelog:
     name: Check changelog fragment
     runs-on: ubuntu-latest
@@ -83,6 +118,7 @@ jobs:
             exit 1
           fi
   BundleMetadataContract:
+    needs: ReleaseLock
     name: Validate bundle metadata contract
     runs-on: ubuntu-latest
     steps:
@@ -93,15 +129,18 @@ jobs:
           python-version: "3.14"
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.12.13"
       - name: Install package
-        run: uv pip install --system .
+        run: uv sync --locked --extra dev
       - name: Install bundle validation tooling
         # Pin the test-only bundle contract dependency until policyengine-bundles
         # has published releases suitable for ordinary dependency specifiers.
-        run: uv pip install --system "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
+        run: uv pip install --python .venv/bin/python "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
       - name: Validate runtime metadata contract
-        run: python -m pytest policyengine_us/tests/test_build_metadata.py
+        run: uv run --no-sync python -m pytest policyengine_us/tests/test_build_metadata.py
   Python-Compat:
+    needs: ReleaseLock
     name: Install + smoke-import (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
@@ -116,15 +155,18 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install package
-        run: uv pip install --system . pytest
+        run: uv sync --locked --python "${{ matrix.python-version }}" --extra dev
       - name: Smoke-import
         run: |
-          python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
+          uv run --no-sync --python "${{ matrix.python-version }}" python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
       - name: Dataset copy/extension tests (real pandas semantics per Python version)
         # Fixture-based and requires no dataset downloads.
-        run: python -m pytest policyengine_us/tests/microsimulation/data/ -q
+        run: uv run --no-sync --python "${{ matrix.python-version }}" python -m pytest policyengine_us/tests/microsimulation/data/ -q
   Quick-Feedback:
+    needs: ReleaseLock
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
     env:
@@ -149,8 +191,10 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
@@ -161,7 +205,7 @@ jobs:
           GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
           echo "Running selective tests based on changed files..."
-          uv run python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
+          uv run --no-sync python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
       - name: Generate coverage report
         id: coverage
         if: always()
@@ -169,10 +213,10 @@ jobs:
           echo "📊 Coverage Report"
           echo "=================="
           # Show files below 100% coverage (won't fail CI)
-          uv run coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
+          uv run --no-sync coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
 
           # Count files below 100%
-          TOTAL_FILES=$(uv run coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
+          TOTAL_FILES=$(uv run --no-sync coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
 
           if [ "$TOTAL_FILES" -gt "0" ]; then
             echo ""
@@ -184,7 +228,7 @@ jobs:
           fi
 
           # Generate XML for Codecov
-          uv run coverage xml || echo "No coverage data to generate XML report."
+          uv run --no-sync coverage xml || echo "No coverage data to generate XML report."
           # Expose whether we have coverage for later steps
           if [ -f coverage.xml ]; then
             echo "has_coverage=true" >> "$GITHUB_OUTPUT"
@@ -204,6 +248,7 @@ jobs:
       - name: Build package
         run: uv build
   Baseline:
+    needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -247,14 +292,17 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Baseline YAML tests (${{ matrix.group }})
-        run: uv run ${{ matrix.cmd }}
+        run: uv run --no-sync ${{ matrix.cmd }}
   HouseholdAPIPartners:
+    needs: ReleaseLock
     name: Household API Partners
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -270,14 +318,17 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
-        run: uv run make test-yaml-no-structural-other-partners
+        run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
+    needs: ReleaseLock
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -315,17 +366,20 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Contrib YAML tests (${{ matrix.group }})
-        run: uv run make ${{ matrix.target }}
+        run: uv run --no-sync make ${{ matrix.target }}
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
-        run: uv run make test-policy-contrib-python
+        run: uv run --no-sync make test-policy-contrib-python
   Rest:
+    needs: ReleaseLock
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -341,17 +395,20 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Python tests (code_health, core, utilities, top-level)
-        run: uv run make test-other-python
+        run: uv run --no-sync make test-other-python
       - name: Run tests/variables YAML tests
         if: always()
-        run: uv run make test-yaml-variables
+        run: uv run --no-sync make test-yaml-variables
   Microsimulation:
+    needs: ReleaseLock
     name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -367,8 +424,10 @@ jobs:
           python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
@@ -376,4 +435,4 @@ jobs:
       # was OOM-killed at ~94% on run 28698452678 once microsimulation
       # peaks stacked on the accumulated python-test RSS.
       - name: Run microsimulation tests
-        run: uv run make test-microsimulation
+        run: uv run --no-sync make test-microsimulation

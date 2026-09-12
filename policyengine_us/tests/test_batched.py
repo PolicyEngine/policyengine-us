@@ -166,6 +166,27 @@ def _format_rss(peak_rss_mb: Optional[float]) -> str:
     return f"{peak_rss_mb:.0f} MB" if peak_rss_mb is not None else "n/a"
 
 
+def subdir_batches(subdir: Path) -> List[List[str]]:
+    """One batch per subdir unless its distinct combos exceed the budget.
+
+    A proposal folder normally shares one subprocess so files that request
+    the same reform share one cached system. Once the folder's DISTINCT
+    combos exceed MAX_BATCH_COMBO_WEIGHT that shared subprocess is exactly
+    what exhausts the runner: congress/tlaib carries weight 8.25 and peaked
+    at 15.0 GB on the 16 GB runner at main (CI run 34637166889), leaving no
+    headroom, and a branch run of the same batch produced no output for 39
+    minutes before CI killed it. Pack such a folder's files by combo weight
+    instead.
+    """
+    files = sorted(subdir.rglob("*.yaml"))
+    combos: set = set()
+    for file in files:
+        combos |= set(file_reform_combos(file))
+    if combo_weight(frozenset(combos)) <= MAX_BATCH_COMBO_WEIGHT:
+        return [[str(subdir)]]
+    return pack_files_by_combo_weight(files)
+
+
 def split_into_batches(
     base_path: Path,
     num_batches: int,
@@ -183,7 +204,8 @@ def split_into_batches(
         exclude: List of directory names to exclude (for contrib tests)
         mode: Batching mode. "auto" (default) uses the per-path heuristics
             below. "per-subdir" runs each immediate subdir as its own batch
-            with loose yamls collected into a trailing batch. "per-file"
+            (packed by reform-combo weight when it exceeds the budget) with
+            loose yamls collected into a trailing batch. "per-file"
             runs every yaml (recursively) as its own batch.
     """
     if exclude is None:
@@ -201,7 +223,7 @@ def split_into_batches(
             if item.is_dir() and item.name not in exclude
         )
         root_files = sorted(base_path.glob("*.yaml"))
-        batches = [[str(s)] for s in subdirs]
+        batches = [batch for s in subdirs for batch in subdir_batches(s)]
         if root_files:
             batches.append([str(f) for f in root_files])
         return batches
@@ -783,7 +805,7 @@ def main():
         "--mode",
         choices=["auto", "per-subdir", "per-file"],
         default="auto",
-        help="Batching mode. 'per-subdir' = each immediate subdir is its own batch; 'per-file' = each yaml is its own batch.",
+        help="Batching mode. 'per-subdir' = each immediate subdir is its own batch, split by reform-combo weight when over budget; 'per-file' = each yaml is its own batch.",
     )
     parser.add_argument(
         "--workers",

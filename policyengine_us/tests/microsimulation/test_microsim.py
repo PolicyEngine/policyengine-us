@@ -1,46 +1,49 @@
 import pytest
 
-DATASETS = [
-    "hf://policyengine/policyengine-us-data/cps_2023.h5",
-    "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
-]
-
-YEARS = list(range(2024, 2026))
+CPS_2023 = "hf://policyengine/policyengine-us-data/cps_2023.h5"
+ENHANCED_CPS_2024 = "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
 
 
-@pytest.fixture(scope="module", params=DATASETS)
-def dataset_sim(request):
-    """One subsampled Microsimulation per dataset, shared across the
-    parametrized years (the tests only read via calc, so sharing is safe)."""
+def test_legacy_cps_file_with_stored_measurements_is_rejected_at_load():
+    """cps_2023 stores a formula-owned SPM output, so it cannot be loaded.
+
+    The loader rejects saved measurement outputs before any geography selection
+    could matter, which is the point of the contract: a population file supplies
+    primitive inputs, and observed Census outputs are retained under separate
+    report-only names.
+    """
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation(dataset=request.param)
-    sim.subsample(1_000)
-    return sim
+    with pytest.raises(ValueError, match="formula-owned SPM output"):
+        Microsimulation(dataset=CPS_2023)
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_microsim_runs(dataset_sim, year: int):
+def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
+    """enhanced_cps_2024 loads, but cannot produce SPM measurements.
+
+    Its county column does hold five-digit FIPS codes, so geography is not what
+    fails. 18 of its 43,134 SPM units are a lone 15-to-17-year-old carrying no
+    source-backed SPM independence role, so those units classify no measurement
+    adult, and every output that reaches the threshold - household net income,
+    benefits, poverty and marginal tax rates included - fails closed over the
+    file. Assert on the threshold itself: it raises straight off the
+    composition, without building the whole resource chain over 43,134 units.
+    """
     import numpy as np
+    from spm_calculator.errors import SPMInputError
 
-    sim = dataset_sim
-    hnet = sim.calc("household_net_income", period=year)
-    assert not hnet.isna().any(), "Some households have NaN net income."
-    # Deciles are 1-10, with -1 for negative income.
-    DECILES = [
-        "household_income_decile",
-        "spm_unit_income_decile",
-        "income_decile",
-    ]
-    for decile_var in DECILES:
-        decile = sim.calc(decile_var)
-        assert np.all(decile >= -1) and np.all(decile <= 10), (
-            f"{decile_var} out of bounds."
-        )
+    from policyengine_us import Microsimulation
 
-    # Check that the microsim calculates important variables as nonzero in current year.
-    for var in ["employment_income", "self_employment_income"]:
-        assert sim.calc(var, period=2024).sum() > 0, f"{var} is zero in 2024."
+    simulation = Microsimulation(dataset=ENHANCED_CPS_2024)
+    counties = np.asarray(simulation.calculate("county_fips", 2024)).astype(str)
+    assert np.all(np.char.str_len(counties) == 5)
+    assert np.all(np.char.isdigit(counties))
+
+    adults = np.asarray(simulation.calculate("spm_measurement_adults", 2024))
+    assert (adults < 1).sum() == 18
+    with pytest.raises(SPMInputError) as error:
+        simulation.calculate("spm_unit_spm_threshold", 2024)
+    assert error.value.code == "SPM_COMPOSITION_REQUIRED"
 
 
 def test_county_persists_across_periods():
@@ -50,8 +53,8 @@ def test_county_persists_across_periods():
     should return the stored value regardless of the period requested, since
     county is a time-invariant geographic variable.
 
-    Uses the NYC dataset which has county explicitly stored (unlike cps_2023
-    which doesn't store county).
+    Uses the NYC dataset, which stores the county enum itself rather than only
+    a county FIPS column.
     """
     import numpy as np
     from policyengine_us import Microsimulation
@@ -92,7 +95,13 @@ def test_county_persists_across_periods():
 def test_default_dataset_loads_and_runs():
     """The no-argument default (certified Populace build) resolves via the
     hf://datasets/ path and entity-level interception, and produces sane
-    aggregates."""
+    aggregates.
+
+    This is the only population file the model ships, so it carries the
+    society-wide coverage the legacy policyengine-us-data CPS files used to
+    provide here: net income across the extended years, in-range income
+    deciles, and nonzero earnings.
+    """
     import numpy as np
     from policyengine_us import Microsimulation
     from policyengine_us.system import DEFAULT_DATASET
@@ -103,9 +112,21 @@ def test_default_dataset_loads_and_runs():
 
     sim = Microsimulation()  # no dataset -> DEFAULT_DATASET (hf://datasets/...)
     sim.subsample(1_000)
-    for year in (2024, 2026):
+    for year in (2024, 2025, 2026):
         hnet = sim.calc("household_net_income", period=year)
         assert not hnet.isna().any(), f"NaN household net income in {year}."
     assert sim.calc("adjusted_gross_income", period=2026).sum() > 0, (
         "Total AGI should be positive on the default dataset."
     )
+    # Deciles are 1-10, with -1 for negative income.
+    for decile_variable in (
+        "household_income_decile",
+        "spm_unit_income_decile",
+        "income_decile",
+    ):
+        decile = sim.calc(decile_variable)
+        assert np.all(decile >= -1) and np.all(decile <= 10), (
+            f"{decile_variable} out of bounds."
+        )
+    for variable in ("employment_income", "self_employment_income"):
+        assert sim.calc(variable, period=2024).sum() > 0, f"{variable} is zero in 2024."

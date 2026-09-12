@@ -8,7 +8,9 @@ society-wide impacts in pre-start years.
 
 import numpy as np
 
-DATASET = "hf://policyengine/policyengine-us-data/cps_2023.h5"
+from policyengine_us.tests.microsimulation.populace_fixture import (
+    default_population_sample,
+)
 
 
 def test_future_dated_reform_zero_impact_before_start():
@@ -28,12 +30,14 @@ def test_future_dated_reform_zero_impact_before_start():
         country_id="us",
     )
 
-    baseline = Microsimulation(dataset=DATASET)
-    reformed = Microsimulation(dataset=DATASET, reform=reform)
-    # Identical default seed (the dataset name) keeps the sampled households
-    # aligned between the two simulations.
-    baseline.subsample(1_000)
-    reformed.subsample(1_000)
+    # A slice of the shipped population, not the legacy policyengine-us-data
+    # CPS files: those supply neither source-backed SPM independence roles nor
+    # county FIPS codes, so resource outputs fail closed over them. Slicing
+    # whole households keeps both simulations on exactly the same population
+    # without subsampling two copies of the whole build.
+    dataset = default_population_sample()
+    baseline = Microsimulation(dataset=dataset)
+    reformed = Microsimulation(dataset=dataset, reform=reform)
 
     # The pre-start year must be the FIRST period calculated on each
     # simulation: computing an earlier period first carries those results
@@ -47,4 +51,12 @@ def test_future_dated_reform_zero_impact_before_start():
         np.asarray(reformed_net_income),
         np.asarray(baseline_net_income),
         err_msg=(f"Reform starting 2029 changed household net income in {year}"),
+    )
+
+    # Guard against a vacuous pass: the same population must show the reform in
+    # the first year it starts, or equality above would prove nothing.
+    started = np.asarray(reformed.calc("household_net_income", period=2029))
+    unreformed = np.asarray(baseline.calc("household_net_income", period=2029))
+    assert (started != unreformed).any(), (
+        "Reform starting 2029 changed no household net income in 2029"
     )

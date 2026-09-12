@@ -1,7 +1,8 @@
 # Shorthand for the batch runner so each target is easier to read.
-# --mode per-subdir = each immediate subdir runs in its own subprocess
-#                     (loose yamls get a trailing batch). New subdirs
-#                     auto-route, no Makefile edit needed.
+# --mode per-subdir = each immediate subdir runs in its own subprocess,
+#                     split by reform-combo weight when it exceeds the
+#                     batcher's budget (loose yamls get a trailing batch).
+#                     New subdirs auto-route, no Makefile edit needed.
 # --mode per-file   = each yaml runs in its own subprocess. Used for
 #                     microsim-heavy folders where one file per subprocess
 #                     is needed to keep peak RAM under the 16 GB runner.
@@ -70,7 +71,8 @@ test-yaml-structural-other-shard-3:
 	# one peak resident at a time.
 	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file --workers 1
 test-yaml-structural-congress:
-	# One subprocess per congress proposal; new proposals auto-route.
+	# One subprocess per congress proposal, split when a proposal's reform
+	# combos exceed the batcher's budget; new proposals auto-route.
 	# --workers 1: congress OOM'd two-wide on CI run 28698452678 — the
 	# romney batch alone peaked 7.1 GB.
 	$(BATCH) $(TESTS)/policy/contrib/congress --mode per-subdir --workers 1
