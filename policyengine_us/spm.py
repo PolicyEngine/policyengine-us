@@ -38,7 +38,14 @@ CONFIG_FIELDS = frozenset(
 # Public aliases belong to the country model, so the calculator cannot list
 # them. Reject these saved outputs alongside the calculator-owned measurements.
 DATASET_FORMULA_OWNED_INPUTS = FORMULA_OWNED_INPUTS | frozenset(
-    {"in_poverty", "deep_poverty_line", "deep_poverty_gap", "in_deep_poverty"}
+    {
+        "in_poverty",
+        "deep_poverty_line",
+        "deep_poverty_gap",
+        "in_deep_poverty",
+        "spm_unit_allocated_housing_subsidy",
+        "spm_unit_allocated_tenant_payment",
+    }
 )
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")

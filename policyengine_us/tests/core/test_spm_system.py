@@ -246,9 +246,17 @@ def test_traced_simulations_keep_parameter_accesses_separate():
 
 
 @pytest.mark.parametrize(
-    "name", ["in_poverty", "deep_poverty_line", "deep_poverty_gap", "in_deep_poverty"]
+    "name",
+    [
+        "in_poverty",
+        "deep_poverty_line",
+        "deep_poverty_gap",
+        "in_deep_poverty",
+        "spm_unit_allocated_housing_subsidy",
+        "spm_unit_allocated_tenant_payment",
+    ],
 )
-def test_dataset_rejects_derived_public_poverty_aliases(name):
+def test_dataset_rejects_country_owned_spm_outputs(name):
     source = small_dataset()
     source.spm_unit[name] = [False, False] if name.startswith("in_") else [0.0, 0.0]
     with pytest.raises(ValueError, match="formula-owned SPM output"):

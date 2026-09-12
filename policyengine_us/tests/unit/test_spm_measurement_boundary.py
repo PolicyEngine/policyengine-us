@@ -10,6 +10,8 @@ def test_spm_caps_have_only_spm_resource_consumers():
     root = Path(__file__).resolve().parents[2]
     # New reporting leaves require an explicit update to this allowed graph.
     consumers = {
+        "spm_unit_allocated_housing_subsidy": {"spm_unit_capped_housing_subsidy"},
+        "spm_unit_allocated_tenant_payment": {"spm_unit_capped_housing_subsidy"},
         "spm_unit_capped_housing_subsidy": {"spm_unit_benefits"},
         "spm_unit_capped_work_childcare_expenses": {"spm_unit_spm_expenses"},
         "spm_unit_head_spouse_earned_cap": {"spm_unit_capped_work_childcare_expenses"},
