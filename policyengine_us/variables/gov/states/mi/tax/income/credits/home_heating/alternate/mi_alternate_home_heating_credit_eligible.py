@@ -8,8 +8,9 @@ class mi_alternate_home_heating_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MI
     reference = (
-        "https://www.michigan.gov/-/media/Pxroject/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2"
-        "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
+        "https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-527a",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf#page=10",
     )
 
     def formula(tax_unit, period, parameters):
