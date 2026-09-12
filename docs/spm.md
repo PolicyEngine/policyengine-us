@@ -72,7 +72,6 @@ bytes exist and pass independent readback. The unpublished candidate embeds the
 same URI; local candidate checks do not establish production default availability.
 
 The published country wheel requires exactly `spm-calculator==1.0.0`; it contains
-no Git or local-path dependency. For coordinated development before registry
-resolution is available, install the local calculator wheel into an isolated
-environment and run tests with `uv run --no-sync`. Refresh the registry lockfile
-when the calculator release is available to the resolver.
+no Git or local-path dependency. The committed `uv.lock` resolves that release
+from PyPI, so `uv sync --locked --extra dev` installs the calculator with every
+other dependency and needs no local wheel.
