@@ -246,6 +246,13 @@ class RegistryValidationTests(RegistryFixture):
                 self.assertNotIn(key, env)
 
 
+class DynamicMetadataTests(RegistryFixture):
+    def test_dynamic_project_metadata_is_rejected(self):
+        project = copy.deepcopy(self.project)
+        project["project"]["dynamic"] = ["version"]
+        self.assert_rejected(release_lock.validate_registry_project, project)
+
+
 class ReleaseTransactionTests(RegistryFixture):
     def test_parent_workspace_cannot_redirect_the_lock_check(self):
         child = self.root / "members" / "child"
@@ -537,6 +544,22 @@ class RehearsalCommandTests(unittest.TestCase):
                             release_lock.main()
                 self.assertEqual(raised.exception.code, 2)
                 self.assertIn("not allowed with argument", reported.getvalue())
+
+    def test_rehearsal_failure_exits_two_with_the_hint(self):
+        with patch.object(
+            release_lock,
+            "rehearse_release_lock",
+            side_effect=ValueError("Versioning changed the reviewed dependency graph"),
+        ):
+            with patch.object(sys, "argv", ["release_lock.py", "--rehearse"]):
+                with contextlib.redirect_stderr(io.StringIO()) as reported:
+                    with self.assertRaises(SystemExit) as raised:
+                        release_lock.main()
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn("regenerate uv.lock with the pinned uv", reported.getvalue())
+        self.assertIn(
+            "Versioning changed the reviewed dependency graph", reported.getvalue()
+        )
 
 
 class CommittedLockTests(RegistryFixture):

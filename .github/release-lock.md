@@ -54,11 +54,12 @@ would rewrite fails the pull request rather than the push to `main`.
 
 Run the rehearsal with the pinned uv, because it reports on the uv that runs it.
 A different version can fail on a good lock, and can pass a lock the release job
-will reject:
+will reject. The script calls whatever `uv` is first on `PATH`, so put the pinned
+release toolchain there before running it, for example through a shim directory:
 
 ```sh
-uvx --from 'uv==0.12.13' uv --version   # the release toolchain
-python .github/release_lock.py --rehearse
+mkdir -p /tmp/uv-release && printf '#!/bin/bash\nexec uvx --from "uv==0.12.13" uv "$@"\n' > /tmp/uv-release/uv && chmod +x /tmp/uv-release/uv
+PATH=/tmp/uv-release:$PATH python .github/release_lock.py --rehearse
 ```
 
 Pull request model jobs depend on `ReleaseLock`. Sentinel push model jobs have

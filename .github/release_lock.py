@@ -48,6 +48,11 @@ def validate_registry_project(project: dict) -> None:
         raise ValueError(
             "Release project must use PyPI without source/index/workspace overrides"
         )
+    if project.get("project", {}).get("dynamic"):
+        raise ValueError(
+            "Release project must declare static metadata; dynamic fields would make "
+            "the two-file release rehearsal resolve a different project"
+        )
 
     def validate_requirements(value):
         if isinstance(value, str):
