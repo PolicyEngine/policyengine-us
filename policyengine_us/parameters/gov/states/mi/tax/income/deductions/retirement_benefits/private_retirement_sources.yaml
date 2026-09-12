@@ -1,0 +1,18 @@
+description: Michigan counts these sources as qualifying private retirement and pension benefits under MCL 206.30(1)(f) and Form 4884.
+values:
+  2012-01-01:
+    - taxable_private_pension_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+metadata:
+  unit: list
+  period: year
+  label: Michigan private retirement benefits sources
+  reference:
+    - title: MCL 206.30(1)(f)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: 2024 Michigan Pension Schedule (Form 4884) Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2024/2024-IIT-Forms/4884.pdf

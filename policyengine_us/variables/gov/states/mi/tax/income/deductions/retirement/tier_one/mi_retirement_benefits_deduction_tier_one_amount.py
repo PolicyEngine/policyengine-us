@@ -20,13 +20,11 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     # retirement benefits deduction
     def formula(tax_unit, period, parameters):
         # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section A
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one
+        p = parameters(period).gov.states.mi.tax.income.deductions.retirement_benefits
         filing_status = tax_unit("filing_status", period)
 
         # Line 9
-        private_cap = p.amount[filing_status]
+        private_cap = p.tier_one.amount[filing_status]
         person = tax_unit.members
         # "Recipients born before 1946 may subtract all qualifying retirement and
         # pension benefits received from federal or Michigan public sources"
@@ -55,7 +53,7 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         )
         # Line 14
         uncapped_private_benefits = (
-            person("taxable_private_pension_income", period) * is_head_or_spouse
+            add(person, period, p.private_retirement_sources) * is_head_or_spouse
         )
         total_uncapped_private_benefits = tax_unit.sum(uncapped_private_benefits)
         # Line 15

@@ -20,7 +20,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
+        uncapped_pension_income = add(person, period, p.sources)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse

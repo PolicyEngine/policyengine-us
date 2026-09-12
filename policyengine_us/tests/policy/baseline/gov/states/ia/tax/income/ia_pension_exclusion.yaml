@@ -190,3 +190,18 @@
   output:
     # 12,000 x 30/40 and 12,000 x 10/40.
     ia_pension_exclusion: [9_000, 3_000]
+
+- name: IA pension exclusion with IRA and 401k distributions (2023+ fully excluded)
+  period: 2023
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_ira_distributions: 15_000
+        taxable_401k_distributions: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_pension_exclusion: 40_000

@@ -59,3 +59,22 @@
       state_code: MI
   output: # min(0.25 * (61518 - 1000), 20000)
     mi_expanded_retirement_benefits_deduction: 15_129.5
+
+- name: 2023 single filer with 401(k) and IRA distributions eligible for expanded deduction
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_401k_distributions: 30_000
+        taxable_ira_distributions: 30_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction: 15_379.5

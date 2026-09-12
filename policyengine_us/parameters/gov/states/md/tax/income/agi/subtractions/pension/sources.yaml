@@ -1,0 +1,11 @@
+description: Income sources eligible for the Maryland pension subtraction (employee retirement systems).
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+metadata:
+  unit: /1
+  reference:
+    - title: Md. Code Ann., Tax-Gen. § 10-209
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-209

@@ -157,3 +157,38 @@
   output:
     ny_pension_exclusion: 10_000  # Only pension income, as Keogh with 5-year averaging is ineligible
 
+- name: NY pension exclusion with traditional IRA distributions
+  period: 2024
+  input:
+    people:
+      person1:
+        taxable_ira_distributions: 25_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 20_000
+
+- name: NY pension exclusion with 401(k) and 403(b) distributions
+  period: 2024
+  input:
+    people:
+      person1:
+        taxable_401k_distributions: 12_000
+        taxable_403b_distributions: 5_000
+        age: 62
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 17_000
+

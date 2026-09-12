@@ -26,11 +26,7 @@ class nd_mpc(Variable):
         hi_taxinc = taxinc > p.marriage_penalty.taxable_income_threshold
         eligible = joint & hi_taxinc
         # determine minimum qualified income between head and spouse
-        qinc_sources = [
-            "irs_employment_income",
-            "total_self_employment_income",
-            "taxable_pension_income",
-        ]
+        qinc_sources = p.marriage_penalty.qualified_income_sources
         person = tax_unit.members
         setax_ded = person("self_employment_tax_ald_person", period)
         qinc_person = add(person, period, qinc_sources) - setax_ded

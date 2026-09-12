@@ -14,14 +14,13 @@ class ny_pension_exclusion(Variable):
     )
 
     def formula(person, period, parameters):
-        pension_income = person("taxable_pension_income", period)
-        age = person("age", period)
-
         # Fetching values from separate YAML files
         p = parameters(
             period
         ).gov.states.ny.tax.income.agi.subtractions.pension_exclusion
 
+        pension_income = add(person, period, p.sources)
+        age = person("age", period)
         meets_age_test = age >= p.min_age
 
         return meets_age_test * min_(pension_income, p.cap)

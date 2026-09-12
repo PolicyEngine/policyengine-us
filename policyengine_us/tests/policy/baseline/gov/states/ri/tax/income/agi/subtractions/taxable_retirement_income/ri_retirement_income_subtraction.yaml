@@ -105,3 +105,36 @@
         state_fips: 44
   output:
     ri_retirement_income_subtraction: 100_000
+
+- name: 2022 - 401k and 403b not yet eligible for subtraction
+  period: 2022
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_401k_distributions: 10_000
+    taxable_403b_distributions: 5_000
+    taxable_ira_distributions: 20_000
+  output:
+    ri_retirement_income_subtraction: 0
+
+- name: 2023 - Eligible with 401k and 403b, IRA excluded
+  period: 2023
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_401k_distributions: 10_000
+    taxable_403b_distributions: 5_000
+    taxable_ira_distributions: 20_000
+  output:
+    ri_retirement_income_subtraction: 15_000
+
+- name: 2024 - Eligible with 401k and 403b, IRA excluded
+  period: 2024
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_401k_distributions: 10_000
+    taxable_403b_distributions: 5_000
+    taxable_ira_distributions: 20_000
+  output:
+    ri_retirement_income_subtraction: 15_000
