@@ -5,24 +5,27 @@ Branch `max/release-lock-rehearsal-20260911`, stacked on `max/release-lock-uv-to
 
 ## State
 
-Closing the gap #9444 left: PR CI runs `uv lock --check`, which accepts a lock written by a
-different uv, so a contributor can regenerate `uv.lock` with any uv, pass CI, and break the next
-`Update versioning` run on main. Add a PR-time rehearsal of the release refresh.
+Implementation, tests, docs and changelog are committed and verified locally. An adversarial
+review workflow is running over the five dimensions (correctness, bypass, tests, CI, docs).
+Remaining: act on confirmed findings, drop this file, push, open the draft PR.
 
 ## Done
 
-- Read `.github/release_lock.py`, `.github/bump_version.py`, `.github/tests/test_release_lock.py`,
-  the three workflows, `.github/release-lock.md`, `docs/spm.md`.
-- Probe: `uv lock` succeeds on a directory holding only copied `pyproject.toml` and `uv.lock`
-  (no package sources, no README); the root metadata is static, so uv never builds the project.
-  The only line that changes is the root version.
+- `.github/release_lock.py`: `--rehearse`, `bumped_project`, `require_unchanged_checkout`,
+  `rehearse_release_lock`, CLI wiring (commit 2dc2f0c9).
+- `.github/workflows/pr.yaml`: `Rehearse the release version refresh` step in `ReleaseLock`
+  (commit 7e4dbd78).
+- `.github/tests/test_release_lock.py`: `RehearsalTests`, `RehearsalCommandTests`, and a real-uv
+  rehearsal probe (commit 2dc2f0c9).
+- `.github/release-lock.md` and `docs/spm.md`: pinned-uv regeneration command, `--rehearse`
+  description, stale spm-calculator paragraphs replaced (commit 409cc58c).
+- `changelog.d/release-lock-rehearsal.added.md`.
+- Verification transcript in the scratchpad `verification.txt`: 33 unit tests pass with and
+  without `RELEASE_LOCK_REAL_UV=1`; `--rehearse` exits 0 on this branch's lock under uv 0.12.13
+  and 2 on the pre-#9444 lock, where the plain `uv lock --check` still exits 0.
 
 ## Next
 
-1. `--rehearse` mode in `.github/release_lock.py`.
-2. `Rehearse the release version refresh` step in the `ReleaseLock` job of `.github/workflows/pr.yaml`.
-3. Unit tests in `.github/tests/test_release_lock.py`, including the real-uv probe.
-4. Refresh `.github/release-lock.md` and `docs/spm.md`.
-5. Changelog fragment.
-6. Local verification with uv 0.12.13, including the failing pre-#9444 lock.
-7. Push to `upstream`, open a draft PR.
+1. Resolve confirmed review findings.
+2. Drop PROGRESS.md, as the previous lanes in this repo did.
+3. `git push upstream max/release-lock-rehearsal-20260911`, open the draft PR against `main`.
