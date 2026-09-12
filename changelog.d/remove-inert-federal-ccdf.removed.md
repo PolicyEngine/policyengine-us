@@ -1,0 +1,1 @@
+Removed the federal CCDF eligibility chain (`is_ccdf_eligible`, `is_ccdf_income_eligible`, `is_ccdf_reason_for_care_eligible`, `ccdf_income_to_smi_ratio`, and `ccdf_income`), which no state program read, along with the partner contract cases that pinned it.
