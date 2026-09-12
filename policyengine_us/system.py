@@ -41,6 +41,7 @@ from typing import Annotated
 from spm_calculator.policyengine_adapter import build_policyengine_variables
 from policyengine_us.spm import (
     SPMSimulationMixin,
+    _parameter_view,
     clone_spm_system,
     create_spm_provider,
 )
@@ -137,8 +138,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
         self._spm_structure_start_instant = start_instant
-        self._spm_structure_parameters = self.parameters
         self.parameters.modified = False
+        # Core's Reform constructor clones this root. Retain the actual clone
+        # origin so a variable-only wrapper can reuse prepared structure.
+        self.parameters = _parameter_view(self.parameters)
+        self._spm_structure_parameters = self.parameters
 
     def get_parameters_at_instant(self, instant):
         # The parameter root already caches plain values. Caching its returned
@@ -217,6 +221,9 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
                 self.tax_benefit_system.parameters, start_instant
             )
             if reform is not None:
+                # Re-evaluation at a different structural start may activate
+                # parameter mutations. Detach before any reform callback;
+                # preserving warm child caches is not safe on this path.
                 self.apply_reform(reform)
 
         # Labor supply responses

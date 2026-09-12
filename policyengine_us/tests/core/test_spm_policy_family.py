@@ -236,6 +236,8 @@ def test_reusing_detached_source_marks_all_shared_owners_for_copy_on_write():
 
 @pytest.mark.parametrize("clone_source", [False, True])
 def test_modified_replacement_default_applies_new_structure(monkeypatch, clone_source):
+    from policyengine_us.spm import _parameter_source
+
     source = system.clone() if clone_source else CountryTaxBenefitSystem()
     if not clone_source:
         assert source.parameters is source._spm_structure_parameters
@@ -244,7 +246,7 @@ def test_modified_replacement_default_applies_new_structure(monkeypatch, clone_s
         period="2024", value=True
     )
     if not clone_source:
-        assert source.parameters.modified
+        assert _parameter_source(source.parameters).modified
     module = importlib.import_module("policyengine_us.system")
     calls = []
     original = module.create_structural_reforms_from_parameters
@@ -279,12 +281,68 @@ def test_structural_detection_reuses_only_matching_default(monkeypatch, start_in
         return original(parameters, instant)
 
     monkeypatch.setattr(module, "create_structural_reforms_from_parameters", record)
-    Simulation(situation=earning_household(), start_instant=start_instant)
+    system.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+    children = system.parameters.children
+    cached = dict(system.parameters.gov._at_instant_cache)
+    simulation = Simulation(situation=earning_household(), start_instant=start_instant)
     assert calls == ([] if start_instant == "2024-01-01" else [start_instant])
+    if start_instant == "2024-01-01":
+        assert simulation.tax_benefit_system.parameters.children is children
+    else:
+        # A changed structural start can activate parameter-mutating callbacks.
+        # Defensive cloning is intentional even when this instance only rebinds
+        # MI variables; the shared source and its warm caches remain intact.
+        assert simulation.tax_benefit_system.parameters.children is not children
+    assert system.parameters.children is children
+    for instant, node in cached.items():
+        assert system.parameters.gov._at_instant_cache[instant] is node
+
+
+@pytest.mark.parametrize("use_modifier", [False, True])
+def test_changed_structural_start_detaches_before_parameter_mutation(
+    monkeypatch, use_modifier
+):
+    module = importlib.import_module("policyengine_us.system")
+    source = system.parameters
+    children = source.children
+    before = source("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
+    cached = dict(source.gov._at_instant_cache)
+
+    def mutate(parameters):
+        assert parameters.children is not children
+        parameters.gov.irs.deductions.standard.amount.SINGLE.update(
+            period="2024", value=100_000
+        )
+        return parameters
+
+    class StructuralParameterChange(Reform):
+        def apply(self):
+            if use_modifier:
+                self.modify_parameters(mutate)
+            else:
+                mutate(self.parameters)
+
+    monkeypatch.setattr(
+        module,
+        "create_structural_reforms_from_parameters",
+        lambda parameters, instant: StructuralParameterChange,
+    )
+    simulation = Simulation(situation=earning_household(), start_instant="2026-01-01")
+    assert (
+        simulation.tax_benefit_system.parameters.gov.irs.deductions.standard.amount.SINGLE(
+            2024
+        )
+        == 100_000
+    )
+    assert source.gov.irs.deductions.standard.amount.SINGLE(2024) == before
+    assert source.children is children
+    for instant, node in cached.items():
+        assert source.gov._at_instant_cache[instant] is node
 
 
 @pytest.mark.parametrize(
-    "clone_count,reform_wrapper", [(0, False), (1, False), (2, False), (1, True)]
+    "clone_count,reform_wrapper",
+    [(0, False), (1, False), (2, False), (0, True), (1, True)],
 )
 def test_supplied_prepared_system_retains_warm_policy_children(
     clone_count, reform_wrapper
