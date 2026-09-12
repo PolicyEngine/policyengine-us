@@ -33,7 +33,16 @@ dependencies = [
 policyengine-us = "policyengine_us:main"
 
 [build-system]
-requires = ["hatchling"]
+# Exact build requirements also constrain the isolated backend environment
+# created by python -m build; the runtime uv.lock does not pin that environment.
+requires = [
+    "hatchling==1.32.0",
+    "packaging==26.3",
+    "pathspec==1.1.1",
+    "pluggy==1.6.0",
+    "tomlkit==0.15.1",
+    "trove-classifiers==2026.6.1.19",
+]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
