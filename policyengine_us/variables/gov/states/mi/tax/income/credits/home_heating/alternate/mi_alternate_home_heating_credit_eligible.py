@@ -14,8 +14,8 @@ class mi_alternate_home_heating_credit_eligible(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # MI-1040CR-7 lines 40-43: heat included with rent bars the alternate
-        # credit.
+        # TY2025 MI-1040CR-7 lines 40-43 (Michigan renumbers the form between
+        # years): heat included with rent bars the alternate credit.
         heat_not_in_rent = ~tax_unit(
             "mi_home_heating_credit_heat_included_in_rent", period
         )
