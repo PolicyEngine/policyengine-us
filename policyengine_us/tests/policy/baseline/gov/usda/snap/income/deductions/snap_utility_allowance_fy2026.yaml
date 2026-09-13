@@ -555,3 +555,26 @@
     snap_utility_allowance: 162
     # No housing cost: 162 - 0.5 * 200 = 62, under the $744 cap.
     snap_excess_shelter_expense_deduction: 62
+
+- name: Alabama home without heating that pays for cooling receives the FY2026 HCSUA from the stated cooling fact
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NONE
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person]
+        state_code: AL
+  output:
+    # (D)(1): heating or cooling incurred separately from rent.
+    has_heating_expense: false
+    has_heating_cooling_expense: true
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 637

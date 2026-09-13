@@ -47,6 +47,9 @@ class snap_individual_utility_allowance(Variable):
             expense_variable = EXPENSE_VARIABLE_OVERRIDES.get(expense, expense)
             # The override may be a boolean incurrence variable; > 0 reads
             # both a dollar amount and a boolean as "incurs the expense".
+            # These are YEAR-defined facts read at this MONTH period: a
+            # dollar amount is divided by 12 and a boolean is carried as is,
+            # which leaves the > 0 test unchanged either way.
             incurs_expense = spm_unit(expense_variable, period) > 0
             flat_val = utility.single[util_name][region]
             if util_name in hh_size_utilities:

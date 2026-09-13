@@ -48,3 +48,21 @@
     has_heating_expense: true
   output:
     has_heating_expense: true
+
+# Electric and solar heat read pre_subsidy_electricity_expense; the
+# subsidy-netted electricity_expense would be circular, so it is not read.
+- name: Case 7, electric heat with only the subsidy-netted electricity bill incurs no heating.
+  period: 2026
+  input:
+    heating_type: ELECTRICITY
+    electricity_expense: 900
+  output:
+    has_heating_expense: false
+
+- name: Case 8, electric heat with the pre-subsidy electricity bill incurs heating.
+  period: 2026
+  input:
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 900
+  output:
+    has_heating_expense: true

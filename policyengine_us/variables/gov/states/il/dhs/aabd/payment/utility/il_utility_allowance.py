@@ -25,6 +25,8 @@ class il_aabd_utility_allowance(Variable):
         # Households may have more than one applicable utility allowance type
         allowances = []
         for expense in p.utility.utility_types:
+            # YEAR-defined dollar inputs read at this MONTH period are
+            # divided by 12 before the monthly cap applies.
             expense_amount = spm_unit(expense, period)
             key = PARAMETER_KEY_OVERRIDES.get(expense, expense.replace("_expense", ""))
             allowances.append(

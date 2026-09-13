@@ -50,3 +50,16 @@
     trash_expense: 90
   output:
     utility_expense: 1_020
+
+- name: Case 5, metered gas and propane bills both count toward the total.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: TX
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    bottled_gas_expense: 300
+  output:
+    # Unlike the utility count, which treats gas and fuel as one utility,
+    # the expense total sums every bill.
+    utility_expense: 1_500
