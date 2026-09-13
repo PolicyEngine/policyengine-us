@@ -1,3 +1,24 @@
+## [2.0.4] - 2026-09-12
+
+### Changed
+
+- Add 2026 statutory standard deduction amounts for Maine basic (P.L. 2025, c. 650 / 36 M.R.S. § 5124-C(1-C)) and additional aged/blind deductions (IRC § 63(c)(3) / Rev. Proc. 2025-32), inflation uprating and downward-$50 rounding metadata for Maine basic and additional standard deductions (36 M.R.S. § 5403) and Minnesota alternate itemized and standard deduction reductions (Minn. Stat. §§ 290.0122, 290.0123), published 2026 thresholds for Minnesota alternate deduction reductions, 2025 minimum income thresholds for Minnesota marriage credit (Minn. Stat. § 290.0675), and 2025 old age subtraction amount for Montana (MCA § 15-30-2120).
+
+
+## [2.0.3] - 2026-09-12
+
+### Fixed
+
+- Updated Michigan expanded retirement benefits deduction for 2026: lifted upper birth-year bracket restriction and added 2026 maximum subtraction limits under Public Act 4 of 2023.
+
+
+## [2.0.2] - 2026-09-12
+
+### Fixed
+
+- Add surviving spouse 2025 boundary tests for Alabama standard deduction.
+
+
 ## [2.0.1] - 2026-09-12
 
 ### Fixed
