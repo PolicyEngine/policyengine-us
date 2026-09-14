@@ -14,7 +14,11 @@ Source: `astra-review-country-201.md`. PR A of two.
       test. Every new test fails on the parent commit `e24e655a04`.
 - [x] Fix findings 1-4 in `policyengine_us/spm.py`.
 - [x] Fix finding 5 (county input type) and the two documentation defects.
-- [ ] Full core/unit + microsimulation + representative YAML runs, then draft PR.
+- [x] Full core/unit + microsimulation + representative YAML runs.
+- [x] Draft PR #9463 opened against `main`.
+- [x] Adversarial review (4 lenses, 27 raised, 18 confirmed after per-finding
+      verification) and every confirmed finding repaired - see below.
+- [ ] Final re-run after the review repairs; update the PR body.
 
 ## Design decisions
 1. **Copy-on-write parameter tree.** `share_spm_policy` returns an instance of a
@@ -80,3 +84,51 @@ Source: `astra-review-country-201.md`. PR A of two.
   at-instant node before `_run_formula` marks the tree. Priming the private root
   as traced repairs that as well, and the test asserts the four accesses per
   simulation that Astra described.
+
+## Review repairs (adversarial review of the change itself)
+
+Confirmed findings and what each cost, all now fixed and pinned by tests that
+fail when the fix is reverted:
+
+1. **Ownership was tracked on the borrower, not on the tree.** A system that
+   detached a private copy and then lent it to a second simulation went on
+   writing to it in place. Sharing is now a one-way mark on the tree, and every
+   simulation's own system carries the barrier - not only the ones borrowing
+   the shipped policy - because a tree a simulation starts out owning acquires
+   readers later. Core's `ParameterNode.clone` copies the instance dictionary,
+   so a private clone is explicitly unmarked.
+2. **Traced simulations stranded their shared-policy branches.** Branches were
+   moved onto a detached tree by root identity, which a traced branch can never
+   match, because tracing hands it a shallow copy of the root. Since the model's
+   own formulas branch this way (itemizing vs not, state EITC refundability,
+   marginal tax rates), a traced `calculate -> apply_reform -> calculate`
+   reported pre-reform numbers - up to a $2,860 error in the verifier's
+   constructed case. Branches are matched on the children of their root now.
+3. **An adopting branch had its copy-on-write switched off**, so its own reform
+   rewrote its parent's tree. It keeps sharing instead.
+4. **A shallow traced root orphaned its children's parent chain**, so an
+   in-place edit cleared the original root's at-instant cache and left the
+   traced copy serving pre-reform values. The root is only copied when the tree
+   is shared; otherwise it is marked traced where it stands.
+5. **A tuple of variable-only reforms paid for a full tree clone**, because
+   core recurses into `apply_reform` per member and the nested call's read of
+   `parameters` fell inside the outer call's armed window. 1.29 s -> 0.001 s.
+6. **The county input-type record was a monotone, unkeyed blacklist.** Keyed on
+   `(year, county)` and replaced per year now, so correcting an input clears
+   it; carried only by `copy_receipts=True` snapshots, so a new simulation on a
+   lender's system is not tainted; recorded on a reform simulation's baseline
+   arm as well; skipped entirely for non-county selections; and each write
+   scans only the period it wrote.
+7. **Test-efficacy gaps**: the clone override, the entity de-duplication, the
+   `load_extension` detach and the pinned-system re-key had no test that would
+   fail if reverted. All four now do (verified by reverting each).
+
+Residual, documented rather than fixed:
+
+- A county rejection is scoped to a county code and year, not to a row, because
+  the county reaching a provider has already been stringified by the variable
+  that read the column. A simulation holding a mistyped code fails every
+  request for that code in that year.
+- `holder.set_input` bypasses the country's `set_input`, so a county written
+  straight through core's holder API after construction is not re-recorded.
+  That channel behaves exactly as it did before this change.
