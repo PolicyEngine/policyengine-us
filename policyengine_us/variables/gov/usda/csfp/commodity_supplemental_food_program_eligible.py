@@ -23,6 +23,7 @@ class commodity_supplemental_food_program_eligible(Variable):
         in_ma = state_code == StateCode.MA
         in_il = state_code == StateCode.IL
         income_eligible = where(in_tx, tx_income_eligible, federal_income_eligible)
+        income_eligible |= person("ks_dcf_csfp_categorically_eligible", period)
         ks_county_eligible = person.household("ks_dcf_csfp_county_eligible", period)
         ma_county_eligible = person.household("ma_dese_csfp_county_eligible", period)
         il_county_eligible = person.household("il_dhs_csfp_county_eligible", period)

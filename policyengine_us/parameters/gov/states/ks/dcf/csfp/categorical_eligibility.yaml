@@ -1,0 +1,23 @@
+description: Kansas grants categorical income eligibility under the Commodity Supplemental Food Program to participants in these programs.
+values:
+  2000-01-01: []
+  2025-04-11:
+    - ssi
+    - receives_ssi
+    - snap
+    - receives_snap
+    - fdpir
+    - msp
+    # Low Income Subsidy also qualifies under the state plan but is not modeled.
+
+metadata:
+  unit: list
+  period: month
+  label: Kansas CSFP categorical income eligibility programs
+  reference:
+    - title: Kansas CSFP State Plan - Income Eligibility Standards and Options
+      href: https://www.dcf.ks.gov/services/ees/Documents/Food_Distribution_Programs/CSFPStatePlan.pdf#page=4
+    - title: Kansas CSFP State Plan - Effective date
+      href: https://www.dcf.ks.gov/services/ees/Documents/Food_Distribution_Programs/CSFPStatePlan.pdf#page=2
+    - title: 7 CFR 247.9(b)(1) and (3) - Eligibility requirements
+      href: https://www.law.cornell.edu/cfr/text/7/247.9#b
