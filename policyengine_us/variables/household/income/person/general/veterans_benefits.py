@@ -8,3 +8,4 @@ class veterans_benefits(Variable):
     unit = USD
     documentation = "Veterans benefits from past military service."
     definition_period = YEAR
+    adds = ["veterans_disability_benefits"]
