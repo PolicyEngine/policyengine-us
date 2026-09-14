@@ -467,3 +467,45 @@
           2026: MA
   output:
     ma_ccfa_countable_income: 2000
+- name: Preserve the legacy calculation before the documented February 2022 corrections.
+  period: 2021-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 60000
+        social_security: 12000
+        ssi:
+          2021: 12000
+        child_support_received: 12000
+        weekly_hours_worked_before_lsr: 40
+        ma_ccfa_eligible_child: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ma_ccfa_eligible_child: true
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - child
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child
+        spm_unit_assets: 999999
+        ma_ccfa_base_copay: 100
+        ma_tafdc_eligible: false
+    households:
+      household:
+        members:
+        - parent
+        - child
+        state_code: MA
+  output:
+    ma_ccfa_countable_income: 8000
+    ma_ccfa_income_eligible: false
+    ma_ccfa_asset_eligible: true
+    ma_ccfa_activity_eligible: true
+    ma_ccfa_total_copay: 100
