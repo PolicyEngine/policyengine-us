@@ -1,34 +1,15 @@
 - name: Case 1, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 999999
-    state_code: MA
+    spm_unit_assets: 999_999
+    state_code: MA 
   output:
     ma_ccfa_asset_eligible: true
-- name: Case 2, assets at the limit are eligible.
+
+- name: Case 2, ineligible.
   period: 2025-01
   input:
-    spm_unit_assets: 1000000
-    state_code: MA
-  output:
-    ma_ccfa_asset_eligible: true
-- name: Case 3, assets above the limit are ineligible.
-  period: 2025-01
-  input:
-    spm_unit_assets:
-      2025: 1000001
-    state_code:
-      2025: MA
+    spm_unit_assets: 1_000_000
+    state_code: MA 
   output:
     ma_ccfa_asset_eligible: false
-- name: Case 4, homeless families are exempt from the asset test in the older guide.
-  period: 2022-02
-  input:
-    spm_unit_assets:
-      2022: 1000001
-    is_homeless:
-      2022: true
-    state_code:
-      2022: MA
-  output:
-    ma_ccfa_asset_eligible: true

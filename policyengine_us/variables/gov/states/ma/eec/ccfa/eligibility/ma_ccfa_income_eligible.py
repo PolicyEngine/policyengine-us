@@ -15,14 +15,8 @@ class ma_ccfa_income_eligible(Variable):
         countable_income = spm_unit("ma_ccfa_countable_income", period)
         smi = spm_unit("hhs_smi", period)
 
+        # Initial eligibility at 50% SMI, continued at 85% SMI
         is_enrolled = spm_unit("ma_ccfa_enrolled", period)
-
-        if p.disabled_child_exception:
-            person = spm_unit.members
-            disabled_child = person("ma_ccfa_eligible_child", period) & person(
-                "is_disabled", period.this_year
-            )
-            is_enrolled = is_enrolled | spm_unit.any(disabled_child)
 
         smi_limit = where(
             is_enrolled,
@@ -30,8 +24,4 @@ class ma_ccfa_income_eligible(Variable):
             p.new_applicants,
         )
         income_limit = smi * smi_limit
-        eligible = countable_income <= income_limit
-        ccfa = parameters(period).gov.states.ma.eec.ccfa
-        if ccfa.homeless_income_and_copay_exempt:
-            eligible = eligible | spm_unit.household("is_homeless", period.this_year)
-        return eligible
+        return countable_income <= income_limit
