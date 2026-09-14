@@ -15,7 +15,10 @@ class utilities_included_in_rent(Variable):
         "instead."
     )
     definition_period = YEAR
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2"
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=1"
 
     def formula(tax_unit, period, parameters):
+        # The household value broadcasts to every tax unit in the household;
+        # a direct input on this variable is the only way to differentiate
+        # tax units that share a household.
         return ~tax_unit.household("tenant_pays_utilities", period)

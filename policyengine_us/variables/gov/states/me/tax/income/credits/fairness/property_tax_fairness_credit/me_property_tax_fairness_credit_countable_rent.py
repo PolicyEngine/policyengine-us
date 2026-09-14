@@ -8,7 +8,7 @@ class me_property_tax_fairness_credit_countable_rent(Variable):
     label = "Countable rent for Maine property tax fairness credit"
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2"
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=1"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
