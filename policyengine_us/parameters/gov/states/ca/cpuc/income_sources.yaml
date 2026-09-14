@@ -1,13 +1,16 @@
 description: >-
   Income sources counted toward CA CPUC CARE/FERA eligibility.
   Total gross annual household income includes all taxable and
-  nontaxable revenues from all people living in the home, from
+  non-taxable revenues from all people living in the home, from
   whatever sources derived, including, but not limited to, wages,
   salaries, interest, dividends, spousal and child support payments,
   public assistance payments, Social Security and pensions, housing
   and military subsidies, rental income, income from self-employment
   and all employment-related, non-cash income.
-# PG&E Form 01-9077, CARE/FERA Program Application.
+# Quoted verbatim from the footnote to the CARE and FERA Income Guidelines
+# tables on PG&E Form 01-9077, CARE/FERA Program Application (Rev. 6.26); the
+# same footnote appears on the CPUC-filed tariff sheet. Each entry below names
+# the phrase it implements.
 values:
   0000-01-01:
   # Wages, salaries
@@ -36,7 +39,22 @@ values:
   - pension_income
   - retirement_distributions
   # Housing subsidies
-  - spm_unit_capped_housing_subsidy
+  #
+  # The form lists "housing and military subsidies" among the revenues that
+  # make up total gross annual household income, with no netting against rent,
+  # no cap and no poverty-measurement valuation anywhere on it - so the entry
+  # is the housing subsidy the household receives.
+  #
+  # It was spm_unit_capped_housing_subsidy, the Census SPM's housing subsidy
+  # capped at the housing portion of the SPM threshold less the tenant
+  # payment. That cap belongs to the poverty measure, not to this form, and it
+  # made a utility discount depend on which SPM geography the request
+  # selected: a Los Angeles renter earning $40,700 with $23,790 of housing
+  # assistance had a $0 capped subsidy under national selection and $310.88
+  # under county selection, moving countable income across the CARE limit and
+  # flipping ca_care_eligible from true to false. Requesting CARE with no SPM
+  # configuration at all raised SPM_GEOGRAPHY_REQUIRED.
+  - housing_assistance
   # Military subsidies
   - veterans_benefits
   - military_service_income
@@ -57,8 +75,14 @@ metadata:
   period: year
   label: CA CPUC CARE/FERA income sources
   reference:
-    - title: PG&E Form 01-9077, CARE/FERA Program Application
-      href: https://bha.berkeleyca.gov/sites/default/files/2022-04/PGE%20CARE%20FERA%20Application.pdf
+    - title: PG&E Form 01-9077, CARE/FERA Program Application (Rev. 6.26)
+      href: https://www.pge.com/assets/pge/localized/en/docs/account/billing-and-assistance/care-fera-application.pdf
+    - title: >-
+        Revised Cal. P.U.C. Sheet No. 61313-E, PG&E Electric Sample Form
+        No. 79-1055, CARE/FERA Program Application for Sub-Metered
+        Residential Customers (Large Print), Advice 7905-E, effective
+        June 1, 2026 - carries the same income footnote as a CPUC filing
+      href: https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_FORMS_79-1055.pdf
     - title: CA PUC 739.1 (CARE)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
     - title: CA PUC 739.12 (FERA)

@@ -419,3 +419,97 @@ def test_generic_benefit_consumers_do_not_use_spm_measurement_composition(
         simulation.calculate("spm_measurement_children", YEAR), [1, 0]
     )
     assert simulation.spm_provenance()["years"] == {}
+
+
+# --- CPUC CARE/FERA countable income -----------------------------------------
+#
+# CARE and FERA are utility discounts, not poverty measurement. PG&E Form
+# 01-9077 counts "housing and military subsidies" among the revenues making up
+# total gross annual household income, with no netting against rent and no cap
+# anywhere on the form, so gov.states.ca.cpuc.income_sources counts the housing
+# assistance received. It used to count spm_unit_capped_housing_subsidy, which
+# made the discount depend on the SPM geography the request selected.
+
+
+def assisted_la_renter(earnings, *, county=None):
+    situation = household(earnings=earnings, county=county)
+    situation["spm_units"]["spm_unit"]["pre_subsidy_electricity_expense"] = {
+        YEAR: 1_800
+    }
+    # Pin the categorical route off so income is what decides, and the
+    # equal-eligibility assertions below cannot pass for an unrelated reason.
+    situation["households"]["household"]["ca_care_categorically_eligible"] = {
+        YEAR: False
+    }
+    return situation
+
+
+CARE_OUTPUTS = ("ca_cpuc_countable_income", "ca_care_income_eligible", "ca_care")
+
+
+@pytest.mark.parametrize(
+    "earnings,eligible",
+    [
+        # $0 earnings, ~$35,975 of assistance: $36,559 countable, inside the
+        # 2024 one-person CARE limit of 2 x $20,440.
+        (0, True),
+        # The reported case: a Los Angeles renter earning $40,700 with $23,790
+        # of assistance. $64,490 countable puts it outside the limit under
+        # every geography, where the capped subsidy flipped it at $310.88.
+        (40_700, False),
+    ],
+)
+def test_care_eligibility_is_the_same_under_every_spm_geography(earnings, eligible):
+    """An assisted household's utility discount must not move with SPM geography.
+
+    The capped subsidy is a poverty-measurement construct: it nets the
+    assistance against the housing portion of the SPM threshold, which is
+    geographically adjusted. Counting it made one Los Angeles renter
+    CARE-eligible nationally and ineligible under county selection.
+    """
+    national = Simulation(
+        situation=assisted_la_renter(earnings),
+        spm={"geography_kind": "national"},
+    )
+    county = Simulation(
+        situation=assisted_la_renter(earnings, county="06037"),
+        spm={"geography_kind": "county"},
+    )
+    unconfigured = Simulation(situation=assisted_la_renter(earnings))
+
+    # Guard the guard: the capped subsidy this parameter used to count still
+    # differs between the two selections, so equal CARE outputs below are the
+    # income definition's doing and not a quiet loss of geographic adjustment.
+    assert (
+        national.calculate("spm_unit_capped_housing_subsidy", YEAR)[0]
+        != (county.calculate("spm_unit_capped_housing_subsidy", YEAR)[0])
+    )
+
+    for variable in CARE_OUTPUTS:
+        values = [sim.calculate(variable, YEAR)[0] for sim in (national, county)]
+        assert values[0] == values[1], variable
+    assert bool(national.calculate("ca_care_eligible", YEAR)[0]) is eligible
+
+    # And the same answer with no SPM configuration and no county at all: this
+    # is what raised SPM_GEOGRAPHY_REQUIRED for partners requesting CARE.
+    for variable in (*CARE_OUTPUTS, "ca_care_eligible"):
+        assert (
+            unconfigured.calculate(variable, YEAR)[0]
+            == national.calculate(variable, YEAR)[0]
+        ), variable
+    # Nothing was looked up, so no measurement was received.
+    assert unconfigured.spm_provenance()["years"] == {}
+
+
+def test_cpuc_countable_income_counts_the_housing_assistance_received():
+    """Non-vacuity: the subsidy is in countable income at its full amount.
+
+    Equal answers across geographies would also hold if the entry had simply
+    been dropped, so pin the arithmetic the form describes.
+    """
+    simulation = Simulation(situation=assisted_la_renter(40_700))
+    assistance = simulation.calculate("housing_assistance", YEAR)[0]
+    assert assistance > 0
+    assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
+        40_700 + assistance
+    )

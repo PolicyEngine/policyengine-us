@@ -40,3 +40,48 @@
         state_code: CA
   output:
     ca_cpuc_countable_income: 68_000
+
+# PG&E Form 01-9077 counts "housing and military subsidies" among the revenues
+# making up total gross annual household income, with no netting against rent
+# and no cap on the form. This used to count the SPM's capped housing subsidy,
+# which made the discount depend on the SPM geography a request selected.
+- name: CPUC countable income includes the housing subsidy received in full
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        housing_assistance: 12_000
+        # Pinned so the housing entry is what the total tests, not the SNAP
+        # this earnings level happens to qualify for.
+        snap: 0
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_cpuc_countable_income: 32_000
+
+- name: CPUC countable income includes military subsidies alongside housing
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 20_000
+        veterans_benefits: 5_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        housing_assistance: 12_000
+        # Pinned so the housing entry is what the total tests, not the SNAP
+        # this earnings level happens to qualify for.
+        snap: 0
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_cpuc_countable_income: 37_000
