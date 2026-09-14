@@ -1,0 +1,1 @@
+Isolate simulation reform state, entities, clone shortcuts and parameter traces; synchronize deliberately shared policy branches, reject saved poverty outputs in datasets and verify the default Microcosm dataset's content hash.

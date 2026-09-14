@@ -41,13 +41,34 @@ the same prerequisite, and `Publish` checks its own committed checkout again
 before installation or build. Model environments use locked synchronization;
 subsequent commands use that environment without synchronizing again.
 
+The PR `CandidateWheel` matrix starts from the reviewed head in two separate
+clean checkouts. Both run the actual release version-bump helper; the `rc1`
+entry appends `rc1` to that computed next version before both perform the
+root-only lock refresh. Each uses the same Ubuntu version, Python, uv, locked
+development environment, and `make` build as `Publish`. Each uploads its
+unpublished wheel and `release-build/receipt.json`; the job has read-only
+repository access and no publication step. The receipt rejects changed or
+untracked policy source, checks the wheel's version and backend, and records source, lock, tool, and
+wheel identities. Download the `release-wheel-rc1-<head SHA>` and
+`release-wheel-final-<head SHA>` artifacts to qualify their actual bytes.
+A change to the head or changelog fragments requires a new candidate; the
+candidate does not reserve a registry version.
+GitHub updates its hosted Ubuntu images even within `ubuntu-24.04`, so receipts
+also record `ImageOS` and `ImageVersion` for release-environment comparison.
+
+`pyproject.toml` pins Hatchling and its complete non-optional dependency closure
+because `python -m build` creates an isolated backend environment outside the
+runtime lock. Both builds use those same pins and the frontend version in
+`uv.lock`. `Publish` verifies its own receipt before publishing. Registry wheel
+comparison and downstream qualification remain separate release checks.
+
 `ReleaseLockTests` has no dependency on a model job or the country lock check.
 It uses only the Python standard library and uv, so it can test the guard while
 the country dependency registry is incomplete:
 
 ```sh
-python -m unittest discover -s .github/tests -p test_release_lock.py -v
-RELEASE_LOCK_REAL_UV=1 python -m unittest discover -s .github/tests -p test_release_lock.py -v
+python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+RELEASE_LOCK_REAL_UV=1 python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
 ```
 
 The opt-in probe creates an isolated, minimal project with a standard PyPI

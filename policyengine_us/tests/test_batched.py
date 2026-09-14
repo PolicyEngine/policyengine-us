@@ -10,7 +10,6 @@ import os
 import gc
 import time
 import argparse
-import re
 import select
 import threading
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor
@@ -21,11 +20,19 @@ from typing import FrozenSet, List, Dict, Optional, Tuple
 import yaml
 
 
+def yaml_files(directory: Path, recursive: bool = True) -> List[Path]:
+    """List both extensions accepted by policyengine-core's YAML runner."""
+    collect = directory.rglob if recursive else directory.glob
+    return sorted(
+        file for extension in ("yaml", "yml") for file in collect(f"*.{extension}")
+    )
+
+
 def count_yaml_files(directory: Path) -> int:
     """Count YAML files in a directory recursively."""
     if not directory.exists():
         return 0
-    return len(list(directory.rglob("*.yaml")))
+    return len(yaml_files(directory))
 
 
 def batch_cost(batch_paths: List[str]) -> int:
@@ -178,7 +185,7 @@ def subdir_batches(subdir: Path) -> List[List[str]]:
     minutes before CI killed it. Pack such a folder's files by combo weight
     instead.
     """
-    files = sorted(subdir.rglob("*.yaml"))
+    files = yaml_files(subdir)
     combos: set = set()
     for file in files:
         combos |= set(file_reform_combos(file))
@@ -214,7 +221,7 @@ def split_into_batches(
     # Explicit modes — bypass the per-path auto heuristics so new files
     # added to the target auto-route without a Makefile edit.
     if mode == "per-file":
-        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
+        return [[str(f)] for f in yaml_files(base_path)]
 
     if mode == "per-subdir":
         subdirs = sorted(
@@ -222,7 +229,7 @@ def split_into_batches(
             for item in base_path.iterdir()
             if item.is_dir() and item.name not in exclude
         )
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = yaml_files(base_path, recursive=False)
         batches = [batch for s in subdirs for batch in subdir_batches(s)]
         if root_files:
             batches.append([str(f) for f in root_files])
@@ -264,7 +271,7 @@ def split_into_batches(
             for item in base_path.iterdir()
             if item.is_dir() and item.name not in exclude
         )
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = yaml_files(base_path, recursive=False)
 
         # One batch per file for per-file folders, then one batch per
         # heavy subdir (if present).
@@ -272,7 +279,7 @@ def split_into_batches(
             [str(file)]
             for subdir in subdirs
             if subdir.name in PER_FILE
-            for file in sorted(subdir.rglob("*.yaml"))
+            for file in yaml_files(subdir)
         ]
         batches += [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
@@ -303,10 +310,10 @@ def split_into_batches(
         subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
         batches = []
         for subdir in subdirs:
-            batches.extend(pack_files_by_combo_weight(sorted(subdir.rglob("*.yaml"))))
+            batches.extend(pack_files_by_combo_weight(yaml_files(subdir)))
 
         # Also include any root-level YAML files as trailing batches
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = yaml_files(base_path, recursive=False)
         if root_files:
             batches.extend(pack_files_by_combo_weight(root_files))
 
@@ -319,7 +326,7 @@ def split_into_batches(
     # shutdown signal". A fresh subprocess per file frees each peak between
     # files.
     if "reform" in str(base_path):
-        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
+        return [[str(f)] for f in yaml_files(base_path)]
 
     # Special handling for states directory - support excluding specific states
     # and splitting into multiple sequential batches for memory management
@@ -334,7 +341,7 @@ def split_into_batches(
         # Root-level YAML files (e.g. cross-state filing-status test) are
         # state-agnostic and would be invisible to subdir-based batching
         # otherwise — collect them into a dedicated trailing batch.
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = yaml_files(base_path, recursive=False)
 
         if not subdirs and not root_files:
             return []
@@ -395,7 +402,7 @@ def split_into_batches(
                 if gov_item.is_dir():
                     if gov_item.name not in heavy_set and gov_item.name != "states":
                         remaining.append(str(gov_item))
-                elif gov_item.suffix == ".yaml":
+                elif gov_item.suffix in {".yaml", ".yml"}:
                     remaining.append(str(gov_item))
 
             # Add non-gov directories and root YAML files
@@ -404,7 +411,7 @@ def split_into_batches(
                     if item.name in ["household", "contrib", "gov"]:
                         continue
                     remaining.append(str(item))
-                elif item.suffix == ".yaml":
+                elif item.suffix in {".yaml", ".yml"}:
                     remaining.append(str(item))
 
             # Build batches (only include non-empty ones)
@@ -435,10 +442,11 @@ def split_into_batches(
         paths = sorted(
             str(item)
             for item in base_path.iterdir()
-            if (item.is_dir() or item.suffix == ".yaml") and item.name not in exclude
+            if (item.is_dir() or item.suffix in {".yaml", ".yml"})
+            and item.name not in exclude
         )
     else:
-        paths = sorted(str(f) for f in base_path.rglob("*.yaml"))
+        paths = sorted(str(f) for f in yaml_files(base_path))
 
     if not paths:
         return []
@@ -459,7 +467,12 @@ def split_into_batches(
     return batches
 
 
-def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Dict:
+def run_batch(
+    test_paths: List[str],
+    batch_name: str,
+    stream: bool = True,
+    timeout_seconds: float = 1800,
+) -> Dict:
     """Run a batch of tests in an isolated subprocess.
 
     With stream=True output is echoed to stdout in real time (sequential
@@ -478,7 +491,7 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
         else:
             buf.append(text + end)
 
-    start_time = time.time()
+    start_time = time.monotonic()
     last_output_time = start_time
     last_heartbeat_time = start_time
     heartbeat_interval = 30
@@ -516,16 +529,28 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
         rss = _read_vm_hwm_mb(process.pid)
         if rss is not None:
             peak_rss_mb = rss
-        last_rss_sample = time.time()
+        last_rss_sample = time.monotonic()
 
     try:
-        test_completed = False
-        test_passed = False
-        output_lines = []
-        output_text = ""
-
         # Monitor output line by line
         while True:
+            if time.monotonic() - start_time >= timeout_seconds:
+                emit("\n    ⏱️ Timeout - terminating process...")
+                sample_rss()
+                if process.poll() is None:
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        process.wait()
+                return {
+                    "elapsed": time.monotonic() - start_time,
+                    "status": "timeout",
+                    "returncode": process.returncode,
+                    "peak_rss_mb": peak_rss_mb,
+                    "output": "".join(buf),
+                }
             ready, _, _ = select.select([process.stdout], [], [], 0.1)
             if not ready:
                 # Sample before poll(): poll() reaps the child, after which
@@ -535,7 +560,7 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
                 if poll_result is not None:
                     # Process terminated
                     break
-                now = time.time()
+                now = time.monotonic()
                 # In buffered (concurrent) mode the shared heartbeat in
                 # run_batches_concurrently reports liveness instead.
                 if stream and now - last_heartbeat_time >= heartbeat_interval:
@@ -562,103 +587,30 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
             # lines such as dots that do not end with newlines.
             line = chunk.decode(errors="replace")
             emit(line, end="")
-            last_output_time = time.time()
+            last_output_time = time.monotonic()
             last_heartbeat_time = last_output_time
-            output_lines.append(line)
-            output_text += line
             if last_output_time - last_rss_sample >= 1.0:
                 sample_rss()
 
-            # Detect pytest completion
-            # Look for patterns like "====== 5638 passed in 491.24s ======"
-            # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(
-                r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
-                output_text,
-            ):
-                test_completed = True
-                # Check if tests passed by parsing actual failure count
-                failed_match = re.search(r"(\d+) failed", output_text)
-                if failed_match:
-                    failed_count = int(failed_match.group(1))
-                    test_passed = failed_count == 0
-                else:
-                    # No "X failed" in line means all passed
-                    test_passed = True
-
-                emit(f"\n    Tests completed, terminating process...")
-
-                # Give 1 second grace period for cleanup
-                time.sleep(1)
-                # Final sample while the pid still exists — captures the
-                # end-of-run high-water mark.
-                sample_rss()
-
-                # Terminate the process
-                process.terminate()
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    # Force kill if it won't terminate
-                    emit(f"    Force killing process...")
-                    process.kill()
-                    process.wait()
-                break
-
-        # If we didn't detect completion, wait for process with timeout
-        if not test_completed:
-            try:
-                # Wait up to 30 minutes total
-                elapsed = time.time() - start_time
-                remaining_timeout = max(1800 - elapsed, 1)
-                process.wait(timeout=remaining_timeout)
-            except subprocess.TimeoutExpired:
-                emit(f"\n    ⏱️ Timeout - terminating process...")
-                sample_rss()
-                process.terminate()
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait()
-
-                elapsed = time.time() - start_time
-                return {
-                    "elapsed": elapsed,
-                    "status": "timeout",
-                    "peak_rss_mb": peak_rss_mb,
-                    "output": "".join(buf),
-                }
-
-        elapsed = time.time() - start_time
-
-        if test_completed:
-            emit(
-                f"\n    Batch completed in {elapsed:.1f}s "
-                f"(peak RSS: {_format_rss(peak_rss_mb)})"
-            )
-            return {
-                "elapsed": elapsed,
-                "status": "passed" if test_passed else "failed",
-                "peak_rss_mb": peak_rss_mb,
-                "output": "".join(buf),
-            }
-        else:
-            # Process ended without detecting test completion
-            returncode = process.poll()
-            emit(
-                f"\n    Batch completed in {elapsed:.1f}s "
-                f"(peak RSS: {_format_rss(peak_rss_mb)})"
-            )
-            return {
-                "elapsed": elapsed,
-                "status": "passed" if returncode == 0 else "failed",
-                "peak_rss_mb": peak_rss_mb,
-                "output": "".join(buf),
-            }
+        # Pytest's summary is output, not an exit status: setup/teardown errors,
+        # interrupted runs and failing session hooks may follow passing tests.
+        # Wait for the actual child exit instead of terminating after a summary.
+        returncode = process.wait()
+        elapsed = time.monotonic() - start_time
+        emit(
+            f"\n    Batch completed in {elapsed:.1f}s "
+            f"(exit {returncode}; peak RSS: {_format_rss(peak_rss_mb)})"
+        )
+        return {
+            "elapsed": elapsed,
+            "status": "passed" if returncode == 0 else "failed",
+            "returncode": returncode,
+            "peak_rss_mb": peak_rss_mb,
+            "output": "".join(buf),
+        }
 
     except Exception as e:
-        elapsed = time.time() - start_time
+        elapsed = time.monotonic() - start_time
         emit(f"\n    ❌ Error: {str(e)[:100]}")
 
         # Clean up process if still running
@@ -678,6 +630,8 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
             "peak_rss_mb": peak_rss_mb,
             "output": "".join(buf),
         }
+    finally:
+        process.stdout.close()
 
 
 def run_batches_concurrently(batches: List[List[str]], workers: int) -> List:

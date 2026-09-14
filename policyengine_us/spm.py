@@ -10,7 +10,11 @@ from collections.abc import Mapping
 from copy import copy, deepcopy
 from functools import lru_cache
 from inspect import signature
+from weakref import WeakSet, ref
 
+from policyengine_core.parameters import ParameterNode, ParameterNodeAtInstant
+from policyengine_core.reforms import Reform
+from policyengine_core.tracers import TracingParameterNodeAtInstant
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
@@ -31,6 +35,25 @@ CONFIG_FIELDS = frozenset(
         "as_of",
     }
 )
+
+# Public aliases belong to the country model, so the calculator cannot list
+# them. Reject these saved outputs alongside the calculator-owned measurements.
+DATASET_FORMULA_OWNED_INPUTS = FORMULA_OWNED_INPUTS | frozenset(
+    {
+        "in_poverty",
+        "deep_poverty_line",
+        "deep_poverty_gap",
+        "in_deep_poverty",
+        "spm_unit_allocated_housing_subsidy",
+        "spm_unit_allocated_tenant_payment",
+    }
+)
+
+# This source role has a head/spouse fallback for household situations. A
+# population producer must retain its observed boolean instead of treating the
+# fallback formula as ownership of the input. This declaration permits source
+# delivery; it does not permit synthesizing a default value when data are absent.
+DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
@@ -181,30 +204,102 @@ def spm_config(provider):
     }
 
 
-def share_spm_policy(system):
-    """Isolate receipts and variable registration without rebuilding policy.
+class _SimulationParameters(ParameterNode):
+    """Reuse child value caches without caching a simulation's root or tracer.
 
-    An ordinary simulation applies no user reform, so it needs private receipts
-    and a private variable registry, not a private copy of the policy itself.
-    It is also new rather than cloned, so no previous receipt belongs to it.
-    Core's TaxBenefitSystem.clone() rebuilds the whole parameter tree node by
-    node and empties both at-instant caches, and this country then deep-copies
-    every variable object on top; doing that per household simulation throws
-    away the shared instance's warm parameter caches and lands on household API
-    request latency.
-
-    Share the parameter tree and its at-instant caches, and reuse the variable
-    objects. Every core operation that a reform performs on a variable
-    (add_variable, replace_variable, update_variable, neutralize_variable,
-    annualize_variable) rebinds ``variables[name]`` to a newly constructed
-    object rather than mutating the registered one, so a private dict is enough
-    to keep this simulation's registration - including the structural reform
-    re-applied at its own start instant - out of the shared instance.
-    ``test_ordinary_simulation_shares_default_policy_state`` enforces that
-    invariant against the shared instance itself.
+    Each simulation owns this root. Unreformed simulations share the authored
+    children and their warm value caches; applying a reform first clones them.
+    Core may set trace/tracer/branch_name on the root during formula execution.
+    A fresh tracing wrapper binds every lookup to that requesting simulation.
     """
+
+    def _get_at_instant(self, instant):
+        # Child updates clear caches along their authored parent chain, which
+        # does not include this private view. Rebuild the small root each time
+        # so in-place updates are visible; expensive child nodes stay cached.
+        node = ParameterNodeAtInstant(self.name, self, instant)
+        if self.trace:
+            return TracingParameterNodeAtInstant(node, self.tracer, self.branch_name)
+        return node
+
+    def clone(self):
+        cloned = super().clone()
+        # Core clones this view for supplied Reform wrappers too. Child updates
+        # now reach the cloned root, never the original view's authored source.
+        cloned._spm_parameter_source = cloned
+        cloned._spm_cloned_from = ref(_parameter_source(self))
+        return cloned
+
+
+def _parameter_source(parameters):
+    return getattr(parameters, "_spm_parameter_source", parameters)
+
+
+def _has_prepared_structure(system, start_instant):
+    parameters = system.parameters
+    source = _parameter_source(parameters)
+    if (
+        start_instant != getattr(system, "_spm_structure_start_instant", None)
+        or parameters.modified
+        or source.modified
+    ):
+        return False
+    prepared = getattr(system, "_spm_structure_parameters", None)
+    if source is _parameter_source(prepared):
+        return True
+    # A variable-only Reform clones the prepared baseline's parameter view.
+    # Recognize that actual clone operation, not an arbitrary replacement root.
+    cloned_from = getattr(source, "_spm_cloned_from", None)
+    return (
+        isinstance(system, Reform)
+        and cloned_from is not None
+        and cloned_from() is _parameter_source(system.baseline.parameters)
+        and _has_prepared_structure(system.baseline, start_instant)
+    )
+
+
+def _parameter_view(parameters):
+    view = object.__new__(_SimulationParameters)
+    view.__dict__ = parameters.__dict__.copy()
+    view._spm_parameter_source = _parameter_source(parameters)
+    view._at_instant_cache = {}
+    view.trace = False
+    view.tracer = None
+    return view
+
+
+def _bind_private_entities(policy, source):
+    policy.entities = [copy(entity) for entity in source.entities]
+    policy.person_entity = next(
+        entity for entity in policy.entities if entity.is_person
+    )
+    policy.group_entities = [
+        entity for entity in policy.entities if not entity.is_person
+    ]
+    for entity in policy.entities:
+        entity.set_tax_benefit_system(policy)
+
+
+def share_spm_policy(system):
+    """Give each request private registration, entities and trace metadata.
+
+    Unreformed policy children retain warm caches. The public apply_reform path
+    detaches authored parameters before mutation; a parameter lookup never
+    stores a request's tracer on the shared source root.
+    """
+    # An existing detached simulation may itself become a shared source. Its
+    # whole policy family must detach before mutating these children again.
+    for owner in getattr(system, "_spm_policy_owners", ()):
+        if owner.tax_benefit_system.variables is system.variables:
+            owner.tax_benefit_system._spm_shared_parameters = True
+    system._spm_shared_parameters = True
     policy = copy(system)
     policy.variables = dict(system.variables)
+    _bind_private_entities(policy, system)
+    policy.parameters = _parameter_view(system.parameters)
+    policy._parameters_at_instant_cache = {}
+    policy._spm_shared_parameters = True
+    policy._spm_policy_owners = WeakSet()
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=False
     )
@@ -228,6 +323,13 @@ def clone_spm_system(system, *, copy_receipts=True):
     for variable in system.variables.values():
         memo[id(variable.entity)] = by_key[variable.entity.key]
     cloned.variables = deepcopy(system.variables, memo)
+    cloned.parameters = _parameter_view(cloned.parameters)
+    if _has_prepared_structure(
+        system, getattr(system, "_spm_structure_start_instant", None)
+    ):
+        cloned._spm_structure_parameters = _parameter_source(cloned.parameters)
+    cloned._spm_shared_parameters = False
+    cloned._spm_policy_owners = WeakSet()
     cloned.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=copy_receipts
     )
@@ -239,11 +341,18 @@ class SPMSimulationMixin:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Core applies constructor reforms directly to the system, including
+        # modifiers that replace the whole parameter root.
+        if not isinstance(self.tax_benefit_system.parameters, _SimulationParameters):
+            self.tax_benefit_system.parameters = _parameter_view(
+                self.tax_benefit_system.parameters
+            )
         # Core switches the baseline system after cloning its populations.
         self._rebind_holders()
 
     def _rebind_holders(self):
         """Bind populations and cached holders to their branch's policy state."""
+        self._register_policy_owner()
         self.tax_benefit_system.simulation = self
         variables = self.tax_benefit_system.variables
         for entity in self.tax_benefit_system.entities:
@@ -266,9 +375,74 @@ class SPMSimulationMixin:
         for branch in self.branches.values():
             branch._rebind_holders()
 
+    def _register_policy_owner(self):
+        policy = self.tax_benefit_system
+        owners = getattr(policy, "_spm_policy_owners", None)
+        if owners is None:
+            owners = policy._spm_policy_owners = WeakSet()
+        owners.add(self)
+        return owners
+
+    def _calculate(self, variable_name, period=None):
+        # Core reads abolition parameters before running a formula, including
+        # on cached/input returns. Bind the current tracer before that lookup.
+        parameters = self.tax_benefit_system.parameters
+        parameters.trace = self.trace
+        parameters.tracer = self.tracer
+        parameters.branch_name = self.branch_name
+        # Supplied Reform instances retain Core's extra system-level cache.
+        # Its results can contain a previous tracer; child value caches remain warm.
+        self.tax_benefit_system._parameters_at_instant_cache.clear()
+        return super()._calculate(variable_name, period)
+
     def apply_reform(self, reform):
-        super().apply_reform(reform)
-        self._rebind_holders()
+        policy = self.tax_benefit_system
+        # Core's parent_branch describes inherited inputs, not policy ownership:
+        # standalone clones retain that ancestry and need not appear in branches.
+        # Capture actual policy owners before a reform can replace the registry.
+        related = [
+            owner
+            for owner in self._register_policy_owner()
+            if owner.tax_benefit_system.variables is policy.variables
+        ]
+        if any(
+            getattr(owner.tax_benefit_system, "_spm_shared_parameters", False)
+            for owner in related
+        ):
+            parameters = policy.parameters.clone()
+            for simulation in related:
+                branch_policy = simulation.tax_benefit_system
+                branch_policy.parameters = _parameter_view(parameters)
+                branch_policy._spm_shared_parameters = False
+        try:
+            super().apply_reform(reform)
+        finally:
+            # A modifier may return another root instead of editing in place.
+            # Publish its resulting policy to every deliberately shared branch,
+            # while keeping each root's caches and tracing context private.
+            parameters = policy.parameters
+            for simulation in related:
+                branch_policy = simulation.tax_benefit_system
+                branch_policy.parameters = _parameter_view(parameters)
+                branch_policy.variables = policy.variables
+                branch_policy._parameters_at_instant_cache = {}
+            # Core invalidates only the caller and its descendants. Synchronize
+            # every owner, including detached clones, without changing the input
+            # ancestry. Avoid repeating Core's recursive work for owned branches.
+            covered = set()
+
+            def cover_branches(owner):
+                for branch in owner.branches.values():
+                    if branch not in covered:
+                        covered.add(branch)
+                        cover_branches(branch)
+
+            for owner in related:
+                cover_branches(owner)
+            for owner in related:
+                if owner not in covered:
+                    owner._rebind_holders()
+                    owner._invalidate_all_caches()
 
     @property
     def spm_config(self):
@@ -285,6 +459,18 @@ class SPMSimulationMixin:
         )
         supplied = arguments.arguments.get("tax_benefit_system")
         reform = arguments.arguments.get("reform")
+        # A prepared country system already applied structural reforms at its
+        # recorded instant. Reuse that work for pristine supplied systems too;
+        # modified/replaced parameters, user reforms and other instants still
+        # run detection.
+        source = (
+            supplied
+            if supplied is not None
+            else self.default_tax_benefit_system_instance
+        )
+        self._spm_default_structure_ready = reform is None and _has_prepared_structure(
+            source, start_instant
+        )
         if supplied is None:
             if reform is not None:
                 chosen = self.default_tax_benefit_system(
@@ -304,6 +490,8 @@ class SPMSimulationMixin:
             # it - the household API among them - keeps that system's warm
             # caches; only receipts and variable registration are private.
             chosen = share_spm_policy(supplied)
+        if not isinstance(chosen.parameters, _SimulationParameters):
+            chosen.parameters = _parameter_view(chosen.parameters)
         # This is a new simulation, unlike clone() of an already calculated
         # simulation, so no previous calculation receipt belongs to it.
         if config is not None:
@@ -325,6 +513,7 @@ class SPMSimulationMixin:
 
     def clone(self, debug=False, trace=False, clone_tax_benefit_system=True):
         """Retain cached-result receipts while isolating future calculations."""
+        self._register_policy_owner()
         cloned = super().clone(debug=debug, trace=trace, clone_tax_benefit_system=False)
         if clone_tax_benefit_system:
             cloned.tax_benefit_system = clone_spm_system(self.tax_benefit_system)
@@ -332,11 +521,18 @@ class SPMSimulationMixin:
             # Core branches may share policy state, but each calculation's
             # receipt belongs to that simulation's provider.
             cloned.tax_benefit_system = copy(self.tax_benefit_system)
+            _bind_private_entities(cloned.tax_benefit_system, self.tax_benefit_system)
+            cloned.tax_benefit_system.parameters = _parameter_view(
+                self.tax_benefit_system.parameters
+            )
+            cloned.tax_benefit_system._parameters_at_instant_cache = {}
             cloned.tax_benefit_system.spm_forecast_provider = (
                 self.tax_benefit_system.spm_forecast_provider.snapshot(
                     copy_receipts=True
                 )
             )
+        cloned.calc = cloned.calculate
+        cloned.df = cloned.calculate_dataframe
         cloned._rebind_holders()
         return cloned
 
@@ -347,7 +543,7 @@ class SPMSimulationMixin:
         # public consumers validate their household input contract separately.
         if (
             getattr(self, "is_over_dataset", False)
-            and variable_name in FORMULA_OWNED_INPUTS
+            and variable_name in DATASET_FORMULA_OWNED_INPUTS
         ):
             raise ValueError(
                 f"Dataset supplies formula-owned SPM output {variable_name}. "

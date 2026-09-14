@@ -713,6 +713,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         refundable_credit_conversion,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
+    if not reforms:
+        return None
 
     class combined_reform(Reform):
         def apply(self):
