@@ -23,7 +23,15 @@ from policyengine_us.spm import (
     REJECTED_DATASET_INPUTS,
     create_spm_provider,
 )
-from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path, system
+from policyengine_us import system as system_module
+from policyengine_us.system import (
+    DEFAULT_DATASET,
+    DEFAULT_DATASET_SHA256,
+    _file_sha256,
+    _resolve_dataset_path,
+    _verify_default_dataset,
+    system,
+)
 
 
 def single_person_situation():
@@ -605,3 +613,74 @@ def test_every_pure_function_of_the_poverty_chain_is_rejected():
     )
     # Guard the guard: a scan that silently matched nothing proves nothing.
     assert set(DERIVED_POVERTY_OUTPUTS) <= set(checked)
+
+
+@pytest.fixture
+def decoy_default_dataset(monkeypatch, tmp_path):
+    """Resolve the default URI to a valid but uncertified build.
+
+    The decoy loads and calculates, so anything that rejects it rejects it on
+    content rather than on shape.
+    """
+    path = tmp_path / "decoy.h5"
+    small_dataset().save(path)
+    monkeypatch.setattr(
+        system_module,
+        "_resolve_dataset_path",
+        lambda dataset_str: str(path),
+    )
+    return path
+
+
+def test_default_dataset_rejects_content_that_is_not_the_certified_build(
+    decoy_default_dataset,
+):
+    """A moved build id must fail loudly instead of changing every result.
+
+    The default pins a Hugging Face tag, which is a mutable pointer: without
+    this check, re-tagging the repository silently substitutes another
+    schema-valid population.
+    """
+    with pytest.raises(ValueError) as error:
+        Microsimulation()
+    message = str(error.value)
+    assert DEFAULT_DATASET in message
+    assert str(decoy_default_dataset) in message
+    assert DEFAULT_DATASET_SHA256 in message
+    assert _file_sha256(decoy_default_dataset) in message
+
+
+def test_default_dataset_accepts_the_certified_digest(
+    decoy_default_dataset, monkeypatch
+):
+    """The check passes exactly the certified bytes and obstructs nothing else."""
+    monkeypatch.setattr(
+        system_module,
+        "DEFAULT_DATASET_SHA256",
+        _file_sha256(decoy_default_dataset),
+    )
+    simulation = Microsimulation()
+    assert simulation.calculate("spm_measurement_adults", 2024).tolist() == [1, 1]
+
+
+def test_explicit_dataset_argument_is_not_content_checked(decoy_default_dataset):
+    """A caller naming its own artifact owns that artifact's provenance."""
+    simulation = Microsimulation(dataset=str(decoy_default_dataset))
+    assert simulation.calculate("spm_measurement_adults", 2024).tolist() == [1, 1]
+
+
+def test_default_dataset_is_digested_once_per_resolved_file(monkeypatch, tmp_path):
+    """The certified build is ~830 MB; construction must not re-digest it."""
+    path = tmp_path / "counted.h5"
+    path.write_bytes(b"populace")
+    digests = []
+
+    def counting_sha256(file_path):
+        digests.append(str(file_path))
+        return "0" * 64
+
+    monkeypatch.setattr(system_module, "_file_sha256", counting_sha256)
+    monkeypatch.setattr(system_module, "DEFAULT_DATASET_SHA256", "0" * 64)
+    _verify_default_dataset(path)
+    _verify_default_dataset(path)
+    assert digests == [str(path)]
