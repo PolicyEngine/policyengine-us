@@ -455,9 +455,12 @@ def test_a_county_rejection_does_not_follow_the_system_to_a_new_simulation():
     with pytest.raises(SPMInputError):
         mistyped.calculate("spm_unit_spm_threshold", 2024)
 
+    # The same county, sent correctly: the lender's record of its own mistake
+    # must not reject it.
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: "36061"}
     correct = Simulation(
-        tax_benefit_system=mistyped.tax_benefit_system,
-        situation=single_person_situation(),
+        tax_benefit_system=mistyped.tax_benefit_system, situation=situation
     )
     assert correct.calculate("spm_unit_spm_threshold", 2024)[0] > 0
     with pytest.raises(SPMInputError):
