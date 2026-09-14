@@ -1,4 +1,4 @@
-description: Income sources eligible for Rhode Island taxable retirement income subtraction.
+description: Rhode Island subtracts these retirement income sources from adjusted gross income under the individual income tax retirement income subtraction program.
 values:
   2021-01-01:
     - taxable_pension_income
@@ -7,7 +7,9 @@ values:
     - taxable_401k_distributions
     - taxable_403b_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: Rhode Island retirement income subtraction sources
   reference:
     - title: R.I. Gen. Laws § 44-30-12(c)(9)
       href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM

@@ -1,4 +1,4 @@
-description: Income sources eligible for the New Jersey pension and retirement exclusion.
+description: New Jersey excludes these retirement income sources under the individual income tax pension and retirement exclusion program.
 values:
   2021-01-01:
     - taxable_pension_income
@@ -8,7 +8,9 @@ values:
     - taxable_sep_distributions
     - keogh_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: New Jersey pension and retirement exclusion sources
   reference:
     - title: N.J.S.A. 54A:6-10
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-10/

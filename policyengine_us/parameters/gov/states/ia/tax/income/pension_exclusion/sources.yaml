@@ -1,10 +1,12 @@
-description: Income sources eligible for the Iowa retirement and pension exclusion.
+description: Iowa excludes these retirement and pension income sources under the individual income tax pension exclusion program.
 values:
   2021-01-01:
     - taxable_pension_income
     - taxable_retirement_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: Iowa pension exclusion income sources
   reference:
     - title: Iowa Code § 422.7(31)
       href: https://www.legis.iowa.gov/docs/code/422.7.pdf

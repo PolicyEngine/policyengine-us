@@ -1,4 +1,4 @@
-description: Employment-related retirement or disability income sources eligible for the Arkansas exemption.
+description: Arkansas exempts these employment-related retirement and disability benefits under the individual income tax retirement exemption program.
 values:
   2021-01-01:
     - disability_benefits
@@ -8,7 +8,9 @@ values:
     - taxable_sep_distributions
     - keogh_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: Arkansas retirement and disability benefits exemption employment sources
   reference:
     - title: Ark. Code Ann. § 26-51-307(a)
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13

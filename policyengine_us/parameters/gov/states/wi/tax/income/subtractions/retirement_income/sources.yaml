@@ -1,10 +1,12 @@
-description: Income sources eligible for Wisconsin retirement income subtraction and exclusion.
+description: Wisconsin subtracts these retirement income sources under the individual income tax retirement income subtraction program.
 values:
   2021-01-01:
     - taxable_pension_income
     - taxable_retirement_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: Wisconsin retirement income subtraction sources
   reference:
     - title: Wis. Stat. § 71.05(6)(b)44
       href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/44

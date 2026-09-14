@@ -1,10 +1,12 @@
-description: Income sources eligible for the South Carolina retirement deduction.
+description: South Carolina deducts these retirement income sources under the individual income tax retirement deduction program.
 values:
   2021-01-01:
     - taxable_pension_income
     - taxable_retirement_distributions
 metadata:
-  unit: /1
+  unit: list
+  period: year
+  label: South Carolina retirement deduction sources
   reference:
     - title: SC Code Section 12-6-1170(A)(1)
       href: https://www.scstatehouse.gov/code/t12c006.php

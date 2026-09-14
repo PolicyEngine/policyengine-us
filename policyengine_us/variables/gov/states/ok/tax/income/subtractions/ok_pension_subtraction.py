@@ -14,20 +14,6 @@ class ok_pension_subtraction(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=17",
     )
     defined_for = StateCode.OK
-    documentation = """
-    Oklahoma allows a subtraction from AGI for retirement benefits received
-    from qualified retirement plans, up to a per-person limit.
-
-    Example calculation for 2025:
-    - Head receives $25,000 in pension income
-    - Spouse receives $15,000 in pension income
-    - Head subtraction: min($10,000, $25,000) = $10,000
-    - Spouse subtraction: min($10,000, $15,000) = $10,000
-    - Total subtraction: $10,000 + $10,000 = $20,000
-
-    Note: The subtraction applies per person, not per tax unit, so married
-    couples filing jointly can each claim up to the maximum limit.
-    """
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions

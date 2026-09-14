@@ -6,12 +6,9 @@ class ny_pension_exclusion(Variable):
     entity = Person
     label = "New York pension exclusion"
     unit = USD
-    documentation = "Exclusion for pension income for eligible individuals."
     definition_period = YEAR
-    dict(
-        title="N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3",
-        href="https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income",  # (c)
-    )
+    defined_for = StateCode.NY
+    reference = "https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income"
 
     def formula(person, period, parameters):
         # Fetching values from separate YAML files
