@@ -19,11 +19,11 @@ class ma_ccfa_countable_income_person(Variable):
         gross = add(person, period, p.sources.earned + p.sources.unearned)
         is_parent = person("ma_ccfa_is_parent", period.this_year)
         earned = add(person, period, p.sources.earned)
-        if p.exclusions.minor_earnings:
+        if p.exclusions.minor_earnings_in_effect:
             minor = person("is_child", period.this_year)
             gross -= where(minor, earned, 0)
 
-        if p.only_parent_income:
+        if p.only_parent_income_in_effect:
             return where(is_parent, gross, 0)
 
         # Support paid is deducted from aggregated household income in
