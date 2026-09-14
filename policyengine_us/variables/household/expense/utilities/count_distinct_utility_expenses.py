@@ -15,7 +15,7 @@ class count_distinct_utility_expenses(Variable):
     )
     definition_period = YEAR
     reference = (
-        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)"
+        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(1)"
     )
 
     def formula(spm_unit, period, parameters):

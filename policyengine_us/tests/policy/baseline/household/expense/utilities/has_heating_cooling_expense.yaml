@@ -128,3 +128,14 @@
     wood_expense: 200
   output:
     has_heating_cooling_expense: false
+
+# Cooling is a separate (D)(1) qualifier; the heat-in-rent flag only
+# suppresses heating incurrence.
+- name: Case 16, cooling qualifies on its own even when heat is included in rent.
+  period: 2026
+  input:
+    heating_type: NONE
+    has_cooling_expense: true
+    heat_expense_included_in_rent: true
+  output:
+    has_heating_cooling_expense: true

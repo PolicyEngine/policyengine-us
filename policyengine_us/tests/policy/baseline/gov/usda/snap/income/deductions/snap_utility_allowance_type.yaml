@@ -296,3 +296,16 @@
   output:
     # One utility (water): individual standards, not the LUA.
     snap_utility_allowance_type: IUA
+
+- name: An unspecified heating type with a legacy heating amount and a water bill receives the SUA, not the LUA
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+    water_expense: 240
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+  output:
+    # The legacy amount signals heating incurrence for pre-canonical
+    # households, so the SUA applies before the two-utility LUA count
+    # (legacy plus water) is ever reached.
+    snap_utility_allowance_type: SUA
