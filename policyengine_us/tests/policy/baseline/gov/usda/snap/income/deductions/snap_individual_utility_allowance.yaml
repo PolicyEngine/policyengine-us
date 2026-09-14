@@ -83,8 +83,8 @@
     snap_utility_region_str: MO
     gas_expense: 2_400
   output:
-    # MO FY26 gas standard, read via the gas_and_fuel_expense -> gas_expense
-    # variable mapping
+    # MO FY26 gas and fuel standard, read via the gas_and_fuel_expense ->
+    # has_gas_and_fuel_expense incurrence mapping
     snap_individual_utility_allowance: 162
 
 # HI individual utility allowances vary by household size
@@ -246,3 +246,35 @@
     phone_expense: 240
   output:
     snap_individual_utility_allowance: 41
+
+# The gas and fuel standard is one individual standard covering metered gas
+# and every deliverable or cooking fuel (7 CFR 273.9(d)(6)(iii)(A)(1)).
+- name: MO fuel-oil-only household receives the gas and fuel standard in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    fuel_oil_expense: 1_800
+  output:
+    # MO FY26 gas and fuel standard
+    snap_individual_utility_allowance: 162
+
+- name: MO metered gas plus propane household receives the gas and fuel standard once in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    gas_expense: 2_400
+    bottled_gas_expense: 600
+  output:
+    snap_individual_utility_allowance: 162
+
+- name: MO wood and cooking fuel household receives the gas and fuel standard once in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    wood_expense: 500
+    cooking_fuel_expense: 120
+  output:
+    snap_individual_utility_allowance: 162
