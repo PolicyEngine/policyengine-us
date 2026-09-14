@@ -394,16 +394,26 @@ def test_all_outside_measurements_have_no_provider_calls_or_poverty_denominator(
         assert np.isnan(result.mean()), variable
 
 
-@pytest.mark.parametrize("variable", ["spm_unit_spm_threshold", *POVERTY_INDICATORS])
-def test_unresolved_measurement_status_fails_closed(mixed_source, variable):
+@pytest.mark.parametrize(
+    "variable", ["household_net_income", "spm_unit_spm_threshold", *POVERTY_INDICATORS]
+)
+def test_unresolved_measurement_status_fails_closed(
+    mixed_source, variable, monkeypatch
+):
     source = mixed_source.copy()
     # Make both units calculable so composition/geography errors cannot mask
     # a missing check for the unresolved source classification.
     source.person["age"] = [40, 8, 40]
     source.household["county_fips"] = ["06037", "36061"]
     source.spm_unit[STATUS] = ["INCLUDED", "UNRESOLVED"]
-    with pytest.raises(SPMInputError):
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Unresolved measurement scope must fail before SPM")
+
+    monkeypatch.setattr(PolicyEngineSPMProvider, "calculate_unit", forbidden)
+    with pytest.raises(SPMInputError) as error:
         Microsimulation(dataset=source).calculate(variable, YEAR)
+    assert error.value.code == "SPM_UNIVERSE_REQUIRED"
 
 
 def test_dataset_without_source_universe_defaults_to_unresolved(mixed_source):
@@ -412,8 +422,9 @@ def test_dataset_without_source_universe_defaults_to_unresolved(mixed_source):
     source.household["county_fips"] = ["06037", "36061"]
     source.spm_unit.drop(columns=[STATUS], inplace=True)
     simulation = Microsimulation(dataset=source)
-    with pytest.raises(SPMInputError):
+    with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", YEAR)
+    assert error.value.code == "SPM_UNIVERSE_REQUIRED"
 
 
 def test_ordinary_household_situation_keeps_included_default():
