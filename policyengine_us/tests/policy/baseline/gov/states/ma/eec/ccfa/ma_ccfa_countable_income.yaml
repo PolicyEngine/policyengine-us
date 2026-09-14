@@ -4,14 +4,14 @@
   input:
     age: 35
     state_code: MA
-    employment_income_before_lsr: 60000
-    social_security: 12000
-    ssi: 12000
-    child_support_received: 12000
+    employment_income_before_lsr: 60_000
+    social_security: 12_000
+    ssi: 12_000
+    child_support_received: 12_000
   output:
     ma_ccfa_countable_income:
-      2023-09: 8000
-      2023-10: 5000
+      2023-09: 8_000
+      2023-10: 5_000
 - name: Case 2, dependent earnings are excluded under the February 2022 policy.
   period: 2022-02
   absolute_error_margin: 0.01
@@ -21,14 +21,14 @@
         age:
           2022: 35
         employment_income_before_lsr:
-          2022: 60000
+          2022: 60_000
       person2:
         age:
           2022: 16
         employment_income_before_lsr:
-          2022: 12000
+          2022: 12_000
         interest_income:
-          2022: 1200
+          2022: 1_200
         is_tax_unit_dependent:
           2022: true
     tax_units:
@@ -49,7 +49,7 @@
         state_code:
           2022: MA
   output:
-    ma_ccfa_countable_income: 5100
+    ma_ccfa_countable_income: 5_100
 - name: Case 3, dependent unearned income becomes excluded in October 2023.
   period: 2023
   absolute_error_margin: 0.01
@@ -57,11 +57,11 @@
     people:
       person1:
         age: 35
-        employment_income_before_lsr: 60000
+        employment_income_before_lsr: 60_000
       person2:
         age: 16
-        employment_income_before_lsr: 12000
-        interest_income: 1200
+        employment_income_before_lsr: 12_000
+        dividend_income: 1_200
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -81,8 +81,8 @@
         state_code: MA
   output:
     ma_ccfa_countable_income:
-      2023-09: 5100
-      2023-10: 5000
+      2023-09: 5_100
+      2023-10: 5_000
 - name: Case 4, resident parent support payments are deductible in 2022.
   period: 2022-02
   absolute_error_margin: 0.01
@@ -92,22 +92,22 @@
     state_code:
       2022: MA
     employment_income_before_lsr:
-      2022: 60000
+      2022: 60_000
     child_support_expense:
-      2022: 12000
+      2022: 12_000
     alimony_expense:
-      2022: 6000
+      2022: 6_000
   output:
-    ma_ccfa_countable_income: 3500
+    ma_ccfa_countable_income: 3_500
 - name: Case 5, support deductions do not make income negative.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     age: 35
     state_code: MA
-    employment_income_before_lsr: 6000
-    child_support_expense: 12000
-    alimony_expense: 6000
+    employment_income_before_lsr: 6_000
+    child_support_expense: 12_000
+    alimony_expense: 6_000
   output:
     ma_ccfa_countable_income: 0
 - name: Case 6, alimony received continues to count after October 2023.
@@ -116,31 +116,31 @@
   input:
     age: 35
     state_code: MA
-    alimony_income: 12000
+    alimony_income: 12_000
   output:
     ma_ccfa_countable_income:
-      2023-09: 1000
-      2023-10: 1000
+      2023-09: 1_000
+      2023-10: 1_000
 - name: Case 7, estate farm and partnership income are countable.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     age: 35
     state_code: MA
-    estate_income: 12000
-    farm_operations_income: 12000
-    partnership_s_corp_income: 12000
+    estate_income: 12_000
+    farm_operations_income: 12_000
+    partnership_s_corp_income: 12_000
   output:
-    ma_ccfa_countable_income: 3000
+    ma_ccfa_countable_income: 3_000
 - name: Case 8, excluded disability and support income do not fail the 2026 income test.
   period: 2026-01
   input:
     people:
       person1:
         age: 35
-        employment_income_before_lsr: 60000
-        social_security_disability: 40000
-        child_support_received: 15000
+        employment_income_before_lsr: 60_000
+        social_security_disability: 40_000
+        child_support_received: 15_000
       person2:
         age: 10
         is_tax_unit_dependent: true
@@ -167,20 +167,20 @@
   input:
     age: 35
     state_code: NY
-    employment_income_before_lsr: 60000
+    employment_income_before_lsr: 60_000
   output:
     ma_ccfa_countable_income: 0
-- name: Case 10, veterans benefits represent disability payments excluded from April 30 2024.
-  period: 2024
+- name: Case 10, veterans benefits represent disability payments excluded from October 2023.
+  period: 2023
   input:
     age: 35
     state_code: MA
-    veterans_benefits: 12000
+    veterans_benefits: 12_000
   output:
-    veterans_benefits: 12000
+    veterans_benefits: 12_000
     ma_ccfa_countable_income:
-      2024-04: 1000
-      2024-05: 0
+      2023-09: 1_000
+      2023-10: 0
 - name: Case 11, military retirement still counts separately from excluded veterans benefits.
   period: 2026-01
   input:
@@ -189,11 +189,11 @@
     state_code:
       2026: MA
     veterans_benefits:
-      2026: 10000
+      2026: 10_000
     military_retirement_pay:
-      2026: 12000
+      2026: 12_000
   output:
-    ma_ccfa_countable_income: 1000
+    ma_ccfa_countable_income: 1_000
 - name: Case 12, veterans disability payments do not fail the 2026 family income test.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -201,8 +201,8 @@
     people:
       person1:
         age: 35
-        employment_income_before_lsr: 88000
-        veterans_benefits: 10000
+        employment_income_before_lsr: 88_000
+        veterans_benefits: 10_000
       person2:
         age: 10
         is_tax_unit_dependent: true
@@ -228,13 +228,13 @@
     state_code:
       2025: MA
     employment_income_before_lsr:
-      2025: 60000
+      2025: 60_000
     ma_paid_leave_taxable_wages:
-      2025: 60000
-    ma_pfml_received:
-      2025: 12000
+      2025: 60_000
+    pfml_benefits:
+      2025: 12_000
   output:
-    ma_ccfa_countable_income: 6000
+    ma_ccfa_countable_income: 6_000
 - name: Case 14, the January 2026 minor earnings exclusion also covers a minor parent.
   period: 2025
   input:
@@ -244,18 +244,18 @@
     state_code:
       2025: MA
       2026: MA
-    ma_ccfa_is_parent:
-      2025: true
-      2026: true
+    own_children_in_household:
+      2025: 1
+      2026: 1
     employment_income_before_lsr:
-      2025: 12000
-      2026: 12000
-    interest_income:
-      2025: 1200
-      2026: 1200
+      2025: 12_000
+      2026: 12_000
+    dividend_income:
+      2025: 1_200
+      2026: 1_200
   output:
     ma_ccfa_countable_income:
-      2025-12: 1100
+      2025-12: 1_100
       2026-01: 100
 - name: Case 15, an adult parent does not receive the minor earnings exclusion.
   period: 2026-01
@@ -264,13 +264,11 @@
       2026: 18
     state_code:
       2026: MA
-    ma_ccfa_is_parent:
-      2026: true
     employment_income_before_lsr:
-      2026: 12000
+      2026: 12_000
   output:
-    ma_ccfa_countable_income: 1000
-- name: Case 17, a dependent college student's earnings were already excluded in 2022.
+    ma_ccfa_countable_income: 1_000
+- name: Case 16, a dependent college student's earnings were already excluded in 2022.
   period: 2022-02
   input:
     age:
@@ -279,17 +277,15 @@
       2022: MA
     is_tax_unit_dependent:
       2022: true
-    ma_ccfa_is_parent:
-      2022: false
     is_full_time_student:
       2022: true
     employment_income_before_lsr:
-      2022: 12000
+      2022: 12_000
     interest_income:
-      2022: 1200
+      2022: 1_200
   output:
     ma_ccfa_countable_income: 100
-- name: Case 18, excluded relatives' support expenses cannot reduce a parent's income.
+- name: Case 17, excluded relatives' support expenses cannot reduce a parent's income.
   period: 2026-01
   input:
     people:
@@ -297,7 +293,7 @@
         age:
           2026: 35
         employment_income_before_lsr:
-          2026: 60000
+          2026: 60_000
         ma_ccfa_is_parent:
           2026: true
       person2:
@@ -306,7 +302,7 @@
         ma_ccfa_is_parent:
           2026: false
         child_support_expense:
-          2026: 12000
+          2026: 12_000
     spm_units:
       spm_unit:
         members:
@@ -325,8 +321,8 @@
         - person1
         - person2
   output:
-    ma_ccfa_countable_income: 5000
-- name: Passive business and farm rental income are unearned for the 2022 dependent exclusion.
+    ma_ccfa_countable_income: 5_000
+- name: Case 18, farm and partnership income are earned and farm rent is unearned for the 2022 dependent exclusion.
   period: 2022-02
   input:
     age:
@@ -338,16 +334,14 @@
     is_tax_unit_dependent:
       2022: true
     farm_operations_income:
-      2022: 12000
+      2022: 12_000
     farm_rent_income:
-      2022: 12000
+      2022: 12_000
     partnership_s_corp_income:
-      2022: 12000
-    passive_partnership_s_corp_income:
-      2022: 6000
+      2022: 12_000
   output:
-    ma_ccfa_countable_income: 1500
-- name: The 2022 guide deducts resident parent support paid from total household income.
+    ma_ccfa_countable_income: 1_000
+- name: Case 19, the 2022 guide deducts resident parent support paid from total household income.
   period: 2022-02
   input:
     people:
@@ -357,16 +351,16 @@
         ma_ccfa_is_parent:
           2022: true
         employment_income_before_lsr:
-          2022: 12000
+          2022: 12_000
         child_support_expense:
-          2022: 24000
+          2022: 24_000
       person2:
         age:
           2022: 35
         ma_ccfa_is_parent:
           2022: true
         employment_income_before_lsr:
-          2022: 36000
+          2022: 36_000
     tax_units:
       tax_unit:
         members:
@@ -385,8 +379,8 @@
         state_code:
           2022: MA
   output:
-    ma_ccfa_countable_income: 2000
-- name: Resident-parent support remains deductible from household income in 2023-10.
+    ma_ccfa_countable_income: 2_000
+- name: Case 20, resident parent support remains deductible from household income in October 2023.
   period: 2023-10
   input:
     people:
@@ -396,16 +390,16 @@
         ma_ccfa_is_parent:
           2023: true
         employment_income_before_lsr:
-          2023: 12000
+          2023: 12_000
         child_support_expense:
-          2023: 24000
+          2023: 24_000
       person2:
         age:
           2023: 35
         ma_ccfa_is_parent:
           2023: true
         employment_income_before_lsr:
-          2023: 36000
+          2023: 36_000
     tax_units:
       tax_unit:
         members:
@@ -424,8 +418,8 @@
         state_code:
           2023: MA
   output:
-    ma_ccfa_countable_income: 2000
-- name: Resident-parent support remains deductible from household income in 2026-01.
+    ma_ccfa_countable_income: 2_000
+- name: Case 21, resident parent support remains deductible from household income in January 2026.
   period: 2026-01
   input:
     people:
@@ -435,16 +429,16 @@
         ma_ccfa_is_parent:
           2026: true
         employment_income_before_lsr:
-          2026: 12000
+          2026: 12_000
         child_support_expense:
-          2026: 24000
+          2026: 24_000
       person2:
         age:
           2026: 35
         ma_ccfa_is_parent:
           2026: true
         employment_income_before_lsr:
-          2026: 36000
+          2026: 36_000
     tax_units:
       tax_unit:
         members:
@@ -463,43 +457,96 @@
         state_code:
           2026: MA
   output:
-    ma_ccfa_countable_income: 2000
-- name: Preserve the legacy calculation before the documented February 2022 corrections.
+    ma_ccfa_countable_income: 2_000
+- name: Case 22, Social Security SSI and child support count in 2021.
   period: 2021-01
   input:
     people:
-      parent:
+      person1:
         age: 35
-        employment_income_before_lsr: 60000
-        social_security: 12000
+        employment_income_before_lsr: 60_000
+        social_security: 12_000
         ssi:
-          2021: 12000
-        child_support_received: 12000
+          2021: 12_000
+        child_support_received: 12_000
         weekly_hours_worked_before_lsr: 40
         ma_ccfa_eligible_child: false
-      child:
+      person2:
         age: 10
         is_tax_unit_dependent: true
         ma_ccfa_eligible_child: true
     tax_units:
       tax_unit:
         members:
-        - parent
-        - child
+        - person1
+        - person2
     spm_units:
       spm_unit:
         members:
-        - parent
-        - child
-        spm_unit_assets: 999999
+        - person1
+        - person2
+        spm_unit_assets: 999_999
         ma_ccfa_base_copay: 100
         ma_tafdc_eligible: false
     households:
       household:
         members:
-        - parent
-        - child
+        - person1
+        - person2
         state_code: MA
   output:
-    ma_ccfa_countable_income: 8000
+    ma_ccfa_countable_income: 8_000
     ma_ccfa_income_eligible: false
+- name: Case 23, a parent's interest income stops counting under the October 2023 exclusive source list.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: MA
+    employment_income_before_lsr: 60_000
+    interest_income: 1_200
+  output:
+    ma_ccfa_countable_income:
+      2023-09: 5_100
+      2023-10: 5_000
+- name: Case 24, an adult dependent student in the parent's tax unit is not identified as a parent.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 60_000
+      person2:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income_before_lsr: 12_000
+        dividend_income: 1_200
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: MA
+  output:
+    ma_ccfa_is_parent: [true, false, false]
+    ma_ccfa_countable_income:
+      2023-09: 5_100
+      2023-10: 5_000

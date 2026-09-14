@@ -4,10 +4,8 @@ values:
     - employment_income_before_lsr
     - self_employment_income_before_lsr
     - sstb_self_employment_income_before_lsr
-  2022-02-01:
-    - employment_income_before_lsr
-    - self_employment_income_before_lsr
-    - sstb_self_employment_income_before_lsr
+    # Appendix A of the procedures manual lists farmers, partnerships, and
+    # S-corporations as self-employment types.
     - farm_operations_income
     - partnership_s_corp_income
 metadata:

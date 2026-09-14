@@ -10,24 +10,15 @@ class ma_ccfa_countable_income_person(Variable):
     defined_for = StateCode.MA
     reference = (
         "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37",
+        "https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download#page=12",
         "https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=3",
-        "https://www.mass.gov/doc/eec-policy-advisory-field-operations-7-child-care-financial-assistance-updated-policy-guidance/download#page=3",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.income.countable_income
         gross = add(person, period, p.sources.earned + p.sources.unearned)
-        if not p.person_rules_in_effect:
-            return gross
-
         is_parent = person("ma_ccfa_is_parent", period.this_year)
         earned = add(person, period, p.sources.earned)
-        # Passive partnership income is a subset of the total, not earnings.
-        passive = min_(
-            max_(person("partnership_s_corp_income", period), 0),
-            max_(person("passive_partnership_s_corp_income", period), 0),
-        )
-        earned -= passive
         if p.exclusions.minor_earnings:
             minor = person("is_child", period.this_year)
             gross -= where(minor, earned, 0)
