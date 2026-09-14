@@ -12,6 +12,7 @@ from copy import copy, deepcopy
 from functools import lru_cache
 from inspect import ismethod, signature
 
+from policyengine_core import periods as periods_
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
@@ -93,32 +94,52 @@ class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
     def __post_init__(self):
         super().__post_init__()
         # The base is a frozen dataclass, so this receipt of input types is
-        # attached rather than declared, and carried across snapshots below.
+        # attached rather than declared. It maps (year, county text) to the
+        # repr of what was actually supplied, and ``record_county_input_types``
+        # replaces a year's entries outright, so correcting an input clears it.
         object.__setattr__(self, "_untyped_counties", {})
 
     def snapshot(self, *, copy_receipts=False):
         snapshot = super().snapshot(copy_receipts=copy_receipts)
-        snapshot._untyped_counties.update(self._untyped_counties)
+        if copy_receipts:
+            # A new simulation re-reads its own inputs; only a clone, which
+            # keeps this simulation's holders, inherits what they held.
+            snapshot._untyped_counties.update(self._untyped_counties)
         return snapshot
 
-    def record_county_input_types(self, values):
-        """Record each county value that was supplied as something but text."""
+    def record_county_input_types(self, year, values):
+        """Replace this year's record of counties not supplied as text.
+
+        Replacing rather than accumulating is what lets a caller correct the
+        input: re-setting ``county_fips`` for a period re-derives the record
+        for that period from what the model now holds.
+        """
+        if self.geography_kind != "county":
+            # Nothing will ask this provider for a county.
+            return
         untyped = self._untyped_counties
+        for key in [key for key in untyped if key[0] == year]:
+            del untyped[key]
         for value in values:
             if not isinstance(value, (str, bytes)):
-                untyped.setdefault(str(value), repr(value))
+                untyped[(year, str(value))] = repr(value)
 
-    def require_county_input(self, county_fips):
+    def require_county_input(self, year, county_fips):
         """Reject a county this provider cannot honour as a five-digit string."""
         if self.geography_kind != "county":
             return
         if is_county_fips(county_fips):
-            supplied = self._untyped_counties.get(county_fips)
+            supplied = self._untyped_counties.get((year, county_fips))
             if supplied is None:
                 return
+            # The county reaching a provider has already been stringified by
+            # the variable that read the column, so this is as precise as the
+            # rejection gets: every request for this county in this year
+            # fails, not only the household whose input was mistyped.
             raise SPMInputError(
                 "SPM_GEOGRAPHY_REQUIRED",
-                f"County input {supplied} was not supplied as text: {COUNTY_INPUT_FIX}",
+                f"County {county_fips} was supplied for {year} as {supplied}, "
+                f"not as text: {COUNTY_INPUT_FIX}",
             )
         raise SPMInputError(
             "SPM_GEOGRAPHY_REQUIRED",
@@ -129,11 +150,11 @@ class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
     def _amounts(self, year, adults, children, tenure, county):
         # Check before the memo, so a cache entry filled by a correctly typed
         # row cannot let an identically spelled untyped row through.
-        self.require_county_input(county)
+        self.require_county_input(year, county)
         return super()._amounts(year, adults, children, tenure, county)
 
     def calculate_unit(self, *, year, adults, children, tenure, county_fips=None):
-        self.require_county_input(county_fips)
+        self.require_county_input(year, county_fips)
         return super().calculate_unit(
             year=year,
             adults=adults,
@@ -815,24 +836,40 @@ class SPMSimulationMixin:
             if ismethod(value) and value.__self__ is self:
                 cloned.__dict__[name] = getattr(cloned, value.__func__.__name__)
 
-    def _record_county_input_types(self):
-        """Tell this simulation's provider which counties were not text.
+    def _record_county_input_types(self, period=None):
+        """Tell this simulation's providers which counties were not text.
 
         The county a provider is asked for has already been stringified by the
         variable that reads the column, so the type has to be captured here,
-        where the stored input is still whatever the caller supplied.
+        where the stored input is still whatever the caller supplied. Record it
+        on this simulation's own provider and on its branches', because a
+        reform simulation's baseline arm is handed a separate provider that
+        never sees an input of its own.
         """
-        provider = self.tax_benefit_system.spm_forecast_provider
-        record = getattr(provider, "record_county_input_types", None)
-        if record is None:
-            return
         holder = self.get_holder("county_fips")
-        for known_period in holder.get_known_periods():
+        periods = (
+            holder.get_known_periods() if period is None else [periods_.period(period)]
+        )
+        for known_period in periods:
             array = holder.get_array(known_period)
             if array is None or array.dtype.kind in "SU":
                 # A real text dtype cannot be hiding an integer.
                 continue
-            record(array)
+            year = int(known_period.start.year)
+            for simulation in self._simulation_family():
+                record = getattr(
+                    simulation.tax_benefit_system.spm_forecast_provider,
+                    "record_county_input_types",
+                    None,
+                )
+                if record is not None:
+                    record(year, array)
+
+    def _simulation_family(self):
+        """This simulation and every branch that reads the same inputs."""
+        yield self
+        for branch in getattr(self, "branches", {}).values():
+            yield from branch._simulation_family()
 
     def set_input(self, variable_name, period, value):
         # Core's loader calls set_input for every dataset format. Reject saved
@@ -849,5 +886,5 @@ class SPMSimulationMixin:
             )
         result = super().set_input(variable_name, period, value)
         if variable_name == "county_fips":
-            self._record_county_input_types()
+            self._record_county_input_types(period)
         return result

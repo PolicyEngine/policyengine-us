@@ -434,6 +434,62 @@ def test_non_text_county_column_requires_county_fips_however_it_is_spelled(
     assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
 
 
+def test_correcting_a_county_input_clears_its_rejection():
+    """The record has to follow the input, not outlive it."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    simulation = Simulation(situation=situation)
+    with pytest.raises(SPMInputError):
+        simulation.calculate("spm_unit_spm_threshold", 2024)
+
+    simulation.set_input("county_fips", 2024, ["36061"])
+
+    assert simulation.calculate("spm_unit_spm_threshold", 2024)[0] > 0
+
+
+def test_a_county_rejection_does_not_follow_the_system_to_a_new_simulation():
+    """A new simulation reads its own inputs; only a clone keeps these."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    mistyped = Simulation(situation=situation)
+    with pytest.raises(SPMInputError):
+        mistyped.calculate("spm_unit_spm_threshold", 2024)
+
+    correct = Simulation(
+        tax_benefit_system=mistyped.tax_benefit_system,
+        situation=single_person_situation(),
+    )
+    assert correct.calculate("spm_unit_spm_threshold", 2024)[0] > 0
+    with pytest.raises(SPMInputError):
+        mistyped.clone().calculate("spm_unit_spm_threshold", 2024)
+
+
+def test_a_reform_simulations_baseline_arm_rejects_the_same_county_input():
+    """Core hands the baseline arm a provider that never sees an input."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    simulation = Simulation(
+        situation=situation,
+        reform=Reform.from_dict(
+            {"gov.irs.credits.ctc.amount.base[0].amount": {"2024": 0}}
+        ),
+    )
+    for arm in (simulation, simulation.baseline):
+        with pytest.raises(SPMInputError) as error:
+            arm.calculate("spm_unit_spm_threshold", 2024)
+        assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+
+
+def test_a_national_selection_records_no_county_input_types():
+    """Nothing will ask that provider for a county, so nothing is scanned."""
+    source = small_dataset()
+    source.household["county_fips"] = [36_061, 36_061]
+    national = Microsimulation(dataset=source, spm={"geography_kind": "national"})
+    provider = national.tax_benefit_system.spm_forecast_provider
+    assert provider._untyped_counties == {}
+    assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
+
+
 def test_text_county_column_still_resolves_its_county():
     source = small_dataset()
     source.household["county_fips"] = ["06037", "36061"]

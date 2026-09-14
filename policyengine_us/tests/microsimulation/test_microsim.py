@@ -50,7 +50,7 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     assisted = np.asarray(
         simulation.calculate("receives_housing_assistance", 2024, map_to="spm_unit")
     )
-    assert assisted.sum() > 0
+    assert assisted.sum() == 870
     assert not assisted[adults < 1].any()
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)

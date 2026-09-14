@@ -5,15 +5,19 @@ Every test here reproduces a defect an external review found on the shipped
 """
 
 import hashlib
+from copy import copy
 
 import pytest
 from policyengine_core.periods import YEAR
 from policyengine_core.reforms import Reform
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_core.variables import Variable
 
 from policyengine_us import Simulation
 from policyengine_us.entities import Person
+from policyengine_us.spm import clone_spm_system, share_spm_policy
 from policyengine_us.system import system
+from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
 
 SINGLE_STANDARD_DEDUCTION = "gov.irs.deductions.standard.amount.SINGLE"
 BASELINE_INCOME_TAX = 4_016
@@ -311,11 +315,18 @@ def test_parameter_reform_on_a_shared_branch_leaves_its_parent_alone():
             {SINGLE_STANDARD_DEDUCTION: {"year:2024:1": 100_000}}
         ),
         lambda policy: policy.add_abolition_parameters(),
+        # Core's load_extension ends in ``self.parameters.merge(...)``. Stub
+        # the base out: a real extension is not needed to pin that this
+        # country override detaches before core reaches the tree.
+        lambda policy: policy.load_extension("any_extension"),
     ],
-    ids=["modify_parameters", "add_abolition_parameters"],
+    ids=["modify_parameters", "add_abolition_parameters", "load_extension"],
 )
-def test_in_place_parameter_edits_detach_before_they_write(mutate):
+def test_in_place_parameter_edits_detach_before_they_write(mutate, monkeypatch):
     """Core edits these into the live tree rather than a copy of it."""
+    monkeypatch.setattr(
+        TaxBenefitSystem, "load_extension", lambda self, extension: None
+    )
     fingerprint_before = parameter_fingerprint(system)
     policy = Simulation(situation=earner_situation()).tax_benefit_system
 
@@ -323,6 +334,64 @@ def test_in_place_parameter_edits_detach_before_they_write(mutate):
 
     assert policy.parameters is not system.parameters
     assert parameter_fingerprint(system) == fingerprint_before
+
+
+def test_shared_policy_over_a_core_cloning_base_clones_without_sharing():
+    """A base that clones through core must not defeat the property.
+
+    Core's ``TaxBenefitSystem.clone`` writes the cloned tree straight into the
+    new instance's dictionary, where ``SharedParameterPolicy.parameters``
+    shadows it, so a system built on a base that uses core's clone would hand
+    back a "clone" still reading the lender's tree, with nothing raised.
+    """
+    base = copy(system)
+    base.__class__ = type(
+        "CoreCloningCountrySystem",
+        (type(system),),
+        {"clone": TaxBenefitSystem.clone},
+    )
+    shared = share_spm_policy(base)
+    assert shared.parameters is system.parameters
+
+    cloned = shared.clone()
+
+    assert cloned.parameters is not system.parameters
+    assert parameter_fingerprint(cloned) == parameter_fingerprint(system)
+
+
+def test_cloned_systems_hold_one_entity_object_per_key():
+    """Core's clone leaves two objects per group-entity key, both bound.
+
+    Rebinding through ``entities`` would then miss the copy that
+    ``instantiate_entities`` and core's simulation builder read.
+    """
+    cloned = clone_spm_system(system)
+
+    by_key = {entity.key: entity for entity in cloned.entities}
+    assert len(by_key) == len(cloned.entities)
+    assert cloned.person_entity is by_key[cloned.person_entity.key]
+    assert all(entity is by_key[entity.key] for entity in cloned.group_entities)
+    for entity in cloned.entities:
+        assert entity._tax_benefit_system is cloned
+
+
+def test_pinned_systems_are_rebuilt_when_their_source_tree_detaches():
+    """A shared system keeps its identity while swapping its tree.
+
+    The NY EITC and CTC formulas reuse a cached clone pinned to an earlier
+    federal vintage. Keyed on the system alone, that clone would survive a
+    reform the system detached for, and NY's decoupled credits would silently
+    go on reading pre-reform federal parameters.
+    """
+    simulation = Simulation(situation=earner_situation())
+    policy = simulation.tax_benefit_system
+    pinned = get_pre_arpa_eitc_tbs(policy)
+    assert get_pre_arpa_eitc_tbs(policy) is pinned
+
+    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert policy.parameters is not system.parameters
+    assert get_pre_arpa_eitc_tbs(policy) is not pinned
 
 
 @pytest.mark.parametrize("traced", [False, True])
