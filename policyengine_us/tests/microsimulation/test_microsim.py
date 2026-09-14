@@ -24,10 +24,16 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     Its county column does hold five-digit FIPS codes, so geography is not what
     fails. 18 of its 43,134 SPM units are a lone 15-to-17-year-old carrying no
     source-backed SPM independence role, so those units classify no measurement
-    adult, and every output that reaches the threshold - household net income,
-    benefits, poverty and marginal tax rates included - fails closed over the
-    file. Assert on the threshold itself: it raises straight off the
+    adult and every output that reaches the threshold fails closed over the
+    file. Only the threshold is asserted here: it raises straight off the
     composition, without building the whole resource chain over 43,134 units.
+
+    Resource outputs are no longer among the outputs that reach it. The
+    capped housing subsidy asks for the SPM housing portion only for units
+    receiving housing assistance, and none of these 18 units does - which is
+    asserted below - so household net income and benefits compute over the
+    file. Computing them here would add two minutes to this suite, so they
+    are left to the resource tests.
     """
     import numpy as np
     from spm_calculator.errors import SPMInputError
@@ -41,6 +47,11 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
 
     adults = np.asarray(simulation.calculate("spm_measurement_adults", 2024))
     assert (adults < 1).sum() == 18
+    assisted = np.asarray(
+        simulation.calculate("receives_housing_assistance", 2024, map_to="spm_unit")
+    )
+    assert assisted.sum() > 0
+    assert not assisted[adults < 1].any()
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
     assert error.value.code == "SPM_COMPOSITION_REQUIRED"
