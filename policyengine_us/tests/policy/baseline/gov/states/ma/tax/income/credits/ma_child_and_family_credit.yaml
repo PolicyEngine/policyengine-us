@@ -150,7 +150,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -176,7 +176,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -236,7 +236,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -262,7 +262,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -288,7 +288,7 @@
       spouse:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit_head:
@@ -377,7 +377,7 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
@@ -409,7 +409,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -433,12 +433,12 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -462,7 +462,7 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
@@ -483,3 +483,55 @@
     # 1 disabled head-or-spouse qualifying individual + 1 qualifying child = 2
     # qualifying individuals: 2 x 440 (2024 amount) = 880.
     ma_child_and_family_credit: 880
+
+- name: Generically disabled spouse without the self-care test does not qualify in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) requires the spouse be incapable of self-care;
+    # the broader is_disabled flag alone does not qualify a spouse.
+    ma_child_and_family_credit: 0
+
+- name: Dependent incapable of self-care qualifies at any age in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 60
+      dependent_adult:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, dependent_adult]
+    households:
+      household:
+        state_code: MA
+        members: [head, dependent_adult]
+  output:
+    # IRC Section 21(b)(1)(B) qualifying individual: 1 x 440 = 440.
+    ma_child_and_family_credit: 440

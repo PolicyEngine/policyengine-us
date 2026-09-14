@@ -43,10 +43,13 @@ class ma_senior_circuit_breaker(Variable):
         meets_max_property_value_condition = (
             assessed_value <= scb.eligibility.max_property_value
         )
+        # Schedule CB: married taxpayers filing separately do not qualify.
+        separate = filing_status == filing_status.possible_values.SEPARATE
         eligible = (
             meets_age_condition
             & meets_max_income_condition
             & meets_max_property_value_condition
+            & ~separate
         )
 
         return eligible * max_payment

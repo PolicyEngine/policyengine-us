@@ -20,9 +20,14 @@ class ma_child_and_family_credit(Variable):
         child = age < p.child_age_limit
         elderly = age >= p.elderly_age_limit
         disabled = person("is_disabled", period)
-        eligible_dependent = dependent & (child | elderly | disabled)
+        # IRC Section 21(b)(1)(B), via M.G.L. c. 62 Section 6(x)(ii): a
+        # dependent physically or mentally incapable of self-care qualifies
+        # at any age, alongside the Section 6(x)(iii) disabled-dependent
+        # category.
+        incapable = person("is_incapable_of_self_care", period)
+        eligible_dependent = dependent & (child | elderly | disabled | incapable)
         count_eligible_dependents = tax_unit.sum(eligible_dependent)
-        # A disabled spouse is a qualifying individual under
+        # A spouse incapable of self-care is a qualifying individual under
         # IRC Section 21(b)(1)(C), incorporated by M.G.L. c. 62
         # Section 6(x)(ii) since 2023. On a joint return there is no legal
         # "primary" taxpayer, so either joint filer who is incapable of
@@ -31,14 +36,13 @@ class ma_child_and_family_credit(Variable):
         # a head/spouse ordering (age) artifact. The credit is restricted to
         # joint returns (IRC Section 21(e)(2)), excluding the unmarried
         # sole-filer case.
-        # Modeling note: the generic is_disabled input proxies the IRC
-        # Section 21 "incapable of self-care" and same-principal-abode tests,
-        # and the 2024+ noncustodial-parent rule (Section 21 applied without
-        # subsection (e)(5)) is not modeled.
+        # Modeling note: household co-membership proxies the Section 21
+        # same-principal-abode test, and the 2024+ noncustodial-parent rule
+        # (Section 21 applied without subsection (e)(5)) is not modeled.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         filing_status = tax_unit("ma_filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
-        disabled_head_or_spouse = head_or_spouse & disabled
+        disabled_head_or_spouse = head_or_spouse & incapable
         # IRC Section 21(b)(1)(C) recognizes a single "spouse of the
         # taxpayer" qualifying individual, so a both-disabled joint couple
         # counts as one qualifying individual, not two.

@@ -150,3 +150,26 @@
     # over threshold: 10,000 - 9,000 = 1,000
     # credit: min(1,000, 2,820) = 1,000
     ma_senior_circuit_breaker: 1_000
+
+- name: Married filing separately cannot claim the credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 40_000
+        filing_status: SEPARATE
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Schedule CB: married taxpayers filing separately do not qualify,
+    # even with income and property value under the limits.
+    ma_senior_circuit_breaker: 0
