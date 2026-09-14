@@ -323,3 +323,97 @@ def test_in_place_parameter_edits_detach_before_they_write(mutate):
 
     assert policy.parameters is not system.parameters
     assert parameter_fingerprint(system) == fingerprint_before
+
+
+@pytest.mark.parametrize("traced", [False, True])
+def test_shared_branch_follows_its_parent_whether_or_not_it_is_traced(traced):
+    """Tracing gives a simulation its own root node, not its own policy.
+
+    A branch cloned without its own system shares its parent's policy, so the
+    detached tree has to reach it however the two roots are spelled. Matching
+    on root identity missed every traced branch, and the model's own formulas
+    branch this way - itemizing against not itemizing, the state EITC
+    refundability branches, marginal tax rates - so a traced simulation
+    reported pre-reform numbers under a reform.
+    """
+    simulation = Simulation(situation=earner_situation())
+    simulation.trace = traced
+    branch = simulation.get_branch("shared_policy")
+
+    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert simulation.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
+    assert branch.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
+    assert branch.tax_benefit_system.parameters.children is (
+        simulation.tax_benefit_system.parameters.children
+    )
+
+
+def test_traced_simulation_sees_a_later_parameter_reform():
+    """A traced root must not outlive the tree its children belong to.
+
+    A shallow root copy keeps the original's children, and each child's parent
+    still points at the original root, so a parameter edit clears that root's
+    at-instant cache and leaves the traced copy serving pre-reform values.
+    """
+    simulation = Simulation(
+        situation=earner_situation(),
+        reform=Reform.from_dict({SINGLE_STANDARD_DEDUCTION: {"2024": 20_000}}),
+    )
+    simulation.trace = True
+    assert simulation.calculate("standard_deduction", 2024)[0] == 20_000
+
+    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert simulation.calculate("standard_deduction", 2024)[0] == 100_000
+
+
+def test_lending_a_detached_tree_stops_the_lender_writing_to_it():
+    """Owning a tree once is not owning it forever.
+
+    A simulation that detached a private tree, and then lent it to a second
+    simulation, has to clone again before its next reform: the borrower can
+    see everything it writes.
+    """
+    lender = Simulation(situation=earner_situation())
+    lender.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    borrower = Simulation(
+        tax_benefit_system=lender.tax_benefit_system, situation=earner_situation()
+    )
+    assert borrower.calculate("standard_deduction", 2024)[0] == 100_000
+
+    lender.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 7_777}})
+
+    assert lender.calculate("standard_deduction", 2024)[0] == 7_777
+    borrower._invalidate_all_caches()
+    assert borrower.calculate("standard_deduction", 2024)[0] == 100_000
+
+
+def test_a_branch_reform_does_not_rewrite_its_parents_policy():
+    simulation = Simulation(situation=earner_situation())
+    branch = simulation.get_branch("reforming_branch")
+    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 50_000}})
+
+    branch.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert branch.calculate("standard_deduction", 2024)[0] == 100_000
+    assert simulation.calculate("standard_deduction", 2024)[0] == 50_000
+
+
+def test_a_tuple_of_variable_only_reforms_keeps_sharing_the_tree():
+    """Core recurses into this override for each member of a reform tuple.
+
+    Reading ``parameters`` inside the outer call's armed window would itself
+    trip the barrier, so every tuple reform - including the purely structural
+    ones - would have paid for a full tree clone.
+    """
+    simulation = Simulation(situation=earner_situation())
+    policy = simulation.tax_benefit_system
+
+    simulation.apply_reform((NeutralizeIncomeTax, AddedInputReform))
+
+    assert simulation.calculate("income_tax", 2024)[0] == 0
+    simulation.set_input("clone_only_income", 2024, [123])
+    assert simulation.calculate("clone_only_income", 2024)[0] == 123
+    assert policy.parameters is system.parameters
+    assert policy.shares_parameters

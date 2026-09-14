@@ -241,6 +241,41 @@ def spm_config(provider):
     }
 
 
+SHARED_TREE_MARK = "_spm_tree_is_shared"
+
+
+def mark_tree_shared(tree):
+    """Record that more than one system can now read this parameter tree.
+
+    Ownership is tracked on the tree rather than on the systems reading it,
+    because a system's own history says nothing about who else holds the tree
+    it is pointing at: a system that took a private copy, and then lent it to a
+    second simulation, must stop writing to that copy in place. The mark is
+    one-way. Dropping it would need to know when the last other reader went
+    away, and a tree wrongly believed private is silently shared state, while a
+    tree wrongly believed shared only costs one clone.
+    """
+    if tree is not None:
+        setattr(tree, SHARED_TREE_MARK, True)
+    return tree
+
+
+def unmark_tree_shared(tree):
+    """Record that this tree has exactly one reader.
+
+    Core's ``ParameterNode.clone`` copies the node's instance dictionary, so a
+    clone taken from a shared tree arrives carrying the mark even though it is
+    brand new and private.
+    """
+    if tree is not None:
+        setattr(tree, SHARED_TREE_MARK, False)
+    return tree
+
+
+def tree_is_shared(tree):
+    return tree is not None and getattr(tree, SHARED_TREE_MARK, False)
+
+
 SHARED_POLICY_BASES = {}
 
 
@@ -308,18 +343,23 @@ class SharedParameterPolicy:
 
     @property
     def shares_parameters(self):
-        """Whether another system can still see writes to this tree."""
-        return self.__dict__.get("shares_parameters_with_lender", False)
+        """Whether anything but this system can see writes to this tree."""
+        return tree_is_shared(self.__dict__["shared_parameters"])
+
+    @property
+    def detaching_shared_parameters(self):
+        """Whether a reform is being applied to this system right now."""
+        return self.__dict__.get("detaching_shared_parameters", False)
 
     def detach_parameters(self):
         """Take a private copy of the shared tree; report whether one was made."""
-        if not self.shares_parameters or self.__dict__["shared_parameters"] is None:
+        tree = self.__dict__["shared_parameters"]
+        if tree is None or not tree_is_shared(tree):
             return False
-        # Clear both flags first: cloning reads the tree, and the read must not
-        # re-enter this method.
-        self.__dict__["shares_parameters_with_lender"] = False
+        # Clear the barrier first: cloning reads the tree through core, and
+        # that read must not re-enter this method.
         self.__dict__["detaching_shared_parameters"] = False
-        self.__dict__["shared_parameters"] = self.__dict__["shared_parameters"].clone()
+        self.__dict__["shared_parameters"] = unmark_tree_shared(tree.clone())
         # The lender keeps its warm at-instant cache; this system starts cold
         # because its parameter values are about to differ.
         self._parameters_at_instant_cache = {}
@@ -387,6 +427,25 @@ def plain_policy_copy(system):
     return copy(system)
 
 
+def with_parameter_barrier(system):
+    """Give ``system`` a copy-on-write parameter tree, in place.
+
+    Every simulation's own system carries the barrier, not only the ones that
+    borrow the shipped policy, because the tree a simulation starts out owning
+    can acquire other readers later - a branch copies the system, and another
+    simulation can be built on it - and from then on a reform must clone
+    before it writes. Whether anyone else is reading is recorded on the tree
+    (see :func:`mark_tree_shared`), so installing the barrier costs nothing
+    and changes nothing on its own.
+    """
+    if isinstance(system, SharedParameterPolicy):
+        return system
+    system.__class__ = shared_policy_class(type(system))
+    system.__dict__["shared_parameters"] = system.__dict__.pop("parameters", None)
+    system.__dict__["detaching_shared_parameters"] = False
+    return system
+
+
 def bind_private_entities(policy):
     """Give ``policy`` its own Entity objects, bound to its own registry.
 
@@ -442,14 +501,27 @@ def isolate_parameter_tracing(system, tracer, branch_name):
     root = system.parameters
     if root is None:
         return None
-    private = copy(root)
-    private._at_instant_cache = {}
-    private.trace = True
-    private.tracer = tracer
-    private.branch_name = branch_name
-    system.parameters = private
-    system._parameters_at_instant_cache = {}
-    return private
+    if tree_is_shared(root):
+        private = copy(root)
+        private._at_instant_cache = {}
+        # The copy shares the original's children, and each child's parent
+        # still points at the original root, so an edit made through a child
+        # would clear the original's at-instant cache and leave this one
+        # stale. Mark the copy shared: any write detaches a real clone first.
+        mark_tree_shared(private)
+        system.parameters = private
+        system._parameters_at_instant_cache = {}
+        root = private
+    else:
+        # Nobody else reads this tree, so it can be marked traced where it
+        # stands - and leaving it in place keeps each parameter's parent
+        # pointing at the root whose at-instant cache an edit has to clear.
+        root._at_instant_cache = {}
+        system._parameters_at_instant_cache = {}
+    root.trace = True
+    root.tracer = tracer
+    root.branch_name = branch_name
+    return root
 
 
 def share_spm_policy(system):
@@ -483,14 +555,10 @@ def share_spm_policy(system):
     policy = copy(system)
     policy.variables = dict(system.variables)
     bind_private_entities(policy)
-    policy.__class__ = shared_policy_class(type(system))
-    if "parameters" in policy.__dict__:
-        # An ordinary system holds its tree as an attribute; a system that is
-        # already sharing one holds it where the property below reads it.
-        policy.__dict__["shared_parameters"] = policy.__dict__.pop("parameters")
-    policy.__dict__.setdefault("shared_parameters", None)
-    policy.__dict__["shares_parameters_with_lender"] = True
-    policy.__dict__["detaching_shared_parameters"] = False
+    with_parameter_barrier(policy)
+    # The lender is now one reader among several, so neither side may write to
+    # this tree in place - including a lender that had taken a private copy.
+    mark_tree_shared(policy.__dict__["shared_parameters"])
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=False
     )
@@ -507,6 +575,7 @@ def clone_spm_system(system, *, copy_receipts=True):
     policy = plain_policy_copy(system)
     policy.variables = {}
     cloned = TaxBenefitSystem.clone(policy)
+    unmark_tree_shared(cloned.parameters)
     # Core copies ``entities``, ``person_entity`` and ``group_entities``
     # separately, leaving two objects per group entity key; keep one, so a
     # rebind reaches every reader of that entity.
@@ -597,25 +666,40 @@ class SPMSimulationMixin:
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
         detaching = getattr(policy, "detaching_parameters", None)
-        if detaching is None:
+        if detaching is None or policy.detaching_shared_parameters:
+            # Either an ordinary system, or core recursing through a tuple of
+            # reforms into this override again. Reading ``parameters`` inside
+            # the armed window would itself trip the barrier and clone the
+            # tree, which is exactly what a variable-only reform must not pay.
             super().apply_reform(reform)
-        else:
-            shared_tree = policy.parameters
-            with detaching():
-                super().apply_reform(reform)
-            self._adopt_detached_parameters(shared_tree)
+            self._rebind_holders()
+            return
+        previous_children = getattr(policy.parameters, "children", None)
+        with detaching():
+            super().apply_reform(reform)
+        self._adopt_detached_parameters(previous_children)
+        # A detached tree is a fresh root, carrying none of the trace state
+        # core wrote onto the one it replaced.
+        self._isolate_parameter_tracing()
         self._rebind_holders()
 
-    def _adopt_detached_parameters(self, shared_tree):
-        """Move branches that shared this tree onto the detached copy.
+    def _adopt_detached_parameters(self, previous_children):
+        """Move branches off the pre-reform tree onto the detached copy.
 
         A branch created with ``clone_system=False`` shares its parent's policy
         state deliberately, so a reform the parent applies is a reform the
         branch runs under. Detaching would otherwise strand the branch on the
         unreformed tree.
+
+        Branches are recognised by the children of their root node rather than
+        by the root itself, because a traced branch holds a shallow copy of the
+        root with those same children (see ``isolate_parameter_tracing``) and
+        would never match on identity. An adopting branch keeps sharing - the
+        tree now has more than one reader, so its own reform must detach rather
+        than rewrite its parent's policy.
         """
         detached = self.tax_benefit_system.parameters
-        if detached is shared_tree:
+        if detached is None or detached.children is previous_children:
             return
         cache = self.tax_benefit_system._parameters_at_instant_cache
         for name, branch in self.branches.items():
@@ -623,12 +707,17 @@ class SPMSimulationMixin:
                 # The baseline branch holds unreformed policy by construction.
                 continue
             policy = branch.tax_benefit_system
-            if getattr(policy, "parameters", None) is shared_tree:
+            tree = getattr(policy, "parameters", None)
+            if tree is not None and tree.children is previous_children:
+                # The detached tree now has a second reader.
+                mark_tree_shared(detached)
                 policy.parameters = detached
                 policy._parameters_at_instant_cache = cache
-                if isinstance(policy, SharedParameterPolicy):
-                    policy.__dict__["shares_parameters_with_lender"] = False
-            branch._adopt_detached_parameters(shared_tree)
+                # A traced branch needs its own root back, with its own
+                # at-instant cache, or its parameter receipts rejoin the
+                # parent's.
+                branch._isolate_parameter_tracing()
+            branch._adopt_detached_parameters(previous_children)
 
     @property
     def spm_config(self):
@@ -647,8 +736,10 @@ class SPMSimulationMixin:
         reform = arguments.arguments.get("reform")
         if supplied is None:
             if reform is not None:
-                chosen = self.default_tax_benefit_system(
-                    reform=reform, spm=config, start_instant=start_instant
+                chosen = with_parameter_barrier(
+                    self.default_tax_benefit_system(
+                        reform=reform, spm=config, start_instant=start_instant
+                    )
                 )
             else:
                 # No reform and no supplied system: nothing distinguishes this
@@ -658,7 +749,9 @@ class SPMSimulationMixin:
         elif reform is not None:
             # Core applies the reform set to whatever system it is handed, so
             # the caller's own system must not be the one it reforms.
-            chosen = clone_spm_system(supplied, copy_receipts=False)
+            chosen = with_parameter_barrier(
+                clone_spm_system(supplied, copy_receipts=False)
+            )
         else:
             # A caller that builds one system and runs many households through
             # it - the household API among them - keeps that system's warm
@@ -692,6 +785,9 @@ class SPMSimulationMixin:
             # Core branches may share policy state, but each calculation's
             # receipt belongs to that simulation's provider.
             cloned.tax_benefit_system = copy(self.tax_benefit_system)
+            # Two systems now read this tree, so neither may write to it in
+            # place: a branch's reform must not rewrite its parent's policy.
+            mark_tree_shared(getattr(cloned.tax_benefit_system, "parameters", None))
             cloned.tax_benefit_system.spm_forecast_provider = (
                 self.tax_benefit_system.spm_forecast_provider.snapshot(
                     copy_receipts=True
