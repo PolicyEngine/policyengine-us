@@ -427,8 +427,10 @@ def test_generic_benefit_consumers_do_not_use_spm_measurement_composition(
 # 01-9077 counts "housing and military subsidies" among the revenues making up
 # total gross annual household income, with no netting against rent and no cap
 # anywhere on the form, so gov.states.ca.cpuc.income_sources counts the housing
-# assistance received. It used to count spm_unit_capped_housing_subsidy, which
-# made the discount depend on the SPM geography the request selected.
+# assistance the household reports receiving - reported_housing_assistance,
+# which is housing_assistance gated on receives_housing_assistance. It used to
+# count spm_unit_capped_housing_subsidy, which made the discount depend on the
+# SPM geography the request selected.
 
 
 def assisted_la_renter(earnings, *, county=None):
@@ -515,40 +517,101 @@ def test_cpuc_countable_income_counts_the_full_housing_assistance():
     )
 
 
-def test_cpuc_counts_modelled_housing_assistance_for_a_non_recipient_renter():
-    """The entry counts what the model computes, as every other entry does.
+def income_eligible_la_renter(*, receives, county="06037"):
+    """A renter HUD would income-qualify, so the imputation has something to bite.
 
-    `housing_assistance` is not a report of what a household receives:
-    `is_eligible_for_housing_assistance` is
-    ``receives_housing_assistance | (is_renter & is_income_eligible)`` and
-    `takes_up_housing_assistance_if_eligible` defaults to true, so an
-    income-eligible California renter who sends
-    ``receives_housing_assistance: false`` is still modelled as holding a
-    voucher, and that amount now counts toward CARE income at its full size.
-
-    This is how the rest of the list already works - `snap`, `tanf`, `ssi` and
-    `wic` are the model's amounts too, not the applicant's reported ones - and
-    the entry it replaced consulted the same modelled amount, merely capped.
-    But the cap incidentally suppressed it: the household below has $0 of
-    capped subsidy and $11,580 of modelled assistance, so this change moves it
-    out of CARE. Pinned here so the choice is visible and reviewable rather
-    than incidental.
+    Earnings of $35,000 against $24,000 of rent leave this household inside the
+    HUD low-income limit for Los Angeles County, so it is eligible for housing
+    assistance whatever it reports, and `takes_up_housing_assistance_if_eligible`
+    defaults to true.
     """
-    situation = household(earnings=35_000, county="06037", rent=24_000)
-    situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: False}
+    situation = household(earnings=35_000, county=county, rent=24_000)
+    situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: receives}
     situation["spm_units"]["spm_unit"]["pre_subsidy_electricity_expense"] = {
         YEAR: 1_800
     }
+    # Pin the categorical route off so income is what decides.
     situation["households"]["household"]["ca_care_categorically_eligible"] = {
         YEAR: False
     }
-    simulation = Simulation(situation=situation, spm={"geography_kind": "national"})
+    return situation
+
+
+def test_cpuc_ignores_an_imputed_subsidy_a_household_does_not_report_receiving():
+    """Only reported receipt counts, so imputed take-up cannot decide CARE.
+
+    `housing_assistance` is eligibility times take-up: is_eligible is
+    ``receives_housing_assistance | (is_renter & is_income_eligible)`` and
+    `takes_up_housing_assistance_if_eligible` defaults to true, so this
+    household - which sends ``receives_housing_assistance: false`` - is still
+    modelled as holding a voucher. Counting that modelled amount would put a
+    subsidy nobody receives into CARE income and take the discount away.
+    """
+    simulation = Simulation(
+        situation=income_eligible_la_renter(receives=False),
+        spm={"geography_kind": "national"},
+    )
     assert not simulation.calculate("receives_housing_assistance", YEAR)[0]
+    # The imputation is live: eligible, taking up, and a positive amount.
     assert simulation.calculate("is_eligible_for_housing_assistance", YEAR)[0]
+    assert simulation.calculate("takes_up_housing_assistance_if_eligible", YEAR)[0]
+    imputed = simulation.calculate("housing_assistance", YEAR)[0]
+    assert imputed > 0
+    # None of it is counted.
+    assert simulation.calculate("reported_housing_assistance", YEAR)[0] == 0
+    assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
+        35_000
+    )
+    # Earnings alone decide, and $35,000 is inside the 2024 one-person CARE
+    # limit of 2 x $20,440; the imputed $13,500 would have carried it outside.
+    assert imputed == pytest.approx(13_500)
+    # The capped entry this replaced also contributed nothing here, so the
+    # defect this test guards is new: it arrives with the uncapped amount.
+    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
+    assert bool(simulation.calculate("ca_care_income_eligible", YEAR)[0])
+    assert bool(simulation.calculate("ca_care_eligible", YEAR)[0])
+    assert simulation.calculate("ca_care", YEAR)[0] == pytest.approx(0.325 * 1_800)
+
+
+@pytest.mark.parametrize("spm", [None, {"geography_kind": "national"}])
+@pytest.mark.parametrize("county", ["06037", None])
+def test_cpuc_countable_income_for_a_non_recipient_needs_no_geography(spm, county):
+    """The unreported case computes under every selection, county input or not.
+
+    Without a county the HUD income limits do not resolve, so the household is
+    not even modelled as voucher-eligible; with one it is. Either way nothing
+    consults SPM geography, so no configuration is required and no measurement
+    is received.
+    """
+    simulation = Simulation(
+        situation=income_eligible_la_renter(receives=False, county=county),
+        spm=spm,
+    )
+    assert simulation.calculate("reported_housing_assistance", YEAR)[0] == 0
+    assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
+        35_000
+    )
+    assert bool(simulation.calculate("ca_care_eligible", YEAR)[0])
+    assert simulation.spm_provenance()["years"] == {}
+
+
+def test_cpuc_counts_the_housing_assistance_a_household_reports_receiving():
+    """Reported receipt counts in full, and takes this household out of CARE.
+
+    The same household as above, now reporting the voucher: the assistance is
+    counted at the amount the model computes for it, with no netting and no
+    cap, and $35,000 of earnings plus that subsidy sits outside the CARE limit.
+    """
+    simulation = Simulation(
+        situation=income_eligible_la_renter(receives=True),
+        spm={"geography_kind": "national"},
+    )
     assistance = simulation.calculate("housing_assistance", YEAR)[0]
     assert assistance > 0
-    # The capped entry this replaced contributed nothing for this household.
-    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
+    assert simulation.calculate("reported_housing_assistance", YEAR)[0] == assistance
     assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
         35_000 + assistance
     )
+    assert not bool(simulation.calculate("ca_care_income_eligible", YEAR)[0])
+    assert not bool(simulation.calculate("ca_care_eligible", YEAR)[0])
+    assert simulation.calculate("ca_care", YEAR)[0] == 0

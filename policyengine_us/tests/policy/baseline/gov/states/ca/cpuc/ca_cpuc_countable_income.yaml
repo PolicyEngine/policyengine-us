@@ -43,8 +43,11 @@
 
 # PG&E Form 01-9077 counts "housing and military subsidies" among the revenues
 # making up total gross annual household income, with no netting against rent
-# and no cap on the form. This used to count the SPM's capped housing subsidy,
-# which made the discount depend on the SPM geography a request selected.
+# and no cap on the form. The entry is reported_housing_assistance: the form
+# asks an applicant what the household receives, so a subsidy the model imputes
+# to an income-eligible renter who does not report one is not counted. This
+# used to count the SPM's capped housing subsidy, which made the discount
+# depend on the SPM geography a request selected.
 - name: CPUC countable income includes the housing subsidy received in full
   period: 2026
   input:
@@ -54,6 +57,7 @@
     spm_units:
       spm_unit:
         members: [person]
+        receives_housing_assistance: true
         housing_assistance: 12_000
         # Pinned so the housing entry is what the total tests, not the SNAP
         # this earnings level happens to qualify for.
@@ -65,6 +69,29 @@
   output:
     ca_cpuc_countable_income: 32_000
 
+- name: CPUC countable income excludes a housing subsidy not reported as received
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        # receives_housing_assistance defaults to false. housing_assistance is
+        # eligibility times take-up, and take-up defaults to true, so the model
+        # carries an amount here for a renter who reports no voucher; only
+        # reported receipt counts toward CARE/FERA income.
+        housing_assistance: 12_000
+        snap: 0
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    reported_housing_assistance: 0
+    ca_cpuc_countable_income: 20_000
+
 - name: CPUC countable income includes military subsidies alongside housing
   period: 2026
   input:
@@ -75,6 +102,7 @@
     spm_units:
       spm_unit:
         members: [person]
+        receives_housing_assistance: true
         housing_assistance: 12_000
         # Pinned so the housing entry is what the total tests, not the SNAP
         # this earnings level happens to qualify for.

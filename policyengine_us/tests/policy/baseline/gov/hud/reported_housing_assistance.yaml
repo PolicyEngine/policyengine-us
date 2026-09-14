@@ -1,0 +1,30 @@
+- name: Reported receipt passes the assistance through in full.
+  period: 2026
+  input:
+    receives_housing_assistance: true
+    housing_assistance: 1_200
+  output:
+    reported_housing_assistance: 1_200
+
+- name: An unreported voucher is not counted, whatever the model computes.
+  period: 2026
+  input:
+    receives_housing_assistance: false
+    housing_assistance: 1_200
+  output:
+    reported_housing_assistance: 0
+
+- name: Receipt defaults to false, so the default is zero.
+  period: 2026
+  input:
+    housing_assistance: 1_200
+  output:
+    reported_housing_assistance: 0
+
+- name: A reporting unit with no assistance has nothing to count.
+  period: 2026
+  input:
+    receives_housing_assistance: true
+    housing_assistance: 0
+  output:
+    reported_housing_assistance: 0

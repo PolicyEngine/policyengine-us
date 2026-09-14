@@ -43,9 +43,18 @@ values:
   # The form lists "housing and military subsidies" among the revenues that
   # make up total gross annual household income, with no netting against rent,
   # no cap and no poverty-measurement valuation anywhere on it - so the entry
-  # is the housing subsidy itself, at the amount the model computes for the
-  # household, exactly as snap, tanf, ssi and wic above are this model's
-  # amounts rather than an applicant's reported ones.
+  # is the housing subsidy itself, at the amount the household receives.
+  #
+  # reported_housing_assistance is housing_assistance gated on
+  # receives_housing_assistance, an input defaulting to false. The ungated
+  # variable is not a report of receipt: is_eligible_for_housing_assistance is
+  # receives_housing_assistance | (is_renter & is_income_eligible) and
+  # takes_up_housing_assistance_if_eligible defaults to true, so counting it
+  # would attach an imputed voucher to every income-eligible renter who
+  # supplies a rent - a Los Angeles renter earning $35,000, paying $24,000 of
+  # rent and sending receives_housing_assistance: false would carry $11,580 of
+  # modelled assistance into CARE income and lose the discount. The form asks
+  # an applicant what the household receives, so the entry counts receipt.
   #
   # It was spm_unit_capped_housing_subsidy, the Census SPM's housing subsidy
   # capped at the housing portion of the SPM threshold less the tenant
@@ -56,7 +65,7 @@ values:
   # under county selection, moving countable income across the CARE limit and
   # flipping ca_care_eligible from true to false. Requesting CARE with no SPM
   # configuration at all raised SPM_GEOGRAPHY_REQUIRED.
-  - housing_assistance
+  - reported_housing_assistance
   # Military subsidies
   - veterans_benefits
   - military_service_income
