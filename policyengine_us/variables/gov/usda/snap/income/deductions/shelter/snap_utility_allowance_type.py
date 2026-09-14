@@ -21,6 +21,8 @@ class snap_utility_allowance_type(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        # The utility count and incurrence facts are YEAR-defined stocks
+        # read at this MONTH period, so they are carried as is (no ÷12).
         distinct_utility_bills = spm_unit("count_distinct_utility_expenses", period)
         lua = parameters(period).gov.usda.snap.income.deductions.utility.limited
         region = spm_unit.household("snap_utility_region_str", period)
