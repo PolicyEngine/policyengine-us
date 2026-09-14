@@ -7,9 +7,10 @@ county: callers must explicitly select national or a particular metropolitan are
 
 import re
 from collections.abc import Mapping
+from contextlib import contextmanager
 from copy import copy, deepcopy
 from functools import lru_cache
-from inspect import signature
+from inspect import ismethod, signature
 
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
@@ -41,19 +42,28 @@ COUNTY_INPUT_FIX = (
 
 
 def is_county_fips(value):
-    """Accept only a five-digit county FIPS code.
+    """Accept only a five-digit county FIPS code, supplied as text.
 
-    Integers, pandas missing values and truncated codes all arrive here as
-    strings, because ``county_fips`` is a string variable and the model casts
-    every input to its own dtype. A within-state CPS code such as ``5`` and a
-    missing value such as ``nan`` are not county FIPS codes, so they must fail
-    as an absent county rather than as an unrecognised one.
+    The advertised contract is a five-digit *string*. Stringifying whatever
+    arrived enforced the digit count alone, so an integer whose decimal form
+    happens to be five digits (``36061``) passed, while the same mistake for a
+    state whose code carries a leading zero (``6037``, meaning Los Angeles
+    County ``06037``) failed - one silently accepted, the other reported as an
+    absent county. Reject every non-text value here instead, so an integer
+    county code, a pandas missing value and a truncated code all fail the same
+    way and name the same fix.
+
+    ``numpy.str_`` and ``numpy.bytes_`` subclass ``str`` and ``bytes``, so a
+    county read back out of the model - which stores ``county_fips`` as text -
+    is still accepted. A within-state CPS code such as ``5`` and a missing
+    value such as ``nan`` fail as an absent county rather than an unrecognised
+    one, whichever type they arrive as.
     """
-    if value is None:
-        return False
     if isinstance(value, bytes):
         value = value.decode()
-    return COUNTY_FIPS_PATTERN.fullmatch(str(value)) is not None
+    if not isinstance(value, str):
+        return False
+    return COUNTY_FIPS_PATTERN.fullmatch(value) is not None
 
 
 class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
@@ -181,20 +191,203 @@ def spm_config(provider):
     }
 
 
+SHARED_POLICY_BASES = {}
+
+
+def shared_policy_class(base):
+    """Return the shared-parameter subclass of ``base``, creating it once.
+
+    ``share_spm_policy`` hands back a system whose parameter tree belongs to
+    someone else, so the tree needs a read barrier that a plain attribute
+    cannot provide. Subclassing keeps that barrier off every other system: an
+    independently built ``CountryTaxBenefitSystem`` is untouched.
+    """
+    if getattr(base, "shared_policy_base", None) is not None:
+        # Already a shared-policy class: sharing a shared system is idempotent.
+        return base
+    created = SHARED_POLICY_BASES.get(base)
+    if created is None:
+        created = type(
+            f"SharedParameter{base.__name__}",
+            (SharedParameterPolicy, base),
+            {"shared_policy_base": base},
+        )
+        SHARED_POLICY_BASES[base] = created
+    return created
+
+
+class SharedParameterPolicy:
+    """Policy state that borrows another system's parameter tree.
+
+    Reading parameters through this system costs nothing: the tree and its warm
+    at-instant caches are the lending system's own. Writing to it must not
+    happen at all, because core applies a reform to whatever tree the system
+    hands it - ``Simulation.apply_reform`` calls ``reform.apply(system)``
+    directly, bypassing ``Reform.__init__``'s defensive clone - and a mutated
+    shared tree changes unrelated simulations, including ones already built.
+
+    So the tree is copy-on-write. Reform application arms the read barrier;
+    the first read of ``parameters`` inside that window takes a private clone
+    through core, leaving the lending system's tree and warm caches untouched.
+    Cloning rebuilds every node of a 130,000-parameter tree and takes seconds,
+    which is why it is deferred to the reforms that actually reach the tree:
+    the structural reform that every simulation re-applies at its own start
+    instant only rebinds variables, so it never reads ``parameters`` and never
+    pays for a clone.
+    """
+
+    shared_policy_base = None
+
+    @property
+    def parameters(self):
+        if self.__dict__.get("detaching_shared_parameters", False):
+            self.detach_parameters()
+        return self.__dict__["shared_parameters"]
+
+    @parameters.setter
+    def parameters(self, value):
+        self.__dict__["shared_parameters"] = value
+
+    @property
+    def shares_parameters(self):
+        """Whether another system can still see writes to this tree."""
+        return self.__dict__.get("shares_parameters_with_lender", False)
+
+    def detach_parameters(self):
+        """Take a private copy of the shared tree; report whether one was made."""
+        if not self.shares_parameters:
+            return False
+        # Clear both flags first: cloning reads the tree, and the read must not
+        # re-enter this method.
+        self.__dict__["shares_parameters_with_lender"] = False
+        self.__dict__["detaching_shared_parameters"] = False
+        self.__dict__["shared_parameters"] = self.__dict__["shared_parameters"].clone()
+        # The lender keeps its warm at-instant cache; this system starts cold
+        # because its parameter values are about to differ.
+        self._parameters_at_instant_cache = {}
+        return True
+
+    @contextmanager
+    def detaching_parameters(self):
+        """Arm the copy-on-write barrier for the duration of a reform."""
+        previous = self.__dict__.get("detaching_shared_parameters", False)
+        self.__dict__["detaching_shared_parameters"] = True
+        try:
+            yield
+        finally:
+            self.__dict__["detaching_shared_parameters"] = previous
+
+    def apply_reform_set(self, reform):
+        # Core applies a reform to this system's own tree, so detach first
+        # however the reform arrives.
+        with self.detaching_parameters():
+            return super().apply_reform_set(reform)
+
+    def unshared_copy(self):
+        """A plain shallow copy holding the tree as an ordinary attribute.
+
+        Core's ``TaxBenefitSystem.clone`` writes the cloned tree straight into
+        the new instance's ``__dict__`` under ``parameters``, which this class's
+        property would shadow, so anything that clones through core starts from
+        an ordinary instance instead.
+        """
+        policy = copy(self)
+        tree = policy.__dict__.pop("shared_parameters", None)
+        policy.__dict__.pop("shares_parameters_with_lender", None)
+        policy.__dict__.pop("detaching_shared_parameters", None)
+        policy.__class__ = type(self).shared_policy_base
+        policy.parameters = tree
+        return policy
+
+
+def plain_policy_copy(system):
+    """Shallow-copy any system into one that holds its tree as an attribute."""
+    if isinstance(system, SharedParameterPolicy):
+        return system.unshared_copy()
+    return copy(system)
+
+
+def bind_private_entities(policy):
+    """Give ``policy`` its own Entity objects, bound to its own registry.
+
+    An Entity resolves variable names through the system it is bound to
+    (``Entity.get_variable``), and a population asks its entity before reading
+    or creating a holder. Sharing the lending system's entities therefore sent
+    every holder lookup to the lending system's registry, so a variable that a
+    reform added to this system's private registry was invisible to
+    ``set_input``, which raised ``VariableNotFoundError`` for a variable the
+    system plainly had.
+
+    Core's own constructor and ``clone`` copy entities for the same reason.
+    Unlike ``clone``, keep ``person_entity`` and ``group_entities`` pointing at
+    the very objects in ``entities``, so there is exactly one entity object per
+    key to rebind.
+    """
+    entities = [copy(entity) for entity in policy.entities]
+    by_key = {entity.key: entity for entity in entities}
+    policy.entities = entities
+    policy.person_entity = by_key[policy.person_entity.key]
+    policy.group_entities = [by_key[entity.key] for entity in policy.group_entities]
+    policy.group_entity_keys = [entity.key for entity in policy.group_entities]
+    for entity in entities:
+        entity.set_tax_benefit_system(policy)
+    return policy
+
+
+def isolate_parameter_tracing(system, tracer, branch_name):
+    """Give ``system`` its own root parameter node, primed for ``tracer``.
+
+    Core marks a traced request by writing that request's tracer, trace flag
+    and branch name onto the root node of the parameter tree, and the root then
+    caches the resulting ``TracingParameterNodeAtInstant`` in its own
+    at-instant cache. On a shared tree the second request reuses the first
+    request's cached tracing node, so its parameter accesses are recorded
+    against the first request's tracer - or, once that request's trace frame
+    has closed, recorded nowhere at all - and the shared tree is left holding a
+    finished request's tracer for every simulation that reads it afterwards.
+
+    Only the root carries those fields: children are wrapped on the fly from
+    the root's tracing node and cache plain at-instant nodes. A shallow copy of
+    the root - the same children, its own at-instant cache and its own trace
+    fields - therefore isolates a request's parameter receipts completely, and
+    costs microseconds rather than the seconds a full tree clone takes. The
+    children stay shared, so a later reform still detaches the whole tree.
+
+    Prime the copy as traced rather than waiting for core to mark it. Core sets
+    those fields in ``_run_formula``, but ``_calculate`` reads
+    ``parameters(period).gov.abolitions`` first, so the at-instant node for
+    each period is built and cached before the tree is ever marked as traced
+    and no parameter access is recorded at all.
+    """
+    root = system.parameters
+    if root is None:
+        return None
+    private = copy(root)
+    private._at_instant_cache = {}
+    private.trace = True
+    private.tracer = tracer
+    private.branch_name = branch_name
+    system.parameters = private
+    system._parameters_at_instant_cache = {}
+    return private
+
+
 def share_spm_policy(system):
     """Isolate receipts and variable registration without rebuilding policy.
 
-    An ordinary simulation applies no user reform, so it needs private receipts
-    and a private variable registry, not a private copy of the policy itself.
-    It is also new rather than cloned, so no previous receipt belongs to it.
-    Core's TaxBenefitSystem.clone() rebuilds the whole parameter tree node by
-    node and empties both at-instant caches, and this country then deep-copies
-    every variable object on top; doing that per household simulation throws
-    away the shared instance's warm parameter caches and lands on household API
-    request latency.
+    An ordinary simulation applies no user reform, so it needs private
+    receipts, a private variable registry and private entities to resolve that
+    registry - not a private copy of the policy itself. It is also new rather
+    than cloned, so no previous receipt belongs to it.
 
-    Share the parameter tree and its at-instant caches, and reuse the variable
-    objects. Every core operation that a reform performs on a variable
+    Core's ``TaxBenefitSystem.clone()`` rebuilds the whole parameter tree node
+    by node and empties both at-instant caches, and this country then
+    deep-copies every variable object on top; doing that per household
+    simulation throws away the shared instance's warm parameter caches and
+    lands on household API request latency.
+
+    So share the parameter tree and its at-instant caches, and reuse the
+    variable objects. Every core operation that a reform performs on a variable
     (add_variable, replace_variable, update_variable, neutralize_variable,
     annualize_variable) rebinds ``variables[name]`` to a newly constructed
     object rather than mutating the registered one, so a private dict is enough
@@ -202,9 +395,20 @@ def share_spm_policy(system):
     re-applied at its own start instant - out of the shared instance.
     ``test_ordinary_simulation_shares_default_policy_state`` enforces that
     invariant against the shared instance itself.
+
+    A reform that reaches the parameter tree has no such protection, so the
+    returned system takes a private copy of the tree the first time a reform
+    reads it: see :class:`SharedParameterPolicy`.
     """
     policy = copy(system)
     policy.variables = dict(system.variables)
+    bind_private_entities(policy)
+    policy.__class__ = shared_policy_class(type(system))
+    tree = policy.__dict__.pop("parameters", None)
+    if tree is not None:
+        policy.__dict__["shared_parameters"] = tree
+    policy.__dict__["shares_parameters_with_lender"] = True
+    policy.__dict__["detaching_shared_parameters"] = False
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=False
     )
@@ -218,10 +422,18 @@ def clone_spm_system(system, *, copy_receipts=True):
     losing instance changes such as neutralization and inherited reform fields.
     Let core clone parameters/entities, then copy the actual variable state.
     """
-    policy = copy(system)
+    policy = plain_policy_copy(system)
     policy.variables = {}
     cloned = TaxBenefitSystem.clone(policy)
+    # Core copies ``entities``, ``person_entity`` and ``group_entities``
+    # separately, leaving two objects per group entity key; keep one, so a
+    # rebind reaches every reader of that entity.
     by_key = {entity.key: entity for entity in cloned.entities}
+    cloned.person_entity = by_key[cloned.person_entity.key]
+    cloned.group_entities = [by_key[entity.key] for entity in cloned.group_entities]
+    cloned.group_entity_keys = [entity.key for entity in cloned.group_entities]
+    for entity in cloned.entities:
+        entity.set_tax_benefit_system(cloned)
     memo = {id(system): cloned, id(system.parameters): cloned.parameters}
     for entity in system.entities:
         memo[id(entity)] = by_key[entity.key]
@@ -241,6 +453,37 @@ class SPMSimulationMixin:
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
         self._rebind_holders()
+        # Core sets ``trace`` before this simulation owns its policy state.
+        self._isolate_parameter_tracing()
+
+    @property
+    def trace(self):
+        return CoreSimulation.trace.fget(self)
+
+    @trace.setter
+    def trace(self, trace):
+        CoreSimulation.trace.fset(self, trace)
+        self._isolate_parameter_tracing()
+
+    def _isolate_parameter_tracing(self):
+        """Stop a traced request writing its tracer onto shared parameters."""
+        if not self.trace:
+            return
+        policy = getattr(self, "tax_benefit_system", None)
+        # Core sets ``trace`` before a new simulation owns its policy state,
+        # both while constructing one and while cloning one, so leave the
+        # original's system alone until this simulation has claimed its own.
+        if policy is not None and getattr(policy, "simulation", None) is self:
+            isolate_parameter_tracing(policy, self.tracer, self.branch_name)
+        for branch in getattr(self, "branches", {}).values():
+            branch._isolate_parameter_tracing()
+
+    def get_branch(self, name="branch", clone_system=False):
+        branch = super().get_branch(name, clone_system)
+        # Core names the branch and hands it this simulation's tracer after
+        # cloning, so re-prime the branch's root with what it ended up holding.
+        branch._isolate_parameter_tracing()
+        return branch
 
     def _rebind_holders(self):
         """Bind populations and cached holders to their branch's policy state."""
@@ -267,8 +510,40 @@ class SPMSimulationMixin:
             branch._rebind_holders()
 
     def apply_reform(self, reform):
-        super().apply_reform(reform)
+        policy = self.tax_benefit_system
+        detaching = getattr(policy, "detaching_parameters", None)
+        if detaching is None:
+            super().apply_reform(reform)
+        else:
+            shared_tree = policy.parameters
+            with detaching():
+                super().apply_reform(reform)
+            self._adopt_detached_parameters(shared_tree)
         self._rebind_holders()
+
+    def _adopt_detached_parameters(self, shared_tree):
+        """Move branches that shared this tree onto the detached copy.
+
+        A branch created with ``clone_system=False`` shares its parent's policy
+        state deliberately, so a reform the parent applies is a reform the
+        branch runs under. Detaching would otherwise strand the branch on the
+        unreformed tree.
+        """
+        detached = self.tax_benefit_system.parameters
+        if detached is shared_tree:
+            return
+        cache = self.tax_benefit_system._parameters_at_instant_cache
+        for name, branch in self.branches.items():
+            if name == "baseline":
+                # The baseline branch holds unreformed policy by construction.
+                continue
+            policy = branch.tax_benefit_system
+            if getattr(policy, "parameters", None) is shared_tree:
+                policy.parameters = detached
+                policy._parameters_at_instant_cache = cache
+                if isinstance(policy, SharedParameterPolicy):
+                    policy.__dict__["shares_parameters_with_lender"] = False
+            branch._adopt_detached_parameters(shared_tree)
 
     @property
     def spm_config(self):
@@ -338,7 +613,26 @@ class SPMSimulationMixin:
                 )
             )
         cloned._rebind_holders()
+        self._rebind_method_aliases(cloned)
+        cloned._isolate_parameter_tracing()
         return cloned
+
+    def _rebind_method_aliases(self, cloned):
+        """Point copied bound-method aliases at the clone, not the original.
+
+        Core keeps backwards-compatibility aliases as bound methods on the
+        instance (``self.calc = self.calculate``, ``self.df =
+        self.calculate_dataframe``) and its ``clone`` copies the instance
+        dictionary verbatim, so every alias on the clone still called the
+        original simulation. ``clone.calc(...)`` therefore returned the
+        original's values under the original's policy, and recorded the
+        original's SPM receipts, while ``clone.calculate(...)`` - documented as
+        the same call - returned the clone's. Rebind by method name so an alias
+        core adds later is repaired too.
+        """
+        for name, value in list(cloned.__dict__.items()):
+            if ismethod(value) and value.__self__ is self:
+                cloned.__dict__[name] = getattr(cloned, value.__func__.__name__)
 
     def set_input(self, variable_name, period, value):
         # Core's loader calls set_input for every dataset format. Reject saved

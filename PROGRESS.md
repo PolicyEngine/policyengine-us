@@ -4,22 +4,49 @@ Branch `max/spm-runtime-isolation-20260914` off `upstream/main` (2.0.1).
 Source: `astra-review-country-201.md`. PR A of two.
 
 ## State
-- [x] Read review, read `policyengine_us/spm.py`, core `simulations/simulation.py`,
+- [x] Read review; read `policyengine_us/spm.py`, core `simulations/simulation.py`,
       `taxbenefitsystems/tax_benefit_system.py`, `reforms/reform.py`, `parameters/*`.
-- [ ] Reproduce findings 1-5 + county-type + docs on this runtime.
-- [ ] Fix.
+- [x] Measured `system.parameters.clone()`: **1.5-2.0 s** against a 0.03 s warm
+      household build and a 0.16 s warm calculate. Detaching on every simulation
+      (the structural reform is re-applied to *every* one) was therefore not an
+      option; copy-on-write had to be genuinely lazy.
+- [x] Fix findings 1-4 in `policyengine_us/spm.py`; existing SPM/trace tests pass.
+- [ ] Finding 5 (county input type) + docs.
+- [ ] New regression tests, full core/unit run, PR.
 
-## Findings to repair
-1. P1 shared-policy contamination: later `apply_reform` mutates the shared parameter tree.
-2. P1 clone alias routing: `clone.calc` is still bound to the original simulation.
-3. P2 private registry vs shared Entity objects: `set_input` on a reform-added variable fails.
-4. P2 tracer/cache misattribution on the shared parameter tree.
-5. Low: `is_county_fips` stringifies, so integer 36061 passes.
-6. Docs: `docs/usage/microsimulation.md` weight double-count + unsupported legacy claim.
+## Design decisions
+1. **Copy-on-write parameter tree.** `share_spm_policy` now returns an instance of
+   a per-base `SharedParameter<Base>` subclass whose `parameters` is a property.
+   `SPMSimulationMixin.apply_reform` (and the shared system's own
+   `apply_reform_set`) arm a read barrier for the duration of the reform; the
+   first read inside that window clones the tree through core and gives this
+   system a cold private at-instant cache, leaving the lender's tree and warm
+   caches untouched. A variable-only reform - which is what the structural
+   reform re-applied at each simulation's start instant is - never reads
+   `parameters`, so it still pays nothing. Measured: household build stays
+   0.05 s; a parameter reform pays 1.24 s once.
+   Branches created with `clone_system=False` are moved onto the detached tree,
+   because they share their parent's policy deliberately.
+2. **Clone alias routing.** Core keeps `self.calc = self.calculate` and
+   `self.df = self.calculate_dataframe` as bound methods in the instance dict and
+   copies them verbatim when cloning. `clone()` now rebinds every copied bound
+   method by method name, so an alias core adds later is repaired too.
+3. **Private entities.** `share_spm_policy` shallow-copies the entities and binds
+   them to the private system, keeping one object per key across `entities`,
+   `person_entity` and `group_entities` (`clone_spm_system` now does the same).
+   An entity resolves variable names through the system it is bound to, so this
+   is what makes `set_input` find a reform-added variable.
+4. **Traced parameter receipts.** Only the *root* node carries core's
+   request-specific `trace`/`tracer`/`branch_name` and caches the resulting
+   `TracingParameterNodeAtInstant`; children are wrapped on the fly. So a traced
+   simulation gets a shallow private root with its own at-instant cache
+   (microseconds, not a 1.5 s tree clone), primed as traced - core marks the tree
+   in `_run_formula`, but `_calculate` reads `gov.abolitions` first, so on
+   core 3.30.2 nothing was ever recorded. Two traced simulations now each record
+   their own four `spm_unit_fpg` parameter accesses, and the shared tree is left
+   untraced.
 
-## Next
-- Measure `system.parameters.clone()` cost: it decides whether copy-on-write can
-  detach unconditionally on every reform, or must be triggered only by reforms
-  that actually reach the parameter tree (the country applies a structural
-  reform to *every* simulation, so unconditional detach would rebuild the tree
-  per household request).
+## Notes
+- Installed core here is **3.30.2**, not the 3.32.5 Astra reviewed. `calc`/`df`
+  aliases sit at `simulation.py:223-224` and the clone copy loop at 1381-1416,
+  matching Astra's citations.

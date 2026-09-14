@@ -152,8 +152,22 @@ def test_ordinary_simulation_shares_default_policy_state():
     assert policy is not system
     assert policy.parameters is system.parameters
     assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
-    # Entities stay bound to the shared instance, exactly as before this change.
-    assert policy.entities is system.entities
+    # Entities are private and bound to this simulation's own registry: an
+    # entity resolves variable names through the system it is bound to, so
+    # sharing the shared instance's entities would send every holder lookup to
+    # the shared registry.
+    assert policy.entities is not system.entities
+    assert {entity.key for entity in policy.entities} == {
+        entity.key for entity in system.entities
+    }
+    for entity in policy.entities:
+        assert entity._tax_benefit_system is policy
+    for entity in system.entities:
+        assert entity._tax_benefit_system is system
+    # One object per key, so rebinding one reaches every reader of it.
+    by_key = {entity.key: entity for entity in policy.entities}
+    assert policy.person_entity is by_key[policy.person_entity.key]
+    assert all(entity is by_key[entity.key] for entity in policy.group_entities)
     # A private registry, holding the shared instance's own variable objects.
     assert policy.variables is not system.variables
     assert (
