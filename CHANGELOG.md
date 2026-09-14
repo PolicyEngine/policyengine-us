@@ -1,3 +1,18 @@
+## [2.0.6] - 2026-09-14
+
+### Changed
+
+- SNAP utility allowance incurrence now reads the canonical heating inputs through new `has_heating_expense` and `has_cooling_expense` facts, counts metered gas and every deliverable or cooking fuel as one gas-and-fuel utility, and Illinois AABD reads `gas_expense` instead of the deprecated `metered_gas_expense`; households without a `heating_type` keep their previous `heating_cooling_expense` behavior.
+- The Michigan home heating credit reads the canonical heating inputs: `heating_expenses` defaults to the SPM unit's `heating_expense` when the SPM unit contains one tax unit and to zero when it contains several, so callers set each claimant's November–October amount directly (`UNSPECIFIED` households keep the `heating_expense_person` sum), and the heat-in-rent halving and alternate-credit bar read `heat_expense_included_in_rent` instead of `utilities_included_in_rent`.
+
+
+## [2.0.5] - 2026-09-14
+
+### Fixed
+
+- Massachusetts Child and Family Tax Credit now counts disabled spouses from 2023 and excludes separate filers, and a new ma_filing_status variable routes federal surviving spouse filers to head of household treatment across Massachusetts filing-status parameters. As a result, the Massachusetts 529 plan contribution deduction cap for qualifying surviving spouse filers changes from $2,000 to $1,000, matching the Form 1 head of household value.
+
+
 ## [2.0.4] - 2026-09-12
 
 ### Changed

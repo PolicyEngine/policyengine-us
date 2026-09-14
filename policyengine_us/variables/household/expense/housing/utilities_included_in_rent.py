@@ -5,7 +5,15 @@ class utilities_included_in_rent(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Whether heat, utilities, furniture, or similar items are included in rent payments"
-    documentation = "Derived as the inverse of the household-level tenant_pays_utilities input, projected to the tax unit; it can still be set directly. Read by the Maine property tax fairness credit (Schedule PTFC line 5b) and, as implying heat is included, by the Michigan home heating credit."
+    documentation = (
+        "Whether the rent covers heat, utilities, furniture, or similar items "
+        "(Maine Schedule PTFC line 5b). Derived as the inverse of the "
+        "household-level tenant_pays_utilities input, projected to the tax "
+        "unit; it can still be set directly. Read by the Maine property tax "
+        "fairness credit. This does not establish that heat is included: the "
+        "Michigan home heating credit reads heat_expense_included_in_rent "
+        "instead."
+    )
     definition_period = YEAR
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2"
 
