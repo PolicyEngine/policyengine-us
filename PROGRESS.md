@@ -55,6 +55,19 @@ Draft PR: https://github.com/PolicyEngine/policyengine-us/pull/9464
 - `make format` clean.
 - The certified default build's sha256 verified against the real cached 830 MB
   H5: matches `6496cc43...`.
+- Microsimulation impact of the CPUC change, measured over the certified build
+  (2026, weighted, CA), with the parameter file swapped on disk between three
+  separate processes: `housing_assistance` and `spm_unit_capped_housing_subsidy`
+  give an identical `ca_care_income_eligible` of 2,712,528 and mean CA countable
+  income of $209,072 vs $209,062. Removing the entry entirely gives 2,743,814.
+  So the valuation is immaterial in microsimulation - the certified build
+  supplies `receives_housing_assistance` and
+  `takes_up_housing_assistance_if_eligible` as inputs, so take-up is not
+  imputed there, and the SPM cap seldom binds for genuinely assisted units. The
+  household/API path is where the change bites, because take-up defaults true.
+  This does not reproduce the review's reported 2,948,108 -> 2,917,330; that
+  delta (-30,778) is close in magnitude to this branch's entry-vs-no-entry
+  figure (+31,286), but I did not establish what was measured there.
 
 ## Not fixed (reported, out of scope)
 
