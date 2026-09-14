@@ -40,8 +40,9 @@ the model retains the October 2023 waiver because no repeal was identified.
 - Before October 2023, tax dependency approximates required dependent membership.
   Dependent earnings are excluded, including those of dependent college students;
   their unearned income counts. The 2022 guide permits support paid to be deducted
-  from total household income. From October 2023, parent income is assessed separately
-  and the model floors each parent's income after deductions at zero.
+  from total household income. No later policy establishes a payer-income cap:
+  resident-parent support payments remain deducted from the household total, with
+  a zero floor on final countable income.
 - Self-employment includes `farm_operations_income` and `partnership_s_corp_income`;
   unearned sources include `farm_rent_income` and recurring `estate_income`. Passive
   partnership income is an unearned subset, not an additional source. Do not use

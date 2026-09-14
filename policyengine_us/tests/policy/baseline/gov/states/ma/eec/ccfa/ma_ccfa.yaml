@@ -281,6 +281,7 @@
         age: 35
         weekly_hours_worked_before_lsr: 0
         ma_pfml_received: 12000
+        veterans_disability_benefits: 24000
         ma_ccfa_approved_parental_leave:
           2025-04: true
       child:
@@ -310,6 +311,50 @@
       2025-04: true
     ma_ccfa_total_copay:
       2025-04: 0
+    # VA disability prevents categorical TAFDC eligibility, but CCFA excludes it.
+    ma_tafdc_eligible:
+      2025-04: false
     # Income is below the fee floor and provider cap exceeds $1,000/month.
     ma_ccfa:
       2025-04: 1000
+
+- name: Full resident-parent support deduction reaches the final CCFA benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income_before_lsr: 12000
+        child_support_expense: 24000
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 35
+        employment_income_before_lsr: 36000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_tafdc_eligible: false
+    ma_ccfa_countable_income: 2000
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 0
+    # Both incomes less full support paid: (12000 + 36000 - 24000) / 12.
+    # Income below fee floor; provider cap above $1,000 monthly expense.
+    ma_ccfa: 1000

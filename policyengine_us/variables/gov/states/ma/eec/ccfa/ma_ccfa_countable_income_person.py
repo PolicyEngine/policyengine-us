@@ -33,17 +33,17 @@ class ma_ccfa_countable_income_person(Variable):
             gross -= where(minor, earned, 0)
 
         if p.only_parent_income:
-            deductions = add(person, period, p.deductions)
+            excluded = 0
             if p.exclude_veterans_disability:
                 # Disability is a subset of the shared veterans-benefits total.
-                deductions += min_(
+                excluded = min_(
                     max_(person("veterans_benefits", period), 0),
                     max_(person("veterans_disability_benefits", period), 0),
                 )
-            return where(is_parent, max_(gross - deductions, 0), 0)
+            return where(is_parent, gross - excluded, 0)
 
-        # The older guide deducted support paid from total household income.
-        # That deduction is applied in ma_ccfa_countable_income.
+        # Support paid is deducted from aggregated household income in
+        # ma_ccfa_countable_income, without capping it at the payer's income.
         dependent = person("is_tax_unit_dependent", period.this_year)
         dependent_income = where(dependent, max_(gross - earned, 0), 0)
         return where(is_parent, gross, dependent_income)

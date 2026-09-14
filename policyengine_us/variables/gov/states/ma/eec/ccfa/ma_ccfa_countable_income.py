@@ -16,7 +16,7 @@ class ma_ccfa_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.income.countable_income
         income = add(spm_unit, period, ["ma_ccfa_countable_income_person"])
-        if p.person_rules_in_effect and not p.only_parent_income:
+        if p.person_rules_in_effect:
             person = spm_unit.members
             parent = person("ma_ccfa_is_parent", period.this_year)
             deductions = add(person, period, p.deductions)
