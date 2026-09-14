@@ -14,7 +14,6 @@ from policyengine_us.data.dataset_schema import (
     USMultiYearDataset,
 )
 from policyengine_us.data.economic_assumptions import (
-    DEFAULT_MICRODATA_UPRATING,
     _apply_single_year_uprating,
     _apply_uprating,
     _resolve_parameter,
@@ -151,30 +150,27 @@ class TestApplySingleYearUprating:
         expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
         np.testing.assert_allclose(current.person["employment_income"].values, expected)
 
-    @pytest.mark.parametrize(
-        "variable_name, uprating_path",
-        [
-            (
-                "partnership_s_corp_income",
-                "calibration.gov.irs.soi.partnership_s_corp_income",
-            ),
-            ("veterans_benefits", DEFAULT_MICRODATA_UPRATING),
-        ],
-    )
-    def test_given_legacy_computed_column_then_values_scaled(
-        self, base_dataset, variable_name, uprating_path
+    def test_given_legacy_partnership_s_corp_column_then_values_scaled(
+        self, base_dataset
     ):
         # Given
         current = base_dataset.copy()
         current.time_period = str(BASE_YEAR + 1)
         previous = base_dataset.copy()
-        current.person[variable_name] = np.array([100.0] * NUM_PERSONS)
-        previous.person[variable_name] = np.array([100.0] * NUM_PERSONS)
-        variables = {variable_name: MockVariable(variable_name, uprating=None)}
+        current.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        previous.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        variables = {
+            "partnership_s_corp_income": MockVariable(
+                "partnership_s_corp_income", uprating=None
+            )
+        }
+        partnership_s_corp_uprating = (
+            "calibration.gov.irs.soi.partnership_s_corp_income"
+        )
         system = MockSystem(
             variables=variables,
             parameters=build_mock_parameters(
-                {uprating_path: EMPLOYMENT_INCOME_PARAM_VALUES}
+                {partnership_s_corp_uprating: EMPLOYMENT_INCOME_PARAM_VALUES}
             ),
         )
 
@@ -183,7 +179,7 @@ class TestApplySingleYearUprating:
 
         # Then
         np.testing.assert_allclose(
-            current.person[variable_name].values,
+            current.person["partnership_s_corp_income"].values,
             np.array([110.0] * NUM_PERSONS),
         )
 

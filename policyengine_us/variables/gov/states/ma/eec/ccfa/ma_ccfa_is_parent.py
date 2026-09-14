@@ -10,10 +10,7 @@ class ma_ccfa_is_parent(Variable):
     reference = "https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=22"
 
     def formula(person, period, parameters):
-        # Override for non-parent caregivers or parents in other tax units.
+        # Supported households consist of parents and their children.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         adult_or_parent = ~person("is_child", period) | person("is_parent", period)
-        nonparent_family = person.spm_unit(
-            "ma_ccfa_is_nonparent_caregiver_family", period
-        )
-        return head_or_spouse & adult_or_parent & ~nonparent_family
+        return head_or_spouse & adult_or_parent

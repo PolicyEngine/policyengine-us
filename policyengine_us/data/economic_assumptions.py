@@ -44,7 +44,6 @@ MICRODATA_UPRATING_OVERRIDES = {
     "tax_unit_weight": "calibration.gov.census.populations.total",
     "tax_exempt_pension_income": DEFAULT_MICRODATA_UPRATING,
     "total_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
-    "veterans_benefits": DEFAULT_MICRODATA_UPRATING,
 }
 
 

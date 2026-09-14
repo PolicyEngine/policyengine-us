@@ -170,18 +170,18 @@
     employment_income_before_lsr: 60000
   output:
     ma_ccfa_countable_income: 0
-- name: Case 10, veterans disability is excluded starting with the April 30 2024 operational change.
+- name: Case 10, veterans benefits represent disability payments excluded from April 30 2024.
   period: 2024
   input:
     age: 35
     state_code: MA
-    veterans_disability_benefits: 12000
+    veterans_benefits: 12000
   output:
     veterans_benefits: 12000
     ma_ccfa_countable_income:
       2024-04: 1000
       2024-05: 0
-- name: Case 11, disability is a subset of total veterans benefits and retirement still counts.
+- name: Case 11, military retirement still counts separately from excluded veterans benefits.
   period: 2026-01
   input:
     age:
@@ -189,28 +189,37 @@
     state_code:
       2026: MA
     veterans_benefits:
-      2026: 18000
-    veterans_disability_benefits:
-      2026: 12000
+      2026: 10000
     military_retirement_pay:
       2026: 12000
   output:
-    ma_ccfa_countable_income: 1500
-- name: Case 12, a disability subset larger than the total cannot erase other income.
+    ma_ccfa_countable_income: 1000
+- name: Case 12, veterans disability payments do not fail the 2026 family income test.
   period: 2026-01
+  absolute_error_margin: 0.01
   input:
-    age:
-      2026: 35
-    state_code:
-      2026: MA
-    employment_income_before_lsr:
-      2026: 60000
-    veterans_benefits:
-      2026: 6000
-    veterans_disability_benefits:
-      2026: 12000
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 88000
+        veterans_benefits: 10000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
   output:
-    ma_ccfa_countable_income: 5000
+    # Only wages count: 88000 / 12.
+    ma_ccfa_countable_income: 7333.33
+    ma_ccfa_income_eligible: true
 - name: Case 13, actual PFML receipts count separately from wages subject to payroll contributions.
   period: 2025-04
   input:
@@ -261,18 +270,6 @@
       2026: 12000
   output:
     ma_ccfa_countable_income: 1000
-- name: Case 16, nonparent caregivers can override the default tax role.
-  period: 2026-01
-  input:
-    age:
-      2026: 65
-    state_code:
-      2026: MA
-    ma_ccfa_is_parent:
-      2026: false
-    pension_income: 120000
-  output:
-    ma_ccfa_countable_income: 0
 - name: Case 17, a dependent college student's earnings were already excluded in 2022.
   period: 2022-02
   input:

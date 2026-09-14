@@ -1,9 +1,6 @@
-description: Massachusetts counts these income sources as countable income under the Child Care Financial Assistance program.
+description: Massachusetts counts these sources as unearned income under the Child Care Financial Assistance program.
 values:
   2020-01-01:
-    - employment_income_before_lsr
-    - self_employment_income_before_lsr
-    - sstb_self_employment_income_before_lsr
     - dividend_income
     - interest_income
     - rental_income
@@ -17,12 +14,7 @@ values:
     - unemployment_compensation
     - workers_compensation
   2022-02-01:
-    - employment_income_before_lsr
-    - self_employment_income_before_lsr
-    - sstb_self_employment_income_before_lsr
-    - farm_operations_income
     - farm_rent_income
-    - partnership_s_corp_income
     - estate_income
     - dividend_income
     - interest_income
@@ -37,12 +29,7 @@ values:
     - unemployment_compensation
     - workers_compensation
   2023-10-01:
-    - employment_income_before_lsr
-    - self_employment_income_before_lsr
-    - sstb_self_employment_income_before_lsr
-    - farm_operations_income
     - farm_rent_income
-    - partnership_s_corp_income
     - estate_income
     - dividend_income
     - interest_income
@@ -53,19 +40,25 @@ values:
     - alimony_income
     - unemployment_compensation
     - workers_compensation
-  2025-04-01:
-    - employment_income_before_lsr
-    - self_employment_income_before_lsr
-    - sstb_self_employment_income_before_lsr
-    - farm_operations_income
+  # CCFA mapping assumption: veterans_benefits contains disability payments.
+  2024-04-30:
     - farm_rent_income
-    - partnership_s_corp_income
     - estate_income
     - dividend_income
     - interest_income
     - rental_income
     - pension_income
-    - veterans_benefits
+    - military_retirement_pay
+    - alimony_income
+    - unemployment_compensation
+    - workers_compensation
+  2025-04-01:
+    - farm_rent_income
+    - estate_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
     - military_retirement_pay
     - alimony_income
     - unemployment_compensation
@@ -74,7 +67,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Massachusetts CCFA countable income sources
+  label: Massachusetts CCFA unearned income sources
   reference:
     - title: Massachusetts CCFA Policy Manual
       href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37
@@ -82,6 +75,8 @@ metadata:
       href: https://www.mass.gov/doc/financial-assistance-procedures-manual-for-subsidy-administrators/download#page=114
     - title: EEC Policy Advisory Field Operations 2023-4, income exclusions effective October 1, 2023
       href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=3
+    - title: EEC Policy Advisory Field Operations 2024-7, implemented income policies
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-7-child-care-financial-assistance-updated-policy-guidance/download#page=3
     - title: EEC Policy Advisory CCFA-25-03, parental leave and PFML income
       href: https://archives.lib.state.ma.us/server/api/core/bitstreams/5c538ae6-69c2-43df-bf85-10d2f5e5bfc2/content#page=6
     - title: EEC Income Eligible Policies, Income

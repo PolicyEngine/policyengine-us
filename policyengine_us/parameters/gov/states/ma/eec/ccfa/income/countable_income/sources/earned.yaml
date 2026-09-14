@@ -1,5 +1,9 @@
-description: Massachusetts excludes these earned income sources for dependents under the Child Care Financial Assistance program.
+description: Massachusetts counts these sources as earned income under the Child Care Financial Assistance program.
 values:
+  2020-01-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    - sstb_self_employment_income_before_lsr
   2022-02-01:
     - employment_income_before_lsr
     - self_employment_income_before_lsr
@@ -9,7 +13,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Massachusetts CCFA dependent earned income sources
+  label: Massachusetts CCFA earned income sources
   reference:
     - title: EEC Financial Assistance Policy Guide, section 4.2.B.2
       href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37

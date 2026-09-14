@@ -16,31 +16,24 @@ class ma_ccfa_countable_income_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.income.countable_income
-        gross = add(person, period, p.sources)
+        gross = add(person, period, p.sources.earned + p.sources.unearned)
         if not p.person_rules_in_effect:
             return gross
 
         is_parent = person("ma_ccfa_is_parent", period.this_year)
-        earned = add(person, period, p.earned_sources)
+        earned = add(person, period, p.sources.earned)
         # Passive partnership income is a subset of the total, not earnings.
         passive = min_(
             max_(person("partnership_s_corp_income", period), 0),
             max_(person("passive_partnership_s_corp_income", period), 0),
         )
         earned -= passive
-        if p.exclude_minor_earnings:
+        if p.exclusions.minor_earnings:
             minor = person("is_child", period.this_year)
             gross -= where(minor, earned, 0)
 
         if p.only_parent_income:
-            excluded = 0
-            if p.exclude_veterans_disability:
-                # Disability is a subset of the shared veterans-benefits total.
-                excluded = min_(
-                    max_(person("veterans_benefits", period), 0),
-                    max_(person("veterans_disability_benefits", period), 0),
-                )
-            return where(is_parent, gross - excluded, 0)
+            return where(is_parent, gross, 0)
 
         # Support paid is deducted from aggregated household income in
         # ma_ccfa_countable_income, without capping it at the payer's income.
