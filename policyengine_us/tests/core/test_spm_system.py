@@ -417,7 +417,16 @@ def small_dataset():
             }
         ),
         **{
-            entity: pd.DataFrame({f"{entity}_id": [1, 2]})
+            entity: pd.DataFrame(
+                {
+                    f"{entity}_id": [1, 2],
+                    **(
+                        {"spm_unit_spm_universe_status": ["INCLUDED", "INCLUDED"]}
+                        if entity == "spm_unit"
+                        else {}
+                    ),
+                }
+            )
             for entity in groups
             if entity != "household"
         },

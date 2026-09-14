@@ -14,6 +14,6 @@ class household_benefits(Variable):
             BENEFITS = [
                 benefit
                 for benefit in BENEFITS
-                if benefit != "spm_unit_capped_housing_subsidy"
+                if benefit != "spm_unit_ordinary_housing_subsidy"
             ]
         return add(household, period, BENEFITS)

@@ -11,14 +11,26 @@ from copy import copy, deepcopy
 from functools import lru_cache
 from inspect import signature
 
+import numpy as np
+
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
 from spm_calculator.policyengine_adapter import (
-    FORMULA_OWNED_INPUTS,
+    FORMULA_OWNED_INPUTS as CALCULATOR_FORMULA_OWNED_INPUTS,
     PolicyEngineSPMProvider,
+    build_policyengine_variables,
 )
 from spm_calculator.rolling_forecast import load_forecast
+
+FORMULA_OWNED_INPUTS = CALCULATOR_FORMULA_OWNED_INPUTS | {
+    "in_poverty",
+    "in_deep_poverty",
+    "person_in_poverty",
+    "deep_poverty_line",
+    "deep_poverty_gap",
+    "spm_unit_ordinary_housing_subsidy",
+}
 
 
 CONFIG_FIELDS = frozenset(
@@ -38,6 +50,80 @@ COUNTY_INPUT_FIX = (
     'send county_fips as a five-digit string (for example "06037"), or select '
     'geography_kind="national" in the spm configuration'
 )
+
+
+def default_spm_universe_status(unit):
+    """Household requests describe included units; datasets must declare scope.
+
+    Data origin is a scalar construction contract, not a demographic inference.
+    In particular, missing age or tenure never makes a unit outside the universe.
+    """
+    values = unit.simulation.tax_benefit_system.variables[
+        "spm_unit_spm_universe_status"
+    ].possible_values
+    status = values.UNRESOLVED if unit.simulation.is_over_dataset else values.INCLUDED
+    return unit.filled_array(status.index)
+
+
+def spm_universe_mask(unit, period):
+    """Require a resolved source decision and return included unit positions."""
+    status = unit("spm_unit_spm_universe_status", period).decode_to_str()
+    if np.any(status == "UNRESOLVED"):
+        raise SPMInputError(
+            "SPM_UNIVERSE_REQUIRED",
+            "Declare INCLUDED or OUTSIDE for every SPM unit from the source "
+            "measurement universe; unresolved units cannot be measured.",
+        )
+    return status == "INCLUDED"
+
+
+def scoped_spm_amount(unit, period, field):
+    """Keep outside amounts missing and never pass those units to the provider."""
+    included = spm_universe_mask(unit, period)
+    amounts = masked_policyengine_amount(unit, period, field, included)
+    return np.where(included, amounts, np.nan)
+
+
+def country_spm_variables():
+    """Apply country-owned scope to the calculator's registered amount fields."""
+    fields = {
+        "spm_unit_reference_spm_threshold": "reference_threshold",
+        "spm_unit_unadjusted_spm_threshold": "unadjusted_threshold",
+        "spm_unit_geographic_adjustment": "geographic_factor",
+        "spm_unit_spm_threshold": "threshold",
+        "spm_unit_spm_threshold_housing_portion": "housing_portion",
+    }
+
+    def formula_for(field):
+        def formula(unit, period, parameters):
+            return scoped_spm_amount(unit, period, field)
+
+        return formula
+
+    variables = build_policyengine_variables()
+    for variable in variables:
+        if variable.__name__ in fields:
+            # The calculator creates fresh classes for each system. Only the
+            # selection changes; its provider still owns every final amount.
+            variable.formula = formula_for(fields[variable.__name__])
+    return variables
+
+
+def nullable_spm_indicator(unit, period, income, threshold):
+    """Return 0/1 for measured units, NaN outside, and reject invalid inputs."""
+    included = spm_universe_mask(unit, period)
+    if (
+        not np.isfinite(income[included]).all()
+        or not np.isfinite(threshold[included]).all()
+        or np.any(threshold[included] <= 0)
+    ):
+        raise SPMInputError(
+            "SPM_MEASUREMENT_INVALID",
+            "Included units require finite resources and positive finite thresholds.",
+        )
+    result = np.full(included.shape, np.nan)
+    result[included] = income[included] < threshold[included]
+    return result
 
 
 def is_county_fips(value):
