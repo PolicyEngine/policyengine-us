@@ -5,8 +5,6 @@ JOINT:
   2002-01-01: 200
 HEAD_OF_HOUSEHOLD:
   2002-01-01: 100
-SURVIVING_SPOUSE:
-  2002-01-01: 100
 SEPARATE:
   2002-01-01: 100
 metadata:
@@ -14,7 +12,7 @@ metadata:
   unit: currency-USD
   period: year
   breakdown:
-  - filing_status
+  - ma_filing_status
   label: Massachusetts interest exemption
   reference:
     - title: Mass. General Laws c.62 § 3(B)(a)(6)

@@ -1,3 +1,10 @@
+## [2.0.5] - 2026-09-14
+
+### Fixed
+
+- Massachusetts Child and Family Tax Credit now counts disabled spouses from 2023 and excludes separate filers, and a new ma_filing_status variable routes federal surviving spouse filers to head of household treatment across Massachusetts filing-status parameters. As a result, the Massachusetts 529 plan contribution deduction cap for qualifying surviving spouse filers changes from $2,000 to $1,000, matching the Form 1 head of household value.
+
+
 ## [2.0.4] - 2026-09-12
 
 ### Changed
