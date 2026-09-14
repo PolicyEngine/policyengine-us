@@ -422,3 +422,42 @@
     school_meal_countable_income: 43_800
     commodity_supplemental_food_program_eligible: [true, false]
     commodity_supplemental_food_program: [651, 0]
+
+- name: Case 15, computed SSI for a senior with no income confers the bypass despite adult child earnings.
+  period: 2026
+  input:
+    people:
+      person2:
+        age: 68
+        receives_ssi: false
+        msp: 0
+      person3:
+        age: 35
+        receives_ssi: false
+        msp: 0
+        employment_income: 33_000
+    # Separate marital units so the adult child's earnings are not deemed to the senior.
+    marital_units:
+      marital_unit1:
+        members: [person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      unit1:
+        members: [person2, person3]
+        snap: 0
+        receives_snap: false
+        fdpir: 0
+    households:
+      household:
+        members: [person2, person3]
+        state_code: KS
+        county_str: SEDGWICK_COUNTY_KS
+  output:
+    # 2026 SSI federal benefit rate: 994 * 12 = 11,928.
+    ssi: [11_928, 0]
+    # 33,000 wages + 11,928 SSI.
+    school_meal_countable_income: 44_928
+    ks_dcf_csfp_categorically_eligible: [true, false]
+    commodity_supplemental_food_program_eligible: [true, false]
+    commodity_supplemental_food_program: [651, 0]

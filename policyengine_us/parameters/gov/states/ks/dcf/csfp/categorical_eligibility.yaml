@@ -7,6 +7,8 @@ values:
     - snap
     - receives_snap
     - fdpir
+    # msp reflects computed Medicare Savings Program eligibility; the model
+    # has no reported-receipt input for it, unlike receives_ssi and receives_snap.
     - msp
     # Low Income Subsidy also qualifies under the state plan but is not modeled.
 
