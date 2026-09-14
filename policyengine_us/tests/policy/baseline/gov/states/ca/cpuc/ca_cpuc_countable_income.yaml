@@ -78,10 +78,12 @@
     spm_units:
       spm_unit:
         members: [person]
-        # receives_housing_assistance defaults to false. housing_assistance is
-        # eligibility times take-up, and take-up defaults to true, so the model
-        # carries an amount here for a renter who reports no voucher; only
-        # reported receipt counts toward CARE/FERA income.
+        # The amount is supplied directly, so the gate is what this case
+        # tests: receives_housing_assistance defaults to false, and without
+        # it nothing is counted. In the household path the amount does not
+        # have to be supplied - housing_assistance is eligibility times
+        # take-up, and take-up defaults to true, so the model carries one for
+        # any income-eligible renter who supplies a rent.
         housing_assistance: 12_000
         snap: 0
     households:

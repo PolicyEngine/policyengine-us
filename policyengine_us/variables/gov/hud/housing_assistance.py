@@ -6,7 +6,16 @@ class housing_assistance(Variable):
     entity = SPMUnit
     label = "Housing assistance"
     unit = USD
-    documentation = "Housing assistance"
+    documentation = """
+    Housing assistance the model computes for this unit: HUD's housing
+    assistance payment where the unit is eligible and takes up.
+
+    Eligibility is `receives_housing_assistance | (is_renter &
+    is_income_eligible)` and take-up defaults to true, so this is a modelled
+    amount rather than a report of receipt. An income definition that counts
+    only subsidies a household reports receiving wants
+    `reported_housing_assistance`.
+    """
     definition_period = YEAR
     defined_for = "is_eligible_for_housing_assistance"
 

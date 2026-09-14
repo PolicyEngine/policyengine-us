@@ -51,10 +51,12 @@ values:
   # receives_housing_assistance | (is_renter & is_income_eligible) and
   # takes_up_housing_assistance_if_eligible defaults to true, so counting it
   # would attach an imputed voucher to every income-eligible renter who
-  # supplies a rent - a Los Angeles renter earning $35,000, paying $24,000 of
-  # rent and sending receives_housing_assistance: false would carry $11,580 of
-  # modelled assistance into CARE income and lose the discount. The form asks
-  # an applicant what the household receives, so the entry counts receipt.
+  # supplies a rent: a Los Angeles renter earning $35,000 and paying $24,000
+  # of rent, sending receives_housing_assistance: false, carries $11,580 of
+  # modelled assistance against the payment standard the model derives for the
+  # county, and $13,500 against a supplied $36,000 standard - either way out
+  # of CARE, for a subsidy nobody receives. The form asks an applicant what
+  # the household receives, so the entry counts receipt.
   #
   # It was spm_unit_capped_housing_subsidy, the Census SPM's housing subsidy
   # capped at the housing portion of the SPM threshold less the tenant
