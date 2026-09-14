@@ -1,6 +1,6 @@
 # PR B progress — CPUC housing subsidy source + dataset/default/batch guards
 
-Branch: `max/cpuc-housing-and-guards-20260914` (from `upstream/main`, 2.0.1).
+Branch: `max/cpuc-housing-and-guards-20260914` (from `upstream/main`, 2.1.0).
 Source review: `rollout/fable-continuation-20260911/out/astra-review-country-201.md`.
 
 ## State
@@ -59,3 +59,26 @@ push, draft PR.
   reads "the ESA Program", and OP 40 itself could not be retrieved, so whether
   the exclusion reaches CARE is unresolved. This branch keeps the form's
   treatment (count them) and only corrects how they are valued.
+
+## Review findings addressed (adversarial pass, 2026-09-14)
+
+- The batch runner's monitoring loop was unbounded in both revisions: its
+  30-minute budget sat below the loop, where the child had already exited, so
+  the wait it guarded returned instantly and never fired. Reading the status
+  from the runner rather than terminating a second after the summary also left
+  pytest's session-finish window unbounded. Both are enforced inside the loop
+  now (`BATCH_TIMEOUT_SECONDS`, `MARKER_GRACE_SECONDS`), with an A/B showing
+  the previous revision still running after 40s where this one returns.
+- `batch_status`'s docstring claimed pytest exit 2 prints no summary count. It
+  does: under policyengine-core's argv, a session whose second test raises
+  KeyboardInterrupt exits 2 beneath "1 passed in 0.10s" (measured), which the
+  old parse also read as success. Corrected, and it is now the clearest
+  example of the defect.
+- `_static_variable_reads` in the poverty closure test discarded any variable
+  whose class body held no direct entity call, which dropped 884 of the
+  system's 6,173 variables - including `poverty_line`, written as
+  `adds = ["spm_unit_spm_threshold"]` with no formula at all. The closure was
+  therefore blind to the idiom the next alias would most likely use. The scan
+  now trusts a formula-less variable's `adds`/`subtracts` and the
+  name-listing helpers, covering 5,665 variables; the closure still passes, so
+  the rejection set is closed under the stronger scan too.

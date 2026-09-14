@@ -486,6 +486,15 @@ def split_into_batches(
 PYTEST_NO_TESTS_COLLECTED = 5
 # How long a child gets to die after being asked to, before it is killed.
 TERMINATE_GRACE_SECONDS = 5
+# Overall budget for one batch, enforced inside the monitoring loop below.
+BATCH_TIMEOUT_SECONDS = 1800
+# How long the runner may take to hand back a status after printing its
+# summary. That gap is pytest's own session-finish hooks and unconfigure, not
+# the slow interpreter teardown described below, which happens after the
+# marker: measured, the marker arrives in the same read as the summary line.
+# This is deliberately generous, and exists only so a runner that stops
+# responding right at the end is reported instead of hanging the job.
+MARKER_GRACE_SECONDS = 300
 
 # The runner's process exit status is not reachable in bounded time. Once
 # policyengine-core's pytest.main() returns, interpreter teardown frees the
@@ -556,8 +565,12 @@ def batch_status(returncode: Optional[int]) -> str:
 
     * "1 passed, 1 error" prints no failed count at all, so the old parse read
       an errored batch as success while the child exited 1.
-    * 2, 3 and 4 (interrupted, internal error, usage error) print no summary
-      count either.
+    * 2 (interrupted) prints a count for whatever ran before the interrupt and
+      no failure count, which the old parse also read as success: under
+      policyengine-core's argv, a session whose second test raises
+      KeyboardInterrupt exits 2 beneath "1 passed in 0.10s" (measured).
+    * 3 and 4 (internal error, usage error) print no summary count at all, so
+      the old parse fell through to a status it had already discarded.
     * 5 (no tests collected) is a failure *for this runner*. It differs from
       run_selective_tests.py, which skips 5 deliberately: that runner selects
       paths from a changed-file list, where a changed test helper legitimately
@@ -630,12 +643,15 @@ def run_batch(
     try:
         test_completed = False
         summary_reported_pass = False
+        abandoned: Optional[str] = None
         reported_returncode: Optional[int] = None
         output_lines = []
         output_text = ""
 
+        summary_at: Optional[float] = None
+
         def stop_process() -> None:
-            """End a child that has already told us how it finished."""
+            """End a child, whether or not it told us how it finished."""
             process.terminate()
             try:
                 process.wait(timeout=TERMINATE_GRACE_SECONDS)
@@ -643,6 +659,23 @@ def run_batch(
                 emit("    Force killing process...")
                 process.kill()
                 process.wait()
+
+        def overdue() -> Optional[str]:
+            """Why this batch should stop being waited on, if it should.
+
+            The monitoring loop is otherwise unbounded, in this revision and
+            the one before it: it ends only when the child exits or reports,
+            and the 30-minute budget below it was only ever consulted after
+            the child had already gone. Enforce that budget here, where it can
+            fire, and bound the window this file opened by reading the status
+            from the runner instead of terminating a second after its summary.
+            """
+            now = time.time()
+            if now - start_time >= BATCH_TIMEOUT_SECONDS:
+                return "timeout"
+            if summary_at is not None and now - summary_at >= MARKER_GRACE_SECONDS:
+                return "unreported"
+            return None
 
         # Monitor output line by line
         while True:
@@ -654,6 +687,20 @@ def run_batch(
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
+                    break
+                give_up = overdue()
+                if give_up is not None:
+                    abandoned = give_up
+                    emit(
+                        "\n    ⏱️ "
+                        + (
+                            "Timeout"
+                            if give_up == "timeout"
+                            else f"No status {MARKER_GRACE_SECONDS}s after the summary"
+                        )
+                        + " - terminating process..."
+                    )
+                    stop_process()
                     break
                 now = time.time()
                 # In buffered (concurrent) mode the shared heartbeat in
@@ -697,6 +744,7 @@ def run_batch(
                 output_text,
             ):
                 test_completed = True
+                summary_at = time.time()
                 # The summary line only decides how loudly a disagreement is
                 # reported below; batch_status() reads the runner's status.
                 failed_match = re.search(r"(\d+) failed", output_text)
@@ -754,6 +802,19 @@ def run_batch(
         returncode = (
             reported_returncode if reported_returncode is not None else process.poll()
         )
+
+        if abandoned == "timeout":
+            emit(
+                f"\n    Batch abandoned after {elapsed:.1f}s "
+                f"(peak RSS: {_format_rss(peak_rss_mb)})"
+            )
+            return {
+                "elapsed": elapsed,
+                "status": "timeout",
+                "returncode": returncode,
+                "peak_rss_mb": peak_rss_mb,
+                "output": "".join(buf),
+            }
 
         status = batch_status(returncode)
         if test_completed and summary_reported_pass and status != "passed":

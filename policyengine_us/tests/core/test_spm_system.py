@@ -539,6 +539,13 @@ def test_rejection_set_extends_rather_than_replaces_the_calculator_contract():
 ENTITY_KEYS = frozenset(
     {"person", "marital_unit", "tax_unit", "family", "spm_unit", "household"}
 )
+# policyengine-core helpers that name the variables they read as string
+# literals, exactly as an entity call does, so the constant scan below sees
+# their reads too (policyengine_core/commons/formulas.py: for_each_variable
+# and the aggregators built on it).
+NAME_LISTING_HELPERS = frozenset(
+    {"add", "and_", "or_", "max_", "min_", "for_each_variable", "sum_of_variables"}
+)
 
 
 def _static_variable_reads(variable):
@@ -548,6 +555,15 @@ def _static_variable_reads(variable):
     class body that names a registered variable counts, so a helper this scan
     does not model cannot make a variable look like a pure function of the
     poverty chain when it is not.
+
+    A formula is only trusted when its reads are visibly named — through an
+    entity call or a name-listing helper. A variable with no formula at all is
+    fully described by its ``adds``/``subtracts`` list, which is how most of
+    the poverty chain is written: ``poverty_line`` is ``adds =
+    ["spm_unit_spm_threshold"]`` and nothing else. Requiring an entity call of
+    those too discarded 884 of the system's variables, this measurement's own
+    aliases among them, leaving the closure below blind to the very idiom the
+    next alias would most likely use.
     """
     for attribute in ("adds", "subtracts"):
         if isinstance(getattr(variable, attribute, None), str):
@@ -564,21 +580,26 @@ def _static_variable_reads(variable):
         # Calculator-built variables have no country source file.
         return None
     tree = ast.parse(source)
-    reads_an_entity_variable = False
+    named_reads = False
+    has_formula = False
     for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if node.name.startswith("formula"):
+                has_formula = True
         if isinstance(node, ast.Call):
             function = node.func
-            if (isinstance(function, ast.Name) and function.id in ENTITY_KEYS) or (
-                isinstance(function, ast.Attribute) and function.attr in ENTITY_KEYS
-            ):
-                reads_an_entity_variable = True
+            name = getattr(function, "id", None) or getattr(function, "attr", None)
+            if name in ENTITY_KEYS or name in NAME_LISTING_HELPERS:
+                named_reads = True
         if (
             isinstance(node, ast.Constant)
             and isinstance(node.value, str)
             and node.value in system.variables
         ):
             reads.add(node.value)
-    if not reads_an_entity_variable:
+    if has_formula and not named_reads:
+        # A formula reaching for its inputs some other way; what it reads is
+        # not knowable from the source.
         return None
     return reads - {variable.name}
 

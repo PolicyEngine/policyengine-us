@@ -257,3 +257,42 @@ def test_default_split_and_exclude_branches_include_yml_files(tmp_path):
         [str(tmp_path / "drop" / "b.yaml"), str(tmp_path / "keep" / "a.yml")],
         [str(tmp_path / "root.yml")],
     ]
+
+
+# --- The monitoring loop is bounded ------------------------------------------
+#
+# The loop ends when the child exits or reports, and nothing else. The 30-minute
+# batch budget sat below it, where the child had already gone and the wait it
+# guarded returned instantly, so it never fired. Reading the status from the
+# runner rather than terminating a second after the summary also opened a
+# second window: pytest's session-finish hooks, between the summary line and
+# pytest.main() returning. Both are bounded inside the loop now.
+
+
+def test_a_child_that_never_reports_after_its_summary_is_abandoned(monkeypatch):
+    """Not a hang: terminated, and reported as the failure it is."""
+    monkeypatch.setattr(batched, "MARKER_GRACE_SECONDS", 1)
+    result = run_scripted(PASSING_SUMMARY, 0, then_hang=True, report=False)
+    assert result["status"] == "failed"
+    assert "No status" in result["output"]
+
+
+def test_a_child_that_never_says_anything_hits_the_batch_budget(monkeypatch):
+    """The 30-minute budget the runner documents now actually fires."""
+    monkeypatch.setattr(batched, "BATCH_TIMEOUT_SECONDS", 1)
+    silent = [sys.executable, "-u", "-c", "import time; time.sleep(600)"]
+    result = batched.run_batch(
+        ["unused/path.yaml"], "Batch 1", stream=False, command=silent
+    )
+    assert result["status"] == "timeout"
+    assert "Timeout" in result["output"]
+    # main() counts anything but "passed" as a failure.
+    assert result["status"] != "passed"
+
+
+def test_the_bounds_do_not_fire_on_an_ordinary_run():
+    """A batch that reports promptly is untouched by either bound."""
+    result = run_scripted(PASSING_SUMMARY, 0)
+    assert result["status"] == "passed"
+    assert "Timeout" not in result["output"]
+    assert "No status" not in result["output"]
