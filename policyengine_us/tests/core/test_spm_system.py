@@ -1,7 +1,10 @@
 """Construction and dataset contracts that require the Python simulation API."""
 
+import ast
 import hashlib
+import inspect
 import json
+import textwrap
 
 import numpy as np
 import pandas as pd
@@ -15,7 +18,11 @@ from spm_calculator.policyengine_adapter import FORMULA_OWNED_INPUTS
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
-from policyengine_us.spm import create_spm_provider
+from policyengine_us.spm import (
+    DERIVED_POVERTY_OUTPUTS,
+    REJECTED_DATASET_INPUTS,
+    create_spm_provider,
+)
 from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path, system
 
 
@@ -474,3 +481,127 @@ def test_microsimulation_rejects_stored_measurements_without_mutating_dataset(
         pd.testing.assert_frame_equal(original, current)
     if dataset_format == "hdfstore":
         assert path.read_bytes() == content
+
+
+@pytest.mark.parametrize("name", sorted(DERIVED_POVERTY_OUTPUTS))
+def test_dataset_storing_a_derived_poverty_output_is_refused(name):
+    """A poverty alias the calculator does not own must still be refused.
+
+    ``FORMULA_OWNED_INPUTS`` stops at the calculator's own outputs, so a
+    dataset supplying ``in_poverty=[False, False]`` was accepted unchanged
+    while every unit in the population sat below its threshold: the poverty
+    calculation documented in ``docs/usage/microsimulation.md`` reported 0%
+    and ``spm_unit_is_in_spm_poverty`` reported 100% for the same population.
+    """
+    variable = system.variables[name]
+    source = small_dataset()
+    table = getattr(source, variable.entity.key)
+    table[name] = [False, False] if variable.value_type == bool else [0.0, 0.0]
+    before = [frame.copy(deep=True) for frame in source.tables]
+    with pytest.raises(ValueError) as error:
+        Microsimulation(dataset=source)
+    message = str(error.value)
+    assert f"formula-owned SPM output {name}" in message
+    assert "Use primitive inputs" in message
+    for original, current in zip(before, source.tables):
+        pd.testing.assert_frame_equal(original, current)
+
+
+def test_accepted_population_publishes_one_poverty_rate():
+    """The two published indicators agree once the aliases cannot be stored."""
+    simulation = Microsimulation(dataset=small_dataset())
+    np.testing.assert_array_equal(
+        simulation.calculate("in_poverty", 2024),
+        simulation.calculate("spm_unit_is_in_spm_poverty", 2024),
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("in_deep_poverty", 2024),
+        simulation.calculate("spm_unit_is_in_deep_spm_poverty", 2024),
+    )
+
+
+def test_rejection_set_extends_rather_than_replaces_the_calculator_contract():
+    for name in FORMULA_OWNED_INPUTS:
+        assert name in REJECTED_DATASET_INPUTS
+    for name in DERIVED_POVERTY_OUTPUTS:
+        # A rejected name must be computed, never a legitimate stored input.
+        assert system.variables[name].formula is not None
+
+
+ENTITY_KEYS = frozenset(
+    {"person", "marital_unit", "tax_unit", "family", "spm_unit", "household"}
+)
+
+
+def _static_variable_reads(variable):
+    """Variable names a registered variable reads, or None when not static.
+
+    Over-collects rather than under-collects: every string constant in the
+    class body that names a registered variable counts, so a helper this scan
+    does not model cannot make a variable look like a pure function of the
+    poverty chain when it is not.
+    """
+    for attribute in ("adds", "subtracts"):
+        if isinstance(getattr(variable, attribute, None), str):
+            # A parameter path: its contents are not statically known here.
+            return None
+    reads = {
+        item
+        for attribute in ("adds", "subtracts")
+        for item in (getattr(variable, attribute, None) or [])
+    }
+    try:
+        source = textwrap.dedent(inspect.getsource(type(variable)))
+    except (OSError, TypeError):
+        # Calculator-built variables have no country source file.
+        return None
+    tree = ast.parse(source)
+    reads_an_entity_variable = False
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+            function = node.func
+            if (isinstance(function, ast.Name) and function.id in ENTITY_KEYS) or (
+                isinstance(function, ast.Attribute) and function.attr in ENTITY_KEYS
+            ):
+                reads_an_entity_variable = True
+        if (
+            isinstance(node, ast.Constant)
+            and isinstance(node.value, str)
+            and node.value in system.variables
+        ):
+            reads.add(node.value)
+    if not reads_an_entity_variable:
+        return None
+    return reads - {variable.name}
+
+
+def test_every_pure_function_of_the_poverty_chain_is_rejected():
+    """The rejection set is closed: no further alias can be stored.
+
+    A variable whose every read is already rejected and which reads at least
+    one threshold or poverty output is another name for the same measurement.
+    ``in_poverty`` was exactly that, and this closure is what stops the next
+    one from shipping unpoliced.
+    """
+    chain = {
+        name
+        for name in REJECTED_DATASET_INPUTS
+        if "poverty" in name or "threshold" in name
+    }
+    unrejected_aliases = []
+    checked = []
+    for name, variable in sorted(system.variables.items()):
+        reads = _static_variable_reads(variable)
+        if not reads or not reads <= REJECTED_DATASET_INPUTS or not reads & chain:
+            continue
+        checked.append(name)
+        if name not in REJECTED_DATASET_INPUTS:
+            unrejected_aliases.append(f"{name} reads {sorted(reads)}")
+    assert not unrejected_aliases, (
+        "These variables are pure functions of rejected SPM poverty outputs "
+        "but a dataset may still store them; add them to "
+        "DERIVED_POVERTY_OUTPUTS in policyengine_us/spm.py:\n"
+        + "\n".join(unrejected_aliases)
+    )
+    # Guard the guard: a scan that silently matched nothing proves nothing.
+    assert set(DERIVED_POVERTY_OUTPUTS) <= set(checked)
