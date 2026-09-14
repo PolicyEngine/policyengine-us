@@ -8,7 +8,8 @@ class ma_senior_circuit_breaker(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6",  # Part (k)
+        "https://www.mass.gov/doc/2023-schedule-cb-circuit-breaker-credit/download",
     )
     defined_for = StateCode.MA
 

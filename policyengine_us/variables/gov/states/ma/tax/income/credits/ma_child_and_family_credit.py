@@ -8,7 +8,8 @@ class ma_child_and_family_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
+        "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit",
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6",
     )
     defined_for = StateCode.MA
 
@@ -24,6 +25,14 @@ class ma_child_and_family_credit(Variable):
         # dependent physically or mentally incapable of self-care qualifies
         # at any age, alongside the Section 6(x)(iii) disabled-dependent
         # category.
+        # is_incapable_of_self_care is a bare Person boolean input that
+        # defaults to False when the microdata does not populate it; in
+        # population runs the Section 21(b)(1)(B) dependent route and the
+        # Section 21(b)(1)(C) spouse route below therefore only fire where the
+        # dataset sets the flag, so the CFTC may be understated for the narrow
+        # group of self-care-incapable individuals not already captured by the
+        # age or disability conditions. Household-level (web app) calculations
+        # honor the user-supplied value and are unaffected.
         incapable = person("is_incapable_of_self_care", period)
         eligible_dependent = dependent & (child | elderly | disabled | incapable)
         count_eligible_dependents = tax_unit.sum(eligible_dependent)
@@ -42,16 +51,17 @@ class ma_child_and_family_credit(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         filing_status = tax_unit("ma_filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
-        disabled_head_or_spouse = head_or_spouse & incapable
+        self_care_head_or_spouse = head_or_spouse & incapable
         # IRC Section 21(b)(1)(C) recognizes a single "spouse of the
-        # taxpayer" qualifying individual, so a both-disabled joint couple
-        # counts as one qualifying individual, not two.
-        has_disabled_spouse = (
+        # taxpayer" qualifying individual, so a joint couple in which both
+        # filers are incapable of self-care counts as one qualifying
+        # individual, not two.
+        has_self_care_spouse = (
             p.disabled_spouse_eligible
             & joint
-            & (tax_unit.sum(disabled_head_or_spouse) > 0)
+            & (tax_unit.sum(self_care_head_or_spouse) > 0)
         )
-        count_eligible = count_eligible_dependents + has_disabled_spouse
+        count_eligible = count_eligible_dependents + has_self_care_spouse
         capped_eligible = min_(count_eligible, p.dependent_cap)
         # Married taxpayers filing separately cannot claim the credit.
         separate = filing_status == filing_status.possible_values.SEPARATE
