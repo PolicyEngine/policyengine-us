@@ -8,17 +8,6 @@ class ma_ccfa_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = (
-        "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=39",
-        "https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=22",
-    )
+    reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37"
 
-    def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.eec.ccfa.income.countable_income
-        income = add(spm_unit, period, ["ma_ccfa_countable_income_person"])
-        if p.person_rules_in_effect:
-            person = spm_unit.members
-            parent = person("ma_ccfa_is_parent", period.this_year)
-            deductions = add(person, period, p.deductions)
-            return max_(income - spm_unit.sum(parent * deductions), 0)
-        return income
+    adds = "gov.states.ma.eec.ccfa.income.countable_income.sources"
