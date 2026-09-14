@@ -5,8 +5,9 @@ Source review: `rollout/fable-continuation-20260911/out/astra-review-country-201
 
 ## State
 
-All four items implemented and committed. Remaining: full affected-suite run,
-push, draft PR.
+All four items implemented, reviewed, and pushed.
+Draft PR: https://github.com/PolicyEngine/policyengine-us/pull/9464
+(head `max/cpuc-housing-and-guards-20260914`, base `main`). Remaining: CI green.
 
 ## Done
 
@@ -43,11 +44,17 @@ push, draft PR.
    enumerated alongside `.yaml`. Tests in
    `tests/code_health/test_batched_exit_status.py`, driving real subprocesses.
 
-## Next
+## Suites run (all exit 0)
 
-- Full affected-suite run (CA CPUC YAML, partner CA, core SPM, unit SPM
-  contract, code_health), CI-order equivalents.
-- Push and open the draft PR.
+- `tests/core` + `tests/unit` + `tests/code_health`: 429 passed.
+- CA CPUC YAML + partner CA `care`/`fera`: 96 passed; partner fixtures untouched.
+- `policy/baseline/gov/states` in 16 batches: 17 batches, 3,322 files.
+- Partner YAML target, all five invocations.
+- `policy/baseline/household`, `tests/variables`.
+- `policy/contrib/congress` per-subdir, `policy/reform` per-file.
+- `make format` clean.
+- The certified default build's sha256 verified against the real cached 830 MB
+  H5: matches `6496cc43...`.
 
 ## Not fixed (reported, out of scope)
 
