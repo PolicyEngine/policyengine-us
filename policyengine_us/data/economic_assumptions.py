@@ -14,6 +14,13 @@ DEFAULT_MICRODATA_UPRATING = (
     "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 )
 
+# Scope and outside housing valuations require a source decision for each year.
+# Dataset extension must not turn a base-year declaration into a new report.
+ANNUAL_SPM_SOURCE_DECLARATIONS = (
+    "spm_unit_spm_universe_status",
+    "spm_unit_ordinary_housing_subsidy_reported",
+)
+
 MICRODATA_UPRATING_OVERRIDES = {
     "american_opportunity_credit": DEFAULT_MICRODATA_UPRATING,
     "cdcc_relevant_expenses": DEFAULT_MICRODATA_UPRATING,
@@ -86,7 +93,8 @@ def extend_single_year_dataset(
     If ``end_year`` is not provided, it defaults to the latest year
     covered by the CPI-U parameter (gov.bls.cpi.cpi_u).
 
-    Variables without an uprating parameter are carried forward unchanged.
+    Variables without an uprating parameter are carried forward unchanged,
+    except annual SPM source declarations, which require explicit new-year inputs.
     """
     if system is None:
         from policyengine_us.system import system as _system
@@ -109,6 +117,14 @@ def extend_single_year_dataset(
     for year in range(start_year + 1, end_year + 1):
         next_year = dataset.copy(deep=False)
         next_year.time_period = str(year)
+        # The loader flattens columns from every entity table. Remove reserved
+        # declarations wherever the source stored them, including legacy layouts.
+        for table in next_year.tables:
+            table.drop(
+                columns=list(ANNUAL_SPM_SOURCE_DECLARATIONS),
+                errors="ignore",
+                inplace=True,
+            )
         datasets.append(next_year)
 
     multi_year_dataset = USMultiYearDataset(datasets=datasets)

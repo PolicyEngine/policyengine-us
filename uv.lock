@@ -1201,15 +1201,15 @@ wheels = [
 
 [[package]]
 name = "microdf-python"
-version = "1.2.1"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "pandas" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e7/96/6f9f37f79f2c6440d91036a7bf8111dd4b983c577a7e96d45bf3ca4171f3/microdf_python-1.2.1.tar.gz", hash = "sha256:d4f58e4e0c21decd0c6d425b115db8acc72751c558f48d2a1c3a6619f168a94a", size = 19641, upload-time = "2026-01-25T13:40:57.147Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a3/1b/a4b6a53c8e6668c190e1928ebf9f8c67d6a4995ff4a4b0e3403ded30d4ab/microdf_python-1.3.0.tar.gz", hash = "sha256:f352fe32c25a4fd6d6188ef6aaca0214b53b29a8a7913aca6af0362dd9c922bd", size = 28141, upload-time = "2026-04-17T23:20:57.018Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/2e/375ab71f8d91b691597247b186a4d7b156d2ed975dfb00450e560beae747/microdf_python-1.2.1-py3-none-any.whl", hash = "sha256:3c3d318a82cba7db0ef5a72e8a73a6072fe0bc7a9cb59b1eac01a26ee8c82e7c", size = 20879, upload-time = "2026-01-25T13:40:55.877Z" },
+    { url = "https://files.pythonhosted.org/packages/b9/aa/ce692e0488b5e6c0943f52886cf6a15f5d9a6dee7744b190a3a1d67f5d6e/microdf_python-1.3.0-py3-none-any.whl", hash = "sha256:e17757a198648108eae24f39384e27b5ae8061acf1b43fa56520010dc00a7b55", size = 28908, upload-time = "2026-04-17T23:20:56.051Z" },
 ]
 
 [[package]]
@@ -1758,7 +1758,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.9.2" },
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2024.8.6" },
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
-    { name = "microdf-python", specifier = ">=1.0.0" },
+    { name = "microdf-python", specifier = ">=1.3.0" },
     { name = "pandas", specifier = ">=3.0" },
     { name = "policyengine-core", specifier = ">=3.30.1" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },

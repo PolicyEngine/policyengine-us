@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.spm import spm_universe_mask
 
 
 def create_ecpa_only() -> Reform:
@@ -100,7 +101,7 @@ def create_ecpa_only() -> Reform:
                 BENEFITS = [
                     benefit
                     for benefit in BENEFITS
-                    if benefit != "spm_unit_capped_housing_subsidy"
+                    if benefit != "spm_unit_ordinary_housing_subsidy"
                 ]
 
             # Add ECPA child benefit
@@ -116,6 +117,7 @@ def create_ecpa_only() -> Reform:
         unit = USD
 
         def formula(spm_unit, period, parameters):
+            included = spm_universe_mask(spm_unit, period)
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -154,7 +156,7 @@ def create_ecpa_only() -> Reform:
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
 
-            return add(spm_unit, period, BENEFITS)
+            return where(included, add(spm_unit, period, BENEFITS), np.nan)
 
     class income_tax_refundable_credits(Variable):
         value_type = float

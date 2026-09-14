@@ -18,16 +18,13 @@ def test_legacy_cps_file_with_stored_measurements_is_rejected_at_load():
         Microsimulation(dataset=CPS_2023)
 
 
-def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
+def test_legacy_enhanced_cps_requires_source_measurement_universe():
     """enhanced_cps_2024 loads, but cannot produce SPM measurements.
 
-    Its county column does hold five-digit FIPS codes, so geography is not what
-    fails. 18 of its 43,134 SPM units are a lone 15-to-17-year-old carrying no
-    source-backed SPM independence role, so those units classify no measurement
-    adult, and every output that reaches the threshold - household net income,
-    benefits, poverty and marginal tax rates included - fails closed over the
-    file. Assert on the threshold itself: it raises straight off the
-    composition, without building the whole resource chain over 43,134 units.
+    Its five-digit county codes are intact, and 18 units independently lack a
+    source-backed measurement adult. The absent annual universe declaration
+    fails before composition or geography can be used for a threshold. Neither
+    those missing roles nor a valid county establishes the measurement scope.
     """
     import numpy as np
     from spm_calculator.errors import SPMInputError
@@ -43,7 +40,7 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     assert (adults < 1).sum() == 18
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
-    assert error.value.code == "SPM_COMPOSITION_REQUIRED"
+    assert error.value.code == "SPM_UNIVERSE_REQUIRED"
 
 
 def test_county_persists_across_periods():
