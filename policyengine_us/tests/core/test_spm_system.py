@@ -15,7 +15,7 @@ from spm_calculator.policyengine_adapter import FORMULA_OWNED_INPUTS
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
-from policyengine_us.spm import create_spm_provider
+from policyengine_us.spm import create_spm_provider, is_county_fips
 from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path, system
 
 
@@ -395,21 +395,73 @@ def test_unresolved_dataset_build_names_the_uri_it_could_not_resolve(
 
 
 @pytest.mark.parametrize("simulation_type", [Simulation, Microsimulation])
-def test_integer_county_column_requires_county_fips_instead_of_reporting_unavailable(
-    simulation_type,
+@pytest.mark.parametrize(
+    "counties",
+    [
+        # A legacy population file storing the CPS within-state code.
+        [5, 1],
+        # A county code whose decimal form is five digits, so only its type
+        # distinguishes it from the documented input.
+        [36_061, 36_061],
+        # The same mistake for a state whose code carries a leading zero.
+        [6_037, 6_037],
+        [float("nan"), float("nan")],
+    ],
+    ids=["within_state", "five_digit_integer", "dropped_leading_zero", "missing"],
+)
+def test_non_text_county_column_requires_county_fips_however_it_is_spelled(
+    simulation_type, counties
 ):
-    """Legacy population files store the CPS within-state code as an integer."""
+    """``county_fips`` is documented as a five-digit *string*.
+
+    Core maps a ``str`` variable onto the numpy ``object`` dtype, so the model
+    stores an integer column as integers, and every reader stringifies before
+    asking the forecast provider. An integer county code for a state without a
+    leading zero was therefore accepted silently, while the identical mistake
+    for California was reported as an absent county.
+    """
     source = small_dataset()
-    source.household["county_fips"] = [5, 1]
+    source.household["county_fips"] = counties
     simulation = simulation_type(dataset=source)
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
     assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
     assert "five-digit string" in str(error.value)
     assert 'geography_kind="national"' in str(error.value)
-    # The same population computes once an SPM area is selected explicitly.
+    # The same population computes once an SPM area is selected explicitly:
+    # a caller who never asks for a county is never asked for one.
     national = simulation_type(dataset=source, spm={"geography_kind": "national"})
     assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
+
+
+def test_text_county_column_still_resolves_its_county():
+    source = small_dataset()
+    source.household["county_fips"] = ["06037", "36061"]
+    simulation = Microsimulation(dataset=source)
+    assert np.all(simulation.calculate("spm_unit_spm_threshold", 2024) > 0)
+    assert len(simulation.spm_provenance()["geographies"]) == 2
+
+
+@pytest.mark.parametrize(
+    ("value", "accepted"),
+    [
+        ("06037", True),
+        (b"06037", True),
+        (np.str_("36061"), True),
+        (np.bytes_(b"36061"), True),
+        ("6037", False),
+        ("", False),
+        ("360610", False),
+        (36_061, False),
+        (np.int64(36_061), False),
+        (36_061.0, False),
+        (float("nan"), False),
+        (None, False),
+        (True, False),
+    ],
+)
+def test_county_fips_accepts_five_digit_text_only(value, accepted):
+    assert is_county_fips(value) is accepted
 
 
 def small_dataset():

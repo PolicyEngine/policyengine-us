@@ -75,15 +75,65 @@ class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
     request sending an integer or a missing value, would otherwise be told its
     county assignment is unavailable, which points at the artifact instead of
     at the input.
+
+    This provider also remembers which counties the model was handed as
+    something other than text. ``county_fips`` declares ``value_type = str``,
+    but core maps ``str`` to the numpy ``object`` dtype, so the model stores
+    whatever it is given and an integer column stays integers - and both
+    readers of that column stringify before calling a provider. An integer
+    county code for a state without a leading zero therefore arrived here
+    indistinguishable from the same code sent correctly as a string, and was
+    silently accepted, while the same mistake for California (``6037`` for Los
+    Angeles County ``06037``) was reported as an absent county. Recording the
+    input's type at the one point that still sees it, and rejecting it when a
+    county measurement actually needs that county, makes the two fail the same
+    way without demanding SPM geography from a caller who never asks for it.
     """
 
-    def calculate_unit(self, *, year, adults, children, tenure, county_fips=None):
-        if self.geography_kind == "county" and not is_county_fips(county_fips):
+    def __post_init__(self):
+        super().__post_init__()
+        # The base is a frozen dataclass, so this receipt of input types is
+        # attached rather than declared, and carried across snapshots below.
+        object.__setattr__(self, "_untyped_counties", {})
+
+    def snapshot(self, *, copy_receipts=False):
+        snapshot = super().snapshot(copy_receipts=copy_receipts)
+        snapshot._untyped_counties.update(self._untyped_counties)
+        return snapshot
+
+    def record_county_input_types(self, values):
+        """Record each county value that was supplied as something but text."""
+        untyped = self._untyped_counties
+        for value in values:
+            if not isinstance(value, (str, bytes)):
+                untyped.setdefault(str(value), repr(value))
+
+    def require_county_input(self, county_fips):
+        """Reject a county this provider cannot honour as a five-digit string."""
+        if self.geography_kind != "county":
+            return
+        if is_county_fips(county_fips):
+            supplied = self._untyped_counties.get(county_fips)
+            if supplied is None:
+                return
             raise SPMInputError(
                 "SPM_GEOGRAPHY_REQUIRED",
-                f"County selection has no county FIPS input ({county_fips!r}): "
-                f"{COUNTY_INPUT_FIX}",
+                f"County input {supplied} was not supplied as text: {COUNTY_INPUT_FIX}",
             )
+        raise SPMInputError(
+            "SPM_GEOGRAPHY_REQUIRED",
+            f"County selection has no county FIPS input ({county_fips!r}): "
+            f"{COUNTY_INPUT_FIX}",
+        )
+
+    def _amounts(self, year, adults, children, tenure, county):
+        # Check before the memo, so a cache entry filled by a correctly typed
+        # row cannot let an identically spelled untyped row through.
+        self.require_county_input(county)
+        return super()._amounts(year, adults, children, tenure, county)
+
+    def calculate_unit(self, *, year, adults, children, tenure, county_fips=None):
+        self.require_county_input(county_fips)
         return super().calculate_unit(
             year=year,
             adults=adults,
@@ -207,11 +257,15 @@ def shared_policy_class(base):
         return base
     created = SHARED_POLICY_BASES.get(base)
     if created is None:
+        name = f"SharedParameter{base.__name__}"
         created = type(
-            f"SharedParameter{base.__name__}",
-            (SharedParameterPolicy, base),
-            {"shared_policy_base": base},
+            name, (SharedParameterPolicy, base), {"shared_policy_base": base}
         )
+        # Publish it under its own name so a system built from it still pickles:
+        # a class only reachable from a dictionary has no import path.
+        created.__module__ = __name__
+        created.__qualname__ = name
+        globals().setdefault(name, created)
         SHARED_POLICY_BASES[base] = created
     return created
 
@@ -282,6 +336,12 @@ class SharedParameterPolicy:
         # however the reform arrives.
         with self.detaching_parameters():
             return super().apply_reform_set(reform)
+
+    def clone(self):
+        # Core's clone writes the cloned tree into the new instance's
+        # dictionary, where this class's property shadows it, so hand it an
+        # ordinary instance and let the base decide how to clone.
+        return type(self).shared_policy_base.clone(self.unshared_copy())
 
     def unshared_copy(self):
         """A plain shallow copy holding the tree as an ordinary attribute.
@@ -455,6 +515,9 @@ class SPMSimulationMixin:
         self._rebind_holders()
         # Core sets ``trace`` before this simulation owns its policy state.
         self._isolate_parameter_tracing()
+        # Every input path - situation builder, dataset loader, direct
+        # set_input - has landed in the holder by now.
+        self._record_county_input_types()
 
     @property
     def trace(self):
@@ -634,6 +697,25 @@ class SPMSimulationMixin:
             if ismethod(value) and value.__self__ is self:
                 cloned.__dict__[name] = getattr(cloned, value.__func__.__name__)
 
+    def _record_county_input_types(self):
+        """Tell this simulation's provider which counties were not text.
+
+        The county a provider is asked for has already been stringified by the
+        variable that reads the column, so the type has to be captured here,
+        where the stored input is still whatever the caller supplied.
+        """
+        provider = self.tax_benefit_system.spm_forecast_provider
+        record = getattr(provider, "record_county_input_types", None)
+        if record is None:
+            return
+        holder = self.get_holder("county_fips")
+        for known_period in holder.get_known_periods():
+            array = holder.get_array(known_period)
+            if array is None or array.dtype.kind in "SU":
+                # A real text dtype cannot be hiding an integer.
+                continue
+            record(array)
+
     def set_input(self, variable_name, period, value):
         # Core's loader calls set_input for every dataset format. Reject saved
         # measurement/resource outputs here without loading the population twice.
@@ -647,4 +729,7 @@ class SPMSimulationMixin:
                 f"Dataset supplies formula-owned SPM output {variable_name}. "
                 "Use primitive inputs and retain observed outputs under report-only names."
             )
-        return super().set_input(variable_name, period, value)
+        result = super().set_input(variable_name, period, value)
+        if variable_name == "county_fips":
+            self._record_county_input_types()
+        return result
