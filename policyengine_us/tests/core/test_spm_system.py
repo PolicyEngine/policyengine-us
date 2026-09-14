@@ -15,7 +15,7 @@ from spm_calculator.policyengine_adapter import FORMULA_OWNED_INPUTS
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
-from policyengine_us.spm import create_spm_provider
+from policyengine_us.spm import create_spm_provider, is_county_fips
 from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path, system
 
 
@@ -152,8 +152,22 @@ def test_ordinary_simulation_shares_default_policy_state():
     assert policy is not system
     assert policy.parameters is system.parameters
     assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
-    # Entities stay bound to the shared instance, exactly as before this change.
-    assert policy.entities is system.entities
+    # Entities are private and bound to this simulation's own registry: an
+    # entity resolves variable names through the system it is bound to, so
+    # sharing the shared instance's entities would send every holder lookup to
+    # the shared registry.
+    assert policy.entities is not system.entities
+    assert {entity.key for entity in policy.entities} == {
+        entity.key for entity in system.entities
+    }
+    for entity in policy.entities:
+        assert entity._tax_benefit_system is policy
+    for entity in system.entities:
+        assert entity._tax_benefit_system is system
+    # One object per key, so rebinding one reaches every reader of it.
+    by_key = {entity.key: entity for entity in policy.entities}
+    assert policy.person_entity is by_key[policy.person_entity.key]
+    assert all(entity is by_key[entity.key] for entity in policy.group_entities)
     # A private registry, holding the shared instance's own variable objects.
     assert policy.variables is not system.variables
     assert (
@@ -381,21 +395,132 @@ def test_unresolved_dataset_build_names_the_uri_it_could_not_resolve(
 
 
 @pytest.mark.parametrize("simulation_type", [Simulation, Microsimulation])
-def test_integer_county_column_requires_county_fips_instead_of_reporting_unavailable(
-    simulation_type,
+@pytest.mark.parametrize(
+    "counties",
+    [
+        # A legacy population file storing the CPS within-state code.
+        [5, 1],
+        # A county code whose decimal form is five digits, so only its type
+        # distinguishes it from the documented input.
+        [36_061, 36_061],
+        # The same mistake for a state whose code carries a leading zero.
+        [6_037, 6_037],
+        [float("nan"), float("nan")],
+    ],
+    ids=["within_state", "five_digit_integer", "dropped_leading_zero", "missing"],
+)
+def test_non_text_county_column_requires_county_fips_however_it_is_spelled(
+    simulation_type, counties
 ):
-    """Legacy population files store the CPS within-state code as an integer."""
+    """``county_fips`` is documented as a five-digit *string*.
+
+    Core maps a ``str`` variable onto the numpy ``object`` dtype, so the model
+    stores an integer column as integers, and every reader stringifies before
+    asking the forecast provider. An integer county code for a state without a
+    leading zero was therefore accepted silently, while the identical mistake
+    for California was reported as an absent county.
+    """
     source = small_dataset()
-    source.household["county_fips"] = [5, 1]
+    source.household["county_fips"] = counties
     simulation = simulation_type(dataset=source)
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
     assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
     assert "five-digit string" in str(error.value)
     assert 'geography_kind="national"' in str(error.value)
-    # The same population computes once an SPM area is selected explicitly.
+    # The same population computes once an SPM area is selected explicitly:
+    # a caller who never asks for a county is never asked for one.
     national = simulation_type(dataset=source, spm={"geography_kind": "national"})
     assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
+
+
+def test_correcting_a_county_input_clears_its_rejection():
+    """The record has to follow the input, not outlive it."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    simulation = Simulation(situation=situation)
+    with pytest.raises(SPMInputError):
+        simulation.calculate("spm_unit_spm_threshold", 2024)
+
+    simulation.set_input("county_fips", 2024, ["36061"])
+
+    assert simulation.calculate("spm_unit_spm_threshold", 2024)[0] > 0
+
+
+def test_a_county_rejection_does_not_follow_the_system_to_a_new_simulation():
+    """A new simulation reads its own inputs; only a clone keeps these."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    mistyped = Simulation(situation=situation)
+    with pytest.raises(SPMInputError):
+        mistyped.calculate("spm_unit_spm_threshold", 2024)
+
+    # The same county, sent correctly: the lender's record of its own mistake
+    # must not reject it.
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: "36061"}
+    correct = Simulation(
+        tax_benefit_system=mistyped.tax_benefit_system, situation=situation
+    )
+    assert correct.calculate("spm_unit_spm_threshold", 2024)[0] > 0
+    with pytest.raises(SPMInputError):
+        mistyped.clone().calculate("spm_unit_spm_threshold", 2024)
+
+
+def test_a_reform_simulations_baseline_arm_rejects_the_same_county_input():
+    """Core hands the baseline arm a provider that never sees an input."""
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: 36_061}
+    simulation = Simulation(
+        situation=situation,
+        reform=Reform.from_dict(
+            {"gov.irs.credits.ctc.amount.base[0].amount": {"2024": 0}}
+        ),
+    )
+    for arm in (simulation, simulation.baseline):
+        with pytest.raises(SPMInputError) as error:
+            arm.calculate("spm_unit_spm_threshold", 2024)
+        assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+
+
+def test_a_national_selection_records_no_county_input_types():
+    """Nothing will ask that provider for a county, so nothing is scanned."""
+    source = small_dataset()
+    source.household["county_fips"] = [36_061, 36_061]
+    national = Microsimulation(dataset=source, spm={"geography_kind": "national"})
+    provider = national.tax_benefit_system.spm_forecast_provider
+    assert provider._untyped_counties == {}
+    assert np.all(national.calculate("spm_unit_spm_threshold", 2024) > 0)
+
+
+def test_text_county_column_still_resolves_its_county():
+    source = small_dataset()
+    source.household["county_fips"] = ["06037", "36061"]
+    simulation = Microsimulation(dataset=source)
+    assert np.all(simulation.calculate("spm_unit_spm_threshold", 2024) > 0)
+    assert len(simulation.spm_provenance()["geographies"]) == 2
+
+
+@pytest.mark.parametrize(
+    ("value", "accepted"),
+    [
+        ("06037", True),
+        (b"06037", True),
+        (np.str_("36061"), True),
+        (np.bytes_(b"36061"), True),
+        ("6037", False),
+        ("", False),
+        ("360610", False),
+        (36_061, False),
+        (np.int64(36_061), False),
+        (36_061.0, False),
+        (float("nan"), False),
+        (None, False),
+        (True, False),
+    ],
+)
+def test_county_fips_accepts_five_digit_text_only(value, accepted):
+    assert is_county_fips(value) is accepted
 
 
 def small_dataset():
