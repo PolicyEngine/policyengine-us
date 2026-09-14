@@ -258,6 +258,10 @@ def shared_policy_class(base):
     created = SHARED_POLICY_BASES.get(base)
     if created is None:
         name = f"SharedParameter{base.__name__}"
+        if name in globals():
+            # Two bases sharing a class name would otherwise publish one class
+            # under the other's name, and pickle would restore the wrong one.
+            name = f"{name}{len(SHARED_POLICY_BASES) + 1}"
         created = type(
             name, (SharedParameterPolicy, base), {"shared_policy_base": base}
         )
@@ -265,7 +269,7 @@ def shared_policy_class(base):
         # a class only reachable from a dictionary has no import path.
         created.__module__ = __name__
         created.__qualname__ = name
-        globals().setdefault(name, created)
+        globals()[name] = created
         SHARED_POLICY_BASES[base] = created
     return created
 
@@ -309,7 +313,7 @@ class SharedParameterPolicy:
 
     def detach_parameters(self):
         """Take a private copy of the shared tree; report whether one was made."""
-        if not self.shares_parameters:
+        if not self.shares_parameters or self.__dict__["shared_parameters"] is None:
             return False
         # Clear both flags first: cloning reads the tree, and the read must not
         # re-enter this method.
@@ -480,9 +484,11 @@ def share_spm_policy(system):
     policy.variables = dict(system.variables)
     bind_private_entities(policy)
     policy.__class__ = shared_policy_class(type(system))
-    tree = policy.__dict__.pop("parameters", None)
-    if tree is not None:
-        policy.__dict__["shared_parameters"] = tree
+    if "parameters" in policy.__dict__:
+        # An ordinary system holds its tree as an attribute; a system that is
+        # already sharing one holds it where the property below reads it.
+        policy.__dict__["shared_parameters"] = policy.__dict__.pop("parameters")
+    policy.__dict__.setdefault("shared_parameters", None)
     policy.__dict__["shares_parameters_with_lender"] = True
     policy.__dict__["detaching_shared_parameters"] = False
     policy.spm_forecast_provider = system.spm_forecast_provider.snapshot(
