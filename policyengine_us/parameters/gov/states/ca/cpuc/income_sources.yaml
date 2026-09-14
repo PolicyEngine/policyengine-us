@@ -43,7 +43,9 @@ values:
   # The form lists "housing and military subsidies" among the revenues that
   # make up total gross annual household income, with no netting against rent,
   # no cap and no poverty-measurement valuation anywhere on it - so the entry
-  # is the housing subsidy the household receives.
+  # is the housing subsidy itself, at the amount the model computes for the
+  # household, exactly as snap, tanf, ssi and wic above are this model's
+  # amounts rather than an applicant's reported ones.
   #
   # It was spm_unit_capped_housing_subsidy, the Census SPM's housing subsidy
   # capped at the housing portion of the SPM threshold less the tenant

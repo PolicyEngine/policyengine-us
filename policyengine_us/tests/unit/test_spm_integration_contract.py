@@ -501,7 +501,7 @@ def test_care_eligibility_is_the_same_under_every_spm_geography(earnings, eligib
     assert unconfigured.spm_provenance()["years"] == {}
 
 
-def test_cpuc_countable_income_counts_the_housing_assistance_received():
+def test_cpuc_countable_income_counts_the_full_housing_assistance():
     """Non-vacuity: the subsidy is in countable income at its full amount.
 
     Equal answers across geographies would also hold if the entry had simply
@@ -512,4 +512,43 @@ def test_cpuc_countable_income_counts_the_housing_assistance_received():
     assert assistance > 0
     assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
         40_700 + assistance
+    )
+
+
+def test_cpuc_counts_modelled_housing_assistance_for_a_non_recipient_renter():
+    """The entry counts what the model computes, as every other entry does.
+
+    `housing_assistance` is not a report of what a household receives:
+    `is_eligible_for_housing_assistance` is
+    ``receives_housing_assistance | (is_renter & is_income_eligible)`` and
+    `takes_up_housing_assistance_if_eligible` defaults to true, so an
+    income-eligible California renter who sends
+    ``receives_housing_assistance: false`` is still modelled as holding a
+    voucher, and that amount now counts toward CARE income at its full size.
+
+    This is how the rest of the list already works - `snap`, `tanf`, `ssi` and
+    `wic` are the model's amounts too, not the applicant's reported ones - and
+    the entry it replaced consulted the same modelled amount, merely capped.
+    But the cap incidentally suppressed it: the household below has $0 of
+    capped subsidy and $11,580 of modelled assistance, so this change moves it
+    out of CARE. Pinned here so the choice is visible and reviewable rather
+    than incidental.
+    """
+    situation = household(earnings=35_000, county="06037", rent=24_000)
+    situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: False}
+    situation["spm_units"]["spm_unit"]["pre_subsidy_electricity_expense"] = {
+        YEAR: 1_800
+    }
+    situation["households"]["household"]["ca_care_categorically_eligible"] = {
+        YEAR: False
+    }
+    simulation = Simulation(situation=situation, spm={"geography_kind": "national"})
+    assert not simulation.calculate("receives_housing_assistance", YEAR)[0]
+    assert simulation.calculate("is_eligible_for_housing_assistance", YEAR)[0]
+    assistance = simulation.calculate("housing_assistance", YEAR)[0]
+    assert assistance > 0
+    # The capped entry this replaced contributed nothing for this household.
+    assert simulation.calculate("spm_unit_capped_housing_subsidy", YEAR)[0] == 0
+    assert simulation.calculate("ca_cpuc_countable_income", YEAR)[0] == pytest.approx(
+        35_000 + assistance
     )
