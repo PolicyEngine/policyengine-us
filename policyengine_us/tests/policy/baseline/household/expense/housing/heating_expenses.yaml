@@ -193,3 +193,25 @@
         heating_type: UNSPECIFIED
   output:
     heating_expenses: [900, 300]
+
+- name: Case 11, a two-adult tax unit still counts as one tax unit and reads the full bill.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+  output:
+    # The formula counts tax unit heads, not members, so a couple filing
+    # jointly is a sole tax unit.
+    heating_expenses: 1_200
