@@ -102,3 +102,58 @@
         state_code: MA
   output:
     ma_ccfa_total_copay: 0
+
+- name: Homeless families have no parent fee starting October 2023.
+  period: 2023
+  input:
+    state_code: MA
+    is_homeless: true
+    ma_tafdc_eligible: false
+    ma_ccfa_base_copay: 100 * 12
+    ma_ccfa_eligible_child: true
+  output:
+    ma_ccfa_total_copay:
+      2023-09: 100
+      2023-10: 0
+
+- name: Nonparent caregiver families owe no fee even with historical dependent income.
+  period: 2022-02
+  input:
+    state_code: {2022: MA}
+    ma_ccfa_is_nonparent_caregiver_family: {2022: true}
+    ma_ccfa_base_copay: 100
+    ma_ccfa_eligible_child: true
+    ma_tafdc_eligible: false
+  output:
+    ma_ccfa_total_copay: 0
+
+- name: Part-time authorization halves each child's fee after the age-ordered sibling discount.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        ma_ccfa_eligible_child: false
+      older_child:
+        age: 10
+        ma_ccfa_eligible_child: true
+        ma_ccfa_has_part_time_authorization: true
+      younger_child:
+        age: 2
+        ma_ccfa_eligible_child: true
+      middle_child:
+        age: 5
+        ma_ccfa_eligible_child: true
+        ma_ccfa_has_part_time_authorization: true
+    spm_units:
+      spm_unit:
+        members: [parent, older_child, younger_child, middle_child]
+        ma_ccfa_base_copay: 100
+        ma_tafdc_eligible: false
+    households:
+      household:
+        members: [parent, older_child, younger_child, middle_child]
+        state_code: MA
+  output:
+    # Youngest 100; second youngest 100 * .5 * .5; oldest 100 * .25 * .5.
+    ma_ccfa_total_copay: 137.5

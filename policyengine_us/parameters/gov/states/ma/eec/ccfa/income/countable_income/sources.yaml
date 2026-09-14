@@ -16,12 +16,61 @@ values:
     - ssi
     - unemployment_compensation
     - workers_compensation
-    # The following are exempted income
-    # ma_liheap, SNAP, ma_eaedc, ma_tafdc
-    # disability_benefits
-    # capital_gains
-
-
+  2022-02-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    - sstb_self_employment_income_before_lsr
+    - farm_operations_income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - estate_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - alimony_income
+    - child_support_received
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - workers_compensation
+  2023-10-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    - sstb_self_employment_income_before_lsr
+    - farm_operations_income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - estate_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - alimony_income
+    - unemployment_compensation
+    - workers_compensation
+  2025-04-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    - sstb_self_employment_income_before_lsr
+    - farm_operations_income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - estate_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - alimony_income
+    - unemployment_compensation
+    - workers_compensation
+    - ma_pfml_received
 metadata:
   unit: list
   period: year
@@ -29,3 +78,11 @@ metadata:
   reference:
     - title: Massachusetts CCFA Policy Manual
       href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37
+    - title: EEC Financial Assistance Procedures Manual, Appendix A, self-employment
+      href: https://www.mass.gov/doc/financial-assistance-procedures-manual-for-subsidy-administrators/download#page=114
+    - title: EEC Policy Advisory Field Operations 2023-4, income exclusions effective October 1, 2023
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=3
+    - title: EEC Policy Advisory CCFA-25-03, parental leave and PFML income
+      href: https://archives.lib.state.ma.us/server/api/core/bitstreams/5c538ae6-69c2-43df-bf85-10d2f5e5bfc2/content#page=6
+    - title: EEC Income Eligible Policies, Income
+      href: https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=21

@@ -13,3 +13,9 @@ class ma_ccfa_asset_eligible(Variable):
         p = parameters(period).gov.states.ma.eec.ccfa.assets
         total_assets = spm_unit("spm_unit_assets", period.this_year)
         return total_assets < p.limit
+
+    def formula_2022_02_01(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ma.eec.ccfa.assets
+        total_assets = spm_unit("spm_unit_assets", period.this_year)
+        homeless = spm_unit.household("is_homeless", period.this_year)
+        return (total_assets <= p.limit) | homeless

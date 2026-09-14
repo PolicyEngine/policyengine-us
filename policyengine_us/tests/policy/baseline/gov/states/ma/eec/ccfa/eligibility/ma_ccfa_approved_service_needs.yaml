@@ -1,0 +1,229 @@
+- name: Approved parental leave becomes a service need in April 2025.
+  period: 2025
+  input:
+    age: 35
+    state_code: MA
+    weekly_hours_worked_before_lsr: 0
+    ma_ccfa_approved_parental_leave: true
+  output:
+    ma_ccfa_activity_eligible:
+      2025-03: false
+      2025-04: true
+- name: Approved domestic violence becomes a service need in April 2025.
+  period: 2025
+  input:
+    age: 35
+    state_code: MA
+    weekly_hours_worked_before_lsr: 0
+    ma_ccfa_approved_domestic_violence: true
+  output:
+    ma_ccfa_activity_eligible:
+      2025-03: false
+      2025-04: true
+- name: Approved substance use treatment becomes a service need in April 2025.
+  period: 2025
+  input:
+    age: 35
+    state_code: MA
+    weekly_hours_worked_before_lsr: 0
+    ma_ccfa_approved_substance_use_treatment: true
+  output:
+    ma_ccfa_activity_eligible:
+      2025-03: false
+      2025-04: true
+- name: Approved pathway becomes a service need in April 2025.
+  period: 2025
+  input:
+    age: 35
+    state_code: MA
+    weekly_hours_worked_before_lsr: 0
+    ma_ccfa_approved_pathway: true
+  output:
+    ma_ccfa_activity_eligible:
+      2025-03: false
+      2025-04: true
+- name: Approved military deployment becomes a service need in April 2025.
+  period: 2025
+  input:
+    age: 35
+    state_code: MA
+    weekly_hours_worked_before_lsr: 0
+    ma_ccfa_approved_military_deployment: true
+  output:
+    ma_ccfa_activity_eligible:
+      2025-03: false
+      2025-04: true
+- name: One parent disability does not waive the other parent service need.
+  period: 2025-04
+  input:
+    people:
+      parent1:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        is_disabled:
+          2025: true
+        is_pregnant:
+          2025: false
+      parent2:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        state_code:
+          2025: MA
+  output:
+    ma_ccfa_activity_eligible: false
+- name: Pregnancy alone does not establish an approved parental leave service need.
+  period: 2025-04
+  input:
+    people:
+      parent1:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        is_disabled:
+          2025: false
+        is_pregnant:
+          2025: true
+      parent2:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        state_code:
+          2025: MA
+  output:
+    ma_ccfa_activity_eligible: false
+- name: Military deployment waives the second parent service need.
+  period: 2025-04
+  input:
+    people:
+      parent1:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        ma_ccfa_approved_military_deployment: true
+      parent2:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        state_code:
+          2025: MA
+  output:
+    ma_ccfa_activity_eligible: true
+- name: Parental leave does not waive the second parent service need.
+  period: 2025-04
+  input:
+    people:
+      parent1:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        ma_ccfa_approved_parental_leave: true
+      parent2:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        state_code:
+          2025: MA
+  output:
+    ma_ccfa_activity_eligible: false
+- name: Both parents cannot use parental leave simultaneously.
+  period: 2025-04
+  input:
+    people:
+      parent1:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        ma_ccfa_approved_parental_leave: true
+      parent2:
+        age:
+          2025: 35
+        is_tax_unit_head_or_spouse:
+          2025: true
+        ma_ccfa_approved_parental_leave: true
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        state_code:
+          2025: MA
+  output:
+    ma_ccfa_activity_eligible: false
+- name: Unapproved 15-hour employment does not replace the general 20-hour floor.
+  period: 2025-04
+  input:
+    age:
+      2025: 35
+    state_code:
+      2025: MA
+    weekly_hours_worked_before_lsr:
+      2025: 15
+  output:
+    ma_ccfa_activity_eligible: false
+- name: Retirement exemption requires retirement as well as age.
+  period: 2025-04
+  input:
+    age:
+      2025: 65
+    state_code:
+      2025: MA
+    is_retired:
+      2025: false
+  output:
+    ma_ccfa_activity_eligible: false
