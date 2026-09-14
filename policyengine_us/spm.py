@@ -337,6 +337,22 @@ class SharedParameterPolicy:
         with self.detaching_parameters():
             return super().apply_reform_set(reform)
 
+    def modify_parameters(self, modifier_function):
+        # The documented way for a reform to edit parameters, and core hands
+        # the live tree to the modifier rather than a copy.
+        self.detach_parameters()
+        return super().modify_parameters(modifier_function)
+
+    def load_extension(self, extension):
+        # Core merges the extension's parameters into this tree in place.
+        self.detach_parameters()
+        return super().load_extension(extension)
+
+    def add_abolition_parameters(self):
+        # Core adds an abolition child per variable, in place.
+        self.detach_parameters()
+        return super().add_abolition_parameters()
+
     def clone(self):
         # Core's clone writes the cloned tree into the new instance's
         # dictionary, where this class's property shadows it, so hand it an

@@ -302,3 +302,24 @@ def test_parameter_reform_on_a_shared_branch_leaves_its_parent_alone():
     assert branch.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
     assert simulation.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     assert simulation.tax_benefit_system.parameters is system.parameters
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        lambda policy: policy.modify_parameters(
+            {SINGLE_STANDARD_DEDUCTION: {"year:2024:1": 100_000}}
+        ),
+        lambda policy: policy.add_abolition_parameters(),
+    ],
+    ids=["modify_parameters", "add_abolition_parameters"],
+)
+def test_in_place_parameter_edits_detach_before_they_write(mutate):
+    """Core edits these into the live tree rather than a copy of it."""
+    fingerprint_before = parameter_fingerprint(system)
+    policy = Simulation(situation=earner_situation()).tax_benefit_system
+
+    mutate(policy)
+
+    assert policy.parameters is not system.parameters
+    assert parameter_fingerprint(system) == fingerprint_before
