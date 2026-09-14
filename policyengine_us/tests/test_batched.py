@@ -484,22 +484,52 @@ def split_into_batches(
 
 # pytest exits 5 when a path collects no tests (see pytest.ExitCode).
 PYTEST_NO_TESTS_COLLECTED = 5
-# How long the runner may take to exit after printing its summary line before
-# this script stops waiting for a status and kills it.
-SUMMARY_EXIT_GRACE_SECONDS = 30
+# How long a child gets to die after being asked to, before it is killed.
+TERMINATE_GRACE_SECONDS = 5
+
+# The runner's process exit status is not reachable in bounded time. Once
+# policyengine-core's pytest.main() returns, interpreter teardown frees the
+# tax-benefit systems the run cached, which is slow: measured on this suite, a
+# single small state took 18.2s to exit after printing its summary, and the
+# large state batches took over 30s. That is why the runner is terminated as
+# soon as it reports rather than waited out - and why its status used to be
+# discarded along with it, leaving the printed summary as the only evidence.
+#
+# So ask for the status at the only moment it is both known and free: run the
+# command through a shim that writes pytest's own return value to stdout the
+# instant pytest.main() hands it back, before any teardown. Measured at the
+# same moment as the summary line, so this costs no wall clock, and the child
+# is still terminated exactly as promptly as before.
+BATCH_EXIT_MARKER = "__POLICYENGINE_BATCH_EXIT__"
+
+RUNNER_SHIM = f"""
+import runpy
+import sys
+
+code = 0
+try:
+    runpy.run_module(
+        "policyengine_core.scripts.policyengine_command", run_name="__main__"
+    )
+except SystemExit as requested:
+    code = requested.code
+sys.stdout.write("\\n{BATCH_EXIT_MARKER} %s\\n" % (0 if code is None else code))
+sys.stdout.flush()
+sys.exit(code)
+"""
+
+BATCH_EXIT_PATTERN = re.compile(rf"{BATCH_EXIT_MARKER} (-?\d+)")
 
 
 def build_test_command(test_paths: List[str], python_exe: str) -> List[str]:
-    """The policyengine-core command one batch runs in its own subprocess."""
+    """The policyengine-core command one batch runs in its own subprocess.
+
+    `python -c` stops consuming options after the program text, so everything
+    after RUNNER_SHIM reaches policyengine_command's own argument parser
+    unchanged.
+    """
     return (
-        [
-            python_exe,
-            "-m",
-            "policyengine_core.scripts.policyengine_command",
-            "test",
-        ]
-        + test_paths
-        + ["-c", "policyengine_us"]
+        [python_exe, "-c", RUNNER_SHIM, "test"] + test_paths + ["-c", "policyengine_us"]
     )
 
 
@@ -517,12 +547,12 @@ def describe_exit_status(returncode: Optional[int]) -> str:
 
 
 def batch_status(returncode: Optional[int]) -> str:
-    """Batch outcome, decided by the child's exit status and nothing else.
+    """Batch outcome, decided by the runner's exit status and nothing else.
 
     policyengine-core's `test` command is `sys.exit(pytest.main(...))`
-    (scripts/run_test.py), so the child reports pytest's own ExitCode and only
-    0 is a pass. Reading the printed summary instead loses every outcome pytest
-    does not express as a failure count:
+    (scripts/run_test.py), so the status is pytest's own ExitCode and only 0 is
+    a pass. Reading the printed summary instead loses every outcome pytest does
+    not express as a failure count:
 
     * "1 passed, 1 error" prints no failed count at all, so the old parse read
       an errored batch as success while the child exited 1.
@@ -600,35 +630,19 @@ def run_batch(
     try:
         test_completed = False
         summary_reported_pass = False
-        returncode: Optional[int] = None
+        reported_returncode: Optional[int] = None
         output_lines = []
         output_text = ""
 
-        def drain_until_exit(timeout: float) -> Optional[int]:
-            """Wait out the child, keeping output and RSS sampling going.
-
-            Returns its exit status, or None if it is still alive when the
-            grace period expires. Output has to keep being drained while we
-            wait: a child blocked writing into a full pipe would otherwise
-            look like a hang of our own making.
-            """
-            deadline = time.time() + timeout
-            while True:
-                ready, _, _ = select.select([process.stdout], [], [], 0.1)
-                if ready:
-                    chunk = os.read(process.stdout.fileno(), 4096)
-                    if chunk:
-                        text = chunk.decode(errors="replace")
-                        emit(text, end="")
-                        output_lines.append(text)
-                # Sample before poll(): poll() reaps the child, after which
-                # /proc/<pid>/status is gone.
-                sample_rss()
-                code = process.poll()
-                if code is not None:
-                    return code
-                if time.time() >= deadline:
-                    return None
+        def stop_process() -> None:
+            """End a child that has already told us how it finished."""
+            process.terminate()
+            try:
+                process.wait(timeout=TERMINATE_GRACE_SECONDS)
+            except subprocess.TimeoutExpired:
+                emit("    Force killing process...")
+                process.kill()
+                process.wait()
 
         # Monitor output line by line
         while True:
@@ -678,39 +692,37 @@ def run_batch(
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(
+            if not test_completed and re.search(
                 r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
                 output_text,
             ):
                 test_completed = True
-                # The summary line only decides how loudly we report a
-                # disagreement below; batch_status() reads the exit status.
+                # The summary line only decides how loudly a disagreement is
+                # reported below; batch_status() reads the runner's status.
                 failed_match = re.search(r"(\d+) failed", output_text)
                 summary_reported_pass = not failed_match or (
                     int(failed_match.group(1)) == 0
                 )
 
-                emit("\n    Tests reported; waiting for the exit status...")
-
-                # Wait for the runner to exit on its own — its status is what
-                # decides the batch. Only kill it if it stops responding, and
-                # then report the batch rather than crediting it a pass.
-                returncode = drain_until_exit(SUMMARY_EXIT_GRACE_SECONDS)
-                if returncode is None:
-                    emit(
-                        f"    No exit after {SUMMARY_EXIT_GRACE_SECONDS}s; "
-                        "force killing process..."
-                    )
-                    process.terminate()
-                    try:
-                        process.wait(timeout=5)
-                    except subprocess.TimeoutExpired:
-                        process.kill()
-                        process.wait()
+            # The runner has reported pytest's return value and is now only
+            # tearing down, which takes tens of seconds. Stop it here, as
+            # before, but keep the status it just gave us.
+            marker_match = BATCH_EXIT_PATTERN.search(output_text)
+            if marker_match:
+                reported_returncode = int(marker_match.group(1))
+                emit(
+                    "\n    Runner reported "
+                    f"{describe_exit_status(reported_returncode)}; "
+                    "terminating process..."
+                )
+                # Final sample while the pid still exists — captures the
+                # end-of-run high-water mark.
+                sample_rss()
+                stop_process()
                 break
 
-        # If we didn't detect completion, wait for process with timeout
-        if not test_completed:
+        # If the runner never reported, wait for the process with a timeout
+        if reported_returncode is None and process.poll() is None:
             try:
                 # Wait up to 30 minutes total
                 elapsed = time.time() - start_time
@@ -737,19 +749,20 @@ def run_batch(
 
         elapsed = time.time() - start_time
 
-        if returncode is None:
-            # Either the loop broke on the child exiting by itself, or it was
-            # killed above; poll() has the status in both cases.
-            returncode = process.poll()
+        # The runner's own report wins: the process status after a terminate is
+        # the signal we sent it, not how the tests went.
+        returncode = (
+            reported_returncode if reported_returncode is not None else process.poll()
+        )
 
         status = batch_status(returncode)
         if test_completed and summary_reported_pass and status != "passed":
             # The case that used to be reported as a pass: pytest printed no
-            # failure count (e.g. "1 passed, 1 error") yet exited nonzero.
+            # failure count (e.g. "1 passed, 1 error") yet finished nonzero.
             emit(
                 f"    ❌ {batch_name} printed a summary with no failures but "
                 f"finished with {describe_exit_status(returncode)}; "
-                "the exit status decides."
+                "the runner's status decides."
             )
         emit(
             f"\n    Batch completed in {elapsed:.1f}s "

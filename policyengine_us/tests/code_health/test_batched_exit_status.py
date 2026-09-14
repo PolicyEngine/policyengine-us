@@ -1,17 +1,22 @@
-"""The batch runner's verdict must come from the child's exit status.
+"""The batch runner's verdict must come from the runner's own exit status.
 
 `test_batched.py` used to decide a batch by parsing the pytest summary line:
 absent a `"N failed"` count it called the batch passed, then terminated the
-child without ever reading its exit status. pytest prints no failure count for
-an errored run, so a real child producing
+child without ever reading its status. pytest prints no failure count for an
+errored run, so a real child producing
 
     1 passed, 1 error in 0.01s          (actual exit status: 1)
 
 was reported as a passing batch, and `make test-yaml-*` exited 0 on it.
 
+The status cannot simply be waited for: policyengine-core takes tens of seconds
+to tear down after pytest.main() returns, which is why the child is terminated
+as soon as it reports. So the command runs through a shim that writes pytest's
+return value to stdout the instant it has one, and the runner reads that.
+
 Each test here drives the real `run_batch` against a real subprocess whose
-output and exit status are scripted, so the runner's own Popen/select/terminate
-path is what is under test, not a stand-in for it.
+output and status are scripted, so the runner's own Popen/select/terminate path
+is what is under test, not a stand-in for it.
 """
 
 import importlib.util
@@ -27,9 +32,23 @@ batched = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(batched)
 
 
-def scripted_child(summary: str, exit_code: int, then_hang: bool = False):
-    """A command printing a pytest-shaped summary, then exiting as told."""
+def scripted_child(
+    summary: str,
+    exit_code: int,
+    then_hang: bool = False,
+    report: bool = True,
+):
+    """A command that prints a pytest-shaped summary, then finishes as told.
+
+    With report=True it also writes the shim's exit marker, standing in for
+    the real runner; with report=False it stands in for a child that died
+    before pytest could hand back a status.
+    """
     body = f"import sys, time\nprint({summary!r}, flush=True)\n"
+    if report:
+        body += (
+            f"print('{batched.BATCH_EXIT_MARKER} ' + str({exit_code}), flush=True)\n"
+        )
     if then_hang:
         body += "time.sleep(600)\n"
     body += f"sys.exit({exit_code})\n"
@@ -92,12 +111,43 @@ def test_a_reported_failure_stays_a_failure():
     assert result["status"] == "failed"
 
 
-def test_a_runner_that_hangs_after_its_summary_is_not_credited_a_pass(monkeypatch):
-    """A killed child reports no status, and an unreported batch is not a pass."""
-    monkeypatch.setattr(batched, "SUMMARY_EXIT_GRACE_SECONDS", 1)
+def test_a_slow_teardown_after_a_clean_run_still_passes():
+    """The real runner takes tens of seconds to exit; that is not a failure.
+
+    Waiting the child out instead of reading its report turned every large
+    green batch red: measured on this suite, a single small state took 18.2s
+    to exit after its summary and the large state batches took over 30s.
+    """
     result = run_scripted(PASSING_SUMMARY, 0, then_hang=True)
-    # Killed by SIGTERM/SIGKILL rather than exiting; either way, not 0.
-    assert result["returncode"] != 0
+    assert result["returncode"] == 0
+    assert result["status"] == "passed"
+
+
+def test_a_slow_teardown_after_a_failed_run_still_fails():
+    result = run_scripted(FAILING_SUMMARY, 1, then_hang=True)
+    assert result["returncode"] == 1
+    assert result["status"] == "failed"
+
+
+def test_a_child_killed_before_reporting_is_not_credited_a_pass():
+    """No report and a nonzero status: an OOM kill mid-run, not a pass."""
+    result = run_scripted(PASSING_SUMMARY, 137, report=False)
+    assert result["returncode"] == 137
+    assert result["status"] == "failed"
+
+
+def test_the_shim_reports_the_real_runner_status():
+    """End to end against policyengine-core, not a scripted stand-in.
+
+    An empty directory collects nothing, so pytest exits 5 - a status the
+    summary line never carries and the runner now reports.
+    """
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as empty:
+        result = batched.run_batch([empty], "Batch 1", stream=False)
+    assert batched.BATCH_EXIT_MARKER in result["output"]
+    assert result["returncode"] == batched.PYTEST_NO_TESTS_COLLECTED
     assert result["status"] == "failed"
 
 
