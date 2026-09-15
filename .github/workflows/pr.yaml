@@ -22,6 +22,8 @@ jobs:
           version: "0.12.13"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
+      - name: Rehearse the release version refresh
+        run: python .github/release_lock.py --rehearse
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
@@ -38,7 +40,73 @@ jobs:
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
-        run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
+        run: python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+  CandidateWheel:
+    name: Unpublished release wheel (${{ matrix.kind }})
+    needs: [ReleaseLock, ReleaseLockTests]
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        kind: [rc1, final]
+    steps:
+      - name: Checkout reviewed PR head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Detect the release tooling on the PR head
+        id: tooling
+        # The job builds from the reviewed head, not the merge commit, so a
+        # branch that predates the release tooling has no script to run.
+        # Skip the build with a notice instead of failing the PR; the
+        # ReleaseLock job above still checks the lock on the merge commit.
+        run: |
+          if [ -f .github/release_lock.py ] && [ -f .github/release_build.py ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge main into the branch to build its candidate wheel."
+          fi
+      - name: Set up Python
+        if: steps.tooling.outputs.present == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14.7"
+      - name: Install uv
+        if: steps.tooling.outputs.present == 'true'
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_lock.py --committed
+      - name: Predict release version with the release helper
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_build.py --prepare "${{ matrix.kind }}"
+      - name: Refresh only the release version in the registry lock
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_lock.py --refresh
+      - name: Install package
+        if: steps.tooling.outputs.present == 'true'
+        run: uv sync --locked --extra dev
+      - name: Build package from unchanged policy source
+        if: steps.tooling.outputs.present == 'true'
+        run: uv run --no-sync make
+      - name: Record and verify release build
+        if: steps.tooling.outputs.present == 'true'
+        run: uv run --no-sync python .github/release_build.py
+      - name: Retain unpublished wheel and build receipt
+        if: steps.tooling.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-wheel-${{ matrix.kind }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/*.whl
+            release-build/receipt.json
+          if-no-files-found: error
+          retention-days: 14
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
@@ -245,8 +313,6 @@ jobs:
           name: codecov-umbrella
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-      - name: Build package
-        run: uv build
   Baseline:
     needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
