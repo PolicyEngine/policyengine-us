@@ -233,6 +233,41 @@ jobs:
       - name: Dataset copy/extension tests (real pandas semantics per Python version)
         # Fixture-based and requires no dataset downloads.
         run: uv run --no-sync --python "${{ matrix.python-version }}" python -m pytest policyengine_us/tests/microsimulation/data/ -q
+  LatestCoreCompatibility:
+    needs: ReleaseLock
+    name: Latest compatible Core (${{ matrix.group }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: household-api-partners
+            target: test-yaml-no-structural-other-partners
+          - group: python-tests
+            target: test-other-python
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run latest-Core compatibility tests (${{ matrix.group }})
+        run: uv run --no-sync make ${{ matrix.target }}
   Quick-Feedback:
     needs: ReleaseLock
     name: Quick Feedback (Selective Tests + Coverage)
