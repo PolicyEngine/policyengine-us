@@ -37,7 +37,6 @@ MICRODATA_UPRATING_OVERRIDES = {
     "social_security": "calibration.gov.irs.soi.social_security",
     "s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
     "spm_unit_weight": "calibration.gov.census.populations.total",
-    "spm_unit_spm_threshold": DEFAULT_MICRODATA_UPRATING,
     "state_and_local_sales_or_income_tax": DEFAULT_MICRODATA_UPRATING,
     "sstb_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
     "taxable_pension_income": "calibration.gov.irs.soi.taxable_pension_income",

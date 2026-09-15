@@ -9,6 +9,7 @@ class mo_tanf_gross_unearned_income(Variable):
     definition_period = MONTH
     reference = (
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-05/",
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
     )
     defined_for = StateCode.MO
@@ -19,5 +20,6 @@ class mo_tanf_gross_unearned_income(Variable):
         # income.
         person = spm_unit.members
         member = person("mo_tanf_is_assistance_unit_member", period)
-        unearned = person("tanf_gross_unearned_income", period)
+        p = parameters(period).gov.states.mo.dss.tanf.income.sources
+        unearned = add(person, period, p.unearned)
         return spm_unit.sum(unearned * member)

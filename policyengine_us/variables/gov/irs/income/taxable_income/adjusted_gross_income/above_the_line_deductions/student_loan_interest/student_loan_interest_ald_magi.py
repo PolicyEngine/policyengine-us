@@ -30,7 +30,7 @@ class student_loan_interest_ald_magi(Variable):
         person_ald_vars = [f"{ald}_person" for ald in person_alds]
         ald_sum_person = add(person, period, person_ald_vars)
         all_alds = p_irs.ald.deductions
-        other_alds = list(
+        other_alds = sorted(
             set(all_alds)
             - set(person_alds)
             - set(p_irs.ald.student_loan_interest.magi.excluded_alds)

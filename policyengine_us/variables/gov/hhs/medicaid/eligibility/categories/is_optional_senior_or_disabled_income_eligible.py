@@ -9,7 +9,8 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         "or people with disabilities"
     )
     documentation = (
-        "True if the tax unit's countable income after the state-specific "
+        "True if the countable income of the individual, or of the married "
+        "couple living together, after the state-specific "
         "income disregard does not exceed the income limit that the state sets "
         "for its optional pathway for aged, blind, or disabled individuals who "
         "are not otherwise SSI-eligible. The limits are income maxima, so "
@@ -22,7 +23,9 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         personal_income = person(
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
-        income = person.tax_unit.sum(personal_income)
+        # SSI financial responsibility rules (42 CFR 435.602): the unit is
+        # the individual or the married couple, not the tax filing unit.
+        income = person.marital_unit.sum(personal_income)
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )
