@@ -15,8 +15,10 @@ class ma_gross_income(Variable):
         federal_gross_income = add(tax_unit, period, ["irs_gross_income"])
         # Add back lines 6/7 losses dropped by irs_gross_income.
         loss_adjustment = tax_unit("ma_gross_income_loss_adjustment", period)
-        # Exclude foreign earned income and Social Security.
+        # Exclude foreign earned income, Social Security, and state/local tax refunds.
+        # Per M.G.L. c. 62 § 2 and Form 1 Schedule X Line 4, state/local refunds are not MA income.
         foreign_earned_income = tax_unit("foreign_earned_income_exclusion", period)
         social_security_in_agi = add(tax_unit, period, ["taxable_social_security"])
-        deductions = foreign_earned_income + social_security_in_agi
+        salt_refund_income = add(tax_unit, period, ["salt_refund_income"])
+        deductions = foreign_earned_income + social_security_in_agi + salt_refund_income
         return max_(0, federal_gross_income + loss_adjustment - deductions)
