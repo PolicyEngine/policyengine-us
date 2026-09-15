@@ -1,1 +1,0 @@
-Correct Massachusetts CCFA countable income, including dependent and minor earnings exclusions, parent support-paid deductions, parent-only income and Social Security and veterans disability exclusions from October 2023, and PFML benefits received.
