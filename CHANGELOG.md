@@ -1,3 +1,15 @@
+## [2.4.1] - 2026-09-15
+
+### Changed
+
+- Simplified uprating metadata in breakdown parameters using `propagate_metadata_to_children`.
+
+### Fixed
+
+- Gave `md_ccs_service_unit` an explicit `UNIT_1` default so negative or NaN childcare hours resolve to one unit instead of an integer 0 that cannot be encoded as a service unit.
+- Corrected the effective year of Montana's $12,600 elderly homeowner/renter credit income exclusion to 2022 (the 2021 value is $6,300).
+
+
 ## [2.4.0] - 2026-09-15
 
 ### Added
