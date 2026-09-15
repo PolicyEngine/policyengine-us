@@ -1,0 +1,217 @@
+# Initiative 195 brackets: 3.7% to $25k, 4.2% to $100k, 4.4% to $500k,
+# 7.4% to $750k, 7.9% to $1m, 8.4% above.
+# The in_effect switch defaults to false, so this case exercises the
+# baseline flat-tax path deliberately.
+- name: Case 1, flat tax applies when the reform is not in effect.
+  period: 2027
+  input:
+    state_code: CO
+    co_taxable_income: 50_000
+  output:
+    # 50,000 * 0.044 = 2,200.
+    co_income_tax_before_non_refundable_credits: 2_200
+
+- name: Case 2, income in the first bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 20_000
+  output:
+    # 20,000 * 0.037 = 740.
+    co_income_tax_before_non_refundable_credits: 740
+
+- name: Case 3, income in the second bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 50_000
+  output:
+    # 25,000 * 0.037 + 25,000 * 0.042 = 925 + 1,050 = 1,975.
+    co_income_tax_before_non_refundable_credits: 1_975
+
+- name: Case 4, joint filers face the same brackets as single filers.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    filing_status: JOINT
+    co_taxable_income: 50_000
+  output:
+    # Same as the single-filer second-bracket case: 925 + 1,050 = 1,975.
+    co_income_tax_before_non_refundable_credits: 1_975
+
+- name: Case 5, income exactly at the second bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 100_000
+  output:
+    # 25,000 * 0.037 + 75,000 * 0.042 = 925 + 3,150 = 4,075.
+    co_income_tax_before_non_refundable_credits: 4_075
+
+- name: Case 6, income in the third bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 300_000
+  output:
+    # 925 + 3,150 + 200,000 * 0.044 = 925 + 3,150 + 8,800 = 12,875.
+    co_income_tax_before_non_refundable_credits: 12_875
+
+- name: Case 7, income in the fourth bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 600_000
+  output:
+    # 925 + 75,000 * 0.042 + 400,000 * 0.044 + 100,000 * 0.074
+    # = 925 + 3,150 + 17,600 + 7,400 = 29,075.
+    co_income_tax_before_non_refundable_credits: 29_075
+
+- name: Case 8, income in the fifth bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 900_000
+  output:
+    # 925 + 3,150 + 17,600 + 250,000 * 0.074 + 150,000 * 0.079
+    # = 925 + 3,150 + 17,600 + 18,500 + 11,850 = 52,025.
+    co_income_tax_before_non_refundable_credits: 52_025
+
+- name: Case 9, income in the top bracket.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 1_200_000
+  output:
+    # 925 + 3,150 + 17,600 + 250,000 * 0.074 + 250,000 * 0.079
+    # + 200,000 * 0.084 = 925 + 3,150 + 17,600 + 18,500 + 19,750
+    # + 16,800 = 76,725.
+    co_income_tax_before_non_refundable_credits: 76_725
+
+- name: Case 10, zero taxable income owes no tax under the reform.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 0
+  output:
+    co_income_tax_before_non_refundable_credits: 0
+
+- name: Case 11, end-to-end single filer with $30,000 of employment income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_taxable_income: 13_450
+    # 13,450 * 0.037 = 497.65 before non-refundable credits.
+    co_income_tax_before_non_refundable_credits: 497.65
+    co_income_tax: 478.65
+
+- name: Case 12, end-to-end single filer with $600,000 of employment income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    people:
+      person:
+        age: 40
+        employment_income: 600_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_taxable_income: 599_000
+    # 925 + 3,150 + 17,600 + 99,000 * 0.074 = 29,001 before
+    # non-refundable credits.
+    co_income_tax_before_non_refundable_credits: 29_001
+    co_income_tax: 28_942
+
+- name: Case 13, end-to-end single filer with $1,200,000 of employment income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    people:
+      person:
+        age: 40
+        employment_income: 1_200_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_taxable_income: 1_199_000
+    # 925 + 3,150 + 17,600 + 18,500 + 19,750 + 199,000 * 0.084
+    # = 76,641 before non-refundable credits.
+    co_income_tax_before_non_refundable_credits: 76_641
+    co_income_tax: 76_582
+
+# Bracket tops are inclusive: MarginalRateTaxScale taxes the boundary
+# dollar at the lower bracket's rate.
+- name: Case 14, income exactly at the first bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 25_000
+  output:
+    # 25,000 * 0.037 = 925.
+    co_income_tax_before_non_refundable_credits: 925
+
+- name: Case 15, income exactly at the third bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 500_000
+  output:
+    # 925 + 3,150 + 400,000 * 0.044 = 925 + 3,150 + 17,600 = 21,675.
+    co_income_tax_before_non_refundable_credits: 21_675
+
+- name: Case 16, income exactly at the fourth bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 750_000
+  output:
+    # 925 + 3,150 + 17,600 + 250,000 * 0.074 = 21,675 + 18,500 = 40,175.
+    co_income_tax_before_non_refundable_credits: 40_175
+
+- name: Case 17, income exactly at the fifth bracket boundary.
+  period: 2027
+  input:
+    gov.contrib.states.co.progressive_income_tax.in_effect: true
+    state_code: CO
+    co_taxable_income: 1_000_000
+  output:
+    # 925 + 3,150 + 17,600 + 18,500 + 250,000 * 0.079
+    # = 40,175 + 19,750 = 59,925.
+    co_income_tax_before_non_refundable_credits: 59_925
