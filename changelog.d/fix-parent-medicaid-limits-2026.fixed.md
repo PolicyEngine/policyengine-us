@@ -1,0 +1,1 @@
+Updated the 2026 parent/caretaker Medicaid income limits for Texas, Mississippi, Georgia, Florida, Wyoming and South Carolina, whose frozen dollar standards cover a smaller share of the federal poverty guidelines each year.
