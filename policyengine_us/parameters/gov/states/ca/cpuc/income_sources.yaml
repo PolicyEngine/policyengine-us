@@ -41,7 +41,13 @@ description: >-
 values:
   # Preserve the earlier model's inclusion before this decision, using the
   # benefit the household receives rather than the poverty measure's capped
-  # subsidy. The pre-2014 income rule has not been revalidated here.
+  # subsidy. That benefit is modelled, not reported: `housing_assistance` is
+  # HUD's payment where the unit is eligible - `receives_housing_assistance |
+  # (is_renter & is_income_eligible)` - times a take-up flag defaulting to
+  # true. It is at least the capped valuation 2.0.1 counted in this list, so
+  # countable income rises for years before the decision and a household near
+  # the limit can lose CARE or FERA eligibility in those years. The pre-2014
+  # income rule has not been revalidated here.
   0000-01-01:
   # Wages, salaries
   - employment_income
