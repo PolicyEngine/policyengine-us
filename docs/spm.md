@@ -141,8 +141,9 @@ constants are held to this paragraph by
 `test_documented_default_build_matches_the_shipped_constants`, which reads the
 URI and the hash from here: editing either constant alone fails that test.
 
-The published country wheel requires exactly `spm-calculator==1.0.0`; it contains
-no Git or local-path dependency. For coordinated development before registry
-resolution is available, install the local calculator wheel into an isolated
-environment and run tests with `uv run --no-sync`. Refresh the registry lockfile
-when the calculator release is available to the resolver.
+The published country wheel requires `spm-calculator>=1.0.0,<=1.0.0.post1`, a
+registry requirement with no Git or local-path dependency. The range admits the
+post-release so that a development consumer pinned to either version resolves;
+`uv.lock` pins 1.0.0, published to PyPI on 2026-09-11, with its sdist and wheel
+hashes. Development against an unpublished calculator installs that wheel into
+an isolated environment and runs tests with `uv run --no-sync`.

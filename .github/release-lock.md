@@ -75,10 +75,15 @@ The opt-in probe creates an isolated, minimal project with a standard PyPI
 dependency and exercises actual uv locking. CI enables it. These commands do not
 install or import the country model.
 
-For the SPM integration, the committed country lock is intentionally still
-blocked until `spm-calculator==1.0.0` is available on PyPI and a production
-registry lock is regenerated and reviewed separately. A stale root version or
-older calculator resolution must fail the full PR and publication gates.
-Passing guard tests does not clear that release prerequisite. Do not use local
-wheel links or edit lock fields to manufacture a passing lock; the automatic
-root-version refresh is not a general dependency update command.
+For the SPM integration, `spm-calculator` 1.0.0 reached PyPI on 2026-09-11, and
+the committed country lock resolves it from `https://pypi.org/simple` with sdist
+and wheel SHA-256 hashes, so `--committed` passes on the committed files.
+`pyproject.toml` requires `>=1.0.0,<=1.0.0.post1` and the lock pins 1.0.0;
+moving that pin to the post-release is an ordinary reviewed lock change. This
+guard validates dependency sources, artifact URLs and hashes, never a version
+string, so the calculator requirement is held by `pyproject.toml` and review
+rather than by `release_lock.py`. A stale root version or an older calculator
+resolution must still fail the full PR and publication gates, and passing guard
+tests clears no other release prerequisite. Do not use local wheel links or edit
+lock fields to manufacture a passing lock; the automatic root-version refresh is
+not a general dependency update command.
