@@ -963,3 +963,105 @@
     nd_tanf_eligible: true
     # Benefit = $739 - $438 = $301
     nd_tanf: 301
+
+# General assistance is unearned cash income: $2,400/year = $200/month.
+# With no earnings, subtract it dollar for dollar from the existing cash benefit.
+# $24,000/year = $2,000/month exceeds the income limit.
+
+- name: Case 27, general assistance reduces the cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_tanf_standard_of_need: 962
+    nd_tanf_countable_earned_income: 0
+    nd_tanf_countable_unearned_income: 200
+    nd_tanf_countable_income: 200
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    nd_tanf: 762
+
+- name: Case 28, general assistance makes the family income ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 24_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_tanf_standard_of_need: 962
+    nd_tanf_countable_earned_income: 0
+    nd_tanf_countable_unearned_income: 2_000
+    nd_tanf_countable_income: 2_000
+    nd_tanf_income_eligible: false
+    nd_tanf_eligible: false
+    nd_tanf: 0
+
+- name: Workers compensation reduces the monthly cash benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        workers_compensation: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: ND
+  output:
+    nd_tanf: 539
+
+- name: Ordinary interest and dividends do not reduce the monthly TANF benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        taxable_interest_income: 1200
+        tax_exempt_interest_income: 1200
+        dividend_income: 2400
+      child:
+        age: 8
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: ND
+  output:
+    nd_tanf: 739

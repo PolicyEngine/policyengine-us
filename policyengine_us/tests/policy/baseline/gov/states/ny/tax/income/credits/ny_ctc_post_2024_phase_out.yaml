@@ -179,7 +179,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        adjusted_gross_income: 115_000  # $5k over $110k threshold for surviving spouse
+        adjusted_gross_income: 80_000  # $5k over the $75k threshold for surviving spouse
         filing_status: SURVIVING_SPOUSE
     households:
       household:
@@ -273,7 +273,7 @@
   output:
     ny_ctc_post_2024_phase_out: 0
 
-- name: Increment rounding behavior - $1,500 over threshold rounds to 2 increments
+- name: Increment rounding behavior - $1,500 over threshold rounds down to 1 increment
   period: 2025
   input:
     people:
@@ -292,9 +292,9 @@
         state_code: NY
   output:
     ny_ctc_post_2024_base: 1_000
-    ny_ctc_post_2024_phase_out: 33.0  # 2 increments * 16.5% = $33.00
+    ny_ctc_post_2024_phase_out: 16.5  # $1,500 // $1,000 = 1 increment (round-down, IT-213 line 6) * 16.5 = $16.50
 
-- name: Increment rounding behavior - $999 over threshold rounds to 1 increment
+- name: Increment rounding behavior - $999 over threshold rounds down to 0 increments
   period: 2025
   input:
     people:
@@ -313,9 +313,9 @@
         state_code: NY
   output:
     ny_ctc_post_2024_base: 1_000
-    ny_ctc_post_2024_phase_out: 16.5  # 1 increment * 16.5% = $16.50
+    ny_ctc_post_2024_phase_out: 0  # $999 // $1,000 = 0 increments (round-down, IT-213 line 6) -> $0
 
-- name: Increment rounding behavior - $1,001 over threshold rounds to 2 increments
+- name: Increment rounding behavior - $1,001 over threshold rounds down to 1 increment
   period: 2025
   input:
     people:
@@ -334,7 +334,7 @@
         state_code: NY
   output:
     ny_ctc_post_2024_base: 1_000
-    ny_ctc_post_2024_phase_out: 33.0  # 2 increments * 16.5% = $33.00
+    ny_ctc_post_2024_phase_out: 16.5  # $1,001 // $1,000 = 1 increment (round-down, IT-213 line 6) * 16.5 = $16.50
 
 - name: High income phase-out calculation
   period: 2025
@@ -419,3 +419,87 @@
   output:
     ny_ctc_post_2024_base: 1_000
     ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: No phase-out at exactly threshold (surviving spouse)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 75_000  # Exactly at $75k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 0  # excess 0 -> 0 increments
+
+- name: Phase-out $1 over threshold rounds down to 0 increments (surviving spouse)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 75_001  # $1 over $75k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 0  # excess $1 // $1,000 = 0 increments (round-down) -> $0
+
+- name: Phase-out non-round AGI rounds down (surviving spouse)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_999  # $5,999 over $75k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # $5,999 // $1,000 = 5 increments (round-down) * 16.5 = $82.50
+
+- name: Phase-out first full increment over threshold (surviving spouse)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 76_000  # $1,000 over $75k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 16.5  # $1,000 // $1,000 = 1 increment (round-down, IT-213 line 6) * 16.5 = $16.50

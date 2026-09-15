@@ -35,7 +35,7 @@ class ma_senior_circuit_breaker(Variable):
         max_payment = min_(ret_over_threshold, scb.amount.max)
 
         # Means-test conditions based on income (cliff).
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         meets_max_income_condition = income <= scb.eligibility.max_income[filing_status]
 
         # Means-tested conditions based on property value (cliff).
