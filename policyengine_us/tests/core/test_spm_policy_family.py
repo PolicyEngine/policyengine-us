@@ -3,13 +3,25 @@
 These cases come from #9448, which proposed a different isolation mechanism from
 the one this branch carries (#9463's). Most of that file asserted #9448's own
 internals, or asserted that a child branch's reform propagates up to its parent
-and siblings - which #9463 deliberately reverses, and which
+and siblings.
+
+#9463 reverses that propagation for parameter reforms only.
 ``test_a_branch_reform_does_not_rewrite_its_parents_policy`` in
-``test_spm_simulation_isolation.py`` pins the other way. What is kept here is
-the part that is mechanism-independent and that #9463's own suite leaves
-uncovered: a nested branch clone's inherited inputs, a structural reform at a
-changed start instant, the warm-cache contract for a system supplied by a
-caller, and a reform reading back its own in-progress edit.
+``test_spm_simulation_isolation.py`` pins the reversal; a variable-only reform on
+a shared-policy branch still reaches its parent and siblings, and
+``test_a_branch_variable_reform_is_not_isolated_from_its_parent`` pins that
+retained behaviour. Every propagation case dropped from #9448 carried a
+parameter reform - ``test_child_reform_updates_warm_parent_and_sibling``
+parametrizes a parameter dictionary against a root-replacing
+``modify_parameters`` reform, and
+``test_parameter_reform_updates_only_intentionally_shared_branches`` is a
+parameter reform by name - so each of them is contradicted rather than merely
+duplicated.
+
+What is kept here is the part that is mechanism-independent and that #9463's own
+suite leaves uncovered: a nested branch clone's inherited inputs, a structural
+reform at a changed start instant, the warm-cache contract for a system supplied
+by a caller, and a reform reading back its own in-progress edit.
 """
 
 import importlib

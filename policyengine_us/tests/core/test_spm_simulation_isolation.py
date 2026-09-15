@@ -213,6 +213,21 @@ def test_traced_simulations_record_their_own_parameter_accesses(period):
     first request's tracer - or, with that request's trace frame closed,
     recorded nowhere - and the shared tree kept a finished request's tracer for
     every simulation that read it afterwards.
+
+    The isolation is keyed on ``trace``: setting it re-primes this request's
+    root with an empty at-instant cache. Replacing a tracer in place afterwards
+    is not covered - neither a bare ``simulation.tracer = ...`` write nor a
+    ``parameters.tracer`` write on a system - because core memoises the
+    ``TracingParameterNodeAtInstant`` in the root's ``_at_instant_cache`` bound
+    to whichever tracer built it, and core's per-formula soft recast in
+    ``Simulation._run_formula`` refreshes the root's own ``trace``/``tracer``
+    fields without rebuilding that memo. #9448's
+    ``test_cached_formula_trace_binds_replacement_tracer`` and
+    ``test_system_parameter_lookup_does_not_cache_tracer`` assert that case;
+    both fail against this mechanism and are not carried, because passing them
+    means rebinding the memo at lookup, which is #9448's mechanism rather than
+    this one. The only bare tracer write left in this package is
+    ``tools/branched_simulation.py``, which nothing constructs.
     """
     first = Simulation(situation=earner_situation())
     first.trace = True
