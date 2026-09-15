@@ -1,3 +1,10 @@
+## [2.4.2] - 2026-09-15
+
+### Fixed
+
+- Add Kansas CSFP categorical income eligibility through existing SSI, SNAP, FDPIR, and Medicare Savings Program variables.
+
+
 ## [2.4.1] - 2026-09-15
 
 ### Changed
