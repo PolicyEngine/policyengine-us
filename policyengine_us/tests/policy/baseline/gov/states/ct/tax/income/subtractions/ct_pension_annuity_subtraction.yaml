@@ -189,3 +189,15 @@
   output:
     ct_pension_annuity_subtraction: 11_000
 
+- name: Single household with Keogh and SEP distributions in 2024 (Keogh 100 percent, SEP 50 percent)
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    keogh_distributions: 10_000
+    taxable_sep_distributions: 6_000
+  output:
+    ct_pension_annuity_subtraction: 13_000
+

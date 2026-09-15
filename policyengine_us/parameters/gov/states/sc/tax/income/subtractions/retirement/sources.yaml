@@ -1,4 +1,4 @@
-description: South Carolina deducts these retirement income sources under the individual income tax retirement deduction program.
+description: South Carolina deducts these retirement income sources under the individual income tax retirement deduction program. Under S.C. Code § 12-6-1170(C), distributions subject to IRC § 72(t) early-distribution penalty are excluded; modeled without early distribution penalty check.
 values:
   2021-01-01:
     - taxable_pension_income
@@ -10,3 +10,6 @@ metadata:
   reference:
     - title: SC Code Section 12-6-1170(A)(1)
       href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC Code Section 12-6-1170(C)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+
