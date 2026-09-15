@@ -1,0 +1,77 @@
+- name: Case 1, aged or disabled client with dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [AGED_OR_DISABLED_WITH_DEPENDENT]
+
+- name: Case 2, aged or disabled client with spouse and dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT]
+
+- name: Case 3, blind client with dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: BLIND_WITH_DEPENDENT
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [BLIND_WITH_DEPENDENT]
+
+- name: Case 4, blind client with aged or disabled spouse and dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: BLIND_WITH_AGED_OR_DISABLED_SPOUSE_AND_DEPENDENT
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [BLIND_WITH_AGED_OR_DISABLED_SPOUSE_AND_DEPENDENT]
+
+- name: Case 5, blind client with blind spouse and dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT]
+
+- name: Case 6, person with no dependent relative.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ia_ssa_dp_configuration: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_dp_configuration: [NONE]

@@ -17,6 +17,7 @@ class spm_unit_benefits(Variable):
             "ga_ssp",
             "al_ssp",
             "ak_ssp",
+            "ia_ssa",  # Iowa benefits
             "dc_ossp",  # DC benefits
             "id_aabd",  # Idaho benefits
             "ky_ssp",  # Kentucky benefits
