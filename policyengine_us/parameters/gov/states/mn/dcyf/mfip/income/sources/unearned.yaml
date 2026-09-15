@@ -1,0 +1,32 @@
+description: Minnesota counts these income sources as unearned income under the Minnesota Family Investment Program.
+# Preserve the inherited start date while correcting the modeled sources.
+values:
+  2010-07-01:
+    - veterans_benefits
+    - survivor_benefits
+    - rental_income
+    - child_support_received
+    - alimony_income
+    - financial_assistance
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - gi_cash_assistance
+    - social_security
+    # MFIP counts GA, RCA and cash benefits already issued (0017.12.03).
+    # Receipt-of-other-assistance rules in 0011.21 are separate eligibility
+    # rules; this input represents cash received by an assistance-unit member.
+    - general_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota MFIP unearned income sources
+  reference:
+    - title: Minnesota Combined Manual, 0017.12.03 - Unearned Income, MFIP
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_00171203
+    - title: Minnesota Combined Manual, 0011.21 - Receipt of Other Assistance
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001121

@@ -9,6 +9,7 @@ class medicaid_work_requirement_eligible(Variable):
     reference = (
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf",
+        "https://www.law.cornell.edu/uscode/text/42/1382c#a_3",
     )
 
     def formula(person, period, parameters):
@@ -72,7 +73,12 @@ class medicaid_work_requirement_eligible(Variable):
         # blind or disabled or is_incapable_of_self_care p.694 (V)
         is_blind = person("is_blind", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
-        eligible_disabled = is_blind | is_disabled | is_incapable_of_self_care
+        # "Blind or disabled" is defined by cross-reference to section 1614
+        # of the Social Security Act, so the SSI disability test also exempts.
+        is_ssi_disabled = person("is_ssi_disabled", period)
+        eligible_disabled = (
+            is_blind | is_disabled | is_ssi_disabled | is_incapable_of_self_care
+        )
         medically_frail = person(
             "is_medically_frail_or_has_special_medical_needs_for_medicaid_ce",
             period,

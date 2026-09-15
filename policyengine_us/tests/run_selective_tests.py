@@ -15,6 +15,8 @@ from typing import Dict, List, Set
 
 SOURCE_FILE_SUFFIXES = (".py", ".yaml", ".yml")
 TEST_INFRASTRUCTURE_FILES = ("run_selective_tests.py", "test_batched.py")
+# pytest exits 5 when a path collects no tests (see pytest.ExitCode).
+PYTEST_NO_TESTS_COLLECTED = 5
 CRITICAL_TEST_TRIGGER_FILES = ("pyproject.toml", "requirements", "Makefile")
 STOP_TEST_DIRS = frozenset(
     {
@@ -519,6 +521,11 @@ class SelectiveTestRunner:
             cmd = base_cmd + [test_path]
             print(f"\nRunning command: {' '.join(cmd)}")
             result = subprocess.run(cmd)
+            if result.returncode == PYTEST_NO_TESTS_COLLECTED:
+                # A changed file under tests/ with nothing to collect is a
+                # support module (a fixture or helper), not a failing test.
+                print(f"No tests collected in {test_path}; nothing to run there.")
+                continue
             if result.returncode != 0:
                 worst_returncode = result.returncode
 

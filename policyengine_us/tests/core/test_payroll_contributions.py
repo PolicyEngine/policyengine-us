@@ -20,6 +20,7 @@ def make_simulation(
     pre_tax_health_insurance_premiums: float = 0,
     tip_income: float = 0,
     traditional_401k_contributions: float = 0,
+    spm: dict | None = None,
 ) -> Simulation:
     household = {
         "members": ["person"],
@@ -30,6 +31,7 @@ def make_simulation(
 
     return Simulation(
         tax_benefit_system=SYSTEM,
+        spm=spm,
         situation={
             "people": {
                 "person": {
@@ -1201,8 +1203,9 @@ def test_employer_total_payroll_tax_aggregates_employer_inputs():
 
 
 def test_employee_state_payroll_tax_flows_into_household_net_income():
-    wa_sim = make_simulation("WA")
-    tx_sim = make_simulation("TX")
+    # Isolate the state payroll tax difference using the same SPM geography.
+    wa_sim = make_simulation("WA", spm={"geography_kind": "national"})
+    tx_sim = make_simulation("TX", spm={"geography_kind": "national"})
 
     wa_state_payroll_tax = calculate(wa_sim, "employee_state_payroll_tax")
     household_tax_difference = calculate(
