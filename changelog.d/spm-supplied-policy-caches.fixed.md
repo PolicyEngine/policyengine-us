@@ -1,0 +1,1 @@
+Preserve the warm parameter caches of a policy system supplied by a caller across clones and variable-only reform wrappers at the same structural start, detach a structural reform's parameter tree before it writes at a changed start instant, and let a reform read back its own in-progress parameter edit.
