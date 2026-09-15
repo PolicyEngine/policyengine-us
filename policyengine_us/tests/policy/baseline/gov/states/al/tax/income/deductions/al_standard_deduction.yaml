@@ -138,3 +138,21 @@
     # 13_000 - 12_750 = 250; 250 // 250 = 1; 4_250 - 88 = 4_162
     al_standard_deduction: 4_162
 
+- name: Surviving spouse filer with AGI $25,999 in 2025 (no reduction)
+  period: 2025
+  input:
+    state_code: AL
+    al_agi: 25_999
+    filing_status: SURVIVING_SPOUSE
+  output:
+    al_standard_deduction: 8_500
+
+- name: Surviving spouse filer with AGI $26,000 in 2025 (first $175 reduction)
+  period: 2025
+  input:
+    state_code: AL
+    al_agi: 26_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 26_000 - 25_500 = 500; 500 // 500 = 1; 8_500 - 175 = 8_325
+    al_standard_deduction: 8_325
