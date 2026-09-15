@@ -535,3 +535,43 @@ def test_a_reform_on_a_clone_still_reaches_the_clones_own_policy():
         system.parameters.gov.irs.deductions.standard.amount.SINGLE("2024-01-01")
         == 14_600
     )
+
+
+def test_a_branch_variable_reform_is_not_isolated_from_its_parent():
+    """Record the boundary of the barrier: it covers parameters, not variables.
+
+    ``SharedParameterPolicy`` guards the parameter tree. A branch created with
+    ``clone_system=False`` still shares its parent's ``variables`` dict - core
+    hands the branch the same tax-benefit system object
+    (``Simulation.clone``: ``new.tax_benefit_system = self.tax_benefit_system``)
+    and every variable operation mutates that registry - so a variable-only
+    reform on a branch does reach its parent and siblings.
+
+    This is the documented limit of what this module isolates, not an
+    endorsement: a caller that wants a variable reform to itself must pass
+    ``clone_system=True``, which every such call site in this repository
+    already does. The test exists so the limit cannot be mistaken for
+    isolation, and so that closing it later is a visible change.
+    """
+    parent = Simulation(situation=earner_situation())
+    child = parent.get_branch("child")
+    sibling = parent.get_branch("sibling")
+    assert parent.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
+
+    child.apply_reform(NeutralizeIncomeTax)
+
+    assert child.calculate("income_tax", 2024)[0] == 0
+    assert parent.tax_benefit_system.variables is child.tax_benefit_system.variables
+    for member in (parent, sibling):
+        member._invalidate_all_caches()
+        assert member.calculate("income_tax", 2024)[0] == 0
+
+    # A branch that asked for its own system keeps the reform to itself.
+    independent = Simulation(situation=earner_situation()).get_branch(
+        "independent", clone_system=True
+    )
+    independent.apply_reform(NeutralizeIncomeTax)
+    assert (
+        Simulation(situation=earner_situation()).calculate("income_tax", 2024)[0]
+        == BASELINE_INCOME_TAX
+    )
