@@ -4,12 +4,15 @@ Run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
 Set RELEASE_LOCK_REAL_UV=1 to exercise the installed uv against ordinary PyPI.
 """
 
+import contextlib
 import copy
 import importlib.util
+import io
 import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import tomllib
 import unittest
@@ -243,6 +246,13 @@ class RegistryValidationTests(RegistryFixture):
                 self.assertNotIn(key, env)
 
 
+class DynamicMetadataTests(RegistryFixture):
+    def test_dynamic_project_metadata_is_rejected(self):
+        project = copy.deepcopy(self.project)
+        project["project"]["dynamic"] = ["version"]
+        self.assert_rejected(release_lock.validate_registry_project, project)
+
+
 class ReleaseTransactionTests(RegistryFixture):
     def test_parent_workspace_cannot_redirect_the_lock_check(self):
         child = self.root / "members" / "child"
@@ -397,6 +407,161 @@ class ReleaseTransactionTests(RegistryFixture):
         self.assertEqual((self.root / "uv.lock").read_bytes(), invalid)
 
 
+class RehearsalTests(RegistryFixture):
+    """The rehearsal runs the release refresh on a copy, never on the checkout."""
+
+    def copy_resolver(self, mutate=None):
+        """Stand in for uv: write the refreshed lock wherever it is invoked."""
+        self.calls = []
+
+        def resolve(command, **kwargs):
+            cwd = Path(kwargs["cwd"])
+            self.calls.append(
+                {
+                    "command": command,
+                    "cwd": cwd,
+                    "contents": sorted(entry.name for entry in cwd.iterdir()),
+                    "project": (cwd / "pyproject.toml").read_text(),
+                    "lock": (cwd / "uv.lock").read_bytes(),
+                }
+            )
+            if "--check" not in command:
+                refreshed = self.refreshed_bytes()
+                (cwd / "uv.lock").write_bytes(
+                    refreshed if mutate is None else mutate(refreshed)
+                )
+            return subprocess.CompletedProcess(command, 0)
+
+        return resolve
+
+    def assert_checkout_untouched(self):
+        self.assertEqual((self.root / "uv.lock").read_bytes(), self.original)
+        self.assertIn('version = "1.0.0"', (self.root / "pyproject.toml").read_text())
+
+    def test_rehearsal_bumps_a_copy_and_accepts_a_root_only_refresh(self):
+        with patch.object(
+            release_lock.subprocess, "run", side_effect=self.copy_resolver()
+        ):
+            version = release_lock.rehearse_release_lock(self.root)
+        self.assertEqual(version, "1.0.1")
+        self.assert_checkout_untouched()
+        self.assertEqual(len(self.calls), 2)
+        for call in self.calls:
+            self.assertNotEqual(call["cwd"], self.root)
+            # uv resolves the copy from project metadata alone, with no
+            # package tree, and the copy is removed when the run ends.
+            self.assertEqual(call["contents"], ["pyproject.toml", "uv.lock"])
+            self.assertFalse(call["cwd"].exists())
+            self.assertIn('version = "1.0.1"', call["project"])
+            self.assertIn("--no-config", call["command"])
+            self.assertIn("--no-sources", call["command"])
+            self.assertIn("https://pypi.org/simple", call["command"])
+        self.assertNotIn("--check", self.calls[0]["command"])
+        self.assertEqual(self.calls[0]["lock"], self.original)
+        self.assertIn("--check", self.calls[1]["command"])
+        self.assertEqual(self.calls[1]["lock"], self.refreshed_bytes())
+
+    def test_rehearsal_rejects_a_resolver_that_rewrites_resolution_markers(self):
+        # The 2026-09-11 release failure: a lock written by one uv version, and
+        # re-resolved by another, keeps every package but renormalizes markers.
+        def renormalize(data):
+            return data.replace(
+                b'requires-python = ">=3.11"\n',
+                b'requires-python = ">=3.11"\n'
+                b"resolution-markers = [\n"
+                b"    \"python_full_version >= '3.12'\",\n"
+                b"    \"python_full_version < '3.12'\",\n"
+                b"]\n",
+            )
+
+        with patch.object(
+            release_lock.subprocess, "run", side_effect=self.copy_resolver(renormalize)
+        ):
+            with self.assertRaisesRegex(
+                ValueError, "changed the reviewed dependency graph"
+            ):
+                release_lock.rehearse_release_lock(self.root)
+        self.assert_checkout_untouched()
+
+    def test_rehearsal_reports_a_resolver_failure_without_touching_the_checkout(self):
+        with patch.object(
+            release_lock.subprocess,
+            "run",
+            side_effect=subprocess.CalledProcessError(1, ["uv", "lock"]),
+        ):
+            self.assert_rejected(release_lock.rehearse_release_lock, self.root)
+        self.assert_checkout_untouched()
+
+    def test_rehearsal_rejects_a_resolver_that_writes_to_the_checkout(self):
+        def stray(command, **kwargs):
+            (self.root / "uv.lock").write_bytes(self.original + b"\n# stray write\n")
+            (Path(kwargs["cwd"]) / "uv.lock").write_bytes(self.refreshed_bytes())
+            return subprocess.CompletedProcess(command, 0)
+
+        with patch.object(release_lock.subprocess, "run", side_effect=stray):
+            with self.assertRaisesRegex(ValueError, "must not change uv.lock"):
+                release_lock.rehearse_release_lock(self.root)
+
+    def test_rehearsal_refuses_a_checkout_inside_a_uv_workspace(self):
+        child = self.root / "members" / "child"
+        child.mkdir(parents=True)
+        for name in ("pyproject.toml", "uv.lock"):
+            shutil.copyfile(FIXTURE / name, child / name)
+        (self.root / "pyproject.toml").write_text(
+            '[tool.uv.workspace]\nmembers = ["members/*"]\n'
+        )
+        with patch.object(release_lock.subprocess, "run") as run:
+            self.assert_rejected(release_lock.rehearse_release_lock, child)
+        run.assert_not_called()
+
+    def test_rehearsed_bump_matches_the_release_bump(self):
+        """The rehearsal applies the patch bump bump_version.py would apply."""
+        spec = importlib.util.spec_from_file_location(
+            "bump_version", HERE.parent / "bump_version.py"
+        )
+        bump_version = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(bump_version)
+        probe = self.root / "probe-pyproject.toml"
+        for source in (FIXTURE / "pyproject.toml", HERE.parents[1] / "pyproject.toml"):
+            with self.subTest(source=source.parent.name):
+                shutil.copyfile(source, probe)
+                current = bump_version.get_current_version(probe)
+                expected = bump_version.bump_version(current, "patch")
+                with contextlib.redirect_stdout(io.StringIO()):
+                    bump_version.update_file(probe, current, expected)
+                project, version = release_lock.bumped_project(source.read_text())
+                self.assertEqual(version, expected)
+                self.assertEqual(project, probe.read_text())
+
+
+class RehearsalCommandTests(unittest.TestCase):
+    def test_rehearse_cannot_combine_with_the_other_modes(self):
+        for flags in (["--rehearse", "--committed"], ["--rehearse", "--refresh"]):
+            with self.subTest(flags=flags):
+                with patch.object(sys, "argv", ["release_lock.py", *flags]):
+                    with contextlib.redirect_stderr(io.StringIO()) as reported:
+                        with self.assertRaises(SystemExit) as raised:
+                            release_lock.main()
+                self.assertEqual(raised.exception.code, 2)
+                self.assertIn("not allowed with argument", reported.getvalue())
+
+    def test_rehearsal_failure_exits_two_with_the_hint(self):
+        with patch.object(
+            release_lock,
+            "rehearse_release_lock",
+            side_effect=ValueError("Versioning changed the reviewed dependency graph"),
+        ):
+            with patch.object(sys, "argv", ["release_lock.py", "--rehearse"]):
+                with contextlib.redirect_stderr(io.StringIO()) as reported:
+                    with self.assertRaises(SystemExit) as raised:
+                        release_lock.main()
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn("regenerate uv.lock with the pinned uv", reported.getvalue())
+        self.assertIn(
+            "Versioning changed the reviewed dependency graph", reported.getvalue()
+        )
+
+
 class CommittedLockTests(RegistryFixture):
     def setUp(self):
         super().setUp()
@@ -449,9 +614,8 @@ class CommittedLockTests(RegistryFixture):
     "set RELEASE_LOCK_REAL_UV=1 for the real registry resolver probe",
 )
 class RealUvTests(RegistryFixture):
-    def test_actual_registry_root_only_refresh(self):
-        """Resolve genuine PyPI idna, bump only root, and check the final graph."""
-        env = release_lock.resolver_environment()
+    def lock_with_installed_uv(self):
+        """Write the fixture lock as the installed uv version normalizes it."""
         command = [
             "uv",
             "lock",
@@ -462,7 +626,17 @@ class RealUvTests(RegistryFixture):
             "--cache-dir",
             str(self.root / "cache"),
         ]
-        subprocess.run(command, cwd=self.root, env=env, check=True, timeout=60)
+        subprocess.run(
+            command,
+            cwd=self.root,
+            env=release_lock.resolver_environment(),
+            check=True,
+            timeout=60,
+        )
+
+    def test_actual_registry_root_only_refresh(self):
+        """Resolve genuine PyPI idna, bump only root, and check the final graph."""
+        self.lock_with_installed_uv()
         before = tomllib.loads((self.root / "uv.lock").read_text())
         release_lock.check_release_lock(self.root)
         self.bump_project()
@@ -474,6 +648,16 @@ class RealUvTests(RegistryFixture):
             release_lock.without_root_version(after, "release-lock-fixture"),
         )
         release_lock.check_release_lock(self.root)
+
+    def test_actual_registry_rehearsal_leaves_the_checkout_alone(self):
+        """Rehearse the release bump against real PyPI, on a copy of the root."""
+        self.lock_with_installed_uv()
+        before = (self.root / "uv.lock").read_bytes()
+        project = (self.root / "pyproject.toml").read_bytes()
+        version = release_lock.rehearse_release_lock(self.root)
+        self.assertEqual(version, "1.0.1")
+        self.assertEqual((self.root / "uv.lock").read_bytes(), before)
+        self.assertEqual((self.root / "pyproject.toml").read_bytes(), project)
 
 
 if __name__ == "__main__":
