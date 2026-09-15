@@ -1,15 +1,97 @@
 - name: Case 1, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 999_999
-    state_code: MA 
+    spm_unit_assets: 999999
+    state_code: MA
   output:
     ma_ccfa_asset_eligible: true
 
-- name: Case 2, ineligible.
+- name: Case 2, eligible at the inclusive asset limit.
   period: 2025-01
   input:
-    spm_unit_assets: 1_000_000
-    state_code: MA 
+    spm_unit_assets: 1000000
+    state_code: MA
   output:
-    ma_ccfa_asset_eligible: false
+    ma_ccfa_asset_eligible: true
+
+- name: Case 3, assets of 1000001 exceed the inclusive limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1000001
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_asset_eligible:
+      2025-01: false
+
+- name: Case 4, homeless family is exempt from assets.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2000000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        is_homeless: true
+  output:
+    ma_ccfa_asset_eligible:
+      2025-01: true
+
+- name: Case 5, TANF enrollment asset exemption starts October 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2000000
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_asset_eligible:
+      2023-09: false
+      2023-10: true
+
+- name: Case 6, homeless asset exemption applies from the beginning of model coverage.
+  period: 2020
+  input:
+    state_code: MA
+    spm_unit_assets: 2000000
+    is_homeless: true
+  output:
+    ma_ccfa_asset_eligible:
+      2020-01: true

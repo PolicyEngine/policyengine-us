@@ -1,0 +1,40 @@
+- name: Case 1, five hours is included in the half day boundary.
+  period: 2026-01
+  input:
+    state_code: MA
+    childcare_hours_per_day: 5
+  output:
+    ma_ccfa_is_part_time_care: true
+
+- name: Case 2, more than five hours is full day.
+  period: 2026-01
+  input:
+    state_code: MA
+    childcare_hours_per_day: 5.1
+  output:
+    ma_ccfa_is_part_time_care: false
+
+- name: Case 3, before school schedule is part time.
+  period: 2026-01
+  input:
+    state_code: MA
+    ma_ccfa_schedule_type: BEFORE_ONLY
+  output:
+    ma_ccfa_is_part_time_care: true
+
+- name: Case 4, unknown daily hours do not imply a short day.
+  period: 2026-01
+  input:
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: false
+
+- name: Case 5, six hours stops being a half day with the FY2025 rates.
+  period: 2024
+  input:
+    state_code: MA
+    childcare_hours_per_day: 6
+  output:
+    ma_ccfa_is_part_time_care:
+      2024-06: true
+      2024-07: false

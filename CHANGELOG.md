@@ -1,3 +1,137 @@
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
+## [2.4.2] - 2026-09-15
+
+### Fixed
+
+- Add Kansas CSFP categorical income eligibility through existing SSI, SNAP, FDPIR, and Medicare Savings Program variables.
+
+
+## [2.4.1] - 2026-09-15
+
+### Changed
+
+- Simplified uprating metadata in breakdown parameters using `propagate_metadata_to_children`.
+
+### Fixed
+
+- Gave `md_ccs_service_unit` an explicit `UNIT_1` default so negative or NaN childcare hours resolve to one unit instead of an integer 0 that cannot be encoded as a service unit.
+- Corrected the effective year of Montana's $12,600 elderly homeowner/renter credit income exclusion to 2022 (the 2021 value is $6,300).
+
+
+## [2.4.0] - 2026-09-15
+
+### Added
+
+- Added the Illinois 2022 property tax rebate (Family Relief Plan), equal to the 2021 property tax credit capped at $300.
+
+### Changed
+
+- Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.
+
+
+## [2.3.2] - 2026-09-15
+
+### Changed
+
+- `tenant_pays_utilities` now defaults to true, so households in counties with an encoded HUD utility allowance schedule receive the allowance unless the input is set to false, and `utilities_included_in_rent` is derived as its inverse (still settable directly) so the Maine property tax fairness credit reads the same utilities-responsibility fact; a caller that sets `tenant_pays_utilities` to false without setting `utilities_included_in_rent` now gets the Maine utilities-in-rent treatment automatically.
+
+
+## [2.3.1] - 2026-09-15
+
+### Changed
+
+- Add a BOOST reform-composition test pinning that Head Start values flow through the reform's static household_benefits list when gov.simulation.include_head_start_benefits_in_net_income is on.
+
+### Fixed
+
+- Skip the pull-request candidate wheel build, with a notice, when the PR head predates the release tooling, instead of failing the check on every branch opened before that tooling landed.
+
+
+## [2.3.0] - 2026-09-15
+
+### Added
+
+- Rehearse the release version refresh in pull request CI, so a lock that the next automatic bump would rewrite fails before it reaches main.
+
+
+## [2.2.1] - 2026-09-15
+
+### Changed
+
+- Count actual housing assistance, rather than its SPM-capped valuation, in general household benefits and CBO means-tested transfers, and keep the capped valuation inside SPM resources. Household benefits, household net income, marginal tax rates and CBO transfer aggregates therefore rise for every household receiving housing assistance, by the amount the SPM cap withheld, while SPM poverty is unchanged by this part. Exclude housing subsidies from California CARE and FERA countable income from the August 14, 2014 parameter date, which annual calculations first apply in 2015, so countable income falls and CARE/FERA eligibility widens for assisted California households from that year. Before that date the model keeps counting housing subsidies, now as the modeled housing assistance amount - HUD's payment where the unit is eligible, times a take-up flag defaulting to true - rather than the smaller SPM-capped valuation, so countable income rises for those years and a household near the limit can lose CARE or FERA eligibility there. That earlier income rule's historical policy basis was not revalidated.
+- Allocate a household's housing assistance, and the tenant contributions of the families actually awarded it, across that household's SPM units by member share before each unit's SPM resource cap. This moves SPM resources between co-resident SPM units, so SPM poverty and deep poverty change for households holding more than one SPM unit where any of them receives housing assistance; households holding a single SPM unit are unchanged, and no program award or general benefit income changes. An awarded family's tenant payment now also reduces a co-resident unit's allocated housing resource, which is recorded as a modeling assumption rather than verified Census parity.
+
+### Fixed
+
+- Decide a test batch by the child process exit status rather than its printed summary, and enumerate `.yml` test files alongside `.yaml`.
+- Retain unpublished wheels for the predicted release and its rc1 version in
+  pull-request CI, built from unchanged policy source with the same pinned build
+  tools as publication. Record their source, package version, generator, lock, and file hash
+  for verification before release.
+- Allow spm-calculator 1.0.0.post1 alongside 1.0.0 so explicitly pinned development consumers can resolve either version; retain the default release lock at 1.0.0.
+- Reinstall the copy-on-write parameter barrier on a cloned tax-benefit system, so a branch of a cloned simulation no longer rewrites the clone's own policy tree.
+- Reject derived poverty aliases such as `in_poverty` from stored datasets.
+- Verify the default dataset content hash so a moved build id cannot silently change every standalone-country result.
+- Isolate one simulation's reform, clone and trace from every other simulation: a parameter reform applied after construction no longer changes unrelated simulations, a clone's `calc` and `df` aliases calculate on the clone rather than the original, `set_input` finds a variable a reform added, each traced request records its own parameter accesses, and a `county_fips` input that is not a five-digit string is rejected however it is spelled.
+- Preserve the warm parameter caches of a policy system supplied by a caller across clones and variable-only reform wrappers at the same structural start, detach a structural reform's parameter tree before it writes at a changed start instant, and let a reform read back its own in-progress parameter edit.
+
+
+## [2.2.0] - 2026-09-15
+
+### Added
+
+- Correct Massachusetts CCFA countable income, including dependent and minor earnings exclusions, parent support-paid deductions, parent-only income and Social Security and veterans disability exclusions from October 2023, and PFML benefits received.
+
+
+## [2.1.0] - 2026-09-14
+
+### Added
+
+- Update Massachusetts CCFA income exclusions and deductions by effective date, add PFML receipt and veterans disability inputs, and correct asset, homeless, service-need and parent-fee rules.
+
+
+## [2.0.6] - 2026-09-14
+
+### Changed
+
+- SNAP utility allowance incurrence now reads the canonical heating inputs through new `has_heating_expense` and `has_cooling_expense` facts, counts metered gas and every deliverable or cooking fuel as one gas-and-fuel utility, and Illinois AABD reads `gas_expense` instead of the deprecated `metered_gas_expense`; households without a `heating_type` keep their previous `heating_cooling_expense` behavior.
+- The Michigan home heating credit reads the canonical heating inputs: `heating_expenses` defaults to the SPM unit's `heating_expense` when the SPM unit contains one tax unit and to zero when it contains several, so callers set each claimant's November–October amount directly (`UNSPECIFIED` households keep the `heating_expense_person` sum), and the heat-in-rent halving and alternate-credit bar read `heat_expense_included_in_rent` instead of `utilities_included_in_rent`.
+
+
+## [2.0.5] - 2026-09-14
+
+### Fixed
+
+- Massachusetts Child and Family Tax Credit now counts disabled spouses from 2023 and excludes separate filers, and a new ma_filing_status variable routes federal surviving spouse filers to head of household treatment across Massachusetts filing-status parameters. As a result, the Massachusetts 529 plan contribution deduction cap for qualifying surviving spouse filers changes from $2,000 to $1,000, matching the Form 1 head of household value.
+
+
+## [2.0.4] - 2026-09-12
+
+### Changed
+
+- Add 2026 statutory standard deduction amounts for Maine basic (P.L. 2025, c. 650 / 36 M.R.S. § 5124-C(1-C)) and additional aged/blind deductions (IRC § 63(c)(3) / Rev. Proc. 2025-32), inflation uprating and downward-$50 rounding metadata for Maine basic and additional standard deductions (36 M.R.S. § 5403) and Minnesota alternate itemized and standard deduction reductions (Minn. Stat. §§ 290.0122, 290.0123), published 2026 thresholds for Minnesota alternate deduction reductions, 2025 minimum income thresholds for Minnesota marriage credit (Minn. Stat. § 290.0675), and 2025 old age subtraction amount for Montana (MCA § 15-30-2120).
+
+
+## [2.0.3] - 2026-09-12
+
+### Fixed
+
+- Updated Michigan expanded retirement benefits deduction for 2026: lifted upper birth-year bracket restriction and added 2026 maximum subtraction limits under Public Act 4 of 2023.
+
+
 ## [2.0.2] - 2026-09-12
 
 ### Fixed
