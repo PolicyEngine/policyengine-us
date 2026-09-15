@@ -27,6 +27,35 @@ def job(text, name):
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_latest_core_compatibility_uses_upgraded_dependency(self):
+        workflows = {
+            name: (ROOT / f".github/workflows/{name}.yaml").read_text()
+            for name in ("pr", "push")
+        }
+        for name, workflow in workflows.items():
+            with self.subTest(workflow=name):
+                compatibility = job(workflow, "LatestCoreCompatibility")
+                for expected in (
+                    'python-version: "3.14"',
+                    'version: "0.12.13"',
+                    "uv lock --upgrade-package policyengine-core",
+                    "uv sync --locked --extra dev",
+                    "target: test-yaml-no-structural-other-partners",
+                    "target: test-other-python",
+                    "uv run --no-sync make ${{ matrix.target }}",
+                ):
+                    self.assertIn(expected, compatibility)
+                self.assertLess(
+                    compatibility.index("uv lock --upgrade-package policyengine-core"),
+                    compatibility.index("uv sync --locked --extra dev"),
+                )
+                self.assertNotIn("\n  schedule:", workflow)
+
+        publish_dependencies = job(workflows["push"], "Publish").split(
+            "steps:", maxsplit=1
+        )[0]
+        self.assertIn("LatestCoreCompatibility", publish_dependencies)
+
     def test_candidate_build_matches_publish_without_publication_or_policy_mutations(
         self,
     ):
