@@ -34,6 +34,53 @@ CONFIG_FIELDS = frozenset(
     }
 )
 
+# Poverty outputs this country derives from the calculator's measurement.
+#
+# ``FORMULA_OWNED_INPUTS`` names what the calculator owns: the thresholds, the
+# SPM resource total, and the canonical indicators ``poverty_line``,
+# ``poverty_gap``, ``spm_unit_is_in_spm_poverty`` and
+# ``spm_unit_is_in_deep_spm_poverty``. These names are country-side functions
+# of those same values - ``in_poverty`` of ``poverty_gap``,
+# ``deep_poverty_line`` of ``poverty_line``, ``deep_poverty_gap`` of
+# ``deep_poverty_line`` and ``spm_unit_net_income``, ``in_deep_poverty`` of
+# ``deep_poverty_gap``, and ``person_in_poverty`` of ``in_poverty`` - so a
+# dataset column for any of them is an alias for a formula-owned output under a
+# name the calculator does not police. Accepting one lets the poverty
+# calculation documented in ``docs/usage/microsimulation.md`` and the canonical
+# indicator publish different poverty rates for the same population: a dataset
+# storing ``in_poverty=[False, False]`` alongside a population every unit of
+# which is below its threshold reports 0% and 100% at once.
+DERIVED_POVERTY_OUTPUTS = frozenset(
+    {
+        "deep_poverty_gap",
+        "deep_poverty_line",
+        "in_deep_poverty",
+        "in_poverty",
+        "person_in_poverty",
+    }
+)
+
+# The household-to-SPM-unit housing allocation is computed here, from the
+# modelled award and the awarded family's tenant contribution. A dataset that
+# stored either quantity would override an allocation the country derives.
+SPM_ALLOCATION_OUTPUTS = frozenset(
+    {
+        "spm_unit_allocated_housing_subsidy",
+        "spm_unit_allocated_tenant_payment",
+    }
+)
+
+# Every name a dataset must not store, from either side of the boundary.
+REJECTED_DATASET_INPUTS = (
+    frozenset(FORMULA_OWNED_INPUTS) | DERIVED_POVERTY_OUTPUTS | SPM_ALLOCATION_OUTPUTS
+)
+
+# This source role has a head/spouse fallback for household situations. A
+# population producer must retain its observed boolean instead of treating the
+# fallback formula as ownership of the input. This declaration permits source
+# delivery; it does not permit synthesizing a default value when data are absent.
+DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
+
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
 COUNTY_INPUT_FIX = (
@@ -878,7 +925,7 @@ class SPMSimulationMixin:
         # public consumers validate their household input contract separately.
         if (
             getattr(self, "is_over_dataset", False)
-            and variable_name in FORMULA_OWNED_INPUTS
+            and variable_name in REJECTED_DATASET_INPUTS
         ):
             raise ValueError(
                 f"Dataset supplies formula-owned SPM output {variable_name}. "
