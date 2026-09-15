@@ -1,3 +1,72 @@
+## [2.2.0] - 2026-09-15
+
+### Added
+
+- Correct Massachusetts CCFA countable income, including dependent and minor earnings exclusions, parent support-paid deductions, parent-only income and Social Security and veterans disability exclusions from October 2023, and PFML benefits received.
+
+
+## [2.1.0] - 2026-09-14
+
+### Added
+
+- Update Massachusetts CCFA income exclusions and deductions by effective date, add PFML receipt and veterans disability inputs, and correct asset, homeless, service-need and parent-fee rules.
+
+
+## [2.0.6] - 2026-09-14
+
+### Changed
+
+- SNAP utility allowance incurrence now reads the canonical heating inputs through new `has_heating_expense` and `has_cooling_expense` facts, counts metered gas and every deliverable or cooking fuel as one gas-and-fuel utility, and Illinois AABD reads `gas_expense` instead of the deprecated `metered_gas_expense`; households without a `heating_type` keep their previous `heating_cooling_expense` behavior.
+- The Michigan home heating credit reads the canonical heating inputs: `heating_expenses` defaults to the SPM unit's `heating_expense` when the SPM unit contains one tax unit and to zero when it contains several, so callers set each claimant's November–October amount directly (`UNSPECIFIED` households keep the `heating_expense_person` sum), and the heat-in-rent halving and alternate-credit bar read `heat_expense_included_in_rent` instead of `utilities_included_in_rent`.
+
+
+## [2.0.5] - 2026-09-14
+
+### Fixed
+
+- Massachusetts Child and Family Tax Credit now counts disabled spouses from 2023 and excludes separate filers, and a new ma_filing_status variable routes federal surviving spouse filers to head of household treatment across Massachusetts filing-status parameters. As a result, the Massachusetts 529 plan contribution deduction cap for qualifying surviving spouse filers changes from $2,000 to $1,000, matching the Form 1 head of household value.
+
+
+## [2.0.4] - 2026-09-12
+
+### Changed
+
+- Add 2026 statutory standard deduction amounts for Maine basic (P.L. 2025, c. 650 / 36 M.R.S. § 5124-C(1-C)) and additional aged/blind deductions (IRC § 63(c)(3) / Rev. Proc. 2025-32), inflation uprating and downward-$50 rounding metadata for Maine basic and additional standard deductions (36 M.R.S. § 5403) and Minnesota alternate itemized and standard deduction reductions (Minn. Stat. §§ 290.0122, 290.0123), published 2026 thresholds for Minnesota alternate deduction reductions, 2025 minimum income thresholds for Minnesota marriage credit (Minn. Stat. § 290.0675), and 2025 old age subtraction amount for Montana (MCA § 15-30-2120).
+
+
+## [2.0.3] - 2026-09-12
+
+### Fixed
+
+- Updated Michigan expanded retirement benefits deduction for 2026: lifted upper birth-year bracket restriction and added 2026 maximum subtraction limits under Public Act 4 of 2023.
+
+
+## [2.0.2] - 2026-09-12
+
+### Fixed
+
+- Add surviving spouse 2025 boundary tests for Alabama standard deduction.
+
+
+## [2.0.1] - 2026-09-12
+
+### Fixed
+
+- Use a stable deduction order for person-level adjusted gross income and student loan interest modified adjusted gross income, preventing process-dependent floating-point results while preserving deduction membership and exclusions.
+
+
+## [2.0.0] - 2026-09-12
+
+### Breaking changes
+
+- Require county FIPS by default, or an explicit national or fixed SPM area selection, for SPM measurement, and for resource calculations (household net income, benefits, marginal tax rates) only where a unit's housing assistance is positive: the housing cap consults the canonical housing portion for assisted units alone, so partner and state-program outputs for the other units never depend on SPM geography. Replace country threshold extrapolation with spm-calculator 1.0.0's canonical 2022–2035 amounts; unavailable years fail. Population datasets must supply observed county inputs and source-backed SPM independence roles instead of stored formula-owned SPM outputs, which the loader now rejects; the legacy policyengine-us-data CPS files supply none of these, so resource and poverty outputs are no longer available over them. Preserve user reforms, isolate simulation receipts and bind cloned and baseline holders to their own policy variables.
+
+### Fixed
+
+- Prevent automatic releases from committing stale or non-PyPI dependency locks, and reject dependency drift when refreshing the package version.
+- Pin the uv release toolchain (0.12.13) in the workflows and commit the registry lock in that version's marker normalization, so the automatic version bump's lock refresh changes only the root version instead of failing closed.
+
+
 ## [1.825.2] - 2026-09-11
 
 ### Fixed

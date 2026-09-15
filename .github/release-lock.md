@@ -67,23 +67,49 @@ the same prerequisite, and `Publish` checks its own committed checkout again
 before installation or build. Model environments use locked synchronization;
 subsequent commands use that environment without synchronizing again.
 
+The PR `CandidateWheel` matrix starts from the reviewed head in two separate
+clean checkouts. Both run the actual release version-bump helper; the `rc1`
+entry appends `rc1` to that computed next version before both perform the
+root-only lock refresh. Each uses the same Ubuntu version, Python, uv, locked
+development environment, and `make` build as `Publish`. Each uploads its
+unpublished wheel and `release-build/receipt.json`; the job has read-only
+repository access and no publication step. The receipt rejects changed or
+untracked policy source, checks the wheel's version and backend, and records source, lock, tool, and
+wheel identities. Download the `release-wheel-rc1-<head SHA>` and
+`release-wheel-final-<head SHA>` artifacts to qualify their actual bytes.
+A change to the head or changelog fragments requires a new candidate; the
+candidate does not reserve a registry version.
+GitHub updates its hosted Ubuntu images even within `ubuntu-24.04`, so receipts
+also record `ImageOS` and `ImageVersion` for release-environment comparison.
+
+`pyproject.toml` pins Hatchling and its complete non-optional dependency closure
+because `python -m build` creates an isolated backend environment outside the
+runtime lock. Both builds use those same pins and the frontend version in
+`uv.lock`. `Publish` verifies its own receipt before publishing. Registry wheel
+comparison and downstream qualification remain separate release checks.
+
 `ReleaseLockTests` has no dependency on a model job or the country lock check.
 It uses only the Python standard library and uv, so it tests the guard without
 resolving or installing the country dependency graph:
 
 ```sh
-python -m unittest discover -s .github/tests -p test_release_lock.py -v
-RELEASE_LOCK_REAL_UV=1 python -m unittest discover -s .github/tests -p test_release_lock.py -v
+python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+RELEASE_LOCK_REAL_UV=1 python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
 ```
 
 The opt-in probe creates an isolated, minimal project with a standard PyPI
 dependency and exercises actual uv locking. CI enables it. These commands do not
 install or import the country model.
 
-The committed country lock resolves `spm-calculator==1.0.0` from PyPI, with the
-same hashed artifacts the guard requires of every other dependency, so the SPM
-integration no longer holds the lock back. The ordinary gates still apply: a
-stale root version or a dependency change outside a reviewed lock fails the full
-PR and publication gates, and passing guard tests does not stand in for them. Do
-not use local wheel links or edit lock fields to manufacture a passing lock; the
-automatic root-version refresh is not a general dependency update command.
+For the SPM integration, `spm-calculator` 1.0.0 reached PyPI on 2026-09-11, and
+the committed country lock resolves it from `https://pypi.org/simple` with sdist
+and wheel SHA-256 hashes, so `--committed` passes on the committed files.
+`pyproject.toml` requires `>=1.0.0,<=1.0.0.post1` and the lock pins 1.0.0;
+moving that pin to the post-release is an ordinary reviewed lock change. This
+guard validates dependency sources, artifact URLs and hashes, never a version
+string, so the calculator requirement is held by `pyproject.toml` and review
+rather than by `release_lock.py`. A stale root version or an older calculator
+resolution must still fail the full PR and publication gates, and passing guard
+tests clears no other release prerequisite. Do not use local wheel links or edit
+lock fields to manufacture a passing lock; the automatic root-version refresh is
+not a general dependency update command.

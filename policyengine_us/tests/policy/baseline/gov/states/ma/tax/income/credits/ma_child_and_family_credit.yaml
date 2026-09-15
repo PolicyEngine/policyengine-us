@@ -25,6 +25,7 @@
   input:
     people:
       filer:
+        is_tax_unit_head: true
         is_tax_unit_dependent: false
         age: 30
       disabled_dependent:
@@ -71,6 +72,7 @@
   input:
     people:
       filer:
+        is_tax_unit_head: true
         is_tax_unit_dependent: false
         age: 30
       disabled_dependent:
@@ -116,6 +118,7 @@
   input:
     people:
       filer:
+        is_tax_unit_head: true
         is_tax_unit_dependent: false
         age: 30
       disabled_dependent:
@@ -133,4 +136,350 @@
         state_code: MA
         members: [filer, disabled_dependent, elderly_dependent]
   output:
+    ma_child_and_family_credit: 880
+
+- name: Disabled spouse qualifies in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) qualifying individual: 1 x 440 = 440.
+    ma_child_and_family_credit: 440
+
+- name: Disabled spouse does not qualify in 2022 under the predecessor credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # The pre-2023 credit for eligible dependents covered only
+    # IRC Section 152 dependents.
+    ma_child_and_family_credit: 0
+
+- name: Married filing separately in two tax units cannot claim the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit_head:
+        members: [head, child]
+        filing_status: SEPARATE
+      tax_unit_spouse:
+        members: [spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # Genuine two-tax-unit fixture: each spouse files SEPARATE. The MFS gate
+    # zeroes the credit in every unit, including the one with the qualifying
+    # child. The scalar assertion checks per-unit credit = 0 for both units.
+    ma_child_and_family_credit: 0
+
+- name: Disabled spouse qualifies at the gate flip year 2023
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Disabled-spouse gate turns on 2023-01-01: 1 x 310 (2023 amount) = 310.
+    ma_child_and_family_credit: 310
+
+- name: Disabled spouse does not qualify in the 2021 pre-gate window
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Disabled-spouse gate is off before 2023, so the spouse is not eligible.
+    ma_child_and_family_credit: 0
+
+- name: Disabled spouse in a separate tax unit cannot claim the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit_head:
+        members: [head]
+        filing_status: SEPARATE
+      tax_unit_spouse:
+        members: [spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # The disabled adult now files in their own SEPARATE tax unit (not a
+    # same-unit override). The disabled-head-or-spouse gate requires a JOINT
+    # return, so both SEPARATE units yield 0. Scalar assertion = per-unit 0.
+    ma_child_and_family_credit: 0
+
+- name: Joint filer with one qualifying child claims the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # 1 qualifying child x 440 (2024 amount) = 440.
+    ma_child_and_family_credit: 440
+
+- name: Identical household split into two separate tax units zeroes the credit in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit_head:
+        members: [head, child]
+        filing_status: SEPARATE
+      tax_unit_spouse:
+        members: [spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # Same people as the joint one-child case (which yields 440), but split into
+    # two genuine SEPARATE tax units. The MFS gate zeroes the otherwise-440 base
+    # in the child-bearing unit; the other unit has no qualifying individual.
+    # Scalar assertion = per-unit 0 for both units.
+    ma_child_and_family_credit: 0
+
+- name: Disabled head on a joint return qualifies in 2024 (disabled older adult)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 45
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # The disabled member is the head (older adult). Keying on
+    # is_tax_unit_head_or_spouse counts 1 qualifying individual under
+    # IRC Section 21(b)(1)(C): 1 x 440 (2024 amount) = 440.
+    ma_child_and_family_credit: 440
+
+- name: Disabled younger adult on a joint return qualifies in 2024 (ordering independence)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # Same household as above, but the disabled member is the younger adult
+    # (spouse). Result is identical to the disabled-head case, confirming no
+    # head/spouse ordering artifact: 1 x 440 (2024 amount) = 440.
+    ma_child_and_family_credit: 440
+
+- name: Both spouses disabled on a joint return count one qualifying individual in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 45
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) recognizes a single "spouse of the taxpayer"
+    # qualifying individual, so a both-disabled joint couple counts 1, not 2:
+    # 1 x 440 (2024 amount) = 440.
+    ma_child_and_family_credit: 440
+
+- name: Disabled head and one dependent child on a joint return in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 45
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # 1 disabled head-or-spouse qualifying individual + 1 qualifying child = 2
+    # qualifying individuals: 2 x 440 (2024 amount) = 880.
     ma_child_and_family_credit: 880
