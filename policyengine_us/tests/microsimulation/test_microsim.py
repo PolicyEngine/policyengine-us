@@ -24,10 +24,16 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     Its county column does hold five-digit FIPS codes, so geography is not what
     fails. 18 of its 43,134 SPM units are a lone 15-to-17-year-old carrying no
     source-backed SPM independence role, so those units classify no measurement
-    adult, and every output that reaches the threshold - household net income,
-    benefits, poverty and marginal tax rates included - fails closed over the
-    file. Assert on the threshold itself: it raises straight off the
+    adult and every output that reaches the threshold fails closed over the
+    file. Only the threshold is asserted here: it raises straight off the
     composition, without building the whole resource chain over 43,134 units.
+
+    Resource outputs are no longer among the outputs that reach it. The
+    capped housing subsidy asks for the SPM housing portion only for units
+    receiving housing assistance, and none of these 18 units does - which is
+    asserted below - so household net income and benefits compute over the
+    file. Computing them here would add two minutes to this suite, so they
+    are left to the resource tests.
     """
     import numpy as np
     from spm_calculator.errors import SPMInputError
@@ -41,6 +47,11 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
 
     adults = np.asarray(simulation.calculate("spm_measurement_adults", 2024))
     assert (adults < 1).sum() == 18
+    assisted = np.asarray(
+        simulation.calculate("receives_housing_assistance", 2024, map_to="spm_unit")
+    )
+    assert assisted.sum() == 870
+    assert not assisted[adults < 1].any()
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
     assert error.value.code == "SPM_COMPOSITION_REQUIRED"
@@ -130,3 +141,99 @@ def test_default_dataset_loads_and_runs():
         )
     for variable in ("employment_income", "self_employment_income"):
         assert sim.calc(variable, period=2024).sum() > 0, f"{variable} is zero in 2024."
+
+
+def test_default_dataset_allocates_no_housing_share_to_an_unclassified_unit():
+    """The member-share housing allocation over the whole certified default build.
+
+    `spm_unit_allocated_housing_subsidy` prorates a household's modeled
+    `housing_assistance` to every SPM unit in that household by member share,
+    and `spm_unit_capped_housing_subsidy` consults the canonical housing
+    portion for every unit holding a positive share. That consultation reaches
+    `SPM_COMPOSITION_REQUIRED`, so a co-resident unit that classifies no
+    measurement adult - everyone under 15, or 15 to 17 without a source-backed
+    independence role - would now fail the whole population's resource chain
+    where the shipped 2.0.1 valuation left it at zero.
+
+    This probe is over `populace_us_2024`, the certified default build, at full
+    population with no subsample: `test_default_dataset_loads_and_runs`
+    subsamples 1,000 units, which cannot rule out a pattern this rare. If the
+    count below is ever nonzero, the allocation needs a guard - allocate only
+    among units that classify an adult and leave the remainder with the awarded
+    unit - and that decision belongs to a reviewer, not to this test.
+    """
+    import gc
+
+    import numpy as np
+    from spm_calculator.errors import SPMInputError
+
+    from policyengine_us import Microsimulation
+
+    simulation = Microsimulation()  # populace_us_2024, full population.
+    allocated = np.asarray(
+        simulation.calculate("spm_unit_allocated_housing_subsidy", 2024)
+    )
+    adults = np.asarray(simulation.calculate("spm_measurement_adults", 2024))
+    unclassified = int(((allocated > 0) & (adults < 1)).sum())
+    assert unclassified == 0, (
+        f"populace_us_2024 (certified default build): {unclassified} of "
+        f"{allocated.size} SPM units hold an allocated housing share while "
+        "classifying no measurement adult, so the member-share allocation "
+        "raises SPM_COMPOSITION_REQUIRED over the whole population."
+    )
+
+    # The whole-population resource chain does not fit the hosted runner's
+    # memory beside the arrays above (the job was killed twice at this point),
+    # so the completion check runs on a subsample. The count above is the
+    # full-population fact; this only shows the chain still completes.
+    del allocated, adults, simulation
+    gc.collect()
+    sample = Microsimulation()
+    sample.subsample(10_000)
+    try:
+        net_income = np.asarray(sample.calculate("spm_unit_net_income", 2024))
+    except SPMInputError as error:
+        pytest.fail(
+            "populace_us_2024 (certified default build, 10,000-unit subsample): "
+            f"the SPM resource chain raised {error.code} even though "
+            f"{unclassified} allocated units classify no measurement adult, so "
+            f"the housing allocation is not what failed: {error}"
+        )
+    assert (
+        net_income.size
+        == np.asarray(sample.calculate("spm_unit_allocated_housing_subsidy", 2024)).size
+    ), (
+        "populace_us_2024 (certified default build): net income and the "
+        "housing allocation must cover the same SPM units."
+    )
+
+
+def test_legacy_enhanced_cps_allocates_no_housing_share_to_an_unclassified_unit():
+    """The same allocation probe over `enhanced_cps_2024`.
+
+    That file is already exercised above, and it is the one population file
+    known to contain units classifying no measurement adult: 18 lone
+    15-to-17-year-olds. None of them receives a housing award, which the test
+    above asserts, but an award is no longer what pulls a unit into the cap -
+    a member share of a co-resident family's award does. So the overlap is
+    reported here as its own count.
+
+    Only the allocation is probed on this file. Its SPM threshold fails closed
+    on those 18 units whatever the housing allocation does, so a resource-chain
+    assertion here would pin that older defect rather than this one.
+    """
+    import numpy as np
+
+    from policyengine_us import Microsimulation
+
+    simulation = Microsimulation(dataset=ENHANCED_CPS_2024)
+    allocated = np.asarray(
+        simulation.calculate("spm_unit_allocated_housing_subsidy", 2024)
+    )
+    adults = np.asarray(simulation.calculate("spm_measurement_adults", 2024))
+    unclassified = int(((allocated > 0) & (adults < 1)).sum())
+    assert unclassified == 0, (
+        f"enhanced_cps_2024 (legacy file): {unclassified} of {allocated.size} "
+        "SPM units hold an allocated housing share while classifying no "
+        "measurement adult."
+    )

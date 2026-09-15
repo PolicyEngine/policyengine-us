@@ -267,6 +267,8 @@ def make_mock_super_init(system_module, captured=None):
         for population in self.populations.values():
             population.simulation = self
         self._user_input_keys = set()
+        # Core's __init__ sets these before the country's __init__ resumes.
+        self.trace = False
         self.branches = {}
         self.baseline = None
         self.is_over_dataset = True
