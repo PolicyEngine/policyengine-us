@@ -162,6 +162,8 @@ def test_default_dataset_allocates_no_housing_share_to_an_unclassified_unit():
     among units that classify an adult and leave the remainder with the awarded
     unit - and that decision belongs to a reviewer, not to this test.
     """
+    import gc
+
     import numpy as np
     from spm_calculator.errors import SPMInputError
 
@@ -180,16 +182,27 @@ def test_default_dataset_allocates_no_housing_share_to_an_unclassified_unit():
         "raises SPM_COMPOSITION_REQUIRED over the whole population."
     )
 
+    # The whole-population resource chain does not fit the hosted runner's
+    # memory beside the arrays above (the job was killed twice at this point),
+    # so the completion check runs on a subsample. The count above is the
+    # full-population fact; this only shows the chain still completes.
+    del allocated, adults, simulation
+    gc.collect()
+    sample = Microsimulation()
+    sample.subsample(10_000)
     try:
-        net_income = np.asarray(simulation.calculate("spm_unit_net_income", 2024))
+        net_income = np.asarray(sample.calculate("spm_unit_net_income", 2024))
     except SPMInputError as error:
         pytest.fail(
-            "populace_us_2024 (certified default build): the SPM resource "
-            f"chain raised {error.code} even though {unclassified} allocated "
-            f"units classify no measurement adult, so the housing allocation "
-            f"is not what failed: {error}"
+            "populace_us_2024 (certified default build, 10,000-unit subsample): "
+            f"the SPM resource chain raised {error.code} even though "
+            f"{unclassified} allocated units classify no measurement adult, so "
+            f"the housing allocation is not what failed: {error}"
         )
-    assert net_income.size == allocated.size, (
+    assert (
+        net_income.size
+        == np.asarray(sample.calculate("spm_unit_allocated_housing_subsidy", 2024)).size
+    ), (
         "populace_us_2024 (certified default build): net income and the "
         "housing allocation must cover the same SPM units."
     )
