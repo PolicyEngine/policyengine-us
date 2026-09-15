@@ -116,8 +116,8 @@
       2023-09: false
       2023-10: true
 
-- name: Disabled child entry limit is covered from the February 2022 guide.
-  period: 2022
+- name: Case 8, disabled child entry limit applies from the beginning of model coverage.
+  period: 2020
   input:
     state_code: MA
     ma_ccfa_eligible_child: true
@@ -127,5 +127,4 @@
     ma_ccfa_enrolled: false
   output:
     ma_ccfa_income_eligible:
-      2022-01: false
-      2022-02: true
+      2020-01: true

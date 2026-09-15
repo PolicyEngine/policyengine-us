@@ -56,13 +56,14 @@
         state_code: MA
         county_str: BERKSHIRE_COUNTY_MA
   output:
-    # Six hours per day: half of the $3.88 full-day fee.
-    ma_ccfa_total_copay: 1.94
+    # Six hours per day is full-day care under the FY2025 definition
+    # (more than 5 hours), so the full $3.88 fee applies.
+    ma_ccfa_total_copay: 3.88
     ma_ccfa_maximum_reimbursement: [0, 1_050]
     ma_ccfa_eligible: true
     # capped expense = min(annual_expense, monthly_max) = $1,050
-    # benefit = max(1050 - 1.94, 0) = $1,048.06
-    ma_ccfa: 1_048.06
+    # benefit = max(1050 - 3.88, 0) = $1,046.12
+    ma_ccfa: 1_046.12
 
 - name: Case 4, TANF enrollment establishes categorical eligibility and zero copay.
   period: 2025-01

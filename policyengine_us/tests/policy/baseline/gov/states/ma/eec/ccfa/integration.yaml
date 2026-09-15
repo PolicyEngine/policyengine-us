@@ -153,7 +153,7 @@
       person3:
         age: 4
         childcare_attending_days_per_month: 20
-        childcare_hours_per_day: 6
+        childcare_hours_per_day: 5
         ma_ccfa_uncapped_daily_payment: 50
     tax_units:
       tax_unit:
@@ -172,12 +172,14 @@
     ma_ccfa_activity_eligible: true
     ma_ccfa_eligible: true
     ma_ccfa_eligible_child: [false, true, true]
-    ma_ccfa_maximum_reimbursement: [0, 0, 1000]
+    # Part-time care: 50 * 0.6 * 20 = 600 reimbursement, half of the $100 fee.
+    ma_ccfa_maximum_reimbursement: [0, 0, 600]
     ma_ccfa_copay_person: [0, 0, 50]
     ma_ccfa_total_copay: 50
-    ma_ccfa: 950
+    # min(18000 / 12, 600) - 50
+    ma_ccfa: 550
 
-- name: Sibling ranks and copays are calculated separately for two families.
+- name: Case 6, sibling ranks and copays are calculated separately for two families.
   period: 2026-01
   input:
     people:
@@ -186,7 +188,7 @@
         weekly_hours_worked_before_lsr: 30
       child1:
         age: 2
-        childcare_hours_per_day: 6
+        childcare_hours_per_day: 5
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
       child2:
@@ -228,4 +230,5 @@
     ma_ccfa_eligible: [true, true]
     ma_ccfa_copay_person: [0, 50, 50, 0, 200]
     ma_ccfa_total_copay: [100, 200]
-    ma_ccfa: [1900, 800]
+    # First family: min(36000 / 12, 600 + 1000) - 100; second: min(1200, 1000) - 200.
+    ma_ccfa: [1500, 800]

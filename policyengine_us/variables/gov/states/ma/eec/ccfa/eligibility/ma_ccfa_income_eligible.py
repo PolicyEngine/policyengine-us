@@ -16,23 +16,24 @@ class ma_ccfa_income_eligible(Variable):
         p = parameters(period).gov.states.ma.eec.ccfa.income
         person = spm_unit.members
         eligible_child = person("ma_ccfa_eligible_child", period)
-        disabled_child = spm_unit.any(
-            eligible_child & person("is_disabled", period.this_year)
-        )
-        initial_limit = where(
-            disabled_child,
+        is_disabled = person("is_disabled", period.this_year)
+        has_disabled_child = spm_unit.any(eligible_child & is_disabled)
+        initial_smi_rate = where(
+            has_disabled_child,
             max_(p.smi_rate.new_applicants, p.smi_rate.disabled_child),
             p.smi_rate.new_applicants,
         )
+        is_enrolled = spm_unit("ma_ccfa_enrolled", period)
         smi_rate = where(
-            spm_unit("ma_ccfa_enrolled", period),
+            is_enrolled,
             p.smi_rate.redetermination,
-            initial_limit,
+            initial_smi_rate,
         )
-        eligible = (
-            spm_unit("ma_ccfa_countable_income", period)
-            <= spm_unit("hhs_smi", period) * smi_rate
-        )
-        if p.homeless_exemption_in_effect:
-            eligible |= spm_unit.household("is_homeless", period.this_year)
-        return eligible
+        countable_income = spm_unit("ma_ccfa_countable_income", period)
+        smi = spm_unit("hhs_smi", period)
+        income_limit = smi * smi_rate
+        meets_income_limit = countable_income <= income_limit
+        is_homeless = spm_unit.household("is_homeless", period.this_year)
+        homeless_exempt = p.homeless_exemption_in_effect & is_homeless
+
+        return meets_income_limit | homeless_exempt

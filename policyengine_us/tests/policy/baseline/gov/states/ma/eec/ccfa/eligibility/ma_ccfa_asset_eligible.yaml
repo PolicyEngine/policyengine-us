@@ -14,7 +14,7 @@
   output:
     ma_ccfa_asset_eligible: true
 
-- name: Case 5, assets of 1000001 at the inclusive limit.
+- name: Case 3, assets of 1000001 exceed the inclusive limit.
   period: 2025
   input:
     people:
@@ -37,7 +37,7 @@
     ma_ccfa_asset_eligible:
       2025-01: false
 
-- name: Case 6, homeless family is exempt from assets.
+- name: Case 4, homeless family is exempt from assets.
   period: 2025
   input:
     people:
@@ -61,7 +61,7 @@
     ma_ccfa_asset_eligible:
       2025-01: true
 
-- name: Case 7, TANF enrollment asset exemption starts October 2023.
+- name: Case 5, TANF enrollment asset exemption starts October 2023.
   period: 2023
   input:
     people:
@@ -86,13 +86,12 @@
       2023-09: false
       2023-10: true
 
-- name: Homeless asset exemption is covered from the February 2022 guide.
-  period: 2022
+- name: Case 6, homeless asset exemption applies from the beginning of model coverage.
+  period: 2020
   input:
     state_code: MA
     spm_unit_assets: 2000000
     is_homeless: true
   output:
     ma_ccfa_asset_eligible:
-      2022-01: false
-      2022-02: true
+      2020-01: true

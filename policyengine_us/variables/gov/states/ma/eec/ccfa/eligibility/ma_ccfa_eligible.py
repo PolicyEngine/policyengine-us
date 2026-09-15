@@ -9,7 +9,7 @@ class ma_ccfa_eligible(Variable):
     defined_for = StateCode.MA
     reference = (
         "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=10",
-        "https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=19",
+        "https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=17",
     )
 
     def formula(spm_unit, period, parameters):

@@ -14,9 +14,10 @@ class ma_ccfa_asset_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.assets
-        eligible = spm_unit("spm_unit_assets", period.this_year) <= p.limit
-        if p.homeless_exemption_in_effect:
-            eligible |= spm_unit.household("is_homeless", period.this_year)
-        if p.tafdc_exemption_in_effect:
-            eligible |= spm_unit("is_tanf_enrolled", period)
-        return eligible
+        assets = spm_unit("spm_unit_assets", period.this_year)
+        meets_asset_limit = assets <= p.limit
+        is_homeless = spm_unit.household("is_homeless", period.this_year)
+        is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
+        tafdc_exempt = p.tafdc_exemption_in_effect & is_tanf_enrolled
+
+        return meets_asset_limit | is_homeless | tafdc_exempt

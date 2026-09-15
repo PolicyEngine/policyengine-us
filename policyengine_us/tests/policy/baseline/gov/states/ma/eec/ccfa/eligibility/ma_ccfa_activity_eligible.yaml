@@ -365,7 +365,7 @@
   output:
     ma_ccfa_activity_eligible: true
 
-- name: A parent who reports not being retired still needs another activity.
+- name: Case 16, a parent who reports not being retired still needs another activity.
   period: 2026-01
   input:
     state_code: MA
