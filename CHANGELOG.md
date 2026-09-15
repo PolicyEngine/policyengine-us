@@ -1,3 +1,10 @@
+## [2.3.0] - 2026-09-15
+
+### Added
+
+- Rehearse the release version refresh in pull request CI, so a lock that the next automatic bump would rewrite fails before it reaches main.
+
+
 ## [2.2.1] - 2026-09-15
 
 ### Changed
