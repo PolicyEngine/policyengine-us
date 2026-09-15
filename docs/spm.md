@@ -120,12 +120,26 @@ eligibility are unchanged. The dataset loader rejects stored formula-owned SPM
 outputs; observed source results should use report-only column names. It does not
 delete or silently recalculate over supplied derived inputs.
 
+## Default population build
+
 `Microsimulation()` defaults to the immutable dataset URI
 `hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909`.
 This dataset supplies observed county inputs and source-backed independence roles.
 The canonical country release must wait until that exact tag and its certified
 bytes exist and pass independent readback. The unpublished candidate embeds the
 same URI; local candidate checks do not establish production default availability.
+
+A Hugging Face tag is a mutable pointer, so the model pins the build's content as
+well as its name. The certified `populace_us_2024.h5` has content hash
+`sha256:6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84`, read
+on 2026-09-09 from the producer's build of that file. `Microsimulation()`
+digests whatever the default URI resolves to and refuses to construct unless it
+matches `policyengine_us.system.DEFAULT_DATASET_SHA256`, so the microsimulation
+CI job - which downloads the tag and constructs the default - is where the
+documented hash is checked against the bytes the tag actually serves. The
+constants are held to this paragraph by
+`test_documented_default_build_matches_the_shipped_constants`, which reads the
+URI and the hash from here: editing either constant alone fails that test.
 
 The published country wheel requires exactly `spm-calculator==1.0.0`; it contains
 no Git or local-path dependency. For coordinated development before registry

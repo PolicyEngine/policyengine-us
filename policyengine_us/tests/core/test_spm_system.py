@@ -4,6 +4,8 @@ import ast
 import hashlib
 import inspect
 import json
+from pathlib import Path
+import re
 import textwrap
 
 import numpy as np
@@ -814,6 +816,46 @@ def test_explicit_dataset_argument_is_not_content_checked(decoy_default_dataset)
     """A caller naming its own artifact owns that artifact's provenance."""
     simulation = Microsimulation(dataset=str(decoy_default_dataset))
     assert simulation.calculate("spm_measurement_adults", 2024).tolist() == [1, 1]
+
+
+DEFAULT_BUILD_SECTION = "## Default population build"
+
+
+def documented_default_build():
+    """The default build's URI and content hash, read from `docs/spm.md`.
+
+    The digest is a bare 64-character constant in `system.py` with no other
+    occurrence in the repository, and the two tests that exercise the check
+    substitute their own value for it, so a silent edit to the constant would
+    pass the suite. `docs/spm.md` carries the value a human can compare with
+    the producer's receipt and with the bytes the Hugging Face tag serves;
+    this reads it back so the record and the constant cannot drift apart.
+    """
+    repository = Path(__file__).resolve().parents[3]
+    if not (repository / "pyproject.toml").exists():
+        pytest.skip("Not a source checkout: docs/ ships with the repository only.")
+    document = (repository / "docs" / "spm.md").read_text(encoding="utf-8")
+    assert DEFAULT_BUILD_SECTION in document, (
+        f"docs/spm.md no longer has a '{DEFAULT_BUILD_SECTION}' section "
+        "recording the default build's URI and content hash."
+    )
+    section = document.split(DEFAULT_BUILD_SECTION, 1)[1].split("\n## ", 1)[0]
+    return set(re.findall(r"`(hf://[^`]+)`", section)), set(
+        re.findall(r"`sha256:([0-9a-f]{64})`", section)
+    )
+
+
+def test_documented_default_build_matches_the_shipped_constants():
+    """One edited side of the default-build record must fail, not ship."""
+    uris, digests = documented_default_build()
+    assert uris == {DEFAULT_DATASET}, (
+        "docs/spm.md documents default dataset URIs "
+        f"{sorted(uris)}, but the model ships {DEFAULT_DATASET!r}."
+    )
+    assert digests == {DEFAULT_DATASET_SHA256}, (
+        f"docs/spm.md documents content hashes {sorted(digests)}, but "
+        f"DEFAULT_DATASET_SHA256 is {DEFAULT_DATASET_SHA256!r}."
+    )
 
 
 def test_default_dataset_is_digested_once_per_resolved_file(monkeypatch, tmp_path):
