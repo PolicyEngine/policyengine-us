@@ -662,6 +662,13 @@ def clone_spm_system(system, *, copy_receipts=True):
     cloned.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=copy_receipts
     )
+    # A clone owns its tree outright, but it does not keep it to itself: a
+    # branch copies the system, and another simulation can be built on it, at
+    # which point a reform must clone before it writes. ``plain_policy_copy``
+    # strips the barrier so core can clone through an ordinary instance, so
+    # put it back - without it, a branch of a clone rewrites the clone's own
+    # policy, which is the defect this class exists to prevent.
+    with_parameter_barrier(cloned)
     return cloned
 
 

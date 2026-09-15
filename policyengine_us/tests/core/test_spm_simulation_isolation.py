@@ -265,6 +265,12 @@ def test_cloning_a_shared_policy_system_stops_sharing_its_tree():
     A shared system resolves ``parameters`` through a property, which would
     shadow that write and hand back a "clone" still sharing the lender's tree,
     with nothing raised.
+
+    The clone keeps the barrier rather than reverting to a plain system: it is
+    the sole reader of its own tree, so nothing is marked shared and no copy is
+    owed, but the tree can acquire readers later and must then be copied before
+    it is written. See
+    ``test_a_clone_keeps_the_copy_on_write_barrier_its_parent_had``.
     """
     shared = Simulation(situation=earner_situation()).tax_benefit_system
     assert shared.parameters is system.parameters
@@ -273,7 +279,7 @@ def test_cloning_a_shared_policy_system_stops_sharing_its_tree():
 
     assert cloned.parameters is not system.parameters
     assert not getattr(cloned, "shares_parameters", False)
-    assert "shared_parameters" not in cloned.__dict__
+    assert cloned.__dict__["shared_parameters"] is cloned.parameters
     assert parameter_fingerprint(cloned) == parameter_fingerprint(system)
 
 
@@ -486,3 +492,46 @@ def test_a_tuple_of_variable_only_reforms_keeps_sharing_the_tree():
     assert simulation.calculate("clone_only_income", 2024)[0] == 123
     assert policy.parameters is system.parameters
     assert policy.shares_parameters
+
+
+def test_a_clone_keeps_the_copy_on_write_barrier_its_parent_had():
+    """A clone owns its tree, but it still must not be written in place.
+
+    ``clone_spm_system`` hands core an ordinary instance to clone through, by
+    stripping the barrier class in ``plain_policy_copy``. Core's clone returns
+    that ordinary instance, so without putting the barrier back the clone's own
+    tree is writable in place - and a branch of the clone, which copies the
+    system and so becomes a second reader, rewrites it.
+    """
+    simulation = Simulation(situation=earner_situation())
+    clone = simulation.clone()
+
+    assert clone.tax_benefit_system.shares_parameters is not None
+
+    branch = clone.get_branch("reforming_branch")
+    branch.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert branch.calculate("standard_deduction", 2024)[0] == 100_000
+    assert clone.calculate("standard_deduction", 2024)[0] == 14_600
+    assert simulation.calculate("standard_deduction", 2024)[0] == 14_600
+
+
+def test_a_reform_on_a_clone_still_reaches_the_clones_own_policy():
+    """The barrier must not make a clone's own reform a no-op.
+
+    The clone is the only reader of its tree until something else copies it, so
+    its own reform is free to detach and apply; what it must not do is reach
+    the simulation it was cloned from.
+    """
+    simulation = Simulation(situation=earner_situation())
+    assert simulation.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
+    clone = simulation.clone()
+
+    clone.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert clone.calculate("standard_deduction", 2024)[0] == 100_000
+    assert simulation.calculate("standard_deduction", 2024)[0] == 14_600
+    assert (
+        system.parameters.gov.irs.deductions.standard.amount.SINGLE("2024-01-01")
+        == 14_600
+    )
