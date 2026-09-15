@@ -392,3 +392,24 @@
     # Private: min($64,797, $500) = $500
     # Total: $1,000 + $500 = $1,500
     mi_retirement_benefits_deduction_tier_one_amount: 1_500
+
+- name: 2025 single filer with IRA and 401(k) distributions
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 0
+        taxable_ira_distributions: 20_000
+        taxable_401k_distributions: 15_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_retirement_benefits_deduction_tier_one_amount: 35_000
+

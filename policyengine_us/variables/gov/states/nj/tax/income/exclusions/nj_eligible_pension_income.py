@@ -6,7 +6,6 @@ class nj_eligible_pension_income(Variable):
     entity = Person
     label = "New Jersey pension income eligible for pension exclusion"
     unit = USD
-    documentation = "New Jersey pension income eligible for pension exclusion"
     definition_period = YEAR
     reference = (
         "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
@@ -27,4 +26,4 @@ class nj_eligible_pension_income(Variable):
         role_eligible = is_head | is_spouse
 
         eligible = demographic_eligible & role_eligible
-        return eligible * person("taxable_pension_income", period)
+        return eligible * add(person, period, p.sources)

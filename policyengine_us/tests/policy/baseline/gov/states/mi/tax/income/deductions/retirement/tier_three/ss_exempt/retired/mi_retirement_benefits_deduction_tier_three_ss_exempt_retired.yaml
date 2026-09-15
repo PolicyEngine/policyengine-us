@@ -69,3 +69,25 @@
       state_code: MI
   output: # min(35000 < 10000, 40000)
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 10_000
+
+- name: 2022 single filer with 401(k) and IRA distributions (ss exempt retired)
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_401k_distributions: 20_000
+        taxable_ira_distributions: 20_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(35000 < 10000, 40000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 10_000
