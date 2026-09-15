@@ -29,3 +29,29 @@
     state_code: MA
   output:
     ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 5, zero hours retains the first bracket ratio.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 0
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 6, five and a half hours changes to full time in July 2024.
+  period: 2024
+  input:
+    childcare_hours_per_day: 5.5
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio:
+      2024-06: 0.6
+      2024-07: 1
+
+- name: Case 7, more than six hours is full time under the FY2024 rules.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 6.5
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
