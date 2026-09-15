@@ -1,3 +1,10 @@
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
 ## [2.4.3] - 2026-09-15
 
 ### Fixed
