@@ -232,3 +232,43 @@
     ma_ccfa_total_copay: [100, 200]
     # First family: min(36000 / 12, 600 + 1000) - 100; second: min(1200, 1000) - 200.
     ma_ccfa: [1500, 800]
+
+- name: Case 7, five and a half hours receives full reimbursement and a full copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 2
+        childcare_attending_days_per_month: 0
+        childcare_hours_per_day: 8
+        ma_ccfa_uncapped_daily_payment: 50
+      person3:
+        age: 4
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 5.5
+        ma_ccfa_uncapped_daily_payment: 50
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 18000
+        ma_ccfa_base_copay: 100
+        hhs_smi: 120000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible: true
+    ma_ccfa_eligible: true
+    ma_ccfa_eligible_child: [false, true, true]
+    ma_ccfa_maximum_reimbursement: [0, 0, 1000]
+    ma_ccfa_copay_person: [0, 0, 100]
+    ma_ccfa_total_copay: 100
+    # Full-day reimbursement: $50 x 20 days = $1,000; subtract the $100 copay.
+    ma_ccfa: 900
