@@ -1,1 +1,0 @@
-Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.

@@ -1,3 +1,14 @@
+## [2.4.0] - 2026-09-15
+
+### Added
+
+- Added the Illinois 2022 property tax rebate (Family Relief Plan), equal to the 2021 property tax credit capped at $300.
+
+### Changed
+
+- Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.
+
+
 ## [2.3.2] - 2026-09-15
 
 ### Changed
