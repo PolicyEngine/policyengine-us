@@ -3,6 +3,9 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    parent_and_child_sibling_sum,
+)
 
 
 class medicaid_household_size(Variable):
@@ -34,9 +37,19 @@ class medicaid_household_size(Variable):
             int
         ) * cohabitating_separate.astype(int)
         spouse_count = same_unit_spouse_count + separate_spouse_count
+        has_parent_ids = (person("parent_1_id", period) != 0) | (
+            person("parent_2_id", period) != 0
+        )
+        child_family_count = parent_and_child_sibling_sum(
+            person, period, child_age_eligible, np.ones(person.count, dtype=int)
+        )
         non_filer_household_size = where(
             child_age_eligible,
-            spouse_count + family_parent_count + family_child_count,
+            where(
+                has_parent_ids,
+                spouse_count + child_family_count,
+                spouse_count + family_parent_count + family_child_count,
+            ),
             1 + spouse_count + family_child_count,
         )
         tax_household_size = person.tax_unit("tax_unit_size", period) + (
