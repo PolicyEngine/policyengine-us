@@ -47,6 +47,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, false, true, false]
     commodity_supplemental_food_program_eligible: [true, false, false, false]
     commodity_supplemental_food_program: [651, 0, 0, 0]
 
@@ -93,6 +94,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, false, true, false]
     commodity_supplemental_food_program_eligible: [true, false, false, false]
     commodity_supplemental_food_program: [651, 0, 0, 0]
 
@@ -139,6 +141,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, true, true, false]
     commodity_supplemental_food_program_eligible: [true, true, false, false]
     commodity_supplemental_food_program: [651, 651, 0, 0]
 
@@ -185,6 +188,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, true, true, false]
     commodity_supplemental_food_program_eligible: [true, true, false, false]
     commodity_supplemental_food_program: [651, 651, 0, 0]
 
@@ -231,6 +235,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, true, true, false]
     commodity_supplemental_food_program_eligible: [true, true, false, false]
     commodity_supplemental_food_program: [651, 651, 0, 0]
 
@@ -277,6 +282,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
+    ks_dcf_csfp_categorically_eligible: [true, false, true, false]
     commodity_supplemental_food_program_eligible: [true, false, false, false]
     commodity_supplemental_food_program: [651, 0, 0, 0]
 
@@ -294,6 +300,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: false
     commodity_supplemental_food_program_eligible: true
 
 - name: Case 8, income above the limit fails without program receipt.
@@ -310,6 +317,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: false
     commodity_supplemental_food_program_eligible: false
 
 - name: Case 9, categorical income eligibility does not waive the county gate.
@@ -326,6 +334,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: true
     commodity_supplemental_food_program_eligible: false
 
 - name: Case 10, categorical income eligibility does not waive minimum age.
@@ -342,6 +351,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: true
     commodity_supplemental_food_program_eligible: false
 
 - name: Case 11, Kansas categorical option does not apply to other states.
@@ -358,6 +368,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: false
     commodity_supplemental_food_program_eligible: false
 
 - name: Case 12, categorical income bypass is not backdated before the state plan.
@@ -374,6 +385,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: false
     commodity_supplemental_food_program_eligible: false
 
 - name: Case 13, categorical income bypass applies in the state plan year.
@@ -390,6 +402,7 @@
     receives_snap: false
     fdpir: 0
   output:
+    ks_dcf_csfp_categorically_eligible: true
     commodity_supplemental_food_program_eligible: true
 
 - name: Case 14, senior receiving SSI qualifies despite adult child earnings above the household limit.
@@ -420,6 +433,7 @@
         county_str: SEDGWICK_COUNTY_KS
   output:
     school_meal_countable_income: 43_800
+    ks_dcf_csfp_categorically_eligible: [true, false]
     commodity_supplemental_food_program_eligible: [true, false]
     commodity_supplemental_food_program: [651, 0]
 
@@ -461,3 +475,21 @@
     ks_dcf_csfp_categorically_eligible: [true, false]
     commodity_supplemental_food_program_eligible: [true, false]
     commodity_supplemental_food_program: [651, 0]
+
+- name: Case 16, single senior with reported SSI receipt qualifies in a post-plan year.
+  period: 2026
+  input:
+    age: 68
+    school_meal_fpg_ratio: 2
+    state_code: KS
+    county_str: SEDGWICK_COUNTY_KS
+    ssi: 0
+    receives_ssi: true
+    msp: 0
+    snap: 0
+    receives_snap: false
+    fdpir: 0
+  output:
+    ks_dcf_csfp_categorically_eligible: true
+    commodity_supplemental_food_program_eligible: true
+    commodity_supplemental_food_program: 651

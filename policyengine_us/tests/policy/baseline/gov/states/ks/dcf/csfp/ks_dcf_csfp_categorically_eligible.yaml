@@ -11,13 +11,15 @@
   output:
     ks_dcf_csfp_categorically_eligible:
       2025-03: false
-      # The plan takes effect April 11; the April period starts before that date.
+      # The plan takes effect April 11. The parameter list is read at the start
+      # of each month, so April (starting April 1) still sees the empty list
+      # and May is the first month with the bypass.
       2025-04: false
       2025-05: true
       2025-12: true
       2025: true
 
-- name: Case 2, annual eligibility uses year-end receipt rather than an earlier month.
+- name: Case 2, receipt in any month of the year confers annual CSFP eligibility.
   period: 2026
   input:
     state_code: KS
@@ -36,5 +38,5 @@
     ks_dcf_csfp_categorically_eligible:
       2026-01: true
       2026-12: false
-      2026: false
-    commodity_supplemental_food_program_eligible: false
+    commodity_supplemental_food_program_eligible: true
+    commodity_supplemental_food_program: 651
