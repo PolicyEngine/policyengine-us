@@ -4,7 +4,7 @@ values:
     - medicaid
     - chip
     - snap
-    - spm_unit_capped_housing_subsidy
+    - housing_assistance
     - ssi
     - tanf
     - free_school_meals
@@ -16,3 +16,6 @@ metadata:
   unit: list
   period: year
   label: CBO means-tested transfers
+  reference:
+    - title: Congressional Budget Office, Reconciling the Official Poverty Measure and CBO’s Distributional Analysis of Household Income, Including In-Kind Transfers
+      href: https://www.cbo.gov/publication/61157

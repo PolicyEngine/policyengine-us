@@ -1,0 +1,1 @@
+Prorate household housing assistance and the tenant contributions of awarded families across SPM units by member share before applying each unit's SPM resource cap, while preserving program awards and general benefit income. Document the tenant-payment allocation as a modeling assumption.

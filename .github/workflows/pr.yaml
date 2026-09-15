@@ -38,7 +38,51 @@ jobs:
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
-        run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
+        run: python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+  CandidateWheel:
+    name: Unpublished release wheel (${{ matrix.kind }})
+    needs: [ReleaseLock, ReleaseLockTests]
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        kind: [rc1, final]
+    steps:
+      - name: Checkout reviewed PR head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14.7"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock
+        run: python .github/release_lock.py --committed
+      - name: Predict release version with the release helper
+        run: python .github/release_build.py --prepare "${{ matrix.kind }}"
+      - name: Refresh only the release version in the registry lock
+        run: python .github/release_lock.py --refresh
+      - name: Install package
+        run: uv sync --locked --extra dev
+      - name: Build package from unchanged policy source
+        run: uv run --no-sync make
+      - name: Record and verify release build
+        run: uv run --no-sync python .github/release_build.py
+      - name: Retain unpublished wheel and build receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-wheel-${{ matrix.kind }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/*.whl
+            release-build/receipt.json
+          if-no-files-found: error
+          retention-days: 14
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
@@ -245,8 +289,6 @@ jobs:
           name: codecov-umbrella
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-      - name: Build package
-        run: uv build
   Baseline:
     needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
