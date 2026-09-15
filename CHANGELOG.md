@@ -1,3 +1,14 @@
+## [2.3.1] - 2026-09-15
+
+### Changed
+
+- Add a BOOST reform-composition test pinning that Head Start values flow through the reform's static household_benefits list when gov.simulation.include_head_start_benefits_in_net_income is on.
+
+### Fixed
+
+- Skip the pull-request candidate wheel build, with a notice, when the PR head predates the release tooling, instead of failing the check on every branch opened before that tooling landed.
+
+
 ## [2.3.0] - 2026-09-15
 
 ### Added
