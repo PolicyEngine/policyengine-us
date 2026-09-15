@@ -1,3 +1,10 @@
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
 ## [2.4.2] - 2026-09-15
 
 ### Fixed
