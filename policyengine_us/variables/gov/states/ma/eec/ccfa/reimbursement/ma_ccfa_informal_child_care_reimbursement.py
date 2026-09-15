@@ -6,7 +6,10 @@ class ma_ccfa_informal_child_care_reimbursement(Variable):
     entity = Person
     label = "Massachusetts Child Care Financial Assistance (CCFA) informal child care reimbursement amount per child"
     unit = USD
-    reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
+    reference = (
+        "https://www.mass.gov/doc/eecfy26-rate-increase-rate-chart/download#page=2",
+        "https://www.mass.gov/doc/fy26-motion-to-approve-fy27-rate-increases-to-informal-child-care-rates/download",
+    )
     definition_period = MONTH
     defined_for = StateCode.MA
 
