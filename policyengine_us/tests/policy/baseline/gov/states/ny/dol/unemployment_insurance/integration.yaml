@@ -246,3 +246,27 @@
         ny_ui_weekly_payable: 71.5
         # Annual = $71.50 * 10 = $715; MBA = $143 * 26 = $3,718 (not binding).
         ny_ui: 715
+
+- name: Case 9, NY UI feeds unemployment compensation income flows.
+  # Reuses Case 1's monetarily-eligible input set (ny_ui = $7,982) and asserts
+  # the state benefit also surfaces through the federal unemployment
+  # compensation income chain (unemployment_compensation adds ny_ui).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: NY
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ny_ui_high_quarter_wages: 8_000
+    ny_ui_base_period_wages: 28_000
+    ny_ui_quarters_with_wages: 4
+    weeks_unemployed: 26
+    ny_ui_weekly_hours_worked: 0
+    ny_ui_gross_weekly_earnings: 0
+  output:
+    ny_ui: 7_982
+    unemployment_compensation: 7_982
+    tax_unit_unemployment_compensation: 7_982
+    taxable_unemployment_compensation: 7_982
+    tax_unit_taxable_unemployment_compensation: 7_982
