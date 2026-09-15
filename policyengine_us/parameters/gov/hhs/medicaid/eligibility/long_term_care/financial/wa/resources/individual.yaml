@@ -1,0 +1,15 @@
+description: Washington limits countable resources to this amount for an individual using the Medicaid LTSS financial screen.
+values:
+  2026-01-01: 2_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington Medicaid LTSS resource limit for an individual
+  reference:
+    - title: Washington Apple Health Income and Resource Standards, January 1, 2026
+      href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3
+    - title: WAC 182-513-1395 - Institutional SSI-related medically needy eligibility
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395
+    - title: WAC 182-515-1508 - HCS waiver financial eligibility using institutional rules
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508
