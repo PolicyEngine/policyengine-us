@@ -141,3 +141,219 @@
     ma_tafdc_dependent_care_deduction: 528
     ma_tafdc: 0
     # Income is too high for TAFDC
+
+# The cases below use the payment standards in effect from 2025-04-01:
+# $901/month for three people and $1,190/month for five people in private
+# housing (106 CMR 704.420), and the $500 clothing allowance per eligible
+# child.
+#
+# Monthly countable earned income follows 106 CMR 704.270 and 704.281:
+#   step 1: subtract the $200 work-related expense deduction from each
+#           earner's own wages;
+#   step 2: count 50% of what is left (704.281(B));
+#   step 3: the model blends 704.281(A)'s six-month 100% disregard over the
+#           year, so half of step 2 is counted (see
+#           ma_tafdc_countable_earned_income).
+
+# DTA's FY2026 Standard Budgets report (Table 5) shows a family of three in
+# private housing with $15,600 of annual earnings receiving $7,512 of TAFDC.
+- name: Case 4, DTA FY2026 Standard Budgets reconciliation, family of three
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 15_600
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # One earner, so one $200 monthly deduction.
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0]
+    ma_tafdc_earned_income_after_deductions: 13_200
+    # $1,300/month - $200 = $1,100; 50% counted = $550; blended with the
+    # six-month 100% disregard = $275/month = $3,300 a year.
+    ma_tafdc_countable_earned_income: [3_300, 0, 0]
+    ma_tafdc_applicable_income_grant_amount: 3_300
+    ma_tafdc_payment_standard: 10_812 # $901 x 12
+    ma_tafdc_financial_eligible: true
+    # ($901 - $275) x 12 = $7,512, matching the DTA report.
+    ma_tafdc_potential_main_benefit: 7_512
+    ma_tafdc: 8_512 # $7,512 + 2 x $500 clothing allowance
+
+# A five-person unit with one earner, private housing. Before this fix the
+# unit lost TAFDC entirely between $26,000 and $27,000 of earnings.
+- name: Case 5, five-person unit with one earner at $26,000
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 26_000
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # $2,400 for the earner only, not $2,400 for each of the five members.
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0, 0, 0]
+    ma_tafdc_earned_income_after_deductions: 23_600
+    # $2,166.67/month - $200 = $1,966.67; 50% = $983.33; blended = $491.67.
+    ma_tafdc_applicable_income_grant_amount: 5_900 # $491.67 x 12
+    ma_tafdc_payment_standard: 14_280 # $1,190 x 12
+    ma_tafdc_financial_eligible: true
+    # ($1,190 - $491.67) x 12 = $8,380.
+    ma_tafdc_potential_main_benefit: 8_380
+    ma_tafdc: 9_880 # $8,380 + 3 x $500 clothing allowance
+
+- name: Case 6, the same unit at $27,000 still gets a tapering grant
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 27_000
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc_financial_eligible: true
+    # $2,250/month - $200 = $2,050; 50% = $1,025; blended = $512.50.
+    ma_tafdc_applicable_income_grant_amount: 6_150
+    # ($1,190 - $512.50) x 12 = $8,130: $250 less than at $26,000, a 25-cent
+    # taper per extra dollar rather than a cliff.
+    ma_tafdc_potential_main_benefit: 8_130
+    ma_tafdc: 9_630
+
+# 106 CMR 704.260 closes the case where countable income passes the payment
+# standard: ($E/12 - $200) x 50% = $1,190, so E = $30,960.
+- name: Case 7, eligibility ends at $30,960 of earnings
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 30_960
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # $2,580/month - $200 = $2,380; 50% counted = $1,190, exactly the payment
+    # standard, so 704.260's "does not exceed" boundary still admits the unit.
+    ma_tafdc_applicable_income_for_financial_eligibility: 14_280
+    ma_tafdc_financial_eligible: true
+    # The grant blends in the six-month 100% disregard, so it counts $595.
+    ma_tafdc_applicable_income_grant_amount: 7_140
+    ma_tafdc_potential_main_benefit: 7_140 # ($1,190 - $595) x 12
+    ma_tafdc: 8_640
+
+- name: Case 8, the same unit is financially ineligible at $31,000
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 31_000
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # $2,583.33/month - $200 = $2,383.33; 50% counted = $1,191.67, above the
+    # $1,190 payment standard.
+    ma_tafdc_applicable_income_for_financial_eligibility: 14_300
+    ma_tafdc_financial_eligible: false
+    ma_tafdc: 0

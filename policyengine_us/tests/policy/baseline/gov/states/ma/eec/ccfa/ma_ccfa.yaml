@@ -56,12 +56,16 @@
         state_code: MA
         county_str: BERKSHIRE_COUNTY_MA
   output:
-    ma_ccfa_total_copay: 3.88
+    # $1,800 of monthly wages less the $200 work-related expense deduction,
+    # 50% counted (106 CMR 704.281(B)) and less the $200 dependent care
+    # deduction leaves $600, under the $688 two-person payment standard, so
+    # this unit receives TAFDC and pays no child care copay.
+    ma_tafdc_financial_eligible: true
+    ma_ccfa_total_copay: 0
     ma_ccfa_maximum_reimbursement: [0, 1_050]
     ma_ccfa_eligible: true
     # capped expense = min(annual_expense, monthly_max) = $1,050
-    # benefit = max(1050 - 3.88, 0) = $1,046.12
-    ma_ccfa: 1_046.12
+    ma_ccfa: 1_050
 
 - name: Case 4, TAFDC recipient integration test - automatic eligibility and zero copay.
   period: 2025-01
@@ -187,8 +191,11 @@
   output:
     ma_ccfa_eligible: true
     ma_ccfa_maximum_reimbursement: [0, 987.8]
-    # computed copay ~3.87; benefit = max(987.8 - 3.87, 0) = 983.93
-    ma_ccfa: 983.93
+    # Same income and deductions as Case 3: the unit receives TAFDC, so the
+    # copay is zero and the benefit is the full reimbursement.
+    ma_tafdc_financial_eligible: true
+    ma_ccfa_total_copay: 0
+    ma_ccfa: 987.8
 
 - name: Case 7, senior caregiver exempt from activity requirements.
   period: 2025-01
