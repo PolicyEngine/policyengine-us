@@ -23,17 +23,19 @@ class me_standard_deduction(Variable):
         # year 2027 on, Sec. 5124-C(1-D) sets the Maine standard deduction equal
         # to the federal standard deduction.
         p = parameters(period).gov.states.me.tax.income.deductions.standard
-        federal = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         aged_blind_count = tax_unit("aged_blind_count", period)
         me_amount = (
             p.amount[filing_status] + p.aged_or_blind[filing_status] * aged_blind_count
         )
-        # The federal standard deduction is the sum of the basic standard
-        # deduction (IRC Section 63(c)(2)) and the additional standard deduction
-        # for the aged or the blind (IRC Section 63(c)(3) and (f)).
-        federal_amount = (
-            federal.amount[filing_status]
-            + federal.aged_or_blind.amount[filing_status] * aged_blind_count
+        # From 2027 Maine takes the federal standard deduction itself, not a
+        # re-addition of the federal basic and aged-or-blind parameters. Reading
+        # the federal variable carries the rest of IRC Section 63(c): the zero
+        # basic deduction for a separate filer whose spouse itemizes
+        # (Section 63(c)(6)) and the cap for a filer who is a dependent of
+        # another taxpayer (Section 63(c)(5)).
+        return where(
+            p.follows_federal,
+            tax_unit("standard_deduction", period),
+            me_amount,
         )
-        return where(p.follows_federal, federal_amount, me_amount)

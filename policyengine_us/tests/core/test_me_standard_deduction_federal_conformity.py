@@ -43,12 +43,14 @@ SITUATIONS = {
 }
 
 
-def _simulation(people, filing_status, year):
+def _simulation(people, filing_status, year, tax_unit_inputs=None):
     period = str(year)
     members = list(people)
     tax_unit = {"members": members}
     if filing_status is not None:
         tax_unit["filing_status"] = {period: filing_status}
+    for name, value in (tax_unit_inputs or {}).items():
+        tax_unit[name] = {period: value}
     situation = {
         "people": {
             name: {field: {period: value} for field, value in attributes.items()}
@@ -106,3 +108,49 @@ def test_me_standard_deduction_does_not_follow_federal_in_2026():
     federal = simulation.calculate("standard_deduction", "2026")[0]
     assert maine == pytest.approx(15_700)
     assert federal == pytest.approx(16_100)
+
+
+def test_me_standard_deduction_applies_the_federal_dependent_cap_in_2027():
+    # IRC Section 63(c)(5), as adjusted by Rev. Proc. 2025-32 section .14(2):
+    # an individual who is a dependent of another taxpayer gets at most the
+    # greater of the dependent floor and earned income plus a fixed addition,
+    # capped at the ordinary basic standard deduction. Maine follows the federal
+    # standard deduction from 2027, so the cap has to reach Maine too.
+    simulation = _simulation(
+        {
+            "person": {
+                "age": 17,
+                "employment_income": 3_000,
+                "is_tax_unit_head": True,
+            }
+        },
+        "SINGLE",
+        2027,
+        tax_unit_inputs={"head_is_dependent_elsewhere": True},
+    )
+    maine = simulation.calculate("me_standard_deduction", "2027")[0]
+    federal = simulation.calculate("standard_deduction", "2027")[0]
+    assert maine == pytest.approx(federal)
+    # The cap binds: earned income plus the fixed addition is far below both the
+    # federal basic amount and Maine's own frozen amount for a single filer.
+    assert maine < _maine_own_amount("SINGLE", 2027)
+    assert (
+        maine
+        < SYSTEM.parameters.gov.irs.deductions.standard.amount("2027-01-01")["SINGLE"]
+    )
+
+
+def test_me_standard_deduction_is_zero_for_a_2027_separate_itemizing_filer():
+    # IRC Section 63(c)(6)(A): a married individual filing separately whose
+    # spouse itemizes gets no standard deduction. Maine follows the federal
+    # standard deduction from 2027, so Maine's is zero as well.
+    simulation = _simulation(
+        {"person": {"age": 40, "employment_income": 50_000}},
+        "SEPARATE",
+        2027,
+        tax_unit_inputs={"separate_filer_itemizes": True},
+    )
+    maine = simulation.calculate("me_standard_deduction", "2027")[0]
+    federal = simulation.calculate("standard_deduction", "2027")[0]
+    assert federal == pytest.approx(0)
+    assert maine == pytest.approx(0)
