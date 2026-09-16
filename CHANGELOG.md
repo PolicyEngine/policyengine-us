@@ -1,3 +1,15 @@
+## [2.6.0] - 2026-09-16
+
+### Fixed
+
+- Count the Trump dividend in the household and SPM unit benefit aggregates under the End Child Poverty Act, BOOST, Economic Dignity for All Agenda, and Texas rebate reforms.
+- Include state and local tax refund income (`salt_refund_income`) in federal gross income and subtract/deduct it in conforming states.
+
+### Removed
+
+- Remove deprecated `salt_refund_last_year` in favor of canonical person-level `salt_refund_income`.
+
+
 ## [2.5.4] - 2026-09-16
 
 ### Fixed
