@@ -2,7 +2,7 @@
 # in 2023 but is booked in the eligibility year. All active-year cases therefore
 # run at period 2021. Cases at 2022 and 2023 guard the year-scoping added by
 # amount.yaml's `2022-01-01: 0` entries: without them, backdating fills the 2021
-# amounts forward and every Montana filer receives a phantom rebate credit.
+# amounts forward and the variable reports a phantom rebate.
 
 - name: Single filer receives the full single rebate
   period: 2021
@@ -20,6 +20,52 @@
         state_code: MT
   output:
     mt_income_tax_rebate: [1_250]
+
+- name: Head of household receives the single-status rebate amount
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: MT
+  output:
+    # MCA 15-30-2191(1)(b)(i): $1,250 for a head of household. Dependents get
+    # nothing, since the amount is gated on is_tax_unit_head_or_spouse.
+    filing_status: HEAD_OF_HOUSEHOLD
+    mt_income_tax_rebate: [1_250, 0]
+
+- name: Surviving spouse receives the joint rebate amount
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, child]
+        state_code: MT
+  output:
+    # The statute does not name a surviving spouse. Montana derives filing
+    # status from the federal return, where a qualifying surviving spouse uses
+    # the joint rate schedule, so the $2,500 joint maximum is the consistent
+    # reading. Only one filer claims it here, so it is not split.
+    mt_income_tax_rebate: [2_500, 0]
 
 - name: Joint filers split the per-return rebate across each spouse's column
   period: 2021
@@ -44,8 +90,68 @@
   output:
     # $2,500 per-return cap split $1,250 per spouse (sums to $2,500, not $5,000)
     mt_income_tax_rebate: [1_250, 1_250]
-    # End to end: 2,518.22 pre-credit - 2,500 pooled rebate = 18.22
+    # End to end: 2,518.22 pre-credit - 2,500 pooled rebate = 18.22.
+    # The 2022 clone of this household below is the year boundary.
+    mt_income_tax_before_non_refundable_credits_joint: 2_518.22
     mt_income_tax: 18.22
+
+- name: The same joint household owes more in 2022, when no rebate applies
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Boundary pair with the 2021 case above. The pre-credit joint base is
+    # lower in 2022 than in 2021 (2,394.50 against 2,518.22), yet net tax is
+    # far higher (2,394.50 against 18.22), because the $2,500 rebate applies
+    # only in 2021. Nothing else offsets the base here.
+    mt_income_tax_rebate: [0, 0]
+    mt_income_tax_before_non_refundable_credits_joint: 2_394.50
+    mt_non_refundable_credits: [0, 0]
+    mt_income_tax: 2_394.50
+
+- name: Single filer below the cap keeps only the liability she owes
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 2021 liability of $625.40 sits strictly between zero and the $1,250
+    # statutory maximum, so MCA 15-30-2191(2) limits the rebate to $625.40.
+    # The variable still reports the uncapped $1,250; the individual path's
+    # ordered credit application is what realizes the cap, flooring tax at
+    # zero. No refundable credit is in play (mt_eitc is 0 at this income), so
+    # mt_income_tax is exactly 0.
+    mt_income_tax_rebate: [1_250]
+    mt_income_tax_before_non_refundable_credits_indiv: [625.40]
+    mt_income_tax_before_refundable_credits_indiv: [0]
+    mt_eitc: [0]
+    mt_income_tax: 0
 
 - name: Rebate cannot drive liability below zero (MCA 15-30-2191(2))
   period: 2021
