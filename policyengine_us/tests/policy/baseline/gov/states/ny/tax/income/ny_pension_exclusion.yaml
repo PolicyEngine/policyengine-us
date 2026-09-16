@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 25_000
+        taxable_private_pension_income: 25_000
         age: 65
     tax_units:
       tax_unit:
@@ -20,7 +20,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 25_000
+        taxable_private_pension_income: 25_000
         age: 58
     tax_units:
       tax_unit:
@@ -37,7 +37,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 15_000
+        taxable_private_pension_income: 15_000
         age: 65
     tax_units:
       tax_unit:
@@ -54,10 +54,10 @@
   input:
     people:
       person1:
-        taxable_pension_income: 15_000
+        taxable_private_pension_income: 15_000
         age: 65
       person2:
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
         age: 60
     tax_units:
       tax_unit:
@@ -74,10 +74,10 @@
   input:
     people:
       person1:
-        taxable_pension_income: 15_000
+        taxable_private_pension_income: 15_000
         age: 65
       person2:
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
         age: 55
     tax_units:
       tax_unit:
@@ -94,7 +94,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 20_000  # Combined pension and IRA income        
+        taxable_private_pension_income: 20_000  # Combined pension and IRA income        
         age: 65
     tax_units:
       tax_unit:
@@ -111,7 +111,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 25_000 # Combined pension and IRA income        
+        taxable_private_pension_income: 25_000 # Combined pension and IRA income        
         age: 65
     tax_units:
       tax_unit:
@@ -128,7 +128,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 25_000 # Combined pension and Keogh income         
+        taxable_private_pension_income: 25_000 # Combined pension and Keogh income         
         age: 65
     tax_units:
       tax_unit:
@@ -145,7 +145,7 @@
   input:
     people:
       person1:
-        taxable_pension_income: 10_000        
+        taxable_private_pension_income: 10_000        
         age: 65        
     tax_units:
       tax_unit:

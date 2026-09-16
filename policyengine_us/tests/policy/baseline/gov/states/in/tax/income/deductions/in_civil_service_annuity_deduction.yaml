@@ -1,0 +1,154 @@
+- name: Indiana civil service annuity deduction for eligible federal retiree
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 10_000
+        taxable_federal_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 10_000
+    in_income_tax: 0
+
+- name: Indiana state/local public pension (PERF/TRF) is not eligible for civil service annuity deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 0
+
+- name: Indiana civil service annuity deduction capped at $16,000 and reduced by Social Security
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 20_000
+        taxable_federal_pension_income: 20_000
+        social_security_retirement: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 12_000  # min(20_000, 16_000) - 4_000
+
+- name: Indiana civil service annuity deduction ineligible under age 62
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        taxable_public_pension_income: 15_000
+        taxable_federal_pension_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 0
+
+- name: Indiana civil service annuity deduction reduced to 0 by Social Security
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 10_000
+        taxable_federal_pension_income: 10_000
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 0
+
+- name: Indiana civil service annuity deduction reduced by railroad benefits
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 15_000
+        taxable_federal_pension_income: 15_000
+        railroad_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 10_000  # 15_000 - 5_000
+
+- name: Indiana joint couple with two qualifying federal annuitants
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_public_pension_income: 15_000
+        taxable_federal_pension_income: 15_000
+        social_security_retirement: 3_000
+      person2:
+        age: 68
+        taxable_public_pension_income: 20_000
+        taxable_federal_pension_income: 20_000
+        railroad_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # person1: min(15_000, 16_000) - 3_000 = 12_000
+    # person2: min(20_000, 16_000) - 2_000 = 14_000
+    # total = 26_000
+    in_civil_service_annuity_deduction: 26_000
+
+- name: Indiana private pension is not eligible for civil service annuity deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_civil_service_annuity_deduction: 0
