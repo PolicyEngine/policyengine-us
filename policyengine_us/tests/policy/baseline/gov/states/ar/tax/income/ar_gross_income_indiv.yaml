@@ -23,3 +23,73 @@
   output:
     ar_gross_income_indiv: 100_000
     ar_gross_income_joint: 100_000
+
+- name: Arkansas includes unemployment compensation in gross income in 2019, before Act 154 of 2021
+  period: 2019
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000
+    ar_gross_income_joint: 25_000
+
+- name: Arkansas excludes unemployment compensation from gross income in 2020 (Act 154 of 2021)
+  period: 2020
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 20_000
+    ar_gross_income_joint: 20_000
+
+- name: Arkansas excludes unemployment compensation from gross income in 2021 (Act 154 of 2021)
+  period: 2021
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 20_000
+
+- name: Arkansas includes unemployment compensation in gross income in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000

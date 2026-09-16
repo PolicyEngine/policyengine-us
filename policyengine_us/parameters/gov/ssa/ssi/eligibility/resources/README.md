@@ -9,6 +9,7 @@ to the SSI resource test via `ssi_countable_resources`.
 Check SSI expenditures with:
 ```python
 from policyengine_us import Microsimulation
+
 Microsimulation().calc("ssi", map_to="person", period=2023).sum() / 1e9
 ```
 
