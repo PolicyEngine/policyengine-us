@@ -1,0 +1,1 @@
+Approximated Pennsylvania's employer pension exclusion with age 59.5, the age Pennsylvania applies to plans with no specific retirement criteria, instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
