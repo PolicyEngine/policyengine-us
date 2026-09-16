@@ -1,3 +1,19 @@
+## [2.5.2] - 2026-09-16
+
+### Changed
+
+- Pinned the Massachusetts TAFDC path into household benefits with regression tests covering the 9,880 grant and the TANF take-up switch.
+- Retracted the 2.1.0 release in the changelog. It contained the Massachusetts CCFA changes from #9457, which were reverted in #9458 seven minutes after merging and replaced by #9460 (2.2.0) and the follow-up in #9468; install 2.2.0 or later. The README now states the current spm-calculator requirement instead of the old 0.3.1 pin.
+
+### Fixed
+
+- Correct the Montana 2021 income tax rebate's reported value outside its eligibility year: without the 2022 sunset the amount backdates forward, so the variable reported a phantom rebate in 2022 and later. Montana income tax is unaffected, as the non-refundable credit list already excludes the rebate from 2022.
+- Approximated Pennsylvania's employer pension exclusion with age 59.5, the age Pennsylvania applies to plans with no specific retirement criteria, instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
+- Corrected the 2026 Idaho parent and caretaker Medicaid income limit from a stale 0.27 to 0.21 of the federal poverty guidelines, the IDAPA 16.03.01.411 standard of $365 a month for a household of three with the 5-point MAGI disregard.
+- Set Maine's standard deduction equal to the federal standard deduction for tax years beginning on or after January 1, 2027, per 36 M.R.S. 5124-C(1-D).
+- Corrected the South Carolina parent and caretaker Medicaid income limit from a never-operative 1.00 of the federal poverty guidelines to the published 67 percent, and refreshed the 2026 frozen-dollar conversions for Texas, Mississippi, Georgia, Florida and Wyoming.
+
+
 ## [2.5.1] - 2026-09-16
 
 ### Changed

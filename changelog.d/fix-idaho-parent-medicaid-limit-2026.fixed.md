@@ -1,1 +1,0 @@
-Corrected the 2026 Idaho parent and caretaker Medicaid income limit from a stale 0.27 to 0.21 of the federal poverty guidelines, the IDAPA 16.03.01.411 standard of $365 a month for a household of three with the 5-point MAGI disregard.
