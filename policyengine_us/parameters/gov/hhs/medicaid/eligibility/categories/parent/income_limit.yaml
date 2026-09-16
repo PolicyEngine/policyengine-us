@@ -85,8 +85,8 @@ FL:
   2018-01-01: 0.34
   2021-01-01: 0.32
   # $303 standard + $183 standard disregard + $114 5% MAGI disregard =
-  # $600/month = $7,200/year for a family of three. The appendix lists the
-  # three components; the $600 total is ours (DCF ESS Appendix A-7).
+  # $600/month = $7,200/year for a family of three. The appendix publishes
+  # the three components, not the $600 total (DCF ESS Appendix A-7).
   2026-01-01: 0.264
 GA:
   2018-01-01: 0.39
@@ -186,9 +186,9 @@ SC:
   2018-01-01: 0.67
   # SCDHHS publishes the Parent/Caretaker Relative limit as 67% of the
   # guidelines, shown as $1,842.50/month for a family of four (effective
-  # March 1, 2026). The 2021 entry of 1.00 removed here came from the
-  # Palmetto Pathways waiver, approved in 2019 and never implemented, so
-  # 0.67 runs unbroken from 2018.
+  # March 1, 2026). No 2021 entry: the 1.00 once stored for that year came
+  # from the Palmetto Pathways waiver, approved in 2019 and never
+  # implemented, so 0.67 runs unbroken from 2018.
   2026-01-01: 0.67
 SD:
   2018-01-01: 0.62
