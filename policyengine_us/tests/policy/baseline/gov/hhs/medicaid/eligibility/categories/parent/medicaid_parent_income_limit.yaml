@@ -124,7 +124,7 @@
     medicaid_parent_income_limit: 0.31
   absolute_error_margin: 0.0001
 
-- name: Case 9, Georgia frozen-dollar parent standard carries the 0.31 FPL level into 2026.
+- name: Case 9, Georgia parent limit falls to 0.291 FPL in 2026 ($662/month for three).
   period: 2026
   input:
     people:
@@ -135,7 +135,7 @@
         members: [person1]
         state_code: GA
   output:
-    medicaid_parent_income_limit: 0.31
+    medicaid_parent_income_limit: 0.291
   absolute_error_margin: 0.0001
 
 - name: Case 10, Missouri uses the MHF monthly dollar parent limit in 2025.
@@ -261,4 +261,108 @@
         state_group_str: CONTIGUOUS_US
   output:
     medicaid_parent_income_limit: 0.156318
+  absolute_error_margin: 0.0001
+
+# Issue #9474: TX, MS, FL and WY also publish frozen dollar standards. Each
+# 2026 value is the state's family-of-three standard over the 2026 guidelines,
+# inclusive of the 5-point MAGI disregard. South Carolina is different: it
+# publishes 67% of the guidelines, which the 2021 entry of 1.00 overwrote, so
+# 0.67 now holds in both 2025 and 2026.
+
+- name: Case 17, Texas parent limit is 0.151 FPL in 2026 ($230 + $113.85 per month).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_parent_income_limit: 0.151
+  absolute_error_margin: 0.0001
+
+- name: Case 18, Mississippi parent limit is 0.219 FPL in 2026 ($498/month for three).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    medicaid_parent_income_limit: 0.219
+  absolute_error_margin: 0.0001
+
+- name: Case 19, Florida parent limit is 0.264 FPL in 2026 ($600/month for three).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    medicaid_parent_income_limit: 0.264
+  absolute_error_margin: 0.0001
+
+- name: Case 20, Wyoming parent limit is 0.433 FPL in 2026 ($873/month plus the disregard).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    medicaid_parent_income_limit: 0.433
+  absolute_error_margin: 0.0001
+
+- name: Case 21, South Carolina parent limit is the published 0.67 FPL in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    medicaid_parent_income_limit: 0.67
+  absolute_error_margin: 0.0001
+
+- name: Case 22, South Carolina parent limit is 0.67 FPL in 2026, the published percentage.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    medicaid_parent_income_limit: 0.67
+  absolute_error_margin: 0.0001
+
+- name: Case 23, Idaho parent limit falls to 0.21 FPL in 2026 ($365/month for three).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    medicaid_parent_income_limit: 0.21
   absolute_error_margin: 0.0001

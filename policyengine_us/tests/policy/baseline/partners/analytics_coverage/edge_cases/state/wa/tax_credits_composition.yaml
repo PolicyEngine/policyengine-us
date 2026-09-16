@@ -62,12 +62,14 @@
   output:
     tax_units:
       tax_unit:
-        # 1-kid WFTC 2026 maximum = 660 x 1.02266 uprating = 674.96; no
-        # capital gains -> tax before credits 0; net WA income tax =
-        # 0 - 674.96 = -674.96.
-        wa_working_families_tax_credit: 674.96
-        wa_refundable_credits: 674.96
-        wa_income_tax: -674.96
+        # 1-kid WFTC 2026 maximum = 660 x 1.02266 uprating = 674.96, rounded
+        # to the nearest $5 = 675 (#9371); income is below the phase-out
+        # start, so the credit is the full $675 (nearest-dollar rounding per
+        # RCW 82.08.0206(3)(b) leaves it unchanged). No capital gains -> tax
+        # before credits 0; net WA income tax = 0 - 675 = -675.
+        wa_working_families_tax_credit: 675
+        wa_refundable_credits: 675
+        wa_income_tax: -675
         adjusted_gross_income: 20_000.0
 - name: statetax_capital_gains_below_deduction_no_tax (wa)
   period: 2026

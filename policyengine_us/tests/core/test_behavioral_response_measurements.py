@@ -530,7 +530,9 @@ def test_substitution_channel_is_live_end_to_end():
         },
     }
 
-    simulation = Simulation(situation=situation, reform=reform)
+    simulation = Simulation(
+        situation=situation, reform=reform, spm={"geography_kind": "national"}
+    )
     response = simulation.calculate("labor_supply_behavioral_response", year)
     measurements = simulation._behavioral_response_measurements[year]
     baseline_mtr = np.asarray(measurements["baseline_mtr"])
@@ -581,7 +583,9 @@ def test_capital_gains_channel_is_live_end_to_end():
         },
     }
 
-    simulation = Simulation(situation=situation, reform=reform)
+    simulation = Simulation(
+        situation=situation, reform=reform, spm={"geography_kind": "national"}
+    )
     response = simulation.calculate("capital_gains_behavioral_response", year)
     measurements = simulation._behavioral_response_measurements[year]
     baseline_mtr = np.asarray(measurements["baseline_capital_gains_mtr"])

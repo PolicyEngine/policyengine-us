@@ -111,3 +111,15 @@
     # Federal 1211 limits the joint net capital loss to -$3,000, allocated to the
     # head; basket = $85,793 interest - $3,000 = $82,793 >> $12,500 cap.
     de_pension_exclusion: [12_500, 0]
+
+- name: DE 60+ filer with 401(k) and IRA distributions
+  period: 2024
+  input:
+    age: 65
+    taxable_ira_distributions: 8_000
+    taxable_401k_distributions: 6_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 12_500
+

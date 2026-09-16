@@ -17,3 +17,13 @@
     taxable_private_pension_income: 13_440
   output:
     ga_retirement_income_exclusion_retirement_income: 25_096
+
+- name: Retirement income includes 401k and IRA distributions
+  period: 2024
+  input:
+    state_code: GA
+    ga_retirement_exclusion_countable_earned_income: 0
+    taxable_ira_distributions: 12_000
+    taxable_401k_distributions: 18_000
+  output:
+    ga_retirement_income_exclusion_retirement_income: 30_000

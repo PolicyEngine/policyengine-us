@@ -1,18 +1,25 @@
-description: Maine additional standard deduction per aged or blind box checked, by filing status. Because Maine conforms to the IRC as of December 31, 2024 (36 MRSA § 111) and did not adopt the One Big Beautiful Bill Act (OBBBA), the additional amount for 2025 remains at the pre-OBBBA federal projection rather than the OBBBA level.
+description: Maine additional standard deduction per aged or blind box checked, by filing status. 36 M.R.S. Sec. 5124-C(1-B)(B) and (1-C)(B) set the Maine additional standard deduction equal to the amount allowed under IRC Section 63(c)(3), so these amounts track the federal additional standard deduction for the aged or the blind. The One Big Beautiful Bill Act changed the basic standard deduction under IRC Section 63(c)(2) and (c)(7), not the aged or blind amount under Section 63(f).
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine additional standard deduction for aged or blind
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
   reference:
-  - title: 36 MRSA § 111 (Maine IRC conformity as of December 31, 2024)
+  - title: 36 M.R.S. Sec. 111(1-A) (Maine IRC conformity as amended through December 31, 2025)
     href: https://www.mainelegislature.org/legis/statutes/36/title36sec111.html
   - title: 36 MRSA § 5124-C (Maine standard deduction)
     href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
-  - title: Maine 2025 Form 1040ME Individual Income Tax Booklet, Standard Deduction Chart for line 17 (page 4)
-    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf
+  - title: 36 M.R.S. Sec. 5124-C(1-B)(B) and (1-C)(B) (Maine additional standard deduction equals the IRC Section 63(c)(3) amount)
+    href: https://legislature.maine.gov/statutes/36/title36sec5124-C.html
+  - title: IRS Rev. Proc. 2025-32, Section 3.14(3) (2026 federal additional standard deduction for the aged or the blind)
+    href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 SINGLE:
   2018-01-01: 1_600
   2019-01-01: 1_650
@@ -21,6 +28,7 @@ SINGLE:
   2023-01-01: 1_850
   2024-01-01: 1_950
   2025-01-01: 2_000
+  2026-01-01: 2_050
 JOINT:
   2018-01-01: 1_300
   2019-01-01: 1_300
@@ -29,6 +37,7 @@ JOINT:
   2023-01-01: 1_500
   2024-01-01: 1_550
   2025-01-01: 1_600
+  2026-01-01: 1_650
 SEPARATE:
   2018-01-01: 1_300
   2019-01-01: 1_300
@@ -37,6 +46,7 @@ SEPARATE:
   2023-01-01: 1_500
   2024-01-01: 1_550
   2025-01-01: 1_600
+  2026-01-01: 1_650
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 1_600
   2019-01-01: 1_650
@@ -45,6 +55,7 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 1_850
   2024-01-01: 1_950
   2025-01-01: 2_000
+  2026-01-01: 2_050
 SURVIVING_SPOUSE:
   2018-01-01: 1_300
   2019-01-01: 1_300
@@ -53,3 +64,4 @@ SURVIVING_SPOUSE:
   2023-01-01: 1_500
   2024-01-01: 1_550
   2025-01-01: 1_600
+  2026-01-01: 1_650

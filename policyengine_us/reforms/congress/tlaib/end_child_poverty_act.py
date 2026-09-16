@@ -108,16 +108,15 @@ def create_end_child_poverty_act() -> Reform:
                 "unemployment_compensation",
                 # Contributed.
                 "basic_income",
-                "spm_unit_capped_housing_subsidy",
+                "trump_dividend",
+                "housing_assistance",
                 "household_state_benefits",
                 "household_head_start_benefits",
                 "ecpa_child_benefit",
             ]
             if parameters(period).gov.hud.abolition:
                 BENEFITS = [
-                    benefit
-                    for benefit in BENEFITS
-                    if benefit != "spm_unit_capped_housing_subsidy"
+                    benefit for benefit in BENEFITS if benefit != "housing_assistance"
                 ]
             return add(household, period, BENEFITS)
 
@@ -158,6 +157,7 @@ def create_end_child_poverty_act() -> Reform:
                 "unemployment_compensation",
                 # Contributed.
                 "basic_income",
+                "trump_dividend",
                 "ny_drive_clean_rebate",
                 "ecpa_child_benefit",
             ]

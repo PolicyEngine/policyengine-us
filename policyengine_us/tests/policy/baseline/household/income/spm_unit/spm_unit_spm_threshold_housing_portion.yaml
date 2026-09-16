@@ -1,13 +1,70 @@
-- name: Housing portion isolates the geographically adjusted housing share.
+# Canonical spm-calculator 1.0.0 forecast spm-rolling-2026-09-09, 2024:
+# County 06037 resolves to Los Angeles metro 31080, with rent index 1.6.
+# Two adults and two children have equivalence factor 1. The canonical housing
+# amounts below use the published reference threshold * housing share * 1.6,
+# before PolicyEngine casts the final amount to its variable storage dtype.
+- name: Case 1, renter housing portion uses the canonical county amount.
   period: 2024
   absolute_error_margin: 0.01
   input:
-    # Renter housing share is 0.443. A 1.5 local-rent ratio implies:
-    # geoadj = 1 - 0.443 + 0.443 * 1.5 = 1.2215.
-    # For a $40,000 unadjusted threshold, the adjusted threshold is $48,860
-    # and the adjusted housing portion is $40,000 * 0.443 * 1.5 = $26,580.
-    spm_unit_unadjusted_spm_threshold: 40_000
-    spm_unit_geographic_adjustment: 1.2215
-    spm_unit_tenure_type: RENTER
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
   output:
-    spm_unit_spm_threshold_housing_portion: 26_580
+    # 39_219.893902 * 0.4305200747 * 1.6.
+    spm_unit_spm_threshold_housing_portion: 27_015.922643864185
+
+- name: Case 2, mortgaged owner housing portion uses the canonical county amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
+  output:
+    # 39_230.994457 * 0.4306812111 * 1.6.
+    spm_unit_spm_threshold_housing_portion: 27_033.683528637033
+
+- name: Case 3, outright owner housing portion uses the canonical county amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 40}
+      person3: {age: 10}
+      person4: {age: 8}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        county_fips: "06037"
+  output:
+    # 32_878.594848 * 0.3206844041 * 1.6.
+    spm_unit_spm_threshold_housing_portion: 16_869.84415436194

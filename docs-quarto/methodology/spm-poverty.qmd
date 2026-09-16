@@ -1,0 +1,65 @@
+---
+title: "How PolicyEngine US calculates SPM poverty"
+subtitle: "Population, thresholds, resources, and what the model does not yet do"
+---
+
+This page describes how the model turns a household into a Supplemental Poverty Measure (SPM) poverty status, and which parts of that calculation are computed from statute, imported from survey data, or not modeled. It is maintained with the code; when a variable named here changes, this page changes with it. Every variable name links to its definition in the repository.
+
+## The measure
+
+A person is in SPM poverty when their SPM unit's resources fall below its threshold:
+
+```text
+in poverty = spm_unit_net_income < spm_unit_spm_threshold
+```
+
+Unit membership comes from the population dataset, which carries the Census SPM unit identifiers from the Current Population Survey. For the equivalence scale, the model classifies a member as an adult when they are 18 or older, or 15 to 17 and marked as independent (`is_spm_independent_minor_role`, a role the dataset derives from the survey's household structure rather than from age alone); everyone else in the unit is a child (`spm_measurement_adults` and `spm_measurement_children`).
+
+## Thresholds
+
+Thresholds come from the [spm-calculator](https://github.com/PolicyEngine/spm-calculator) package, which owns SPM measurement. For each unit the calculator returns the national reference threshold for the unit's tenure and year, the Betson three-parameter equivalence scale for its adult and child counts, the geographic factor for its metro or nonmetro estimation area, and the housing portion of the threshold. The variables that hold those amounts (`spm_unit_reference_spm_threshold`, `spm_unit_unadjusted_spm_threshold`, `spm_unit_geographic_adjustment`, `spm_unit_spm_threshold` and `spm_unit_spm_threshold_housing_portion`) are created by the calculator's PolicyEngine adapter ([`build_policyengine_variables` in `spm_calculator/policyengine_adapter.py`](https://github.com/PolicyEngine/spm-calculator/blob/main/spm_calculator/policyengine_adapter.py)) and registered by [`policyengine_us/system.py`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/system.py); each returns the calculator's final amount for the unit rather than multiplying rounded intermediates.
+
+For 2022 through 2025 the national thresholds and housing shares are the published BLS values at full spreadsheet precision: the corrected 2019 to 2024 series BLS issued in July 2026, and the 2025 values from BLS's current workbook published on August 24, 2026. For 2026 onward the calculator projects them by advancing the five-year Consumer Expenditure window and the five-year ACS rent window that Census and BLS use, under two real-spending scenarios (`ce_trend`, the default, and `zero_real`). Local rent indices are the published Census values where a year's geography has been published and modeled otherwise; for 2025 the local component is modeled because Census had not published 2025 geography at the calculator's information date. The calculator's [methodology](https://policyengine-docs.vercel.app/spm-calculator/methodology) and [validation](https://policyengine-docs.vercel.app/spm-calculator/validation) pages document the sources and the forecast evaluation.
+
+Geography is a county lookup: the population dataset supplies each household's county, and the calculator maps the county to an SPM estimation area for that year. That mapping is a research approximation built from public ACS microdata and the 2013 metropolitan delineations, since Census does not publish its internal county-to-area assignment. Households without a usable county fail rather than falling back silently.
+
+## Resources
+
+[`spm_unit_net_income`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/household/income/spm_unit/spm_unit_net_income.py) is market income plus benefits, minus taxes and SPM expenses:
+
+| Component | Variable | What it holds |
+| --- | --- | --- |
+| Market income | `spm_unit_market_income` | Wages, self-employment, capital, retirement and other market income of the unit's members, from the survey record |
+| Benefits | `spm_unit_benefits` | Social Security, SSI and state supplements, SNAP, WIC, free and reduced-price school meals, TANF, child support received, workers' compensation, unemployment compensation, educational and financial assistance, survivor benefits, the energy subsidy, housing subsidies capped at the housing portion of the threshold minus the tenant payment, and several state programs, each computed from its program rules where the model has them |
+| Broadband subsidies | `acp`, `ebb` | Added separately |
+| Taxes | `spm_unit_taxes` | Payroll and self-employment taxes, federal income tax after credits, and state income tax after credits, all computed from statute |
+| Expenses | `spm_unit_spm_expenses` | Child support paid, medical out-of-pocket expenses, and work and child care expenses capped by earnings |
+
+Benefit amounts are computed from statute for the eligible population. Whether an eligible unit is counted as receiving a benefit depends on take-up indicators the dataset supplies (`takes_up_snap_if_eligible`, `takes_up_tanf_if_eligible`, `takes_up_housing_assistance_if_eligible`, `takes_up_medicaid_if_eligible`, `takes_up_ssi_if_eligible`, `takes_up_eitc` and others are columns of the population file); for example SNAP is `defined_for = "takes_up_snap_if_eligible"` in [`snap.py`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/gov/usda/snap/snap.py).
+
+### Medical out-of-pocket expenses
+
+[`spm_unit_medical_out_of_pocket_expenses`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/household/income/spm_unit/spm_unit_medical_out_of_pocket_expenses.py) is health insurance premiums plus non-premium medical spending.
+
+- Premiums the model computes from rules: Medicare Part A and Part B (including IRMAA), the Part D IRMAA surcharge, CHIP premiums in the states with encoded schedules, and Marketplace net premiums after the premium tax credit. Medicaid expansion premium schedules for Indiana, Michigan and Montana are encoded for reform analysis but are zero in the 2024 and 2025 baselines. Other reported premiums, including the employee share of employer plans, stay as reported in the survey.
+- Non-premium spending ([`other_medical_expenses`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/household/expense/health/other_medical_expenses.py) and over-the-counter health expenses) is imported from the survey and uprated with CMS per-capita spending. No rule changes it.
+
+The [MOOP decomposition page](moop-decomposition.qmd) records the design and the remaining double-count risks.
+
+## Population
+
+Population results use the Microcosm US dataset. The current default is Build P: 57,240 Current Population Survey Annual Social and Economic Supplement households with 166,321 people, whose weights are fitted to 5,659 administrative and demographic targets (IRS Statistics of Income by state and by income, Census population estimates by age, sex and state, CMS Medicaid and Marketplace enrollment, USDA SNAP participation and benefits, SSA SSI, TANF, state tax collections and BEA national accounts). Poverty rates are never a target. That is a rule of the calibration, not an accident: a model whose weights were fitted to survey-based poverty rates could not be checked against them.
+
+2025 values are the 2024 survey values carried forward by the model's uprating parameters: CBO's projections of adjusted gross income by source for most income variables, IRS Statistics of Income series for others, CPI-U for rents, CMS per-capita spending for medical expenses, and Census population estimates for the weights. Household composition is held at its 2024 state. The population is projected, not resampled.
+
+## What the model does not do
+
+- **Medicaid and non-premium medical spending.** The model computes Medicaid eligibility and enrollment, but non-premium medical spending is a survey input. Enrolling a person in Medicaid, or removing their coverage, leaves their imported out-of-pocket spending unchanged. Reforms that change coverage therefore reach SPM poverty only through the rules-based premium components, not through the non-premium spending that makes up most of MOOP.
+- **Copays.** CHIP and other cost sharing are not modeled beyond the premium schedules.
+- **Employer premiums and base Part D premiums.** These stay as reported; only the rules-based components respond to reform.
+- **Levels versus Census.** Simulated poverty levels differ from Census-published levels by construction: benefits are computed rather than reported, income is calibrated to administrative totals, and the population is projected. Gaps against Census are investigation signals, not calibration targets. PolicyEngine's published predictions therefore report the modeled change applied to the Census level, never the modeled level alone.
+- **Forecast years.** Thresholds after 2025 and all 2025 local geography are projections with the uncertainty documented in the calculator's validation page.
+
+## Reproducing a result
+
+The [spm-calculator](https://github.com/PolicyEngine/spm-calculator) package computes thresholds offline from bundled inputs. The [policyengine](https://github.com/PolicyEngine/policyengine.py) wrapper runs household and population calculations with an explicit SPM release selection. The [spm-threshold-paper](https://github.com/PolicyEngine/spm-threshold-paper) repository holds the pre-committed threshold nowcast and the pre-committed 2025 poverty-rate prediction with their timestamp proofs.

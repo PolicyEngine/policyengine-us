@@ -20,7 +20,7 @@
     head_start: 0
     early_head_start: 0
     basic_income: 0
-    spm_unit_capped_housing_subsidy: 0
+    housing_assistance: 0
     household_state_benefits: 0
     household_health_benefits: 0
   output:
@@ -51,7 +51,7 @@
     head_start: 0
     early_head_start: 0
     basic_income: 0
-    spm_unit_capped_housing_subsidy: 10
+    housing_assistance: 10
     household_state_benefits: 0
     commodity_supplemental_food_program: 0
     household_health_benefits: 0
@@ -80,10 +80,33 @@
     acp: 0
     ebb: 0
     basic_income: 0
-    spm_unit_capped_housing_subsidy: 0
+    housing_assistance: 0
     household_state_benefits: 0
     commodity_supplemental_food_program: 0
     household_health_benefits: 0
   output:
     household_head_start_benefits: 0
     household_benefits: 0
+
+- name: Case 4, household benefits use the full housing payment rather than its SPM valuation.
+  period: 2024
+  input:
+    age: 40
+    housing_assistance: 12_000
+    spm_unit_capped_housing_subsidy: 1_000
+    social_security: 0
+    ssi: 0
+    tanf: 0
+    unemployment_compensation: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    household_state_benefits: 0
+    household_health_benefits: 0
+  output:
+    household_benefits: 12_000
+    # The SPM resource valuation remains separate.
+    spm_unit_benefits: 1_000

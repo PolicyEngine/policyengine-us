@@ -44,3 +44,23 @@
         state_code: AR 
   output:
     ar_agi_indiv: [1_200, 0, 0]
+
+- name: Single filer with 401(k) distributions included in gross income and exempted
+  period: 2024
+  input:
+    people:
+      person1:
+        irs_employment_income: 50_000
+        taxable_401k_distributions: 6_000
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 56_000
+    ar_capped_retirement_or_disability_benefits_exemption_person: 6_000
+    ar_agi_indiv: 50_000

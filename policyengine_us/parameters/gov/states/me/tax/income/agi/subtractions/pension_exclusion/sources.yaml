@@ -1,0 +1,15 @@
+description: Maine excludes these pension and retirement income sources under the individual income tax pension income deduction program. Distributions subject to IRC § 72(t) early-distribution tax are excluded under 36 M.R.S. § 5122(2)(M-2)(2)(f) (approximated via age 59½ threshold in formula).
+values:
+  2021-01-01:
+    - pension_income
+    - taxable_retirement_distributions
+metadata:
+  unit: list
+  period: year
+  label: Maine pension income deduction sources
+  reference:
+    - title: 36 M.R.S. § 5122(2)(M-2)
+      href: https://legislature.maine.gov/statutes/36/title36sec5122.html
+    - title: 36 M.R.S. § 5122(2)(M-2)(2)(f)
+      href: https://legislature.maine.gov/statutes/36/title36sec5122.html
+

@@ -72,15 +72,14 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "unemployment_compensation",
                 # Contributed.
                 "basic_income",
-                "spm_unit_capped_housing_subsidy",
+                "trump_dividend",
+                "housing_assistance",
                 "household_state_benefits",
                 "household_head_start_benefits",
             ]
             if parameters(period).gov.hud.abolition:
                 BENEFITS = [
-                    benefit
-                    for benefit in BENEFITS
-                    if benefit != "spm_unit_capped_housing_subsidy"
+                    benefit for benefit in BENEFITS if benefit != "housing_assistance"
                 ]
             previous_benefits = add(household, period, BENEFITS)
             middle_class_credit = add(
@@ -130,6 +129,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "unemployment_compensation",
                 # Contributed.
                 "basic_income",
+                "trump_dividend",
                 "ny_drive_clean_rebate",
             ]
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
