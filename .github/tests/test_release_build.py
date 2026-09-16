@@ -27,34 +27,45 @@ def job(text, name):
 
 
 class WorkflowTests(unittest.TestCase):
-    def test_latest_core_compatibility_uses_upgraded_dependency(self):
+    def test_existing_test_jobs_resolve_latest_core_without_duplicate_jobs(self):
         workflows = {
             name: (ROOT / f".github/workflows/{name}.yaml").read_text()
             for name in ("pr", "push")
         }
         for name, workflow in workflows.items():
-            with self.subTest(workflow=name):
-                compatibility = job(workflow, "LatestCoreCompatibility")
-                for expected in (
-                    'python-version: "3.14"',
-                    'version: "0.12.13"',
-                    "uv lock --upgrade-package policyengine-core",
-                    "uv sync --locked --extra dev",
-                    "target: test-yaml-no-structural-other-partners",
-                    "target: test-other-python",
-                    "uv run --no-sync make ${{ matrix.target }}",
-                ):
-                    self.assertIn(expected, compatibility)
-                self.assertLess(
-                    compatibility.index("uv lock --upgrade-package policyengine-core"),
-                    compatibility.index("uv sync --locked --extra dev"),
-                )
+            test_jobs = [
+                "Baseline",
+                "HouseholdAPIPartners",
+                "Contrib",
+                "Rest",
+                "Microsimulation",
+            ]
+            if name == "pr":
+                test_jobs.extend(("Python-Compat", "Quick-Feedback"))
+            for test_job in test_jobs:
+                with self.subTest(workflow=name, job=test_job):
+                    definition = job(workflow, test_job)
+                    self.assertIn(
+                        "uv lock --upgrade-package policyengine-core", definition
+                    )
+                    self.assertIn("uv sync --locked", definition)
+                    self.assertLess(
+                        definition.index("uv lock --upgrade-package policyengine-core"),
+                        definition.index("uv sync --locked"),
+                    )
+
+            with self.subTest(workflow=name, job="release build"):
+                release_job = "CandidateWheel" if name == "pr" else "Publish"
+                definition = job(workflow, release_job)
+                self.assertIn("uv sync --locked --extra dev", definition)
+                self.assertNotIn("uv lock --upgrade-package", definition)
+                self.assertNotIn("  LatestCoreCompatibility:", workflow)
                 self.assertNotIn("\n  schedule:", workflow)
 
         publish_dependencies = job(workflows["push"], "Publish").split(
             "steps:", maxsplit=1
         )[0]
-        self.assertIn("LatestCoreCompatibility", publish_dependencies)
+        self.assertNotIn("LatestCoreCompatibility", publish_dependencies)
 
     def test_candidate_build_matches_publish_without_publication_or_policy_mutations(
         self,
