@@ -1,3 +1,10 @@
+## [2.5.3] - 2026-09-16
+
+### Changed
+
+- Count state SSI supplements as SNAP unearned income.
+
+
 ## [2.5.2] - 2026-09-16
 
 ### Changed
