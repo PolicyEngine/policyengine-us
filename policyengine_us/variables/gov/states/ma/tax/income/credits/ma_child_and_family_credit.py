@@ -25,14 +25,27 @@ class ma_child_and_family_credit(Variable):
         # dependent physically or mentally incapable of self-care qualifies
         # at any age, alongside the Section 6(x)(iii) disabled-dependent
         # category.
-        # is_incapable_of_self_care is a bare Person boolean input that
-        # defaults to False when the microdata does not populate it; in
-        # population runs the Section 21(b)(1)(B) dependent route and the
-        # Section 21(b)(1)(C) spouse route below therefore only fire where the
-        # dataset sets the flag, so the CFTC may be understated for the narrow
-        # group of self-care-incapable individuals not already captured by the
-        # age or disability conditions. Household-level (web app) calculations
-        # honor the user-supplied value and are unaffected.
+        # Keep BOTH the dependent is_disabled route and the
+        # is_incapable_of_self_care route: the mass.gov CFTC page collapses
+        # category (3) into the self-care test, but c.62 Section 6(x) and
+        # Form 1 keep the disabled-dependent and self-care-incapable
+        # categories legally distinct (disability is broader than the
+        # self-care standard), so do not "fix" this toward the web page by
+        # dropping is_disabled. The asymmetry with the spouse route below is
+        # deliberate: Section 21(b)(1)(C) recognizes only a self-care-
+        # incapable spouse, not a merely disabled one.
+        # is_incapable_of_self_care is a bare Person boolean input. Microcosm
+        # populates it from the ASEC self-care difficulty item PEDISDRS in its
+        # CDCC adult-care stage (microcosm us_runtime/adult_care.py, added in
+        # microcosm PR #638 and aligned to policyengine-us 1.819.0), so on
+        # datasets built from that Microcosm surface or later the
+        # Section 21(b)(1)(B) dependent route and the Section 21(b)(1)(C)
+        # spouse route below fire on measured survey data. Datasets built
+        # before that surface leave the flag at its False default, in which
+        # case those two routes are inert and the CFTC may be understated for
+        # the narrow group of self-care-incapable individuals not already
+        # captured by the age or disability conditions. Household-level (web
+        # app) calculations honor the user-supplied value and are unaffected.
         incapable = person("is_incapable_of_self_care", period)
         eligible_dependent = dependent & (child | elderly | disabled | incapable)
         count_eligible_dependents = tax_unit.sum(eligible_dependent)
