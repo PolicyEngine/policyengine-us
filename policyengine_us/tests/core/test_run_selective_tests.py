@@ -148,6 +148,27 @@ def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
     }
 
 
+def test_limit_test_paths_defers_directly_changed_reform_tests():
+    runner = SelectiveTestRunner()
+
+    reform_test = (
+        "policyengine_us/tests/policy/reform/boost_head_start_benefits_composition.yaml"
+    )
+    changed_files = {
+        "policyengine_us/reforms/congress/tlaib/end_child_poverty_act.py",
+        reform_test,
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/policy/reform" not in limited_paths
+    assert reform_test not in limited_paths
+    # The reform module still maps to its light contrib directory.
+    assert limited_paths == {"policyengine_us/tests/policy/contrib/congress/tlaib"}
+
+
 def test_limit_test_paths_ignores_deleted_direct_tests():
     runner = SelectiveTestRunner()
 

@@ -34,6 +34,11 @@ QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
         "policyengine_us/tests/policy/reform",
     }
 )
+# Reform YAML tests force-apply a reform and deep-copy the full parameter
+# tree (about 5.5 to 8 GB per file, see the Makefile's test-yaml-reform note),
+# so even one directly changed file can exhaust a coverage-instrumented
+# quick-feedback process. The per-file Reform job runs them instead.
+QUICK_FEEDBACK_DEFERRED_FILE_PREFIXES = ("policyengine_us/tests/policy/reform/",)
 
 
 class SelectiveTestRunner:
@@ -369,6 +374,18 @@ class SelectiveTestRunner:
                 f"to the full suite jobs: {deferred_list}."
             )
             test_paths = test_paths - deferred_paths
+        deferred_files = {
+            path
+            for path in test_paths
+            if path.startswith(QUICK_FEEDBACK_DEFERRED_FILE_PREFIXES)
+        }
+        if deferred_files:
+            deferred_list = ", ".join(sorted(deferred_files))
+            print(
+                "\nQuick Feedback is deferring memory-heavy reform test file(s) "
+                f"to the per-file Reform job: {deferred_list}."
+            )
+            test_paths = test_paths - deferred_files
 
         total_test_files = self.count_test_files(test_paths)
         if (
@@ -377,7 +394,11 @@ class SelectiveTestRunner:
         ):
             return test_paths
 
-        direct_changed_tests = self.get_direct_changed_tests(changed_files)
+        direct_changed_tests = {
+            path
+            for path in self.get_direct_changed_tests(changed_files)
+            if not path.startswith(QUICK_FEEDBACK_DEFERRED_FILE_PREFIXES)
+        }
         bounded_test_paths = direct_changed_tests | {
             path for path in test_paths if Path(path).is_file()
         }

@@ -1,0 +1,1 @@
+Quick Feedback now defers directly changed reform YAML tests to the per-file Reform job instead of running them under coverage in one process, where a single stacked-reform file could exhaust the runner.
