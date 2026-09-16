@@ -143,10 +143,12 @@
   output:
     # 2021 liability of $625.40 sits strictly between zero and the $1,250
     # statutory maximum, so MCA 15-30-2191(2) limits the rebate to $625.40.
-    # The variable still reports the uncapped $1,250; the individual path's
-    # ordered credit application is what realizes the cap, flooring tax at
-    # zero. No refundable credit is in play (mt_eitc is 0 at this income), so
-    # mt_income_tax is exactly 0.
+    # The variable still reports the uncapped $1,250. Both credit paths
+    # floor at zero, so the cap is realized downstream:
+    # mt_income_tax_before_refundable_credits_indiv is 0, and because
+    # mt_files_separately is False here the delivered mt_income_tax comes
+    # from the joint path, also floored to 0. No refundable credit is in
+    # play (mt_eitc is 0 at this income).
     mt_income_tax_rebate: [1_250]
     mt_income_tax_before_non_refundable_credits_indiv: [625.40]
     mt_income_tax_before_refundable_credits_indiv: [0]
