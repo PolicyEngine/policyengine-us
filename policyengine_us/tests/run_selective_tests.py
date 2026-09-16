@@ -26,14 +26,30 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+# Directory targets that Quick Feedback leaves to the sharded full-suite jobs.
+# A target is deferred when it is one of these directories or lies under one:
+# the full suite runs policy/contrib/congress one proposal per subprocess with
+# --workers 1 because a single proposal batch (tlaib) peaks around 15 GB, which
+# is more than the 16 GB Quick Feedback runner survives (PR #9497, run
+# 35042783076, "The runner has received a shutdown signal").
 QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
     {
         "policyengine_us/tests/microsimulation",
         "policyengine_us/tests/policy/baseline/household",
         "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/contrib/congress",
         "policyengine_us/tests/policy/reform",
     }
 )
+
+
+def is_quick_feedback_deferred(test_path: str) -> bool:
+    """True when the target is a deferred directory or sits inside one."""
+    normalized = test_path.rstrip("/")
+    return any(
+        normalized == deferred or normalized.startswith(deferred + "/")
+        for deferred in QUICK_FEEDBACK_DEFERRED_DIRS
+    )
 
 
 class SelectiveTestRunner:
@@ -361,7 +377,9 @@ class SelectiveTestRunner:
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
-        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        deferred_paths = {
+            path for path in test_paths if is_quick_feedback_deferred(path)
+        }
         if deferred_paths:
             deferred_list = ", ".join(sorted(deferred_paths))
             print(
