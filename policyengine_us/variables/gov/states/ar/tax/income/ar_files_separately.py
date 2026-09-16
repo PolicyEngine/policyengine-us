@@ -7,8 +7,8 @@ class ar_files_separately(Variable):
     label = "married couple files separately on the Arkansas tax return"
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf",
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
     )
     defined_for = StateCode.AR
 
