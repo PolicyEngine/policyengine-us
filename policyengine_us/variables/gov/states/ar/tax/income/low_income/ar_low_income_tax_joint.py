@@ -7,7 +7,7 @@ class ar_low_income_tax_joint(Variable):
     label = "Arkansas low income tax when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29"
+    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29"
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
