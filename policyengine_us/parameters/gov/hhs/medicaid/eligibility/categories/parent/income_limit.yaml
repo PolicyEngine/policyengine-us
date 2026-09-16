@@ -206,7 +206,12 @@ SC:
   # 2023 eligibility levels, so it carries the waiver-era level forward
   # rather than SCDHHS's current table. Do not re-add the 1.00 on the
   # strength of that row.
-  2026-01-01: 0.67
+  #
+  # SCDHHS resubmitted the demonstration to CMS on June 23, 2025 as a
+  # five-year request for the same 67% to 100% band. It was pending when
+  # this entry was written, and the March 1, 2026 eligibility table above
+  # still shows 67%. If CMS approves it and SCDHHS implements, add a dated
+  # entry at the implementation date rather than restoring a 2021 value.
 SD:
   2018-01-01: 0.62
   2021-01-01: 0.57
