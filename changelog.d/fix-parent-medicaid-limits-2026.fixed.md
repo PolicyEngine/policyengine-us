@@ -1,0 +1,1 @@
+Corrected the South Carolina parent and caretaker Medicaid income limit from a never-operative 1.00 of the federal poverty guidelines to the published 67 percent, and refreshed the 2026 frozen-dollar conversions for Texas, Mississippi, Georgia, Florida and Wyoming.
