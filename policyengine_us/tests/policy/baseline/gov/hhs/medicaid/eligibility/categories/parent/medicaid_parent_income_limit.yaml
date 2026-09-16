@@ -263,9 +263,11 @@
     medicaid_parent_income_limit: 0.156318
   absolute_error_margin: 0.0001
 
-# Issue #9474: TX, MS, FL, WY and SC also publish frozen dollar standards.
-# Each 2026 value is the state's family-of-three standard over the $27,320
-# 2026 guideline, inclusive of the 5-point MAGI disregard.
+# Issue #9474: TX, MS, FL and WY also publish frozen dollar standards. Each
+# 2026 value is the state's family-of-three standard over the 2026 guidelines,
+# inclusive of the 5-point MAGI disregard. South Carolina is different: it
+# publishes 67% of the guidelines, which the 2021 entry of 1.00 overwrote, so
+# 0.67 now holds in both 2025 and 2026.
 
 - name: Case 17, Texas parent limit is 0.151 FPL in 2026 ($230 + $113.85 per month).
   period: 2026
@@ -323,7 +325,7 @@
     medicaid_parent_income_limit: 0.433
   absolute_error_margin: 0.0001
 
-- name: Case 21, South Carolina parent limit keeps the stale 1.00 FPL value in 2025.
+- name: Case 21, South Carolina parent limit is the published 0.67 FPL in 2025.
   period: 2025
   input:
     people:
@@ -334,10 +336,10 @@
         members: [person1]
         state_code: SC
   output:
-    medicaid_parent_income_limit: 1.0
+    medicaid_parent_income_limit: 0.67
   absolute_error_margin: 0.0001
 
-- name: Case 22, South Carolina parent limit is 0.67 FPL in 2026 ($18,304/year for three).
+- name: Case 22, South Carolina parent limit is 0.67 FPL in 2026, the published percentage.
   period: 2026
   input:
     people:
