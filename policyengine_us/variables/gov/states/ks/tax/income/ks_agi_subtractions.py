@@ -19,4 +19,6 @@ class ks_agi_subtractions(Variable):
         oasdi_subtraction = where(agi <= p.oasdi.agi_limit, taxable_oasdi, 0)
         us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
         plan_529 = tax_unit("ks_529_plan_subtraction", period)
-        return oasdi_subtraction + us_govt_interest + plan_529
+        # K.S.A. 79-32,117(c)(v) / Form K-40 Schedule S Line A12
+        salt_refund_income = add(tax_unit, period, ["salt_refund_income"])
+        return oasdi_subtraction + us_govt_interest + plan_529 + salt_refund_income

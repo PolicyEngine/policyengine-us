@@ -1,27 +1,32 @@
 description: Maine reduces the sales tax fairness credit for filers with income above this amount, based on filing status.
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   unit: currency-USD
   period: year
   label: Maine sales tax fairness credit phase-out start
   reference:
-    - title: §5213-A. Sales tax fairness credit (4)
-      href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
-    - title: §5403. Annual adjustments for inflation 5(C)
-      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+  - title: §5213-A. Sales tax fairness credit (4)
+    href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+  - title: §5403. Annual adjustments for inflation 5(C)
+    href: https://legislature.maine.gov/statutes/36/title36sec5403.html
   # Reduction parameters only specified in the law
-    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
-    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
-    - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
-    - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
-    - title: 2025 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+  - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+  - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
+  - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+  - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+  - title: 2025 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
   breakdown:
-    - filing_status
+  - filing_status
 SINGLE:
   values:
     2021-01-01: 21_350
@@ -29,21 +34,9 @@ SINGLE:
     2023-01-01: 23_300
     2024-01-01: 24_750
     2025-01-01: 25_450
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SEPARATE:
   values:
     2021-01-01: 0
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 32_000
@@ -51,12 +44,6 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 34_950
     2024-01-01: 37_100
     2025-01-01: 38_200
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 JOINT:
   values:
     2021-01-01: 42_700
@@ -64,12 +51,6 @@ JOINT:
     2023-01-01: 46_600
     2024-01-01: 49_500
     2025-01-01: 50_950
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 42_700
@@ -77,9 +58,3 @@ SURVIVING_SPOUSE:
     2023-01-01: 46_600
     2024-01-01: 49_500
     2025-01-01: 50_950
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50

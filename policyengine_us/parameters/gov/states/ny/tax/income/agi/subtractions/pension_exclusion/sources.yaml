@@ -1,0 +1,20 @@
+description: Income sources eligible for the New York pension and annuity exclusion under N.Y. Tax Law § 612(c)(3-a).
+values:
+  2020-01-01:
+    - taxable_pension_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+metadata:
+  unit: list
+  period: year
+  label: New York pension exclusion eligible income sources
+  reference:
+    - title: N.Y. Tax Law § 612(c)(3-a)
+      href: https://www.nysenate.gov/legislation/laws/TAX/612
+    - title: 2024 NY Form IT-201 Instructions Line 29
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=9
+    - title: N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3
+      href: https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income

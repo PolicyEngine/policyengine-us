@@ -114,3 +114,17 @@
     co_pension_subtraction_indv_eligible: false
   output:
     co_pension_subtraction_indv: 0
+
+- name: Eligible with 401k and IRA distributions
+  period: 2022
+  input:
+    age: 65
+    taxable_401k_distributions: 10_000
+    taxable_ira_distributions: 10_000
+    co_social_security_subtraction_indv: 0
+    pension_survivors: 0
+    co_pension_subtraction_indv_eligible: true
+    state_code: CO
+  output:
+    co_pension_subtraction_income: 20_000
+    co_pension_subtraction_indv: 20_000

@@ -32,6 +32,9 @@ def household(*, people=None, county=None, earnings=0, rent=36_000):
         "members": members,
         "state_code": {YEAR: "CA"},
         "pha_payment_standard": {YEAR: 36_000},
+        # Los Angeles County has an encoded HUD utility allowance; keep gross
+        # rent equal to the rent so the cap comparisons hold as written.
+        "tenant_pays_utilities": {YEAR: False},
     }
     if county is not None:
         location["county_fips"] = {YEAR: county}
