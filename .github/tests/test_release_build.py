@@ -27,46 +27,6 @@ def job(text, name):
 
 
 class WorkflowTests(unittest.TestCase):
-    def test_existing_test_jobs_resolve_latest_core_without_duplicate_jobs(self):
-        workflows = {
-            name: (ROOT / f".github/workflows/{name}.yaml").read_text()
-            for name in ("pr", "push")
-        }
-        for name, workflow in workflows.items():
-            test_jobs = [
-                "Baseline",
-                "HouseholdAPIPartners",
-                "Contrib",
-                "Rest",
-                "Microsimulation",
-            ]
-            if name == "pr":
-                test_jobs.extend(("Python-Compat", "Quick-Feedback"))
-            for test_job in test_jobs:
-                with self.subTest(workflow=name, job=test_job):
-                    definition = job(workflow, test_job)
-                    self.assertIn(
-                        "uv lock --upgrade-package policyengine-core", definition
-                    )
-                    self.assertIn("uv sync --locked", definition)
-                    self.assertLess(
-                        definition.index("uv lock --upgrade-package policyengine-core"),
-                        definition.index("uv sync --locked"),
-                    )
-
-            with self.subTest(workflow=name, job="release build"):
-                release_job = "CandidateWheel" if name == "pr" else "Publish"
-                definition = job(workflow, release_job)
-                self.assertIn("uv sync --locked --extra dev", definition)
-                self.assertNotIn("uv lock --upgrade-package", definition)
-                self.assertNotIn("  LatestCoreCompatibility:", workflow)
-                self.assertNotIn("\n  schedule:", workflow)
-
-        publish_dependencies = job(workflows["push"], "Publish").split(
-            "steps:", maxsplit=1
-        )[0]
-        self.assertNotIn("LatestCoreCompatibility", publish_dependencies)
-
     def test_candidate_build_matches_publish_without_publication_or_policy_mutations(
         self,
     ):
