@@ -199,6 +199,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install package
         run: uv sync --locked --extra dev
       - name: Install bundle validation tooling
@@ -225,6 +227,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install package
         run: uv sync --locked --python "${{ matrix.python-version }}" --extra dev
       - name: Smoke-import
@@ -261,6 +265,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -360,6 +366,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -386,6 +394,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -434,6 +444,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -463,6 +475,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -492,6 +506,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
