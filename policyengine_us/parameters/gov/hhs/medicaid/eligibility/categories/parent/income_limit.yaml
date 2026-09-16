@@ -37,6 +37,8 @@ metadata:
       href: https://www.scdhhs.gov/sites/dhhs/files/pdf/links/Medicaid%20Eligibility%20Groups%20Effective%201.1.pdf
     - title: Palmetto Pathways to Independence, section 1115 waiver application (June 23, 2025) | South Carolina DHHS - CMS approved the predecessor Healthy Connections Community Engagement Initiative waivers in December 2019, SCDHHS paused implementation for the COVID-19 public health emergency, and CMS withdrew the approval on August 10, 2021
       href: https://www.scdhhs.gov/sites/dhhs/files/waivers/2025-06-23%20Palmetto%20Pathways%20to%20Independence%20Submission%20(1).pdf
+    - title: IDAPA 16.03.01.411, Income Limits for Parents and Caretaker Relatives, Table 411 | Idaho Department of Health and Welfare - $365/month for a household of three
+      href: https://adminrules.idaho.gov/rules/current/16/160301.pdf#page=14
 
 # Most of the states carrying a 2026 entry below set the section 1931
 # parent/caretaker standard as a frozen dollar amount, so its share of the
@@ -53,10 +55,6 @@ metadata:
 # family-of-three fraction is too strict for a single parent with one child:
 # the published size-two standard works out about 0.8 points higher in Texas
 # ($196/month) and about 2.6 points higher in Wyoming ($737/month).
-#
-# Idaho's 0.27 is stale the same way and is not corrected here: IDAPA
-# 16.03.01.411 sets $365/month for a household of three, about 0.21 of the
-# guidelines once the disregard is added.
 AK:
   2018-01-01: 1.44
   2021-01-01: 1.36
@@ -107,6 +105,11 @@ IA:
 ID:
   2018-01-01: 0.29
   2021-01-01: 0.27
+  # $365/month + $113.83 disregard = $5,746/year (IDAPA 16.03.01.411,
+  # Table 411). Idaho covers adults to 1.38 under the expansion, so this
+  # limit decides the category a parent lands in, not whether they are
+  # covered. The 2018 and 2021 entries are left as found.
+  2026-01-01: 0.21
 IL:
   2018-01-01: 1.38
   2021-01-01: 1.38

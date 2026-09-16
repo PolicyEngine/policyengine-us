@@ -352,3 +352,17 @@
   output:
     medicaid_parent_income_limit: 0.67
   absolute_error_margin: 0.0001
+
+- name: Case 23, Idaho parent limit falls to 0.21 FPL in 2026 ($365/month for three).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    medicaid_parent_income_limit: 0.21
+  absolute_error_margin: 0.0001
