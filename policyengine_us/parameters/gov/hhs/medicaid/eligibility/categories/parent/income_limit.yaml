@@ -35,6 +35,8 @@ metadata:
       href: https://health.wyo.gov/healthcarefin/medicaid/programs-and-eligibility/medicaid-income-requirements/
     - title: Medicaid Eligibility Programs (effective March 1, 2026) | South Carolina DHHS - Parent/Caretaker Relative family income cannot exceed 67% of FPL, $1,842.50/month for a family of four
       href: https://www.scdhhs.gov/sites/dhhs/files/pdf/links/Medicaid%20Eligibility%20Groups%20Effective%201.1.pdf
+    - title: Palmetto Pathways to Independence, section 1115 waiver application (June 23, 2025) | South Carolina DHHS - CMS approved the predecessor Healthy Connections Community Engagement Initiative waivers in December 2019, SCDHHS paused implementation for the COVID-19 public health emergency, and CMS withdrew the approval on August 10, 2021
+      href: https://www.scdhhs.gov/sites/dhhs/files/waivers/2025-06-23%20Palmetto%20Pathways%20to%20Independence%20Submission%20(1).pdf
 
 # Most of the states carrying a 2026 entry below set the section 1931
 # parent/caretaker standard as a frozen dollar amount, so its share of the
@@ -187,8 +189,23 @@ SC:
   # SCDHHS publishes the Parent/Caretaker Relative limit as 67% of the
   # guidelines, shown as $1,842.50/month for a family of four (effective
   # March 1, 2026). No 2021 entry: the 1.00 once stored for that year came
-  # from the Palmetto Pathways waiver, approved in 2019 and never
-  # implemented, so 0.67 runs unbroken from 2018.
+  # from the section 1115 waiver South Carolina later resubmitted as
+  # Palmetto Pathways to Independence, which would have covered parents
+  # above 67% and up to 95% of the guidelines with a 5-point disregard,
+  # that is up to 100%. CMS approved the original waivers in December
+  # 2019, SCDHHS paused implementation during the COVID-19 federal public
+  # health emergency to comply with the Families First Coronavirus
+  # Response Act, and CMS withdrew the approval on August 10, 2021, so the
+  # 100% level never took effect (SCDHHS, Palmetto Pathways to
+  # Independence application, June 23, 2025). 0.67 therefore runs unbroken
+  # from 2018.
+  #
+  # MACPAC Exhibit 36 (July 2025), cited above, still lists South Carolina
+  # parents at 95%, which is that same 100% once the 5-point disregard is
+  # added. Its source note gives the exhibit as a 2025 analysis of CMS's
+  # 2023 eligibility levels, so it carries the waiver-era level forward
+  # rather than SCDHHS's current table. Do not re-add the 1.00 on the
+  # strength of that row.
   2026-01-01: 0.67
 SD:
   2018-01-01: 0.62
