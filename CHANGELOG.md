@@ -1,3 +1,149 @@
+## [2.5.4] - 2026-09-16
+
+### Fixed
+
+- Quick Feedback now defers congress contrib test directories to the sharded full suite, as it already did for reform tests, so a PR touching a congress reform no longer runs a 15 GB proposal batch on the 16 GB quick-feedback runner.
+
+
+## [2.5.3] - 2026-09-16
+
+### Changed
+
+- Count state SSI supplements as SNAP unearned income.
+
+
+## [2.5.2] - 2026-09-16
+
+### Changed
+
+- Pinned the Massachusetts TAFDC path into household benefits with regression tests covering the 9,880 grant and the TANF take-up switch.
+- Retracted the 2.1.0 release in the changelog. It contained the Massachusetts CCFA changes from #9457, which were reverted in #9458 seven minutes after merging and replaced by #9460 (2.2.0) and the follow-up in #9468; install 2.2.0 or later. The README now states the current spm-calculator requirement instead of the old 0.3.1 pin.
+
+### Fixed
+
+- Correct the Montana 2021 income tax rebate's reported value outside its eligibility year: without the 2022 sunset the amount backdates forward, so the variable reported a phantom rebate in 2022 and later. Montana income tax is unaffected, as the non-refundable credit list already excludes the rebate from 2022.
+- Approximated Pennsylvania's employer pension exclusion with age 59.5, the age Pennsylvania applies to plans with no specific retirement criteria, instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
+- Corrected the 2026 Idaho parent and caretaker Medicaid income limit from a stale 0.27 to 0.21 of the federal poverty guidelines, the IDAPA 16.03.01.411 standard of $365 a month for a household of three with the 5-point MAGI disregard.
+- Set Maine's standard deduction equal to the federal standard deduction for tax years beginning on or after January 1, 2027, per 36 M.R.S. 5124-C(1-D).
+- Corrected the South Carolina parent and caretaker Medicaid income limit from a never-operative 1.00 of the federal poverty guidelines to the published 67 percent, and refreshed the 2026 frozen-dollar conversions for Texas, Mississippi, Georgia, Florida and Wyoming.
+
+
+## [2.5.1] - 2026-09-16
+
+### Changed
+
+- Count California's SSI state supplement in SPM unit benefits, raising SPM resources for California SSI recipients and lowering California SPM poverty.
+
+### Fixed
+
+- Excluded unemployment compensation from Arkansas gross income for 2020 and 2021, the calendar years Act 154 of 2021 exempted, and kept it taxable from 2018 through 2019 and from 2022 on.
+
+
+## [2.5.0] - 2026-09-15
+
+### Removed
+
+- Removed the federal CCDF eligibility chain (`is_ccdf_eligible`, `is_ccdf_income_eligible`, `is_ccdf_reason_for_care_eligible`, `ccdf_income_to_smi_ratio`, and `ccdf_income`), which no state program read, along with the partner contract cases that pinned it.
+
+
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
+## [2.4.2] - 2026-09-15
+
+### Fixed
+
+- Add Kansas CSFP categorical income eligibility through existing SSI, SNAP, FDPIR, and Medicare Savings Program variables.
+
+
+## [2.4.1] - 2026-09-15
+
+### Changed
+
+- Simplified uprating metadata in breakdown parameters using `propagate_metadata_to_children`.
+
+### Fixed
+
+- Gave `md_ccs_service_unit` an explicit `UNIT_1` default so negative or NaN childcare hours resolve to one unit instead of an integer 0 that cannot be encoded as a service unit.
+- Corrected the effective year of Montana's $12,600 elderly homeowner/renter credit income exclusion to 2022 (the 2021 value is $6,300).
+
+
+## [2.4.0] - 2026-09-15
+
+### Added
+
+- Added the Illinois 2022 property tax rebate (Family Relief Plan), equal to the 2021 property tax credit capped at $300.
+
+### Changed
+
+- Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.
+
+
+## [2.3.2] - 2026-09-15
+
+### Changed
+
+- `tenant_pays_utilities` now defaults to true, so households in counties with an encoded HUD utility allowance schedule receive the allowance unless the input is set to false, and `utilities_included_in_rent` is derived as its inverse (still settable directly) so the Maine property tax fairness credit reads the same utilities-responsibility fact; a caller that sets `tenant_pays_utilities` to false without setting `utilities_included_in_rent` now gets the Maine utilities-in-rent treatment automatically.
+
+
+## [2.3.1] - 2026-09-15
+
+### Changed
+
+- Add a BOOST reform-composition test pinning that Head Start values flow through the reform's static household_benefits list when gov.simulation.include_head_start_benefits_in_net_income is on.
+
+### Fixed
+
+- Skip the pull-request candidate wheel build, with a notice, when the PR head predates the release tooling, instead of failing the check on every branch opened before that tooling landed.
+
+
+## [2.3.0] - 2026-09-15
+
+### Added
+
+- Rehearse the release version refresh in pull request CI, so a lock that the next automatic bump would rewrite fails before it reaches main.
+
+
+## [2.2.1] - 2026-09-15
+
+### Changed
+
+- Count actual housing assistance, rather than its SPM-capped valuation, in general household benefits and CBO means-tested transfers, and keep the capped valuation inside SPM resources. Household benefits, household net income, marginal tax rates and CBO transfer aggregates therefore rise for every household receiving housing assistance, by the amount the SPM cap withheld, while SPM poverty is unchanged by this part. Exclude housing subsidies from California CARE and FERA countable income from the August 14, 2014 parameter date, which annual calculations first apply in 2015, so countable income falls and CARE/FERA eligibility widens for assisted California households from that year. Before that date the model keeps counting housing subsidies, now as the modeled housing assistance amount - HUD's payment where the unit is eligible, times a take-up flag defaulting to true - rather than the smaller SPM-capped valuation, so countable income rises for those years and a household near the limit can lose CARE or FERA eligibility there. That earlier income rule's historical policy basis was not revalidated.
+- Allocate a household's housing assistance, and the tenant contributions of the families actually awarded it, across that household's SPM units by member share before each unit's SPM resource cap. This moves SPM resources between co-resident SPM units, so SPM poverty and deep poverty change for households holding more than one SPM unit where any of them receives housing assistance; households holding a single SPM unit are unchanged, and no program award or general benefit income changes. An awarded family's tenant payment now also reduces a co-resident unit's allocated housing resource, which is recorded as a modeling assumption rather than verified Census parity.
+
+### Fixed
+
+- Decide a test batch by the child process exit status rather than its printed summary, and enumerate `.yml` test files alongside `.yaml`.
+- Retain unpublished wheels for the predicted release and its rc1 version in
+  pull-request CI, built from unchanged policy source with the same pinned build
+  tools as publication. Record their source, package version, generator, lock, and file hash
+  for verification before release.
+- Allow spm-calculator 1.0.0.post1 alongside 1.0.0 so explicitly pinned development consumers can resolve either version; retain the default release lock at 1.0.0.
+- Reinstall the copy-on-write parameter barrier on a cloned tax-benefit system, so a branch of a cloned simulation no longer rewrites the clone's own policy tree.
+- Reject derived poverty aliases such as `in_poverty` from stored datasets.
+- Verify the default dataset content hash so a moved build id cannot silently change every standalone-country result.
+- Isolate one simulation's reform, clone and trace from every other simulation: a parameter reform applied after construction no longer changes unrelated simulations, a clone's `calc` and `df` aliases calculate on the clone rather than the original, `set_input` finds a variable a reform added, each traced request records its own parameter accesses, and a `county_fips` input that is not a five-digit string is rejected however it is spelled.
+- Preserve the warm parameter caches of a policy system supplied by a caller across clones and variable-only reform wrappers at the same structural start, detach a structural reform's parameter tree before it writes at a changed start instant, and let a reform read back its own in-progress parameter edit.
+
+
+## [2.2.0] - 2026-09-15
+
+### Added
+
+- Correct Massachusetts CCFA countable income, including dependent and minor earnings exclusions, parent support-paid deductions, parent-only income and Social Security and veterans disability exclusions from October 2023, and PFML benefits received.
+
+
 ## [2.1.0] - 2026-09-14
 
 ### Added

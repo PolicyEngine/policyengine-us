@@ -19,11 +19,10 @@ class me_deductions(Variable):
         phaseout_percent = tax_unit("me_deduction_phaseout_percentage", period)
 
         # Get the relevant deduction amount (Line 6).
-        # Either itemized deduction or Maine's standard deduction.
-        # Maine publishes its own standard deduction because it uses fixed-date
-        # IRC conformity (as of December 31, 2024) per 36 MRSA Sec. 111 and did
-        # not adopt the OBBBA federal standard deduction increase starting in
-        # 2025.
+        # Either itemized deduction or Maine's standard deduction. Maine sets
+        # its own standard deduction amounts for tax years 2025 and 2026 under
+        # 36 M.R.S. Sec. 5124-C(1-B) and (1-C), and follows the federal standard
+        # deduction from 2027 under Sec. 5124-C(1-D).
         itemizes = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("me_standard_deduction", period)
         larger_deduction = max_(

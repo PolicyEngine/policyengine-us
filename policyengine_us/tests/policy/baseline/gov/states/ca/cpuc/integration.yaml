@@ -97,3 +97,75 @@
     ca_care_eligible: false
     ca_fera_eligible: true
     ca_fera: 18
+
+- name: Case 6, housing assistance does not disqualify an income-eligible CARE household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_700
+        pre_subsidy_rent: 36_000
+    spm_units:
+      unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        pha_payment_standard: 36_000
+  output:
+    # Tenant payment is 30% of income. The $36,000 payment standard equals
+    # gross rent, so the HUD benefit is $36,000 minus the tenant payment.
+    hud_ttp: 12_210
+    housing_assistance: 23_790
+    # CPUC D.14-08-030 excludes housing subsidies from countable income.
+    ca_cpuc_countable_income: 40_700
+    ca_care_categorically_eligible: false
+    ca_care_income_eligible: true
+    ca_care_eligible: true
+    ca_care: 390
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 7, housing assistance does not disqualify an income-eligible FERA household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_000
+        pre_subsidy_rent: 36_000
+      person2:
+        age: 40
+        employment_income: 21_000
+      person3:
+        age: 40
+        employment_income: 21_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        spm_unit_tenure_type: RENTER
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        pha_payment_standard: 36_000
+  output:
+    # Tenant payment = 30% of $63,000; the $36,000 payment standard equals
+    # gross rent, so the HUD benefit is $36,000 - $18,900 = $17,100.
+    hud_ttp: 18_900
+    housing_assistance: 17_100
+    ca_cpuc_countable_income: 63_000
+    ca_care_categorically_eligible: false
+    ca_care_income_eligible: false
+    ca_care_eligible: false
+    ca_care: 0
+    ca_fera_eligible: true
+    # FERA discount = 18% of $1,200.
+    ca_fera: 216

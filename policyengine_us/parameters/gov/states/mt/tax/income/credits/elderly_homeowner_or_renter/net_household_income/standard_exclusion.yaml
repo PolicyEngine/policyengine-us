@@ -1,25 +1,22 @@
 description: Montana excludes this amount of net household income when computing net household income for elderly homeowner or renter credit.
 values:
   2009-01-01: 6_300
-  2021-01-01: 12_600
+  # HB 191 (2021 session, Ch. 476) doubled the exclusion to $12,600 effective
+  # tax year 2022 (the 2021 Form 2 still uses $6,300).
+  2022-01-01: 12_600
 
 metadata:
   period: year
   unit: currency-USD
   label: Montana elderly homeowner or renter credit net household income standard exclusion
   reference:
-  - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (8)
-    href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/
-  - title: 2021 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (8)
-    href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-23/section-15-30-2337/
-  - title: 2020 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (8)
-    href: https://law.justia.com/codes/montana/2020/title-15/chapter-30/part-23/section-15-30-2337/
-  - title: 2022 Form of Montana Individual Income Tax Return, Page 10, Line 11
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=10
-  - title: 2021 Form of Montana Individual Income Tax Return, Page 10, Line 11
-    href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=10
-  - title: 2023 Form of Montana Individual Income Tax Return, Page 10, Line 11
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=10
-  - title: 2024 Montana Individual Income Tax Return
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf#page=46
-    
+  - title: Montana Code Annotated 15-30-2337(8) ($12,600 exclusion, per Laws 2021, ch. 476)
+    href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - title: 2013 Montana Code Annotated 15-30-2337(8) ($6,300 exclusion)
+    href: https://mca.legmt.gov/bills/2013/mca/15/30/15-30-2337.htm
+  - title: 2021 Montana Form 2, Elderly Homeowner/Renter Credit Schedule, Line 11 ($6,300)
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2021/form%202%202021.pdf#page=10
+  - title: 2022 Montana Form 2, Elderly Homeowner/Renter Credit Schedule, Line 11 ($12,600)
+    href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10
+  - title: 2024 Montana Form 2 Instructions, Schedule 2EC (deduct $12,600 from gross household income)
+    href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=40
