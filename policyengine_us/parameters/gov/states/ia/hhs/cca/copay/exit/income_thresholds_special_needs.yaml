@@ -1,5 +1,6 @@
 description: Iowa assigns each child receiving special-needs care in a CCA Exit family to a fee level (A through D) under the Child Care Assistance program based on the family's monthly income and family size, by moving down the family-size column to the first row with an amount greater than the family's monthly income and using the row above; each printed threshold is the inclusive floor of its own level.
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: Iowa CCA Exit special-needs-care fee level income thresholds by family size

@@ -12,6 +12,8 @@ values:
     - social_security
     - ssi
     - tanf
+    # 7 CFR 245.6(a)(5)(ii) lists welfare among the sources of cash income.
+    - general_assistance
     - pension_income
     - survivor_benefits
     - financial_assistance
@@ -25,6 +27,8 @@ values:
 
 metadata:
   reference:
+    - title: Code of Federal Regulations, 7 CFR 245.6(a)(5)(ii)
+      href: https://www.law.cornell.edu/cfr/text/7/245.6#a_5_ii
     - title: Code of Federal Regulations, 7 CFR 273.9(b)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b
     - title: Code of Federal Regulations, 7 CFR 247.9(d)(1)

@@ -401,3 +401,14 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 41, meeting the section 1614 SSI disability test exempts without the generic disability flag.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_disabled: false
+    is_ssi_disabled: true
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true

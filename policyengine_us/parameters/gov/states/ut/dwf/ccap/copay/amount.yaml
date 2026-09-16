@@ -19,6 +19,7 @@ description: Utah sets these monthly child care copayment amounts under the Chil
 # published column so every lookup is defined; they can never bind (a
 # two-person household cannot have two subsidized children).
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   label: Utah CCAP monthly copayment amount

@@ -1,0 +1,154 @@
+# heating_expense is pure: the bill matching the canonical heating_type,
+# zero included. UNSPECIFIED households are handled by each program's
+# deprecated legacy adapter, never here.
+
+- name: Electric heating reads the pre-subsidy electricity bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 800
+  output:
+    heating_expense: 800
+
+- name: Natural gas heating reads the gas bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    heating_expense: 1_200
+
+- name: Fuel oil heating reads the fuel oil bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 1_100
+  output:
+    heating_expense: 1_100
+
+- name: Kerosene heating reads the fuel oil bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: KEROSENE
+    fuel_oil_expense: 600
+  output:
+    heating_expense: 600
+
+- name: Propane heating reads the bottled gas bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: PROPANE
+    bottled_gas_expense: 900
+  output:
+    heating_expense: 900
+
+- name: Wood heating reads the wood bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: WOOD
+    wood_expense: 750
+  output:
+    heating_expense: 750
+
+- name: Coal heating reads the coal bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: COAL
+    coal_expense: 550
+  output:
+    heating_expense: 550
+
+- name: Other heating fuel reads the catch-all bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: OTHER
+    other_heating_fuel_expense: 650
+  output:
+    heating_expense: 650
+
+- name: Grid-tied solar heating reads the electricity bill for supplemental heat.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 900
+  output:
+    heating_expense: 900
+
+- name: Off-grid solar heating has no fuel bill, even with legacy inputs set.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: SOLAR
+    heating_cooling_expense: 400
+    heating_expense_person: 300
+  output:
+    heating_expense: 0
+
+- name: An explicit zero bill is a valid value, not missing data.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 0
+    heating_cooling_expense: 400
+    heating_expense_person: 300
+  output:
+    heating_expense: 0
+
+- name: NONE affirmatively means no heating cost, regardless of legacy inputs.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NONE
+    heating_cooling_expense: 400
+    heating_expense_person: 300
+  output:
+    heating_expense: 0
+
+- name: UNSPECIFIED has no canonical bill — legacy inputs are handled by program adapters, not here.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_cooling_expense: 400
+    heating_expense_person: 300
+    gas_expense: 1_000
+  output:
+    heating_expense: 0
+
+- name: A known heating type never reads the deprecated person-level input.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    heating_expense_person: 700
+  output:
+    heating_expense: 1_000
+
+- name: Mixed-fuel household is represented by its primary fuel's bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    pre_subsidy_electricity_expense: 900
+  output:
+    heating_expense: 1_000
+
+- name: Monthly reads divide the annual bill by twelve.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    heating_expense: 100

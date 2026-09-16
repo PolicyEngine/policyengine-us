@@ -7,6 +7,7 @@ description: The IRS taxes long-term capital gains and qualified dividends at th
   2013-01-01: 0.2
 
 metadata:
+  propagate_metadata_to_children: true
   unit: /1
   period: year
   label: Capital gains tax rates

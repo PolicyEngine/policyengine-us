@@ -326,3 +326,23 @@
         state_code: NY
   output:
     ny_ctc: 330
+
+- name: 2025 - Phase-out at $80k AGI for surviving spouse with one young child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 917.5  # $1,000 - (5 * $16.50) = $1,000 - $82.50

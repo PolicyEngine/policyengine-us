@@ -9,6 +9,7 @@ description: New Mexico provides these full-time monthly reimbursement rates for
 # and the accreditation/staff-pay "Enhanced Rate" tables are not modeled (see
 # the PR description).
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: New Mexico CCAP licensed center monthly rates

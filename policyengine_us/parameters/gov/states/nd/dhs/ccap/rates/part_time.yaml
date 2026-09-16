@@ -11,6 +11,7 @@ description: North Dakota provides these part-time monthly maximum reimbursement
 # percentile of market rate.
 
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: North Dakota CCAP part-time monthly maximum rates

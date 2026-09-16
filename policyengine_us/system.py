@@ -1,3 +1,5 @@
+import hashlib
+from functools import lru_cache
 from pathlib import Path
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.entities import *
@@ -37,6 +39,12 @@ from policyengine_us.data.dataset_schema import (
 )
 
 from typing import Annotated
+from spm_calculator.policyengine_adapter import build_policyengine_variables
+from policyengine_us.spm import (
+    SPMSimulationMixin,
+    clone_spm_system,
+    create_spm_provider,
+)
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -46,7 +54,17 @@ DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 # Certified Populace build (primary-source US microdata), pinned by build id.
 # Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
-DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-c86a631-6e1bcd0271a5-20260619T002242Z"
+DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
+# Content hash of the certified build the default URI must resolve to.
+#
+# A Hugging Face tag is a mutable pointer: re-tagging the repository, or a
+# truncated or substituted download, would hand the model another schema-valid
+# H5 and change every standalone-country result with no rejection anywhere.
+# Only the country's own default is checked - an explicit `dataset=` argument
+# names the caller's own artifact and remains the caller's responsibility.
+DEFAULT_DATASET_SHA256 = (
+    "6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84"
+)
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -82,8 +100,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         start_instant: Annotated[
             str, "ISO date format YYYY-MM-DD"
         ] = DEFAULT_START_DATE,
+        spm: dict | None = None,
     ):
         super().__init__(entities, reform=reform)
+        self.spm_forecast_provider = create_spm_provider(spm)
+        self.add_variables(*build_policyengine_variables())
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
         self.parameters = set_irs_uprating_parameter(self.parameters)
@@ -125,6 +146,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
+    def clone(self):
+        return clone_spm_system(self)
+
 
 system = CountryTaxBenefitSystem()
 
@@ -158,7 +182,7 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
-class Simulation(CoreSimulation):
+class Simulation(SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
     defined against the base simulation class in the -core package.
@@ -183,6 +207,9 @@ class Simulation(CoreSimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
         )
         super().__init__(*args, **kwargs)
 
@@ -234,6 +261,25 @@ class Simulation(CoreSimulation):
         _backfill_state_code_from_str(self)
 
 
+def _download_or_explain(dataset_str, download):
+    """Name the unresolved dataset URI instead of re-raising a Hub exception.
+
+    A build id that is not published yet, a renamed repository and an offline
+    cache miss all surface from ``huggingface_hub`` as transport-level errors
+    that never mention which dataset the model was asked for.
+    """
+    from huggingface_hub.errors import HfHubHTTPError, LocalEntryNotFoundError
+
+    try:
+        return download()
+    except (HfHubHTTPError, LocalEntryNotFoundError) as error:
+        raise FileNotFoundError(
+            f"Could not resolve the dataset {dataset_str!r}: {error}. "
+            "Check that the build id in the URI is published, or pass a "
+            "dataset= argument that is."
+        ) from error
+
+
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
@@ -248,11 +294,14 @@ def _resolve_dataset_path(dataset_str):
         version = None
         if "@" in repo_filename:
             repo_filename, version = repo_filename.rsplit("@", 1)
-        return hf_hub_download(
-            repo_id=f"{owner}/{repo}",
-            filename=repo_filename,
-            repo_type="dataset",
-            revision=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: hf_hub_download(
+                repo_id=f"{owner}/{repo}",
+                filename=repo_filename,
+                repo_type="dataset",
+                revision=version,
+            ),
         )
     if "hf://" in dataset_str:
         from policyengine_core.tools.hugging_face import (
@@ -261,15 +310,56 @@ def _resolve_dataset_path(dataset_str):
         )
 
         owner, repo, filename, version = parse_hf_url(dataset_str)
-        return download_huggingface_dataset(
-            repo=f"{owner}/{repo}",
-            repo_filename=filename,
-            version=version,
+        return _download_or_explain(
+            dataset_str,
+            lambda: download_huggingface_dataset(
+                repo=f"{owner}/{repo}",
+                repo_filename=filename,
+                version=version,
+            ),
         )
     elif Path(dataset_str).exists():
         return dataset_str
     else:
         raise FileNotFoundError(f"Dataset file not found: {dataset_str}")
+
+
+def _file_sha256(file_path):
+    digest = hashlib.sha256()
+    with open(file_path, "rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+@lru_cache(maxsize=None)
+def _checked_default_dataset_digest(file_path, size, mtime_ns):
+    """Digest the resolved default build once per process.
+
+    The certified build is ~830 MB, so a per-construction digest would add
+    about a third of a second to every default `Microsimulation`. Key the
+    digest on the resolved path together with its size and modification time,
+    so a replaced or re-downloaded cache entry is digested again rather than
+    inheriting the previous file's verdict.
+    """
+    return _file_sha256(file_path)
+
+
+def _verify_default_dataset(file_path):
+    """Reject a default build whose bytes are not the certified ones."""
+    stat = Path(file_path).stat()
+    actual = _checked_default_dataset_digest(
+        str(file_path), stat.st_size, stat.st_mtime_ns
+    )
+    if actual != DEFAULT_DATASET_SHA256:
+        raise ValueError(
+            f"The default dataset {DEFAULT_DATASET} resolved to {file_path}, "
+            f"whose content is not the certified build: expected sha256 "
+            f"{DEFAULT_DATASET_SHA256}, got {actual}. The build id in the "
+            "default URI points at different bytes than this model version "
+            "was certified against; upgrade policyengine-us, or pass an "
+            "explicit dataset= argument to use that artifact deliberately."
+        )
 
 
 def _is_hdfstore_format(file_path):
@@ -289,7 +379,7 @@ def _is_hdfstore_format(file_path):
         return False
 
 
-class Microsimulation(CoreMicrosimulation):
+class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
     defined against the base microsimulation class in the -core package.
@@ -317,8 +407,14 @@ class Microsimulation(CoreMicrosimulation):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
         )
+        args, kwargs = self._prepare_spm_system(
+            args, kwargs, kwargs.pop("spm", None), start_instant
+        )
 
         dataset = kwargs.get("dataset")
+        # Only the build this model version chose for itself is content-checked
+        # below; a caller-supplied dataset= is the caller's own artifact.
+        uses_country_default = dataset is None
         if dataset is None:
             # Route the class default through the same interception below as an
             # explicit dataset, so an entity-level (HDFStore) default such as
@@ -338,6 +434,10 @@ class Microsimulation(CoreMicrosimulation):
         # entity-level datasets, making this interception unnecessary.
         if dataset is not None and isinstance(dataset, str):
             local_path = _resolve_dataset_path(dataset)
+            if uses_country_default and dataset == DEFAULT_DATASET:
+                # A subclass may point `default_dataset` elsewhere; only the
+                # shipped default is certified by DEFAULT_DATASET_SHA256.
+                _verify_default_dataset(local_path)
             if _is_hdfstore_format(local_path):
                 from policyengine_us.data.economic_assumptions import (
                     extend_single_year_dataset,

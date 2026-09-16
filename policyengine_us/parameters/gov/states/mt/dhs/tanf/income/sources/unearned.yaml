@@ -12,6 +12,11 @@ values:
     - social_security
     - veterans_benefits
     - workers_compensation
+    # TANF 501-1 (Assistance Programs) and Mont. Admin. r. 37.78.402 count
+    # Bureau of Indian Affairs General Assistance; general_assistance is a
+    # proxy for BIA General Assistance since Montana has no broad state
+    # general assistance program
+    - general_assistance
     # Adoption Subsidies
     # TANF from other states
     # Capital Gains

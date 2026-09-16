@@ -134,8 +134,11 @@
     ma_liheap_hecs_payment: 160
     ma_liheap: 500
 
-# Legacy fallback tests — verify pre-PR-#7986 per-fuel inputs still cap the benefit.
-- name: Legacy fallback, electricity heating uses electricity_expense.
+# Legacy adapter tests — with heating_type UNSPECIFIED, MA's pre-canonical
+# arbitration applies exactly (person-level total, else the per-fuel bill
+# matching the MA heating type including post-subsidy electricity_expense,
+# else heating_cooling_expense).
+- name: Legacy adapter, electricity heating uses electricity_expense.
   period: 2023
   input:
     spm_unit_size: 4
@@ -148,11 +151,12 @@
     heating_expense_last_year: 1_800
     state_code: MA
   output:
-    # heating_expense_person unset → falls back to electricity_expense (500)
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to electricity_expense (500)
     # min(852 + 160, 500) = 500
     ma_liheap: 500
 
-- name: Legacy fallback, oil heating uses fuel_oil_expense.
+- name: Legacy adapter, oil heating uses fuel_oil_expense.
   period: 2023
   input:
     spm_unit_size: 4
@@ -165,8 +169,66 @@
     heating_expense_last_year: 2_000
     state_code: MA
   output:
-    # heating_expense_person unset → falls back to fuel_oil_expense (500)
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to fuel_oil_expense (500)
     # min(1_239 + 160, 500) = 500
+    ma_liheap: 500
+
+- name: Legacy inputs set for SNAP do not create a heating cost for a known heating type.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: ELECTRICITY
+    heating_cooling_expense: 1_200
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # Canonical electric heating with no electricity bill supplied:
+    # heating_expense = 0; heating_cooling_expense is never read.
+    # min(852 + 160, 0) = 0
+    ma_liheap: 0
+
+# Canonical vocabulary tests — heating_type selects the per-fuel expense and
+# derives the MA heating-type category.
+- name: Canonical inputs, electricity heating uses pre_subsidy_electricity_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # heating_expense = pre_subsidy_electricity_expense (500)
+    # min(852 + 160, 500) = 500
+    ma_liheap_heating_type: ELECTRICITY
+    ma_liheap: 500
+
+- name: Canonical inputs, fuel oil heating uses fuel_oil_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # FUEL_OIL maps to MA's HEATING_OIL_AND_PROPANE category;
+    # heating_expense = fuel_oil_expense (500)
+    # min(1_239 + 160, 500) = 500
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
     ma_liheap: 500
 
 - name: Legacy fallback, other heating uses heating_cooling_expense.
@@ -185,3 +247,266 @@
     # heating_expense_person unset → falls back to heating_cooling_expense (800)
     # min(672 + 120, 800) = 792
     ma_liheap: 792
+
+- name: Canonical inputs, wood heating maps to the other category and reads wood_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 18_001
+    heating_type: WOOD
+    wood_expense: 800
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: true
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # WOOD maps to MA's OTHER category (deliverable fuel);
+    # heating_expense = wood_expense (800)
+    # min(672 + 120, 800) = 792
+    ma_liheap_heating_type: OTHER
+    ma_liheap: 792
+
+# Every canonical heating type has a pinned MA rate row. FY2023 (period 2023)
+# non-subsidized level 3: utility / heat-in-rent 852, deliverable fuel 1_239,
+# HECS 160; HECS prior-year thresholds: oil/propane 1_856, gas 1_190,
+# other 1_635, kerosene 1_487, electricity 1_709.
+- name: Canonical no heating cannot receive the HECS supplement and has no heating cost.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: NONE
+    gas_expense: 1_000
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    ma_liheap_heating_type: NONE
+    ma_liheap_hecs_eligible: false
+    ma_liheap_hecs_payment: 0
+    ma_liheap_standard_payment: 0
+    ma_liheap: 0
+
+- name: Legacy kerosene reads fuel_oil_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: KEROSENE
+    fuel_oil_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # min(1_239 + 160, 500) = 500
+    ma_liheap_hecs_payment: 160
+    ma_liheap_standard_payment: 1_239
+    ma_liheap: 500
+
+- name: Canonical kerosene keeps its own MA row and reads fuel_oil_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: KEROSENE
+    fuel_oil_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # Same result as the legacy kerosene case above.
+    ma_liheap_heating_type: KEROSENE
+    ma_liheap: 500
+
+- name: Canonical propane maps to the heating oil and propane row.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: PROPANE
+    bottled_gas_expense: 3_000
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # min(1_239 + 160, 3_000) = 1_399
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    ma_liheap: 1_399
+
+- name: Canonical natural gas maps to the natural gas row.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 3_000
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # 1_800 > gas threshold 1_190 → HECS 160; min(852 + 160, 3_000) = 1_012
+    ma_liheap_heating_type: NATURAL_GAS
+    ma_liheap: 1_012
+
+- name: Canonical solar maps to the electricity row and reads the electricity bill.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    ma_liheap_heating_type: ELECTRICITY
+    ma_liheap: 500
+
+- name: Canonical coal maps to the other category and reads coal_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 18_001
+    heating_type: COAL
+    coal_expense: 800
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: true
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # min(672 + 120, 800) = 792
+    ma_liheap_heating_type: OTHER
+    ma_liheap: 792
+
+- name: Canonical other fuel maps to the other category and reads other_heating_fuel_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 18_001
+    heating_type: OTHER
+    other_heating_fuel_expense: 800
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: true
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    ma_liheap_heating_type: OTHER
+    ma_liheap: 792
+
+- name: No heating with heat included in rent is contradictory; the standard payment still bypasses the cap without HECS.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 12_000
+    heating_type: NONE
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    ma_liheap_heating_type: NONE
+    ma_liheap_hecs_eligible: false
+    ma_liheap_standard_payment: 852
+    ma_liheap: 852
+
+# Legacy adapter precedence and the mixed-vocabulary override.
+- name: Legacy adapter, person-level total takes precedence over the per-fuel bill.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: ELECTRICITY
+    heating_expense_person: 300
+    electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # heating_expense_person > 0 wins: min(852 + 160, 300) = 300
+    ma_liheap: 300
+
+- name: Legacy adapter, an explicit zero person-level input falls through to the per-fuel bill.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: ELECTRICITY
+    heating_expense_person: 0
+    electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # heating_expense_person == 0 is treated as unset → electricity_expense (500)
+    ma_liheap: 500
+
+- name: Legacy adapter, person-level inputs sum across members.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        irs_gross_income: 40_000
+        rent: 0
+        heating_expense_person: 500
+      person2:
+        age: 38
+        heating_expense_person: 300
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ma_liheap_heating_type: ELECTRICITY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        heating_expense_last_year: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MA
+  output:
+    # 500 + 300 = 800 < 852 + 160 → 800
+    ma_liheap: 800
+
+- name: Mixed vocabularies, the deprecated state override moves only the rate row.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: NATURAL_GAS
+    ma_liheap_heating_type: KEROSENE
+    gas_expense: 900
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # Direct enum input wins for the row (kerosene: deliverable 1_239, HECS 160
+    # since 2_000 > 1_487); the cap follows the canonical heating_type
+    # (gas bill 900): min(1_399, 900) = 900
+    ma_liheap_heating_type: KEROSENE
+    ma_liheap: 900

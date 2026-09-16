@@ -1,0 +1,34 @@
+description: North Dakota counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+# Preserve the inherited start date while correcting the modeled sources.
+values:
+  2010-07-01:
+    - veterans_benefits
+    - survivor_benefits
+    - rental_income
+    - child_support_received
+    - alimony_income
+    - financial_assistance
+    # Section 400-19-55-25 excludes ordinary investment interest/dividends.
+    - miscellaneous_income
+    # Regular pension payments, including their interest, remain countable.
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - gi_cash_assistance
+    - social_security
+    # Direct GA cash is countable. Section 400-19-55-25 separately excludes
+    # GA reimbursements, third-party payments and complementary assistance
+    # for needs not covered by TANF; those are not represented by this input.
+    - general_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: North Dakota TANF unearned income sources
+  reference:
+    - title: North Dakota TANF Manual, 400-19-55-20-15 - Countable Unearned Income Types
+      href: https://www.nd.gov/dhs/policymanuals/40019/400_19_55_20_15.htm
+    - title: North Dakota TANF Manual, 400-19-55-25 - Disregard of Certain Income
+      href: https://www.nd.gov/dhs/policymanuals/40019/400_19_55_25.htm
+    - title: North Dakota TANF Manual, 400-19-55-20-15, item 22 (2015 edition)
+      href: https://www.nd.gov/dhs/policymanuals/40019/Archive%20Documents/2016%20-%20ML3482/400_19_55_20_15%20ML%203482.htm

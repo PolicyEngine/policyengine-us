@@ -1,6 +1,5 @@
 - name: Case 1, two-parent household, eligible.
   period: 2024-01
-  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -28,7 +27,6 @@
 
 - name: Case 2, two-parent household, ineligible.
   period: 2024-01
-  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -55,7 +53,6 @@
 
 - name: Case 3, eligible due to homeless.
   period: 2024-01
-  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -81,9 +78,8 @@
   output:
     ma_ccfa_activity_eligible: true
 
-- name: Case 3, eligible due to age.
+- name: Case 4, retired parents meet the activity requirement.
   period: 2024-01
-  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -109,3 +105,273 @@
         state_code: MA
   output:
     ma_ccfa_activity_eligible: true
+
+- name: Case 5, pregnancy alone is not a service need.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_pregnant: true
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: false
+
+- name: Case 6, disability satisfies the affected parent only.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: true
+
+- name: Case 7, one disabled parent does not exempt the other parent.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 34
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: false
+
+- name: Case 8, each parent has a qualifying service need.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 34
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: true
+
+- name: Case 9, 19 hours is below ordinary minimum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 19
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: false
+
+- name: Case 10, 20 hours meets ordinary minimum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: true
+
+- name: Case 11, PFML receipt alone does not establish service need.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        pfml_benefits:
+          2025: 15000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: false
+
+- name: Case 12, minor parent must meet service need.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        own_children_in_household: 1
+        is_full_time_student: false
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible:
+      2025-05: false
+
+- name: Case 13, other approved activities use the existing CCDF input.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible: true
+    is_homeless: false
+
+- name: Case 14, family without a parent does not vacuously satisfy activities.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible: false
+
+- name: Case 15, one parent working and one studying qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 34
+        is_full_time_student: true
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible: true
+
+- name: Case 16, a parent who reports not being retired still needs another activity.
+  period: 2026-01
+  input:
+    state_code: MA
+    ma_ccfa_is_parent: true
+    age: 65
+    is_retired: false
+    weekly_hours_worked_before_lsr: 0
+  output:
+    ma_ccfa_activity_eligible: false

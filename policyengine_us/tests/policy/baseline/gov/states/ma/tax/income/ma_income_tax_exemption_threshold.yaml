@@ -1,0 +1,49 @@
+- name: Surviving spouse filer receives head of household treatment in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # Massachusetts has no surviving spouse filing status; federal qualifying
+    # surviving spouses generally file as head of household in Massachusetts.
+    # Base 7,600 + personal exemption 6,800 + 1 dependent x 1,000 = 15,400.
+    ma_income_tax_exemption_threshold: 15_400
+
+- name: Head of household filer with one dependent in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # Base 7,600 + personal exemption 6,800 + 1 dependent x 1,000 = 15,400.
+    ma_income_tax_exemption_threshold: 15_400

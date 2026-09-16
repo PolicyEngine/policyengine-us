@@ -60,7 +60,9 @@ def test_acp_lifeline_categorical_eligibility_is_vectorized(monkeypatch):
 
     result = acp_module.is_acp_eligible.formula(spm_unit, "2022", _parameter_tree())
 
-    np.testing.assert_array_equal(result, np.array([True, False, True]))
+    # Household 2 is on Tribal land and enrolled in Medicaid: 47 CFR 54.409(b)
+    # keeps the standard routes for Tribal households, so it is eligible.
+    np.testing.assert_array_equal(result, np.array([True, True, True]))
 
 
 def test_ebb_categorical_eligibility_is_vectorized(monkeypatch):

@@ -74,3 +74,96 @@
     is_snap_eligible: true
   output:
     tx_ceap_eligible: true
+
+- name: Case 8, aged household with low resources but income above the limit and no SSI payment is ineligible.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    age: 70
+    immigration_status: CITIZEN
+    employment_income: 100_000
+    ssi_countable_resources: 0
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    is_ssi_eligible: true
+    ssi: 0
+    tx_ceap_eligible: false
+
+- name: Case 9, household reporting SSI receipt above the income limit is categorically eligible.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    employment_income: 100_000
+    receives_ssi: true
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 10, SSI receipt reported only from December still confers categorical eligibility for the year.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    employment_income: 100_000
+    receives_ssi:
+      2025-01: false
+      2025-12: true
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 11, SSI receipt reported from June through November but not December still confers categorical eligibility.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    employment_income: 100_000
+    receives_ssi:
+      2025-01: false
+      2025-06: true
+      2025-12: false
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 12, reading Medicaid eligibility before CEAP leaves the annual SSI flag untouched.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    age: 70
+    immigration_status: CITIZEN
+    employment_income: 100_000
+    ssi_countable_resources: 0
+    receives_ssi:
+      2025-01: false
+      2025-06: true
+      2025-12: false
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    is_medicaid_eligible: false
+    tx_ceap_eligible: true
+    receives_ssi:
+      2025-12: false
+
+- name: Case 13, reading CEAP before Medicaid eligibility gives the same answers.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    age: 70
+    immigration_status: CITIZEN
+    employment_income: 100_000
+    ssi_countable_resources: 0
+    receives_ssi:
+      2025-01: false
+      2025-06: true
+      2025-12: false
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+    is_medicaid_eligible: false
+    receives_ssi:
+      2025-12: false
