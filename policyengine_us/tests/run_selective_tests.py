@@ -44,7 +44,13 @@ QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
 
 
 def is_quick_feedback_deferred(test_path: str) -> bool:
-    """True when the target is a deferred directory or sits inside one."""
+    """True for a directory target that is a deferred directory or sits inside one.
+
+    File targets are never deferred: a directly changed test file runs in its
+    own subprocess, which is exactly the bound the deferral protects.
+    """
+    if Path(test_path).is_file():
+        return False
     normalized = test_path.rstrip("/")
     return any(
         normalized == deferred or normalized.startswith(deferred + "/")
