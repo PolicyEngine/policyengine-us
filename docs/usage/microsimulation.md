@@ -32,10 +32,10 @@ income = sim.calc("household_net_income")
 income = sim.calculate("household_net_income")
 
 # MicroSeries supports weighted aggregations
-income.sum()      # Total across population (using weights)
-income.mean()     # Weighted mean
-income.median()   # Weighted median
-income.gini()     # Gini coefficient
+income.sum()  # Total across population (using weights)
+income.mean()  # Weighted mean
+income.median()  # Weighted median
+income.gini()  # Gini coefficient
 ```
 
 ### Key parameters
@@ -267,9 +267,7 @@ baseline.subsample(10_000, seed=123)  # For faster iteration
 # Define a reform
 reform = Reform.from_dict(
     {
-        "gov.contrib.ubi_center.basic_income.amount": {
-            "2024-01-01.2100-12-31": 1000
-        },
+        "gov.contrib.ubi_center.basic_income.amount": {"2024-01-01.2100-12-31": 1000},
         "gov.contrib.ubi_center.basic_income.phase_out.rate": {
             "2024-01-01.2100-12-31": 0.1
         },
