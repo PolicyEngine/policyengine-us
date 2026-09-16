@@ -21,6 +21,8 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 86_000
   2024-01-01: 91_000
   2025-01-01: 94_000
+# Married-filing-separately taxpayers cannot claim the credit (Schedule CB);
+# the breakdown requires the key, but the eligibility formula zeroes it out.
 SEPARATE:
   2001-01-01: 40_000
   2021-01-01: 62_000
