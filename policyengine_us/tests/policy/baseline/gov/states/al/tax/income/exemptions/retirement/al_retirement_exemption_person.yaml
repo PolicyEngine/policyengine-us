@@ -27,3 +27,12 @@
     state_code: AL
   output:
     al_retirement_exemption_person: 0
+
+- name: Taxable Roth conversions qualify for retirement exemption
+  period: 2026
+  input:
+    al_retirement_exemption_eligible_person: true
+    taxable_roth_conversions: 5_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 5_000

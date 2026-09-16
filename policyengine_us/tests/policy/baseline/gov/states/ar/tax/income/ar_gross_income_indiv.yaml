@@ -105,3 +105,21 @@
         state_code: AR
   output:
     ar_gross_income_indiv: 25_000
+
+- name: Arkansas gross income includes taxable Roth conversions
+  period: 2026
+  input:
+    people:
+      person1:
+        irs_employment_income: 50_000
+        taxable_roth_conversions: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 60_000
+    ar_gross_income_joint: 60_000
