@@ -237,16 +237,9 @@ Once you find a parameter, use it in a reform:
 from policyengine_us import Simulation
 
 # Create reform modifying the standard deduction
-reform = {
-    "gov.irs.deductions.standard.amount.SINGLE": {
-        "2024-01-01": 20_000
-    }
-}
+reform = {"gov.irs.deductions.standard.amount.SINGLE": {"2024-01-01": 20_000}}
 
-sim = Simulation(
-    situation=household,
-    reform=reform
-)
+sim = Simulation(situation=household, reform=reform)
 ```
 
 ## Additional resources
