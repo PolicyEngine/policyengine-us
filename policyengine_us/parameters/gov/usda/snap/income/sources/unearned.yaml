@@ -7,12 +7,18 @@ values:
     - general_assistance
     # (i) State SSI supplements. 273.9(b)(2)(i) counts "assistance payments
     # from Federal or federally aided public assistance programs, such as
-    # supplemental security income (SSI)". Per POMS SI 01401.001B.1 a state
-    # supplementary payment is "paid either in cash or other negotiable
-    # instrument easily convertible to cash" to the individual, and SI
-    # 01401.001B.2 states that "third party vendor payments" are not state
-    # supplementary payments, so the 273.9(c)(1) exclusion for benefits not
-    # payable directly to the household does not reach the programs below.
+    # supplemental security income (SSI) ... or other assistance programs
+    # based on need", and adds that "such assistance is considered to be
+    # unearned income even if provided in the form of a vendor payment
+    # (provided to a third party on behalf of the household), unless the
+    # vendor payment is specifically exempt from consideration as countable
+    # income under the provisions of paragraph (c)(1)". 273.9(c)(1)(i)
+    # exempts public assistance vendor payments only for medical assistance,
+    # child care, energy assistance, migrant emergency assistance, housing
+    # authority housing assistance, and emergency or special assistance that
+    # is not the normal grant. None of the supplements below fall in those
+    # categories, so each counts, whether paid to the recipient or to a
+    # facility on the recipient's behalf.
     - ak_ssp
     - al_ssp
     # co_oap has an annual definition period; policyengine-core's
@@ -29,9 +35,7 @@ values:
     - ga_ssp_person
     - hi_oss
     - id_aabd
-    # in_ssp adds in_ssp_sapn and in_ssp_rcap. Only SAPN is counted: see the
-    # exclusions below.
-    - in_ssp_sapn
+    - in_ssp
     - ks_sspp
     - ky_ssp
     - la_oss
@@ -46,16 +50,10 @@ values:
     - sc_ssi_state_supplement
     - tx_ssi_state_supplement
     - wa_ssp
-    # Excluded state SSI supplements, with reasons:
-    # - in_ssp_rcap (Indiana Residential Care Assistance Program): 455 IAC
-    #   1-3-3 pays the facility a per diem directly ("the facility shall
-    #   receive per diem reimbursement from the division"), reduced by what
-    #   the recipient contributes. That is a vendor payment excluded by
-    #   273.9(c)(1), so in_ssp itself is not listed.
-    # - ca_state_supplement: an SPM unit variable with no person-level
-    #   counterpart. policyengine-core projects a group value onto every
-    #   member, so listing it here would count it once per person in the SPM
-    #   unit. It is listed in unearned_spm_unit.yaml instead.
+    # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
+    # person-level counterpart. policyengine-core projects a group value onto
+    # every member, so listing it here would count it once per person in the
+    # SPM unit. It is listed in unearned_spm_unit.yaml instead.
     # (ii)
     - pension_income # Includes annuities.
     - veterans_benefits
