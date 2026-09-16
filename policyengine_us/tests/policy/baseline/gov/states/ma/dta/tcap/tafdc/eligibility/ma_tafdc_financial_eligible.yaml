@@ -1,32 +1,37 @@
-# 106 CMR 704.260: "Filing units whose total countable income ... does not
-# exceed the applicable Need Standard ... are eligible." That section counts
-# income net of "the disregarded income as provided in 106 CMR 704.270,
-# 704.275, 704.280 and 704.281", which is what
-# ma_tafdc_applicable_income_for_financial_eligibility now carries.
-
-- name: Countable income below the Need Standard is eligible
+- name: Eligible
   period: 2023
   input:
-    ma_tafdc_applicable_income_for_financial_eligibility: 130
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
     ma_tafdc_payment_standard: 150
     state_code: MA
   output:
     ma_tafdc_financial_eligible: true
 
-- name: Countable income above the Need Standard is ineligible
+- name: Income above the Need Standard, ineligible
   period: 2023
   input:
-    ma_tafdc_applicable_income_for_financial_eligibility: 130
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
     ma_tafdc_payment_standard: 120
     state_code: MA
   output:
     ma_tafdc_financial_eligible: false
 
-# "Does not exceed" makes the boundary inclusive.
+# 106 CMR 704.260: countable income that "does not exceed" (equals) the
+# applicable Need Standard is financially eligible (inclusive boundary).
+# Countable income here is 500 - 200 - 170 = 130, plus 0 unearned.
 - name: Countable income exactly equal to the Need Standard is eligible
   period: 2023
   input:
-    ma_tafdc_applicable_income_for_financial_eligibility: 130
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
     ma_tafdc_payment_standard: 130
     state_code: MA
   output:
@@ -35,27 +40,11 @@
 - name: Countable income one dollar above the Need Standard is ineligible
   period: 2023
   input:
-    ma_tafdc_applicable_income_for_financial_eligibility: 129.99
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
     ma_tafdc_payment_standard: 129
     state_code: MA
   output:
     ma_tafdc_financial_eligible: false
-
-# The same unit tested from its wages: $500 of monthly wages, less the $200
-# work-related expense deduction (106 CMR 704.270) and the $170 dependent care
-# deduction (704.275), leaves $130. Before the 704.281(B) 50% disregard was
-# applied here, that $130 was compared with a $120 standard and the unit was
-# found ineligible even though the grant calculation still paid a benefit.
-- name: The 704.281(B) 50% disregard applies to the eligibility test
-  period: 2023
-  input:
-    ma_tcap_gross_earned_income: 500
-    ma_tafdc_dependent_care_deduction: 170
-    ma_tafdc_countable_unearned_income: 0
-    ma_tafdc_payment_standard: 120
-    state_code: MA
-  output:
-    # ($500 - $200) x 50% = $150, less the $170 dependent care deduction,
-    # floored at $0.
-    ma_tafdc_applicable_income_for_financial_eligibility: 0
-    ma_tafdc_financial_eligible: true

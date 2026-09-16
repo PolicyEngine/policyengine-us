@@ -15,14 +15,9 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard.full_disregard
-        # 106 CMR 704.281(A) opens the six-month 100% disregard only while
-        # "the total household countable income does not exceed 200% of the
-        # Federal Poverty Limit". That screen runs on income after the 704.270
-        # and 704.275 deductions, before the 704.281(B) 50% disregard, which
-        # would otherwise let the disregard widen its own entry test.
         gross_income = person.spm_unit(
-            "ma_tafdc_earned_income_after_deductions", period
-        ) + person.spm_unit("ma_tafdc_countable_unearned_income", period)
+            "ma_tafdc_applicable_income_for_financial_eligibility", period
+        )
 
         fpg = person.spm_unit("spm_unit_fpg", period)
         income_limit = fpg * p.fpg_limit

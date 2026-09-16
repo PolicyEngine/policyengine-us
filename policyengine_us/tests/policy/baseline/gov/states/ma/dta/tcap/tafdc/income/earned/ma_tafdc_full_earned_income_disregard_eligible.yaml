@@ -1,8 +1,7 @@
 - name: Case 1, eligible for full earned income disregard.
   period: 2023
   input:
-    ma_tafdc_earned_income_after_deductions: 0
-    ma_tafdc_countable_unearned_income: 0
+    ma_tafdc_applicable_income_for_financial_eligibility: 0
     spm_unit_fpg: 100
     state_code: MA
   output:
@@ -11,21 +10,8 @@
 - name: Case 2, not eligible for full earned income disregard.
   period: 2023
   input:
-    ma_tafdc_earned_income_after_deductions: 210
-    ma_tafdc_countable_unearned_income: 0
+    ma_tafdc_applicable_income_for_financial_eligibility: 210
     spm_unit_fpg: 100
     state_code: MA
   output:
-    ma_tafdc_full_earned_income_disregard_eligible: false
-
-# Unearned income counts toward the 200% screen alongside earned income.
-- name: Case 3, unearned income counts toward the 200% screen.
-  period: 2023
-  input:
-    ma_tafdc_earned_income_after_deductions: 150
-    ma_tafdc_countable_unearned_income: 60
-    spm_unit_fpg: 100
-    state_code: MA
-  output:
-    # $150 + $60 = $210, above 200% of the $100 poverty guideline.
     ma_tafdc_full_earned_income_disregard_eligible: false
