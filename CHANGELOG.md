@@ -1,3 +1,11 @@
+## [2.6.4] - 2026-09-16
+
+### Fixed
+
+- Update reference URLs and statutory citations for Arkansas, Rhode Island, and Wisconsin retirement income exclusions.
+- Fix citations and reference URLs for state income tax refund subtractions in NY, ME, and VA.
+
+
 ## [2.6.3] - 2026-09-16
 
 ### Fixed
