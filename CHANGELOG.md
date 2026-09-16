@@ -1,3 +1,10 @@
+## [2.6.3] - 2026-09-16
+
+### Fixed
+
+- Run the existing US policy test suites against the latest compatible PolicyEngine Core release without duplicating test jobs.
+
+
 ## [2.6.2] - 2026-09-16
 
 ### Fixed
