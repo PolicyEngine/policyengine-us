@@ -1,0 +1,1 @@
+Approximated Pennsylvania's employer pension exclusion with the state's 59.5 proxy retirement age instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
