@@ -1,1 +1,0 @@
-Quick Feedback now defers congress contrib test directories to the sharded full suite, as it already did for reform tests, so a PR touching a congress reform no longer runs a 15 GB proposal batch on the 16 GB quick-feedback runner.
