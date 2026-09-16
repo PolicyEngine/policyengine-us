@@ -1,3 +1,72 @@
+## [2.5.0] - 2026-09-15
+
+### Removed
+
+- Removed the federal CCDF eligibility chain (`is_ccdf_eligible`, `is_ccdf_income_eligible`, `is_ccdf_reason_for_care_eligible`, `ccdf_income_to_smi_ratio`, and `ccdf_income`), which no state program read, along with the partner contract cases that pinned it.
+
+
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
+## [2.4.2] - 2026-09-15
+
+### Fixed
+
+- Add Kansas CSFP categorical income eligibility through existing SSI, SNAP, FDPIR, and Medicare Savings Program variables.
+
+
+## [2.4.1] - 2026-09-15
+
+### Changed
+
+- Simplified uprating metadata in breakdown parameters using `propagate_metadata_to_children`.
+
+### Fixed
+
+- Gave `md_ccs_service_unit` an explicit `UNIT_1` default so negative or NaN childcare hours resolve to one unit instead of an integer 0 that cannot be encoded as a service unit.
+- Corrected the effective year of Montana's $12,600 elderly homeowner/renter credit income exclusion to 2022 (the 2021 value is $6,300).
+
+
+## [2.4.0] - 2026-09-15
+
+### Added
+
+- Added the Illinois 2022 property tax rebate (Family Relief Plan), equal to the 2021 property tax credit capped at $300.
+
+### Changed
+
+- Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.
+
+
+## [2.3.2] - 2026-09-15
+
+### Changed
+
+- `tenant_pays_utilities` now defaults to true, so households in counties with an encoded HUD utility allowance schedule receive the allowance unless the input is set to false, and `utilities_included_in_rent` is derived as its inverse (still settable directly) so the Maine property tax fairness credit reads the same utilities-responsibility fact; a caller that sets `tenant_pays_utilities` to false without setting `utilities_included_in_rent` now gets the Maine utilities-in-rent treatment automatically.
+
+
+## [2.3.1] - 2026-09-15
+
+### Changed
+
+- Add a BOOST reform-composition test pinning that Head Start values flow through the reform's static household_benefits list when gov.simulation.include_head_start_benefits_in_net_income is on.
+
+### Fixed
+
+- Skip the pull-request candidate wheel build, with a notice, when the PR head predates the release tooling, instead of failing the check on every branch opened before that tooling landed.
+
+
 ## [2.3.0] - 2026-09-15
 
 ### Added
