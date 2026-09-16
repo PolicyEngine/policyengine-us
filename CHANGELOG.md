@@ -1,3 +1,14 @@
+## [2.5.1] - 2026-09-16
+
+### Changed
+
+- Count California's SSI state supplement in SPM unit benefits, raising SPM resources for California SSI recipients and lowering California SPM poverty.
+
+### Fixed
+
+- Excluded unemployment compensation from Arkansas gross income for 2020 and 2021, the calendar years Act 154 of 2021 exempted, and kept it taxable from 2018 through 2019 and from 2022 on.
+
+
 ## [2.5.0] - 2026-09-15
 
 ### Removed
