@@ -3,7 +3,7 @@ values:
   2021-01-01:
     - in_renters_deduction
     - in_homeowners_property_tax_deduction
-    - salt_refund_last_year
+    - salt_refund_income
     - us_govt_interest
     - tax_unit_taxable_social_security  # includes railroad retirement benefits
     - in_military_service_deduction
@@ -17,8 +17,8 @@ values:
     - in_renters_deduction
     # IC 6-1.1
     - in_homeowners_property_tax_deduction
-    # IC 6-3.1-19-1
-    - salt_refund_last_year
+    # IC 6-3-1-3.5(a)(6) / IT-40 Schedule 2 line 3 (code 618)
+    - salt_refund_income
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
@@ -41,8 +41,8 @@ values:
     - in_renters_deduction
     # IC 6-1.1
     - in_homeowners_property_tax_deduction
-    # IC 6-3.1-19-1
-    - salt_refund_last_year
+    # IC 6-3-1-3.5(a)(6) / IT-40 Schedule 2 line 3 (code 618)
+    - salt_refund_income
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
@@ -67,8 +67,8 @@ values:
     - in_renters_deduction
     # IC 6-1.1
     - in_homeowners_property_tax_deduction
-    # IC 6-3.1-19-1
-    - salt_refund_last_year
+    # IC 6-3-1-3.5(a)(6) / IT-40 Schedule 2 line 3 (code 618)
+    - salt_refund_income
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
@@ -99,8 +99,8 @@ values:
     - in_renters_deduction
     # IC 6-1.1
     - in_homeowners_property_tax_deduction
-    # IC 6-3.1-19-1
-    - salt_refund_last_year
+    # IC 6-3-1-3.5(a)(6) / IT-40 Schedule 2 line 3 (code 618)
+    - salt_refund_income
     # IC 6-8-5-1
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
