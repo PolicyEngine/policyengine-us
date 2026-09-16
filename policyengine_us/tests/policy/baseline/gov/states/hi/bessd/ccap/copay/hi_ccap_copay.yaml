@@ -1,12 +1,11 @@
-# HI CCAP family co-payment (HAR 17-798.2-14(b)(4)).
-# Co-payment = (department's maximum rate allowable) x (co-pay percentage).
-# The percentage multiplies the PROVIDER MAX RATE, not gross income. This is
-# the HI-specific difference from income-times-percent designs.
+# HI CCAP family co-payment (HAR 17-798.3-14, eff. 2021-08-06).
+# Co-payment = (co-payment tier from Exhibit II) x (monthly gross income
+# for the family unit), assessed once per family unit.
 #
 # Family of 2, HI 2025 (FPG family of 2 = 24,320/year = 2,026.67/month).
 # Children are full-time (childcare_hours_per_week 30 -> ~130 monthly hours).
 
-- name: Case 1, worked example 740 rate times 9 percent.
+- name: Case 1, worked example gross income times 9 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -31,11 +30,11 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (licensed center or group home, full-time) = 795; copay rate 9%
-    # copay = 795 x 0.09 = 71.55
-    hi_ccap_copay: 71.55
+    # Monthly gross income = 56,000 / 12 = 4,666.67; copay tier 9%
+    # copay = 4,666.67 x 0.09 = 420.00
+    hi_ccap_copay: 420
 
-- name: Case 2, infant/toddler rate 1733 times 5 percent.
+- name: Case 2, gross income times 5 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -60,9 +59,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (licensed center infant/toddler, full-time) = 1,733; copay rate 5%
-    # copay = 1,733 x 0.05 = 86.65
-    hi_ccap_copay: 86.65
+    # Monthly gross income = 40,800 / 12 = 3,400; copay tier 5%
+    # copay = 3,400 x 0.05 = 170.00 (the provider rate does not enter)
+    hi_ccap_copay: 170
 
 - name: Case 3, zero copay percent gives zero copay.
   period: 2025-01
@@ -89,5 +88,214 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # 795 x 0.00 = 0
+    # 1,000 x 0.00 = 0
     hi_ccap_copay: 0
+
+# The FFY2025-2027 CCDF plan (section 3.1.2) shows a family unit of 1 at
+# monthly income 3,632 paying a 327 co-payment: ratio far above 230% FPG
+# -> 9% tier, and 3,632 x 0.09 = 326.88, which rounds to the plan's 327.
+- name: Case 4, CCDF plan worked example, family of 1 at 3632 per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 43_584  # 3,632/mo
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.09
+    hi_ccap_copay: 326.88
+
+# === Effective-date boundary: HAR 17-798.3 replaced 17-798.2's payment
+# provisions on August 6, 2021. Before then the co-payment was the tier
+# percentage of the department's maximum rate allowable, per child
+# (17-798.2-14(b)(4)); since then it is the tier percentage of monthly
+# gross income, per family unit (17-798.3-14). ===
+
+- name: Case 5, before August 2021 the tier applies to the provider maximum rate.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Max rate (licensed center or group home, full-time) = 795
+    # copay = 795 x 0.09 = 71.55
+    hi_ccap_copay: 71.55
+
+- name: Case 6, from the 2021 rule change the tier applies to gross income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # copay = 4,666.67 x 0.09 = 420.00 (same household as Case 5)
+    hi_ccap_copay: 420
+
+# The August 6, 2021 effective date falls mid-month. Monthly formulas read
+# income_based_in_effect as of the first day of the month, so August 2021
+# is the last month on the maximum-rate method and September 2021 the
+# first on the gross-income method. HI 2021 FPG family of 2 =
+# 20,040/year = 1,670/month, so 4,666.67 is 2.79 x FPG -> 9% tier.
+
+- name: Case 7, August 2021 still uses the maximum-rate method and September 2021 is the first month on the gross-income method.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.79 -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # The toggle is still false on August 1, 2021 and true on September 1:
+    # August copay = 795 (max rate) x 0.09 = 71.55
+    # September copay = 4,666.67 (gross income) x 0.09 = 420.00
+    hi_ccap_copay_rate:
+      2021-08: 0.09
+      2021-09: 0.09
+    hi_ccap_copay:
+      2021-08: 71.55
+      2021-09: 420
+
+# Two children in care: the old method summed each child's maximum rate
+# before applying the tier; the new method charges the tier on the family's
+# income once, regardless of how many children are in care. Family of 3,
+# 66,000/year = 5,500/month. HI FPG family of 3: 2021 = 25,260/year =
+# 2,105/month (ratio 2.61); 2022 = 26,490/year = 2,207.50/month
+# (ratio 2.49). Both years land in the 9% tier.
+
+- name: Case 8, before August 2021 two children sum their maximum rates.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000  # 5,500/mo, FPG ratio 2.61 -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 1  # < 36 months -> INFANT_TODDLER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+      person3:
+        age: 4  # >= 36 months -> OLDER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Licensed center full-time rates: infant/toddler 1,733 + older 795
+    # = 2,528; copay = 2,528 x 0.09 = 227.52
+    hi_ccap_maximum_monthly_rate: [0, 1_733, 795]
+    hi_ccap_copay_rate: 0.09
+    hi_ccap_copay: 227.52
+
+- name: Case 9, from the 2021 rule change two children still pay the tier on income once.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000  # 5,500/mo, FPG ratio 2.49 -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 1  # < 36 months -> INFANT_TODDLER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+      person3:
+        age: 4  # >= 36 months -> OLDER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Same household and rates as Case 8, but the rates no longer enter:
+    # copay = 5,500 (gross income) x 0.09 = 495.00, not 227.52
+    hi_ccap_maximum_monthly_rate: [0, 1_733, 795]
+    hi_ccap_copay_rate: 0.09
+    hi_ccap_copay: 495

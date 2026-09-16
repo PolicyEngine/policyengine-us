@@ -15,3 +15,24 @@
     ma_liheap_heating_type: NATURAL_GAS  
   output:
     ma_liheap_hecs_eligible: false
+
+- name: Canonical fuel oil heating derives the heating oil threshold
+  period: 2022
+  input:
+    state_code: MA
+    heating_expense_last_year: 1_300
+    heating_type: FUEL_OIL
+  output:
+    # 1_300 > FY2022 oil/propane threshold 1_279
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    ma_liheap_hecs_eligible: true
+
+- name: No heating cannot qualify on a prior-year heating cost
+  period: 2025
+  input:
+    state_code: MA
+    heating_expense_last_year: 5_000
+    heating_type: NONE
+  output:
+    ma_liheap_heating_type: NONE
+    ma_liheap_hecs_eligible: false

@@ -13,6 +13,7 @@ values:
     - social_security
     - workers_compensation
     - disability_benefits
+    # general_assistance is exempt under 9 CCR 2503-6, Section 3.605.4(A)(7)
 metadata:
   unit: list
   period: month
@@ -20,3 +21,5 @@ metadata:
   reference:
     - title: 9 CCR 2503-6, Section 3.605.3 — Countable Unearned Income Definition
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=45
+    - title: 9 CCR 2503-6, Section 3.605.4 (A)(7) — Exempt Unearned Income (General Assistance)
+      href: https://www.law.cornell.edu/regulations/colorado/9-CCR-2503-6-3.605

@@ -311,3 +311,237 @@
     # floor) and >= BB floor (9_500), so no row exceeds it -> last level, BB
     # index 27
     ia_cca_sliding_fee_level: 27
+
+# === July 1, 2025 chart edition (period 2026-01) ===
+# The 2025 chart ends at Level AA: Level BB was eliminated, so income at or
+# above every printed floor lands at Level AA index 26 instead of BB index 27.
+# Family-of-3 floors (2025 chart): A 2_110, B 2_221, C 2_283.
+# Size-2 top floor: AA 3_485. Size-10 top floor: AA 10_734.
+
+- name: Income one dollar below the 2025 Level B floor stays at Level A index 0.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 26_640
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_220/mo: >= A floor (2_110), < B floor (2_221)
+    # -> Level A index 0. Under the 2024 chart the same income was >= the old
+    # C floor (2_212) -> Level C, so this asserts the 2025 layer applies.
+    ia_cca_sliding_fee_level: 0
+
+- name: Income exactly at the 2025 Level B floor is Level B index 1.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 26_652
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_221/mo equals the B floor: the first row greater
+    # is C (2_283) -> row above -> Level B index 1 (each floor is inclusive)
+    ia_cca_sliding_fee_level: 1
+
+- name: Family of two above every 2025 floor lands at Level AA, not the eliminated BB.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 61_200
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Family of 2; income 5_100/mo exceeds every printed size-2 floor (top:
+    # AA 3_485). The 2025 chart ends at AA, so the family lands at AA index
+    # 26; the same household at 2025-01 (2024 chart, BB size-2 floor 5_000)
+    # landed at BB index 27.
+    ia_cca_sliding_fee_level: 26
+
+- name: Family of ten above every 2025 floor lands at Level AA, not the eliminated BB.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 132_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+        state_code: IA
+  output:
+    # Family of 10; income 11_000/mo >= AA floor (10_734, the highest printed
+    # size-10 floor). Under the 2024 chart the out-of-order BB row (size-10
+    # floor 9_500) made BB index 27 reachable here; with BB eliminated the
+    # scan caps at AA index 26.
+    ia_cca_sliding_fee_level: 26
+
+# === July 1, 2026 chart edition (period 2027-01) ===
+# Family-of-3 floors (2026 chart): A 2_163, B 2_277, C 2_341, D 2_405.
+# The 2026 chart blanks the cells above the CCA Plus state-median-income
+# ceiling: level Y is capped at 12_768 for family size 13, level Z at 12_517
+# for size 12 (blank for 13), and level AA is blank for sizes 12-13. The
+# blank cells are encoded as infinity, keeping the scan on the last printed
+# row of those columns.
+
+- name: Income one dollar below the 2026 Level B floor stays at Level A index 0.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 27_312
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_276/mo: >= A floor (2_163), < B floor (2_277)
+    # -> Level A index 0
+    ia_cca_sliding_fee_level: 0
+
+- name: Income exactly at the 2026 Level B floor is Level B index 1.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 27_324
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_277/mo equals the B floor: the first row greater
+    # is C (2_341) -> row above -> Level B index 1
+    ia_cca_sliding_fee_level: 1
+
+- name: Family of thirteen above the capped Level Y cell lands at Level Y index 24.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 156_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+      c12: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
+        state_code: IA
+  output:
+    # Family of 13; income 13_000/mo. The last printed size-13 row is Y
+    # (12_768, capped at the CCA Plus ceiling for a family of 13); Z and AA
+    # are blank (infinity), so the first row greater than income is the blank
+    # Z row -> row above -> Level Y index 24. Income this high exceeds the
+    # CCA Plus ceiling, so an enrolled family would be dispatched to the CCA
+    # Exit fee instead of this sliding fee.
+    ia_cca_sliding_fee_level: 24
+
+- name: Family of twelve above the capped Level Z cell lands at Level Z index 25.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 151_200
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11]
+        state_code: IA
+  output:
+    # Family of 12; income 12_600/mo: >= Z floor (12_517, capped at the CCA
+    # Plus ceiling for a family of 12); AA is blank (infinity) -> the first
+    # row greater is the blank AA row -> row above -> Level Z index 25
+    ia_cca_sliding_fee_level: 25

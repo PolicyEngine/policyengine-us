@@ -6,6 +6,7 @@ values:
     - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - ssi
     - receives_ssi # Reported SSI receipt, for people the model gives a $0 payment.
+    - receives_housing_assistance # Federal Public Housing Assistance (Section 8 vouchers, public housing, project-based rental assistance), reported receipt.
     # Also not implemented:
     # - Veterans and Survivors Pension Benefit
 metadata:
@@ -13,7 +14,7 @@ metadata:
   unit: list
   label: Lifeline non-tribal qualifying programs
   reference:
-    - title: 47 CFR § 54.409 - Consumer qualification for Lifeline.
-      href: https://www.law.cornell.edu/cfr/text/47/54.409
+    - title: 47 CFR § 54.409(a)(2) - Consumer qualification for Lifeline, program-based qualification.
+      href: https://www.law.cornell.edu/cfr/text/47/54.409#a_2
     - title: Lifeline Program for Low-Income Consumers # Specifies 2016-12-01 start date.
       href: https://www.fcc.gov/general/lifeline-program-low-income-consumers

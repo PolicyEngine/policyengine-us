@@ -60,6 +60,13 @@ class ia_cca_sliding_fee_level(Variable):
         # too high in the band between the BB and AA floors. Incomes below
         # the Level A floor stay at Level A; incomes no row exceeds (at or
         # above every floor) take the last level (BB).
+        # Level BB was eliminated effective July 1, 2025 — the 2025 and 2026
+        # chart editions end at level AA — so the BB thresholds are infinity
+        # from that date: BB is then always the first-greater row and every
+        # family lands at or below AA. The 2026 chart also blanks the cells
+        # above the CCA Plus state-median-income ceiling (Z size 13, AA sizes
+        # 12-13, encoded as infinity), which keeps the scan on the last
+        # printed row of those columns.
         num_levels = len(SLIDING_FEE_LEVELS)
         first_greater = num_levels
         for index in reversed(range(num_levels)):

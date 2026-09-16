@@ -1,0 +1,66 @@
+# Maine TANF Gross Unearned Income Tests
+# Source: 10-144 C.M.R. Chapter 331, Chapter III, Section B
+
+- name: Case 1, social security counts as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 3,000 / 12 = 250
+    me_tanf_gross_unearned_income: 250
+
+- name: Case 2, general assistance is excluded under Chapter III, Section B(2)(d).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+        gi_cash_assistance: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # general_assistance excluded; gi_cash_assistance 1,200 / 12 = 100
+    me_tanf_gross_unearned_income: 100
+
+- name: Case 3, earned income does not count as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_gross_unearned_income: 0
+
+- name: Case 4, cash from friends or relatives counts as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        financial_assistance: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 2,400 / 12 = 200
+    me_tanf_gross_unearned_income: 200

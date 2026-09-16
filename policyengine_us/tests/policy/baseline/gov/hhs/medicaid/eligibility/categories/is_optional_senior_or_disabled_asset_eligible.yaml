@@ -55,6 +55,9 @@
         ssi_countable_resources: 90_000
       person2:
         ssi_countable_resources: 90_000
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -66,6 +69,8 @@
   output:
     is_optional_senior_or_disabled_asset_eligible: [true, true]
 
+# Each spouse is under the 130,000 individual limit; only the 195,000
+# couple limit applied to combined resources makes them ineligible.
 - name: joint filers above the reinstated CA couple limit in 2026, ineligible
   period: 2026
   input:
@@ -74,6 +79,9 @@
         ssi_countable_resources: 100_000
       person2:
         ssi_countable_resources: 100_000
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -83,4 +91,57 @@
         members: [person1, person2]
         tax_unit_is_joint: true
   output:
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
+
+# Missouri's 2026 limits are 5,726 for one person and 11,452 for a couple.
+# One spouse holds more than the individual limit, but the couple's
+# combined resources are tested against the couple limit.
+- name: Missouri spouse over the individual limit is eligible when combined resources are under the couple limit
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 6_000
+      person2:
+        age: 68
+        ssi_countable_resources: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 11,000 combined is under 11,452.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Missouri couple at the couple resource limit is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 6_000
+      person2:
+        age: 68
+        ssi_countable_resources: 5_452
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 11,452 combined is not under the 11,452 couple limit.
     is_optional_senior_or_disabled_asset_eligible: [false, false]

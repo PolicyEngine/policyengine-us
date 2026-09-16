@@ -1,0 +1,19 @@
+description: Oregon applies a child citizenship or qualified-noncitizen test if this is true, under the Employment Related Day Care program.
+# OAR 414-175-0021 sunsets the test: "Until May 1, 2024, a child in a filing
+# group must meet one of the following citizenship and noncitizen status
+# requirements." From that date, DELC serves income-qualified children
+# regardless of immigration status, covering federally ineligible children
+# with state funds.
+values:
+  2023-07-01: true
+  2024-05-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Oregon ERDC immigration test in effect
+  reference:
+    - title: OAR 414-175-0021 (Citizenship and Noncitizen Status)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0021
+    - title: DELC, Employment Related Day Care (ERDC) program
+      href: https://www.oregon.gov/delc/programs/pages/erdc.aspx

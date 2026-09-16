@@ -10,34 +10,38 @@ brackets:
      2021-01-01: 0
      2026-01-01: 0.0199
  - threshold:
-     1994-01-01: 2_220
-     2021-01-01: 3_110
-     2022-01-01: 3_200
-     2023-01-01: 3_330
-     2024-01-01: 3_460
-     2025-01-01: 3_560
-     2026-01-01: 30_000
-   metadata:
-      uprating: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 10
+     values:
+       1994-01-01: 2_220
+       2021-01-01: 3_110
+       2022-01-01: 3_200
+       2023-01-01: 3_330
+       2024-01-01: 3_460
+       2025-01-01: 3_560
+       2026-01-01: 30_000
+     metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 10
    rate:
      1994-01-01: 0.03
      2026-01-01: 0.0521
  - threshold:
-     1994-01-01: 4_440
-     2021-01-01: 6_220
-     2022-01-01: 16_040
-     2023-01-01: 16_680
-     2024-01-01: 17_330
-     2025-01-01: 17_830
-     2026-01-01: .inf
-   metadata:
-      uprating: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 10
+     values:
+       1994-01-01: 4_440
+       2021-01-01: 6_220
+       2022-01-01: 16_040
+       2023-01-01: 16_680
+       2024-01-01: 17_330
+       2025-01-01: 17_830
+       2026-01-01: .inf
+     metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 10
    rate:
      1994-01-01: 0.04
      2022-01-01: 0.065

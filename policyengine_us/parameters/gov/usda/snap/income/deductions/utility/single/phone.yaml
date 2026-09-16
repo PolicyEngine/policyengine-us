@@ -1,6 +1,4 @@
-description: Utility allowance for households whose utility expenses are only phone-related
-  (or, if the state does not have a defined limited utility allowance, households
-  with phone expenses but not heating/cooling expenses).
+description: Telephone standard under the Supplemental Nutrition Assistance Program, applied to households whose only utility expense is a phone, to households with phone but no heating or cooling expenses in states without a limited utility allowance, and on top of the limited utility allowance in states that exclude telephone from it.
 metadata:
   unit: currency-USD
   period: month
@@ -32,6 +30,8 @@ metadata:
     href: https://snapqcdata.net/sites/default/files/2022-12/FY%202020%20SNAP%20QC%20Technical%20Documentation.pdf#page=175
   - title: FY 2021 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2024-05/FY%202021%20Tech%20Doc.pdf#page=138
+  - title: AZ DES CNAP manual FAA6.J Standards, Fees, and Amounts, 09 Utility Allowance Current Amount (archived 10/01/2020 page under Previous Years; $41 Telephone Utility Allowance)
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA6/Utility_Allowance_Current_Amount.html
 AK_C:
   2010-01-01: 0
   2017-10-01: 40
@@ -116,7 +116,10 @@ AZ:
   2017-10-01: 32
   2018-10-01: 36
   2019-10-01: 36
-  2020-10-01: 0
+  # The DES manual's archived FAA6.J page for 10/01/20-09/30/21 sets the
+  # Telephone Utility Allowance at $41; the value was previously misfiled
+  # into limited/main.yaml.
+  2020-10-01: 41
   2021-10-01: 44
   2022-10-01: 47
   2023-10-01: 47

@@ -1,17 +1,147 @@
-- name: joint
+- name: Joint path cheaper after credits, so does not elect combined-separate
   period: 2022
   input:
-    ky_taxable_income_indiv: 200
-    ky_taxable_income_joint: 100
-    state_code: KY
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        ky_income_tax_before_refundable_credits_if_separate: 200
+        ky_income_tax_before_refundable_credits_if_joint: 100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
   output:
     ky_files_separately: false
 
-- name: separate
+- name: Combined-separate cheaper after credits, so elects it
   period: 2022
   input:
-    ky_taxable_income_indiv: 100
-    ky_taxable_income_joint: 200
-    state_code: KY
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 200
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
   output:
     ky_files_separately: true
+
+- name: Single filer never elects combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 200
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    ky_files_separately: false
+
+# Head-of-household filer never elects combined-separate. The combined-separate
+# election under KRS 141.0205(2) is available only to married couples, so even
+# though if_separate < if_joint (which would elect if ungated), the married-only
+# gate blocks it and the result is false.
+- name: Head-of-household filer never elects combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 200
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    ky_files_separately: false
+
+# Surviving-spouse filer never elects combined-separate. The same married-only
+# gate blocks it despite if_separate < if_joint.
+- name: Surviving-spouse filer never elects combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SURVIVING_SPOUSE
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 200
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    ky_files_separately: false
+
+# Lone one-person tax unit that declares SEPARATE. The combined-separate election
+# under KRS 141.0205(2) requires a married couple (a spouse present), so the gate
+# blocks it even though the injected if_separate < if_joint would elect if ungated.
+- name: Lone SEPARATE filer with no spouse never elects combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 200
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    ky_files_separately: false
+
+# Post-credit tie for a married (joint) couple. The combined-separate election
+# uses a strict "<" test, so an equal separate and joint liability does NOT elect
+# combined-separate.
+- name: Post-credit tie does not elect combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        ky_income_tax_before_refundable_credits_if_separate: 100
+        ky_income_tax_before_refundable_credits_if_joint: 100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: false

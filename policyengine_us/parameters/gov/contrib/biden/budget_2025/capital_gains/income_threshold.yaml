@@ -11,12 +11,32 @@ metadata:
   breakdown:
     - filing_status
 JOINT:
-  2024-01-01: 1_000_000 
+  values:
+    2024-01-01: 1_000_000
+  metadata:
+    unit: currency-USD
+    period: year
 SINGLE:
-  2024-01-01: 1_000_000 
+  values:
+    2024-01-01: 1_000_000
+  metadata:
+    unit: currency-USD
+    period: year
 SEPARATE:
-  2024-01-01: 500_000 
+  values:
+    2024-01-01: 500_000
+  metadata:
+    unit: currency-USD
+    period: year
 HEAD_OF_HOUSEHOLD:
-  2024-01-01: 1_000_000 
+  values:
+    2024-01-01: 1_000_000
+  metadata:
+    unit: currency-USD
+    period: year
 SURVIVING_SPOUSE:
-  2024-01-01: 1_000_000 
+  values:
+    2024-01-01: 1_000_000
+  metadata:
+    unit: currency-USD
+    period: year

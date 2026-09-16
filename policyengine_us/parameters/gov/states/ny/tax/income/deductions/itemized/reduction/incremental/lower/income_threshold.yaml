@@ -16,6 +16,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 150_000
 
 metadata:
+  propagate_metadata_to_children: true
   label: New York itemized deduction higher incremental reduction lower income threshold
   breakdown:
     - filing_status

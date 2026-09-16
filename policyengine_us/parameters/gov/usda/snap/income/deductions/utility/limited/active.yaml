@@ -23,9 +23,23 @@ AL:
 AR:
   2010-01-01: false
   2021-10-01: false
+  # The FY2023-FY2026 FNS SUA tables list an Arkansas BUA ($245 rising to
+  # $274), matching the values maintained in main.yaml. The AR SNAP
+  # Certification Manual 6622 (rev. 01/01/2021) describes the BUA earlier,
+  # but no pre-FY2023 amount is published, so activation starts with the
+  # first known value.
+  2022-10-01: true
 AZ:
   2010-01-01: false
   2021-10-01: false
+  # The DES manual's archived FAA6.J Utility Allowance amounts page for
+  # 11/29/22-09/30/23 introduces the LUA with the note "LUA is effective
+  # the benefit month of 01/2023. Budgetary units eligible for LUA for
+  # benefit months prior to 01/2023 receive SUA instead of LUA" (that
+  # three-month SUA fallback is not modeled). The FY2023-FY2026 FNS SUA
+  # tables carry the matching by-household-size values maintained in
+  # by_household_size/amount.yaml.
+  2023-01-01: true
 CA:
   2010-01-01: false
   2021-10-01: true
@@ -185,6 +199,7 @@ WY:
   2010-01-01: false
   2021-10-01: true
 metadata:
+  propagate_metadata_to_children: true
   unit: bool
   period: year
   label: SNAP Limited Utility Allowance active
@@ -199,3 +214,9 @@ metadata:
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
   - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
     href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+  - title: AZ DES CNAP manual FAA6.J Standards, Fees, and Amounts, 09 Utility Allowance Current Amount (archived 10/01/2022 page under Previous Years; "LUA is effective the benefit month of 01/2023")
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA6/Utility_Allowance_Current_Amount.html
+  - title: AR SNAP Certification Manual 6622, Basic Utility Allowance (rev. 01/01/2021)
+    href: https://humanservices.arkansas.gov/wp-content/uploads/Recent-Rules-Filing-SNAP-6000-Deductions.pdf#page=29
+  - title: FY 2023 SNAP QC Technical Documentation, Table F.7 (first published Arkansas BUA)
+    href: https://snapqcdata.net/sites/default/files/2025-03/FY%202023%20Tech%20Doc.pdf#page=162

@@ -1,0 +1,35 @@
+# Unit tests for the combined-separate path of the Kentucky combined-separate
+# election. Each spouse's personal credit offsets only their own column's tax
+# (Form 740 lines 16-18; KRS 141.0205(2)), so the per-column cap can bind in one
+# column but not the other.
+
+# Two age-65 spouses (each with a $40 personal credit). The head's tiny column
+# tax ($1.50) caps their $40 credit down to $1.50, while the spouse's large
+# column tax fully absorbs their $40. Personal credit applied = 1.50 + 40 = 41.50.
+- name: Combined-separate per-column personal credit cap binds in one column only
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 2_800
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Column tax: head (2,800 - 2,770) x 5% = 1.50; spouse (40,000 - 2,770) x 5%
+    # = 1,861.50; base = 1,863.00. Personal credit capped per column: min(40,
+    # 1.50) + min(40, 1,861.50) = 1.50 + 40 = 41.50. Family size credit rate 0 at
+    # $42,800 modified gross income for a 2-person family. 1,863.00 - 41.50.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax_before_refundable_credits_if_separate: 1_821.50

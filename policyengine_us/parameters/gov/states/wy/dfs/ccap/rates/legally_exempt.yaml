@@ -3,6 +3,7 @@ description: Wyoming pays up to these maximum daily rates for legally exempt chi
 # non-relative) providers, identical on the 04/01/24, 04/01/25, and 04/01/26
 # Table I charts.
 metadata:
+  propagate_metadata_to_children: true
   period: day
   unit: currency-USD
   label: Wyoming CCAP legally exempt provider daily maximum rates

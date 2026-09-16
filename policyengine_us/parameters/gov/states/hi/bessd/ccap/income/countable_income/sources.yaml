@@ -48,6 +48,12 @@ metadata:
   period: year
   label: Hawaii CCAP countable income sources
   reference:
+    # Chapter 17-798.3 (eff. 2021-08-06) carries the same source list in
+    # 17-798.3-10(b) and the same exclusions in 17-798.3-11 (page 29);
+    # "gross income" is defined in 17-798.3-2 as all non-excluded earned
+    # and unearned income.
+    - title: HAR 17-798.3-10(b) and 17-798.3-11
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=24
     - title: HAR 17-798.2-10(b)
       href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=19
     - title: HAR 17-798.2-11

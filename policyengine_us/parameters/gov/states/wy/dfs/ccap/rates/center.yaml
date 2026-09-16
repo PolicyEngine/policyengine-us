@@ -4,6 +4,7 @@ description: Wyoming pays up to these maximum daily rates for child care center 
 # printed on the charts. University, community-college, and Wind River
 # Reservation centers also receive the center rate (Manual §1203.G).
 metadata:
+  propagate_metadata_to_children: true
   period: day
   unit: currency-USD
   label: Wyoming CCAP child care center daily maximum rates

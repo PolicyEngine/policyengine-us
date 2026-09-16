@@ -3,6 +3,7 @@ description: South Carolina provides these maximum weekly payment rates for fami
 # Urban and rural rates are also identical for FFN providers.
 # Rates use a simplified 2-tier age structure: under 3 and 3+.
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: South Carolina CCAP FFN weekly rates

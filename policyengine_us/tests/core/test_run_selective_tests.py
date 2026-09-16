@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+
+from policyengine_us.tests import run_selective_tests
 from policyengine_us.tests.run_selective_tests import SelectiveTestRunner
 
 
@@ -168,3 +171,31 @@ def test_limit_test_paths_ignores_deleted_direct_tests():
 
     assert deleted_test not in limited_paths
     assert existing_test in limited_paths
+
+
+def _fake_pytest(returncodes):
+    def run(cmd, *args, **kwargs):
+        return SimpleNamespace(returncode=returncodes[cmd[-1]])
+
+    return run
+
+
+def test_paths_that_collect_no_tests_do_not_fail_the_run(monkeypatch):
+    """A changed support module under tests/ collects nothing; that is not a failure."""
+    runner = SelectiveTestRunner()
+    monkeypatch.setattr(
+        run_selective_tests.subprocess,
+        "run",
+        _fake_pytest({"tests/a_test.py": 0, "tests/populace_fixture.py": 5}),
+    )
+    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 0
+
+
+def test_real_failures_still_fail_beside_an_empty_path(monkeypatch):
+    runner = SelectiveTestRunner()
+    monkeypatch.setattr(
+        run_selective_tests.subprocess,
+        "run",
+        _fake_pytest({"tests/a_test.py": 1, "tests/populace_fixture.py": 5}),
+    )
+    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 1

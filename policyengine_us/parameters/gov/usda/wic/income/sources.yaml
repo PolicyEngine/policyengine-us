@@ -11,6 +11,8 @@ values:
     - social_security
     - ssi
     - tanf
+    # 7 CFR 246.7(d)(2)(ii)(E) counts public assistance or welfare payments.
+    - general_assistance
     - pension_income
     - survivor_benefits
     - financial_assistance
@@ -29,5 +31,5 @@ values:
 
 metadata:
   reference:
-    - title: 7 CFR 246.7(d)(2)(ii)(A)
-      href: https://www.law.cornell.edu/cfr/text/7/246.7#d_2_ii_A
+    - title: 7 CFR 246.7(d)(2)(ii) - Definition of income
+      href: https://www.law.cornell.edu/cfr/text/7/246.7#d_2_ii

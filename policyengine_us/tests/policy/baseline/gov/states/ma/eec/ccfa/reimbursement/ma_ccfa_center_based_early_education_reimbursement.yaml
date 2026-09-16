@@ -8,3 +8,81 @@
     state_code: MA
   output:
     ma_ccfa_center_based_early_education_reimbursement: 105
+
+- name: Case 2, region 1, preschool, FY2025 rate equals the region's Head Start full-day rate.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 58.09
+
+# FY2026 rates effective July 1, 2025 (advisory CCFA-26-02).
+- name: Case 3, region 1, infant, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 105.53
+
+- name: Case 4, region 1, preschool, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 58.78
+
+- name: Case 5, region 3, toddler, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 2
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 86.96
+
+- name: Case 6, region 3, preschool, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 62.38
+
+- name: Case 7, metro region, infant, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 121.92
+
+- name: Case 8, metro region, toddler, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 2
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 110.64

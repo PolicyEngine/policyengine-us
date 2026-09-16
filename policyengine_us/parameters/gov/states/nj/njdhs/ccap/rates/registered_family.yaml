@@ -8,14 +8,20 @@ metadata:
     - nj_ccap_grow_nj_kids_rating
     - nj_ccap_age_group
   reference:
-    - title: CC-230 (02/25) Maximum Child Care Payment Rates, Registered Family Child Care Homes
+    - title: CC-230 (03/26) Maximum Child Care Payment Rates, Registered Family Child Care Homes, effective April 1, 2026
       href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=2
+    - title: CC-230 (02/25) Maximum Child Care Payment Rates, Registered Family Child Care Homes, effective March 1, 2025 (Bergen County mirror)
+      href: https://bergencountynj.gov/wp-content/uploads/2025/03/CC-230-March-2025-Rate-Chart.pdf#page=2
     - title: CC-230 (02/24) Maximum Child Care Payment Rates, Registered Family Child Care Homes
       href: http://www.bccap.org/wp-content/uploads/2024/03/Maximum-Child-Care-Payment-Rates-March-2024.pdf#page=2
 
 # 2024-01-01 values are CC-230 (02/24) rates effective March 1, 2024,
 # backdated to January 1 for microsimulation coverage.
 # The prior (March 2023) rates could not be sourced.
+# The CC-230 (07/24) edition effective August 1, 2024 left these rates
+# unchanged.
+# 2025-03-01 values are CC-230 (02/25) rates effective March 1, 2025; the
+# CC-230 (03/26) edition effective April 1, 2026 left them unchanged.
 FULL_TIME:
   NONE:
     INFANT:

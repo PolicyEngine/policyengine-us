@@ -86,3 +86,36 @@
     # child_support_expense: 3,600/year = 300/month
     # max(300 - 300, 0) = 0
     mt_tanf_gross_unearned_income: 0
+
+- name: Case 6, general assistance counts as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # general_assistance: 2,400/year = 200/month
+    mt_tanf_gross_unearned_income: 200
+
+- name: Case 7, no general assistance leaves other unearned income unchanged.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_400
+        general_assistance: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # social_security: 2,400/year = 200/month; general_assistance: 0
+    mt_tanf_gross_unearned_income: 200

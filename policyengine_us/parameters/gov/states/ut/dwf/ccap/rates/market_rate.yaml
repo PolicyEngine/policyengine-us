@@ -10,6 +10,7 @@ description: Utah caps the monthly child care payment at these local market rate
 # and neighbor) and Licensed Commercial Preschool rows publish identical
 # rates but are distinct provider categories in the table.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   label: Utah CCAP maximum monthly local market rates

@@ -15,6 +15,14 @@ class wa_working_families_tax_credit(Variable):
     reference = (
         "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206",
         "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=61",
+        # The (3)(c) $50 minimum-credit floor and the (3)(f) rate-setting rule
+        # are on the next page.
+        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=62",
+        # WAC 458-20-285 implements the WFTC and publishes the per-dollar
+        # reduction rates; DOR's Excise Tax Advisory ETA 3240 lists the
+        # per-year, per-child-count rates and the nearest-dollar rounding rule.
+        "https://apps.leg.wa.gov/wac/default.aspx?cite=458-20-285",
+        "https://dor.wa.gov/sites/default/files/2022-09/3240.pdf",
         # IRC 152(c)(3)(B), included in the federal EITC rules as in effect on
         # June 9, 2022, waives the qualifying-child age test for permanently
         # and totally disabled individuals.
@@ -32,6 +40,14 @@ class wa_working_families_tax_credit(Variable):
         # date-valued types, so the date appears here rather than in the
         # parameter tree.
         frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
+        # The June 9, 2022 Internal Revenue Code still contains the EITC
+        # inflation-adjustment provisions (26 U.S.C. 32(j)), so the
+        # inflation-indexed dollar amounts (the investment-income limit here,
+        # and the maximum qualifying income) track the current tax year, while
+        # the structural rules (age band, disabled-dependent waiver,
+        # separate-filer rule) stay on the frozen snapshot. Washington DOR
+        # publishes the current-year federal investment-income limit each year.
+        eitc = parameters(period).gov.irs.credits.eitc
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
@@ -64,9 +80,9 @@ class wa_working_families_tax_credit(Variable):
         federal_demographic_eligible = calculate_eitc_demographic_eligibility(
             tax_unit, period, frozen_eitc, federal_child_count
         )
-        frozen_investment_income_eligible = (
+        investment_income_eligible = (
             tax_unit("eitc_relevant_investment_income", period)
-            <= frozen_eitc.phase_out.max_investment_income
+            <= eitc.phase_out.max_investment_income
         )
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
@@ -76,16 +92,17 @@ class wa_working_families_tax_credit(Variable):
         )
         is_filer = eitc_filing_requirement_met(tax_unit, period)
         takes_up_eitc = tax_unit("takes_up_eitc", period)
-        baseline_income_eligible = (earnings > 0) & (
-            higher_income <= maximum_qualifying_income
-        )
+        # WAC 458-20-285(4) / Answer 4C: AGI must be strictly less than the
+        # maximum qualifying income, so the ceiling test uses `<`. The baseline
+        # and state-only paths share the same income test.
+        income_eligible = (earnings > 0) & (higher_income < maximum_qualifying_income)
 
         # Baseline eligibility: filers who qualify under the frozen 2022 IRC.
         eitc_eligible = (
-            baseline_income_eligible
+            income_eligible
             & federal_demographic_eligible
             & federal_identification_eligible
-            & frozen_investment_income_eligible
+            & investment_income_eligible
             & eitc_filing_status_eligible(
                 tax_unit,
                 period,
@@ -100,19 +117,16 @@ class wa_working_families_tax_credit(Variable):
             | separate
             | (child_count > federal_child_count)
         )
-        state_only_income_eligible = (earnings > 0) & (
-            higher_income <= maximum_qualifying_income
-        )
         state_only_eitc_eligible = needs_state_only_path & (
-            state_only_income_eligible
+            income_eligible
             & demographic_eligible
             & filer_has_tin
-            & frozen_investment_income_eligible
+            & investment_income_eligible
             & is_filer
             & takes_up_eitc
         )
 
-        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
+        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2028)
         age_expansion_eligible = tax_unit(
             "wa_working_families_tax_credit_age_expansion_eligible", period
         )
@@ -126,24 +140,38 @@ class wa_working_families_tax_credit(Variable):
         max_amount = p.amount.calc(wftc_child_count)
         # WFTC phases out at a certain amount below maximum qualifying income.
         # Before ESSB 6346, this is the frozen federal EITC maximum AGI.
-        # From 2029 onward, it is the greater of that amount and the cash
+        # From 2028 onward, it is the greater of that amount and the cash
         # assistance need standard for the tax household size.
         phase_out_start_reduction = p.phase_out.start_below_eitc.calc(wftc_child_count)
         phase_out_start = maximum_qualifying_income - phase_out_start_reduction
-        # The phase-out rates are hard-coded in the legal code, but HB 1888
-        # (2021-22) and ESSB 6346 instruct DOR to revise them so the minimum
-        # amount is reached at the applicable maximum qualifying income.
-        # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
-        phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
-        # RCW 82.08.0206(3)(b) measures the reduction against the federal
-        # phase-out income (the greater of earned income or AGI) -- the same
-        # measure used for the maximum-qualifying-income ceiling above -- not
-        # earned income alone.
+        # RCW 82.08.0206(3)(f) delegates the per-dollar reduction rate to DOR,
+        # which sets it (via ETA 3240) at (maximum amount / phase-out band) so
+        # the credit reaches the $50 statutory minimum at the maximum
+        # qualifying income. WAC 458-20-285 Answer 10D publishes the resulting
+        # 2022-base per-dollar rates ($0.12 for 0-1 children, $0.18 for 2,
+        # $0.24 for 3+), which equal this ratio. The $50 minimum (RCW
+        # 82.08.0206(3)(c)) then floors any positive reduced amount.
+        phase_out_rate = max_amount / phase_out_start_reduction
+        # Modeling choice: the reduction is measured against the greater of
+        # earned income or AGI, the same measure used for the
+        # maximum-qualifying-income ceiling above. RCW 82.08.0206(2)(b) defines
+        # "income" as earned income (26 U.S.C. Sec. 32), so using the greater
+        # of earned income and AGI is not the statutory base; it can
+        # over-reduce households whose AGI exceeds their earned income inside
+        # the band. Aligning the reduction base to earned income alone is a
+        # follow-up.
         excess = max_(0, higher_income - phase_out_start)
-        reduction = max_(0, excess * phase_out_rate)
+        reduction = excess * phase_out_rate
         phased_out_amount = max_amount - reduction
-        # minimum benefit applies if calculated amount exceeds zero
+        # RCW 82.08.0206(3)(b): the reduced refund is rounded to the nearest
+        # dollar. The $50 statutory minimum (RCW 82.08.0206(3)(c)) gates on the
+        # UNROUNDED amount, so a positive amount that rounds toward zero still
+        # floors to $50 rather than dropping to $0. This also makes the floor
+        # residue-proof against float error exactly at the ceiling
+        # (Sec. 901(2)(a)(ii)(C)).
         amount_if_eligible = where(
-            phased_out_amount > 0, max_(p.min_amount, phased_out_amount), 0
+            phased_out_amount > 0,
+            max_(p.min_amount, round_(phased_out_amount)),
+            0,
         )
         return amount_if_eligible * eligible
