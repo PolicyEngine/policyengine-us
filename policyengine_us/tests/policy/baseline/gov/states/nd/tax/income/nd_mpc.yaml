@@ -130,3 +130,29 @@
         state_code: ND
   output:
     nd_mpc: 287
+
+- name: Test 6, 401k and IRA distributions count toward qualified income
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_401k_distributions: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        taxable_ira_distributions: 180_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_mpc: 287

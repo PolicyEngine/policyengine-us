@@ -22,7 +22,7 @@ class md_pension_subtraction_amount(Variable):
         partner_is_disabled = person("has_disabled_spouse", period)
         eligible = ~dependent & (elderly | disabled | partner_is_disabled)
         # calculate pension subtraction amount for each person
-        peninc = person("taxable_pension_income", period)
+        peninc = add(person, period, p.pension.sources)
         socsec = person("social_security", period)
         amount = min_(peninc, max_(0, p.pension.max_amount - socsec))
         # return pension subtraction amount for each eligible person

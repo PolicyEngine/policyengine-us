@@ -1,0 +1,13 @@
+description: Oklahoma subtracts these retirement benefits from adjusted gross income under the individual income tax pension subtraction program.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_retirement_distributions
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma pension and retirement benefits subtraction sources
+  reference:
+    - title: Oklahoma Statutes Title 68, Section 2358(A)(13)(c), retirement benefit definition
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1013
+
