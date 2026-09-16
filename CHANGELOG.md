@@ -1,3 +1,10 @@
+## [2.6.1] - 2026-09-16
+
+### Fixed
+
+- Massachusetts Senior Circuit Breaker now excludes separate filers per Schedule CB, the no-tax-status threshold adds the per-dependent amount only for head of household and joint filers, and the Child and Family Tax Credit applies the IRC Section 21 incapable-of-self-care test to spouses and dependents.
+
+
 ## [2.6.0] - 2026-09-16
 
 ### Fixed
