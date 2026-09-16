@@ -10,8 +10,11 @@ values:
     - snap
     - receives_snap
     - fdpir
-    # msp reflects computed Medicare Savings Program eligibility; the model
-    # has no reported-receipt input for it, unlike receives_ssi and receives_snap.
+    # msp reflects computed Medicare Savings Program eligibility gated only by
+    # takes_up_msp_if_eligible, which defaults to true; there is no reported-
+    # receipt input, unlike receives_ssi and receives_snap. Until the microdata
+    # assigns MSP take-up, this leg is modeled at full take-up and the Kansas
+    # CSFP figure is an upper bound.
     - msp
     # Low Income Subsidy also qualifies under the state plan but is not modeled.
 
