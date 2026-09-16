@@ -1,0 +1,73 @@
+# Unset, the provider type follows the child's age category; an input still wins.
+- name: A preschooler with no provider named is a center-based early-education child, not a school-age one
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # The adult is 'school age' too, which is harmless: only a child's care is reimbursed.
+    ma_ccfa_child_age_category: [SCHOOL_AGE, PRESCHOOL]
+    ma_ccfa_care_provider_type: [CENTER_BASED_CARE_SCHOOL_AGE, CENTER_BASED_CARE_EARLY_EDUCATION]
+
+- name: A schoolchild with no provider named is center-based school age
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 8
+    households:
+      household:
+        members: [child]
+        state_code: MA
+  output:
+    ma_ccfa_child_age_category: SCHOOL_AGE
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+
+- name: A named provider is kept whatever the child's age
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 3
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [child]
+        state_code: MA
+  output:
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+
+- name: The subsidy a single parent's 3-year-old draws with no provider named, $12,000 bill, full-time care (was $0)
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    ma_child_care_subsidies: 12_000

@@ -1,0 +1,1 @@
+Set the Massachusetts CCFA care provider type from the child's age category when no provider is named, so a household with a child under school age is paid at the early-education center rate instead of $0.
