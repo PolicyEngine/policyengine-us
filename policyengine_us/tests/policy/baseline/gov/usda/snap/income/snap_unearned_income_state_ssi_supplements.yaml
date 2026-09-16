@@ -1,0 +1,66 @@
+# 7 CFR 273.9(b)(2)(i) counts assistance payments from federally aided public
+# assistance programs such as SSI, which includes state SSI supplements.
+- name: California state supplement counts as SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_name: CA
+  output:
+    ssi: 994
+    ca_state_supplement: 341.81
+    # Without the supplement the household's SNAP unearned income would be the
+    # $994 federal SSI benefit alone, and SNAP would be $143.
+    snap_unearned_income: 1_335.81
+    snap: 24
+
+- name: Massachusetts state supplement counts as SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_name: MA
+  output:
+    ssi: 994
+    ma_state_supplement: 128.82
+    # Without the supplement SNAP unearned income would be $994 and SNAP $218.
+    snap_unearned_income: 1_122.82
+    snap: 160
+
+# The California supplement is an SPM unit variable, so it is counted once for
+# the unit rather than projected onto each member.
+- name: California state supplement is counted once in a two-person SPM unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: CA
+  output:
+    ca_state_supplement: 341.81
+    snap_unearned_income: 1_335.81
