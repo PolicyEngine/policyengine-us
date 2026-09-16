@@ -1,0 +1,16 @@
+description: Massachusetts waives income collection for families experiencing homelessness under the Child Care Financial Assistance program.
+
+# The May 2026 consolidation omits this sentence but no rescission was located; retain the explicit advisory rule pending EEC clarification.
+values:
+  2020-01-01: false
+  2023-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts CCFA homeless income exemption in effect
+  reference:
+    - title: EEC Policy Advisory Field Operations 2023-4, Income eligible
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=2
+    - title: EEC Policy Advisory Field Operations 2024-7, Service Need
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-7-child-care-financial-assistance-updated-policy-guidance/download#page=4

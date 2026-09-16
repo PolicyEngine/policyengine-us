@@ -218,3 +218,13 @@
   output:
     # 24 CFR 982.604(b): 0.75 * $210 (Wichita 0 BR) = $157.50/month.
     hud_utility_allowance: 157.5 * 12
+
+- name: The allowance applies by default because tenants are assumed to pay utilities
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 0
+  output:
+    hud_utility_allowance: 227 * 12
