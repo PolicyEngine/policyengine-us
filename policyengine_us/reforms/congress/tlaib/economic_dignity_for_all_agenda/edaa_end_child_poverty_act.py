@@ -141,6 +141,7 @@ def create_ecpa_only() -> Reform:
                 "unemployment_compensation",
                 "ak_energy_relief",
                 "basic_income",
+                "trump_dividend",
                 "ny_drive_clean_rebate",
             ]
 
