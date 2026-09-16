@@ -58,7 +58,7 @@ class ma_child_and_family_credit(Variable):
         # a head/spouse ordering (age) artifact. The credit is restricted to
         # joint returns (IRC Section 21(e)(2)), excluding the unmarried
         # sole-filer case.
-        # Modeling note: household co-membership proxies the Section 21
+        # Modeling note: tax unit co-membership proxies the Section 21
         # same-principal-abode test, and the 2024+ noncustodial-parent rule
         # (Section 21 applied without subsection (e)(5)) is not modeled.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
