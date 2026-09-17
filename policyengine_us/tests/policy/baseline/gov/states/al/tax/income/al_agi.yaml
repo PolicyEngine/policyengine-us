@@ -16,3 +16,27 @@
     state_code: AL
   output:
     al_agi: 100_000
+
+- name: Taxable Roth conversions are included in Alabama AGI and income tax
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        taxable_roth_conversions: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_agi: 60_000
+    al_income_tax: 2_442.75
