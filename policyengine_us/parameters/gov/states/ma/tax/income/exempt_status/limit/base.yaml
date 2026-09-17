@@ -2,9 +2,6 @@ description: AGI limit to be exempt from state income tax. Joint or head-of-hous
 SINGLE:
   2020-01-01: 0
   2021-01-01: 8_000
-SURVIVING_SPOUSE:
-  2020-01-01: 0
-  2021-01-01: 8_000
 SEPARATE:
   2020-01-01: 0
 JOINT:
@@ -16,12 +13,14 @@ HEAD_OF_HOUSEHOLD:
 metadata:
   propagate_metadata_to_children: true
   reference:
-    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust 
+    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+    - title: Filing Status on Massachusetts Personal Income Tax
+      href: https://www.mass.gov/info-details/filing-status-on-massachusetts-personal-income-tax
     # NB: This parameter does not show up directly in tax forms.
     #     It is not inflation adjusted.
   unit: currency-USD
   period: year
   breakdown:
-  - filing_status
+  - ma_filing_status
   label: AGI addition to limit to be exempt from Massachusetts income tax.

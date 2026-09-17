@@ -15,6 +15,8 @@ from typing import Dict, List, Set
 
 SOURCE_FILE_SUFFIXES = (".py", ".yaml", ".yml")
 TEST_INFRASTRUCTURE_FILES = ("run_selective_tests.py", "test_batched.py")
+# pytest exits 5 when a path collects no tests (see pytest.ExitCode).
+PYTEST_NO_TESTS_COLLECTED = 5
 CRITICAL_TEST_TRIGGER_FILES = ("pyproject.toml", "requirements", "Makefile")
 STOP_TEST_DIRS = frozenset(
     {
@@ -24,14 +26,36 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+# Directory targets that Quick Feedback leaves to the sharded full-suite jobs.
+# A target is deferred when it is one of these directories or lies under one:
+# the full suite runs policy/contrib/congress one proposal per subprocess with
+# --workers 1 because a single proposal batch (tlaib) peaks around 15 GB, which
+# is more than the 16 GB Quick Feedback runner survives (PR #9497, run
+# 35042783076, "The runner has received a shutdown signal").
 QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
     {
         "policyengine_us/tests/microsimulation",
         "policyengine_us/tests/policy/baseline/household",
         "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/contrib/congress",
         "policyengine_us/tests/policy/reform",
     }
 )
+
+
+def is_quick_feedback_deferred(test_path: str) -> bool:
+    """True for a directory target that is a deferred directory or sits inside one.
+
+    File targets are never deferred: a directly changed test file runs in its
+    own subprocess, which is exactly the bound the deferral protects.
+    """
+    if Path(test_path).is_file():
+        return False
+    normalized = test_path.rstrip("/")
+    return any(
+        normalized == deferred or normalized.startswith(deferred + "/")
+        for deferred in QUICK_FEEDBACK_DEFERRED_DIRS
+    )
 
 
 class SelectiveTestRunner:
@@ -359,7 +383,9 @@ class SelectiveTestRunner:
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
-        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        deferred_paths = {
+            path for path in test_paths if is_quick_feedback_deferred(path)
+        }
         if deferred_paths:
             deferred_list = ", ".join(sorted(deferred_paths))
             print(
@@ -519,6 +545,11 @@ class SelectiveTestRunner:
             cmd = base_cmd + [test_path]
             print(f"\nRunning command: {' '.join(cmd)}")
             result = subprocess.run(cmd)
+            if result.returncode == PYTEST_NO_TESTS_COLLECTED:
+                # A changed file under tests/ with nothing to collect is a
+                # support module (a fixture or helper), not a failing test.
+                print(f"No tests collected in {test_path}; nothing to run there.")
+                continue
             if result.returncode != 0:
                 worst_returncode = result.returncode
 

@@ -1,0 +1,19 @@
+description: New Jersey excludes these retirement income sources under the individual income tax pension and retirement exclusion program.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+    - taxable_roth_conversions
+metadata:
+  unit: list
+  period: year
+  label: New Jersey pension and retirement exclusion sources
+  reference:
+    - title: N.J.S.A. 54A:6-10
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-10/
+    - title: New Jersey Division of Taxation Technical Bulletin GIT-1 & 2, Retirement Income
+      href: https://www.nj.gov/treasury/taxation/pdf/pubs/tgi-ee/git1&2.pdf#page=18

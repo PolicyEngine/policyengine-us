@@ -12,6 +12,7 @@ def make_local_tax_simulation(
     state_code: str,
     period: str = PERIOD,
     *,
+    spm: dict | None = None,
     pa_philadelphia_wage_tax_taxable_wages: float = 0,
     pa_philadelphia_wage_tax_resident: bool = False,
     pa_philadelphia_wage_tax_reduced_rate_eligible: bool = False,
@@ -25,6 +26,7 @@ def make_local_tax_simulation(
 ) -> Simulation:
     return Simulation(
         tax_benefit_system=SYSTEM,
+        spm=spm,
         situation={
             "people": {
                 "person": {
@@ -277,9 +279,11 @@ def test_st_louis_credit_does_not_pool_across_people():
 
 
 def test_local_taxes_feed_household_net_income():
-    baseline = make_local_tax_simulation("PA")
+    spm = {"geography_kind": "national"}
+    baseline = make_local_tax_simulation("PA", spm=spm)
     reformed = make_local_tax_simulation(
         "PA",
+        spm=spm,
         pa_philadelphia_wage_tax_taxable_wages=WAGES,
         pa_philadelphia_wage_tax_resident=True,
         co_denver_employee_occupational_privilege_tax_months=12,

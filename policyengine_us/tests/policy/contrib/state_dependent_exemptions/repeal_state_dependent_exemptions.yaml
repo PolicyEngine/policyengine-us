@@ -103,3 +103,51 @@
     # The rate scale: 130% -> 0.1, 133% -> 0
     # Since 132.8% is between 130% and 133%, the rate is 0.1
     ky_family_size_tax_credit_rate: 0.1
+
+- name: Surviving spouse with one dependent in Massachusetts - reform drops dependent add
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # Federal surviving spouse maps to MA head of household via ma_filing_status.
+    # Reform removes the dependent add: base 7,600 + personal exemption 6,800 = 14,400.
+    ma_income_tax_exemption_threshold: 14_400
+
+- name: Surviving spouse with one dependent in Massachusetts - reform not in effect
+  period: 2024
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # Baseline keeps the dependent add: 7,600 + 1 x 1,000 + 6,800 = 15,400.
+    ma_income_tax_exemption_threshold: 15_400

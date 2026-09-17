@@ -8,6 +8,8 @@
       person2:
         age: 1
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,6 +34,8 @@
       person2:
         age: 1
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -56,12 +60,18 @@
       person2:
         age: 1
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
       person3:
         age: 3
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
       person4:
         age: 5
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -76,7 +86,7 @@
     ma_ccfa_total_copay: 112.35
     # 64.2 + 64.2*0.5 + 64.2*0.25
 
-- name: Case 4, TAFDC recipient with children has zero copay.
+- name: Case 4, family enrolled in TANF has zero copay.
   period: 2025-01
   input:
     people:
@@ -86,13 +96,17 @@
       person2:
         age: 2
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
       person3:
         age: 4
         ma_ccfa_eligible_child: true
+        ma_ccfa_maximum_reimbursement: 1_000
+        childcare_attending_days_per_month: 20
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        ma_tafdc_eligible: true
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -102,3 +116,16 @@
         state_code: MA
   output:
     ma_ccfa_total_copay: 0
+
+- name: Case 5, homeless parent fee waiver starts in October 2023.
+  period: 2023
+  input:
+    state_code: MA
+    is_homeless: true
+    ma_ccfa_copay_person:
+      2023-09: 100
+      2023-10: 100
+  output:
+    ma_ccfa_total_copay:
+      2023-09: 100
+      2023-10: 0

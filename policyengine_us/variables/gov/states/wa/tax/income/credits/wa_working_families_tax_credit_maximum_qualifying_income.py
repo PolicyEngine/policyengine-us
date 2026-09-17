@@ -10,7 +10,7 @@ class wa_working_families_tax_credit_maximum_qualifying_income(Variable):
     label = "Washington Working Families Tax Credit maximum qualifying income"
     unit = USD
     definition_period = YEAR
-    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=59"
+    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=60"
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):

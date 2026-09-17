@@ -23,3 +23,110 @@
   output:
     ar_gross_income_indiv: 100_000
     ar_gross_income_joint: 100_000
+
+- name: Arkansas gross income includes 401(k), 403(b), SEP, and Keogh distributions
+  period: 2024
+  input:
+    irs_employment_income: 50_000
+    taxable_401k_distributions: 6_000
+    taxable_403b_distributions: 2_000
+    taxable_sep_distributions: 1_000
+    keogh_distributions: 1_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 60_000
+    ar_gross_income_joint: 60_000
+- name: Arkansas includes unemployment compensation in gross income in 2019, before Act 154 of 2021
+  period: 2019
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000
+    ar_gross_income_joint: 25_000
+
+- name: Arkansas excludes unemployment compensation from gross income in 2020 (Act 154 of 2021)
+  period: 2020
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 20_000
+    ar_gross_income_joint: 20_000
+
+- name: Arkansas excludes unemployment compensation from gross income in 2021 (Act 154 of 2021)
+  period: 2021
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 20_000
+
+- name: Arkansas includes unemployment compensation in gross income in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 20_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000
+
+- name: Arkansas gross income and tax include taxable Roth conversions
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        taxable_roth_conversions: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: 60_000
+    ar_gross_income_joint: 60_000
+    ar_income_tax: 1_730.56
