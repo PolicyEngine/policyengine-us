@@ -315,3 +315,89 @@
     ca_cchip_eligible: [false, false, false]
     chip_category: [NONE, NONE, NONE]
     chip: [0, 0, 0]
+
+- name: Case 9, available employer coverage excludes an uninsured child from CCHIP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+        has_esi: false
+        offered_aca_disqualifying_esi: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip_enrolled: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]
+
+# The child stays PTC eligible because the 2025 parameters are read at
+# January 1, 2025, when gov.aca.ineligible_immigration_statuses did not yet
+# include DACA again (it does from August 25, 2025).
+- name: Case 10, DACA child does not lose ACA PTC eligibility through CCHIP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 18
+        immigration_status: DACA
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip_enrolled: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]

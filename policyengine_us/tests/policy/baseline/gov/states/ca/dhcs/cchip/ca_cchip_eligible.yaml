@@ -221,3 +221,56 @@
         state_code: NV
   output:
     ca_cchip_eligible: false
+
+# The county handbook excludes children with employer-sponsored coverage
+# available, even when not enrolled; the ACA offer input is the model's proxy.
+- name: Case 14, uninsured child with employer coverage available is not eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+    has_esi: false
+    offered_aca_disqualifying_esi: true
+  output:
+    has_chip_disqualifying_health_coverage: false
+    ca_cchip_eligible: false
+
+# CMS SHO #12-002 excludes DACA from the CHIP lawfully residing option.
+- name: Case 15, child with DACA status is not eligible.
+  period: 2025
+  input:
+    age: 18
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: DACA
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 16, lawful permanent resident child is eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 17, child with temporary protected status is eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: TPS
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: true
