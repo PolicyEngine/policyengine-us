@@ -18,6 +18,8 @@ class ma_ccfa_reimbursement_ratio(Variable):
         childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
         # Exactly the part-time hour limit retains the lower reimbursement rate.
         part_time_ratio = p.amount_ratio.calc(childcare_hours_per_day, right=True)
+        # As on the fee side, unreported daily hours do not imply a short day.
+        hours_reported = childcare_hours_per_day > 0
         # NOTE: The part-time ratio applies to the full-time rates only. The
         # before and after school columns are partial-day rates already, and
         # only school age center-based care and the Head Start partner and
@@ -35,4 +37,4 @@ class ma_ccfa_reimbursement_ratio(Variable):
         uses_before_or_after_rate = (
             schedule_type != schedule_type.possible_values.FULL_DAY
         ) & (is_school_age_center_based | is_head_start_partner_or_kindergarten)
-        return where(uses_before_or_after_rate, 1, part_time_ratio)
+        return where(uses_before_or_after_rate | ~hours_reported, 1, part_time_ratio)

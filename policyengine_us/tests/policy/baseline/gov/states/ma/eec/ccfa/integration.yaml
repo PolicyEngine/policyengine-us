@@ -183,47 +183,47 @@
   period: 2026-01
   input:
     people:
-      parent1:
+      person1:
         age: 35
         weekly_hours_worked_before_lsr: 30
-      child1:
+      person2:
         age: 2
         childcare_hours_per_day: 5
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
-      child2:
+      person3:
         age: 4
         childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
-      parent2:
+      person4:
         age: 30
         weekly_hours_worked_before_lsr: 30
-      child3:
+      person5:
         age: 6
         childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
     tax_units:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
     spm_units:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
         ma_ccfa_base_copay: 100
         spm_unit_pre_subsidy_childcare_expenses: 36000
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
         ma_ccfa_base_copay: 200
         spm_unit_pre_subsidy_childcare_expenses: 14400
     households:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
         state_code: MA
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
         state_code: MA
   output:
     ma_ccfa_activity_eligible: [true, true]

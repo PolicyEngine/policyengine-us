@@ -30,13 +30,13 @@
   output:
     ma_ccfa_reimbursement_ratio: 0.6
 
-- name: Case 5, zero hours retains the first bracket ratio.
+- name: Case 5, unknown daily hours do not imply a part-time day.
   period: 2026-01
   input:
     childcare_hours_per_day: 0
     state_code: MA
   output:
-    ma_ccfa_reimbursement_ratio: 0.6
+    ma_ccfa_reimbursement_ratio: 1
 
 - name: Case 6, five and a half hours changes to full time in July 2024.
   period: 2024
