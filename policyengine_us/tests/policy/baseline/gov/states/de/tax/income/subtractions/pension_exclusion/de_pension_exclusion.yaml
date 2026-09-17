@@ -123,3 +123,13 @@
   output:
     de_pension_exclusion: 12_500
 
+- name: DE 60+ filer with taxable Roth conversions
+  period: 2026
+  input:
+    age: 65
+    taxable_roth_conversions: 10_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 10_000
+

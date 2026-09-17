@@ -106,15 +106,21 @@
   output:
     ar_gross_income_indiv: 25_000
 
-- name: Arkansas gross income includes taxable Roth conversions
+- name: Arkansas gross income and tax include taxable Roth conversions
   period: 2026
   input:
     people:
       person1:
-        irs_employment_income: 50_000
+        age: 40
+        employment_income: 50_000
         taxable_roth_conversions: 10_000
+        is_tax_unit_head: true
     tax_units:
       tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
         members: [person1]
     households:
       household:
@@ -123,3 +129,4 @@
   output:
     ar_gross_income_indiv: 60_000
     ar_gross_income_joint: 60_000
+    ar_income_tax: 1_730.56

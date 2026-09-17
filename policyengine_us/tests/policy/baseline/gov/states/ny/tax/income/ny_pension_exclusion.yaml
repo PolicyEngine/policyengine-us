@@ -192,3 +192,20 @@
   output:
     ny_pension_exclusion: 17_000
 
+- name: NY pension exclusion with taxable Roth conversions
+  period: 2026
+  input:
+    people:
+      person1:
+        taxable_roth_conversions: 15_000
+        age: 62
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 15_000
+

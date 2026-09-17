@@ -495,7 +495,7 @@
   output:
     nj_pension_retirement_exclusion: 0
 
-- name: 18 Filer age 62 or older can exclude taxable Roth conversions.
+- name: Case 18, Filer age 62 or older can exclude taxable Roth conversions.
   absolute_error_margin: 0
   period: 2026
   input:
@@ -512,7 +512,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 50_000
         filing_status: SINGLE
     households:
       household:

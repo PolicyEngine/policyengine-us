@@ -174,7 +174,7 @@
     # 50_000 wages + 10_000 IRA + 15_000 401(k) = 75_000
     nj_gross_income: 75_000
 
-- name: NJ gross income includes taxable Roth conversions (Category j)
+- name: NJ gross income and tax include taxable Roth conversions (Category j)
   period: 2026
   input:
     people:
@@ -186,6 +186,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        filing_status: SINGLE
     spm_units:
       spm_unit:
         members: [person1]
@@ -196,3 +197,4 @@
   output:
     # 50_000 wages + 10_000 Roth conversion = 60_000
     nj_gross_income: 60_000
+    nj_income_tax: 1_767.25
