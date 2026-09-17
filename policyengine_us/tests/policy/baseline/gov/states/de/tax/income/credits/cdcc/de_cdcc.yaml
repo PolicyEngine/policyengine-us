@@ -14,3 +14,24 @@
     de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_cdcc: 0
+# The 2021 and 2022 Delaware credit (50% of the federal credit, Line 30 of the
+# PIT-RES) must flow into the state_cdcc aggregate that TAXSIM reads for v38;
+# it was previously omitted from state_cdccs for those years (taxsim #1188).
+- name: 2021 DE CDCC flows into the state_cdcc aggregate
+  period: 2021
+  input:
+    cdcc: 100
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
+    de_cdcc: 50
+    state_cdcc: 50
+- name: 2022 DE CDCC flows into the state_cdcc aggregate
+  period: 2022
+  input:
+    cdcc: 100
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
+    de_cdcc: 50
+    state_cdcc: 50
