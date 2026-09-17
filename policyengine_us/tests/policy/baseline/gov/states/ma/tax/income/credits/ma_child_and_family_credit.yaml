@@ -150,7 +150,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -176,7 +176,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -236,7 +236,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -262,7 +262,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -288,7 +288,7 @@
       spouse:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit_head:
@@ -377,7 +377,7 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
@@ -409,7 +409,7 @@
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -433,12 +433,12 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 40
     tax_units:
       tax_unit:
@@ -462,7 +462,7 @@
       head:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 45
       spouse:
         is_tax_unit_spouse: true
@@ -483,3 +483,160 @@
     # 1 disabled head-or-spouse qualifying individual + 1 qualifying child = 2
     # qualifying individuals: 2 x 440 (2024 amount) = 880.
     ma_child_and_family_credit: 880
+
+- name: Generically disabled spouse without the self-care test does not qualify in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    # IRC Section 21(b)(1)(C) requires the spouse be incapable of self-care;
+    # the broader is_disabled flag alone does not qualify a spouse.
+    ma_child_and_family_credit: 0
+
+- name: Dependent incapable of self-care qualifies at any age in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 60
+      dependent_adult:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, dependent_adult]
+    households:
+      household:
+        state_code: MA
+        members: [head, dependent_adult]
+  output:
+    # IRC Section 21(b)(1)(B) qualifying individual: 1 x 440 = 440.
+    ma_child_and_family_credit: 440
+
+- name: Incapable spouse plus incapable dependent on one joint return in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_incapable_of_self_care: true
+        age: 45
+      dependent_adult:
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent_adult]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, dependent_adult]
+  output:
+    # Exercises the interaction of the two NEW routes in one unit: the
+    # IRC Section 21(b)(1)(B) dependent-incapable route (1 qualifying
+    # dependent) and the Section 21(b)(1)(C) spouse-incapable route
+    # (1 qualifying spouse individual). No double-count: 1 + 1 = 2
+    # qualifying individuals x 440 (2024 amount) = 880. The cap is .inf in
+    # 2024, so it does not bind.
+    # notes: SA3 combination case (incapable spouse + incapable dependent).
+    ma_child_and_family_credit: 880
+
+- name: Dependent cap binds at two in 2022 with four eligible dependents
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child_1:
+        is_tax_unit_dependent: true
+        age: 7
+      child_2:
+        is_tax_unit_dependent: true
+        age: 7
+      child_3:
+        is_tax_unit_dependent: true
+        age: 7
+      child_4:
+        is_tax_unit_dependent: true
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2, child_3, child_4]
+    households:
+      household:
+        state_code: MA
+        members: [head, child_1, child_2, child_3, child_4]
+  output:
+    # In 2022 the dependent cap is finite (2) and the amount is 180. Four
+    # eligible dependents are capped to two: min(4, 2) x 180 = 360. This is
+    # the only route exercising the finite cap: before 2023 the spouse route
+    # (disabled_spouse_eligible) is off, so a spouse qualifier cannot
+    # contribute to the count in a finite-cap year. From 2023 the cap is .inf,
+    # so it is non-binding in all modeled (2023+) years, including the
+    # spouse-route years.
+    # notes: SA4 finite dependent-cap year case (documented alternative:
+    # spouse route cannot fire pre-2023, so a dependent-only finite-cap case
+    # plus this note stands in for the "spouse qualifier under a finite cap").
+    ma_child_and_family_credit: 360
+
+- name: Incapable dependent under 13 counts once, not twice, in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # The dependent satisfies BOTH the child branch (age < 13) and the
+    # IRC Section 21(b)(1)(B) incapable branch. eligible_dependent is a single
+    # per-person OR, so the dependent is counted exactly once, not twice:
+    # 1 x 440 (2024 amount) = 440. Pins no double-count across the OR-branches.
+    # notes: Suggestion 7b - incapable dependent under 13, no double-count.
+    ma_child_and_family_credit: 440

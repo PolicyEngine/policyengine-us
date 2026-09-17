@@ -57,7 +57,7 @@ values:
     #   404.5(b)(5)(vi), but counting them closes a circular dependency:
     #   ny_ccap_countable_income -> tanf -> childcare_expenses ->
     #   child_care_subsidies -> ny_ccap -> ny_ccap_countable_income. The same
-    #   hazard is documented on the federal ccdf_income variable and in
+    #   hazard is documented in
     #   gov/states/in/fssa/ccdf/income/sources.yaml. Omitting them understates
     #   countable income for public-assistance households, which is partly
     #   offset because 415.3(e)(1) exempts those households from the family

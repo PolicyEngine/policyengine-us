@@ -53,3 +53,139 @@
         state_code: DC
   output:
     household_state_benefits: 500
+
+# MA TAFDC is one of the state TANF programs summed into `tanf`, and `tanf` is
+# already part of `household_benefits`. Listing it here as well counted the
+# grant twice in household net income.
+- name: Massachusetts TAFDC reaches household benefits once, through TANF
+  period: 2026
+  input:
+    age: 30
+    state_code: MA
+    ma_tafdc: 6_000
+    ma_eaedc: 0
+    ma_state_supplement: 0
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    commodity_supplemental_food_program: 0
+    basic_income: 0
+    trump_dividend: 0
+    housing_assistance: 0
+    household_health_benefits: 0
+  output:
+    tanf: 6_000
+    household_state_benefits: 0
+    household_benefits: 6_000
+
+# EAEDC is not a TANF program, so it stays in household state benefits.
+- name: Massachusetts EAEDC still flows into household state benefits
+  period: 2026
+  input:
+    age: 30
+    state_code: MA
+    ma_eaedc: 3_000
+    ma_tafdc: 0
+    ma_state_supplement: 0
+  output:
+    household_state_benefits: 3_000
+
+# Regression for the household in the report: a Massachusetts married couple
+# with three children and 26,000 of earnings draws a 9,880 TAFDC grant in 2026.
+# The grant must reach household benefits once, through `tanf`. SNAP, WIC and
+# school meals are pinned to zero so that `household_benefits` isolates TAFDC.
+- name: Massachusetts TAFDC of 9,880 reaches household benefits once in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 26_000
+        wic: 0
+      spouse:
+        age: 30
+        wic: 0
+      child_1:
+        age: 1
+        wic: 0
+      child_2:
+        age: 4
+        wic: 0
+      child_3:
+        age: 9
+        wic: 0
+    marital_units:
+      parents:
+        members: [parent, spouse]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, child_1, child_2, child_3]
+        snap: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, spouse, child_1, child_2, child_3]
+        state_code: MA
+  output:
+    ma_tafdc: 9_880
+    tanf: 9_880
+    household_state_benefits: 0
+    household_benefits: 9_880
+
+# `tanf` is defined_for takes_up_tanf_if_eligible, so turning take-up off drops
+# the grant out of household benefits. While TAFDC was also listed in
+# `household_state_benefits`, that path ignored take-up and kept paying it.
+- name: Massachusetts TAFDC leaves household benefits when TANF take-up is off
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 26_000
+        wic: 0
+      spouse:
+        age: 30
+        wic: 0
+      child_1:
+        age: 1
+        wic: 0
+      child_2:
+        age: 4
+        wic: 0
+      child_3:
+        age: 9
+        wic: 0
+    marital_units:
+      parents:
+        members: [parent, spouse]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, child_1, child_2, child_3]
+        takes_up_tanf_if_eligible: false
+        snap: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, spouse, child_1, child_2, child_3]
+        state_code: MA
+  output:
+    ma_tafdc: 9_880
+    tanf: 0
+    household_state_benefits: 0
+    household_benefits: 0

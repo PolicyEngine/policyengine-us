@@ -22,5 +22,18 @@
   output:
     ar_retirement_or_disability_benefits_exemption_person: 5_000
 
+- name: Arkansas exemption with 401k and 403b under age 59.5
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    taxable_401k_distributions: 3_000
+    taxable_403b_distributions: 2_000
+    taxable_ira_distributions: 5_000
+    age: 50
+    disability_benefits: 0
+    state_code: AR
+  output:
+    ar_retirement_or_disability_benefits_exemption_person: 5_000
+
 
 

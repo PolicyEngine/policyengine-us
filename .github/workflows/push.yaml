@@ -173,6 +173,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -202,6 +204,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -253,6 +257,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -285,6 +291,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -317,6 +325,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching

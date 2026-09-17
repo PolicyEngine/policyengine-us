@@ -41,3 +41,15 @@
     state_code: SC
   output:
     sc_retirement_deduction_indv: 500
+
+- name: Case 5, age 65+, IRA and 401k distributions eligible for deduction.
+  period: 2024
+  input:
+    taxable_ira_distributions: 3_000
+    taxable_401k_distributions: 4_000
+    military_retirement_pay: 0
+    age: 66
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_retirement_deduction_indv: 7_000

@@ -13,8 +13,10 @@ class oh_pension_based_retirement_income_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits.retirement.pension_based
 
+        # Under R.C. 5747.055(A)(1), distributions must be received on
+        # account of retirement; modeled without checking retirement event condition.
         person = tax_unit.members
-        pension_income = person("taxable_pension_income", period)
+        pension_income = add(person, period, p.sources)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         eligible_pension = pension_income * head_or_spouse
         total_pension_income = tax_unit.sum(eligible_pension)

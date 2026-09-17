@@ -150,3 +150,149 @@
     # over threshold: 10,000 - 9,000 = 1,000
     # credit: min(1,000, 2,820) = 1,000
     ma_senior_circuit_breaker: 1_000
+
+- name: Married filing separately cannot claim the credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 40_000
+        filing_status: SEPARATE
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Schedule CB: married taxpayers filing separately do not qualify,
+    # even with income and property value under the limits.
+    ma_senior_circuit_breaker: 0
+
+- name: Married filing separately at the SEPARATE income limit still cannot claim in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 74_000
+        filing_status: SEPARATE
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Income 74,000 sits just under the SEPARATE/SINGLE 2025 ceiling of
+    # 75,000, so nothing but the MFS gate zeroes the credit. Paired with the
+    # SINGLE contrast below (identical inputs -> 2,600), this isolates the
+    # ~separate gate as the sole cause of the zero.
+    # notes: SA5 MFS boundary-income case.
+    ma_senior_circuit_breaker: 0
+
+- name: Single filer with identical inputs to the MFS boundary case claims the credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 74_000
+        filing_status: SINGLE
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Identical to the MFS boundary case except filing_status = SINGLE, which
+    # passes the ~separate gate. income 74,000 <= SINGLE ceiling 75,000.
+    # income threshold: 74,000 * 0.10 = 7,400
+    # over threshold: 10,000 - 7,400 = 2,600
+    # credit: min(2,600, 2,820) = 2,600
+    # notes: SA5 single-filer contrast isolating the MFS gate.
+    ma_senior_circuit_breaker: 2_600
+
+- name: Surviving spouse over the head of household income limit gets no credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 95_000
+        filing_status: SURVIVING_SPOUSE
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Surviving spouses map to the head of household income limit (94,000 in
+    # 2025). Income 95,000 > 94,000, so the credit is 0. Pins the over-limit
+    # side of the surviving-spouse -> HoH mapping (the under-limit side is
+    # already covered above).
+    # notes: Suggestion 7a - SURVIVING_SPOUSE over the HoH income limit.
+    ma_senior_circuit_breaker: 0
+
+- name: Married couple filing as two separate tax units cannot claim the credit in 2025
+  # Ziming's diagnostic: a married couple modeled as two SEPARATE tax units in
+  # one MA household returns [0, 0] post-fix (was [1,000, 1,000] pre-fix). Each
+  # spouse is otherwise SCB-eligible; only the SEPARATE/MFS gate zeroes both
+  # units. M.G.L. c.62 s.6(k)(5): no credit unless a joint return is filed.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+      spouse:
+        is_tax_unit_head: true
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit_head:
+        members: [head]
+        ma_scb_total_income: 40_000
+        filing_status: SEPARATE
+      tax_unit_spouse:
+        members: [spouse]
+        ma_scb_total_income: 40_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Genuine two-tax-unit fixture: each spouse files SEPARATE. Absent the gate
+    # each unit would earn min(10,000 - 40,000 * 0.10, 2,820)
+    #   = min(10,000 - 4,000, 2,820) = min(6,000, 2,820) = 2,820.
+    # The MFS/SEPARATE gate zeroes the credit in both units. The scalar
+    # assertion checks per-unit credit = 0 for both units.
+    ma_senior_circuit_breaker: 0

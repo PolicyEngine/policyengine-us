@@ -1,3 +1,106 @@
+## [2.6.4] - 2026-09-16
+
+### Fixed
+
+- Update reference URLs and statutory citations for Arkansas, Rhode Island, and Wisconsin retirement income exclusions.
+- Fix citations and reference URLs for state income tax refund subtractions in NY, ME, and VA.
+
+
+## [2.6.3] - 2026-09-16
+
+### Fixed
+
+- Run the existing US policy test suites against the latest compatible PolicyEngine Core release without duplicating test jobs.
+
+
+## [2.6.2] - 2026-09-16
+
+### Fixed
+
+- Include traditional IRA, 401(k), 403(b), SEP, and Keogh distributions where statutorily eligible in state pension and retirement income exclusions across 20 states (Issue #9005).
+
+
+## [2.6.1] - 2026-09-16
+
+### Fixed
+
+- Massachusetts Senior Circuit Breaker now excludes separate filers per Schedule CB, the no-tax-status threshold adds the per-dependent amount only for head of household and joint filers, and the Child and Family Tax Credit applies the IRC Section 21 incapable-of-self-care test to spouses and dependents.
+
+
+## [2.6.0] - 2026-09-16
+
+### Fixed
+
+- Count the Trump dividend in the household and SPM unit benefit aggregates under the End Child Poverty Act, BOOST, Economic Dignity for All Agenda, and Texas rebate reforms.
+- Include state and local tax refund income (`salt_refund_income`) in federal gross income and subtract/deduct it in conforming states.
+
+### Removed
+
+- Remove deprecated `salt_refund_last_year` in favor of canonical person-level `salt_refund_income`.
+
+
+## [2.5.4] - 2026-09-16
+
+### Fixed
+
+- Quick Feedback now defers congress contrib test directories to the sharded full suite, as it already did for reform tests, so a PR touching a congress reform no longer runs a 15 GB proposal batch on the 16 GB quick-feedback runner.
+
+
+## [2.5.3] - 2026-09-16
+
+### Changed
+
+- Count state SSI supplements as SNAP unearned income.
+
+
+## [2.5.2] - 2026-09-16
+
+### Changed
+
+- Pinned the Massachusetts TAFDC path into household benefits with regression tests covering the 9,880 grant and the TANF take-up switch.
+- Retracted the 2.1.0 release in the changelog. It contained the Massachusetts CCFA changes from #9457, which were reverted in #9458 seven minutes after merging and replaced by #9460 (2.2.0) and the follow-up in #9468; install 2.2.0 or later. The README now states the current spm-calculator requirement instead of the old 0.3.1 pin.
+
+### Fixed
+
+- Correct the Montana 2021 income tax rebate's reported value outside its eligibility year: without the 2022 sunset the amount backdates forward, so the variable reported a phantom rebate in 2022 and later. Montana income tax is unaffected, as the non-refundable credit list already excludes the rebate from 2022.
+- Approximated Pennsylvania's employer pension exclusion with age 59.5, the age Pennsylvania applies to plans with no specific retirement criteria, instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
+- Corrected the 2026 Idaho parent and caretaker Medicaid income limit from a stale 0.27 to 0.21 of the federal poverty guidelines, the IDAPA 16.03.01.411 standard of $365 a month for a household of three with the 5-point MAGI disregard.
+- Set Maine's standard deduction equal to the federal standard deduction for tax years beginning on or after January 1, 2027, per 36 M.R.S. 5124-C(1-D).
+- Corrected the South Carolina parent and caretaker Medicaid income limit from a never-operative 1.00 of the federal poverty guidelines to the published 67 percent, and refreshed the 2026 frozen-dollar conversions for Texas, Mississippi, Georgia, Florida and Wyoming.
+
+
+## [2.5.1] - 2026-09-16
+
+### Changed
+
+- Count California's SSI state supplement in SPM unit benefits, raising SPM resources for California SSI recipients and lowering California SPM poverty.
+
+### Fixed
+
+- Excluded unemployment compensation from Arkansas gross income for 2020 and 2021, the calendar years Act 154 of 2021 exempted, and kept it taxable from 2018 through 2019 and from 2022 on.
+
+
+## [2.5.0] - 2026-09-15
+
+### Removed
+
+- Removed the federal CCDF eligibility chain (`is_ccdf_eligible`, `is_ccdf_income_eligible`, `is_ccdf_reason_for_care_eligible`, `ccdf_income_to_smi_ratio`, and `ccdf_income`), which no state program read, along with the partner contract cases that pinned it.
+
+
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
 ## [2.4.2] - 2026-09-15
 
 ### Fixed

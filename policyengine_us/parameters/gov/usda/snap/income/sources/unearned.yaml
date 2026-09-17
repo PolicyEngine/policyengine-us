@@ -5,6 +5,55 @@ values:
     # (i)
     - ssi
     - general_assistance
+    # (i) State SSI supplements. 273.9(b)(2)(i) counts "assistance payments
+    # from Federal or federally aided public assistance programs, such as
+    # supplemental security income (SSI) ... or other assistance programs
+    # based on need", and adds that "such assistance is considered to be
+    # unearned income even if provided in the form of a vendor payment
+    # (provided to a third party on behalf of the household), unless the
+    # vendor payment is specifically exempt from consideration as countable
+    # income under the provisions of paragraph (c)(1)". 273.9(c)(1)(i)
+    # exempts public assistance vendor payments only for medical assistance,
+    # child care, energy assistance, migrant emergency assistance, housing
+    # authority housing assistance, and emergency or special assistance that
+    # is not the normal grant. None of the supplements below fall in those
+    # categories, so each counts, whether paid to the recipient or to a
+    # facility on the recipient's behalf.
+    - ak_ssp
+    - al_ssp
+    # co_oap has an annual definition period; policyengine-core's
+    # calculate_divide converts it to a monthly amount here.
+    - co_oap
+    - co_state_supplement
+    # ct_ssp, ga_ssp, mi_ssp and mn_msa are SPM unit variables that only add
+    # up these person-level components, so the person-level variable is used
+    # here and the household total is unchanged.
+    - ct_ssp_person
+    - dc_ossp
+    - de_ssp
+    - fl_oss
+    - ga_ssp_person
+    - hi_oss
+    - id_aabd
+    - in_ssp
+    - ks_sspp
+    - ky_ssp
+    - la_oss
+    - ma_state_supplement
+    - md_paa
+    - me_ssp
+    - mi_ssp_person
+    - mn_msa_person
+    - mo_ssp
+    - ne_aabd
+    - nm_ssi_state_supplement
+    - sc_ssi_state_supplement
+    - tx_ssi_state_supplement
+    - wa_ssp
+    # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
+    # person-level counterpart. policyengine-core projects a group value onto
+    # every member, so listing it here would count it once per person in the
+    # SPM unit. It is listed in unearned_spm_unit.yaml instead.
     # (ii)
     - pension_income # Includes annuities.
     - veterans_benefits
@@ -34,3 +83,7 @@ metadata:
   reference:
     - title: 7 CFR 273.9(b)(2)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
+    - title: 7 CFR 273.9(c)(1)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#c_1
+    - title: POMS SI 01401.001 General Information about State Supplementation
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501401001
