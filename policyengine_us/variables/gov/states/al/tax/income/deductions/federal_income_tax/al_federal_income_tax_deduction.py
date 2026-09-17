@@ -27,6 +27,15 @@ class al_federal_income_tax_deduction(Variable):
         # credits (EITC, refundable CTC/ACTC, American Opportunity Credit).
         part_i = max_(federal_tax - add(tax_unit, period, p.credits), 0)
 
+        # Part II (Act 2022-37) applies only to tax year 2021, the one year the
+        # federal CTC/CDCC/EITC were expanded and made refundable by ARPA. The
+        # 2022+ Alabama worksheets are Part I only, and the provision did not
+        # exist before 2021, so in every other year the deduction is Part I.
+        # (Restricting the 2020 recompute to 2021 also avoids cloning the whole
+        # simulation in the current-year microsimulation.)
+        if period.start.year != 2021:
+            return part_i
+
         # Part II (worksheet lines 1-14, per Act 2022-37): recompute the CTC,
         # CDCC, and EITC as if the IRC in effect on 2020-12-31 applied, then
         # take the greater deduction. ARPA (2021) expanded and made these

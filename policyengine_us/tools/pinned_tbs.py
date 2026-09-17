@@ -74,11 +74,13 @@ def _pin_2020_irc(tbs):
     # Child and Dependent Care Credit, and Earned Income Credit "as if the
     # individual paid the federal income tax that would otherwise have been
     # paid under the provisions of the Internal Revenue Code in effect on
-    # December 31, 2020," using the current-year information. Pin those three
-    # credits' parameters to their 2020 vintage for TY2021-2022 returns.
+    # December 31, 2020," using the current-year information. This applied only
+    # to tax year 2021 (the one-year ARPA expansion); the 2022+ Alabama
+    # worksheets are Part I only. Pin those three credits' parameters to their
+    # 2020 vintage for TY2021.
     pin_date = instant("2020-01-01")
     start = instant("2021-01-01")
-    stop = instant("2022-12-31")
+    stop = instant("2021-12-31")
     credits = tbs.parameters.gov.irs.credits
     for subtree in (credits.eitc, credits.ctc, credits.cdcc):
         for param in subtree.get_descendants():
