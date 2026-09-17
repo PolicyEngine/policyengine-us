@@ -96,6 +96,12 @@ from .states.mt.hb268 import (
 from .states.mt.ctc import (
     create_mt_ctc_reform,
 )
+from .states.ma.tiered_child_and_family_credit import (
+    create_ma_tiered_child_and_family_credit_reform,
+)
+from .states.ma.commonwealth_credit import (
+    create_ma_commonwealth_credit_reform,
+)
 from .states.mt.newborn_credit import (
     create_mt_newborn_credit_reform,
 )
@@ -436,6 +442,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_hb268 = create_mt_hb268_reform(parameters, period)
     mt_ctc = create_mt_ctc_reform(parameters, period)
+    ma_tiered_child_and_family_credit = create_ma_tiered_child_and_family_credit_reform(
+        parameters, period
+    )
+    ma_commonwealth_credit = create_ma_commonwealth_credit_reform(parameters, period)
     mt_newborn_credit = create_mt_newborn_credit_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
     tax_employer_social_security_tax = create_tax_employer_social_security_tax_reform(
@@ -616,6 +626,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_school_tax_credit_with_phase_out,
         mt_hb268,
         mt_ctc,
+        ma_tiered_child_and_family_credit,
+        ma_commonwealth_credit,
         mt_newborn_credit,
         fisc_act,
         tax_employer_social_security_tax,

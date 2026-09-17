@@ -1,0 +1,237 @@
+# Tests for the Massachusetts tiered Child and Family Tax Credit reform.
+
+- name: Children in the two lower age bands receive $610 each in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 35
+      child_age_5:
+        is_tax_unit_dependent: true
+        age: 5
+      child_age_12:
+        is_tax_unit_dependent: true
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [head, child_age_5, child_age_12]
+    households:
+      household:
+        state_code: MA
+        members: [head, child_age_5, child_age_12]
+  output:
+    # 610 (age 0-5 band) + 610 (age 6-12 band) = 1,220.
+    ma_child_and_family_credit: 1_220
+
+- name: Children aged 13 and 18 receive $170 each in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      child_age_13:
+        is_tax_unit_dependent: true
+        age: 13
+      child_age_18:
+        is_tax_unit_dependent: true
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [head, child_age_13, child_age_18]
+    households:
+      household:
+        state_code: MA
+        members: [head, child_age_13, child_age_18]
+  output:
+    # 170 (age 13-18 band) x 2 = 340.
+    ma_child_and_family_credit: 340
+
+- name: Dependent age 19 who is not a student receives nothing in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      dependent_19:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [head, dependent_19]
+    households:
+      household:
+        state_code: MA
+        members: [head, dependent_19]
+  output:
+    ma_child_and_family_credit: 0
+
+- name: Dependent full-time college student age 20 receives the student amount in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      student_20:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [head, student_20]
+    households:
+      household:
+        state_code: MA
+        members: [head, student_20]
+  output:
+    ma_child_and_family_credit: 170
+
+- name: Dependent full-time college student age 24 is over the student age limit in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 50
+      student_24:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+        age: 24
+    tax_units:
+      tax_unit:
+        members: [head, student_24]
+    households:
+      household:
+        state_code: MA
+        members: [head, student_24]
+  output:
+    ma_child_and_family_credit: 0
+
+- name: Disabled 15-year-old dependent receives the higher disabled amount in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      disabled_teen:
+        is_tax_unit_dependent: true
+        is_disabled: true
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [head, disabled_teen]
+    households:
+      household:
+        state_code: MA
+        members: [head, disabled_teen]
+  output:
+    # max(170 age band, 610 disabled amount) = 610, not 780.
+    ma_child_and_family_credit: 610
+
+- name: Dependent age 65 receives the elderly amount in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 45
+      parent_65:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head, parent_65]
+    households:
+      household:
+        state_code: MA
+        members: [head, parent_65]
+  output:
+    ma_child_and_family_credit: 610
+
+- name: Spouse incapable of self-care receives the disabled amount on a joint return in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_incapable_of_self_care: true
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse]
+  output:
+    ma_child_and_family_credit: 610
+
+- name: Married filing separately cannot claim the tiered credit in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
+  input:
+    gov.contrib.states.ma.tiered_child_and_family_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    ma_child_and_family_credit: 0
