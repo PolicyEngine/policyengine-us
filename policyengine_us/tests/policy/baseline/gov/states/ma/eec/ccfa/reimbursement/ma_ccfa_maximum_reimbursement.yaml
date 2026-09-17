@@ -5,7 +5,7 @@
     county_str: BERKSHIRE_COUNTY_MA
     ma_ccfa_child_age_category: SCHOOL_AGE
     ma_ccfa_schedule_type: FULL_DAY
-    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE
     childcare_attending_days_per_month: 10
     childcare_hours_per_day: 6
     state_code: MA
@@ -25,3 +25,52 @@
   output:
     ma_ccfa_uncapped_daily_payment: 24.57
     ma_ccfa_maximum_reimbursement: 245.7
+
+- name: Case 3, region 1, school-age after school care for 20 days is paid the full after school rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 8
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_attending_days_per_month: 20
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 24.8
+    ma_ccfa_reimbursement_ratio: 1
+    # 24.8 * 1 * 20
+    ma_ccfa_maximum_reimbursement: 496
+
+- name: Case 4, region 1, kindergarten after school care for 20 days is paid the full after school rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 5
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_attending_days_per_month: 20
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 32.99
+    ma_ccfa_reimbursement_ratio: 1
+    # 32.99 * 1 * 20
+    ma_ccfa_maximum_reimbursement: 659.8
+
+- name: Case 5, region 1, school-age full day rate for three hours is paid at 60 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 8
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    childcare_attending_days_per_month: 20
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 49.94
+    ma_ccfa_reimbursement_ratio: 0.6
+    # 49.94 * 0.6 * 20
+    ma_ccfa_maximum_reimbursement: 599.28

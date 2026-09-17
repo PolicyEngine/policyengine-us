@@ -1,1 +1,1 @@
-Derive the default Massachusetts CCFA care provider type from the child's age category and date the FY2027 informal child care reimbursement rates to July 2026.
+Stop paying $0 for Massachusetts CCFA children under school age when no care provider type is given, stop applying the 60% part-time ratio on top of the before and after school rates, and date the FY2027 informal child care reimbursement rates to July 2026.
