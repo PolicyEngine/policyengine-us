@@ -69,9 +69,42 @@ def _pin_pre_tcja_ctc(tbs):
             )
 
 
+def _pin_2020_irc(tbs):
+    # Alabama Act 2022-37 (HB 231) recomputes the federal Child Tax Credit,
+    # Child and Dependent Care Credit, and Earned Income Credit "as if the
+    # individual paid the federal income tax that would otherwise have been
+    # paid under the provisions of the Internal Revenue Code in effect on
+    # December 31, 2020," using the current-year information. Pin those three
+    # credits' parameters to their 2020 vintage for TY2021-2022 returns.
+    pin_date = instant("2020-01-01")
+    start = instant("2021-01-01")
+    stop = instant("2022-12-31")
+    credits = tbs.parameters.gov.irs.credits
+    for subtree in (credits.eitc, credits.ctc, credits.cdcc):
+        for param in subtree.get_descendants():
+            if isinstance(param, Parameter):
+                try:
+                    param.update(start=start, stop=stop, value=param(pin_date))
+                except Exception:
+                    pass
+    # ARPA added the CDCC to the list of refundable credits in 2021; restore the
+    # 2020 membership so the recomputed CDCC is non-refundable (limited by tax).
+    try:
+        credits.refundable.update(
+            start=start, stop=stop, value=credits.refundable(pin_date)
+        )
+    except Exception:
+        pass
+
+
 def get_pre_arpa_eitc_tbs(base_tbs):
     """Pre-ARPA (2020-pinned) EITC system for NY's TY2021 decoupling."""
     return _get_pinned_tbs(base_tbs, "ny_pre_arpa_eitc", _pin_pre_arpa_eitc)
+
+
+def get_2020_irc_tbs(base_tbs):
+    """2020-IRC-pinned EITC/CTC/CDCC system for Alabama's Act 2022-37 recompute."""
+    return _get_pinned_tbs(base_tbs, "al_2020_irc", _pin_2020_irc)
 
 
 def get_pre_tcja_ctc_tbs(base_tbs):
