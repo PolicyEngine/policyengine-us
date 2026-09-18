@@ -1,3 +1,10 @@
+## [2.6.8] - 2026-09-18
+
+### Fixed
+
+- Correct the uprating description on the SPM poverty methodology page so it matches the code: rent follows the default CBO adjusted gross income projection, not CPI-U.
+
+
 ## [2.6.7] - 2026-09-18
 
 ### Fixed
