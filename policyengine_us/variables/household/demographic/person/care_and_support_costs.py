@@ -6,4 +6,5 @@ class care_and_support_costs(Variable):
     entity = Person
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     label = "Total costs for this person's care and support"

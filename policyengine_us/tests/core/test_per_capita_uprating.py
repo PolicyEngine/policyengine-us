@@ -85,8 +85,8 @@ def test_no_variable_uprates_by_a_national_total():
     "variable, expected",
     [
         ("employment_income_before_lsr", per_capita_path(SOI_EMPLOYMENT)),
-        ("pre_subsidy_rent", per_capita_path(CBO_AGI)),
-        ("spm_unit_pre_subsidy_childcare_expenses", per_capita_path(CBO_AGI)),
+        ("charitable_cash_donations", per_capita_path(CBO_AGI)),
+        ("miscellaneous_income", per_capita_path(CBO_AGI)),
         ("other_medical_expenses", CMS_MOOP),
         ("child_support_expense", CPI_U),
         ("household_weight", POPULATION_PATH),
@@ -131,7 +131,7 @@ def _tiny_dataset():
             "person_id": [1, 2, 3, 4],
             "person_household_id": [1, 1, 2, 3],
             "employment_income_before_lsr": [50_000.0, 0.0, 120_000.0, 30_000.0],
-            "pre_subsidy_rent": [12_000.0, 0.0, 30_000.0, 9_000.0],
+            "charitable_cash_donations": [1_200.0, 0.0, 30_000.0, 900.0],
             "other_medical_expenses": [500.0, 250.0, 4_000.0, 0.0],
             "child_support_expense": [0.0, 0.0, 6_000.0, 0.0],
             "age": [40.0, 8.0, 55.0, 70.0],
@@ -180,7 +180,9 @@ def test_extended_dataset_totals_track_national_totals(year):
     assert growth("employment_income_before_lsr") == pytest.approx(
         _growth(SOI_EMPLOYMENT, year), rel=1e-9
     )
-    assert growth("pre_subsidy_rent") == pytest.approx(_growth(CBO_AGI, year), rel=1e-9)
+    assert growth("charitable_cash_donations") == pytest.approx(
+        _growth(CBO_AGI, year), rel=1e-9
+    )
     # Per-person rates and price indices: amounts follow the series and the
     # weights add population growth.
     assert growth("other_medical_expenses") == pytest.approx(

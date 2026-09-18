@@ -7,3 +7,4 @@ class workers_compensation(Variable):
     label = "worker's compensation"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

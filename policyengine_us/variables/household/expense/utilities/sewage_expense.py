@@ -7,3 +7,4 @@ class sewage_expense(Variable):
     label = "Sewage expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

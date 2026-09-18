@@ -6,6 +6,7 @@ class pre_subsidy_care_expenses(Variable):
     entity = Person
     label = "Pre-subsidy care expenses for a disabled adult dependent or spouse"
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/21#b_2"
     documentation = """

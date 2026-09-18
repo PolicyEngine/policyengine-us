@@ -10,3 +10,4 @@ class traditional_401k_contributions_desired(Variable):
         "Traditional 401(k) contributions before statutory contribution limits."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"
