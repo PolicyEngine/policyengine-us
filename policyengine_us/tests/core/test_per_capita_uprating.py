@@ -18,9 +18,16 @@ from policyengine_us.data.economic_assumptions import (
 )
 from policyengine_us.reforms.ssa import apply_trustees_2025_economic_assumptions
 from policyengine_us.system import system
+from policyengine_us.tests.microsimulation.data.fixtures.test_extend_single_year_dataset import (  # noqa: E501
+    MockSystem,
+    MockVariable,
+    build_mock_parameters,
+)
 from policyengine_us.tools.per_capita_uprating import (
+    DERIVED_FROM,
     PER_CAPITA_SUFFIX,
     POPULATION_PATH,
+    _add_per_capita_parameter,
     add_per_capita_uprating,
     is_national_total_path,
     per_capita_path,
@@ -53,6 +60,11 @@ def _growth(path, year, parameters=None):
         (CPI_U, False),
         (POPULATION_PATH, False),
         (per_capita_path(SOI_EMPLOYMENT), False),
+        # A state total and a head count: national population is the wrong
+        # denominator, so these are not treated as national totals.
+        ("calibration.gov.aca.spending.state.AL", False),
+        ("calibration.gov.aca.enrollment.state.AK", False),
+        ("gov.ssa.nawi", False),
         (None, False),
     ],
 )
@@ -263,3 +275,143 @@ def test_trustees_long_run_incomes_grow_with_average_wages():
             path, year - 1, parameters
         )
         assert per_record_growth == pytest.approx(wage_growth, rel=1e-9)
+
+
+def test_trustees_long_run_holds_after_the_population_series_ends():
+    """Population is flat after 2055, so totals and per-record incomes both
+    grow with the average wage alone."""
+    parameters = CountryTaxBenefitSystem(reform=_Trustees2025).parameters
+    path = per_capita_path(SOI_EMPLOYMENT)
+    assert _value(POPULATION_PATH, 2060, parameters) == _value(
+        POPULATION_PATH, 2056, parameters
+    )
+    wage_growth = _value("gov.ssa.nawi", 2060, parameters) / _value(
+        "gov.ssa.nawi", 2059, parameters
+    )
+    for series in (path, SOI_EMPLOYMENT):
+        growth = _value(series, 2060, parameters) / _value(series, 2059, parameters)
+        assert growth == pytest.approx(wage_growth, rel=1e-9)
+    assert _value(path, 2060, parameters) == pytest.approx(
+        _value(SOI_EMPLOYMENT, 2060, parameters)
+        / _value(POPULATION_PATH, 2060, parameters),
+        rel=1e-12,
+    )
+
+
+def test_smi_threshold_keeps_pace_with_default_incomes():
+    """HHS state median income is projected from 2027; it must grow like the
+    incomes tested against it, or eligibility drifts with population."""
+    for year in (2028, 2030, 2035, 2040):
+        threshold = _value("gov.hhs.smi.amount.CA", year) / _value(
+            "gov.hhs.smi.amount.CA", 2027
+        )
+        income = _value(per_capita_path(CBO_AGI), year) / _value(
+            per_capita_path(CBO_AGI), 2027
+        )
+        assert threshold == pytest.approx(income, rel=1e-9)
+
+
+def test_derived_series_are_reachable_through_at_instant_views():
+    node = system.parameters("2030-01-01").calibration.gov.irs.soi
+    assert node.employment_income_per_capita == pytest.approx(
+        _value(per_capita_path(SOI_EMPLOYMENT), 2030)
+    )
+
+
+def test_derived_series_are_marked_and_cms_series_is_untouched():
+    derived = get_parameter(system.parameters, per_capita_path(SOI_EMPLOYMENT))
+    assert derived.metadata[DERIVED_FROM] == SOI_EMPLOYMENT
+    cms = get_parameter(system.parameters, CMS_MOOP)
+    assert DERIVED_FROM not in cms.metadata
+    assert cms.file_path is not None
+
+
+def test_changes_after_init_reach_the_series_or_fail_loudly():
+    fresh = CountryTaxBenefitSystem()
+    path = per_capita_path(SOI_EMPLOYMENT)
+    before = _value(path, 2030, fresh.parameters)
+
+    # A reform applied after init, as core's Simulation does, refreshes it.
+    fresh.apply_reform_set(_LargerPopulation)
+    assert _value(path, 2030, fresh.parameters) == pytest.approx(before / 2, rel=1e-12)
+
+    # A parameter edited behind the system's back leaves the series stale;
+    # dataset extension refuses to use it.
+    total = get_parameter(fresh.parameters, SOI_EMPLOYMENT)
+    total.update(period="year:2030-01-01:1", value=total("2030-01-01") * 3)
+    with pytest.raises(ValueError, match="out of date"):
+        extend_single_year_dataset(_tiny_dataset(), end_year=2030, system=fresh)
+    add_per_capita_uprating(fresh)
+    extended = extend_single_year_dataset(_tiny_dataset(), end_year=2030, system=fresh)
+    assert 2030 in extended.datasets
+
+
+def test_dataset_extension_reads_the_per_capita_sibling():
+    total = {"2024-01-01": 100.0, "2025-01-01": 110.0}
+    sibling = {"2024-01-01": 50.0, "2025-01-01": 52.0}
+    mock = MockSystem(
+        variables={
+            "employment_income": MockVariable("employment_income", SOI_EMPLOYMENT)
+        },
+        parameters=build_mock_parameters(
+            {SOI_EMPLOYMENT: total, per_capita_path(SOI_EMPLOYMENT): sibling}
+        ),
+    )
+    dataset = USSingleYearDataset(
+        person=pd.DataFrame({"person_id": [1], "employment_income": [1_000.0]}),
+        household=pd.DataFrame({"household_id": [1]}),
+        tax_unit=pd.DataFrame({"tax_unit_id": [1]}),
+        spm_unit=pd.DataFrame({"spm_unit_id": [1]}),
+        family=pd.DataFrame({"family_id": [1]}),
+        marital_unit=pd.DataFrame({"marital_unit_id": [1]}),
+        time_period=BASE_YEAR,
+    )
+    extended = extend_single_year_dataset(dataset, end_year=2025, system=mock)
+    assert extended.datasets[2025].person["employment_income"][0] == pytest.approx(
+        1_000.0 * 52.0 / 50.0
+    )
+
+
+def test_missing_per_capita_sibling_raises():
+    parameters = build_mock_parameters(
+        {SOI_EMPLOYMENT: {"2024-01-01": 100.0}}, per_capita_siblings=False
+    )
+    with pytest.raises(ValueError, match="national total"):
+        _resolve_uprating_parameter(parameters, SOI_EMPLOYMENT)
+
+
+class _StubVariable:
+    def __init__(self, uprating):
+        self.uprating = uprating
+
+
+class _StubSystem:
+    def __init__(self, uprating):
+        self.variables = {"stub": _StubVariable(uprating)}
+        self.parameters = None
+
+
+def test_unclassified_calibration_path_is_rejected():
+    with pytest.raises(ValueError, match="national-total family"):
+        add_per_capita_uprating(_StubSystem("calibration.gov.aca.spending.state.AL"))
+
+
+def test_existing_per_capita_series_is_never_overwritten():
+    """A series someone wrote by hand that happens to share the derived name
+    must stop the build, not be replaced."""
+    from policyengine_core.parameters import ParameterNode
+
+    values = {"values": {"2024-01-01": 10.0}}
+    tree = ParameterNode(
+        "",
+        data={
+            "calibration": {
+                "gov": {
+                    "cbo": {"spending": values, "spending_per_capita": values},
+                    "census": {"populations": {"total": values}},
+                }
+            }
+        },
+    )
+    with pytest.raises(ValueError, match="already exists"):
+        _add_per_capita_parameter(tree, "calibration.gov.cbo.spending")

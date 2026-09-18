@@ -32,7 +32,10 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
-from .tools.per_capita_uprating import add_per_capita_uprating
+from .tools.per_capita_uprating import (
+    add_per_capita_parameters_for_parameter_uprating,
+    add_per_capita_uprating,
+)
 from policyengine_us.data.dataset_schema import (
     US_ENTITIES,
     USSingleYearDataset,
@@ -114,6 +117,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         )
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.parameters = interpolate_parameters(self.parameters)
+        add_per_capita_parameters_for_parameter_uprating(self.parameters)
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
@@ -150,6 +154,15 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # Last, so reforms to a national total or to the population series
         # reach the per-capita series the variables uprate by.
         add_per_capita_uprating(self)
+        self._per_capita_uprating_built = True
+
+    def modify_parameters(self, modifier_function):
+        result = super().modify_parameters(modifier_function)
+        # Reforms applied after init (core's Simulation applies the reform
+        # once more) must reach the derived per-capita series too.
+        if getattr(self, "_per_capita_uprating_built", False):
+            add_per_capita_uprating(self)
+        return result
 
     def clone(self):
         return clone_spm_system(self)
