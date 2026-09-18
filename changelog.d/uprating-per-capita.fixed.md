@@ -1,1 +1,0 @@
-Uprate dollar inputs by national totals per capita, so weighted totals track each national total instead of also growing with the population-uprated weights (a 0.9 percent overshoot in 2025 rising to 5.1 percent by 2035).
