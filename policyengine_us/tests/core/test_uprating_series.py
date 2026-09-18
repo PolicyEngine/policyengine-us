@@ -56,7 +56,10 @@ EXPECTED = {
     "health_insurance_premiums": CMS,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
-    # Consumption expenses, debts and the interest on them follow prices.
+    # Consumption expenses, and the interest on debts, follow prices. The
+    # structured first and second mortgage inputs stay on the default: two are
+    # deprecated (issue #9275) and the file's formulas are outside the
+    # selective coverage job.
     "pre_subsidy_rent": CPI_U,
     "pre_subsidy_care_expenses": CPI_U,
     "spm_unit_pre_subsidy_childcare_expenses": CPI_U,
@@ -85,10 +88,6 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
-    "first_home_mortgage_interest": CPI_U,
-    "second_home_mortgage_interest": CPI_U,
-    "first_home_mortgage_balance": CPI_U,
-    "second_home_mortgage_balance": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.

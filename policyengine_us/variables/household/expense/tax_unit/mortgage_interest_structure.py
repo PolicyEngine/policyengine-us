@@ -32,7 +32,6 @@ class first_home_mortgage_balance(Variable):
     label = "First home mortgage balance"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     default_value = 0
     documentation = (
         "Outstanding balance on the first home acquisition mortgage used to "
@@ -46,7 +45,6 @@ class second_home_mortgage_balance(Variable):
     label = "Second home mortgage balance"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     default_value = 0
     documentation = (
         "Outstanding balance on the second home acquisition mortgage used to "
@@ -60,7 +58,6 @@ class first_home_mortgage_interest(Variable):
     label = "First home mortgage interest"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     default_value = 0
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
@@ -77,7 +74,6 @@ class second_home_mortgage_interest(Variable):
     label = "Second home mortgage interest"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     default_value = 0
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
