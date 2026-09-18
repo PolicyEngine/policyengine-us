@@ -244,15 +244,6 @@ def test_reform_to_population_reaches_per_capita_series():
     assert _value(path, 2029, reformed) == pytest.approx(_value(path, 2029), rel=1e-12)
 
 
-def test_rebuilding_is_idempotent():
-    rebuilt = CountryTaxBenefitSystem()
-    before = {v.name: v.uprating for v in rebuilt.variables.values()}
-    value = _value(per_capita_path(CBO_AGI), 2030, rebuilt.parameters)
-    add_per_capita_uprating(rebuilt)
-    assert {v.name: v.uprating for v in rebuilt.variables.values()} == before
-    assert _value(per_capita_path(CBO_AGI), 2030, rebuilt.parameters) == value
-
-
 class _Trustees2025(Reform):
     def apply(self):
         def modify(parameters):
@@ -262,10 +253,15 @@ class _Trustees2025(Reform):
         self.modify_parameters(modify)
 
 
+@lru_cache(maxsize=1)
+def _trustees_parameters():
+    return CountryTaxBenefitSystem(reform=_Trustees2025).parameters
+
+
 def test_trustees_long_run_incomes_grow_with_average_wages():
     """The Trustees scenario ages each record's income with the average wage
     after the CBO window; population growth belongs to the weights."""
-    parameters = CountryTaxBenefitSystem(reform=_Trustees2025).parameters
+    parameters = _trustees_parameters()
     path = per_capita_path(SOI_EMPLOYMENT)
     for year in (2040, 2050):
         wage_growth = _value("gov.ssa.nawi", year, parameters) / _value(
@@ -280,7 +276,7 @@ def test_trustees_long_run_incomes_grow_with_average_wages():
 def test_trustees_long_run_holds_after_the_population_series_ends():
     """Population is flat after 2055, so totals and per-record incomes both
     grow with the average wage alone."""
-    parameters = CountryTaxBenefitSystem(reform=_Trustees2025).parameters
+    parameters = _trustees_parameters()
     path = per_capita_path(SOI_EMPLOYMENT)
     assert _value(POPULATION_PATH, 2060, parameters) == _value(
         POPULATION_PATH, 2056, parameters
@@ -326,10 +322,16 @@ def test_derived_series_are_marked_and_cms_series_is_untouched():
     assert cms.file_path is not None
 
 
-def test_changes_after_init_reach_the_series_or_fail_loudly():
+def test_rebuilds_reforms_and_stale_edits_after_init():
     fresh = CountryTaxBenefitSystem()
     path = per_capita_path(SOI_EMPLOYMENT)
     before = _value(path, 2030, fresh.parameters)
+
+    # Rebuilding is a no-op.
+    uprating = {v.name: v.uprating for v in fresh.variables.values()}
+    add_per_capita_uprating(fresh)
+    assert {v.name: v.uprating for v in fresh.variables.values()} == uprating
+    assert _value(path, 2030, fresh.parameters) == before
 
     # A reform applied after init, as core's Simulation does, refreshes it.
     fresh.apply_reform_set(_LargerPopulation)
