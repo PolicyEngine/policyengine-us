@@ -7,3 +7,4 @@ class state_or_federal_salary(Variable):
     label = "state or federal salary"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

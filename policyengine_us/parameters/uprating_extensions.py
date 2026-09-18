@@ -510,6 +510,16 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # Unemployment compensation inputs age with CBO's unemployment
+    # compensation outlays, which anchor the SOI series past its last total.
+    extend_parameter_values(
+        parameters.calibration.gov.cbo.unemployment_compensation,
+        last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # CBO income-by-source aggregates are used directly and as anchors for
     # SOI-based income upraters. Extending them in the baseline path keeps
     # long-run nominal data aging independent of scenario-specific reforms.

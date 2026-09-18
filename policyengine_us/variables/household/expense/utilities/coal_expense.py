@@ -7,3 +7,4 @@ class coal_expense(Variable):
     label = "Coal expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

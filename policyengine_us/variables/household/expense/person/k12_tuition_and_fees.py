@@ -7,3 +7,4 @@ class k12_tuition_and_fees(Variable):
     label = "K-12 Tuition and fees (from Form 8917)"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
