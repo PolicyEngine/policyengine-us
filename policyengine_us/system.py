@@ -32,6 +32,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.per_capita_uprating import add_per_capita_uprating
 from policyengine_us.data.dataset_schema import (
     US_ENTITIES,
     USSingleYearDataset,
@@ -145,6 +146,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
+
+        # Last, so reforms to a national total or to the population series
+        # reach the per-capita series the variables uprate by.
+        add_per_capita_uprating(self)
 
     def clone(self):
         return clone_spm_system(self)
