@@ -197,6 +197,13 @@ from .states.ia.dependent_credit.ia_dependent_credit_reform import (
 )
 from .states.az.dependent_credit.az_dependent_credit_reform import (
     create_az_dependent_credit_reform_fn,
+    create_az_refundable_dependent_credit_reform_fn,
+)
+from .states.ma.dependent_exemption.ma_dependent_exemption_reform import (
+    create_ma_dependent_exemption_reform_fn,
+)
+from .states.ut.dependent_exemption.ut_dependent_exemption_reform import (
+    create_ut_dependent_exemption_reform_fn,
 )
 from .states.md.dependent_exemption.md_dependent_exemption_reform import (
     create_md_dependent_exemption_reform_fn,
@@ -505,6 +512,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     ca_dependent_credit = create_ca_dependent_credit_reform_fn(parameters, period)
     ia_dependent_credit = create_ia_dependent_credit_reform_fn(parameters, period)
     az_dependent_credit = create_az_dependent_credit_reform_fn(parameters, period)
+    az_refundable_dependent_credit = create_az_refundable_dependent_credit_reform_fn(
+        parameters, period
+    )
+    ma_dependent_exemption = create_ma_dependent_exemption_reform_fn(parameters, period)
+    ut_dependent_exemption = create_ut_dependent_exemption_reform_fn(parameters, period)
     md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
     oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
     ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
@@ -660,6 +672,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         ca_dependent_credit,
         ia_dependent_credit,
         az_dependent_credit,
+        az_refundable_dependent_credit,
+        ma_dependent_exemption,
+        ut_dependent_exemption,
         md_dependent_exemption,
         oh_dependent_exemption,
         ar_dependent_credit,
