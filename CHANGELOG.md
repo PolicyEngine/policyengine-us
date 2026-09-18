@@ -1,3 +1,10 @@
+## [2.6.7] - 2026-09-18
+
+### Fixed
+
+- Register Covered Connecticut, ConnectorCare, NJ Health Plan Savings, Vermont Premium Assistance and Washington Cascade Care Savings in `gov.household.household_health_benefits`, so all nine state marketplace premium programs reach household benefits and net income when `gov.simulation.include_health_benefits_in_net_income` is enabled, as California, Colorado, Maryland and New Mexico already did.
+
+
 ## [2.6.6] - 2026-09-18
 
 ### Fixed
