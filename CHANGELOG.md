@@ -1,3 +1,10 @@
+## [2.6.6] - 2026-09-18
+
+### Fixed
+
+- Defaulted the Maryland Child Care Scholarship provider type to a licensed center rather than none, so an eligible household is paid without naming a provider.
+
+
 ## [2.6.5] - 2026-09-17
 
 ### Fixed
