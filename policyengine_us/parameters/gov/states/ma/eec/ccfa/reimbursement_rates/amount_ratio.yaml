@@ -18,8 +18,10 @@ metadata:
 # The second threshold is the part-time hour boundary: 6 or fewer hours under
 # the 2022 guide and the FY2024 rate sheet, 5 or fewer from the FY2025 rate
 # sheet. Keep it in step with copay/maximum_part_time_daily_hours.yaml. The
-# ratio formula pays the full rate when daily hours are unreported and for
-# the before and after school rates.
+# ratio formula assumes full-time care when daily hours are unreported, unless
+# a school-age family child care before/after schedule establishes part-day care.
+# Before and after school rate columns already incorporate partial-day pricing
+# and do not receive a second reduction.
 brackets:
   - threshold:
       2023-07-01: -.inf
