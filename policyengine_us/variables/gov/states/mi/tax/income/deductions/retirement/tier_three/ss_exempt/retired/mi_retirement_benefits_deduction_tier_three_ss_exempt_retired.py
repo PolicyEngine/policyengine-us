@@ -29,7 +29,23 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        uncapped_pension_income = add(person, period, p_all.sources)
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        age_eligible = person("age", period) >= p_irs.age_threshold
+        ira_sources = [
+            s
+            for s in p_all.sources
+            if s
+            in {
+                "taxable_ira_distributions",
+                "taxable_roth_conversions",
+                "taxable_sep_distributions",
+            }
+        ]
+        pension_sources = [s for s in p_all.sources if s not in ira_sources]
+        uncapped_pension_income = (
+            add(person, period, pension_sources)
+            + add(person, period, ira_sources) * age_eligible
+        )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Where one or two people in the household qualify determines the amount of deduction
