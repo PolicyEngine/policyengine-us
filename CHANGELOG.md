@@ -1,3 +1,10 @@
+## [2.6.5] - 2026-09-17
+
+### Fixed
+
+- Include taxable Roth conversions in state gross income (AL, AR, NJ) and state retirement income exclusions (AL, AR, CO, DE, GA, IA, IL, KY, MI, NJ, NY, OK, WI); align Kentucky retirement income sources with Schedule P.
+
+
 ## [2.6.4] - 2026-09-16
 
 ### Fixed

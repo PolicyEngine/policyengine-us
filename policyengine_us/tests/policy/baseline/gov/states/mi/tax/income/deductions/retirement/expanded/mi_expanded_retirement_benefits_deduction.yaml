@@ -120,3 +120,21 @@
       state_code: MI
   output:
     mi_expanded_retirement_benefits_deduction: 15_379.5
+
+- name: 2026 single filer with taxable Roth conversions eligible for expanded deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        taxable_roth_conversions: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_pension_benefit: 20_000

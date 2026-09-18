@@ -27,3 +27,23 @@
     state_code: AL
   output:
     al_retirement_exemption_person: 0
+
+- name: Taxable Roth conversions qualify for retirement exemption at age 65
+  period: 2026
+  input:
+    age: 65
+    is_tax_unit_head: true
+    taxable_roth_conversions: 5_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 5_000
+
+- name: Taxable Roth conversions do not qualify under age 65
+  period: 2026
+  input:
+    age: 50
+    is_tax_unit_head: true
+    taxable_roth_conversions: 5_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 0

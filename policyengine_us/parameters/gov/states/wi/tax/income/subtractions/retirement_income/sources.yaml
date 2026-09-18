@@ -3,6 +3,7 @@ values:
   2021-01-01:
     - taxable_pension_income
     - taxable_retirement_distributions
+    - taxable_roth_conversions
 metadata:
   unit: list
   period: year
@@ -10,5 +11,7 @@ metadata:
   reference:
     - title: Wis. Stat. § 71.05(6)(b)54
       href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/54
+    - title: Wisconsin Department of Revenue Publication 126, How Your Retirement Benefits Are Taxed
+      href: https://www.revenue.wi.gov/DOR%20Publications/pb126.pdf
 
 
