@@ -1,11 +1,13 @@
-# The rebate is keyed to the 2021 tax year (MCA 15-30-2191(1)); it was paid out
-# in 2023 but is booked in the eligibility year. All active-year cases therefore
-# run at period 2021. Cases at 2022 and 2023 guard the year-scoping added by
-# amount.yaml's `2022-01-01: 0` entries: without them, backdating fills the 2021
-# amounts forward and the variable reports a phantom rebate.
+# Montana's 2021 income tax rebate (MCA 15-30-2191, paid in 2023, booked to the
+# 2021 eligibility year). It is the lesser of the 2021 income tax liability or a
+# per-return cap ($1,250, or $2,500 for a joint return). It is applied once per
+# return - not split across a couple's separate columns - and does not affect
+# the separate-vs-joint filing election (taxsim #1189). Amounts are zero from
+# 2022 on (amount.yaml), so the rebate only appears in 2021.
 
-- name: Single filer receives the full single rebate
+- name: Single filer above the cap receives the full single rebate
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -19,55 +21,33 @@
         members: [person1]
         state_code: MT
   output:
-    mt_income_tax_rebate: [1_250]
+    # 2021 liability $2,339.51 exceeds the $1,250 cap, so the rebate is $1,250.
+    mt_income_tax_rebate: 1_250
+    mt_income_tax_before_2021_rebate: 2_339.51
+    mt_income_tax: 1_089.51
 
-- name: Head of household receives the single-status rebate amount
+- name: Single filer below the cap is limited to her liability
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 45
-        employment_income: 50_000
-      child:
-        age: 10
+        employment_income: 25_000
     tax_units:
       tax_unit:
-        members: [person1, child]
+        members: [person1]
     households:
       household:
-        members: [person1, child]
+        members: [person1]
         state_code: MT
   output:
-    # MCA 15-30-2191(1)(b)(i): $1,250 for a head of household. Dependents get
-    # nothing, since the amount is gated on is_tax_unit_head_or_spouse.
-    filing_status: HEAD_OF_HOUSEHOLD
-    mt_income_tax_rebate: [1_250, 0]
+    # 2021 liability of $625.40 is below the $1,250 cap, so MCA 15-30-2191(2)
+    # limits the rebate to $625.40 and net tax is zero.
+    mt_income_tax_rebate: 625.40
+    mt_income_tax: 0
 
-- name: Surviving spouse receives the joint rebate amount
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 50_000
-      child:
-        age: 10
-    tax_units:
-      tax_unit:
-        members: [person1, child]
-        filing_status: SURVIVING_SPOUSE
-    households:
-      household:
-        members: [person1, child]
-        state_code: MT
-  output:
-    # The statute does not name a surviving spouse. Montana derives filing
-    # status from the federal return, where a qualifying surviving spouse uses
-    # the joint rate schedule, so the $2,500 joint maximum is the consistent
-    # reading. Only one filer claims it here, so it is not split.
-    mt_income_tax_rebate: [2_500, 0]
-
-- name: Joint filers split the per-return rebate across each spouse's column
+- name: Joint filers receive one per-return rebate, capped at the joint liability
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -88,14 +68,45 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # $2,500 per-return cap split $1,250 per spouse (sums to $2,500, not $5,000)
-    mt_income_tax_rebate: [1_250, 1_250]
-    # End to end: 2,518.22 pre-credit - 2,500 pooled rebate = 18.22.
-    # The 2022 clone of this household below is the year boundary.
-    mt_income_tax_before_non_refundable_credits_joint: 2_518.22
+    # $2,518.22 joint liability exceeds the $2,500 joint cap, so the full
+    # $2,500 applies once (not $1,250 per spouse), leaving $18.22.
+    mt_income_tax_rebate: 2_500
+    mt_income_tax_before_2021_rebate: 2_518.22
     mt_income_tax: 18.22
 
-- name: The same joint household owes more in 2022, when no rebate applies
+- name: Unequal joint filers keep the full rebate without per-column clipping
+  # Regression test for taxsim #1189. The lower-earning spouse's separate-column
+  # liability ($206.80) is far below their $1,250 half of the cap. Modeling the
+  # rebate as a per-column non-refundable credit clipped it to that column and
+  # flipped the separate-vs-joint election; applied once per return it stays at
+  # the full $2,500 and the couple still files separately (the cheaper choice).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+      person2:
+        age: 45
+        employment_income: 15_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_files_separately: true
+    mt_income_tax_rebate: 2_500
+    mt_income_tax_before_2021_rebate: 5_306.31
+    mt_income_tax_before_refundable_credits_unit: 2_806.31
+
+- name: No rebate in 2022
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -116,75 +127,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # Boundary pair with the 2021 case above. The pre-credit joint base is
-    # lower in 2022 than in 2021 (2,394.50 against 2,518.22), yet net tax is
-    # far higher (2,394.50 against 18.22), because the $2,500 rebate applies
-    # only in 2021. Nothing else offsets the base here.
-    mt_income_tax_rebate: [0, 0]
-    mt_income_tax_before_non_refundable_credits_joint: 2_394.50
-    mt_non_refundable_credits: [0, 0]
+    mt_income_tax_rebate: 0
     mt_income_tax: 2_394.50
-
-- name: Single filer below the cap keeps only the liability she owes
-  period: 2021
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 25_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MT
-  output:
-    # 2021 liability of $625.40 sits strictly between zero and the $1,250
-    # statutory maximum, so MCA 15-30-2191(2) limits the rebate to $625.40.
-    # The variable still reports the uncapped $1,250. Both credit paths
-    # floor at zero, so the cap is realized downstream:
-    # mt_income_tax_before_refundable_credits_indiv is 0, and because
-    # mt_files_separately is False here the delivered mt_income_tax comes
-    # from the joint path, also floored to 0. No refundable credit is in
-    # play (mt_eitc is 0 at this income).
-    mt_income_tax_rebate: [1_250]
-    mt_income_tax_before_non_refundable_credits_indiv: [625.40]
-    mt_income_tax_before_refundable_credits_indiv: [0]
-    mt_eitc: [0]
-    mt_income_tax: 0
-
-- name: Rebate cannot drive liability below zero (MCA 15-30-2191(2))
-  period: 2021
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 20_000
-      person2:
-        age: 45
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
-    # The statutory "lesser of the amount or the liability" cap is enforced by
-    # the ordered credit application, not by the rebate variable: the full
-    # $2,500 is reported, but the joint path floors at zero, so a household
-    # whose pre-credit liability is only $252.40 keeps $252.40 of benefit and
-    # no more. (mt_income_tax itself goes to -33.81 here from the refundable
-    # Montana EITC, which is unrelated to the rebate.)
-    mt_income_tax_rebate: [1_250, 1_250]
-    mt_income_tax_before_non_refundable_credits_joint: 252.40
-    mt_income_tax_before_refundable_credits_joint: 0
 
 - name: No rebate outside Montana
   period: 2021
@@ -201,49 +145,4 @@
         members: [person1]
         state_code: AR
   output:
-    mt_income_tax_rebate: [0]
-
-- name: No phantom rebate value in 2022
-  period: 2022
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 50_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MT
-  output:
-    # This is the discriminating assertion: without amount.yaml's 2022
-    # zeroing, backdating fills the 2021 amount forward and this reads
-    # 1_250. Montana tax is NOT affected either way, because
-    # credits/non_refundable.yaml already drops mt_income_tax_rebate from
-    # the list at 2022-01-01 - so the defect is the variable's reported
-    # value, which mis-feeds consumers such as the TAXSIM srebate
-    # comparison, not the tax outcome. mt_income_tax and
-    # mt_non_refundable_credits are pinned here as unchanged controls.
-    mt_income_tax_rebate: [0]
-    mt_non_refundable_credits: [0]
-    mt_income_tax: 2_246.00
-
-- name: No rebate in 2023, the year the rebate was actually paid out
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 50_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MT
-  output:
-    mt_income_tax_rebate: [0]
+    mt_income_tax_rebate: 0

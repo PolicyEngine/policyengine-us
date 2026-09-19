@@ -10,9 +10,10 @@ class mt_income_tax_before_refundable_credits_unit(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income
-        indiv = add(tax_unit, period, ["mt_income_tax_before_refundable_credits_indiv"])
-        joint = tax_unit("mt_income_tax_before_refundable_credits_joint", period)
-        if p.married_filing_separately_on_same_return_allowed:
-            return min_(indiv, joint)
-        return joint
+        # Elected income tax before refundable credits, then reduced by the
+        # 2021 income tax rebate (a one-time payment based on the return's
+        # liability), so the rebate flows through to state_income_tax without
+        # being clipped per column or distorting the election (taxsim #1189).
+        before_rebate = tax_unit("mt_income_tax_before_2021_rebate", period)
+        rebate = tax_unit("mt_income_tax_rebate", period)
+        return max_(before_rebate - rebate, 0)
