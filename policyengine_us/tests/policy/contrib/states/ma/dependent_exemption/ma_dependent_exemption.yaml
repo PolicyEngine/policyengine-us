@@ -1,0 +1,116 @@
+- name: Under-18 repeal zeroes young dependents, preserves the older one.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ma.dependent_exemption.ma_dependent_exemption_reform
+  input:
+    gov.contrib.states.ma.dependent_exemption.in_effect: true
+    gov.contrib.states.ma.dependent_exemption.amount: 0
+    gov.contrib.states.ma.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ma.dependent_exemption.age_limit.threshold: 18
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: MA
+  output:
+    # $6,800 head-of-household personal exemption + $0 for the 5-year-old
+    # + the baseline $1,000 for the 19-year-old dependent.
+    ma_part_b_taxable_income_exemption: 7_800
+
+- name: Reform at defaults reproduces the baseline (sentinel amount).
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ma.dependent_exemption.ma_dependent_exemption_reform
+  input:
+    gov.contrib.states.ma.dependent_exemption.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: MA
+  output:
+    # $6,800 personal + 2 x $1,000 baseline dependent exemptions.
+    ma_part_b_taxable_income_exemption: 8_800
+
+- name: Age limit with the sentinel amount is a pure no-op.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ma.dependent_exemption.ma_dependent_exemption_reform
+  input:
+    gov.contrib.states.ma.dependent_exemption.in_effect: true
+    gov.contrib.states.ma.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ma.dependent_exemption.age_limit.threshold: 18
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 8_800
+
+- name: Full repeal without an age limit zeroes every dependent.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ma.dependent_exemption.ma_dependent_exemption_reform
+  input:
+    gov.contrib.states.ma.dependent_exemption.in_effect: true
+    gov.contrib.states.ma.dependent_exemption.amount: 0
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 6_800
