@@ -7,6 +7,7 @@ class heating_cooling_expense(Variable):
     label = "Heating and cooling expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     documentation = (
         "Deprecated for heating amounts: set heating_type and the matching per-fuel "
         "expense instead; this input remains only as a fallback inside the IL and MA "

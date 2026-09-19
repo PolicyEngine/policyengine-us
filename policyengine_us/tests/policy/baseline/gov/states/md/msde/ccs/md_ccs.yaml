@@ -185,3 +185,33 @@
     # capped: min(19,844, 10,140) = 10,140
     # monthly: 10,140 / 12 = 845
     md_ccs: 845
+
+- name: Case 1 again with no provider named — the default is a licensed center, so the same $793 (the default was NONE, which paid $0)
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_ccs_provider_type: [LICENSED_CENTER, LICENSED_CENTER]
+    md_ccs: 793

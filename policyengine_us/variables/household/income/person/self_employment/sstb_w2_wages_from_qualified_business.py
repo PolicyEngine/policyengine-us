@@ -13,6 +13,7 @@ class sstb_w2_wages_from_qualified_business(Variable):
         "mixed-business cases."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/199A#b_2",
         "https://www.law.cornell.edu/uscode/text/26/199A#d_3",

@@ -8,23 +8,24 @@
 # add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
 # annual total, so the values below are annual SLCSP.
 #
-# Formula (REQ-9..13):
+# Formula (final PY2026 policy, Section 5(1)(c)-(d)):
 #   n_group1 = count of is_aca_ptc_eligible members
 #   n_group3 = count of (immigration_status UNDOCUMENTED and NOT
 #              wa_apple_health_expansion_eligible) members
-#   base_annual        = 12 * (55*n_group1 + 250*n_group3)
-#   expectation(frac)  = 0 (<=1.5), 10 (>1.5 to 2.0), 15 (>2.0)   [per member per month]
-#   expectation_annual = 12 * expectation(frac) * (n_group1 + n_group3)
-#   cap                = max(0, slcsp_annual - aca_ptc - expectation_annual)
-#   annual             = eligible * min(base_annual, cap)
-# Benchmark bracket thresholds are 1.5001 and 2.0001, so at EXACTLY 200% FPL
-# (frac 2.0) the expectation is still $10, not $15.
+#   base_annual = 12 * (55*n_group1 + 250*n_group3)
+#   cap         = max(0, slcsp_annual - aca_ptc)
+#   annual      = eligible * min(base_annual, cap)
+# There is NO income banding inside the 250% FPL ceiling and NO benchmark
+# premium expectation: the final policy's Attachment 1 lists the expectation
+# ($0 / $0 / $15 a month by band) among the concepts "included in the final
+# draft PY 2026 Cascade Care Savings policy, but not included in the final
+# policy". Cases 2, 3, 13, 14 and 24 pin its absence at the draft's band edges.
 
-# --- Group 1 ($55) path, expectation tiers ---
+# --- Group 1 ($55) path, the same amount across the income range ---
 
-- name: Case 1, single Group 1 member at 140% FPL, expectation $0.
-  # n_group1=1 -> base_annual = 12*55 = 660. frac 1.4 <= 1.5 -> expectation 0.
-  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+- name: Case 1, single Group 1 member at 140% FPL, base binds.
+  # n_group1=1 -> base_annual = 12*55 = 660.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660, 1_000) = 660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -45,9 +46,9 @@
   output:
     wa_cascade_care_savings: 660
 
-- name: Case 2, single Group 1 member at 180% FPL, expectation $10.
-  # base_annual = 660. frac 1.8 in (1.5, 2.0] -> expectation 10/mo -> 120/yr.
-  # cap = max(0, 6_000 - 5_000 - 120) = 880. annual = min(660, 880) = 660.
+- name: Case 2, single Group 1 member at 180% FPL, the same $55.
+  # base_annual = 660. No banding at 150% FPL: cap = max(0, 6_000 - 5_000)
+  # = 1_000. annual = min(660, 1_000) = 660, exactly as at 140% (Case 1).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -68,10 +69,9 @@
   output:
     wa_cascade_care_savings: 660
 
-- name: Case 3, single Group 1 member at exactly 200% FPL, expectation still $10.
-  # frac 2.0 is NOT > 2.0001, so expectation is 10/mo -> 120/yr (not 15).
-  # base_annual = 660. cap = max(0, 6_000 - 5_000 - 120) = 880.
-  # annual = min(660, 880) = 660.
+- name: Case 3, single Group 1 member at exactly 200% FPL, the same $55.
+  # No banding at 200% FPL either. base_annual = 660. cap = max(0, 6_000 -
+  # 5_000) = 1_000. annual = min(660, 1_000) = 660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -92,10 +92,11 @@
   output:
     wa_cascade_care_savings: 660
 
-- name: Case 4, Group 1 couple at 220% FPL, expectation $15 each, cap binds.
+- name: Case 4, Group 1 couple at 220% FPL, cap binds.
   # n_group1=2 -> base_annual = 12*(55*2) = 12*110 = 1_320.
-  # frac 2.2 > 2.0 -> expectation 15/mo each -> 12*15*2 = 360/yr.
-  # cap = max(0, 8_000 - 7_000 - 360) = 640. annual = min(1_320, 640) = 640 (cap binds).
+  # cap = max(0, 8_000 - 7_000) = 1_000. annual = min(1_320, 1_000) = 1_000
+  # (cap binds). Under the unadopted draft expectation this would have been
+  # 640; the adopted Section 5(1)(d) subtracts nothing from the residual.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -117,13 +118,13 @@
         members: [person1, person2]
         state_code: WA
   output:
-    wa_cascade_care_savings: 640
+    wa_cascade_care_savings: 1_000
 
 # --- Group 3 ($250) path ---
 
 - name: Case 5, single Group 3 member at 200% FPL, base binds.
-  # n_group3=1 -> base_annual = 12*250 = 3_000. frac 2.0 -> expectation 10/mo ->
-  # 120/yr. cap = max(0, 12_000 - 3_000 - 120) = 8_880. annual = min(3_000, 8_880)
+  # n_group3=1 -> base_annual = 12*250 = 3_000.
+  # cap = max(0, 12_000 - 3_000) = 9_000. annual = min(3_000, 9_000)
   # = 3_000. (Group 3 members are APTC-ineligible; aca_ptc reflects any household
   # PTC, here from other sources -> set to 3_000 to exercise the subtraction.)
   period: 2026
@@ -151,8 +152,7 @@
 
 - name: Case 6, mixed household with one Group 1 and one Group 3 member.
   # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 12*305 = 3_660.
-  # frac 1.6 in (1.5, 2.0] -> expectation 10/mo each -> 12*10*2 = 240/yr.
-  # cap = max(0, 10_000 - 4_000 - 240) = 5_760. annual = min(3_660, 5_760) = 3_660.
+  # cap = max(0, 10_000 - 4_000) = 6_000. annual = min(3_660, 6_000) = 3_660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -179,9 +179,8 @@
 
 # --- Cap edge cases ---
 
-- name: Case 7, cap is zero when SLCSP minus APTC minus expectation is negative.
-  # base_annual = 660. frac 2.2 -> expectation 15/mo -> 180/yr.
-  # slcsp_annual - aca_ptc - expectation = 5_000 - 5_000 - 180 = -180 -> cap = 0.
+- name: Case 7, cap is zero when the federal credit covers the whole benchmark.
+  # base_annual = 660. slcsp_annual - aca_ptc = 5_000 - 5_000 = 0 -> cap = 0.
   # annual = min(660, 0) = 0 (eligible but the entire premium is already covered).
   period: 2026
   absolute_error_margin: 0.01
@@ -229,8 +228,8 @@
 
 - name: Case 8b, zero SLCSP forces the cap to zero even when eligible.
   # Distinct from Case 7 (there slcsp == aca_ptc == 5_000). Here the benchmark
-  # premium is entirely absent: slcsp 0, aca_ptc 0. frac 1.4 -> expectation 0.
-  # cap = max(0, 0 - 0 - 0) = 0. base_annual = 660. annual = min(660, 0) = 0.
+  # premium is entirely absent: slcsp 0, aca_ptc 0.
+  # cap = max(0, 0 - 0) = 0. base_annual = 660. annual = min(660, 0) = 0.
   # Exercises the SLCSP-absent branch of the cap (guards against a nonzero
   # benefit when no benchmark premium exists to reimburse).
   period: 2026
@@ -299,12 +298,11 @@
 
 # --- Cap floor and exact-tie edge cases ---
 
-- name: Case 11, expectation exceeds the SLCSP-minus-APTC residual, cap floors at 0.
-  # Distinct from Cases 7 and 8b: here slcsp - aca_ptc = 6_000 - 5_900 = 100 is
-  # POSITIVE, but the benchmark expectation pushes the cap negative before the
-  # floor. frac 2.2 -> expectation 15/mo -> 180/yr. cap = max(0, 100 - 180)
-  # = max(0, -80) = 0. base_annual = 660. annual = min(660, 0) = 0. Confirms the
-  # expectation subtraction is applied before the max_(0, ...) floor.
+- name: Case 11, a small positive residual is paid in full.
+  # slcsp - aca_ptc = 6_000 - 5_900 = 100 is POSITIVE and nothing is subtracted
+  # from it: cap = max(0, 100) = 100. base_annual = 660. annual = min(660, 100)
+  # = 100. Under the unadopted draft expectation ($15 a month at 220% FPL) this
+  # household would have been zeroed; the adopted policy pays the $100.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -323,11 +321,11 @@
         members: [person1]
         state_code: WA
   output:
-    wa_cascade_care_savings: 0
+    wa_cascade_care_savings: 100
 
 - name: Case 12, base equals cap exactly, min returns the shared value.
-  # frac 1.4 -> expectation 0. slcsp - aca_ptc = 6_000 - 5_340 = 660 = base_annual.
-  # cap = max(0, 660 - 0) = 660. base_annual = 12*55 = 660. annual = min(660, 660)
+  # slcsp - aca_ptc = 6_000 - 5_340 = 660 = base_annual.
+  # cap = max(0, 660) = 660. base_annual = 12*55 = 660. annual = min(660, 660)
   # = 660. Exercises the min_() tie between base and cap.
   period: 2026
   absolute_error_margin: 0.01
@@ -349,13 +347,12 @@
   output:
     wa_cascade_care_savings: 660
 
-# --- 1.5 FPL expectation boundary at the amount level (cap binds so the
-#     expectation value is observable). Single Group 3 member, base_annual =
+# --- Either side of 150% FPL at the amount level (cap binds, so any step in
+#     the cap would be observable). Single Group 3 member, base_annual =
 #     12*250 = 3_000, slcsp 1_000, aca_ptc 0. ---
 
-- name: Case 13, expectation is $0 at exactly 150% FPL (below the 1.5001 threshold).
-  # frac 1.5 is NOT >= 1.5001, so expectation is 0 -> expectation_annual 0.
-  # cap = max(0, 1_000 - 0 - 0) = 1_000. annual = min(3_000, 1_000) = 1_000.
+- name: Case 13, Group 3 member at exactly 150% FPL, cap binds at the residual.
+  # cap = max(0, 1_000 - 0) = 1_000. annual = min(3_000, 1_000) = 1_000.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -377,11 +374,10 @@
   output:
     wa_cascade_care_savings: 1_000
 
-- name: Case 14, expectation is $10 at 151% FPL (above the 1.5001 threshold).
-  # frac 1.51 >= 1.5001 -> expectation 10/mo -> 120/yr. cap = max(0, 1_000 - 0
-  # - 120) = 880. annual = min(3_000, 880) = 880. Pairs with Case 13 to bracket
-  # the 1.5001 boundary at the amount level (1_000 vs 880 differs only by the
-  # $0 -> $10 expectation crossing).
+- name: Case 14, Group 3 member at 151% FPL, the same amount as at 150%.
+  # cap = max(0, 1_000 - 0) = 1_000. annual = min(3_000, 1_000) = 1_000. Pairs
+  # with Case 13 to pin that nothing steps at 150% FPL (the unadopted draft
+  # expectation would have made this 880).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -401,7 +397,7 @@
         members: [person1]
         state_code: WA
   output:
-    wa_cascade_care_savings: 880
+    wa_cascade_care_savings: 1_000
 
 # --- Larger mixed household: member counting must exclude the Apple-Health member ---
 
@@ -410,10 +406,9 @@
   # person4 undocumented but Apple-Health-eligible -> excluded from Group 3.
   # n_group1=2, n_group3=1, eligible members = 3 (NOT 4).
   # base_annual = 12*(55*2 + 250*1) = 12*360 = 4_320.
-  # frac 1.6 -> expectation 10/mo each * 3 members -> 12*10*3 = 360/yr.
-  # cap = max(0, 15_000 - 6_000 - 360) = 8_640. annual = min(4_320, 8_640) = 4_320.
-  # Guards both the base sum and the expectation member count against including
-  # the Apple-Health-eligible undocumented member.
+  # cap = max(0, 15_000 - 6_000) = 9_000. annual = min(4_320, 9_000) = 4_320.
+  # Guards the base sum against including the Apple-Health-eligible
+  # undocumented member.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -457,8 +452,8 @@
   # income-eligible so wa_apple_health_kids_eligible is true -> the child has
   # state MEC and is EXCLUDED from Group 3 (post-C1 gate adds
   # ~wa_apple_health_kids_eligible). n_group1=1, n_group3=0 -> base reflects the
-  # ADULT ONLY. base_annual = 12*55 = 660. frac 1.4 -> expectation 0.
-  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # ADULT ONLY. base_annual = 12*55 = 660.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660, 1_000) = 660.
   # (A child counted as Group 3 would have produced 12*(55+250) = 3_660.)
   period: 2026
   absolute_error_margin: 0.01
@@ -492,7 +487,7 @@
   # for Kids eligible (income above the kids limit), and undocumented children
   # cannot get expansion (age < 19) -> the child IS a Group 3 member ($250).
   # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 3_660.
-  # frac 1.4 -> expectation 0. cap = max(0, 12_000 - 5_000 - 0) = 7_000.
+  # cap = max(0, 12_000 - 5_000) = 7_000.
   # annual = min(3_660, 7_000) = 3_660. Companion to Case 17: the ONLY difference
   # is the child's kids income eligibility, and it toggles the $250 member in/out.
   period: 2026
@@ -526,8 +521,8 @@
   # stack. person1 is set is_aca_ptc_eligible true AND UNDOCUMENTED with
   # wa_apple_health_expansion_eligible false. Under the post-fix gate Group 3 adds
   # ~is_aca_ptc_eligible, so this person is Group 1 ONLY. n_group1=1, n_group3=0
-  # -> base_annual = 12*55 = 660 (NOT 12*(55+250) = 3_660). frac 1.4 ->
-  # expectation 0. cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = 660.
+  # -> base_annual = 12*55 = 660 (NOT 12*(55+250) = 3_660).
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = 660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -554,8 +549,8 @@
   # Guards S6: prior Group 1 cases relied on the default immigration_status not
   # being UNDOCUMENTED. Here immigration_status CITIZEN is set explicitly and the
   # person is is_aca_ptc_eligible -> Group 1 only ($55), never $305.
-  # n_group1=1 -> base_annual = 660. frac 1.4 -> expectation 0.
-  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # n_group1=1 -> base_annual = 660.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660, 1_000) = 660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -581,8 +576,8 @@
   # Guards S6: prior Group 3 cases relied on the default is_aca_ptc_eligible being
   # false. Here it is set false explicitly, immigration_status UNDOCUMENTED,
   # wa_apple_health_expansion_eligible false -> Group 3 only ($250).
-  # n_group3=1 -> base_annual = 12*250 = 3_000. frac 1.4 -> expectation 0.
-  # cap = max(0, 12_000 - 0 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000.
+  # n_group3=1 -> base_annual = 12*250 = 3_000.
+  # cap = max(0, 12_000 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -635,10 +630,10 @@
 # --- Temporal: open-ended in_effect carries the PY2026 design into PY2027 ---
 
 - name: Case 16, program still in effect in 2027 with unchanged amounts.
-  # in_effect has no end date (2026-01-01 true, open-ended), and all amounts and
-  # expectation brackets are open-ended from 2026, so 2027 mirrors Case 1.
-  # base_annual = 660. frac 1.4 -> expectation 0. cap = max(0, 6_000 - 5_000)
-  # = 1_000. annual = min(660, 1_000) = 660.
+  # in_effect has no end date (2026-01-01 true, open-ended), and both amounts
+  # are open-ended from 2026, so 2027 mirrors Case 1.
+  # base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000.
+  # annual = min(660, 1_000) = 660.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -702,13 +697,11 @@
     wa_cascade_care_savings_eligible: false
     wa_cascade_care_savings: 0
 
-- name: Case 24, expectation is still $10 at exactly 200.01% FPL (2.0001 threshold).
-  # Top-tier boundary pin. Single Group 3 member, cap binds so the expectation
-  # value is observable. At frac EXACTLY 2.0001 the $15 tier has not yet engaged
-  # (the bracket requires strictly above 2.0001), so expectation is 10/mo ->
-  # 120/yr. base_annual = 12*250 = 3_000. cap = max(0, 1_000 - 0 - 120) = 880.
-  # annual = min(3_000, 880) = 880. Pairs with Case 3 (frac 2.0, also $10): the
-  # $15 tier engages only ABOVE 2.0001 (see Case 25 at frac 2.5).
+- name: Case 24, Group 3 member just past 200% FPL, the same amount as at 200%.
+  # Single Group 3 member, cap binds. base_annual = 12*250 = 3_000. cap =
+  # max(0, 1_000 - 0) = 1_000. annual = min(3_000, 1_000) = 1_000. Pairs with
+  # Case 3 (frac 2.0): nothing steps at 200% FPL (the unadopted draft
+  # expectation would have made this 880).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -728,13 +721,12 @@
         members: [person1]
         state_code: WA
   output:
-    wa_cascade_care_savings: 880
+    wa_cascade_care_savings: 1_000
 
 - name: Case 25, exactly 250% FPL ceiling is eligible with a non-zero $15-tier amount.
   # Ties the eligibility ceiling (fpl_limit 2.5, inclusive) to a real payout.
   # frac 2.5 <= 2.5 -> eligible. Single Group 3 member -> base_annual = 12*250 =
-  # 3_000. frac 2.5 > 2.0001 -> expectation 15/mo -> 180/yr.
-  # cap = max(0, 12_000 - 0 - 180) = 11_820. annual = min(3_000, 11_820) = 3_000
+  # 3_000. cap = max(0, 12_000 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000
   # (base binds). Confirms the top of the income range still produces the full
   # base amount rather than dropping to 0.
   period: 2026

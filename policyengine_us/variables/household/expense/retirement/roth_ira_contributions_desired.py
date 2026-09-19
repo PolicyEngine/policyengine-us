@@ -8,3 +8,4 @@ class roth_ira_contributions_desired(Variable):
     unit = USD
     documentation = "Roth IRA contributions before statutory contribution limits."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

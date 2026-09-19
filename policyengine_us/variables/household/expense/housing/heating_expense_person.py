@@ -7,6 +7,7 @@ class heating_expense_person(Variable):
     label = "Heating cost for each person"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     documentation = (
         "Deprecated: set heating_type and the matching per-fuel expense "
         "(e.g. gas_expense) for the dwelling's heating bill. For Michigan "

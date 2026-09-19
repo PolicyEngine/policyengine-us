@@ -8,3 +8,4 @@ class veterans_benefits(Variable):
     unit = USD
     documentation = "Veterans benefits from past military service."
     definition_period = YEAR
+    uprating = "gov.ssa.uprating"
