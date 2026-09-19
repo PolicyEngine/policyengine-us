@@ -15,10 +15,13 @@ class in_ssp_sapn_eligible(Variable):
     def formula(person, period, parameters):
         # IC 12-15-32-6.5: must be "a recipient of assistance under the federal SSI program"
         is_ssi_recipient = (person("ssi", period) > 0) | person("receives_ssi", period)
-        # SAPN recipients are SSI recipients, whom the Medicaid community
-        # engagement requirement never reaches, so the before-work-
-        # requirements concept gives the same answer and keeps this
-        # payment out of the Medicaid -> SNAP -> supplement cycle (#9534).
+        # SAPN goes to SSI recipients, who are Medicaid eligible under
+        # 42 U.S.C. 1396a(a)(10)(A)(i)(II) and so fall outside the subclause
+        # (VIII) adult group, the only group the community engagement
+        # requirement applies to (1396a(xx)(9)(A)(i)). Reading Medicaid
+        # enrollment before work requirements is therefore exact, and it
+        # keeps this payment out of the Medicaid -> SNAP -> state supplement
+        # cycle that opens in 2027 (issue #9534).
         on_medicaid = person(
             "medicaid_enrolled_before_work_requirements", period.this_year
         )

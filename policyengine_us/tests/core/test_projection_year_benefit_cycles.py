@@ -101,3 +101,58 @@ def test_benefits_compute_in_every_state_in_projection_years(year):
         f"Benefit outputs fail to compute for {year} in "
         f"{len(offenders)} state(s): {offenders}"
     )
+
+
+BEFORE_WORK_REQUIREMENT_VARIABLES = (
+    "is_medicaid_eligible_before_work_requirements",
+    "medicaid_enrolled_before_work_requirements",
+)
+
+# The only formulas allowed to read Medicaid status before work requirements.
+# Each pays people the community engagement requirement cannot reach (SSI
+# recipients, or the aged, blind or disabled), which is what makes the
+# substitution exact. Before adding a reader, confirm the same holds for it;
+# an expansion adult read through these variables would silently skip the
+# work requirement.
+ALLOWED_READERS = {
+    "gov/hhs/medicaid/eligibility/is_medicaid_eligible_before_work_requirements.py",
+    "gov/hhs/medicaid/medicaid_enrolled_before_work_requirements.py",
+    "gov/states/in/fssa/ssp/in_ssp_rcap_eligible.py",
+    "gov/states/in/fssa/ssp/in_ssp_sapn_eligible.py",
+    "gov/states/ks/kdhe/sspp/ks_sspp_eligible.py",
+}
+
+
+def test_before_work_requirements_readers_are_confined():
+    from pathlib import Path
+
+    import policyengine_us
+
+    package = Path(policyengine_us.__file__).parent
+    readers = set()
+    for folder, pattern in (("variables", "*.py"), ("parameters", "*.yaml")):
+        for path in (package / folder).rglob(pattern):
+            text = path.read_text()
+            if any(name in text for name in BEFORE_WORK_REQUIREMENT_VARIABLES):
+                readers.add(path.relative_to(package / folder).as_posix())
+    assert readers == ALLOWED_READERS, (
+        "Medicaid status before work requirements is exact only for people "
+        "the community engagement requirement cannot reach. Unexpected "
+        f"readers: {sorted(readers - ALLOWED_READERS)}; missing: "
+        f"{sorted(ALLOWED_READERS - readers)}"
+    )
+
+
+def test_before_work_requirements_matches_eligibility_without_a_requirement():
+    """With no work requirement in effect the two concepts must agree.
+
+    is_medicaid_eligible_before_work_requirements restates the categorical,
+    immigration and state-funded tests of is_medicaid_eligible. This catches
+    drift if one formula gains a condition the other lacks.
+    """
+    year = 2026
+    simulation = Simulation(situation=_situation(year, STATES))
+    before = simulation.calculate("is_medicaid_eligible_before_work_requirements", year)
+    eligible = simulation.calculate("is_medicaid_eligible", year)
+    assert (before == eligible).all()
+    assert eligible.any() and not eligible.all()

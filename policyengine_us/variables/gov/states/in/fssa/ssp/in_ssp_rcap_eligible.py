@@ -19,11 +19,14 @@ class in_ssp_rcap_eligible(Variable):
         # Indiana RCAP page: "at least 65 years of age, or blind or disabled."
         is_abd = person("is_ssi_aged_blind_disabled", period.this_year)
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        # RCAP is limited to aged, blind or disabled people. The Medicaid
-        # community engagement requirement excludes people aged 65 or over
-        # and exempts the blind and disabled, so the before-work-
-        # requirements concept gives the same answer and keeps this
-        # payment out of the Medicaid -> SNAP -> supplement cycle (#9534).
+        # RCAP goes only to the aged, blind or disabled. People aged 65 or
+        # over are outside the under-65 adult group in 42 U.S.C.
+        # 1396a(a)(10)(A)(i)(VIII), and the blind or disabled are specified
+        # excluded individuals under 1396a(xx)(9)(A)(ii)(V)(aa), so the
+        # community engagement requirement reaches no RCAP recipient.
+        # Reading Medicaid enrollment before work requirements is therefore
+        # exact, and it keeps this payment out of the Medicaid -> SNAP ->
+        # state supplement cycle that opens in 2027 (issue #9534).
         on_medicaid = person(
             "medicaid_enrolled_before_work_requirements", period.this_year
         )
