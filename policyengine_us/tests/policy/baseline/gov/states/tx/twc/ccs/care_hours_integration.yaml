@@ -72,7 +72,7 @@
         age: 3
         is_tax_unit_dependent: true
         childcare_attending_days_per_month: 0
-        childcare_hours_per_day: 0
+        childcare_hours_per_day: 3
       person15:
         age: 30
         employment_income: 24_000
@@ -128,34 +128,35 @@
       household1:
         members: [person1, person2]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household2:
         members: [person3, person4]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household3:
         members: [person5, person6]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household4:
         members: [person7, person8]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household5:
         members: [person9, person10]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household6:
         members: [person11, person12]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household7:
         members: [person13, person14]
         state_code: TX
-        tx_ccs_workforce_board_region: ALAMO
+        county_fips: "48029"
       household8:
         members: [person15, person16]
         state_code: CA
+        county_fips: "06037"
   output:
     tx_ccs_payment_rate: [0, 860, 0, 736, 0, 860, 0, 736, 0, 738.2, 0, 736, 0, 0, 0, 0]
     tx_ccs_countable_income: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 0]
