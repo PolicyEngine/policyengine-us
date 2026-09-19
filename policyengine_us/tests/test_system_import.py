@@ -13,16 +13,23 @@ to hit `ValueError` at import time (issue #8055). This test loads the
 whole system once, which will fail loudly on any future mismatch.
 """
 
+import pytest
 
-def test_country_tax_benefit_system_constructs_cleanly():
+
+@pytest.fixture(scope="module")
+def fresh_system():
+    from policyengine_us.system import CountryTaxBenefitSystem
+
+    return CountryTaxBenefitSystem()
+
+
+def test_country_tax_benefit_system_constructs_cleanly(fresh_system):
     """Constructing the tax-benefit system runs parameter homogenization,
     which validates every `breakdown` declaration against its children.
     Any mismatch raises `ValueError` from
     `policyengine_core.parameters.operations.homogenize_parameters`.
     """
-    from policyengine_us.system import CountryTaxBenefitSystem
-
-    CountryTaxBenefitSystem()
+    assert fresh_system.variables
 
 
 def test_package_import_does_not_raise():
@@ -38,13 +45,11 @@ def test_package_import_does_not_raise():
     importlib.reload(policyengine_us)
 
 
-def test_variables_use_at_most_one_computation_mode():
+def test_variables_use_at_most_one_computation_mode(fresh_system):
     """Variables should choose exactly one computation mode after all
     system-level mutations, including default uprating assignment.
     """
-    from policyengine_us.system import CountryTaxBenefitSystem
-
-    system = CountryTaxBenefitSystem()
+    system = fresh_system
     conflicts = []
     for name, variable in system.variables.items():
         modes = []
@@ -60,16 +65,15 @@ def test_variables_use_at_most_one_computation_mode():
     assert conflicts == []
 
 
-def test_computed_default_uprated_variables_have_microdata_overrides():
+def test_computed_default_uprated_variables_have_microdata_overrides(fresh_system):
     """Default uprating can only be assigned to input variables at runtime.
     Computed columns that previously received the default uprater keep that
     behavior through microdata-only overrides.
     """
     from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
-    from policyengine_us.system import CountryTaxBenefitSystem
     from policyengine_us.tools.default_uprating import INPUT_VARIABLES
 
-    system = CountryTaxBenefitSystem()
+    system = fresh_system
     missing_overrides = []
     for name in INPUT_VARIABLES:
         variable = system.variables.get(name)
@@ -84,10 +88,8 @@ def test_computed_default_uprated_variables_have_microdata_overrides():
     assert missing_overrides == []
 
 
-def test_capital_gains_indexation_inputs_have_expected_uprating():
-    from policyengine_us.system import CountryTaxBenefitSystem
-
-    system = CountryTaxBenefitSystem()
+def test_capital_gains_indexation_inputs_have_expected_uprating(fresh_system):
+    system = fresh_system
     assert (
         system.variables["long_term_capital_gains_basis"].uprating
         == "calibration.gov.irs.soi.long_term_capital_gains_per_capita"

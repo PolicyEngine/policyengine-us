@@ -482,11 +482,34 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Python tests (code_health, core, utilities, top-level)
-        run: uv run --no-sync make test-other-python
+      # Run sequentially on this runner; process exit releases the SPM heap
+      # before collecting the remaining Python files.
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-spm-resources.txt uv run --no-sync make test-other-python-spm
+      - name: Run remaining Python tests
+        if: always()
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-other.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-other-resources.txt uv run --no-sync make test-other-python-rest
       - name: Run tests/variables YAML tests
         if: always()
-        run: uv run --no-sync make test-yaml-variables
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-test-timings
+          path: |
+            rest-python-spm.xml
+            rest-python-other.xml
+            rest-variables.xml
+            rest-python-spm-resources.txt
+            rest-python-other-resources.txt
+            rest-variables-resources.txt
   Microsimulation:
     needs: ReleaseLock
     name: Full Suite - Microsimulation

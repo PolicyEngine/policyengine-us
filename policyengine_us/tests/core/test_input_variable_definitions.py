@@ -1,4 +1,4 @@
-from policyengine_us import CountryTaxBenefitSystem
+from policyengine_us.system import system
 from policyengine_us.model_api import STATES
 
 
@@ -14,8 +14,6 @@ def _state_prefix(name):
 
 
 def test_input_variables_do_not_use_non_geographic_defined_for():
-    system = CountryTaxBenefitSystem()
-
     invalid = {
         name: variable.defined_for
         for name, variable in system.variables.items()
@@ -28,8 +26,6 @@ def test_input_variables_do_not_use_non_geographic_defined_for():
 
 
 def test_input_variables_do_not_use_formulas_adds_or_subtracts():
-    system = CountryTaxBenefitSystem()
-
     invalid = {
         name: {
             "formulas": bool(getattr(variable, "formulas", None)),
@@ -49,8 +45,6 @@ def test_input_variables_do_not_use_formulas_adds_or_subtracts():
 
 
 def test_legacy_marketplace_coverage_is_not_active_input_variable():
-    system = CountryTaxBenefitSystem()
-
     legacy_variable = system.variables["has_marketplace_health_coverage"]
     assert not legacy_variable.is_input_variable()
     assert legacy_variable.formulas
@@ -61,8 +55,6 @@ def test_legacy_marketplace_coverage_is_not_active_input_variable():
 
 
 def test_state_input_variables_match_state_defined_for():
-    system = CountryTaxBenefitSystem()
-
     invalid = {
         name: variable.defined_for
         for name, variable in system.variables.items()
