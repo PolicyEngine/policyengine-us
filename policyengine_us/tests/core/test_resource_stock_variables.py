@@ -1,4 +1,5 @@
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system
 
 
 RESOURCE_STOCK_VARIABLES = [
@@ -29,8 +30,6 @@ SSI_MONTHLY_VARIABLES = [
 
 
 def test_resource_variables_are_stocks():
-    system = CountryTaxBenefitSystem()
-
     non_stock_variables = [
         variable
         for variable in RESOURCE_STOCK_VARIABLES
@@ -41,8 +40,6 @@ def test_resource_variables_are_stocks():
 
 
 def test_ssi_payment_and_eligibility_variables_are_monthly():
-    system = CountryTaxBenefitSystem()
-
     non_monthly_variables = [
         variable
         for variable in SSI_MONTHLY_VARIABLES

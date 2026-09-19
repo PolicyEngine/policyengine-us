@@ -11,10 +11,8 @@ the same simulation, so they do not hard code projected federal amounts.
 
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
-
-
-SYSTEM = CountryTaxBenefitSystem()
+from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 
 CONFORMITY_YEARS = (2027, 2028)
 
