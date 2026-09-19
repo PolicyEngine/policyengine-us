@@ -263,3 +263,25 @@
       person1:
         # Household is outside PA -> defined_for filters the benefit.
         pa_uc: 0
+
+- name: Case 8, PA UC feeds unemployment compensation income flows.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    pa_uc: 10_218
+    unemployment_compensation: 10_218
+    tax_unit_unemployment_compensation: 10_218
+    taxable_unemployment_compensation: 10_218
+    tax_unit_taxable_unemployment_compensation: 10_218
+    spm_unit_benefits: 10_218
+    household_benefits: 10_218

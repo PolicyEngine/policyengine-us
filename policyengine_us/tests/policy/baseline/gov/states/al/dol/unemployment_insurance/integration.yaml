@@ -367,3 +367,27 @@
         # so the clamp binds. Annual = 275 * 14 = 3,850 (equals MBA, so the
         # MBA cap is not additionally binding here).
         al_ui: 3_850
+
+- name: Case 13, AL UI feeds unemployment compensation income flows.
+  # Reuses Case 1's monetarily-eligible input set (al_ui = $3,850) and asserts
+  # the state benefit also surfaces through the federal unemployment
+  # compensation income chain (unemployment_compensation adds al_ui).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: AL
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    al_ui_high_quarter_wages: 10_000
+    al_ui_second_high_quarter_wages: 10_000
+    al_ui_base_period_wages: 40_000
+    al_ui_quarters_with_wages: 4
+    al_ui_weekly_earnings: 0
+    weeks_unemployed: 20
+  output:
+    al_ui: 3_850
+    unemployment_compensation: 3_850
+    tax_unit_unemployment_compensation: 3_850
+    taxable_unemployment_compensation: 3_850
+    tax_unit_taxable_unemployment_compensation: 3_850

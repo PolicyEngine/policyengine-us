@@ -266,3 +266,27 @@
         # weeks_unemployed (17) == duration (17): annual = $395 * 17 = $6,715.
         # min($6,715, MBA $6,715) = $6,715 -> cap binds exactly at equality.
         ut_ui: 6_715
+
+- name: Case 9, UT UI feeds unemployment compensation income flows.
+  # Reuses Case 2's monetarily-eligible input set (ut_ui = $19,396) and asserts
+  # the state benefit also surfaces through the federal unemployment
+  # compensation income chain (unemployment_compensation adds ut_ui).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: UT
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ut_ui_base_period_wages: 80_000
+    ut_ui_high_quarter_wages: 25_000
+    ut_ui_quarters_with_wages: 4
+    ut_ui_weeks_unemployed: 26
+    ut_ui_gross_weekly_earnings: 0
+    ut_ui_weekly_hours_worked: 0
+  output:
+    ut_ui: 19_396
+    unemployment_compensation: 19_396
+    tax_unit_unemployment_compensation: 19_396
+    taxable_unemployment_compensation: 19_396
+    tax_unit_taxable_unemployment_compensation: 19_396
