@@ -1,0 +1,273 @@
+# Regression tests for issue #9364. The adult child is assumed to meet the
+# relationship, residency, and joint-return tests, as in the existing WFTC model.
+# RCW 82.08.0206(2)(e)-(f), IRC 32(c)(3)(A), and IRC 152(c)(3)(B).
+# 2023 DOR instructions: AGI limits (pp. 1, 4) and disability age waiver (p. 5).
+# https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf
+# Application Q16 accepts an ITIN and asks about permanent and total disability.
+# https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf#page=3
+# DOR ETA 3240.2024, pp. 2-3: $625 maximum and 12.5% reduction for one child.
+# https://dor.wa.gov/sites/default/files/2024-01/3240.2024.pdf
+
+- name: Disabled adult ITIN child receives the full credit below the childless limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 16_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    wa_working_families_tax_credit_maximum_qualifying_income: 46_560
+    # The one-child phase-out begins at $46,560 - $5,000 = $41,560.
+    wa_working_families_tax_credit: 625
+
+- name: Disabled adult ITIN child raises the income ceiling above the childless limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 20_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    wa_working_families_tax_credit_maximum_qualifying_income: 46_560
+    # The one-child limit is $46,560; the full 2023 one-child credit is $625.
+    wa_working_families_tax_credit: 625
+
+- name: Disabled adult ITIN child uses the one-child phase-out band.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 44_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    wa_working_families_tax_credit_maximum_qualifying_income: 46_560
+    # $625 - ($44,000 - $41,560) * ($625 / $5,000) = $320.
+    wa_working_families_tax_credit: 320
+
+- name: Disabled adult ITIN child receives the minimum just below the income limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 46_559
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    wa_working_families_tax_credit_maximum_qualifying_income: 46_560
+    # The positive phased-out credit is raised to the $50 minimum.
+    wa_working_families_tax_credit: 50
+
+- name: Disabled adult ITIN child is ineligible exactly at the income limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 46_560
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    wa_working_families_tax_credit_maximum_qualifying_income: 46_560
+    # DOR requires income strictly below $46,560.
+    wa_working_families_tax_credit: 0
+
+- name: General disability alone does not waive the adult ITIN child age test.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 20_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: false
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    # Without permanent and total disability, the adult fails the child age test.
+    wa_working_families_tax_credit: 0
+
+- name: Disabled adult child without a TIN does not raise the income limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 20_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+        has_tin: false
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: WA
+  output:
+    # Federal EITC excludes this child without a qualifying SSN.
+    eitc_child_count: 0
+    # The Washington exception requires a valid SSN or ITIN for the child.
+    wa_working_families_tax_credit: 0
