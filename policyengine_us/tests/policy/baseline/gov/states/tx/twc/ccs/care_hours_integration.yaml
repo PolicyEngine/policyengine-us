@@ -1,0 +1,163 @@
+# Texas family-of-two SMI: $108,284 x 0.68 / 12 = $6,136.0933/month.
+# Parent share: $2,000 x [0.02 + (0.0493 / 0.74) x ($2,000 / $6,136.0933 - 0.01)]
+# = $82.0969, unchanged by the care schedule. Benefits cap expenses at the rate
+# and then subtract this share. No billable days or expenses yields no benefit.
+- name: Case 1, mixed households preserve missing hours and explicit authorizations independently.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+      person3:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+      person5:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person6:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+        tx_ccs_care_schedule: FULL_TIME
+      person7:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person8:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+        tx_ccs_care_schedule: PART_TIME
+      person9:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person10:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+        tx_ccs_care_schedule: BLENDED
+      person11:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person12:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_week: 15
+        childcare_days_per_week: 5
+      person13:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person14:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 0
+        childcare_hours_per_day: 0
+      person15:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person16:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+      tax_unit5:
+        members: [person9, person10]
+      tax_unit6:
+        members: [person11, person12]
+      tax_unit7:
+        members: [person13, person14]
+      tax_unit8:
+        members: [person15, person16]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit2:
+        members: [person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit3:
+        members: [person5, person6]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit4:
+        members: [person7, person8]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit5:
+        members: [person9, person10]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit6:
+        members: [person11, person12]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit7:
+        members: [person13, person14]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+      spm_unit8:
+        members: [person15, person16]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household2:
+        members: [person3, person4]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household3:
+        members: [person5, person6]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household4:
+        members: [person7, person8]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household5:
+        members: [person9, person10]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household6:
+        members: [person11, person12]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household7:
+        members: [person13, person14]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+      household8:
+        members: [person15, person16]
+        state_code: CA
+  output:
+    tx_ccs_payment_rate: [0, 860, 0, 736, 0, 860, 0, 736, 0, 738.2, 0, 736, 0, 0, 0, 0]
+    tx_ccs_countable_income: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 0]
+    tx_ccs_copay: [82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 0]
+    tx_ccs: [777.9031, 653.9031, 777.9031, 653.9031, 656.1031, 653.9031, 0, 0]

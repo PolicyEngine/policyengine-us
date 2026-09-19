@@ -1,0 +1,1 @@
+Derive Texas CCS payment schedules from reported care hours while preserving explicit authorizations and the full-time fallback for unknown hours. The supplied `tx_ccs_care_schedule` now defaults to `UNSPECIFIED`; use `tx_ccs_payment_care_schedule` to query the resolved payment category.
