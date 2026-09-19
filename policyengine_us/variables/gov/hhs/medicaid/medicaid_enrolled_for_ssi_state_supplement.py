@@ -1,19 +1,20 @@
 from policyengine_us.model_api import *
 
 
-class in_ssp_medicaid_enrolled(Variable):
+class medicaid_enrolled_for_ssi_state_supplement(Variable):
     value_type = bool
     entity = Person
-    label = "Medicaid enrollment for Indiana state supplement eligibility"
+    label = "Medicaid enrollment for SSI state supplement eligibility"
     definition_period = YEAR
-    defined_for = StateCode.IN
     reference = (
         "https://www.in.gov/fssa/ompp/files/Medicaid_PM_5000.pdf#page=2",
         "https://www.in.gov/fssa/ddars/bba/provider-resources/residential-care-assistance-program/",
+        "https://khap.kdhe.ks.gov/kfmam/policydocs/state%20supplemental%20payment%20program%20policy%20memo.pdf#page=2",
         "https://www.ecfr.gov/current/title-42/section-435.554",
     )
     documentation = (
-        "Medicaid enrollment condition for SAPN and RCAP candidates only. "
+        "Medicaid enrollment condition for SSI/aged/blind/disabled state "
+        "supplement candidates only (Indiana SAPN/RCAP and Kansas SSPP). "
         "SSI recipients and aged, blind, or disabled RCAP candidates do not "
         "need the SNAP/TANF community-engagement exclusion. Other consumers "
         "must use medicaid_enrolled, which retains that exclusion."
@@ -29,11 +30,11 @@ class in_ssp_medicaid_enrolled(Variable):
         if enrolled is not None:
             return enrolled
 
-        # SNAP counts Indiana SSP as income, so asking SNAP for its receipt
+        # SNAP counts these state supplements as income, so asking for receipt
         # status here would recurse. SSP candidates qualify through SSI or
         # age/blindness/disability independently of SNAP/TANF. Keep all other
         # Medicaid conditions, take-up and supplied inputs in a private branch.
-        branch_name = f"{simulation.branch_name}_in_ssp_medicaid_{period}"
+        branch_name = f"{simulation.branch_name}_ssi_state_supplement_medicaid_{period}"
         branch = simulation.get_branch(branch_name)
         try:
             branch.set_input(
