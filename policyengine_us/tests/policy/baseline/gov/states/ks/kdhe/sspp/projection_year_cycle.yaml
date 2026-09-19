@@ -1,0 +1,27 @@
+# Issue #9534. The Kansas supplement read medicaid_enrolled, SNAP counts the
+# supplement as unearned income, and from 2027 Medicaid eligibility reads SNAP
+# through the community engagement pass-through, so every Kansas household
+# raised CycleError from 2027.
+
+- name: The Kansas supplement computes in 2027 and reaches SNAP unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: KS
+  output:
+    ssi: 30
+    medicaid_enrolled: true
+    ks_sspp_eligible: true
+    ks_sspp: 32
+    snap_unearned_income: 62

@@ -1,0 +1,82 @@
+# Issue #9534. From 2027 Medicaid eligibility consults the community engagement
+# requirement, whose SNAP pass-through reads SNAP, and SNAP counts the Indiana
+# supplement as unearned income. While the supplement read medicaid_enrolled,
+# every Indiana household raised CycleError from 2027. These cases enter the
+# loop from each side. They pin flags and amounts that do not move with
+# uprating forecasts.
+
+- name: Supplemental Assistance for Personal Needs computes in 2027 and reaches SNAP unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    ssi: 30
+    medicaid_enrolled: true
+    in_ssp_sapn_eligible: true
+    in_ssp_sapn: 22
+    in_ssp: 22
+    snap_unearned_income: 52
+
+- name: The residential care supplement computes in 2027 and reaches SNAP unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        ssi: 1_000
+        in_resides_in_licensed_residential_facility: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    medicaid_enrolled: true
+    in_ssp_rcap_eligible: true
+    # 49.35 per diem x 365 / 12 = 1,501.06 state standard, less 1,000 of SSI.
+    in_ssp_rcap: 501.06
+    in_ssp: 501.06
+    snap_unearned_income: 1_501.06
+
+- name: An Indiana expansion adult keeps Medicaid through the SNAP pass-through in 2027.
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 5_000
+      child:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IN
+  output:
+    medicaid_category: [ADULT, OLDER_CHILD]
+    is_medicaid_work_requirement_applicable_adult: [true, false]
+    # 5,000 a year is below 80 hours a month at the minimum wage, a child of 15
+    # is past the dependent-child exemption, and no activity hours are
+    # reported, so only the SNAP pass-through keeps the parent eligible.
+    medicaid_work_requirement_eligible: [true, true]
+    is_medicaid_eligible: [true, true]

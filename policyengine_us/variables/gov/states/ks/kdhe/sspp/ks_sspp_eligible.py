@@ -22,7 +22,13 @@ class ks_sspp_eligible(Variable):
         in_medical_facility = (
             federal_la == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        on_medicaid = person("medicaid_enrolled", period.this_year)
+        # SSPP recipients are SSI recipients, whom the Medicaid community
+        # engagement requirement never reaches, so the before-work-
+        # requirements concept gives the same answer and keeps this
+        # payment out of the Medicaid -> SNAP -> supplement cycle (#9534).
+        on_medicaid = person(
+            "medicaid_enrolled_before_work_requirements", period.this_year
+        )
         age = person("age", period.this_year)
         return (
             receives_ssi & in_medical_facility & on_medicaid & (age >= p.age_threshold)
