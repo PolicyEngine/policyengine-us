@@ -269,17 +269,9 @@ jobs:
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
         run: uv run --no-sync make test-policy-contrib-python
-  RestShards:
+  Rest:
     needs: ReleaseLock
-    name: Full Suite - Rest (${{ matrix.group }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - group: spm
-            target: test-other-python-spm
-          - group: other
-            target: test-other-python-rest
+    name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     timeout-minutes: 60
     if: |
@@ -306,12 +298,19 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Python tests (${{ matrix.group }})
+      # Run sequentially on this runner; process exit releases the SPM heap
+      # before collecting the remaining Python files.
+      - name: Run SPM Python tests
         env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-python-resources.txt uv run --no-sync make ${{ matrix.target }}
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-spm-resources.txt uv run --no-sync make test-other-python-spm
+      - name: Run remaining Python tests
+        if: always()
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-other.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-other-resources.txt uv run --no-sync make test-other-python-rest
       - name: Run tests/variables YAML tests
-        if: ${{ always() && matrix.group == 'other' }}
+        if: always()
         env:
           PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
@@ -319,24 +318,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-test-timings-${{ matrix.group }}
+          name: rest-test-timings
           path: |
-            rest-python.xml
+            rest-python-spm.xml
+            rest-python-other.xml
             rest-variables.xml
-            rest-python-resources.txt
+            rest-python-spm-resources.txt
+            rest-python-other-resources.txt
             rest-variables-resources.txt
-  # Preserve the existing check name and release dependency. Both parallel
-  # groups must succeed; this gate's own duration is not the batch runtime.
-  Rest:
-    needs: RestShards
-    name: Full Suite - Rest (Python + variables)
-    if: ${{ always() && github.repository == 'PolicyEngine/policyengine-us' && github.event.head_commit.message == 'Update PolicyEngine US' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Require both Rest groups to pass
-        env:
-          REST_RESULT: ${{ needs.RestShards.result }}
-        run: test "$REST_RESULT" = success
   Microsimulation:
     needs: ReleaseLock
     name: Full Suite - Microsimulation

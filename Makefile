@@ -14,8 +14,9 @@
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
 TESTS := policyengine_us/tests
-# Keep the expensive SPM construction/isolation tests in one CI group. The
-# other group discovers every remaining Python test, including future files.
+# Run the expensive SPM construction/isolation tests in a separate process
+# before the remaining files on the same CI runner, releasing their heap.
+# The remaining group discovers every other Python test, including future files.
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
 	$(TESTS)/core/test_spm_system.py
