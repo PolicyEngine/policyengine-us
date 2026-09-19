@@ -1,1 +1,1 @@
-Reduce repeated model construction across Python regression tests and record complete Rest CI timing and memory reports.
+Reduce repeated model construction, run the full Rest test coverage in two parallel CI groups, and record complete timing and memory reports.
