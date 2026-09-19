@@ -7,3 +7,4 @@ class fuel_oil_expense(Variable):
     label = "Fuel oil expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

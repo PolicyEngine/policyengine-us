@@ -4,16 +4,21 @@ metadata:
   unit: currency-USD
   label: Massachusetts CCFA informal child care relative's home reimbursement rates
   reference:
+    - title: Board of Early Education and Care Motion FY 2026-08, Approval of Fiscal Year 2027 Reimbursement Rate Increase for Informal Child Care
+      href: https://www.mass.gov/doc/fy26-motion-to-approve-fy27-rate-increases-to-informal-child-care-rates/download
     - title: FY 2026 Child Care Financial Assistance Daily Reimbursement Rates
-      href: https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=2
+      href: https://www.mass.gov/doc/eecfy26-rate-increase-rate-chart/download#page=2
     - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download#page=2
     - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download#page=2
 
-# The FY2026 chart sets a single informal child care full-time rate of
-# $27.80 for both the relative's-home and child's-home settings.
+# The FY2025 rate of $24.57 carries through FY2026. Board Motion FY 2026-08
+# raises the full-time relative's-home rate to $27.80 effective July 1, 2026
+# (FY2027), matching the child's-home rate. The FY2026 rate chart published at
+# eecfy26-rate-increase-chart was updated in July 2026 to show the FY2027
+# informal rates; the March 2026 version cited here shows the FY2026 rates.
 values:
   2023-07-01: 24.33
   2024-07-01: 24.57
-  2025-07-01: 27.8
+  2026-07-01: 27.8

@@ -1,3 +1,56 @@
+## [2.6.11] - 2026-09-19
+
+### Changed
+
+- Consolidate the Massachusetts CCFA `CENTER_BASED_CARE_EARLY_EDUCATION` and `CENTER_BASED_CARE_SCHOOL_AGE` care provider types into a single `CENTER_BASED_CARE` type, and the two center-based reimbursement variables into `ma_ccfa_center_based_reimbursement`, with the child's age category selecting the rate.
+
+### Fixed
+
+- Stop paying $0 for Massachusetts CCFA children under school age when no care provider type is given, avoid a second part-time reduction on before and after school rates, and assume full-time care when daily hours are unreported unless a school-age family child care before/after schedule establishes part-day care. Count a before or after school schedule as part-time care for the parent fee only where the rate chart or policy guide prices that care as part-day, so the fee and the reimbursement agree. Date the FY2027 informal child care reimbursement rates to July 2026.
+
+
+## [2.6.10] - 2026-09-18
+
+### Fixed
+
+- Point dollar inputs at closer uprating series: unemployment compensation follows CBO unemployment outlays instead of taxable Social Security, alimony follows the SOI alimony series, capital gains components follow capital gains, pay-linked inputs follow employment income, general health insurance premiums follow CMS per-capita spending, veterans benefits follow the Social Security cost-of-living index, and rent, child care, tuition, utilities, mortgage interest and student loan interest follow CPI-U.
+
+
+## [2.6.9] - 2026-09-18
+
+### Fixed
+
+- Uprate dollar inputs by national totals per capita, so weighted totals track each national total instead of also growing with the population-uprated weights (a 0.9 percent overshoot in 2025 rising to 5.1 percent by 2035).
+
+
+## [2.6.8] - 2026-09-18
+
+### Fixed
+
+- Correct the uprating description on the SPM poverty methodology page so it matches the code: rent follows the default CBO adjusted gross income projection, not CPI-U.
+
+
+## [2.6.7] - 2026-09-18
+
+### Fixed
+
+- Register Covered Connecticut, ConnectorCare, NJ Health Plan Savings, Vermont Premium Assistance and Washington Cascade Care Savings in `gov.household.household_health_benefits`, so all nine state marketplace premium programs reach household benefits and net income when `gov.simulation.include_health_benefits_in_net_income` is enabled, as California, Colorado, Maryland and New Mexico already did.
+
+
+## [2.6.6] - 2026-09-18
+
+### Fixed
+
+- Defaulted the Maryland Child Care Scholarship provider type to a licensed center rather than none, so an eligible household is paid without naming a provider.
+
+
+## [2.6.5] - 2026-09-17
+
+### Fixed
+
+- Include taxable Roth conversions in state gross income (AL, AR, NJ) and state retirement income exclusions (AL, AR, CO, DE, GA, IA, IL, KY, MI, NJ, NY, OK, WI); align Kentucky retirement income sources with Schedule P.
+
+
 ## [2.6.4] - 2026-09-16
 
 ### Fixed

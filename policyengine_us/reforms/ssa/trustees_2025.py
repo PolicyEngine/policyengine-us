@@ -157,10 +157,16 @@ def apply_trustees_2025_soi_income_projection(
     benefits use these calibration totals as uprating factors. If they flatten
     after the CBO projection window, nominal incomes freeze in long-run
     microsimulations even when NAWI and tax parameters keep growing.
+
+    Inputs uprate by each total divided by population (see
+    ``policyengine_us.tools.per_capita_uprating``), so each total grows by
+    average-wage growth times population growth. Each record's income then
+    follows the average wage and the weights carry population growth.
     """
 
     nawi = parameters.gov.ssa.nawi
     soi = parameters.calibration.gov.irs.soi
+    population = parameters.calibration.gov.census.populations.total
 
     for parameter_name in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS:
         parameter = getattr(soi, parameter_name)
@@ -170,9 +176,12 @@ def apply_trustees_2025_soi_income_projection(
             wage_growth = float(nawi(f"{year}-01-01")) / float(
                 nawi(f"{year - 1}-01-01")
             )
+            population_growth = float(population(f"{year}-01-01")) / float(
+                population(f"{year - 1}-01-01")
+            )
             parameter.update(
                 period=f"year:{year}-01-01:1",
-                value=previous_value * wage_growth,
+                value=previous_value * wage_growth * population_growth,
             )
 
         final_value = float(parameter(f"{end_year}-01-01"))

@@ -90,6 +90,6 @@ def test_capital_gains_indexation_inputs_have_expected_uprating():
     system = CountryTaxBenefitSystem()
     assert (
         system.variables["long_term_capital_gains_basis"].uprating
-        == "calibration.gov.irs.soi.long_term_capital_gains"
+        == "calibration.gov.irs.soi.long_term_capital_gains_per_capita"
     )
     assert system.variables["long_term_capital_gains_years_held"].uprating is None

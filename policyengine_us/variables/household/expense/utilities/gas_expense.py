@@ -7,3 +7,4 @@ class gas_expense(Variable):
     label = "Gas expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

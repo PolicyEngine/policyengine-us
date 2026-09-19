@@ -7,3 +7,4 @@ class broadband_cost(Variable):
     label = "Broadband cost"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

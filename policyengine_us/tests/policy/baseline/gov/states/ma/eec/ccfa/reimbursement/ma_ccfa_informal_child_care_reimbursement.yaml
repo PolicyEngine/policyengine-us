@@ -9,9 +9,9 @@
   output:
     ma_ccfa_informal_child_care_reimbursement: 24.57
 
-# The FY2026 chart sets a single $27.80 full-time informal rate for both
-# the relative's-home and child's-home settings.
-- name: Case 2, informal child care in relative home, FY2026 rate.
+# The FY2025 informal rates carry through FY2026; Board Motion FY 2026-08
+# raises both settings to $27.80 effective July 1, 2026.
+- name: Case 2, informal child care in relative home, FY2026 rate unchanged.
   period: 2026-01
   absolute_error_margin: 0.2
   input:
@@ -20,9 +20,9 @@
     state_code: MA
     ma_ccfa_is_in_relatives_home_care: true
   output:
-    ma_ccfa_informal_child_care_reimbursement: 27.8
+    ma_ccfa_informal_child_care_reimbursement: 24.57
 
-- name: Case 3, informal child care in the child's home, FY2026 rate.
+- name: Case 3, informal child care in the child's home, FY2026 rate unchanged.
   period: 2026-01
   absolute_error_margin: 0.2
   input:
@@ -31,4 +31,30 @@
     state_code: MA
     ma_ccfa_is_in_relatives_home_care: false
   output:
-    ma_ccfa_informal_child_care_reimbursement: 27.8
+    ma_ccfa_informal_child_care_reimbursement: 17.33
+
+- name: Case 4, informal child care in the child's home, FY2027 rate starts in July 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    ma_ccfa_is_in_relatives_home_care:
+      2026-06: false
+      2026-07: false
+  output:
+    ma_ccfa_informal_child_care_reimbursement:
+      2026-06: 17.33
+      2026-07: 27.8
+
+- name: Case 5, informal child care in relative home, FY2027 rate starts in July 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    ma_ccfa_is_in_relatives_home_care:
+      2026-06: true
+      2026-07: true
+  output:
+    ma_ccfa_informal_child_care_reimbursement:
+      2026-06: 24.57
+      2026-07: 27.8
