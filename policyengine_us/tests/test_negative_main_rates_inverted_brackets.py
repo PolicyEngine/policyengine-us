@@ -92,11 +92,27 @@ def test_low_income_filer_unaffected_by_inversion_above_their_income():
 
 
 def test_main_rates_never_negative_across_incomes():
-    for income in [0, 10_000, 100_000, 300_000, 500_000, 1_000_000]:
-        sim = Simulation(
-            reform=INVERTED_BRACKET_REFORM, situation=separate_filer(income)
-        )
-        assert sim.calculate("income_tax_main_rates", 2026)[0] >= 0
+    incomes = [0, 10_000, 100_000, 300_000, 500_000, 1_000_000]
+    situation = {"people": {}, "tax_units": {}, "households": {}}
+    for i, income in enumerate(incomes):
+        person = f"person_{i}"
+        situation["people"][person] = {
+            "age": {"2026": 40},
+            "employment_income": {"2026": income},
+        }
+        situation["tax_units"][f"tu_{i}"] = {
+            "members": [person],
+            "filing_status": {"2026": "SEPARATE"},
+        }
+        situation["households"][f"hh_{i}"] = {
+            "members": [person],
+            "state_code": {"2026": "TX"},
+        }
+    sim = Simulation(reform=INVERTED_BRACKET_REFORM, situation=situation)
+    assert np.all(sim.calculate("filing_status", 2026).decode_to_str() == "SEPARATE")
+    taxes = sim.calculate("income_tax_main_rates", 2026)
+    assert len(taxes) == len(incomes)
+    assert np.all(taxes >= 0)
 
 
 def test_amt_comparator_stays_consistent_with_preferential_income():
