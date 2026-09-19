@@ -6,11 +6,21 @@
   output:
     is_pregnant_for_medicaid: true
 
-- name: Pregnancy and over FPL limit confers ineligibility in CA
+# WIC § 15832(a)(1)(B) starts the Medi-Cal Access Program above the pregnancy
+# Medi-Cal limit, so income exactly at the limit stays in Medi-Cal.
+- name: Pregnancy at the inclusive FPL limit confers eligibility in CA
   period: 2022
   input:
     is_pregnant: true
     medicaid_income_level: 2.13
+  output:
+    is_pregnant_for_medicaid: true
+
+- name: Pregnancy and over FPL limit confers ineligibility in CA
+  period: 2022
+  input:
+    is_pregnant: true
+    medicaid_income_level: 2.14
   output:
     is_pregnant_for_medicaid: false
 
