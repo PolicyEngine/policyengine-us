@@ -1,3 +1,10 @@
+## [2.6.17] - 2026-09-19
+
+### Fixed
+
+- Break the Indiana and Kansas state supplement–Medicaid–SNAP calculation cycles from 2027 while preserving Medicaid enrollment conditions and SNAP/TANF exemptions for other adults.
+
+
 ## [2.6.16] - 2026-09-19
 
 ### Fixed
