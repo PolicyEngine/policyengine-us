@@ -22,7 +22,16 @@ class ks_sspp_eligible(Variable):
         in_medical_facility = (
             federal_la == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        on_medicaid = person("medicaid_enrolled", period.this_year)
+        # SSPP goes to SSI recipients, who are Medicaid eligible under
+        # 42 U.S.C. 1396a(a)(10)(A)(i)(II) and so fall outside the subclause
+        # (VIII) adult group, the only group the community engagement
+        # requirement applies to (1396a(xx)(9)(A)(i)). Reading Medicaid
+        # enrollment before work requirements is therefore exact, and it
+        # keeps this payment out of the Medicaid -> SNAP -> state supplement
+        # cycle that opens in 2027 (issue #9534).
+        on_medicaid = person(
+            "medicaid_enrolled_before_work_requirements", period.this_year
+        )
         age = person("age", period.this_year)
         return (
             receives_ssi & in_medical_facility & on_medicaid & (age >= p.age_threshold)

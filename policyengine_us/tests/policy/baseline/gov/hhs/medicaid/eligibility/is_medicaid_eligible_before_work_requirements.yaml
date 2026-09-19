@@ -1,0 +1,88 @@
+# Medicaid eligibility before the community engagement requirement (42 U.S.C.
+# 1396a(xx)) and any state work requirement. It differs from
+# is_medicaid_eligible only for the adult expansion group from 2027.
+
+- name: Before the requirement starts, an Indiana expansion adult is eligible either way.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    medicaid_category: ADULT
+    is_medicaid_eligible_before_work_requirements: true
+    is_medicaid_eligible: true
+
+- name: From 2027 an expansion adult with no qualifying activity fails only the work requirement.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    medicaid_category: ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    medicaid_work_requirement_eligible: false
+    is_medicaid_eligible_before_work_requirements: true
+    is_medicaid_eligible: false
+    medicaid_enrolled_before_work_requirements: true
+    medicaid_enrolled: false
+
+- name: The requirement never reaches an SSI recipient, so both concepts agree in 2027.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        is_ssi_disabled: true
+        is_disabled: true
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_work_requirement_applicable_adult: false
+    is_medicaid_eligible_before_work_requirements: true
+    is_medicaid_eligible: true
+    medicaid_enrolled_before_work_requirements: true
+    medicaid_enrolled: true
+
+- name: Enrollment before work requirements still needs take-up.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        takes_up_medicaid_if_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    is_medicaid_eligible_before_work_requirements: true
+    medicaid_enrolled_before_work_requirements: false
+
+- name: A person in no Medicaid category is ineligible before work requirements too.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 60_000
+    households:
+      household:
+        members: [person]
+        state_code: IN
+  output:
+    medicaid_category: NONE
+    is_medicaid_eligible_before_work_requirements: false
+    medicaid_enrolled_before_work_requirements: false
