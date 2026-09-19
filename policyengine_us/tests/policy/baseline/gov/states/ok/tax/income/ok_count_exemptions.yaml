@@ -31,3 +31,26 @@
     state_code: OK
   output:
     ok_count_exemptions: 6
+
+- name: Elderly single filer qualifying for special exemption when Roth conversions excluded from AGI
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 66
+    adjusted_gross_income: 20_000
+    taxable_roth_conversions: 8_000
+    state_code: OK
+  output:
+    ok_count_exemptions: 2
+
+- name: Elderly single filer exceeding AGI limit even after excluding Roth conversions
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 66
+    adjusted_gross_income: 25_000
+    taxable_roth_conversions: 8_000
+    state_code: OK
+  output:
+    ok_count_exemptions: 1
+
