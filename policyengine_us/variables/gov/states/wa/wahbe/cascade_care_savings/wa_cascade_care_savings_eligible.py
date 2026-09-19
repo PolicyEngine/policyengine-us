@@ -9,7 +9,7 @@ class wa_cascade_care_savings_eligible(Variable):
     defined_for = StateCode.WA
     reference = (
         "https://app.leg.wa.gov/rcw/default.aspx?cite=43.71.110",
-        "https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=8",
+        "https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=11",
     )
     documentation = (
         "A tax unit is eligible for Cascade Care Savings when the program is "
