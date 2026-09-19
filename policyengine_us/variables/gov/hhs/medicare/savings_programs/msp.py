@@ -10,6 +10,6 @@ class msp(Variable):
     reference = (
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
-    defined_for = "msp_eligible"
+    defined_for = "takes_up_msp_if_eligible"
 
     adds = ["msp_benefit_value"]
