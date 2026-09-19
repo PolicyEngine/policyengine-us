@@ -1,0 +1,1 @@
+Consolidate the Massachusetts CCFA `CENTER_BASED_CARE_EARLY_EDUCATION` and `CENTER_BASED_CARE_SCHOOL_AGE` care provider types into a single `CENTER_BASED_CARE` type, and the two center-based reimbursement variables into `ma_ccfa_center_based_reimbursement`, with the child's age category selecting the rate.

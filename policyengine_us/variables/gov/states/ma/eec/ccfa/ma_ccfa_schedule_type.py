@@ -16,4 +16,10 @@ class ma_ccfa_schedule_type(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
     label = "Massachusetts Child Care Financial Assistance (CCFA) schedule type"
-    reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
+    reference = (
+        "https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=1",
+        "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=120",
+    )
+    # NOTE: EEC bills school age children the before and after school rates on
+    # school days and the full day rate only on non-school days. School days
+    # are not modeled, so the schedule is an input that defaults to full day.
