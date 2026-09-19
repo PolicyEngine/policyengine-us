@@ -1,3 +1,10 @@
+## [2.6.16] - 2026-09-19
+
+### Fixed
+
+- Count permanently and totally disabled adult qualifying children with ITINs when determining Washington Working Families Tax Credit income limits.
+
+
 ## [2.6.15] - 2026-09-19
 
 ### Changed
