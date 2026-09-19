@@ -438,7 +438,7 @@
     # 24 < 25 -> HALF_TIME
     sc_ccap_time_category: HALF_TIME
 
-- name: Case 13, zero childcare hours.
+- name: Case 13, unknown hours retain full-time pricing.
   period: 2025
   input:
     people:
@@ -451,7 +451,7 @@
         state_code: SC
   output:
     # 0 -> HALF_TIME (below 25)
-    sc_ccap_time_category: HALF_TIME
+    sc_ccap_time_category: FULL_TIME
 
 # ============================================================
 # CHILD AGE BOUNDARY EDGE CASES
@@ -1166,7 +1166,7 @@
   output:
     sc_ccap_eligible_child: [false, true, true]
     # person1 (adult, 0 hrs): HT; person2 (age 0, 35 hrs): FT; person3 (age 10, 15 hrs): HT
-    sc_ccap_time_category: [HALF_TIME, FULL_TIME, HALF_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME, HALF_TIME]
     # person1 (age 35): AGE_5_12_IN_SCHOOL (adults fall into last bucket)
     sc_ccap_age_group: [AGE_5_12_IN_SCHOOL, UNDER_1, AGE_5_12_IN_SCHOOL]
     # person2: Center A+ Rural FT Under 1 = $158/wk
