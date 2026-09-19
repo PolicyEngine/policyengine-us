@@ -1,3 +1,10 @@
+## [2.6.15] - 2026-09-19
+
+### Changed
+
+- Reduce repeated model construction, run Rest tests sequentially in separate processes on one CI runner, and record complete timing and memory reports.
+
+
 ## [2.6.14] - 2026-09-19
 
 ### Fixed
