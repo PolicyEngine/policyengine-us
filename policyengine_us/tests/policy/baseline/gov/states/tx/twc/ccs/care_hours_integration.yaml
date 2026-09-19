@@ -2,7 +2,11 @@
 # Parent share: $2,000 x [0.02 + (0.0493 / 0.74) x ($2,000 / $6,136.0933 - 0.01)]
 # = $82.0969, unchanged by the care schedule. Benefits cap expenses at the rate
 # and then subtract this share. No billable days or expenses yields no benefit.
-- name: Case 1, mixed households preserve missing hours and explicit authorizations independently.
+# Alamo LCCC REG age 3: full time $43/day, part time $36.80/day.
+# Age 4: part time $36/day, blended $36.91/day.
+# Derived and explicit schedules are tested in separate populations because
+# core defaults omitted rows when any schedule is supplied in an input array.
+- name: Case 1, mixed households derive schedules from hours with a full-time fallback.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -32,8 +36,7 @@
         age: 3
         is_tax_unit_dependent: true
         childcare_attending_days_per_month: 20
-        childcare_hours_per_day: 3
-        tx_ccs_care_schedule: FULL_TIME
+        childcare_hours_per_day: 6
       person7:
         age: 30
         employment_income: 24_000
@@ -43,7 +46,6 @@
         is_tax_unit_dependent: true
         childcare_attending_days_per_month: 20
         childcare_hours_per_day: 8
-        tx_ccs_care_schedule: PART_TIME
       person9:
         age: 30
         employment_income: 24_000
@@ -53,7 +55,6 @@
         is_tax_unit_dependent: true
         childcare_attending_days_per_month: 20
         childcare_hours_per_day: 3
-        tx_ccs_care_schedule: BLENDED
       person11:
         age: 30
         employment_income: 24_000
@@ -128,37 +129,108 @@
       household1:
         members: [person1, person2]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household2:
         members: [person3, person4]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household3:
         members: [person5, person6]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household4:
         members: [person7, person8]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household5:
         members: [person9, person10]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household6:
         members: [person11, person12]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household7:
         members: [person13, person14]
         state_code: TX
-        county_fips: "48029"
+        county_fips: '48029'
       household8:
         members: [person15, person16]
         state_code: CA
-        county_fips: "06037"
+        county_fips: '06037'
   output:
-    tx_ccs_payment_rate: [0, 860, 0, 736, 0, 860, 0, 736, 0, 738.2, 0, 736, 0, 0, 0, 0]
+    tx_ccs_payment_rate: [0, 860, 0, 736, 0, 860, 0, 860, 0, 720, 0, 736, 0, 0, 0, 0]
     tx_ccs_countable_income: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 0]
     tx_ccs_copay: [82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 82.0969, 0]
-    tx_ccs: [777.9031, 653.9031, 777.9031, 653.9031, 656.1031, 653.9031, 0, 0]
+    tx_ccs: [777.9031, 653.9031, 777.9031, 777.9031, 637.9031, 653.9031, 0, 0]
+
+- name: Case 2, explicit full-time, part-time, and blended authorizations override hours.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+        tx_ccs_care_schedule: FULL_TIME
+      person3:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+        tx_ccs_care_schedule: PART_TIME
+      person5:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person6:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 3
+        tx_ccs_care_schedule: BLENDED
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit2:
+        members: [person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+      spm_unit3:
+        members: [person5, person6]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: TX
+        county_fips: '48029'
+      household2:
+        members: [person3, person4]
+        state_code: TX
+        county_fips: '48029'
+      household3:
+        members: [person5, person6]
+        state_code: TX
+        county_fips: '48029'
+  output:
+    tx_ccs_payment_rate: [0, 860, 0, 736, 0, 738.2]
+    tx_ccs_countable_income: [2_000, 2_000, 2_000]
+    tx_ccs_copay: [82.0969, 82.0969, 82.0969]
+    tx_ccs: [777.9031, 653.9031, 656.1031]

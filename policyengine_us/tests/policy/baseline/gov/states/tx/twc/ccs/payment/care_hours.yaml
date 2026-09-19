@@ -13,7 +13,7 @@
     childcare_hours_per_day: 3
   output:
     tx_ccs_payment_rate: 736
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
 
 - name: Case 2, weekly hours with known weekly days select the part-time rate.
   period: 2026-01
@@ -28,7 +28,7 @@
     childcare_days_per_week: 5
   output:
     tx_ccs_payment_rate: 736
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
 
 - name: Case 3, omitted hours retain the full-time fallback.
   period: 2026-01
@@ -40,7 +40,7 @@
     tx_ccs_workforce_board_region: ALAMO
     childcare_attending_days_per_month: 20
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 4, zero hours retain the full-time fallback.
@@ -55,7 +55,7 @@
     childcare_hours_per_day: 0
     childcare_hours_per_week: 0
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 5, just below six daily hours is part time.
@@ -69,7 +69,7 @@
     childcare_attending_days_per_month: 20
     childcare_hours_per_day: 5.99
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 736
 
 - name: Case 6, exactly six daily hours is full time.
@@ -83,7 +83,7 @@
     childcare_attending_days_per_month: 20
     childcare_hours_per_day: 6
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 7, twelve daily hours is full time.
@@ -97,7 +97,7 @@
     childcare_attending_days_per_month: 20
     childcare_hours_per_day: 12
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 8, weekly hours at the daily boundary are full time.
@@ -112,7 +112,7 @@
     childcare_hours_per_week: 30
     childcare_days_per_week: 5
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 9, weekly hours without known weekly days retain the fallback.
@@ -126,7 +126,7 @@
     childcare_attending_days_per_month: 20
     childcare_hours_per_week: 15
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 10, positive daily hours take precedence over conflicting weekly hours.
@@ -142,7 +142,7 @@
     childcare_hours_per_week: 40
     childcare_days_per_week: 5
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 736
 
 - name: Case 11, explicit full-time authorization overrides short attendance.
@@ -157,7 +157,7 @@
     childcare_hours_per_day: 3
     tx_ccs_care_schedule: FULL_TIME
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 860
 
 - name: Case 12, explicit part-time authorization overrides long attendance.
@@ -172,7 +172,7 @@
     childcare_hours_per_day: 8
     tx_ccs_care_schedule: PART_TIME
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 736
 
 - name: Case 13, explicit blended authorization preserves its own rate.
@@ -187,7 +187,7 @@
     childcare_hours_per_day: 3
     tx_ccs_care_schedule: BLENDED
   output:
-    tx_ccs_payment_care_schedule: BLENDED
+    tx_ccs_care_schedule: BLENDED
     tx_ccs_payment_rate: 738.2
 
 - name: Case 14, zero billable days preserve zero payment despite the full-time fallback.
@@ -200,10 +200,10 @@
     tx_ccs_workforce_board_region: ALAMO
     childcare_attending_days_per_month: 0
   output:
-    tx_ccs_payment_care_schedule: FULL_TIME
+    tx_ccs_care_schedule: FULL_TIME
     tx_ccs_payment_rate: 0
 
-- name: Case 15, explicit unspecified schedule derives the rate from hours.
+- name: Case 15, explicit part-time authorization is preserved with unknown hours.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -212,10 +212,9 @@
     state_code: TX
     tx_ccs_workforce_board_region: ALAMO
     childcare_attending_days_per_month: 20
-    tx_ccs_care_schedule: UNSPECIFIED
-    childcare_hours_per_day: 3
+    tx_ccs_care_schedule: PART_TIME
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 736
 
 - name: Case 16, positive daily hours do not require weekly days.
@@ -230,7 +229,7 @@
     childcare_hours_per_day: 3
     childcare_days_per_week: 0
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 736
 
 - name: Case 17, reported hours select the historical part-time rate.
@@ -250,5 +249,5 @@
     childcare_hours_per_day:
       2024: 3
   output:
-    tx_ccs_payment_care_schedule: PART_TIME
+    tx_ccs_care_schedule: PART_TIME
     tx_ccs_payment_rate: 642.6

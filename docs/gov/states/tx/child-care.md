@@ -1,8 +1,8 @@
 # Texas Child Care Services care hours
 
 Texas Child Care Services (CCS) selects provider payment rates using
-`tx_ccs_payment_care_schedule`. The model resolves this category for each child
-in the following order:
+`tx_ccs_care_schedule`. Its formula derives the category from reported hours when
+the schedule is not supplied:
 
 1. An explicit `tx_ccs_care_schedule` of `FULL_TIME`, `PART_TIME`, or `BLENDED`
    takes precedence. This represents a known schedule or authorization, which
@@ -39,18 +39,21 @@ alone do not cancel positive billable days or expenses. The existing eligibility
 expense cap, and copay formulas continue to apply. The modeled copay does not
 vary with the full-time/part-time category.
 
-## API migration
+## Batched schedule inputs
 
-`tx_ccs_care_schedule` now defaults to `UNSPECIFIED`, replacing its previous
-`FULL_TIME` input default. Existing explicit `FULL_TIME`, `PART_TIME`, and `BLENDED`
-inputs retain their meaning. Callers querying the category actually used for
-payment should request `tx_ccs_payment_care_schedule`.
+The existing `FULL_TIME`, `PART_TIME`, and `BLENDED` choices and `FULL_TIME`
+default remain unchanged. The core input builder treats a supplied variable as
+an array for the whole population. If any person supplies `tx_ccs_care_schedule`
+for a month, omitted entries are filled with `FULL_TIME` and this formula is not
+run for those entries. For example, a three-hour child without a supplied schedule
+will receive the full-time rate when batched with another child whose schedule
+is supplied explicitly.
 
-Keeping supplied and resolved categories separate allows an omitted category to
-be derived from hours even when another person in the same simulation has an
-explicit authorization. Callers should omit unknown schedules or supply
-`UNSPECIFIED`; filling missing schedules with `FULL_TIME` asserts an explicit
-authorization and takes precedence over reported hours.
+This is a remaining core input limitation, not a Texas policy rule. When using
+mixed explicit schedules in a batch, callers must supply each child's intended
+schedule, or evaluate households separately without partially populated schedule
+arrays. Mixed explicit and derived schedules remain unresolved under issue #9524;
+this Texas formula change does not claim to fix that case.
 
 This page describes the Texas implementation. Other state programs require
 separate review of their thresholds, units, and authorization rules under

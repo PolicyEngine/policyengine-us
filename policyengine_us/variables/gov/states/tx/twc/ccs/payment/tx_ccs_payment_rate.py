@@ -25,7 +25,7 @@ class tx_ccs_payment_rate(Variable):
         provider_type = person("tx_ccs_provider_type", period)
         provider_rating = person("tx_ccs_provider_rating", period)
         age_category = person("tx_ccs_child_age_category", period)
-        care_schedule = person("tx_ccs_payment_care_schedule", period)
+        care_schedule = person("tx_ccs_care_schedule", period)
 
         attending_days_per_month = person(
             "childcare_attending_days_per_month", period.this_year
