@@ -18,9 +18,11 @@ class pa_ccw_time_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.pa.dhs.ccw
+        # Zero is also the input default for unknown hours. Use full-time
+        # pricing; attendance and expense rules still determine payment.
         hours_per_day = person("childcare_hours_per_day", period.this_year)
         return where(
-            hours_per_day >= p.full_time_hours_per_day,
+            (hours_per_day == 0) | (hours_per_day >= p.full_time_hours_per_day),
             PACCWTimeCategory.FULL_TIME,
             PACCWTimeCategory.PART_TIME,
         )

@@ -24,7 +24,7 @@
   output:
     wy_ccap_day_length: [PART_DAY, PART_DAY, FULL_DAY, FULL_DAY]
 
-- name: Case 2, with no reported care hours the zero default is a part day.
+- name: Case 2, unknown hours retain full-time pricing.
   period: 2026-01
   input:
     people:
@@ -35,13 +35,10 @@
         members: [person1]
         state_code: WY
   output:
-    wy_ccap_day_length: [PART_DAY]
+    wy_ccap_day_length: [FULL_DAY]
 
-# Because childcare_hours_per_day defaults to zero, the formula always returns
-# PART_DAY when hours are unreported, so the FULL_DAY default_value is never
-# the observed output inside Wyoming. Outside Wyoming defined_for masks the
-# formula and the variable reports its default, which is what pins it here: if
-# the default_value were changed, this case would fail.
+# Both the formula and metadata default retain FULL_DAY for unknown hours.
+# Outside Wyoming, defined_for returns only the metadata default.
 - name: Case 3, outside Wyoming defined_for masks the formula and the FULL_DAY default shows.
   period: 2026-01
   input:

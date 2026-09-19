@@ -59,7 +59,7 @@
   output:
     pa_ccw_time_category: [PART_TIME]
 
-- name: Case 5, zero hours per day default part time.
+- name: Case 5, unknown hours retain full-time pricing.
   period: 2025-01
   input:
     people:
@@ -70,5 +70,5 @@
         members: [person1]
         state_code: PA
   output:
-    # Default childcare_hours_per_day = 0 -> 0 < 5 -> PART_TIME
-    pa_ccw_time_category: [PART_TIME]
+    # Zero is the unknown-hours input default, so use FULL_TIME.
+    pa_ccw_time_category: [FULL_TIME]
