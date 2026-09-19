@@ -142,3 +142,61 @@
   output:
     pays_aca_premium: [true, true, true, true, false]
     is_aca_ptc_eligible: [false, false, false, false, false]
+
+# The coverage gap: under the premium tax credit's floor with no Medicaid
+# pathway, nobody buys the full-price plan (policyengine-us #9472).
+- name: An adult in the coverage gap pays no premium (under the PTC floor, no Medicaid)
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: At the floor the premium is paid and subsidized
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 1.0
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
+- name: Before 2026 a lawfully present immigrant under the floor is not in the gap (36B(c)(1)(B))
+  period: 2025
+  input:
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
+- name: From 2026 the same immigrant is in the gap, the exception repealed by P.L. 119-21
+  period: 2026
+  input:
+    age: 40
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 0.5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
