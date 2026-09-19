@@ -56,7 +56,7 @@
   output:
     nj_ccap_time_category: PART_TIME
 
-- name: Case 5, part time zero hours per week.
+- name: Case 5, unknown hours retain full-time pricing.
   period: 2026-01
   input:
     people:
@@ -67,7 +67,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_ccap_time_category: PART_TIME
+    nj_ccap_time_category: FULL_TIME
 
 - name: Case 6, full time 40 hours per week.
   period: 2026-01

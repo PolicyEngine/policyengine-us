@@ -66,7 +66,7 @@
   output:
     sc_ccap_time_category: [FULL_TIME]
 
-- name: Case 6, zero hours defaults to half time.
+- name: Case 6, unknown hours retain full-time pricing.
   period: 2025
   input:
     people:
@@ -77,4 +77,4 @@
         members: [person1]
         state_code: SC
   output:
-    sc_ccap_time_category: [HALF_TIME]
+    sc_ccap_time_category: [FULL_TIME]

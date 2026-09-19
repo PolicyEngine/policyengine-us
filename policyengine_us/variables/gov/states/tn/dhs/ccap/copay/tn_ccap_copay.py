@@ -27,7 +27,18 @@ class tn_ccap_copay(Variable):
 
         person = spm_unit.members
         is_eligible_child = person("tn_ccap_eligible_child", period)
-        in_care = person("childcare_hours_per_week", period.this_year) > 0
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
         is_paying_child = is_eligible_child & in_care
         n_paying = spm_unit.sum(is_paying_child)
 
