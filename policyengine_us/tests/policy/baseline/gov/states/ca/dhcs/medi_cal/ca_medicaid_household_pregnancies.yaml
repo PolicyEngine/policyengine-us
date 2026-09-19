@@ -1,0 +1,465 @@
+# DHCS ACWDL 20-10, pp. 3-5; MAGI Household Size Flowchart, steps 7-8.
+- name: California joint filers and dependent count twins once in each household
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+      person2:
+        age: 35
+        current_pregnancies: 2
+      person3:
+        age: 8
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      marital_unit:
+        members:
+        - person1
+        - person2
+      marital_unit2:
+        members:
+        - person3
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 5
+    - 5
+    - 5
+    ca_medicaid_household_pregnancies:
+    - 2
+    - 2
+    - 2
+- name: California counts a pregnant dependent for both parents and the dependent
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+      person2:
+        age: 35
+      person3:
+        age: 17
+        current_pregnancies: 1
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      marital_unit:
+        members:
+        - person1
+        - person2
+      marital_unit2:
+        members:
+        - person3
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 4
+    - 4
+    - 4
+    ca_medicaid_household_pregnancies:
+    - 1
+    - 1
+    - 1
+- name: California counts all expected children across multiple pregnant members
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+      person2:
+        age: 35
+        current_pregnancies: 1
+      person3:
+        age: 17
+        current_pregnancies: 2
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      marital_unit:
+        members:
+        - person1
+        - person2
+      marital_unit2:
+        members:
+        - person3
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 6
+    - 6
+    - 6
+    ca_medicaid_household_pregnancies:
+    - 3
+    - 3
+    - 3
+- name: California separately filing parents with pregnancy, married=False
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+        own_children_in_household: 1
+      person2:
+        age: 35
+        own_children_in_household: 1
+        current_pregnancies: 1
+        employment_income: 10000
+      person3:
+        age: 8
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      person1:
+        members:
+        - person1
+      person2:
+        members:
+        - person2
+      person3:
+        members:
+        - person3
+    tax_units:
+      tax1:
+        members:
+        - person1
+        - person3
+        tax_unit_is_filer: true
+        cohabitating_spouses: false
+      tax2:
+        members:
+        - person2
+        tax_unit_is_filer: true
+        cohabitating_spouses: false
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 2
+    - 2
+    - 4
+    ca_medicaid_household_pregnancies:
+    - 0
+    - 1
+    - 1
+- name: California separately filing parents with pregnancy, married=True
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+        own_children_in_household: 1
+      person2:
+        age: 35
+        own_children_in_household: 1
+        current_pregnancies: 1
+        employment_income: 10000
+      person3:
+        age: 8
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      marital_unit:
+        members:
+        - person1
+        - person2
+      marital_unit2:
+        members:
+        - person3
+    tax_units:
+      tax1:
+        members:
+        - person1
+        - person3
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      tax2:
+        members:
+        - person2
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 4
+    - 3
+    - 4
+    ca_medicaid_household_pregnancies:
+    - 1
+    - 1
+    - 1
+- name: California does not count an unrelated pregnant roommate
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+        own_children_in_household: 1
+      person2:
+        age: 35
+        current_pregnancies: 1
+      person3:
+        age: 8
+    families:
+      family1:
+        members:
+        - person1
+        - person3
+      family2:
+        members:
+        - person2
+    marital_units:
+      person1:
+        members:
+        - person1
+      person2:
+        members:
+        - person2
+      person3:
+        members:
+        - person3
+    tax_units:
+      tax1:
+        members:
+        - person1
+        - person3
+        tax_unit_is_filer: true
+      tax2:
+        members:
+        - person2
+        tax_unit_is_filer: true
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size:
+    - 2
+    - 2
+    - 2
+    ca_medicaid_household_pregnancies:
+    - 0
+    - 1
+    - 0
+- name: California counts a known externally claimed pregnant dependent without doubling her pregnancy
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 80000
+      dependent:
+        age: 17
+        current_pregnancies: 1
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      claimant:
+        members:
+        - parent
+        tax_unit_id: 1
+      dependent_return:
+        members:
+        - dependent
+        tax_unit_id: 2
+    families:
+      one:
+        members:
+        - parent
+      two:
+        members:
+        - dependent
+    marital_units:
+      one:
+        members:
+        - parent
+      two:
+        members:
+        - dependent
+    households:
+      one:
+        members:
+        - parent
+        state_code: CA
+      two:
+        members:
+        - dependent
+        state_code: CA
+  output:
+    medicaid_household_size:
+    - 3
+    - 3
+    ca_medicaid_household_pregnancies:
+    - 1
+    - 1
+- name: Non-California pregnancy household treatment is preserved
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80000
+      person2:
+        age: 35
+        current_pregnancies: 1
+      person3:
+        age: 8
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    marital_units:
+      marital_unit:
+        members:
+        - person1
+        - person2
+      marital_unit2:
+        members:
+        - person3
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: KS
+  output:
+    medicaid_household_size:
+    - 3
+    - 4
+    - 3
+    ca_medicaid_household_pregnancies:
+    - 0
+    - 0
+    - 0

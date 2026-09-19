@@ -6,6 +6,9 @@ class CHIPCategory(Enum):
     PREGNANT_STANDARD = "Pregnant - Standard"
     PREGNANT_FCEP = "Pregnant - FCEP"
     NONE = "None"
+    # Added after NONE so that the existing enum indices (and tests that
+    # assert them numerically) are unchanged.
+    CHILD_CCHIP = "Child - California CCHIP"
 
 
 class chip_category(Variable):
@@ -28,17 +31,24 @@ class chip_category(Variable):
             "is_chip_eligible_standard_pregnant_person", period
         )
         is_chip_fcep_eligible_person = person("is_chip_fcep_eligible_person", period)
+        # California's County Children's Health Initiative Program (CCHIP) is a
+        # separate CHIP population for children in three counties; California
+        # has no statewide separate CHIP for children, so it never overlaps CHILD.
+        ca_cchip_eligible = person("ca_cchip_eligible", period)
 
         # Use select to return the appropriate category
-        # If eligible under multiple categories, prioritize child, then standard pregnant, then FCEP
+        # If eligible under multiple categories, prioritize child, then CCHIP,
+        # then standard pregnant, then FCEP
         return select(
             [
                 is_child_eligible,
+                ca_cchip_eligible,
                 is_chip_eligible_standard_pregnant_person,
                 is_chip_fcep_eligible_person,
             ],
             [
                 CHIPCategory.CHILD,
+                CHIPCategory.CHILD_CCHIP,
                 CHIPCategory.PREGNANT_STANDARD,
                 CHIPCategory.PREGNANT_FCEP,
             ],

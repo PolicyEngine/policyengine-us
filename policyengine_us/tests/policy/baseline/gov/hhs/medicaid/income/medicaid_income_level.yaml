@@ -107,7 +107,7 @@
     medicaid_income_level: [0.774593, 0.978474, 0.774593]
   absolute_error_margin: 0.001
 
-- name: Case 4, the pregnant applicant gets the pregnancy household-size adjustment but the spouse does not by default.
+- name: Case 4, the existing Kansas calculation adjusts only the pregnant applicant's household size.
   period: 2024
   input:
     people:
@@ -126,6 +126,7 @@
       household:
         members: [person1, person2]
         state_group_str: CONTIGUOUS_US
+        state_code: KS
     families:
       family:
         members: [person1, person2]
