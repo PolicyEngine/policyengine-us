@@ -1,3 +1,10 @@
+## [2.6.13] - 2026-09-19
+
+### Fixed
+
+- Include the Delaware child and dependent care credit in the state CDCC aggregate for 2021 and 2022.
+
+
 ## [2.6.12] - 2026-09-19
 
 ### Fixed
