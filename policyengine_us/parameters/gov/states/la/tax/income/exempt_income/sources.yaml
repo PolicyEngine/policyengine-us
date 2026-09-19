@@ -5,7 +5,11 @@ values:
     # Louisiana State Employees’ Retirement Benefits 02E
     # Louisiana State Teachers’ Retirement Benefits 03E
     - military_retirement_pay # 04E
-    # Other Retirement Benefits 05E
+    # Other Retirement Benefits 05E (federal civil service, municipal, etc.)
+    # Proxy note: Schedule E exempts specific Louisiana state/municipal systems and federal
+    # retirement systems (codes 02E, 03E, 05E). Out-of-state public pensions are not exempt.
+    # PolicyEngine treats taxable_public_pension_income as exempt public pensions.
+    - taxable_public_pension_income
     - la_retirement_exemption_person # 06E
     - taxable_social_security # 07E
     # Native American Income 08E

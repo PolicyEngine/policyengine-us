@@ -1,0 +1,38 @@
+- name: Louisiana public pension is exempt from income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: 1
+        taxable_public_pension_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 0  # Under 65, no private retirement exemption
+    la_agi_exempt_income: 25_000
+
+- name: Louisiana public pension does not consume the $6,000 retirement exemption cap
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: 1
+        taxable_public_pension_income: 25_000
+        taxable_private_pension_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 6_000  # Capped at $6,000 for private pension
+    la_agi_exempt_income: 31_000  # 25,000 public + 6,000 private
