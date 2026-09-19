@@ -1,3 +1,14 @@
+## [2.6.11] - 2026-09-19
+
+### Changed
+
+- Consolidate the Massachusetts CCFA `CENTER_BASED_CARE_EARLY_EDUCATION` and `CENTER_BASED_CARE_SCHOOL_AGE` care provider types into a single `CENTER_BASED_CARE` type, and the two center-based reimbursement variables into `ma_ccfa_center_based_reimbursement`, with the child's age category selecting the rate.
+
+### Fixed
+
+- Stop paying $0 for Massachusetts CCFA children under school age when no care provider type is given, avoid a second part-time reduction on before and after school rates, and assume full-time care when daily hours are unreported unless a school-age family child care before/after schedule establishes part-day care. Count a before or after school schedule as part-time care for the parent fee only where the rate chart or policy guide prices that care as part-day, so the fee and the reimbursement agree. Date the FY2027 informal child care reimbursement rates to July 2026.
+
+
 ## [2.6.10] - 2026-09-18
 
 ### Fixed
