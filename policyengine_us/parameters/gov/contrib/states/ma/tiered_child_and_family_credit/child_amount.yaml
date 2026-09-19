@@ -1,0 +1,25 @@
+description: Massachusetts provides the following amount per dependent child under the tiered child and family tax credit, based on age.
+brackets:
+  - threshold:
+      2027-01-01: 0
+    amount:
+      2027-01-01: 610
+  - threshold:
+      2027-01-01: 6
+    amount:
+      2027-01-01: 610
+  - threshold:
+      2027-01-01: 13
+    amount:
+      2027-01-01: 170
+  - threshold:
+      2027-01-01: 19
+    amount:
+      2027-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: year
+  label: Massachusetts tiered child and family tax credit child amount by age
