@@ -1,0 +1,271 @@
+# Verified court-supervision pathways and independent eligibility requirements.
+- name: GA care-specific court order age boundaries
+  period: 2026-09
+  input:
+    state_code:
+      2026: [GA, GA, GA, GA, GA, GA]
+    age:
+      2026: [12, 13, 17, 18, 19, 40]
+    requires_childcare_under_court_order:
+      2026: [true, true, true, true, true, true]
+  output:
+    ga_caps_eligible_child: [true, true, true, false, false, false]
+    is_disabled: false
+    receives_or_needs_protective_services: false
+
+- name: GA general court supervision alone does not establish a care order
+  period: 2026-09
+  input:
+    state_code:
+      2026: [GA, GA, GA, GA]
+    age:
+      2026: [12, 13, 17, 18]
+    is_under_court_supervision:
+      2026: [true, true, true, true]
+  output:
+    ga_caps_eligible_child: [true, false, false, false]
+    requires_childcare_under_court_order: false
+
+- name: GA care order does not bypass immigration requirement
+  period: 2026-09
+  input:
+    state_code:
+      2026: GA
+    age:
+      2026: 17
+    requires_childcare_under_court_order:
+      2026: true
+    immigration_status:
+      2026: UNDOCUMENTED
+  output:
+    ga_caps_eligible_child: false
+
+# $12,000 annual income at 50-100% FPG: floor(12,000 * 5% / 52) = $11/week.
+# Monthly fee = 11 * 52/12 = $47.67; $100 expenses - $47.67 = $52.33.
+- name: GA supervised teenager receives ordinary reimbursement net of the five-percent family fee
+  period: 2026-09
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent:
+        age:
+          2026: 35
+        employment_income:
+          2026: 12000
+        weekly_hours_worked_before_lsr:
+          2026: 25
+      child:
+        age:
+          2026: 17
+        is_tax_unit_dependent:
+          2026: true
+        is_in_k12_school:
+          2026: true
+        childcare_hours_per_week:
+          2026: 30
+        childcare_hours_per_day:
+          2026: 6
+        childcare_days_per_week:
+          2026: 5
+        childcare_attending_days_per_month:
+          2026: 20
+        pre_subsidy_childcare_expenses:
+          2026: 1200
+        requires_childcare_under_court_order:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 1200
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: GA
+        county_str:
+          2026: FULTON_COUNTY_GA
+  output:
+    ga_caps_eligible_child: [false, true]
+    ga_caps_eligible: true
+    ga_caps: 52.333333
+    ga_caps_family_fee: 47.666667
+
+- name: GA court pathway does not waive income requirements
+  period: 2026-09
+  input:
+    people:
+      parent:
+        age:
+          2026: 35
+        employment_income:
+          2026: 500000
+        weekly_hours_worked_before_lsr:
+          2026: 25
+      child:
+        age:
+          2026: 17
+        is_tax_unit_dependent:
+          2026: true
+        is_in_k12_school:
+          2026: true
+        childcare_hours_per_week:
+          2026: 30
+        childcare_hours_per_day:
+          2026: 6
+        childcare_days_per_week:
+          2026: 5
+        childcare_attending_days_per_month:
+          2026: 20
+        pre_subsidy_childcare_expenses:
+          2026: 1200
+        requires_childcare_under_court_order:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 1200
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: GA
+        county_str:
+          2026: FULTON_COUNTY_GA
+  output:
+    ga_caps_income_eligible: false
+    ga_caps: 0
+
+- name: GA court pathway does not waive parent activity requirements
+  period: 2026-09
+  input:
+    people:
+      parent:
+        age:
+          2026: 35
+        employment_income:
+          2026: 0
+        weekly_hours_worked_before_lsr:
+          2026: 0
+      child:
+        age:
+          2026: 17
+        is_tax_unit_dependent:
+          2026: true
+        is_in_k12_school:
+          2026: true
+        childcare_hours_per_week:
+          2026: 30
+        childcare_hours_per_day:
+          2026: 6
+        childcare_days_per_week:
+          2026: 5
+        childcare_attending_days_per_month:
+          2026: 20
+        pre_subsidy_childcare_expenses:
+          2026: 1200
+        requires_childcare_under_court_order:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 1200
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: GA
+        county_str:
+          2026: FULTON_COUNTY_GA
+  output:
+    ga_caps_activity_eligible: false
+    ga_caps: 0
+
+- name: GA eligible supervised child without care receives zero
+  period: 2026-09
+  input:
+    people:
+      parent:
+        age:
+          2026: 35
+        employment_income:
+          2026: 12000
+        weekly_hours_worked_before_lsr:
+          2026: 25
+      child:
+        age:
+          2026: 17
+        is_tax_unit_dependent:
+          2026: true
+        is_in_k12_school:
+          2026: true
+        childcare_hours_per_week:
+          2026: 0
+        childcare_hours_per_day:
+          2026: 0
+        childcare_days_per_week:
+          2026: 0
+        childcare_attending_days_per_month:
+          2026: 0
+        pre_subsidy_childcare_expenses:
+          2026: 0
+        requires_childcare_under_court_order:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: GA
+        county_str:
+          2026: FULTON_COUNTY_GA
+  output:
+    ga_caps: 0
+
+- name: GA sibling supervision does not inherit another child care order
+  period: 2026-09
+  input:
+    people:
+      parent:
+        age:
+          2026: 35
+        is_under_court_supervision:
+          2026: true
+      qualifying:
+        age:
+          2026: 17
+        requires_childcare_under_court_order:
+          2026: true
+      sibling:
+        age:
+          2026: 17
+        is_under_court_supervision:
+          2026: true
+    spm_units:
+      spm_unit:
+        members: &id001 [parent, qualifying, sibling]
+    households:
+      household:
+        members: *id001
+        state_code:
+          2026: GA
+  output:
+    ga_caps_eligible_child: [false, true, false]
