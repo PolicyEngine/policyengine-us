@@ -5,20 +5,20 @@
       person1:
         is_tax_unit_head: true
         social_security: 20_000
-        pension_income: 1_000
+        taxable_pension_income: 1_000
         military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
-        pension_income: 1_000
+        taxable_pension_income: 1_000
         military_retirement_pay: 0
       person3:
         social_security: 0 
-        pension_income: 0
+        taxable_pension_income: 0
         military_retirement_pay: 0
       person4:
         social_security: 0
-        pension_income: 0
+        taxable_pension_income: 0
         military_retirement_pay: 0
     tax_units:
       tax_unit:
@@ -41,20 +41,20 @@
       person1:
         is_tax_unit_head: true
         social_security: 20_000
-        pension_income: 1_000
+        taxable_pension_income: 1_000
         military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
-        pension_income: 6_000
+        taxable_pension_income: 6_000
         military_retirement_pay: 0
       person3:
         social_security: 0
-        pension_income: 0
+        taxable_pension_income: 0
         military_retirement_pay: 0
       person4:
         social_security: 0
-        pension_income: 0
+        taxable_pension_income: 0
         military_retirement_pay: 0
     tax_units:
       tax_unit:
@@ -77,12 +77,12 @@
       person1:
         is_tax_unit_head: true
         social_security: 20_000
-        pension_income: 1_000
+        taxable_pension_income: 1_000
         military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
-        pension_income: 6_000
+        taxable_pension_income: 6_000
         military_retirement_pay: 0
     tax_units:
       tax_unit:
@@ -105,7 +105,7 @@
       person1:
         is_tax_unit_head: true
         social_security: 20_000
-        pension_income: 1_000
+        taxable_pension_income: 1_000
         military_retirement_pay: 1_000
     tax_units:
       tax_unit:
@@ -169,7 +169,7 @@
         is_tax_unit_head: true
         age: 67
         social_security: 0
-        pension_income: 50_000
+        taxable_pension_income: 50_000
         military_retirement_pay: 40_000
         taxable_interest_income: 300_000
     tax_units:
@@ -202,9 +202,9 @@
         is_tax_unit_head: true
         age: 67
         social_security: 0
-        pension_income: 60_000
+        taxable_pension_income: 60_000
         military_retirement_pay: 0
-        taxable_interest_income: 150_000
+        taxable_interest_income: 90_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -217,7 +217,8 @@
       spm_unit:
         members: [person1]
   output:
-    # Federal AGI = $150,000; MFS threshold $125k, width $50k.
+    # Federal AGI = $60,000 pension + $90,000 interest = $150,000; MFS
+    # threshold $125k, width $50k.
     # Excess = $25,000; fraction = 0.5.
     # Pre-phaseout P5 = min($60,000, $48,216) = $48,216.
     # Allowed = $48,216 * 0.5 = $24,108.
@@ -233,13 +234,13 @@
         is_tax_unit_head: true
         age: 67
         social_security: 0
-        pension_income: 30_000
+        taxable_pension_income: 30_000
       person2:
         is_tax_unit_spouse: true
         age: 67
         social_security: 0
-        pension_income: 30_000
-        taxable_interest_income: 275_000
+        taxable_pension_income: 30_000
+        taxable_interest_income: 215_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -252,7 +253,8 @@
       spm_unit:
         members: [person1, person2]
   output:
-    # Federal AGI = $275,000 (interest); JOINT threshold $250k, width $100k.
+    # Federal AGI = $60,000 pensions + $215,000 interest = $275,000; JOINT
+    # threshold $250k, width $100k.
     # Excess = $25,000; fraction = 0.25.
     # Per-person non-military P5 = min($30,000, $48,216) = $30,000.
     # Sum over head and spouse = $60,000.
@@ -310,4 +312,58 @@
         members: [person1]
   output:
     me_pension_income_deduction: 0
+
+- name: Maine 2026 pension income deduction uses the 2026 cap of 49,824 (#9535)
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 40_000
+        taxable_private_pension_income: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Cap less Social Security: 49,824 - 40,000 = 9,824, below the pension.
+    me_pension_income_deduction: 9_824
+
+- name: Maine pension income deduction excludes pension income that is not in federal AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        tax_exempt_private_pension_income: 30_000
+        taxable_interest_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 36 M.R.S. 5122(2)(M-2)(1)(a)(i) deducts only benefits included in
+    # federal adjusted gross income.
+    adjusted_gross_income: 60_000
+    me_pension_income_deduction: 0
+    me_agi: 60_000
 
