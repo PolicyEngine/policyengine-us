@@ -1,3 +1,10 @@
+## [2.6.19] - 2026-09-20
+
+### Fixed
+
+- Correct the 2024 CalEITC exclusive income limit to $31,951, including its effect on young child and foster youth tax credit eligibility. Clarify income-limit descriptions and replace broken foster youth tax credit statutory references.
+
+
 ## [2.6.18] - 2026-09-20
 
 ### Fixed
