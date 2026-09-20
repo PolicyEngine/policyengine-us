@@ -1,0 +1,137 @@
+# Missing-hours convention: zero is the numeric default, not evidence of part-time care.
+# Benefit expectations reuse the documented full-time arithmetic in ../integration.yaml.
+- name: Omitted hours use the full-time fallback for classification.
+  period: 2024-01
+  input:
+    state_code: KY
+    childcare_attending_days_per_month: 20
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Zero is unknown while positive hours retain the daily threshold in one population.
+  period: 2024-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_day: 3
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_day: 4.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_day: 5
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: KY
+  output:
+    ky_ccap_day_length:
+    - FULL_DAY
+    - PART_DAY
+    - PART_DAY
+    - FULL_DAY
+    - FULL_DAY
+- name: Explicit part-time schedule overrides reported full-time hours.
+  period: 2024-01
+  input:
+    state_code: KY
+    childcare_hours_per_day: 8
+    ky_ccap_day_length: PART_DAY
+  output:
+    ky_ccap_day_length: PART_DAY
+- name: Billable care with unknown hours uses the full-time rate and copay.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_eligible_child:
+    - false
+    - true
+    ky_ccap_income_eligible: true
+    ky_ccap_activity_eligible: true
+    ky_ccap_eligible: true
+    ky_ccap_rate_region: REGION_4
+    ky_ccap_child_age_category:
+    - SCHOOL_AGE
+    - PRESCHOOL
+    ky_ccap_daily_rate:
+    - 0
+    - 41
+    ky_ccap_copay: 242
+    ky_ccap: 660
+- name: Zero hours, care days, and expenses do not create a subsidy.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 30
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 0
+        childcare_hours_per_day: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap: 0
