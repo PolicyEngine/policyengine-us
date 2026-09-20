@@ -7,11 +7,12 @@ class id_iccp_eligible(Variable):
     definition_period = MONTH
     label = "Eligible for the Idaho Child Care Program"
     defined_for = StateCode.ID
-    reference = "https://files.dfm.idaho.gov/dfm-admin-website/rules/current/16/160612.pdf#page=12"
+    reference = "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=12"
 
     def formula(spm_unit, period, parameters):
         # Intentional limitations: we don't track these ICCP pathways at the
-        # moment - the incapacitated-parent activity exemption
+        # moment - court-ordered disability child eligibility (IDAPA
+        # 16.06.12.105.03.b), the incapacitated-parent activity exemption
         # (106), the 3-month continuation after a qualifying activity ceases
         # (202), the child immunization requirement (105.01), and the
         # graduated phase-out for income between 175% FPG and the State Plan

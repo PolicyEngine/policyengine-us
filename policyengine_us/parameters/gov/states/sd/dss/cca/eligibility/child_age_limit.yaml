@@ -1,7 +1,7 @@
 description: South Dakota limits eligibility to children below this age under the Child Care Assistance program.
 
 # A child is eligible if under age 13, or turned 13 during the current
-# eligibility period (BEES Manual, Section 4.3). Dated to the modeled program
+# eligibility period (Subsidy Manual, Section 3). Dated to the modeled program
 # start month (2026-08-01; the weekly rate era takes effect 8/3/2026).
 values:
   2026-08-01: 13
@@ -11,5 +11,5 @@ metadata:
   period: year
   label: South Dakota CCA child age limit
   reference:
-    - title: South Dakota Child Care Assistance BEES Manual, Section 4.3 Age of Child
-      href: https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=18
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 3 Eligibility Criteria
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=9

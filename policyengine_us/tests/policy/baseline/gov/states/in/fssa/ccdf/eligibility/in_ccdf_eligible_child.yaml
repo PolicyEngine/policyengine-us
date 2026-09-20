@@ -1,5 +1,5 @@
 # Tests for in_ccdf_eligible_child (Person, MONTH, bool).
-# Special-status applicants must be under 18; active awards continue under 19.
+# Eligible = age < limit (13, or 19 if disabled)
 # AND US citizen / qualified non-citizen (federal is_ccdf_immigration_eligible_child).
 # Policy Manual Section 1.6 defines an eligible child by age, custody, and
 # relationship to the applicant -- NOT by tax-unit dependency -- so the formula
@@ -48,7 +48,7 @@
   output:
     in_ccdf_eligible_child: true
 
-- name: Case 4, age 18 continuing an award for special needs, eligible.
+- name: Case 4, age 18 with special needs, eligible (under 19 extension).
   period: 2026-01
   input:
     people:
@@ -56,7 +56,6 @@
         age: 18
         is_tax_unit_dependent: true
         is_disabled: true
-        in_ccdf_has_active_under_18_award: true
     households:
       household:
         members: [person1]

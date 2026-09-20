@@ -7,18 +7,13 @@ class id_iccp_eligible_child(Variable):
     definition_period = MONTH
     label = "Child eligible for the Idaho Child Care Program"
     defined_for = StateCode.ID
-    reference = "https://files.dfm.idaho.gov/dfm-admin-website/rules/current/16/160612.pdf#page=12"
+    reference = "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=12"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.id.dhw.iccp.age_threshold
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        supervision_plan = person(
-            "id_iccp_has_constant_supervision_plan", period.this_year
-        )
-        age_eligible = (age < p.child) | (
-            (is_disabled | supervision_plan) & (age < p.disabled_child)
-        )
+        age_eligible = (age < p.child) | (is_disabled & (age < p.disabled_child))
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )

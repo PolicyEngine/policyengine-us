@@ -13,21 +13,18 @@ class wy_ccap_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        # Manual 601.B.1 requires a court order specifying that child care
-        # is necessary. General court supervision does not establish this.
-        # Retain the existing annual age and exclusive special-age ceiling.
+        # Rules Ch. 1 §8(e)(i)(A): a child must be under 13, or over 13 with
+        # special needs, a developmental delay, or an inability to care for
+        # themselves. The Rules state no upper age, so the 18 comes from CCDF
+        # Plan §2.2.1.b. Court supervision isn't tracked, so the extension
+        # applies only via the special-needs branch.
         p = parameters(period).gov.states.wy.dfs.ccap.eligibility
         age = person("age", period.this_year)
         has_special_need = person("is_disabled", period.this_year) | person(
             "has_developmental_delay", period.this_year
         )
-        court_ordered_care = person(
-            "requires_childcare_under_court_order", period.this_year
-        )
         age_limit = where(
-            has_special_need | court_ordered_care,
-            p.special_needs_child_age_limit,
-            p.child_age_limit,
+            has_special_need, p.special_needs_child_age_limit, p.child_age_limit
         )
         age_eligible = age < age_limit
         # §8(e)(ii): the eligible child must be a U.S. citizen or legally

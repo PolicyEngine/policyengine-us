@@ -51,9 +51,6 @@ class wy_ccap_income_eligible(Variable):
         # applies the same simplification and quantifies its effect. The
         # activity and child tests continue to apply (Plan §2.2.2.h, Rules
         # §8(e)(i)(J)).
-        # An individual court order for care does not establish that the
-        # family qualifies for a case-by-case protective-services waiver.
-        # Keep that determination in the separate protective-services input.
         person = spm_unit.members
         income_waived = spm_unit.any(
             person("is_in_foster_care", period)
