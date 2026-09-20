@@ -1,0 +1,196 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: MO court supervision age boundaries and default status
+  period: 2025-01
+  input:
+    state_code: [MO, MO, MO, MO, MO, MO, MO, MO]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+    is_tax_unit_dependent: [true, true, true, true, true, true, true, false]
+  output:
+    mo_ccs_eligible_child: [true, false, true, true, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: MO court supervision does not bypass child immigration eligibility
+  period: 2025-01
+  input:
+    state_code: MO
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+    is_tax_unit_dependent: true
+  output:
+    mo_ccs_eligible_child: false
+
+- name: MO court supervision receives special-needs reimbursement and sliding-fee treatment
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_maximum_daily_benefit:
+    - 0
+    - 89.4625
+    mo_ccs_copay: 0
+    mo_ccs: 1789.25
+    mo_ccs_special_needs:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+
+- name: MO court supervision does not waive the activity test
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+    mo_ccs_eligible: false
+    mo_ccs: 0
+- name: MO court supervision does not waive the income test
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+    mo_ccs_eligible: false
+    mo_ccs: 0
+
+- name: MO age-18 court-supervised child must still attend school
+  period: 2025-01
+  input:
+    state_code:
+    - MO
+    - MO
+    - MO
+    age:
+    - 18
+    - 18
+    - 19
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    is_tax_unit_dependent:
+    - true
+    - true
+    - true
+    is_in_secondary_school:
+    - true
+    - false
+    - true
+  output:
+    mo_ccs_eligible_child:
+    - true
+    - false
+    - false

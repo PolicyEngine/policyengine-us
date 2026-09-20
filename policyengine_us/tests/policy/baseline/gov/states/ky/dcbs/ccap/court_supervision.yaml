@@ -1,0 +1,116 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: KY court supervision age boundaries and default status
+  period: 2025-01
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY, KY, KY]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    ky_ccap_eligible_child: [true, false, true, true, true, false, false, false]
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: KY court supervision does not bypass child immigration eligibility
+  period: 2025-01
+  input:
+    state_code: KY
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ky_ccap_eligible_child: false
+
+- name: KY 2024-01 court-supervision supplement is limited to ages 13 through 18
+  period: 2024-01
+  input:
+    state_code:
+    - KY
+    - KY
+    - KY
+    - KY
+    - KY
+    age:
+    - 12
+    - 13
+    - 18
+    - 19
+    - 13
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    - true
+    - false
+    ky_ccap_daily_rate:
+    - 30
+    - 30
+    - 30
+    - 30
+    - 30
+    pre_subsidy_childcare_expenses:
+    - 24000
+    - 24000
+    - 24000
+    - 24000
+    - 24000
+    childcare_attending_days_per_month:
+    - 20
+    - 20
+    - 20
+    - 20
+    - 20
+  output:
+    ky_ccap_daily_benefit:
+    - 30
+    - 31
+    - 31
+    - 0
+    - 0
+
+- name: KY 2025-01 court-supervision supplement is limited to ages 13 through 18
+  period: 2025-01
+  input:
+    state_code:
+    - KY
+    - KY
+    - KY
+    - KY
+    - KY
+    age:
+    - 12
+    - 13
+    - 18
+    - 19
+    - 13
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    - true
+    - false
+    ky_ccap_daily_rate:
+    - 30
+    - 30
+    - 30
+    - 30
+    - 30
+    pre_subsidy_childcare_expenses:
+    - 24000
+    - 24000
+    - 24000
+    - 24000
+    - 24000
+    childcare_attending_days_per_month:
+    - 20
+    - 20
+    - 20
+    - 20
+    - 20
+  output:
+    ky_ccap_daily_benefit:
+    - 30
+    - 35
+    - 35
+    - 0
+    - 0

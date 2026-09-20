@@ -8,18 +8,24 @@ class ut_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.UT
     reference = (
-        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-702"
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-702",
+        "https://jobs.utah.gov/occ/provider/r986700.pdf#page=2",
+        "https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ut.dwf.ccap.eligibility
         age = person("age", period.this_year)
-        # Children with special needs (R986-700-717) or under court
-        # supervision remain eligible through the higher age limit
-        # (R986-700-702(5)(b)); is_disabled proxies special-needs status and
-        # the court-supervision pathway is not tracked.
+        # R986-700-702(5)(b) extends the age limit for children under court
+        # supervision or meeting R986-700-717 special-needs requirements.
+        # is_disabled proxies the latter, without assigning it to court cases.
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.disabled_child_age_limit, p.child_age_limit)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
+        age_limit = where(
+            is_disabled | under_court_supervision,
+            p.disabled_child_age_limit,
+            p.child_age_limit,
+        )
         age_eligible = age < age_limit
         # The child must be a U.S. citizen, authorized non-citizen, refugee,
         # or permanent resident (R986-700-702); this matches the federal CCDF

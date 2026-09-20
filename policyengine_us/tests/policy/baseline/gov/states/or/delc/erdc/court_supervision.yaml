@@ -1,0 +1,12 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: OR court supervision age boundaries and default status
+  period: 2025-01
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    or_erdc_eligible_child: [true, false, true, true, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]

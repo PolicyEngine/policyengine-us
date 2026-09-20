@@ -25,7 +25,17 @@ class ky_ccap_daily_benefit(Variable):
         has_special_need = person("is_disabled", period.this_year) | person(
             "has_developmental_delay", period.this_year
         )
-        special_care_supplement = where(has_special_need, p.supplements.special_care, 0)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
+        age = person("age", period.this_year)
+        court_special_care = (
+            under_court_supervision
+            & (age >= p.eligibility.child_age_limit)
+            & (age < p.eligibility.special_needs_child_age_limit)
+        )
+        # Section 10(3)(b) also covers court-supervised children ages 13-18.
+        special_care_supplement = where(
+            has_special_need | court_special_care, p.supplements.special_care, 0
+        )
         # We don't track provider accreditation (Section 10(2)(a)) or
         # nontraditional-hours care (Section 10(2)(b)) at the moment, so those
         # rate supplements are not applied.

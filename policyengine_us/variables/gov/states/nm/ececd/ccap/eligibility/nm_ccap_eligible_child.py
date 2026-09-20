@@ -9,6 +9,7 @@ class nm_ccap_eligible_child(Variable):
     defined_for = StateCode.NM
     reference = (
         "https://www.srca.nm.gov/parts/title08/08.015.0002.html",
+        "https://www.srca.nm.gov/parts/title08/08.009.0003.html",
         "https://www.law.cornell.edu/cfr/text/45/98.20",
     )
 
@@ -17,15 +18,15 @@ class nm_ccap_eligible_child(Variable):
         # 13th birthday. The 6-week lower bound is not modeled because we don't
         # track sub-year age granularity at the moment (all children under 1
         # read age == 0), so enforcing it would wrongly exclude every infant.
-        # 8.15.2.11.G: extended to under 18 for children needing special
-        # supervision. We model the medical/treatment-professional branch via
-        # has_developmental_delay; the court-supervision branch is not tracked
-        # at the moment.
+        # 8.9.3.11.G (formerly 8.15.2.11.G) extends eligibility for children
+        # needing special supervision, including supervision by a court.
+        # has_developmental_delay proxies the medical-professional branch.
         p = parameters(period).gov.states.nm.ececd.ccap.eligibility
         age = person("age", period.this_year)
         has_developmental_delay = person("has_developmental_delay", period.this_year)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            has_developmental_delay,
+            has_developmental_delay | under_court_supervision,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )

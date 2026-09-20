@@ -8,6 +8,7 @@ class ok_ccs_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.OK
     reference = (
+        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4-b.pdf#page=1",
         "https://okrules.elaws.us/oac/340:40-7-3",
         "https://okrules.elaws.us/oac/340:40-7-5",
     )
@@ -18,11 +19,15 @@ class ok_ccs_eligible_child(Variable):
         # A child is eligible through the day before their 13th birthday; a
         # child with disabilities or under court supervision is eligible
         # through the day before their 19th birthday (OAC 340:40-7-3).
-        # is_disabled proxies the OAC 340:40-7-3.1 disability verification;
-        # the court supervision pathway and the grace period through the next
-        # renewal after the birthday are not tracked at the moment.
+        # is_disabled proxies OAC 340:40-7-3.1 disability verification.
+        # The grace period through the next renewal remains unmodeled.
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.disabled_child_age_limit, p.child_age_limit)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
+        age_limit = where(
+            is_disabled | under_court_supervision,
+            p.disabled_child_age_limit,
+            p.child_age_limit,
+        )
         age_eligible = age < age_limit
         # Only the child for whom care is requested must meet citizenship
         # and alienage requirements (OAC 340:40-7-5(c)).

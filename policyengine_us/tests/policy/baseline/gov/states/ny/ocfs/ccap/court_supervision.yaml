@@ -1,0 +1,59 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: NY court supervision age boundaries and default status
+  period: 2025
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    ny_ccap_age_eligible: [true, false, true, true, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: NY court-supervised age-18 student must attend secondary school full time
+  period: 2025
+  input:
+    state_code:
+    - NY
+    - NY
+    - NY
+    - NY
+    age:
+    - 18
+    - 18
+    - 18
+    - 19
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    - true
+    is_full_time_student:
+    - true
+    - true
+    - false
+    - true
+    is_in_secondary_school:
+    - true
+    - false
+    - true
+    - true
+  output:
+    ny_ccap_age_eligible:
+    - true
+    - false
+    - false
+    - false
+- name: NY court supervision does not waive income eligibility
+  period: 2025-01
+  input:
+    state_code: NY
+    age: 17
+    is_under_court_supervision: true
+    ny_ccap_countable_income: 400000
+    hhs_smi: 80000
+    ny_ccap_activity_eligible: true
+  output:
+    ny_ccap_age_eligible: true
+    ny_ccap_eligible_child: false

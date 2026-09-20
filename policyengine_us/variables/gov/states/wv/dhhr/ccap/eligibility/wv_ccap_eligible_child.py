@@ -13,13 +13,14 @@ class wv_ccap_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        # NOTE: we don't track court-supervision (§3.1.2.1) at the moment, so the
-        # 13-17 extension applies only via the special-needs branch (§3.1.2.2).
+        # Sections 3.1.2.1 and 3.1.2.2 allow ages 13-17 under court
+        # supervision or with special needs, respectively.
         p = parameters(period).gov.states.wv.dhhr.ccap.eligibility
         age = person("age", period.this_year)
         has_developmental_delay = person("has_developmental_delay", period.this_year)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            has_developmental_delay,
+            has_developmental_delay | under_court_supervision,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )
