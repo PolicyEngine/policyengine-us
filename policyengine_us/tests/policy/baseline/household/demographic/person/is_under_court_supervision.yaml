@@ -1,0 +1,17 @@
+- name: Court supervision is not inferred from disability or protective services
+  period: 2025
+  input:
+    age: [10, 15, 16]
+    is_disabled: [true, false, false]
+    receives_or_needs_protective_services: [false, true, false]
+  output:
+    is_under_court_supervision: [false, false, false]
+
+- name: Court supervision is an independent person status
+  period: 2025
+  input:
+    age: [15, 30]
+    is_under_court_supervision: [true, false]
+  output:
+    is_disabled: [false, false]
+    receives_or_needs_protective_services: [false, false]

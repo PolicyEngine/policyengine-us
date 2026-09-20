@@ -1,0 +1,35 @@
+# Verified court-supervision pathways and independent eligibility requirements.
+- name: NE approved plan declines a court-supervision age extension
+  period: 2026-09
+  input:
+    state_code:
+      2026: [NE, NE, NE, NE, NE]
+    age:
+      2026: [12, 13, 17, 18, 19]
+    is_under_court_supervision:
+      2026: [true, true, true, true, true]
+    requires_childcare_under_court_order:
+      2026: [true, true, true, true, true]
+  output:
+    ne_child_care_subsidy_eligible_child: [true, false, false, false, false]
+    ne_dhhs_has_special_needs: false
+    ne_child_care_subsidy_categorical_waived: false
+
+- name: NE court-supervised family member does not automatically waive income assets or fees
+  period: 2026-09
+  input:
+    state_code:
+      2026: NE
+    age:
+      2026: 35
+    is_under_court_supervision:
+      2026: true
+    ne_child_care_subsidy_countable_income: 10000
+    ne_child_care_subsidy_gross_income:
+      2026: 120000
+    ne_child_care_subsidy_fpg: 2000
+    ne_child_care_subsidy_smi: 5000
+  output:
+    ne_child_care_subsidy_categorical_waived: false
+    ne_child_care_subsidy_income_eligible: false
+    ne_child_care_subsidy_family_fee: 700

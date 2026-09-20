@@ -1,0 +1,1 @@
+Add court-related child-care eligibility in Georgia, Idaho, Indiana, Michigan, North Dakota, South Dakota, and Wyoming, with state-specific care-order, school-completion, and continuing-award requirements. Correct Indiana application-age and South Dakota graduation conditions, and verify that Nebraska does not allow the court-supervision age extension.
