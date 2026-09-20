@@ -1,3 +1,10 @@
+## [2.6.18] - 2026-09-20
+
+### Fixed
+
+- Apply full-time pricing for unknown care hours in Alabama, Mississippi, North Dakota, New Jersey, South Carolina, Tennessee, and Wisconsin. Recognize reported care days consistently in payment and copay participation rules, and exclude children outside care from pooled reimbursement ceilings and North Dakota provider bonuses.
+
+
 ## [2.6.17] - 2026-09-19
 
 ### Fixed
