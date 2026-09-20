@@ -1,0 +1,171 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: NJ
+    childcare_attending_days_per_month: 20
+  output:
+    nj_ccap_time_category: FULL_TIME
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_week: 29.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_week: 30
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: NJ
+  output:
+    nj_ccap_time_category:
+    - FULL_TIME
+    - PART_TIME
+    - PART_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: NJ
+    childcare_hours_per_week: 40
+    nj_ccap_time_category: PART_TIME
+  output:
+    nj_ccap_time_category: PART_TIME
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 19000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    nj_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 51.67
+    nj_ccap_age_group:
+    - SCHOOL_AGE
+    - INFANT
+    nj_ccap_time_category:
+    - FULL_TIME
+    - FULL_TIME
+    nj_ccap_maximum_weekly_benefit:
+    - 0
+    - 366.67
+    nj_ccap: 1531.67
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31000
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: NJ
+  output:
+    nj_ccap: 0
+
+- name: A sibling outside care cannot increase the family's weekly reimbursement ceiling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      receiving_care:
+        childcare_attending_days_per_month: 20
+        nj_ccap_maximum_weekly_benefit: 100
+      outside_care:
+        nj_ccap_maximum_weekly_benefit: 1000
+    spm_units:
+      family:
+        members: [receiving_care, outside_care]
+        nj_ccap_eligible: true
+        nj_ccap_copay: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members: [receiving_care, outside_care]
+        state_code: NJ
+  output:
+    # Only the participating child's $100/week ceiling applies: 100 * 52 / 12.
+    nj_ccap: 433.33

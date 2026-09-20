@@ -41,7 +41,8 @@ class al_ccsp_maximum_weekly_rate(Variable):
         # rate, including for INFORMAL providers (so the part-time cap is
         # half of informal_weekly_cap).
         hours = person("childcare_hours_per_week", period.this_year)
-        is_part_time = hours <= p.full_time_hours_threshold
+        # Zero also represents unknown hours, so retain full-time pricing.
+        is_part_time = (hours > 0) & (hours <= p.full_time_hours_threshold)
         return where(
             is_part_time,
             full_time_rate * p.part_time_multiplier,

@@ -431,15 +431,14 @@
     # countable income 4,000/mo; an eight-person family has a much higher SMI,
     # so the ratio is well below 30% and the co-payment is waived.
     nd_ccap_copay: 0
-    # in-care rates: two infants 1,240 + one toddler 1,124 = 3,604. The three
-    # school-age children carry the default Center part-time rate 416 each
-    # (no "not in care" flag), so the pooled cap is 3,604 + 3 * 416 = 4,852;
-    # expenses 10,000 do not bind. base = 4,852 - 0 = 4,852.
-    nd_ccap_base_subsidy: 4_852
+    # Only the three children in care contribute to the pooled rate ceiling:
+    # 1,240 + 1,240 + 1,124 = 3,604. School-age siblings have no care inputs.
+    # Expenses 10,000 do not bind, and the copay is zero.
+    nd_ccap_base_subsidy: 3_604
     # all three children in care are at a step-2 provider, which unlocks the
     # infant/toddler bonuses (200 + 200 + 115 = 515) but carries no QRIS step
-    # bonus in 2026. nd_ccap = 4,852 + 515 = 5,367.
-    nd_ccap: 5_367
+    # bonus in 2026. nd_ccap = 3,604 + 515 = 4,119.
+    nd_ccap: 4_119
 
 - name: Case 15, disabled infant at a QRIS step-4 center stacks special needs and bonuses.
   period: 2026-01

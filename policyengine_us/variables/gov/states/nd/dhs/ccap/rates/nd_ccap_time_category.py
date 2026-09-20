@@ -10,7 +10,7 @@ class nd_ccap_time_category(Variable):
     value_type = Enum
     entity = Person
     possible_values = NDCCAPTimeCategory
-    default_value = NDCCAPTimeCategory.PART_TIME
+    default_value = NDCCAPTimeCategory.FULL_TIME
     definition_period = MONTH
     label = "North Dakota CCAP level of care"
     defined_for = StateCode.ND
@@ -21,8 +21,9 @@ class nd_ccap_time_category(Variable):
         # Full-time level of care is 25 or more hours per week; part-time is
         # 1 to fewer than 25 hours per week (400-28-80-50).
         hours = person("childcare_hours_per_week", period.this_year)
+        # Zero also represents unknown hours, so retain full-time pricing.
         return where(
-            hours >= p.full_time_min_hours,
+            (hours == 0) | (hours >= p.full_time_min_hours),
             NDCCAPTimeCategory.FULL_TIME,
             NDCCAPTimeCategory.PART_TIME,
         )

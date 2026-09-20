@@ -19,4 +19,5 @@ class nj_ccap_time_category(Variable):
     def formula(person, period, parameters):
         hours = person("childcare_hours_per_week", period.this_year)
         p = parameters(period).gov.states.nj.njdhs.ccap.time_authorization
-        return p.thresholds.calc(hours)
+        # Unknown hours retain full-time pricing; supplied categories override.
+        return where(hours == 0, NJCCAPTimeCategory.FULL_TIME, p.thresholds.calc(hours))

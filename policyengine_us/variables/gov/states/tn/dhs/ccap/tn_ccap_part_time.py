@@ -13,4 +13,5 @@ class tn_ccap_part_time(Variable):
         p = parameters(period).gov.states.tn.dhs.ccap.time
         hours = person("childcare_hours_per_week", period.this_year)
         # Full-time care is 20 or more hours per week; part-time is fewer.
-        return hours < p.full_time_threshold
+        # Zero is also the input default for unknown hours.
+        return (hours > 0) & (hours < p.full_time_threshold)

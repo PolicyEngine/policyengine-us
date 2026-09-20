@@ -1,0 +1,201 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: SC
+    childcare_attending_days_per_month: 20
+  output:
+    sc_ccap_time_category: FULL_TIME
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_week: 24.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_week: 25
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: SC
+  output:
+    sc_ccap_time_category:
+    - FULL_TIME
+    - HALF_TIME
+    - HALF_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: SC
+    childcare_hours_per_week: 40
+    sc_ccap_time_category: HALF_TIME
+  output:
+    sc_ccap_time_category: HALF_TIME
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 35
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        childcare_attending_days_per_month: 20
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        spm_unit_pre_subsidy_childcare_expenses: 18000
+        tanf: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    sc_ccap_eligible_child:
+    - false
+    - false
+    - true
+    - true
+    sc_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    sc_ccap_eligible: true
+    sc_ccap_copay: 1144
+    sc_ccap_time_category:
+    - FULL_TIME
+    - FULL_TIME
+    - FULL_TIME
+    - FULL_TIME
+    sc_ccap_maximum_weekly_benefit:
+    - 0
+    - 0
+    - 2340
+    - 1980
+    sc_ccap: 16856
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 33
+        weekly_hours_worked: 35
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        tanf: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    sc_ccap: 0
+- name: Head Start still selects half-time with unknown hours.
+  period: 2026-01
+  input:
+    state_code: SC
+    is_enrolled_in_head_start: true
+    childcare_attending_days_per_month: 20
+  output:
+    sc_ccap_time_category: HALF_TIME
