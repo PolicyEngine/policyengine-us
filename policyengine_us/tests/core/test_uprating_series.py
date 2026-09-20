@@ -2,12 +2,14 @@
 national series, the income source it is part of, prices for consumption
 expenses and debts, CMS per-capita spending for health costs."""
 
+from pathlib import Path
+
 import pytest
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
 from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
 from policyengine_us.system import system
-from policyengine_us.tools.per_capita_uprating import per_capita_path
+from policyengine_us.tools.per_capita_uprating import DERIVED_FROM, per_capita_path
 
 EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.employment_income")
 SELF_EMPLOYMENT = per_capita_path("calibration.gov.irs.soi.self_employment_income")
@@ -138,3 +140,48 @@ def test_alimony_series_is_labelled_as_alimony():
 def test_rent_override_matches_the_rent_input():
     assert MICRODATA_UPRATING_OVERRIDES["rent"] == CPI_U
     assert system.variables["pre_subsidy_rent"].uprating == CPI_U
+
+
+METHODOLOGY_PAGE = (
+    Path(__file__).parents[3] / "docs-quarto" / "methodology" / "spm-poverty.qmd"
+)
+PARAMETERS_FOLDER = "policyengine_us/parameters/"
+
+
+def _authored_series(uprating):
+    """The authored parameter behind an uprating path: a derived per-capita
+    series names the national total it divides."""
+    parameter = get_parameter(system.parameters, uprating)
+    return parameter.metadata.get(DERIVED_FROM, uprating)
+
+
+def _series_that_inputs_follow():
+    return sorted(
+        {
+            _authored_series(variable.uprating)
+            for variable in system.variables.values()
+            if getattr(variable, "uprating", None)
+        }
+    )
+
+
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_methodology_page_links_every_series_an_input_follows(series):
+    """The SPM methodology page names the series each family of inputs follows
+    and sends every other uprated input to the default. That stays true only
+    while the page links every series some input follows: the parameter's own
+    file, the file that holds it, or the folder that holds it."""
+    if not METHODOLOGY_PAGE.exists():
+        pytest.skip("The documentation is not part of an installed package.")
+    page = METHODOLOGY_PAGE.read_text()
+    path = series.replace(".", "/")
+    holder = path.rpartition("/")[0]
+    links = (
+        f"{PARAMETERS_FOLDER}{path}.yaml",
+        f"{PARAMETERS_FOLDER}{holder}.yaml",
+        f"{PARAMETERS_FOLDER}{holder})",
+    )
+    assert any(link in page for link in links), (
+        f"{METHODOLOGY_PAGE.name} does not link {series}, which uprates at "
+        "least one input. Say on the page which inputs follow it."
+    )
