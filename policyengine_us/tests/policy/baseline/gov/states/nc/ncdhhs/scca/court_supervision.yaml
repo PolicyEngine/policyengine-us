@@ -1,0 +1,103 @@
+- name: NC ordinary child remains eligible.
+  period: 2026
+  input:
+    state_code: NC
+    age: 12
+    is_under_court_supervision: false
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: true
+    is_disabled: false
+
+- name: NC older child needs an exception.
+  period: 2026
+  input:
+    state_code: NC
+    age: 13
+    is_under_court_supervision: false
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: false
+    is_disabled: false
+
+- name: NC court supervision at the lower boundary.
+  period: 2026
+  input:
+    state_code: NC
+    age: 13
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: true
+    is_disabled: false
+
+- name: NC court supervision at the upper boundary.
+  period: 2026
+  input:
+    state_code: NC
+    age: 17
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: true
+    is_disabled: false
+
+- name: NC court supervision does not override the upper age limit.
+  period: 2026
+  input:
+    state_code: NC
+    age: 18
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: false
+    is_disabled: false
+
+- name: NC supervised adult does not qualify.
+  period: 2026
+  input:
+    state_code: NC
+    age: 30
+    is_under_court_supervision: true
+    is_disabled: false
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+  output:
+    nc_scca_child_age_eligible: false
+    is_disabled: false
+
+- name: NC supervision is specific to the child in a mixed household.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        is_under_court_supervision: true
+      supervised_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+      other_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [parent, supervised_child, other_child]
+        state_code: NC
+  output:
+    nc_scca_child_age_eligible: [false, true, false]
+    is_disabled: [false, false, false]

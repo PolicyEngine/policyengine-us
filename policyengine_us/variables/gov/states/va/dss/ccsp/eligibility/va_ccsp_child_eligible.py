@@ -16,7 +16,8 @@ class va_ccsp_child_eligible(Variable):
         p = parameters(period).gov.states.va.dss.ccsp.age_threshold
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.disabled_child, p.child)
+        court_supervision = person("is_under_court_supervision", period.this_year)
+        age_limit = where(is_disabled | court_supervision, p.disabled_child, p.child)
         age_eligible = age < age_limit
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year

@@ -13,7 +13,8 @@ class me_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.me.dhhs.ccap.age_limit
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.special_needs, p.child)
+        court_supervision = person("is_under_court_supervision", period.this_year)
+        age_limit = where(is_disabled | court_supervision, p.special_needs, p.child)
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period.this_year)
         immigration_eligible = person(
