@@ -8,8 +8,8 @@ class de_poc_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.DE
     reference = (
-        "https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml",
-        "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
+        "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=79",
+        "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
     )
 
     def formula(person, period, parameters):
@@ -29,4 +29,8 @@ class de_poc_eligible_child(Variable):
         protective = person("receives_or_needs_protective_services", period)
         homeless = person.household("is_homeless", period.this_year)
         categorical_eligible = age_eligible & (foster | protective | homeless)
-        return standard_eligible | categorical_eligible
+        referral = person("de_poc_has_dfs_referral", period)
+        # Protective child-care referrals are a separate under-19 route.
+        # The state's court-age election does not replace the agency referral.
+        referred_eligible = referral & (age < p.disabled_child)
+        return standard_eligible | categorical_eligible | referred_eligible

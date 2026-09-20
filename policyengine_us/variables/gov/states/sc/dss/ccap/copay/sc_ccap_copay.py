@@ -101,7 +101,20 @@ class sc_ccap_copay(Variable):
                 threshold = np.floor(monthly_smi * ratio + 0.5)
                 tier = tier + (monthly_income > threshold).astype(int)
 
-        exempt = protective | is_tanf | below_fpl_threshold | has_disabled_child
+        has_court_child = spm_unit.any(
+            person("sc_ccap_eligible_child", period)
+            & person("is_under_court_supervision", period.this_year)
+        )
+        court_waiver = has_court_child & spm_unit(
+            "sc_ccap_court_care_copay_waived", period
+        )
+        exempt = (
+            protective
+            | is_tanf
+            | below_fpl_threshold
+            | has_disabled_child
+            | court_waiver
+        )
 
         weekly_copay_per_child = where(
             zero_only_row,

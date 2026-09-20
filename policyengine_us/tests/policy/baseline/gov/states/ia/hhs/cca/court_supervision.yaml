@@ -1,0 +1,71 @@
+# Authority: https://hhs.iowa.gov/media/13429/download?inline=#page=16
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: IA court status alone does not extend the age limit.
+  period: 2026-01
+  input:
+    state_code: IA
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ia_cca_eligible_child: false
+
+- name: IA court status alone does not waive income.
+  period: 2026-01
+  input:
+    state_code: IA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ia_cca_eligible_child: true
+    ia_cca_income_exception: false
+
+- name: IA care order alone does not establish HHS approval.
+  period: 2026-01
+  input:
+    state_code: IA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+  output:
+    ia_cca_eligible_child: true
+    ia_cca_income_exception: false
+
+- name: IA approved court-ordered care waives income.
+  period: 2026-01
+  input:
+    state_code: IA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+    ia_cca_court_ordered_care_approved: true
+  output:
+    ia_cca_eligible_child: true
+    ia_cca_income_exception: true
+
+- name: IA court-directed care does not extend the ordinary age limit.
+  period: 2026-01
+  input:
+    state_code: IA
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+    ia_cca_court_ordered_care_approved: true
+  output:
+    ia_cca_eligible_child: false
+    ia_cca_income_exception: false

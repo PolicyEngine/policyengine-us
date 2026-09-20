@@ -156,7 +156,7 @@
   output:
     hi_ccap_activity_eligible: false
 
-- name: Case 7, single caretaker receiving protective services is eligible.
+- name: Case 7, caretaker protective status alone does not establish court-ordered care.
   period: 2025-01
   input:
     people:
@@ -179,8 +179,8 @@
         members: [person1]
         state_code: HI
   output:
-    # Active via the protective-services branch, not employment/school.
-    hi_ccap_activity_eligible: true
+    # No order or case plan requiring child care has been reported.
+    hi_ccap_activity_eligible: false
 
 - name: Case 8, single caretaker with employment income but zero hours is eligible.
   period: 2025-01

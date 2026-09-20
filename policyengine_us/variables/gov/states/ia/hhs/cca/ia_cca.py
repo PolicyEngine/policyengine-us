@@ -15,6 +15,25 @@ class ia_cca(Variable):
         is_in_care = person("ia_cca_eligible_child", period) & (
             person("childcare_hours_per_week", period.this_year) > 0
         )
+        ordered_care = person("requires_childcare_under_court_order", period.this_year)
+        approved = person("ia_cca_court_ordered_care_approved", period)
+        court_child = ordered_care & approved & person("ia_cca_eligible_child", period)
+        has_court_child = spm_unit.any(court_child)
+        ordinary_requirements = spm_unit("ia_cca_income_eligible", period) & spm_unit(
+            "ia_cca_activity_eligible", period
+        )
+        other_exception = spm_unit("is_tanf_enrolled", period) | spm_unit.any(
+            person("receives_or_needs_protective_services", period)
+            | person("is_in_foster_care", period)
+        )
+        # A court-directed approval covers the specified child. Preserve the
+        # existing family pathways for other children in the household.
+        payable = court_child | spm_unit.project(
+            ordinary_requirements | other_exception
+        )
+        is_in_care = is_in_care & where(
+            spm_unit.project(has_court_child), payable, True
+        )
         # Iowa pays the provider's charge for each child, not to exceed the
         # maximum rate ceiling (rate per half-day unit times the child's
         # monthly units of care), then subtracts the family fee

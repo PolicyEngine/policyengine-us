@@ -16,8 +16,13 @@ class co_ccap_child_eligible(Variable):
         else:
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
-        # child < 13 or disabled child < 19 to be eligible
+        # Section 3.105.1(F): court supervision also requires verified care needs.
         disabled = person("is_disabled", period.this_year)
-        age_limit = where(disabled, p.disabled_age_limit, p.age_limit)
+        court_supervision = person("is_under_court_supervision", period.this_year)
+        verified_care_needs = person(
+            "co_ccap_has_verified_additional_care_needs", period.this_year
+        )
+        court_eligible = court_supervision & verified_care_needs
+        age_limit = where(disabled | court_eligible, p.disabled_age_limit, p.age_limit)
         age_eligible = person("age", period.this_year) < age_limit
         return age_eligible & person("is_tax_unit_dependent", period.this_year)

@@ -17,7 +17,7 @@ class de_poc_age_group(Variable):
     default_value = DEPOCAgeGroup.NONE
     definition_period = MONTH
     label = "Delaware Purchase of Care child care age group"
-    defined_for = "is_tax_unit_dependent"
+    defined_for = StateCode.DE
     reference = "https://dhss.delaware.gov/dss/childcr/"
 
     def formula(person, period, parameters):
@@ -29,8 +29,15 @@ class de_poc_age_group(Variable):
         is_school_age_part_time = (base_group == school_age) & (
             hours_per_day < p.full_time_hours_per_day
         )
-        return where(
+        age_group = where(
             is_school_age_part_time,
             DEPOCAgeGroup.SCHOOL_AGE_PART_TIME,
             base_group,
         )
+        # A DFS-referred child can qualify without being a tax dependent.
+        # That child must still reach the age-group reimbursement table.
+        referred_child = person("de_poc_has_dfs_referral", period) & person(
+            "de_poc_eligible_child", period
+        )
+        in_scope = person("is_tax_unit_dependent", period.this_year) | referred_child
+        return where(in_scope, age_group, DEPOCAgeGroup.NONE)

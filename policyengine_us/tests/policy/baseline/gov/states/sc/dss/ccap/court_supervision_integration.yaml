@@ -1,0 +1,132 @@
+# Court/referral approvals are child-specific; rates are fixed here to isolate eligibility and payment scope.
+- name: SC court status True, activity waiver True, copay waiver False
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      unit:
+        members: &id001
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id001
+        sc_ccap_countable_income: 5000
+        sc_ccap_income_eligible: true
+        sc_ccap_court_care_activity_waived: true
+        sc_ccap_court_care_copay_waived: false
+    households:
+      home:
+        members: *id001
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: true
+- name: SC court status True, activity waiver False, copay waiver True
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      unit:
+        members: &id002
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id002
+        sc_ccap_countable_income: 5000
+        sc_ccap_income_eligible: true
+        sc_ccap_court_care_activity_waived: false
+        sc_ccap_court_care_copay_waived: true
+    households:
+      home:
+        members: *id002
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: false
+    sc_ccap_copay: 0
+- name: SC court status True, activity waiver True, copay waiver True
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      unit:
+        members: &id003
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id003
+        sc_ccap_countable_income: 5000
+        sc_ccap_income_eligible: true
+        sc_ccap_court_care_activity_waived: true
+        sc_ccap_court_care_copay_waived: true
+    households:
+      home:
+        members: *id003
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: true
+    sc_ccap_copay: 0
+- name: SC court status False, activity waiver True, copay waiver True
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: false
+        childcare_hours_per_week: 40
+    tax_units:
+      unit:
+        members: &id004
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id004
+        sc_ccap_countable_income: 5000
+        sc_ccap_income_eligible: true
+        sc_ccap_court_care_activity_waived: true
+        sc_ccap_court_care_copay_waived: true
+    households:
+      home:
+        members: *id004
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: false
+    sc_ccap_copay: 0

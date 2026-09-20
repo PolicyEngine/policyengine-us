@@ -9,7 +9,7 @@ class nj_ccap(Variable):
     definition_period = MONTH
     defined_for = "nj_ccap_eligible"
     reference = (
-        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-15-5-2",
+        "https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_15%20CHILD%20CARE%20SERVICES.PDF#page=52",
         "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=14",
     )
 
@@ -38,4 +38,24 @@ class nj_ccap(Variable):
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
         capped_expenses = min_(pre_subsidy_childcare_expenses, maximum_monthly_benefit)
-        return max_(capped_expenses - copay, 0)
+        ordinary_benefit = max_(capped_expenses - copay, 0)
+        person = spm_unit.members
+        eligible_child = person("nj_ccap_eligible_child", period)
+        referred = person("nj_ccap_has_cpp_referral", period) & eligible_child
+        has_referred_child = spm_unit.any(referred)
+        ordinary_requirements = spm_unit("nj_ccap_income_eligible", period) & spm_unit(
+            "nj_ccap_activity_eligible", period
+        )
+        payable = eligible_child & (referred | spm_unit.project(ordinary_requirements))
+        # Referral eligibility belongs to the referred child. Siblings still
+        # need the ordinary family requirements to contribute to the payment.
+        child_expense = person("pre_subsidy_childcare_expenses", period)
+        child_maximum = person("nj_ccap_maximum_weekly_benefit", period) * (
+            WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        )
+        referred_expense = spm_unit.sum(
+            min_(child_expense, child_maximum) * payable * in_care
+        )
+        return where(
+            has_referred_child, max_(referred_expense - copay, 0), ordinary_benefit
+        )

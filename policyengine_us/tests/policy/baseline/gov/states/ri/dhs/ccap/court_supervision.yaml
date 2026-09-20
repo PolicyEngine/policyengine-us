@@ -1,0 +1,62 @@
+# Authority: https://dhs.ri.gov/media/7916/download?language=en#page=17
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: RI ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ri_ccap_eligible_child: true
+
+- name: RI court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ri_ccap_eligible_child: false
+
+- name: RI court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ri_ccap_eligible_child: false
+
+- name: RI court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ri_ccap_eligible_child: false
+
+- name: RI court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ri_ccap_eligible_child: false

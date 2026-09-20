@@ -19,4 +19,23 @@ class tx_ccs(Variable):
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
         capped_expense = min_(pre_subsidy_childcare_expense, maximum_payment)
-        return max_(capped_expense - copay, 0)
+        standard_benefit = max_(capped_expense - copay, 0)
+        person = spm_unit.members
+        eligible_child = person("tx_ccs_eligible_child", period)
+        authorized = person("tx_ccs_dfps_authorized", period) & eligible_child
+        has_dfps_child = spm_unit.any(authorized)
+        standard_requirements = spm_unit(
+            "tx_ccs_meets_standard_family_requirements", period
+        )
+        payable_child = eligible_child & (
+            authorized | spm_unit.project(standard_requirements)
+        )
+        # A DFPS authorization is child-specific. Do not use a sibling's
+        # expenses or rates when that sibling fails standard eligibility.
+        child_expense = person("pre_subsidy_childcare_expenses", period)
+        child_rate = person("tx_ccs_payment_rate", period)
+        protective_expense = spm_unit.sum(
+            min_(child_expense, child_rate) * payable_child
+        )
+        protective_benefit = max_(protective_expense - copay, 0)
+        return where(has_dfps_child, protective_benefit, standard_benefit)

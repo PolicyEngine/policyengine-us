@@ -13,10 +13,10 @@ class ak_ccap_child_age_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # 7 AAC 41.060(a) caps the special-needs age limit at the same
-        # under-13 threshold as the general child eligibility — Alaska does
-        # not extend the federal CCDF special-needs age (up to 19) at the
-        # moment. A single age check therefore covers both cases.
+        # This models PASS II/III under 7 AAC 41, with the under-13 limit
+        # in 7 AAC 41.060(a) and manual 4070-2. Court status alone does not
+        # extend this limit. PASS I (TANF, 7 AAC 45) and PASS IV protective
+        # care are separate pathways, not established by this age test.
         p = parameters(period).gov.states.ak.dpa.ccap.age_threshold
         age = person("age", period.this_year)
         return age < p.child

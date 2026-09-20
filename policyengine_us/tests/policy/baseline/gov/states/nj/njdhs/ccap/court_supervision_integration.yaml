@@ -1,0 +1,431 @@
+- name: NJ approved child is paid without funding an unapproved sibling
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id001
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id001
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+    households:
+      home:
+        members: *id001
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    - true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 0
+    nj_ccap: 400
+- name: NJ court status without approval does not waive family requirements
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: false
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id002
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id002
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+    households:
+      home:
+        members: *id002
+        state_code: NJ
+  output:
+    nj_ccap_eligible: false
+    nj_ccap: 0
+- name: NJ unapproved sibling expenses cannot fund approved child with no care
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 0
+        childcare_hours_per_week: 0
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id003
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id003
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+    households:
+      home:
+        members: *id003
+        state_code: NJ
+  output:
+    nj_ccap: 0
+- name: NJ in-home CP&P referral retains copay without an approved waiver
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: false
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id004
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id004
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+        nj_ccap_countable_income: 5000
+    households:
+      home:
+        members: *id004
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    - true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 150
+    nj_ccap: 250
+- name: NJ CP&P foster placement is copay-exempt
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: false
+        is_in_foster_care: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id005
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id005
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+        nj_ccap_countable_income: 5000
+    households:
+      home:
+        members: *id005
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    - true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 0
+    nj_ccap: 400
+- name: NJ exempt foster placement does not waive eligible sibling copay
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: false
+        is_in_foster_care: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+    tax_units:
+      unit:
+        members: &id006
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id006
+        nj_ccap_income_eligible: true
+        nj_ccap_activity_eligible: true
+        nj_ccap_countable_income: 5000
+    households:
+      home:
+        members: *id006
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    - true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 150
+    nj_ccap: 1250
+- name: NJ child approval stays within its SPM unit
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        nj_ccap_maximum_weekly_benefit: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+        nj_ccap_cpp_copay_waived: true
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        nj_ccap_maximum_weekly_benefit: 500
+      other_parent:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      other_child:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6000
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        - other_parent
+        - other_child
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    - true
+    - false
+    - true
+    nj_ccap_eligible:
+    - true
+    - false
+    nj_ccap:
+    - 400
+    - 0
+- name: NJ approved non-tax-dependent child reaches actual reimbursement rates
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        nj_ccap_has_cpp_referral: true
+        pre_subsidy_childcare_expenses: 2400
+        childcare_hours_per_week: 40
+        nj_ccap_cpp_copay_waived: true
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        nj_ccap_income_eligible: false
+        nj_ccap_activity_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child:
+    - false
+    - true
+    nj_ccap_eligible: true
+    nj_ccap_copay: 0
+    nj_ccap: 200

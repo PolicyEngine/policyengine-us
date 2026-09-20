@@ -1,0 +1,62 @@
+# Authority: https://dcf.wisconsin.gov/files/wishares/ccdbg/2025-27-ccdf-plan-draft-10-2024.pdf#page=17
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: WI ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    wi_shares_eligible_child: true
+
+- name: WI court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    wi_shares_eligible_child: false
+
+- name: WI court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    wi_shares_eligible_child: false
+
+- name: WI court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    wi_shares_eligible_child: false
+
+- name: WI court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    wi_shares_eligible_child: false

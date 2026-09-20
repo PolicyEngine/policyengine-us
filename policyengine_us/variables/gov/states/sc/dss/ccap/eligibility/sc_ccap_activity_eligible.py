@@ -29,4 +29,11 @@ class sc_ccap_activity_eligible(Variable):
         # eligible. Mirrors the VA CCSP activity-test pattern.
         has_head_or_spouse = spm_unit.sum(is_head_or_spouse) >= 1
         all_covered = spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
-        return has_head_or_spouse & all_covered
+        has_court_child = spm_unit.any(
+            person("sc_ccap_eligible_child", period)
+            & person("is_under_court_supervision", period.this_year)
+        )
+        court_waiver = has_court_child & spm_unit(
+            "sc_ccap_court_care_activity_waived", period
+        )
+        return (has_head_or_spouse & all_covered) | court_waiver

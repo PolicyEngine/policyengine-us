@@ -7,11 +7,30 @@ class ca_calworks_child_care_child_age_eligible(Variable):
     label = "Eligible child for the California CalWORKs Child Care based on age"
     definition_period = YEAR
     defined_for = StateCode.CA
-    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"
+    reference = (
+        "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260AB119",
+        "https://www.cdss.ca.gov/ord/entres/getinfo/pdf/14EAS.pdf#page=34",
+        "https://www.cdss.ca.gov/ord/entres/getinfo/pdf/4EAS.pdf#page=43",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.eligibility
         age = person("age", period)
         is_disabled = person("is_disabled", period)
-        age_limit = where(is_disabled, p.disabled_age_threshold, p.age_threshold)
-        return age <= age_limit
+        ordinary_age_eligible = age < p.age_threshold
+        disabled_age_eligible = is_disabled & (age <= p.disabled_age_threshold)
+        court_supervision = person("is_under_court_supervision", period)
+        qualifying_supervision = person(
+            "ca_calworks_child_care_has_qualifying_court_supervision", period
+        )
+        school_requirement = person(
+            "ca_calworks_child_care_meets_age_18_school_requirement", period
+        )
+        court_age_eligible = (age < p.disabled_age_threshold) | (
+            (age == p.disabled_age_threshold) & school_requirement
+        )
+        return (
+            ordinary_age_eligible
+            | disabled_age_eligible
+            | (court_supervision & qualifying_supervision & court_age_eligible)
+        )

@@ -1,0 +1,79 @@
+# Authority: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-acf-118-ccdf-state-plan-ffy-2025-2027-twc.pdf#page=19
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: TX court status alone is insufficient.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    tx_ccs_eligible_child: false
+
+- name: TX authorization without a qualifying older-child condition.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+    tx_ccs_dfps_authorized: true
+  output:
+    tx_ccs_eligible_child: false
+
+- name: TX DFPS-authorized court-supervised care at age 13.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    tx_ccs_dfps_authorized: true
+  output:
+    tx_ccs_eligible_child: true
+
+- name: TX DFPS-authorized court-supervised care at age 18.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    tx_ccs_dfps_authorized: true
+  output:
+    tx_ccs_eligible_child: true
+
+- name: TX DFPS-authorized court-supervised care at age 19.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    tx_ccs_dfps_authorized: true
+  output:
+    tx_ccs_eligible_child: false
+
+- name: TX DFPS-authorized court-supervised care at age 40.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    tx_ccs_dfps_authorized: true
+  output:
+    tx_ccs_eligible_child: false

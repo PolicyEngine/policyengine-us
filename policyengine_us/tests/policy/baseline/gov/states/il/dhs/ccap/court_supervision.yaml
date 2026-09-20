@@ -1,0 +1,53 @@
+# Authority: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/policies/ACF-118%20CCDF%20FFY%202025-2027%20For%20Illinois%20Amend%202.pdf#page=18
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: IL court status alone is insufficient.
+  period: 2026-01
+  input:
+    state_code: IL
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    il_ccap_eligible_child: false
+
+- name: IL court order specifically requiring care at age 13.
+  period: 2026-01
+  input:
+    state_code: IL
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+  output:
+    il_ccap_eligible_child: true
+
+- name: IL court order specifically requiring care at age 18.
+  period: 2026-01
+  input:
+    state_code: IL
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+  output:
+    il_ccap_eligible_child: true
+
+- name: IL court order specifically requiring care at age 19.
+  period: 2026-01
+  input:
+    state_code: IL
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    requires_childcare_under_court_order: true
+  output:
+    il_ccap_eligible_child: false

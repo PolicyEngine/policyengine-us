@@ -27,4 +27,8 @@ class nj_ccap_eligible_child(Variable):
         protective = person("receives_or_needs_protective_services", period)
         foster = person("is_in_foster_care", period)
         categorical_eligible = age_eligible & (protective | foster)
-        return standard_eligible | categorical_eligible
+        referral = person("nj_ccap_has_cpp_referral", period)
+        # Protective child-care referrals are a separate under-19 route.
+        # The state's court-age election does not replace the agency referral.
+        referred_eligible = referral & (age < p.special_needs)
+        return standard_eligible | categorical_eligible | referred_eligible

@@ -7,7 +7,10 @@ class nv_ccdp_eligible_child(Variable):
     label = "Eligible child for Nevada CCDP"
     definition_period = MONTH
     defined_for = StateCode.NV
-    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=36"
+    reference = (
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=36",
+        "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/2025-2027_CCDF_State_Plan._For_Remediation._no_markup__2.pdf#page=17",
+    )
 
     def formula(person, period, parameters):
         # MS 210: child must be under 13. MS 211: a child with a special need
@@ -22,8 +25,13 @@ class nv_ccdp_eligible_child(Variable):
         has_special_need = person("has_developmental_delay", period.this_year) | person(
             "is_disabled", period.this_year
         )
+        court_supervision = person("is_under_court_supervision", period.this_year)
+        court_extension = parameters(
+            period
+        ).gov.states.nv.dwss.ccdp.eligibility.court_supervision_extension
+        court_supervision = court_supervision & court_extension
         age_eligible = where(
-            has_special_need,
+            has_special_need | court_supervision,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )

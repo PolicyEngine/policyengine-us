@@ -21,12 +21,8 @@ class hi_ccap_eligible_child(Variable):
         disabled_eligible = (
             is_disabled & (age >= p.child_limit) & (age <= p.disabled_child_limit)
         )
-        # Receiving court-ordered child protective services qualifies a
-        # child of any age (HAR 17-798.2-9(a)(3)).
-        protective_services = person(
-            "receives_or_needs_protective_services", period.this_year
-        )
-        age_eligible = under_age_limit | disabled_eligible | protective_services
+        protective_care = person("hi_ccap_court_ordered_protective_care", period)
+        age_eligible = under_age_limit | disabled_eligible | protective_care
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )

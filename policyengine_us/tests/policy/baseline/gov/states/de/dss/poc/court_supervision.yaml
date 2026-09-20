@@ -1,0 +1,66 @@
+# Authority: https://mychildde.org/wp-content/uploads/11.18.24-2024.11.08_ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: DE court status without a protective-care referral is insufficient.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: false
+
+- name: DE court-supervised child with protective-care referral at age 13.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    de_poc_has_dfs_referral: true
+  output:
+    de_poc_eligible_child: true
+
+- name: DE court-supervised child with protective-care referral at age 18.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    de_poc_has_dfs_referral: true
+  output:
+    de_poc_eligible_child: true
+
+- name: DE court-supervised child with protective-care referral at age 19.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    de_poc_has_dfs_referral: true
+  output:
+    de_poc_eligible_child: false
+
+- name: DE court-supervised child with protective-care referral at age 40.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    de_poc_has_dfs_referral: true
+  output:
+    de_poc_eligible_child: false

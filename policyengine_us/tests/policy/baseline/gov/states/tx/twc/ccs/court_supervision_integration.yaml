@@ -1,0 +1,316 @@
+- name: TX approved child is paid without funding an unapproved sibling
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        tx_ccs_payment_rate: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+    tax_units:
+      unit:
+        members: &id001
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id001
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+    households:
+      home:
+        members: *id001
+        state_code: TX
+  output:
+    tx_ccs_eligible_child:
+    - false
+    - true
+    - true
+    tx_ccs_eligible: true
+    tx_ccs_copay: 0
+    tx_ccs: 400
+- name: TX court status without approval does not waive family requirements
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        tx_ccs_payment_rate: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: false
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+    tax_units:
+      unit:
+        members: &id002
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id002
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+    households:
+      home:
+        members: *id002
+        state_code: TX
+  output:
+    tx_ccs_eligible: false
+    tx_ccs: 0
+- name: TX unapproved sibling expenses cannot fund approved child with no care
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        tx_ccs_payment_rate: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: true
+        pre_subsidy_childcare_expenses: 0
+        childcare_hours_per_week: 0
+        tx_ccs_payment_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+    tax_units:
+      unit:
+        members: &id003
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id003
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+    households:
+      home:
+        members: *id003
+        state_code: TX
+  output:
+    tx_ccs: 0
+- name: TX DFPS assessed share is deducted from authorized child expenses
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        tx_ccs_payment_rate: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+    tax_units:
+      unit:
+        members: &id004
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id004
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+        tx_ccs_dfps_assessed_parent_share: 75
+    households:
+      home:
+        members: *id004
+        state_code: TX
+  output:
+    tx_ccs_copay: 75
+    tx_ccs: 325
+- name: TX child approval stays within its SPM unit
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        tx_ccs_payment_rate: 0
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        tx_ccs_payment_rate: 500
+      other_parent:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      other_child:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6000
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        - other_parent
+        - other_child
+        state_code: TX
+  output:
+    tx_ccs_eligible_child:
+    - false
+    - true
+    - true
+    - false
+    - true
+    tx_ccs_eligible:
+    - true
+    - false
+    tx_ccs:
+    - 400
+    - 0
+- name: TX approved non-tax-dependent child reaches actual reimbursement rates
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        tx_ccs_dfps_authorized: true
+        pre_subsidy_childcare_expenses: 2400
+        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        tx_ccs_provider_type: LCCC
+        tx_ccs_provider_rating: REG
+        tx_ccs_care_schedule: FULL_TIME
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        tx_ccs_income_eligible: false
+        tx_ccs_work_requirement_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    tx_ccs_eligible_child:
+    - false
+    - true
+    tx_ccs_eligible: true
+    tx_ccs_copay: 0
+    tx_ccs: 200

@@ -1,0 +1,86 @@
+# Authority: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/CCDF%20FFY%202025-2027%20For%20District%20of%20Columbia.pdf#page=18
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: DC court-supervised child at age 12.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: DC court-supervised child at age 13.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: DC court-supervised child at age 17.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: DC court-supervised child at age 18.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: DC court-supervised child at age 19.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: false
+
+- name: DC court-supervised child at age 40.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    dc_ccsp_eligible_child: false
+
+- name: DC older child without court supervision.
+  period: 2026-01
+  input:
+    state_code: DC
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    dc_ccsp_eligible_child: false

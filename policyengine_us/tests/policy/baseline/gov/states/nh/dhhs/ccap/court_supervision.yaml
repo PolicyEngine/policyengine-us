@@ -1,0 +1,62 @@
+# Authority: https://gc.nh.gov/rules/state_agencies/he-c6900.html
+# Tests cover the modeled ordinary program; a separate protective or TANF program is not inferred from court status.
+
+- name: NH ordinary program includes age 12.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nh_ccap_eligible_child: true
+
+- name: NH court status alone does not extend ordinary program eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nh_ccap_eligible_child: false
+
+- name: NH court status alone does not extend ordinary program eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nh_ccap_eligible_child: false
+
+- name: NH court status alone does not extend ordinary program eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nh_ccap_eligible_child: false
+
+- name: NH court status alone does not extend ordinary program eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nh_ccap_eligible_child: false

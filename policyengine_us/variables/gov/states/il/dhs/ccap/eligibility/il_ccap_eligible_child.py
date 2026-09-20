@@ -8,6 +8,7 @@ class il_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.IL
     reference = (
+        "https://www.dhs.state.il.us/OneNetLibrary/27897/documents/Forms/IL444-4480.pdf",
         "https://www.dhs.state.il.us/page.aspx?item=104995",
         "https://www.dhs.state.il.us/page.aspx?item=46885",
     )
@@ -16,7 +17,13 @@ class il_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.il.dhs.ccap.age_limit
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.special_needs_child, p.child)
+        court_ordered_care = person(
+            "requires_childcare_under_court_order", period.this_year
+        )
+        # Form IL444-4480 requires an order specifically directing child care.
+        age_limit = where(
+            is_disabled | court_ordered_care, p.special_needs_child, p.child
+        )
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period)
         # Citizenship and immigration status are not eligibility factors.

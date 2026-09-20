@@ -8,6 +8,7 @@ class sc_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.SC
     reference = (
+        "https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=21",
         "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=14",
         "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=19",
     )
@@ -16,8 +17,9 @@ class sc_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.sc.dss.ccap.eligibility
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
+        court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            is_disabled,
+            is_disabled | court_supervision,
             age < p.disabled_child_age_limit,
             age < p.child_age_limit,
         )

@@ -1,0 +1,314 @@
+- name: IA approved child is paid without funding an unapproved sibling
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        ia_cca_max_rate: 0
+      approved_child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+    tax_units:
+      unit:
+        members: &id001
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id001
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members: *id001
+        state_code: IA
+  output:
+    ia_cca_eligible_child:
+    - false
+    - true
+    - true
+    ia_cca_eligible: true
+    ia_cca_copay: 0
+    ia_cca: 400
+- name: IA court status without approval does not waive family requirements
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        ia_cca_max_rate: 0
+      approved_child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: false
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+    tax_units:
+      unit:
+        members: &id002
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id002
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members: *id002
+        state_code: IA
+  output:
+    ia_cca_eligible: false
+    ia_cca: 0
+- name: IA unapproved sibling expenses cannot fund approved child with no care
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        ia_cca_max_rate: 0
+      approved_child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: true
+        pre_subsidy_childcare_expenses: 0
+        childcare_hours_per_week: 0
+        ia_cca_max_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+    tax_units:
+      unit:
+        members: &id003
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id003
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members: *id003
+        state_code: IA
+  output:
+    ia_cca: 0
+- name: IA court approval does not waive the child age limit
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        ia_cca_max_rate: 0
+      approved_child:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+    tax_units:
+      unit:
+        members: &id004
+        - parent
+        - approved_child
+        - sibling
+    spm_units:
+      unit:
+        members: *id004
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members: *id004
+        state_code: IA
+  output:
+    ia_cca_income_exception: false
+    ia_cca_eligible: false
+    ia_cca: 0
+- name: IA child approval stays within its SPM unit
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+        ia_cca_max_rate: 0
+      approved_child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: true
+        pre_subsidy_childcare_expenses: 4800
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      sibling:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      other_parent:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      other_child:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6000
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+      other_unit:
+        members:
+        - other_parent
+        - other_child
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        - sibling
+        - other_parent
+        - other_child
+        state_code: IA
+  output:
+    ia_cca_eligible_child:
+    - false
+    - true
+    - true
+    - false
+    - true
+    ia_cca_eligible:
+    - true
+    - false
+    ia_cca:
+    - 400
+    - 0
+- name: IA approved non-tax-dependent child reaches actual reimbursement rates
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+      approved_child:
+        age: 12
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        ia_cca_court_ordered_care_approved: true
+        pre_subsidy_childcare_expenses: 2400
+        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        state_code: IA
+  output:
+    ia_cca_eligible_child:
+    - false
+    - true
+    ia_cca_eligible: true
+    ia_cca_copay: 0
+    ia_cca: 200

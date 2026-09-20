@@ -7,9 +7,12 @@ class nh_ccap_eligible_child(Variable):
     label = "Eligible child for New Hampshire Child Care Scholarship Program"
     definition_period = MONTH
     defined_for = StateCode.NH
-    reference = "https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-C-6910.07"
+    reference = "https://gc.nh.gov/rules/state_agencies/he-c6900.html"
 
     def formula(person, period, parameters):
+        # He-C 6910.07 has no standalone court-supervision age exception.
+        # The separate DCYF pathway in He-C 6912.09 requires an open case
+        # and approved protective/special needs, not just court status.
         p = parameters(period).gov.states.nh.dhhs.ccap.eligibility
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period.this_year)

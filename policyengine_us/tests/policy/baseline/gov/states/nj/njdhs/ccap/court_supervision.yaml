@@ -1,0 +1,66 @@
+# Authority: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: NJ court status without a protective-care referral is insufficient.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child: false
+
+- name: NJ court-supervised child with protective-care referral at age 13.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    nj_ccap_has_cpp_referral: true
+  output:
+    nj_ccap_eligible_child: true
+
+- name: NJ court-supervised child with protective-care referral at age 18.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    nj_ccap_has_cpp_referral: true
+  output:
+    nj_ccap_eligible_child: true
+
+- name: NJ court-supervised child with protective-care referral at age 19.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    nj_ccap_has_cpp_referral: true
+  output:
+    nj_ccap_eligible_child: false
+
+- name: NJ court-supervised child with protective-care referral at age 40.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    nj_ccap_has_cpp_referral: true
+  output:
+    nj_ccap_eligible_child: false

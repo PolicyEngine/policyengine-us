@@ -1,0 +1,62 @@
+# Authority: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=173
+# Tests cover the modeled ordinary program; a separate protective or TANF program is not inferred from court status.
+
+- name: AK ordinary program includes age 12.
+  period: 2026-01
+  input:
+    state_code: AK
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ak_ccap_child_age_eligible: true
+
+- name: AK court status alone does not extend ordinary program eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: AK
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ak_ccap_child_age_eligible: false
+
+- name: AK court status alone does not extend ordinary program eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: AK
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ak_ccap_child_age_eligible: false
+
+- name: AK court status alone does not extend ordinary program eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: AK
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ak_ccap_child_age_eligible: false
+
+- name: AK court status alone does not extend ordinary program eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: AK
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ak_ccap_child_age_eligible: false

@@ -1,0 +1,92 @@
+# Authority: https://www.cdss.ca.gov/Portals/9/CCDD/2025-27%20CCDF%20State%20Plan%20%E2%80%93%20Amendments%201.pdf#page=19
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: CA general court status without qualifying jurisdiction.
+  period: 2026
+  input:
+    state_code: CA
+    age: 14
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+- name: CA qualifying court supervision at age 17.
+  period: 2026
+  input:
+    state_code: CA
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    ca_calworks_child_care_has_qualifying_court_supervision: true
+  output:
+    ca_calworks_child_care_child_age_eligible: true
+
+- name: CA age 18 needs the school condition.
+  period: 2026
+  input:
+    state_code: CA
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    ca_calworks_child_care_has_qualifying_court_supervision: true
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+- name: CA age 18 with qualifying schooling.
+  period: 2026
+  input:
+    state_code: CA
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    ca_calworks_child_care_has_qualifying_court_supervision: true
+    ca_calworks_child_care_meets_age_18_school_requirement: true
+  output:
+    ca_calworks_child_care_child_age_eligible: true
+
+- name: CA age 19 remains outside the modeled child-care age limit.
+  period: 2026
+  input:
+    state_code: CA
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+    ca_calworks_child_care_has_qualifying_court_supervision: true
+    ca_calworks_child_care_meets_age_18_school_requirement: true
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+- name: CA ordinary age 12 remains eligible.
+  period: 2026
+  input:
+    state_code: CA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    ca_calworks_child_care_child_age_eligible: true
+
+- name: CA ordinary age 13 is excluded.
+  period: 2026
+  input:
+    state_code: CA
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    ca_calworks_child_care_child_age_eligible: false

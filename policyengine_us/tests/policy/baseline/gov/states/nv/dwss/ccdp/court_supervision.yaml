@@ -1,0 +1,103 @@
+# Authority: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/2025-2027_CCDF_State_Plan._For_Remediation._no_markup__2.pdf#page=17
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: NV court-supervised child at age 12.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: NV court-supervised child at age 13.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: NV court-supervised child at age 17.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: NV court-supervised child at age 18.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: NV court-supervised child at age 19.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: NV court-supervised child at age 40.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: NV older child without court supervision.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: NV previous CCDF plan did not elect a court-age exception.
+  period: 2024-01
+  input:
+    state_code: NV
+    age:
+      2024: 13
+    is_tax_unit_dependent:
+      2024: true
+    immigration_status:
+      2024: CITIZEN
+    is_disabled:
+      2024: false
+    is_under_court_supervision:
+      2024: true
+  output:
+    nv_ccdp_eligible_child: false

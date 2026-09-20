@@ -1,0 +1,117 @@
+# Court/referral approvals are child-specific; rates are fixed here to isolate eligibility and payment scope.
+- name: DC court-supervised dependent age 18 and family waivers
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+    tax_units:
+      unit:
+        members: &id001
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id001
+        dc_ccsp_income_eligible: false
+    households:
+      home:
+        members: *id001
+        state_code: DC
+  output:
+    dc_ccsp_income_test_waived: true
+    dc_ccsp_eligible: true
+- name: DC court-supervised dependent age 19 and family waivers
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+    tax_units:
+      unit:
+        members: &id002
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id002
+        dc_ccsp_income_eligible: false
+    households:
+      home:
+        members: *id002
+        state_code: DC
+  output:
+    dc_ccsp_income_test_waived: false
+    dc_ccsp_eligible: false
+- name: DC court-supervised dependent age 40 and family waivers
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 40
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+    tax_units:
+      unit:
+        members: &id003
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id003
+        dc_ccsp_income_eligible: false
+    households:
+      home:
+        members: *id003
+        state_code: DC
+  output:
+    dc_ccsp_income_test_waived: false
+    dc_ccsp_eligible: false
+- name: DC parent court status does not waive child-care family requirements
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        is_under_court_supervision: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      unit:
+        members: &id004
+        - parent
+        - child
+    spm_units:
+      unit:
+        members: *id004
+        dc_ccsp_income_eligible: false
+    households:
+      home:
+        members: *id004
+        state_code: DC
+  output:
+    dc_ccsp_income_test_waived: false
+    dc_ccsp_eligible: false
