@@ -10,7 +10,16 @@ class wa_working_families_tax_credit_maximum_qualifying_income(Variable):
     label = "Washington Working Families Tax Credit maximum qualifying income"
     unit = USD
     definition_period = YEAR
-    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=60"
+    reference = (
+        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=60",
+        # RCW 82.08.0206(2)(e)-(f): income limit and qualifying children,
+        # including children with ITINs.
+        "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206",
+        "https://www.law.cornell.edu/uscode/text/26/152#c_3_B",
+        # DOR's age waiver and the application's disability/SSN-or-ITIN fields.
+        "https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf#page=5",
+        "https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf#page=3",
+    )
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
@@ -29,8 +38,14 @@ class wa_working_families_tax_credit_maximum_qualifying_income(Variable):
         eitc = parameters(period).gov.irs.credits.eitc
         person = tax_unit.members
         federal_child_count = tax_unit("eitc_child_count", period)
+        # Apply the IRC 152(c)(3)(B) age waiver to ITIN children too, using
+        # the same qualifying-child count as the WFTC amount formula.
+        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
+            "is_permanently_and_totally_disabled", period
+        )
         washington_child_count = tax_unit.sum(
-            person("is_qualifying_child_dependent", period) & person("has_tin", period)
+            (person("is_qualifying_child_dependent", period) | is_disabled_dependent)
+            & person("has_tin", period)
         )
         child_count = max_(federal_child_count, washington_child_count)
         federal_max_agi = calculate_eitc_max_agi_limit(

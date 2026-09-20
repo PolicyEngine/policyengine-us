@@ -14,6 +14,7 @@ class trump_dividend(Variable):
         "basic_income default non-taxable treatment."
     )
     definition_period = YEAR
+    reference = "https://www.whitehouse.gov/releases/2026/09/trump-dividend-america-is-winning-and-americans-should-win-with-it/"
     defined_for = "trump_dividend_eligible"
 
     adds = ["gov.contrib.trump.dividend.amount"]

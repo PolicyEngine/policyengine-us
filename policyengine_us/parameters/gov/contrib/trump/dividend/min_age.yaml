@@ -1,9 +1,12 @@
-# Hypothetical illustrative reform; no official source document exists.
-# Parameters reflect the proposal as specified by the contributor.
+# The White House release promises the payment to "every adult American
+# citizen" without naming an age test; 18 is PolicyEngine's reading of adult.
 description: The Trump dividend is limited to people at or above this age.
 metadata:
   unit: year
   label: Trump dividend minimum age
   period: year
+  reference:
+    - title: "Trump Dividend: America Is Winning — and Americans Should Win With It"
+      href: https://www.whitehouse.gov/releases/2026/09/trump-dividend-america-is-winning-and-americans-should-win-with-it/
 values:
   0000-01-01: 18

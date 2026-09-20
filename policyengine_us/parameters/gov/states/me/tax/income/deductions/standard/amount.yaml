@@ -1,24 +1,19 @@
-description: Maine basic standard deduction amount by filing status. Maine uses fixed-date IRC conformity (as of December 31, 2024) per 36 MRSA § 111, so it did not adopt the One Big Beautiful Bill Act (OBBBA) increase to the federal standard deduction that took effect in 2025.
+description: Maine basic standard deduction amount by filing status, set in dollars by statute for tax years 2025 and 2026. Maine conforms to the Internal Revenue Code as amended through December 31, 2025 (36 M.R.S. Sec. 111(1-A)), but 36 M.R.S. Sec. 5124-C(1-B) and (1-C) fix Maine's own basic amounts for those two years rather than following the federal amount. From tax year 2027 on, Sec. 5124-C(1-D) sets the Maine standard deduction equal to the federal standard deduction, so these amounts are not projected past 2026.
 metadata:
   propagate_metadata_to_children: true
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   label: Maine basic standard deduction
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
   reference:
-  - title: 36 MRSA § 111 (Maine IRC conformity as of December 31, 2024)
+  - title: 36 M.R.S. Sec. 111(1-A) (Maine IRC conformity as amended through December 31, 2025)
     href: https://www.mainelegislature.org/legis/statutes/36/title36sec111.html
   - title: 36 MRSA § 5124-C (Maine standard deduction)
     href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
   - title: P.L. 2025, c. 650, Pt. K, § 14 (LD 2212) / 36 M.R.S. § 5124-C(1-C) (Standard deduction amounts for tax year 2026)
     href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=138
-  - title: Maine Revenue Services 2026 Legislative Changes Summary (page 6)
+  - title: Maine Revenue Services 2026 Legislative Changes Summary, conformity (page 2) and 2026 standard deduction (page 6)
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/legischange26.pdf#page=6
   - title: Maine Revenue Services 2026 Individual Income Tax Rate Schedule (revised May 20, 2026)
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf
@@ -28,8 +23,8 @@ metadata:
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_book_gen_instr.pdf
   - title: 36 MRSA § 5403 (Maine annual adjustments for inflation)
     href: https://legislature.maine.gov/statutes/36/title36sec5403.html
-  - title: Maine Revenue Services 2025 Income Tax Important Update (OBBBA non-conformity)
-    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf
+  - title: P.L. 2025, c. 650, Pt. K, Sec. 15 (L.D. 2212) / 36 M.R.S. Sec. 5124-C(1-D) (Maine standard deduction equals the federal standard deduction from 2027)
+    href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=138
 SINGLE:
   2018-01-01: 12_000
   2019-01-01: 12_200

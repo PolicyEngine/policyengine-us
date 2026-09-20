@@ -7,21 +7,30 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
     label = "Arkansas individual retirement or disability benefits exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
+    reference = (
+        "https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-3/section-26-51-307/",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=13",
+    )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.income.exemption.traditional_distribution
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        p_ar = parameters(
+            period
+        ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
         # Only head or spouse of the tax unit will have this exemption
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        disability_benefits_and_taxable_pensions = add(
-            person, period, ["disability_benefits", "taxable_pension_income"]
+        employment_retirement_and_disability = add(
+            person, period, p_ar.employment_sources
         )
         # Filers over a certain age can deduct IRA distributions in addition to pension income
-        ira_age_eligible = person("age", period) >= p.age_threshold
-        age_eligible_ira_distributions = ira_age_eligible * person(
-            "taxable_ira_distributions", period
+        ira_age_eligible = person("age", period) >= p_irs.age_threshold
+        ira_distributions = add(
+            person,
+            period,
+            ["taxable_ira_distributions", "taxable_roth_conversions"],
         )
+        age_eligible_ira_distributions = ira_age_eligible * ira_distributions
         return head_or_spouse * (
-            disability_benefits_and_taxable_pensions + age_eligible_ira_distributions
+            employment_retirement_and_disability + age_eligible_ira_distributions
         )

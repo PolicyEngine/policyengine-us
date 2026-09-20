@@ -24,8 +24,15 @@ class ma_income_tax_exemption_threshold(Variable):
             exempt_status.personal_exemption_added[filing_status]
             * tax.exemptions.personal[filing_status]
         )
+        # The No Tax Status worksheet adds the per-dependent amount only for
+        # head of household and married filing jointly.
+        dependent_exemptions_added = (
+            exempt_status.dependent_exemption_added[filing_status]
+            * dependents
+            * tax.exemptions.dependent
+        )
         return (
             exempt_status.base[filing_status]
-            + dependents * tax.exemptions.dependent
+            + dependent_exemptions_added
             + personal_exemptions_added
         )

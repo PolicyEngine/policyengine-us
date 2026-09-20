@@ -1,0 +1,126 @@
+# Missing-hours convention: zero is the numeric default, not evidence of part-time care.
+# Benefit expectations reuse the documented full-time arithmetic in ../integration.yaml.
+- name: Omitted hours use the full-time fallback for classification.
+  period: 2026-01
+  input:
+    state_code: WY
+    childcare_attending_days_per_month: 20
+  output:
+    wy_ccap_day_length: FULL_DAY
+- name: Zero is unknown while positive hours retain the daily threshold in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_day: 3
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_day: 4.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_day: 5
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: WY
+  output:
+    wy_ccap_day_length:
+    - FULL_DAY
+    - PART_DAY
+    - PART_DAY
+    - FULL_DAY
+    - FULL_DAY
+- name: Explicit part-time schedule overrides reported full-time hours.
+  period: 2026-01
+  input:
+    state_code: WY
+    childcare_hours_per_day: 8
+    wy_ccap_day_length: PART_DAY
+  output:
+    wy_ccap_day_length: PART_DAY
+- name: Billable care with unknown hours uses the full-time rate and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 6000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: WY
+  output:
+    wy_ccap_gross_income: 2500
+    wy_ccap_countable_income: 2300
+    wy_ccap_income_eligible: true
+    wy_ccap_activity_eligible: true
+    wy_ccap_eligible_child:
+    - false
+    - true
+    wy_ccap_eligible: true
+    wy_ccap_copay: 17.6
+    wy_ccap_max_rate:
+    - 0
+    - 32
+    wy_ccap_daily_benefit:
+    - 0
+    - 32
+    wy_ccap: 302.4
+    wy_child_care_subsidies: 302.4
+    child_care_subsidies: 302.4
+- name: Zero hours, care days, and expenses do not create a subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+      person2:
+        age: 3
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: WY
+  output:
+    wy_ccap: 0

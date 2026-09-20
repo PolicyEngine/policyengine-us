@@ -5,18 +5,27 @@ metadata:
   unit: currency-USD
   label: Montana income tax rebate amount
   reference:
-    - title: Montana Code Annotated 2023, Title 15, Chapter 30, Part 21, Section 15-30-2191 (b)
-      href: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0910/0150-0300-0210-0910.html
+    - title: MCA 15-30-2191(1)(b)(i)-(ii) (rebate amounts) and (2) (line-20 cap)
+      href: https://web.archive.org/web/20250210203531/https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0910/0150-0300-0210-0910.html
+    - title: Montana HB 192 (Ch. 44, L. 2023), enrolled bill, sec. 2
+      href: https://web.archive.org/web/20230626082025/https://leg.mt.gov/bills/2023/billpdf/HB0192.pdf
+    - title: Montana Department of Revenue, Income tax and property tax rebate report, May 2024, p. 8
+      href: https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=8
   breakdown:
     - filing_status
 
 SINGLE:
   2021-01-01: 1_250
+  2022-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 1_250
+  2022-01-01: 0
 JOINT:
   2021-01-01: 2_500
+  2022-01-01: 0
 SURVIVING_SPOUSE:
   2021-01-01: 2_500
+  2022-01-01: 0
 SEPARATE:
-  2021-01-01: 1_250 
+  2021-01-01: 1_250
+  2022-01-01: 0

@@ -17,4 +17,5 @@ class me_agi_subtractions(Variable):
         "me_pension_income_deduction",
         "me_529_plan_subtraction",
         "me_affordability_payment_subtraction",
+        "salt_refund_income",  # 36 M.R.S. § 5122(2)(F) / Schedule 1S line 2
     ]

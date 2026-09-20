@@ -7,3 +7,4 @@ class pre_subsidy_electricity_expense(Variable):
     label = "Pre subsidy electricity expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

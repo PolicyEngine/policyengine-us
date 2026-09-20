@@ -93,3 +93,16 @@
     state_code: WI
   output:
     wi_retirement_income_exclusion_amount: 24_000
+
+- name: Single age 68, $10k 401k + $10k IRA - below cap
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_401k_distributions: 10_000
+    taxable_ira_distributions: 10_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 20_000

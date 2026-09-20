@@ -18,7 +18,21 @@ class me_pension_income_deduction(Variable):
 
         # Per-person non-military pension deduction (Pension Income Deduction
         # Worksheet, lines P1-P5).
-        pension_income = person("pension_income", period)
+        # Distributions subject to IRC § 72(t) early-distribution tax are excluded
+        # under 36 M.R.S. § 5122(2)(M-2)(2)(f). We approximate this by gating
+        # retirement distributions at age 59½.
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        age_eligible = person("age", period) >= p_irs.age_threshold
+        pension_sources = [
+            s for s in p.sources if s != "taxable_retirement_distributions"
+        ]
+        distribution_sources = [
+            s for s in p.sources if s == "taxable_retirement_distributions"
+        ]
+        pension_income = (
+            add(person, period, pension_sources)
+            + add(person, period, distribution_sources) * age_eligible
+        )
         gross_ss = person("social_security", period)
         ss_reduced_cap = max_(p.cap - gross_ss, 0)
         non_military_deduction = min_(pension_income, ss_reduced_cap)

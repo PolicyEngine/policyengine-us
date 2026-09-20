@@ -6,7 +6,11 @@ values:
 metadata:
   unit: currency-USD
   label: SOI unemployment compensation
-  uprating: calibration.gov.cbo.income_by_source.taxable_social_security
+  # CBO's unemployment compensation outlays begin in 2022, a year after the
+  # last SOI total, so growth is applied from 2022.
+  uprating:
+    parameter: calibration.gov.cbo.unemployment_compensation
+    start_instant: 2022-01-01
   reference:
     - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
       href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

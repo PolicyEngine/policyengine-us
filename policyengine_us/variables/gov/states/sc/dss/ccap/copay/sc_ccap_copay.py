@@ -116,7 +116,18 @@ class sc_ccap_copay(Variable):
         # or protective services).  Head Start-only units pay $0.
         is_eligible = person("sc_ccap_eligible_child", period)
         is_head_start = person("is_enrolled_in_head_start", period.this_year)
-        in_care = person("childcare_hours_per_week", period) > 0
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
         income_eligible = spm_unit("sc_ccap_income_eligible", period)
         activity_eligible = spm_unit("sc_ccap_activity_eligible", period)
         covers_non_hs = (income_eligible & activity_eligible) | protective

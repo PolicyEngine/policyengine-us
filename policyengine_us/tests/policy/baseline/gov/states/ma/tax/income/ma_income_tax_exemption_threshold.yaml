@@ -47,3 +47,119 @@
   output:
     # Base 7,600 + personal exemption 6,800 + 1 dependent x 1,000 = 15,400.
     ma_income_tax_exemption_threshold: 15_400
+
+- name: Single filer with one dependent gets no per-dependent addition in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # The No Tax Status worksheet adds $1,000 per dependent only for head of
+    # household and married filing jointly; single filers use the flat 8,000.
+    ma_income_tax_exemption_threshold: 8_000
+
+- name: Joint filers with two dependents include the per-dependent addition in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+      child1:
+        is_tax_unit_dependent: true
+        age: 5
+      child2:
+        is_tax_unit_dependent: true
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child1, child2]
+  output:
+    # Base 7,600 + personal exemption 8,800 + 2 dependents x 1,000 = 18,400.
+    ma_income_tax_exemption_threshold: 18_400
+
+- name: Married filing separately with one dependent gets no threshold in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # No exemptions are allowed to a married individual filing separately
+    # (M.G.L. c.62 s.5(a)). SEPARATE base is 0, personal_exemption_added
+    # [SEPARATE] is false, and dependent_exemption_added[SEPARATE] is false,
+    # so the per-dependent addition cannot fire: 0 + 0 x 6,800 + 0 x 1 x 1,000
+    # = 0. Pins that the SEPARATE dependent gate stays inert even alongside a
+    # dependent, closing the last filing-status cell.
+    # notes: SA6 exemption-threshold MFS+dependent cell.
+    ma_income_tax_exemption_threshold: 0
+
+- name: Single filer with two dependents gets the flat threshold in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child1:
+        is_tax_unit_dependent: true
+        age: 5
+      child2:
+        is_tax_unit_dependent: true
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        state_code: MA
+        members: [head, child1, child2]
+  output:
+    # Two dependents, but the SINGLE per-dependent addition is fully
+    # suppressed (dependent_exemption_added[SINGLE] is false), not merely
+    # reduced: flat 8,000 + 0 x 6,800 + 0 x 2 x 1,000 = 8,000.
+    # notes: Suggestion 7c - SINGLE with 2+ dependents, addition fully suppressed.
+    ma_income_tax_exemption_threshold: 8_000
