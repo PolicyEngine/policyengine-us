@@ -8,6 +8,10 @@ class ca_eitc_eligible(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
+    reference = (
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.",
+        "https://www.ftb.ca.gov/forms/2024/2024-3514-booklet.html",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -28,8 +32,8 @@ class ca_eitc_eligible(Variable):
             eitc_investment_income <= p.eligibility.max_investment_income
         )
 
-        # FTB 3514 (Steps 7-8): federal AGI must also be below the CalEITC
-        # earnings threshold (p.phase_out.final.end).
+        # FTB 3514 Step 1 requires federal AGI below the exclusive income limit.
+        # Compare supplied income without optional whole-dollar return rounding.
         federal_agi = tax_unit("adjusted_gross_income", period)
         meets_agi_requirements = federal_agi < p.phase_out.final.end
 
