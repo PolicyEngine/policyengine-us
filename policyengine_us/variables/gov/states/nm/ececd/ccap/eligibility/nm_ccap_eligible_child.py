@@ -11,6 +11,7 @@ class nm_ccap_eligible_child(Variable):
         "https://www.srca.nm.gov/parts/title08/08.015.0002.html",
         "https://www.srca.nm.gov/parts/title08/08.009.0003.html",
         "https://www.law.cornell.edu/cfr/text/45/98.20",
+        "https://www.nmlegis.gov/Sessions/26%20Regular/final/SB0241.pdf#page=14",
     )
 
     def formula(person, period, parameters):
@@ -20,6 +21,8 @@ class nm_ccap_eligible_child(Variable):
         # read age == 0), so enforcing it would wrongly exclude every infant.
         # 8.9.3.11.G (formerly 8.15.2.11.G) extends eligibility for children
         # needing special supervision, including supervision by a court.
+        # 2026 Laws, Ch. 63, Section 5(G) expressly includes age 18 from
+        # May 20, 2026; the dated age parameter captures that change.
         # has_developmental_delay proxies the medical-professional branch.
         p = parameters(period).gov.states.nm.ececd.ccap.eligibility
         age = person("age", period.this_year)

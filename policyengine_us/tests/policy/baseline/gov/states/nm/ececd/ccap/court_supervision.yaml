@@ -20,3 +20,233 @@
     immigration_status: UNDOCUMENTED
   output:
     nm_ccap_eligible_child: false
+
+# 2026 Laws, Chapter 63, section 5(G), effective May 20, 2026.
+- name: NM 2026-04 age 18, court True, medical-supervision proxy False
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-04 age 18, court False, medical-supervision proxy True
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-04 age 18, court False, medical-supervision proxy False
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-04 age 19, court True, medical-supervision proxy False
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-04 age 19, court False, medical-supervision proxy True
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-04 age 19, court False, medical-supervision proxy False
+  period: 2026-04
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-06 age 18, court True, medical-supervision proxy False
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: true
+- name: NM 2026-06 age 18, court False, medical-supervision proxy True
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: true
+- name: NM 2026-06 age 18, court False, medical-supervision proxy False
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-06 age 19, court True, medical-supervision proxy False
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-06 age 19, court False, medical-supervision proxy True
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+- name: NM 2026-06 age 19, court False, medical-supervision proxy False
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
