@@ -1,3 +1,10 @@
+## [2.6.20] - 2026-09-20
+
+### Fixed
+
+- Use full-time pricing for unknown care hours in Arkansas, Florida, Kentucky, Pennsylvania, and Wyoming, and derive Virginia full-day care from reported hours while preserving explicit authorizations. Exclude children outside care from Florida's schedule-dependent copay.
+
+
 ## [2.6.19] - 2026-09-20
 
 ### Fixed
