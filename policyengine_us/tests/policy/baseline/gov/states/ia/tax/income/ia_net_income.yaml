@@ -76,3 +76,26 @@
     ia_pension_exclusion: 6_000
     ia_net_income: 54_000
 
+- name: 2024 single filer with wages and traditional IRA distribution
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        irs_employment_income: 50_000
+        taxable_ira_distributions: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_gross_income: 60_000
+    ia_pension_exclusion: 10_000
+    ia_net_income: 50_000
+
+

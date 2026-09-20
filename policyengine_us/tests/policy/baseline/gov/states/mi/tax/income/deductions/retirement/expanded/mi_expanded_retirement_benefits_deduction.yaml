@@ -178,3 +178,25 @@
     mi_expanded_retirement_benefits_deduction: 0
     mi_pension_benefit: 0
 
+- name: 2026 disabled single filer under age 59.5 with taxable IRA distributions eligible for deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        taxable_ira_distributions: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Disabled filer: IRA distributions qualify under MCL 206.30(8)(a)(ii) despite age < 59.5.
+    mi_expanded_retirement_benefits_deduction: 20_000
+    mi_pension_benefit: 20_000
+
+

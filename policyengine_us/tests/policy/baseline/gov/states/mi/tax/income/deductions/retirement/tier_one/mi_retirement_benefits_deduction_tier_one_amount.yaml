@@ -398,6 +398,7 @@
   input:
     people:
       person1:
+        age: 65
         taxable_public_pension_income: 0
         taxable_ira_distributions: 20_000
         taxable_401k_distributions: 15_000
@@ -412,4 +413,52 @@
       state_code: MI
   output:
     mi_retirement_benefits_deduction_tier_one_amount: 35_000
+
+- name: 2025 single filer under age 59.5 with IRA and 401(k) distributions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_public_pension_income: 0
+        taxable_ira_distributions: 20_000
+        taxable_401k_distributions: 15_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Under 59.5 without disability: IRA distributions ($20,000) are excluded;
+    # 401(k) distributions ($15,000) are included.
+    mi_retirement_benefits_deduction_tier_one_amount: 15_000
+
+- name: 2025 disabled single filer under age 59.5 with IRA and 401(k) distributions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        taxable_public_pension_income: 0
+        taxable_ira_distributions: 20_000
+        taxable_401k_distributions: 15_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Disabled filer: IRA distributions ($20,000) qualify under MCL 206.30(8)(a)(ii);
+    # 401(k) ($15,000) also qualifies -> total $35,000.
+    mi_retirement_benefits_deduction_tier_one_amount: 35_000
+
 

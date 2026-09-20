@@ -112,8 +112,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ok.tax.income.exemptions
-            # special exemption AGI eligibility
-            fagi = tax_unit("adjusted_gross_income", period)
+            # special exemption AGI eligibility (excluding Roth conversion income per Form 511 instructions)
+            person = tax_unit.members
+            roth_conversions = tax_unit.sum(person("taxable_roth_conversions", period))
+            fagi = tax_unit("adjusted_gross_income", period) - roth_conversions
             filing_status = tax_unit("filing_status", period)
             agi_eligible = fagi <= p.special_agi_limit[filing_status]
             # head exemptions

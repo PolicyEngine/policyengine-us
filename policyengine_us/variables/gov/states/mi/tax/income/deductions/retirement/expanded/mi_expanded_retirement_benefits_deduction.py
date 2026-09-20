@@ -21,7 +21,12 @@ class mi_expanded_retirement_benefits_deduction(Variable):
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        age_eligible = person("age", period) >= p_irs.age_threshold
+        # Under MCL 206.30(8)(a)(ii), distributions from individual retirement accounts
+        # qualify if made after age 59½, or in the case of disability.
+        # Exceptions for death and IRC § 72(t)(2)(A)(iv) periodic payments are unmodeled.
+        ira_eligible = (person("age", period) >= p_irs.age_threshold) | person(
+            "is_disabled", period
+        )
         ira_sources = [
             s
             for s in p.sources
@@ -35,7 +40,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         pension_sources = [s for s in p.sources if s not in ira_sources]
         uncapped_pension_income = (
             add(person, period, pension_sources)
-            + add(person, period, ira_sources) * age_eligible
+            + add(person, period, ira_sources) * ira_eligible
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         uncapped_head_or_spouse_pension = tax_unit.sum(
