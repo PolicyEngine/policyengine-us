@@ -65,17 +65,39 @@ class al_federal_income_tax_deduction(Variable):
         recomputed_cdcc = branch.tax_unit("cdcc", period)
         recomputed_eitc = branch.tax_unit("eitc", period)
 
-        american_opportunity_credit = tax_unit("american_opportunity_credit", period)
+        # Worksheet line 11 (2021 Form 1040 line 29) is the REFUNDABLE portion of
+        # the American Opportunity Credit (Form 8863 line 8). The non-refundable
+        # portion already reduced `federal_tax`, so subtracting the total would
+        # double-count it.
+        refundable_american_opportunity_credit = tax_unit(
+            "refundable_american_opportunity_credit", period
+        )
 
-        part_ii = max_(
-            federal_tax
+        # `federal_tax` (Part I line 3) includes the net investment income tax,
+        # which the worksheet only adds on Part II line 7 (after the line-6
+        # floor). Split it out so nonrefundable credits cannot erode the NIIT.
+        niit = tax_unit("net_investment_income_tax", period)
+        regular_tax_basis = federal_tax - niit
+
+        # Lines 1e-6: recompute regular tax net of the 2020-rule nonrefundable
+        # CTC/CDCC (after adding back the actual nonrefundable amounts that
+        # `federal_tax` already netted out), then floor at zero on line 6.
+        line_6 = max_(
+            regular_tax_basis
             + actual_non_refundable_ctc
             + actual_non_refundable_cdcc
             - recomputed_non_refundable_ctc
-            - recomputed_cdcc
+            - recomputed_cdcc,
+            0,
+        )
+        # Line 7 adds NIIT back; lines 13-14 subtract the refundable credits and
+        # apply the final zero floor.
+        part_ii = max_(
+            line_6
+            + niit
             - recomputed_eitc
             - recomputed_refundable_ctc
-            - american_opportunity_credit,
+            - refundable_american_opportunity_credit,
             0,
         )
 

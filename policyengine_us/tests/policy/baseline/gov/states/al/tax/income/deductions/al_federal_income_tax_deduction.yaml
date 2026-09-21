@@ -68,7 +68,24 @@
   output:
     al_federal_income_tax_deduction: 10_587.5
 
-- name: Capped at 0
+- name: 2021 childless filer, NIIT survives the line-6 floor
+  # RE-PINNED by PR #9502 Stage 1 (was "Capped at 0" -> 0). This childless case
+  # has NIIT $200 and a total AOC $200, so both Stage-1 fixes bite:
+  #   - Part II line-6 floor applies BEFORE adding NIIT, protecting the $200 NIIT.
+  #   - Part II subtracts only the refundable AOC (0.4 * 200 = 80), not the full $200.
+  # Childless -> the 2020-IRC branch recomputes CTC/CDCC/EITC to 0 and there are
+  # no non-refundable add-backs.
+  # Hand arithmetic:
+  #   federal_tax = 100; niit = 200
+  #   Part I  = max(100 - eitc(200) - full_AOC(200) - refundable_ctc(0), 0) = 0
+  #   regular_tax_basis = 100 - 200 = -100
+  #   line_6  = max(-100, 0) = 0                      <- floor before NIIT
+  #   refundable_AOC = 0.4 * 200 = 80
+  #   Part II = max(0 + niit(200) - recomputed_eitc(0)
+  #                 - recomputed_refundable_ctc(0) - refundable_AOC(80), 0) = 120
+  #   deduction = max(Part I 0, Part II 120) = 120
+  # Pre-fix code gave 0 (single final floor let the AOC/EITC erode the NIIT).
+  absolute_error_margin: 0.01
   period: 2021
   input:
     income_tax_before_refundable_credits: 100
@@ -77,4 +94,75 @@
     american_opportunity_credit: 200
     state_code: AL
   output:
-    al_federal_income_tax_deduction: 0
+    al_federal_income_tax_deduction: 120
+
+- name: 2021 filer with an American Opportunity Credit - Part II subtracts only the refundable AOC
+  # M1 (PR #9502, Max review 2026-09-20): exercises the Part II AOC subtraction
+  # path, which no prior case covered. Childless direct-input case isolates the
+  # arithmetic: with no qualifying children or child-care expenses the 2020-IRC
+  # branch recomputes CTC/CDCC/EITC all to 0 and there are no non-refundable
+  # add-backs, so Part II reduces to line_6 + NIIT - refundable_AOC.
+  #
+  # Worksheet line 11 (Form 1040 line 29) is the REFUNDABLE portion of the AOC
+  # only. Refundability is 40% (gov.irs.credits.education.american_opportunity_
+  # credit.refundability = 0.4), so a $2,500 total AOC -> $1,000 refundable
+  # (Max's sanity check). The non-refundable $1,500 already reduced
+  # income_tax_before_refundable_credits, so subtracting the total would
+  # double-count it.
+  #
+  # Hand arithmetic (all direct inputs):
+  #   federal_tax = income_tax_before_refundable_credits = 5,000; NIIT = 0
+  #   Part I  = max(5,000 - eitc(0) - full_AOC(2,500) - refundable_ctc(0), 0)
+  #           = 2,500
+  #   regular_tax_basis = 5,000 - 0 = 5,000
+  #   line_6  = max(5,000 + 0 + 0 - 0 - 0, 0) = 5,000
+  #   refundable_AOC = 0.4 * 2,500 = 1,000
+  #   Part II = max(5,000 + NIIT(0) - eitc(0) - refundable_ctc(0)
+  #                 - refundable_AOC(1,000), 0) = 4,000
+  #   deduction = max(Part I 2,500, Part II 4,000) = 4,000
+  # Regression guard: the pre-fix code subtracted the full $2,500 AOC in Part II,
+  # giving Part II = max(5,000 - 2,500, 0) = 2,500 and a deduction of 2,500.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    income_tax_before_refundable_credits: 5_000
+    net_investment_income_tax: 0
+    eitc: 0
+    american_opportunity_credit: 2_500
+    state_code: AL
+  output:
+    al_federal_income_tax_deduction: 4_000
+
+- name: 2021 filer with NIIT exceeding regular tax - line-6 floor protects NIIT
+  # M2 (PR #9502, Max review 2026-09-20; hua7450 repro intent): the worksheet
+  # floors the recomputed regular-tax basis at zero on line 6 BEFORE adding NIIT
+  # on line 7, so a negative regular-tax basis cannot absorb (erode) the NIIT.
+  #
+  # A real household could not be shaped to hit hua7450's exact $600 nonref-CTC /
+  # $1,400 ACTC / $0 basis split (income high enough to zero out regular tax also
+  # changed the branch recompute). Following the coordinator's guidance, this is a
+  # direct-input case (like the M1 AOC case) that isolates and asserts the
+  # qualitative floor behavior: regular-tax basis is negative, NIIT still
+  # contributes in full.
+  #
+  # Childless -> the 2020-IRC branch recomputes CTC/CDCC/EITC to 0 and there are
+  # no non-refundable add-backs, so Part II reduces to max(line_6 + NIIT, 0).
+  # Hand arithmetic (all direct inputs):
+  #   federal_tax = income_tax_before_refundable_credits = 0; NIIT = 1,900
+  #   Part I  = max(0 - eitc(0) - AOC(0) - refundable_ctc(0), 0) = 0
+  #   regular_tax_basis = 0 - 1,900 = -1,900
+  #   line_6  = max(-1,900 + 0 + 0 - 0 - 0, 0) = 0        <- floor before NIIT
+  #   Part II = max(line_6(0) + NIIT(1,900) - 0 - 0 - 0, 0) = 1,900
+  #   deduction = max(Part I 0, Part II 1,900) = 1,900
+  # Pre-fix code (NIIT inside the basis, single final floor) gave
+  #   max(0 - 0 - 0 - 0, 0) = 0, letting the negative basis swallow the NIIT.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    income_tax_before_refundable_credits: 0
+    net_investment_income_tax: 1_900
+    eitc: 0
+    american_opportunity_credit: 0
+    state_code: AL
+  output:
+    al_federal_income_tax_deduction: 1_900
