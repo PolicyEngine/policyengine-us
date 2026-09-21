@@ -1,1 +1,1 @@
-Extend Maryland Child Care Scholarship age eligibility through age 18 for court-supervised children under the approved FFY 2025–2027 CCDF plan, beginning October 1, 2024.
+Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021 under the FFY 2022–2024 and FFY 2025–2027 approved CCDF plans (COMAR itself does not provide the route).

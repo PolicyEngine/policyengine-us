@@ -1,5 +1,6 @@
-# Approved FFY 2025-2027 plan 2.2.1(c): court-supervised children through age 18.
-# Current-plan formula begins 2024-10-01; earlier model behavior is preserved.
+# Approved FFY 2025-2027 plan 2.2.1(c) and FFY 2022-2024 plan 3.1.1: court-supervised
+# children through age 18. The route is modeled from 2021-10-01 (first plan election in
+# evidence); before that the court threshold equals the ordinary child ceiling.
 
 - name: Maryland court age boundaries include 18 and exclude 19 and adults
   period: 2025-01
@@ -201,7 +202,7 @@
           2025: VA
   output:
     md_ccs_eligible_child: false
-- name: Maryland current-plan change preserves the earlier model before October 2024
+- name: Maryland FFY 2022-2024 plan already elected the court route before October 2024
   period: 2024-09
   input:
     people:
@@ -219,7 +220,7 @@
         state_code:
           2024: MD
   output:
-    md_ccs_eligible_child: false
+    md_ccs_eligible_child: true
 - name: Maryland approved current plan includes age 18 from October 2024
   period: 2024-10
   input:
@@ -673,3 +674,41 @@
     - 183
     - 0
     md_ccs: 1586
+- name: Maryland court route is inert before the FFY 2022-2024 plan election in September 2021
+  period: 2021-09
+  input:
+    people:
+      person_0:
+        age:
+          2021: 18
+        is_ccdf_immigration_eligible_child:
+          2021: true
+        is_under_court_supervision:
+          2021: true
+    households:
+      household:
+        members:
+        - person_0
+        state_code:
+          2021: MD
+  output:
+    md_ccs_eligible_child: false
+- name: Maryland FFY 2022-2024 plan election includes age 18 from October 2021
+  period: 2021-10
+  input:
+    people:
+      person_0:
+        age:
+          2021: 18
+        is_ccdf_immigration_eligible_child:
+          2021: true
+        is_under_court_supervision:
+          2021: true
+    households:
+      household:
+        members:
+        - person_0
+        state_code:
+          2021: MD
+  output:
+    md_ccs_eligible_child: true
