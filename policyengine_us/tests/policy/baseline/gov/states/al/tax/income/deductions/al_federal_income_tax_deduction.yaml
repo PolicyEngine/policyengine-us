@@ -166,3 +166,74 @@
     state_code: AL
   output:
     al_federal_income_tax_deduction: 1_900
+
+- name: 2021 MFJ, seven children with childcare - CDCC precedes the CTC limit in the 2020 recompute
+  # PR #9502 (PavelMakarchuk review 2026-09-21): the 2020 CTC & ODC Worksheet
+  # (Pub. 972 p.7) uses the CDCC (Form 2441) BEFORE the CTC when computing the
+  # CTC's tax-liability limit, and Schedule 8812 then routes the unused CTC to
+  # the ACTC. The recompute branch pins the CDCC out of the refundable list but
+  # must ALSO add it to the non-refundable list read by ctc_limiting_tax_liability
+  # so the recomputed CDCC reduces that limit. This is the one case that makes the
+  # ordering bind: line_6 floors at 0, so the extra ACTC (not offset by line_6)
+  # flows straight into Part II and cancels the NIIT.
+  #
+  # Fully calculated household (no federal-tax/credit/NIIT overrides): MFJ, wages
+  # 220,000 + 10,000, taxable interest 40,000 (AGI 270,000 -> NIIT 760), seven
+  # children age 8, childcare 6,000, medical 180,000.
+  #   income_tax_before_credits = 13,552; NIIT = 760; recomputed CDCC = 1,200.
+  #   Correct CTC tax-liability limit = 13,552 - 1,200 = 12,352 (CDCC first), so
+  #   1,200 of the 2020-rule CTC that would otherwise be non-refundable becomes
+  #   ACTC: recomputed ACTC = 1,648 (was 448 before the fix).
+  #   line_6 = max(13,552 - recomputed_nonref_ctc(12,352) - recomputed_cdcc(1,200), 0) = 0
+  #   Part II = max(line_6(0) + NIIT(760) - eitc(0) - recomputed_refundable_ctc(1,648)
+  #                 - refundable_AOC(0), 0) = 0
+  #   Part I = 0 as well -> deduction = max(0, 0) = 0.
+  # Regression guard: before the fix the branch used the full 13,552 as the CTC
+  # limit, so recomputed ACTC was only 448 and Part II = max(760 - 448, 0) = 312,
+  # giving a deduction of 312 instead of 0.
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 220_000
+        taxable_interest_income: 40_000
+        other_medical_expenses: 180_000
+      spouse:
+        age: 40
+        employment_income: 10_000
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+      child4:
+        age: 8
+        is_tax_unit_dependent: true
+      child5:
+        age: 8
+        is_tax_unit_dependent: true
+      child6:
+        age: 8
+        is_tax_unit_dependent: true
+      child7:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7]
+        state_code: AL
+  output:
+    al_federal_income_tax_deduction: 0

@@ -97,6 +97,19 @@ def _pin_2020_irc(tbs):
         )
     except Exception:
         pass
+    # The 2020 CTC & ODC Worksheet (Pub. 972, p.7) uses the CDCC before the CTC
+    # when computing the CTC's tax-liability limit, so the recomputed CDCC must
+    # reduce that limit inside `ctc_limiting_tax_liability`, which reads the
+    # non-refundable-credits list. The 2021 list omits `cdcc` (it was refundable
+    # under ARPA). Add `cdcc` to the current 2021 membership rather than pinning
+    # the whole 2020 list, which would drop `new_clean_vehicle_credit` (2021+).
+    try:
+        non_refundable_2021 = list(credits.non_refundable(start))
+        if "cdcc" not in non_refundable_2021:
+            non_refundable_2021 = ["cdcc"] + non_refundable_2021
+        credits.non_refundable.update(start=start, stop=stop, value=non_refundable_2021)
+    except Exception:
+        pass
 
 
 def get_pre_arpa_eitc_tbs(base_tbs):
