@@ -104,6 +104,108 @@
     ma_ccfa_total_copay: 100
     ma_ccfa: 900
 
+- name: Case 8, missing hours use full-time reimbursement and copay when no schedule is supplied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 3
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14400
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_is_part_time_care: [false, false]
+    ma_ccfa_maximum_reimbursement: [0, 1175.6]
+    ma_ccfa_copay_person: [0, 100]
+    ma_ccfa_total_copay: 100
+    # min(14400 / 12, 58.78 * 20) - 100
+    ma_ccfa: 1075.6
+
+- name: Case 9, missing hours retain part-time reimbursement and copay for school-age family care after school.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 8
+        childcare_attending_days_per_month: 20
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        ma_ccfa_schedule_type: AFTER_ONLY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14400
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_is_part_time_care: [false, true]
+    ma_ccfa_maximum_reimbursement: [0, 595.68]
+    ma_ccfa_copay_person: [0, 50]
+    ma_ccfa_total_copay: 50
+    # min(14400 / 12, 49.64 * 0.6 * 20) - 100 * 0.5
+    ma_ccfa: 545.68
+
+- name: Case 10, annual school-age family care subsidy respects the after school schedule without hours.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 8
+        childcare_attending_days_per_month: 20
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        ma_ccfa_schedule_type: AFTER_ONLY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_eligible:
+      2026-01: true
+    ma_ccfa_total_copay:
+      2026-01: 0
+    # 49.64 * 0.6 * 20 * 12
+    ma_child_care_subsidies: 7148.16
+
 - name: Case 4, TANF enrollment supplies categorical eligibility.
   period: 2026-01
   input:
@@ -183,47 +285,47 @@
   period: 2026-01
   input:
     people:
-      parent1:
+      person1:
         age: 35
         weekly_hours_worked_before_lsr: 30
-      child1:
+      person2:
         age: 2
         childcare_hours_per_day: 5
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
-      child2:
+      person3:
         age: 4
         childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
-      parent2:
+      person4:
         age: 30
         weekly_hours_worked_before_lsr: 30
-      child3:
+      person5:
         age: 6
         childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
         ma_ccfa_uncapped_daily_payment: 50
     tax_units:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
     spm_units:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
         ma_ccfa_base_copay: 100
         spm_unit_pre_subsidy_childcare_expenses: 36000
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
         ma_ccfa_base_copay: 200
         spm_unit_pre_subsidy_childcare_expenses: 14400
     households:
       first:
-        members: [parent1, child1, child2]
+        members: [person1, person2, person3]
         state_code: MA
       second:
-        members: [parent2, child3]
+        members: [person4, person5]
         state_code: MA
   output:
     ma_ccfa_activity_eligible: [true, true]

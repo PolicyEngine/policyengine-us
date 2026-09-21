@@ -8,3 +8,4 @@ class military_service_income(Variable):
     unit = USD
     documentation = "Military pay from active duty, National Guard, and/or the reserve component of the armed forces."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

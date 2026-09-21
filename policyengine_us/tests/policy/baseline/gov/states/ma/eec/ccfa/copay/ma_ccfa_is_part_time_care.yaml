@@ -14,9 +14,10 @@
   output:
     ma_ccfa_is_part_time_care: false
 
-- name: Case 3, before school schedule is part time.
+- name: Case 3, school-age child in center-based before school care is part time.
   period: 2026-01
   input:
+    age: 8
     state_code: MA
     ma_ccfa_schedule_type: BEFORE_ONLY
   output:
@@ -38,3 +39,57 @@
     ma_ccfa_is_part_time_care:
       2024-06: true
       2024-07: false
+
+# A before or after school schedule counts as part-time care only where the
+# rate chart or policy guide prices that care as part-day: school age
+# center-based care, the Head Start partner and kindergarten table, and
+# school age family child care. Other children are part time by hours only.
+- name: Case 6, school-age child in family child care before school is part time without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: BEFORE_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: true
+
+- name: Case 7, kindergarten child in after school care is part time without hours.
+  period: 2026-01
+  input:
+    age: 5
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: true
+
+- name: Case 8, preschooler with an after school schedule and no hours is not part time.
+  period: 2026-01
+  input:
+    age: 3
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: false
+
+- name: Case 9, school-age child in informal care with an after school schedule and no hours is not part time.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: false
+
+- name: Case 10, school-age child in informal care for three hours is part time by hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_is_part_time_care: true

@@ -53,7 +53,7 @@
   output:
     ar_sra_time_category: PART_TIME
 
-- name: Case 5, 0 hours per day is PART_TIME.
+- name: Case 5, unknown hours retain full-time pricing.
   period: 2026-01
   input:
     people:
@@ -64,7 +64,7 @@
         members: [person1]
         state_code: AR
   output:
-    ar_sra_time_category: PART_TIME
+    ar_sra_time_category: FULL_TIME
 
 - name: Case 6, 8 hours per day for 4 days per week (32 hours per week total) is FULL_TIME under the per-day rule.
   period: 2026-01

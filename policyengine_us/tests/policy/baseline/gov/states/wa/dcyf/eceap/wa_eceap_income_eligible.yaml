@@ -138,8 +138,8 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI for WA family of 3 in 2031 (after uprating) = $70,405.39.
-    # $55,000 < $70,405.39, so income-eligible under the 2030-08-01 50% SMI threshold.
+    # 50% SMI for WA family of 3 in 2031 (projected per capita with AGI) = $69,317.41.
+    # $55,000 < $69,317.41, so income-eligible under the 2030-08-01 50% SMI threshold.
     wa_eceap_income_eligible: [true, true, true]
 
 - name: 2031 SMI era, family of 3 at $75,000, above 50% SMI threshold.
@@ -167,7 +167,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI family of 3 in 2031 = $70,405.39; $75,000 > threshold.
+    # 50% SMI family of 3 in 2031 = $69,317.41; $75,000 > threshold.
     wa_eceap_income_eligible: [false, false, false]
 
 - name: Oregon family, income below threshold, not eligible due to residency.
@@ -469,13 +469,13 @@
     # 36% SMI family of 3 in 2026 = $42,128.25; $42,129 > threshold.
     wa_eceap_income_eligible: [false, false, false]
 
-- name: 2031 family of 3 at $73,057, one dollar below 50% SMI floor, eligible.
+- name: 2031 family of 3 at $69,316, one dollar below 50% SMI floor, eligible.
   period: 2031
   input:
     people:
       parent:
         age: 30
-        employment_income: 70_404
+        employment_income: 69_316
       child:
         age: 4
         employment_income: 0
@@ -494,16 +494,16 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI family of 3 in 2031 = $70,405.39. $70,404 <= threshold.
+    # 50% SMI family of 3 in 2031 = $69,317.41. $69,316 <= threshold.
     wa_eceap_income_eligible: [true, true, true]
 
-- name: 2031 family of 3 at $73,058, one dollar above 50% SMI floor, not eligible.
+- name: 2031 family of 3 at $69,318, one dollar above 50% SMI floor, not eligible.
   period: 2031
   input:
     people:
       parent:
         age: 30
-        employment_income: 70_406
+        employment_income: 69_318
       child:
         age: 4
         employment_income: 0

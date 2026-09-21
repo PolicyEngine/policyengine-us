@@ -2,24 +2,23 @@
 #
 # These exercise the full chain: aca_magi_fraction (income gate) ->
 # wa_cascade_care_savings_eligible (Group 1 / Group 3 membership) ->
-# wa_cascade_care_savings (per-member build-up, capped by SLCSP - APTC -
-# benchmark expectation).
+# wa_cascade_care_savings (per-member build-up, capped by SLCSP - APTC).
 #
 # slcsp, aca_ptc, and aca_magi_fraction are supplied directly (SLCSP as an annual
 # value) so the arithmetic is fully hand-verifiable. slcsp is a MONTH variable;
 # at the YEAR test period its output is the annual sum (= the value supplied).
 # Each scenario documents the per-member build-up and the cap.
 #
-# Amount formula recap:
-#   base_annual        = 12 * (55*n_group1 + 250*n_group3)
-#   expectation(frac)  = 0 (<=1.5), 10 (>1.5 to 2.0), 15 (>2.0) per member per month
-#   expectation_annual = 12 * expectation(frac) * (n_group1 + n_group3)
-#   cap                = max(0, slcsp_annual - aca_ptc - expectation_annual)
-#   annual             = eligible * min(base_annual, cap)
+# Amount formula recap (final PY2026 policy, Section 5(1)(c)-(d); no benchmark
+# premium expectation, which the policy's Attachment 1 lists among the concepts
+# "not included in the final policy"):
+#   base_annual = 12 * (55*n_group1 + 250*n_group3)
+#   cap         = max(0, slcsp_annual - aca_ptc)
+#   annual      = eligible * min(base_annual, cap)
 
 - name: Scenario 1, single Group 1 adult at 140% FPL, base binds.
-  # n_group1=1, n_group3=0. base_annual = 12*55 = 660. frac 1.4 -> expectation 0.
-  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # n_group1=1, n_group3=0. base_annual = 12*55 = 660.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660, 1_000) = 660.
   # (CCS additionally flows into healthcare_benefit_value; that wiring is checked
   # in tests/policy/baseline/household/healthcare_benefit_value.yaml.)
   period: 2026
@@ -47,9 +46,9 @@
     wa_cascade_care_savings_eligible: true
     wa_cascade_care_savings: 660
 
-- name: Scenario 2, single Group 1 adult at 180% FPL, expectation $10, base binds.
-  # base_annual = 660. frac 1.8 -> expectation 10/mo -> 120/yr.
-  # cap = max(0, 6_000 - 5_000 - 120) = 880. annual = min(660, 880) = 660.
+- name: Scenario 2, single Group 1 adult at 180% FPL, base binds.
+  # base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660,
+  # 1_000) = 660: no banding inside the 250% ceiling.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -75,10 +74,10 @@
     wa_cascade_care_savings_eligible: true
     wa_cascade_care_savings: 660
 
-- name: Scenario 3, Group 1 couple at 220% FPL, expectation $15 each, cap binds.
-  # n_group1=2 -> base_annual = 12*110 = 1_320. frac 2.2 -> expectation 15/mo each
-  # -> 12*15*2 = 360/yr. cap = max(0, 8_000 - 7_000 - 360) = 640.
-  # annual = min(1_320, 640) = 640 (cap binds).
+- name: Scenario 3, Group 1 couple at 220% FPL, cap binds.
+  # n_group1=2 -> base_annual = 12*110 = 1_320. cap = max(0, 8_000 - 7_000)
+  # = 1_000. annual = min(1_320, 1_000) = 1_000 (cap binds; 640 under the
+  # unadopted draft expectation).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -105,14 +104,13 @@
     slcsp: 8_000
     aca_ptc: 7_000
     wa_cascade_care_savings_eligible: true
-    wa_cascade_care_savings: 640
+    wa_cascade_care_savings: 1_000
 
 - name: Scenario 4, single Group 3 undocumented adult at 200% FPL, base binds.
   # immigration_status UNDOCUMENTED and wa_apple_health_expansion_eligible false
-  # -> Group 3. n_group3=1 -> base_annual = 12*250 = 3_000. frac 2.0 (not > 2.0001)
-  # -> expectation 10/mo -> 120/yr. cap = max(0, 12_000 - 0 - 120) = 11_880.
-  # annual = min(3_000, 11_880) = 3_000. Group 3 members are APTC-ineligible, so
-  # aca_ptc is 0 here.
+  # -> Group 3. n_group3=1 -> base_annual = 12*250 = 3_000. cap = max(0,
+  # 12_000 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000. Group 3 members
+  # are APTC-ineligible, so aca_ptc is 0 here.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -141,8 +139,7 @@
 
 - name: Scenario 5, mixed household with one Group 1 and one Group 3 member.
   # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 3_660.
-  # frac 1.6 -> expectation 10/mo each -> 12*10*2 = 240/yr.
-  # cap = max(0, 10_000 - 4_000 - 240) = 5_760. annual = min(3_660, 5_760) = 3_660.
+  # cap = max(0, 10_000 - 4_000) = 6_000. annual = min(3_660, 6_000) = 3_660.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -233,10 +230,9 @@
   # Group 3. person4 undocumented but Apple-Health-eligible -> NOT Group 3.
   # n_group1=2, n_group3=1, eligible members = 3.
   # base_annual = 12*(55*2 + 250*1) = 12*360 = 4_320.
-  # frac 1.6 -> expectation 10/mo each * 3 -> 12*10*3 = 360/yr.
-  # cap = max(0, 15_000 - 6_000 - 360) = 8_640. annual = min(4_320, 8_640) = 4_320.
-  # End-to-end guard that the Apple-Health-eligible undocumented member inflates
-  # neither the base sum nor the expectation member count.
+  # cap = max(0, 15_000 - 6_000) = 9_000. annual = min(4_320, 9_000) = 4_320.
+  # End-to-end guard that the Apple-Health-eligible undocumented member does not
+  # inflate the base sum.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -274,9 +270,9 @@
     wa_cascade_care_savings: 4_320
 
 - name: Scenario 9, program still in effect in 2027 (open-ended in_effect).
-  # in_effect and every amount/expectation bracket are open-ended from 2026, so
-  # 2027 mirrors Scenario 1. base_annual = 660. frac 1.4 -> expectation 0.
-  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # in_effect and both amounts are open-ended from 2026, so 2027 mirrors
+  # Scenario 1. base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000.
+  # annual = min(660, 1_000) = 660.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -308,7 +304,7 @@
   # has state MEC through Apple Health for Kids, so wa_apple_health_kids_eligible
   # is true and the child is EXCLUDED from Group 3. n_group1=1, n_group3=0 ->
   # base_annual = 12*55 = 660 (the ADULT ONLY; a child counted as Group 3 would
-  # have produced 12*(55+250) = 3_660). frac 1.4 -> expectation 0.
+  # have produced 12*(55+250) = 3_660).
   # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
   period: 2026
   absolute_error_margin: 0.01
@@ -352,7 +348,7 @@
   # true AND UNDOCUMENTED (wa_apple_health_expansion_eligible false). The FIXED
   # contract makes Groups 1 and 3 structurally exclusive (Group 3 adds
   # ~is_aca_ptc_eligible), so this person is Group 1 ONLY. n_group1=1, n_group3=0
-  # -> base_annual = 12*55 = 660 (NOT 3_660). frac 1.4 -> expectation 0.
+  # -> base_annual = 12*55 = 660 (NOT 3_660).
   # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
   period: 2026
   absolute_error_margin: 0.01
@@ -424,12 +420,12 @@
   # 2025 (prior-year) single FPG = 15_650. aca_magi_fraction =
   # floor(100 * 25_000 / 15_650) / 100 = floor(159.74)/100 = 1.59.
   # 1.59 is within the ACA PTC income range and <= 2.5, so is_aca_ptc_eligible is
-  # true -> Group 1 ($55). base_annual = 12*55 = 660. expectation at 1.59 (in
-  # (1.5001, 2.0001]) = 10/mo -> 120/yr. SLCSP (age 35, King County) = 357.00 *
+  # true -> Group 1 ($55). base_annual = 12*55 = 660. SLCSP (age 35, King
+  # County) = 357.00 *
   # 1.5974 * 12 = 6_843.28; required contribution % at 1.59 = 0.0419 +
   # (1.59-1.50)/0.50*(0.066-0.0419) = 0.046238; aca_ptc = 6_843.28 - 25_000*
-  # 0.046238 = 5_687.33; cap = max(0, 6_843.28 - 5_687.33 - 120) = 1_035.95.
-  # annual = min(660, 1_035.95) = 660 (base binds with a wide margin, so the
+  # 0.046238 = 5_687.33; cap = max(0, 6_843.28 - 5_687.33) = 1_155.95.
+  # annual = min(660, 1_155.95) = 660 (base binds with a wide margin, so the
   # amount is robust to small premium/MAGI variation).
   period: 2026
   absolute_error_margin: 0.01
@@ -466,11 +462,11 @@
   # 2025 (prior-year) 2-person FPG = 15_650 + 5_500 = 21_150. aca_magi_fraction =
   # floor(100 * 40_000 / 21_150) / 100 = floor(189.12)/100 = 1.89. Both are
   # is_aca_ptc_eligible -> two Group 1 members. base_annual = 12*(55*2) = 1_320.
-  # expectation at 1.89 = 10/mo each -> 12*10*2 = 240/yr. SLCSP (two age-40
+  # SLCSP (two age-40
   # adults, King County) = 357.00 * (1.6706 + 1.6706) * 12 = 14_313.70; required
   # contribution % at 1.89 = 0.0419 + (1.89-1.50)/0.50*(0.066-0.0419) = 0.060698;
   # aca_ptc = 14_313.70 - 40_000*0.060698 = 11_885.78; cap = max(0, 14_313.70 -
-  # 11_885.78 - 240) = 2_187.92. annual = min(1_320, 2_187.92) = 1_320 (base
+  # 11_885.78) = 2_427.92. annual = min(1_320, 2_427.92) = 1_320 (base
   # binds). Catches an aggregation/entity bug a single-person derived case cannot.
   period: 2026
   absolute_error_margin: 0.01

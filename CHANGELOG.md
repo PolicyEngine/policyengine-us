@@ -1,3 +1,142 @@
+## [2.6.20] - 2026-09-20
+
+### Fixed
+
+- Use full-time pricing for unknown care hours in Arkansas, Florida, Kentucky, Pennsylvania, and Wyoming, and derive Virginia full-day care from reported hours while preserving explicit authorizations. Exclude children outside care from Florida's schedule-dependent copay.
+
+
+## [2.6.19] - 2026-09-20
+
+### Fixed
+
+- Correct the 2024 CalEITC exclusive income limit to $31,951, including its effect on young child and foster youth tax credit eligibility. Clarify income-limit descriptions and replace broken foster youth tax credit statutory references.
+
+
+## [2.6.18] - 2026-09-20
+
+### Fixed
+
+- Apply full-time pricing for unknown care hours in Alabama, Mississippi, North Dakota, New Jersey, South Carolina, Tennessee, and Wisconsin. Recognize reported care days consistently in payment and copay participation rules, and exclude children outside care from pooled reimbursement ceilings and North Dakota provider bonuses.
+
+
+## [2.6.17] - 2026-09-19
+
+### Fixed
+
+- Break the Indiana and Kansas state supplement–Medicaid–SNAP calculation cycles from 2027 while preserving Medicaid enrollment conditions and SNAP/TANF exemptions for other adults.
+
+
+## [2.6.16] - 2026-09-19
+
+### Fixed
+
+- Count permanently and totally disabled adult qualifying children with ITINs when determining Washington Working Families Tax Credit income limits.
+
+
+## [2.6.15] - 2026-09-19
+
+### Changed
+
+- Reduce repeated model construction, run Rest tests sequentially in separate processes on one CI runner, and record complete timing and memory reports.
+
+
+## [2.6.14] - 2026-09-19
+
+### Fixed
+
+- Exempt and deduct taxable public pension income across 7 states (MA, KS, NY, AL, LA, IN, OR) with statutory citations and baseline tests:
+  - MA: Excludes contributory public pensions from `ma_gross_income` (M.G.L. c. 62 § 2(a)(2)(E)) and re-adds them to Senior Circuit Breaker total income.
+  - KS: Subtracts public pensions from federal AGI (K.S.A. § 79-32,117(c)(ii), (vii)–(ix), Form K-40 Schedule S Line A13).
+  - NY: Subtracts public pensions under N.Y. Tax Law § 612(c)(3) (Form IT-201 Line 26) without consuming the $20,000 private pension exclusion cap under § 612(c)(3-a).
+  - AL: Deducts public pensions from state AGI (Ala. Code § 40-18-19(a)(1), (2), (5), (6)) without consuming the $6,000 private retirement exemption cap.
+  - LA: Exempts public pensions under Schedule E codes 02E, 03E, 05E without consuming the $6,000 retirement exemption cap under R.S. 47:44.1 (code 06E).
+  - IN: Implements civil service annuity deduction under IC 6-3-2-3.7 bounded by `min_(taxable_federal_pension_income, taxable_public_pension_income)`, capped at $16,000 per person and reduced by Social Security and railroad retirement benefits.
+  - OR: Wires user input variable `or_federal_pension_subtraction` into Oregon subtractions under ORS 316.680(1)(e).
+  - NC: Public pension deduction (Bailey settlement exemption) is deferred until a dedicated Bailey-eligibility variable is designed.
+
+
+## [2.6.13] - 2026-09-19
+
+### Fixed
+
+- Include the Delaware child and dependent care credit in the state CDCC aggregate for 2021 and 2022.
+
+
+## [2.6.12] - 2026-09-19
+
+### Fixed
+
+- Washington Cascade Care Savings: drop the benchmark premium expectation, which the Exchange's final plan-year-2026 policy lists among the concepts "not included in the final policy", so the household amount is capped at the premium left after the federal credit as Section 5(1)(d) adopts; repoint every reference at the published policy and PMPM methodology (the cited `board/2025/PY2026-Final-*.pdf` paths return 404).
+
+
+## [2.6.11] - 2026-09-19
+
+### Changed
+
+- Consolidate the Massachusetts CCFA `CENTER_BASED_CARE_EARLY_EDUCATION` and `CENTER_BASED_CARE_SCHOOL_AGE` care provider types into a single `CENTER_BASED_CARE` type, and the two center-based reimbursement variables into `ma_ccfa_center_based_reimbursement`, with the child's age category selecting the rate.
+
+### Fixed
+
+- Stop paying $0 for Massachusetts CCFA children under school age when no care provider type is given, avoid a second part-time reduction on before and after school rates, and assume full-time care when daily hours are unreported unless a school-age family child care before/after schedule establishes part-day care. Count a before or after school schedule as part-time care for the parent fee only where the rate chart or policy guide prices that care as part-day, so the fee and the reimbursement agree. Date the FY2027 informal child care reimbursement rates to July 2026.
+
+
+## [2.6.10] - 2026-09-18
+
+### Fixed
+
+- Point dollar inputs at closer uprating series: unemployment compensation follows CBO unemployment outlays instead of taxable Social Security, alimony follows the SOI alimony series, capital gains components follow capital gains, pay-linked inputs follow employment income, general health insurance premiums follow CMS per-capita spending, veterans benefits follow the Social Security cost-of-living index, and rent, child care, tuition, utilities, mortgage interest and student loan interest follow CPI-U.
+
+
+## [2.6.9] - 2026-09-18
+
+### Fixed
+
+- Uprate dollar inputs by national totals per capita, so weighted totals track each national total instead of also growing with the population-uprated weights (a 0.9 percent overshoot in 2025 rising to 5.1 percent by 2035).
+
+
+## [2.6.8] - 2026-09-18
+
+### Fixed
+
+- Correct the uprating description on the SPM poverty methodology page so it matches the code: rent follows the default CBO adjusted gross income projection, not CPI-U.
+
+
+## [2.6.7] - 2026-09-18
+
+### Fixed
+
+- Register Covered Connecticut, ConnectorCare, NJ Health Plan Savings, Vermont Premium Assistance and Washington Cascade Care Savings in `gov.household.household_health_benefits`, so all nine state marketplace premium programs reach household benefits and net income when `gov.simulation.include_health_benefits_in_net_income` is enabled, as California, Colorado, Maryland and New Mexico already did.
+
+
+## [2.6.6] - 2026-09-18
+
+### Fixed
+
+- Defaulted the Maryland Child Care Scholarship provider type to a licensed center rather than none, so an eligible household is paid without naming a provider.
+
+
+## [2.6.5] - 2026-09-17
+
+### Fixed
+
+- Include taxable Roth conversions in state gross income (AL, AR, NJ) and state retirement income exclusions (AL, AR, CO, DE, GA, IA, IL, KY, MI, NJ, NY, OK, WI); align Kentucky retirement income sources with Schedule P.
+
+
+## [2.6.4] - 2026-09-16
+
+### Fixed
+
+- Update reference URLs and statutory citations for Arkansas, Rhode Island, and Wisconsin retirement income exclusions.
+- Fix citations and reference URLs for state income tax refund subtractions in NY, ME, and VA.
+
+
+## [2.6.3] - 2026-09-16
+
+### Fixed
+
+- Run the existing US policy test suites against the latest compatible PolicyEngine Core release without duplicating test jobs.
+
+
 ## [2.6.2] - 2026-09-16
 
 ### Fixed
