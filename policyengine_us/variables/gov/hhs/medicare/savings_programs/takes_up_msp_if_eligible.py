@@ -7,3 +7,8 @@ class takes_up_msp_if_eligible(Variable):
     label = "Whether an eligible person takes up the Medicare Savings Program"
     definition_period = YEAR
     default_value = True
+    documentation = (
+        "Discretionary MSP take-up. A false value removes modeled assistance "
+        "for nonparticipants while preserving existing SSI-related buy-in "
+        "coverage. Potential benefit estimates remain available separately."
+    )

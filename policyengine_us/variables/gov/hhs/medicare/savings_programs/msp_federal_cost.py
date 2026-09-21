@@ -29,6 +29,9 @@ class msp_federal_cost(Variable):
         federal_cost = 0
         for month in period.get_subperiods(MONTH):
             category = person("msp_category", month)
+            eligible_participant = person("msp_eligible", month) & person(
+                "msp_participation", month
+            )
             monthly_cost = person("msp_benefit_value", month) + person(
                 "qmb_cost_sharing", month
             )
@@ -45,6 +48,6 @@ class msp_federal_cost(Variable):
                 ],
                 default=0,
             )
-            federal_cost += monthly_cost * federal_share
+            federal_cost += monthly_cost * federal_share * eligible_participant
 
         return where(person("medicaid_enrolled", period), 0, federal_cost)

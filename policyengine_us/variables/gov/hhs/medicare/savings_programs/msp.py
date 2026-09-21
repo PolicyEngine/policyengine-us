@@ -10,6 +10,7 @@ class msp(Variable):
     reference = (
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
-    defined_for = "takes_up_msp_if_eligible"
+    defined_for = "msp_eligible"
 
-    adds = ["msp_benefit_value"]
+    def formula(person, period, parameters):
+        return person("msp_benefit_value", period) * person("msp_participation", period)

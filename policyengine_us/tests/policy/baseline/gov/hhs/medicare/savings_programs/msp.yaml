@@ -2,6 +2,7 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
+    msp_eligible: true
     msp_benefit_value: 150
     takes_up_msp_if_eligible: false
   output:
@@ -12,6 +13,7 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
+    msp_eligible: true
     msp_benefit_value: 150
     takes_up_msp_if_eligible: true
   output:
@@ -22,6 +24,16 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
+    msp_eligible: true
     msp_benefit_value: 150
   output:
     msp: 150
+
+- name: Case 4, an overridden estimate cannot bypass MSP eligibility.
+  period: 2026-01
+  input:
+    msp_eligible: false
+    msp_benefit_value: 150
+    takes_up_msp_if_eligible: true
+  output:
+    msp: 0

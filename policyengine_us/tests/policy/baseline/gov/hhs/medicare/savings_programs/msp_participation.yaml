@@ -1,0 +1,38 @@
+- name: Case 1, discretionary take-up and SSI receipt are individual participation gates.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        takes_up_msp_if_eligible: false
+        ssi: 0
+        receives_ssi: false
+      person2:
+        takes_up_msp_if_eligible: false
+        ssi: 0
+        receives_ssi: true
+      person3:
+        takes_up_msp_if_eligible: false
+        ssi: 994
+        receives_ssi: false
+      person4:
+        takes_up_msp_if_eligible: true
+        ssi: 0
+        receives_ssi: false
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+  output:
+    msp_participation: [false, true, true, true]
+
+- name: Case 2, reported SSI preserves participation only in its reported month.
+  period: 2026
+  input:
+    takes_up_msp_if_eligible: false
+    ssi: 0
+    receives_ssi:
+      2026-01: true
+      2026-02: false
+  output:
+    msp_participation:
+      2026-01: true
+      2026-02: false
