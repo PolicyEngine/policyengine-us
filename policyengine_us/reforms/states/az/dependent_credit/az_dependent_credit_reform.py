@@ -109,11 +109,14 @@ def create_az_refundable_dependent_credit() -> Reform:
     def modify_parameters(parameters):
         node = parameters.gov.states.az.tax.income.credits.refundable
         current = node("2024-01-01")
-        node.update(
-            start=instant("2024-01-01"),
-            stop=instant("2100-12-31"),
-            value=current + ["az_refundable_dependent_tax_credit"],
-        )
+        # modify_parameters can run more than once per build; guard the
+        # append so the refund is registered exactly once.
+        if "az_refundable_dependent_tax_credit" not in current:
+            node.update(
+                start=instant("2024-01-01"),
+                stop=instant("2100-12-31"),
+                value=list(current) + ["az_refundable_dependent_tax_credit"],
+            )
         return parameters
 
     class reform(Reform):

@@ -19,6 +19,18 @@ def create_ut_dependent_exemption_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ut.tax.income.credits.taxpayer
             pc = parameters(period).gov.contrib.states.ut.dependent_exemption
+            # Only apply the reform pricing in periods where the reform is
+            # in effect — the reform is installed for the whole simulation
+            # whenever it activates in any of the next five years, so this
+            # per-period gate prevents the reform amount leaking into
+            # pre-activation years.
+            if not pc.in_effect:
+                total_dependents = tax_unit("ut_total_dependents", period)
+                if p.in_effect:
+                    total_dependents += tax_unit(
+                        "ut_personal_exemption_additional_dependents", period
+                    )
+                return p.personal_exemption * total_dependents
             person = tax_unit.members
             age = person("age", period)
             dependent = person("is_tax_unit_dependent", period)

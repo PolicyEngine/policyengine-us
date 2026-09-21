@@ -49,8 +49,10 @@
     tax_units:
       tax_unit:
         members: [person1, child1, child2]
+        # AGI above the excise-credit limit so the refundable aggregate
+        # isolates the new credit.
         filing_status: HEAD_OF_HOUSEHOLD
-        adjusted_gross_income: 20_000
+        adjusted_gross_income: 50_000
         az_income_tax_before_non_refundable_credits: 0
     households:
       household:
@@ -58,6 +60,10 @@
         state_code: AZ
   output:
     az_refundable_dependent_tax_credit: 250
+    # The refundable aggregate and the bottom line catch a
+    # double-registered refund (each copy would add another $250).
+    az_refundable_credits: 250
+    az_income_tax: -250
 
 - name: The per-period gate pays nothing while the flag is off.
   period: 2026

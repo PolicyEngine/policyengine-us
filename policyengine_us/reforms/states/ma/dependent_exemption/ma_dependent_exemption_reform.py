@@ -32,20 +32,28 @@ def create_ma_dependent_exemption_reform() -> Reform:
             # (3): Dependent exemptions — the reformed piece. Dependents
             # under the age threshold (all dependents when the age limit is
             # off) take the contrib amount; older dependents keep the
-            # baseline per-dependent exemption.
-            if pc.age_limit.in_effect:
-                young = dependent & (age < pc.age_limit.threshold)
+            # baseline per-dependent exemption. Only apply the reform
+            # pricing in periods where the reform is in effect — the reform
+            # is installed for the whole simulation whenever it activates in
+            # any of the next five years, so this per-period gate prevents
+            # the reform amount leaking into pre-activation years.
+            if pc.in_effect:
+                if pc.age_limit.in_effect:
+                    young = dependent & (age < pc.age_limit.threshold)
+                else:
+                    young = dependent
+                count_young = tax_unit.sum(young)
+                count_older = tax_unit.sum(dependent) - count_young
+                if pc.amount < 0:
+                    reform_amount = tax.exemptions.dependent
+                else:
+                    reform_amount = pc.amount
+                dependent_exemption = (
+                    reform_amount * count_young + tax.exemptions.dependent * count_older
+                )
             else:
-                young = dependent
-            count_young = tax_unit.sum(young)
-            count_older = tax_unit.sum(dependent) - count_young
-            if pc.amount < 0:
-                reform_amount = tax.exemptions.dependent
-            else:
-                reform_amount = pc.amount
-            dependent_exemption = (
-                reform_amount * count_young + tax.exemptions.dependent * count_older
-            )
+                count_dependents = tax_unit("tax_unit_dependents", period)
+                dependent_exemption = tax.exemptions.dependent * count_dependents
             # (4): Medical expense deduction for itemizers.
             itemizes = tax_unit("tax_unit_itemizes", period)
             federal_medical_expense_deduction = tax_unit(

@@ -11,6 +11,7 @@
       person1:
         age: 40
         is_tax_unit_head: true
+        employment_income: 60_000
       child1:
         age: 5
         is_tax_unit_dependent: true
@@ -29,6 +30,10 @@
     # $6,800 head-of-household personal exemption + $0 for the 5-year-old
     # + the baseline $1,000 for the 19-year-old dependent.
     ma_part_b_taxable_income_exemption: 7_800
+    # $50 above the same household's baseline tax of $2,020: 5% of the
+    # repealed $1,000 exemption. Asserts the exemption flows through to
+    # the bottom line.
+    ma_income_tax: 2_070
 
 - name: Reform at defaults reproduces the baseline (sentinel amount).
   period: 2026
@@ -114,3 +119,32 @@
         state_code: MA
   output:
     ma_part_b_taxable_income_exemption: 6_800
+
+- name: The reform amount is inert in periods where the reform is off.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ma.dependent_exemption.ma_dependent_exemption_reform
+  input:
+    gov.contrib.states.ma.dependent_exemption.amount: 0
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: MA
+  output:
+    # in_effect is false, so the $0 amount does not apply: baseline
+    # $6,800 personal + 2 x $1,000 dependent exemptions.
+    ma_part_b_taxable_income_exemption: 8_800
