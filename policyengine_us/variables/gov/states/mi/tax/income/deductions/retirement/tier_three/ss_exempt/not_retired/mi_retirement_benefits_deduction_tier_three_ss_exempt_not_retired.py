@@ -26,7 +26,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
         )
 
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
+        uncapped_pension_income = add(person, period, p.sources)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount

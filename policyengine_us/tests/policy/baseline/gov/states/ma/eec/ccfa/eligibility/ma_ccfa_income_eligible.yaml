@@ -22,7 +22,6 @@
 
 - name: Case 3, existing applicants, income below threshold, eligible.
   period: 2024-01
-  absolute_error_margin: 0.2
   input:
     ma_ccfa_countable_income: 10300
     spm_unit_size: 4

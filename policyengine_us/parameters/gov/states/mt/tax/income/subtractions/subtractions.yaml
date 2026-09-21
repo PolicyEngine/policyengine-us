@@ -11,11 +11,13 @@ values:
     # Former 15-30-2110, MCA exempted unemployment compensation;
     # SB 399 (2021) repealed the exemption effective tax year 2024.
     - mt_unemployment_compensation_subtraction
+    - salt_refund_income # Form 2 Subtractions Schedule
   2024-01-01:
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     - mt_disability_income_exclusion_person
+    - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
   2025-01-01:
     # Section 15-30-2120 starts from federal taxable income, so federal
     # OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified
@@ -28,6 +30,7 @@ values:
     # TODO: Remove this subtraction starting in 2029 because the federal
     # Schedule 1-A deductions expire after 2028.
     - mt_federal_obbba_subtraction
+    - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
 metadata:
   unit: list
   period: year

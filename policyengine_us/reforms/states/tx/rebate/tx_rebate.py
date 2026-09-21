@@ -116,6 +116,7 @@ def create_tx_rebate() -> Reform:
                 "ak_energy_relief",
                 # Contributed.
                 "basic_income",
+                "trump_dividend",
                 "ny_drive_clean_rebate",
                 "tx_rebate",
             ]

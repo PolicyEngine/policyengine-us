@@ -4,10 +4,7 @@ from math import isinf
 
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem
-
-
-SYSTEM = CountryTaxBenefitSystem()
+from policyengine_us.system import system as SYSTEM
 
 
 def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):

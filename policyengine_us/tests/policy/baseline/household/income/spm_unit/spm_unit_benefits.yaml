@@ -96,3 +96,31 @@
     spm_unit_capped_housing_subsidy: 0
   output:
     spm_unit_benefits: 4
+
+- name: Benefits include California's SSI state supplement.
+  # Single aged Californian, no income, 2026. Monthly payment standard is
+  # 1,206.94 (aged or disabled, single) + 128.87 (food allowance) = 1,335.81.
+  # Monthly SSI is the 994 federal benefit rate for an individual, and
+  # countable income is zero, so the monthly supplement is
+  # 1,335.81 - 994 - 0 = 341.81. Annualised: ssi = 994 * 12 = 11,928 and
+  # ca_state_supplement = 341.81 * 12 = 4,101.72, summing to 16,029.72,
+  # which is the annual payment standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ssi: 11_928
+    ca_state_supplement: 4_101.72
+    spm_unit_benefits: 16_029.72

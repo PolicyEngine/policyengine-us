@@ -404,7 +404,7 @@
       tax_unit:
         aca_ptc: 0.0
         premium_tax_credit: 0.0
-- name: medicaid_parent_below_19pct_fpl_limit (federal)
+- name: medicaid_parent_above_tx_parent_limit (federal)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -466,8 +466,96 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # 4,000 / 21,640 (2p FPG) = 0.185 FPL <= TX parent limit 0.19 -> PARENT.
-        # Household avg index = (661.32 + 414.00) / 2 = 537.66;
+        # 4,000 / 21,640 (2p FPG) = 0.185 FPL > TX parent limit 0.151 -> NONE.
+        # The 2026 Texas standard is $230/month for a family of three in the
+        # One Parent column plus the $113.85 MAGI disregard, so the parent
+        # loses Medicaid at this income while the child keeps it.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        medicaid_category: 9  # NONE
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 0.185 FPL < TX young child limit 1.49:
+        # 13,708.50 x 414.00 / 537.66 = 10,555.55.
+        medicaid: 10_555.55
+        is_medicaid_eligible: true
+        medicaid_category: 1  # YOUNG_CHILD
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_parent_below_tx_parent_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 3_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id009
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 3,000 / 21,640 (2p FPG) = 0.139 FPL <= TX parent limit 0.151 -> PARENT.
+        # Household avg index = (661.32 + 414.00) / 2 = 537.66; per-capita cost
         # 13,708.50 x 661.32 / 537.66 = 16,861.44.
         medicaid: 16_861.44
         is_medicaid_eligible: true
@@ -480,7 +568,7 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # 0.185 FPL < TX young child limit 1.49:
+        # 0.139 FPL < TX young child limit 1.49:
         # 13,708.50 x 414.00 / 537.66 = 10,555.55.
         medicaid: 10_555.55
         is_medicaid_eligible: true

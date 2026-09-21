@@ -7,3 +7,4 @@ class trash_expense(Variable):
     label = "Trash expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

@@ -3,6 +3,7 @@
 import pytest
 
 from policyengine_us.system import system
+from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
     round_social_security_amount,
@@ -112,9 +113,8 @@ def test_social_security_benefit_inputs_use_gross_benefit_uprater():
         "social_security_survivors",
         "social_security_dependents",
     ]:
-        assert (
-            system.variables[variable_name].uprating
-            == "calibration.gov.irs.soi.social_security"
+        assert system.variables[variable_name].uprating == per_capita_path(
+            "calibration.gov.irs.soi.social_security"
         )
 
 
@@ -146,8 +146,10 @@ def test_soi_income_upraters_extend_without_trustees_reform():
 
 def test_retirement_distribution_inputs_use_pension_upraters():
     """Retirement account components should age with pension income, not AGI."""
-    taxable_uprater = "calibration.gov.irs.soi.taxable_pension_income"
-    tax_exempt_uprater = "calibration.gov.irs.soi.tax_exempt_pension_income"
+    taxable_uprater = per_capita_path("calibration.gov.irs.soi.taxable_pension_income")
+    tax_exempt_uprater = per_capita_path(
+        "calibration.gov.irs.soi.tax_exempt_pension_income"
+    )
 
     for variable_name in [
         "csrs_retirement_pay",

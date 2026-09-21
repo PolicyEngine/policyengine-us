@@ -7,3 +7,4 @@ class investment_interest_expense(Variable):
     label = "Investment interest expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

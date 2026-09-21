@@ -15,7 +15,7 @@ class ia_pension_exclusion(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ia.tax.income.pension_exclusion
-        pension = person("taxable_pension_income", period)
+        pension = add(person, period, p.sources)
         eligible = person("ia_pension_exclusion_eligible", period)
         eligible_pension = pension * eligible
         filing_status = person.tax_unit("filing_status", period)
