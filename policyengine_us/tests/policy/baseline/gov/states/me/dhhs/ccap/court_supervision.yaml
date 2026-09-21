@@ -101,3 +101,48 @@
   output:
     me_ccap_eligible_child: [false, true, false]
     is_disabled: [false, false, false]
+
+- name: ME court-supervised 17-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 50_000
+      person2:
+        age: 17
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        me_ccap_provider_type: LICENSE_EXEMPT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+        spm_unit_assets: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+        county_str: OXFORD_COUNTY_ME
+  output:
+    # person2: age 17, not disabled, under court supervision (13-18) => eligible child
+    me_ccap_eligible_child: [false, true]
+    me_ccap_eligible: true
+    is_disabled: [false, false]
+    # Age group: age 17 => SCHOOL_AGE
+    me_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    # Market rate: Region 2 (Oxford) License-Exempt School Age FT = $119/week
+    me_ccap_market_rate: [0, 119]
+    # Parent fee: same household income as the disabled-teen integration case => $208/month
+    me_ccap_parent_fee: 208
+    # Benefit: 119 * 52 / 12 = 515.67 - 208 = 307.67
+    me_ccap: 307.67

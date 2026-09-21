@@ -101,3 +101,40 @@
   output:
     nc_scca_child_age_eligible: [false, true, false]
     is_disabled: [false, false, false]
+
+- name: NC court-supervised 17-year-old receives a benefit through the full pipeline.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+      person3:
+        age: 17
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nc_scca_countable_income: 2_150
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+        county_str: ALAMANCE_COUNTY_NC
+  output:
+    # person3: age 17, not disabled, under court supervision (13-17) => age eligible
+    nc_scca_child_age_eligible: [false, false, true]
+    nc_scca_child_eligible: [false, false, true]
+    nc_scca_entry_eligible: true
+    is_disabled: [false, false, false]
+    # Same household as the disabled 17-year-old integration case:
+    # Alamance school-age market rate = $323/month, parent fee = $215/month
+    nc_scca_market_rate: [0, 0, 323]
+    nc_scca_parent_fee: 215
+    # Benefit: 323 - 215 = 108
+    nc_scca: 108

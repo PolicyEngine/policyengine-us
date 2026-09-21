@@ -101,3 +101,45 @@
   output:
     va_ccsp_child_eligible: [false, true, false]
     is_disabled: [false, false, false]
+
+- name: VA court-supervised 17-year-old receives a benefit through the full pipeline.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 17
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # person2: age 17, not disabled, under court supervision (13-17) => eligible child
+    va_ccsp_child_eligible: [false, true]
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+    is_disabled: [false, false]
+    # Group III school-age daily MRR = $30; 23 attending days => 30 * 23 = 690
+    va_ccsp_daily_mrr: [30, 30]
+    # Copay: family of 2 at 36,000 => $60/month
+    va_ccsp_copay: 60
+    # Benefit: 690 - 60 = 630
+    va_ccsp: 630
