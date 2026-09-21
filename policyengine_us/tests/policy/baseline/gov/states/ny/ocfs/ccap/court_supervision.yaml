@@ -11,7 +11,9 @@
     is_disabled: [false, false, false, false, false, false, false, false]
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 
-- name: NY court-supervised age-18 student must attend secondary school full time
+# 18 NYCRR 415.1(b)(3): the court route requires secondary school (or
+# equivalent training), not full-time student status.
+- name: NY court-supervised age-18 student must attend secondary school
   period: 2025
   input:
     state_code:
@@ -43,7 +45,7 @@
     ny_ccap_age_eligible:
     - true
     - false
-    - false
+    - true
     - false
 - name: NY court supervision does not waive income eligibility
   period: 2025-01
@@ -57,3 +59,32 @@
   output:
     ny_ccap_age_eligible: true
     ny_ccap_eligible_child: false
+# 18 NYCRR 415.1(b)(3): court-supervised 18-year-old in secondary school (or
+# equivalent training) is age eligible until 19; full-time status is not required.
+- name: NY court-supervised age 18 in secondary school without full-time flag
+  period: 2025
+  input:
+    state_code: NY
+    age: 18
+    is_under_court_supervision: true
+    is_in_secondary_school: true
+  output:
+    ny_ccap_age_eligible: true
+- name: NY court-supervised age 18 with no school flags
+  period: 2025
+  input:
+    state_code: NY
+    age: 18
+    is_under_court_supervision: true
+  output:
+    ny_ccap_age_eligible: false
+# is_in_k12_school is imputed only through age 17, so it must be set explicitly.
+- name: NY court-supervised age 18 with is_in_k12_school only
+  period: 2025
+  input:
+    state_code: NY
+    age: 18
+    is_under_court_supervision: true
+    is_in_k12_school: true
+  output:
+    ny_ccap_age_eligible: true

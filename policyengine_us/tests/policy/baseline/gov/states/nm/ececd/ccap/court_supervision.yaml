@@ -250,3 +250,25 @@
           2026: NM
   output:
     nm_ccap_eligible_child: false
+# May 2026 still uses the age-18 limit: the 2026-05-20 parameter value first
+# applies in the monthly model for June 2026, because monthly periods resolve
+# parameters at the first of the month.
+- name: NM 2026-05 age 18, court True, medical-supervision proxy False
+  period: 2026-05
+  input:
+    people:
+      child:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      home:
+        members:
+        - child
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false

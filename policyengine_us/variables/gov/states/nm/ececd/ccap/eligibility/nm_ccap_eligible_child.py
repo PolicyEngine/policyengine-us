@@ -21,8 +21,9 @@ class nm_ccap_eligible_child(Variable):
         # read age == 0), so enforcing it would wrongly exclude every infant.
         # 8.9.3.11.G (formerly 8.15.2.11.G) extends eligibility for children
         # needing special supervision, including supervision by a court.
-        # 2026 Laws, Ch. 63, Section 5(G) expressly includes age 18 from
-        # May 20, 2026; the dated age parameter captures that change.
+        # 2026 Laws, Ch. 63, Section 5(G) expressly includes age 18 effective
+        # May 20, 2026 (applied from June 2026 in the monthly model, since the
+        # dated age parameter resolves at the first of the month).
         # has_developmental_delay proxies the medical-professional branch.
         p = parameters(period).gov.states.nm.ececd.ccap.eligibility
         age = person("age", period.this_year)

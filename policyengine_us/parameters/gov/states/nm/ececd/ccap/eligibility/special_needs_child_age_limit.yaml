@@ -1,6 +1,9 @@
 description: New Mexico limits child care assistance for children with special supervision needs to those under this age under the Child Care Assistance Program.
 values:
   2016-10-01: 18
+  # 2026 Laws, Ch. 63 (SB 241) is effective May 20, 2026. Monthly periods
+  # resolve parameters at the first of the month, so the monthly model first
+  # applies the age-19 limit for June 2026; May 2026 still uses 18.
   2026-05-20: 19
 
 metadata:
