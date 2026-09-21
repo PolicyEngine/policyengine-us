@@ -1,3 +1,10 @@
+## [2.6.21] - 2026-09-21
+
+### Fixed
+
+- Stopped charging a marketplace premium to a person in the Medicaid coverage gap — under the premium tax credit's income floor, income-ineligible under the eligibility scale itself, and with no Medicaid pathway — who has no subsidy to buy the plan with.
+
+
 ## [2.6.20] - 2026-09-20
 
 ### Fixed
