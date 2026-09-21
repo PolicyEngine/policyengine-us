@@ -1,1 +1,1 @@
-Apply Montana's 2021 income tax rebate once per return (capped at the combined liability) instead of as a per-column non-refundable credit, so unequal joint filers keep the full rebate and it does not distort the separate-vs-joint election (taxsim #1189).
+Cap Montana's reported 2021 income tax rebate at each return's 2021 liability (Form 2 line 20), per column when a married couple files separately, without changing anyone's tax (taxsim #1189).

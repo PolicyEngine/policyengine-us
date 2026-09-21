@@ -1,0 +1,40 @@
+# Elected Montana income tax before refundable credits (Form 2 line 20) at the
+# tax-unit level. While married-filing-separately-on-same-return (status 2a) is
+# allowed it is the smaller of the separate (indiv) and joint computations;
+# after that option is repealed (2024) it is always the joint computation.
+# Restored per Max's review: the unit variable's own test was renamed onto
+# mt_income_tax_before_2021_rebate, leaving this (still-used) variable untested.
+
+- name: MFSS era picks the minimum (indiv lower)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 1_300
+    mt_income_tax_before_refundable_credits_joint: 2_000
+    state_code: MT
+  output:
+    # min(1_300, 2_000) = 1_300.
+    mt_income_tax_before_refundable_credits_unit: 1_300
+
+- name: MFSS era picks the minimum (joint lower)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 6_000
+    mt_income_tax_before_refundable_credits_joint: 2_000
+    state_code: MT
+  output:
+    # min(6_000, 2_000) = 2_000.
+    mt_income_tax_before_refundable_credits_unit: 2_000
+
+- name: Post-MFSS repeal (2024) always picks joint
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 0
+    mt_income_tax_before_refundable_credits_joint: 3_500
+    state_code: MT
+  output:
+    # Status 2a is repealed, so the joint computation is used regardless of the
+    # (lower) separate value: 3_500.
+    mt_income_tax_before_refundable_credits_unit: 3_500
