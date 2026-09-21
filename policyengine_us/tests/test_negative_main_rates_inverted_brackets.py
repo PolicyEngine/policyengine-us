@@ -27,10 +27,11 @@ the SEPARATE-specific reform under test.
 """
 
 import numpy as np
+import pytest
 
 from policyengine_core.reforms import Reform
 
-from policyengine_us import Simulation
+from policyengine_us import CountryTaxBenefitSystem, Simulation
 from policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform import (
     additional_tax_bracket,
 )
@@ -45,6 +46,12 @@ INVERTED_BRACKET_REFORM = Reform.from_dict(
     },
     country_id="us",
 )
+
+
+@pytest.fixture(scope="module")
+def inverted_bracket_system():
+    """Reuse the read-only reform while each test builds its own household."""
+    return CountryTaxBenefitSystem(reform=INVERTED_BRACKET_REFORM)
 
 
 def separate_filer(employment_income, qualified_dividends=0):
@@ -71,19 +78,23 @@ def test_fixture_actually_creates_a_separate_filer():
     assert sim.calculate("filing_status", 2026).decode_to_str()[0] == ("SEPARATE")
 
 
-def test_zero_income_filer_owes_zero_under_inverted_brackets():
+def test_zero_income_filer_owes_zero_under_inverted_brackets(inverted_bracket_system):
     # Sharpest symptom of the bug: a no-income filer of the affected
     # status owed a flat negative amount.
-    sim = Simulation(reform=INVERTED_BRACKET_REFORM, situation=separate_filer(0))
+    sim = Simulation(
+        tax_benefit_system=inverted_bracket_system, situation=separate_filer(0)
+    )
     assert sim.calculate("income_tax_main_rates", 2026)[0] == 0
 
 
-def test_low_income_filer_unaffected_by_inversion_above_their_income():
+def test_low_income_filer_unaffected_by_inversion_above_their_income(
+    inverted_bracket_system,
+):
     # Income far below every modified threshold: the inversion must not
     # change the filer's tax at all.
     baseline = Simulation(situation=separate_filer(50_000))
     reformed = Simulation(
-        reform=INVERTED_BRACKET_REFORM, situation=separate_filer(50_000)
+        tax_benefit_system=inverted_bracket_system, situation=separate_filer(50_000)
     )
     base_val = baseline.calculate("income_tax_main_rates", 2026)[0]
     reform_val = reformed.calculate("income_tax_main_rates", 2026)[0]
@@ -91,22 +102,40 @@ def test_low_income_filer_unaffected_by_inversion_above_their_income():
     assert np.isclose(reform_val, base_val)
 
 
-def test_main_rates_never_negative_across_incomes():
-    for income in [0, 10_000, 100_000, 300_000, 500_000, 1_000_000]:
-        sim = Simulation(
-            reform=INVERTED_BRACKET_REFORM, situation=separate_filer(income)
-        )
-        assert sim.calculate("income_tax_main_rates", 2026)[0] >= 0
+def test_main_rates_never_negative_across_incomes(inverted_bracket_system):
+    incomes = [0, 10_000, 100_000, 300_000, 500_000, 1_000_000]
+    situation = {"people": {}, "tax_units": {}, "households": {}}
+    for i, income in enumerate(incomes):
+        person = f"person_{i}"
+        situation["people"][person] = {
+            "age": {"2026": 40},
+            "employment_income": {"2026": income},
+        }
+        situation["tax_units"][f"tu_{i}"] = {
+            "members": [person],
+            "filing_status": {"2026": "SEPARATE"},
+        }
+        situation["households"][f"hh_{i}"] = {
+            "members": [person],
+            "state_code": {"2026": "TX"},
+        }
+    sim = Simulation(tax_benefit_system=inverted_bracket_system, situation=situation)
+    assert np.all(sim.calculate("filing_status", 2026).decode_to_str() == "SEPARATE")
+    taxes = sim.calculate("income_tax_main_rates", 2026)
+    assert len(taxes) == len(incomes)
+    assert np.all(taxes >= 0)
 
 
-def test_amt_comparator_stays_consistent_with_preferential_income():
+def test_amt_comparator_stays_consistent_with_preferential_income(
+    inverted_bracket_system,
+):
     # One dollar of qualified dividends routes the AMT regular-tax
     # comparison through the duplicate worksheet schedule. If that copy
     # is not clamped identically, the corrected main-rates tax minus a
     # still-corrupted comparator manufactures tens of thousands of
     # dollars of phantom AMT.
     sim = Simulation(
-        reform=INVERTED_BRACKET_REFORM,
+        tax_benefit_system=inverted_bracket_system,
         situation=separate_filer(300_000, qualified_dividends=1),
     )
     amt = sim.calculate("alternative_minimum_tax", 2026)[0]
@@ -117,7 +146,7 @@ def test_amt_comparator_stays_consistent_with_preferential_income():
     assert abs(before_credits - main) < 2  # only the $1 dividend's tax
 
 
-def test_mixed_statuses_only_the_separate_row_responds():
+def test_mixed_statuses_only_the_separate_row_responds(inverted_bracket_system):
     def four_status_situation():
         statuses = {
             "single": "SINGLE",
@@ -143,7 +172,7 @@ def test_mixed_statuses_only_the_separate_row_responds():
 
     baseline = Simulation(situation=four_status_situation())
     reformed = Simulation(
-        reform=INVERTED_BRACKET_REFORM, situation=four_status_situation()
+        tax_benefit_system=inverted_bracket_system, situation=four_status_situation()
     )
     statuses = baseline.calculate("filing_status", 2026).decode_to_str()
     base = baseline.calculate("income_tax_main_rates", 2026)

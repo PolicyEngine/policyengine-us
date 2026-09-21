@@ -7,7 +7,10 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
     label = "Arkansas individual retirement or disability benefits exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
+    reference = (
+        "https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-3/section-26-51-307/",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=13",
+    )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
@@ -22,9 +25,12 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
         )
         # Filers over a certain age can deduct IRA distributions in addition to pension income
         ira_age_eligible = person("age", period) >= p_irs.age_threshold
-        age_eligible_ira_distributions = ira_age_eligible * person(
-            "taxable_ira_distributions", period
+        ira_distributions = add(
+            person,
+            period,
+            ["taxable_ira_distributions", "taxable_roth_conversions"],
         )
+        age_eligible_ira_distributions = ira_age_eligible * ira_distributions
         return head_or_spouse * (
             employment_retirement_and_disability + age_eligible_ira_distributions
         )

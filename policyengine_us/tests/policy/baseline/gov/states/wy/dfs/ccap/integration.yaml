@@ -91,8 +91,8 @@
     wy_ccap_income_eligible: true
     wy_ccap_activity_eligible: true
     wy_ccap_eligible: true
-    # Parents have no reported care hours, so they read as part day.
-    wy_ccap_day_length: [PART_DAY, PART_DAY, FULL_DAY, PART_DAY]
+    # Parents have unknown hours, so their unused classification is full day.
+    wy_ccap_day_length: [FULL_DAY, FULL_DAY, FULL_DAY, PART_DAY]
     # Ratio 4_100 / 2_750 = 1.491: Step 3. Copay = (1.76 full + 0.88 part)
     # x 10 days = 26.40; the 7 percent cap 0.07 x 4_500 = 315 does not bind.
     wy_ccap_copay: 26.4

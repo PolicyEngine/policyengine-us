@@ -30,13 +30,13 @@
   output:
     ma_ccfa_reimbursement_ratio: 0.6
 
-- name: Case 5, zero hours retains the first bracket ratio.
+- name: Case 5, unknown daily hours do not imply a part-time day.
   period: 2026-01
   input:
     childcare_hours_per_day: 0
     state_code: MA
   output:
-    ma_ccfa_reimbursement_ratio: 0.6
+    ma_ccfa_reimbursement_ratio: 1
 
 - name: Case 6, five and a half hours changes to full time in July 2024.
   period: 2024
@@ -52,6 +52,174 @@
   period: 2024-01
   input:
     childcare_hours_per_day: 6.5
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+# The before and after school columns are partial-day rates, so the part-time
+# ratio does not apply to them.
+- name: Case 8, school-age child in center-based after school care keeps the full after school rate.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 9, school-age child in center-based before and after school care keeps the full rate.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_schedule_type: BEFORE_AND_AFTER
+    childcare_hours_per_day: 4
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 10, school-age child on the full day rate for three hours is part time.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_schedule_type: FULL_DAY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 11, kindergarten child in after school care keeps the full after school rate.
+  period: 2026-01
+  input:
+    age: 5
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 12, kindergarten child on the full day rate for three hours is part time.
+  period: 2026-01
+  input:
+    age: 5
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: FULL_DAY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+# Rates without before and after school columns still receive the part-time
+# ratio when reported hours or a school-age family care schedule establish it.
+- name: Case 13, preschooler with an after school schedule is still part time.
+  period: 2026-01
+  input:
+    age: 3
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 14, school-age child in family child care with an after school schedule is still part time.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 15, school-age child in informal care with an after school schedule is still part time.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    childcare_hours_per_day: 3
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 16, school-age family child care before school is part day without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: BEFORE_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 17, school-age family child care after school is part day without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 18, school-age family child care before and after school is part day without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: BEFORE_AND_AFTER
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 19, full-day family child care retains the full-time fallback without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 20, school-day family child care receives the part-day rate even with longer reported hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: BEFORE_AND_AFTER
+    childcare_hours_per_day: 6
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 21, the school-age family care exception does not apply to preschoolers.
+  period: 2026-01
+  input:
+    age: 3
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 22, school-age center care keeps its after school rate without hours.
+  period: 2026-01
+  input:
+    age: 8
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 23, kindergarten care keeps its after school rate without hours.
+  period: 2026-01
+  input:
+    age: 5
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: AFTER_ONLY
     state_code: MA
   output:
     ma_ccfa_reimbursement_ratio: 1

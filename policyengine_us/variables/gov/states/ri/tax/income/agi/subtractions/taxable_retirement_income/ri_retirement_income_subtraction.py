@@ -7,7 +7,9 @@ class ri_retirement_income_subtraction(Variable):
     label = "Rhode Island retirement income subtraction"
     unit = USD
     definition_period = YEAR
-    reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
+    reference = (
+        "https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm"
+    )
     defined_for = "ri_retirement_income_subtraction_eligible"
 
     def formula(tax_unit, period, parameters):

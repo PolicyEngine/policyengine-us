@@ -23,7 +23,22 @@ class nd_ccap_base_subsidy(Variable):
         # 400-28-130-15-15) are not modeled: they are a separate provider
         # payment outside the monthly care subsidy, and we don't track whether a
         # provider charges a registration fee or its amount at the moment.
-        maximum_monthly_rate = add(spm_unit, period, ["nd_ccap_state_max_rate"])
+        person = spm_unit.members
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
+        maximum_monthly_rate = spm_unit.sum(
+            person("nd_ccap_state_max_rate", period) * in_care
+        )
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )

@@ -205,3 +205,31 @@
         state_code: IA
   output:
     ia_pension_exclusion: 40_000
+
+- name: Taxable Roth conversions not excluded in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_roth_conversions: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_pension_exclusion: 0
+
+- name: Taxable Roth conversions excluded in 2023+ (fully excluded for eligible filer)
+  period: 2023
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_roth_conversions: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_pension_exclusion: 10_000
