@@ -1,3 +1,10 @@
+## [2.7.0] - 2026-09-21
+
+### Added
+
+- Add Alabama federal income tax deduction Part II (Act 2022-37): recompute the CTC, CDCC, and EITC as if the 2020 IRC applied and take the greater deduction.
+
+
 ## [2.6.21] - 2026-09-21
 
 ### Fixed
