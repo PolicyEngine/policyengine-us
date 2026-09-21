@@ -15,11 +15,15 @@ def _care_days_per_week(person, period):
 
 
 def childcare_hours_for_daily_schedule(person, period):
-    """Use daily hours or convert weekly hours using reported attendance.
+    """Use daily hours or convert weekly hours for a binary pricing category.
 
-    Without attendance frequency, weekly hours do not identify a daily
-    category. Zero preserves the state's existing full-time fallback.
-    These conversions are local to pricing: shared input variables stay intact.
+    With no reported attendance frequency, the weekly hours give an upper
+    bound on hours in any single care day (care occurs on at least one day
+    per week): classify as part day only when that bound is in the state's
+    part-day range. Otherwise retain full-time pricing. This bound is not
+    actual daily care hours and must not be used for hourly payments or
+    attendance calculations. These conversions are local to pricing: shared
+    input variables stay intact.
     """
     daily_hours = person("childcare_hours_per_day", period.this_year)
     weekly_hours = person("childcare_hours_per_week", period.this_year)
@@ -27,7 +31,7 @@ def childcare_hours_for_daily_schedule(person, period):
     converted_hours = np.divide(
         weekly_hours,
         days,
-        out=np.zeros_like(weekly_hours),
+        out=weekly_hours.copy(),
         where=days > 0,
     )
     return where(daily_hours > 0, daily_hours, converted_hours)

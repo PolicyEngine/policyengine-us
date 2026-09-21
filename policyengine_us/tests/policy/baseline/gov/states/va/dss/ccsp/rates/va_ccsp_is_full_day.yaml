@@ -46,3 +46,19 @@
     childcare_days_per_week: 5
   output:
     va_ccsp_is_full_day: true
+- name: Case 6, weekly hours below the daily threshold without attendance days are a part day.
+  period: 2026-01
+  input:
+    state_code: VA
+    age: 3
+    childcare_hours_per_week: 4
+  output:
+    va_ccsp_is_full_day: false
+- name: Case 7, weekly hours at the daily threshold without attendance days retain the full-day fallback.
+  period: 2026-01
+  input:
+    state_code: VA
+    age: 3
+    childcare_hours_per_week: 5
+  output:
+    va_ccsp_is_full_day: true

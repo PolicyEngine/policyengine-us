@@ -165,3 +165,17 @@
     - PART_DAY
     - FULL_DAY
     - FULL_DAY
+- name: Case 16, weekly hours below the daily threshold without attendance days are a part day.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 4
+  output:
+    ky_ccap_day_length: PART_DAY
+- name: Case 17, weekly hours at the daily threshold without attendance days retain the full-day fallback.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 5
+  output:
+    ky_ccap_day_length: FULL_DAY

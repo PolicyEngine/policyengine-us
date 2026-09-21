@@ -119,3 +119,19 @@
     childcare_days_per_week: 5
   output:
     fl_sr_time_category: FULL_TIME
+- name: Case 11, weekly hours below the daily threshold without attendance days are part time.
+  period: 2026-01
+  input:
+    state_code: FL
+    age: 3
+    childcare_hours_per_week: 3
+  output:
+    fl_sr_time_category: PART_TIME
+- name: Case 12, weekly hours at the daily threshold without attendance days retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: FL
+    age: 3
+    childcare_hours_per_week: 6
+  output:
+    fl_sr_time_category: FULL_TIME

@@ -125,3 +125,19 @@
     childcare_days_per_week: 5
   output:
     ar_sra_time_category: FULL_TIME
+- name: Case 12, weekly hours below the daily threshold without attendance days are PART_TIME.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 3
+    childcare_hours_per_week: 6
+  output:
+    ar_sra_time_category: PART_TIME
+- name: Case 13, weekly hours at the daily threshold without attendance days retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 3
+    childcare_hours_per_week: 7
+  output:
+    ar_sra_time_category: FULL_TIME
