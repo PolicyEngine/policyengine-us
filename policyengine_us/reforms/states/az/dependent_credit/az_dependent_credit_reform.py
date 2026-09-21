@@ -86,6 +86,19 @@ def create_az_refundable_dependent_credit() -> Reform:
             # contrib (amount/age levers) is also active it overrides the
             # potential, so the two reforms compose.
             potential = tax_unit("az_dependent_tax_credit_potential", period)
+            # This refund inherits the baseline
+            # gov.states.az.tax.income.credits.non_refundable ordering: the
+            # stranded (unused) dependent credit is whatever this ordered list
+            # leaves after higher-priority credits consume liability. That
+            # baseline list currently applies the charitable credit before the
+            # dependent/family credits, contrary to AZ Forms 140/301, which
+            # apply the dependent and family credits first. In baseline the
+            # ordering is invisible (same total, same az_income_tax), but with
+            # this refund on it can strand the dependent credit and pay a
+            # refund the form would not. Reordering the baseline list to
+            # dependent, family, then charitable is tracked as a separate
+            # follow-up issue rather than fixed in this reform (see
+            # https://github.com/PolicyEngine/policyengine-us/issues/9559).
             ordered_credits = parameters(
                 period
             ).gov.states.az.tax.income.credits.non_refundable
