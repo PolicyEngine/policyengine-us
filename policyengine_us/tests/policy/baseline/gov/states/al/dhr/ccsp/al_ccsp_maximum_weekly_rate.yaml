@@ -490,3 +490,51 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_maximum_weekly_rate: [0, 50]
+
+# Two hours per day cannot exceed 14 hours per week. Alabama uses the $50 informal cap times 0.5.
+- name: Case 1, two daily hours remain part time even across seven days.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 3
+    childcare_hours_per_day: 2
+    al_ccsp_eligible_child: true
+    al_ccsp_provider_type: INFORMAL
+  output:
+    al_ccsp_maximum_weekly_rate: 25
+  absolute_error_margin: 0.01
+- name: Case 2, daily hours and monthly attendance determine weekly pricing.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 3
+    childcare_hours_per_day: 3
+    childcare_attending_days_per_month: 20
+    al_ccsp_eligible_child: true
+    al_ccsp_provider_type: INFORMAL
+  output:
+    al_ccsp_maximum_weekly_rate: 25
+  absolute_error_margin: 0.01
+- name: Case 3, reported weekly hours take precedence over daily conversion.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 3
+    childcare_hours_per_day: 2
+    childcare_hours_per_week: 40
+    al_ccsp_eligible_child: true
+    al_ccsp_provider_type: INFORMAL
+  output:
+    al_ccsp_maximum_weekly_rate: 50
+  absolute_error_margin: 0.01
+- name: Case 4, care days without hours retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 3
+    childcare_days_per_week: 5
+    al_ccsp_eligible_child: true
+    al_ccsp_provider_type: INFORMAL
+  output:
+    al_ccsp_maximum_weekly_rate: 50
+  absolute_error_margin: 0.01

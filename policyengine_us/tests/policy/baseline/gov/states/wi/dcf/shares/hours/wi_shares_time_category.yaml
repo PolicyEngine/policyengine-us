@@ -56,3 +56,39 @@
         state_code: WI
   output:
     wi_shares_time_category: FULL_TIME
+
+# Two hours per day cannot exceed 14 hours per week.
+- name: Case 5, two daily hours remain part time even across seven days.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 3
+    childcare_hours_per_day: 2
+  output:
+    wi_shares_time_category: PART_TIME
+- name: Case 6, daily hours and monthly attendance determine weekly pricing.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 3
+    childcare_hours_per_day: 3
+    childcare_attending_days_per_month: 20
+  output:
+    wi_shares_time_category: PART_TIME
+- name: Case 7, reported weekly hours take precedence over daily conversion.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 3
+    childcare_hours_per_day: 2
+    childcare_hours_per_week: 40
+  output:
+    wi_shares_time_category: FULL_TIME
+- name: Case 8, care days without hours retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 3
+    childcare_days_per_week: 5
+  output:
+    wi_shares_time_category: FULL_TIME

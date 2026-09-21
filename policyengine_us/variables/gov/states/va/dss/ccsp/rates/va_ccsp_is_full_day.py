@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class va_ccsp_is_full_day(Variable):
@@ -11,7 +12,7 @@ class va_ccsp_is_full_day(Variable):
     reference = "https://www.childcare.virginia.gov/home/showpublisheddocument/66667/638981099706730000#page=203"
 
     def formula(person, period, parameters):
-        hours = person("childcare_hours_per_day", period)
+        hours = childcare_hours_for_daily_schedule(person, period)
         p = parameters(period).gov.states.va.dss.ccsp.maximum_reimbursement_rate
         # Zero also represents unknown hours. Explicit authorizations remain
         # inputs, including full-day authorization for unavailable part-day care.

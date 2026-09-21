@@ -31,7 +31,11 @@ class fl_sr_copay(Variable):
         is_full_time = time_category == time_category.possible_values.FULL_TIME
         hours = person("childcare_hours_per_day", period.this_year)
         care_days = person("childcare_attending_days_per_month", period.this_year)
-        in_care = is_eligible_child & ((hours > 0) | (care_days > 0))
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = is_eligible_child & (
+            (hours > 0) | (weekly_hours > 0) | (care_days > 0) | (weekly_days > 0)
+        )
         # A sibling outside care must not trigger the full-time fallback fee.
         any_full_time = spm_unit.any(in_care & is_full_time)
 

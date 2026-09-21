@@ -61,3 +61,107 @@
         state_code: KY
   output:
     ky_ccap_day_length: FULL_DAY
+
+# Alternate hours use reported attendance frequency; thresholds remain state-specific.
+- name: Case 6, ten weekly hours over five care days is a short day.
+  period: 2026-01
+  input:
+    state_code: KY
+    age: 3
+    childcare_hours_per_week: 10
+    childcare_days_per_week: 5
+  output:
+    ky_ccap_day_length: PART_DAY
+- name: Case 7, monthly attendance supplies frequency for weekly hours.
+  period: 2026-01
+  input:
+    state_code: KY
+    age: 3
+    childcare_hours_per_week: 10
+    childcare_attending_days_per_month: 20
+  output:
+    ky_ccap_day_length: PART_DAY
+- name: Case 8, weekly hours at the daily threshold qualify for full days.
+  period: 2026-01
+  input:
+    state_code: KY
+    age: 3
+    childcare_hours_per_week: 25
+    childcare_days_per_week: 5
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Case 9, reported daily hours take precedence over weekly conversion.
+  period: 2026-01
+  input:
+    state_code: KY
+    age: 3
+    childcare_hours_per_day: 5
+    childcare_hours_per_week: 10
+    childcare_days_per_week: 5
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Case 10, care days without hours retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: KY
+    age: 3
+    childcare_days_per_week: 5
+  output:
+    ky_ccap_day_length: FULL_DAY
+
+# Frequency is required for a daily category; explicit schedules still take precedence.
+- name: Case 11, weekly hours without attendance days leave the daily category unresolved.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 10
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Case 12, fractional weekly attendance is not rounded up before conversion.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 3
+    childcare_days_per_week: 0.5
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Case 13, sparse monthly attendance is not rounded up to one day per week.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 3
+    childcare_attending_days_per_month: 2
+  output:
+    ky_ccap_day_length: FULL_DAY
+- name: Case 14, explicit short-day authorization overrides converted full-day hours.
+  period: 2026-01
+  input:
+    state_code: KY
+    childcare_hours_per_week: 40
+    childcare_days_per_week: 5
+    ky_ccap_day_length: PART_DAY
+  output:
+    ky_ccap_day_length: PART_DAY
+- name: Case 15, daily and weekly inputs resolve independently within one household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 10
+        childcare_days_per_week: 5
+      person2:
+        childcare_hours_per_day: 8
+      person3:
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: KY
+  output:
+    ky_ccap_day_length:
+    - PART_DAY
+    - FULL_DAY
+    - FULL_DAY

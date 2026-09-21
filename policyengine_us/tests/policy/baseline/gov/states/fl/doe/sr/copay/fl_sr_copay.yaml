@@ -281,3 +281,94 @@
 # scale linearly with income, so income * 0.06 < income * 0.07 for all income.
 # The cap can never bind, so no test can exercise the capping arm; the highest
 # achievable copay is the 6% full-time rate (verified by Case 7).
+
+# At 50% SMI, the copay is $3,600 times 2% part time or 4% full time.
+- name: Case 11, weekly part-time care counts for the family copay without an inactive sibling changing it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_fl_sr_child_eligible: true
+        childcare_hours_per_week: 10
+        childcare_days_per_week: 5
+      person2:
+        is_fl_sr_child_eligible: true
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        fl_sr_countable_income: 3_600
+        fl_sr_smi: 7_200
+        fl_sr_copay_waived: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: FL
+  output:
+    fl_sr_time_category:
+    - PART_TIME
+    - FULL_TIME
+    fl_sr_copay: 72
+- name: Case 12, weekly full-time care counts for the family copay without an inactive sibling changing it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_fl_sr_child_eligible: true
+        childcare_hours_per_week: 40
+        childcare_days_per_week: 5
+      person2:
+        is_fl_sr_child_eligible: true
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        fl_sr_countable_income: 3_600
+        fl_sr_smi: 7_200
+        fl_sr_copay_waived: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: FL
+  output:
+    fl_sr_time_category:
+    - FULL_TIME
+    - FULL_TIME
+    fl_sr_copay: 144
+- name: Case 13, weekly attendance with unknown hours counts for the family copay without an inactive sibling changing it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_fl_sr_child_eligible: true
+        childcare_days_per_week: 5
+      person2:
+        is_fl_sr_child_eligible: true
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        fl_sr_countable_income: 3_600
+        fl_sr_smi: 7_200
+        fl_sr_copay_waived: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: FL
+  output:
+    fl_sr_time_category:
+    - FULL_TIME
+    - FULL_TIME
+    fl_sr_copay: 144
