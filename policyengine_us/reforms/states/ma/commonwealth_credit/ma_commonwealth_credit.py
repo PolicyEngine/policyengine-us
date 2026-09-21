@@ -68,8 +68,8 @@ def create_ma_commonwealth_credit() -> Reform:
 
     def modify_parameters(parameters):
         parameters.gov.states.ma.tax.income.credits.refundable.update(
-            start=instant("2027-01-01"),
-            stop=instant("2037-12-31"),
+            start=instant("2025-01-01"),
+            stop=instant("2035-12-31"),
             value=[
                 "ma_eitc",
                 "ma_commonwealth_credit",

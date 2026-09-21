@@ -1,21 +1,21 @@
 description: Massachusetts provides the following maximum Commonwealth Credit, based on the number of EITC-qualifying children up to the base child limit.
 brackets:
   - threshold:
-      2027-01-01: 0
+      2025-01-01: 0
     amount:
-      2027-01-01: 0
+      2025-01-01: 0
   - threshold:
-      2027-01-01: 1
+      2025-01-01: 1
     amount:
-      2027-01-01: 1_800
+      2025-01-01: 1_800
   - threshold:
-      2027-01-01: 2
+      2025-01-01: 2
     amount:
-      2027-01-01: 3_000
+      2025-01-01: 3_000
   - threshold:
-      2027-01-01: 3
+      2025-01-01: 3
     amount:
-      2027-01-01: 3_300
+      2025-01-01: 3_300
 
 metadata:
   type: single_amount

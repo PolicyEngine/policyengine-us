@@ -1,7 +1,7 @@
 # Tests for the Massachusetts tiered Child and Family Tax Credit reform.
 
-- name: Children in the two lower age bands receive $610 each in 2027
-  period: 2027
+- name: Children in the two lower age bands receive $610 each in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -28,8 +28,8 @@
     # 610 (age 0-5 band) + 610 (age 6-12 band) = 1,220.
     ma_child_and_family_credit: 1_220
 
-- name: Children aged 13 and 18 receive $170 each in 2027
-  period: 2027
+- name: Children aged 13 and 18 receive $170 each in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -56,8 +56,8 @@
     # 170 (age 13-18 band) x 2 = 340.
     ma_child_and_family_credit: 340
 
-- name: Dependent age 19 who is not a student receives nothing in 2027
-  period: 2027
+- name: Dependent age 19 who is not a student receives nothing in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -81,8 +81,8 @@
   output:
     ma_child_and_family_credit: 0
 
-- name: Dependent full-time college student age 20 receives the student amount in 2027
-  period: 2027
+- name: Dependent full-time college student age 20 receives the student amount in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -107,8 +107,8 @@
   output:
     ma_child_and_family_credit: 170
 
-- name: Dependent full-time college student age 24 is over the student age limit in 2027
-  period: 2027
+- name: Dependent full-time college student age 24 is over the student age limit in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -133,8 +133,8 @@
   output:
     ma_child_and_family_credit: 0
 
-- name: Disabled 15-year-old dependent receives the higher disabled amount in 2027
-  period: 2027
+- name: Disabled 15-year-old dependent receives the higher disabled amount in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -159,8 +159,8 @@
     # max(170 age band, 610 disabled amount) = 610, not 780.
     ma_child_and_family_credit: 610
 
-- name: Dependent age 65 receives the elderly amount in 2027
-  period: 2027
+- name: Dependent age 65 receives the elderly amount in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -184,8 +184,8 @@
   output:
     ma_child_and_family_credit: 610
 
-- name: Spouse incapable of self-care receives the disabled amount on a joint return in 2027
-  period: 2027
+- name: Spouse incapable of self-care receives the disabled amount on a joint return in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:
@@ -211,8 +211,8 @@
   output:
     ma_child_and_family_credit: 610
 
-- name: Married filing separately cannot claim the tiered credit in 2027
-  period: 2027
+- name: Married filing separately cannot claim the tiered credit in 2025
+  period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.tiered_child_and_family_credit.ma_tiered_child_and_family_credit.ma_tiered_child_and_family_credit
   input:

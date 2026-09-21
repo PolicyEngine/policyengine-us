@@ -2,21 +2,21 @@ description: Massachusetts phases the Commonwealth Credit out for filers with in
 
 SINGLE:
   values:
-    2027-01-01: 30_000
+    2025-01-01: 30_000
 
 HEAD_OF_HOUSEHOLD:
   values:
-    2027-01-01: 30_000
+    2025-01-01: 30_000
 
 JOINT:
   values:
-    2027-01-01: 38_000
+    2025-01-01: 38_000
 
 # Married-filing-separately filers are excluded from the credit unless
 # separate_filer_eligible is true; the breakdown requires the key.
 SEPARATE:
   values:
-    2027-01-01: 30_000
+    2025-01-01: 30_000
 
 metadata:
   propagate_metadata_to_children: true
