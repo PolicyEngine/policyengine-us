@@ -68,7 +68,7 @@ class spm_unit_benefits(Variable):
             "wa_rca",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
-            "unemployment_compensation",
+            "total_unemployment_compensation",
             # One-time energy relief payments.
             # Paid at the same time as the Alaska Permanent Fund Dividend,
             # which is part of IRS gross income.

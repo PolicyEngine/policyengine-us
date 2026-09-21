@@ -44,7 +44,7 @@ class capped_qualified_tuition_expenses_ald(Variable):
         }
         safe_sources = [src for src in gross_income_sources if src not in cycle_sources]
         if "taxable_unemployment_compensation" in gross_income_sources:
-            safe_sources.append("unemployment_compensation")
+            safe_sources.append("total_unemployment_compensation")
         magi = 0
         for source in safe_sources:
             magi += not_dependent * max_(0, add(person, period, [source]))

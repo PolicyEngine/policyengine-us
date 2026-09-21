@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 # Sources that depend on filing_status and would cause circular dependencies
 CIRCULAR_SOURCES = {
-    "taxable_unemployment_compensation": "unemployment_compensation",
+    "taxable_unemployment_compensation": "total_unemployment_compensation",
     "taxable_social_security": "social_security",
 }
 

@@ -370,8 +370,8 @@
 
 - name: Case 13, AL UI feeds unemployment compensation income flows.
   # Reuses Case 1's monetarily-eligible input set (al_ui = $3,850) and asserts
-  # the state benefit also surfaces through the federal unemployment
-  # compensation income chain (unemployment_compensation adds al_ui).
+  # the state benefit surfaces through the total unemployment compensation
+  # income chain (modeled fallback: no reported UC, so total = modeled al_ui).
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -387,7 +387,53 @@
     weeks_unemployed: 20
   output:
     al_ui: 3_850
-    unemployment_compensation: 3_850
+    # No reported unemployment_compensation input -> fallback to modeled.
+    modeled_state_unemployment_compensation: 3_850
+    total_unemployment_compensation: 3_850
     tax_unit_unemployment_compensation: 3_850
     taxable_unemployment_compensation: 3_850
     tax_unit_taxable_unemployment_compensation: 3_850
+
+- name: Case 14, reported UC preserved when present (no state UI inputs).
+  # Reported unemployment_compensation is supplied and no AL UI wage inputs are
+  # given, so total_unemployment_compensation equals the reported amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: AL
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    unemployment_compensation: 5_000
+  output:
+    al_ui: 0
+    modeled_state_unemployment_compensation: 0
+    unemployment_compensation: 5_000
+    total_unemployment_compensation: 5_000
+    tax_unit_unemployment_compensation: 5_000
+
+- name: Case 15, reported UC wins over modeled - no double count.
+  # Both reported unemployment_compensation and AL UI wage inputs are present.
+  # total_unemployment_compensation uses the reported amount only (does not
+  # add reported + modeled), proving the fallback prevents double counting.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: AL
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    unemployment_compensation: 5_000
+    al_ui_high_quarter_wages: 10_000
+    al_ui_second_high_quarter_wages: 10_000
+    al_ui_base_period_wages: 40_000
+    al_ui_quarters_with_wages: 4
+    al_ui_weekly_earnings: 0
+    weeks_unemployed: 20
+  output:
+    al_ui: 3_850
+    modeled_state_unemployment_compensation: 3_850
+    unemployment_compensation: 5_000
+    # Reported wins; total is 5,000 (not 5,000 + 3,850).
+    total_unemployment_compensation: 5_000
+    tax_unit_unemployment_compensation: 5_000

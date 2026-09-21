@@ -45,7 +45,7 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # Simplification: any UC receipt during the year exempts the person
         # in all months of that year, since survey data lack monthly UC
         # receipt histories.
-        receiving_ui = person("unemployment_compensation", period.this_year) > 0
+        receiving_ui = person("total_unemployment_compensation", period.this_year) > 0
         applied_for_ui = person("has_applied_for_unemployment_compensation", period)
         # (vi) Regular participant in a drug addiction or alcoholic
         # treatment and rehabilitation program — 7 CFR 273.7(b)(1)(vi).
