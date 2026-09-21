@@ -19,8 +19,8 @@ class sd_cca_eligible_child(Variable):
         p = parameters(period).gov.states.sd.dss.cca.eligibility
         age = person("age", period.this_year)
         # ARSD 67:47:01:03(2)-(4) applies the same age and school conditions
-        # to incapacity and court supervision. Expected graduation is a
-        # separate fact; school enrollment alone is insufficient at age 18.
+        # to incapacity and court supervision. Expected graduation defaults
+        # to K-12 enrollment unless overridden per person.
         special_status = person("is_disabled", period.this_year) | person(
             "is_under_court_supervision", period.this_year
         )

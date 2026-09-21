@@ -8,6 +8,9 @@
       2026: [12, 13, 17, 18, 19, 40]
     is_under_court_supervision:
       2026: [true, true, true, true, true, true]
+    # New applicants: override the continuing-award default (which would
+    # otherwise be true for a court-supervised child).
+    in_ccdf_has_active_under_18_award: [false, false, false, false, false, false]
   output:
     in_ccdf_eligible_child: [true, true, true, false, false, false]
 
@@ -34,6 +37,9 @@
     is_under_court_supervision:
       2026: true
     is_in_ccdf_enrolled: true
+    # Household enrollment is not this child's own award; override the
+    # continuing-award default so the case isolates is_in_ccdf_enrolled.
+    in_ccdf_has_active_under_18_award: false
   output:
     in_ccdf_eligible_child: false
 
@@ -261,3 +267,35 @@
           2026: MARION_COUNTY_IN
   output:
     in_ccdf: 0
+
+- name: IN disabled 18-year-old defaults to a continuing award when none is supplied
+  period: 2026-09
+  input:
+    state_code:
+      2026: [IN, IN]
+    age:
+      2026: [18, 18]
+    is_disabled:
+      2026: [true, false]
+  output:
+    # The award defaults to the special-status flags (disabled or under court
+    # supervision), so the disabled 18-year-old continues under the under-19
+    # ceiling while the 18-year-old with neither status gets no default award.
+    in_ccdf_has_active_under_18_award: [true, false]
+    in_ccdf_eligible_child: [true, false]
+
+- name: IN disabled 18-year-old new applicant with the award set to false is ineligible
+  period: 2026-09
+  input:
+    state_code:
+      2026: IN
+    age:
+      2026: 18
+    is_disabled:
+      2026: true
+    in_ccdf_has_active_under_18_award: false
+  output:
+    # An explicit false overrides the default: a new application at 18 must
+    # be under the special-needs application age limit.
+    in_ccdf_has_active_under_18_award: false
+    in_ccdf_eligible_child: false

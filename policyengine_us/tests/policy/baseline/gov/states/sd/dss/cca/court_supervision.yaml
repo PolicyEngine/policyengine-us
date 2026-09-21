@@ -275,3 +275,44 @@
           2026: MINNEHAHA_COUNTY_SD
   output:
     sd_cca: 0
+
+- name: SD disabled 18-year-old in school defaults to expected graduation when none is supplied
+  period: 2026-09
+  input:
+    state_code:
+      2026: [SD, SD]
+    age:
+      2026: [18, 18]
+    is_disabled:
+      2026: [true, true]
+    is_in_k12_school:
+      2026: [true, false]
+    meets_ccdf_activity_test:
+      2026: [true, true]
+  output:
+    # Expected graduation defaults to K-12 enrollment, so the enrolled child
+    # gets the under-19 student limit while the non-enrolled child stays at
+    # the under-18 special-needs limit.
+    sd_cca_expected_to_graduate: [true, false]
+    sd_cca_eligible_child: [true, false]
+
+- name: SD disabled 18-year-old in school with expected graduation set to false is ineligible
+  period: 2026-09
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 18
+    is_disabled:
+      2026: true
+    is_in_k12_school:
+      2026: true
+    sd_cca_expected_to_graduate:
+      2026: false
+    meets_ccdf_activity_test:
+      2026: true
+  output:
+    # An explicit false overrides the enrollment default, so the under-19
+    # student limit does not apply.
+    sd_cca_expected_to_graduate: false
+    sd_cca_eligible_child: false
