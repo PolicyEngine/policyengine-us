@@ -27,7 +27,7 @@ class dc_ccsp_income_test_waived(Variable):
         eligible_child = person("dc_ccsp_eligible_child", period)
         court_supervision = person("is_under_court_supervision", period.this_year)
         protective = person("receives_or_needs_protective_services", period.this_year)
-        foster = person("is_in_foster_care", period.this_year)
+        foster = person("is_in_foster_care", period)
         has_protective_child = spm_unit.any(
             eligible_child & (court_supervision | protective | foster)
         )

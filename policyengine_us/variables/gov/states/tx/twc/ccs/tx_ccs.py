@@ -33,6 +33,26 @@ class tx_ccs(Variable):
         # A DFPS authorization is child-specific. Do not use a sibling's
         # expenses or rates when that sibling fails standard eligibility.
         child_expense = person("pre_subsidy_childcare_expenses", period)
+        # The default person-level allocation spreads the SPM-unit expense only
+        # across children under 18, so a payable child with no reported expense
+        # (such as a referred 18-year-old) takes an equal share of the SPM-unit
+        # expense not already attributed to any person. When person-level
+        # expenses are supplied nothing is unattributed, so results are
+        # unchanged and no expense is counted twice.
+        unattributed_expense = max_(
+            pre_subsidy_childcare_expense - spm_unit.sum(child_expense), 0
+        )
+        needs_fallback = payable_child & (child_expense == 0)
+        fallback_count = spm_unit.sum(needs_fallback)
+        fallback_share = np.divide(
+            unattributed_expense,
+            fallback_count,
+            out=np.zeros_like(unattributed_expense),
+            where=fallback_count > 0,
+        )
+        child_expense = where(
+            needs_fallback, spm_unit.project(fallback_share), child_expense
+        )
         child_rate = person("tx_ccs_payment_rate", period)
         protective_expense = spm_unit.sum(
             min_(child_expense, child_rate) * payable_child

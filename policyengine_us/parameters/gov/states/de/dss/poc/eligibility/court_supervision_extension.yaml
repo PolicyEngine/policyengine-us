@@ -1,0 +1,17 @@
+description: Delaware extends child-care subsidy age eligibility to children under court supervision.
+values:
+  # The approved FFY 2025-2027 plan (approved November 9, 2024), section
+  # 2.2.1(c), elects the 45 CFR 98.20(a)(1)(ii) court-supervision extension
+  # through age 18 from the plan period start. The FFY 2022-2024 election was
+  # not verified, so the earlier calculation is retained before October 2024.
+  2021-10-01: false
+  2024-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Delaware Purchase of Care court-supervision age extension
+  reference:
+    - title: 45 CFR 98.20(a)(1)(ii)
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-C/section-98.20
+    - title: Delaware CCDF FFY 2025-2027 Plan, Section 2.2.1(c)
+      href: https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21

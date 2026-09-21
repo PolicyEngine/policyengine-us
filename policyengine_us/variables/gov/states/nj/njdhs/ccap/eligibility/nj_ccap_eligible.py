@@ -9,7 +9,7 @@ class nj_ccap_eligible(Variable):
     defined_for = StateCode.NJ
     reference = (
         "https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_15%20CHILD%20CARE%20SERVICES.PDF#page=52",
-        "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=14",
+        "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20",
     )
 
     def formula(spm_unit, period, parameters):

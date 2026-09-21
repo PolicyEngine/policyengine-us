@@ -37,6 +37,26 @@ class de_poc(Variable):
         # Referral eligibility belongs to the referred child. Siblings still
         # need the ordinary family requirements to contribute to the payment.
         child_expense = person("pre_subsidy_childcare_expenses", period)
+        # The default person-level allocation spreads the SPM-unit expense only
+        # across children under 18, so a payable child with no reported expense
+        # (such as a referred 18-year-old) takes an equal share of the SPM-unit
+        # expense not already attributed to any person. When person-level
+        # expenses are supplied nothing is unattributed, so results are
+        # unchanged and no expense is counted twice.
+        unattributed_expense = max_(
+            pre_subsidy_childcare_expenses - spm_unit.sum(child_expense), 0
+        )
+        needs_fallback = payable & (child_expense == 0)
+        fallback_count = spm_unit.sum(needs_fallback)
+        fallback_share = np.divide(
+            unattributed_expense,
+            fallback_count,
+            out=np.zeros_like(unattributed_expense),
+            where=fallback_count > 0,
+        )
+        child_expense = where(
+            needs_fallback, spm_unit.project(fallback_share), child_expense
+        )
         child_maximum = person("de_poc_maximum_weekly_benefit", period) * (
             WEEKS_IN_YEAR / MONTHS_IN_YEAR
         )

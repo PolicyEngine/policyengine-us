@@ -268,3 +268,55 @@
     de_poc_age_group:
     - NONE
     - SCHOOL_AGE_FULL_TIME
+- name: DE approved child with expenses reported only at the SPM unit level
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240000
+      approved_child:
+        age: 18
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        requires_childcare_under_court_order: true
+        de_poc_has_dfs_referral: true
+        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        de_poc_provider_type: CENTER
+    tax_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - approved_child
+        spm_unit_pre_subsidy_childcare_expenses: 2400
+        de_poc_income_eligible: false
+        de_poc_activity_eligible: false
+    households:
+      home:
+        members:
+        - parent
+        - approved_child
+        state_code: DE
+  output:
+    # The default person-level allocation only reaches children under 18,
+    # so the 18-year-old's own expense is 0; the unattributed $2,400 / 12 =
+    # $200 falls back to the referred child, matching the person-level case.
+    pre_subsidy_childcare_expenses:
+    - 0
+    - 0
+    de_poc_eligible_child:
+    - false
+    - true
+    de_poc_eligible: true
+    de_poc_copay: 0
+    de_poc: 200

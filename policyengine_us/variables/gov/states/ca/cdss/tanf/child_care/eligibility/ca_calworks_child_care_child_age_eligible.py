@@ -18,7 +18,6 @@ class ca_calworks_child_care_child_age_eligible(Variable):
         age = person("age", period)
         is_disabled = person("is_disabled", period)
         ordinary_age_eligible = age < p.age_threshold
-        disabled_age_eligible = is_disabled & (age <= p.disabled_age_threshold)
         court_supervision = person("is_under_court_supervision", period)
         qualifying_supervision = person(
             "ca_calworks_child_care_has_qualifying_court_supervision", period
@@ -26,11 +25,14 @@ class ca_calworks_child_care_child_age_eligible(Variable):
         school_requirement = person(
             "ca_calworks_child_care_meets_age_18_school_requirement", period
         )
-        court_age_eligible = (age < p.disabled_age_threshold) | (
+        # MPP 47-201.2 limits both the disabled and court-supervision routes
+        # to the MPP 42-101 age: under 18, or 18 with the 42-101.2 school
+        # condition.
+        extended_age_eligible = (age < p.disabled_age_threshold) | (
             (age == p.disabled_age_threshold) & school_requirement
         )
-        return (
-            ordinary_age_eligible
-            | disabled_age_eligible
-            | (court_supervision & qualifying_supervision & court_age_eligible)
+        disabled_age_eligible = is_disabled & extended_age_eligible
+        court_age_eligible = (
+            court_supervision & qualifying_supervision & extended_age_eligible
         )
+        return ordinary_age_eligible | disabled_age_eligible | court_age_eligible

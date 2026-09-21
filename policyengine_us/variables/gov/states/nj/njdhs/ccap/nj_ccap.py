@@ -10,7 +10,7 @@ class nj_ccap(Variable):
     defined_for = "nj_ccap_eligible"
     reference = (
         "https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_15%20CHILD%20CARE%20SERVICES.PDF#page=52",
-        "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=14",
+        "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20",
     )
 
     def formula(spm_unit, period, parameters):
@@ -50,6 +50,26 @@ class nj_ccap(Variable):
         # Referral eligibility belongs to the referred child. Siblings still
         # need the ordinary family requirements to contribute to the payment.
         child_expense = person("pre_subsidy_childcare_expenses", period)
+        # The default person-level allocation spreads the SPM-unit expense only
+        # across children under 18, so a payable child with no reported expense
+        # (such as a referred 18-year-old) takes an equal share of the SPM-unit
+        # expense not already attributed to any person. When person-level
+        # expenses are supplied nothing is unattributed, so results are
+        # unchanged and no expense is counted twice.
+        unattributed_expense = max_(
+            pre_subsidy_childcare_expenses - spm_unit.sum(child_expense), 0
+        )
+        needs_fallback = payable & in_care & (child_expense == 0)
+        fallback_count = spm_unit.sum(needs_fallback)
+        fallback_share = np.divide(
+            unattributed_expense,
+            fallback_count,
+            out=np.zeros_like(unattributed_expense),
+            where=fallback_count > 0,
+        )
+        child_expense = where(
+            needs_fallback, spm_unit.project(fallback_share), child_expense
+        )
         child_maximum = person("nj_ccap_maximum_weekly_benefit", period) * (
             WEEKS_IN_YEAR / MONTHS_IN_YEAR
         )
