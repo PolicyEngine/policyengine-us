@@ -19,7 +19,9 @@ class in_ssp_rcap_eligible(Variable):
         # Indiana RCAP page: "at least 65 years of age, or blind or disabled."
         is_abd = person("is_ssi_aged_blind_disabled", period.this_year)
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        on_medicaid = person("medicaid_enrolled", period.this_year)
+        on_medicaid = person(
+            "medicaid_enrolled_for_ssi_state_supplement", period.this_year
+        )
         is_recipient = receives_ssi | on_medicaid
         age = person("age", period.this_year)
         p = parameters(period).gov.states["in"].fssa.ssp

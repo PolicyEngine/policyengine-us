@@ -1,8 +1,8 @@
 # Tests for sd_cca_reason_for_care_eligible (Person, MONTH, bool).
 # A child has a reason for care when every caretaker is in an approved
 # activity (sd_cca_activity_eligible) or when the child receives or needs
-# protective services (ARSD 67:47:01:03). This mirrors the federal
-# is_ccdf_reason_for_care_eligible pattern.
+# protective services (ARSD 67:47:01:03). This mirrors the federal CCDF
+# reason-for-care pattern.
 
 - name: Case 1, caretaker activity met, every member has a reason for care.
   period: 2027-01

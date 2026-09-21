@@ -10,6 +10,7 @@ class long_term_capital_gains_on_collectibles(Variable):
         "Portion of capital_gains_28_percent_rate_gain associated with collectibles."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.long_term_capital_gains"
     reference = dict(
         title="26 U.S. Code § 1(h)(4)",
         href="https://www.law.cornell.edu/uscode/text/26/1#h_4",

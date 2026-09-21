@@ -1,3 +1,5 @@
+import hashlib
+from functools import lru_cache
 from pathlib import Path
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.entities import *
@@ -30,6 +32,10 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.per_capita_uprating import (
+    add_per_capita_parameters_for_parameter_uprating,
+    add_per_capita_uprating,
+)
 from policyengine_us.data.dataset_schema import (
     US_ENTITIES,
     USSingleYearDataset,
@@ -53,6 +59,16 @@ DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 # Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
 DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
+# Content hash of the certified build the default URI must resolve to.
+#
+# A Hugging Face tag is a mutable pointer: re-tagging the repository, or a
+# truncated or substituted download, would hand the model another schema-valid
+# H5 and change every standalone-country result with no rejection anywhere.
+# Only the country's own default is checked - an explicit `dataset=` argument
+# names the caller's own artifact and remains the caller's responsibility.
+DEFAULT_DATASET_SHA256 = (
+    "6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84"
+)
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -101,6 +117,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         )
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.parameters = interpolate_parameters(self.parameters)
+        add_per_capita_parameters_for_parameter_uprating(self.parameters)
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
@@ -133,6 +150,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
+
+        # Last, so reforms to a national total or to the population series
+        # reach the per-capita series the variables uprate by.
+        add_per_capita_uprating(self)
+        self._per_capita_uprating_built = True
+
+    def modify_parameters(self, modifier_function):
+        result = super().modify_parameters(modifier_function)
+        # Reforms applied after init (core's Simulation applies the reform
+        # once more) must reach the derived per-capita series too.
+        if getattr(self, "_per_capita_uprating_built", False):
+            add_per_capita_uprating(self)
+        return result
 
     def clone(self):
         return clone_spm_system(self)
@@ -312,6 +342,44 @@ def _resolve_dataset_path(dataset_str):
         raise FileNotFoundError(f"Dataset file not found: {dataset_str}")
 
 
+def _file_sha256(file_path):
+    digest = hashlib.sha256()
+    with open(file_path, "rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+@lru_cache(maxsize=None)
+def _checked_default_dataset_digest(file_path, size, mtime_ns):
+    """Digest the resolved default build once per process.
+
+    The certified build is ~830 MB, so a per-construction digest would add
+    about a third of a second to every default `Microsimulation`. Key the
+    digest on the resolved path together with its size and modification time,
+    so a replaced or re-downloaded cache entry is digested again rather than
+    inheriting the previous file's verdict.
+    """
+    return _file_sha256(file_path)
+
+
+def _verify_default_dataset(file_path):
+    """Reject a default build whose bytes are not the certified ones."""
+    stat = Path(file_path).stat()
+    actual = _checked_default_dataset_digest(
+        str(file_path), stat.st_size, stat.st_mtime_ns
+    )
+    if actual != DEFAULT_DATASET_SHA256:
+        raise ValueError(
+            f"The default dataset {DEFAULT_DATASET} resolved to {file_path}, "
+            f"whose content is not the certified build: expected sha256 "
+            f"{DEFAULT_DATASET_SHA256}, got {actual}. The build id in the "
+            "default URI points at different bytes than this model version "
+            "was certified against; upgrade policyengine-us, or pass an "
+            "explicit dataset= argument to use that artifact deliberately."
+        )
+
+
 def _is_hdfstore_format(file_path):
     """Check if an HDF5 file uses entity-level HDFStore format.
 
@@ -362,6 +430,9 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         )
 
         dataset = kwargs.get("dataset")
+        # Only the build this model version chose for itself is content-checked
+        # below; a caller-supplied dataset= is the caller's own artifact.
+        uses_country_default = dataset is None
         if dataset is None:
             # Route the class default through the same interception below as an
             # explicit dataset, so an entity-level (HDFStore) default such as
@@ -381,6 +452,10 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         # entity-level datasets, making this interception unnecessary.
         if dataset is not None and isinstance(dataset, str):
             local_path = _resolve_dataset_path(dataset)
+            if uses_country_default and dataset == DEFAULT_DATASET:
+                # A subclass may point `default_dataset` elsewhere; only the
+                # shipped default is certified by DEFAULT_DATASET_SHA256.
+                _verify_default_dataset(local_path)
             if _is_hdfstore_format(local_path):
                 from policyengine_us.data.economic_assumptions import (
                     extend_single_year_dataset,

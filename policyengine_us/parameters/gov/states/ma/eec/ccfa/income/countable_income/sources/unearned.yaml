@@ -1,0 +1,61 @@
+description: Massachusetts counts these sources as unearned income under the Child Care Financial Assistance program.
+values:
+  2020-01-01:
+    - farm_rent_income
+    - estate_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - alimony_income
+    - child_support_received
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - workers_compensation
+  # Effective October 1, 2023, the interim policies exclude Social Security
+  # (all types), SSI, child support, and veterans disability benefits, and
+  # the countable list becomes exclusive; interest income is not on it.
+  # CCFA mapping assumption: veterans_benefits contains disability payments.
+  2023-10-01:
+    - farm_rent_income
+    - estate_income
+    - dividend_income
+    - rental_income
+    - pension_income
+    - military_retirement_pay
+    - alimony_income
+    - unemployment_compensation
+    - workers_compensation
+  2025-04-01:
+    - farm_rent_income
+    - estate_income
+    - dividend_income
+    - rental_income
+    - pension_income
+    - military_retirement_pay
+    - alimony_income
+    - unemployment_compensation
+    - workers_compensation
+    - pfml_benefits
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts CCFA unearned income sources
+  reference:
+    - title: EEC Financial Assistance Policy Guide, section 4.2.C.3, income from other sources
+      href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=38
+    - title: EEC Interim Income Eligible Child Care Financial Assistance Program Policies, effective October 1, 2023, countable and excluded income
+      href: https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download#page=12
+    - title: Massachusetts CCDF State Plan FY 2022-2024 Amendment 4, section 3.1.3(a), effective October 1, 2023
+      href: https://www.mass.gov/doc/ma-eec-ccdf-state-plan-fy-2022-2024-amend-4/download#page=61
+    - title: EEC Policy Advisory Field Operations 2023-4, income exclusions effective October 1, 2023
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=3
+    - title: EEC Policy Advisory Field Operations 2024-7, veterans disability benefits listed as not countable
+      href: https://www.mass.gov/doc/eec-policy-advisory-field-operations-7-child-care-financial-assistance-updated-policy-guidance/download#page=3
+    - title: EEC Policy Advisory CCFA-25-03, parental leave service need with PFML benefits and countable income entered
+      href: https://archives.lib.state.ma.us/server/api/core/bitstreams/5c538ae6-69c2-43df-bf85-10d2f5e5bfc2/content#page=6
+    - title: EEC Child Care Financial Assistance Program Income Eligible Policies, May 6, 2026, Income
+      href: https://www.mass.gov/doc/eec-ccfa-2026-04-income-eligible-consolidated-policies-may-6-2026/download#page=21

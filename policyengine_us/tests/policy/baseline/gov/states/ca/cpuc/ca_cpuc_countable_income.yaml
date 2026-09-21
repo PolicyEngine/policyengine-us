@@ -40,3 +40,75 @@
         state_code: CA
   output:
     ca_cpuc_countable_income: 68_000
+
+- name: Case 4, the earlier annual income convention uses actual housing assistance.
+  period: 2014
+  input:
+    age: 40
+    state_code: CA
+    employment_income: 1_000
+    self_employment_income: 0
+    sstb_self_employment_income: 0
+    partnership_s_corp_income: 0
+    farm_operations_income: 0
+    interest_income: 0
+    dividend_income: 0
+    alimony_income: 0
+    child_support_received: 0
+    tanf: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    social_security: 0
+    pension_income: 0
+    retirement_distributions: 0
+    housing_assistance: 500
+    veterans_benefits: 0
+    military_service_income: 0
+    rental_income: 0
+    farm_rent_income: 0
+    capital_gains: 0
+    unemployment_compensation: 0
+    miscellaneous_income: 0
+    gi_cash_assistance: 0
+    debt_relief: 0
+    illicit_income: 0
+    spm_unit_capped_housing_subsidy: 25
+  output:
+    ca_cpuc_countable_income: 1_500
+
+- name: Case 5, annual income excludes housing assistance after the dated decision.
+  period: 2015
+  input:
+    age: 40
+    state_code: CA
+    employment_income: 1_000
+    self_employment_income: 0
+    sstb_self_employment_income: 0
+    partnership_s_corp_income: 0
+    farm_operations_income: 0
+    interest_income: 0
+    dividend_income: 0
+    alimony_income: 0
+    child_support_received: 0
+    tanf: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    social_security: 0
+    pension_income: 0
+    retirement_distributions: 0
+    housing_assistance: 500
+    veterans_benefits: 0
+    military_service_income: 0
+    rental_income: 0
+    farm_rent_income: 0
+    capital_gains: 0
+    unemployment_compensation: 0
+    miscellaneous_income: 0
+    gi_cash_assistance: 0
+    debt_relief: 0
+    illicit_income: 0
+    spm_unit_capped_housing_subsidy: 25
+  output:
+    ca_cpuc_countable_income: 1_000

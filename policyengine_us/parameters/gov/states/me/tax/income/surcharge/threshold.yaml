@@ -1,6 +1,11 @@
 description: Maine limits its income tax surcharge to taxable income above this threshold under Maine's individual income tax.
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   unit: currency-USD
   period: year
   label: Maine income tax surcharge threshold
@@ -25,49 +30,19 @@ SINGLE:
   values:
     0000-01-01: .inf
     2026-01-01: 1_000_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SEPARATE:
   values:
     0000-01-01: .inf
     2026-01-01: 750_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     0000-01-01: .inf
     2026-01-01: 1_500_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 JOINT:
   values:
     0000-01-01: .inf
     2026-01-01: 1_500_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SURVIVING_SPOUSE:
   values:
     0000-01-01: .inf
     2026-01-01: 1_500_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50

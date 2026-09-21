@@ -182,3 +182,44 @@
   output:
     mt_elderly_homeowner_or_renter_credit: [1_150, 0]
     mt_income_tax_indiv: [-150, 800]
+
+- name: MT EHRC uses the $6,300 exclusion in 2021 (taxsim 1180)
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 20_892.60
+        real_estate_taxes: 863.08
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # (863.08 - (gross_hh - 6,300) x 0.05) x 1.0, capped at $1,000 = $133.
+    mt_elderly_homeowner_or_renter_credit: 133.33
+
+- name: MT EHRC uses the $12,600 exclusion from 2022 (HB 191)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 20_892.60
+        real_estate_taxes: 863.08
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Same household, larger exclusion ($12,600) leaves a smaller expected
+    # contribution, so the credit is higher: $539.67.
+    mt_elderly_homeowner_or_renter_credit: 539.67

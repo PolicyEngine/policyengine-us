@@ -21,11 +21,33 @@ from typing import FrozenSet, List, Dict, Optional, Tuple
 import yaml
 
 
+# policyengine-core collects both YAML suffixes
+# (policyengine_core/tools/test_runner.py accepts ".yaml" and ".yml"), so any
+# batch built by listing files has to list both. Enumerating only "*.yaml"
+# would hand the subprocess a path list that silently omits a ".yml" test —
+# invisibly, because the batch it belonged to still passes.
+YAML_SUFFIXES = (".yaml", ".yml")
+
+
+def yaml_files(directory: Path) -> List[Path]:
+    """Every YAML test file under a directory, recursively, in a stable order."""
+    return sorted(
+        path for suffix in YAML_SUFFIXES for path in directory.rglob(f"*{suffix}")
+    )
+
+
+def root_yaml_files(directory: Path) -> List[Path]:
+    """YAML test files directly in a directory, not in its subdirectories."""
+    return sorted(
+        path for suffix in YAML_SUFFIXES for path in directory.glob(f"*{suffix}")
+    )
+
+
 def count_yaml_files(directory: Path) -> int:
     """Count YAML files in a directory recursively."""
     if not directory.exists():
         return 0
-    return len(list(directory.rglob("*.yaml")))
+    return len(yaml_files(directory))
 
 
 def batch_cost(batch_paths: List[str]) -> int:
@@ -178,7 +200,7 @@ def subdir_batches(subdir: Path) -> List[List[str]]:
     minutes before CI killed it. Pack such a folder's files by combo weight
     instead.
     """
-    files = sorted(subdir.rglob("*.yaml"))
+    files = yaml_files(subdir)
     combos: set = set()
     for file in files:
         combos |= set(file_reform_combos(file))
@@ -214,7 +236,7 @@ def split_into_batches(
     # Explicit modes — bypass the per-path auto heuristics so new files
     # added to the target auto-route without a Makefile edit.
     if mode == "per-file":
-        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
+        return [[str(f)] for f in yaml_files(base_path)]
 
     if mode == "per-subdir":
         subdirs = sorted(
@@ -222,7 +244,7 @@ def split_into_batches(
             for item in base_path.iterdir()
             if item.is_dir() and item.name not in exclude
         )
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = root_yaml_files(base_path)
         batches = [batch for s in subdirs for batch in subdir_batches(s)]
         if root_files:
             batches.append([str(f) for f in root_files])
@@ -264,7 +286,7 @@ def split_into_batches(
             for item in base_path.iterdir()
             if item.is_dir() and item.name not in exclude
         )
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = root_yaml_files(base_path)
 
         # One batch per file for per-file folders, then one batch per
         # heavy subdir (if present).
@@ -272,7 +294,7 @@ def split_into_batches(
             [str(file)]
             for subdir in subdirs
             if subdir.name in PER_FILE
-            for file in sorted(subdir.rglob("*.yaml"))
+            for file in yaml_files(subdir)
         ]
         batches += [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
@@ -303,10 +325,10 @@ def split_into_batches(
         subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
         batches = []
         for subdir in subdirs:
-            batches.extend(pack_files_by_combo_weight(sorted(subdir.rglob("*.yaml"))))
+            batches.extend(pack_files_by_combo_weight(yaml_files(subdir)))
 
         # Also include any root-level YAML files as trailing batches
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = root_yaml_files(base_path)
         if root_files:
             batches.extend(pack_files_by_combo_weight(root_files))
 
@@ -319,7 +341,7 @@ def split_into_batches(
     # shutdown signal". A fresh subprocess per file frees each peak between
     # files.
     if "reform" in str(base_path):
-        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
+        return [[str(f)] for f in yaml_files(base_path)]
 
     # Special handling for states directory - support excluding specific states
     # and splitting into multiple sequential batches for memory management
@@ -334,7 +356,7 @@ def split_into_batches(
         # Root-level YAML files (e.g. cross-state filing-status test) are
         # state-agnostic and would be invisible to subdir-based batching
         # otherwise — collect them into a dedicated trailing batch.
-        root_files = sorted(base_path.glob("*.yaml"))
+        root_files = root_yaml_files(base_path)
 
         if not subdirs and not root_files:
             return []
@@ -395,7 +417,7 @@ def split_into_batches(
                 if gov_item.is_dir():
                     if gov_item.name not in heavy_set and gov_item.name != "states":
                         remaining.append(str(gov_item))
-                elif gov_item.suffix == ".yaml":
+                elif gov_item.suffix in YAML_SUFFIXES:
                     remaining.append(str(gov_item))
 
             # Add non-gov directories and root YAML files
@@ -404,7 +426,7 @@ def split_into_batches(
                     if item.name in ["household", "contrib", "gov"]:
                         continue
                     remaining.append(str(item))
-                elif item.suffix == ".yaml":
+                elif item.suffix in YAML_SUFFIXES:
                     remaining.append(str(item))
 
             # Build batches (only include non-empty ones)
@@ -435,10 +457,11 @@ def split_into_batches(
         paths = sorted(
             str(item)
             for item in base_path.iterdir()
-            if (item.is_dir() or item.suffix == ".yaml") and item.name not in exclude
+            if (item.is_dir() or item.suffix in YAML_SUFFIXES)
+            and item.name not in exclude
         )
     else:
-        paths = sorted(str(f) for f in base_path.rglob("*.yaml"))
+        paths = [str(f) for f in yaml_files(base_path)]
 
     if not paths:
         return []
@@ -459,7 +482,113 @@ def split_into_batches(
     return batches
 
 
-def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Dict:
+# pytest exits 5 when a path collects no tests (see pytest.ExitCode).
+PYTEST_NO_TESTS_COLLECTED = 5
+# How long a child gets to die after being asked to, before it is killed.
+TERMINATE_GRACE_SECONDS = 5
+# Overall budget for one batch, enforced inside the monitoring loop below.
+BATCH_TIMEOUT_SECONDS = 1800
+# How long the runner may take to hand back a status after printing its
+# summary. That gap is pytest's own session-finish hooks and unconfigure, not
+# the slow interpreter teardown described below, which happens after the
+# marker: measured, the marker arrives in the same read as the summary line.
+# This is deliberately generous, and exists only so a runner that stops
+# responding right at the end is reported instead of hanging the job.
+MARKER_GRACE_SECONDS = 300
+
+# The runner's process exit status is not reachable in bounded time. Once
+# policyengine-core's pytest.main() returns, interpreter teardown frees the
+# tax-benefit systems the run cached, which is slow: measured on this suite, a
+# single small state took 18.2s to exit after printing its summary, and the
+# large state batches took over 30s. That is why the runner is terminated as
+# soon as it reports rather than waited out - and why its status used to be
+# discarded along with it, leaving the printed summary as the only evidence.
+#
+# So ask for the status at the only moment it is both known and free: run the
+# command through a shim that writes pytest's own return value to stdout the
+# instant pytest.main() hands it back, before any teardown. Measured at the
+# same moment as the summary line, so this costs no wall clock, and the child
+# is still terminated exactly as promptly as before.
+BATCH_EXIT_MARKER = "__POLICYENGINE_BATCH_EXIT__"
+
+RUNNER_SHIM = f"""
+import runpy
+import sys
+
+code = 0
+try:
+    runpy.run_module(
+        "policyengine_core.scripts.policyengine_command", run_name="__main__"
+    )
+except SystemExit as requested:
+    code = requested.code
+sys.stdout.write("\\n{BATCH_EXIT_MARKER} %s\\n" % (0 if code is None else code))
+sys.stdout.flush()
+sys.exit(code)
+"""
+
+BATCH_EXIT_PATTERN = re.compile(rf"{BATCH_EXIT_MARKER} (-?\d+)")
+
+
+def build_test_command(test_paths: List[str], python_exe: str) -> List[str]:
+    """The policyengine-core command one batch runs in its own subprocess.
+
+    `python -c` stops consuming options after the program text, so everything
+    after RUNNER_SHIM reaches policyengine_command's own argument parser
+    unchanged.
+    """
+    return (
+        [python_exe, "-c", RUNNER_SHIM, "test"] + test_paths + ["-c", "policyengine_us"]
+    )
+
+
+def describe_exit_status(returncode: Optional[int]) -> str:
+    """Human-readable form of a batch subprocess's exit status."""
+    if returncode is None:
+        return "no exit status (killed after it stopped responding)"
+    if returncode == 0:
+        return "exit 0"
+    if returncode < 0:
+        return f"killed by signal {-returncode}"
+    if returncode == PYTEST_NO_TESTS_COLLECTED:
+        return f"exit {returncode} (pytest collected no tests)"
+    return f"exit {returncode}"
+
+
+def batch_status(returncode: Optional[int]) -> str:
+    """Batch outcome, decided by the runner's exit status and nothing else.
+
+    policyengine-core's `test` command is `sys.exit(pytest.main(...))`
+    (scripts/run_test.py), so the status is pytest's own ExitCode and only 0 is
+    a pass. Reading the printed summary instead loses every outcome pytest does
+    not express as a failure count:
+
+    * "1 passed, 1 error" prints no failed count at all, so the old parse read
+      an errored batch as success while the child exited 1.
+    * 2 (interrupted) prints a count for whatever ran before the interrupt and
+      no failure count, which the old parse also read as success: under
+      policyengine-core's argv, a session whose second test raises
+      KeyboardInterrupt exits 2 beneath "1 passed in 0.10s" (measured).
+    * 3 and 4 (internal error, usage error) print no summary count at all, so
+      the old parse fell through to a status it had already discarded.
+    * 5 (no tests collected) is a failure *for this runner*. It differs from
+      run_selective_tests.py, which skips 5 deliberately: that runner selects
+      paths from a changed-file list, where a changed test helper legitimately
+      collects nothing. This runner enumerates the YAML suite itself, so a
+      batch that collects nothing means the suite or this enumeration is
+      broken — a result to report, not to pass over.
+    * None means the child never reported a status, having been killed after
+      it stopped responding. An unreported batch is not a passing batch.
+    """
+    return "passed" if returncode == 0 else "failed"
+
+
+def run_batch(
+    test_paths: List[str],
+    batch_name: str,
+    stream: bool = True,
+    command: Optional[List[str]] = None,
+) -> Dict:
     """Run a batch of tests in an isolated subprocess.
 
     With stream=True output is echoed to stdout in real time (sequential
@@ -485,17 +614,10 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
     peak_rss_mb = None
     last_rss_sample = 0.0
 
-    # Build command - direct policyengine-core with timeout protection
-    cmd = (
-        [
-            python_exe,
-            "-m",
-            "policyengine_core.scripts.policyengine_command",
-            "test",
-        ]
-        + test_paths
-        + ["-c", "policyengine_us"]
-    )
+    # Build command - direct policyengine-core with timeout protection.
+    # `command` is an injection point for the code-health tests, which drive a
+    # real subprocess with scripted output and exit statuses.
+    cmd = command or build_test_command(test_paths, python_exe)
 
     emit(f"    Running {batch_name}...")
     emit(f"    Paths: {len(test_paths)} items")
@@ -520,9 +642,40 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
 
     try:
         test_completed = False
-        test_passed = False
+        summary_reported_pass = False
+        abandoned: Optional[str] = None
+        reported_returncode: Optional[int] = None
         output_lines = []
         output_text = ""
+
+        summary_at: Optional[float] = None
+
+        def stop_process() -> None:
+            """End a child, whether or not it told us how it finished."""
+            process.terminate()
+            try:
+                process.wait(timeout=TERMINATE_GRACE_SECONDS)
+            except subprocess.TimeoutExpired:
+                emit("    Force killing process...")
+                process.kill()
+                process.wait()
+
+        def overdue() -> Optional[str]:
+            """Why this batch should stop being waited on, if it should.
+
+            The monitoring loop is otherwise unbounded, in this revision and
+            the one before it: it ends only when the child exits or reports,
+            and the 30-minute budget below it was only ever consulted after
+            the child had already gone. Enforce that budget here, where it can
+            fire, and bound the window this file opened by reading the status
+            from the runner instead of terminating a second after its summary.
+            """
+            now = time.time()
+            if now - start_time >= BATCH_TIMEOUT_SECONDS:
+                return "timeout"
+            if summary_at is not None and now - summary_at >= MARKER_GRACE_SECONDS:
+                return "unreported"
+            return None
 
         # Monitor output line by line
         while True:
@@ -534,6 +687,20 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
+                    break
+                give_up = overdue()
+                if give_up is not None:
+                    abandoned = give_up
+                    emit(
+                        "\n    ⏱️ "
+                        + (
+                            "Timeout"
+                            if give_up == "timeout"
+                            else f"No status {MARKER_GRACE_SECONDS}s after the summary"
+                        )
+                        + " - terminating process..."
+                    )
+                    stop_process()
                     break
                 now = time.time()
                 # In buffered (concurrent) mode the shared heartbeat in
@@ -572,41 +739,38 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(
+            if not test_completed and re.search(
                 r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
                 output_text,
             ):
                 test_completed = True
-                # Check if tests passed by parsing actual failure count
+                summary_at = time.time()
+                # The summary line only decides how loudly a disagreement is
+                # reported below; batch_status() reads the runner's status.
                 failed_match = re.search(r"(\d+) failed", output_text)
-                if failed_match:
-                    failed_count = int(failed_match.group(1))
-                    test_passed = failed_count == 0
-                else:
-                    # No "X failed" in line means all passed
-                    test_passed = True
+                summary_reported_pass = not failed_match or (
+                    int(failed_match.group(1)) == 0
+                )
 
-                emit(f"\n    Tests completed, terminating process...")
-
-                # Give 1 second grace period for cleanup
-                time.sleep(1)
+            # The runner has reported pytest's return value and is now only
+            # tearing down, which takes tens of seconds. Stop it here, as
+            # before, but keep the status it just gave us.
+            marker_match = BATCH_EXIT_PATTERN.search(output_text)
+            if marker_match:
+                reported_returncode = int(marker_match.group(1))
+                emit(
+                    "\n    Runner reported "
+                    f"{describe_exit_status(reported_returncode)}; "
+                    "terminating process..."
+                )
                 # Final sample while the pid still exists — captures the
                 # end-of-run high-water mark.
                 sample_rss()
-
-                # Terminate the process
-                process.terminate()
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    # Force kill if it won't terminate
-                    emit(f"    Force killing process...")
-                    process.kill()
-                    process.wait()
+                stop_process()
                 break
 
-        # If we didn't detect completion, wait for process with timeout
-        if not test_completed:
+        # If the runner never reported, wait for the process with a timeout
+        if reported_returncode is None and process.poll() is None:
             try:
                 # Wait up to 30 minutes total
                 elapsed = time.time() - start_time
@@ -626,36 +790,53 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
                 return {
                     "elapsed": elapsed,
                     "status": "timeout",
+                    "returncode": process.poll(),
                     "peak_rss_mb": peak_rss_mb,
                     "output": "".join(buf),
                 }
 
         elapsed = time.time() - start_time
 
-        if test_completed:
+        # The runner's own report wins: the process status after a terminate is
+        # the signal we sent it, not how the tests went.
+        returncode = (
+            reported_returncode if reported_returncode is not None else process.poll()
+        )
+
+        if abandoned == "timeout":
             emit(
-                f"\n    Batch completed in {elapsed:.1f}s "
+                f"\n    Batch abandoned after {elapsed:.1f}s "
                 f"(peak RSS: {_format_rss(peak_rss_mb)})"
             )
             return {
                 "elapsed": elapsed,
-                "status": "passed" if test_passed else "failed",
+                "status": "timeout",
+                "returncode": returncode,
                 "peak_rss_mb": peak_rss_mb,
                 "output": "".join(buf),
             }
-        else:
-            # Process ended without detecting test completion
-            returncode = process.poll()
+
+        status = batch_status(returncode)
+        if test_completed and summary_reported_pass and status != "passed":
+            # The case that used to be reported as a pass: pytest printed no
+            # failure count (e.g. "1 passed, 1 error") yet finished nonzero.
             emit(
-                f"\n    Batch completed in {elapsed:.1f}s "
-                f"(peak RSS: {_format_rss(peak_rss_mb)})"
+                f"    ❌ {batch_name} printed a summary with no failures but "
+                f"finished with {describe_exit_status(returncode)}; "
+                "the runner's status decides."
             )
-            return {
-                "elapsed": elapsed,
-                "status": "passed" if returncode == 0 else "failed",
-                "peak_rss_mb": peak_rss_mb,
-                "output": "".join(buf),
-            }
+        emit(
+            f"\n    Batch completed in {elapsed:.1f}s "
+            f"(peak RSS: {_format_rss(peak_rss_mb)}, "
+            f"{describe_exit_status(returncode)})"
+        )
+        return {
+            "elapsed": elapsed,
+            "status": status,
+            "returncode": returncode,
+            "peak_rss_mb": peak_rss_mb,
+            "output": "".join(buf),
+        }
 
     except Exception as e:
         elapsed = time.time() - start_time
@@ -675,6 +856,7 @@ def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Di
         return {
             "elapsed": elapsed,
             "status": "error",
+            "returncode": process.poll(),
             "peak_rss_mb": peak_rss_mb,
             "output": "".join(buf),
         }
@@ -743,6 +925,7 @@ def run_batches_concurrently(batches: List[List[str]], workers: int) -> List:
                     result = {
                         "elapsed": 0.0,
                         "status": "error",
+                        "returncode": None,
                         "peak_rss_mb": None,
                         "output": f"Worker crashed: {str(e)[:200]}\n",
                     }
@@ -754,6 +937,7 @@ def run_batches_concurrently(batches: List[List[str]], workers: int) -> List:
                     f"\n[Batch {idx}/{total}] finished in "
                     f"{result['elapsed']:.1f}s | peak RSS: "
                     f"{_format_rss(result.get('peak_rss_mb'))} | "
+                    f"{describe_exit_status(result.get('returncode'))} | "
                     f"{result['status']}",
                     flush=True,
                 )
@@ -897,7 +1081,7 @@ def main():
             print("  Cleaning up memory...")
             gc.collect()
 
-    all_failed = any(result["status"] != "passed" for _, result in results)
+    any_failed = any(result["status"] != "passed" for _, result in results)
     total_elapsed = sum(result["elapsed"] for _, result in results)
 
     # Final summary
@@ -909,6 +1093,7 @@ def main():
         print(
             f"  {name}: {result['elapsed']:.1f}s | "
             f"peak RSS: {_format_rss(result.get('peak_rss_mb'))} | "
+            f"{describe_exit_status(result.get('returncode'))} | "
             f"{result['status']}"
         )
     print(f"Workers: {args.workers}")
@@ -917,7 +1102,7 @@ def main():
         print(f"Wall time: {time.time() - run_start:.1f}s")
 
     # Exit code
-    sys.exit(1 if all_failed else 0)
+    sys.exit(1 if any_failed else 0)
 
 
 if __name__ == "__main__":

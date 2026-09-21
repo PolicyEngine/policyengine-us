@@ -1,4 +1,4 @@
-"""Validate a release lock, or refresh only its automatic version bump.
+"""Validate a release lock, rehearse its refresh, or refresh a version bump.
 
 Dependency changes belong in a reviewed registry lock before versioning runs.
 This helper uses only the standard library and never imports the country model.
@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 import tomllib
 from urllib.parse import unquote, urlsplit
 
@@ -46,6 +47,11 @@ def validate_registry_project(project: dict) -> None:
     if forbidden.intersection(uv):
         raise ValueError(
             "Release project must use PyPI without source/index/workspace overrides"
+        )
+    if project.get("project", {}).get("dynamic"):
+        raise ValueError(
+            "Release project must declare static metadata; dynamic fields would make "
+            "the two-file release rehearsal resolve a different project"
         )
 
     def validate_requirements(value):
@@ -290,6 +296,58 @@ def check_release_lock(
             lock_path.write_bytes(before_bytes)
 
 
+def bumped_project(text: str) -> tuple[str, str]:
+    """Apply one patch bump to project text, exactly as bump_version.py does.
+
+    The release job picks the bump level from the changelog fragments. A patch
+    bump rehearses it faithfully: the refresh guard drops the root version
+    before it compares the graphs, so only the fact of the change matters.
+    """
+    match = re.search(r'^version\s*=\s*"(\d+\.\d+\.\d+)"', text, re.MULTILINE)
+    if not match:
+        raise ValueError("Release project has no version to bump")
+    previous = match.group(1)
+    major, minor, patch = (int(part) for part in previous.split("."))
+    bumped = f"{major}.{minor}.{patch + 1}"
+    return text.replace(f'version = "{previous}"', f'version = "{bumped}"'), bumped
+
+
+def require_unchanged_checkout(root: Path, sources: dict[str, bytes]) -> None:
+    """The rehearsal reads the checkout; no resolver may write back to it."""
+    for name, before in sources.items():
+        if (root / name).read_bytes() != before:
+            raise ValueError(
+                f"Release rehearsal must not change {name} in the checkout"
+            )
+
+
+def rehearse_release_lock(root: Path = REPO_ROOT) -> str:
+    """Run the release refresh against a temporary copy of this checkout.
+
+    `uv lock --check` accepts a lock another uv version wrote, but the release
+    bump re-resolves, so drift only surfaces on main. This runs that refresh
+    early on a copy. Only pyproject.toml and uv.lock are copied: the project
+    declares no dynamic metadata, so uv resolves it without the package tree.
+    """
+    reject_parent_workspaces(root)
+    sources = {}
+    for name in ("pyproject.toml", "uv.lock"):
+        path = root / name
+        if path.is_symlink():
+            raise ValueError(f"Release rehearsal requires a regular {name}")
+        sources[name] = path.read_bytes()
+    project, version = bumped_project(sources["pyproject.toml"].decode("utf-8"))
+    with tempfile.TemporaryDirectory(prefix="release-lock-rehearsal-") as temporary:
+        rehearsal = Path(temporary)
+        (rehearsal / "pyproject.toml").write_text(project, encoding="utf-8")
+        (rehearsal / "uv.lock").write_bytes(sources["uv.lock"])
+        try:
+            check_release_lock(rehearsal, refresh=True)
+        finally:
+            require_unchanged_checkout(root, sources)
+    return version
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
@@ -303,10 +361,26 @@ def main() -> int:
         action="store_true",
         help="Refresh only the root version after the automatic bump",
     )
+    mode.add_argument(
+        "--rehearse",
+        action="store_true",
+        help="Rehearse that refresh on a temporary copy, before the merge",
+    )
     args = parser.parse_args()
     try:
-        check_release_lock(refresh=args.refresh, committed=args.committed)
+        if args.rehearse:
+            version = rehearse_release_lock()
+            print(f"Rehearsed the release refresh at version {version}")
+        else:
+            check_release_lock(refresh=args.refresh, committed=args.committed)
     except (ValueError, OSError, KeyError, subprocess.CalledProcessError) as exc:
+        if args.rehearse:
+            print(
+                "The release version refresh failed on a copy of this checkout."
+                " See .github/release-lock.md; if the dependency graph changed,"
+                " regenerate uv.lock with the pinned uv.",
+                file=sys.stderr,
+            )
         parser.error(str(exc))
     return 0
 

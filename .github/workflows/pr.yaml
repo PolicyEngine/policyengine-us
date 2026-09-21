@@ -22,6 +22,8 @@ jobs:
           version: "0.12.13"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
+      - name: Rehearse the release version refresh
+        run: python .github/release_lock.py --rehearse
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
@@ -38,7 +40,73 @@ jobs:
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
-        run: python -m unittest discover -s .github/tests -p test_release_lock.py -v
+        run: python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+  CandidateWheel:
+    name: Unpublished release wheel (${{ matrix.kind }})
+    needs: [ReleaseLock, ReleaseLockTests]
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        kind: [rc1, final]
+    steps:
+      - name: Checkout reviewed PR head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Detect the release tooling on the PR head
+        id: tooling
+        # The job builds from the reviewed head, not the merge commit, so a
+        # branch that predates the release tooling has no script to run.
+        # Skip the build with a notice instead of failing the PR; the
+        # ReleaseLock job above still checks the lock on the merge commit.
+        run: |
+          if [ -f .github/release_lock.py ] && [ -f .github/release_build.py ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge main into the branch to build its candidate wheel."
+          fi
+      - name: Set up Python
+        if: steps.tooling.outputs.present == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14.7"
+      - name: Install uv
+        if: steps.tooling.outputs.present == 'true'
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Check committed registry lock
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_lock.py --committed
+      - name: Predict release version with the release helper
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_build.py --prepare "${{ matrix.kind }}"
+      - name: Refresh only the release version in the registry lock
+        if: steps.tooling.outputs.present == 'true'
+        run: python .github/release_lock.py --refresh
+      - name: Install package
+        if: steps.tooling.outputs.present == 'true'
+        run: uv sync --locked --extra dev
+      - name: Build package from unchanged policy source
+        if: steps.tooling.outputs.present == 'true'
+        run: uv run --no-sync make
+      - name: Record and verify release build
+        if: steps.tooling.outputs.present == 'true'
+        run: uv run --no-sync python .github/release_build.py
+      - name: Retain unpublished wheel and build receipt
+        if: steps.tooling.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-wheel-${{ matrix.kind }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/*.whl
+            release-build/receipt.json
+          if-no-files-found: error
+          retention-days: 14
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
@@ -131,6 +199,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install package
         run: uv sync --locked --extra dev
       - name: Install bundle validation tooling
@@ -157,6 +227,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install package
         run: uv sync --locked --python "${{ matrix.python-version }}" --extra dev
       - name: Smoke-import
@@ -193,6 +265,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -245,8 +319,6 @@ jobs:
           name: codecov-umbrella
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-      - name: Build package
-        run: uv build
   Baseline:
     needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
@@ -294,6 +366,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -320,6 +394,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -368,6 +444,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
@@ -397,16 +475,41 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Python tests (code_health, core, utilities, top-level)
-        run: uv run --no-sync make test-other-python
+      # Run sequentially on this runner; process exit releases the SPM heap
+      # before collecting the remaining Python files.
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-spm-resources.txt uv run --no-sync make test-other-python-spm
+      - name: Run remaining Python tests
+        if: always()
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-other.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-python-other-resources.txt uv run --no-sync make test-other-python-rest
       - name: Run tests/variables YAML tests
         if: always()
-        run: uv run --no-sync make test-yaml-variables
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-test-timings
+          path: |
+            rest-python-spm.xml
+            rest-python-other.xml
+            rest-variables.xml
+            rest-python-spm-resources.txt
+            rest-python-other-resources.txt
+            rest-variables-resources.txt
   Microsimulation:
     needs: ReleaseLock
     name: Full Suite - Microsimulation
@@ -426,6 +529,8 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Turn off default branching

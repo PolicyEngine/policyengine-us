@@ -13,15 +13,17 @@ class spm_unit_capped_housing_subsidy(Variable):
 
     def formula(spm_unit, period, parameters):
         included = spm_universe_mask(spm_unit, period)
-        housing_assistance = spm_unit("housing_assistance", period).astype("float64")
+        housing_assistance = spm_unit(
+            "spm_unit_allocated_housing_subsidy", period
+        ).astype("float64")
         if not np.isfinite(housing_assistance[included]).all() or np.any(
             housing_assistance[included] < 0
         ):
             raise SPMInputError(
                 "SPM_HOUSING_ASSISTANCE_INVALID",
-                "Included housing assistance must be finite and nonnegative.",
+                "Included allocated housing assistance must be finite and nonnegative.",
             )
-        # Only a unit with housing assistance has anything to cap. Consulting
+        # Only a unit allocated housing assistance has anything to cap. Consulting
         # the canonical housing portion for the other units would demand SPM
         # geography and composition from resource and benefit consumers that
         # never use the measurement, so the cap is evaluated for assisted units
@@ -34,7 +36,9 @@ class spm_unit_capped_housing_subsidy(Variable):
         housing_portion = masked_policyengine_amount(
             spm_unit, period, "housing_portion", assisted
         )
-        tenant_payment = spm_unit("hud_ttp", period).astype("float64")
+        tenant_payment = spm_unit("spm_unit_allocated_tenant_payment", period).astype(
+            "float64"
+        )
         cap = max_(housing_portion - tenant_payment, 0)
         return where(
             included, where(assisted, min_(housing_assistance, cap), 0), np.nan

@@ -5,8 +5,16 @@ values:
     # (i) Unit-level assistance payments are counted in full since they
     # cannot be attributed to an individual ineligible member.
     - tanf
+    # (i) California's SSI state supplement is an SPM unit variable with no
+    # person-level counterpart, so it is counted here rather than in
+    # unearned.yaml. 273.9(b)(2)(i) counts assistance payments from federally
+    # aided public assistance programs such as SSI, and Welfare and
+    # Institutions Code 12200 pays the supplement to the recipient.
+    - ca_state_supplement
 
 metadata:
   reference:
     - title: 7 CFR 273.9(b)(2)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
+    - title: California Welfare and Institutions Code 12200
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200

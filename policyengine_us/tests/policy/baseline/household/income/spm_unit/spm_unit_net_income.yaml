@@ -24,6 +24,9 @@
   input:
     age: 30
     county_fips: "06037"
+    # Los Angeles County has an encoded HUD utility allowance; keep it out
+    # of housing assistance so only the cash support leaves are summed.
+    tenant_pays_utilities: false
     spm_unit_market_income: 0
     child_support_received: 1
     workers_compensation: 2

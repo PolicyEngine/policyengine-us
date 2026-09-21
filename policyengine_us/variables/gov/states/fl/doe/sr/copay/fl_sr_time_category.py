@@ -10,7 +10,7 @@ class fl_sr_time_category(Variable):
     value_type = Enum
     entity = Person
     possible_values = FLSRTimeCategory
-    default_value = FLSRTimeCategory.PART_TIME
+    default_value = FLSRTimeCategory.FULL_TIME
     definition_period = MONTH
     label = "Florida School Readiness authorized care time category"
     defined_for = StateCode.FL
@@ -22,9 +22,11 @@ class fl_sr_time_category(Variable):
         # a 24-hour period. This is a DAILY measure, not weekly -- e.g. 4 days x
         # 6 hours is full-time even though it is only 24 hours/week.
         p = parameters(period).gov.states.fl.doe.sr.copay
+        # Zero is also the input default for unknown hours. Use full-time
+        # pricing; attendance and expense rules still determine payment.
         hours = person("childcare_hours_per_day", period.this_year)
         return where(
-            hours >= p.full_time_hours_threshold,
+            (hours == 0) | (hours >= p.full_time_hours_threshold),
             FLSRTimeCategory.FULL_TIME,
             FLSRTimeCategory.PART_TIME,
         )

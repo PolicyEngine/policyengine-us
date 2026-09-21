@@ -1,10 +1,8 @@
-# SPM scope and ordinary housing income
+# SPM measurement scope
 
 The country model separates Supplemental Poverty Measure (SPM) outputs from
 ordinary income for records outside a dataset's declared measurement universe.
-It preserves included units' existing housing cap and canonical calculator
-amounts. Dataset construction must supply the measurement universe and any
-required outside housing valuation.
+Dataset construction must supply the measurement universe.
 
 ## Source decisions
 
@@ -23,6 +21,11 @@ an earlier year's declaration does not supply a later year's declaration.
 Automatic dataset extension drops these annual source declarations from its
 generated future-year tables; explicitly supplied multi-year tables retain them.
 
+Scope is a source-owned input with a household fallback, so it is listed in
+`DATASET_SOURCE_INPUTS` rather than rejected. Setting it invalidates dependent
+cached results, because every scope-dependent measurement and summary is
+downstream of it.
+
 Source universes differ. Census's ACS research excludes all group quarters
 because the public ACS does not identify the required subtypes. CPS-based SPM
 includes some noninstitutional group quarters. A dataset release must identify
@@ -32,38 +35,29 @@ and [Census group-quarters guidance](https://www.census.gov/topics/income-povert
 
 ## Housing in ordinary income
 
-`spm_unit_ordinary_housing_subsidy` supplies household benefits, CBO means-tested
-transfers and California CPUC income. The corresponding contributed household
-benefit overrides use the same output. SPM resources continue to use
-`spm_unit_capped_housing_subsidy`.
+Ordinary income aggregates - general household benefits, CBO means-tested
+transfers, California CPUC countable income and the contributed household
+benefit overrides - add the modelled `housing_assistance` award, not the
+Census SPM's capped housing valuation. That separation is independent of SPM
+scope: `housing_assistance` is a program amount the model computes for every
+unit, so these aggregates never consult the measurement universe and never
+require a scope declaration.
 
-| Unit | Ordinary housing value |
-| --- | --- |
-| Included | Existing capped SPM housing value, including supported policy overrides. |
-| Outside with finite, nonnegative assistance equal to zero | Zero. |
-| Outside with positive assistance | Explicit `spm_unit_ordinary_housing_subsidy_reported`, between zero and assistance. |
-
-The reported input defaults to `-1`, a missing-value sentinel. Its year-local
-formula and the dataset-extension exclusion prevent uprating or carry-forward
-from manufacturing a new year's report. The model ignores this report for included units. A missing or
-invalid required report raises `SPM_ORDINARY_HOUSING_VALUE_REQUIRED`. Invalid
-assistance raises `SPM_HOUSING_ASSISTANCE_INVALID`. Core rejects explicit NaN
-inputs before these formulas execute; computed invalid values reach these
-typed checks.
-
-A release supplying an outside value must retain its unit identifier, year,
-allocation and valuation source. Numeric bounds do not establish that evidence.
-Likewise, accepting the country's computed/input assistance of zero does not
-certify observed nonreceipt; the release still must validate its source inputs.
+SPM resources keep the capped valuation through
+`spm_unit_capped_housing_subsidy`, which caps the SPM-unit-allocated award at
+shelter need less the allocated tenant payment. That variable is scoped:
+included units receive the capped value, outside units receive `NaN`. Included
+allocated assistance must be finite and nonnegative; otherwise the formula
+raises `SPM_HOUSING_ASSISTANCE_INVALID`.
 
 Census first values housing assistance using market rent less tenant payment,
 then caps the amount added to SPM resources at shelter need less tenant payment.
 See the [SPM technical documentation, page 14](https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=14).
 That definition does not establish a housing valuation outside the SPM universe
-or authorize changing CBO and CPUC conventions. This bridge preserves included
-valuations and requires an explicit outside valuation.
+or authorize changing CBO and CPUC conventions; those aggregates use the actual
+award instead.
 
-## Nullable indicators and aggregation
+## Nullable indicators, distribution outputs and aggregation
 
 The following outputs now use floating-point `0`, `1` and `NaN`:
 `spm_unit_is_in_spm_poverty`, `spm_unit_is_in_deep_spm_poverty`, `in_poverty`,
@@ -72,6 +66,12 @@ Included records with invalid resources or thresholds raise
 `SPM_MEASUREMENT_INVALID`.
 The indicators retain stock-quantity semantics: a monthly request returns the
 annual classification without dividing a positive indicator by twelve.
+
+`spm_unit_oecd_equiv_net_income` and `spm_unit_income_decile` inherit the same
+universe. Equivalised income is `NaN` outside the universe, and decile ranks
+are computed over the included units alone, so an outside record cannot move
+another record's rank. Both are float stock quantities and both reject
+non-finite included inputs with `SPM_MEASUREMENT_INVALID`.
 
 Use `calculate(..., map_to="person")` and MicroSeries `count`, `sum` and `mean`
 for person-weighted summaries. Keep outside records in full-population coverage
@@ -82,8 +82,7 @@ them directly as Boolean selection masks. Compare an observed indicator with
 `1` when selecting poor units and separately retain its missingness mask.
 
 Dataset inputs and `set_input` cannot override formula-owned measurement
-outputs or the computed ordinary housing bridge. Preserve observed poverty
-reports under separate report-only names.
+outputs. Preserve observed poverty reports under separate report-only names.
 
 The country consumer audit found only direct alias projections in production
 Python; usage documentation uses MicroSeries means. The historical Utah
@@ -94,14 +93,13 @@ require the companion nullable-summary change.
 ## Qualification limits
 
 Synthetic tests exercise mixed included/outside records, canonical-provider
-selection, included parity, missing outcomes, housing consumers, year-local
-reports and contributed reforms. They do not certify a native population build,
-outside housing source values or a complete managed-wrapper run.
+selection, included parity, missing outcomes, decile ranking, housing
+consumers and contributed reforms. They do not certify a native population
+build or a complete managed-wrapper run.
 
 Tiny country dataset fixtures also invoke dataset-dependent Medicaid allocation:
 the model distributes statewide spending across the fixture's weighted enrolled
 cost indices. Thus their absolute Medicaid totals do not represent household
-estimates. Housing-component tests explicitly isolate Medicaid and CHIP where
-needed to avoid float32 cancellation in CBO totals. This limitation reproduces
-on the unchanged country base and requires representative population validation
-before interpreting fiscal totals.
+estimates. This limitation reproduces on the unchanged country base and
+requires representative population validation before interpreting fiscal
+totals.

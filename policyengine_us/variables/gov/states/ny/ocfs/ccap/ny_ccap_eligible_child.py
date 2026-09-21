@@ -8,9 +8,8 @@ class ny_ccap_eligible_child(Variable):
     label = "Eligible child for the New York Child Care Assistance Program"
     defined_for = StateCode.NY
     documentation = (
-        "New York's eligibility test, which replaces the federal "
-        "is_ccdf_eligible for CCAP. It keeps the federal asset and "
-        "immigration tests, applies New York's own age limit and income "
+        "New York's eligibility test for CCAP. It keeps the federal asset "
+        "and immigration tests, applies New York's own age limit and income "
         "limit, and adds the two categorical routes New York law requires: "
         "foster care and open child protective or preventive services cases "
         "are eligible without regard to income, and families experiencing "

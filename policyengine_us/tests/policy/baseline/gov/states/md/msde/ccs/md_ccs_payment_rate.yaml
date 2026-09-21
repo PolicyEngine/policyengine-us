@@ -216,3 +216,34 @@
     # 2027-01 uses post-2026-03-01 schedule (60th percentile of 2024 MRS).
     # Region W, Family, REGULAR (age 4), UNIT_3 (8hrs): $262/week
     md_ccs_payment_rate: [0, 262]
+
+- name: Licensed center, Region X (Howard), regular age, negative hours falls to one unit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: -1
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: HOWARD_COUNTY_MD
+  output:
+    # Negative hours -> 0 units from the bracket -> select default UNIT_1.
+    # Region X, Center, REGULAR (age 5), UNIT_3 base $381/week x 1/3 = $127/week
+    md_ccs_payment_rate: [0, 127]

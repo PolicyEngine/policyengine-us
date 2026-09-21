@@ -1,21 +1,30 @@
-"""Structural guards for state-summing aggregate list parameters.
+"""Structural guards for benefit aggregate lists.
 
-These lists sum implemented per-state variables into national aggregates.
-Three failure modes have shipped before (see issues #9234 and #9080):
+The first half covers the state-summing aggregate list parameters, which sum
+implemented per-state variables into national aggregates. Three failure modes
+have shipped before (see issues #9234 and #9080):
 1. A list member that is not a defined variable (silent typo or rename).
 2. A member without a state gate, leaking one state's program into every
    state (the dc_ctc bug).
 3. A new year block silently dropping members of the previous block, since
    these lists are full-replacement rather than incremental.
+
+The second half covers the benefit aggregates themselves. Several structural
+reforms replace household_benefits or spm_unit_benefits with their own
+hardcoded list, so a contributed program added to the baseline aggregates is
+silently dropped under those reforms unless it is added to every copy. That
+shipped with the Trump dividend, which #9430 added to the baseline lists only.
 """
 
+import ast
 import re
 from pathlib import Path
 
 import pytest
 import yaml
 
-PARAMETERS = Path(__file__).parent.parent / "parameters"
+PACKAGE = Path(__file__).parent.parent
+PARAMETERS = PACKAGE / "parameters"
 
 AGGREGATE_LISTS = [
     "gov/states/household/state_ctcs.yaml",
@@ -109,3 +118,106 @@ def test_no_silent_removals_between_year_blocks(list_path):
             "prior members forward, or record an intentional removal in "
             "ALLOWED_REMOVALS in this test."
         )
+
+
+# --- Reform-side copies of the benefit aggregates -------------------------
+
+AGGREGATE_VARIABLES = ("household_benefits", "spm_unit_benefits")
+
+BASELINE_SPM_BENEFITS_SOURCE = (
+    PACKAGE / "variables/household/income/spm_unit/spm_unit_benefits.py"
+)
+BASELINE_HOUSEHOLD_BENEFITS_LIST = "gov/household/household_benefits.yaml"
+
+# Contributed programs that a reform may legitimately leave out of its own
+# copy of an aggregate, keyed by (reform source path, variable name).
+ALLOWED_REFORM_OMISSIONS: dict[tuple[str, str], set[str]] = {}
+
+
+def contrib_variable_names():
+    """Variables defined under variables/contrib, by source-file location."""
+    names = set()
+    for source in (PACKAGE / "variables/contrib").rglob("*.py"):
+        names.update(re.findall(r"^class (\w+)\(Variable\)", source.read_text(), re.M))
+    return names
+
+
+def benefits_lists_in(source_path):
+    """(variable name, members) for each literal BENEFITS list in a file.
+
+    Only plain list literals are returned. A reform that rebuilds its list
+    from the parameter (or filters an existing one) has no literal to check.
+    """
+    tree = ast.parse(source_path.read_text())
+    found = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.ClassDef) or node.name not in AGGREGATE_VARIABLES:
+            continue
+        for statement in ast.walk(node):
+            if not isinstance(statement, ast.Assign):
+                continue
+            targets = [t.id for t in statement.targets if isinstance(t, ast.Name)]
+            if "BENEFITS" not in targets:
+                continue
+            if not isinstance(statement.value, ast.List):
+                continue
+            found.append(
+                (
+                    node.name,
+                    [
+                        element.value
+                        for element in statement.value.elts
+                        if isinstance(element, ast.Constant)
+                    ],
+                )
+            )
+    return found
+
+
+def reform_aggregate_overrides():
+    cases = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        for variable_name, members in benefits_lists_in(source):
+            cases.append(
+                (str(source.relative_to(PACKAGE)), variable_name, tuple(members))
+            )
+    return cases
+
+
+REFORM_AGGREGATE_OVERRIDES = reform_aggregate_overrides()
+
+
+def baseline_members(variable_name):
+    if variable_name == "spm_unit_benefits":
+        lists = benefits_lists_in(BASELINE_SPM_BENEFITS_SOURCE)
+        assert len(lists) == 1, "baseline spm_unit_benefits changed shape"
+        return set(lists[0][1])
+    return members_of(BASELINE_HOUSEHOLD_BENEFITS_LIST)
+
+
+def test_reform_aggregate_overrides_are_discovered():
+    """The scan below is only a guard while it still finds the copies."""
+    found = {(path, variable) for path, variable, _ in REFORM_AGGREGATE_OVERRIDES}
+    assert len(found) >= 6, (
+        f"expected the reform-side benefit aggregate copies, found {sorted(found)}"
+    )
+
+
+@pytest.mark.parametrize(
+    "source_path,variable_name,members",
+    REFORM_AGGREGATE_OVERRIDES,
+    ids=[f"{path}::{variable}" for path, variable, _ in REFORM_AGGREGATE_OVERRIDES],
+)
+def test_reform_aggregates_keep_baseline_contrib_entries(
+    source_path, variable_name, members
+):
+    contrib = contrib_variable_names()
+    expected = baseline_members(variable_name) & contrib
+    allowed = ALLOWED_REFORM_OMISSIONS.get((source_path, variable_name), set())
+    missing = sorted(expected - set(members) - allowed)
+    assert not missing, (
+        f"{source_path} redefines {variable_name} with its own list and drops "
+        f"{missing}, which the baseline {variable_name} counts. Add the entry "
+        "here too, or record a deliberate omission in "
+        "ALLOWED_REFORM_OMISSIONS in this test."
+    )

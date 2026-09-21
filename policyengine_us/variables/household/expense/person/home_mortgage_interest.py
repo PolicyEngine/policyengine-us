@@ -7,4 +7,5 @@ class home_mortgage_interest(Variable):
     label = "Interest paid on a home mortgage"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     documentation = "Home mortgage interest, including both reported and not reported on federal Form 1098."

@@ -23,9 +23,7 @@ Sources (one per state; see the parameter YAML ``reference`` blocks for the rest
 
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem
-
-SYSTEM = CountryTaxBenefitSystem()
+from policyengine_us.system import system as SYSTEM
 
 
 def _p(date):

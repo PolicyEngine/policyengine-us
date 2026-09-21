@@ -1,3 +1,328 @@
+## [2.7.0] - 2026-09-21
+
+### Added
+
+- Add Alabama federal income tax deduction Part II (Act 2022-37): recompute the CTC, CDCC, and EITC as if the 2020 IRC applied and take the greater deduction.
+
+
+## [2.6.21] - 2026-09-21
+
+### Fixed
+
+- Stopped charging a marketplace premium to a person in the Medicaid coverage gap — under the premium tax credit's income floor, income-ineligible under the eligibility scale itself, and with no Medicaid pathway — who has no subsidy to buy the plan with.
+
+
+## [2.6.20] - 2026-09-20
+
+### Fixed
+
+- Use full-time pricing for unknown care hours in Arkansas, Florida, Kentucky, Pennsylvania, and Wyoming, and derive Virginia full-day care from reported hours while preserving explicit authorizations. Exclude children outside care from Florida's schedule-dependent copay.
+
+
+## [2.6.19] - 2026-09-20
+
+### Fixed
+
+- Correct the 2024 CalEITC exclusive income limit to $31,951, including its effect on young child and foster youth tax credit eligibility. Clarify income-limit descriptions and replace broken foster youth tax credit statutory references.
+
+
+## [2.6.18] - 2026-09-20
+
+### Fixed
+
+- Apply full-time pricing for unknown care hours in Alabama, Mississippi, North Dakota, New Jersey, South Carolina, Tennessee, and Wisconsin. Recognize reported care days consistently in payment and copay participation rules, and exclude children outside care from pooled reimbursement ceilings and North Dakota provider bonuses.
+
+
+## [2.6.17] - 2026-09-19
+
+### Fixed
+
+- Break the Indiana and Kansas state supplement–Medicaid–SNAP calculation cycles from 2027 while preserving Medicaid enrollment conditions and SNAP/TANF exemptions for other adults.
+
+
+## [2.6.16] - 2026-09-19
+
+### Fixed
+
+- Count permanently and totally disabled adult qualifying children with ITINs when determining Washington Working Families Tax Credit income limits.
+
+
+## [2.6.15] - 2026-09-19
+
+### Changed
+
+- Reduce repeated model construction, run Rest tests sequentially in separate processes on one CI runner, and record complete timing and memory reports.
+
+
+## [2.6.14] - 2026-09-19
+
+### Fixed
+
+- Exempt and deduct taxable public pension income across 7 states (MA, KS, NY, AL, LA, IN, OR) with statutory citations and baseline tests:
+  - MA: Excludes contributory public pensions from `ma_gross_income` (M.G.L. c. 62 § 2(a)(2)(E)) and re-adds them to Senior Circuit Breaker total income.
+  - KS: Subtracts public pensions from federal AGI (K.S.A. § 79-32,117(c)(ii), (vii)–(ix), Form K-40 Schedule S Line A13).
+  - NY: Subtracts public pensions under N.Y. Tax Law § 612(c)(3) (Form IT-201 Line 26) without consuming the $20,000 private pension exclusion cap under § 612(c)(3-a).
+  - AL: Deducts public pensions from state AGI (Ala. Code § 40-18-19(a)(1), (2), (5), (6)) without consuming the $6,000 private retirement exemption cap.
+  - LA: Exempts public pensions under Schedule E codes 02E, 03E, 05E without consuming the $6,000 retirement exemption cap under R.S. 47:44.1 (code 06E).
+  - IN: Implements civil service annuity deduction under IC 6-3-2-3.7 bounded by `min_(taxable_federal_pension_income, taxable_public_pension_income)`, capped at $16,000 per person and reduced by Social Security and railroad retirement benefits.
+  - OR: Wires user input variable `or_federal_pension_subtraction` into Oregon subtractions under ORS 316.680(1)(e).
+  - NC: Public pension deduction (Bailey settlement exemption) is deferred until a dedicated Bailey-eligibility variable is designed.
+
+
+## [2.6.13] - 2026-09-19
+
+### Fixed
+
+- Include the Delaware child and dependent care credit in the state CDCC aggregate for 2021 and 2022.
+
+
+## [2.6.12] - 2026-09-19
+
+### Fixed
+
+- Washington Cascade Care Savings: drop the benchmark premium expectation, which the Exchange's final plan-year-2026 policy lists among the concepts "not included in the final policy", so the household amount is capped at the premium left after the federal credit as Section 5(1)(d) adopts; repoint every reference at the published policy and PMPM methodology (the cited `board/2025/PY2026-Final-*.pdf` paths return 404).
+
+
+## [2.6.11] - 2026-09-19
+
+### Changed
+
+- Consolidate the Massachusetts CCFA `CENTER_BASED_CARE_EARLY_EDUCATION` and `CENTER_BASED_CARE_SCHOOL_AGE` care provider types into a single `CENTER_BASED_CARE` type, and the two center-based reimbursement variables into `ma_ccfa_center_based_reimbursement`, with the child's age category selecting the rate.
+
+### Fixed
+
+- Stop paying $0 for Massachusetts CCFA children under school age when no care provider type is given, avoid a second part-time reduction on before and after school rates, and assume full-time care when daily hours are unreported unless a school-age family child care before/after schedule establishes part-day care. Count a before or after school schedule as part-time care for the parent fee only where the rate chart or policy guide prices that care as part-day, so the fee and the reimbursement agree. Date the FY2027 informal child care reimbursement rates to July 2026.
+
+
+## [2.6.10] - 2026-09-18
+
+### Fixed
+
+- Point dollar inputs at closer uprating series: unemployment compensation follows CBO unemployment outlays instead of taxable Social Security, alimony follows the SOI alimony series, capital gains components follow capital gains, pay-linked inputs follow employment income, general health insurance premiums follow CMS per-capita spending, veterans benefits follow the Social Security cost-of-living index, and rent, child care, tuition, utilities, mortgage interest and student loan interest follow CPI-U.
+
+
+## [2.6.9] - 2026-09-18
+
+### Fixed
+
+- Uprate dollar inputs by national totals per capita, so weighted totals track each national total instead of also growing with the population-uprated weights (a 0.9 percent overshoot in 2025 rising to 5.1 percent by 2035).
+
+
+## [2.6.8] - 2026-09-18
+
+### Fixed
+
+- Correct the uprating description on the SPM poverty methodology page so it matches the code: rent follows the default CBO adjusted gross income projection, not CPI-U.
+
+
+## [2.6.7] - 2026-09-18
+
+### Fixed
+
+- Register Covered Connecticut, ConnectorCare, NJ Health Plan Savings, Vermont Premium Assistance and Washington Cascade Care Savings in `gov.household.household_health_benefits`, so all nine state marketplace premium programs reach household benefits and net income when `gov.simulation.include_health_benefits_in_net_income` is enabled, as California, Colorado, Maryland and New Mexico already did.
+
+
+## [2.6.6] - 2026-09-18
+
+### Fixed
+
+- Defaulted the Maryland Child Care Scholarship provider type to a licensed center rather than none, so an eligible household is paid without naming a provider.
+
+
+## [2.6.5] - 2026-09-17
+
+### Fixed
+
+- Include taxable Roth conversions in state gross income (AL, AR, NJ) and state retirement income exclusions (AL, AR, CO, DE, GA, IA, IL, KY, MI, NJ, NY, OK, WI); align Kentucky retirement income sources with Schedule P.
+
+
+## [2.6.4] - 2026-09-16
+
+### Fixed
+
+- Update reference URLs and statutory citations for Arkansas, Rhode Island, and Wisconsin retirement income exclusions.
+- Fix citations and reference URLs for state income tax refund subtractions in NY, ME, and VA.
+
+
+## [2.6.3] - 2026-09-16
+
+### Fixed
+
+- Run the existing US policy test suites against the latest compatible PolicyEngine Core release without duplicating test jobs.
+
+
+## [2.6.2] - 2026-09-16
+
+### Fixed
+
+- Include traditional IRA, 401(k), 403(b), SEP, and Keogh distributions where statutorily eligible in state pension and retirement income exclusions across 20 states (Issue #9005).
+
+
+## [2.6.1] - 2026-09-16
+
+### Fixed
+
+- Massachusetts Senior Circuit Breaker now excludes separate filers per Schedule CB, the no-tax-status threshold adds the per-dependent amount only for head of household and joint filers, and the Child and Family Tax Credit applies the IRC Section 21 incapable-of-self-care test to spouses and dependents.
+
+
+## [2.6.0] - 2026-09-16
+
+### Fixed
+
+- Count the Trump dividend in the household and SPM unit benefit aggregates under the End Child Poverty Act, BOOST, Economic Dignity for All Agenda, and Texas rebate reforms.
+- Include state and local tax refund income (`salt_refund_income`) in federal gross income and subtract/deduct it in conforming states.
+
+### Removed
+
+- Remove deprecated `salt_refund_last_year` in favor of canonical person-level `salt_refund_income`.
+
+
+## [2.5.4] - 2026-09-16
+
+### Fixed
+
+- Quick Feedback now defers congress contrib test directories to the sharded full suite, as it already did for reform tests, so a PR touching a congress reform no longer runs a 15 GB proposal batch on the 16 GB quick-feedback runner.
+
+
+## [2.5.3] - 2026-09-16
+
+### Changed
+
+- Count state SSI supplements as SNAP unearned income.
+
+
+## [2.5.2] - 2026-09-16
+
+### Changed
+
+- Pinned the Massachusetts TAFDC path into household benefits with regression tests covering the 9,880 grant and the TANF take-up switch.
+- Retracted the 2.1.0 release in the changelog. It contained the Massachusetts CCFA changes from #9457, which were reverted in #9458 seven minutes after merging and replaced by #9460 (2.2.0) and the follow-up in #9468; install 2.2.0 or later. The README now states the current spm-calculator requirement instead of the old 0.3.1 pin.
+
+### Fixed
+
+- Correct the Montana 2021 income tax rebate's reported value outside its eligibility year: without the 2022 sunset the amount backdates forward, so the variable reported a phantom rebate in 2022 and later. Montana income tax is unaffected, as the non-refundable credit list already excludes the rebate from 2022.
+- Approximated Pennsylvania's employer pension exclusion with age 59.5, the age Pennsylvania applies to plans with no specific retirement criteria, instead of the age-65 retirement assumption, since Pennsylvania sets no statutory age for employer plans.
+- Corrected the 2026 Idaho parent and caretaker Medicaid income limit from a stale 0.27 to 0.21 of the federal poverty guidelines, the IDAPA 16.03.01.411 standard of $365 a month for a household of three with the 5-point MAGI disregard.
+- Set Maine's standard deduction equal to the federal standard deduction for tax years beginning on or after January 1, 2027, per 36 M.R.S. 5124-C(1-D).
+- Corrected the South Carolina parent and caretaker Medicaid income limit from a never-operative 1.00 of the federal poverty guidelines to the published 67 percent, and refreshed the 2026 frozen-dollar conversions for Texas, Mississippi, Georgia, Florida and Wyoming.
+
+
+## [2.5.1] - 2026-09-16
+
+### Changed
+
+- Count California's SSI state supplement in SPM unit benefits, raising SPM resources for California SSI recipients and lowering California SPM poverty.
+
+### Fixed
+
+- Excluded unemployment compensation from Arkansas gross income for 2020 and 2021, the calendar years Act 154 of 2021 exempted, and kept it taxable from 2018 through 2019 and from 2022 on.
+
+
+## [2.5.0] - 2026-09-15
+
+### Removed
+
+- Removed the federal CCDF eligibility chain (`is_ccdf_eligible`, `is_ccdf_income_eligible`, `is_ccdf_reason_for_care_eligible`, `ccdf_income_to_smi_ratio`, and `ccdf_income`), which no state program read, along with the partner contract cases that pinned it.
+
+
+## [2.4.4] - 2026-09-15
+
+### Fixed
+
+- Removed Massachusetts TAFDC from household state benefits so that it is no longer counted twice alongside TANF in household net income.
+
+
+## [2.4.3] - 2026-09-15
+
+### Fixed
+
+- Correct Massachusetts CCFA asset and income eligibility exceptions, individual parental activity requirements, TANF enrollment treatment, child-specific parent fee discounts, and reimbursement boundaries for fractional care hours.
+
+
+## [2.4.2] - 2026-09-15
+
+### Fixed
+
+- Add Kansas CSFP categorical income eligibility through existing SSI, SNAP, FDPIR, and Medicare Savings Program variables.
+
+
+## [2.4.1] - 2026-09-15
+
+### Changed
+
+- Simplified uprating metadata in breakdown parameters using `propagate_metadata_to_children`.
+
+### Fixed
+
+- Gave `md_ccs_service_unit` an explicit `UNIT_1` default so negative or NaN childcare hours resolve to one unit instead of an integer 0 that cannot be encoded as a service unit.
+- Corrected the effective year of Montana's $12,600 elderly homeowner/renter credit income exclusion to 2022 (the 2021 value is $6,300).
+
+
+## [2.4.0] - 2026-09-15
+
+### Added
+
+- Added the Illinois 2022 property tax rebate (Family Relief Plan), equal to the 2021 property tax credit capped at $300.
+
+### Changed
+
+- Document how PolicyEngine US calculates SPM poverty in the methodology docs: unit membership and the independence role, thresholds from spm-calculator, resource components, medical out-of-pocket expenses, the population and its calibration, uprating, and current limitations.
+
+
+## [2.3.2] - 2026-09-15
+
+### Changed
+
+- `tenant_pays_utilities` now defaults to true, so households in counties with an encoded HUD utility allowance schedule receive the allowance unless the input is set to false, and `utilities_included_in_rent` is derived as its inverse (still settable directly) so the Maine property tax fairness credit reads the same utilities-responsibility fact; a caller that sets `tenant_pays_utilities` to false without setting `utilities_included_in_rent` now gets the Maine utilities-in-rent treatment automatically.
+
+
+## [2.3.1] - 2026-09-15
+
+### Changed
+
+- Add a BOOST reform-composition test pinning that Head Start values flow through the reform's static household_benefits list when gov.simulation.include_head_start_benefits_in_net_income is on.
+
+### Fixed
+
+- Skip the pull-request candidate wheel build, with a notice, when the PR head predates the release tooling, instead of failing the check on every branch opened before that tooling landed.
+
+
+## [2.3.0] - 2026-09-15
+
+### Added
+
+- Rehearse the release version refresh in pull request CI, so a lock that the next automatic bump would rewrite fails before it reaches main.
+
+
+## [2.2.1] - 2026-09-15
+
+### Changed
+
+- Count actual housing assistance, rather than its SPM-capped valuation, in general household benefits and CBO means-tested transfers, and keep the capped valuation inside SPM resources. Household benefits, household net income, marginal tax rates and CBO transfer aggregates therefore rise for every household receiving housing assistance, by the amount the SPM cap withheld, while SPM poverty is unchanged by this part. Exclude housing subsidies from California CARE and FERA countable income from the August 14, 2014 parameter date, which annual calculations first apply in 2015, so countable income falls and CARE/FERA eligibility widens for assisted California households from that year. Before that date the model keeps counting housing subsidies, now as the modeled housing assistance amount - HUD's payment where the unit is eligible, times a take-up flag defaulting to true - rather than the smaller SPM-capped valuation, so countable income rises for those years and a household near the limit can lose CARE or FERA eligibility there. That earlier income rule's historical policy basis was not revalidated.
+- Allocate a household's housing assistance, and the tenant contributions of the families actually awarded it, across that household's SPM units by member share before each unit's SPM resource cap. This moves SPM resources between co-resident SPM units, so SPM poverty and deep poverty change for households holding more than one SPM unit where any of them receives housing assistance; households holding a single SPM unit are unchanged, and no program award or general benefit income changes. An awarded family's tenant payment now also reduces a co-resident unit's allocated housing resource, which is recorded as a modeling assumption rather than verified Census parity.
+
+### Fixed
+
+- Decide a test batch by the child process exit status rather than its printed summary, and enumerate `.yml` test files alongside `.yaml`.
+- Retain unpublished wheels for the predicted release and its rc1 version in
+  pull-request CI, built from unchanged policy source with the same pinned build
+  tools as publication. Record their source, package version, generator, lock, and file hash
+  for verification before release.
+- Allow spm-calculator 1.0.0.post1 alongside 1.0.0 so explicitly pinned development consumers can resolve either version; retain the default release lock at 1.0.0.
+- Reinstall the copy-on-write parameter barrier on a cloned tax-benefit system, so a branch of a cloned simulation no longer rewrites the clone's own policy tree.
+- Reject derived poverty aliases such as `in_poverty` from stored datasets.
+- Verify the default dataset content hash so a moved build id cannot silently change every standalone-country result.
+- Isolate one simulation's reform, clone and trace from every other simulation: a parameter reform applied after construction no longer changes unrelated simulations, a clone's `calc` and `df` aliases calculate on the clone rather than the original, `set_input` finds a variable a reform added, each traced request records its own parameter accesses, and a `county_fips` input that is not a five-digit string is rejected however it is spelled.
+- Preserve the warm parameter caches of a policy system supplied by a caller across clones and variable-only reform wrappers at the same structural start, detach a structural reform's parameter tree before it writes at a changed start instant, and let a reform read back its own in-progress parameter edit.
+
+
+## [2.2.0] - 2026-09-15
+
+### Added
+
+- Correct Massachusetts CCFA countable income, including dependent and minor earnings exclusions, parent support-paid deductions, parent-only income and Social Security and veterans disability exclusions from October 2023, and PFML benefits received.
+
+
 ## [2.1.0] - 2026-09-14
 
 ### Added

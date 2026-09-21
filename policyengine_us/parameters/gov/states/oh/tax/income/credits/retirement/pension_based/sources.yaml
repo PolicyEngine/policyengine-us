@@ -1,0 +1,12 @@
+description: Ohio includes these income sources under the pension-based retirement income credit program. Under R.C. 5747.055(A)(1), distributions must be received on account of retirement; modeled including all distributions without checking retirement event condition.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_retirement_distributions
+metadata:
+  unit: list
+  period: year
+  label: Ohio pension-based retirement income credit sources
+  reference:
+    - title: Ohio Revised Code § 5747.055
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.055

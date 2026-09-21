@@ -459,3 +459,36 @@
     # Negative self-employment income does not inflate benefit (benefit formula
     # uses expenses - copay, not income-based formula)
     md_ccs: 793
+
+# === Negative childcare hours ===
+
+- name: Case 38, negative childcare hours per day gets the hourly rate like zero hours.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: -1
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # -1 hrs/day -> unit_hours bracket returns 0 units -> select default UNIT_1
+    # -> $1/week, the same as zero hours (Case 36)
+    md_ccs_weekly_copay: 1

@@ -7,3 +7,4 @@ class bottled_gas_expense(Variable):
     label = "Bottled gas expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

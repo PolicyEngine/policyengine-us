@@ -1,12 +1,11 @@
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 from policyengine_us.variables.gov.states.tax.payroll.unemployment._jurisdictions import (
     STATE_UNEMPLOYMENT_TAX_JURISDICTIONS,
 )
 
-
-SYSTEM = CountryTaxBenefitSystem()
 PERIOD = "2026"
 
 

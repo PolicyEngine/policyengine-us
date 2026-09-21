@@ -30,6 +30,8 @@ values:
     - ak_permanent_fund_dividend
     # Alimony from divorces executed before the TCJA cutoff (Schedule 1 line 2a).
     - taxable_alimony_income
+    # Taxable state and local income tax refunds (Schedule 1 line 1 / IRC § 111).
+    - salt_refund_income
 
 metadata:
   unit: list
@@ -38,3 +40,5 @@ metadata:
   reference:
     - title: 26 U.S. Code § 61 - Gross income defined
       href: https://www.law.cornell.edu/uscode/text/26/61
+    - title: 26 U.S. Code § 111 - Recovery of tax benefit items
+      href: https://www.law.cornell.edu/uscode/text/26/111

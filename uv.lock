@@ -1730,7 +1730,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
-version = "2.1.0"
+version = "2.7.0"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -1763,7 +1763,7 @@ requires-dist = [
     { name = "policyengine-core", specifier = ">=3.30.1" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
-    { name = "spm-calculator", specifier = "==1.0.0" },
+    { name = "spm-calculator", specifier = ">=1.0.0,<=1.0.0.post1" },
     { name = "tables", specifier = ">=3.9" },
     { name = "towncrier", marker = "extra == 'dev'", specifier = ">=24.8.0" },
     { name = "tqdm", specifier = ">=4.67.1" },

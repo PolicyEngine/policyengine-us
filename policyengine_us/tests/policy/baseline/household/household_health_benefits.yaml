@@ -291,3 +291,165 @@
     assigned_nm_premium_assistance: 0
     household_health_benefits: 0
     household_benefits: 0
+
+- name: Case 13, Covered Connecticut flows into household health benefits.
+  # ct_covered_connecticut is registered in the household_health_benefits list,
+  # so with the flag on a forced $6,000 residual-premium payment aggregates into
+  # household_health_benefits / household_benefits / net income. Every other
+  # health component is zeroed so the total equals the Connecticut subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    ct_covered_connecticut: 6_000
+    snap: 0
+  output:
+    household_health_benefits: 6_000
+    household_benefits: 6_000
+
+- name: Case 14, ConnectorCare flows into household health benefits.
+  # ma_connector_care is registered in the household_health_benefits list, so a
+  # forced $4,200 subsidy aggregates into household_health_benefits and thus
+  # household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    ma_connector_care: 4_200
+    snap: 0
+  output:
+    household_health_benefits: 4_200
+    household_benefits: 4_200
+
+- name: Case 15, NJ Health Plan Savings flows into household health benefits.
+  # nj_njhps is registered in the household_health_benefits list, so a forced
+  # $1,200 per-member-per-month subsidy total aggregates into
+  # household_health_benefits and thus household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nj_njhps: 1_200
+    snap: 0
+  output:
+    household_health_benefits: 1_200
+    household_benefits: 1_200
+
+- name: Case 16, Vermont Premium Assistance flows into household health benefits.
+  # vt_premium_assistance is registered in the household_health_benefits list,
+  # so a forced $700 subsidy aggregates into household_health_benefits and thus
+  # household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    vt_premium_assistance: 700
+    snap: 0
+  output:
+    household_health_benefits: 700
+    household_benefits: 700
+
+- name: Case 17, Cascade Care Savings flows into household health benefits.
+  # wa_cascade_care_savings is registered in the household_health_benefits list,
+  # so a forced $660 subsidy (12 x $55 for one Group 1 member) aggregates into
+  # household_health_benefits and thus household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    wa_cascade_care_savings: 660
+    snap: 0
+  output:
+    household_health_benefits: 660
+    household_benefits: 660
+
+- name: Case 18, DERIVED Cascade Care Savings flows into net income with the flag on.
+  # A real WA tax unit (single age 40 at 140% FPL, Group 1) derives
+  # wa_cascade_care_savings through the model: 12 x $55 = 660, capped by
+  # slcsp - aca_ptc - expectation = 8_000 - 2_000 - 0 = 6_000, so 660 stands and
+  # flows through household_health_benefits into household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+        slcsp: 8_000
+        aca_ptc: 2_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the WA subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+    household_health_benefits: 660  # derived WA subsidy flows through the pipeline
+    household_benefits: 660
+
+- name: Case 19, DERIVED NJ Health Plan Savings flows into net income with the flag on.
+  # A real NJ tax unit (single age 40 at 300% FPL, $100 band) derives nj_njhps
+  # through the model: 12 x $100 x 1 member = 1_200, capped by the post-APTC
+  # residual 9_000 - 3_000 = 6_000, so 1_200 stands and flows through
+  # household_health_benefits into household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true  # the enrollment gate NJHPS reads, supplied as upstream's own NJ cases do
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+        slcsp: 9_000
+        aca_ptc: 3_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the NJ subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 1_200
+    household_health_benefits: 1_200  # derived NJ subsidy flows through the pipeline
+    household_benefits: 1_200

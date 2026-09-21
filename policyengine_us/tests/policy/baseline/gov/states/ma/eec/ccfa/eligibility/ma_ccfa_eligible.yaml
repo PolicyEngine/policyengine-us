@@ -31,7 +31,7 @@
   output:
     ma_ccfa_eligible: false
 
-- name: Case 4, TAFDC recipient automatically eligible despite failing other requirements.
+- name: Case 4, TAFDC eligibility alone does not bypass CCFA requirements.
   period: 2024-01
   input:
     ma_ccfa_eligible_child: false
@@ -41,4 +41,99 @@
     ma_tafdc_eligible: true
     state_code: MA
   output:
+    ma_ccfa_eligible: false
+
+- name: Case 5, TAFDC eligibility alone does not bypass CCFA requirements.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_tafdc_eligible: true
+        ma_ccfa_activity_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_eligible:
+      2025-01: false
+
+- name: Case 6, TANF enrollment still requires an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_ccfa_eligible: false
+
+- name: Case 7, TANF enrollment bypasses the ordinary income and activity tests.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        ma_ccfa_countable_income: 10000
+        ma_ccfa_activity_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
     ma_ccfa_eligible: true
+
+- name: Case 8, activity fallback does not waive income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        ma_ccfa_countable_income: 10000
+        hhs_smi: 120000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_activity_eligible: true
+    ma_ccfa_income_eligible: false
+    ma_ccfa_eligible: false
+    is_homeless: false

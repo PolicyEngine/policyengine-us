@@ -7,6 +7,7 @@ class trump_dividend_eligible(Variable):
     label = "Trump dividend eligible"
     documentation = "Eligible for the Trump dividend."
     definition_period = YEAR
+    reference = "https://www.whitehouse.gov/releases/2026/09/trump-dividend-america-is-winning-and-americans-should-win-with-it/"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.contrib.trump.dividend

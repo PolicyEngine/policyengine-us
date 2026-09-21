@@ -580,7 +580,8 @@ metadata:
   unit: currency-USD
   period: year
   uprating:
-    parameter: calibration.gov.cbo.income_by_source.adjusted_gross_income
+    # Per capita, like the incomes this threshold is compared against.
+    parameter: calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
     start_instant: 2027-01-01
   reference:
   - title: 60 percent of estimated State Median Income adjusted for family size, by state, FFY 2018 (Attachment 1, LIHEAP-IM-2017-03)
