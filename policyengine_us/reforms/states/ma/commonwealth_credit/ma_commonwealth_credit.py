@@ -29,6 +29,12 @@ def create_ma_commonwealth_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ma.commonwealth_credit
+            # The 5-year lookahead in the reform factory can apply this
+            # reform to years before it takes effect; gate on the scalar
+            # in_effect parameter so pre-effective years return the
+            # baseline behavior (no Commonwealth Credit).
+            if not p.in_effect:
+                return 0
             children = tax_unit("eitc_child_count", period)
             base = p.max_amount.calc(min_(children, p.base_child_limit))
             additional = p.additional_child_amount * max_(
@@ -44,7 +50,14 @@ def create_ma_commonwealth_credit() -> Reform:
             threshold = p.phase_out.threshold[filing_status]
             reduction = p.phase_out.rate * max_(income - threshold, 0)
             separate = filing_status == filing_status.possible_values.SEPARATE
-            eligible = (children > 0) & (p.separate_filer_eligible | ~separate)
+            # Married-filing-separately filers are eligible when the federal
+            # EITC allows separate filers (true since ARPA for 2021+) or when
+            # the reform's separate_filer_eligible override is set.
+            federal_separate_eligible = parameters(
+                period
+            ).gov.irs.credits.eitc.eligibility.separate_filer
+            separate_eligible = p.separate_filer_eligible | federal_separate_eligible
+            eligible = (children > 0) & (separate_eligible | ~separate)
             return eligible * max_(max_credit - reduction, 0)
 
     class ma_eitc(Variable):
@@ -59,17 +72,24 @@ def create_ma_commonwealth_credit() -> Reform:
         defined_for = StateCode.MA
 
         def formula(tax_unit, period, parameters):
+            federal_eitc = tax_unit("eitc", period)
+            rate = parameters(period).gov.states.ma.tax.income.credits.eitc.match
+            # The 5-year lookahead in the reform factory can apply this
+            # reform to years before it takes effect; gate on the scalar
+            # in_effect parameter so pre-effective years return the baseline
+            # full match to all filers.
+            p = parameters(period).gov.contrib.states.ma.commonwealth_credit
+            if not p.in_effect:
+                return federal_eitc * rate
             # The Commonwealth Credit replaces the match for tax units with
             # EITC-qualifying children; childless units keep the match.
             has_children = tax_unit("eitc_child_count", period) > 0
-            federal_eitc = tax_unit("eitc", period)
-            rate = parameters(period).gov.states.ma.tax.income.credits.eitc.match
             return ~has_children * federal_eitc * rate
 
     def modify_parameters(parameters):
         parameters.gov.states.ma.tax.income.credits.refundable.update(
             start=instant("2025-01-01"),
-            stop=instant("2035-12-31"),
+            stop=instant("2100-12-31"),
             value=[
                 "ma_eitc",
                 "ma_commonwealth_credit",
@@ -82,7 +102,7 @@ def create_ma_commonwealth_credit() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.add_variable(ma_commonwealth_credit)
+            self.update_variable(ma_commonwealth_credit)
             self.update_variable(ma_eitc)
             self.modify_parameters(modify_parameters)
 
@@ -98,7 +118,7 @@ def create_ma_commonwealth_credit_reform(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for _ in range(5):
         if p(current_period).in_effect:
             reform_active = True
             break

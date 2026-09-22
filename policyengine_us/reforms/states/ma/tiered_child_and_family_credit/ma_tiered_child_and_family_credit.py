@@ -2,6 +2,38 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
 
+def baseline_ma_child_and_family_credit(tax_unit, period, parameters):
+    """Baseline Massachusetts child and family tax credit.
+
+    Replicates the current-law formula from
+    variables/gov/states/ma/tax/income/credits/ma_child_and_family_credit.py
+    so the reform can return baseline behavior for pre-effective years.
+    """
+    p = parameters(period).gov.states.ma.tax.income.credits.child_and_family
+    person = tax_unit.members
+    dependent = person("is_tax_unit_dependent", period)
+    age = person("age", period)
+    child = age < p.child_age_limit
+    elderly = age >= p.elderly_age_limit
+    disabled = person("is_disabled", period)
+    incapable = person("is_incapable_of_self_care", period)
+    eligible_dependent = dependent & (child | elderly | disabled | incapable)
+    count_eligible_dependents = tax_unit.sum(eligible_dependent)
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    filing_status = tax_unit("ma_filing_status", period)
+    joint = filing_status == filing_status.possible_values.JOINT
+    self_care_head_or_spouse = head_or_spouse & incapable
+    has_self_care_spouse = (
+        p.disabled_spouse_eligible
+        & joint
+        & (tax_unit.sum(self_care_head_or_spouse) > 0)
+    )
+    count_eligible = count_eligible_dependents + has_self_care_spouse
+    capped_eligible = min_(count_eligible, p.dependent_cap)
+    separate = filing_status == filing_status.possible_values.SEPARATE
+    return ~separate * capped_eligible * p.amount
+
+
 def create_ma_tiered_child_and_family_credit() -> Reform:
     """Massachusetts tiered Child and Family Tax Credit reform.
 
@@ -34,6 +66,12 @@ def create_ma_tiered_child_and_family_credit() -> Reform:
             person = tax_unit.members
             dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
+            # The 5-year lookahead in the reform factory can apply this
+            # reform to years before it takes effect; gate on the scalar
+            # in_effect parameter so pre-effective years return the baseline
+            # flat-amount credit.
+            if not p.in_effect:
+                return baseline_ma_child_and_family_credit(tax_unit, period, parameters)
             child_amount = p.child_amount.calc(age)
             # Dependent full-time college students under the age limit
             # receive the student amount; students inside the child age
@@ -93,7 +131,7 @@ def create_ma_tiered_child_and_family_credit_reform(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for _ in range(5):
         if p(current_period).in_effect:
             reform_active = True
             break
