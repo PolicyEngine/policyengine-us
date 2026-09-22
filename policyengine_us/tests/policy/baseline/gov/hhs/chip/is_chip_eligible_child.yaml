@@ -274,3 +274,5 @@
         state_code: TX
   output:
     is_chip_eligible_child: [false, false, true]
+    chip_category: [NONE, NONE, CHILD]
+    is_chip_eligible: [false, false, true]
