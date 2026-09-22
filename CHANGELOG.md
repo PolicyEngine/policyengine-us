@@ -1,3 +1,10 @@
+## [2.8.2] - 2026-09-22
+
+### Fixed
+
+- Excluded DACA recipients from general CHIP child and standard pregnancy eligibility, and from the Healthier Mississippi Waiver's potentially-CHIP-eligible child check, while preserving FCEP coverage regardless of the pregnant parent's immigration status.
+
+
 ## [2.8.1] - 2026-09-22
 
 ### Fixed
