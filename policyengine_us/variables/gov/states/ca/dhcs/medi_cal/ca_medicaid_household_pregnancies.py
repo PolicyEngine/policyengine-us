@@ -45,14 +45,45 @@ class ca_medicaid_household_pregnancies(Variable):
             0,
         )
         spouse_pregnancies = same_unit_spouse + separate_spouse
+        is_parent = person("is_parent", period)
         child_pregnancies = person.family.sum(child * pregnancies)
-        parent_pregnancies = person.family.sum(
-            person("is_parent", period) * pregnancies
+        # ACWDL 20-10 non-filer rule for a child-age applicant: the household is
+        # the child, the child's children, the parents in the home, and the
+        # siblings. Sum once over the UNION of child-age members and parents so
+        # a pregnant member who is both child-age and a parent (a teen mother)
+        # contributes her pregnancies once, not once per role.
+        child_household_pregnancies = person.family.sum(
+            (child | is_parent) * pregnancies
         )
-        non_filer_pregnancies = spouse_pregnancies + where(
+        branch_pregnancies = where(
             child,
-            parent_pregnancies + child_pregnancies,
+            child_household_pregnancies,
             pregnancies + child_pregnancies,
+        )
+
+        # The spouse channel above must not re-count a spouse who already sits
+        # inside the branch's family sum. Derive the spouse's child-age and
+        # parent flags through the same two channels (same tax unit head/spouse;
+        # cohabitating separate filers via the marital unit). This assumes
+        # spouses share the family entity, so a spouse inside the branch mask
+        # is already counted by the family sum.
+        def spouse_has_flag(flag):
+            flag = flag.astype(int)
+            same_unit = head_or_spouse * (
+                person.tax_unit.sum(head_or_spouse * flag) - flag
+            )
+            separate = where(
+                cohabitating_separate & (head_or_spouse | outside_claim),
+                person.marital_unit.sum(flag) - flag,
+                0,
+            )
+            return (same_unit + separate) > 0
+
+        spouse_child = spouse_has_flag(child)
+        spouse_parent = spouse_has_flag(is_parent)
+        spouse_in_branch = where(child, spouse_child | spouse_parent, spouse_child)
+        non_filer_pregnancies = (
+            branch_pregnancies + spouse_pregnancies * ~spouse_in_branch
         )
 
         # Include a separately filing spouse for every member of this tax

@@ -38,7 +38,9 @@ class chip_category(Variable):
 
         # Use select to return the appropriate category
         # If eligible under multiple categories, prioritize child, then CCHIP,
-        # then standard pregnant, then FCEP
+        # then standard pregnant, then FCEP. The order does not enforce the
+        # CCHIP/MCAP exclusion: ca_cchip_eligible already excludes persons who
+        # qualify for the Medi-Cal Access Program (FCEP) per WIC § 15853(a)(1)(A).
         return select(
             [
                 is_child_eligible,

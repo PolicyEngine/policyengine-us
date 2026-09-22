@@ -1,11 +1,11 @@
 # DHCS ACWDL 20-10, pp. 3-5; MAGI Household Size Flowchart, steps 7-8.
-- name: California joint filers and dependent count twins once in each household
+- name: Case 1, joint filers and dependent count twins once in each household.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
       person2:
         age: 35
         current_pregnancies: 2
@@ -13,54 +13,35 @@
         age: 8
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       marital_unit:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
       marital_unit2:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 5
-    - 5
-    - 5
-    ca_medicaid_household_pregnancies:
-    - 2
-    - 2
-    - 2
-- name: California counts a pregnant dependent for both parents and the dependent
+    # Tax household of 3 plus the 2 expected children.
+    medicaid_household_size: [5, 5, 5]
+    ca_medicaid_household_pregnancies: [2, 2, 2]
+
+- name: Case 2, a pregnant dependent counts for both parents and the dependent.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
       person2:
         age: 35
       person3:
@@ -68,54 +49,34 @@
         current_pregnancies: 1
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       marital_unit:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
       marital_unit2:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 4
-    - 4
-    - 4
-    ca_medicaid_household_pregnancies:
-    - 1
-    - 1
-    - 1
-- name: California counts all expected children across multiple pregnant members
+    medicaid_household_size: [4, 4, 4]
+    ca_medicaid_household_pregnancies: [1, 1, 1]
+
+- name: Case 3, all expected children count across multiple pregnant members.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
       person2:
         age: 35
         current_pregnancies: 1
@@ -124,184 +85,131 @@
         current_pregnancies: 2
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       marital_unit:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
       marital_unit2:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 6
-    - 6
-    - 6
-    ca_medicaid_household_pregnancies:
-    - 3
-    - 3
-    - 3
-- name: California separately filing parents with pregnancy, married=False
+    # 3 members plus 1 + 2 expected children.
+    medicaid_household_size: [6, 6, 6]
+    ca_medicaid_household_pregnancies: [3, 3, 3]
+
+- name: Case 4, separately filing unmarried parents with a pregnancy.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
         own_children_in_household: 1
       person2:
         age: 35
         own_children_in_household: 1
         current_pregnancies: 1
-        employment_income: 10000
+        employment_income: 10_000
       person3:
         age: 8
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       person1:
-        members:
-        - person1
+        members: [person1]
       person2:
-        members:
-        - person2
+        members: [person2]
       person3:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax1:
-        members:
-        - person1
-        - person3
+        members: [person1, person3]
         tax_unit_is_filer: true
         cohabitating_spouses: false
       tax2:
-        members:
-        - person2
+        members: [person2]
         tax_unit_is_filer: true
         cohabitating_spouses: false
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 2
-    - 2
-    - 4
-    ca_medicaid_household_pregnancies:
-    - 0
-    - 1
-    - 1
-- name: California separately filing parents with pregnancy, married=True
+    # person1 and person2 follow their own returns (2 and 1 + 1 unborn); the
+    # child lives with both parents, so the non-filer rule counts the child,
+    # both parents and person2's unborn child.
+    medicaid_household_size: [2, 2, 4]
+    ca_medicaid_household_pregnancies: [0, 1, 1]
+
+- name: Case 5, separately filing married parents with a pregnancy.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
         own_children_in_household: 1
       person2:
         age: 35
         own_children_in_household: 1
         current_pregnancies: 1
-        employment_income: 10000
+        employment_income: 10_000
       person3:
         age: 8
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       marital_unit:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
       marital_unit2:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax1:
-        members:
-        - person1
-        - person3
+        members: [person1, person3]
         tax_unit_is_filer: true
         cohabitating_spouses: true
       tax2:
-        members:
-        - person2
+        members: [person2]
         tax_unit_is_filer: true
         cohabitating_spouses: true
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 4
-    - 3
-    - 4
-    ca_medicaid_household_pregnancies:
-    - 1
-    - 1
-    - 1
-- name: California does not count an unrelated pregnant roommate
+    # A cohabiting spouse joins each filer's household: person1 counts 2 + the
+    # spouse + her unborn child; person2 counts herself, the spouse and the
+    # unborn child.
+    medicaid_household_size: [4, 3, 4]
+    ca_medicaid_household_pregnancies: [1, 1, 1]
+
+- name: Case 6, an unrelated pregnant roommate is not counted.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
         own_children_in_household: 1
       person2:
         age: 35
@@ -310,112 +218,82 @@
         age: 8
     families:
       family1:
-        members:
-        - person1
-        - person3
+        members: [person1, person3]
       family2:
-        members:
-        - person2
+        members: [person2]
     marital_units:
       person1:
-        members:
-        - person1
+        members: [person1]
       person2:
-        members:
-        - person2
+        members: [person2]
       person3:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax1:
-        members:
-        - person1
-        - person3
+        members: [person1, person3]
         tax_unit_is_filer: true
       tax2:
-        members:
-        - person2
+        members: [person2]
         tax_unit_is_filer: true
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: CA
         county_str: SANTA_CLARA_COUNTY_CA
   output:
-    medicaid_household_size:
-    - 2
-    - 2
-    - 2
-    ca_medicaid_household_pregnancies:
-    - 0
-    - 1
-    - 0
-- name: California counts a known externally claimed pregnant dependent without doubling her pregnancy
+    medicaid_household_size: [2, 2, 2]
+    ca_medicaid_household_pregnancies: [0, 1, 0]
+
+- name: Case 7, a known externally claimed pregnant dependent is counted without doubling her pregnancy.
   period: 2025
   input:
     people:
-      parent:
+      person1:
         age: 40
-        employment_income: 80000
-      dependent:
+        employment_income: 80_000
+      person2:
         age: 17
         current_pregnancies: 1
         medicaid_claiming_tax_unit_id: 1
     tax_units:
       claimant:
-        members:
-        - parent
+        members: [person1]
         tax_unit_id: 1
       dependent_return:
-        members:
-        - dependent
+        members: [person2]
         tax_unit_id: 2
     families:
-      one:
-        members:
-        - parent
-      two:
-        members:
-        - dependent
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
     marital_units:
-      one:
-        members:
-        - parent
-      two:
-        members:
-        - dependent
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
-      one:
-        members:
-        - parent
+      household1:
+        members: [person1]
         state_code: CA
-      two:
-        members:
-        - dependent
+      household2:
+        members: [person2]
         state_code: CA
   output:
-    medicaid_household_size:
-    - 3
-    - 3
-    ca_medicaid_household_pregnancies:
-    - 1
-    - 1
-- name: Non-California pregnancy household treatment is preserved
+    # Claimant plus the claimed dependent plus her unborn child.
+    medicaid_household_size: [3, 3]
+    ca_medicaid_household_pregnancies: [1, 1]
+
+- name: Case 8, non-California pregnancy household treatment is preserved.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        employment_income: 80000
+        employment_income: 80_000
       person2:
         age: 35
         current_pregnancies: 1
@@ -423,43 +301,128 @@
         age: 8
     families:
       family:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     marital_units:
       marital_unit:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
       marital_unit2:
-        members:
-        - person3
+        members: [person3]
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
         state_code: KS
   output:
-    medicaid_household_size:
-    - 3
-    - 4
-    - 3
-    ca_medicaid_household_pregnancies:
-    - 0
-    - 0
-    - 0
+    # Outside California only the pregnant member's own household grows.
+    medicaid_household_size: [3, 4, 3]
+    ca_medicaid_household_pregnancies: [0, 0, 0]
+
+# ACWDL 20-10, p. 5, non-filer rule for a child: the child, the child's
+# children, the child's parents in the home and siblings. A pregnant teen mother
+# is both a child-age member and a parent, so the union sum counts her one
+# pregnancy once for herself and for her baby.
+- name: Case 9, a pregnant teen mother claimed on another return counts her pregnancy once for herself and her baby.
+  period: 2025
+  input:
+    people:
+      person1:
+        # Custodial mother, files alone and does not claim her daughter.
+        age: 40
+        employment_income: 110_000
+        own_children_in_household: 1
+      person2:
+        # Pregnant 17-year-old daughter with her own child, claimed on the
+        # non-custodial parent's return (ACWDL 20-10, p. 5, exception 3).
+        age: 17
+        current_pregnancies: 1
+        own_children_in_household: 1
+        claimed_as_dependent_on_another_return: true
+      person3:
+        age: 1
+        claimed_as_dependent_on_another_return: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_is_filer: true
+      tax_unit2:
+        members: [person2, person3]
+        tax_unit_is_filer: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_uses_non_filer_rules: [false, true, true]
+    # person1 follows her own return (no pregnancy in it); person2 and person3
+    # sum pregnancies once over the union of child-age members and parents.
+    ca_medicaid_household_pregnancies: [0, 1, 1]
+    # Eligibility is not asserted: under DHCS non-filer rules (Box C) the
+    # infant's household is the infant and the teen mother, not the grandmother,
+    # and the model's current composition for the infant is a follow-up.
+
+# ACWDL 20-10, p. 5, non-filer rule for a child: both 18-year-old parents are
+# child-age members (under 19) and parents, and each is the other's spouse.
+# The wife's pregnancy is already inside the union sum for the husband, so the
+# spouse channel must not add it again; every member counts it exactly once.
+- name: Case 10, married non-filing 18-year-old parents count the wife's pregnancy once for each member.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 18
+        own_children_in_household: 1
+      person2:
+        age: 18
+        own_children_in_household: 1
+        current_pregnancies: 1
+      person3:
+        age: 1
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_is_filer: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    # person1 and person2 are the unit's head and spouse in a non-filing unit
+    # with no claim elsewhere; person3 is their dependent claimed by a parent in
+    # the same unit with both parents present, so no tax-dependent exception
+    # applies and the child follows the parents' tax household (one pregnancy).
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # person1: wife's pregnancy via the (child | is_parent) union only, not
+    # again through the spouse channel; person2: her own pregnancy once;
+    # person3: the tax household sum over the unit.
+    ca_medicaid_household_pregnancies: [1, 1, 1]

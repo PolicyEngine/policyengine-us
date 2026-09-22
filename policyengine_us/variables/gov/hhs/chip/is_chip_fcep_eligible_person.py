@@ -25,8 +25,12 @@ class is_chip_fcep_eligible_person(Variable):
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
         # California's FCEP population is the Medi-Cal Access Program. WIC
         # § 15833 excludes applicants eligible for no-cost Medi-Cal or Medicare
-        # and WIC § 15834 excludes services already covered by private coverage;
-        # 10 CCR § 2699.200(b)(1)(G) carries the maternity coverage exception.
+        # and WIC § 15834 excludes services already covered by private coverage.
+        # 10 CCR § 2699.200 is the former MRMIB Access for Infants and Mothers
+        # (AIM) regulation; its 200-300 percent FPL band and $50 prepayment are
+        # superseded by WIC § 15832. Only (b)(1)(F)-(G) (no-cost Medi-Cal or
+        # Medicare; private maternity coverage and the maternity-only deductible
+        # or copayment above $500 exception) are relied on here.
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15833.",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15834.",
         "https://www.law.cornell.edu/regulations/california/10-CCR-2699.200",
@@ -77,10 +81,11 @@ class is_chip_fcep_eligible_person(Variable):
         # Medi-Cal Access Program (MCAP). MCAP turns away applicants who are
         # eligible for no-cost Medi-Cal or Medicare (WIC § 15833) and applicants
         # whose private coverage already covers its services (WIC § 15834), which
-        # the CHIP disqualifying coverage list captures. The exception in
-        # 10 CCR § 2699.200(b)(1)(G) for private plans that omit maternity
-        # benefits, or carry a maternity-only deductible or copayment above $500,
-        # is not modeled.
+        # the CHIP disqualifying coverage list captures. The former AIM rule at
+        # 10 CCR § 2699.200(b)(1)(F)-(G) states the same two exclusions; its
+        # (b)(1)(G) exception for private plans that omit maternity benefits, or
+        # carry a maternity-only deductible or copayment above $500, is not
+        # modeled.
         in_california = state_code == StateCode.CA
         ca_has_disqualifying_coverage = in_california & person(
             "has_chip_disqualifying_health_coverage", period

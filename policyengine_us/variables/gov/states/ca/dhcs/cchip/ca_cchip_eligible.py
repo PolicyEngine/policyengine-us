@@ -14,7 +14,7 @@ class ca_cchip_eligible(Variable):
         # below 317 percent of the FPL before MAGI conversion, and no eligibility
         # for the optional targeted low-income children group, the Medi-Cal
         # Access Program, or no-cost Medi-Cal.
-        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15853.",
+        "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=WIC&division=9.&title=&part=3.3.&chapter=3.&article=",
         # WIC § 15850.1(d): a child is a person under 19 years of age.
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15850.1.",
         # CHIP state plan: Population 1/CCHIP, age 0 up to 19, above 261 up to
@@ -45,6 +45,11 @@ class ca_cchip_eligible(Variable):
         # targeted low-income children group or no-cost Medi-Cal, so the 266
         # percent FPL Medi-Cal child limit is the CCHIP floor.
         medicaid_eligible = person("is_medicaid_eligible", period)
+        # WIC § 15853(a)(1)(A): the child "does not qualify for the optional
+        # targeted low-income children group or the Access program". The
+        # Medi-Cal Access Program is California's FCEP population (state plan
+        # Population 3), so an MCAP-eligible pregnant child is not CCHIP-eligible.
+        mcap_eligible = person("is_chip_fcep_eligible_person", period)
         income_eligible = medicaid_income_eligible(
             person, period, parameters, p.income_limit
         )
@@ -60,6 +65,7 @@ class ca_cchip_eligible(Variable):
             & age_eligible
             & immigration_eligible
             & ~medicaid_eligible
+            & ~mcap_eligible
             & income_eligible
             & ~has_disqualifying_coverage
             & ~offered_esi
