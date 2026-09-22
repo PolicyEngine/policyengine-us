@@ -1,1 +1,0 @@
-Contributed reforms paying Arizona's dependent tax credit as refundable and age-splitting the Massachusetts and Utah dependent exemptions (repeal or reprice for dependents under a threshold while preserving the baseline for older dependents).
