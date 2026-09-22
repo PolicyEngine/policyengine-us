@@ -332,7 +332,7 @@
 
 # FCEP covers the unborn child regardless of the parent's immigration status.
 # https://www.medicaid.gov/chip/chip-eligibility-enrollment
-- name: Case 17, FCEP preserves CHIP pregnancy eligibility for DACA and undocumented parents and citizens.
+- name: Case 17, FCEP preserves CHIP pregnancy eligibility for DACA, undocumented, citizen, refugee and asylee parents.
   period: 2023
   input:
     people:
@@ -354,11 +354,23 @@
         immigration_status: CITIZEN
         is_medicaid_eligible: false
         medicaid_income_level: 3.0
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: REFUGEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: ASYLEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2, person3, person4, person5]
         state_code: CA
   output:
-    is_chip_eligible_standard_pregnant_person: [false, false, false]
-    is_chip_fcep_eligible_person: [true, true, true]
-    is_chip_eligible_pregnant: [true, true, true]
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false]
+    is_chip_fcep_eligible_person: [true, true, true, true, true]
+    is_chip_eligible_pregnant: [true, true, true, true, true]

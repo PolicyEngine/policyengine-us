@@ -18,6 +18,7 @@ class is_chip_eligible_child(Variable):
         "https://www.healthcare.gov/medicaid-chip/childrens-health-insurance-program/",
         "https://www.law.cornell.edu/uscode/text/8/1611#a",
         "https://www.law.cornell.edu/uscode/text/8/1641#b",
+        "https://www.law.cornell.edu/cfr/text/45/155.20",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
     )
