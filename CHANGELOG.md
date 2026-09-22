@@ -1,3 +1,10 @@
+## [2.9.0] - 2026-09-22
+
+### Added
+
+- Implement California's County Children's Health Initiative Program (CCHIP) for children in San Francisco, San Mateo, and Santa Clara counties, integrate it with CHIP eligibility, count pregnancies throughout California MAGI Medi-Cal households, and apply the existing-coverage check to California's Medi-Cal Access Program.
+
+
 ## [2.8.2] - 2026-09-22
 
 ### Fixed
