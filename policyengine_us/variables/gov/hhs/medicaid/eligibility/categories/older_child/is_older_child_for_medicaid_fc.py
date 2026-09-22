@@ -11,6 +11,10 @@ class is_older_child_for_medicaid_fc(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.118",
+        # Page 1: the 138%/266%/322% FPL monthly dollar table.
+        "https://www.dhcs.ca.gov/services/HACCP/Documents/Program-Income-Eligibility-Comparison2025.pdf#page=1",
+        # Page 2: footnotes 3-4 defining the inclusive "up to 266%" and
+        # "above 266%" income bands.
         "https://www.dhcs.ca.gov/services/HACCP/Documents/Program-Income-Eligibility-Comparison2025.pdf#page=2",
     )
 

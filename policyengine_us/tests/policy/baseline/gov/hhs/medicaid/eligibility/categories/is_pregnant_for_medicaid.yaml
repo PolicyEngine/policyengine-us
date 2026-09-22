@@ -71,6 +71,9 @@
     is_pregnant_for_medicaid: true
 
 # This ratio is above 2.05 but within the rounded monthly dollar ceiling.
+# The pregnancy makes the applicant a household of 2 in 2026: 2.05 x 21,640
+# / 12 = 3,696.83 -> $3,697 -> effective ratio 2.05009, so 2.0500001 is eligible
+# under the uniform rounding convention, not NV's published dollar table.
 - name: Pregnancy just above the unrounded FPL ratio stays within the monthly ceiling in NV
   period: 2026
   input:
