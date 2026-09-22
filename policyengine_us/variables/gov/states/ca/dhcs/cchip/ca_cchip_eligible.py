@@ -42,13 +42,22 @@ class ca_cchip_eligible(Variable):
         daca = istatus == istatus.possible_values.DACA
         immigration_eligible = ~(undocumented | daca)
         # WIC § 15853(a)(1)(A)-(B): the child must not qualify for the optional
-        # targeted low-income children group or no-cost Medi-Cal, so the 266
-        # percent FPL Medi-Cal child limit is the CCHIP floor.
+        # targeted low-income children group or no-cost Medi-Cal. The Medi-Cal
+        # exclusion is a complete floor: WIC § 14007.8 state-funded Medi-Cal
+        # (is_ca_medicaid_immigration_status_eligible) covers children under 19
+        # regardless of immigration status, and CCHIP shares Medi-Cal's age and
+        # residency rules, so every CCHIP-county child at or below the 266 percent
+        # FPL Medi-Cal child limit is Medi-Cal-eligible and no explicit lower-bound
+        # parameter is needed.
         medicaid_eligible = person("is_medicaid_eligible", period)
         # WIC § 15853(a)(1)(A): the child "does not qualify for the optional
         # targeted low-income children group or the Access program". The
         # Medi-Cal Access Program is California's FCEP population (state plan
         # Population 3), so an MCAP-eligible pregnant child is not CCHIP-eligible.
+        # MCAP's coverage exclusion (has_chip_disqualifying_health_coverage) is
+        # also a CCHIP exclusion and both share the 3.22 FPL ceiling, so this
+        # term restates WIC § 15853(a)(1)(A) and never removes a child who is
+        # otherwise CCHIP-eligible; chip_category reads both variables (acyclic).
         mcap_eligible = person("is_chip_fcep_eligible_person", period)
         income_eligible = medicaid_income_eligible(
             person, period, parameters, p.income_limit

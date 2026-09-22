@@ -886,3 +886,58 @@
     county_str: SANTA_CLARA_COUNTY_CA
   output:
     ca_cchip_eligible: false
+
+# Case 24: the same pregnant 17-year-old as Case 20 (household of 3 + 1 unborn
+# = 4, 100,000 / 32,150 = 3.11 FPL) but enrolled in CHAMPVA, which is on
+# gov.hhs.chip.disqualifying_health_coverage. A pregnant child who is not MCAP
+# eligible but is CCHIP eligible cannot exist: the two share the
+# has_chip_disqualifying_health_coverage exclusion (WIC § 15834 for MCAP) and
+# the 3.22 FPL ceiling, so the only way a pregnant child in the CCHIP band
+# fails MCAP is coverage that fails CCHIP too. The ~mcap term in
+# ca_cchip_eligible restates WIC § 15853(a)(1)(A) and never opens a gap.
+# CHAMPVA is also on gov.aca.qualifying_non_marketplace_health_coverage, so
+# the teen does not pay an ACA premium either.
+- name: Case 24, pregnant teenager with CHAMPVA coverage is excluded from both MCAP and CCHIP by the coverage rule, not the MCAP gate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+      person3:
+        age: 17
+        is_pregnant: true
+        has_champva_health_coverage_at_interview: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [4, 4, 4]
+    medicaid_income_level: [3.11, 3.11, 3.11]
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, true]
+    is_chip_fcep_eligible_person: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]

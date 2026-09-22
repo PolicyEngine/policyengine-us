@@ -13,6 +13,9 @@ class medicaid_household_size(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.603#b",
         "https://www.law.cornell.edu/cfr/text/42/435.603#f",
+        # California (ACWDL 20-10) counts the unborn children of every member of
+        # the applicant's MAGI household; see ca_medicaid_household_pregnancies.
+        "https://www.dhcs.ca.gov/wp-content/uploads/2025/10/c20-10.pdf#page=3",
     )
 
     def formula(person, period, parameters):
