@@ -21,6 +21,14 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
         # spouse's column (PIT-RES Line 34), capped at that column's tax.
         "variables/gov/states/de/tax/income/de_income_tax_before_refundable_credits_separate.py",
     },
+    "az_dependent_tax_credit": {
+        # Arizona refundable dependent credit contrib reform references
+        # "az_dependent_tax_credit" only as the ordering key for
+        # state_non_refundable_credit_limit; it reads the pre-ordering
+        # az_dependent_tax_credit_potential for the value, not the applied
+        # credit.
+        "reforms/states/az/dependent_credit/az_dependent_credit_reform.py",
+    },
     "ga_ctc": {
         # Georgia refundable CTC contrib reform references "ga_ctc" only as the
         # ordering key for state_non_refundable_credit_limit; it reads the
