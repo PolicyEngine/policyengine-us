@@ -6,8 +6,9 @@
   output:
     is_pregnant_for_medicaid: true
 
-# WIC § 15832(a)(1)(B) starts the Medi-Cal Access Program above the pregnancy
-# Medi-Cal limit, so income exactly at the limit stays in Medi-Cal.
+# WIC § 15832(a)(1)(B) starts the Medi-Cal Access Program at income "above 208
+# percent" of the FPL (213% with the 5 percentage point MAGI disregard), so income
+# exactly at the pregnancy Medi-Cal limit stays in Medi-Cal.
 - name: Pregnancy at the inclusive FPL limit confers eligibility in CA
   period: 2022
   input:
