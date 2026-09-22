@@ -9,6 +9,7 @@ class qbid_amount(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.law.cornell.edu/cfr/text/26/1.199A-1#d_2",
         "https://www.law.cornell.edu/uscode/text/26/199A#d_3",
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
         "https://www.irs.gov/pub/irs-pdf/f8995.pdf",
@@ -130,15 +131,33 @@ class qbid_amount(Variable):
             )
             return max_(wage_cap, alt_cap)  # Worksheet 12-A, line 10
 
+        # Section 1.199A-1(d)(2) orders SSTB exclusion before loss netting,
+        # then applies wage/property limits to each positive component.
+        # Allocate all eligible tax-unit losses proportionately to positive
+        # QBI; a losing business supplies no wages/property to another one.
+        eligible_sstb_qbi = sstb_qbi * applicable_rate
+        positive_non_sstb = max_(0, non_sstb_qbi_final)
+        positive_sstb = max_(0, eligible_sstb_qbi)
+        total_positive = person.tax_unit.sum(positive_non_sstb + positive_sstb)
+        total_losses = person.tax_unit.sum(
+            max_(0, -non_sstb_qbi_final) + max_(0, -eligible_sstb_qbi)
+        )
+        retained_share = np.divide(
+            max_(0, total_positive - total_losses),
+            total_positive,
+            out=np.zeros_like(total_positive),
+            where=total_positive > 0,
+        )
+
         non_sstb_component = qbi_component(
-            non_sstb_qbi_final,
+            positive_non_sstb * retained_share,
             full_cap(non_sstb_w2_wages, non_sstb_b_property),
             1,
         )
         sstb_component = qbi_component(
-            sstb_qbi,
-            full_cap(sstb_w2_wages, sstb_b_property),
-            applicable_rate,
+            positive_sstb * retained_share,
+            full_cap(sstb_w2_wages, sstb_b_property) * applicable_rate,
+            1,
         )
 
         # REIT/PTP component (Form 8995 Lines 6-9).

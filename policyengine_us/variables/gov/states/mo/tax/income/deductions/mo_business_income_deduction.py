@@ -20,4 +20,4 @@ class mo_business_income_deduction(Variable):
             person("qualified_business_income", period)
             + person("sstb_qualified_business_income", period)
         )
-        return p.rate * total_qualified_business_income
+        return p.rate * max_(0, total_qualified_business_income)

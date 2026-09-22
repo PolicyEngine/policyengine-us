@@ -1,0 +1,66 @@
+# Current-year allowed qualified losses; no suspended losses/carryforwards.
+- name: Spouse qualified loss reduces the joint QBI deduction
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 400_000
+        self_employment_income: 200_000
+        w2_wages_from_qualified_business: 200_000
+      spouse:
+        age: 45
+        self_employment_income: -100_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    qualified_business_income: [197_321.85, -100_000]
+    qualified_business_income_deduction: 19_464.37
+
+- name: Net losses before each profitable business wage limit
+  period: 2022
+  input:
+    people:
+      first:
+        qualified_business_income: 100_000
+        w2_wages_from_qualified_business: 10_000
+      second:
+        qualified_business_income: 200_000
+        w2_wages_from_qualified_business: 100_000
+      third:
+        qualified_business_income: -150_000
+        w2_wages_from_qualified_business: 1_000_000
+    tax_units:
+      unit:
+        members: [first, second, third]
+        filing_status: JOINT
+        taxable_income_less_qbid: 600_000
+  output:
+    qbid_amount: [5_000, 20_000, 0]
+    qualified_business_income_deduction: 25_000
+
+- name: SSTB applicability precedes loss allocation and REIT stays separate
+  period: 2022
+  input:
+    filing_status: JOINT
+    taxable_income_less_qbid: [390_100, 440_100, 390_100, 300_000, 300_000]
+    qualified_business_income: [100_000, 100_000, -20_000, -100_000, 0]
+    sstb_qualified_business_income: [-100_000, -100_000, 100_000, 50_000, 0]
+    w2_wages_from_qualified_business: [100_000, 100_000, 100_000, 100_000, 0]
+    sstb_w2_wages_from_qualified_business: [0, 0, 100_000, 100_000, 0]
+    qualified_reit_and_ptp_income: [0, 0, 0, 1_000, 0]
+  output:
+    qbid_amount: [10_000, 20_000, 6_000, 200, 0]
+
+- name: Qualified SE losses remain signed in both categories
+  period: 2022
+  input:
+    self_employment_income: [-50_000, 0]
+    sstb_self_employment_income: [0, -50_000]
+  output:
+    qualified_business_income: [-50_000, 0]
+    sstb_qualified_business_income: [0, -50_000]
+    qbid_amount: [0, 0]
