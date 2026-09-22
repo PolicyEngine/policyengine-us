@@ -147,14 +147,14 @@
     - 0
     - 712.06055
     aca_ptc: 1575.72852
-- name: California child age 0 at annual income 70889 respects inclusive Medi-Cal ceiling
+- name: California child age 0 at the published monthly Medi-Cal ceiling remains in Medi-Cal
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889
+        employment_income: 70896
       person2:
         age: 35
       person3:
@@ -211,14 +211,14 @@
     - true
     - true
     - false
-- name: California child age 0 at annual income 70889.01 respects inclusive Medi-Cal ceiling
+- name: California child age 0 ten cents monthly above the Medi-Cal ceiling moves to CCHIP
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889.01
+        employment_income: 70897.2
       person2:
         age: 35
       person3:
@@ -275,14 +275,14 @@
     - true
     - true
     - false
-- name: California child age 3 at annual income 70889 respects inclusive Medi-Cal ceiling
+- name: California child age 3 at the published monthly Medi-Cal ceiling remains in Medi-Cal
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889
+        employment_income: 70896
       person2:
         age: 35
       person3:
@@ -339,14 +339,14 @@
     - true
     - true
     - false
-- name: California child age 3 at annual income 70889.01 respects inclusive Medi-Cal ceiling
+- name: California child age 3 ten cents monthly above the Medi-Cal ceiling moves to CCHIP
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889.01
+        employment_income: 70897.2
       person2:
         age: 35
       person3:
@@ -403,14 +403,14 @@
     - true
     - true
     - false
-- name: California child age 8 at annual income 70889 respects inclusive Medi-Cal ceiling
+- name: California child age 8 at the published monthly Medi-Cal ceiling remains in Medi-Cal
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889
+        employment_income: 70896
       person2:
         age: 35
       person3:
@@ -467,14 +467,14 @@
     - true
     - true
     - false
-- name: California child age 8 at annual income 70889.01 respects inclusive Medi-Cal ceiling
+- name: California child age 8 ten cents monthly above the Medi-Cal ceiling moves to CCHIP
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 70889.01
+        employment_income: 70897.2
       person2:
         age: 35
       person3:
@@ -729,3 +729,27 @@
     - true
     - false
     - false
+
+- name: CA at the published 8,855 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 4
+    medicaid_household_income: 106260
+    age: 17
+    is_medicaid_eligible: false
+    county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: CA ten cents above the published 8,855 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 4
+    medicaid_household_income: 106261.2
+    age: 17
+    is_medicaid_eligible: false
+    county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false

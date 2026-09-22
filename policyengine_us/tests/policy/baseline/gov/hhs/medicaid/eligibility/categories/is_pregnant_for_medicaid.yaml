@@ -69,17 +69,15 @@
   output:
     is_pregnant_for_medicaid: true
 
-# Exactly at the limit is ineligible under the strict-less-than financial test.
-# medicaid_income_level is float32, so 2.0500001 is the closest YAML input
-# that remains on the ineligible side of the 2.05 parameter.
-- name: Pregnancy at the updated FPL limit confers ineligibility in NV
+# This ratio is above 2.05 but within the rounded monthly dollar ceiling.
+- name: Pregnancy just above the unrounded FPL ratio stays within the monthly ceiling in NV
   period: 2026
   input:
     state_code: NV
     is_pregnant: true
     medicaid_income_level: 2.0500001
   output:
-    is_pregnant_for_medicaid: false
+    is_pregnant_for_medicaid: true
 
 - name: Pregnancy and just over updated FPL limit confers ineligibility in NV
   period: 2026

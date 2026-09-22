@@ -140,12 +140,8 @@
     tax_unit_medicaid_income_level: 1
   absolute_error_margin: 0.001
 
-# Missouri applies its MAGI limits as the Appendix A monthly-dollar maximums,
-# rounded up from the exact FPL threshold (household of 2 in 2026: MHK ages
-# 1-18 at 148% + 5% = 21,640 x 1.53 / 12 = 2,759.10 -> $2,760), so the level
-# is measured from the whole dollar just below monthly income: at $2,760/month
-# it is 2,759 x 12 / 21,640 = 1.52995 rather than the exact 1.53049.
-- name: Case 5, Missouri measures the level from the whole dollar below monthly income.
+# Monthly ceiling rounding belongs in eligibility tests, not applicant income.
+- name: Case 5, Missouri retains the actual income-to-FPG ratio.
   period: 2026
   input:
     people:
@@ -164,10 +160,10 @@
   output:
     medicaid_household_size: [2, 2]
     medicaid_household_income: [33_120, 33_120]
-    medicaid_income_level: [1.52995, 1.52995]
+    medicaid_income_level: [1.53049, 1.53049]
   absolute_error_margin: 0.00001
 
-- name: Case 6, outside Missouri the level is the exact income-to-FPG ratio.
+- name: Case 6, Kansas also retains the actual income-to-FPG ratio.
   period: 2026
   input:
     people:
@@ -186,3 +182,170 @@
   output:
     medicaid_income_level: [1.53049, 1.53049]
   absolute_error_margin: 0.00001
+
+# Shared eligibility comparisons use the unmodified income ratio and a monthly
+# dollar ceiling, calculated uniformly as ceil(round(annual FPG * limit / 12, 2)).
+# CA tables additionally round monthly FPG, so the modeled size-2 child ceiling
+# below is $4,797 rather than the published $4,799. This is an approximation.
+# Annual inputs at and just above each ceiling check eligibility independently
+# of floating-point artifacts or a broad isclose tolerance.
+
+- name: CA at the modeled 4,797 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 2
+    medicaid_household_income: 57564
+  output:
+    is_infant_for_medicaid_fc: true
+    is_young_child_for_medicaid_fc: true
+    is_older_child_for_medicaid_fc: true
+
+- name: CA ten cents above the modeled 4,797 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 2
+    medicaid_household_income: 57565.2
+  output:
+    is_infant_for_medicaid_fc: false
+    is_young_child_for_medicaid_fc: false
+    is_older_child_for_medicaid_fc: false
+
+- name: MO at the published 3,625 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 2
+    medicaid_household_income: 43500
+  output:
+    is_infant_for_medicaid_fc: true
+    is_pregnant_for_medicaid_fc: true
+
+- name: MO ten cents above the published 3,625 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 2
+    medicaid_household_income: 43501.2
+  output:
+    is_infant_for_medicaid_fc: false
+    is_pregnant_for_medicaid_fc: false
+
+- name: MO at the published 8,388 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 4
+    medicaid_household_income: 100656
+    age: 17
+    is_pregnant: true
+    is_medicaid_eligible: false
+  output:
+    is_chip_eligible_child: true
+    is_chip_eligible_standard_pregnant_person: true
+    is_chip_fcep_eligible_person: true
+
+- name: MO ten cents above the published 8,388 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 4
+    medicaid_household_income: 100657.2
+    age: 17
+    is_pregnant: true
+    is_medicaid_eligible: false
+  output:
+    is_chip_eligible_child: false
+    is_chip_eligible_standard_pregnant_person: false
+    is_chip_fcep_eligible_person: false
+
+- name: MO at the published 353 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 4
+    medicaid_household_income: 4236
+  output:
+    is_parent_for_medicaid_fc: true
+
+- name: MO ten cents above the published 353 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 4
+    medicaid_household_income: 4237.2
+  output:
+    is_parent_for_medicaid_fc: false
+
+- name: mixed states all reject income above the same modeled monthly ceiling.
+  period: 2026
+  input:
+    people:
+      ca_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37710
+      mo_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37710
+      oh_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37710
+    households:
+      ca_household:
+        members: [ca_adult]
+        state_code: CA
+      mo_household:
+        members: [mo_adult]
+        state_code: MO
+      oh_household:
+        members: [oh_adult]
+        state_code: OH
+  output:
+    is_adult_for_medicaid_fc: [false, false, false]
+    is_young_adult_for_medicaid_fc: [false, false, false]
+
+- name: MO infant one cent monthly above the published ceiling is ineligible.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_household_size: 2
+    medicaid_household_income: 43500.12
+  output:
+    is_infant_for_medicaid_fc: false
+
+- name: mixed states all include income at the same modeled monthly ceiling.
+  period: 2026
+  input:
+    people:
+      ca_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37704
+      mo_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37704
+      oh_adult:
+        medicaid_household_size: 3
+        medicaid_household_income: 37704
+    households:
+      ca_household:
+        members: [ca_adult]
+        state_code: CA
+      mo_household:
+        members: [mo_adult]
+        state_code: MO
+      oh_household:
+        members: [oh_adult]
+        state_code: OH
+  output:
+    is_adult_for_medicaid_fc: [true, true, true]
+
+- name: MD infant one cent monthly above the modeled ceiling is ineligible.
+  period: 2026
+  input:
+    state_code: MD
+    age: 0
+    medicaid_household_size: 3
+    medicaid_household_income: 87972.12
+  output:
+    is_infant_for_medicaid: false

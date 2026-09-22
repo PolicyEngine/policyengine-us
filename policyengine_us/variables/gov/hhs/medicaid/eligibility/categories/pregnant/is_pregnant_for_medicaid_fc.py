@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
+    medicaid_income_eligible,
+)
 
 
 class is_pregnant_for_medicaid_fc(Variable):
@@ -18,10 +21,6 @@ class is_pregnant_for_medicaid_fc(Variable):
 
     def formula(person, period, parameters):
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories.pregnant
-        income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]
-        # California's ceiling is inclusive. Compare at the stored income ratio's
-        # precision so exactly 213% is not rejected by float32 rounding.
-        ca_eligible = income <= np.asarray(income_limit, dtype=income.dtype)
-        return where(state == "CA", ca_eligible, income < income_limit)
+        return medicaid_income_eligible(person, period, parameters, income_limit)

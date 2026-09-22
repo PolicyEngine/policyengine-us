@@ -30,10 +30,7 @@
   output:
     is_older_child_for_medicaid: true
 
-# The formula compares with strict less-than, but the float32-stored input
-# 1.53 (~1.52999997) lands just below the float64 parameter 1.53, so the
-# exact boundary evaluates eligible under both < and <= — matching the
-# manual's income-maximum (<=) semantics.
+# The published monthly ceiling includes income exactly at 153% FPL.
 - name: MO child at exactly 153% FPL, the income maximum, eligible
   period: 2026
   input:

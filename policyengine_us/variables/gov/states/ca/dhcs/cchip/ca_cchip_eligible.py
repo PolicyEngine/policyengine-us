@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
+    medicaid_income_eligible,
+)
 
 
 class ca_cchip_eligible(Variable):
@@ -42,7 +45,9 @@ class ca_cchip_eligible(Variable):
         # targeted low-income children group or no-cost Medi-Cal, so the 266
         # percent FPL Medi-Cal child limit is the CCHIP floor.
         medicaid_eligible = person("is_medicaid_eligible", period)
-        income_eligible = person("medicaid_income_level", period) <= p.income_limit
+        income_eligible = medicaid_income_eligible(
+            person, period, parameters, p.income_limit
+        )
         has_disqualifying_coverage = person(
             "has_chip_disqualifying_health_coverage", period
         )
