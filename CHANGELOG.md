@@ -1,3 +1,81 @@
+## [2.7.0] - 2026-09-21
+
+### Added
+
+- Add Alabama federal income tax deduction Part II (Act 2022-37): recompute the CTC, CDCC, and EITC as if the 2020 IRC applied and take the greater deduction.
+
+
+## [2.6.21] - 2026-09-21
+
+### Fixed
+
+- Stopped charging a marketplace premium to a person in the Medicaid coverage gap — under the premium tax credit's income floor, income-ineligible under the eligibility scale itself, and with no Medicaid pathway — who has no subsidy to buy the plan with.
+
+
+## [2.6.20] - 2026-09-20
+
+### Fixed
+
+- Use full-time pricing for unknown care hours in Arkansas, Florida, Kentucky, Pennsylvania, and Wyoming, and derive Virginia full-day care from reported hours while preserving explicit authorizations. Exclude children outside care from Florida's schedule-dependent copay.
+
+
+## [2.6.19] - 2026-09-20
+
+### Fixed
+
+- Correct the 2024 CalEITC exclusive income limit to $31,951, including its effect on young child and foster youth tax credit eligibility. Clarify income-limit descriptions and replace broken foster youth tax credit statutory references.
+
+
+## [2.6.18] - 2026-09-20
+
+### Fixed
+
+- Apply full-time pricing for unknown care hours in Alabama, Mississippi, North Dakota, New Jersey, South Carolina, Tennessee, and Wisconsin. Recognize reported care days consistently in payment and copay participation rules, and exclude children outside care from pooled reimbursement ceilings and North Dakota provider bonuses.
+
+
+## [2.6.17] - 2026-09-19
+
+### Fixed
+
+- Break the Indiana and Kansas state supplement–Medicaid–SNAP calculation cycles from 2027 while preserving Medicaid enrollment conditions and SNAP/TANF exemptions for other adults.
+
+
+## [2.6.16] - 2026-09-19
+
+### Fixed
+
+- Count permanently and totally disabled adult qualifying children with ITINs when determining Washington Working Families Tax Credit income limits.
+
+
+## [2.6.15] - 2026-09-19
+
+### Changed
+
+- Reduce repeated model construction, run Rest tests sequentially in separate processes on one CI runner, and record complete timing and memory reports.
+
+
+## [2.6.14] - 2026-09-19
+
+### Fixed
+
+- Exempt and deduct taxable public pension income across 7 states (MA, KS, NY, AL, LA, IN, OR) with statutory citations and baseline tests:
+  - MA: Excludes contributory public pensions from `ma_gross_income` (M.G.L. c. 62 § 2(a)(2)(E)) and re-adds them to Senior Circuit Breaker total income.
+  - KS: Subtracts public pensions from federal AGI (K.S.A. § 79-32,117(c)(ii), (vii)–(ix), Form K-40 Schedule S Line A13).
+  - NY: Subtracts public pensions under N.Y. Tax Law § 612(c)(3) (Form IT-201 Line 26) without consuming the $20,000 private pension exclusion cap under § 612(c)(3-a).
+  - AL: Deducts public pensions from state AGI (Ala. Code § 40-18-19(a)(1), (2), (5), (6)) without consuming the $6,000 private retirement exemption cap.
+  - LA: Exempts public pensions under Schedule E codes 02E, 03E, 05E without consuming the $6,000 retirement exemption cap under R.S. 47:44.1 (code 06E).
+  - IN: Implements civil service annuity deduction under IC 6-3-2-3.7 bounded by `min_(taxable_federal_pension_income, taxable_public_pension_income)`, capped at $16,000 per person and reduced by Social Security and railroad retirement benefits.
+  - OR: Wires user input variable `or_federal_pension_subtraction` into Oregon subtractions under ORS 316.680(1)(e).
+  - NC: Public pension deduction (Bailey settlement exemption) is deferred until a dedicated Bailey-eligibility variable is designed.
+
+
+## [2.6.13] - 2026-09-19
+
+### Fixed
+
+- Include the Delaware child and dependent care credit in the state CDCC aggregate for 2021 and 2022.
+
+
 ## [2.6.12] - 2026-09-19
 
 ### Fixed

@@ -1,0 +1,1 @@
+Apply inclusive monthly income ceilings consistently across Medicaid and CHIP, remove the Missouri income and parent-limit workarounds, and make older-child eligibility use its financial and nonfinancial checks. The uniform rounding convention approximates state dollar tables without adding state rounding parameters.
