@@ -13,10 +13,13 @@ class is_pregnant_for_medicaid_fc(Variable):
         # 42 CFR 435.116(b): pregnant women with household income at or below the
         # state's income standard.
         "https://www.law.cornell.edu/cfr/text/42/435.116",
-        # WIC § 15832(a)(1)(B): California's Medi-Cal Access Program begins above
-        # the pregnancy Medi-Cal limit, so income exactly at the limit stays in
-        # Medi-Cal.
-        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=15832.",
+        # WIC § 15832(a)(1)(B): California's Medi-Cal Access Program covers
+        # household income "above 208 percent" but "not exceed[ing] 317
+        # percent" of the FPL (213% and 322% after the 5 percentage point MAGI
+        # disregard), so income exactly at the pregnancy Medi-Cal limit stays in
+        # Medi-Cal. The section-level URL returns a version picker; this link
+        # renders the full chapter text.
+        "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=WIC&division=9.&title=&part=3.3.&chapter=2.&article=",
     )
 
     def formula(person, period, parameters):

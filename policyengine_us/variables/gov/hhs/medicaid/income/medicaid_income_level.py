@@ -23,9 +23,25 @@ class medicaid_income_level(Variable):
 def medicaid_income_eligible(person, period, parameters, income_limit):
     """Apply one monthly whole-dollar ceiling convention in every state.
 
-    This approximates state tables that additionally round the monthly FPG base.
-    Inclusive standards: 42 CFR 435.110(b), 435.116(b), 435.118(b),
-    435.119(b)(5), 435.222(b), and 457.310(b)(1).
+    The MAGI standards are inclusive: household income "at or below" the
+    standard qualifies (42 CFR 435.110(b), 435.116(b), 435.118(b),
+    435.119(b)(5), 435.222(b), and 457.310(b)(1)).
+
+    States apply those standards through published monthly dollar tables.
+    Missouri's MAGI Appendix A converts each FPL percentage to a monthly
+    amount and rounds it up to the next whole dollar (for example, 133% FPL
+    for a household of 5 is $4,448.20 exactly and $4,449 in the table), and
+    countable income "cannot exceed" the table amount:
+    https://dssmanuals.mo.gov/wp-content/uploads/2019/03/MAGIappendix-a.pdf#page=1
+    https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-10/
+    https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-030-00/1805-030-20/1805-030-20-20/1805-030-20-20-05/
+
+    This function applies that round-up convention uniformly. It is a modeling
+    approximation, not an assertion that every state rounds identically:
+    against a state that publishes an exact or annual standard (for example,
+    California's DHCS program income comparison chart) it admits up to $0.99
+    of monthly income above the exact standard, and it does not reproduce
+    tables that additionally round the monthly FPG base before multiplying.
     """
     income = person("medicaid_income_level", period)
 
