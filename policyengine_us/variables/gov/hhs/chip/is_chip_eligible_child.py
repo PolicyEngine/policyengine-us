@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
+    medicaid_income_eligible,
+)
 
 
 class is_chip_eligible_child(Variable):
@@ -45,9 +48,9 @@ class is_chip_eligible_child(Variable):
         medicaid_eligible = person("is_medicaid_eligible", period)
 
         # Check if family income is below CHIP threshold
-        # Use medicaid_income_level as the income measure
-        income_ratio = person("medicaid_income_level", period)
-        income_eligible = income_ratio <= income_limit
+        income_eligible = medicaid_income_eligible(
+            person, period, parameters, income_limit
+        )
 
         has_disqualifying_coverage = person(
             "has_chip_disqualifying_health_coverage", period
