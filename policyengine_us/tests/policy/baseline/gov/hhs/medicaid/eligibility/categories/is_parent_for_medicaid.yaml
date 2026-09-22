@@ -633,3 +633,46 @@
         state_code: MO
   output:
     is_parent_for_medicaid: [false, false]
+
+# medicaid_parent_income_limit is a per-person array (Missouri's MHF dollar
+# schedule for MO people, the national table elsewhere), so the ceiling helper
+# must broadcast elementwise across households of different sizes in 2026:
+# person1 MO size 4: MHF $353 / (33,000 / 12 = 2,750) = 0.128364 ->
+#   ceil(round(33,000 x 0.128364 / 12, 2)) = $353 -> 4,236/yr, at limit.
+# person2 MO size 2: MHF $241 / (21,640 / 12) -> $241 -> 2,892/yr; 2,904 is
+#   $242 per month, above.
+# person3 OH size 3 (0.95 FPL): 27,320 x 0.95 / 12 = 2,162.83 -> $2,163 ->
+#   25,956/yr, at limit.
+# person4 OH size 1 (0.95 FPL): 15,960 x 0.95 / 12 = 1,263.50 -> $1,264 ->
+#   15,168/yr; 15,168.12 is one cent per month above.
+- name: Mixed household sizes across Missouri and Ohio apply each person's own parent income ceiling
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_household_size: 4
+        medicaid_household_income: 4_236
+      person2:
+        medicaid_household_size: 2
+        medicaid_household_income: 2_904
+      person3:
+        medicaid_household_size: 3
+        medicaid_household_income: 25_956
+      person4:
+        medicaid_household_size: 1
+        medicaid_household_income: 15_168.12
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+      household2:
+        members: [person2]
+        state_code: MO
+      household3:
+        members: [person3]
+        state_code: OH
+      household4:
+        members: [person4]
+        state_code: OH
+  output:
+    is_parent_for_medicaid_fc: [true, false, true, false]
