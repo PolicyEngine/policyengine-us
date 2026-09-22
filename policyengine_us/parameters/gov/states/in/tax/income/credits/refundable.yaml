@@ -8,10 +8,17 @@ metadata:
       href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1
 values:
   2020-01-01:
-    - in_eitc  
+    - in_eitc
+    - in_unified_elderly_tax_credit
+  2021-01-01:
+    - in_eitc
+    - in_unified_elderly_tax_credit
+  # The 2022 automatic taxpayer refunds ($125 + $200) are booked to 2022, the
+  # year they are received/credited (the $200 path is a 2022-return credit).
+  2022-01-01:
+    - in_eitc
     - in_unified_elderly_tax_credit
     - in_automatic_refund_rebate
-
-  2021-01-01:
+  2023-01-01:
     - in_eitc
     - in_unified_elderly_tax_credit

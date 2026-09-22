@@ -1,0 +1,1 @@
+Booked one-time state rebates to the tax year whose return determines eligibility rather than the payout year (Virginia rebate, Oregon kicker, Indiana automatic taxpayer refund), and stopped the Colorado TABOR cash back, Delaware relief rebate, and Montana property tax rebate from applying outside their one-time program years.

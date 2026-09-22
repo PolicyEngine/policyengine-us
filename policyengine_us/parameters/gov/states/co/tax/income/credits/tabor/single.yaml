@@ -1,6 +1,11 @@
 description: Colorado provides the following Taxpayer's Bill of Rights cash back amount for single filers.
 values:
+  # SB 22-233 was a one-time refund of the 2021 surplus, based on the 2021
+  # return and paid in 2022. Bracketed with zeros so it applies only in 2021
+  # (the amount is not gated by a credit list).
+  2020-01-01: 0
   2021-01-01: 750
+  2022-01-01: 0
 metadata:
   unit: currency-USD
   period: year

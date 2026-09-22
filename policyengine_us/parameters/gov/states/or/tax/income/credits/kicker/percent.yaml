@@ -1,10 +1,17 @@
 description: Oregon returns this portion of the filer's prior-year tax liability before credits via its kicker credit.
 values:
-  2021-01-01: 0.17341
-  2022-01-01: 0
-  2023-01-01: 0.4428
-  2024-01-01: 0
-  2025-01-01: 0.09863
+  # Rates are keyed to the tax year whose liability determines the kicker (the
+  # even-numbered surplus year), not the odd-numbered year the kicker is claimed
+  # on the return. The 2020 surplus (17.341%) is claimed on the 2021 return, the
+  # 2022 surplus (44.28%) on the 2023 return, and the 2024 surplus (9.863%) on
+  # the 2025 return.
+  2019-01-01: 0
+  2020-01-01: 0.17341
+  2021-01-01: 0
+  2022-01-01: 0.4428
+  2023-01-01: 0
+  2024-01-01: 0.09863
+  2025-01-01: 0
 metadata:
   unit: /1
   period: year  

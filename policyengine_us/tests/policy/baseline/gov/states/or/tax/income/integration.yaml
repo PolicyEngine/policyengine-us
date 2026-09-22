@@ -115,9 +115,13 @@
     # Taxable income: $17,519.90
     # Tax: $4,300 @ 4.75% + $6,450 @ 6.75% + $6,769.90 @ 8.75% = $1,231.99
     # Credits: Exemption $249 + Retirement $44.01 = $293.01
-    # Final tax: $1,231.99 - $293.01 = $938.98
+    # Tax before the kicker: $1,231.99 - $293.01 = $938.98
+    # The 2024 surplus kicker (9.863%) is booked to the tax year whose
+    # liability determines it (2024), not the 2025 return it is claimed on:
+    # 9.863% x $1,231.99 = $121.51.
+    # Final tax: $938.98 - $121.51 = $817.47
     or_retirement_credit: 44
-    or_income_tax: 939
+    or_income_tax: 817.47
 
 # 2025 integration test
 - name: 2025 single filer with employment income
