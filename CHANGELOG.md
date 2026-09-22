@@ -1,3 +1,10 @@
+## [2.8.1] - 2026-09-22
+
+### Fixed
+
+- Apply inclusive monthly income ceilings across the MAGI Medicaid categories and CHIP, remove the Missouri income and parent-limit workarounds, and make older-child eligibility use its financial and nonfinancial checks. The uniform rounding convention approximates state dollar tables without adding state rounding parameters.
+
+
 ## [2.8.0] - 2026-09-22
 
 ### Added
