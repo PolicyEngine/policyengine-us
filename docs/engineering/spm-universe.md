@@ -14,6 +14,13 @@ Supply `spm_unit_spm_universe_status` for every SPM unit and year:
 | `OUTSIDE` | Return missing SPM amounts, resources and poverty indicators; do not call the threshold provider for the unit. |
 | `UNRESOLVED` | Raise `SPM_UNIVERSE_REQUIRED` when scope-dependent outputs are requested. |
 
+Store the declaration on the SPM-unit table, for every year, as either the
+member name (`"INCLUDED"`, `"OUTSIDE"`, `"UNRESOLVED"`) or the member index
+(`0`, `1`, `2`); both encodings resolve the same scope. Any other stored value
+raises `SPM_UNIVERSE_REQUIRED`: a name the enum does not define is rejected on
+load, and an index the enum does not define fails closed at measurement rather
+than removing the unit from the universe.
+
 Dataset simulations default to `UNRESOLVED`. A household situation defaults to
 `INCLUDED`. The model never infers scope from missing tenure, age, county or a
 zero-adult measurement composition. A dataset must resolve scope for each year;

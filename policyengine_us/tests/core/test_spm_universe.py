@@ -260,6 +260,61 @@ def test_unresolved_measurement_status_fails_closed(
     assert error.value.code == "SPM_UNIVERSE_REQUIRED"
 
 
+@pytest.mark.parametrize("variable", ALL_MEASUREMENTS)
+def test_unreadable_measurement_status_fails_closed(
+    mixed_source, variable, monkeypatch
+):
+    """An unreadable declaration is not a declaration of exclusion.
+
+    A producer may store this enum as member indices rather than member names,
+    and core decodes an index outside the enum to ``"unknown"`` instead of
+    rejecting it (``EnumArray.decode_to_str``). Reading that as anything but a
+    failure would drop the unit from the measurement with no error, which is
+    exactly the exclusion-inferred-from-missing-data the scope declaration
+    exists to prevent.
+    """
+    source = mixed_source.copy()
+    # Make both units calculable so composition/geography errors cannot mask
+    # a missing check for the unreadable source classification.
+    source.person["age"] = [40, 8, 40]
+    source.household["county_fips"] = ["06037", "36061"]
+    # One declared unit and one index the enum does not define.
+    source.spm_unit[STATUS] = np.array([0, 99], dtype=np.int8)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("An unreadable measurement scope must fail before SPM")
+
+    monkeypatch.setattr(PolicyEngineSPMProvider, "calculate_unit", forbidden)
+    with pytest.raises(SPMInputError) as error:
+        Microsimulation(dataset=source).calculate(variable, YEAR)
+    assert error.value.code == "SPM_UNIVERSE_REQUIRED"
+
+
+def test_member_index_declarations_resolve_the_same_scope_as_member_names(
+    mixed_source,
+):
+    """Both accepted storage encodings of the declaration measure the same units.
+
+    ``Enum.encode`` takes a string column by member name and an integer column
+    as member indices, so a producer may ship either. Neither encoding may
+    change which units are measured.
+    """
+    by_name = mixed_source.copy()
+    by_name.spm_unit[STATUS] = ["INCLUDED", "OUTSIDE"]
+    by_index = mixed_source.copy()
+    by_index.spm_unit[STATUS] = np.array([0, 1], dtype=np.int8)
+    thresholds = []
+    for source in (by_name, by_index):
+        simulation = Microsimulation(dataset=source)
+        assert list(simulation.calculate(STATUS, YEAR)) == ["INCLUDED", "OUTSIDE"]
+        thresholds.append(
+            np.asarray(simulation.calculate("spm_unit_spm_threshold", YEAR))
+        )
+    assert thresholds[0][0] > 0
+    assert np.isnan(thresholds[0][1])
+    np.testing.assert_array_equal(thresholds[0], thresholds[1])
+
+
 def test_dataset_without_source_universe_defaults_to_unresolved(mixed_source):
     source = mixed_source.copy()
     source.person["age"] = [40, 8, 40]

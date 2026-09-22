@@ -120,13 +120,20 @@ def default_spm_universe_status(unit):
 def spm_universe_mask(unit, period):
     """Require a resolved source decision and return included unit positions."""
     status = unit("spm_unit_spm_universe_status", period).decode_to_str()
-    if np.any(status == "UNRESOLVED"):
+    included = status == "INCLUDED"
+    # A dataset may store this enum as member indices, and core decodes an index
+    # outside the enum to "unknown" rather than rejecting it. Reading anything
+    # but a declaration as exclusion would silently drop a mis-encoded unit from
+    # the measurement, which is the inference from missing data this declaration
+    # exists to prevent, so only the two declared decisions resolve scope.
+    if not np.all(included | (status == "OUTSIDE")):
         raise SPMInputError(
             "SPM_UNIVERSE_REQUIRED",
             "Declare INCLUDED or OUTSIDE for every SPM unit from the source "
-            "measurement universe; unresolved units cannot be measured.",
+            "measurement universe; an unresolved or unreadable declaration "
+            "cannot be measured.",
         )
-    return status == "INCLUDED"
+    return included
 
 
 def scoped_spm_amount(unit, period, field):
