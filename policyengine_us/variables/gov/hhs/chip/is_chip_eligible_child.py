@@ -13,6 +13,8 @@ class is_chip_eligible_child(Variable):
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
         "https://www.healthcare.gov/medicaid-chip/childrens-health-insurance-program/",
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
     )
 
     def formula(person, period, parameters):
@@ -32,7 +34,8 @@ class is_chip_eligible_child(Variable):
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        immigration_eligible = ~undocumented
+        daca = istatus == istatus.possible_values.DACA
+        immigration_eligible = ~(undocumented | daca)
 
         # Check income eligibility
         # CHIP is for children who make too much for Medicaid but below CHIP limits

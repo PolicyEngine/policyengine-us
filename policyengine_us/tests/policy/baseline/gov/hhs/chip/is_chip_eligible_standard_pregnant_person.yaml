@@ -111,3 +111,34 @@
         members: [head]
   output:
     is_chip_eligible_standard_pregnant_person: False
+
+# CMS SHO #12-002 excludes DACA from the CHIPRA lawfully residing option.
+# https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf
+- name: Case 7, standard pregnancy CHIP excludes DACA and undocumented applicants but covers citizens.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false, true]
