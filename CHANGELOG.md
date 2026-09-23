@@ -1,3 +1,10 @@
+## [2.11.1] - 2026-09-23
+
+### Fixed
+
+- Include taxable Roth conversions in South Carolina retirement deduction (#9523); exclude Roth conversions from Oklahoma age-65 special exemption AGI limit (#9522); add retirement distributions and Roth conversions to Iowa gross income (#9521); enforce age 59½ requirement and disability exception on IRA distributions and Roth conversions in Michigan retirement deductions under MCL § 206.30(8)(a)(ii) (partially addressing #9520); update retirement citation links for NY, WI, GA, and KY.
+
+
 ## [2.11.0] - 2026-09-23
 
 ### Added
