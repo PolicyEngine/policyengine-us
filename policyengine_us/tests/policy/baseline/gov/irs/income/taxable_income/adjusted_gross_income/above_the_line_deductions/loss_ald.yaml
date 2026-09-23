@@ -310,5 +310,6 @@
         members: [person1]
         state_code: TX
   output:
-    # 461(l) threshold carries forward from 2024 ($305,000 single) under OBBBA.
-    loss_ald: 305_000
+    # Model extrapolation: the latest published (2026) threshold carries forward.
+    # This tests permanence, not an IRS-published 2027 inflation adjustment.
+    loss_ald: 256_000
