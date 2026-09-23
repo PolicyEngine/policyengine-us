@@ -60,3 +60,14 @@
       2023: 68_315
   output:
     ca_la_ez_save_eligible: false
+
+- name: Income-eligible household with utilities included in rent is not the LADWP customer of record, ineligible
+  period: 2023-01
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income:
+      2023: 36_620
+    household_size: 2
+    tenant_pays_utilities: false
+  output:
+    ca_la_ez_save_eligible: false
