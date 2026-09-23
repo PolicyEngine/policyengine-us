@@ -1,0 +1,296 @@
+# total_unemployment_compensation uses reported unemployment_compensation when it
+# is above 0 and otherwise falls back to the modeled state UI programs. These
+# cases follow modeled UI into means tests (SNAP) and the remaining direct
+# consumers. PA inputs below give pa_uc = 10,218 per year (see the PA UC
+# integration tests); a MONTH test period reports YEAR amounts divided by 12.
+
+- name: Case 1, modeled PA UC counts as SNAP unearned income for a low-income adult.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # No reported UC, so total UC falls back to modeled pa_uc:
+    # 10,218 / 12 = 851.50 per month.
+    pa_uc: 851.5
+    total_unemployment_compensation: 851.5
+    # 7 CFR 273.9(b)(2)(ii): unemployment compensation is unearned income.
+    snap_unearned_income_person: 851.5
+    snap_gross_income: 851.5
+    # 851.50 - 204 standard deduction = 647.50; shelter = 758 SUA
+    # - 647.50 / 2 = 434.25; net = 647.50 - 434.25 = 213.25 -> 213.
+    snap_net_income: 213
+    is_snap_work_registration_exempt_non_age: true
+    # 292 maximum allotment - ceil(0.3 * 213 = 63.90) = 292 - 64 = 228.
+    # Before modeled UI reached the SNAP income list, SNAP paid the full 292.
+    snap: 228
+
+- name: Case 2, modeled NJ UI flows into federal unemployment compensation.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 5_660
+        nj_unemployment_insurance_weeks_claimed: 26
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # Average weekly wage = 5,660 / 20 = 283; weekly benefit rate =
+    # floor(0.6 * 283) = 169; weeks = min(26 claimed, 20 base weeks) = 20;
+    # annual benefit = 169 * 20 = 3,380.
+    nj_unemployment_insurance: 3_380
+    modeled_state_unemployment_compensation: 3_380
+    total_unemployment_compensation: 3_380
+    tax_unit_unemployment_compensation: 3_380
+    taxable_unemployment_compensation: 3_380
+
+- name: Case 3, modeled NJ UI counts as SNAP unearned income in a month.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 5_660
+        nj_unemployment_insurance_weeks_claimed: 26
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 3,380 / 12 = 281.67 per month.
+    total_unemployment_compensation: 281.67
+    snap_unearned_income: 281.67
+    # 281.67 - 198 standard deduction = 83.67 -> 84 (no utility allowance).
+    snap_net_income: 84
+    # 291 maximum allotment - ceil(0.3 * 84 = 25.20) = 291 - 26 = 265.
+    snap: 265
+
+- name: Case 4, asymmetric couple with reported UC for one spouse and modeled PA UC for the other.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        unemployment_compensation: 6_000
+      person2:
+        age: 38
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_uc: [0, 10_218]
+    # Each person resolves separately: person1 keeps reported 6,000,
+    # person2 falls back to modeled 10,218.
+    total_unemployment_compensation: [6_000, 10_218]
+    tax_unit_unemployment_compensation: 16_218
+    # TAXSIM splits UC by role: primary (head) and spouse.
+    taxsim_pui: 6_000
+    taxsim_ui: 10_218
+
+- name: Case 5, asymmetric couple aggregates reported and modeled UC in monthly SNAP income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        unemployment_compensation: 6_000
+      person2:
+        age: 38
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 6,000 / 12 = 500 and 10,218 / 12 = 851.50.
+    snap_unearned_income_person: [500, 851.5]
+    snap_unearned_income: 1_351.5
+    # 1,351.50 - 204 = 1,147.50; shelter = 758 - 1,147.50 / 2 = 184.25;
+    # net = 1,147.50 - 184.25 = 963.25 -> 963.
+    snap_net_income: 963
+    # 536 maximum allotment - ceil(0.3 * 963 = 288.90) = 536 - 289 = 247.
+    # Before, only person1's 500 counted and SNAP paid the full 536.
+    snap: 247
+
+- name: Case 6, explicitly reported zero UC still falls back to modeled PA UC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    unemployment_compensation: 0
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    # A reported 0 is treated as not reported; only a reported amount above 0
+    # overrides modeled UI.
+    unemployment_compensation: 0
+    total_unemployment_compensation: 10_218
+
+- name: Case 7, modeled UT UI is taxable so it adds nothing to UT homeowner/renter relief nontaxable income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: UT
+    ut_ui_base_period_wages: 80_000
+    ut_ui_high_quarter_wages: 25_000
+    ut_ui_quarters_with_wages: 4
+    ut_ui_weeks_unemployed: 26
+    ut_ui_gross_weekly_earnings: 0
+    ut_ui_weekly_hours_worked: 0
+  output:
+    ut_ui: 19_396
+    total_unemployment_compensation: 19_396
+    taxable_unemployment_compensation: 19_396
+    # Nontaxable UC = max(0, 19,396 - 19,396) = 0.
+    ut_homeowner_renter_relief_nontaxable_income: 0
+
+- name: Case 8, 2020 tuition deduction cap with tax-exempt UC.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 60_000
+        unemployment_compensation: 10_000
+        qualified_tuition_expenses: 5_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # The 2020 exclusion (up to 10,200) makes all 10,000 of UC tax-exempt.
+    tax_exempt_unemployment_compensation: 10_000
+    taxable_unemployment_compensation: 0
+    # Existing model behavior carried over from main, not the statutory result:
+    # the local MAGI counts all UC, including the tax-exempt part, giving
+    # 60,000 + 10,000 = 70,000, inside the 65,000-80,000 band, so the cap is
+    # 2,000. Excluding tax-exempt UC under IRC 85(c) would give 60,000 and a
+    # cap of 4,000. Kept to cover the pre-2021 path of this variable.
+    capped_qualified_tuition_expenses_ald: 2_000
+
+- name: Case 9, tuition deduction is zero after its 2021 repeal.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 60_000
+        unemployment_compensation: 10_000
+        qualified_tuition_expenses: 5_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 0
+    # SS MAGI = 60,000 + 10,000 total UC = 70,000.
+    taxable_ss_magi: 70_000
+
+- name: Case 10, UC receipt exempts an Arkansas adult from the 2018 Medicaid work requirement.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    unemployment_compensation: 1_000
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: true
+    ar_medicaid_work_requirement_eligible: true
+
+- name: Case 11, UC receipt bars Contra Costa County General Assistance.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        unemployment_compensation: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_eligible_person: false

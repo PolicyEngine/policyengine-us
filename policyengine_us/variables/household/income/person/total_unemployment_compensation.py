@@ -9,7 +9,11 @@ class total_unemployment_compensation(Variable):
     documentation = (
         "Unemployment compensation used in downstream income flows, using "
         "the reported (uprated) amount when present and otherwise falling "
-        "back to the modeled state unemployment insurance programs."
+        "back to the modeled state unemployment insurance programs. A "
+        "reported amount above 0 overrides modeled unemployment insurance; a "
+        "reported 0 is treated as not reported. To suppress modeled "
+        "unemployment insurance, leave the state unemployment insurance wage "
+        "and weeks inputs at 0."
     )
     definition_period = YEAR
 

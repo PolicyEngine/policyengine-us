@@ -34,17 +34,21 @@ class capped_qualified_tuition_expenses_ald(Variable):
         )
         # Build a simple MAGI from non-dependent person-level income sources,
         # excluding sources that depend on MAGI themselves (taxable SS, UI).
+        # Total UI stands in for taxable UI, so reforms that drop taxable UI
+        # from gross income drop it here too.
         irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)
-        cycle_sources = {
-            "taxable_social_security",
-            "taxable_unemployment_compensation",
-        }
-        safe_sources = [src for src in gross_income_sources if src not in cycle_sources]
-        if "taxable_unemployment_compensation" in gross_income_sources:
-            safe_sources.append("total_unemployment_compensation")
+        safe_sources = [
+            (
+                "total_unemployment_compensation"
+                if src == "taxable_unemployment_compensation"
+                else src
+            )
+            for src in gross_income_sources
+            if src != "taxable_social_security"
+        ]
         magi = 0
         for source in safe_sources:
             magi += not_dependent * max_(0, add(person, period, [source]))

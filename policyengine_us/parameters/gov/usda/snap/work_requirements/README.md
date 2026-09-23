@@ -55,8 +55,10 @@ supplied inputs:
 - `is_pregnant`: no survey source; defaults to false.
 - `is_incapable_of_self_care`: care-of-incapacitated-person exemption.
 - `is_homeless` and `is_veteran`: pre-HR1 ABAWD exemptions.
-- `is_snap_higher_ed_student` and `unemployment_compensation`: non-age work
-  registration exemptions.
+- `is_snap_higher_ed_student` and `unemployment_compensation` (read through
+  `total_unemployment_compensation`, which falls back to modeled state
+  unemployment insurance when none is reported): non-age work registration
+  exemptions.
 
 Population-level data parity is tracked separately in
 [PolicyEngine/populace#248](https://github.com/PolicyEngine/populace/issues/248).
