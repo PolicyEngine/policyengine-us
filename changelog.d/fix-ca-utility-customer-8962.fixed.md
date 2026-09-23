@@ -1,0 +1,1 @@
+Required the household to pay its own utilities (`tenant_pays_utilities`) for California CARE, FERA, LADWP EZ-SAVE, and Riverside SHARE eligibility, since each is an on-bill discount for the utility customer or a sub-metered tenant.
