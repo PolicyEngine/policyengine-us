@@ -77,8 +77,8 @@ class qbid_amount(Variable):
         non_sstb_gross_final = where(is_sstb_legacy, 0, non_sstb_gross)
         sstb_gross_final = sstb_gross + where(is_sstb_legacy, non_sstb_gross, 0)
 
-        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final > 0)
-        has_sstb = (sstb_gross_final != 0) | (sstb_qbi > 0)
+        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final != 0)
+        has_sstb = (sstb_gross_final != 0) | (sstb_qbi != 0)
         has_mixed_categories = has_non_sstb & has_sstb
 
         # Schedule A applies the SSTB applicable percentage to the SSTB's own
