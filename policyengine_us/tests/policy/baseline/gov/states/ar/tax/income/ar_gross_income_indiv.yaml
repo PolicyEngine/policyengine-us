@@ -130,3 +130,16 @@
     ar_gross_income_indiv: 60_000
     ar_gross_income_joint: 60_000
     ar_income_tax: 1_730.56
+
+- name: Arkansas gross income includes partnership and S-corporation income
+  period: 2024
+  input:
+    irs_employment_income: 30_000
+    partnership_s_corp_income: 20_000
+    state_code: AR
+  output:
+    # AR1000F Line 19: "income from rents, royalties, estates or trusts,
+    # profits (whether received or not) from partnerships, fiduciaries, small
+    # business corporations, etc."
+    ar_gross_income_indiv: 50_000
+    ar_gross_income_joint: 50_000

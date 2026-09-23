@@ -6,6 +6,10 @@
         is_qualifying_child_dependent: false
         is_disabled: false
       person3:
+        # Not a qualifying child, and gross income above the $2,580 exemption
+        # amount, so not a Montana dependent.
+        is_tax_unit_dependent: true
+        irs_gross_income: 3_000
         is_qualifying_child_dependent: false
         is_disabled: false
       person4:
@@ -71,9 +75,15 @@
       person1:
         is_tax_unit_head: true
       person3:
+        # Not qualifying children, and gross income above the $2,710
+        # exemption amount, so neither is a Montana dependent.
+        is_tax_unit_dependent: true
+        irs_gross_income: 5_000
         is_qualifying_child_dependent: false
         is_disabled: false
       person4:
+        is_tax_unit_dependent: true
+        irs_gross_income: 2_711
         is_qualifying_child_dependent: false
         is_disabled: true
     tax_units:
@@ -108,3 +118,72 @@
         state_code: MT
   output:
     mt_dependent_exemptions_person: [0, 0, 0]
+
+- name: Adult dependent with no gross income is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        # e.g. a parent who is not a qualifying child. Form 2 instructions: a
+        # dependent is an individual "who does not have gross income of more
+        # than $2,710, unless the dependent is a 'qualifying child'".
+        age: 70
+        is_tax_unit_dependent: true
+        irs_gross_income: 0
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with gross income exactly at the exemption amount is eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        irs_gross_income: 2_960
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # "not ... more than" the $2,960 exemption amount
+    mt_dependent_exemptions_person: [0, 2_960]
+
+- name: Disabled adult dependent who is not a child gets one exemption, not two
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        # The additional exemption is "for a child who is disabled".
+        is_tax_unit_dependent: true
+        irs_gross_income: 1_000
+        is_qualifying_child_dependent: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710]
