@@ -29,9 +29,11 @@ class ca_fera_eligible(Variable):
         ca_care_poverty_line = household("ca_care_poverty_line", period)
         income_limit = ca_care_poverty_line * p.fpl_limit
         income_eligible = income <= income_limit
-        # Check the household pays its own utilities. This gate also keeps a
-        # household below the CARE income limit from passing ~care_eligible
-        # when CARE is denied only because utilities are included in rent.
+        # Check the household pays its own utilities, the model's proxy for
+        # the tariff's exclusion of non-sub-metered tenants of master-metered
+        # customers. This gate also keeps a household below the CARE income
+        # limit from passing ~care_eligible when CARE is denied only because
+        # utilities are included in rent.
         pays_utilities = household("tenant_pays_utilities", period)
         return (
             income_eligible & eligible_household_size & ~care_eligible & pays_utilities

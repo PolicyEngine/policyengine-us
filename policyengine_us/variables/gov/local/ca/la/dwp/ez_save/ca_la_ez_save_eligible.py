@@ -15,5 +15,7 @@ class ca_la_ez_save_eligible(Variable):
         p = parameters(period).gov.local.ca.la.dwp.ez_save.eligibility
         income_limit = fpg * p.fpg_limit_increase
         # The applicant must be the customer of record on the LADWP account.
+        # tenant_pays_utilities approximates this; the model cannot identify
+        # sub-metered tenants, who are not the customer of record.
         pays_utilities = household("tenant_pays_utilities", period.this_year)
         return (income <= income_limit) & pays_utilities

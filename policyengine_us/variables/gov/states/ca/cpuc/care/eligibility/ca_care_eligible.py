@@ -8,9 +8,11 @@ class ca_care_eligible(Variable):
     label = "Eligible for California CARE program"
     documentation = (
         "Eligible for California Alternate Rates for Energy. CARE is an on-bill "
-        "discount for the utility customer or a sub-metered tenant, so a "
-        "household whose utilities are included in rent "
-        "(tenant_pays_utilities false) cannot enroll."
+        "discount for the utility customer or a sub-metered tenant; the tariff "
+        "excludes non-sub-metered tenants of master-metered customers. The "
+        "model has no metering input, so a household whose utilities are "
+        "included in rent (tenant_pays_utilities false) is treated as such a "
+        "tenant."
     )
     reference = (
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1",
