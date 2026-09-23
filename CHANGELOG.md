@@ -1,3 +1,11 @@
+## [2.10.1] - 2026-09-23
+
+### Fixed
+
+- Count qualified dividends once in the capital-gains worksheet used for alternative minimum tax.
+- Prevent passive and capital losses from offsetting portfolio income in the EITC investment-income eligibility test.
+
+
 ## [2.10.0] - 2026-09-23
 
 ### Added
