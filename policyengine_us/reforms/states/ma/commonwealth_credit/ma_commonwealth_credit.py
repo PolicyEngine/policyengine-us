@@ -41,9 +41,9 @@ def create_ma_commonwealth_credit() -> Reform:
                 children - p.base_child_limit, 0
             )
             max_credit = base + additional
-            # The phase-out applies to adjusted gross income: the credit
-            # decouples from the federal EITC and uses the standard AGI
-            # definition of the broader tax system.
+            # The phase-out applies to federal adjusted gross income alone,
+            # decoupling the credit from the federal EITC's greater-of-
+            # earnings-and-AGI income measure.
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("ma_filing_status", period)
             threshold = p.phase_out.threshold[filing_status]

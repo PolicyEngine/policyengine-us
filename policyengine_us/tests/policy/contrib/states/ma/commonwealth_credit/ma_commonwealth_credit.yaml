@@ -392,3 +392,55 @@
     # Refundable credits: 3,000 + 1,220 = 4,220 (EITC match replaced to 0,
     # no other MA refundable credits apply).
     ma_refundable_credits: 4_220
+
+- name: Single filer at exactly the 30,000 threshold receives the full credit in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        eitc_child_count: 1
+        eitc_earned_income: 0
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        state_code: MA
+        members: [head]
+  output:
+    # AGI equals the threshold, so no phase-out applies:
+    # 1,800 - 0.08 x max(30,000 - 30,000, 0) = 1,800.
+    ma_commonwealth_credit: 1_800
+
+- name: Single filer phase-out at 8 percent above 30,000 in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        eitc_child_count: 1
+        eitc_earned_income: 0
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        state_code: MA
+        members: [head]
+  output:
+    # Single filers share the non-joint threshold:
+    # 1,800 - 0.08 x (35,000 - 30,000) = 1,400.
+    ma_commonwealth_credit: 1_400
