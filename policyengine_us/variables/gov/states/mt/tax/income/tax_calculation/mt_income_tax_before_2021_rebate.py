@@ -7,18 +7,30 @@ class mt_income_tax_before_2021_rebate(Variable):
     label = "Montana income tax before refundable credits and the 2021 rebate"
     unit = USD
     definition_period = YEAR
+    reference = (
+        # MCA 15-30-2191(1)(a), (2) and (6): rebate capped at the 2021 liability
+        # as properly reported on Form 2 line 20
+        "https://web.archive.org/web/20250210203531/https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0910/0150-0300-0210-0910.html",
+        # Montana HB 192 (Ch. 44, L. 2023), enrolled bill, Sec. 2(1)(a) and (2)
+        "https://web.archive.org/web/20230626082025/https://leg.mt.gov/bills/2023/billpdf/HB0192.pdf#page=1",
+        # 2021 Montana Form 2, lines 18-20 and Column B (filing status 2a)
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1",
+        # Montana Department of Revenue rebate report, May 2024, pp. 10-11:
+        # couples filing separately (status 2a) treated as separate individuals
+        "https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=13",
+    )
     defined_for = StateCode.MT
 
-    # Each column's share of Form 2 line 20 (income tax before refundable
-    # credits) before the 2021 income tax rebate, used only to cap the reported
-    # rebate at the 2021 liability (MCA 15-30-2191(2)). Montana treated married
-    # couples who filed separately (status 2a) as separate individuals, so a
-    # column filing separately is capped at its own line 20; a return filed
-    # jointly shares the return's line 20 across the head and spouse columns so
-    # their pooled rebate is capped at the joint liability. The separate-vs-
-    # joint choice is made on the rebate-free liabilities to avoid a cycle
-    # through the rebate itself: this is a reporting cap that does not enter the
-    # tax calculation (taxsim #1189).
+    # Each column's share of 2021 Form 2 line 20 (tax after nonrefundable
+    # credits: line 18 less line 19) without the 2021 income tax rebate. It is
+    # the base for the rebate's liability cap (MCA 15-30-2191(2)). The Montana
+    # Department of Revenue treated married couples who filed separately
+    # (status 2a) as separate individuals, so a column filing separately is
+    # capped at its own line 20. A joint return splits its line 20 evenly
+    # across the head and spouse columns. The separate-vs-joint choice here is
+    # made on rebate-free liabilities: the rebate is a refundable payment
+    # subtracted equally on both paths, so it cannot move the election, and
+    # reading it here would create a cycle (taxsim #1189).
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         capital_gain_credit = person("mt_capital_gain_credit", period)

@@ -1,1 +1,1 @@
-Cap Montana's reported 2021 income tax rebate at each return's 2021 liability (Form 2 line 20), per column when a married couple files separately, without changing anyone's tax (taxsim #1189).
+Cap Montana's 2021 income tax rebate at each column's 2021 Form 2 line 20 and pay it as a refundable amount outside the separate-vs-joint election, with no rebate in other years (taxsim #1189).

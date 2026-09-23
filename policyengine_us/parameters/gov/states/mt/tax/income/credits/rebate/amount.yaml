@@ -14,18 +14,26 @@ metadata:
   breakdown:
     - filing_status
 
+# The rebate is keyed to tax year 2021 liability only (paid out in 2023). The
+# 0000-01-01 entries stop parameter backdating from extending the 2021 amounts
+# into earlier years, so the amount is zero in every year other than 2021.
 SINGLE:
+  0000-01-01: 0
   2021-01-01: 1_250
   2022-01-01: 0
 HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
   2021-01-01: 1_250
   2022-01-01: 0
 JOINT:
+  0000-01-01: 0
   2021-01-01: 2_500
   2022-01-01: 0
 SURVIVING_SPOUSE:
+  0000-01-01: 0
   2021-01-01: 2_500
   2022-01-01: 0
 SEPARATE:
+  0000-01-01: 0
   2021-01-01: 1_250
   2022-01-01: 0
