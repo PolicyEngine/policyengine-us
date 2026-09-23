@@ -1,12 +1,6 @@
 description: Delaware provides a relief rebate of this amount to each adult in the household.
 values:
-  # HB 360 was a one-time flat $300/adult stimulus not scaled by any tax-year
-  # return (a non-filer application path also qualified). It is booked to 2022,
-  # the year it was paid, and bracketed with zeros so it applies only in 2022
-  # (the amount is not gated by a credit list).
-  2020-01-01: 0
-  2022-01-01: 300
-  2023-01-01: 0
+  2020-01-01: 300
 metadata:
   reference:
     - title: Delaware General Assembly - House Bill 360 

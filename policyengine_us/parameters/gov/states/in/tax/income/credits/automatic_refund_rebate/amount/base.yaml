@@ -1,10 +1,6 @@
 description: Indiana provides a base automatic refund rebate of this amount.
 values:
-  # The automatic taxpayer refunds are flat amounts not scaled by any tax-year
-  # return, and the $200 path is a refundable credit on the 2022 return. Both
-  # are booked to 2022, the year the rebate is received/credited.
-  2022-01-01: 125
-  2023-01-01: 0
+  2020-01-01: 125
 metadata:
   unit: currency-USD
   period: year

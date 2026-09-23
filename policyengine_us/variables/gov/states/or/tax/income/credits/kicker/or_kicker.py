@@ -15,9 +15,4 @@ class or_kicker(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["or"].tax.income.credits.kicker
-        # The kicker is booked to the tax year whose liability determines it
-        # (e.g. the 17.341% kicker is 17.341% of 2020 tax, so it is booked to
-        # 2020), not the odd-numbered return year it is later claimed on. The
-        # rate is therefore keyed to that determining year and applied to the
-        # same year's tax before credits.
-        return p.percent * tax_unit("or_income_tax_before_credits", period)
+        return p.percent * tax_unit("or_tax_before_credits_in_prior_year", period)

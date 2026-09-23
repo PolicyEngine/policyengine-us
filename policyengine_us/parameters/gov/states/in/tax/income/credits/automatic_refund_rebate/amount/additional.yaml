@@ -1,8 +1,6 @@
 description: Indiana provides an additional automatic refund rebate for qualifying dependents.
 values:
-  # Booked to 2022, the year the rebate is received/credited (see base.yaml).
-  2022-01-01: 200
-  2023-01-01: 0
+  2020-01-01: 200
 metadata:
   unit: currency-USD
   period: year

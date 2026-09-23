@@ -27,6 +27,10 @@
       tax_unit:
         members: [person1, person2]
         aca_ptc: 0
+        # Expected values come from issue #1674 (an externally supplied
+        # retirement-credit case) and exclude the 2021 kicker, so the 2020
+        # liability is pinned to 0 rather than proxied by the 2021 liability.
+        or_tax_before_credits_in_prior_year: 0
     households:
       household:
         members: [person1, person2]
@@ -68,6 +72,10 @@
         members: [person1, person2, person3, person4]
         tax_unit_itemizes: False
         state_income_tax: 10_431.06
+        # Expected values come from a TAXSIM35 record whose Oregon tax excludes
+        # the 2021 kicker, so the 2020 liability is pinned to 0 rather than
+        # proxied by the 2021 liability.
+        or_tax_before_credits_in_prior_year: 0
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -115,13 +123,9 @@
     # Taxable income: $17,519.90
     # Tax: $4,300 @ 4.75% + $6,450 @ 6.75% + $6,769.90 @ 8.75% = $1,231.99
     # Credits: Exemption $249 + Retirement $44.01 = $293.01
-    # Tax before the kicker: $1,231.99 - $293.01 = $938.98
-    # The 2024 surplus kicker (9.863%) is booked to the tax year whose
-    # liability determines it (2024), not the 2025 return it is claimed on:
-    # 9.863% x $1,231.99 = $121.51.
-    # Final tax: $938.98 - $121.51 = $817.47
+    # Final tax: $1,231.99 - $293.01 = $938.98
     or_retirement_credit: 44
-    or_income_tax: 817.47
+    or_income_tax: 939
 
 # 2025 integration test
 - name: 2025 single filer with employment income
@@ -182,3 +186,88 @@
     or_standard_deduction: 5_670
     or_exemption_credit: 768
     or_ctc: 1_050
+
+- name: 2025 single filer includes the kicker on the 2025 return
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    # 2025 Form OR-40 line 32: the kicker is 9.863% of 2024 liability.
+    # Tax before credits: $3,478.18 (see the 2025 single filer case above)
+    # Exemption credit: $256
+    # Tax before refundable credits: $3,478.18 - $256 = $3,222.18
+    # 2024 liability not provided, so the 2025 liability is the proxy.
+    # Kicker: 9.863% x $3,478.18 = $343.05
+    # Final tax: $3,222.18 - $343.05 = $2,879.13
+    or_income_tax_before_credits: 3_478.18
+    or_income_tax_before_refundable_credits: 3_222.18
+    or_tax_before_credits_in_prior_year: 3_478.18
+    or_kicker: 343.05
+    or_income_tax: 2_879.13
+
+- name: 2025 kicker uses the provided 2024 liability, not the 2025 liability
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        or_tax_before_credits_in_prior_year: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    # Tax before credits: $3,478.18; tax before refundable credits: $3,222.18
+    # Kicker: 9.863% x $2,000 (2024 liability) = $197.26
+    # (not 9.863% x $3,478.18 = $343.05)
+    # Final tax: $3,222.18 - $197.26 = $3,024.92
+    or_income_tax_before_credits: 3_478.18
+    or_kicker: 197.26
+    or_income_tax: 3_024.92
+
+- name: 2024 single filer receives no kicker in an even year
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        or_tax_before_credits_in_prior_year: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    # OR AGI: $50,000 - $4,016 federal tax subtraction = $45,984
+    # Standard deduction: $2,745 (single 2024)
+    # Taxable income: $45,984 - $2,745 = $43,239
+    # Tax: $4,300 @ 4.75% + $6,450 @ 6.75% + $32,489 @ 8.75%
+    #   = $204.25 + $435.38 + $2,842.79 = $3,482.41
+    # Exemption credit: $249
+    # Kicker rate is 0 in 2024, so the kicker is $0 despite a prior-year
+    # liability of $2,000.
+    # Final tax: $3,482.41 - $249 = $3,233.41
+    or_taxable_income: 43_239
+    or_income_tax_before_credits: 3_482.41
+    or_kicker: 0
+    or_income_tax: 3_233.41

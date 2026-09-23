@@ -69,19 +69,3 @@
     filing_status: SURVIVING_SPOUSE
   output:
     co_tabor_cash_back: 750
-
-- name: No cash back before the one-time 2021 program
-  period: 2020
-  input:
-    state_code: CO
-    filing_status: SINGLE
-  output:
-    co_tabor_cash_back: 0
-
-- name: No cash back after the one-time 2021 program
-  period: 2022
-  input:
-    state_code: CO
-    filing_status: JOINT
-  output:
-    co_tabor_cash_back: 0

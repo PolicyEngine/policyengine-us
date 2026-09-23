@@ -1,43 +1,69 @@
-# The kicker is booked to the tax year whose liability determines it (the
-# even-numbered surplus year), not the odd-numbered return year it is claimed
-# on. The 2020 surplus kicker (17.341% of 2020 tax) is booked to 2020, the 2022
-# surplus kicker (44.28%) to 2022, and the 2024 surplus kicker (9.863%) to 2024.
-- name: 2020 surplus kicker booked to 2020 (17.341% of 2020 tax)
-  period: 2020
-  input:
-    state_code: OR
-    or_income_tax_before_credits: 1_000
-  output:
-    or_kicker: 173.41
-
-- name: 2022 surplus kicker booked to 2022 (44.28% of 2022 tax)
-  period: 2022
-  input:
-    state_code: OR
-    or_income_tax_before_credits: 1_000
-  output:
-    or_kicker: 442.8
-
-- name: 2024 surplus kicker booked to 2024 (9.863% of 2024 tax)
-  period: 2024
-  input:
-    state_code: OR
-    or_income_tax_before_credits: 1_000
-  output:
-    or_kicker: 98.63
-
-- name: No kicker in an odd-numbered return year (2021)
+- name: In 2021, OR returned 17.341 percent of tax as a kicker from prior year (2020)
   period: 2021
   input:
     state_code: OR
-    or_income_tax_before_credits: 1_000
+    or_tax_before_credits_in_prior_year: 1
   output:
-    or_kicker: 0
+    or_kicker: 0.17341
 
-- name: No kicker in an odd-numbered return year (2023)
-  period: 2023
+# 2025 kicker test - 9.863% rate for tax year 2025 based on 2024 surplus
+- name: In 2025, OR returns 9.863 percent of prior year tax as a kicker
+  period: 2025
   input:
     state_code: OR
-    or_income_tax_before_credits: 1_000
+    or_tax_before_credits_in_prior_year: 1_000
   output:
+    or_kicker: 98.63
+
+- name: In 2025, the provided prior-year tax drives the kicker, not current-year tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_income_tax_before_credits: 3_000
+    or_tax_before_credits_in_prior_year: 1_000
+  output:
+    # 9.863% x $1,000 = $98.63 (not 9.863% x $3,000 = $295.89)
+    or_kicker: 98.63
+
+- name: In 2025, prior-year tax defaults to current-year tax when not provided
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_income_tax_before_credits: 3_000
+  output:
+    # Proxy: prior-year tax = current-year tax = $3,000
+    # 9.863% x $3,000 = $295.89
+    or_tax_before_credits_in_prior_year: 3_000
+    or_kicker: 295.89
+
+- name: In 2026, the 2025 kicker rate does not carry forward
+  period: 2026
+  input:
+    state_code: OR
+    or_tax_before_credits_in_prior_year: 1_000
+  output:
+    # Kicker rate is 0 in 2026 (even year), so 0 x $1,000 = $0.
+    or_kicker: 0
+
+- name: In 2019, OR returns 17.171 percent of prior year (2018) tax as a kicker
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_tax_before_credits_in_prior_year: 1_000
+  output:
+    # 17.171% x $1,000 = $171.71
+    or_kicker: 171.71
+
+- name: In 2020, the proxy prior-year tax yields no kicker in an even year
+  period: 2020
+  input:
+    state_code: OR
+    or_income_tax_before_credits: 3_000
+  output:
+    # Proxy: prior-year tax = current-year tax = $3,000, but the 2020 kicker
+    # rate is 0 (the 2021 rate does not apply backward), so 0 x $3,000 = $0.
+    or_tax_before_credits_in_prior_year: 3_000
     or_kicker: 0
