@@ -10,6 +10,8 @@ class ca_fera_eligible(Variable):
     reference = (
         "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12",
+        # Applies to separately metered residences and sub-metered tenants.
+        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1",
     )
     defined_for = StateCode.CA
 
@@ -27,4 +29,10 @@ class ca_fera_eligible(Variable):
         ca_care_poverty_line = household("ca_care_poverty_line", period)
         income_limit = ca_care_poverty_line * p.fpl_limit
         income_eligible = income <= income_limit
-        return income_eligible & eligible_household_size & ~care_eligible
+        # Check the household pays its own utilities. This gate also keeps a
+        # household below the CARE income limit from passing ~care_eligible
+        # when CARE is denied only because utilities are included in rent.
+        pays_utilities = household("tenant_pays_utilities", period)
+        return (
+            income_eligible & eligible_household_size & ~care_eligible & pays_utilities
+        )

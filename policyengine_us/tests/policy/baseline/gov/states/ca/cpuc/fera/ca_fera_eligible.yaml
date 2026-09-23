@@ -38,3 +38,31 @@
     state_code: CA
   output:
     ca_fera_eligible: false
+
+- name: A three-person household at 250% of the poverty line with utilities included in rent is not eligible.
+  period: 2023
+  input:
+    household_size: 3
+    ca_cpuc_countable_income: 2.5
+    ca_care_poverty_line: 1
+    ca_care_eligible: false
+    tenant_pays_utilities: false
+    state_code: CA
+  output:
+    ca_fera_eligible: false
+
+- name: A three-person household within the CARE income limit with utilities included in rent gets neither CARE nor FERA.
+  period: 2023
+  input:
+    household_size: 3
+    ca_cpuc_countable_income: 2
+    ca_care_poverty_line: 1
+    ca_care_categorically_eligible: false
+    tenant_pays_utilities: false
+    state_code: CA
+  output:
+    # CARE is denied only for the utilities-in-rent gate, which must not
+    # route this household into FERA through the not-CARE-eligible check.
+    ca_care_income_eligible: true
+    ca_care_eligible: false
+    ca_fera_eligible: false

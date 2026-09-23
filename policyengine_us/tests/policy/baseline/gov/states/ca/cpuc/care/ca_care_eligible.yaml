@@ -1,0 +1,48 @@
+- name: Case 1, income-eligible household that pays its own utilities by default is eligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: false
+    ca_care_income_eligible: true
+  output:
+    ca_care_eligible: true
+
+- name: Case 2, categorically eligible household that pays its own utilities is eligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: true
+    ca_care_income_eligible: false
+    tenant_pays_utilities: true
+  output:
+    ca_care_eligible: true
+
+- name: Case 3, income-eligible household with utilities included in rent is ineligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: false
+    ca_care_income_eligible: true
+    tenant_pays_utilities: false
+  output:
+    ca_care_eligible: false
+
+- name: Case 4, categorically eligible household with utilities included in rent is ineligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: true
+    ca_care_income_eligible: false
+    tenant_pays_utilities: false
+  output:
+    ca_care_eligible: false
+
+- name: Case 5, household that pays its own utilities but meets neither test is ineligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: false
+    ca_care_income_eligible: false
+    tenant_pays_utilities: true
+  output:
+    ca_care_eligible: false
