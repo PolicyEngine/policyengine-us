@@ -1,7 +1,10 @@
 description: Montana provides the following property tax rebate amount.
 values:
+  # The property tax rebate was only offered in the 2022 and 2023 tax years,
+  # so it is zero before 2022 and from 2024 onward.
+  2021-01-01: 0
   2022-01-01: 675
-  # The property tax rebate was only offered in the 2022 and 2023 tax years
+  2024-01-01: 0
 metadata:
   period: year
   unit: currency-USD

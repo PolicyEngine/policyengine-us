@@ -45,3 +45,19 @@
     filing_status: SINGLE
   output:
     in_automatic_refund_rebate: 325  # (125 base + 200 additional) * 1
+
+- name: No rebate before the one-time 2020 program
+  period: 2019
+  input:
+    state_code: IN
+    head_spouse_count: 1
+  output:
+    in_automatic_refund_rebate: 0
+
+- name: No rebate after the one-time 2020 program
+  period: 2021
+  input:
+    state_code: IN
+    head_spouse_count: 2
+  output:
+    in_automatic_refund_rebate: 0
