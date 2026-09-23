@@ -12,8 +12,8 @@ JOINT:
   values:
     2025-01-01: 38_000
 
-# Married-filing-separately filers are excluded from the credit unless
-# separate_filer_eligible is true; the breakdown requires the key.
+# All non-joint statuses, including married filing separately, share the
+# lower threshold.
 SEPARATE:
   values:
     2025-01-01: 30_000
