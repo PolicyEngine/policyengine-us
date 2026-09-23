@@ -128,6 +128,19 @@ explicitly instead:
 sim = Microsimulation(dataset=..., spm={"geography_kind": "national"})
 ```
 
+Entity-level single-year datasets are extended through the latest available
+economic-assumption year by default. If a calculation needs only an earlier
+range, set `dataset_end_year` to its final year. Setting it to the dataset's own
+year loads only that year:
+
+```python
+sim = Microsimulation(dataset=single_year_dataset, dataset_end_year=2024)
+```
+
+`dataset_end_year` also works with the default dataset and entity-level HDFStore
+paths. It does not apply to an existing `USMultiYearDataset` or to the legacy
+variable-centric HDF5 format.
+
 ### Filtering by geography
 
 The microdata includes geographic identifiers that can be used for state-level analysis:
