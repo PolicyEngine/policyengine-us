@@ -8,7 +8,9 @@ class md_ccs_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.MD
     reference = (
-        "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02",
+        "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02#B(11)",
+        "https://web.archive.org/web/20220121165420id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/2018_maryland_state_plan.pdf#page=81",
+        "https://web.archive.org/web/20241110153119id_/https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/ffy2022_2024_ccdf_plan_approved.pdf#page=87",
         "https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/final_fy_2022_-_2024_ccdf_online_draft_.pdf#page=62",
         "https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/acf-118_ccdf_ffy_2025-2027_plan_approved_updated_6.25.25_amendment_request_1.pdf#page=23",
     )
