@@ -7,12 +7,18 @@ class me_ccap_eligible_child(Variable):
     label = "Eligible child for Maine CCAP"
     definition_period = MONTH
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=11"
+    reference = (
+        "https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=5",
+        "https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=11",
+        "https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=12",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.me.dhhs.ccap.age_limit
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period.this_year)
+        # Section 2.A.7.c: a Child with Special Needs or a child under court
+        # supervision (Definition 19(f)) shares the special-needs age limit.
         court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(is_disabled | court_supervision, p.special_needs, p.child)
         age_eligible = age < age_limit

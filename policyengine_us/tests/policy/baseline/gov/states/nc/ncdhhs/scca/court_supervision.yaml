@@ -124,9 +124,53 @@
     nc_scca_child_age_eligible: [false, false, true]
     nc_scca_child_eligible: [false, false, true]
     nc_scca_entry_eligible: true
-    # Same household as the disabled 17-year-old integration case:
+    # Income of $2,150/month is below the 133% FPL school-age entry limit, so
+    # the court-supervised teen qualifies at the ordinary rate (see the next
+    # case for the divergence from the 200% special-needs rate).
     # Alamance school-age market rate = $323/month, parent fee = $215/month
     nc_scca_market_rate: [0, 0, 323]
     nc_scca_parent_fee: 215
     # Benefit: 323 - 215 = 108
     nc_scca: 108
+
+- name: NC court supervision combines with disability and applies below 13.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC]
+    age: [12, 17, 18]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+  output:
+    nc_scca_child_age_eligible: [true, true, false]
+
+# Three-person FPL in 2026 is $27,320/year; $3,500/month ($42,000/year) is
+# between the 133% school-age entry limit ($36,336) and the 200% special-needs
+# limit ($54,640). Chapter 7 II.A applies the 200% limit to special-needs
+# children only, so the court-supervised teen keeps the school-age rate.
+- name: NC court-supervised teen uses the school-age entry rate while a disabled sibling uses the special-needs rate.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 15
+        is_under_court_supervision: true
+      person3:
+        age: 15
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nc_scca_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_scca_child_age_eligible: [false, true, true]
+    nc_scca_fpg_rate:
+      2026: [1.33, 1.33, 2]
+    nc_scca_child_income_eligible: [false, false, true]
+    nc_scca_child_eligible: [false, false, true]

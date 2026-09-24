@@ -1,14 +1,17 @@
-description: North Carolina limits its Subsidized Child Care Assistance program to children younger than this age, if they have a disability.
+description: North Carolina limits its Subsidized Child Care Assistance program to children younger than this age if they have a special need or are under court-ordered supervision.
 metadata:
   reference:
-    - title: Child Care and Development Fund (CCDF) Plan for State/Territory North Carolina FFY 2022 – 24 Amendment 1
+    - title: North Carolina SCCA Policy Manual, Chapter 4 Section IX(ii)(a)-(b), Age Requirements
+      href: https://policies.ncdhhs.gov/wp-content/uploads/Chapter-4-RED-CN-26-03-Application-Eligibility-Determination-Documentation-2.pdf#page=10
+    - title: Child Care and Development Fund (CCDF) Plan for North Carolina FFY 2022-24 Amendment 1, Sections 3.1.1(b)-(c)
       href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=83
-  label: North Carolina Subsidized Child Care Assistance program disabled child age limit
+    - title: Child Care and Development Fund (CCDF) Plan for North Carolina FFY 2025-27, Section 2.2.1(b)-(c), upper age 17.00
+      href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2025-2027_For_North_Carolina_November_2024.pdf?ver=5Qk3uXFjaCh3xyBqG3faZg%3d%3d#page=18
+  label: North Carolina Subsidized Child Care Assistance program special needs or court supervision child age limit
   unit: year
   period: year
-# Confirmed with our benefits specialist: the disabled age limit is exclusive to 18.
-# Manual Chapter 4 IX lists court-ordered supervision as a separate 13-through-17
-# route, so the court-supervision route shares this ceiling (CCDF Plan FFY
-# 2025-2027 section 2.2.1(c), upper age 17.00).
+# Chapter 4 Section IX serves children "13 through 17" with a special need or
+# under court-ordered supervision, so both routes share this exclusive limit
+# of 18 (confirmed with our benefits specialist and both CCDF Plans).
 values:
   2022-10-01: 18

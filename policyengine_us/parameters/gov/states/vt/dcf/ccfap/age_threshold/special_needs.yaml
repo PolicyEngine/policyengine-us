@@ -1,16 +1,19 @@
-description: Vermont limits the Child Care Financial Assistance Program to children with special needs younger than this age.
-# Regulation I.B.6 defines a child as under 19 if incapable of self-care "or
-# under court supervision", so the court-supervision route shares this ceiling
-# (CCDF Plan FFY 2025-2027 section 2.2.1(c), upper age 18.00).
+description: Vermont limits the Child Care Financial Assistance Program to children younger than this age if they are physically or mentally incapable of self-care or are under court supervision.
+# Regulation I.B.6 sets the same under-19 limit for both routes, matching the
+# CCDF Plan's upper age of 18.00; the June 2024 rule revision restates I.B.6.
 values:
   2009-02-09: 19
 
 metadata:
   unit: year
   period: year
-  label: Vermont CCFAP special needs child age threshold
+  label: Vermont CCFAP special needs or court supervision child age threshold
   reference:
     - title: CCFAP Regulations Section I B 6
       href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=4
+    - title: DCF memo, CCFAP Rule Revision under Act 76 (eff. 6/30/2024)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=5
     - title: 33 V.S.A. § 3512
       href: https://legislature.vermont.gov/statutes/section/33/035/03512
+    - title: Vermont CCDF State Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18.00
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Reports/CCDF-Plans/CCDF-Plan-2025-2027-Approved.pdf#page=17

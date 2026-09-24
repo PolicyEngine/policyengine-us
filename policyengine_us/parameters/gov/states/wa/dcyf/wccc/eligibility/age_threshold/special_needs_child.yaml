@@ -1,19 +1,19 @@
-description: Washington limits eligibility for children with a verified special need to under this age under the Working Connections Child Care program.
-# RCW 43.216.802(2)(a)(ii) and WAC 110-15-0005(3)(b)(ii)(B) apply the same
-# under-19 limit to a child under court supervision, so the court-supervision
-# route shares this ceiling (CCDF Plan FFY 2025-2027 section 2.2.1(c), upper
-# age 18.00).
+description: Washington limits eligibility for children with a verified special need or under court supervision to under this age under the Working Connections Child Care program.
+# RCW 43.216.802(2)(a)(ii) and WAC 110-15-0005(3)(b)(ii)(A)-(B) set the same
+# under-19 limit for both routes, matching the CCDF Plan's upper age of 18.00.
 values:
   2019-04-26: 19
 
 metadata:
   unit: year
   period: year
-  label: Washington WCCC special needs child age threshold
+  label: Washington WCCC special needs or court supervision child age threshold
   reference:
-    - title: WAC 110-15-0005(3)(b)(ii)
+    - title: WAC 110-15-0005(3)(b)(ii)(A)-(B)
       href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0005
-    - title: WAC 110-15-0220(1)(b)
+    - title: WAC 110-15-0220(1), special needs rate qualification (defines a verified special need)
       href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0220
     - title: RCW 43.216.802(2)(a)(ii)
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.802
+    - title: Washington CCDF State Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18.00
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/2025-2027-CCDF-Current-Plan.pdf#page=18

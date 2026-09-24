@@ -138,3 +138,26 @@
     me_ccap_parent_fee: 208
     # Benefit: 119 * 52 / 12 = 515.67 - 208 = 307.67
     me_ccap: 307.67
+
+- name: ME court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [ME, ME, ME]
+    age: [12, 18, 19]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+    is_tax_unit_dependent: [true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+  output:
+    me_ccap_eligible_child: [true, true, false]
+
+- name: ME court supervision does not bypass the dependency or immigration gates.
+  period: 2026-01
+  input:
+    state_code: [ME, ME]
+    age: [17, 17]
+    is_under_court_supervision: [true, true]
+    is_tax_unit_dependent: [false, true]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+  output:
+    me_ccap_eligible_child: [false, false]

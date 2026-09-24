@@ -132,3 +132,58 @@
     vt_ccfap_family_share: 650
     # Benefit: 371 * 52 / 12 = 1,607.67 - 650 = 957.67
     vt_ccfap: 957.67
+
+- name: VT court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [VT, VT, VT]
+    age: [12, 18, 19]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+    is_tax_unit_dependent: [true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+  output:
+    vt_ccfap_eligible_child: [true, true, false]
+
+# Vermont dropped the child citizenship test on June 30, 2024 (Act 76), so
+# only the dependency gate applies in 2026.
+- name: VT court supervision does not bypass the dependency gate.
+  period: 2026-01
+  input:
+    state_code: [VT, VT]
+    age: [17, 17]
+    is_under_court_supervision: [true, true]
+    is_tax_unit_dependent: [false, true]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+  output:
+    vt_ccfap_eligible_child: [false, true]
+
+# Regulations II.B.1.g count only a child with a special health need as a
+# service need, so court supervision does not excuse a non-working parent.
+- name: VT court supervision is not a service need for a non-working parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 0
+      person2:
+        age: 17
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 6
+        pre_subsidy_childcare_expenses: 16_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false, true]
+    vt_ccfap_meets_activity_test: false
+    vt_ccfap_eligible: false
+    vt_ccfap: 0

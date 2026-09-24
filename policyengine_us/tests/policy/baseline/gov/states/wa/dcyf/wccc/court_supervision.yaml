@@ -95,8 +95,11 @@
   output:
     wa_wccc_eligible_child: [false, true, false]
 
+# Center school-age cap in Adams County = $1,227.28/month; expenses of
+# $6,000/year = $500/month less the $100 copay = $400, below the cap.
 - name: WA court-supervised teenager receives ordinary school-age reimbursement.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       parent:
@@ -128,19 +131,83 @@
     wa_wccc_eligible_child: [false, true]
     wa_wccc_eligible: true
     wa_wccc_center_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    wa_wccc_max_monthly_reimbursement: [0, 1_227.28]
     wa_wccc: 400
 
-- name: WA court supervision does not waive activity or pay for no care.
-  period: 2026-01
+- name: WA court supervision does not waive the parent activity requirement.
+  period: 2025-01
   input:
-    state_code: WA
-    age: 17
-    is_tax_unit_dependent: true
-    is_under_court_supervision: true
-    wa_wccc_activity_eligible: false
-    wa_wccc_income_eligible: true
-    spm_unit_pre_subsidy_childcare_expenses: 0
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+        wa_wccc_provider_type: CENTER
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+        spm_unit_assets: 0
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
   output:
-    wa_wccc_eligible_child: true
+    wa_wccc_eligible_child: [false, true]
+    wa_wccc_activity_eligible: false
     wa_wccc_eligible: false
     wa_wccc: 0
+
+- name: WA eligible supervised child without care expenses receives zero.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 24_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+        wa_wccc_provider_type: CENTER
+        childcare_attending_days_per_month: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        wa_wccc_copay: 100
+        spm_unit_assets: 0
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
+  output:
+    wa_wccc_eligible: true
+    wa_wccc: 0
+
+- name: WA court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [WA, WA, WA]
+    age: [12, 18, 19]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+    is_tax_unit_dependent: [true, true, true]
+  output:
+    wa_wccc_eligible_child: [true, true, false]

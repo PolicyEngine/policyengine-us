@@ -135,3 +135,26 @@
     va_ccsp_copay: 60
     # Benefit: 690 - 60 = 630
     va_ccsp: 630
+
+- name: VA court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [VA, VA, VA]
+    age: [12, 17, 18]
+    is_under_court_supervision: [true, true, true]
+    is_disabled: [false, true, true]
+    is_tax_unit_dependent: [true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+  output:
+    va_ccsp_child_eligible: [true, true, false]
+
+- name: VA court supervision does not bypass the dependency or immigration gates.
+  period: 2026-01
+  input:
+    state_code: [VA, VA]
+    age: [17, 17]
+    is_under_court_supervision: [true, true]
+    is_tax_unit_dependent: [false, true]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+  output:
+    va_ccsp_child_eligible: [false, false]
