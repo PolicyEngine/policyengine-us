@@ -1,0 +1,27 @@
+description: Hawaii allows an itemized deduction for income or sales taxes only for filers with federal adjusted gross income below this amount, based on filing status.
+
+SINGLE:
+  2021-01-01: 100_000
+JOINT:
+  2021-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 150_000
+SEPARATE:
+  2021-01-01: 100_000
+SURVIVING_SPOUSE:
+  2021-01-01: 200_000
+
+metadata:
+  propagate_metadata_to_children: true
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: Hawaii income or sales tax deduction income limit
+  reference:
+    - title: Hawaii Revised Statutes 235-2.4(k)(2)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm
+    - title: 2021 Hawaii N-11 Instructions, Taxes You Paid
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=16
+    - title: 2025 Hawaii N-11 Instructions, Taxes You Paid
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=16
