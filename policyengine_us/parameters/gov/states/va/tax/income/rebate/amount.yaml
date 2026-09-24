@@ -19,28 +19,39 @@ metadata:
     href: https://legiscan.com/VA/text/HB1600/id/3262750/Virginia-2025-HB1600-Chaptered.pdf#page=335
   # House Bill 1600 reauthorized rebate for tax year 2024; no rebate for tax year 2025
 
+# Each Virginia rebate is booked to the tax year whose return determines
+# eligibility and the amount, not the calendar year the check is issued:
+#   period 2021 -> the 2022 rebate (based on the 2021 return, paid fall 2022)
+#   period 2022 -> the 2023 rebate (based on the 2022 return, paid fall 2023)
+#   period 2024 -> the HB1600 TY2024 rebate (based on the 2024 return)
+# 2023 and 2025 carry no rebate, so the amount is zeroed in those years.
 JOINT:
   2021-01-01: 500
-  2022-01-01: 0
-  2023-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 0
+  2024-01-01: 400
   2025-01-01: 0
 SINGLE:
   2021-01-01: 250
-  2022-01-01: 0
-  2023-01-01: 200
+  2022-01-01: 200
+  2023-01-01: 0
+  2024-01-01: 200
   2025-01-01: 0
 SEPARATE:
   2021-01-01: 250
-  2022-01-01: 0
-  2023-01-01: 200
+  2022-01-01: 200
+  2023-01-01: 0
+  2024-01-01: 200
   2025-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 250
-  2022-01-01: 0
-  2023-01-01: 200
+  2022-01-01: 200
+  2023-01-01: 0
+  2024-01-01: 200
   2025-01-01: 0
 SURVIVING_SPOUSE:
   2021-01-01: 250
-  2022-01-01: 0
-  2023-01-01: 200
+  2022-01-01: 200
+  2023-01-01: 0
+  2024-01-01: 200
   2025-01-01: 0
