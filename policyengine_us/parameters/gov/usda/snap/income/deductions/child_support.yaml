@@ -11,8 +11,10 @@ description: Whether the state excludes legally obligated child support payments
 #   2023-10-01: 16th edition (current as of October 1, 2023)
 #   2024-10-01: 17th edition (data reference period October 2024)
 # Where a state's own rules contradict an edition, the state's rules govern
-# and the comment on that value names them. 2010-01-01 values are unsourced
-# placeholders set to deduction unless a comment cites a source.
+# and the comment on that value names them. Where one edition disagrees with
+# the editions before and after it, the comment on that value says which
+# source the value follows. 2010-01-01 values are unsourced placeholders set
+# to deduction unless a comment cites a source.
 AK:
   2010-01-01: false
   2017-10-01: false
@@ -65,8 +67,9 @@ DC:
   2024-10-01: false
 DE:
   2010-01-01: false
-  # DSSM 9059(26), 13 DE Reg. 1550 (06/01/10).
-  2010-06-01: true
+  # DSSM 9059(26), adopted by the final order at 13 DE Reg. 1550 (June 1,
+  # 2010 Register), which took effect 2010-06-10.
+  2010-06-10: true
   2017-10-01: true
   # 15th and 16th editions list a deduction; DSSM 9059(26) excludes.
   2022-10-01: true
@@ -137,16 +140,23 @@ KY:
 LA:
   2010-01-01: false
   2017-10-01: true
-  # The 15th edition lists Louisiana as under review.
+  # The 15th edition lists Louisiana as under review, so the 14th edition's
+  # exclusion carries forward.
+  2022-10-01: true
+  # The 16th and 17th editions list a deduction.
   2023-10-01: false
   2024-10-01: false
 MA:
   2010-01-01: false
-  2017-10-01: false
-  2022-10-01: false
-  # DTA SNAP policy on the child support exclusion, last updated 2023-01-05.
-  2023-01-05: true
-  # 16th edition lists a deduction; the DTA policy excludes.
+  # 106 CMR 363.230(O) excludes the payments from income for the gross income
+  # test. It appears in 106 CMR 363 as amended by Mass Register Issue 1330,
+  # effective 2017-01-13. That is the earliest date with evidence, not
+  # necessarily the date Massachusetts adopted the exclusion.
+  2017-01-13: true
+  # The 14th, 15th and 16th editions list a deduction; 106 CMR 363.230(O)
+  # and the DTA SNAP policy exclude the payments for the gross income test.
+  2017-10-01: true
+  2022-10-01: true
   2023-10-01: true
   2024-10-01: true
 MD:
@@ -164,8 +174,13 @@ ME:
 MI:
   2010-01-01: false
   2017-10-01: false
-  # 15th edition only; the 14th, 16th and 17th editions list a deduction.
-  2022-10-01: true
+  # The 15th edition lists an exclusion, but the 14th, 16th and 17th editions
+  # list a deduction, and the current BEM 556 subtracts child support after
+  # gross income (DHS-2242 line 20). No Michigan policy adopting an exclusion
+  # for fiscal year 2023 alone has been found, and the 15th edition's table
+  # contradicts state rules for California, Delaware, Illinois and
+  # Massachusetts.
+  2022-10-01: false
   2023-10-01: false
   2024-10-01: false
 MN:
@@ -373,10 +388,16 @@ metadata:
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
     - title: Delaware Social Services Manual 9059(26) - Income exclusions, child support payments
       href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-9000-9059
+    - title: 13 DE Reg. 1550 (June 1, 2010) - Final order adopting the child support income exclusion, effective June 10, 2010
+      href: https://archive.regulations.delaware.gov/register/june2010/final/13%20DE%20Reg%201550%2006-01-10.htm
     - title: Illinois Department of Human Services Manual Release 23.22 - SNAP policy clarification on child support income exclusion
       href: https://www.dhs.state.il.us/page.aspx?item=149614
+    - title: 106 CMR 363.230(O) - Legally obligated child support payments excluded for the gross income test
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-363-230
     - title: Massachusetts Department of Transitional Assistance SNAP policy - Child support expenses deduction (excluding child support from the gross income test)
       href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
+    - title: Michigan Bridges Eligibility Manual 556 - Computing the Food Assistance budget (child support expenses, line 20)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/556.pdf#page=5
     - title: Oregon Administrative Rules 461-140-0266 - Court ordered child support exclusion; SNAP
       href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
     - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments

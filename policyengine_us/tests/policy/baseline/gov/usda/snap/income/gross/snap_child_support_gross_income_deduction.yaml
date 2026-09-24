@@ -67,3 +67,67 @@
     weekly_hours_worked_before_lsr: 40
   output:
     snap_child_support_gross_income_deduction: 100
+
+- name: Vermont excludes child support payments through September 2024 under the 16th edition and deducts them from October 2024 under the 17th.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for January through September.
+    snap_child_support_gross_income_deduction: 900
+
+- name: Iowa excludes child support payments through September 2022 under the 14th edition and deducts them from October 2022 under the 15th.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for January through September.
+    snap_child_support_gross_income_deduction: 900
+
+- name: Michigan deducts child support payments in 2023, although the 15th edition lists an exclusion for fiscal year 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Louisiana keeps the 14th edition's exclusion through fiscal year 2023, when the 15th edition lists it as under review.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Louisiana deducts child support payments from October 2023 under the 16th edition.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for January through September.
+    snap_child_support_gross_income_deduction: 900
+
+- name: Massachusetts excludes child support payments from February 2017, after the earliest evidence of 106 CMR 363.230(O) on 2017-01-13.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for February through December.
+    snap_child_support_gross_income_deduction: 1_100
