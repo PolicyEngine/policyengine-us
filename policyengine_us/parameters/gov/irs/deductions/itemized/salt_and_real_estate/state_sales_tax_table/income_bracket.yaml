@@ -1,89 +1,95 @@
-description: Montana taxes the net long-term capital gains by the following marginal rates for head of household filers, according to the taxable income.
+description: The IRS assigns filers to these income brackets, by income, in the Optional State Sales Tax Tables.
 metadata:
-  threshold_unit: currency-USD
-  period: year
   type: single_amount
-  label: Montana capital gains tax rates for head of household filers
-  rate_unit: /1
+  threshold_unit: currency-USD
+  amount_unit: int
+  period: year
+  label: Optional state sales tax table income brackets
+  # Each IRS row runs from "At least" the threshold to "But less than" the
+  # next threshold; the top row is "$300,000 or more".
   reference:
-    - title: 2023 Montana Form 2 Individual Income Tax Instructions, Net Long-Term Capital Gains Tax Table
-      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6
-    - title: Montana Code Annotated 2023, TITLE 15. TAXATION, CHAPTER 30. INDIVIDUAL INCOME TAX, Part 21. Rate and General Provisions-(2)
-      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+    - title: 2022 Optional State Sales Tax Tables, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=13
+    - title: 2023 Optional State Sales Tax Tables, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=13
+    - title: 2024 Optional State Sales Tax Tables, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=12
+    - title: 2025 Optional State Sales Tax Tables, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=13
 brackets:
   - threshold:
-      2024-01-01: -.inf
-    amount: 
-      2024-01-01: 1
-  - threshold: 
-      2024-01-01: 20_000
-    amount: 
-      2024-01-01: 2
-  - threshold: 
-      2024-01-01: 30_000
-    amount: 
-      2024-01-01: 3
-  - threshold: 
-      2024-01-01: 40_000
-    amount: 
-      2024-01-01: 4
-  - threshold: 
-      2024-01-01: 50_000
-    amount: 
-      2024-01-01: 5
-  - threshold: 
-      2024-01-01: 60_000
-    amount: 
-      2024-01-01: 6
-  - threshold: 
-      2024-01-01: 70_000
-    amount: 
-      2024-01-01: 7
-  - threshold: 
-      2024-01-01: 80_000
-    amount: 
-      2024-01-01: 8
-  - threshold: 
-      2024-01-01: 90_000
-    amount: 
-      2024-01-01: 9
-  - threshold: 
-      2024-01-01: 100_000
-    amount: 
-      2024-01-01: 10
-  - threshold: 
-      2024-01-01: 120_000
-    amount: 
-      2024-01-01: 11
-  - threshold: 
-      2024-01-01: 140_000
-    amount: 
-      2024-01-01: 12
-  - threshold: 
-      2024-01-01: 160_000
-    amount: 
-      2024-01-01: 13
-  - threshold: 
-      2024-01-01: 180_000
-    amount: 
-      2024-01-01: 14
-  - threshold: 
-      2024-01-01: 200_000
-    amount: 
-      2024-01-01: 15
-  - threshold: 
-      2024-01-01: 225_000
-    amount: 
-      2024-01-01: 16
-  - threshold: 
-      2024-01-01: 250_000
-    amount: 
-      2024-01-01: 17
-  - threshold: 
-      2024-01-01: 275_000
-    amount: 
-      2024-01-01: 18
-  - threshold: 
-      2024-01-01: 300_000
-    amount: 
-      2024-01-01: 19
+      2022-01-01: -.inf
+    amount:
+      2022-01-01: 1
+  - threshold:
+      2022-01-01: 20_000
+    amount:
+      2022-01-01: 2
+  - threshold:
+      2022-01-01: 30_000
+    amount:
+      2022-01-01: 3
+  - threshold:
+      2022-01-01: 40_000
+    amount:
+      2022-01-01: 4
+  - threshold:
+      2022-01-01: 50_000
+    amount:
+      2022-01-01: 5
+  - threshold:
+      2022-01-01: 60_000
+    amount:
+      2022-01-01: 6
+  - threshold:
+      2022-01-01: 70_000
+    amount:
+      2022-01-01: 7
+  - threshold:
+      2022-01-01: 80_000
+    amount:
+      2022-01-01: 8
+  - threshold:
+      2022-01-01: 90_000
+    amount:
+      2022-01-01: 9
+  - threshold:
+      2022-01-01: 100_000
+    amount:
+      2022-01-01: 10
+  - threshold:
+      2022-01-01: 120_000
+    amount:
+      2022-01-01: 11
+  - threshold:
+      2022-01-01: 140_000
+    amount:
+      2022-01-01: 12
+  - threshold:
+      2022-01-01: 160_000
+    amount:
+      2022-01-01: 13
+  - threshold:
+      2022-01-01: 180_000
+    amount:
+      2022-01-01: 14
+  - threshold:
+      2022-01-01: 200_000
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 225_000
+    amount:
+      2022-01-01: 16
+  - threshold:
+      2022-01-01: 250_000
+    amount:
+      2022-01-01: 17
+  - threshold:
+      2022-01-01: 275_000
+    amount:
+      2022-01-01: 18
+  - threshold:
+      2022-01-01: 300_000
+    amount:
+      2022-01-01: 19

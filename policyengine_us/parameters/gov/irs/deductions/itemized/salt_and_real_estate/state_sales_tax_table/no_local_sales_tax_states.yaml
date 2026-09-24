@@ -1,0 +1,44 @@
+description: The IRS has full-year residents of these jurisdictions enter no local general sales tax on the optional sales tax deduction worksheet.
+values:
+  # 2023 worksheet; the 2022, 2024, and 2025 worksheets carry the same
+  # sentence with only the year changed:
+  # "If, for all of 2023, you lived only in Connecticut, the District of
+  # Columbia, Indiana, Kentucky, Maine, Maryland, Massachusetts, Michigan, New
+  # Jersey, or Rhode Island, skip lines 2 through 5, enter -0- on line 6, and
+  # go to line 7."
+  # Table footnote 4, carried by these ten jurisdictions in 2022 through 2025:
+  # "This state does not have a local general sales tax, so the amount in the
+  # state table is the only amount to be deducted."
+  2022-01-01:
+    - CT
+    - DC
+    - IN
+    - KY
+    - MA
+    - MD
+    - ME
+    - MI
+    - NJ
+    - RI
+
+metadata:
+  unit: list
+  period: year
+  label: Jurisdictions without a local general sales tax for the optional sales tax deduction
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 6
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5
+    - title: 2023 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 6
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5
+    - title: 2024 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 6
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4
+    - title: 2025 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 6
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4
+    - title: 2022 Optional State Sales Tax Tables, footnote 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=16
+    - title: 2023 Optional State Sales Tax Tables, footnote 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=16
+    - title: 2024 Optional State Sales Tax Tables, footnote 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=15
+    - title: 2025 Optional State Sales Tax Tables, footnote 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=17
