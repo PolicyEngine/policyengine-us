@@ -38,5 +38,5 @@ class qualified_business_income(Variable):
             out=np.zeros_like(positive_gross_total),
             where=positive_gross_total > 0,
         )
-        # Preserve losses for tax-unit netting in qbid_amount (Schedule C).
+        # Preserve losses for tax-unit netting in qbid_amount (Form 8995-A Schedule C).
         return non_sstb_gross - qbi_deductions * non_sstb_share

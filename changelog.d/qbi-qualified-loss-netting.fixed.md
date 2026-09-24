@@ -1,1 +1,1 @@
-Net allowed qualified business losses across tax-unit members before QBI wage/property limitations, retaining SSTB applicability and a nonnegative Missouri deduction.
+Net eligible qualified business losses before component limits, preserve the minimum deduction after SSTB exclusions, and floor Missouri business income separately for each spouse.
