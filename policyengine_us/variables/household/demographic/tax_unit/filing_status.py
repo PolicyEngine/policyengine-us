@@ -23,9 +23,10 @@ class filing_status(Variable):
         # to the tax unit head or spouse, not a dependent or other member.
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_separated = tax_unit.any(is_head_or_spouse & person("is_separated", period))
-        return select(
+        married = tax_unit("tax_unit_married", period)
+        derived = select(
             [
-                tax_unit("tax_unit_married", period),
+                married,
                 tax_unit("surviving_spouse_eligible", period),
                 tax_unit("head_of_household_eligible", period),
                 is_separated,
@@ -37,4 +38,21 @@ class filing_status(Variable):
                 FilingStatus.SEPARATE,
             ],
             default=FilingStatus.SINGLE,
+        )
+        # A dataset's tax-unit constructor can supply the status instead.
+        supplied = tax_unit("filing_status_input", period)
+        statuses = supplied.possible_values
+        is_supplied = supplied != statuses.UNSPECIFIED
+        disagrees = is_supplied & ((supplied == statuses.JOINT) != married)
+        if disagrees.any():
+            raise ValueError(
+                f"filing_status_input disagrees with the members of "
+                f"{disagrees.sum()} tax units: a supplied JOINT status needs a "
+                "spouse in the unit, and a unit with a spouse must be supplied "
+                "JOINT."
+            )
+        return select(
+            [supplied == statuses[status.name] for status in FilingStatus],
+            list(FilingStatus),
+            default=derived,
         )

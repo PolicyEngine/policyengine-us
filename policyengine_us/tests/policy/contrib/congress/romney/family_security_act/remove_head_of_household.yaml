@@ -27,3 +27,22 @@
         members: [head]
   output:
     filing_status: SINGLE
+
+- name: Remove head of household filing status for a supplied head of household status
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head:
+        age: 40
+        tax_unit_role_input: HEAD
+      child:
+        age: 10
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status_input: HEAD_OF_HOUSEHOLD
+  output:
+    filing_status: SINGLE

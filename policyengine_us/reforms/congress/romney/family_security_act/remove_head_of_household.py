@@ -6,6 +6,9 @@ def create_remove_head_of_household() -> Reform:
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("head_of_household_eligible")
+            # A supplied filing status would otherwise keep head of household
+            # units filing as such, so re-derive every status from the rules.
+            self.neutralize_variable("filing_status_input")
 
     return reform
 

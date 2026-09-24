@@ -109,6 +109,31 @@ source-backed `is_spm_independent_minor_role` values, and it must not store
 formula-owned SPM outputs such as `spm_unit_spm_threshold`. Any observed Census
 measurement is retained under a separate report-only name.
 
+A population file can also supply the tax units its constructor built, not just
+their membership:
+
+- `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or `DEPENDENT`.
+- `filing_status_input` (tax unit): `SINGLE`, `JOINT`, `SEPARATE`,
+  `HEAD_OF_HOUSEHOLD` or `SURVIVING_SPOUSE`.
+
+The certified Populace build supplies both. When every member of a tax unit has
+a supplied role, `is_tax_unit_head`, `is_tax_unit_spouse` and
+`is_tax_unit_dependent` follow it, and a supplied filing status becomes
+`filing_status`. A unit without supplied roles falls back to age ordering: the
+oldest adult is the head and the next-oldest adult the spouse, which pairs an
+adult student with a parent as joint filers and leaves a minor living without a
+parent with no head. A unit without a supplied status has its status derived
+from its members and the filing rules.
+
+Supplied values fail closed rather than falling back: roles supplied for only
+some members of a unit, a unit without exactly one `HEAD` or with more than one
+`SPOUSE`, and a `JOINT` status in a unit without a spouse (or a non-`JOINT`
+status in a unit with one) all raise a `ValueError`. A supplied status is a fact
+about the record, so parameter reforms to the head of household and surviving
+spouse rules, such as the dependent age limits, do not re-derive it. A
+structural reform that removes a status must neutralize `filing_status_input`,
+as `remove_head_of_household` does.
+
 The legacy files under `hf://policyengine/policyengine-us-data/` predate that
 contract, so SPM measurements are not available over them:
 
