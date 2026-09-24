@@ -511,3 +511,39 @@
   output:
     mo_ssp_eligible: false
     mo_ssp: 0
+
+- name: Case 26, July 2026 SAB recipient with low SSI uses the $949 maximum payment.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 9_768  # Produces $200/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Maximum SAB payment $949 effective 2026-07-01 - $200 SSI = $749.
+    ssi: 200
+    mo_ssp: 749
+
+- name: Case 27, July 2026 SAB applicant with no SSI receives the full maximum payment.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp: 949
