@@ -1,9 +1,0 @@
-# Maryland CCS court supervision
-
-Maryland's CCDF plans elect child-care eligibility for court-supervised children through age 18: the [FFY 2022–2024 plan, §3.1.1, PDF page 62](https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/final_fy_2022_-_2024_ccdf_online_draft_.pdf#page=62) (effective October 1, 2021) and the [approved FFY 2025–2027 plan, §2.2.1(c), PDF page 23](https://earlychildhood.marylandpublicschools.org/system/files/filedepot/12/acf-118_ccdf_ffy_2025-2027_plan_approved_updated_6.25.25_amendment_request_1.pdf#page=23). The model follows that election from October 1, 2021, the earliest plan period in evidence, through a dedicated `court_supervised_child` age threshold (19) in `parameters/gov/states/md/msde/ccs/age_threshold/`. Before October 2021 the threshold equals the ordinary child ceiling (13), so the route is inert. Court supervision does not set disability status.
-
-This is an explicit source choice: [COMAR 13A.14.06.02B(11),(16)](https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02) still describes older children through disability only. The plan election is used for modeled court-supervision eligibility; the discrepancy with COMAR remains documented rather than treated as a regulatory amendment.
-
-The formula does not infer protective-services status or waive income, activity, immigration or copayment requirements. The plans decline the protective-services reason-for-care category in §2.2.2(f). A supervised parent does not extend a child's age eligibility, and eligibility ends at the child's 19th birthday under the model's annual-age convention.
-
-YAML regressions cover age and plan-period boundaries, default false, immigration, ordinary disability eligibility, mixed siblings and supervised adults, actual payment rates, copayments, income/activity exclusions and no reported childcare expenses.

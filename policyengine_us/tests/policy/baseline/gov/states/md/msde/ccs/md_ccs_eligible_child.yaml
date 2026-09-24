@@ -1,7 +1,7 @@
 # Tests for md_ccs_eligible_child
 # Child must be under 13, or under 19 if disabled or court-supervised,
-# and CCDF immigration eligible. Court supervision applies from 2024-10.
-# COMAR 13A.14.06.02 and approved FFY 2025-2027 plan 2.2.1(c).
+# and CCDF immigration eligible. Court supervision applies from 2018-10.
+# COMAR 13A.14.06.02 and Maryland's CCDF plan elections.
 
 - name: Case 1, child age 5 not disabled is eligible.
   period: 2025-01

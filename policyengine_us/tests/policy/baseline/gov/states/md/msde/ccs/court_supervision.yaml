@@ -1,47 +1,48 @@
-# Approved FFY 2025-2027 plan 2.2.1(c) and FFY 2022-2024 plan 3.1.1: court-supervised
-# children through age 18. The route is modeled from 2021-10-01 (first plan election in
-# evidence); before that the court threshold equals the ordinary child ceiling.
+# Maryland's CCDF plans elect court-supervised children through age 18
+# (FFY 2022-2024 plan 3.1.1; FFY 2025-2027 plan 2.2.1(c)). The route is modeled
+# from 2018-10-01, the FFY 2019-2021 plan period start; before that the court
+# threshold equals the ordinary child ceiling.
 
-- name: Maryland court age boundaries include 18 and exclude 19 and adults
+- name: Case 1, Maryland court age boundaries include 18 and exclude 19 and adults.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 12
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: true
-      person_1:
+      person2:
         age:
           2025: 13
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: true
-      person_2:
+      person3:
         age:
           2025: 17
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: true
-      person_3:
+      person4:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: true
-      person_4:
+      person5:
         age:
           2025: 19
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: true
-      person_5:
+      person6:
         age:
           2025: 40
         is_ccdf_immigration_eligible_child:
@@ -51,12 +52,12 @@
     households:
       household:
         members:
-        - person_0
-        - person_1
-        - person_2
-        - person_3
-        - person_4
-        - person_5
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
         state_code:
           2025: MD
   output:
@@ -67,32 +68,32 @@
     - true
     - false
     - false
-- name: Maryland ordinary age boundary is unchanged
+- name: Case 2, Maryland ordinary age boundary is unchanged.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 12
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: false
-      person_1:
+      person2:
         age:
           2025: 13
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: false
-      person_2:
+      person3:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
           2025: true
         is_under_court_supervision:
           2025: false
-      person_3:
+      person4:
         age:
           2025: 19
         is_ccdf_immigration_eligible_child:
@@ -102,10 +103,10 @@
     households:
       household:
         members:
-        - person_0
-        - person_1
-        - person_2
-        - person_3
+        - person1
+        - person2
+        - person3
+        - person4
         state_code:
           2025: MD
   output:
@@ -114,11 +115,11 @@
     - false
     - false
     - false
-- name: Maryland does not infer court supervision
+- name: Case 3, Maryland does not infer court supervision.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
@@ -126,16 +127,16 @@
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
           2025: MD
   output:
     md_ccs_eligible_child: false
-- name: Maryland disability route remains available without court supervision
+- name: Case 4, Maryland disability route remains available without court supervision.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
@@ -144,7 +145,7 @@
           2025: false
         is_disabled:
           2025: true
-      person_1:
+      person2:
         age:
           2025: 19
         is_ccdf_immigration_eligible_child:
@@ -156,19 +157,19 @@
     households:
       household:
         members:
-        - person_0
-        - person_1
+        - person1
+        - person2
         state_code:
           2025: MD
   output:
     md_ccs_eligible_child:
     - true
     - false
-- name: Maryland court supervision does not waive immigration eligibility
+- name: Case 5, Maryland court supervision does not waive immigration eligibility.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
@@ -178,16 +179,16 @@
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
           2025: MD
   output:
     md_ccs_eligible_child: false
-- name: Maryland court extension does not apply outside Maryland
+- name: Case 6, Maryland court extension does not apply outside Maryland.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
@@ -197,16 +198,16 @@
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
           2025: VA
   output:
     md_ccs_eligible_child: false
-- name: Maryland FFY 2022-2024 plan already elected the court route before October 2024
+- name: Case 7, Maryland court route applies in September 2024, before the FFY 2025-2027 plan period.
   period: 2024-09
   input:
     people:
-      person_0:
+      person1:
         age:
           2024: 18
         is_ccdf_immigration_eligible_child:
@@ -216,23 +217,23 @@
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
           2024: MD
   output:
     md_ccs_eligible_child: true
-- name: Maryland approved current plan includes age 18 from October 2024
+- name: Case 8, Maryland FFY 2025-2027 plan keeps age 18 and excludes 19 in October 2024.
   period: 2024-10
   input:
     people:
-      person_0:
+      person1:
         age:
           2024: 18
         is_ccdf_immigration_eligible_child:
           2024: true
         is_under_court_supervision:
           2024: true
-      person_1:
+      person2:
         age:
           2024: 19
         is_ccdf_immigration_eligible_child:
@@ -242,19 +243,19 @@
     households:
       household:
         members:
-        - person_0
-        - person_1
+        - person1
+        - person2
         state_code:
           2024: MD
   output:
     md_ccs_eligible_child:
     - true
     - false
-- name: Maryland court child need not be a tax dependent
+- name: Case 9, Maryland court child need not be a tax dependent.
   period: 2025-01
   input:
     people:
-      person_0:
+      person1:
         age:
           2025: 18
         is_ccdf_immigration_eligible_child:
@@ -266,12 +267,12 @@
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
           2025: MD
   output:
     md_ccs_eligible_child: true
-- name: Maryland court-supervised child receives ordinary rates and pays the ordinary copay
+- name: Case 10, Maryland court-supervised child receives ordinary rates and pays the ordinary copay.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -325,7 +326,7 @@
     receives_or_needs_protective_services:
     - false
     - false
-- name: Maryland court-supervised child payment remains capped at the ordinary rate
+- name: Case 11, Maryland court-supervised child payment remains capped at the ordinary rate.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -379,7 +380,7 @@
     receives_or_needs_protective_services:
     - false
     - false
-- name: Maryland court supervision does not waive income requirements
+- name: Case 12, Maryland court supervision does not waive income requirements.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -421,7 +422,7 @@
     md_ccs_income_eligible: false
     md_ccs_eligible: false
     md_ccs: 0
-- name: Maryland court supervision does not waive activity requirements
+- name: Case 13, Maryland court supervision does not waive activity requirements.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -463,7 +464,7 @@
     md_ccs_activity_eligible: false
     md_ccs_eligible: false
     md_ccs: 0
-- name: Maryland supervised parent does not qualify an over-age unsupervised child
+- name: Case 14, Maryland supervised parent does not qualify an over-age unsupervised child.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -508,7 +509,7 @@
     - false
     md_ccs_eligible: false
     md_ccs: 0
-- name: Maryland court supervision does not pay benefits without childcare expenses
+- name: Case 15, Maryland court supervision does not pay benefits without childcare expenses.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -549,7 +550,7 @@
   output:
     md_ccs_eligible: true
     md_ccs: 0
-- name: Maryland unsupervised older sibling does not add payment or copay
+- name: Case 16, Maryland unsupervised older sibling does not add payment or copay.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -606,7 +607,7 @@
     - 0
     md_ccs_weekly_copay: 3
     md_ccs: 793
-- name: Maryland mixed siblings retain ordinary and court age boundaries
+- name: Case 17, Maryland mixed siblings retain ordinary and court age boundaries.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -674,41 +675,53 @@
     - 183
     - 0
     md_ccs: 1586
-- name: Maryland court route is inert before the FFY 2022-2024 plan election in September 2021
-  period: 2021-09
+- name: Case 18, Maryland court route is inert in September 2018, before the FFY 2019-2021 plan period.
+  period: 2018-09
   input:
     people:
-      person_0:
+      person1:
         age:
-          2021: 18
+          2018: 18
         is_ccdf_immigration_eligible_child:
-          2021: true
+          2018: true
         is_under_court_supervision:
-          2021: true
+          2018: true
+      person2:
+        age:
+          2018: 18
+        is_ccdf_immigration_eligible_child:
+          2018: true
+        is_under_court_supervision:
+          2018: true
+        is_disabled:
+          2018: true
     households:
       household:
         members:
-        - person_0
+        - person1
+        - person2
         state_code:
-          2021: MD
+          2018: MD
   output:
-    md_ccs_eligible_child: false
-- name: Maryland FFY 2022-2024 plan election includes age 18 from October 2021
-  period: 2021-10
+    md_ccs_eligible_child:
+    - false
+    - true
+- name: Case 19, Maryland court route includes age 18 from October 2018.
+  period: 2018-10
   input:
     people:
-      person_0:
+      person1:
         age:
-          2021: 18
+          2018: 18
         is_ccdf_immigration_eligible_child:
-          2021: true
+          2018: true
         is_under_court_supervision:
-          2021: true
+          2018: true
     households:
       household:
         members:
-        - person_0
+        - person1
         state_code:
-          2021: MD
+          2018: MD
   output:
     md_ccs_eligible_child: true
