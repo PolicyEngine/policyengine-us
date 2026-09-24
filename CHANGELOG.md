@@ -1,3 +1,32 @@
+## [2.11.3] - 2026-09-24
+
+### Changed
+
+- Booked the 2023 Virginia rebate to tax year 2022, whose return determines it, in line with other one-time state rebates, and defaulted the Oregon kicker's prior-year tax liability to the current-year liability instead of $0.
+
+
+## [2.11.2] - 2026-09-24
+
+### Changed
+
+- Massachusetts Commonwealth Credit reform now phases out on adjusted gross income and extends eligibility to separate filers at the non-joint threshold.
+
+
+## [2.11.1] - 2026-09-23
+
+### Fixed
+
+- Include taxable Roth conversions in South Carolina retirement deduction (#9523); exclude Roth conversions from Oklahoma age-65 special exemption AGI limit (#9522); add retirement distributions and Roth conversions to Iowa gross income (#9521); enforce age 59½ requirement and disability exception on IRA distributions and Roth conversions in Michigan retirement deductions under MCL § 206.30(8)(a)(ii) (partially addressing #9520); update retirement citation links for NY, WI, GA, and KY.
+
+
+## [2.11.0] - 2026-09-23
+
+### Added
+
+- Allow callers to limit automatic single-year dataset extension with the
+  `Microsimulation` `dataset_end_year` argument.
+
+
 ## [2.10.1] - 2026-09-23
 
 ### Fixed
