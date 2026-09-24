@@ -4,9 +4,30 @@ values:
   2022-01-01: 400
   2024-01-01: 450
   2025-01-01: 450
+  2026-01-01: 450
 metadata:
   unit: currency-USD
+  period: year
+  label: Dependent standard deduction earned income addition
+  # Values after the last IRS publication are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 63(c)(4)(B)(ii): the
+  # statutory $250 increased by the 1(f)(3) cost-of-living adjustment with
+  # calendar year 1997 as the base year (C-CPI-U for the 12 months ending
+  # August 31 of the prior year), each increase rounded down to the next
+  # lowest multiple of $50 under 1(f)(7)(A). Computing from the $250 base
+  # rather than chaining from the rounded $450 keeps the projection from
+  # lagging the statute by a $50 step; those values supersede this
+  # uprating rule, which describes the index and rounding.
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
+    - title: 26 U.S. Code § 63(c)(4)-(5)
+      href: https://www.law.cornell.edu/uscode/text/26/63#c_4
+    - title: 26 U.S. Code § 1(f)(3)-(7)
+      href: https://www.law.cornell.edu/uscode/text/26/1#f_3
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release

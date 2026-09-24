@@ -1,11 +1,16 @@
 """Test unified uprating extensions through 2100."""
 
+import math
 import pytest
 
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
+    DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
+    get_average_for_12_months_ending_august,
+    get_irs_cola,
+    get_irs_cola_denominator,
     round_social_security_amount,
     round_social_security_payroll_cap,
 )
@@ -445,3 +450,86 @@ def test_retirement_contribution_limits_include_latest_explicit_irs_values():
 
     assert limits2027["401k"] >= limits2026["401k"]
     assert limits2027.annual_additions >= limits2026.annual_additions
+
+
+def test_average_for_12_months_ending_august_reads_observations_and_projections():
+    """The 1(f)(4)/(6)(B) window runs September through August."""
+    c_cpi_u = PARAMETERS.gov.bls.cpi.c_cpi_u
+
+    # Fully observed: the C-CPI-U for calendar year 2016 (BLS SUUR0000SA0).
+    assert get_average_for_12_months_ending_august(c_cpi_u, 2016) == pytest.approx(
+        135.993, abs=1e-9
+    )
+    # Observed through June 2026 (October 2025 unpublished): July and
+    # August carry June's value.
+    observed = [180.196, 180.196, 179.712, 179.598, 180.232, 181.080]
+    observed += [183.013, 184.499, 185.589, 184.992, 184.992, 184.992]
+    assert get_average_for_12_months_ending_august(c_cpi_u, 2026) == pytest.approx(
+        sum(observed) / 12
+    )
+    # No observed month: CBO's projection of the September-August average.
+    assert get_average_for_12_months_ending_august(c_cpi_u, 2031) == c_cpi_u(
+        "2031-02-01"
+    )
+
+
+def test_irs_cola_denominator_uses_2016_ratio_for_pre_2017_base_years():
+    """1(f)(3)(A)(ii) and (B): CPI(base year) x C-CPI-U(2016) / CPI(2016)."""
+    # CPI-U Sep-Aug averages: 1986-87 111.983, 1996-97 159.492, 2015-16 238.649.
+    assert get_irs_cola_denominator(PARAMETERS, 1997) == pytest.approx(
+        1_913.9 / 12 * 135.993 / 238.649
+    )
+    assert get_irs_cola_denominator(PARAMETERS, 1987) == pytest.approx(
+        1_343.8 / 12 * 135.993 / 238.649
+    )
+    with pytest.raises(ValueError):
+        get_irs_cola_denominator(PARAMETERS, 2017)
+
+
+def statutory_dependent_standard_deduction_amount(base, base_year, year):
+    cola = get_irs_cola(PARAMETERS, year, base_year)
+    return base + math.floor(base * cola / 50) * 50
+
+
+def test_irs_cola_reproduces_published_dependent_standard_deduction_amounts():
+    """The 63(c)(4) computation matches every IRS-published value, 2018-2026."""
+    # As encoded in dependent/amount.yaml and additional_earned_income.yaml.
+    published = {
+        # year: (63(c)(5)(A) floor, 63(c)(5)(B) earned income addition)
+        2018: (1_050, 350),
+        2019: (1_100, 350),
+        2020: (1_100, 350),
+        2021: (1_100, 350),
+        2022: (1_150, 400),
+        2023: (1_250, 400),
+        2024: (1_300, 450),
+        2025: (1_350, 450),
+        2026: (1_350, 450),
+    }
+    for year, amounts in published.items():
+        computed = tuple(
+            statutory_dependent_standard_deduction_amount(base, base_year, year)
+            for _, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES
+        )
+        assert computed == amounts, year
+
+
+def test_dependent_standard_deduction_projections_follow_statute():
+    """Projected years come from the statutory bases, not the rounded last value."""
+    dependent = PARAMETERS.gov.irs.deductions.standard.dependent
+    last_explicit_years = {"amount": 2036, "additional_earned_income": 2026}
+    for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
+        parameter = getattr(dependent, name)
+        previous = parameter(f"{last_explicit_years[name]}-01-01")
+        for year in range(last_explicit_years[name] + 1, 2101):
+            value = parameter(f"{year}-01-01")
+            assert value == statutory_dependent_standard_deduction_amount(
+                base, base_year, year
+            ), (name, year)
+            assert value % 50 == 0, (name, year)
+            assert value >= previous, (name, year)
+            previous = value
+
+    # Chaining from the rounded 2026 $450 ($450 x 1.03 = $463) would keep
+    # 2027 at $450; the $250 base gives $500.
+    assert dependent.additional_earned_income("2027-01-01") == 500
