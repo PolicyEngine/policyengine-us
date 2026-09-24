@@ -1,170 +1,353 @@
-description: Whether legally mandated child support payments can be deducted from gross income for SNAP.
+description: Whether the state excludes legally obligated child support payments to nonhousehold members from gross income under the Supplemental Nutrition Assistance Program, rather than deducting them when computing net income.
+# true: the state takes the 7 CFR 273.9(c)(17) option and excludes the
+# payments from gross income, which lowers the income compared against the
+# gross income limit.
+# false: the state deducts the payments when computing net income under
+# 7 CFR 273.9(d)(5).
+# Each state's value on these dates comes from one edition of the USDA SNAP
+# State Options Report:
+#   2017-10-01: 14th edition (options as of October 1, 2017)
+#   2022-10-01: 15th edition (options chosen in fiscal year 2023)
+#   2023-10-01: 16th edition (current as of October 1, 2023)
+#   2024-10-01: 17th edition (data reference period October 2024)
+# Where a state's own rules contradict an edition, the state's rules govern
+# and the comment on that value names them. 2010-01-01 values are unsourced
+# placeholders set to deduction unless a comment cites a source.
 AK:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AL:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AR:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 AZ:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 CA:
-  2010-01-01: false
-  2021-10-01: false
+  # CDSS ACL 06-31: exclusion since 2006-10-01.
+  2010-01-01: true
+  2017-10-01: true
+  # 15th edition lists a deduction; ACL 06-31 and MPP 63-502.2(p) exclude.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 CO:
   2010-01-01: false
-  2021-10-01: false
-  # May have changed prior to 2022-11-30.
-  2022-11-30:
-    value: true
-    metadata:
-      reference:
-        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.5(A) (page 111)
-          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 CT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 DC:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 DE:
   2010-01-01: false
-  2021-10-01: false
+  # DSSM 9059(26), 13 DE Reg. 1550 (06/01/10).
+  2010-06-01: true
+  2017-10-01: true
+  # 15th and 16th editions list a deduction; DSSM 9059(26) excludes.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 FL:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 GA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 GU:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 HI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 IA:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 ID:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 IL:
-  2010-01-01: false
-  2021-10-01: false
+  # IDHS MR #23.22: exclusion implemented June 2004.
+  2010-01-01: true
+  2017-10-01: true
+  # 15th edition lists a deduction; IDHS MR #23.22 confirms the exclusion.
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 IN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 KS:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 KY:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 LA:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  # The 15th edition lists Louisiana as under review.
+  2023-10-01: false
+  2024-10-01: false
 MA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  # DTA SNAP policy on the child support exclusion, last updated 2023-01-05.
+  2023-01-05: true
+  # 16th edition lists a deduction; the DTA policy excludes.
+  2023-10-01: true
+  2024-10-01: true
 MD:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 ME:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 MI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  # 15th edition only; the 14th, 16th and 17th editions list a deduction.
+  2022-10-01: true
+  2023-10-01: false
+  2024-10-01: false
 MN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 MO:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 MS:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 MT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NC:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 ND:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NE:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NH:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NJ:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 NM:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NV:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 NY:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 OH:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 OK:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 OR:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  # OAR 461-140-0266, effective 2023-01-19.
+  2023-01-19: true
+  2023-10-01: true
+  2024-10-01: true
 PA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 RI:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 SC:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 SD:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 TN:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 TX:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 UT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 VA:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  # 22VAC40-601-70, effective 2018-10-31.
+  2018-10-31: true
+  2022-10-01: true
+  # 16th edition lists a deduction; 22VAC40-601-70 excludes.
+  2023-10-01: true
+  2024-10-01: true
 VI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 VT:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  # 16th edition only; the 15th and 17th editions list a deduction.
+  2023-10-01: true
+  2024-10-01: false
 WA:
   2010-01-01: false
-  2021-10-01: false
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 WI:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 WV:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 WY:
   2010-01-01: false
-  2021-10-01: true
+  2017-10-01: false
+  2022-10-01: false
+  2023-10-01: false
+  2024-10-01: false
 metadata:
   propagate_metadata_to_children: true
   unit: bool
@@ -172,5 +355,29 @@ metadata:
   breakdown:
   - state_code
   reference:
-    - title: SNAP Screener SNAP Eligibility Parameters
-      href: https://www.snapscreener.com/?p=table
+    - title: 7 CFR 273.9(c)(17) - Child support exclusion option
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#c_17
+    - title: 7 CFR 273.9(d)(5) - Child support deduction
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#d_5
+    - title: SNAP State Options Report, 14th Edition, Treatment of Child Support Payments (page 18)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/14-State-Options.pdf#page=24
+    - title: SNAP State Options Report, 15th Edition, Treatment of Child Support Payments (page 15)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-15th-state-options-report-october23.pdf#page=17
+    - title: SNAP State Options Report, 16th Edition, Treatment of Child Support Payments (page 15)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-16th-state-options-report-june24.pdf#page=17
+    - title: SNAP State Options Report, 17th Edition, Treatment of Child Support Payments (page 21)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-stateOptionsReport-17edition-120925.pdf#page=23
+    - title: California Department of Social Services All County Letter 06-31 (legally obligated child support payment exclusion)
+      href: https://www.cdss.ca.gov/getinfo/acl06/pdf/06-31.pdf
+    - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.5(A) (page 111)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+    - title: Delaware Social Services Manual 9059(26) - Income exclusions, child support payments
+      href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-9000-9059
+    - title: Illinois Department of Human Services Manual Release 23.22 - SNAP policy clarification on child support income exclusion
+      href: https://www.dhs.state.il.us/page.aspx?item=149614
+    - title: Massachusetts Department of Transitional Assistance SNAP policy - Child support expenses deduction (excluding child support from the gross income test)
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
+    - title: Oregon Administrative Rules 461-140-0266 - Court ordered child support exclusion; SNAP
+      href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
+    - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter601/section70/

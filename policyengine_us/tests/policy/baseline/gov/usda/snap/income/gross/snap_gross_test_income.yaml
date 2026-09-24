@@ -50,7 +50,40 @@
     snap_gross_income: 1_333.33
     snap_gross_test_income: 1_333.33
 
-- name: Case 3, hybrid state counts the full-count alien's child support deduction in full under the gross test.
+- name: Case 3, hybrid state that excluded child support from gross income would count the full-count alien's payment in full under the gross test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    # No full-count state excludes child support from gross income, so this
+    # case sets Arkansas to exclude it to exercise that branch.
+    gov.usda.snap.income.deductions.child_support.AR: true
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        child_support_expense: 3_600
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Net side counts 2/3 of the $2,000 earnings and 2/3 of the $300 child
+    # support: $1,333.33 - $200 = $1,133.33.
+    snap_gross_income: 1_133.33
+    # Gross test counts the full earnings and the full child support
+    # payment: $2,000 - $300 = $1,700.
+    snap_gross_test_income: 1_700
+
+- name: Case 3b, hybrid state that deducts child support from net income leaves it out of both gross income measures.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -73,13 +106,12 @@
         members: [person1, person2, person3]
         state_code: AR
   output:
-    # Arkansas deducts child support from gross income. Net side counts
-    # 2/3 of the $2,000 earnings and 2/3 of the $300 child support:
-    # $1,333.33 - $200 = $1,133.33.
-    snap_gross_income: 1_133.33
-    # Gross test counts the full earnings and the full child support
-    # payment: $2,000 - $300 = $1,700.
-    snap_gross_test_income: 1_700
+    # Arkansas deducts child support when computing net income, so neither
+    # gross income measure subtracts it. Net side counts 2/3 of the $2,000
+    # earnings: $1,333.33.
+    snap_gross_income: 1_333.33
+    # Gross test counts the full $2,000.
+    snap_gross_test_income: 2_000
 
 - name: Case 4, hybrid state counts the full-count alien's self-employment income in full under the gross test only.
   period: 2026-01
