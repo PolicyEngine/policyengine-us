@@ -1,1 +1,1 @@
-- Build SNAP gross and net income standards for households larger than eight from a separately rounded-up per-person increment per 7 CFR 273.9(a)(3), and stop single-precision error from rounding SNAP net income ending in exactly 50 cents down.
+Build SNAP gross and net income standards for households larger than eight from a separately rounded-up per-person increment per 7 CFR 273.9(a)(3), and stop single-precision error from rounding SNAP net income ending in exactly 50 cents down.

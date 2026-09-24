@@ -92,7 +92,7 @@
   output:
     meets_snap_gross_income_test: false
 
-- name: Ten-person household at the published FY 2026 gross limit passes
+- name: Ten-person Kansas household at the published FY 2026 gross limit passes
   period: 2026-01
   input:
     people:
@@ -110,11 +110,11 @@
     households:
       household:
         members: [person1]
-        state_code: MO
+        state_code: KS
   output:
     meets_snap_gross_income_test: true
 
-- name: Ten-person household just above the published FY 2026 gross limit fails
+- name: Ten-person Washington household just above the published FY 2026 gross limit fails
   period: 2026-01
   input:
     people:
@@ -127,6 +127,26 @@
     households:
       household:
         members: [person1]
-        state_code: MO
+        state_code: WA
   output:
     meets_snap_gross_income_test: false
+
+- name: Twelve-person North Carolina household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $5,867 + 4 x $596 = $8,251 under 7 CFR 273.9(a)(3)(i); rounding
+        # up the whole twelve-person amount (130% x $76,150 / 12 =
+        # $8,249.58) would give $8,250.
+        snap_gross_test_income: 8_251
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    meets_snap_gross_income_test: true

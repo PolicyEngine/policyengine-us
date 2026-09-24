@@ -82,7 +82,7 @@
   output:
     meets_snap_net_income_test: false
 
-- name: Nine-person household at the published FY 2026 net limit passes
+- name: Nine-person Missouri household at the published FY 2026 net limit passes
   period: 2026-01
   input:
     people:
@@ -104,7 +104,7 @@
   output:
     meets_snap_net_income_test: true
 
-- name: Nine-person household just above the published FY 2026 net limit fails
+- name: Nine-person Texas household just above the published FY 2026 net limit fails
   period: 2026-01
   input:
     people:
@@ -117,11 +117,11 @@
     households:
       household:
         members: [person1]
-        state_code: MO
+        state_code: TX
   output:
     meets_snap_net_income_test: false
 
-- name: Twelve-person household at the published FY 2026 net limit passes
+- name: Twelve-person Illinois household at the published FY 2026 net limit passes
   period: 2026-01
   input:
     people:
@@ -137,9 +137,26 @@
     households:
       household:
         members: [person1]
-        state_code: MO
+        state_code: IL
   output:
     meets_snap_net_income_test: true
+
+- name: Twelve-person Colorado household just above the published FY 2026 net limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        snap_net_income: 6_350
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    meets_snap_net_income_test: false
 
 - name: Net income of exactly 50 cents over the one-person FY 2026 net limit rounds up and fails
   period: 2026-01
