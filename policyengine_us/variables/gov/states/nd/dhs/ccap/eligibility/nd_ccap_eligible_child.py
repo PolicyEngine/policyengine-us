@@ -10,7 +10,10 @@ class nd_ccap_eligible_child(Variable):
     label = "North Dakota CCAP eligible child"
     definition_period = MONTH
     defined_for = StateCode.ND
-    reference = "https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2025/CCAP%20ML%203909%20Effective%20May.1.2025.pdf#page=3"
+    reference = (
+        "https://www.nd.gov/dhs/policymanuals/40028/40028.htm",
+        "https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2025/CCAP%20ML%203909%20Effective%20May.1.2025.pdf#page=3",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nd.dhs.ccap.eligibility

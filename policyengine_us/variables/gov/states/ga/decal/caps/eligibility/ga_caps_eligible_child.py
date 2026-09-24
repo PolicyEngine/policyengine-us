@@ -16,8 +16,13 @@ class ga_caps_eligible_child(Variable):
         p = parameters(period).gov.states.ga.decal.caps.age_threshold
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        # Section 6.4.1 requires a case plan specifying child care as part
-        # of court supervision; a general supervision flag is insufficient.
+        # Section 6.4.1 (the "in order to apply" rule) requires a case plan
+        # specifying child care as part of court supervision; a general
+        # supervision flag is insufficient. Sections 6.4.3-6.4.4 use the looser
+        # phrase "court order for supervision" for continuing care, which we
+        # do not model separately. The court route shares the disabled-child
+        # ceiling (Manual 17 or younger; the CCDF Plan 2.2.1(c) elects 18.00,
+        # see the disabled_child parameter note).
         court_ordered_care = person(
             "requires_childcare_under_court_order", period.this_year
         )

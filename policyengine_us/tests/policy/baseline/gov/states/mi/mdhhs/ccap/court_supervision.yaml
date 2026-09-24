@@ -87,7 +87,7 @@
   output:
     mi_ccap_eligible_child: false
 
-- name: MI age-18 route requires high school rather than postsecondary training
+- name: MI age-18 route accepts secondary-school enrollment beyond the K-12 imputation
   period: 2026-09
   input:
     state_code:
@@ -109,9 +109,11 @@
     mi_ccap_expected_to_graduate_before_19:
       2026: true
   output:
-    mi_ccap_eligible_child: false
+    # is_in_k12_school is imputed only through 17, so is_in_secondary_school
+    # alone establishes high-school enrollment at 18.
+    mi_ccap_eligible_child: true
 
-- name: MI age-18 route requires secondary-school attendance
+- name: MI age-18 route requires high-school attendance
   period: 2026-09
   input:
     state_code:
@@ -127,7 +129,7 @@
     is_in_secondary_school:
       2026: false
     is_in_k12_school:
-      2026: true
+      2026: false
     is_full_time_student:
       2026: true
     mi_ccap_expected_to_graduate_before_19:
@@ -431,3 +433,22 @@
           2026: WAYNE_COUNTY_MI
   output:
     mi_ccap: 0
+
+- name: MI age-18 constant-care student defaults to expected graduation when none is supplied
+  period: 2026-09
+  input:
+    state_code:
+      2026: [MI, MI]
+    age:
+      2026: [18, 18]
+    is_tax_unit_dependent:
+      2026: [true, true]
+    mi_ccap_requires_court_ordered_constant_care:
+      2026: [true, true]
+    is_in_k12_school:
+      2026: [true, false]
+  output:
+    # Expected graduation defaults to high-school enrollment, so the enrolled
+    # student meets the age-18 route while the non-enrolled child does not.
+    mi_ccap_expected_to_graduate_before_19: [true, false]
+    mi_ccap_eligible_child: [true, false]

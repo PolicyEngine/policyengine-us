@@ -22,9 +22,12 @@ class mi_ccap_eligible_child(Variable):
         )
         # BEM 703 pp1-2: general supervision extends eligibility below 18.
         # At 18, constant care and both high-school conditions are required.
+        # is_in_k12_school is imputed only through age 17, so an 18-year-old
+        # still in high school is captured via is_in_secondary_school (as in
+        # mo_ccs_eligible_child and ny_ccap_age_eligible).
         high_school_student = person(
             "is_in_secondary_school", period.this_year
-        ) & person("is_in_k12_school", period.this_year)
+        ) | person("is_in_k12_school", period.this_year)
         graduating_student = (
             high_school_student
             & person("is_full_time_student", period.this_year)
