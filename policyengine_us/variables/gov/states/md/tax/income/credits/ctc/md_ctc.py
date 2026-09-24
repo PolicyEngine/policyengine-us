@@ -9,6 +9,7 @@ class md_ctc(Variable):
     definition_period = YEAR
     unit = USD
     reference = [
+        "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=27",
         "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child",
         "https://law.justia.com/codes/maryland/2022/tax-general/title-10/subtitle-7/section-10-751/",
         "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=169",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
@@ -41,8 +42,11 @@ class md_ctc(Variable):
             excess_income = max_(agi - p.phase_out.threshold, 0)
             # Use ceiling division: any fraction of increment counts as a full increment for phase-out
             increments_above_threshold = ceil(excess_income / p.phase_out.increment)
-            phase_out_amount = increments_above_threshold * p.phase_out.rate
+            phase_out_amount = (
+                increments_above_threshold * p.phase_out.rate * eligible_children
+            )
 
+            # Worksheet 21C applies the reduction to each qualifying child.
             # Apply phase-out (credit cannot go below zero)
             return max_(base_credit - phase_out_amount, 0)
 
