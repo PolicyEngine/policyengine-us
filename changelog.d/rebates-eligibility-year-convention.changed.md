@@ -1,0 +1,1 @@
+Booked the 2023 Virginia rebate to tax year 2022, whose return determines it, in line with other one-time state rebates, and defaulted the Oregon kicker's prior-year tax liability to the current-year liability instead of $0.
