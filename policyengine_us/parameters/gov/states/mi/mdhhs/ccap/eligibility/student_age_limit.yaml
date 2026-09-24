@@ -1,11 +1,14 @@
-description: Michigan extends Child Development and Care eligibility below this age for children requiring constant care who attend high school full time and are expected to finish before this age.
+description: Michigan limits Child Development and Care eligibility to full-time high school students below this age who require constant care due to a condition or a court order.
+# BEM 703 p.2: an 18-year-old qualifies when a full-time high school student
+# reasonably expected to complete high school before 19; school enrollment
+# proxies that expectation.
 values:
   2024-09-22: 19
 
 metadata:
   unit: year
   period: year
-  label: Michigan CDC graduating student age limit
+  label: Michigan CDC high school student age limit
   reference:
     - title: BEM 703, Eligible Children
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=2

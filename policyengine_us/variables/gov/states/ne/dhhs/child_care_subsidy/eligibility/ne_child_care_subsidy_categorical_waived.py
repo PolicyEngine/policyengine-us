@@ -18,8 +18,8 @@ class ne_child_care_subsidy_categorical_waived(Variable):
         # 392 NAC 2-011.02-.03 concerns Department/tribal wards. The Plan's
         # 2.2.2(f)-(g) includes families under court supervision in protective
         # services and permits case-by-case income waivers. An individual's
-        # supervision alone does not establish that family/case status; use
-        # the separate protective-services input for a qualifying case.
+        # supervision alone does not establish that family/case status; that
+        # determination stays in receives_or_needs_protective_services.
         # 2.2.6(b)'s asset-waiver narrative and 3.3.1(vi)'s fee waiver are
         # narrower (wards, subsidized adoption/guardianship). The existing
         # shared protective-services approximation is retained, not expanded.

@@ -18,17 +18,21 @@ class sd_cca_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sd.dss.cca.eligibility
         age = person("age", period.this_year)
-        # ARSD 67:47:01:03(2)-(4) applies the same age and school conditions
-        # to incapacity and court supervision. Expected graduation defaults
-        # to K-12 enrollment unless overridden per person.
+        # ARSD 67:47:01:03(2)-(4) and Manual 4.3: a child under 18, or under 19
+        # "if enrolled in school and expected to graduate", is eligible when
+        # physically or mentally incapable of self-care (is_disabled proxies
+        # the medical documentation) or under court supervision. School
+        # enrollment proxies the graduation expectation. is_in_k12_school is
+        # imputed only through age 17, so an 18-year-old still in school is
+        # captured via is_in_secondary_school (as in mo_ccs_eligible_child).
         special_status = person("is_disabled", period.this_year) | person(
             "is_under_court_supervision", period.this_year
         )
-        graduating_student = person("is_in_k12_school", period.this_year) & person(
-            "sd_cca_expected_to_graduate", period.this_year
+        is_in_school = person("is_in_k12_school", period.this_year) | person(
+            "is_in_secondary_school", period.this_year
         )
         special_needs_age_limit = where(
-            graduating_student,
+            is_in_school,
             p.special_needs_student_age_limit,
             p.special_needs_age_limit,
         )

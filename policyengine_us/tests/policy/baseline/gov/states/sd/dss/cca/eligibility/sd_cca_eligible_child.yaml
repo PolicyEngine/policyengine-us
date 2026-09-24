@@ -2,10 +2,11 @@
 # A child is eligible if under the applicable age limit AND a US citizen or
 # lawful permanent resident AND has a reason for care (every caretaker in an
 # approved activity, or the child receives protective services)
-# (ARSD 67:47:01:02, :03; BEES CCA Policy Manual Section 4.3):
+# (ARSD 67:47:01:02, :03; Child Care Assistance Policy Manual Section 4.3):
 #   general limit: under 13
 #   special needs (disabled), not in school: under 18
-#   special needs (disabled), in school and expected to graduate: under 19
+#   special needs (disabled), enrolled in school: under 19
+# Court supervision uses the same limits (see court_supervision.yaml).
 # is_in_k12_school imputes true for ages 5-17, so the disabled cases set it
 # explicitly to isolate the school vs non-school age limit. Each case sets
 # meets_ccdf_activity_test true so the age and immigration dimensions are
@@ -120,7 +121,7 @@
   output:
     sd_cca_eligible_child: false
 
-- name: Case 7, disabled age 18 in school and expected to graduate, under the 19 limit, eligible.
+- name: Case 7, disabled age 18 in school, under the 19 limit, eligible.
   period: 2027-01
   input:
     people:
@@ -128,7 +129,6 @@
         age: 18
         is_disabled: true
         is_in_k12_school: true
-        sd_cca_expected_to_graduate: true
     spm_units:
       spm_unit:
         members: [person1]

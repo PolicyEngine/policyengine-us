@@ -1,301 +1,223 @@
-# Verified court-supervision pathways and independent eligibility requirements.
-- name: IN new court-supervised applicants must be under 18
-  period: 2026-09
+# Court-supervision route for in_ccdf_eligible_child (Policy Manual 1.6,
+# p.12): a child with court-ordered supervision who qualified while under 18
+# may participate until the Sunday after the 19th birthday, approximated as
+# under 19. Court status does not waive income, activity, or immigration
+# requirements.
+- name: Case 1, court supervision extends the age limit to under 19.
+  period: 2026-01
   input:
-    state_code:
-      2026: [IN, IN, IN, IN, IN, IN]
-    age:
-      2026: [12, 13, 17, 18, 19, 40]
-    is_under_court_supervision:
-      2026: [true, true, true, true, true, true]
-    # New applicants: override the continuing-award default (which would
-    # otherwise be true for a court-supervised child).
-    in_ccdf_has_active_under_18_award: [false, false, false, false, false, false]
+    state_code: [IN, IN, IN, IN, IN, IN]
+    age: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision: [true, true, true, true, true, true]
   output:
-    in_ccdf_eligible_child: [true, true, true, false, false, false]
+    in_ccdf_eligible_child: [true, true, true, true, false, false]
 
-- name: IN active individual awards allow continuation at 18
-  period: 2026-09
+- name: Case 2, court supervision does not bypass the immigration requirement.
+  period: 2026-01
   input:
-    state_code:
-      2026: [IN, IN, IN, IN]
-    age:
-      2026: [17, 18, 19, 40]
-    is_under_court_supervision:
-      2026: [true, true, true, true]
-    in_ccdf_has_active_under_18_award: [true, true, true, true]
-  output:
-    in_ccdf_eligible_child: [true, true, false, false]
-
-- name: IN household enrollment alone does not establish a child continuation award
-  period: 2026-09
-  input:
-    state_code:
-      2026: IN
-    age:
-      2026: 18
-    is_under_court_supervision:
-      2026: true
-    is_in_ccdf_enrolled: true
-    # Household enrollment is not this child's own award; override the
-    # continuing-award default so the case isolates is_in_ccdf_enrolled.
-    in_ccdf_has_active_under_18_award: false
+    state_code: IN
+    age: 18
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
   output:
     in_ccdf_eligible_child: false
 
-- name: IN disability uses the same application and continuation ages
-  period: 2026-09
-  input:
-    state_code:
-      2026: [IN, IN, IN, IN]
-    age:
-      2026: [17, 18, 18, 19]
-    is_disabled:
-      2026: [true, true, true, true]
-    in_ccdf_has_active_under_18_award: [false, false, true, true]
-  output:
-    in_ccdf_eligible_child: [true, false, true, false]
-
-- name: IN continuation award does not bypass immigration
-  period: 2026-09
-  input:
-    state_code:
-      2026: IN
-    age:
-      2026: 18
-    is_under_court_supervision:
-      2026: true
-    in_ccdf_has_active_under_18_award: true
-    immigration_status:
-      2026: UNDOCUMENTED
-  output:
-    in_ccdf_eligible_child: false
-
-- name: IN supervised teenager receives child-care benefit through full pipeline
-  period: 2026-09
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge.
+- name: Case 3, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2026-01
   absolute_error_margin: 0.02
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 12000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        is_under_court_supervision:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: IN
-        county_str:
-          2026: MARION_COUNTY_IN
+        members: [person1, person2]
+        state_code: IN
+        county_str: MARION_COUNTY_IN
   output:
     in_ccdf_eligible_child: [false, true]
     in_ccdf_eligible: true
     in_ccdf: 100
 
-- name: IN court pathway does not waive income requirements
-  period: 2026-09
+- name: Case 4, supervised 18-year-old at the top of the extended range receives the same benefit.
+  # An 18-year-old is a non-child adult, so the head/spouse roles are set
+  # explicitly to keep the parent as the only caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.02
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 500000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        is_under_court_supervision:
-          2026: true
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_tax_unit_head_or_spouse: false
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: IN
-        county_str:
-          2026: MARION_COUNTY_IN
+        members: [person1, person2]
+        state_code: IN
+        county_str: MARION_COUNTY_IN
+  output:
+    in_ccdf_eligible_child: [false, true]
+    in_ccdf_eligible: true
+    in_ccdf: 100
+
+- name: Case 5, court supervision does not waive the income requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 500_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+        county_str: MARION_COUNTY_IN
   output:
     in_ccdf_income_eligible: false
     in_ccdf: 0
 
-- name: IN court pathway does not waive parent activity requirements
-  period: 2026-09
+- name: Case 6, court supervision does not waive the parent activity requirement.
+  period: 2026-01
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 0
-        weekly_hours_worked_before_lsr:
-          2026: 0
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        is_under_court_supervision:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: IN
-        county_str:
-          2026: MARION_COUNTY_IN
+        members: [person1, person2]
+        state_code: IN
+        county_str: MARION_COUNTY_IN
   output:
     in_ccdf_activity_eligible: false
     in_ccdf: 0
 
-- name: IN eligible supervised child without care receives zero
-  period: 2026-09
+- name: Case 7, eligible supervised child without care receives zero.
+  period: 2026-01
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 12000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 0
-        childcare_hours_per_day:
-          2026: 0
-        childcare_days_per_week:
-          2026: 0
-        childcare_attending_days_per_month:
-          2026: 0
-        pre_subsidy_childcare_expenses:
-          2026: 0
-        is_under_court_supervision:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 0
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: IN
-        county_str:
-          2026: MARION_COUNTY_IN
+        members: [person1, person2]
+        state_code: IN
+        county_str: MARION_COUNTY_IN
   output:
     in_ccdf: 0
 
-- name: IN disabled 18-year-old defaults to a continuing award when none is supplied
-  period: 2026-09
+- name: Case 8, court supervision is specific to the child in a mixed household.
+  period: 2026-01
   input:
-    state_code:
-      2026: [IN, IN]
-    age:
-      2026: [18, 18]
-    is_disabled:
-      2026: [true, false]
+    people:
+      person1:
+        age: 35
+        is_under_court_supervision: true
+      person2:
+        age: 17
+        is_under_court_supervision: true
+      person3:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
   output:
-    # The award defaults to the special-status flags (disabled or under court
-    # supervision), so the disabled 18-year-old continues under the under-19
-    # ceiling while the 18-year-old with neither status gets no default award.
-    in_ccdf_has_active_under_18_award: [true, false]
-    in_ccdf_eligible_child: [true, false]
-
-- name: IN disabled 18-year-old new applicant with the award set to false is ineligible
-  period: 2026-09
-  input:
-    state_code:
-      2026: IN
-    age:
-      2026: 18
-    is_disabled:
-      2026: true
-    in_ccdf_has_active_under_18_award: false
-  output:
-    # An explicit false overrides the default: a new application at 18 must
-    # be under the special-needs application age limit.
-    in_ccdf_has_active_under_18_award: false
-    in_ccdf_eligible_child: false
+    in_ccdf_eligible_child: [false, true, false]

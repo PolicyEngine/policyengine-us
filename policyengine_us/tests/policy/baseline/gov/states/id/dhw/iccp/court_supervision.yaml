@@ -1,270 +1,222 @@
-# Verified court-supervision pathways and independent eligibility requirements.
-- name: ID constant-supervision plan extends age without disability
-  period: 2026-09
+# Court-supervision route for id_iccp_eligible_child (IDAPA 16.06.12.105.03.b,
+# p.12): a child under court supervision is eligible until the month of the
+# 19th birthday, approximated as under 19. Court status does not waive income,
+# activity, or immigration requirements.
+- name: Case 1, court supervision extends the age limit to under 19.
+  period: 2026-01
   input:
-    state_code:
-      2026: [ID, ID, ID, ID, ID, ID]
-    age:
-      2026: [12, 13, 17, 18, 19, 40]
-    id_iccp_has_constant_supervision_plan:
-      2026: [true, true, true, true, true, true]
+    state_code: [ID, ID, ID, ID, ID, ID]
+    age: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision: [true, true, true, true, true, true]
   output:
     id_iccp_eligible_child: [true, true, true, true, false, false]
-    is_disabled: false
-    receives_or_needs_protective_services: false
 
-- name: ID court status and child-care order do not establish constant supervision
-  period: 2026-09
+- name: Case 2, court supervision does not bypass the immigration requirement.
+  period: 2026-01
   input:
-    state_code:
-      2026: [ID, ID, ID]
-    age:
-      2026: [13, 17, 18]
-    is_under_court_supervision:
-      2026: [true, true, true]
-    requires_childcare_under_court_order:
-      2026: [true, true, true]
-  output:
-    id_iccp_eligible_child: false
-    id_iccp_has_constant_supervision_plan: false
-
-- name: ID supervision plan does not bypass immigration
-  period: 2026-09
-  input:
-    state_code:
-      2026: ID
-    age:
-      2026: 17
-    id_iccp_has_constant_supervision_plan:
-      2026: true
-    immigration_status:
-      2026: UNDOCUMENTED
+    state_code: ID
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
   output:
     id_iccp_eligible_child: false
 
-- name: ID supervised teenager receives child-care benefit through full pipeline
-  period: 2026-09
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge less the $20 copayment.
+- name: Case 3, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2026-01
   absolute_error_margin: 0.02
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 12000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        id_iccp_has_constant_supervision_plan:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: ID
-        county_str:
-          2026: ADA_COUNTY_ID
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADA_COUNTY_ID
   output:
     id_iccp_eligible_child: [false, true]
     id_iccp_eligible: true
     id_iccp: 80
 
-- name: ID court pathway does not waive income requirements
-  period: 2026-09
+- name: Case 4, supervised 18-year-old at the top of the extended range receives the same benefit.
+  # An 18-year-old is a non-child adult, so the head/spouse roles are set
+  # explicitly to keep the parent as the only caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.02
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 500000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        id_iccp_has_constant_supervision_plan:
-          2026: true
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_tax_unit_head_or_spouse: false
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: ID
-        county_str:
-          2026: ADA_COUNTY_ID
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADA_COUNTY_ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_eligible: true
+    id_iccp: 80
+
+- name: Case 5, court supervision does not waive the income requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 500_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADA_COUNTY_ID
   output:
     id_iccp_income_eligible: false
     id_iccp: 0
 
-- name: ID court pathway does not waive parent activity requirements
-  period: 2026-09
+- name: Case 6, court supervision does not waive the parent activity requirement.
+  period: 2026-01
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 0
-        weekly_hours_worked_before_lsr:
-          2026: 0
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 30
-        childcare_hours_per_day:
-          2026: 6
-        childcare_days_per_week:
-          2026: 5
-        childcare_attending_days_per_month:
-          2026: 20
-        pre_subsidy_childcare_expenses:
-          2026: 1200
-        id_iccp_has_constant_supervision_plan:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 1200
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: ID
-        county_str:
-          2026: ADA_COUNTY_ID
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADA_COUNTY_ID
   output:
     id_iccp_activity_eligible: false
     id_iccp: 0
 
-- name: ID eligible supervised child without care receives zero
-  period: 2026-09
+- name: Case 7, eligible supervised child without care receives zero.
+  period: 2026-01
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        employment_income:
-          2026: 12000
-        weekly_hours_worked_before_lsr:
-          2026: 25
-      child:
-        age:
-          2026: 17
-        is_tax_unit_dependent:
-          2026: true
-        is_in_k12_school:
-          2026: true
-        childcare_hours_per_week:
-          2026: 0
-        childcare_hours_per_day:
-          2026: 0
-        childcare_days_per_week:
-          2026: 0
-        childcare_attending_days_per_month:
-          2026: 0
-        pre_subsidy_childcare_expenses:
-          2026: 0
-        id_iccp_has_constant_supervision_plan:
-          2026: true
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+        is_under_court_supervision: true
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses:
-          2026: 0
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
-        members: [parent, child]
-        state_code:
-          2026: ID
-        county_str:
-          2026: ADA_COUNTY_ID
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADA_COUNTY_ID
   output:
     id_iccp: 0
 
-- name: ID sibling supervision does not inherit another child care order
-  period: 2026-09
+- name: Case 8, court supervision is specific to the child in a mixed household.
+  period: 2026-01
   input:
     people:
-      parent:
-        age:
-          2026: 35
-        is_under_court_supervision:
-          2026: true
-      qualifying:
-        age:
-          2026: 17
-        id_iccp_has_constant_supervision_plan:
-          2026: true
-      sibling:
-        age:
-          2026: 17
-        is_under_court_supervision:
-          2026: true
+      person1:
+        age: 35
+        is_under_court_supervision: true
+      person2:
+        age: 17
+        is_under_court_supervision: true
+      person3:
+        age: 17
     spm_units:
       spm_unit:
-        members: &id001 [parent, qualifying, sibling]
+        members: [person1, person2, person3]
     households:
       household:
-        members: *id001
-        state_code:
-          2026: ID
+        members: [person1, person2, person3]
+        state_code: ID
   output:
     id_iccp_eligible_child: [false, true, false]

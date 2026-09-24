@@ -18,21 +18,24 @@ class nd_ccap_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nd.dhs.ccap.eligibility
         age = person("age", period.this_year)
-        # 400-28-35-02 requires supervised care specified in a court order.
-        # General court supervision alone does not satisfy that requirement.
+        # 400-28-35-02 (ML 3909 p.3): a child 13 to under 19 is eligible if
+        # physically or mentally incapable of self-care (is_disabled proxies
+        # the physician or psychologist verification) or "in need of
+        # supervised care as specified in a court order". We treat the order's
+        # content as a verification detail and use the single court-supervision
+        # input. "Under age 19" runs through the month of the 19th birthday,
+        # which annual age cannot resolve.
         is_disabled = person("is_disabled", period.this_year)
-        court_ordered_care = person(
-            "requires_childcare_under_court_order", period.this_year
-        )
+        court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(
-            is_disabled | court_ordered_care,
+            is_disabled | court_supervision,
             p.disabled_child_age_limit,
             p.child_age_limit,
         )
-        # A child who turns 13 mid-eligibility-period stays eligible through the
-        # next review under the continuation rule. We do not track the
-        # application/review month, so we use a flat
-        # age < 13 cutoff instead (400-28-35-02).
+        # A child who is 12 at application or review and turns 13 during the
+        # eligibility period stays eligible through the month they turn 14
+        # (ML 3909, eff. May 1, 2025). We do not track the application/review
+        # month, so we use a flat age < 13 cutoff instead (400-28-35-02).
         age_eligible = age < age_limit
         # The child (not the caretaker) must be a United States citizen or an
         # alien lawfully admitted for permanent residence (400-28-50-25). This
