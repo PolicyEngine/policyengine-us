@@ -1,0 +1,175 @@
+# P.L. 119-21 section 10103: in California, the deemed SUA requires an
+# elderly or disabled member from the 2025-11-01 proxy date (ACL 25-68).
+
+- name: CA deemed SUA before the proxy date, no elderly or disabled member.
+  period: 2025-10
+  input:
+    state_code:
+      2025: CA
+    count_distinct_utility_expenses:
+      2025: 0
+    has_heating_cooling_expense:
+      2025: false
+    has_snap_elderly_disabled_member: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: CA deemed SUA withdrawn after the proxy date, no elderly or disabled member.
+  period: 2025-11
+  input:
+    state_code:
+      2025: CA
+    count_distinct_utility_expenses:
+      2025: 0
+    has_heating_cooling_expense:
+      2025: false
+    has_snap_elderly_disabled_member: false
+  output:
+    snap_utility_allowance_type: NONE
+
+- name: CA deemed SUA kept after the proxy date with an elderly or disabled member.
+  period: 2025-11
+  input:
+    state_code:
+      2025: CA
+    count_distinct_utility_expenses:
+      2025: 0
+    has_heating_cooling_expense:
+      2025: false
+    has_snap_elderly_disabled_member: true
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: CA actual heating or cooling expense still qualifies without an elderly or disabled member.
+  period: 2026-01
+  input:
+    state_code:
+      2026: CA
+    count_distinct_utility_expenses:
+      2026: 1
+    has_heating_cooling_expense:
+      2026: true
+    has_snap_elderly_disabled_member: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: CA household losing the deemed SUA falls through to the LUA with two bills.
+  period: 2026-01
+  input:
+    state_code:
+      2026: CA
+    count_distinct_utility_expenses:
+      2026: 2
+    has_heating_cooling_expense:
+      2026: false
+    has_snap_elderly_disabled_member: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: A non-deeming state is routed as before.
+  period: 2026-01
+  input:
+    state_code:
+      2026: CO
+    snap_utility_region_str:
+      2026: CO
+    snap_state_using_standard_utility_allowance: false
+    count_distinct_utility_expenses:
+      2026: 2
+    has_heating_cooling_expense:
+      2026: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: A deeming state other than CA is unchanged after the CA date.
+  period: 2026-01
+  input:
+    state_code:
+      2026: NY
+    count_distinct_utility_expenses:
+      2026: 0
+    has_heating_cooling_expense:
+      2026: false
+    has_snap_elderly_disabled_member: false
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: always_standard for CA is not changed by the gate.
+  period: 2026-01
+  input:
+    state_code:
+      2026: CA
+  output:
+    snap_state_using_standard_utility_allowance: true
+
+# Through the real entry point: the elderly or disabled status comes from a
+# person's age rather than an input override, and the amount is the FFY 2026
+# California SUA of 663 dollars.
+- name: CA person aged 65 keeps the SUA after the proxy date.
+  period: 2025-12
+  input:
+    people:
+      person1:
+        age:
+          2025: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        count_distinct_utility_expenses:
+          2025: 0
+        has_heating_cooling_expense:
+          2025: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: CA
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 663
+
+- name: CA person aged 30 loses the SUA after the proxy date.
+  period: 2025-12
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        count_distinct_utility_expenses:
+          2025: 0
+        has_heating_cooling_expense:
+          2025: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: CA
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: CA person aged 30 still has the SUA before the proxy date.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        count_distinct_utility_expenses:
+          2025: 0
+        has_heating_cooling_expense:
+          2025: false
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: CA
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 663

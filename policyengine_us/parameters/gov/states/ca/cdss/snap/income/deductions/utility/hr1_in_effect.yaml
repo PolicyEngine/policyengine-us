@@ -1,0 +1,17 @@
+description: California limits qualification for the Standard Utility Allowance through receipt of energy assistance, including the State Utility Assistance Subsidy, to households with an elderly or disabled member under the Supplemental Nutrition Assistance Program when this is true. The 2025-11-01 date is a proxy. California applies the change upon completion of CalSAWS automation, at initial certification and at the next recertification, and has not published that date; 2025-11-01 is the end of the federal 120-day Quality Control variance exclusion for section 10103 named in ACL 25-68. Switching on at a month boundary for every household also approximates the certification and recertification timing, which is not modelled.
+
+values:
+  0000-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: California CalFresh HR1 Standard Utility Allowance limitation status
+  reference:
+    - title: California All County Letter No. 25-68, Implementation and Automation of SUAS Changes
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-68.pdf#page=7
+    - title: California All County Letter No. 25-68, Quality Control (exclusionary period end date November 1, 2025)
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-68.pdf#page=8
+    - title: Public Law 119-21, Section 10103 - Availability of Standard Utility Allowances Based on Receipt of Energy Assistance
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=13
