@@ -1,4 +1,4 @@
-description: Maximum amount of business losses deductible
+description: Business losses exceeding business income plus this threshold are disallowed; only joint returns receive twice the nonjoint threshold.
 metadata:
   propagate_metadata_to_children: true
   label: Business loss limitation
@@ -6,7 +6,14 @@ metadata:
     - filing_status
   unit: currency-USD
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1_000
   reference:
+    - title: CARES Act section 2304(a), retroactive suspension through 2020
+      href: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf
     - title: 26 U.S. Code § 461 - General rule for taxable year of deduction (l)(3)(A)(ii)(II)
       href: https://www.law.cornell.edu/uscode/text/26/461#l_3_A_ii_II
     - title: OBBBA § 70601 - Permanent extension of limitation on excess business losses of noncorporate taxpayers
@@ -14,9 +21,9 @@ metadata:
     - title: 2025 Form 461, line 15
       href: https://www.irs.gov/pub/irs-prior/f461--2025.pdf
     - title: Revenue Procedure 2025-32, section 4.31 (2026 threshold)
-      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=23
     - title: 2024 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=20
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=17
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=13
     - title: 2022 IRS data release
@@ -28,10 +35,8 @@ metadata:
 HEAD_OF_HOUSEHOLD:
   values:
     2013-01-01: .inf
-    # IRC defines $250,000.
-    2018-01-01: 250_000
-    2019-01-01: 255_000
-    2020-01-01: 259_000
+    # CARES Act section 2304 suspends the limitation through 2020.
+    2018-01-01: .inf
     2021-01-01: 262_000
     2022-01-01: 270_000
     2023-01-01: 289_000
@@ -41,9 +46,7 @@ HEAD_OF_HOUSEHOLD:
 JOINT:
   values:
     2013-01-01: .inf
-    2018-01-01: 500_000
-    2019-01-01: 510_000
-    2020-01-01: 518_000
+    2018-01-01: .inf
     2021-01-01: 524_000
     2022-01-01: 540_000
     2023-01-01: 578_000
@@ -53,9 +56,8 @@ JOINT:
 SEPARATE:
   values:
     2013-01-01: .inf
-    2018-01-01: 250_000
-    2019-01-01: 255_000
-    2020-01-01: 259_000
+    # CARES Act section 2304 suspends the limitation through 2020.
+    2018-01-01: .inf
     2021-01-01: 262_000
     2022-01-01: 270_000
     2023-01-01: 289_000
@@ -65,9 +67,8 @@ SEPARATE:
 SINGLE:
   values:
     2013-01-01: .inf
-    2018-01-01: 250_000
-    2019-01-01: 255_000
-    2020-01-01: 259_000
+    # CARES Act section 2304 suspends the limitation through 2020.
+    2018-01-01: .inf
     2021-01-01: 262_000
     2022-01-01: 270_000
     2023-01-01: 289_000
@@ -78,9 +79,8 @@ SURVIVING_SPOUSE:
   # Section 461(l)(3)(A) doubles the threshold only for a joint return.
   values:
     2013-01-01: .inf
-    2018-01-01: 250_000
-    2019-01-01: 255_000
-    2020-01-01: 259_000
+    # CARES Act section 2304 suspends the limitation through 2020.
+    2018-01-01: .inf
     2021-01-01: 262_000
     2022-01-01: 270_000
     2023-01-01: 289_000
