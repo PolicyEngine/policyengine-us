@@ -9,7 +9,7 @@ class wv_ccap_eligible_child(Variable):
     defined_for = StateCode.WV
     reference = (
         "https://bfa.wv.gov/media/6766/download?inline#page=25",
-        "https://bfa.wv.gov/media/39915/download?inline#page=16",
+        "https://bfa.wv.gov/media/39915/download?inline#page=17",
     )
 
     def formula(person, period, parameters):

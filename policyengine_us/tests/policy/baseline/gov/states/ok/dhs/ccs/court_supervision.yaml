@@ -8,8 +8,14 @@
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
     ok_ccs_eligible_child: [true, false, true, true, true, false, false, false]
+    # OK CCS reads is_disabled only in the age test, which court supervision
+    # already extends, so this row only records that the court flag leaves
+    # it unset.
     is_disabled: [false, false, false, false, false, false, false, false]
-    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+    # Protective or preventive care would satisfy the activity test. No one
+    # reports work or study, so every unit fails it, including the
+    # court-supervised ones.
+    ok_ccs_activity_eligible: [false, false, false, false, false, false, false, false]
 
 - name: Case 2, OK court supervision does not bypass child immigration eligibility.
   period: 2025-01

@@ -7,9 +7,10 @@
     age: [12, 13, 13, 17, 18, 19, 18, 40]
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
+    # Single-person units with no income or care show no downstream effect of
+    # disability or protective status here; Case 3 checks both through the
+    # rate and the copay.
     tn_ccap_eligible_child: [true, false, true, true, true, false, false, false]
-    is_disabled: [false, false, false, false, false, false, false, false]
-    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 
 - name: Case 2, TN court supervision does not bypass child immigration eligibility.
   period: 2025-01
@@ -28,7 +29,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24000
+        employment_income: 24_000
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 17
@@ -48,7 +49,7 @@
         members:
         - person1
         - person2
-        spm_unit_pre_subsidy_childcare_expenses: 12000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
         members:
@@ -62,7 +63,11 @@
     - true
     tn_ccap_income_eligible: true
     tn_ccap_eligible: true
+    # Not waived: court supervision does not make the child a
+    # protective-services child, which would exempt the family from the copay.
     tn_ccap_copay: 98.9
+    # No 15% disability differential: court supervision does not set
+    # is_disabled.
     tn_ccap_max_weekly_benefit:
     - 0
     - 119
@@ -76,7 +81,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24000
+        employment_income: 24_000
         weekly_hours_worked_before_lsr: 0
       person2:
         age: 17
@@ -96,7 +101,7 @@
         members:
         - person1
         - person2
-        spm_unit_pre_subsidy_childcare_expenses: 12000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
         members:
@@ -111,6 +116,7 @@
     tn_ccap_protective_services_waiver: false
     tn_ccap: 0
     tn_ccap_eligible: false
+
 - name: Case 5, TN court supervision does not waive the income test.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -118,7 +124,7 @@
     people:
       person1:
         age: 30
-        employment_income: 200000
+        employment_income: 200_000
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 17
@@ -138,7 +144,7 @@
         members:
         - person1
         - person2
-        spm_unit_pre_subsidy_childcare_expenses: 12000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
         members:
@@ -153,6 +159,7 @@
     tn_ccap_protective_services_waiver: false
     tn_ccap: 0
     tn_ccap_eligible: false
+
 - name: Case 6, TN court supervision pays no benefit without care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -160,7 +167,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24000
+        employment_income: 24_000
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 17
@@ -180,7 +187,7 @@
         members:
         - person1
         - person2
-        spm_unit_pre_subsidy_childcare_expenses: 12000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
         members:
@@ -202,27 +209,27 @@
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 40
         is_under_court_supervision: true
-      younger:
+      person2:
         age: 12
-      supervised:
+      person3:
         age: 17
         is_under_court_supervision: true
-      sibling:
+      person4:
         age: 17
-      overage:
+      person5:
         age: 19
         is_under_court_supervision: true
     households:
       household:
         members:
-        - parent
-        - younger
-        - supervised
-        - sibling
-        - overage
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
         state_code: TN
   output:
     tn_ccap_eligible_child:

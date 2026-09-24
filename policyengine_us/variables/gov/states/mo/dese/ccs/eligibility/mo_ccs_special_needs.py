@@ -8,7 +8,9 @@ class mo_ccs_special_needs(Variable):
     definition_period = MONTH
     defined_for = StateCode.MO
     reference = (
-        "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/5csr/5c25-200.pdf#page=2"
+        "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/5csr/5c25-200.pdf#page=2",
+        "https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=26",
+        "https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=52",
     )
 
     def formula(person, period, parameters):
@@ -23,6 +25,11 @@ class mo_ccs_special_needs(Variable):
         # (mo_ccs_eligible_child), the market-rate +25%
         # special-needs rate column (mo_ccs_maximum_daily_benefit), and the
         # sliding-fee waiver (mo_ccs_copay), so all three stay consistent.
+        # State Plan FFY 2025-2027 2.3.1(d) also lists a child under
+        # court-ordered supervision, and 4.3.3(b)(ii) pays such children the
+        # 25% special-needs rate differential. The Eligibility Policy Manual's
+        # 6.7 lists only the SSI, mental-health, and disability criteria and
+        # omits the court route; the rule and State Plan govern here.
         is_disabled = person("is_disabled", period.this_year)
         # A child receiving SSI is a child with special needs
         # (5 CSR 25-200.050(11)(A)).

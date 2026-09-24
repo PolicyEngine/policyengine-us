@@ -9,7 +9,8 @@ class ky_ccap_daily_benefit(Variable):
     definition_period = MONTH
     defined_for = "ky_ccap_eligible_child"
     reference = (
-        "https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=10",
+        "https://apps.legislature.ky.gov/law/kar/downloads/docs/10239/document.engrossed.pdf#page=10",
+        "https://apps.legislature.ky.gov/law/kar/registers/49Ky_R_2022-23/02_Aug.pdf#page=70",
         "https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc300kymaxpaymentchart.pdf#page=1",
     )
 
@@ -27,12 +28,14 @@ class ky_ccap_daily_benefit(Variable):
         )
         under_court_supervision = person("is_under_court_supervision", period.this_year)
         age = person("age", period.this_year)
+        # Section 10(3)(b) also covers court-supervised children age 13 but
+        # under 19, the same band the Section 3(1)(b) eligibility age
+        # parameters set, so those parameters are reused here.
         court_special_care = (
             under_court_supervision
             & (age >= p.eligibility.child_age_limit)
             & (age < p.eligibility.special_needs_child_age_limit)
         )
-        # Section 10(3)(b) also covers court-supervised children ages 13-18.
         special_care_supplement = where(
             has_special_need | court_special_care, p.supplements.special_care, 0
         )

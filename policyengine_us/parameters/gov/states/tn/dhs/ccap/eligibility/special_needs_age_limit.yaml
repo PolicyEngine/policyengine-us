@@ -1,12 +1,18 @@
 description: Tennessee limits eligibility to children at or below this age when they are incapable of self-care or under court supervision under the Child Care Certificate Program.
 values:
+  # tn_ccap_eligible_child compares the State Plan's upper age of 18.00 with
+  # age <= 18, so eligibility runs through age 18.0 and excludes age 18.5.
   2024-06-01: 18
 
 metadata:
   unit: year
   period: year
-  label: Tennessee CCAP special needs age limit
+  label: Tennessee CCAP special needs or court-supervised age limit
   reference:
+    - title: Tennessee CCDF State Plan FFY 2022-2024, Section 3.1.1(b)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/stplan_pdf_2022%20downloaded%201-19-22.pdf#page=86
+    - title: Tennessee CCDF State Plan FFY 2022-2024, Section 3.1.1(c)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/stplan_pdf_2022%20downloaded%201-19-22.pdf#page=87
     - title: Tennessee CCDF State Plan FFY 2025-2027, Section 2.2.1(b)
       href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=23
     - title: Tennessee CCDF State Plan FFY 2025-2027, Section 2.2.1(c)

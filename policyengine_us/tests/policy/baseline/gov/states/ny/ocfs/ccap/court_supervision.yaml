@@ -8,8 +8,13 @@
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
     ny_ccap_age_eligible: [true, false, true, true, false, false, false, false]
+    # Special needs and court supervision share one age test in
+    # ny_ccap_age_eligible, and no other NY CCAP variable reads is_disabled,
+    # so this row only records that the court flag leaves it unset.
     is_disabled: [false, false, false, false, false, false, false, false]
-    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+    # A protective services case would waive the income test and family share
+    # for the whole unit; court supervision does not open one.
+    ny_ccap_protective_services_case: [false, false, false, false, false, false, false, false]
 
 # 18 NYCRR 415.1(b)(3) extends the court route to under 19 for a full-time
 # student in secondary school (or equivalent training). is_in_secondary_school
@@ -43,20 +48,23 @@
     - true
     - false
     - false
+
 - name: Case 3, NY court supervision does not waive income eligibility.
   period: 2025-01
   input:
     state_code: NY
     age: 17
     is_under_court_supervision: true
-    ny_ccap_countable_income: 400000
-    hhs_smi: 80000
+    ny_ccap_countable_income: 400_000
+    hhs_smi: 80_000
     ny_ccap_activity_eligible: true
   output:
     ny_ccap_age_eligible: true
     ny_ccap_eligible_child: false
+
 # is_in_secondary_school alone stands in for the full-time secondary student
-# of 18 NYCRR 415.1(b)(3); the court route does not read is_full_time_student.
+# of 18 NYCRR 415.1(b)(3); neither the court route nor the special-needs route
+# reads is_full_time_student.
 - name: Case 4, NY court-supervised age 18 in secondary school without full-time flag.
   period: 2025
   input:
@@ -66,6 +74,7 @@
     is_in_secondary_school: true
   output:
     ny_ccap_age_eligible: true
+
 - name: Case 5, NY court-supervised age 18 with no school flags.
   period: 2025
   input:
@@ -74,6 +83,7 @@
     is_under_court_supervision: true
   output:
     ny_ccap_age_eligible: false
+
 # is_in_k12_school is imputed only through age 17, so it must be set explicitly.
 - name: Case 6, NY court-supervised age 18 with is_in_k12_school only.
   period: 2025
@@ -84,3 +94,85 @@
     is_in_k12_school: true
   output:
     ny_ccap_age_eligible: true
+
+# Case 3's household with income under the limit.
+- name: Case 7, NY court-supervised 17-year-old under the income limit is eligible.
+  period: 2025-01
+  input:
+    state_code: NY
+    age: 17
+    is_under_court_supervision: true
+    ny_ccap_countable_income: 40_000
+    hhs_smi: 80_000
+    ny_ccap_activity_eligible: true
+  output:
+    # Age 17 < 18 court-supervision age limit.
+    ny_ccap_age_eligible: true
+    # 40_000 / 12 = 3_333.33 per month <= 80_000 x 0.85 / 12 = 5_666.67.
+    ny_ccap_income_eligible: true
+    ny_ccap_eligible_child: true
+
+# Two working parents with court-supervised children aged 18 and 16. The
+# 44-year-old is the tax-unit spouse, so the 18-year-old is a dependent and
+# not a caretaker for the activity test.
+- name: Case 8, NY household with a court-supervised 18-year-old in secondary school.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 44
+        employment_income: 10_000
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 18
+        is_under_court_supervision: true
+        is_in_secondary_school: true
+      person4:
+        age: 16
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # (50_000 + 10_000) / 12 = 5_000 per month.
+    ny_ccap_countable_income: 5_000
+    # NY SMI (FFY 2025) 127_802 x 1.00 size-4 adjustment / 12 = 10_650.17.
+    hhs_smi: 10_650.17
+    # 5_000 <= 10_650.17 x 0.85 = 9_052.64.
+    ny_ccap_income_eligible: true
+    # Both caretakers report work hours.
+    ny_ccap_activity_eligible: true
+    # Age 18: court supervision, secondary school, and 18 < 19.
+    # Age 16: court supervision and 16 < 18.
+    ny_ccap_age_eligible: [false, false, true, true]
+    ny_ccap_eligible_child: [false, false, true, true]
+
+# Both routes read is_in_secondary_school or is_in_k12_school as the
+# full-time secondary enrollment of 18 NYCRR 415.1(b)(3), so a full-time
+# student outside secondary school does not qualify at 18 on either route.
+- name: Case 9, NY disabled 18-year-old full-time student needs secondary school on either route.
+  period: 2025
+  input:
+    state_code: [NY, NY, NY]
+    age: [18, 18, 18]
+    is_disabled: [true, true, true]
+    is_under_court_supervision: [true, false, true]
+    is_full_time_student: [true, true, false]
+    is_in_secondary_school: [false, false, true]
+  output:
+    # Person 1: court supervision and special needs, not in secondary school.
+    # Person 2: special needs only, not in secondary school.
+    # Person 3: court supervision and special needs, in secondary school.
+    ny_ccap_age_eligible: [false, false, true]

@@ -8,5 +8,10 @@
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
     or_erdc_eligible_child: [true, false, true, true, false, false, false, false]
-    is_disabled: [false, false, false, false, false, false, false, false]
+    # is_disabled would move an eligible child to the special-needs rate
+    # group; court-supervised children stay in the school-age group.
+    # Ineligible people show the SCHOOL default.
+    or_erdc_age_group: [SCHOOL, SCHOOL, SCHOOL, SCHOOL, SCHOOL, SCHOOL, SCHOOL, SCHOOL]
+    # OR ERDC does not read receives_or_needs_protective_services, so this row
+    # only records that the court flag leaves it unset.
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]

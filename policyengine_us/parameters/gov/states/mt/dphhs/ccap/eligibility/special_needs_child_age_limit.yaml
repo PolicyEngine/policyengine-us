@@ -1,16 +1,18 @@
-description: Montana limits eligibility to children with special needs or under court supervision under this age under the Best Beginnings Child Care Scholarship program.
-# Standard CCDF eligible-child age cap from 45 CFR 98.20(a)(1): a child who is
-# physically or mentally incapable of self-care, or under court supervision, may
-# remain eligible until under age 19.
+description: Montana limits eligibility for children with special needs or under court supervision to those under this age under the Best Beginnings Child Care Scholarship program.
+# Standard CCDF eligible-child age cap from 45 CFR 98.20(a)(1)(ii): a child who
+# is physically or mentally incapable of self-care, or under court supervision,
+# may remain eligible until under age 19.
 values:
   2016-11-01: 19
 
 metadata:
   unit: year
   period: year
-  label: Montana CCAP special needs child age limit
+  label: Montana CCAP special needs or court-supervised child age limit
   reference:
     - title: 45 CFR 98.20(a)(1)(ii) (eligible child under age 19 if physically or mentally incapable of self-care or under court supervision)
-      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(1)
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(1)(ii)
+    - title: Montana CCDF State Plan FFY 2016-2018, Section 3.1.1(b)-(c)
+      href: https://web.archive.org/web/20190201201207/https://dphhs.mt.gov/Portals/85/hcsd/documents/ChildCare/2016-2018stateplan.pdf#page=76
     - title: Montana CCDF State Plan FFY 2025-2027, Section 2.2.1(b)-(c)
       href: https://dphhs.mt.gov/assets/ecfsd/childcare/documentsandresources/MontanaCCDFStatePlan.pdf#page=18

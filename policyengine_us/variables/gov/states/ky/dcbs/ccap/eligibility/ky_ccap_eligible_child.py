@@ -7,7 +7,7 @@ class ky_ccap_eligible_child(Variable):
     label = "Eligible child for Kentucky CCAP"
     definition_period = MONTH
     defined_for = StateCode.KY
-    reference = "https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=4"
+    reference = "https://apps.legislature.ky.gov/law/kar/downloads/docs/10239/document.engrossed.pdf#page=4"
 
     def formula(person, period, parameters):
         # 922 KAR 2:160 Section 3(1)(b): under 13, or under 19 if incapable

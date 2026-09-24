@@ -11,6 +11,7 @@ class ut_ccap_eligible_child(Variable):
         "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-702",
         "https://jobs.utah.gov/occ/provider/r986700.pdf#page=2",
         "https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1",
+        "https://jobs.utah.gov/occ/ccdfplan.pdf#page=19",
     )
 
     def formula(person, period, parameters):
@@ -19,6 +20,8 @@ class ut_ccap_eligible_child(Variable):
         # R986-700-702(5)(b) extends the age limit for children under court
         # supervision or meeting R986-700-717 special-needs requirements.
         # is_disabled proxies the latter, without assigning it to court cases.
+        # The r986700.pdf edition (last changed March 31, 2022) numbers this
+        # rule (4)(b); State Plan FFY 2025-2027 2.2.1(b)-(c) also covers it.
         is_disabled = person("is_disabled", period.this_year)
         under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(

@@ -8,9 +8,9 @@ class ok_ccs_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.OK
     reference = (
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-3",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-5",
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4-b.pdf#page=1",
-        "https://okrules.elaws.us/oac/340:40-7-3",
-        "https://okrules.elaws.us/oac/340:40-7-5",
     )
 
     def formula(person, period, parameters):

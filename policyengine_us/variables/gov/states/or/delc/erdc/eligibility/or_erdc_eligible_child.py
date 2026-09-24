@@ -19,11 +19,12 @@ class or_erdc_eligible_child(Variable):
         # OAR 414-175-0022(2)(b): court supervision is a separate age
         # extension from the incapacity, foster-care, and disability routes.
         # Compromised-safety circumstances under (2)(b)(E) remain unmodeled.
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         special_circumstances = (
             person("is_incapable_of_self_care", period.this_year)
             | person("is_in_foster_care", period)
             | person("is_disabled", period.this_year)
-            | person("is_under_court_supervision", period.this_year)
+            | under_court_supervision
         )
         age_eligible = (age < p.child) | (
             (age < p.special_circumstances_child) & special_circumstances

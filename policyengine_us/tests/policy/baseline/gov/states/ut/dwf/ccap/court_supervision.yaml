@@ -8,6 +8,10 @@
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
     ut_ccap_eligible_child: [true, false, true, true, false, false, false, false]
+    # UT CCAP reads is_disabled only in the age test and in the two-parent
+    # incapacity route of the activity test, which a one-person unit cannot
+    # reach, and does not read protective services; these rows record that
+    # the court flag leaves both unset.
     is_disabled: [false, false, false, false, false, false, false, false]
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 

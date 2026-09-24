@@ -8,7 +8,11 @@
     is_under_court_supervision: [false, false, true, true, true, true, false, true]
   output:
     la_ccap_eligible_child: [true, false, true, true, false, false, false, false]
-    is_disabled: [false, false, false, false, false, false, false, false]
+    # Court supervision does not make a child a special-needs child, so no one
+    # gets the Special Needs Care Incentive rate or the copay waiver.
+    la_ccap_special_needs_child: [false, false, false, false, false, false, false, false]
+    # LA CCAP does not read receives_or_needs_protective_services, so this row
+    # only records that the court flag leaves it unset.
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 
 - name: Case 2, LA court supervision does not bypass child immigration eligibility.
@@ -20,3 +24,55 @@
     immigration_status: UNDOCUMENTED
   output:
     la_ccap_eligible_child: false
+
+# LAC 28:CLXV.503.A.2 admits a court-supervised child age 13 through 17. The
+# court route does not make the child a special-needs child (LAC 28:CLXV.103),
+# so the regular rate and the sliding-fee copay still apply.
+- name: Case 3, LA court-supervised 15-year-old receives the regular rate less the copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 39_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Court supervision and 15 < 18.
+    la_ccap_eligible_child: [false, true]
+    la_ccap_special_needs_child: [false, false]
+    # 39_000 / 12 = 3_250 per month of head-of-household wages.
+    la_ccap_countable_income: 3_250
+    # January 2025 uses the FFY 2024 SMI: 86_934 x 0.68 (size 2) / 12 = 4_926.26.
+    la_ccap_smi: 4_926.26
+    # 3_250 <= 0.85 x 4_926.26 = 4_187.32.
+    la_ccap_income_eligible: true
+    # The parent works 40 >= 20 hours per week.
+    la_ccap_activity_eligible: true
+    la_ccap_eligible: true
+    la_ccap_copay_waived: false
+    # 3_250 / 4_926.26 = 0.660 of SMI, in the [0.6401, 0.6901) band -> $2 a day.
+    la_ccap_daily_copay: 2
+    # Type III early learning center, regular (age 3 and over) rate = $31.50.
+    la_ccap_daily_rate: [0, 31.5]
+    # 40 hours a week >= 30 full-time hours -> 22 x min(40 / 30, 1) = 22 days.
+    la_ccap_monthly_days: [0, 22]
+    # 2 x 22 = 44.
+    la_ccap_total_copay: 44
+    # min(12_000 / 12 = 1_000, 31.5 x 22 = 693) = 693; 693 - 44 = 649.
+    la_ccap: 649
