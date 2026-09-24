@@ -1,6 +1,6 @@
 # Court supervision extends this state's age test without setting disability
 # or protective-services status. Cases include both age boundaries and adults.
-- name: LA court supervision age boundaries and default status
+- name: Case 1, LA court supervision age boundaries and default status.
   period: 2025-01
   input:
     state_code: [LA, LA, LA, LA, LA, LA, LA, LA]
@@ -11,7 +11,7 @@
     is_disabled: [false, false, false, false, false, false, false, false]
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 
-- name: LA court supervision does not bypass child immigration eligibility
+- name: Case 2, LA court supervision does not bypass child immigration eligibility.
   period: 2025-01
   input:
     state_code: LA

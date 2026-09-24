@@ -1,6 +1,6 @@
 # Court supervision extends this state's age test without setting disability
 # or protective-services status. Cases include both age boundaries and adults.
-- name: MO court supervision age boundaries and default status
+- name: Case 1, MO court supervision age boundaries and default status.
   period: 2025-01
   input:
     state_code: [MO, MO, MO, MO, MO, MO, MO, MO]
@@ -12,7 +12,7 @@
     is_disabled: [false, false, false, false, false, false, false, false]
     receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
 
-- name: MO court supervision does not bypass child immigration eligibility
+- name: Case 2, MO court supervision does not bypass child immigration eligibility.
   period: 2025-01
   input:
     state_code: MO
@@ -23,7 +23,7 @@
   output:
     mo_ccs_eligible_child: false
 
-- name: MO court supervision receives special-needs reimbursement and sliding-fee treatment
+- name: Case 3, MO court supervision receives special-needs reimbursement and sliding-fee treatment.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -75,7 +75,7 @@
     - false
     - false
 
-- name: MO court supervision does not waive the activity test
+- name: Case 4, MO court supervision does not waive the activity test.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -120,7 +120,7 @@
     - false
     mo_ccs_eligible: false
     mo_ccs: 0
-- name: MO court supervision does not waive the income test
+- name: Case 5, MO court supervision does not waive the income test.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -166,7 +166,7 @@
     mo_ccs_eligible: false
     mo_ccs: 0
 
-- name: MO age-18 court-supervised child must still attend school
+- name: Case 6, MO age-18 court-supervised child must still attend school.
   period: 2025-01
   input:
     state_code:

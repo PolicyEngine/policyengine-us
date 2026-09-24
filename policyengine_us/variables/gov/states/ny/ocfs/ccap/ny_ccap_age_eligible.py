@@ -17,9 +17,10 @@ class ny_ccap_age_eligible(Variable):
         "is_full_time_student stands in for the full-time secondary or "
         "vocational student of 415.1(b)(3), so a post-secondary student with "
         "special needs is also admitted by the existing special-needs proxy. "
-        "The court-supervision route uses is_in_secondary_school or the "
-        "is_in_k12_school imputation to require secondary education or "
-        "equivalent training for the under-19 extension."
+        "For the court-supervision route's under-19 extension, "
+        "is_in_secondary_school or is_in_k12_school stands in for full-time "
+        "secondary or equivalent-training enrollment, as in federal TANF; "
+        "is_full_time_student is not read on that route."
     )
     reference = (
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=2",
