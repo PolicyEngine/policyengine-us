@@ -1,6 +1,6 @@
 # Validation against TAXSIM
 
-PolicyEngine runs the same Enhanced CPS households through PolicyEngine US and through NBER's [TAXSIM](https://taxsim.nber.org/taxsim35/), and compares the federal and state income tax each one calculates. The comparison is maintained in [policyengine-taxsim](https://github.com/PolicyEngine/policyengine-taxsim). Its [dashboard](https://www.policyengine.org/us/taxsim/dashboard) has state-by-state results, side-by-side outputs for a sample of households, and the complete comparison data for each year.
+PolicyEngine compares the federal and state income tax that PolicyEngine US and NBER's [TAXSIM](https://taxsim.nber.org/taxsim35/) calculate for the same Enhanced CPS households. Each household contributes one record: the tax unit that contains the household head. The comparison is maintained in [policyengine-taxsim](https://github.com/PolicyEngine/policyengine-taxsim). Its [dashboard](https://www.policyengine.org/us/taxsim/dashboard) has state-by-state results, side-by-side outputs for a sample of households, and the complete comparison data for each year.
 
 ## Results
 
@@ -78,21 +78,28 @@ The table below is loaded from the results the dashboard publishes, so it always
     row.date = typeof meta.generatedAt === "string" ? meta.generatedAt.slice(0, 10) : null;
     // Mirrors the dashboard's notice that some states used an earlier TAXSIM build.
     var fb = meta.taxsimFallback;
-    var states = fb && fb.appliesToThisYear === true ? (Array.isArray(fb.states) ? fb.states : [fb.state]) : [];
-    row.fallbackStates = states.filter(function (s) {
-      return typeof s === "string" && /^[A-Z]{2}$/.test(s);
-    });
+    row.fallbackStates = null;
+    if (fb && typeof fb === "object" && fb.appliesToThisYear === true) {
+      var states = Array.isArray(fb.states) ? fb.states : [fb.state];
+      row.fallbackStates = states.filter(function (s) {
+        return typeof s === "string" && /^[A-Z]{2}$/.test(s);
+      });
+    }
     return row;
   }
 
   function load(year) {
-    return fetch(DATA_URL + year + "/summary_" + year + ".json")
+    // A stalled request counts as a failed year instead of leaving the table loading.
+    var controller = typeof AbortController === "function" ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, 15000) : null;
+    return fetch(DATA_URL + year + "/summary_" + year + ".json", controller ? { signal: controller.signal } : {})
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
         return response.json();
       })
       .then(function (raw) { return parse(year, raw); })
-      .catch(function () { return null; });
+      .catch(function () { return null; })
+      .then(function (row) { if (timer) clearTimeout(timer); return row; });
   }
 
   function unique(values) {
@@ -122,14 +129,14 @@ The table below is loaded from the results the dashboard publishes, so it always
     var failed = YEARS.filter(function (y, i) { return rows[i] === null; });
     root.textContent = "";
     if (results.length === 0) {
-      root.appendChild(el("p", {}, ["The latest results could not be loaded. They are on the ", dashboardLink("TAXSIM dashboard"), "."]));
+      root.appendChild(el("p", {}, ["The latest results could not be loaded here. See the ", dashboardLink("TAXSIM dashboard"), "."]));
       return;
     }
     var records = unique(results.map(function (r) { return r.records; }));
     var sameRecords = records.length === 1;
     var intro = "Share of records where the two models agree, for tax years " +
       yearRange(results.map(function (r) { return r.year; })) + ".";
-    if (sameRecords) intro += " Each year compares " + records[0].toLocaleString("en-US") + " household records.";
+    if (sameRecords) intro += " Each year compares " + records[0].toLocaleString("en-US") + " records, one per household.";
     root.appendChild(el("p", {}, [intro]));
 
     var head1 = [el("th", { scope: "col", rowspan: "2", class: "head" }, ["Tax year"])];
@@ -164,18 +171,18 @@ The table below is loaded from the results the dashboard publishes, so it always
 
     var byStates = {};
     results.forEach(function (r) {
-      if (!r.fallbackStates.length) return;
+      if (r.fallbackStates === null) return;
       var key = r.fallbackStates.join(",");
       (byStates[key] = byStates[key] || []).push(r.year);
     });
     Object.keys(byStates).forEach(function (key) {
       root.appendChild(el("p", {}, [
-        "For " + yearRange(byStates[key]) + ", the TAXSIM results for " + listStates(key.split(",")) +
+        "For " + yearRange(byStates[key]) + ", the TAXSIM results for " + (key ? listStates(key.split(",")) : "some states") +
         " come from the previous TAXSIM build; other states use the updated build."
       ]));
     });
     if (failed.length) {
-      root.appendChild(el("p", {}, ["Results for " + yearRange(failed) + " could not be loaded. The ", dashboardLink("dashboard"), " has every year."]));
+      root.appendChild(el("p", {}, ["Results for " + yearRange(failed) + " could not be loaded here. See the ", dashboardLink("TAXSIM dashboard"), "."]));
     }
   }
 
@@ -194,7 +201,7 @@ The table below is loaded from the results the dashboard publishes, so it always
 Each test compares PolicyEngine with TAXSIM for one record at a time, separately for federal income tax and state income tax. A cell in the table is the share of records that pass.
 
 - **Within 1% of income** (the dashboard's default view): the two amounts differ by less than 1% of the record's gross income. Gross income here is wages, self-employment income, interest, dividends, other property income, non-property income, pensions and unemployment compensation, plus short- and long-term capital gains when positive and 85% of Social Security benefits. Records with zero or negative gross income use the \$15 test instead.
-- **Within 1%, net of rebates** (state only): the same test applied to state income tax plus one-time state rebates on both sides. TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to; netting rebates out removes that timing difference.
+- **Within 1%, net of rebates** (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia's in 2022 and 2025, for example), so this column can be lower than the plain 1% column.
 - **Within \$15**: the two amounts differ by \$15 or less.
 
-These rules are implemented in `match_flags` in [`scripts/refresh_dashboard.py`](https://github.com/PolicyEngine/policyengine-taxsim/blob/main/scripts/refresh_dashboard.py), which produces the published results.
+These rules are implemented in `match_flags` in [`scripts/refresh_dashboard.py`](https://github.com/PolicyEngine/policyengine-taxsim/blob/main/scripts/refresh_dashboard.py). Each year's published summary records the commit and script hash that produced it.

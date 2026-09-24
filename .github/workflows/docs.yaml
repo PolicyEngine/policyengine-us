@@ -6,6 +6,7 @@ on:
       - "docs/**"
       - "Makefile"
       - "policyengine_us/tools/add_plotly_to_book.py"
+      - "policyengine_us/tools/render_plotly_outputs.py"
       - ".github/workflows/docs.yaml"
   push:
     branches: [main]
@@ -13,6 +14,7 @@ on:
       - "docs/**"
       - "Makefile"
       - "policyengine_us/tools/add_plotly_to_book.py"
+      - "policyengine_us/tools/render_plotly_outputs.py"
       - ".github/workflows/docs.yaml"
   workflow_dispatch:
 
@@ -23,6 +25,7 @@ jobs:
   Build:
     name: Build documentation
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     concurrency:
       group: docs-build-${{ github.ref }}
       cancel-in-progress: true
@@ -39,11 +42,15 @@ jobs:
       # The book is Jupyter Book 1 (docs/_config.yml, docs/_toc.yml), but
       # uv.lock resolves jupyter-book 2, so the docs toolchain is installed
       # here rather than with `uv sync --extra dev`. docs/_config.yml loads
-      # sphinxarg.ext, which needs sphinx-argparse.
-      - name: Install the package and the Jupyter Book 1 toolchain
+      # sphinxarg.ext, which needs sphinx-argparse. The book renders stored
+      # outputs and never imports policyengine_us; plotly (pinned to the
+      # uv.lock version) is only needed to render the stored charts.
+      - name: Install the Jupyter Book 1 toolchain
         run: |
           uv venv --python 3.13 .venv
-          uv pip install --python .venv/bin/python -e . "jupyter-book>=1.0.4.post1,<2" "furo>=2024.8.6" sphinx-argparse
+          uv pip install --python .venv/bin/python "jupyter-book>=1.0.4.post1,<2" "furo>=2024.8.6" sphinx-argparse "plotly==5.24.1"
+      - name: Render stored Plotly outputs
+        run: .venv/bin/python policyengine_us/tools/render_plotly_outputs.py docs
       - name: Build the book
         run: |
           source .venv/bin/activate
@@ -57,6 +64,7 @@ jobs:
   Deploy:
     name: Deploy documentation to GitHub Pages
     needs: Build
+    timeout-minutes: 10
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'PolicyEngine/policyengine-us'
     runs-on: ubuntu-latest
     permissions:
