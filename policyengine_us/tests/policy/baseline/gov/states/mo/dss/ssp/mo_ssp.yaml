@@ -512,8 +512,8 @@
     mo_ssp_eligible: false
     mo_ssp: 0
 
-- name: Case 26, July 2026 SAB recipient with low SSI uses the $949 maximum payment.
-  period: 2026-07
+- name: Case 26, SAB grant rises to the $949 maximum payment in July 2026.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -527,12 +527,15 @@
         members: [person1]
         state_code: MO
   output:
-    # Maximum SAB payment $949 effective 2026-07-01 - $200 SSI = $749.
-    ssi: 200
-    mo_ssp: 749
+    # $917 - $200 SSI = $717 through June; $949 - $200 SSI = $749 from
+    # 2026-07-01.
+    ssi: 2_400
+    mo_ssp:
+      2026-06: 717
+      2026-07: 749
 
-- name: Case 27, July 2026 SAB applicant with no SSI receives the full maximum payment.
-  period: 2026-07
+- name: Case 27, SAB applicant with no SSI receives the full maximum payment each month.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -546,4 +549,6 @@
         members: [person1]
         state_code: MO
   output:
-    mo_ssp: 949
+    mo_ssp:
+      2026-06: 917
+      2026-07: 949

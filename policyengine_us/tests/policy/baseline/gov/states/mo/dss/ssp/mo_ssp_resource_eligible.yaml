@@ -79,8 +79,8 @@
   output:
     mo_ssp_resource_eligible: false
 
-- name: Case 5, July 2026 SAB applicant at the $6,220.50 individual limit is eligible.
-  period: 2026-07
+- name: Case 5, SAB applicant at the $6,220.50 individual limit becomes eligible in July 2026.
+  period: 2026
   input:
     people:
       person1:
@@ -93,10 +93,13 @@
         members: [person1]
         state_code: MO
   output:
-    mo_ssp_resource_eligible: true
+    # The individual limit rises from $6,068.80 to $6,220.50 on 2026-07-01.
+    mo_ssp_resource_eligible:
+      2026-06: false
+      2026-07: true
 
-- name: Case 6, July 2026 SAB applicant above the individual limit is ineligible.
-  period: 2026-07
+- name: Case 6, SAB applicant above the July 2026 individual limit is ineligible.
+  period: 2026
   input:
     people:
       person1:
@@ -109,26 +112,30 @@
         members: [person1]
         state_code: MO
   output:
-    mo_ssp_resource_eligible: false
+    mo_ssp_resource_eligible:
+      2026-07: false
 
-- name: Case 7, July 2026 SNC applicant above the individual limit is ineligible.
-  period: 2026-07
+- name: Case 7, SNC applicant at the $6,220.50 individual limit becomes eligible in July 2026.
+  period: 2026
   input:
     people:
       person1:
         age: 70
         is_ssi_aged: true
-        ssi_countable_resources: 6_220.51
+        ssi_countable_resources: 6_220.50
         mo_ssp_living_arrangement: RCF_LEVEL_I
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    mo_ssp_resource_eligible: false
+    # The SNC individual limit also rises from $6,068.80 to $6,220.50.
+    mo_ssp_resource_eligible:
+      2026-06: false
+      2026-07: true
 
 - name: Case 8, unmarried adult child in a parent's tax unit uses the individual limit.
-  period: 2026-07
+  period: 2026
   input:
     people:
       person1:
@@ -158,10 +165,11 @@
     # is_tax_unit_spouse ranks the 22-year-old as the spouse, so the SPM
     # unit reads as married, but the claimant's own marital unit has one
     # person. $8,000 exceeds the $6,220.50 individual limit.
-    mo_ssp_resource_eligible: [true, false]
+    mo_ssp_resource_eligible:
+      2026-07: [true, false]
 
 - name: Case 9, married SAB claimant living with a spouse uses the couple limit.
-  period: 2026-07
+  period: 2026
   input:
     people:
       person1:
@@ -187,10 +195,11 @@
         state_code: MO
   output:
     # $8,000 is below the $12,441.00 couple limit.
-    mo_ssp_resource_eligible: [true, true]
+    mo_ssp_resource_eligible:
+      2026-07: [true, true]
 
-- name: Case 10, married couple above the July 2026 couple limit is ineligible.
-  period: 2026-07
+- name: Case 10, married couple at the July 2026 couple limit becomes eligible in July.
+  period: 2026
   input:
     people:
       person1:
@@ -200,7 +209,7 @@
         mo_ssp_living_arrangement: SAB
       person2:
         age: 50
-        ssi_countable_resources: 4_441.01
+        ssi_countable_resources: 4_441
         mo_ssp_living_arrangement: NONE
     marital_units:
       marital_unit:
@@ -216,5 +225,8 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Combined $12,441.01 exceeds the $12,441.00 couple limit.
-    mo_ssp_resource_eligible: [false, true]
+    # Combined $12,441 exceeds the $12,137.55 June couple limit and equals the
+    # $12,441.00 limit effective 2026-07-01.
+    mo_ssp_resource_eligible:
+      2026-06: [false, true]
+      2026-07: [true, true]
