@@ -8,14 +8,8 @@ class modeled_state_unemployment_compensation(Variable):
     unit = USD
     documentation = (
         "Unemployment compensation computed from the modeled state "
-        "unemployment insurance programs."
+        "unemployment insurance programs. Each program counts from the "
+        "first year its implementation is verified."
     )
     definition_period = YEAR
-    adds = [
-        "al_ui",
-        "nj_unemployment_insurance",
-        "ny_ui",
-        "ok_ui",
-        "pa_uc",
-        "ut_ui",
-    ]
+    adds = "gov.states.household.modeled_state_unemployment_compensation"
