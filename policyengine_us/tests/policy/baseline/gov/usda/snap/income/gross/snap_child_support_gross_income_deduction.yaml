@@ -132,17 +132,15 @@
     # LAC 67:III.1980(A)(3). $5,200 / 12.
     snap_child_support_gross_income_deduction: 433.33
 
-- name: Massachusetts excludes child support payments from February 2017, after the earliest evidence of 106 CMR 363.230(O) on 2017-01-13.
-  period: 2017
+- name: Massachusetts excludes child support payments from gross income in 2015, as the 9th to 12th editions list.
+  period: 2015
   absolute_error_margin: 0.01
   input:
     state_code: MA
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
-    # $100 a month for February through December.
-    snap_child_support_gross_income_deduction: 1_100
-
+    snap_child_support_gross_income_deduction: 1_200
 - name: North Carolina excludes child support payments from gross income in 2026.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -164,16 +162,16 @@
     # Missouri IM-39 (2003): excluded before the gross income test.
     snap_child_support_gross_income_deduction: 1_200
 
-- name: New Jersey excludes child support payments from March 2017, after N.J.A.C. 10:87-5.9(a)20 took effect on 2017-02-06.
-  period: 2017
+- name: New Jersey excludes child support payments from gross income in 2015, under P.L. 2013, c.45 (effective 2013-11-01).
+  period: 2015
   absolute_error_margin: 0.01
   input:
     state_code: NJ
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
-    # $100 a month for March through December.
-    snap_child_support_gross_income_deduction: 1_000
+    # N.J.S.A. 44:10-104.
+    snap_child_support_gross_income_deduction: 1_200
 
 - name: Washington excludes child support payments from gross income in 2015, before the 14th edition.
   period: 2015
@@ -206,4 +204,14 @@
     weekly_hours_worked_before_lsr: 40
   output:
     # 10 CCR 2506-1 B-4223.6, version effective 2009-07-01.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: New York excludes child support payments from gross income in 2015, as the 9th to 14th editions list.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
     snap_child_support_gross_income_deduction: 1_200

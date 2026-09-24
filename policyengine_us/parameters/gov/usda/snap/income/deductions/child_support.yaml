@@ -13,8 +13,14 @@ description: Whether the state excludes legally obligated child support payments
 # Where a state's own rules contradict an edition, the state's rules govern
 # and the comment on that value names them. Where one edition disagrees with
 # the editions before and after it, the comment on that value says which
-# source the value follows. 2010-01-01 values are unsourced placeholders set
-# to deduction unless a comment cites a source.
+# source the value follows.
+# Before 2017-10-01: the 9th to 13th editions (as of November 2010, August
+# 2012, September 2013, October 1, 2015 and October 1, 2016) list IA, ME, NY
+# and SD as exclusion states in every edition, as the 14th does, so they are
+# true from 2010-01-01; other pre-2017 values come from the state rules the
+# comments cite. For AZ, CT, HI, ID, MD, MI, MS, NM, PA, TN, UT, VT and WI the
+# 9th to 13th editions disagree with one another, and their 2010-01-01
+# deduction values are placeholders until the state rules are checked.
 AK:
   2010-01-01: false
   2017-10-01: false
@@ -103,7 +109,8 @@ HI:
   2023-10-01: false
   2024-10-01: false
 IA:
-  2010-01-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
   2017-10-01: true
   2022-10-01: false
   2023-10-01: false
@@ -153,14 +160,13 @@ LA:
   2023-10-01: true
   2024-10-01: true
 MA:
-  2010-01-01: false
-  # 106 CMR 363.230(O) excludes the payments from income for the gross income
-  # test. It appears in 106 CMR 363 as amended by Mass Register Issue 1330,
-  # effective 2017-01-13. That is the earliest date with evidence, not
-  # necessarily the date Massachusetts adopted the exclusion.
-  2017-01-13: true
-  # The 14th, 15th and 16th editions list a deduction; 106 CMR 363.230(O)
-  # and the DTA SNAP policy exclude the payments for the gross income test.
+  # The 9th to 12th editions (November 2010 to October 2015) list an
+  # exclusion, and 106 CMR 363.230(O) (in 106 CMR 363 as amended by Mass
+  # Register Issue 1330, effective 2017-01-13) excludes the payments for the
+  # gross income test.
+  2010-01-01: true
+  # The 13th to 16th editions list a deduction; 106 CMR 363.230(O) and the DTA
+  # SNAP policy exclude the payments for the gross income test.
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -172,7 +178,8 @@ MD:
   2023-10-01: false
   2024-10-01: false
 ME:
-  2010-01-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -246,11 +253,12 @@ NH:
   2023-10-01: false
   2024-10-01: false
 NJ:
-  # Until 2017 the rules deducted child support after the gross income test
-  # (PRN 2016-017). N.J.A.C. 10:87-5.9(a)20, added by R.2017 d.022 (49 N.J.R.
-  # 267(a)), excludes it from income effective 2017-02-06.
+  # P.L. 2013, c.45, sec. 10 (N.J.S.A. 44:10-104) requires the exclusion for
+  # the gross and net income standards from 2013-11-01 (sec. 11: the first day
+  # of the seventh month after enactment on 2013-04-15). N.J.A.C.
+  # 10:87-5.9(a)20 (R.2017 d.022, effective 2017-02-06) later codified it.
   2010-01-01: false
-  2017-02-06: true
+  2013-11-01: true
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -268,7 +276,8 @@ NV:
   2023-10-01: false
   2024-10-01: false
 NY:
-  2010-01-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -301,7 +310,8 @@ PA:
   2024-10-01: false
 RI:
   # RI DHS SNAP rules 1008.20.22 and 1010.20 (REV 05/2005): child support
-  # paid is an income exclusion, not a deduction; 218-RICR-20-00-1 1.5.3 keeps it.
+  # paid is an income exclusion, not a deduction (superseding the REV 09/2000
+  # deduction text still printed at 1038.19); 218-RICR-20-00-1 1.5.3 keeps it.
   2010-01-01: true
   2017-10-01: true
   2022-10-01: true
@@ -314,7 +324,8 @@ SC:
   2023-10-01: false
   2024-10-01: false
 SD:
-  2010-01-01: false
+  # 9th to 14th editions all list an exclusion.
+  2010-01-01: true
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -401,6 +412,16 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9#c_17
     - title: 7 CFR 273.9(d)(5) - Child support deduction
       href: https://www.law.cornell.edu/cfr/text/7/273.9#d_5
+    - title: SNAP State Options Report, 9th Edition (as of November 2010), Child Support Expense Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/9-State_Options.pdf#page=16
+    - title: SNAP State Options Report, 10th Edition (as of August 2012), state profiles, Child Support Expense Income Exclusion
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/10-State_Options.pdf#page=30
+    - title: SNAP State Options Report, 11th Edition (as of September 2013), state summaries, Child Support Expense Exclusion (pages 25-35)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/11-State_Options.pdf#page=27
+    - title: SNAP State Options Report, 12th Edition (as of October 1, 2015), Child Support Expense Income Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/12-State_Options.pdf#page=16
+    - title: SNAP State Options Report, 13th Edition (as of October 1, 2016), Treatment of Child Support Payments (page 13)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/13-State_Options-revised.pdf#page=17
     - title: SNAP State Options Report, 14th Edition, Treatment of Child Support Payments (page 18)
       href: https://fns-prod.azureedge.us/sites/default/files/snap/14-State-Options.pdf#page=24
     - title: SNAP State Options Report, 15th Edition, Treatment of Child Support Payments (page 15)
@@ -437,9 +458,11 @@ metadata:
       href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_13/im34_13.html
     - title: Missouri Food Stamp Program Manual 1115.035.20 - Child support exclusion
       href: https://dssmanuals.mo.gov/food-stamps/1115-000-00/1115-035-00/1115-035-20/
+    - title: New Jersey P.L. 2013, c.45, sec. 10 (N.J.S.A. 44:10-104) - Child support paid excluded for the SNAP gross and net income standards, effective 2013-11-01
+      href: https://pub.njleg.gov/bills/2012/PL13/45_.HTM
     - title: N.J.A.C. 10:87-5.9(a)20 - Income exclusions, legally obligated child support paid (added by R.2017 d.022, effective 2017-02-06)
       href: https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/SNAPManual_10.14.25.pdf
-    - title: New Jersey PRN 2016-017 - Proposal moving child support paid from a deduction to an income exclusion
+    - title: New Jersey PRN 2016-017 - Proposal codifying the child support income exclusion required by P.L. 2013, c.45
       href: https://www.nj.gov/humanservices/notices/documents/rule-proposals/(F)%20PRN%202016-017%20(DHS-DFD%2010_87-1.11).pdf
     - title: North Carolina DSS Administrative Letter Economic Services No. 6-2005 - Treatment of legally obligated child support exclusion
       href: https://policies.ncdhhs.gov/wp-content/uploads/es_al-6-2005.pdf
@@ -449,8 +472,12 @@ metadata:
       href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
     - title: Rhode Island DHS SNAP Rules and Regulations (October 2014) - 1008.20.22 Child support income exclusion and 1010.20 (REV 05/2005)
       href: https://risos-apa-production-public.s3.amazonaws.com/DHS/7907.pdf
+    - title: Rhode Island 218-RICR-20-00-1, 1.5.3 Excluded income (item 7, child support income exclusion)
+      href: https://rules.sos.ri.gov/regulations/part/218-20-00-1
     - title: 3SquaresVT Program Manual 1700 - Deductions (1700.2.1 Child support deduction)
       href: https://www.ahsnet.ahs.state.vt.us/Public/3sVT/assets/BRM/1600_Deductions.htm
+    - title: 3SquaresVT Program Manual 1800 - Determining income and deductions (1800.7.2 Gross income limit)
+      href: https://www.ahsnet.ahs.state.vt.us/Public/3sVT/assets/BRM/1700DetIncDeduct.htm
     - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments
       href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter601/section70/
     - title: Washington State Register 09-15-085 - Amending WAC 388-450-0015 to exclude child support paid before the gross income test

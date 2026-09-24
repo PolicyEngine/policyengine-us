@@ -55,7 +55,8 @@
   absolute_error_margin: 0.1
   input:
     # North Carolina counts ineligible aliens' income in full under the gross
-    # test and excludes child support from gross income (NCDHHS FNS 340.19(A)).
+    # test (gross_test_full_count_states, from the 16th edition's NC profile)
+    # and excludes child support from gross income (NCDHHS FNS 340.19(A)).
     people:
       person1:
         age: 35
