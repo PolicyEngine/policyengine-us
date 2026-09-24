@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
+    medicaid_income_eligible,
+)
 
 
 class is_chip_eligible_child(Variable):
@@ -13,6 +16,11 @@ class is_chip_eligible_child(Variable):
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
         "https://www.healthcare.gov/medicaid-chip/childrens-health-insurance-program/",
+        "https://www.law.cornell.edu/uscode/text/8/1611#a",
+        "https://www.law.cornell.edu/uscode/text/8/1641#b",
+        "https://www.law.cornell.edu/cfr/text/45/155.20",
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
     )
 
     def formula(person, period, parameters):
@@ -32,7 +40,8 @@ class is_chip_eligible_child(Variable):
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        immigration_eligible = ~undocumented
+        daca = istatus == istatus.possible_values.DACA
+        immigration_eligible = ~(undocumented | daca)
 
         # Check income eligibility
         # CHIP is for children who make too much for Medicaid but below CHIP limits
@@ -40,9 +49,9 @@ class is_chip_eligible_child(Variable):
         medicaid_eligible = person("is_medicaid_eligible", period)
 
         # Check if family income is below CHIP threshold
-        # Use medicaid_income_level as the income measure
-        income_ratio = person("medicaid_income_level", period)
-        income_eligible = income_ratio <= income_limit
+        income_eligible = medicaid_income_eligible(
+            person, period, parameters, income_limit
+        )
 
         has_disqualifying_coverage = person(
             "has_chip_disqualifying_health_coverage", period

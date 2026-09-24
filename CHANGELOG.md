@@ -1,3 +1,82 @@
+## [2.11.3] - 2026-09-24
+
+### Changed
+
+- Booked the 2023 Virginia rebate to tax year 2022, whose return determines it, in line with other one-time state rebates, and defaulted the Oregon kicker's prior-year tax liability to the current-year liability instead of $0.
+
+
+## [2.11.2] - 2026-09-24
+
+### Changed
+
+- Massachusetts Commonwealth Credit reform now phases out on adjusted gross income and extends eligibility to separate filers at the non-joint threshold.
+
+
+## [2.11.1] - 2026-09-23
+
+### Fixed
+
+- Include taxable Roth conversions in South Carolina retirement deduction (#9523); exclude Roth conversions from Oklahoma age-65 special exemption AGI limit (#9522); add retirement distributions and Roth conversions to Iowa gross income (#9521); enforce age 59½ requirement and disability exception on IRA distributions and Roth conversions in Michigan retirement deductions under MCL § 206.30(8)(a)(ii) (partially addressing #9520); update retirement citation links for NY, WI, GA, and KY.
+
+
+## [2.11.0] - 2026-09-23
+
+### Added
+
+- Allow callers to limit automatic single-year dataset extension with the
+  `Microsimulation` `dataset_end_year` argument.
+
+
+## [2.10.1] - 2026-09-23
+
+### Fixed
+
+- Count qualified dividends once in the capital-gains worksheet used for alternative minimum tax.
+- Prevent passive and capital losses from offsetting portfolio income in the EITC investment-income eligibility test.
+
+
+## [2.10.0] - 2026-09-23
+
+### Added
+
+- Add Massachusetts tiered Child and Family Tax Credit and Commonwealth Credit contributed reforms.
+
+
+## [2.9.0] - 2026-09-22
+
+### Added
+
+- Implement California's County Children's Health Initiative Program (CCHIP) for children in San Francisco, San Mateo, and Santa Clara counties, integrate it with CHIP eligibility, count pregnancies throughout California MAGI Medi-Cal households, and apply the existing-coverage check to California's Medi-Cal Access Program.
+
+
+## [2.8.2] - 2026-09-22
+
+### Fixed
+
+- Excluded DACA recipients from general CHIP child and standard pregnancy eligibility, and from the Healthier Mississippi Waiver's potentially-CHIP-eligible child check, while preserving FCEP coverage regardless of the pregnant parent's immigration status.
+
+
+## [2.8.1] - 2026-09-22
+
+### Fixed
+
+- Apply inclusive monthly income ceilings across the MAGI Medicaid categories and CHIP, remove the Missouri income and parent-limit workarounds, and make older-child eligibility use its financial and nonfinancial checks. The uniform rounding convention approximates state dollar tables without adding state rounding parameters.
+
+
+## [2.8.0] - 2026-09-22
+
+### Added
+
+- Contributed reforms paying Arizona's dependent tax credit as refundable and age-splitting the Massachusetts and Utah dependent exemptions (repeal or reprice for dependents under a threshold while preserving the baseline for older dependents).
+
+
+## [2.7.0] - 2026-09-21
+
+### Added
+
+- Add Alabama federal income tax deduction Part II (Act 2022-37): recompute the CTC, CDCC, and EITC as if the 2020 IRC applied and take the greater deduction.
+
+
 ## [2.6.21] - 2026-09-21
 
 ### Fixed
