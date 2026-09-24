@@ -25,7 +25,7 @@ for html_file in book_folder.glob("**/*.html"):
     with open(html_file, "r") as f:
         html = f.read()
 
-    if 'class="plotly-graph-div"' not in html:
+    if 'class="plotly-graph-div"' not in html or plotly_script in html:
         continue
 
     html = html.replace("<head>", "<head>" + plotly_script, 1)
