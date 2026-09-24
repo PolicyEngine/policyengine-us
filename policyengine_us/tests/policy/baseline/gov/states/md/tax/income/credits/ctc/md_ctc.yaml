@@ -469,3 +469,75 @@
         state_code: MD
   output:
     md_ctc: 0
+
+- name: 2025 two-child CTC at negative AGI
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: -1000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 1000
+
+- name: 2024 two-child CTC above old income limit
+  period: 2024
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 0
+
+- name: 2025 phased-out CTC reduces final Maryland income tax
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16000
+        md_income_tax_before_refundable_credits: 100
+        md_refundable_cdcc: 0
+        md_refundable_eitc: 0
+        md_montgomery_eitc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 900
+    md_refundable_credits: 900
+    md_income_tax: -800
