@@ -132,15 +132,17 @@
     # LAC 67:III.1980(A)(3). $5,200 / 12.
     snap_child_support_gross_income_deduction: 433.33
 
-- name: Massachusetts excludes child support payments from gross income in 2015, as the 9th to 12th editions list.
-  period: 2015
+- name: Massachusetts excludes child support payments from gross income in 2016, although the 13th edition lists a deduction.
+  period: 2016
   absolute_error_margin: 0.01
   input:
     state_code: MA
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
+    # 106 CMR 363.230(O) (Rev. 7/2009).
     snap_child_support_gross_income_deduction: 1_200
+
 - name: North Carolina excludes child support payments from gross income in 2026.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -214,4 +216,26 @@
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
+    # 9th to 14th editions.
     snap_child_support_gross_income_deduction: 1_200
+
+- name: Iowa excludes child support payments from gross income in 2015.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # Iowa Employees' Manual 7-F (General Letter 7-F-81, effective 2009-02-01).
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Arizona deducts child support payments in 2015, after the 11th edition first lists a deduction.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: AZ
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_child_support_gross_income_deduction: 0

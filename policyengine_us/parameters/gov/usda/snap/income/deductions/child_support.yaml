@@ -14,13 +14,17 @@ description: Whether the state excludes legally obligated child support payments
 # and the comment on that value names them. Where one edition disagrees with
 # the editions before and after it, the comment on that value says which
 # source the value follows.
-# Before 2017-10-01: the 9th to 13th editions (as of November 2010, August
-# 2012, September 2013, October 1, 2015 and October 1, 2016) list IA, ME, NY
-# and SD as exclusion states in every edition, as the 14th does, so they are
-# true from 2010-01-01; other pre-2017 values come from the state rules the
-# comments cite. For AZ, CT, HI, ID, MD, MI, MS, NM, PA, TN, UT, VT and WI the
-# 9th to 13th editions disagree with one another, and their 2010-01-01
-# deduction values are placeholders until the state rules are checked.
+# Before 2017-10-01 the values follow the 9th to 13th editions (as of
+# November 2010, August 2012, September 2013, October 1, 2015 and October 1,
+# 2016) and the state rules the comments cite. States every edition from the
+# 9th to the 14th lists as deducting are false from 2010-01-01; IA, ME, NY and
+# SD, which every one of those editions lists as excluding, are true. A state
+# listed as excluding in a single edition (CT, NM in the 10th; MS, UT in the
+# 11th; ID, TN in the 12th; MI in the 13th; WI in the 9th) follows the
+# editions around it, as MI and VT do after 2022. HI, MD and PA (11th and
+# 12th) and VT (12th and 13th) are listed as excluding in two consecutive
+# editions; their deduction values for those years are placeholders until
+# their state rules are checked.
 AK:
   2010-01-01: false
   2017-10-01: false
@@ -40,7 +44,11 @@ AR:
   2023-10-01: false
   2024-10-01: false
 AZ:
-  2010-01-01: false
+  # The 8th to 10th editions (June 2009 to August 2012) list an exclusion.
+  2010-01-01: true
+  # The 11th edition (September 2013) is the first to list a deduction, as all
+  # later editions do; the exact switch date is not sourced.
+  2013-09-01: false
   2017-10-01: false
   2022-10-01: false
   2023-10-01: false
@@ -109,7 +117,9 @@ HI:
   2023-10-01: false
   2024-10-01: false
 IA:
-  # 9th to 14th editions all list an exclusion.
+  # Iowa DHS Employees' Manual 7-F, General Letter 7-F-81 (effective
+  # 2009-02-01), excludes child support paid when comparing income to the gross
+  # income limit; the 9th to 14th editions all list an exclusion.
   2010-01-01: true
   2017-10-01: true
   2022-10-01: false
@@ -160,13 +170,11 @@ LA:
   2023-10-01: true
   2024-10-01: true
 MA:
-  # The 9th to 12th editions (November 2010 to October 2015) list an
-  # exclusion, and 106 CMR 363.230(O) (in 106 CMR 363 as amended by Mass
-  # Register Issue 1330, effective 2017-01-13) excludes the payments for the
-  # gross income test.
+  # 106 CMR 363.230(O) (Rev. 7/2009, and in every later compilation) excludes
+  # the payments for the gross income test, and the 9th to 12th editions list
+  # an exclusion. The 13th to 16th editions list a deduction; the rule and the
+  # DTA SNAP policy govern.
   2010-01-01: true
-  # The 13th to 16th editions list a deduction; 106 CMR 363.230(O) and the DTA
-  # SNAP policy exclude the payments for the gross income test.
   2017-10-01: true
   2022-10-01: true
   2023-10-01: true
@@ -253,11 +261,11 @@ NH:
   2023-10-01: false
   2024-10-01: false
 NJ:
+  2010-01-01: false
   # P.L. 2013, c.45, sec. 10 (N.J.S.A. 44:10-104) requires the exclusion for
   # the gross and net income standards from 2013-11-01 (sec. 11: the first day
   # of the seventh month after enactment on 2013-04-15). N.J.A.C.
   # 10:87-5.9(a)20 (R.2017 d.022, effective 2017-02-06) later codified it.
-  2010-01-01: false
   2013-11-01: true
   2017-10-01: true
   2022-10-01: true
@@ -412,12 +420,14 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9#c_17
     - title: 7 CFR 273.9(d)(5) - Child support deduction
       href: https://www.law.cornell.edu/cfr/text/7/273.9#d_5
+    - title: SNAP State Options Report, 8th Edition (as of June 2009), Child Support Expense Income Exclusion
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/8-State_Options.pdf#page=18
     - title: SNAP State Options Report, 9th Edition (as of November 2010), Child Support Expense Exclusion (page 12)
       href: https://fns-prod.azureedge.us/sites/default/files/snap/9-State_Options.pdf#page=16
-    - title: SNAP State Options Report, 10th Edition (as of August 2012), state profiles, Child Support Expense Income Exclusion
-      href: https://fns-prod.azureedge.us/sites/default/files/snap/10-State_Options.pdf#page=30
-    - title: SNAP State Options Report, 11th Edition (as of September 2013), state summaries, Child Support Expense Exclusion (pages 25-35)
-      href: https://fns-prod.azureedge.us/sites/default/files/snap/11-State_Options.pdf#page=27
+    - title: SNAP State Options Report, 10th Edition (as of August 2012), Child Support Expense Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/10-State_Options.pdf#page=15
+    - title: SNAP State Options Report, 11th Edition (as of September 2013), Child Support Expense Income Exclusion (page 8)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/11-State_Options.pdf#page=10
     - title: SNAP State Options Report, 12th Edition (as of October 1, 2015), Child Support Expense Income Exclusion (page 12)
       href: https://fns-prod.azureedge.us/sites/default/files/snap/12-State_Options.pdf#page=16
     - title: SNAP State Options Report, 13th Edition (as of October 1, 2016), Treatment of Child Support Payments (page 13)
@@ -440,6 +450,8 @@ metadata:
       href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-9000-9059
     - title: 13 DE Reg. 1550 (June 1, 2010) - Final order adopting the child support income exclusion, effective June 10, 2010
       href: https://archive.regulations.delaware.gov/register/june2010/final/13%20DE%20Reg%201550%2006-01-10.htm
+    - title: Iowa DHS Employees' Manual 7-F, General Letter 7-F-81 (January 16, 2009, effective February 1, 2009) - Child support paid excluded for the gross income limit
+      href: http://web.archive.org/web/20110812123737/http://www.dhs.state.ia.us:80/policyanalysis/policymanualpages/Manual_Documents/Master/7-f.pdf
     - title: Illinois Department of Human Services Manual Release 23.22 - SNAP policy clarification on child support income exclusion
       href: https://www.dhs.state.il.us/page.aspx?item=149614
     - title: 106 CMR 363.230(O) - Legally obligated child support payments excluded for the gross income test
@@ -448,6 +460,8 @@ metadata:
       href: https://www.doa.la.gov/media/oq1j3hys/67.docx
     - title: Louisiana Register Vol. 29, No. 4 (April 20, 2003), p. 607 - Rule adding the child support exclusion to LAC 67:III.1980
       href: https://www.doa.louisiana.gov/media/m23b1mhf/0304.pdf#page=96
+    - title: 106 CMR 363.230(O), Rev. 7/2009 (Trans. by S.L. 1353) - Child support paid excluded for the gross income test
+      href: http://web.archive.org/web/20091202182220/http://www.mass.gov/Eeohhs2/docs/dta/g_reg_363.pdf
     - title: Massachusetts Department of Transitional Assistance SNAP policy - Child support expenses deduction (excluding child support from the gross income test)
       href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
     - title: Michigan Bridges Eligibility Manual 556 - Computing the Food Assistance budget (child support expenses, line 20)
