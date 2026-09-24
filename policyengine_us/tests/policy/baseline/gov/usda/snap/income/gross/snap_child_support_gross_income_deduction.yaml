@@ -68,7 +68,7 @@
   output:
     snap_child_support_gross_income_deduction: 100
 
-- name: Vermont excludes child support payments through September 2024 under the 16th edition and deducts them from October 2024 under the 17th.
+- name: Vermont deducts child support payments in 2024, although the 16th edition lists an exclusion for fiscal year 2024.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -76,8 +76,8 @@
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
-    # $100 a month for January through September.
-    snap_child_support_gross_income_deduction: 900
+    # 3SquaresVT Program Manual 1700.2.1: a deduction from gross income.
+    snap_child_support_gross_income_deduction: 0
 
 - name: Iowa excludes child support payments through September 2022 under the 14th edition and deducts them from October 2022 under the 15th.
   period: 2022
@@ -100,7 +100,7 @@
   output:
     snap_child_support_gross_income_deduction: 0
 
-- name: Louisiana keeps the 14th edition's exclusion through fiscal year 2023, when the 15th edition lists it as under review.
+- name: Louisiana excludes child support payments from gross income in 2022, when the 15th edition lists it as under review.
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -110,7 +110,7 @@
   output:
     snap_child_support_gross_income_deduction: 1_200
 
-- name: Louisiana deducts child support payments from October 2023 under the 16th edition.
+- name: Louisiana still excludes child support payments from gross income in 2023, although the 16th edition lists a deduction.
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -118,8 +118,19 @@
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
-    # $100 a month for January through September.
-    snap_child_support_gross_income_deduction: 900
+    # LAC 67:III.1980(A)(3): excluded for the gross income standards.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Louisiana excludes child support payments from gross income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # LAC 67:III.1980(A)(3). $5,200 / 12.
+    snap_child_support_gross_income_deduction: 433.33
 
 - name: Massachusetts excludes child support payments from February 2017, after the earliest evidence of 106 CMR 363.230(O) on 2017-01-13.
   period: 2017

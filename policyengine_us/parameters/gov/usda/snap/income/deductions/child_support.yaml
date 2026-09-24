@@ -138,14 +138,17 @@ KY:
   2023-10-01: false
   2024-10-01: false
 LA:
-  2010-01-01: false
+  # LAC 67:III.1980(A)(3): legally obligated child support payments to
+  # non-household members are excluded when determining eligibility based on
+  # gross income standards (adopted as 1980(C), Louisiana Register Vol. 29,
+  # p. 607, April 2003); 67:III.1981 deducts them in the net budget.
+  2010-01-01: true
   2017-10-01: true
-  # The 15th edition lists Louisiana as under review, so the 14th edition's
-  # exclusion carries forward.
+  # The 15th edition lists Louisiana as under review.
   2022-10-01: true
-  # The 16th and 17th editions list a deduction.
-  2023-10-01: false
-  2024-10-01: false
+  # The 16th and 17th editions list a deduction; LAC 67:III.1980(A)(3) excludes.
+  2023-10-01: true
+  2024-10-01: true
 MA:
   2010-01-01: false
   # 106 CMR 363.230(O) excludes the payments from income for the gross income
@@ -344,8 +347,10 @@ VT:
   2010-01-01: false
   2017-10-01: false
   2022-10-01: false
-  # 16th edition only; the 15th and 17th editions list a deduction.
-  2023-10-01: true
+  # The 16th edition alone lists an exclusion for fiscal year 2024; the 15th
+  # and 17th editions list a deduction, and the 3SquaresVT Program Manual
+  # (1700.1.1, 1700.2.1) treats child support as a deduction from gross income.
+  2023-10-01: false
   2024-10-01: false
 WA:
   2010-01-01: false
@@ -402,19 +407,27 @@ metadata:
       href: https://www.dhs.state.il.us/page.aspx?item=149614
     - title: 106 CMR 363.230(O) - Legally obligated child support payments excluded for the gross income test
       href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-363-230
+    - title: Louisiana Administrative Code 67:III.1980(A)(3) and 67:III.1981 (Title 67, Social Services, September 2026 compilation) - Child support excluded for the gross income test
+      href: https://www.doa.la.gov/media/oq1j3hys/67.docx
+    - title: Louisiana Register Vol. 29, No. 4 (April 20, 2003), p. 607 - Rule adding the child support exclusion to LAC 67:III.1980
+      href: https://www.doa.louisiana.gov/media/m23b1mhf/0304.pdf#page=96
     - title: Massachusetts Department of Transitional Assistance SNAP policy - Child support expenses deduction (excluding child support from the gross income test)
       href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
     - title: Michigan Bridges Eligibility Manual 556 - Computing the Food Assistance budget (child support expenses, line 20)
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/556.pdf#page=5
     - title: Missouri Income Maintenance Memorandum IM-39 (March 4, 2003) - Court ordered child support expense policy
       href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_03/im39_03.html
-    - title: Missouri Income Maintenance Memorandum IM-34 (2013) - Court ordered child support
+    - title: Missouri Income Maintenance Memorandum IM-34 (2013) - Disqualified or ineligible members earned income and expense budgeting (child support exclusion from gross income)
       href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_13/im34_13.html
+    - title: Missouri Food Stamp Program Manual 1115.035.20 - Child support exclusion
+      href: https://dssmanuals.mo.gov/food-stamps/1115-000-00/1115-035-00/1115-035-20/
     - title: North Carolina DSS Administrative Letter Economic Services No. 6-2005 - Treatment of legally obligated child support exclusion
       href: https://policies.ncdhhs.gov/wp-content/uploads/es_al-6-2005.pdf
     - title: NCDHHS FNS 340 Deductions, 340.19(A) Child support deduction (August 4, 2026)
       href: https://policies.ncdhhs.gov/wp-content/uploads/FNS-340-Deductions_8.4.2026.pdf#page=25
     - title: Oregon Administrative Rules 461-140-0266 - Court ordered child support exclusion; SNAP
       href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
+    - title: 3SquaresVT Program Manual 1700 - Deductions (1700.2.1 Child support deduction)
+      href: https://www.ahsnet.ahs.state.vt.us/Public/3sVT/assets/BRM/1600_Deductions.htm
     - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments
       href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter601/section70/
