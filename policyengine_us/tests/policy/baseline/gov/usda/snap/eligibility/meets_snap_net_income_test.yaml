@@ -81,3 +81,84 @@
         state_code: MO
   output:
     meets_snap_net_income_test: false
+
+- name: Nine-person household at the published FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # 7 CFR 273.9(a)(3)(ii) adds a separately rounded-up increment to
+        # the eight-person standard: $54,150 / 12 = $4,512.50, rounded up to
+        # $4,513, plus $5,500 / 12 = $458.33, rounded up to $459, gives
+        # $4,972, matching the USDA FY 2026 table. Rounding up the whole
+        # nine-person guideline ($59,650 / 12 = $4,970.83) gives only $4,971.
+        snap_net_income: 4_972
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    meets_snap_net_income_test: true
+
+- name: Nine-person household just above the published FY 2026 net limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        snap_net_income: 4_973
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    meets_snap_net_income_test: false
+
+- name: Twelve-person household at the published FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $4,513 + 4 x $459 = $6,349 under 7 CFR 273.9(a)(3)(ii); rounding
+        # up the whole twelve-person guideline ($76,150 / 12 = $6,345.83)
+        # would give $6,346.
+        snap_net_income: 6_349
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    meets_snap_net_income_test: true
+
+- name: Net income of exactly 50 cents over the one-person FY 2026 net limit rounds up and fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,048.65 - $743.15 = $1,305.50, which 7 CFR 273.10(e)(1)(ii)(A)
+        # rounds up to $1,306, above the $1,305 standard. In single
+        # precision the difference is $1,305.4999, which must not round
+        # down to $1,305.
+        snap_gross_income: 2_048.65
+        snap_deductions: 743.15
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    snap_net_income: 1_306
+    meets_snap_net_income_test: false
