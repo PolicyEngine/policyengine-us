@@ -50,13 +50,12 @@
     snap_gross_income: 1_333.33
     snap_gross_test_income: 1_333.33
 
-- name: Case 3, hybrid state that excluded child support from gross income would count the full-count alien's payment in full under the gross test.
+- name: Case 3, hybrid state that excludes child support from gross income counts the full-count alien's payment in full under the gross test.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
-    # No full-count state excludes child support from gross income, so this
-    # case sets Arkansas to exclude it to exercise that branch.
-    gov.usda.snap.income.deductions.child_support.AR: true
+    # North Carolina counts ineligible aliens' income in full under the gross
+    # test and excludes child support from gross income (NCDHHS FNS 340.19(A)).
     people:
       person1:
         age: 35
@@ -74,7 +73,7 @@
     households:
       household:
         members: [person1, person2, person3]
-        state_code: AR
+        state_code: NC
   output:
     # Net side counts 2/3 of the $2,000 earnings and 2/3 of the $300 child
     # support: $1,333.33 - $200 = $1,133.33.

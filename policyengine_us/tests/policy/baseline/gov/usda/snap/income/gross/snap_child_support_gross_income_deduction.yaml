@@ -76,7 +76,7 @@
     child_support_expense: 1_200
     weekly_hours_worked_before_lsr: 40
   output:
-    # 3SquaresVT Program Manual 1700.2.1: a deduction from gross income.
+    # 3SquaresVT Program Manual 1700.1.1, 1700.2.1: a net income deduction.
     snap_child_support_gross_income_deduction: 0
 
 - name: Iowa excludes child support payments through September 2022 under the 14th edition and deducts them from October 2022 under the 15th.
@@ -162,4 +162,48 @@
     weekly_hours_worked_before_lsr: 40
   output:
     # Missouri IM-39 (2003): excluded before the gross income test.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: New Jersey excludes child support payments from March 2017, after N.J.A.C. 10:87-5.9(a)20 took effect on 2017-02-06.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # $100 a month for March through December.
+    snap_child_support_gross_income_deduction: 1_000
+
+- name: Washington excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # WSR 09-15-085, effective 2009-11-15.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Rhode Island excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # RI DHS SNAP rules 1008.20.22, REV 05/2005.
+    snap_child_support_gross_income_deduction: 1_200
+
+- name: Colorado excludes child support payments from gross income in 2015, before the 14th edition.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # 10 CCR 2506-1 B-4223.6, version effective 2009-07-01.
     snap_child_support_gross_income_deduction: 1_200
