@@ -131,3 +131,24 @@
   output:
     # $100 a month for February through December.
     snap_child_support_gross_income_deduction: 1_100
+
+- name: North Carolina excludes child support payments from gross income in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    child_support_expense: 5_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # NCDHHS FNS 340.19(A): allowed before the gross income screen. $5,200 / 12.
+    snap_child_support_gross_income_deduction: 433.33
+
+- name: Missouri excludes child support payments from gross income in 2020, before the 15th edition lists it.
+  period: 2020
+  input:
+    state_code: MO
+    child_support_expense: 1_200
+    weekly_hours_worked_before_lsr: 40
+  output:
+    # Missouri IM-39 (2003): excluded before the gross income test.
+    snap_child_support_gross_income_deduction: 1_200

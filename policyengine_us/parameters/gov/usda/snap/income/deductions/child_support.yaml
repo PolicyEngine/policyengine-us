@@ -190,8 +190,12 @@ MN:
   2023-10-01: false
   2024-10-01: false
 MO:
-  2010-01-01: false
-  2017-10-01: false
+  # Missouri IM-39 (2003): exclusion before the gross income test for budgets
+  # completed on or after 2003-03-10; IM-34 (2013) and SNAP Manual
+  # 1115.035.20 keep it.
+  2010-01-01: true
+  # 14th edition lists a deduction; IM-39 and IM-34 exclude.
+  2017-10-01: true
   2022-10-01: true
   2023-10-01: true
   2024-10-01: true
@@ -208,11 +212,15 @@ MT:
   2023-10-01: false
   2024-10-01: false
 NC:
-  2010-01-01: false
-  2017-10-01: false
-  2022-10-01: false
-  2023-10-01: false
-  2024-10-01: false
+  # NC DSS Administrative Letter 6-2005: legally obligated child support is
+  # excluded from gross income beginning 2005-01-01; NCDHHS FNS manual 340.19(A)
+  # (August 2026) still allows it before the gross income screen.
+  2010-01-01: true
+  # The 14th through 17th editions list a deduction; the state's rules exclude.
+  2017-10-01: true
+  2022-10-01: true
+  2023-10-01: true
+  2024-10-01: true
 ND:
   2010-01-01: false
   2017-10-01: false
@@ -398,6 +406,14 @@ metadata:
       href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/!SSL!/WebHelp/SNAP/ExpensesDeductions/Ex_CSExpDed.htm
     - title: Michigan Bridges Eligibility Manual 556 - Computing the Food Assistance budget (child support expenses, line 20)
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/556.pdf#page=5
+    - title: Missouri Income Maintenance Memorandum IM-39 (March 4, 2003) - Court ordered child support expense policy
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_03/im39_03.html
+    - title: Missouri Income Maintenance Memorandum IM-34 (2013) - Court ordered child support
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_13/im34_13.html
+    - title: North Carolina DSS Administrative Letter Economic Services No. 6-2005 - Treatment of legally obligated child support exclusion
+      href: https://policies.ncdhhs.gov/wp-content/uploads/es_al-6-2005.pdf
+    - title: NCDHHS FNS 340 Deductions, 340.19(A) Child support deduction (August 4, 2026)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/FNS-340-Deductions_8.4.2026.pdf#page=25
     - title: Oregon Administrative Rules 461-140-0266 - Court ordered child support exclusion; SNAP
       href: https://ch461rules.odhs.oregon.gov/rules/461-140-0266.pdf
     - title: 22 Virginia Administrative Code 40-601-70 - Income exclusion for legally obligated child support payments
