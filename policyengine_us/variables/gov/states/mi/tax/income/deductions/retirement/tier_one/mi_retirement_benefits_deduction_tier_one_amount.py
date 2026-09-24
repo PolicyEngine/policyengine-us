@@ -52,9 +52,30 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
             reduced_private_cap - total_public_benefit, 0
         )
         # Line 14
-        uncapped_private_benefits = (
-            add(person, period, p.private_retirement_sources) * is_head_or_spouse
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        # Under MCL 206.30(1)(f)(iv)(B)(II) & (8)(a)(ii), individual retirement account
+        # distributions qualify after age 59½ or in the case of disability.
+        # Exceptions for death and IRC § 72(t)(2)(A)(iv) periodic payments are unmodeled.
+        ira_eligible = (person("age", period) >= p_irs.age_threshold) | person(
+            "is_disabled", period
         )
+        ira_sources = [
+            s
+            for s in p.private_retirement_sources
+            if s
+            in {
+                "taxable_ira_distributions",
+                "taxable_roth_conversions",
+                "taxable_sep_distributions",
+            }
+        ]
+        pension_sources = [
+            s for s in p.private_retirement_sources if s not in ira_sources
+        ]
+        uncapped_private_benefits = (
+            add(person, period, pension_sources)
+            + add(person, period, ira_sources) * ira_eligible
+        ) * is_head_or_spouse
         total_uncapped_private_benefits = tax_unit.sum(uncapped_private_benefits)
         # Line 15
         capped_private_benefits = min_(
