@@ -9,7 +9,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: true
-    is_disabled: false
 
 - name: ME older child needs an exception.
   period: 2026-01
@@ -22,7 +21,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: false
-    is_disabled: false
 
 - name: ME court supervision at the lower boundary.
   period: 2026-01
@@ -35,7 +33,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: true
-    is_disabled: false
 
 - name: ME court supervision at the upper boundary.
   period: 2026-01
@@ -48,7 +45,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: true
-    is_disabled: false
 
 - name: ME court supervision does not override the upper age limit.
   period: 2026-01
@@ -61,7 +57,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: false
-    is_disabled: false
 
 - name: ME supervised adult does not qualify.
   period: 2026-01
@@ -74,7 +69,6 @@
     immigration_status: CITIZEN
   output:
     me_ccap_eligible_child: false
-    is_disabled: false
 
 - name: ME supervision is specific to the child in a mixed household.
   period: 2026-01
@@ -100,7 +94,6 @@
         state_code: ME
   output:
     me_ccap_eligible_child: [false, true, false]
-    is_disabled: [false, false, false]
 
 - name: ME court-supervised 17-year-old receives a benefit through the full pipeline.
   period: 2026-01
@@ -137,7 +130,6 @@
     # person2: age 17, not disabled, under court supervision (13-18) => eligible child
     me_ccap_eligible_child: [false, true]
     me_ccap_eligible: true
-    is_disabled: [false, false]
     # Age group: age 17 => SCHOOL_AGE
     me_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE]
     # Market rate: Region 2 (Oxford) License-Exempt School Age FT = $119/week

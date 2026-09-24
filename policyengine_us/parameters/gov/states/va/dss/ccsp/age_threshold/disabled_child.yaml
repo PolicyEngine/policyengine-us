@@ -1,4 +1,7 @@
 description: Virginia limits the Child Care Subsidy Program to children with special needs younger than this age.
+# 8VAC20-790-20(A)(1) applies the same under-18 limit to a child "under court
+# supervision", so the court-supervision route shares this ceiling (CCDF Plan
+# FFY 2025-2027 section 2.2.1(c), upper age 17.00).
 values:
   2023-01-01: 18
 
@@ -7,7 +10,7 @@ metadata:
   period: year
   label: Virginia CCSP disabled child age threshold
   reference:
-    - title: 8VAC20-790-20(B)
+    - title: 8VAC20-790-20(A)(1)
       href: https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section20/
     - title: Virginia Child Care Subsidy Program Guidance Manual Section 3.3 G
       href: https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=58

@@ -9,7 +9,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: true
-    is_disabled: false
 
 - name: WA older child needs an exception.
   period: 2026-01
@@ -22,7 +21,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: false
-    is_disabled: false
 
 - name: WA court supervision at the lower boundary.
   period: 2026-01
@@ -35,7 +33,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: true
-    is_disabled: false
 
 - name: WA court supervision at the upper boundary.
   period: 2026-01
@@ -48,7 +45,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: true
-    is_disabled: false
 
 - name: WA court supervision does not override the upper age limit.
   period: 2026-01
@@ -61,7 +57,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: false
-    is_disabled: false
 
 - name: WA supervised adult does not qualify.
   period: 2026-01
@@ -74,7 +69,6 @@
     immigration_status: CITIZEN
   output:
     wa_wccc_eligible_child: false
-    is_disabled: false
 
 - name: WA supervision is specific to the child in a mixed household.
   period: 2026-01
@@ -100,7 +94,6 @@
         state_code: WA
   output:
     wa_wccc_eligible_child: [false, true, false]
-    is_disabled: [false, false, false]
 
 - name: WA court-supervised teenager receives ordinary school-age reimbursement.
   period: 2025-01

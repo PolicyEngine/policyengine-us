@@ -9,7 +9,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: true
-    is_disabled: false
 
 - name: VA older child needs an exception.
   period: 2026-01
@@ -22,7 +21,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: false
-    is_disabled: false
 
 - name: VA court supervision at the lower boundary.
   period: 2026-01
@@ -35,7 +33,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: true
-    is_disabled: false
 
 - name: VA court supervision at the upper boundary.
   period: 2026-01
@@ -48,7 +45,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: true
-    is_disabled: false
 
 - name: VA court supervision does not override the upper age limit.
   period: 2026-01
@@ -61,7 +57,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: false
-    is_disabled: false
 
 - name: VA supervised adult does not qualify.
   period: 2026-01
@@ -74,7 +69,6 @@
     immigration_status: CITIZEN
   output:
     va_ccsp_child_eligible: false
-    is_disabled: false
 
 - name: VA supervision is specific to the child in a mixed household.
   period: 2026-01
@@ -100,7 +94,6 @@
         state_code: VA
   output:
     va_ccsp_child_eligible: [false, true, false]
-    is_disabled: [false, false, false]
 
 - name: VA court-supervised 17-year-old receives a benefit through the full pipeline.
   period: 2024-01
@@ -136,7 +129,6 @@
     va_ccsp_child_eligible: [false, true]
     va_ccsp_income_eligible: true
     va_ccsp_eligible: true
-    is_disabled: [false, false]
     # Group III school-age daily MRR = $30; 23 attending days => 30 * 23 = 690
     va_ccsp_daily_mrr: [30, 30]
     # Copay: family of 2 at 36,000 => $60/month
