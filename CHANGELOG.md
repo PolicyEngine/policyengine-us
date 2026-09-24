@@ -1,3 +1,10 @@
+## [2.11.2] - 2026-09-24
+
+### Changed
+
+- Massachusetts Commonwealth Credit reform now phases out on adjusted gross income and extends eligibility to separate filers at the non-joint threshold.
+
+
 ## [2.11.1] - 2026-09-23
 
 ### Fixed
