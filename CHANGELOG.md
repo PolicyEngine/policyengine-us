@@ -1,3 +1,10 @@
+## [2.14.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision age eligibility to child-care assistance in Maine, North Carolina, Virginia, Vermont, and Washington.
+
+
 ## [2.13.0] - 2026-09-25
 
 ### Added
