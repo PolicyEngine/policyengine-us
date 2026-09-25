@@ -11,6 +11,12 @@ catch that kind of transcription error:
   whole columns from one state to another, which a monotonicity check misses
   when the copied state's own row happens to rise.
 
+A third check keeps each year's table its own: no jurisdiction's table is the
+same in two IRS table years. A year missing from the file silently takes a
+neighboring year's table. PolicyEngine-US extends each parameter's earliest
+value back to 2015 (`backdate_parameters` in policyengine_us/system.py), so
+2018-2021 used the 2022 table until their own tables were added.
+
 The variable-level tests run grids of single-person households through the
 formulas that read the table:
 
@@ -43,7 +49,7 @@ from policyengine_us.system import system
 
 TABLE_PATH = "gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table"
 TABLE_DIR = REPO.joinpath("parameters", *TABLE_PATH.split("."))
-IRS_TABLE_YEARS = (2022, 2023, 2024, 2025)
+IRS_TABLE_YEARS = (2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
 # Later years are uprated from the last IRS table.
 CHECKED_YEARS = IRS_TABLE_YEARS + (2026, 2030)
 FAMILY_SIZES = range(1, 7)
@@ -59,7 +65,7 @@ IRS_JURISDICTIONS = {
 # Worksheet, instruction after line 1: "If, for all of 2023, you lived only in
 # Connecticut, the District of Columbia, Indiana, Kentucky, Maine, Maryland,
 # Massachusetts, Michigan, New Jersey, or Rhode Island, skip lines 2 through 5,
-# enter -0- on line 6" (same list in 2022, 2024, and 2025).
+# enter -0- on line 6" (same list in 2018 through 2025).
 NO_LOCAL_SALES_TAX = ["CT", "DC", "IN", "KY", "MA", "MD", "ME", "MI", "NJ", "RI"]
 # Lower bound of each IRS income row after the first ("At least").
 IRS_ROW_FLOORS = [
@@ -70,10 +76,14 @@ IRS_ROW_FLOORS = [
 # Family sizes above 6 use the "Over 5" column.
 SIMULATED_FAMILY_SIZES = range(1, 9)
 # The IRS counts income as "the amount shown on your Form 1040 or 1040-SR,
-# line 11 [line 11b in 2025], plus any nontaxable items, such as" tax-exempt
-# interest, veterans' benefits, workers' compensation, the nontaxable part of
-# social security and of IRA, pension, or annuity distributions, and public
-# assistance payments. These are the PolicyEngine variables for those items.
+# line 11, plus any nontaxable items, such as the following" (2020-2024; the
+# 2018 instructions cite Form 1040, line 7, 2019 line 8b, and 2025 line 11b).
+# The list is the same from 2018 to 2025: tax-exempt interest; veterans'
+# benefits; nontaxable combat pay; workers' compensation; the nontaxable part
+# of social security and railroad retirement benefits; the nontaxable part of
+# IRA, pension, or annuity distributions; and public assistance payments.
+# These are the PolicyEngine variables for those items. Combat pay and
+# railroad retirement benefits are not included.
 TABLE_INCOME_SOURCES = [
     "adjusted_gross_income",
     "tax_exempt_interest_income",
@@ -171,6 +181,25 @@ def test_no_family_size_column_repeats_another(table_yaml, year):
             columns.setdefault(column, []).append(f"{state} family size {size}")
     repeats = [cells for cells in columns.values() if len(cells) > 1]
     assert not repeats, f"Identical columns: {repeats[:10]}"
+
+
+def test_no_state_table_repeats_another_years(table_yaml):
+    """The IRS prints a new table each year, and no jurisdiction's 114 cells
+    are the same in any two years. A year left out of the file would
+    silently take a neighboring year's table: the earliest table is extended
+    back to 2015, and a missing later year keeps the year before."""
+    repeats = []
+    for state in sorted(IRS_JURISDICTIONS):
+        tables = {}
+        for year in IRS_TABLE_YEARS:
+            table = tuple(
+                table_yaml[state][size][bracket][date(year, 1, 1)]
+                for size in FAMILY_SIZES
+                for bracket in INCOME_BRACKETS
+            )
+            tables.setdefault(table, []).append(year)
+        repeats += [(state, years) for years in tables.values() if len(years) > 1]
+    assert not repeats, f"Same table in several years: {repeats[:10]}"
 
 
 def _grid_simulation(year, states, sizes, **inputs):
