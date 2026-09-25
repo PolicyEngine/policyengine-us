@@ -1,1 +1,1 @@
-Arkansas itemized medical expense deduction now uses Arkansas's own floor: 10% of Arkansas AGI (7.5% for filers 65 or older in 2014-2016), instead of the federal 7.5% from 2017 on.
+Arkansas itemized medical expense deduction now uses Arkansas's own floor under Ark. Code § 26-51-423: 10% of Arkansas AGI from 2013 (7.5% when the filer or spouse is 65 or older in 2013-2016), instead of the federal 7.5% from 2017 on.
