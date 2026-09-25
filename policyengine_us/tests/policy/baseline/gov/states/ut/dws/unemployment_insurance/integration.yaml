@@ -266,3 +266,68 @@
         # weeks_unemployed (17) == duration (17): annual = $395 * 17 = $6,715.
         # min($6,715, MBA $6,715) = $6,715 -> cap binds exactly at equality.
         ut_ui: 6_715
+
+- name: Case 9, UT UI feeds unemployment compensation income flows.
+  # Reuses Case 2's monetarily-eligible input set (ut_ui = $19,396) and asserts
+  # the state benefit surfaces through the total unemployment compensation
+  # income chain (modeled fallback: no reported UC, so total = modeled ut_ui).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: UT
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ut_ui_base_period_wages: 80_000
+    ut_ui_high_quarter_wages: 25_000
+    ut_ui_quarters_with_wages: 4
+    ut_ui_weeks_unemployed: 26
+    ut_ui_gross_weekly_earnings: 0
+    ut_ui_weekly_hours_worked: 0
+  output:
+    ut_ui: 19_396
+    # No reported unemployment_compensation input -> fallback to modeled.
+    modeled_state_unemployment_compensation: 19_396
+    total_unemployment_compensation: 19_396
+    tax_unit_unemployment_compensation: 19_396
+    taxable_unemployment_compensation: 19_396
+    tax_unit_taxable_unemployment_compensation: 19_396
+
+- name: Case 10, reported UC preserved when present (no UT UI inputs).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: UT
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    unemployment_compensation: 12_000
+  output:
+    ut_ui: 0
+    modeled_state_unemployment_compensation: 0
+    unemployment_compensation: 12_000
+    total_unemployment_compensation: 12_000
+    tax_unit_unemployment_compensation: 12_000
+
+- name: Case 11, reported UC wins over modeled UT UI - no double count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: UT
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    unemployment_compensation: 12_000
+    ut_ui_base_period_wages: 80_000
+    ut_ui_high_quarter_wages: 25_000
+    ut_ui_quarters_with_wages: 4
+    ut_ui_weeks_unemployed: 26
+    ut_ui_gross_weekly_earnings: 0
+    ut_ui_weekly_hours_worked: 0
+  output:
+    ut_ui: 19_396
+    modeled_state_unemployment_compensation: 19_396
+    unemployment_compensation: 12_000
+    # Reported wins; total is 12,000 (not 12,000 + 19,396).
+    total_unemployment_compensation: 12_000
+    tax_unit_unemployment_compensation: 12_000

@@ -1,0 +1,26 @@
+description: Modeled state unemployment insurance programs that count toward unemployment compensation.
+values:
+  # Year-gated: each program appears from the first year its implementation
+  # is verified (verified_years in programs.yaml). Extend a program's block
+  # when its verified years are extended. The empty base also keeps
+  # simulations of earlier years from reaching state UI parameters that
+  # start later.
+  0000-01-01: []
+  2022-01-01:
+    - ok_ui
+  2024-01-01:
+    - al_ui
+    - nj_unemployment_insurance
+    - ok_ui
+    - ut_ui
+  2025-01-01:
+    - al_ui
+    - nj_unemployment_insurance
+    - ny_ui
+    - ok_ui
+    - pa_uc
+    - ut_ui
+metadata:
+  unit: list
+  period: year
+  label: Modeled state unemployment compensation programs

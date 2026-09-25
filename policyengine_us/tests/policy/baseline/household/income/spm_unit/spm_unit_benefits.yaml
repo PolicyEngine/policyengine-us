@@ -124,3 +124,35 @@
     ssi: 11_928
     ca_state_supplement: 4_101.72
     spm_unit_benefits: 16_029.72
+
+- name: Benefits include modeled state unemployment insurance net of the SNAP it reduces.
+  # Low-income Pennsylvania adult with no reported UC and no earnings. Modeled
+  # pa_uc = 10,218 feeds total_unemployment_compensation and SNAP unearned
+  # income (851.50 per month). SNAP is 228 per month for January-September
+  # (292 maximum - 64) and 265 for October-December (298 maximum - 33), so
+  # annual snap = 228 * 9 + 265 * 3 = 2,052 + 795 = 2,847.
+  # spm_unit_benefits = 10,218 + 2,847 = 13,065. Without the modeled UC in SNAP
+  # income, snap would be 292 * 9 + 298 * 3 = 3,522.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_uc: 10_218
+    total_unemployment_compensation: 10_218
+    snap: 2_847
+    spm_unit_benefits: 13_065

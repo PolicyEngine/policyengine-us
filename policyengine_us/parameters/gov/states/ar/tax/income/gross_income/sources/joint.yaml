@@ -18,7 +18,7 @@ values:
     - disability_benefits # Line 18b
     - rental_income # Line 19
     - farm_rent_income # Line 20
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
   2020-01-01:
     - irs_employment_income # Line 8
     - self_employment_income # Line 8
@@ -53,7 +53,7 @@ values:
     - disability_benefits # Line 18b
     - rental_income # Line 19
     - farm_rent_income # Line 20
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
 
 metadata:
   unit: list
