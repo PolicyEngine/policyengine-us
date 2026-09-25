@@ -1,0 +1,240 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, TN court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [TN, TN, TN, TN, TN, TN, TN, TN]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    # Single-person units with no income or care show no downstream effect of
+    # disability or protective status here; Case 3 checks both through the
+    # rate and the copay.
+    tn_ccap_eligible_child: [true, false, true, true, true, false, false, false]
+
+- name: Case 2, TN court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: TN
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    tn_ccap_eligible_child: false
+
+- name: Case 3, TN court-supervised teenager receives ordinary school-age reimbursement and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    # Not waived: court supervision does not make the child a
+    # protective-services child, which would exempt the family from the copay.
+    tn_ccap_copay: 98.9
+    # No 15% disability differential: court supervision does not set
+    # is_disabled.
+    tn_ccap_max_weekly_benefit:
+    - 0
+    - 119
+    tn_ccap: 416.77
+    tn_ccap_protective_services_waiver: false
+
+- name: Case 4, TN court supervision does not waive the activity test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    tn_ccap_protective_services_waiver: false
+    tn_ccap: 0
+    tn_ccap_eligible: false
+
+- name: Case 5, TN court supervision does not waive the income test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    tn_ccap_protective_services_waiver: false
+    tn_ccap: 0
+    tn_ccap_eligible: false
+
+- name: Case 6, TN court supervision pays no benefit without care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    tn_ccap_protective_services_waiver: false
+    tn_ccap: 0
+    tn_ccap_max_weekly_benefit:
+    - 0
+    - 0
+
+- name: Case 7, TN court supervision applies to each child separately in a mixed family.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_under_court_supervision: true
+      person2:
+        age: 12
+      person3:
+        age: 17
+        is_under_court_supervision: true
+      person4:
+        age: 17
+      person5:
+        age: 19
+        is_under_court_supervision: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        state_code: TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    - true
+    - false
+    - false

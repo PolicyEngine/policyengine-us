@@ -1,3 +1,53 @@
+## [2.15.1] - 2026-09-25
+
+### Fixed
+
+- Correct the 2022 single 37% bracket threshold from $539,000 to $539,900.
+
+
+## [2.15.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision child-care age eligibility in Georgia, Idaho, Indiana, Michigan, North Dakota, South Dakota, and Wyoming, including the Michigan and South Dakota age-18 student extensions, and verify that Nebraska does not elect the extension.
+
+
+## [2.14.1] - 2026-09-25
+
+### Fixed
+
+- Repoint Arkansas DFA references from the dead images/uploads/incomeTaxOffice path to wp-content/uploads, and replace the removed 2014 tax bracket sheet with the 2014 instruction booklet.
+
+
+## [2.14.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision age eligibility to child-care assistance in Maine, North Carolina, Virginia, Vermont, and Washington.
+
+
+## [2.13.0] - 2026-09-25
+
+### Added
+
+- Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021, following Maryland's CCDF plan elections, using the new `is_under_court_supervision` input (COMAR itself does not provide the route).
+
+
+## [2.12.0] - 2026-09-25
+
+### Added
+
+- Add a reusable court-supervision status input and apply verified child-care age rules in Kansas, Kentucky, Louisiana, Missouri, Montana, New Mexico, New York, Oklahoma, Oregon, Tennessee, Utah, and West Virginia, including Kentucky's special-care supplement and Missouri's special-needs treatment.
+
+### Changed
+
+- Include age 18 in New Mexico child-care special-supervision eligibility effective May 20, 2026 (applied from June 2026 in the monthly model), under the Child Care Assistance Program Act.
+
+### Fixed
+
+- Correct the start date of Kentucky's $5 child-care special-care supplement to August 1, 2022, and require secondary-school enrollment for New York's age-18 special-needs child-care route.
+
+
 ## [2.11.4] - 2026-09-24
 
 ### Fixed
