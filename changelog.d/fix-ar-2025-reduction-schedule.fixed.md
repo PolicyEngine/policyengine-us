@@ -1,0 +1,1 @@
+Fix Arkansas 2025 and 2024 income tax minus-adjustment schedules to match the DFA Indexed Tax Brackets: add the missing 2025 $94,701-$95,000 rows (previously taxed with the $419.96 adjustment), use DFA's exact cents for 2025, and honor the 2024 asterisked $94,301-$94,500 row.
