@@ -1,11 +1,27 @@
 description: New Mexico limits child care assistance for children with special supervision needs to those under this age under the Child Care Assistance Program.
 values:
+  # "Between the ages of 13 and 18" (8.9.3.11.G) and the Parents' Guide's "up
+  # to 18 years of age" are read as under 18, so an 18-year-old is excluded.
   2016-10-01: 18
+  # 2026 Laws, Ch. 63 (SB 241) is effective May 20, 2026. Monthly periods
+  # resolve parameters at the first of the month, so the monthly model first
+  # applies the age-19 limit for June 2026; May 2026 still uses 18.
+  2026-05-20: 19
 
 metadata:
   unit: year
   period: year
-  label: New Mexico CCAP special needs child age limit
+  label: New Mexico CCAP special needs or court-supervised child age limit
   reference:
-    - title: 8.15.2.11.G NMAC
+    - title: 8.15.2.11.G NMAC (in effect 10/1/2016 to 10/31/2022)
       href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+    - title: 8.9.3.11.G NMAC (successor to 8.15.2.11.G)
+      href: https://www.srca.nm.gov/parts/title08/08.009.0003.html
+    - title: ECECD Parents' Guide to Selecting Quality Child Care, ages served
+      href: https://www.nmececd.org/wp-content/uploads/2024/12/Parents-Guide-to-Child-Care_English.pdf#page=5
+    - title: 2026 New Mexico Laws, Chapter 63 (SB 241), Section 4(B), under age nineteen if under court supervision
+      href: https://www.nmlegis.gov/Sessions/26%20Regular/final/SB0241.pdf#page=7
+    - title: 2026 New Mexico Laws, Chapter 63 (SB 241), Section 5(G), through age eighteen
+      href: https://www.nmlegis.gov/Sessions/26%20Regular/final/SB0241.pdf#page=14
+    - title: New Mexico Legislature session dates, 2026 ordinary effective date
+      href: https://www.nmlegis.gov/Publications/Session_Dates.pdf#page=1

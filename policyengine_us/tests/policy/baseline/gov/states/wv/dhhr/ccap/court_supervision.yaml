@@ -1,0 +1,25 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, WV court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [WV, WV, WV, WV, WV, WV, WV, WV]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    wv_ccap_eligible_child: [true, false, true, true, false, false, false, false]
+    # WV CCAP reads neither status (its special-needs proxy is
+    # has_developmental_delay), so no downstream variable can show the
+    # difference; these rows record that the court flag leaves both unset.
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, WV court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: WV
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    wv_ccap_eligible_child: false

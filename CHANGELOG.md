@@ -1,3 +1,46 @@
+## [2.14.1] - 2026-09-25
+
+### Fixed
+
+- Repoint Arkansas DFA references from the dead images/uploads/incomeTaxOffice path to wp-content/uploads, and replace the removed 2014 tax bracket sheet with the 2014 instruction booklet.
+
+
+## [2.14.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision age eligibility to child-care assistance in Maine, North Carolina, Virginia, Vermont, and Washington.
+
+
+## [2.13.0] - 2026-09-25
+
+### Added
+
+- Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021, following Maryland's CCDF plan elections, using the new `is_under_court_supervision` input (COMAR itself does not provide the route).
+
+
+## [2.12.0] - 2026-09-25
+
+### Added
+
+- Add a reusable court-supervision status input and apply verified child-care age rules in Kansas, Kentucky, Louisiana, Missouri, Montana, New Mexico, New York, Oklahoma, Oregon, Tennessee, Utah, and West Virginia, including Kentucky's special-care supplement and Missouri's special-needs treatment.
+
+### Changed
+
+- Include age 18 in New Mexico child-care special-supervision eligibility effective May 20, 2026 (applied from June 2026 in the monthly model), under the Child Care Assistance Program Act.
+
+### Fixed
+
+- Correct the start date of Kentucky's $5 child-care special-care supplement to August 1, 2022, and require secondary-school enrollment for New York's age-18 special-needs child-care route.
+
+
+## [2.11.4] - 2026-09-24
+
+### Fixed
+
+- Correct which states exclude legally obligated child support payments from SNAP gross income instead of deducting them from net income. The state values were inverted, so 46 jurisdictions had the wrong treatment in 2026. They now follow the USDA SNAP State Options Report (14th through 17th editions), with overrides where state rules for California, Delaware, Illinois, Louisiana, Massachusetts, Missouri, North Carolina, Oregon and Virginia contradict an edition, and with Michigan (fiscal year 2023) and Vermont (fiscal year 2024) kept as deduction states where a single edition lists an exclusion. Before October 2017 the values follow the 9th to 13th editions and state rules: Iowa, Maine, New York and South Dakota exclude from 2010 as every edition lists; Arizona excludes until the 11th edition (September 2013) lists a deduction; state rules set the exclusions for Colorado, Iowa, Massachusetts, Rhode Island and Washington (in effect by 2010) and New Jersey (from November 1, 2013, under P.L. 2013, c.45).
+
+
 ## [2.11.3] - 2026-09-24
 
 ### Changed

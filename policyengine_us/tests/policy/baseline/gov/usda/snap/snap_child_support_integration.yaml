@@ -1,0 +1,83 @@
+# A single adult earning $36,275.59 a year ($3,022.97 a month) who pays
+# $5,200 a year ($433.33 a month) in legally obligated child support and
+# $10,560 a year in rent, based on PolicyBench scenario_045. Gross income is
+# 232% of the poverty guideline before subtracting child support and 199%
+# after.
+
+- name: Michigan deducts child support from net income, so the household fails the 200% of poverty BBCE gross income limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 36_275.59
+        employment_income_before_lsr: 36_275.59
+        weekly_hours_worked_before_lsr: 40
+        child_support_expense: 5_200
+        pre_subsidy_rent: 10_560
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MI
+  output:
+    snap_child_support_gross_income_deduction: 0
+    snap_gross_income: 3_022.97
+    snap_child_support_deduction: 433.33
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    snap: 0
+
+- name: California excludes child support from gross income, so the same household meets the 200% of poverty BBCE gross income limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 36_275.59
+        employment_income_before_lsr: 36_275.59
+        weekly_hours_worked_before_lsr: 40
+        child_support_expense: 5_200
+        pre_subsidy_rent: 10_560
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    snap_child_support_gross_income_deduction: 433.33
+    snap_gross_income: 2_589.63
+    snap_child_support_deduction: 0
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    snap: 24
+
+- name: New York excludes child support from gross income and does not deduct it again from net income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 36_275.59
+        employment_income_before_lsr: 36_275.59
+        weekly_hours_worked_before_lsr: 40
+        child_support_expense: 5_200
+        pre_subsidy_rent: 10_560
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    snap_child_support_gross_income_deduction: 433.33
+    snap_gross_income: 2_589.63
+    snap_child_support_deduction: 0

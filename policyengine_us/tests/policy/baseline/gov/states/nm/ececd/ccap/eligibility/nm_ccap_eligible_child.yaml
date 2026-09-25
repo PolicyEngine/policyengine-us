@@ -1,7 +1,10 @@
 # NM CCAP eligible child: age 6 weeks to under 13 (8.15.2.11.F NMAC), or
-# under 18 with a developmental delay (special-supervision extension,
-# 8.15.2.11.G), AND a US citizen or qualified immigrant (8.15.2.11.E,
-# reusing is_ccdf_immigration_eligible_child).
+# with a developmental delay or under court supervision, under 18 through May
+# 2026 (special-supervision extension, 8.9.3.11.G, formerly 8.15.2.11.G) and
+# under 19 from June 2026 (2026 Laws, Ch. 63, section 4(B)), AND a US citizen
+# or qualified immigrant before Universal Child Care (8.15.2.11.E, reusing
+# is_ccdf_immigration_eligible_child). Court-supervision cases are in
+# ../court_supervision.yaml.
 
 - name: Case 1, citizen child under thirteen is eligible.
   period: 2025-01
@@ -76,7 +79,7 @@
   output:
     nm_ccap_eligible_child: [false, true]
 
-- name: Case 5, special needs child at exactly eighteen is ineligible.
+- name: Case 5, special needs child at exactly eighteen is ineligible before the June 2026 age-19 limit.
   period: 2025-01
   input:
     people:
@@ -84,7 +87,8 @@
         age: 45
         immigration_status: CITIZEN
       person2:
-        # Developmental delay, age 18 is NOT < 18 -> ineligible
+        # Developmental delay, age 18 is NOT < 18 in 2025 -> ineligible. The
+        # age-19 limit that starts in June 2026 would make this child eligible.
         age: 18
         has_developmental_delay: true
         immigration_status: CITIZEN
