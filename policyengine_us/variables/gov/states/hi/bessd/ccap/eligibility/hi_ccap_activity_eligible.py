@@ -15,17 +15,17 @@ class hi_ccap_activity_eligible(Variable):
         # Approved activities (HAR 17-798.2-9(b)(2)). We model the core work,
         # education/training, and protective-services pathways. Activity
         # pathways for short-term job offers, employment breaks, job search,
-        # first-to-work, rely on timing windows
+        # first-to-work, and protective-order day care rely on timing windows
         # we don't track at the moment. Use the pre-labor-supply-response work
         # hours to avoid a circular dependency with behavioral responses.
         is_employed = (
             person("weekly_hours_worked_before_lsr", period.this_year) > 0
         ) | (person("employment_income", period.this_year) > 0)
         is_student = person("is_full_time_student", period.this_year)
-        court_ordered_care = spm_unit.any(
-            person("hi_ccap_court_ordered_protective_care", period)
+        protective_services = person(
+            "receives_or_needs_protective_services", period.this_year
         )
-        real_activity = is_employed | is_student
+        real_activity = is_employed | is_student | protective_services
         # Disability is NOT a standalone activity: under HAR 17-798.2-9(b)(2)(H)
         # and (I), an incapacitated caretaker qualifies the family only via an
         # activity link -- when the OTHER head/spouse is in an approved
@@ -42,7 +42,6 @@ class hi_ccap_activity_eligible(Variable):
         # is in a real activity.
         n_disabled_inactive = spm_unit.sum(is_caretaker & ~real_activity & is_disabled)
         n_real_active = spm_unit.sum(is_caretaker & real_activity)
-        return court_ordered_care | (
-            (n_inactive_nondisabled == 0)
-            & ((n_disabled_inactive == 0) | (n_real_active >= 1))
+        return (n_inactive_nondisabled == 0) & (
+            (n_disabled_inactive == 0) | (n_real_active >= 1)
         )

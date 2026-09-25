@@ -1,110 +1,51 @@
-# Authority: https://humanservices.hawaii.gov/bessd/files/2024/11/ACF-118-CCDF-FFY-2025-2027-For-Hawaii.pdf#page=16
-# Court status is distinct from protective-services or child-care authorization.
-
-- name: HI court status alone does not extend eligibility.
+# Hawaii has no general court-supervision age extension. HAR 17-798.2-9(a)(3)
+# covers a child receiving child protective services whose court-ordered case
+# plan specifies child care; court supervision stands in for the court order,
+# and HAR 17-798.2-2 limits a child to under 18.
+- name: Case 1, court supervision alone does not extend the age limit.
   period: 2026-01
   input:
-    state_code: HI
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
+    state_code: [HI, HI, HI, HI]
+    age: [12, 13, 17, 18]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false]
+    is_under_court_supervision: [true, true, true, true]
   output:
-    hi_ccap_eligible_child: false
+    hi_ccap_eligible_child: [true, false, false, false]
 
-- name: HI protective status alone is insufficient after 12.
+- name: Case 2, protective services under court supervision qualify through 17.
   period: 2026-01
   input:
-    state_code: HI
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    receives_or_needs_protective_services: true
+    state_code: [HI, HI, HI, HI]
+    age: [12, 13, 17, 18]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false]
+    receives_or_needs_protective_services: [true, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
   output:
-    hi_ccap_eligible_child: false
+    hi_ccap_eligible_child: [true, true, true, false]
 
-- name: HI care order without CPS does not qualify.
+- name: Case 3, protective services without court supervision follow the ordinary limit.
   period: 2026-01
   input:
-    state_code: HI
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
+    state_code: [HI, HI]
+    age: [12, 13]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    receives_or_needs_protective_services: [true, true]
+    is_under_court_supervision: [false, false]
   output:
-    hi_ccap_eligible_child: false
+    hi_ccap_eligible_child: [true, false]
 
-- name: HI court-ordered protective care at age 13.
+- name: Case 4, the disabled-child route is unchanged by court supervision.
   period: 2026-01
   input:
-    state_code: HI
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-    receives_or_needs_protective_services: true
+    state_code: [HI, HI, HI]
+    age: [17, 17, 18]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [true, true, true]
+    receives_or_needs_protective_services: [false, false, false]
+    is_under_court_supervision: [false, true, true]
   output:
-    hi_ccap_eligible_child: true
-
-- name: HI court-ordered protective care at age 17.
-  period: 2026-01
-  input:
-    state_code: HI
-    age: 17
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-    receives_or_needs_protective_services: true
-  output:
-    hi_ccap_eligible_child: true
-
-- name: HI court-ordered protective care at age 18.
-  period: 2026-01
-  input:
-    state_code: HI
-    age: 18
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-    receives_or_needs_protective_services: true
-  output:
-    hi_ccap_eligible_child: false
-
-- name: HI court-ordered protective care at age 19.
-  period: 2026-01
-  input:
-    state_code: HI
-    age: 19
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-    receives_or_needs_protective_services: true
-  output:
-    hi_ccap_eligible_child: false
-
-- name: HI court-ordered protective care at age 40.
-  period: 2026-01
-  input:
-    state_code: HI
-    age: 40
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-    receives_or_needs_protective_services: true
-  output:
-    hi_ccap_eligible_child: false
+    hi_ccap_eligible_child: [true, true, false]

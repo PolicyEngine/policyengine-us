@@ -15,9 +15,9 @@ class ia_cca(Variable):
         is_in_care = person("ia_cca_eligible_child", period) & (
             person("childcare_hours_per_week", period.this_year) > 0
         )
-        ordered_care = person("requires_childcare_under_court_order", period.this_year)
-        approved = person("ia_cca_court_ordered_care_approved", period)
-        court_child = ordered_care & approved & person("ia_cca_eligible_child", period)
+        court_child = person("is_under_court_supervision", period.this_year) & person(
+            "ia_cca_eligible_child", period
+        )
         has_court_child = spm_unit.any(court_child)
         ordinary_requirements = spm_unit("ia_cca_income_eligible", period) & spm_unit(
             "ia_cca_activity_eligible", period
@@ -26,8 +26,9 @@ class ia_cca(Variable):
             person("receives_or_needs_protective_services", period)
             | person("is_in_foster_care", period)
         )
-        # A court-directed approval covers the specified child. Preserve the
-        # existing family pathways for other children in the household.
+        # Court-directed care covers the court-supervised child. Other children
+        # are paid only through the ordinary family requirements or another
+        # family-level exception.
         payable = court_child | spm_unit.project(
             ordinary_requirements | other_exception
         )

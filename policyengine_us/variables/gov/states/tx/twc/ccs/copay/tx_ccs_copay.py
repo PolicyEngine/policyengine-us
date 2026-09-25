@@ -47,11 +47,4 @@ class tx_ccs_copay(Variable):
 
         # Total rate capped at maximum, then applied to income.
         total_rate = min_(first_child_rate + additional_child_rate, max_rate)
-        person = spm_unit.members
-        has_dfps_child = spm_unit.any(
-            person("tx_ccs_dfps_authorized", period)
-            & person("tx_ccs_eligible_child", period)
-        )
-        # 809.19(a)(3)(D) exempts these parents unless DFPS assesses a share.
-        assessed_share = max_(spm_unit("tx_ccs_dfps_assessed_parent_share", period), 0)
-        return where(has_dfps_child, assessed_share, total_rate * income)
+        return total_rate * income

@@ -1,92 +1,37 @@
-# Authority: https://www.cdss.ca.gov/Portals/9/CCDD/2025-27%20CCDF%20State%20Plan%20%E2%80%93%20Amendments%201.pdf#page=19
-# Court status is distinct from protective-services or child-care authorization.
-
-- name: CA general court status without qualifying jurisdiction.
+# WIC 11323.2(a)(1)(A) and MPP 47-201.2 provide Stage One child care for a
+# child under court supervision, up to the MPP 42-101 age: under 18, or 18
+# and a full-time high school student. The ordinary limit is 12 or under.
+- name: Case 1, court supervision extends the age limit through 17.
   period: 2026
   input:
-    state_code: CA
-    age: 14
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
+    state_code: [CA, CA, CA, CA]
+    age: [12, 13, 17, 18]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false]
+    is_under_court_supervision: [true, true, true, true]
+    is_in_secondary_school: [false, false, false, false]
   output:
-    ca_calworks_child_care_child_age_eligible: false
+    ca_calworks_child_care_child_age_eligible: [true, true, true, false]
 
-- name: CA qualifying court supervision at age 17.
+- name: Case 2, a court-supervised 18-year-old in high school remains eligible.
   period: 2026
   input:
-    state_code: CA
-    age: 17
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    ca_calworks_child_care_has_qualifying_court_supervision: true
+    state_code: [CA, CA]
+    age: [18, 19]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [true, true]
+    is_in_secondary_school: [true, true]
   output:
-    ca_calworks_child_care_child_age_eligible: true
+    ca_calworks_child_care_child_age_eligible: [true, false]
 
-- name: CA age 18 needs the school condition.
+- name: Case 3, without court supervision the ordinary under-13 limit applies.
   period: 2026
   input:
-    state_code: CA
-    age: 18
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    ca_calworks_child_care_has_qualifying_court_supervision: true
+    state_code: [CA, CA]
+    age: [12, 13]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [false, false]
   output:
-    ca_calworks_child_care_child_age_eligible: false
-
-- name: CA age 18 with qualifying schooling.
-  period: 2026
-  input:
-    state_code: CA
-    age: 18
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    ca_calworks_child_care_has_qualifying_court_supervision: true
-    ca_calworks_child_care_meets_age_18_school_requirement: true
-  output:
-    ca_calworks_child_care_child_age_eligible: true
-
-- name: CA age 19 remains outside the modeled child-care age limit.
-  period: 2026
-  input:
-    state_code: CA
-    age: 19
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    ca_calworks_child_care_has_qualifying_court_supervision: true
-    ca_calworks_child_care_meets_age_18_school_requirement: true
-  output:
-    ca_calworks_child_care_child_age_eligible: false
-
-- name: CA ordinary age 12 remains eligible.
-  period: 2026
-  input:
-    state_code: CA
-    age: 12
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: false
-  output:
-    ca_calworks_child_care_child_age_eligible: true
-
-- name: CA ordinary age 13 is excluded.
-  period: 2026
-  input:
-    state_code: CA
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: false
-  output:
-    ca_calworks_child_care_child_age_eligible: false
+    ca_calworks_child_care_child_age_eligible: [true, false]

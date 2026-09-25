@@ -12,13 +12,14 @@ class tx_ccs_eligible(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        standard_requirements = spm_unit(
-            "tx_ccs_meets_standard_family_requirements", period
-        )
+        # Check all eligibility criteria
+        income_eligible = spm_unit("tx_ccs_income_eligible", period)
+        asset_eligible = spm_unit("tx_ccs_asset_eligible", period)
+        work_eligible = spm_unit("tx_ccs_work_requirement_eligible", period)
+
+        # Check if at least one child is age-eligible
         person = spm_unit.members
-        eligible_child = person("tx_ccs_eligible_child", period)
-        has_eligible_child = spm_unit.any(eligible_child)
-        authorized_child = person("tx_ccs_dfps_authorized", period) & eligible_child
-        return (standard_requirements & has_eligible_child) | spm_unit.any(
-            authorized_child
-        )
+        age_eligible = person("tx_ccs_eligible_child", period)
+        has_eligible_child = spm_unit.any(age_eligible)
+
+        return income_eligible & asset_eligible & work_eligible & has_eligible_child

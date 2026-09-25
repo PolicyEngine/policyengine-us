@@ -1,6 +1,6 @@
 # HI CCAP eligible-child tests (HAR 17-798.2-9(a)).
 # Under 13, OR disabled 13-17, OR receiving court-ordered protective
-# services (under 18), AND CCDF immigration eligible.
+# services under court supervision (under 18), AND CCDF immigration eligible.
 
 - name: Case 1, child under 13 who is a citizen.
   period: 2025-01
@@ -101,7 +101,7 @@
   output:
     hi_ccap_eligible_child: [false, false]
 
-- name: Case 7, child under 18 with court-ordered protective care is eligible.
+- name: Case 7, child under 18 receiving protective services under court supervision is eligible.
   period: 2025-01
   input:
     people:
@@ -110,7 +110,7 @@
       person2:
         age: 15
         receives_or_needs_protective_services: true
-        requires_childcare_under_court_order: true
+        is_under_court_supervision: true
         immigration_status: CITIZEN
     households:
       household:

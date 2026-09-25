@@ -8,8 +8,9 @@ class de_poc_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.DE
     reference = (
-        "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=79",
-        "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
+        "https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml",
+        "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
+        "https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21",
     )
 
     def formula(person, period, parameters):
@@ -40,9 +41,4 @@ class de_poc_eligible_child(Variable):
         protective = person("receives_or_needs_protective_services", period)
         homeless = person.household("is_homeless", period.this_year)
         categorical_eligible = age_eligible & (foster | protective | homeless)
-        referral = person("de_poc_has_dfs_referral", period)
-        # A DFS child-care referral is a separate under-19 route that does
-        # not depend on the court-supervision election, dependency or
-        # immigration status.
-        referred_eligible = referral & (age < p.age_threshold.disabled_child)
-        return standard_eligible | categorical_eligible | referred_eligible
+        return standard_eligible | categorical_eligible

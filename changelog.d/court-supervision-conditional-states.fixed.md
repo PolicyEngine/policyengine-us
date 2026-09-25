@@ -1,1 +1,0 @@
-Apply state-specific court, care-order, and protective-referral child-care rules in Arkansas, California, Colorado, Delaware, DC, Hawaii, Illinois, Iowa, New Jersey, Nevada, South Carolina, and Texas. Preserve child-specific payment and copay conditions, correct California's ordinary age-13 boundary, and document the national audit and Maryland source conflict.

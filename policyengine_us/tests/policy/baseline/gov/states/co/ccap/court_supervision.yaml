@@ -1,66 +1,38 @@
-# Authority: https://spl.cde.state.co.us/artemis/huserials/hu62510internet/hu62510202527internet.pdf#page=23
-# Court status is distinct from protective-services or child-care authorization.
+# Colorado's approved CCDF Plan 2.2.1(c) (p.23) and 8 CCR 1403-1 section
+# 3.105.1(F) extend eligibility through age 18 for a child under court
+# supervision. The documented care need is a verification detail.
+- name: Case 1, court supervision extends the age limit through 18.
+  period: 2026-01
+  input:
+    state_code: [CO, CO, CO, CO, CO]
+    age: [12, 13, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    co_ccap_child_eligible: [true, true, true, true, false]
 
-- name: CO court status alone is insufficient.
+- name: Case 2, without court supervision the ordinary under-13 limit applies.
+  period: 2026-01
+  input:
+    state_code: [CO, CO]
+    age: [12, 13]
+    is_tax_unit_dependent: [true, true]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [false, false]
+  output:
+    co_ccap_child_eligible: [true, false]
+
+- name: Case 3, court supervision does not replace the dependency requirement.
   period: 2026-01
   input:
     state_code: CO
-    age: 13
-    is_tax_unit_dependent: true
+    age: 15
+    is_tax_unit_dependent: false
     immigration_status: CITIZEN
     is_disabled: false
     is_under_court_supervision: true
-  output:
-    co_ccap_child_eligible: false
-
-- name: CO verified care needs alone are insufficient.
-  period: 2026-01
-  input:
-    state_code: CO
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: false
-    co_ccap_has_verified_additional_care_needs: true
-  output:
-    co_ccap_child_eligible: false
-
-- name: CO court supervision with verified additional care needs at age 13.
-  period: 2026-01
-  input:
-    state_code: CO
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    co_ccap_has_verified_additional_care_needs: true
-  output:
-    co_ccap_child_eligible: true
-
-- name: CO court supervision with verified additional care needs at age 18.
-  period: 2026-01
-  input:
-    state_code: CO
-    age: 18
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    co_ccap_has_verified_additional_care_needs: true
-  output:
-    co_ccap_child_eligible: true
-
-- name: CO court supervision with verified additional care needs at age 19.
-  period: 2026-01
-  input:
-    state_code: CO
-    age: 19
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    co_ccap_has_verified_additional_care_needs: true
   output:
     co_ccap_child_eligible: false

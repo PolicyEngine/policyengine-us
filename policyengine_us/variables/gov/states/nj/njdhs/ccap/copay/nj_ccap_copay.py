@@ -14,7 +14,6 @@ class nj_ccap_copay(Variable):
     reference = (
         "https://www.childcarenj.gov/ChildCareNJ/media/media_library/Copayment_Schedule.pdf#page=1",
         "https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=40",
-        "https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_15%20CHILD%20CARE%20SERVICES.PDF#page=85",
     )
 
     def formula(spm_unit, period, parameters):
@@ -44,24 +43,6 @@ class nj_ccap_copay(Variable):
             | (weekly_days > 0)
         )
         is_paying_child = is_eligible_child & in_care
-        referred = person("nj_ccap_has_cpp_referral", period) & is_eligible_child
-        protective = referred | person("receives_or_needs_protective_services", period)
-        # 10:15-9.1(e)-(g): CP&P-paid foster placements are exempt. In-home
-        # protective care requires a case-specific waiver; an exempt child's
-        # status does not waive the copay for other children in the family.
-        exempt_child = protective & (
-            person("is_in_foster_care", period)
-            | person("nj_ccap_cpp_copay_waived", period)
-        )
-        ordinary_requirements = spm_unit("nj_ccap_income_eligible", period) & spm_unit(
-            "nj_ccap_activity_eligible", period
-        )
-        payable_child = referred | spm_unit.project(ordinary_requirements)
-        is_paying_child = (
-            is_paying_child
-            & ~exempt_child
-            & where(spm_unit.project(spm_unit.any(referred)), payable_child, True)
-        )
 
         n_paying = spm_unit.sum(is_paying_child)
         n_ft = spm_unit.sum(is_paying_child & is_ft)
@@ -82,4 +63,8 @@ class nj_ccap_copay(Variable):
         )
 
         total_rate = first_child_rate + where(has_second_child, second_child_rate, 0)
-        return where(n_paying == 0, 0, countable_income * total_rate)
+        # CPS children are copay-exempt (N.J.A.C. 10:15-9.1).
+        has_cps_child = spm_unit.any(
+            is_eligible_child & person("receives_or_needs_protective_services", period)
+        )
+        return where(has_cps_child | (n_paying == 0), 0, countable_income * total_rate)

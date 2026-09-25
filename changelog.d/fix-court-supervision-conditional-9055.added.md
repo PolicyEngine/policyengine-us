@@ -1,0 +1,1 @@
+Add court-supervision child-care routes in Arkansas, California, Colorado, Delaware, DC, Hawaii, Illinois, Iowa, New Jersey, Nevada, and South Carolina, confirm no effect in states that decline the option, and correct California's ordinary eligibility to children 12 or under.

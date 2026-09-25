@@ -21,7 +21,7 @@
     age: 18
     is_disabled: true
     immigration_status: CITIZEN
-    ca_calworks_child_care_meets_age_18_school_requirement: true
+    is_in_secondary_school: true
   output:
     ca_calworks_child_care_child_age_eligible: true
 
@@ -39,6 +39,6 @@
     age: 18
     is_disabled: true
     immigration_status: CITIZEN
-    ca_calworks_child_care_meets_age_18_school_requirement: false
+    is_in_secondary_school: false
   output:
     ca_calworks_child_care_child_age_eligible: false

@@ -1,53 +1,37 @@
-# Authority: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/policies/ACF-118%20CCDF%20FFY%202025-2027%20For%20Illinois%20Amend%202.pdf#page=18
-# Court status is distinct from protective-services or child-care authorization.
-
-- name: IL court status alone is insufficient.
+# Illinois's approved CCDF Plan 2.2.1(c) (p.18) extends eligibility through
+# age 18 for a child under court supervision.
+- name: Case 1, court supervision extends the age limit through 18.
   period: 2026-01
   input:
-    state_code: IL
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
+    state_code: [IL, IL, IL, IL, IL]
+    age: [12, 13, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
   output:
-    il_ccap_eligible_child: false
+    il_ccap_eligible_child: [true, true, true, true, false]
 
-- name: IL court order specifically requiring care at age 13.
+- name: Case 2, without court supervision the ordinary under-13 limit applies.
   period: 2026-01
   input:
-    state_code: IL
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
+    state_code: [IL, IL]
+    age: [12, 13]
+    is_tax_unit_dependent: [true, true]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [false, false]
   output:
-    il_ccap_eligible_child: true
+    il_ccap_eligible_child: [true, false]
 
-- name: IL court order specifically requiring care at age 18.
+- name: Case 3, court supervision does not replace the dependency requirement.
   period: 2026-01
   input:
     state_code: IL
-    age: 18
-    is_tax_unit_dependent: true
+    age: 15
+    is_tax_unit_dependent: false
     immigration_status: CITIZEN
     is_disabled: false
     is_under_court_supervision: true
-    requires_childcare_under_court_order: true
-  output:
-    il_ccap_eligible_child: true
-
-- name: IL court order specifically requiring care at age 19.
-  period: 2026-01
-  input:
-    state_code: IL
-    age: 19
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
-    requires_childcare_under_court_order: true
   output:
     il_ccap_eligible_child: false
