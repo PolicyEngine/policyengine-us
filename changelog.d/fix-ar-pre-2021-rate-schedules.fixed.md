@@ -1,1 +1,1 @@
-Arkansas 2014-2020 income tax schedules now match DFA's Indexed Tax Brackets and Regular Tax Tables. The subtraction amounts for 2014-2020 are added, and the 2016-2018 rates, thresholds, and high-income bracket adjustments are corrected.
+Arkansas 2014-2020 income tax schedules now follow DFA's Indexed Tax Brackets, which reproduce every row of DFA's Regular Tax Tables: the 2014-2020 subtraction amounts are added, and the 2016-2018 rates, thresholds and high-income bracket adjustments are corrected.
