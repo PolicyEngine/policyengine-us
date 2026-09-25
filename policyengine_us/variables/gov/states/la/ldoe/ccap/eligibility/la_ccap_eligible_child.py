@@ -13,11 +13,11 @@ class la_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.la.ldoe.ccap.age
         age = person("age", period.this_year)
         # LAC 28:CLXV.503.A.2: under 13, or 13-17 and incapable of self-care
-        # (verified by a physician or by receipt of SSI). The court-supervision
-        # pathway for ages 13-17 is not tracked at the moment.
+        # (verified by a physician or SSI receipt), or under court supervision.
         incapable = person("is_incapable_of_self_care", period.this_year)
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        older_child_eligible = (incapable | receives_ssi) & (
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
+        older_child_eligible = (incapable | receives_ssi | under_court_supervision) & (
             age < p.disabled_child_limit
         )
         age_eligible = (age < p.child_limit) | older_child_eligible

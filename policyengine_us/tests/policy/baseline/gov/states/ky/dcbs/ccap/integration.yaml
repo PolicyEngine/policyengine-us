@@ -372,12 +372,13 @@
     ky_ccap_eligible: true
     # Region 4, Licensed Type I, Preschool, Full Day = $41 base rate.
     ky_ccap_daily_rate: [0, 41]
-    # +$1 special-care supplement -> daily benefit = min(42, $100 charge) = $42.
-    ky_ccap_daily_benefit: [0, 42]
+    # +$5 special-care supplement ($5 from 8-1-2022 under 49 Ky.R. 300) ->
+    # daily benefit = min(46, $100 charge) = $46.
+    ky_ccap_daily_benefit: [0, 46]
     # size_2 band at $2,000/month = $11/day x 20 = $220 copay.
     ky_ccap_copay: 220
-    # reimbursement = 42 x 20 = $840; benefit = max(840 - 220, 0) = $620.
-    ky_ccap: 620
+    # reimbursement = 46 x 20 = $920; benefit = max(920 - 220, 0) = $700.
+    ky_ccap: 700
 
 - name: Case 10 (2024 chart), full chain under the 11-18-2024 copay table.
   period: 2025-01

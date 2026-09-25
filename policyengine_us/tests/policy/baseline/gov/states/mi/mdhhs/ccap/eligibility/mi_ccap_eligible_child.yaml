@@ -1,7 +1,8 @@
 # Eligible child age test.
 # Under 13 -> eligible; 13 to under 18 -> eligible only if requires constant
-# care (is_disabled proxy); must be a tax-unit dependent and immigration
-# eligible (BEM 703 p.1-2, p.14).
+# care (is_disabled proxy) or under court supervision; at 18 also requires
+# high-school enrollment (see court_supervision.yaml); must be a tax-unit
+# dependent and immigration eligible (BEM 703 p.1-2, p.14).
 
 - name: Case 1, young child under 13 is an eligible child.
   period: 2026-01
@@ -59,7 +60,7 @@
   output:
     mi_ccap_eligible_child: true
 
-- name: Case 4, child at exactly 18 is not eligible even with constant care.
+- name: Case 4, child at exactly 18 with constant care is not eligible without high-school attendance facts.
   period: 2026-01
   input:
     people:
