@@ -134,3 +134,53 @@
     # household resources exceed income limits for the credit
     mi_home_heating_credit: 0
     mi_income_tax: 4_218
+
+- name: 2024 funding factor preserved
+  period: 2024
+  input:
+    mi_standard_home_heating_credit: 1000
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output:
+    mi_home_heating_credit: 520
+
+- name: 2025 standard credit funding factor
+  period: 2025
+  input:
+    mi_standard_home_heating_credit: 1000
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output:
+    mi_home_heating_credit: 600
+
+- name: 2025 alternate credit funding factor
+  period: 2025
+  input:
+    mi_standard_home_heating_credit: 200
+    mi_alternate_home_heating_credit: 1000
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output:
+    mi_home_heating_credit: 600
+
+- name: 2025 funding factor with partial eligibility
+  period: 2025
+  input:
+    mi_standard_home_heating_credit: 1000
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 0.2
+    state_code: MI
+  output:
+    mi_home_heating_credit: 120
+
+- name: 2025 ineligible household
+  period: 2025
+  input:
+    mi_standard_home_heating_credit: 1000
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 0
+    state_code: MI
+  output:
+    mi_home_heating_credit: 0
