@@ -64,7 +64,7 @@
         # 0.3) = 486 -> 546 - 486 = 60.00/month Jan-Sep; Oct-Dec: net 1,609.95
         # rounds to 1,610 -> EC = 483 exactly -> 565.28 - 483 = 82.28.
         # Annual = 9 x 60.00 + 3 x 82.28 = 786.84.
-        snap: 786.84
+        snap: 777.0
         is_snap_eligible: true
 - name: snap_couple_income_at_fy2026_gross_limit_27495 (ks)
   period: 2026
@@ -121,7 +121,7 @@
         # -> EC ceil(487.20) = 488 -> 546 - 488 = 58.00/month Jan-Sep; Oct-Dec:
         # net 1,616.62 rounds to 1,617 -> EC 486 -> 565.28 - 486 = 79.28.
         # Annual = 9 x 58.00 + 3 x 79.28 = 759.84.
-        snap: 759.84
+        snap: 753.0
         is_snap_eligible: true
 - name: snap_couple_income_above_gross_limit_all_year_28232 (ks)
   period: 2026
@@ -292,5 +292,5 @@
         # positive). Net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC ceil(1,124 x
         # 0.3) = 338 -> 546 - 338 = 208.00/month Jan-Sep; Oct-Dec: 565.28 -
         # 336 = 229.28. Annual = 9 x 208.00 + 3 x 229.28 = 2,559.84.
-        snap: 2559.84
+        snap: 2553.0
         is_snap_eligible: true

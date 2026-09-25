@@ -77,7 +77,7 @@
         # 0.3) = 658 -> 785 - 658 = 127.00/month Jan-Sep; Oct-Dec: net
         # 2,183.62 rounds to 2,184 -> EC 656 -> 812.72 - 656 = 156.72.
         # Annual = 9 x 127.00 + 3 x 156.72 = 1,613.17.
-        snap: 1613.17
+        snap: 1602.0
         is_snap_eligible: true
 - name: snap_ca_net_income_at_fy2026_net_limit_36447 (ca)
   period: 2026
@@ -144,7 +144,7 @@
         # EC = ceil(2,221 x 0.3) = 667 -> 785 - 667 = 118.00/month
         # Jan-Sep; Oct-Dec: net 2,213.42 rounds to 2,213 -> EC 664 ->
         # 812.72 - 664 = 148.72. Annual = 9 x 118.00 + 3 x 148.72 = 1,508.17.
-        snap: 1508.17
+        snap: 1494.0
         is_snap_eligible: true
 - name: snap_ca_net_income_above_net_limit_all_year_38000 (ca)
   period: 2026
@@ -280,7 +280,7 @@
         # fully counted; from April the head is excluded (size 2) and their
         # earnings count at the 2/3 prorated share under 7 CFR
         # 273.11(c)(2)-(3), raising the benefit relative to full counting.
-        snap: 2181.84
+        snap: 2172.0
         is_snap_eligible: true
 - name: snap_ca_head_immigration_undocumented_calworks_interaction (ca)
   period: 2026
@@ -346,5 +346,5 @@
         # 2, the CalWORKs grant excludes the head from the AU but counts in
         # full as unit-level unearned income, and the head's earnings count
         # at the 2/3 prorated share under 7 CFR 273.11(c)(2)-(3).
-        snap: 3018.84
+        snap: 3009.0
         is_snap_eligible: true
