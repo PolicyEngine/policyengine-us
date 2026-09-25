@@ -11,16 +11,11 @@ class ar_medical_expense_deduction_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        year = period.start.year
+        p = parameters(
+            period
+        ).gov.states.ar.tax.income.deductions.itemized.medical_expense
         agi = add(tax_unit, period, ["ar_agi_joint"])
-        # Arkansas applies the federal medical expense floor rate which was established in 2013
-        if year >= 2017:
-            instant_str = f"2017-01-01"
-        else:
-            instant_str = f"2013-01-01"
-        p = parameters(instant_str).gov.irs.deductions.itemized.medical
+        senior = tax_unit("greater_age_head_spouse", period) >= p.senior.age_threshold
+        floor = where(senior, p.senior.income_floor, p.income_floor)
         medical_expenses = tax_unit("itemized_medical_expenses", period)
-        return max_(
-            0,
-            medical_expenses - p.floor * agi,
-        )
+        return max_(0, medical_expenses - floor * agi)

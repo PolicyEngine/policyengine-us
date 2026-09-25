@@ -1,39 +1,175 @@
-- name: Arkansas medical and dental expense deduction (after 2017)
+- name: Arkansas medical expense deduction uses a 10% floor in 2022
   period: 2022
   input:
     people:
       person1:
-        other_medical_expenses: 5_000
+        age: 40
         ar_agi_joint: 120_000
       person2:
-        other_medical_expenses: 18_000
+        age: 40
         ar_agi_joint: 120_000
     tax_units:
       tax_unit:
         members: [person1, person2]
+        itemized_medical_expenses: 28_000
     households:
       household:
         members: [person1, person2]
-        state_code: AR 
+        state_code: AR
   output:
-    ar_medical_expense_deduction_joint: 5_000
-  
-- name: Arkansas medical and dental expense deduction (before 2017)
-  period: 2014
+    # 28_000 - 0.1 * 240_000; the 2022 Form AR3 uses 10%, not the federal 7.5%
+    ar_medical_expense_deduction_joint: 4_000
+
+- name: Arkansas medical expense deduction is zero when expenses fall below the 10% floor in 2022
+  period: 2022
   input:
     people:
       person1:
-        other_medical_expenses: 5_000
-        ar_agi_joint: 240_000
+        age: 40
+        ar_agi_joint: 120_000
       person2:
-        other_medical_expenses: 18_000
+        age: 40
+        ar_agi_joint: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 23_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 23_000 - 0.1 * 240_000 < 0; the federal 7.5% floor would give 5_000
+    ar_medical_expense_deduction_joint: 0
+
+- name: Arkansas medical expense deduction keeps the 10% floor for filers 65 and older in 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        ar_agi_joint: 120_000
+      person2:
+        age: 68
+        ar_agi_joint: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 28_000 - 0.1 * 240_000
+    ar_medical_expense_deduction_joint: 4_000
+
+- name: Arkansas medical expense deduction uses a 10% floor for filers 65 and older from 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 70
+        ar_agi_joint: 100_000
+      person2:
+        age: 40
         ar_agi_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
+        itemized_medical_expenses: 23_000
     households:
       household:
         members: [person1, person2]
-        state_code: AR 
+        state_code: AR
   output:
+    # 23_000 - 0.1 * 100_000; from 2017 Form AR3 applies 10% regardless of age
+    ar_medical_expense_deduction_joint: 13_000
+
+- name: Arkansas medical expense deduction uses a 10% floor when both spouses are under 65 in 2015
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 64
+        ar_agi_joint: 240_000
+      person2:
+        age: 60
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 23_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 23_000 - 0.1 * 240_000 < 0; Form AR3 Line 3A
     ar_medical_expense_deduction_joint: 0
+
+- name: Arkansas medical expense deduction uses a 7.5% floor when a spouse is 65 or older in 2015
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 64
+        ar_agi_joint: 240_000
+      person2:
+        age: 65
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 23_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 23_000 - 0.075 * 240_000; Form AR3 Line 3B
+    ar_medical_expense_deduction_joint: 5_000
+
+- name: Arkansas medical expense deduction uses a 7.5% floor when the filer is 65 or older in 2016
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+        ar_agi_joint: 100_000
+      person2:
+        age: 50
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 23_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 23_000 - 0.075 * 100_000; Form AR3 Line 3B
+    ar_medical_expense_deduction_joint: 15_500
+
+- name: Arkansas medical expense deduction uses a 10% floor when both spouses are under 65 in 2016
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 64
+        ar_agi_joint: 100_000
+      person2:
+        age: 50
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 23_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 23_000 - 0.1 * 100_000; Form AR3 Line 3A
+    ar_medical_expense_deduction_joint: 13_000
