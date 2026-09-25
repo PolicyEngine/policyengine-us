@@ -1,3 +1,10 @@
+## [2.15.1] - 2026-09-25
+
+### Fixed
+
+- Correct the 2022 single 37% bracket threshold from $539,000 to $539,900.
+
+
 ## [2.15.0] - 2026-09-25
 
 ### Added
