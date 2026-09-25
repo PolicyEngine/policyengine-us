@@ -1,0 +1,123 @@
+- name: Case 1, aged Iowan meets SSI categorical eligibility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    is_ssi_eligible: [true]
+    ia_ssa_eligible: [true]
+
+- name: Case 2, young non-disabled person is not SSA-eligible (not aged/blind/disabled).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    is_ssi_eligible: [false]
+    ia_ssa_eligible: [false]
+
+- name: Case 3, aged Iowan with excess resources is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ssi_countable_resources: 5_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Resources $5,000 > $2,000 individual limit -> fails resources test
+    ia_ssa_resources_eligible: [false]
+    ia_ssa_eligible: [false]
+
+- name: Case 4, non-Iowa resident is ineligible (defined_for filter).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ia_ssa_eligible: [false]
+
+- name: Case 5, aged Iowan with high income still SSA-eligible (no state income test for eligibility itself).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 24_000  # $2,000/mo -> no federal SSI
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # ia_ssa_eligible = is_ssi_eligible & resources_eligible.
+    # is_ssi_eligible does NOT include an income test -> true even with high income.
+    # Per IAC 441—51.2, applicants need only "apply for or receive" SSI.
+    is_ssi_eligible: [true]
+    ia_ssa_eligible: [true]
