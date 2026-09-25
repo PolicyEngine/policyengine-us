@@ -15,9 +15,10 @@ source:
   row's start is skipped.
 - 2026: Act 1 of 2026 (1st Extraordinary Session), A.C.A. 26-51-201(a)(4).
 
-Invariants (every integer taxable income, 2021-2026): tax is non-negative;
-reduction thresholds are strictly increasing; tax never falls as taxable
-income rises, except the one drop Act 1 of 2026 writes into the statute:
+Invariants (2021-2026): reduction.yaml rows carry strictly increasing
+finite thresholds, with every .inf row after them. At every integer taxable
+income, tax is non-negative and never falls as income rises, except the one
+drop Act 1 of 2026 writes into the statute:
 (a)(4)(A) taxes $94,700 at $3,136.70, while (a)(4)(B) less the $290
 (a)(4)(C) adjustment taxes $94,701 at $3,134.04.
 """
@@ -168,6 +169,12 @@ def test_ar_schedule_tax_is_nonnegative_and_nondecreasing(year):
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_ar_reduction_thresholds_strictly_increase(year):
-    thresholds = [t for t in P.reduction(f"{year}-01-01").thresholds if t < np.inf]
-    assert all(a < b for a, b in zip(thresholds, thresholds[1:])), thresholds
+def test_ar_reduction_rows_have_strictly_increasing_thresholds(year):
+    # Read each YAML row's own threshold: the loaded scale can't show a
+    # mis-keyed row, because add_bracket sorts thresholds and sums the amounts
+    # of duplicates.
+    instant = f"{year}-01-01"
+    thresholds = [bracket.threshold(instant) for bracket in P.reduction.brackets]
+    finite = [t for t in thresholds if t < np.inf]
+    assert thresholds[: len(finite)] == finite, thresholds
+    assert all(a < b for a, b in zip(finite, finite[1:])), finite
