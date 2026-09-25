@@ -2,10 +2,14 @@
 
 The IRS prints the table in blocks of three states, six family-size columns
 each. A three-column shift within those blocks once left 30 jurisdictions
-with another state's values in some or all family-size columns, which put
-some family-size-6 amounts below family-size-1 amounts. The IRS amounts never
-fall as family size or income rises, so a monotonicity check catches that
-kind of transcription error.
+with another state's values in some or all family-size columns. Two checks
+catch that kind of transcription error:
+
+- The IRS amounts never fall as family size or income rises. The shift put
+  some family-size-6 amounts below family-size-1 amounts.
+- No two family-size columns of the IRS table are identical. The shift copied
+  whole columns from one state to another, which a monotonicity check misses
+  when the copied state's own row happens to rise.
 """
 
 from datetime import date
@@ -14,8 +18,8 @@ import pytest
 import yaml
 from policyengine_core.parameters import get_parameter
 
-from policyengine_us import CountryTaxBenefitSystem
 from policyengine_us.model_api import REPO
+from policyengine_us.system import system
 
 TABLE_PATH = "gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table"
 TABLE_DIR = REPO.joinpath("parameters", *TABLE_PATH.split("."))
@@ -42,7 +46,7 @@ def table_yaml():
 
 @pytest.fixture(scope="module")
 def table_parameter():
-    return get_parameter(CountryTaxBenefitSystem().parameters, f"{TABLE_PATH}.tax")
+    return get_parameter(system.parameters, f"{TABLE_PATH}.tax")
 
 
 def _states(table_yaml):
@@ -104,3 +108,17 @@ def test_table_is_non_decreasing_in_family_size_and_income(table_parameter, year
                         f"({cells[row - 1][column]})"
                     )
     assert not violations, "\n".join(violations[:20])
+
+
+@pytest.mark.parametrize("year", IRS_TABLE_YEARS)
+def test_no_family_size_column_repeats_another(table_yaml, year):
+    columns = {}
+    for state in sorted(IRS_JURISDICTIONS):
+        for size in FAMILY_SIZES:
+            column = tuple(
+                table_yaml[state][size][bracket][date(year, 1, 1)]
+                for bracket in INCOME_BRACKETS
+            )
+            columns.setdefault(column, []).append(f"{state} family size {size}")
+    repeats = [cells for cells in columns.values() if len(cells) > 1]
+    assert not repeats, f"Identical columns: {repeats[:10]}"

@@ -25,7 +25,7 @@
   output:
     state_sales_tax: 1_773
 
-- name: Integration test, 0 income bracket
+- name: Delaware is not in the IRS state table, so no state table amount
   period: 2026
   input:
     state_code: DE
@@ -368,7 +368,7 @@
   output:
     state_sales_tax: 495
 
-- name: Wyoming (1st state in its IRS block), family size 6, $300,000 or more, 2022
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2022
   period: 2022
   input:
     state_code: WY
@@ -377,7 +377,7 @@
   output:
     state_sales_tax: 1_577
 
-- name: Wyoming (1st state in its IRS block), family size 6, $300,000 or more, 2023
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2023
   period: 2023
   input:
     state_code: WY
@@ -386,7 +386,7 @@
   output:
     state_sales_tax: 1_773
 
-- name: Wyoming (1st state in its IRS block), family size 6, $300,000 or more, 2024
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2024
   period: 2024
   input:
     state_code: WY
@@ -395,7 +395,7 @@
   output:
     state_sales_tax: 1_488
 
-- name: Wyoming (1st state in its IRS block), family size 6, $300,000 or more, 2025
+- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2025
   period: 2025
   input:
     state_code: WY
@@ -476,7 +476,16 @@
   output:
     state_sales_tax: 703
 
-- name: Family size above 6 uses the IRS "Over 5" column
+- name: Family size above 6 uses the IRS "Over 5" column, 2022
+  period: 2022
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_269
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2023
   period: 2023
   input:
     state_code: TX
@@ -484,6 +493,24 @@
     state_sales_tax_income_bracket: 8
   output:
     state_sales_tax: 1_448
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2024
+  period: 2024
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_281
+
+- name: Family size above 6 uses the IRS "Over 5" column, 2025
+  period: 2025
+  input:
+    state_code: TX
+    tax_unit_size: 8
+    state_sales_tax_income_bracket: 8
+  output:
+    state_sales_tax: 1_301
 
 - name: Alaska has no state sales tax, so no state table amount
   period: 2024

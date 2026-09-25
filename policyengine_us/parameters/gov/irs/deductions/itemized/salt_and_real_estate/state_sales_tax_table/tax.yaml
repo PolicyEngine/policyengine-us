@@ -11,7 +11,11 @@ metadata:
   - Family size
   - Income bracket
   label: Optional state sales tax table
-  # IRS values through 2025; later years are uprated from 2025.
+  # IRS values through 2025; later years are uprated from 2025. The IRS built
+  # the 2025 tables from the 2024 tables using "the rate of growth of total
+  # state general sales and gross receipts tax revenues from 2024 to 2025
+  # (adjusted for changes in population)" (2025 Optional State Sales Tax
+  # Tables); gov.irs.uprating stands in until the IRS publishes later tables.
   uprating: gov.irs.uprating
   propagate_metadata_to_children: true
   # The IRS prints three states side by side, six family-size columns

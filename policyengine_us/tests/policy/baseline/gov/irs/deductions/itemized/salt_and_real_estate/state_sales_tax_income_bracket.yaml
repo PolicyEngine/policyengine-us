@@ -5,7 +5,7 @@
   output:
     state_sales_tax_income_bracket: 1
 
-- name: Interest in second income bracket
+- name: Tax-exempt interest of $45,000 is in the $40,000-$50,000 row
   period: 2023
   input:
     tax_exempt_interest_income: 45_000
