@@ -5,6 +5,14 @@ values:
     - dividend_income
     - rental_income
     - passive_partnership_s_corp_income
+    # Income from estates and trusts (Schedule E Part III) keeps its character
+    # in the beneficiary's hands (§§ 652(b), 662(b)). Form 8960 line 4a
+    # includes all of it with the rest of Schedule 1 line 5; the fiduciary's
+    # Schedule K-1 (Form 1041) box 14 code H adjustment then removes any part
+    # that is not net investment income, on line 7. The model follows that
+    # structure: all estate_income counts unless the code H input says
+    # otherwise, and a dependent's amount stays off the filer's return.
+    - estate_net_investment_income
     - loss_limited_net_capital_gains
     - non_sch_d_capital_gains
     # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
@@ -14,3 +22,11 @@ metadata:
   reference:
     - title: Instructions for Form 8960, Net Investment Income Tax
       href: https://www.irs.gov/pub/irs-pdf/i8960.pdf
+    - title: 26 U.S. Code § 1411(c)(1)(A) - Net investment income
+      href: https://www.law.cornell.edu/uscode/text/26/1411#c_1_A
+    - title: 26 U.S. Code § 652(b) - Character of amounts (simple trusts)
+      href: https://www.law.cornell.edu/uscode/text/26/652#b
+    - title: 26 U.S. Code § 662(b) - Character of amounts (complex trusts and estates)
+      href: https://www.law.cornell.edu/uscode/text/26/662#b
+    - title: 2024 Instructions for Form 8960, line 4a note and line 7 (distributions from estates and trusts)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=7

@@ -66,3 +66,140 @@
     filing_status: SINGLE
   output:
     net_investment_income_tax: 26_600
+
+- name: Estate and trust income above the AGI threshold
+  # With no Schedule K-1 (Form 1041) box 14 code H adjustment, all
+  # Schedule E Part III income counts, as on Form 8960 line 4a.
+  period: 2024
+  input:
+    adjusted_gross_income: 230_000
+    estate_income: 30_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    # 3.8% of min(30,000 NII, 30,000 excess AGI)
+    net_investment_income_tax: 1_140
+
+- name: Estate and trust income below the AGI threshold
+  period: 2024
+  input:
+    adjusted_gross_income: 199_000
+    estate_income: 50_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 50_000
+    net_investment_income_tax: 0
+
+- name: Estate and trust losses reduce net investment income
+  period: 2024
+  input:
+    adjusted_gross_income: 250_000
+    taxable_interest_income: 40_000
+    estate_income: -10_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    net_investment_income_tax: 1_140
+
+- name: Estate income raises AGI above the threshold and counts as net investment income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 190_000
+        estate_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 220_000
+    net_investment_income: 30_000
+    # 3.8% of min(30,000 NII, 220,000 - 200,000 excess AGI)
+    net_investment_income_tax: 760
+
+- name: Treas. Reg. 1.1411-3(e)(5) Example 1 beneficiary with the code H adjustment
+  # The trust passes $1,000 of interest (K-1 box 1), $1,500 of dividends
+  # (box 2a), and $7,500 of IRA income (box 5, Schedule E Part III) to the
+  # beneficiary. The IRA income is excluded from net investment income under
+  # section 1411(c)(5), so the fiduciary reports -7,500 in box 14 code H.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+        taxable_interest_income: 1_000
+        ordinary_dividend_income: 1_500
+        estate_income: 7_500
+        estate_income_net_investment_income_adjustment: -7_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 240,000 + 1,000 + 1,500 + 7,500; the IRA income stays in AGI.
+    adjusted_gross_income: 250_000
+    estate_net_investment_income: 0
+    net_investment_income: 2_500
+    # 3.8% of min(2,500, 50,000)
+    net_investment_income_tax: 95
+
+- name: Same beneficiary without the code H adjustment counts all estate income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+        taxable_interest_income: 1_000
+        ordinary_dividend_income: 1_500
+        estate_income: 7_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 250_000
+    net_investment_income: 10_000
+    # 3.8% of min(10,000, 50,000)
+    net_investment_income_tax: 380
+
+- name: A dependent's estate income stays out of the filer's net investment income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 250_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    irs_gross_income: [250_000, 0]
+    adjusted_gross_income: 250_000
+    estate_net_investment_income: [0, 0]
+    net_investment_income: 0
+    net_investment_income_tax: 0
