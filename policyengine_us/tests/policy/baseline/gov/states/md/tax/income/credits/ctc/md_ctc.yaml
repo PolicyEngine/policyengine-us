@@ -287,8 +287,8 @@
     # Base credit: 2 * $500 = $1,000
     # Excess income: $18,000 - $15,000 = $3,000
     # Phase-out reduction: ($3,000 / $1,000) * $50 = $150
-    # Final credit: $1,000 - $150 = $850
-    md_ctc: 850
+    # Final credit: 2 * ($500 - $150) = $700
+    md_ctc: 700
 
 - name: 2025 CTC phase-out - Partial thousands (test rounding)
   period: 2025
@@ -337,3 +337,207 @@
     # Phase-out reduction: ceil($1 / $1,000) * $50 = ceil(0.001) * $50 = 1 * $50 = $50
     # Final credit: $500 - $50 = $450
     md_ctc: 450
+
+- name: 2025 two-child CTC at AGI 15000
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 15000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 1000
+
+- name: 2025 two-child CTC at AGI 15001
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 15001
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 900
+
+- name: 2025 two-child CTC at AGI 16000
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 900
+
+- name: 2025 two-child CTC at AGI 16001
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16001
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 800
+
+- name: 2025 two-child CTC at AGI 24000
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 24000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 100
+
+- name: 2025 two-child CTC at AGI 24001
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 24001
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 0
+
+- name: 2025 two-child CTC at negative AGI
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: -1000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 1000
+
+- name: 2024 two-child CTC above old income limit
+  period: 2024
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16000
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 0
+
+- name: 2025 phased-out CTC reduces final Maryland income tax
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 2
+        is_tax_unit_dependent: true
+      child_2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 16000
+        md_income_tax_before_refundable_credits: 100
+        md_refundable_cdcc: 0
+        md_refundable_eitc: 0
+        md_montgomery_eitc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 900
+    md_refundable_credits: 900
+    md_income_tax: -800
