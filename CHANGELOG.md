@@ -1,3 +1,18 @@
+## [2.12.0] - 2026-09-25
+
+### Added
+
+- Add a reusable court-supervision status input and apply verified child-care age rules in Kansas, Kentucky, Louisiana, Missouri, Montana, New Mexico, New York, Oklahoma, Oregon, Tennessee, Utah, and West Virginia, including Kentucky's special-care supplement and Missouri's special-needs treatment.
+
+### Changed
+
+- Include age 18 in New Mexico child-care special-supervision eligibility effective May 20, 2026 (applied from June 2026 in the monthly model), under the Child Care Assistance Program Act.
+
+### Fixed
+
+- Correct the start date of Kentucky's $5 child-care special-care supplement to August 1, 2022, and require secondary-school enrollment for New York's age-18 special-needs child-care route.
+
+
 ## [2.11.4] - 2026-09-24
 
 ### Fixed
