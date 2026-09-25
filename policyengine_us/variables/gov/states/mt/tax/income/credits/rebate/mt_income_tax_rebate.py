@@ -18,26 +18,30 @@ class mt_income_tax_rebate(Variable):
     ]
     defined_for = StateCode.MT
 
-    # The rebate is based on 2021 income tax liability, but provided in 2023.
-    # It applies once per return (MCA 15-30-2191(1)), so joint filers split
-    # the per-return cap across each spouse's column ($1,250 each) to avoid
-    # double-counting when the person-level non-refundable credits are pooled.
+    # The rebate is based on 2021 income tax liability but was paid in 2023. It
+    # is booked to tax year 2021 as a Montana refundable payment (see
+    # mt_refundable_credits), so it reduces Montana tax and raises household
+    # net income without entering the separate-vs-joint election.
     #
-    # MCA 15-30-2191(2) caps the rebate at the 2021 liability reported on line
-    # 20 of Form 2. That cap is not applied here: the ordered non-refundable
-    # credit application already floors each path at zero, so the effective
-    # rebate is line-20-capped per filing configuration. The guarding cases are
-    # "Single filer below the cap" and "Rebate cannot drive liability below
-    # zero" in the matching test file under
-    # tests/policy/baseline/gov/states/mt/tax/income/credits/rebate/.
+    # The cap applies once per return (MCA 15-30-2191(1)(b)), so a joint return
+    # splits its $2,500 across the head and spouse columns ($1,250 each) rather
+    # than paying $2,500 per spouse. MCA 15-30-2191(2) limits the rebate to the
+    # 2021 liability on Form 2 line 20, before the rebate itself. The Montana
+    # Department of Revenue treated married couples who filed separately
+    # (status 2a) as separate individuals, so each column receives the lesser
+    # of $1,250 and its own line 20; a joint column receives the lesser of
+    # $1,250 and half the joint line 20 (mt_income_tax_before_2021_rebate).
+    # This fixes the overstatement when line 20 was below the cap (taxsim
+    # #1189).
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.credits.rebate
         filing_status = person.tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        per_person_amount = where(
+        per_person_cap = where(
             filing_status == statuses.JOINT,
             p.amount["SEPARATE"],
             p.amount[filing_status],
         )
-        return head_or_spouse * per_person_amount
+        line_20 = person("mt_income_tax_before_2021_rebate", period)
+        return head_or_spouse * min_(per_person_cap, line_20)

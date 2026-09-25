@@ -94,12 +94,12 @@
       person1:
         age: 59
         taxable_interest_income: 5_505
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
       person2:
         age: 59
         employment_income: 27010
         taxable_interest_income: 5_505
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -125,12 +125,12 @@
         age: 33
         employment_income: 7010
         taxable_interest_income: 5505
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
       person2:
         age: 33
         employment_income: 136010
         taxable_interest_income: 5505
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
       person3:
         age: 16
       person4:
@@ -164,12 +164,12 @@
         age: 66
         employment_income: 17010
         taxable_interest_income: 5505.0
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
       person2:
         age: 66
         employment_income: 7010
         taxable_interest_income: 5505.0
-        mt_income_tax_rebate: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0  # not in TAXSIM35 (Person-level variable)
       person3:
         age: 11
       person4:
@@ -543,7 +543,7 @@
     # TaxAct status 2a columns: 34,166 + 20,539
     mt_taxable_social_security: [34_166, 20_539]
 
-- name: MT 2021 joint couple rebate applies once per return, not per spouse (issue 9012)
+- name: MT 2021 couple rebate is capped per column and paid once per return (issue 9012)
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -562,10 +562,16 @@
         members: [head, spouse]
         state_code: MT
   output:
-    # $2,500 per-return cap split $1,250 per spouse (was double-counted to $5,000)
+    # Two high earners: separate filing is cheaper, so status 2a applies and each
+    # column is capped at min($1,250, its own line 20). Both columns
+    # (5,099.51 and 3,719.51) exceed $1,250, so the reported rebate is
+    # [1_250, 1_250] = $2,500 total.
+    mt_files_separately: true
     mt_income_tax_rebate: [1_250, 1_250]
-    # Files separately: 5,099.51 - 1,250 + 3,719.51 - 1,250 = 6,319.02
-    # (old double-count subtracted $2,500 per column, understating tax by $2,500)
+    # The rebate is a Montana refundable payment, subtracted per column:
+    # (5,099.51 - 1,250) + (3,719.51 - 1,250) = 6,319.02.
+    # (The old double count subtracted $2,500 per column, understating tax by
+    # $2,500.)
     mt_income_tax: 6_319.02
 
 - name: MT property tax rebate is not a Form 2 credit and is not tripled (issue 9347)
@@ -660,3 +666,85 @@
         state_code: MT
   output:
     mt_non_refundable_credits: 0
+
+- name: MT 2021 income tax rebate raises household net income, single filer
+  # The rebate is booked as a Montana refundable payment in 2021, so it flows
+  # through state_income_tax and household refundable credits into household
+  # net income (and SPM resources via spm_unit_state_tax).
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # MT line 20: TI = 50,000 - 4,830 - 2,580 = 42,590;
+    # tax = 698 + 6.9% x 23,790 = 698 + 1,641.51 = 2,339.51.
+    # Rebate = min(1,250, 2,339.51) = 1,250.
+    mt_income_tax_rebate: 1_250
+    mt_refundable_credits: 1_250
+    # 2,339.51 - 1,250 = 1,089.51.
+    state_income_tax: 1_089.51
+    household_refundable_state_tax_credits: 1_250
+    # Federal 2021 recovery rebate credit 1,400 + MT rebate 1,250 = 2,650.
+    household_refundable_tax_credits: 2_650
+    # Federal income tax 4,295 (TI = 50,000 - 12,550 = 37,450;
+    # 10% x 9,950 + 12% x 27,500 = 995 + 3,300) + employee payroll tax
+    # 3,825 (7.65% x 50,000) + MT line 20 2,339.51 = 10,459.51.
+    household_tax_before_refundable_credits: 10_459.51
+    # 50,000 + 2,650 - 10,459.51 = 42,190.49 (40,940.49 without the rebate).
+    household_net_income: 42_190.49
+
+- name: MT 2021 income tax rebate raises household net income, joint filers
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # MT joint line 20: standard deduction min(max(20% x 60,000, 4,280), 9,660)
+    # = 9,660; exemptions 2 x 2,580 = 5,160; TI = 60,000 - 9,660 - 5,160 =
+    # 45,180; tax = 698 + 6.9% x 26,380 = 698 + 1,820.22 = 2,518.22.
+    # Each column's cap base = 2,518.22 / 2 = 1,259.11, so each spouse gets
+    # min(1,250, 1,259.11) = 1,250, or 2,500 for the return.
+    mt_income_tax_rebate: [1_250, 1_250]
+    mt_refundable_credits: [1_250, 1_250]
+    # 2,518.22 - 2,500 = 18.22.
+    state_income_tax: 18.22
+    household_refundable_state_tax_credits: 2_500
+    # Federal 2021 recovery rebate credit 2 x 1,400 + MT rebate 2,500 = 5,300.
+    household_refundable_tax_credits: 5_300
+    # Federal income tax 3,790 (TI = 60,000 - 25,100 = 34,900;
+    # 10% x 19,900 + 12% x 15,000 = 1,990 + 1,800) + employee payroll tax
+    # 4,590 (7.65% x 60,000) + MT line 20 2,518.22 = 10,898.22.
+    household_tax_before_refundable_credits: 10_898.22
+    # 60,000 + 5,300 - 10,898.22 = 54,401.78 (51,901.78 without the rebate).
+    household_net_income: 54_401.78

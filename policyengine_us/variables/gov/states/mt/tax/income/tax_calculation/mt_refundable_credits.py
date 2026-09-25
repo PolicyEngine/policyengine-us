@@ -12,6 +12,13 @@ class mt_refundable_credits(Variable):
     adds = [
         "mt_refundable_credits_before_renter_credit",
         "mt_elderly_homeowner_or_renter_credit",
+        # HB 192 Sec. 2(3) pays the 2021 income tax rebate electronically or by
+        # check in 2023. Like Georgia's HB 162 surplus rebate, it is booked to
+        # tax year 2021 as a refundable payment (zero in every other year). It
+        # stays out of credits/refundable.yaml because that list also feeds the
+        # elderly homeowner or renter credit's gross household income (Form 2EC
+        # line 7).
+        "mt_income_tax_rebate",
     ]
     # Under the gross income sources computation, the elderly homeowner or renter credit
     # is included in the list of refundable credits
