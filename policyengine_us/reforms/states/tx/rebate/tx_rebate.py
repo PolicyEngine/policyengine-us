@@ -13,6 +13,7 @@ as households. The rebate is paid once (2027) and reverts to $0 from 2028.
 """
 
 from policyengine_us.model_api import *
+from policyengine_us.spm import spm_universe_mask
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
@@ -50,6 +51,7 @@ def create_tx_rebate() -> Reform:
         unit = USD
 
         def formula(spm_unit, period, parameters):
+            included = spm_universe_mask(spm_unit, period)
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -124,7 +126,7 @@ def create_tx_rebate() -> Reform:
                 BENEFITS.append("assigned_aca_ptc")
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
-            return add(spm_unit, period, BENEFITS)
+            return where(included, add(spm_unit, period, BENEFITS), np.nan)
 
     class reform(Reform):
         def apply(self):

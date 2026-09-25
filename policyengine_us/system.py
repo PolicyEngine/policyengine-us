@@ -43,11 +43,11 @@ from policyengine_us.data.dataset_schema import (
 )
 
 from typing import Annotated
-from spm_calculator.policyengine_adapter import build_policyengine_variables
 from policyengine_us.spm import (
     SPMSimulationMixin,
     clone_spm_system,
     create_spm_provider,
+    country_spm_variables,
 )
 
 COUNTRY_DIR = Path(__file__).parent
@@ -108,7 +108,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     ):
         super().__init__(entities, reform=reform)
         self.spm_forecast_provider = create_spm_provider(spm)
-        self.add_variables(*build_policyengine_variables())
+        self.add_variables(*country_spm_variables())
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
         self.parameters = set_irs_uprating_parameter(self.parameters)

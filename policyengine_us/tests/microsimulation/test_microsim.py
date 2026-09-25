@@ -21,19 +21,15 @@ def test_legacy_cps_file_with_stored_measurements_is_rejected_at_load():
 def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     """enhanced_cps_2024 loads, but cannot produce SPM measurements.
 
-    Its county column does hold five-digit FIPS codes, so geography is not what
-    fails. 18 of its 43,134 SPM units are a lone 15-to-17-year-old carrying no
-    source-backed SPM independence role, so those units classify no measurement
-    adult and every output that reaches the threshold fails closed over the
-    file. Only the threshold is asserted here: it raises straight off the
-    composition, without building the whole resource chain over 43,134 units.
-
-    Resource outputs are no longer among the outputs that reach it. The
-    capped housing subsidy asks for the SPM housing portion only for units
-    receiving housing assistance, and none of these 18 units does - which is
-    asserted below - so household net income and benefits compute over the
-    file. Computing them here would add two minutes to this suite, so they
-    are left to the resource tests.
+    The file lacks an annual source declaration of SPM scope, which must fail
+    before geography or composition is evaluated for a measurement. Its county
+    column still holds five-digit FIPS codes. Separately, 18 of its 43,134 SPM
+    units are lone 15-to-17-year-olds with no source-backed independence role;
+    those units classify no measurement adult and none receives housing aid.
+    These primitive checks remain meaningful even though scope is the first
+    missing prerequisite. Only the threshold is requested here, without building
+    the resource chain. Ordinary household income and actual benefits remain
+    independent of the SPM measurement scope.
     """
     import numpy as np
     from spm_calculator.errors import SPMInputError
@@ -54,7 +50,7 @@ def test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles():
     assert not assisted[adults < 1].any()
     with pytest.raises(SPMInputError) as error:
         simulation.calculate("spm_unit_spm_threshold", 2024)
-    assert error.value.code == "SPM_COMPOSITION_REQUIRED"
+    assert error.value.code == "SPM_UNIVERSE_REQUIRED"
 
 
 def test_county_persists_across_periods():

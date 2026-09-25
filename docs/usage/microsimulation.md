@@ -89,6 +89,11 @@ poverty_rate = person_poverty.mean()
 hh_eitc = sim.calc("eitc", map_to="household")
 ```
 
+SPM poverty indicators contain `0` and `1` for included records and `NaN` for
+records outside the declared measurement universe. MicroSeries means exclude
+missing indicators; an empty eligible population has a missing rate. Preserve
+that rate as JSON `null`, and do not cast the indicators to Boolean values.
+
 ## Available datasets
 
 ### The default build
@@ -108,6 +113,11 @@ inputs, including observed `county_fips` codes as five-digit strings and
 source-backed `is_spm_independent_minor_role` values, and it must not store
 formula-owned SPM outputs such as `spm_unit_spm_threshold`. Any observed Census
 measurement is retained under a separate report-only name.
+
+The file must also declare `spm_unit_spm_universe_status` for every unit and
+measurement year. See the
+[SPM universe contract](../engineering/spm-universe.md) for source requirements
+and nullable outputs.
 
 The legacy files under `hf://policyengine/policyengine-us-data/` predate that
 contract, so SPM measurements are not available over them:

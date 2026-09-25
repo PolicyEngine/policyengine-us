@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.spm import spm_universe_mask
 
 
 class spm_unit_benefits(Variable):
@@ -9,6 +10,7 @@ class spm_unit_benefits(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
+        included = spm_universe_mask(spm_unit, period)
         BENEFITS = [
             "social_security",
             "ssi",
@@ -86,4 +88,4 @@ class spm_unit_benefits(Variable):
             BENEFITS.append("assigned_aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
-        return add(spm_unit, period, BENEFITS)
+        return where(included, add(spm_unit, period, BENEFITS), np.nan)

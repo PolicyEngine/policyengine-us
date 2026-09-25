@@ -23,6 +23,7 @@ from policyengine_us.entities import Person
 from policyengine_us.spm import (
     DERIVED_POVERTY_OUTPUTS,
     REJECTED_DATASET_INPUTS,
+    SPM_DISTRIBUTION_OUTPUTS,
     create_spm_provider,
     is_county_fips,
 )
@@ -559,10 +560,18 @@ def small_dataset():
                 "household_weight": [1.0, 1.0],
             }
         ),
+        # These two deliberate household units are included for this synthetic
+        # year's measurements. Real/default population files are not relabelled.
+        spm_unit=pd.DataFrame(
+            {
+                "spm_unit_id": [1, 2],
+                "spm_unit_spm_universe_status": ["INCLUDED", "INCLUDED"],
+            }
+        ),
         **{
             entity: pd.DataFrame({f"{entity}_id": [1, 2]})
             for entity in groups
-            if entity != "household"
+            if entity not in {"household", "spm_unit"}
         },
         time_period=2024,
     )
@@ -588,7 +597,7 @@ def test_dataset_roles_receipts_and_formula_owned_rejection_preserve_source(
     assert np.all(simulation.calculate("spm_unit_spm_threshold", 2024) > 0)
     assert len(simulation.spm_provenance()["geographies"]) == 2
     json.dumps(simulation.spm_provenance())
-    for name in FORMULA_OWNED_INPUTS:
+    for name in REJECTED_DATASET_INPUTS:
         with pytest.raises(ValueError, match="formula-owned SPM output"):
             simulation.set_input(variable_name=name, period=2024, value=[1.0, 1.0])
     for original, current in zip(before, source.tables):
@@ -619,7 +628,9 @@ def test_microsimulation_rejects_stored_measurements_without_mutating_dataset(
         assert path.read_bytes() == content
 
 
-@pytest.mark.parametrize("name", sorted(DERIVED_POVERTY_OUTPUTS))
+@pytest.mark.parametrize(
+    "name", sorted(DERIVED_POVERTY_OUTPUTS | SPM_DISTRIBUTION_OUTPUTS)
+)
 def test_dataset_storing_a_derived_poverty_output_is_refused(name):
     """A poverty alias the calculator does not own must still be refused.
 
@@ -659,9 +670,14 @@ def test_accepted_population_publishes_one_poverty_rate():
 def test_rejection_set_extends_rather_than_replaces_the_calculator_contract():
     for name in FORMULA_OWNED_INPUTS:
         assert name in REJECTED_DATASET_INPUTS
-    for name in DERIVED_POVERTY_OUTPUTS:
+    for name in DERIVED_POVERTY_OUTPUTS | SPM_DISTRIBUTION_OUTPUTS:
         # A rejected name must be computed, never a legitimate stored input.
+        assert name in REJECTED_DATASET_INPUTS
         assert system.variables[name].formula is not None
+    assert SPM_DISTRIBUTION_OUTPUTS == {
+        "spm_unit_oecd_equiv_net_income",
+        "spm_unit_income_decile",
+    }
 
 
 ENTITY_KEYS = frozenset(
@@ -743,7 +759,7 @@ def test_every_pure_function_of_the_poverty_chain_is_rejected():
     chain = {
         name
         for name in REJECTED_DATASET_INPUTS
-        if "poverty" in name or "threshold" in name
+        if "poverty" in name or "threshold" in name or name in SPM_DISTRIBUTION_OUTPUTS
     }
     unrejected_aliases = []
     checked = []
@@ -762,6 +778,10 @@ def test_every_pure_function_of_the_poverty_chain_is_rejected():
     )
     # Guard the guard: a scan that silently matched nothing proves nothing.
     assert set(DERIVED_POVERTY_OUTPUTS) <= set(checked)
+    # These distribution outputs also read scope/weights, so they are not pure
+    # aliases captured by the subset scan. Their names must still be rejected
+    # explicitly, and extending the chain above covers aliases of either one.
+    assert SPM_DISTRIBUTION_OUTPUTS <= REJECTED_DATASET_INPUTS
 
 
 @pytest.fixture
