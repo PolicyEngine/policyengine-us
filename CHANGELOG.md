@@ -1,3 +1,10 @@
+## [2.15.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision child-care age eligibility in Georgia, Idaho, Indiana, Michigan, North Dakota, South Dakota, and Wyoming, including the Michigan and South Dakota age-18 student extensions, and verify that Nebraska does not elect the extension.
+
+
 ## [2.14.1] - 2026-09-25
 
 ### Fixed
