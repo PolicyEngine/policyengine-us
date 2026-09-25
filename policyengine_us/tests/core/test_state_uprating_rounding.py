@@ -11,17 +11,30 @@ def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
     return tuple(scale.brackets[index].threshold(period) for index in bracket_indexes)
 
 
-def test_ar_income_tax_thresholds_round_down_after_last_published_year():
-    scale = SYSTEM.parameters.gov.states.ar.tax.income.rates.main.rate
+def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
+    # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
+    # nearest one hundred dollars ($100)". 5,600 x 1.0298 = 5,766.9 -> 5,800.
+    main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
+    scale = main.rate
 
     assert _thresholds(scale, "2027-01-01", (1, 2, 3, 4)) == (
-        5_700,
+        5_800,
         11_500,
-        16_400,
-        27_100,
+        16_500,
+        27_200,
     )
     assert isinf(scale.brackets[5].threshold("2027-01-01"))
     assert isinf(scale.brackets[6].threshold("2027-01-01"))
+    high_income = main.high_income
+    assert high_income.threshold("2027-01-01") == 97_500
+    assert high_income.rate.brackets[1].threshold("2027-01-01") == 4_800
+    ladder = high_income.bracket_adjustment.brackets
+    assert _thresholds(high_income.bracket_adjustment, "2027-01-01", (0, 1, 29)) == (
+        97_500,
+        97_600,
+        100_500,
+    )
+    assert len(ladder) == 30
 
 
 def test_nm_low_income_rebate_amounts_round_to_whole_dollars():

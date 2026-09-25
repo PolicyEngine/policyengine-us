@@ -1,0 +1,17 @@
+description: Arkansas taxes net income above this amount under the high-income tax table, less the bracket adjustment.
+values:
+  2026-01-01: 94_700
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arkansas high-income tax table threshold
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
+  reference:
+  - title: A.C.A. § 26-51-201(a)(4)(A)-(B), as amended by Act 1 of 2026 (1st Extraordinary Session), § 1
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=1
+  - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4

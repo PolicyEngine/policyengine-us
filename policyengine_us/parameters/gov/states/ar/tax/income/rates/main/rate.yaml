@@ -34,6 +34,10 @@ metadata:
     href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FBills%2F2026S1%2FPublic%2FHB1001.pdf#page=2
   - title: Arkansas Legislature HB1001 status page (enacted as Act 1, 2026 1st Extraordinary Session)
     href: https://arkleg.state.ar.us/Bills/Detail?id=hb1001&ddBienniumSession=2025%2F2026S1
+  - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - title: A.C.A. § 26-51-201(a)(5), added by Act 1 of 2026 (1st Extraordinary Session), § 1 (the (a)(1)-(4) tables are indexed under (d))
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
 
 brackets:
   - threshold:
@@ -43,7 +47,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.009 
@@ -63,7 +67,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.025
@@ -84,7 +88,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.035
@@ -106,7 +110,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.045
@@ -128,7 +132,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.06
@@ -145,12 +149,6 @@ brackets:
         2020-01-01: 38_500
         2021-01-01: 39_700
         2022-01-01: .inf
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 100
     amount:
       2014-01-01: 0.07
       2019-01-01: 0.06
@@ -162,12 +160,6 @@ brackets:
         2019-01-01: 80_801 
         2020-01-01: 82_001
         2021-01-01: .inf
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 100
     amount:
       2014-01-01: .inf
       2019-01-01: 0.069

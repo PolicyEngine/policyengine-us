@@ -1,0 +1,15 @@
+description: Arkansas computes the regular income tax as the published rate times net taxable income minus the published reduction if this is true, and from the statutory tax tables as indexed otherwise.
+values:
+  2014-01-01: true
+  # No Indexed Tax Brackets card has been published for 2026 or later, so the
+  # model derives those years from A.C.A. § 26-51-201(a)(4), indexed under (d).
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Arkansas published income tax reduction schedule applies
+  reference:
+  - title: 2025 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_TaxBrackets.pdf#page=1
+  - title: Arkansas Act 1 of 2026 (1st Extraordinary Session), § 1, amending A.C.A. § 26-51-201(a)(4) and adding (a)(5)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=1
