@@ -1,0 +1,268 @@
+- name: SINGLE below the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 99_999
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 15_000
+
+- name: SINGLE at the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: SINGLE above the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_001
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: JOINT below the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    adjusted_gross_income: 199_999
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 15_000
+
+- name: JOINT at the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    adjusted_gross_income: 200_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: JOINT above the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    adjusted_gross_income: 200_001
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: HEAD_OF_HOUSEHOLD below the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 149_999
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 15_000
+
+- name: HEAD_OF_HOUSEHOLD at the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 150_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: HEAD_OF_HOUSEHOLD above the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 150_001
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: SEPARATE below the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    adjusted_gross_income: 99_999
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 15_000
+
+- name: SEPARATE at the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    adjusted_gross_income: 100_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: SEPARATE above the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    adjusted_gross_income: 100_001
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: SURVIVING_SPOUSE below the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 199_999
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 15_000
+
+- name: SURVIVING_SPOUSE at the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 200_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: SURVIVING_SPOUSE above the federal AGI limit
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 200_001
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 3_000
+  output:
+    hi_salt_deduction: 3_000
+
+- name: Income limit applies in 2021 using federal rather than Hawaii AGI
+  period: 2021
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    hi_agi: 80_000
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 2_000
+  output:
+    hi_salt_deduction: 2_000
+
+- name: Income limit applies in 2024 using federal rather than Hawaii AGI
+  period: 2024
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    hi_agi: 80_000
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 2_000
+  output:
+    hi_salt_deduction: 2_000
+
+- name: Income limit applies in 2026 using federal rather than Hawaii AGI
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    hi_agi: 80_000
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 2_000
+  output:
+    hi_salt_deduction: 2_000
+
+- name: Sales tax election with federal AGI 99999
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 99_999
+    hi_agi: 120_000
+    state_withheld_income_tax: 8_000
+    state_sales_tax: 12_000
+    local_sales_tax: 0
+    real_estate_taxes: 3_000
+  output:
+    state_and_local_sales_or_income_tax: 12_000
+    hi_salt_deduction: 15_000
+
+- name: Sales tax election with federal AGI 100000
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    hi_agi: 120_000
+    state_withheld_income_tax: 8_000
+    state_sales_tax: 12_000
+    local_sales_tax: 0
+    real_estate_taxes: 3_000
+  output:
+    state_and_local_sales_or_income_tax: 12_000
+    hi_salt_deduction: 3_000
+
+- name: Sales tax election with federal AGI -1000
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: -1_000
+    hi_agi: 120_000
+    state_withheld_income_tax: 8_000
+    state_sales_tax: 12_000
+    local_sales_tax: 0
+    real_estate_taxes: 3_000
+  output:
+    state_and_local_sales_or_income_tax: 12_000
+    hi_salt_deduction: 15_000
+
+- name: Real estate taxes aggregate across spouses above the limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        real_estate_taxes: 2_000
+      spouse:
+        age: 40
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        state_and_local_sales_or_income_tax: 12_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_salt_deduction: 5_000
