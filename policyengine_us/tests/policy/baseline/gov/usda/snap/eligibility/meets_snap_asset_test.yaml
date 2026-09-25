@@ -1,35 +1,39 @@
 - name: No assets, passes test
-  period: 2022
+  period: 2022-01
   input:
-    snap_assets: 0
+    snap_assets:
+      2022: 0
   output:
     meets_snap_asset_test: true
 
 - name: Assets over limit for a non-elderly/disabled household
-  period: 2022
+  period: 2022-01
   input:
-    snap_assets: 2_600
+    snap_assets:
+      2022: 2_600
   output:
     meets_snap_asset_test: false
 
 - name: Assets under limit for an elderly/disabled household
-  period: 2022
+  period: 2022-01
   input:
-    snap_assets: 2_600
+    snap_assets:
+      2022: 2_600
     has_snap_elderly_disabled_member: true
   output:
     meets_snap_asset_test: true
 
 - name: Assets over limit for an elderly/disabled household
-  period: 2022
+  period: 2022-01
   input:
-    snap_assets: 3_800
+    snap_assets:
+      2022: 3_800
     has_snap_elderly_disabled_member: true
   output:
     meets_snap_asset_test: false
 
 - name: Excluded elderly member does not confer the elderly/disabled resource limit.
-  period: 2026
+  period: 2026-01
   input:
     people:
       person1:
@@ -40,7 +44,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_assets: 4_000
+        snap_assets:
+          2026: 4_000
     households:
       household:
         members: [person1, person2]
@@ -52,7 +57,7 @@
     meets_snap_asset_test: false
 
 - name: Eligible elderly member confers the elderly/disabled resource limit.
-  period: 2026
+  period: 2026-01
   input:
     people:
       person1:
@@ -63,7 +68,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_assets: 4_000
+        snap_assets:
+          2026: 4_000
     households:
       household:
         members: [person1, person2]
