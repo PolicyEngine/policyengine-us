@@ -173,3 +173,33 @@
   output:
     # 23_000 - 0.1 * 100_000; Form AR3 Line 3A
     ar_medical_expense_deduction_indiv: 13_000
+
+- name: Arkansas medical expense deduction uses the 7.5% floor for a filer whose spouse is 65 or older and files a separate return (2015)
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+        ar_agi_indiv: 50_000
+      person2:
+        age: 66
+        ar_agi_indiv: 30_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        itemized_medical_expenses: 9_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        itemized_medical_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # 9_000 - 0.075 * 50_000; Form AR3 Line 3B: "if either you or your spouse were age 65 or over"
+    ar_medical_expense_deduction_indiv: [5_250, 0]
