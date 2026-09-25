@@ -77,6 +77,18 @@
     # 7,945,800 - 7,389,800 = 556,000 = 0.40 * (20,000,000 - 18,610,000)
     estate_tax: 556_000
 
+- name: 2026 taxable estate equal to the basic exclusion amount
+  period: 2026
+  input:
+    is_deceased: true
+    taxable_estate_value: 15_000_000
+  output:
+    # Tentative tax: 345,800 + 0.40 * (15,000,000 - 1,000,000) = 5,945,800
+    estate_tax_before_credits: 5_945_800
+    # The credit is the same tentative tax on the $15,000,000 exclusion.
+    estate_tax_credit: 5_945_800
+    estate_tax: 0
+
 - name: 2026 taxable estate of $20 million
   period: 2026
   input:
