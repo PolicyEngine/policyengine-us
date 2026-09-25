@@ -124,8 +124,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         # Backdated before any reform is applied. Backdating copies each
         # parameter's earliest value back to 2015, so on a parameter first
-        # dated after 2015 it would copy a reform value that starts on that
-        # first date back to 2015, and a reform bounded to a year before
+        # dated after 2015 it would copy a reform value that starts on or
+        # before that first date back to 2015, and a reform ending before
         # that date would leave the years between the two undefined.
         self.parameters = backdate_parameters(
             self.parameters, first_instant="2015-01-01"
@@ -140,6 +140,12 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             # structural-reform detection, which reads reformed parameter
             # values.
             self.apply_reform_set(reform)
+            # Backdates parameters the reform added. The rest already have a
+            # value dated by 2015, and ``Parameter.update`` never removes
+            # values dated before the period it sets, so they keep it.
+            self.parameters = backdate_parameters(
+                self.parameters, first_instant="2015-01-01"
+            )
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, start_instant
