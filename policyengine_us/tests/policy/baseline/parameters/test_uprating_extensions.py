@@ -1,14 +1,16 @@
 """Test unified uprating extensions through 2100."""
 
 import math
+from types import SimpleNamespace
 import pytest
+
+from policyengine_core.parameters import Parameter
 
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
     DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
-    get_average_for_12_months_ending_august,
     get_irs_cola,
     get_irs_cola_denominator,
     round_social_security_amount,
@@ -452,25 +454,53 @@ def test_retirement_contribution_limits_include_latest_explicit_irs_values():
     assert limits2027.annual_additions >= limits2026.annual_additions
 
 
-def test_average_for_12_months_ending_august_reads_observations_and_projections():
-    """The 1(f)(4)/(6)(B) window runs September through August."""
-    c_cpi_u = PARAMETERS.gov.bls.cpi.c_cpi_u
+def _synthetic_irs_parameters():
+    """A synthetic CPI-U / C-CPI-U tree with round Sep-Aug window averages.
 
-    # Fully observed: the C-CPI-U for calendar year 2016 (BLS SUUR0000SA0).
-    assert get_average_for_12_months_ending_august(c_cpi_u, 2016) == pytest.approx(
-        135.993, abs=1e-9
+    The window-averaging branches themselves are pinned on synthetic series
+    by the Oregon Kids' Credit COLA tests, which share the helper.
+    """
+
+    def months(start_year, start_month, end_year, end_month, level):
+        year, month = start_year, start_month
+        values = {}
+        while (year, month) <= (end_year, end_month):
+            values[f"{year}-{month:02d}-01"] = level
+            year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+        return values
+
+    cpi_u = {
+        **months(1996, 9, 1997, 8, 100),
+        **months(2015, 9, 2016, 8, 200),
+    }
+    c_cpi_u = {
+        **months(2015, 9, 2016, 8, 150),
+        **months(2019, 9, 2020, 8, 60),
+        # Monthly observations end in August 2030; later years hold annual
+        # projection points at February instants.
+        **months(2029, 9, 2030, 8, 180),
+        "2032-02-01": 195,
+    }
+    cpi = SimpleNamespace(
+        cpi_u=Parameter("cpi_u", data=cpi_u),
+        c_cpi_u=Parameter("c_cpi_u", data=c_cpi_u),
     )
-    # Observed through June 2026 (October 2025 unpublished): July and
-    # August carry June's value.
-    observed = [180.196, 180.196, 179.712, 179.598, 180.232, 181.080]
-    observed += [183.013, 184.499, 185.589, 184.992, 184.992, 184.992]
-    assert get_average_for_12_months_ending_august(c_cpi_u, 2026) == pytest.approx(
-        sum(observed) / 12
-    )
-    # No observed month: CBO's projection of the September-August average.
-    assert get_average_for_12_months_ending_august(c_cpi_u, 2031) == c_cpi_u(
-        "2031-02-01"
-    )
+    return SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
+
+
+def test_irs_cola_follows_1f3_on_a_synthetic_index():
+    """COLA = C-CPI-U(prior year) / (CPI(base) x C-CPI-U(2016) / CPI(2016)) - 1."""
+    parameters = _synthetic_irs_parameters()
+    # CPI-U averages 100 over Sep 1996-Aug 1997 and 200 over Sep 2015-Aug
+    # 2016; C-CPI-U averages 150 over Sep 2015-Aug 2016: 100 x 150 / 200 = 75.
+    assert get_irs_cola_denominator(parameters, 1997) == pytest.approx(75)
+    # Tax year 2031 reads the fully observed Sep 2029-Aug 2030 window (180).
+    assert get_irs_cola(parameters, 2031, 1997) == pytest.approx(180 / 75 - 1)
+    # Tax year 2033 has no observed month and reads the 2032 projection point.
+    assert get_irs_cola(parameters, 2033, 1997) == pytest.approx(195 / 75 - 1)
+    # "The percentage (if any)": the Sep 2019-Aug 2020 window (60) is below
+    # the denominator, so the tax year 2021 COLA is zero, not negative.
+    assert get_irs_cola(parameters, 2021, 1997) == 0
 
 
 def test_irs_cola_denominator_uses_2016_ratio_for_pre_2017_base_years():
@@ -530,6 +560,10 @@ def test_dependent_standard_deduction_projections_follow_statute():
             assert value >= previous, (name, year)
             previous = value
 
+    # Hand-derived anchors (derivations in basic_standard_deduction.yaml).
     # Chaining from the rounded 2026 $450 ($450 x 1.03 = $463) would keep
     # 2027 at $450; the $250 base gives $500.
     assert dependent.additional_earned_income("2027-01-01") == 500
+    assert dependent.additional_earned_income("2032-01-01") == 550
+    assert dependent.additional_earned_income("2042-01-01") == 650
+    assert dependent.amount("2042-01-01") == 1_900
