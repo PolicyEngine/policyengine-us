@@ -82,23 +82,56 @@ def test_members_are_defined_variables(list_path, variables):
     )
 
 
+def has_state_gate(variables, member):
+    """True when a StateCode (or locality) gate appears in the defined_for chain."""
+    gate = variables[member].defined_for
+    for _ in range(10):
+        if gate is None:
+            return False
+        if re.fullmatch(r"[A-Z]{2}", str(gate)):
+            return True  # StateCode gate found
+        if gate in GEOGRAPHIC_GATES:
+            return True
+        gate = variables[gate].defined_for if gate in variables else None
+    return False
+
+
+def aggregate_members(variables, member):
+    """The variables an aggregate member sums, or None if it is not an aggregate.
+
+    `adds` is either a list of variable names or a dotted parameter path
+    (e.g. gov.hhs.ccdf.child_care_subsidy_programs).
+    """
+    adds = getattr(variables[member], "adds", None)
+    if not adds:
+        return None
+    if isinstance(adds, str):
+        list_path = adds.replace(".", "/") + ".yaml"
+        if not (PARAMETERS / list_path).exists():
+            return None
+        return members_of(list_path)
+    return set(adds)
+
+
+def is_state_gated(variables, member, depth=0):
+    if has_state_gate(variables, member):
+        return True
+    # An aggregate whose every summed member is state-gated cannot leak one
+    # state's program into other states: each addend is zero outside its gate.
+    if depth < 3:
+        members = aggregate_members(variables, member)
+        if members is not None:
+            return all(is_state_gated(variables, m, depth + 1) for m in members)
+    return False
+
+
 @pytest.mark.parametrize("list_path", AGGREGATE_LISTS)
 def test_members_are_state_gated(list_path, variables):
-    ungated = []
-    for member in sorted(members_of(list_path)):
-        gate = variables[member].defined_for
-        for _ in range(10):
-            if gate is None:
-                break
-            if re.fullmatch(r"[A-Z]{2}", str(gate)):
-                break  # StateCode gate found
-            if gate in GEOGRAPHIC_GATES:
-                break
-            gate = variables[gate].defined_for if gate in variables else None
-        else:
-            gate = None
-        if gate is None:
-            ungated.append(member)
+    ungated = [
+        member
+        for member in sorted(members_of(list_path))
+        if not is_state_gated(variables, member)
+    ]
     assert not ungated, (
         f"{list_path} members without a StateCode gate in their "
         f"defined_for chain (dc_ctc-style leak risk): {ungated}"

@@ -1,9 +1,10 @@
 description: The government counts these sources as benefits paid by state agencies.
 values:
   2023-01-01:
+    # Child care subsidies administered by state agencies
+    - child_care_subsidies
     # Delaware benefits
     - de_ssp
-    - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
     # Connecticut benefits
@@ -14,9 +15,6 @@ values:
     - me_ssp
     # Missouri benefits
     - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
     # Massachusetts benefits
     - ma_state_supplement
     # Maryland benefits
@@ -28,9 +26,6 @@ values:
     # Colorado benefits
     - co_state_supplement
     - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
     - ca_cvrp
     - ca_care
     - ca_fera
@@ -41,37 +36,22 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
-    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
-    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
-    # Maryland benefits
-    - md_child_care_subsidies
     # Nebraska benefits
     - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
-    # South Carolina benefits
-    - sc_child_care_subsidies
     # New Mexico benefits
     - nm_ssi_state_supplement
     # South Carolina benefits
     - sc_ssi_state_supplement
     # Texas benefits
     - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
@@ -86,17 +66,13 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
-    # Washington benefits
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
   2024-01-01:
+    # Child care subsidies administered by state agencies
+    - child_care_subsidies
     # Delaware benefits
     - de_ssp
-    - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
-    - in_child_care_subsidies
     # Connecticut benefits
     - ct_ssp
     # Georgia benefits
@@ -105,9 +81,6 @@ values:
     - me_ssp
     # Missouri benefits
     - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
     # Massachusetts benefits
     - ma_state_supplement
     # Maryland benefits
@@ -119,9 +92,6 @@ values:
     # Colorado benefits
     - co_state_supplement
     - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
     - ca_cvrp
     - ca_care
     - ca_fera
@@ -132,43 +102,22 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
-    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
-    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
     # Nebraska benefits
     - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
     # New Mexico benefits
     - nm_ssi_state_supplement
     # South Carolina benefits
     - sc_ssi_state_supplement
     # Texas benefits
     - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    # South Carolina benefits
-    - sc_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
@@ -183,21 +132,13 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
-    # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
   2025-01-01:
+    # Child care subsidies administered by state agencies
+    - child_care_subsidies
     # Delaware benefits
     - de_ssp
-    - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
-    - in_child_care_subsidies
     # Connecticut benefits
     - ct_ssp
     # Georgia benefits
@@ -206,9 +147,6 @@ values:
     - me_ssp
     # Missouri benefits
     - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
     # Massachusetts benefits
     - ma_state_supplement
     # Maryland benefits
@@ -220,9 +158,6 @@ values:
     # Colorado benefits
     - co_state_supplement
     - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
     - ca_cvrp
     - ca_care
     - ca_fera
@@ -233,48 +168,26 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
-    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
-    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
     # Nebraska benefits
     - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
     # New Mexico benefits
     - nm_ssi_state_supplement
     # South Carolina benefits
     - sc_ssi_state_supplement
     # Texas benefits
     - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    # South Carolina benefits
-    - sc_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
     - dc_ossp
-    - dc_child_care_subsidies
     # Kansas benefits
     - ks_sspp
     # Hawaii benefits
@@ -285,21 +198,13 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
-    # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
   2026-01-01:
+    # Child care subsidies administered by state agencies
+    - child_care_subsidies
     # Delaware benefits
     - de_ssp
-    - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
-    - in_child_care_subsidies
     # Connecticut benefits
     - ct_ssp
     # Georgia benefits
@@ -308,9 +213,6 @@ values:
     - me_ssp
     # Missouri benefits
     - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
     # Massachusetts benefits
     - ma_state_supplement
     # Maryland benefits
@@ -322,9 +224,6 @@ values:
     # Colorado benefits
     - co_state_supplement
     - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
     - ca_cvrp
     - ca_care
     - ca_fera
@@ -335,48 +234,26 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
-    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
-    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
     # Nebraska benefits
     - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
     # New Mexico benefits
     - nm_ssi_state_supplement
     # South Carolina benefits
     - sc_ssi_state_supplement
     # Texas benefits
     - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    # South Carolina benefits
-    - sc_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
     - dc_ossp
-    - dc_child_care_subsidies
     # Kansas benefits
     - ks_sspp
     # Hawaii benefits
@@ -387,16 +264,8 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
-    # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
     # New Jersey benefits
     - nj_property_tax_relief
-    # New York benefits
-    - ny_child_care_subsidies
 metadata:
   unit: list
   period: year
