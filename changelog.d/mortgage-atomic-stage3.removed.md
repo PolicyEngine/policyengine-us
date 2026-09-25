@@ -1,0 +1,1 @@
+Removed the deprecated first_home_mortgage_interest and second_home_mortgage_interest inputs; the person-level home_mortgage_interest input is the single mortgage-interest input, while the per-mortgage balance and origination-year inputs are unchanged. Datasets still carrying the removed columns load with a warning on policyengine-core 3.31+, which is now the minimum.

@@ -5,7 +5,7 @@
     tax_unit_itemizes: true
     standard_deduction: 0
     first_home_mortgage_balance: 900_000
-    first_home_mortgage_interest: 45_000
+    home_mortgage_interest: 45_000
     first_home_mortgage_origination_year: 2017
   output:
     deductible_mortgage_interest_tax_unit: 45_000
@@ -19,7 +19,7 @@
     tax_unit_itemizes: true
     standard_deduction: 0
     first_home_mortgage_balance: 900_000
-    first_home_mortgage_interest: 45_000
+    home_mortgage_interest: 45_000
     first_home_mortgage_origination_year: 2018
   output:
     deductible_mortgage_interest_tax_unit: 37_500
@@ -34,10 +34,9 @@
     tax_unit_itemizes: true
     standard_deduction: 0
     first_home_mortgage_balance: 800_000
-    first_home_mortgage_interest: 40_000
+    home_mortgage_interest: 55_000
     first_home_mortgage_origination_year: 2017
     second_home_mortgage_balance: 300_000
-    second_home_mortgage_interest: 15_000
     second_home_mortgage_origination_year: 2018
   output:
     deductible_mortgage_interest_tax_unit: 40_000
@@ -51,14 +50,14 @@
     tax_unit_itemizes: true
     standard_deduction: 0
     first_home_mortgage_balance: 500_000
-    first_home_mortgage_interest: 25_000
+    home_mortgage_interest: 25_000
     first_home_mortgage_origination_year: 2018
   output:
     deductible_mortgage_interest_tax_unit: 18_750
     interest_deduction: 18_750
     mortgage_interest: 25_000
 
-- name: No structural mortgage inputs yields zero deductible interest
+- name: No mortgage inputs yields zero deductible interest
   period: 2024
   input:
     filing_status: SINGLE
@@ -68,7 +67,7 @@
     deductible_mortgage_interest_tax_unit: 0
     non_deductible_mortgage_interest_tax_unit: 0
 
-- name: Person-level home mortgage interest is deductible when no structural inputs are provided
+- name: Person-level home mortgage interest is the single interest input
   period: 2024
   input:
     people:
@@ -84,48 +83,6 @@
     deductible_mortgage_interest_tax_unit: 10_000
     interest_deduction: 10_000
     mortgage_interest: 10_000
-
-- name: Structural interest with no reported balance is fully deductible
-  period: 2024
-  input:
-    filing_status: SINGLE
-    tax_unit_itemizes: true
-    standard_deduction: 0
-    first_home_mortgage_interest: 10_000
-  output:
-    deductible_mortgage_interest_tax_unit: 10_000
-
-- name: Regression guard - post-TCJA balance above the cap is still limited
-  period: 2024
-  input:
-    filing_status: SINGLE
-    tax_unit_itemizes: true
-    standard_deduction: 0
-    first_home_mortgage_balance: 900_000
-    first_home_mortgage_interest: 45_000
-    first_home_mortgage_origination_year: 2018
-  output:
-    deductible_mortgage_interest_tax_unit: 37_500
-
-- name: Person-level input is canonical when both input styles are supplied (issue #9275)
-  period: 2024
-  input:
-    people:
-      head:
-        home_mortgage_interest: 12_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        filing_status: SINGLE
-        tax_unit_itemizes: true
-        standard_deduction: 0
-        first_home_mortgage_interest: 10_000
-  output:
-    # Person-level wins; the deprecated structured input is ignored when
-    # person-level interest is reported.
-    home_mortgage_interest_tax_unit: 12_000
-    deductible_mortgage_interest_tax_unit: 12_000
-    interest_deduction: 12_000
 
 - name: Person-level interest still passes through the acquisition-debt caps
   period: 2024
