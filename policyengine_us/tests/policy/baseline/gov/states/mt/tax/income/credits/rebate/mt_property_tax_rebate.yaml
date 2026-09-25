@@ -21,3 +21,19 @@
     state_code: MT
   output:
     mt_property_tax_rebate: 675
+
+- name: No property tax rebate after the 2022-2023 program
+  period: 2024
+  input:
+    real_estate_taxes: 5_000
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 0
+
+- name: No property tax rebate before the 2022-2023 program
+  period: 2021
+  input:
+    real_estate_taxes: 5_000
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 0

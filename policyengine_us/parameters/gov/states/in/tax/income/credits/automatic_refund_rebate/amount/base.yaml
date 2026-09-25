@@ -1,6 +1,15 @@
 description: Indiana provides a base automatic refund rebate of this amount.
 values:
+  # IC 4-10-22-4 / IB 110: the $125 ATR and the automatic $200 ATR
+  # (IC 4-10-22-4.5(a)) went to individuals who filed a 2020 Indiana resident
+  # return by Dec. 31, 2021, so both are booked to 2020 (eligibility year),
+  # although paid in 2022. The $200 refundable credit on the 2022 return for
+  # Social Security recipients not eligible for the $125 ATR
+  # (IC 4-10-22-4.5(b)) is not modeled. Bracketed with zeros so the amount
+  # applies only in 2020.
+  2019-01-01: 0
   2020-01-01: 125
+  2021-01-01: 0
 metadata:
   unit: currency-USD
   period: year

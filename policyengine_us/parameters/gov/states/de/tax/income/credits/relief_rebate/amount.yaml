@@ -1,6 +1,11 @@
 description: Delaware provides a relief rebate of this amount to each adult in the household.
 values:
+  # HB 360 was a one-time rebate keyed to the 2020 Delaware resident return,
+  # so it is booked to 2020 and bracketed with zeros so it applies only in
+  # 2020, matching the 2020-only entry in the refundable credits list.
+  2019-01-01: 0
   2020-01-01: 300
+  2021-01-01: 0
 metadata:
   reference:
     - title: Delaware General Assembly - House Bill 360 

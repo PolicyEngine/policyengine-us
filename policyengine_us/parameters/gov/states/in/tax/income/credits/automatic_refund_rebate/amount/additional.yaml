@@ -1,10 +1,16 @@
-description: Indiana provides an additional automatic refund rebate for qualifying dependents.
+description: Indiana provides an additional automatic refund rebate of this amount to each eligible individual.
 values:
+  # Booked to 2020 with the base amount and bracketed with zeros so it applies
+  # only in 2020 (see base.yaml).
+  2019-01-01: 0
   2020-01-01: 200
+  2021-01-01: 0
 metadata:
   unit: currency-USD
   period: year
-  label: Indiana additional automatic refund rebate per dependent
+  label: Indiana additional automatic refund rebate per eligible individual
   reference:
-    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-4
-      href: https://law.justia.com/codes/indiana/2022/title-4/article-10/chapter-22/section-4-10-22-4/
+    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-4.5(a)
+      href: https://law.justia.com/codes/indiana/2022/title-4/article-10/chapter-22/section-4-10-22-4-5/
+    - title: Indiana Department of Revenue Income Tax Information Bulletin 110, Eligibility for the $125 ATR and the $200 ATR Issued During 2022
+      href: https://www.in.gov/dor/files/ib110.pdf#page=2
