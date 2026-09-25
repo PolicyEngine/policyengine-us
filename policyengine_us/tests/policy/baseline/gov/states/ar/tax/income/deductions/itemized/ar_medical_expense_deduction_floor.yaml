@@ -1,0 +1,238 @@
+- name: Arkansas medical expense floor is 7.5% before 2013 regardless of age
+  period: 2012
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 70
+    # Filing status is an input: computing it before 2015 reaches the federal
+    # 401(k) limit, which the model does not define for those years.
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Form AR3 2012 Line 3: "Multiply Line 2 by 7.5% (.075)"
+    ar_medical_expense_deduction_floor: [0.075, 0.075]
+
+- name: Arkansas medical expense floor switches to the senior rate at age 65 in 2013
+  period: 2013
+  input:
+    people:
+      person1:
+        age: 64
+      person2:
+        age: 65
+    # Filing status is an input: computing it before 2015 reaches the federal
+    # 401(k) limit, which the model does not define for those years.
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Form AR3 2013 Line 3A (10%, under 65) and Line 3B (7.5%, 65 or over)
+    ar_medical_expense_deduction_floor: [0.1, 0.075]
+
+- name: Arkansas medical expense floor uses the senior rate when only the spouse is 65 or older in 2016
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 60
+      person2:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_medical_expense_deduction_floor: 0.075
+
+- name: Arkansas medical expense floor is 10% for filers 65 and older from 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 80
+      person2:
+        age: 78
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Form AR3 2017 Line 3: "Multiply Line 2 by 10% (.10)"
+    ar_medical_expense_deduction_floor: 0.1
+
+- name: An older dependent does not trigger the Arkansas senior medical expense floor
+  period: 2015
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: AR
+  output:
+    # Form AR3 Line 3B asks about "you or your spouse" only.
+    ar_medical_expense_deduction_floor: 0.1
+
+- name: Single filers who share a situation without marital units keep their own Arkansas medical expense floors
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 64
+      person3:
+        age: 65
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_medical_expense_deduction_floor: [0.1, 0.1, 0.075]
+
+- name: Two unmarried filers in one default marital unit keep their own Arkansas medical expense floors
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Neither unit files separately, so the other filer's age is never read.
+    ar_medical_expense_deduction_floor: [0.1, 0.075]
+
+- name: A spouse filing a separate return who is 65 or older sets the Arkansas senior medical expense floor for both returns
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 66
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Form AR3 2015 Line 3B: "If either you or your spouse were age 65 or over"
+    ar_medical_expense_deduction_floor: [0.075, 0.075]
+
+- name: Spouses filing separate returns who are both under 65 use the Arkansas 10% medical expense floor
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 64
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_medical_expense_deduction_floor: [0.1, 0.1]
+
+- name: A separate filer does not take the Arkansas senior medical expense floor from a default marital unit of three people
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 50
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Without explicit marital units all three share one default unit, which
+    # cannot identify a spouse; the 70-year-old's age stays on their own return.
+    ar_medical_expense_deduction_floor: [0.1, 0.1, 0.075]
