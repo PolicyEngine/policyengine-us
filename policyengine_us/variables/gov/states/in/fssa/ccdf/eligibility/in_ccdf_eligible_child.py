@@ -21,12 +21,12 @@ class in_ccdf_eligible_child(Variable):
         # ordered supervision" who is under 18 at application or reapplication
         # "may participate until the Sunday following their nineteenth (19th)
         # birthday". is_disabled proxies the documented special-needs status
-        # (IEP, SSI verification, Head Start, or medical diagnosis per Section
-        # 1.6); we do not track the documentation type. Subsidy periods run
-        # at least 53 weeks, so a qualifying child is normally reauthorized at
-        # 18; we do not track the application date and apply the under-19
-        # ceiling to all qualifying children, approximating the Sunday grace
-        # with annual age.
+        # (for a child 13 or older, an IEP or a health care professional's
+        # statement under "Child with Special Needs", p.14); we do not track
+        # the documentation type. The application-age test is not modeled:
+        # we apply the under-19 ceiling to all qualifying children, so a
+        # child who first applies at 18 is treated as eligible, and the
+        # Sunday grace is approximated with annual age.
         special_status = person("is_disabled", period.this_year) | person(
             "is_under_court_supervision", period.this_year
         )

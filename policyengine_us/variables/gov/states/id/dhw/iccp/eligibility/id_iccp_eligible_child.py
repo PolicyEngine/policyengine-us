@@ -18,7 +18,10 @@ class id_iccp_eligible_child(Variable):
         # practitioner's verification) or (b) "a court order, probation order,
         # child protection, or mental health case plan requires constant
         # supervision". We treat the constant-supervision content of the order
-        # as a verification detail and use the single court-supervision input.
+        # as a verification detail and use the single court-supervision input;
+        # a child-protection or mental-health case plan is not a court
+        # instrument, so users must set is_under_court_supervision for such a
+        # plan (the model has no separate case-plan input).
         # The birthday-month cutoff is approximated with annual age, and the
         # discretionary "may be eligible" wording is modeled as eligible.
         is_disabled = person("is_disabled", period.this_year)

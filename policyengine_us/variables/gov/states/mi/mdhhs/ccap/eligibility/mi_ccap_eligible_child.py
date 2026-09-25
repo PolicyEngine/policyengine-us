@@ -23,7 +23,9 @@ class mi_ccap_eligible_child(Variable):
         # are a full-time high school student reasonably expected to complete
         # high school before 19. We use the single court-supervision input
         # for both court conditions, treating the constant-care content of
-        # the order as a verification detail.
+        # the order as a verification detail; the model may therefore
+        # overstate eligibility for a supervised child whose order does not
+        # require constant care.
         requires_constant_care = person("is_disabled", period.this_year)
         court_supervision = person("is_under_court_supervision", period.this_year)
         extended_status = requires_constant_care | court_supervision
@@ -32,7 +34,8 @@ class mi_ccap_eligible_child(Variable):
         # mo_ccs_eligible_child). is_full_time_student derives from the same
         # imputation, so secondary-school enrollment also satisfies the
         # full-time test (as in is_mo_tanf_earned_income_exempt). Enrollment
-        # proxies the expectation of finishing before 19.
+        # proxies the expectation of finishing before 19, so the model may
+        # overstate eligibility for an enrolled 18-year-old who will not.
         in_secondary_school = person("is_in_secondary_school", period.this_year)
         high_school_student = in_secondary_school | person(
             "is_in_k12_school", period.this_year

@@ -32,7 +32,8 @@
   output:
     ne_child_care_subsidy_eligible_child: [true, false]
 
-- name: Case 3, a court-supervised family member does not waive income, assets, or fees.
+# The family fee is 7% of monthly gross income: 120,000 / 12 x 0.07 = 700.
+- name: Case 3, a court-supervised family member does not waive income or fees.
   period: 2026-01
   input:
     state_code: NE

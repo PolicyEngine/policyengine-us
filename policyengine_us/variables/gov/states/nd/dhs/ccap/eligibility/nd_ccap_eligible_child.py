@@ -23,8 +23,10 @@ class nd_ccap_eligible_child(Variable):
         # the physician or psychologist verification) or "in need of
         # supervised care as specified in a court order". We treat the order's
         # content as a verification detail and use the single court-supervision
-        # input. "Under age 19" runs through the month of the 19th birthday,
-        # which annual age cannot resolve.
+        # input, so the model may overstate eligibility for a supervised child
+        # whose order does not specify supervised care. "Under age 19" runs
+        # through the month of the 19th birthday, which annual age cannot
+        # resolve.
         is_disabled = person("is_disabled", period.this_year)
         court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(

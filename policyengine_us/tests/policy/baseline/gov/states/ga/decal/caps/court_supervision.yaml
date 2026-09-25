@@ -191,6 +191,7 @@
         state_code: GA
         county_str: FULTON_COUNTY_GA
   output:
+    ga_caps_eligible: true
     ga_caps: 0
 
 - name: Case 8, court supervision is specific to the child in a mixed household.

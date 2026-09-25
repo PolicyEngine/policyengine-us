@@ -48,7 +48,19 @@
   output:
     mi_ccap_eligible_child: false
 
-- name: Case 5, an 18-year-old student without constant care or court supervision is ineligible.
+- name: Case 5, a part-time secondary student at 18 fails the full-time test.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_k12_school: true
+    is_full_time_student: false
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 6, an 18-year-old student without constant care or court supervision is ineligible.
   period: 2026-01
   input:
     state_code: MI
@@ -58,7 +70,7 @@
   output:
     mi_ccap_eligible_child: false
 
-- name: Case 6, a 19-year-old student under court supervision is too old.
+- name: Case 7, a 19-year-old student under court supervision is too old.
   period: 2026-01
   input:
     state_code: MI
@@ -69,7 +81,7 @@
   output:
     mi_ccap_eligible_child: false
 
-- name: Case 7, an 18-year-old student requiring constant care for a condition is also eligible.
+- name: Case 8, an 18-year-old student requiring constant care for a condition is also eligible.
   period: 2026-01
   input:
     state_code: MI
@@ -80,7 +92,7 @@
   output:
     mi_ccap_eligible_child: true
 
-- name: Case 8, court supervision does not bypass the immigration requirement.
+- name: Case 9, court supervision does not bypass the immigration requirement.
   period: 2026-01
   input:
     state_code: MI
@@ -91,7 +103,7 @@
   output:
     mi_ccap_eligible_child: false
 
-- name: Case 9, court supervision does not bypass the dependency requirement.
+- name: Case 10, court supervision does not bypass the dependency requirement.
   period: 2026-01
   input:
     state_code: MI
@@ -103,7 +115,7 @@
 
 # Monthly expenses of $100 are below the school-age rate, so the payment is
 # capped at the $100 charge.
-- name: Case 10, supervised 17-year-old receives child-care benefit through the full pipeline.
+- name: Case 11, supervised 17-year-old receives child-care benefit through the full pipeline.
   period: 2026-01
   absolute_error_margin: 0.02
   input:
@@ -139,7 +151,7 @@
     mi_ccap_eligible: true
     mi_ccap: 100
 
-- name: Case 11, supervised 18-year-old high school student receives the same benefit.
+- name: Case 12, supervised 18-year-old high school student receives the same benefit.
   # An 18-year-old is a non-child adult, so the head/spouse roles are set
   # explicitly to keep the parent as the only caretaker.
   period: 2026-01
@@ -179,7 +191,7 @@
     mi_ccap_eligible: true
     mi_ccap: 100
 
-- name: Case 12, court supervision does not waive the income requirement.
+- name: Case 13, court supervision does not waive the income requirement.
   period: 2026-01
   input:
     people:
@@ -213,7 +225,7 @@
     mi_ccap_income_eligible: false
     mi_ccap: 0
 
-- name: Case 13, court supervision does not waive the parent activity requirement.
+- name: Case 14, court supervision does not waive the parent activity requirement.
   period: 2026-01
   input:
     people:
@@ -247,7 +259,7 @@
     mi_ccap_activity_eligible: false
     mi_ccap: 0
 
-- name: Case 14, eligible supervised child without care receives zero.
+- name: Case 15, eligible supervised child without care receives zero.
   period: 2026-01
   input:
     people:
@@ -278,9 +290,10 @@
         state_code: MI
         county_str: WAYNE_COUNTY_MI
   output:
+    mi_ccap_eligible: true
     mi_ccap: 0
 
-- name: Case 15, court supervision is specific to the child in a mixed household.
+- name: Case 16, court supervision is specific to the child in a mixed household.
   period: 2026-01
   input:
     people:

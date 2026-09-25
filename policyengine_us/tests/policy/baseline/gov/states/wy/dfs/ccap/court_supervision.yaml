@@ -158,6 +158,7 @@
         state_code: WY
         county_str: LARAMIE_COUNTY_WY
   output:
+    wy_ccap_eligible: true
     wy_ccap: 0
 
 - name: Case 7, court supervision is specific to the child in a mixed household.
@@ -183,6 +184,9 @@
     wy_ccap_eligible_child: [false, true, false]
 
 # 175% FPG is Step 4: $6.40/full day * 20 days = $128, below the 7% cap.
+# Annual countable income of 3,500 x 12 = 42,000 sits exactly on the 175% FPG
+# entry limit (24,000 x 1.75) and at the top of copay Step 4, which the
+# inclusive limit and step ceiling both admit.
 - name: Case 8, court supervision leaves the ordinary per-child copay in force.
   period: 2026-01
   absolute_error_margin: 0.01

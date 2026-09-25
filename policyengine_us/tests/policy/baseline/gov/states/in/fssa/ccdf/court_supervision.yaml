@@ -198,6 +198,7 @@
         state_code: IN
         county_str: MARION_COUNTY_IN
   output:
+    in_ccdf_eligible: true
     in_ccdf: 0
 
 - name: Case 8, court supervision is specific to the child in a mixed household.

@@ -18,7 +18,23 @@
   output:
     sd_cca_eligible_child: [true, true, true, false, false, false]
 
-- name: Case 2, supervised 18-year-old in secondary school is eligible.
+- name: Case 2, a supervised 17-year-old not in school is eligible under the under-18 limit.
+  period: 2027-01
+  input:
+    state_code:
+      2027: SD
+    age:
+      2027: 17
+    is_under_court_supervision:
+      2027: true
+    is_in_k12_school:
+      2027: false
+    meets_ccdf_activity_test:
+      2027: true
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 3, supervised 18-year-old in secondary school is eligible.
   period: 2027-01
   input:
     state_code:
@@ -34,7 +50,7 @@
   output:
     sd_cca_eligible_child: true
 
-- name: Case 3, supervised 18-year-old flagged through the K-12 input is eligible.
+- name: Case 4, supervised 18-year-old flagged through the K-12 input is eligible.
   period: 2027-01
   input:
     state_code:
@@ -50,7 +66,7 @@
   output:
     sd_cca_eligible_child: true
 
-- name: Case 4, a 19-year-old student under court supervision is too old.
+- name: Case 5, a 19-year-old student under court supervision is too old.
   period: 2027-01
   input:
     state_code:
@@ -66,7 +82,7 @@
   output:
     sd_cca_eligible_child: false
 
-- name: Case 5, an 18-year-old student incapable of self-care is also eligible.
+- name: Case 6, an 18-year-old student incapable of self-care is also eligible.
   period: 2027-01
   input:
     state_code:
@@ -82,7 +98,7 @@
   output:
     sd_cca_eligible_child: true
 
-- name: Case 6, court supervision does not replace the reason for care.
+- name: Case 7, court supervision does not replace the reason for care.
   period: 2027-01
   input:
     state_code:
@@ -95,7 +111,7 @@
   output:
     sd_cca_eligible_child: false
 
-- name: Case 7, court supervision does not bypass the citizen or permanent resident requirement.
+- name: Case 8, court supervision does not bypass the citizen or permanent resident requirement.
   period: 2027-01
   input:
     state_code:
@@ -113,7 +129,7 @@
 
 # Monthly expenses of $100 are below the school-age rate, so the payment is
 # capped at the $100 charge.
-- name: Case 8, supervised 17-year-old receives child-care benefit through the full pipeline.
+- name: Case 9, supervised 17-year-old receives child-care benefit through the full pipeline.
   period: 2027-01
   absolute_error_margin: 0.02
   input:
@@ -164,7 +180,7 @@
     sd_cca_eligible: true
     sd_cca: 100
 
-- name: Case 9, supervised 18-year-old student receives the same benefit.
+- name: Case 10, supervised 18-year-old student receives the same benefit.
   # An 18-year-old is a non-child adult, so the head/spouse roles are set
   # explicitly to keep the parent as the only caretaker.
   period: 2027-01
@@ -221,7 +237,7 @@
     sd_cca_eligible: true
     sd_cca: 100
 
-- name: Case 10, court supervision does not waive the income requirement.
+- name: Case 11, court supervision does not waive the income requirement.
   period: 2027-01
   input:
     people:
@@ -270,7 +286,7 @@
     sd_cca_income_eligible: false
     sd_cca: 0
 
-- name: Case 11, court supervision does not waive the parent activity requirement.
+- name: Case 12, court supervision does not waive the parent activity requirement.
   period: 2027-01
   input:
     people:
@@ -319,7 +335,7 @@
     sd_cca_activity_eligible: false
     sd_cca: 0
 
-- name: Case 12, eligible supervised child without care receives zero.
+- name: Case 13, eligible supervised child without care receives zero.
   period: 2027-01
   input:
     people:
@@ -365,9 +381,10 @@
         county_str:
           2027: MINNEHAHA_COUNTY_SD
   output:
+    sd_cca_eligible: true
     sd_cca: 0
 
-- name: Case 13, court supervision is specific to the child in a mixed household.
+- name: Case 14, court supervision is specific to the child in a mixed household.
   period: 2027-01
   input:
     people:

@@ -197,6 +197,7 @@
         state_code: ND
         county_str: CASS_COUNTY_ND
   output:
+    nd_ccap_eligible: true
     nd_ccap: 0
 
 - name: Case 8, court supervision is specific to the child in a mixed household.

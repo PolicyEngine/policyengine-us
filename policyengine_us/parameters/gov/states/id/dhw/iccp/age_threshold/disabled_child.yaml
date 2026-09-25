@@ -1,8 +1,10 @@
-description: Idaho limits eligibility for children incapable of self-care or under court supervision to below this age under the Idaho Child Care Program.
+description: Idaho limits eligibility to children incapable of self-care or under court supervision below this age under the Idaho Child Care Program.
 # IDAPA 16.06.12.105.03.a-b: eligible "until the month of their nineteenth
 # birthday" if incapable of self-care or if a court order, probation order,
 # child protection, or mental health case plan requires constant supervision.
-# The birthday-month cutoff is approximated with annual age.
+# Non-court case plans have no separate input and are entered through
+# is_under_court_supervision. The birthday-month cutoff is approximated with
+# annual age.
 values:
   2022-03-17: 19
 

@@ -197,6 +197,7 @@
         state_code: ID
         county_str: ADA_COUNTY_ID
   output:
+    id_iccp_eligible: true
     id_iccp: 0
 
 - name: Case 8, court supervision is specific to the child in a mixed household.
