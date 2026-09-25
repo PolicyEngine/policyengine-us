@@ -6,9 +6,9 @@ class wv_sctc_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the West Virginia senior citizens tax credit"
     reference = (
-        "https://code.wvlegislature.gov/11-21-21/"
-        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=27 "
-        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=35"
+        "https://code.wvlegislature.gov/11-21-21/",
+        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=27",
+        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=35",
     )
     definition_period = YEAR
     defined_for = StateCode.WV

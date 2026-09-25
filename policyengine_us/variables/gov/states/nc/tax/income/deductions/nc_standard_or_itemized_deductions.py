@@ -8,8 +8,8 @@ class nc_standard_or_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ncdor.gov/2021-d-401-individual-income-tax-instructions/open#page=14"
-        "https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=14"
+        "https://www.ncdor.gov/2021-d-401-individual-income-tax-instructions/open#page=14",
+        "https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=14",
     )
     defined_for = StateCode.NC
 

@@ -8,8 +8,8 @@ class mn_niit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf"
-        "https://www.revisor.mn.gov/statutes/cite/290.033"
+        "https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf",
+        "https://www.revisor.mn.gov/statutes/cite/290.033",
     )
     defined_for = StateCode.MN
 

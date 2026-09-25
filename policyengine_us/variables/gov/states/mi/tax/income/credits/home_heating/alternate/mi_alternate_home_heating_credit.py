@@ -11,8 +11,8 @@ class mi_alternate_home_heating_credit(Variable):
     definition_period = YEAR
 
     reference = (
-        "https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2"
-        "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
+        "https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2",
+        "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a",
     )
 
     # Calculated from https://drive.google.com/file/d/1-bCwQn3nV9W-bIPlrVViTHes0ovWgLBr/view?usp=sharing

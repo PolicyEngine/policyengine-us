@@ -8,10 +8,10 @@ class wi_income_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf",
     )
     defined_for = StateCode.WI
 

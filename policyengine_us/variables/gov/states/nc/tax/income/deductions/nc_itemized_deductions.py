@@ -7,7 +7,7 @@ class nc_itemized_deductions(Variable):
     label = "North Carolina itemized deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions "
+    reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions"
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):
