@@ -1,0 +1,82 @@
+# Income from an interest in an estate or trust is gross income under
+# IRC § 61(a)(15) (Schedule E Part III, carried to Schedule 1 line 5).
+
+- name: Positive estate income flows into federal gross income and AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    irs_gross_income: 10_000
+    adjusted_gross_income: 10_000
+
+- name: Estate income adds to other gross income
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    irs_gross_income: 60_000
+    adjusted_gross_income: 60_000
+
+- name: Estate losses are excluded from gross income and deducted in loss_ald
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+        estate_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    irs_gross_income: 50_000
+    loss_ald: 10_000
+    adjusted_gross_income: 40_000
+
+- name: A dependent's estate income is excluded from the filer's gross income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    irs_gross_income: [50_000, 0]
+    adjusted_gross_income: 50_000
