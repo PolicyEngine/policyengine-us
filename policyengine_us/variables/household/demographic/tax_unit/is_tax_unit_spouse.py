@@ -19,4 +19,7 @@ class is_tax_unit_spouse(Variable):
         eligible = adult & ~head & ~is_separated
         age = person("age", period)
         next_oldest_adult = person.get_rank(tax_unit, -age, eligible) == 0
-        return where(supplied, role == role.possible_values.SPOUSE, next_oldest_adult)
+        # An explicit is_tax_unit_head input still wins over a supplied role,
+        # so keep the head out of the spouse role either way.
+        supplied_spouse = (role == role.possible_values.SPOUSE) & ~head
+        return where(supplied, supplied_spouse, next_oldest_adult)

@@ -57,7 +57,9 @@
   output:
     filing_status: SEPARATE
 
-- name: A supplied joint status is used for a supplied couple.
+- name: A supplied joint status is accepted for a supplied couple.
+  # The rules also give JOINT here; this checks the status is accepted, not
+  # that it overrides the rules, which cannot differ for a couple.
   period: 2024
   input:
     people:

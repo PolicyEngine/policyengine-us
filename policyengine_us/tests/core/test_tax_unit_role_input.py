@@ -100,6 +100,68 @@ def test_supplied_status_must_agree_with_the_units_spouse(people, status):
         simulation.calculate("filing_status", YEAR)
 
 
+def _abolish(variable: str) -> dict:
+    return {f"gov.abolitions.{variable}": {"2000-01-01.2100-12-31": True}}
+
+
+@pytest.mark.parametrize(
+    "status,abolished,expected",
+    [
+        ("HEAD_OF_HOUSEHOLD", "head_of_household_eligible", "SINGLE"),
+        ("SINGLE", "head_of_household_eligible", "SINGLE"),
+        ("SURVIVING_SPOUSE", "surviving_spouse_eligible", "HEAD_OF_HOUSEHOLD"),
+        ("HEAD_OF_HOUSEHOLD", "surviving_spouse_eligible", "HEAD_OF_HOUSEHOLD"),
+    ],
+    ids=[
+        "abolished HOH re-derives a supplied HOH",
+        "abolished HOH keeps a supplied SINGLE",
+        "abolished SS re-derives a supplied SS",
+        "abolished SS keeps a supplied HOH",
+    ],
+)
+def test_abolishing_a_status_rule_re_derives_only_that_status(
+    status, abolished, expected
+):
+    """A parent of a 10-year-old, supplied with a status the rules may not give.
+
+    Abolishing an eligibility rule removes that status, so a unit supplied with
+    it is re-derived from the remaining rules; a unit supplied with another
+    status keeps it, as the rules would not otherwise differ from the input.
+    """
+    people = {"parent": (40, "HEAD"), "child": (10, "DEPENDENT")}
+    simulation = Simulation(
+        situation=_situation(people, status), reform=_abolish(abolished)
+    )
+    assert simulation.calculate("filing_status", YEAR).decode_to_str().tolist() == [
+        expected
+    ]
+
+
+@pytest.mark.parametrize(
+    "abolished", ["tax_unit_married", "is_tax_unit_spouse", "tax_unit_roles_supplied"]
+)
+def test_abolishing_a_role_variable_does_not_fail_the_status_check(abolished):
+    """The JOINT check reads the supplied roles, not the abolishable variables."""
+    people = {"head": (40, "HEAD"), "spouse": (40, "SPOUSE")}
+    simulation = Simulation(
+        situation=_situation(people, "JOINT"), reform=_abolish(abolished)
+    )
+    assert simulation.calculate("filing_status", YEAR).decode_to_str().tolist() == [
+        "JOINT"
+    ]
+
+
+def test_an_explicit_head_input_is_never_also_the_spouse():
+    """Explicit role flags win over supplied roles without doubling a person."""
+    situation = _situation({"a": (50, "HEAD"), "b": (48, "SPOUSE")})
+    situation["people"]["b"]["is_tax_unit_head"] = {YEAR: True}
+    simulation = Simulation(situation=situation)
+    head = simulation.calculate("is_tax_unit_head", YEAR)
+    spouse = simulation.calculate("is_tax_unit_spouse", YEAR)
+    assert head.tolist() == [False, True]
+    assert not (head & spouse).any()
+
+
 def _dataset(with_supplied_columns: bool) -> USSingleYearDataset:
     """Three tax units in one household, with Populace-style string columns.
 
