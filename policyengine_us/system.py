@@ -122,6 +122,15 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
 
+        # Backdated before any reform is applied. Backdating copies each
+        # parameter's earliest value back to 2015, so on a parameter first
+        # dated after 2015 it would copy a reform value that starts on that
+        # first date back to 2015, and a reform bounded to a year before
+        # that date would leave the years between the two undefined.
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant="2015-01-01"
+        )
+
         if reform:
             # Applied after the parameter processing pipeline so that values
             # a reform inserts at future dates cannot act as defined values
@@ -138,10 +147,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         if reform is None:
             reform = ()
         reform = (reform, structural_reform)
-
-        self.parameters = backdate_parameters(
-            self.parameters, first_instant="2015-01-01"
-        )
 
         for parameter in self.parameters.get_descendants():
             parameter.modified = False
