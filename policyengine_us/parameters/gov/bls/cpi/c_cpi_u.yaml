@@ -320,18 +320,18 @@ values:
   2026-04-01: 184.499
   2026-05-01: 185.589
   2026-06-01: 184.992
-  # CBO projections from CBO Feb 2026 forecast for future periods.
-  # CBO projects the average C-CPI-U over the 12mo ending August,
-  # which determines tax parameters for the following year.
-  2027-02-01: 187.2 # 2028 value.
-  2028-02-01: 191.1 # 2029 value.
-  2029-02-01: 194.9 # 2030 value.
-  2030-02-01: 198.8 # 2031 value.
-  2031-02-01: 202.7 # 2032 value.
-  2032-02-01: 206.7 # 2033 value.
-  2033-02-01: 210.8 # 2034 value.
-  2034-02-01: 214.9 # 2035 value.
-  2035-02-01: 219.2 # 2036 value.
+  # CBO's February 2026 projections of each calendar year's average C-CPI-U.
+  # Tax parameters use the average over the 12 months ending August instead;
+  # CBO's projections of that average are in tax_year_projection/c_cpi_u.yaml.
+  2027-02-01: 187.2 # Calendar year 2027 average.
+  2028-02-01: 191.1 # Calendar year 2028 average.
+  2029-02-01: 194.9 # Calendar year 2029 average.
+  2030-02-01: 198.8 # Calendar year 2030 average.
+  2031-02-01: 202.7 # Calendar year 2031 average.
+  2032-02-01: 206.7 # Calendar year 2032 average.
+  2033-02-01: 210.8 # Calendar year 2033 average.
+  2034-02-01: 214.9 # Calendar year 2034 average.
+  2035-02-01: 219.2 # Calendar year 2035 average.
   # Values for 2036-2100 are set programmatically in uprating_extensions.py
 metadata:
   economy: false
