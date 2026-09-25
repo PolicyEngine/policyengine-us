@@ -1,0 +1,56 @@
+# Form 8960 line 4a includes Schedule E Part III income from estates and
+# trusts; the Schedule K-1 (Form 1041) box 14 code H adjustment is taken on
+# line 7. A dependent's amounts belong on the dependent's own return.
+
+- name: Estate income counts in full without a code H adjustment
+  period: 2024
+  input:
+    estate_income: 12_000
+  output:
+    estate_net_investment_income: 12_000
+
+- name: A negative code H adjustment removes excluded income
+  period: 2024
+  input:
+    estate_income: 12_000
+    estate_income_net_investment_income_adjustment: -5_000
+  output:
+    estate_net_investment_income: 7_000
+
+- name: A positive code H adjustment adds net investment income
+  period: 2024
+  input:
+    estate_income: 12_000
+    estate_income_net_investment_income_adjustment: 2_000
+  output:
+    estate_net_investment_income: 14_000
+
+- name: Estate and trust losses carry their sign
+  period: 2024
+  input:
+    estate_income: -4_000
+  output:
+    estate_net_investment_income: -4_000
+
+- name: A dependent's estate income and adjustment are excluded
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        estate_income: 3_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: -1_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    estate_net_investment_income: [3_000, 0]

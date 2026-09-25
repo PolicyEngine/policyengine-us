@@ -1,0 +1,1 @@
+Include estate and trust income (Schedule E Part III) in federal gross income under § 61(a)(14) and in the net investment income tax base, following Form 8960: all of it counts by default, a new input carries the fiduciary's Schedule K-1 (Form 1041) box 14 code H adjustment, and a dependent's estate income stays off the filer's return.
