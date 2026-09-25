@@ -1,0 +1,29 @@
+description: Arkansas taxes net income above the high-income threshold at these marginal rates, before the bracket adjustment.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Arkansas high-income tax table
+  reference:
+  - title: A.C.A. § 26-51-201(a)(4)(B), as amended by Act 1 of 2026 (1st Extraordinary Session), § 1
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=2
+  - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.02
+  # The statute's rows are $0-$4,700 at 2% and $4,701 and above at 3.7%, so
+  # 3.7% applies to each dollar above $4,700.
+  - threshold:
+      values:
+        2026-01-01: 4_700
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    rate:
+      2026-01-01: 0.037
