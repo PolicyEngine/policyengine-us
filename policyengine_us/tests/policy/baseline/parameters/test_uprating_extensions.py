@@ -479,14 +479,20 @@ def _synthetic_irs_parameters():
     c_cpi_u = {
         **months(2015, 9, 2016, 8, 150),
         **months(2019, 9, 2020, 8, 60),
-        # Monthly observations end in August 2030; later years hold annual
-        # projection points at February instants.
+        # Monthly observations end in August 2030; later years hold
+        # calendar-year projection points at February instants.
         **months(2029, 9, 2030, 8, 180),
-        "2032-02-01": 195,
+        "2032-02-01": 199,
     }
     cpi = SimpleNamespace(
         cpi_u=Parameter("cpi_u", data=cpi_u),
         c_cpi_u=Parameter("c_cpi_u", data=c_cpi_u),
+        # CBO's projections of the 12 months ending the August before each
+        # tax year.
+        tax_year_projection=SimpleNamespace(
+            cpi_u=Parameter("cpi_u_projection", data={"2033-01-01": 390}),
+            c_cpi_u=Parameter("c_cpi_u_projection", data={"2033-01-01": 195}),
+        ),
     )
     return SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
 
@@ -499,7 +505,8 @@ def test_irs_cola_follows_1f3_on_a_synthetic_index():
     assert get_irs_cola_denominator(parameters, 1997) == pytest.approx(75)
     # Tax year 2031 reads the fully observed Sep 2029-Aug 2030 window (180).
     assert get_irs_cola(parameters, 2031, 1997) == pytest.approx(180 / 75 - 1)
-    # Tax year 2033 has no observed month and reads the 2032 projection point.
+    # Tax year 2033 has no observed month, so it reads CBO's tax-year
+    # projection (195), not the 2032 calendar-year point (199).
     assert get_irs_cola(parameters, 2033, 1997) == pytest.approx(195 / 75 - 1)
     # "The percentage (if any)": the Sep 2019-Aug 2020 window (60) is below
     # the denominator, so the tax year 2021 COLA is zero, not negative.
@@ -559,10 +566,14 @@ def encoded_dependent_standard_deduction_values(name):
 
 
 def test_dependent_standard_deduction_encoded_values_take_precedence():
-    """IRS and CBO values in the YAML survive the statutory extension."""
+    """IRS values in the YAML survive the statutory extension.
+
+    Every encoded value is an IRS publication that the statute reproduces,
+    so precedence for a non-statutory value is checked on the synthetic tree
+    in the next test.
+    """
     dependent = PARAMETERS.gov.irs.deductions.standard.dependent
-    statute_differs = []
-    for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
+    for name, _, _ in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
         parameter = getattr(dependent, name)
         # The 0001 placeholder in additional_earned_income.yaml is not a year.
         encoded = {
@@ -572,14 +583,6 @@ def test_dependent_standard_deduction_encoded_values_take_precedence():
         }
         for year, value in encoded.items():
             assert parameter(f"{year}-01-01") == value, (name, year)
-            if value != statutory_dependent_standard_deduction_amount(
-                base, base_year, year
-            ):
-                statute_differs.append((name, year))
-    # The check only bites where an encoded value differs from the statutory
-    # computation on the model's index: CBO's floor does in 2031 and 2034
-    # (#9608).
-    assert statute_differs
 
 
 def test_dependent_standard_deduction_extension_starts_after_last_encoded_year():
@@ -595,10 +598,19 @@ def test_dependent_standard_deduction_extension_starts_after_last_encoded_year()
         cpi_u=Parameter(
             "cpi_u", data={**months(1986, 40), **months(1996, 100), **months(2015, 200)}
         ),
-        # Monthly observations end in August 2030; 2032 holds a projection.
+        # Monthly observations end in August 2030; 2032 holds a calendar-year
+        # point, which windows do not read.
         c_cpi_u=Parameter(
             "c_cpi_u",
-            data={**months(2015, 150), **months(2029, 190), "2032-02-01": 205},
+            data={**months(2015, 150), **months(2029, 190), "2032-02-01": 211},
+        ),
+        # CBO's projections of the 12 months ending the August before each
+        # tax year.
+        tax_year_projection=SimpleNamespace(
+            cpi_u=Parameter("cpi_u_projection", data={"2033-01-01": 410}),
+            c_cpi_u=Parameter(
+                "c_cpi_u_projection", data={"2032-01-01": 190, "2033-01-01": 205}
+            ),
         ),
     )
     # A node, so Parameter.update can reach a parent.
@@ -630,13 +642,13 @@ def test_dependent_standard_deduction_extension_starts_after_last_encoded_year()
     assert dependent.additional_earned_income("2030-01-01") == 999
     # Denominators: 1987 base 40 x 150 / 200 = 30; 1997 base 100 x 150 / 200 = 75.
     # 2031 reads the observed Sep 2029-Aug 2030 window (190); 2032 has no
-    # observed month and no projection point of its own, so it reads 190 too.
+    # observed month and reads its tax-year projection, also 190.
     # Floor: $500 x (190 / 30 - 1) = $2,666.67, rounded down to $2,650.
     # Addition: $250 x (190 / 75 - 1) = $383.33, rounded down to $350.
     for year in (2031, 2032):
         assert dependent.amount(f"{year}-01-01") == 3_150
         assert dependent.additional_earned_income(f"{year}-01-01") == 600
-    # 2033 reads the 2032 projection point (205).
+    # 2033 reads its tax-year projection (205), not the calendar-year point.
     # Floor: $500 x (205 / 30 - 1) = $2,916.67, rounded down to $2,900.
     # Addition: $250 x (205 / 75 - 1) = $433.33, rounded down to $400.
     assert dependent.amount("2033-01-01") == 3_400
@@ -670,3 +682,39 @@ def test_dependent_standard_deduction_projections_follow_statute():
     assert dependent.additional_earned_income("2032-01-01") == 550
     assert dependent.additional_earned_income("2042-01-01") == 650
     assert dependent.amount("2042-01-01") == 1_900
+
+
+def test_statute_on_the_index_reproduces_cbo_dependent_floor_projections():
+    """CBO's projected floor is 63(c)(4) applied to CBO's projected index.
+
+    CBO Tax Parameters, February 2026, sheet 1: row 68 ("Dependent filers
+    (unearned)") by tax year. The model derives the floor from row 153, the
+    C-CPI-U over the 12 months ending the previous August, for 2028-2036,
+    and from BLS observations for 2027, so matching row 68 in every year
+    checks both the index and the statute encoding.
+    """
+    cbo_floor = {
+        2027: 1_400,
+        2028: 1_450,
+        2029: 1_450,
+        2030: 1_500,
+        2031: 1_500,
+        2032: 1_550,
+        2033: 1_600,
+        2034: 1_600,
+        2035: 1_650,
+        2036: 1_700,
+    }
+    dependent = PARAMETERS.gov.irs.deductions.standard.dependent
+    for year, amount in cbo_floor.items():
+        assert dependent.amount(f"{year}-01-01") == amount, year
+
+
+def test_irs_uprating_is_the_c_cpi_u_for_12_months_ending_august():
+    """1(f)(6)(B): the index for tax year T averages Sep T-2 through Aug T-1."""
+    uprating = PARAMETERS.gov.irs.uprating
+    # CBO's actual tax year 2026 index (Tax Parameters row 153): 177.114.
+    assert uprating("2026-01-01") == pytest.approx(177.114, abs=5e-4)
+    # No BLS observation covers Sep 2026-Aug 2027: CBO's projection.
+    assert uprating("2028-01-01") == pytest.approx(185.881)
+    assert uprating("2036-01-01") == pytest.approx(217.68)
