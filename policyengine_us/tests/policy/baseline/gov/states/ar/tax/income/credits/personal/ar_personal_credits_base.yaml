@@ -296,3 +296,41 @@
   output:
     # 11 credits at $29 (DFA 2020 instructions, Lines 7A and 7B)
     ar_personal_credits_base: 319
+
+- name: Arkansas 65 Special credit for a military retiree aged 66 (2017)
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 66
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # Military retirement was claimed on the Line 17 retirement exemption before 2018, so no 65 Special credit: 2 credits at $26
+    ar_personal_credits_base: 52
+
+- name: Arkansas 65 Special credit for a military retiree aged 66 (2018)
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 66
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # From 2018 military retirement has its own exemption line, so the 65 Special credit applies: 3 credits at $26
+    ar_personal_credits_base: 78
