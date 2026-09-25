@@ -170,3 +170,36 @@ def test_ar_medical_expense_deduction_is_monotone(year):
     agi = more_income.calculate("ar_agi_joint", period)
     more_income.set_input("ar_agi_joint", period, agi + 10_000)
     assert np.all(more_income.calculate(variable, period) <= base)
+
+
+@pytest.mark.parametrize("statuses", list(product(["SINGLE", "SEPARATE"], repeat=2)))
+@pytest.mark.parametrize("year", [2015, 2017])
+def test_ar_medical_expense_floor_in_two_person_simulations(year, statuses):
+    # With exactly two people and no marital units, the default marital unit
+    # looks like a couple. Only two separate filers are read as spouses of
+    # each other (intended: married people filing separately must both file
+    # separately); anyone else keeps the ages on their own return.
+    period = str(year)
+    ages = list(product(HEAD_AGES, HEAD_AGES))
+    both_separate = statuses == ("SEPARATE", "SEPARATE")
+    for a, b in ages:
+        people = {"p1": {"age": {period: a}}, "p2": {"age": {period: b}}}
+        situation = {
+            "people": people,
+            "tax_units": {
+                f"t{i}": {"members": [name], "filing_status": {period: status}}
+                for i, (name, status) in enumerate(zip(people, statuses))
+            },
+            "households": {
+                f"h{i}": {"members": [name], "state_code": {period: "AR"}}
+                for i, name in enumerate(people)
+            },
+        }
+        floor = Simulation(situation=situation).calculate(
+            "ar_medical_expense_deduction_floor", period
+        )
+        if both_separate:
+            expected = [expected_floor(year, [a, b])] * 2
+        else:
+            expected = [expected_floor(year, [a]), expected_floor(year, [b])]
+        np.testing.assert_allclose(floor, expected, err_msg=f"ages {a}, {b}")

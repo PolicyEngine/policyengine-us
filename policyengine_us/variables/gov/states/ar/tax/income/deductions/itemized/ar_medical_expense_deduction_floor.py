@@ -22,13 +22,15 @@ class ar_medical_expense_deduction_floor(Variable):
         aged = head_or_spouse & (person("age", period) >= p.senior.age_threshold)
         # "You or your spouse" (Form AR3 Line 3B) includes a spouse who files a
         # separate return in another tax unit. Reach that spouse through the
-        # marital unit only when it holds exactly the couple: without explicit
-        # marital units, everyone shares one default unit.
+        # marital unit only when it holds exactly two people who both file
+        # separately: without explicit marital units, everyone shares one
+        # default unit.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        couple = person.marital_unit.nb_persons() == 2
-        spouse_aged = couple & person.marital_unit.any(aged)
-        senior = tax_unit.any(aged) | (
-            separate & tax_unit.any(head_or_spouse & spouse_aged)
+        separate_filer = head_or_spouse & tax_unit.project(separate)
+        couple = (person.marital_unit.nb_persons() == 2) & (
+            person.marital_unit.sum(separate_filer) == 2
         )
+        spouse_aged = couple & person.marital_unit.any(aged)
+        senior = tax_unit.any(aged | spouse_aged)
         return where(senior, p.senior.income_floor, p.income_floor)

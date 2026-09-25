@@ -236,3 +236,30 @@
     # Without explicit marital units all three share one default unit, which
     # cannot identify a spouse; the 70-year-old's age stays on their own return.
     ar_medical_expense_deduction_floor: [0.1, 0.1, 0.075]
+
+- name: A separate filer does not take the Arkansas senior medical expense floor from an unrelated filer in a two-person default marital unit
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: AR
+      household2:
+        members: [person2]
+        state_code: AR
+  output:
+    # The default marital unit holds both people, but person2 files as single,
+    # so person2 cannot be person1's separately filing spouse.
+    ar_medical_expense_deduction_floor: [0.1, 0.075]
