@@ -61,9 +61,9 @@
         # Monthly gross 27,395/12 = 2,282.92 vs Jan-Sep limit 1.3 x 21,150/12
         # = 2,291.25 -> passes the federal gross test all year (Oct-Dec limit
         # 2,344.33). Net = 2,282.92 x 0.8 - 209 = 1,617.33 -> EC ceil(1,617 x
-        # 0.3) = 486 -> 546 - 486 = 60.00/month Jan-Sep; Oct-Dec: net 1,609.95
-        # rounds to 1,610 -> EC = 483 exactly -> 565.28 - 483 = 82.28.
-        # Annual = 9 x 60.00 + 3 x 82.28 = 786.84.
+        # 0.3) = 486 -> 546 - 486 = 60.00/month Jan-Sep; Oct-Dec (FY2027): net
+        # 1,609.33 rounds to 1,609 -> EC ceil(482.70) = 483 -> 562 - 483 = 79.00.
+        # Annual = 9 x 60.00 + 3 x 79.00 = 777.00.
         snap: 777.0
         is_snap_eligible: true
 - name: snap_couple_income_at_fy2026_gross_limit_27495 (ks)
@@ -119,8 +119,8 @@
         # Exactly at the binding FY2026 limit: 27,495 = 1.3 x 21,150 -> gross
         # ratio 1.30 -> still eligible. Net = 2,291.25 x 0.8 - 209 = 1,624.00
         # -> EC ceil(487.20) = 488 -> 546 - 488 = 58.00/month Jan-Sep; Oct-Dec:
-        # net 1,616.62 rounds to 1,617 -> EC 486 -> 565.28 - 486 = 79.28.
-        # Annual = 9 x 58.00 + 3 x 79.28 = 759.84.
+        # net 1,616.00 -> EC ceil(484.80) = 485 -> 562 - 485 = 77.00.
+        # Annual = 9 x 58.00 + 3 x 77.00 = 753.00.
         snap: 753.0
         is_snap_eligible: true
 - name: snap_couple_income_above_gross_limit_all_year_28232 (ks)
@@ -287,10 +287,12 @@
     spm_units:
       spm_unit:
         # Same unit as the previous case but the head is 60 (elderly): the
-        # higher elderly/disabled asset limit ($4,500) applies, so $4,000
+        # higher elderly/disabled asset limit ($4,500; $4,750 from October 2026)
+        # applies, so $4,000
         # passes and the age-59/60 asset distinction is observable (0 vs
         # positive). Net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC ceil(1,124 x
-        # 0.3) = 338 -> 546 - 338 = 208.00/month Jan-Sep; Oct-Dec: 565.28 -
-        # 336 = 229.28. Annual = 9 x 208.00 + 3 x 229.28 = 2,559.84.
+        # 0.3) = 338 -> 546 - 338 = 208.00/month Jan-Sep; Oct-Dec (FY2027): net
+        # 1,116 -> EC 335 -> 562 - 335 = 227.00. Annual = 9 x 208.00 +
+        # 3 x 227.00 = 2,553.00.
         snap: 2553.0
         is_snap_eligible: true

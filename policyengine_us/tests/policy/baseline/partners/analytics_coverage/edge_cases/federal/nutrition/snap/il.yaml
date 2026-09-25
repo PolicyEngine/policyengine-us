@@ -70,7 +70,7 @@
         # 562.17 = 583.83 (below the 744 cap, so the IL SUA value is fully
         # visible) -> net = 540.50 (540.4998 unrounded, so it rounds to 540) ->
         # EC = 540 x 0.3 = 162 exactly -> 785 - 162 = 623.00/month;
-        # Oct-Dec: 812.72 - 159 = 653.72.
-        # Annual = 9 x 623.00 + 3 x 653.72 = 7,568.17.
+        # Oct-Dec (FY2027): net 528 -> EC ceil(158.40) = 159 -> 808 - 159 =
+        # 649.00. Annual = 9 x 623.00 + 3 x 649.00 = 7,554.00.
         snap: 7554.0
         is_snap_eligible: true

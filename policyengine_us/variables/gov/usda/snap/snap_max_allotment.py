@@ -32,8 +32,9 @@ class snap_max_allotment(Variable):
         snap_region = spm_unit.household("snap_region_str", period)
         # 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21, limits the
         # increment for households of 9 or more to 200 percent of the
-        # four-person allotment. USDA's FY2026 table listed only a
-        # per-person increment; its FY2027 memo first published the
-        # resulting 18+ caps, so the cap applies from October 2026.
+        # four-person allotment. USDA dates that provision to October 2025,
+        # but its FY2026 table listed only a per-person increment; its
+        # FY2027 memo first published the resulting 18+ caps. The cap here
+        # covers published tables from October 2026; FY2026 is unchanged.
         cap = parameters(period).gov.usda.snap.max_allotment.cap[snap_region]
         return min_(allotment, cap)
