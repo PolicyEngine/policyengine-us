@@ -105,8 +105,6 @@ class deductible_mortgage_interest_tax_unit(Variable):
         first_year = tax_unit("first_home_mortgage_origination_year", period)
         second_year = tax_unit("second_home_mortgage_origination_year", period)
         total_balance = first_balance + second_balance
-        # Falls back to reported person-level interest when the structured
-        # first/second inputs are absent.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
 
         filing_status = tax_unit("filing_status", period)
