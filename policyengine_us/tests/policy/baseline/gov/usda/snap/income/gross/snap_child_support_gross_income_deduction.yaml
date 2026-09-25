@@ -277,7 +277,7 @@
     # $100 a month for January through August.
     snap_child_support_gross_income_deduction: 800
 
-- name: Delaware deducts child support payments in June 2010, because a monthly period reads the parameter on its first day (2010-06-01), before DSSM 9059(26) takes effect on 2010-06-10; it excludes them in July.
+- name: The model deducts Delaware child support payments for June 2010, because a monthly period reads the parameter on its first day (2010-06-01), before DSSM 9059(26) takes effect on 2010-06-10; it excludes them from July.
   period: 2010
   absolute_error_margin: 0.01
   input:
@@ -364,7 +364,7 @@
   output:
     snap_child_support_gross_income_deduction: 0
 
-- name: Arkansas deducts child support payments in 2010, although the 8th edition lists an exclusion; Certification Manual 6550 and 7524 deduct them.
+- name: Arkansas deducts child support payments in 2010, although the 6th to 8th editions list an exclusion; Certification Manual 6550 deducts them and 7524 allows no deduction but farm loss in total gross income.
   period: 2010
   absolute_error_margin: 0.01
   input:

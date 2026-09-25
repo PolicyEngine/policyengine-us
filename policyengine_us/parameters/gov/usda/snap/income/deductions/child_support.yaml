@@ -22,9 +22,10 @@ description: Whether the state excludes legally obligated child support payments
 # listed as excluding in a single edition (CT, NM in the 10th; MS, UT in the
 # 11th; ID, TN in the 12th; MI in the 13th; WI in the 9th) follows the
 # editions around it, as MI and VT do after 2022. HI, MD and PA (11th and
-# 12th), VT (12th and 13th) and AR (7th and 8th, the editions current before
-# and at 2010-01-01) are listed as excluding in two consecutive editions, but
-# their own rules deduct throughout, as the comments on their values cite.
+# 12th) and VT (12th and 13th) are listed as excluding in two consecutive
+# editions, and AR in three (6th to 8th, October 2006 to June 2009, the last
+# of them current on 2010-01-01), but their own rules deduct throughout, as
+# the comments on their values cite.
 AK:
   2010-01-01: false
   2017-10-01: false
@@ -40,7 +41,7 @@ AL:
 AR:
   # The DHS Food Stamp (later SNAP) Certification Manual deducts legally
   # obligated child support paid (6550) and allows no deduction but farm loss
-  # in total gross income (7524); the 7th and 8th editions list an exclusion,
+  # in total gross income (7524); the 6th to 8th editions list an exclusion,
   # the 9th and later a deduction.
   2010-01-01: false
   2017-10-01: false
@@ -442,6 +443,8 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9#c_17
     - title: 7 CFR 273.9(d)(5) - Child support deduction
       href: https://www.law.cornell.edu/cfr/text/7/273.9#d_5
+    - title: Food Stamp Program State Options Report, 6th Edition (October 2006), Child Support Expense Income Exclusion (page 12)
+      href: https://fns-prod.azureedge.us/sites/default/files/snap/6-State_Options.pdf#page=16
     - title: Food Stamp Program State Options Report, 7th Edition (as of November 2007), Child Support Expense Income Exclusion (page 13)
       href: https://fns-prod.azureedge.us/sites/default/files/snap/7-State_Options.pdf#page=17
     - title: SNAP State Options Report, 8th Edition (as of June 2009), Child Support Expense Income Exclusion
