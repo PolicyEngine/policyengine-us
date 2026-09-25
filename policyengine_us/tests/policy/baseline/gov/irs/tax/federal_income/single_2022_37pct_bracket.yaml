@@ -1,0 +1,28 @@
+- name: Single 2022 filer above the 37% threshold is taxed from $539,900, not $539,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 560_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  # Regression for a typo in bracket.yaml that set the 2022 SINGLE bracket 6
+  # (37%) threshold to 539,000. The 2022 Form 1040 instructions, Schedule X
+  # (Single), start the 37% bracket at $539,900: "162,718.00 + 37%" of the
+  # excess over 539,900 (HEAD_OF_HOUSEHOLD already uses 539,900).
+  #
+  # Taxable income 547,050 (= 560,000 - 12,950 standard deduction):
+  # 162,718 + 0.37 * (547,050 - 539,900) = 165,363.50. The typo overtaxed the
+  # 900 between 539,000 and 539,900 at 37% instead of 35%, adding 18.
+  # NBER taxsimtest (cd2026081819) returns 165,363.50 for the same filer.
+  output:
+    taxable_income: 547_050
+    income_tax_before_refundable_credits: 165_363.5
