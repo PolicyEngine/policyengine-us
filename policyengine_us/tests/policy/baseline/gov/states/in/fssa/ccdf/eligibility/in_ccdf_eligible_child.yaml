@@ -1,5 +1,5 @@
 # Tests for in_ccdf_eligible_child (Person, MONTH, bool).
-# Eligible = age < limit (13, or 19 if disabled)
+# Eligible = age < limit (13, or 19 if disabled or under court supervision)
 # AND US citizen / qualified non-citizen (federal is_ccdf_immigration_eligible_child).
 # Policy Manual Section 1.6 defines an eligible child by age, custody, and
 # relationship to the applicant -- NOT by tax-unit dependency -- so the formula
