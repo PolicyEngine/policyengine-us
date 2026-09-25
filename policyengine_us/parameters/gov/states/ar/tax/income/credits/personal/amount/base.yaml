@@ -1,5 +1,7 @@
 description: Arkansas provides this base personal tax credit amount.
 values:
+  2014-01-01: 26
+  2020-01-01: 29
   2021-01-01: 29
 
 metadata:
@@ -7,6 +9,20 @@ metadata:
   period: year
   label: Arkansas personal tax credit base amount
   reference:
+    - title: Arkansas 2014 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=13
+    - title: Arkansas 2015 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=13
+    - title: Arkansas 2016 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=11
+    - title: Arkansas 2017 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=11
+    - title: Arkansas 2018 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions_2018.pdf#page=11
+    - title: Arkansas 2019 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2019_AR1000F_and_AR1000NR_Instructions.pdf#page=11
+    - title: Arkansas 2020 Individual Income Tax Instructions, Lines 7A and 7B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2020_AR1000F_and_AR1000NR_Instructions.pdf#page=11
     - title: Arkansas 2022 Individual Income Tax Forms and Instructions, LINE 7A.
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12
     - title: 2022 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident

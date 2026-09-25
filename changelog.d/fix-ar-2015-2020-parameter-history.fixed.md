@@ -1,0 +1,1 @@
+Arkansas 2015-2020 income tax parameters no longer fall back on 2021-2022 values: add each year's low income tax tables, personal tax credit amount ($26 through 2019), and tuition deduction caps; exempt unemployment compensation through 2017; share the $6,000 retirement exemption with military retirement before 2018; and zero the 2022 credits before they existed.

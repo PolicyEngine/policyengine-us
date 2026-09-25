@@ -130,3 +130,33 @@
     ar_gross_income_indiv: 60_000
     ar_gross_income_joint: 60_000
     ar_income_tax: 1_730.56
+
+- name: Arkansas unemployment compensation is exempt through 2017 (2016)
+  period: 2016
+  input:
+    irs_employment_income: 25_000
+    unemployment_compensation: 8_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000
+    ar_gross_income_joint: 25_000
+
+- name: Arkansas unemployment compensation is exempt through 2017 (2017)
+  period: 2017
+  input:
+    irs_employment_income: 25_000
+    unemployment_compensation: 8_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 25_000
+    ar_gross_income_joint: 25_000
+
+- name: Arkansas unemployment compensation is taxable from 2018 (Act 141 of 2017) (2018)
+  period: 2018
+  input:
+    irs_employment_income: 25_000
+    unemployment_compensation: 8_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 33_000
+    ar_gross_income_joint: 33_000

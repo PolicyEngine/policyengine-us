@@ -1,0 +1,969 @@
+# DFA Low Income Tax Tables for 2015-2020. PolicyEngine previously used the 2021
+# tables for these years (backdate_parameters), which have higher zero-tax
+# ceilings and higher tops.
+
+- name: AR 2015 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2015
+  input:
+    people:
+      p1: {ar_agi_joint: 11_643}
+      p2: {ar_agi_joint: 11_700}
+      p3: {ar_agi_joint: 15_100}
+      p4: {ar_agi_joint: 16_553}
+      p5: {ar_agi_joint: 16_600}
+      p6: {ar_agi_joint: 21_300}
+      p7: {ar_agi_joint: 19_733}
+      p8: {ar_agi_joint: 19_800}
+      p9: {ar_agi_joint: 24_200}
+      p10: {ar_agi_joint: 16_553}
+      p11: {ar_agi_joint: 16_600}
+      p12: {ar_agi_joint: 21_300}
+      p13: {ar_agi_joint: 19_733}
+      p14: {ar_agi_joint: 19_800}
+      p15: {ar_agi_joint: 24_200}
+      p16: {ar_agi_joint: 19_635}
+      p17: {ar_agi_joint: 19_700}
+      p18: {ar_agi_joint: 24_200}
+      p19: {ar_agi_joint: 23_631}
+      p20: {ar_agi_joint: 23_700}
+      p21: {ar_agi_joint: 30_200}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2015 Low Income Tax Tables (TaxTables_2015.pdf#page=2), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$11,643 -> $0
+    # p2: single: first taxed row $11,644-$11,700 -> $35
+    # p3: single: top row $15,001-$15,100 -> $288
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$16,553 -> $0
+    # p5: head of household, 1 dependent: first taxed row $16,554-$16,600 -> $71
+    # p6: head of household, 1 dependent: top row $21,201-$21,300 -> $560
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$19,733 -> $0
+    # p8: head of household, 2 dependents: first taxed row $19,734-$19,800 -> $99
+    # p9: head of household, 2 dependents: top row $24,101-$24,200 -> $719
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$16,553 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $16,554-$16,600 -> $71
+    # p12: surviving spouse, no dependents: top row $21,201-$21,300 -> $560
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$19,733 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $19,734-$19,800 -> $99
+    # p15: surviving spouse, 3 dependents: top row $24,101-$24,200 -> $719
+    # p16: joint, no dependents: zero-tax ceiling $0-$19,635 -> $0
+    # p17: joint, no dependents: first taxed row $19,636-$19,700 -> $79
+    # p18: joint, no dependents: top row $24,101-$24,200 -> $592
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$23,631 -> $0
+    # p20: joint, 2 dependents: first taxed row $23,632-$23,700 -> $114
+    # p21: joint, 2 dependents: top row $30,101-$30,200 -> $946
+    ar_low_income_tax_joint: [0, 35, 288, 0, 71, 560, 0, 99, 719, 0, 71, 560, 0, 99, 719, 0, 79, 592, 0, 114, 946]
+
+- name: AR 2015 low income tax tables apply up to their top row only
+  period: 2015
+  input:
+    people:
+      p1: {ar_agi_joint: 11_643, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 15_101, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 16_553, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 21_301, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 19_733, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 24_201, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 16_553, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 21_301, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 19_733, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 24_201, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 19_635, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 24_201, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 23_631, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 30_201, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $11,643 (table tax $0)
+    # t2: single: AGI $15,101, above the table
+    # t3: head of household, 1 dependent: AGI $16,553 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $21,301, above the table
+    # t5: head of household, 2 dependents: AGI $19,733 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $24,201, above the table
+    # t7: surviving spouse, no dependents: AGI $16,553 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $21,301, above the table
+    # t9: surviving spouse, 3 dependents: AGI $19,733 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $24,201, above the table
+    # t11: joint, no dependents: AGI $19,635 (table tax $0)
+    # t12: joint, no dependents: AGI $24,201, above the table
+    # t13: joint, 2 dependents: AGI $23,631 (table tax $0)
+    # t14: joint, 2 dependents: AGI $30,201, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: AR 2016 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2016
+  input:
+    people:
+      p1: {ar_agi_joint: 11_736}
+      p2: {ar_agi_joint: 11_800}
+      p3: {ar_agi_joint: 15_200}
+      p4: {ar_agi_joint: 16_686}
+      p5: {ar_agi_joint: 16_700}
+      p6: {ar_agi_joint: 21_400}
+      p7: {ar_agi_joint: 19_891}
+      p8: {ar_agi_joint: 19_900}
+      p9: {ar_agi_joint: 24_300}
+      p10: {ar_agi_joint: 16_686}
+      p11: {ar_agi_joint: 16_700}
+      p12: {ar_agi_joint: 21_400}
+      p13: {ar_agi_joint: 19_891}
+      p14: {ar_agi_joint: 19_900}
+      p15: {ar_agi_joint: 24_300}
+      p16: {ar_agi_joint: 19_793}
+      p17: {ar_agi_joint: 19_800}
+      p18: {ar_agi_joint: 24_300}
+      p19: {ar_agi_joint: 23_821}
+      p20: {ar_agi_joint: 23_900}
+      p21: {ar_agi_joint: 30_500}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2016 Low Income Tax Tables (LongBookwTaxTables_2016.pdf#page=44), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$11,736 -> $0
+    # p2: single: first taxed row $11,737-$11,800 -> $35
+    # p3: single: top row $15,101-$15,200 -> $289
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$16,686 -> $0
+    # p5: head of household, 1 dependent: first taxed row $16,687-$16,700 -> $72
+    # p6: head of household, 1 dependent: top row $21,301-$21,400 -> $561
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$19,891 -> $0
+    # p8: head of household, 2 dependents: first taxed row $19,892-$19,900 -> $100
+    # p9: head of household, 2 dependents: top row $24,201-$24,300 -> $715
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$16,686 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $16,687-$16,700 -> $72
+    # p12: surviving spouse, no dependents: top row $21,301-$21,400 -> $561
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$19,891 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $19,892-$19,900 -> $100
+    # p15: surviving spouse, 3 dependents: top row $24,201-$24,300 -> $715
+    # p16: joint, no dependents: zero-tax ceiling $0-$19,793 -> $0
+    # p17: joint, no dependents: first taxed row $19,794-$19,800 -> $80
+    # p18: joint, no dependents: top row $24,201-$24,300 -> $593
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$23,821 -> $0
+    # p20: joint, 2 dependents: first taxed row $23,822-$23,900 -> $116
+    # p21: joint, 2 dependents: top row $30,401-$30,500 -> $918
+    ar_low_income_tax_joint: [0, 35, 289, 0, 72, 561, 0, 100, 715, 0, 72, 561, 0, 100, 715, 0, 80, 593, 0, 116, 918]
+
+- name: AR 2016 low income tax tables apply up to their top row only
+  period: 2016
+  input:
+    people:
+      p1: {ar_agi_joint: 11_736, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 15_201, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 16_686, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 21_401, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 19_891, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 24_301, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 16_686, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 21_401, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 19_891, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 24_301, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 19_793, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 24_301, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 23_821, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 30_501, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $11,736 (table tax $0)
+    # t2: single: AGI $15,201, above the table
+    # t3: head of household, 1 dependent: AGI $16,686 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $21,401, above the table
+    # t5: head of household, 2 dependents: AGI $19,891 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $24,301, above the table
+    # t7: surviving spouse, no dependents: AGI $16,686 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $21,401, above the table
+    # t9: surviving spouse, 3 dependents: AGI $19,891 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $24,301, above the table
+    # t11: joint, no dependents: AGI $19,793 (table tax $0)
+    # t12: joint, no dependents: AGI $24,301, above the table
+    # t13: joint, 2 dependents: AGI $23,821 (table tax $0)
+    # t14: joint, 2 dependents: AGI $30,501, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: AR 2017 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2017
+  input:
+    people:
+      p1: {ar_agi_joint: 11_969}
+      p2: {ar_agi_joint: 12_000}
+      p3: {ar_agi_joint: 15_500}
+      p4: {ar_agi_joint: 17_018}
+      p5: {ar_agi_joint: 17_100}
+      p6: {ar_agi_joint: 22_000}
+      p7: {ar_agi_joint: 20_286}
+      p8: {ar_agi_joint: 20_300}
+      p9: {ar_agi_joint: 24_800}
+      p10: {ar_agi_joint: 17_018}
+      p11: {ar_agi_joint: 17_100}
+      p12: {ar_agi_joint: 22_000}
+      p13: {ar_agi_joint: 20_286}
+      p14: {ar_agi_joint: 20_300}
+      p15: {ar_agi_joint: 24_800}
+      p16: {ar_agi_joint: 20_186}
+      p17: {ar_agi_joint: 20_200}
+      p18: {ar_agi_joint: 24_800}
+      p19: {ar_agi_joint: 24_294}
+      p20: {ar_agi_joint: 24_300}
+      p21: {ar_agi_joint: 31_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2017 Low Income Tax Tables (AR1000FandAR1000NRInstructions.pdf#page=44), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$11,969 -> $0
+    # p2: single: first taxed row $11,970-$12,000 -> $36
+    # p3: single: top row $15,401-$15,500 -> $296
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$17,018 -> $0
+    # p5: head of household, 1 dependent: first taxed row $17,019-$17,100 -> $74
+    # p6: head of household, 1 dependent: top row $21,900-$22,000 -> $584
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$20,286 -> $0
+    # p8: head of household, 2 dependents: first taxed row $20,287-$20,300 -> $102
+    # p9: head of household, 2 dependents: top row $24,701-$24,800 -> $728
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$17,018 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $17,019-$17,100 -> $74
+    # p12: surviving spouse, no dependents: top row $21,900-$22,000 -> $584
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$20,286 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $20,287-$20,300 -> $102
+    # p15: surviving spouse, 3 dependents: top row $24,701-$24,800 -> $728
+    # p16: joint, no dependents: zero-tax ceiling $0-$20,186 -> $0
+    # p17: joint, no dependents: first taxed row $20,187-$20,200 -> $82
+    # p18: joint, no dependents: top row $24,701-$24,800 -> $606
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$24,294 -> $0
+    # p20: joint, 2 dependents: first taxed row $24,295-$24,300 -> $118
+    # p21: joint, 2 dependents: top row $30,901-$31,000 -> $929
+    ar_low_income_tax_joint: [0, 36, 296, 0, 74, 584, 0, 102, 728, 0, 74, 584, 0, 102, 728, 0, 82, 606, 0, 118, 929]
+
+- name: AR 2017 low income tax tables apply up to their top row only
+  period: 2017
+  input:
+    people:
+      p1: {ar_agi_joint: 11_969, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 15_501, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 17_018, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 22_001, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 20_286, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 17_018, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 22_001, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 20_286, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 20_186, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 24_294, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 31_001, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $11,969 (table tax $0)
+    # t2: single: AGI $15,501, above the table
+    # t3: head of household, 1 dependent: AGI $17,018 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $22,001, above the table
+    # t5: head of household, 2 dependents: AGI $20,286 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $24,801, above the table
+    # t7: surviving spouse, no dependents: AGI $17,018 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $22,001, above the table
+    # t9: surviving spouse, 3 dependents: AGI $20,286 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $24,801, above the table
+    # t11: joint, no dependents: AGI $20,186 (table tax $0)
+    # t12: joint, no dependents: AGI $24,801, above the table
+    # t13: joint, 2 dependents: AGI $24,294 (table tax $0)
+    # t14: joint, 2 dependents: AGI $31,001, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: AR 2018 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2018
+  input:
+    people:
+      p1: {ar_agi_joint: 12_259}
+      p2: {ar_agi_joint: 12_300}
+      p3: {ar_agi_joint: 15_900}
+      p4: {ar_agi_joint: 17_430}
+      p5: {ar_agi_joint: 17_500}
+      p6: {ar_agi_joint: 22_500}
+      p7: {ar_agi_joint: 20_777}
+      p8: {ar_agi_joint: 20_800}
+      p9: {ar_agi_joint: 25_400}
+      p10: {ar_agi_joint: 17_430}
+      p11: {ar_agi_joint: 17_500}
+      p12: {ar_agi_joint: 22_500}
+      p13: {ar_agi_joint: 20_777}
+      p14: {ar_agi_joint: 20_800}
+      p15: {ar_agi_joint: 25_400}
+      p16: {ar_agi_joint: 20_674}
+      p17: {ar_agi_joint: 20_700}
+      p18: {ar_agi_joint: 25_500}
+      p19: {ar_agi_joint: 24_882}
+      p20: {ar_agi_joint: 24_900}
+      p21: {ar_agi_joint: 31_800}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2018 Low Income Tax Tables (2018_Final_TaxTable_with_Cover_Sheet.pdf#page=2), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$12,259 -> $0
+    # p2: single: first taxed row $12,260-$12,300 -> $37
+    # p3: single: top row $15,801-$15,900 -> $306
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$17,430 -> $0
+    # p5: head of household, 1 dependent: first taxed row $17,431-$17,500 -> $76
+    # p6: head of household, 1 dependent: top row $22,401-$22,500 -> $596
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$20,777 -> $0
+    # p8: head of household, 2 dependents: first taxed row $20,778-$20,800 -> $105
+    # p9: head of household, 2 dependents: top row $25,301-$25,400 -> $745
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$17,430 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $17,431-$17,500 -> $76
+    # p12: surviving spouse, no dependents: top row $22,401-$22,500 -> $596
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$20,777 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $20,778-$20,800 -> $105
+    # p15: surviving spouse, 3 dependents: top row $25,301-$25,400 -> $745
+    # p16: joint, no dependents: zero-tax ceiling $0-$20,674 -> $0
+    # p17: joint, no dependents: first taxed row $20,675-$20,700 -> $85
+    # p18: joint, no dependents: top row $25,401-$25,500 -> $632
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$24,882 -> $0
+    # p20: joint, 2 dependents: first taxed row $24,883-$24,900 -> $122
+    # p21: joint, 2 dependents: top row $31,701-$31,800 -> $958
+    ar_low_income_tax_joint: [0, 37, 306, 0, 76, 596, 0, 105, 745, 0, 76, 596, 0, 105, 745, 0, 85, 632, 0, 122, 958]
+
+- name: AR 2018 low income tax tables apply up to their top row only
+  period: 2018
+  input:
+    people:
+      p1: {ar_agi_joint: 12_259, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 15_901, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 17_430, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 22_501, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 20_777, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 25_401, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 17_430, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 22_501, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 20_777, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 25_401, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 20_674, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 25_501, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 24_882, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 31_801, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $12,259 (table tax $0)
+    # t2: single: AGI $15,901, above the table
+    # t3: head of household, 1 dependent: AGI $17,430 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $22,501, above the table
+    # t5: head of household, 2 dependents: AGI $20,777 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $25,401, above the table
+    # t7: surviving spouse, no dependents: AGI $17,430 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $22,501, above the table
+    # t9: surviving spouse, 3 dependents: AGI $20,777 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $25,401, above the table
+    # t11: joint, no dependents: AGI $20,674 (table tax $0)
+    # t12: joint, no dependents: AGI $25,501, above the table
+    # t13: joint, 2 dependents: AGI $24,882 (table tax $0)
+    # t14: joint, 2 dependents: AGI $31,801, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: AR 2019 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2019
+  input:
+    people:
+      p1: {ar_agi_joint: 12_492}
+      p2: {ar_agi_joint: 12_500}
+      p3: {ar_agi_joint: 14_900}
+      p4: {ar_agi_joint: 17_761}
+      p5: {ar_agi_joint: 17_800}
+      p6: {ar_agi_joint: 21_600}
+      p7: {ar_agi_joint: 21_172}
+      p8: {ar_agi_joint: 21_200}
+      p9: {ar_agi_joint: 24_800}
+      p10: {ar_agi_joint: 17_761}
+      p11: {ar_agi_joint: 17_800}
+      p12: {ar_agi_joint: 21_600}
+      p13: {ar_agi_joint: 21_172}
+      p14: {ar_agi_joint: 21_200}
+      p15: {ar_agi_joint: 24_800}
+      p16: {ar_agi_joint: 21_067}
+      p17: {ar_agi_joint: 21_100}
+      p18: {ar_agi_joint: 24_800}
+      p19: {ar_agi_joint: 25_355}
+      p20: {ar_agi_joint: 25_400}
+      p21: {ar_agi_joint: 30_800}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2019 Low Income Tax Tables (2019_AR1000F_and_AR1000NR_Instructions.pdf#page=26), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$12,492 -> $0
+    # p2: single: first taxed row $12,493-$12,500 -> $25
+    # p3: single: top row $14,801-$14,900 -> $193
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$17,761 -> $0
+    # p5: head of household, 1 dependent: first taxed row $17,762-$17,800 -> $58
+    # p6: head of household, 1 dependent: top row $21,501-$21,600 -> $415
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$21,172 -> $0
+    # p8: head of household, 2 dependents: first taxed row $21,173-$21,200 -> $81
+    # p9: head of household, 2 dependents: top row $24,701-$24,800 -> $527
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$17,761 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $17,762-$17,800 -> $58
+    # p12: surviving spouse, no dependents: top row $21,501-$21,600 -> $415
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$21,172 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $21,173-$21,200 -> $81
+    # p15: surviving spouse, 3 dependents: top row $24,701-$24,800 -> $527
+    # p16: joint, no dependents: zero-tax ceiling $0-$21,067 -> $0
+    # p17: joint, no dependents: first taxed row $21,068-$21,100 -> $66
+    # p18: joint, no dependents: top row $24,701-$24,800 -> $451
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$25,355 -> $0
+    # p20: joint, 2 dependents: first taxed row $25,356-$25,400 -> $95
+    # p21: joint, 2 dependents: top row $30,701-$30,800 -> $894
+    ar_low_income_tax_joint: [0, 25, 193, 0, 58, 415, 0, 81, 527, 0, 58, 415, 0, 81, 527, 0, 66, 451, 0, 95, 894]
+
+- name: AR 2019 low income tax tables apply up to their top row only
+  period: 2019
+  input:
+    people:
+      p1: {ar_agi_joint: 12_492, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 14_901, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 17_761, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 21_601, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 21_172, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 17_761, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 21_601, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 21_172, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 21_067, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 24_801, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 25_355, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 30_801, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $12,492 (table tax $0)
+    # t2: single: AGI $14,901, above the table
+    # t3: head of household, 1 dependent: AGI $17,761 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $21,601, above the table
+    # t5: head of household, 2 dependents: AGI $21,172 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $24,801, above the table
+    # t7: surviving spouse, no dependents: AGI $17,761 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $21,601, above the table
+    # t9: surviving spouse, 3 dependents: AGI $21,172 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $24,801, above the table
+    # t11: joint, no dependents: AGI $21,067 (table tax $0)
+    # t12: joint, no dependents: AGI $24,801, above the table
+    # t13: joint, 2 dependents: AGI $25,355 (table tax $0)
+    # t14: joint, 2 dependents: AGI $30,801, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: AR 2020 low income tax tables at the zero-tax ceiling, the first taxed row and the top row
+  period: 2020
+  input:
+    people:
+      p1: {ar_agi_joint: 12_674}
+      p2: {ar_agi_joint: 12_700}
+      p3: {ar_agi_joint: 15_200}
+      p4: {ar_agi_joint: 18_020}
+      p5: {ar_agi_joint: 18_100}
+      p6: {ar_agi_joint: 22_000}
+      p7: {ar_agi_joint: 21_481}
+      p8: {ar_agi_joint: 21_500}
+      p9: {ar_agi_joint: 25_100}
+      p10: {ar_agi_joint: 18_020}
+      p11: {ar_agi_joint: 18_100}
+      p12: {ar_agi_joint: 22_000}
+      p13: {ar_agi_joint: 21_481}
+      p14: {ar_agi_joint: 21_500}
+      p15: {ar_agi_joint: 25_100}
+      p16: {ar_agi_joint: 21_374}
+      p17: {ar_agi_joint: 21_400}
+      p18: {ar_agi_joint: 25_200}
+      p19: {ar_agi_joint: 25_725}
+      p20: {ar_agi_joint: 25_800}
+      p21: {ar_agi_joint: 31_300}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: SINGLE, tax_unit_dependents: 0}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t7: {members: [p7], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t8: {members: [p8], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t9: {members: [p9], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t11: {members: [p11], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t14: {members: [p14], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t15: {members: [p15], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t16: {members: [p16], filing_status: JOINT, tax_unit_dependents: 0}
+      t17: {members: [p17], filing_status: JOINT, tax_unit_dependents: 0}
+      t18: {members: [p18], filing_status: JOINT, tax_unit_dependents: 0}
+      t19: {members: [p19], filing_status: JOINT, tax_unit_dependents: 2}
+      t20: {members: [p20], filing_status: JOINT, tax_unit_dependents: 2}
+      t21: {members: [p21], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+      h15: {members: [p15], state_code: AR}
+      h16: {members: [p16], state_code: AR}
+      h17: {members: [p17], state_code: AR}
+      h18: {members: [p18], state_code: AR}
+      h19: {members: [p19], state_code: AR}
+      h20: {members: [p20], state_code: AR}
+      h21: {members: [p21], state_code: AR}
+  output:
+    # DFA 2020 Low Income Tax Tables (2020_AR1000F_and_AR1000NR_Instructions.pdf#page=26), one tax unit per row:
+    # p1: single: zero-tax ceiling $0-$12,674 -> $0
+    # p2: single: first taxed row $12,675-$12,700 -> $26
+    # p3: single: top row $15,101-$15,200 -> $201
+    # p4: head of household, 1 dependent: zero-tax ceiling $0-$18,020 -> $0
+    # p5: head of household, 1 dependent: first taxed row $18,021-$18,100 -> $59
+    # p6: head of household, 1 dependent: top row $21,901-$22,000 -> $426
+    # p7: head of household, 2 dependents: zero-tax ceiling $0-$21,481 -> $0
+    # p8: head of household, 2 dependents: first taxed row $21,482-$21,500 -> $83
+    # p9: head of household, 2 dependents: top row $25,001-$25,100 -> $529
+    # p10: surviving spouse, no dependents: zero-tax ceiling $0-$18,020 -> $0
+    # p11: surviving spouse, no dependents: first taxed row $18,021-$18,100 -> $59
+    # p12: surviving spouse, no dependents: top row $21,901-$22,000 -> $426
+    # p13: surviving spouse, 3 dependents: zero-tax ceiling $0-$21,481 -> $0
+    # p14: surviving spouse, 3 dependents: first taxed row $21,482-$21,500 -> $83
+    # p15: surviving spouse, 3 dependents: top row $25,001-$25,100 -> $529
+    # p16: joint, no dependents: zero-tax ceiling $0-$21,374 -> $0
+    # p17: joint, no dependents: first taxed row $21,375-$21,400 -> $67
+    # p18: joint, no dependents: top row $25,101-$25,200 -> $462
+    # p19: joint, 2 dependents: zero-tax ceiling $0-$25,725 -> $0
+    # p20: joint, 2 dependents: first taxed row $25,726-$25,800 -> $97
+    # p21: joint, 2 dependents: top row $31,201-$31,300 -> $913
+    ar_low_income_tax_joint: [0, 26, 201, 0, 59, 426, 0, 83, 529, 0, 59, 426, 0, 83, 529, 0, 67, 462, 0, 97, 913]
+
+- name: AR 2020 low income tax tables apply up to their top row only
+  period: 2020
+  input:
+    people:
+      p1: {ar_agi_joint: 12_674, ar_taxable_income_joint: 30_000}
+      p2: {ar_agi_joint: 15_201, ar_taxable_income_joint: 30_000}
+      p3: {ar_agi_joint: 18_020, ar_taxable_income_joint: 30_000}
+      p4: {ar_agi_joint: 22_001, ar_taxable_income_joint: 30_000}
+      p5: {ar_agi_joint: 21_481, ar_taxable_income_joint: 30_000}
+      p6: {ar_agi_joint: 25_101, ar_taxable_income_joint: 30_000}
+      p7: {ar_agi_joint: 18_020, ar_taxable_income_joint: 30_000}
+      p8: {ar_agi_joint: 22_001, ar_taxable_income_joint: 30_000}
+      p9: {ar_agi_joint: 21_481, ar_taxable_income_joint: 30_000}
+      p10: {ar_agi_joint: 25_101, ar_taxable_income_joint: 30_000}
+      p11: {ar_agi_joint: 21_374, ar_taxable_income_joint: 30_000}
+      p12: {ar_agi_joint: 25_201, ar_taxable_income_joint: 30_000}
+      p13: {ar_agi_joint: 25_725, ar_taxable_income_joint: 30_000}
+      p14: {ar_agi_joint: 31_301, ar_taxable_income_joint: 30_000}
+    tax_units:
+      t1: {members: [p1], filing_status: SINGLE, tax_unit_dependents: 0}
+      t2: {members: [p2], filing_status: SINGLE, tax_unit_dependents: 0}
+      t3: {members: [p3], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t4: {members: [p4], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 1}
+      t5: {members: [p5], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t6: {members: [p6], filing_status: HEAD_OF_HOUSEHOLD, tax_unit_dependents: 2}
+      t7: {members: [p7], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t8: {members: [p8], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 0}
+      t9: {members: [p9], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t10: {members: [p10], filing_status: SURVIVING_SPOUSE, tax_unit_dependents: 3}
+      t11: {members: [p11], filing_status: JOINT, tax_unit_dependents: 0}
+      t12: {members: [p12], filing_status: JOINT, tax_unit_dependents: 0}
+      t13: {members: [p13], filing_status: JOINT, tax_unit_dependents: 2}
+      t14: {members: [p14], filing_status: JOINT, tax_unit_dependents: 2}
+    households:
+      h1: {members: [p1], state_code: AR}
+      h2: {members: [p2], state_code: AR}
+      h3: {members: [p3], state_code: AR}
+      h4: {members: [p4], state_code: AR}
+      h5: {members: [p5], state_code: AR}
+      h6: {members: [p6], state_code: AR}
+      h7: {members: [p7], state_code: AR}
+      h8: {members: [p8], state_code: AR}
+      h9: {members: [p9], state_code: AR}
+      h10: {members: [p10], state_code: AR}
+      h11: {members: [p11], state_code: AR}
+      h12: {members: [p12], state_code: AR}
+      h13: {members: [p13], state_code: AR}
+      h14: {members: [p14], state_code: AR}
+  output:
+    # Net taxable income of $30,000 puts the regular-table tax above every low income
+    # table amount, so the flag is true only where the low income table applies.
+    # t1: single: AGI $12,674 (table tax $0)
+    # t2: single: AGI $15,201, above the table
+    # t3: head of household, 1 dependent: AGI $18,020 (table tax $0)
+    # t4: head of household, 1 dependent: AGI $22,001, above the table
+    # t5: head of household, 2 dependents: AGI $21,481 (table tax $0)
+    # t6: head of household, 2 dependents: AGI $25,101, above the table
+    # t7: surviving spouse, no dependents: AGI $18,020 (table tax $0)
+    # t8: surviving spouse, no dependents: AGI $22,001, above the table
+    # t9: surviving spouse, 3 dependents: AGI $21,481 (table tax $0)
+    # t10: surviving spouse, 3 dependents: AGI $25,101, above the table
+    # t11: joint, no dependents: AGI $21,374 (table tax $0)
+    # t12: joint, no dependents: AGI $25,201, above the table
+    # t13: joint, 2 dependents: AGI $25,725 (table tax $0)
+    # t14: joint, 2 dependents: AGI $31,301, above the table
+    ar_uses_low_income_tax_tables: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
