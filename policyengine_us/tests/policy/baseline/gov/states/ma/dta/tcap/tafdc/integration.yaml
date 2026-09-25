@@ -141,3 +141,181 @@
     ma_tafdc_dependent_care_deduction: 528
     ma_tafdc: 0
     # Income is too high for TAFDC
+
+# The cases below use the payment standards in effect from 2025-04-01:
+# $901/month for three people and $1,190/month for five people in private
+# housing (106 CMR 704.420), and the $500 clothing allowance per eligible
+# child.
+#
+# Monthly countable earned income follows 106 CMR 704.270 and 704.281:
+#   step 1: subtract the $200 work-related expense deduction from each
+#           earner's own wages;
+#   step 2: count 50% of what is left (704.281(B));
+#   step 3: the model blends 704.281(A)'s six-month 100% disregard over the
+#           year, so half of step 2 is counted (see
+#           ma_tafdc_countable_earned_income).
+
+# DTA's FY2026 Standard Budgets report (Table 5) shows a family of three in
+# private housing with $15,600 of annual earnings receiving $7,512 of TAFDC.
+- name: Case 4, DTA FY2026 Standard Budgets family of three at $15,600 — the applicant test after the per-earner deduction
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 15_600
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # One earner, so one $200 monthly deduction (106 CMR 704.270(A)). Before
+    # this fix every member drew one, $7,200 a year for three, which put
+    # $8,400 of countable income under the $10,812 standard and made the
+    # applicant test pass; that is how DTA's FY2026 Standard Budgets figure
+    # ($7,512 of potential main benefit at $15,600) reproduced. With the
+    # deduction counted once, countable income is $13,200 against the
+    # $10,812 standard, and the applicant test (704.280, only applicants who
+    # had TAFDC in the last four months get an earned-income disregard here)
+    # fails. DTA's figure is a recipient's budget — the 704.281(B) 50%
+    # disregard applies in the grant calculation — so an applicant test
+    # cannot reproduce it. Whether recipients should be modeled with their
+    # own test is the open design question on #9469; this case pins what
+    # the corrected deduction does under the current applicant test.
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0]
+    ma_tafdc_earned_income_after_deductions: 13_200
+    ma_tafdc_applicable_income_for_financial_eligibility: 13_200
+    ma_tafdc_payment_standard: 10_812 # $901 x 12
+    ma_tafdc_financial_eligible: false
+    ma_tafdc: 0
+
+# A five-person unit with one earner, private housing. Before this fix the
+# applicant test deducted $200 a month for each of the five members, $12,000
+# a year, so the unit stayed eligible to $26,280 of earnings; with the
+# deduction counted once the applicant cutoff is the $14,280 standard plus one
+# $2,400 deduction, $16,680.
+- name: Case 5, five-person unit with one earner at $16,680, the last eligible dollar
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 16_680
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    # $2,400 for the earner only, not $2,400 for each of the five members.
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0, 0, 0]
+    ma_tafdc_applicable_income_for_financial_eligibility: 14_280
+    ma_tafdc_payment_standard: 14_280 # $1,190 x 12
+    ma_tafdc_financial_eligible: true
+    # $1,390/month - $200 = $1,190; 50% = $595; blended with the six-month
+    # 100% disregard = $297.50; ($1,190 - $297.50) x 12 = $10,710, plus
+    # 3 x $500 clothing allowance.
+    ma_tafdc: 12_210
+
+- name: Case 6, the same unit is financially ineligible at $16,700
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 16_700
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc_applicable_income_for_financial_eligibility: 14_300
+    ma_tafdc_financial_eligible: false
+    ma_tafdc: 0
+
+- name: Case 7, the same unit at $26,000, which was eligible before the fix
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 26_000
+      parent2:
+        age: 30
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0, 0, 0]
+    ma_tafdc_applicable_income_for_financial_eligibility: 23_600
+    ma_tafdc_financial_eligible: false
+    ma_tafdc: 0
