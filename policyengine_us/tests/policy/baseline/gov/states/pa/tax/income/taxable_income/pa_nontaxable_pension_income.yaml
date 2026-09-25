@@ -1,4 +1,46 @@
-- name: Case 1, pension income remains taxable before retirement.
+- name: Case 1, pension income remains taxable below the proxy retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        taxable_pension_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_pension_income: 0
+
+- name: Case 2, pension income remains taxable just below the 59.5 proxy age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59.4
+        taxable_pension_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_pension_income: 0
+
+- name: Case 3, pension income is excluded at the 59.5 proxy retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59.5
+        taxable_pension_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_pension_income: 10_000
+
+- name: Case 4, pension income is excluded above the proxy retirement age.
   period: 2026
   input:
     people:
@@ -10,9 +52,9 @@
         members: [person1]
         state_code: PA
   output:
-    pa_nontaxable_pension_income: 0
+    pa_nontaxable_pension_income: 10_000
 
-- name: Case 2, pension income is excluded after retirement.
+- name: Case 5, pension income is excluded well past the proxy retirement age.
   period: 2026
   input:
     people:

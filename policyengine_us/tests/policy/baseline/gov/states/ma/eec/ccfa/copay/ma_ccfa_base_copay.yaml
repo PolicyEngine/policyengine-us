@@ -29,3 +29,224 @@
   output:
     ma_ccfa_base_copay: 64.2
     # (3800 - 2600)*0.0535
+
+# The FY2025 and FY2026 Parent Fee Tables both list 4.45% at fee level 3
+# and 7.6% at fee level 10 (the only cells consistent with the chart's
+# uniform 0.45 percentage-point progression).
+- name: Case 4, family of 2, $2000 income, fee level 3 charges 4.45 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 2_000
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 13.22
+    # (2000 - 1703) * 0.0445
+
+- name: Case 5, family of 2, $3500 income, fee level 10 charges 7.6 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 3_500
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 10
+    ma_ccfa_base_copay: 136.57
+    # (3500 - 1703) * 0.076
+
+# === FY2026 Parent Fee Table, effective October 1, 2025: wider income
+# brackets on the 2025 poverty guidelines (family of 2 fee level 1
+# ceiling 1,763, bracket width $231 per level). ===
+
+- name: Case 6, FY2026 chart worked example, family of 2 with $1850 income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_850
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 2
+    ma_ccfa_base_copay: 3.48
+    # The chart's step-4 example: subtract the FPG (1,763) from 1,850
+    # and multiply the result by 4 percent: 87 * 0.04 = 3.48 (the
+    # chart's printed result of 2.28 is an arithmetic slip in the
+    # source; its stated calculation gives 3.48).
+
+- name: Case 7, FY2026 brackets place $2450 for a family of 2 in fee level 4.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 2_450
+    state_code: MA
+  output:
+    # FY2026 level 4 spans 2,226-2,456; under the FY2025 bracket widths
+    # this income would have landed in level 5.
+    ma_ccfa_copay_level: 4
+    ma_ccfa_base_copay: 33.66
+    # (2450 - 1763) * 0.049
+
+- name: Case 8, FY2026 family of 7, $5000 income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 7
+    ma_ccfa_countable_income: 5_000
+    state_code: MA
+  output:
+    # Family of 7 fee level 1 ceiling 4,054; FY2026 level 4 spans
+    # 4,931-5,368.
+    ma_ccfa_copay_level: 4
+    ma_ccfa_base_copay: 46.35
+    # (5000 - 4054) * 0.049
+
+# === Bracket boundaries. The chart's fee level 1 ceiling is the monthly
+# poverty guideline rounded to the nearest dollar, and each later level
+# spans one bracket width above it, with the ceiling inclusive. ===
+
+- name: Case 9, FY2026 family of 2 at the fee level 2 ceiling stays in level 2.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_994
+    state_code: MA
+  output:
+    # Monthly FPG 21,150 / 12 = 1,762.50 rounds half up to the printed
+    # 1,763 (rounding half to even would give 1,762 and push this income
+    # into level 3). Level 2 spans 1,764-1,994.
+    ma_ccfa_copay_level: 2
+    ma_ccfa_base_copay: 9.24
+    # (1994 - 1763) * 0.04
+
+- name: Case 10, FY2026 family of 2 one dollar above the fee level 2 ceiling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_995
+    state_code: MA
+  output:
+    # Level 3 spans 1,995-2,225.
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 10.32
+    # (1995 - 1763) * 0.0445
+
+- name: Case 11, FY2026 family of 4 at the fee level 2 ceiling stays in level 2.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    ma_ccfa_countable_income: 3_015
+    state_code: MA
+  output:
+    # Monthly FPG 32,150 / 12 = 2,679.17 rounds down to the printed 2,679
+    # (rounding up would give 2,680 and a 13.40 fee). Level 2 spans
+    # 2,680-3,015 with a 336 bracket width.
+    ma_ccfa_copay_level: 2
+    ma_ccfa_base_copay: 13.44
+    # (3015 - 2679) * 0.04
+
+- name: Case 12, FY2026 family of 4 one dollar above the fee level 2 ceiling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    ma_ccfa_countable_income: 3_016
+    state_code: MA
+  output:
+    # Level 3 spans 3,016-3,351.
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 15
+    # (3016 - 2679) * 0.0445 = 14.9965
+
+- name: Case 13, FY2026 family of 6 at the fee level 2 ceiling, the widest bracket.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 6
+    ma_ccfa_countable_income: 4_038
+    state_code: MA
+  output:
+    # Bracket widths peak at family size 6 (442) and narrow for larger
+    # families. Monthly FPG 43,150 / 12 = 3,595.83 -> 3,596; level 2
+    # spans 3,597-4,038.
+    ma_ccfa_copay_level: 2
+    ma_ccfa_base_copay: 17.68
+    # (4038 - 3596) * 0.04
+
+- name: Case 14, FY2026 family of 6 one dollar above the fee level 2 ceiling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 6
+    ma_ccfa_countable_income: 4_039
+    state_code: MA
+  output:
+    # Level 3 spans 4,039-4,480.
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 19.71
+    # (4039 - 3596) * 0.0445
+
+- name: Case 15, FY2026 family of 10 uses the narrower large-family bracket.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 10
+    ma_ccfa_countable_income: 6_000
+    state_code: MA
+  output:
+    # Monthly FPG 65,150 / 12 = 5,429.17 -> 5,429; bracket width 426, so
+    # level 3 spans 5,856-6,281.
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 25.41
+    # (6000 - 5429) * 0.0445
+
+- name: Case 16, FY2026 family of 2 far above the top bracket is capped at fee level 28.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 10_000
+    state_code: MA
+  output:
+    # Level 28 starts at 7,770 (level 27 ceiling 7,769). The uncapped
+    # bracket count would put 10,000 at level 37; the fee stays at the
+    # level 28 rate of 15.6 percent.
+    ma_ccfa_copay_level: 28
+    ma_ccfa_base_copay: 1_284.97
+    # (10000 - 1763) * 0.156
+
+# === The FY2025 -> FY2026 bracket change at a second family size. ===
+
+- name: Case 17, FY2025 family of 3 with $2700 income is in fee level 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    ma_ccfa_countable_income: 2_700
+    state_code: MA
+  output:
+    # Monthly FPG 25,820 / 12 = 2,151.67 -> 2,152; bracket width 268, so
+    # level 4 spans 2,689-2,956.
+    ma_ccfa_copay_level: 4
+    ma_ccfa_base_copay: 26.85
+    # (2700 - 2152) * 0.049
+
+- name: Case 18, FY2026 family of 3 with $2700 income drops to fee level 3.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    ma_ccfa_countable_income: 2_700
+    state_code: MA
+  output:
+    # Monthly FPG 26,650 / 12 = 2,220.83 -> 2,221; bracket width 283, so
+    # level 3 spans 2,505-2,787 (the same income was level 4 in FY2025).
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 21.32
+    # (2700 - 2221) * 0.0445

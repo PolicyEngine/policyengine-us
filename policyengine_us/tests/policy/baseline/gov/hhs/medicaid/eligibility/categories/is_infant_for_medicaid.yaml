@@ -79,3 +79,16 @@
     medicaid_income_level: 2.21
   output:
     is_infant_for_medicaid: false
+
+# The CA limit is 266% FPL. With the size-1 2022 FPG of 13,590 the modeled
+# ceiling is ceil(round(13,590 x 2.66 / 12, 2)) = ceil(3,012.45) = $3,013, an
+# effective ratio of 3,013 x 12 / 13,590 = 2.6605, so 2.66 is inclusive and
+# 2.67 (the second case above) is out.
+- name: Child under 1 and exactly at the FPL limit, eligible in CA
+  period: 2022
+  input:
+    state_code: CA
+    age: 0
+    medicaid_income_level: 2.66
+  output:
+    is_infant_for_medicaid: true

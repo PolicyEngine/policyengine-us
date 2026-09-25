@@ -57,3 +57,19 @@
     state_code: KY
   output:
     ky_pension_income_exclusion: 35_000 + 31_110
+
+- name: 403b, SEP, Keogh, and Roth conversions qualify for exclusion
+  period: 2026
+  input:
+    taxable_pension_income: 0
+    ky_pension_income_exclusion_exemption_eligible: false
+    ky_service_credits_percentage_pre_1998: 0
+    taxable_ira_distributions: 0
+    taxable_401k_distributions: 0
+    taxable_403b_distributions: 5_000
+    taxable_sep_distributions: 5_000
+    keogh_distributions: 5_000
+    taxable_roth_conversions: 5_000
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 20_000

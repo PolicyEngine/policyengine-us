@@ -18,7 +18,7 @@ class me_tanf_countable_unearned_income(Variable):
         # is excluded from income calculations
         p = parameters(period).gov.states.me.dhhs.tanf
 
-        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
+        gross_unearned = add(spm_unit, period, ["me_tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])
         child_support_deduction = min_(child_support, p.child_support_deduction)
 

@@ -3,16 +3,33 @@
   output:
     meets_tanf_non_cash_net_income_test: true
 
-- name: California household with 100% FPG income would barely meet the net income test.
+- name: California household with net income exactly at the standard meets the net income test.
   period: 2022
   input:
-    snap_net_income_fpg_ratio: 1
+    snap_fpg: 12_000
+    snap_net_income: 12_000
   output:
+    # Monthly standard is ceil(1.0 x 1,000) = 1,000; net income of 1,000
+    # per month is exactly at it.
     meets_tanf_non_cash_net_income_test: true
 
-- name: California household with 101% FPG income would fail the net income test.
+- name: California household with net income above the standard fails the net income test.
   period: 2022
   input:
-    snap_net_income_fpg_ratio: 1.01
+    snap_fpg: 12_000
+    snap_net_income: 12_120
   output:
+    # Net income of 1,010 per month exceeds the 1,000 standard.
     meets_tanf_non_cash_net_income_test: false
+
+- name: California household at the rounded-up whole-dollar standard meets the net income test.
+  period: 2022
+  input:
+    # Monthly poverty guideline of 2,220.83 yields a whole-dollar standard
+    # of ceil(2,220.83) = 2,221, so a rounded net income of exactly 2,221
+    # still passes; a raw ratio comparison (2,221 / 2,220.83 > 1) would
+    # wrongly deny this household.
+    snap_fpg: 26_650
+    snap_net_income: 26_652
+  output:
+    meets_tanf_non_cash_net_income_test: true

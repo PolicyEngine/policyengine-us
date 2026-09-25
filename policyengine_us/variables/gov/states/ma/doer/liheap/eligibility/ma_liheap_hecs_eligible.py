@@ -15,5 +15,9 @@ class ma_liheap_hecs_eligible(Variable):
 
         p = parameters(period).gov.states.ma.doer.liheap.hecs.eligibility
         threshold = p.prior_year_cost_threshold[heating_type]
+        # The benefit chart has no threshold row for homes without heating,
+        # so a household reporting no heating type cannot qualify on a
+        # prior-year heating cost.
+        has_heating = heating_type != heating_type.possible_values.NONE
 
-        return heating_expense_last_year > threshold
+        return has_heating & (heating_expense_last_year > threshold)

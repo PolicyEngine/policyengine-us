@@ -8,8 +8,10 @@ metadata:
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A) # (d)(1) for uprating.
     href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
-  - title: 2014 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2014.pdf#page=1
+  - title: 2014 AR1000F and AR1000NR Instructions (tax bracket reduced to 0.9% for 2014)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=6
+  - title: 2014 AR1000F and AR1000NR Instructions (2014 Regular Tax Table)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=28
   - title: 2015 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2015.pdf#page=1
   - title: 2019 Indexed Tax Brackets
@@ -36,10 +38,11 @@ brackets:
       values:
         2014-01-01: 0
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.009 
       2019-01-01: 0
@@ -55,10 +58,11 @@ brackets:
         2025-01-01: 5_600
         2026-01-01: 5_600
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.025
       2015-01-01: 0.024
@@ -75,10 +79,11 @@ brackets:
         2025-01-01: 11_200
         2026-01-01: 11_200
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.035
       2015-01-01: 0.034
@@ -96,10 +101,11 @@ brackets:
         2025-01-01: 16_000
         2026-01-01: 16_000
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.045
       2015-01-01: 0.044
@@ -117,10 +123,11 @@ brackets:
         2025-01-01: 26_400
         2026-01-01: 26_400
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.06
       2019-01-01: 0.05
@@ -137,10 +144,11 @@ brackets:
         2021-01-01: 39_700
         2022-01-01: .inf
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: 0.07
       2019-01-01: 0.06
@@ -153,10 +161,11 @@ brackets:
         2020-01-01: 82_001
         2021-01-01: .inf
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     amount:
       2014-01-01: .inf
       2019-01-01: 0.069

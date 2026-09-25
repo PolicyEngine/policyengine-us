@@ -14,13 +14,15 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
         "the TANF exclusion, states do not confirm actual compliance with "
         "SNAP work requirements. The model tests subject-to status with the "
         "general work requirement age brackets and non-age registration "
-        "exemptions; the 7 CFR 273.7(b)(1)(vii) exemption for people working "
-        "30 or more hours weekly is not netted out, and post-HR1 adults aged "
-        "60-64 who are subject only to the ABAWD requirement are not "
-        "separately captured."
+        "exemptions OR the ABAWD time-limit exemption set (is_snap_abawd_exempt), "
+        "so post-HR1 adults aged 60-64 who are exempt from the general work "
+        "requirement but subject to the ABAWD requirement are captured. The "
+        "7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more "
+        "hours weekly is included in the registration-exempt set, so such "
+        "workers do not pass through on either prong."
     )
     reference = (
-        "https://www.congress.gov/bill/119th-congress/house-bill/1/text",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=236",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf#page=6",
         "https://www.federalregister.gov/documents/2026/06/03/2026-11094/medicaid-program-community-engagement-requirement-for-certain-individuals",
         "https://www.ecfr.gov/current/title-42/part-435/section-435.554#p-435.554(c)(7)",
@@ -42,7 +44,15 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
             bool
         )
         snap_non_age_exempt = person("is_snap_work_registration_exempt_non_age", period)
-        snap_pass_through = snap & ~snap_age_exempt & ~snap_non_age_exempt
+        # Subject to the general SNAP work requirement (age 16-59 and not
+        # otherwise registration-exempt) ...
+        subject_to_general = ~snap_age_exempt & ~snap_non_age_exempt
+        # ... or subject to the ABAWD time limit (an able-bodied adult without
+        # dependents who is not exempt). The ABAWD path captures post-HR1
+        # adults aged 60-64, who are exempt from the general work requirement
+        # but subject to the ABAWD requirement.
+        subject_to_abawd = person("is_subject_to_snap_abawd", period)
+        snap_pass_through = snap & (subject_to_general | subject_to_abawd)
 
         tanf_pass_through = tanf & person.spm_unit(
             "meets_tanf_work_requirements", period

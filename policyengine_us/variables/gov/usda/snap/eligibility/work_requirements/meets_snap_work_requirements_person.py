@@ -18,40 +18,14 @@ class meets_snap_work_requirements_person(Variable):
             "meets_snap_general_work_requirements", period
         )
         abawd_work_requirements = person("meets_snap_abawd_work_requirements", period)
-        # This is the single source of truth for the household-child ABAWD
-        # exception. 7 CFR 273.24(c)(4) exempts a person "residing in a
-        # household where a household member is under age 18, even if the
-        # household member who is under 18 is not himself eligible for SNAP
-        # benefits." The exemption therefore keys on the presence of any
-        # household member under the age threshold, not on tax-unit
-        # dependency: a non-dependent under-18 household member (e.g., a teen
-        # parent) triggers it. Post-HR1, 7 U.S.C. 2015(o)(3)(C) lowers the
-        # threshold to 14 ("a parent or other member of a household with
-        # responsibility for a dependent child under 14"), implemented
-        # household-wide.
-        # The threshold differs: pre-HR1 (18) vs post-HR1 (14). During an
-        # approved good-faith-effort exemption window (7 U.S.C. 2015(o)(7);
-        # currently Alaska, 2025-11-01 through 2026-10-31), the State
-        # temporarily retains the pre-HR1 dependent-child threshold (18), so a
-        # household with a child aged 14-17 keeps the exemption even though HR1
-        # is otherwise in effect.
-        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
-        in_good_faith_window = person(
-            "is_snap_abawd_in_good_faith_exemption_window", period
-        )
-        p = parameters(period).gov.usda.snap.work_requirements.abawd.age_threshold
-        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
-        p_pre = parameters(
-            "2025-06-01"
-        ).gov.usda.snap.work_requirements.abawd.age_threshold
-        dep_threshold = where(
-            hr1_in_effect & ~in_good_faith_window, p.dependent, p_pre.dependent
-        )
-        age = person("monthly_age", period)
-        is_household_child = age < dep_threshold
-        no_household_child = person.spm_unit.sum(is_household_child) == 0
+        # The household-child ABAWD gate (7 CFR 273.24(c)(4); post-HR1
+        # threshold from 7 U.S.C. 2015(o)(3)(C)) lives in
+        # has_snap_abawd_household_child: a person residing with any
+        # household member under the dependent-age threshold is routed
+        # around the ABAWD time limit.
+        has_household_child = person("has_snap_abawd_household_child", period)
         return where(
-            no_household_child,
-            abawd_work_requirements & general_work_requirements,
+            has_household_child,
             general_work_requirements,
+            abawd_work_requirements & general_work_requirements,
         )

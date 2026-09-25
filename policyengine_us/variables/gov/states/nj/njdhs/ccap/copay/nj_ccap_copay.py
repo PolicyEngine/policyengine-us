@@ -30,7 +30,18 @@ class nj_ccap_copay(Variable):
         # those who would be eligible. Follows the VA CCSP (va_ccsp_copay)
         # and SC CCAP (sc_ccap_copay) pattern of gating the child count on
         # an "in care" flag.
-        in_care = person("childcare_hours_per_week", period.this_year) > 0
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
         is_paying_child = is_eligible_child & in_care
 
         n_paying = spm_unit.sum(is_paying_child)
@@ -56,4 +67,4 @@ class nj_ccap_copay(Variable):
         has_cps_child = spm_unit.any(
             is_eligible_child & person("receives_or_needs_protective_services", period)
         )
-        return where(has_cps_child, 0, countable_income * total_rate)
+        return where(has_cps_child | (n_paying == 0), 0, countable_income * total_rate)

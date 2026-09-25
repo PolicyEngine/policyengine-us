@@ -6,6 +6,7 @@ description: North Dakota pays providers this additional monthly amount per infa
 # Preschool and school-age children receive no bonus.
 
 metadata:
+  propagate_metadata_to_children: true
   period: month
   unit: currency-USD
   label: North Dakota CCAP infant/toddler provider bonus

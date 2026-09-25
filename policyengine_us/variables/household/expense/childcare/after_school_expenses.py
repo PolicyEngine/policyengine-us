@@ -6,4 +6,5 @@ class after_school_expenses(Variable):
     entity = Person
     label = "After school childcare expenses"
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     unit = USD

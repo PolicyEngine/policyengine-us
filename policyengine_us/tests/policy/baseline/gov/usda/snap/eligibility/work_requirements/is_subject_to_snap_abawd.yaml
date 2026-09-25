@@ -1,0 +1,260 @@
+- name: Case 1, post-HR1 non-exempt adult with no dependents is subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: true
+
+- name: Case 2, post-HR1 age 62 is within the extended ABAWD age range and is subject.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: true
+
+- name: Case 3, pre-HR1 age 62 is above the ABAWD age range and is not subject.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 62
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 4, post-HR1 age 65 is above the ABAWD age range and is not subject.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 5, disabled adult is exempt and is not subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 6, adult residing with a household child under 14 is not subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The child (age 10 < 14) routes the parent around the ABAWD time limit;
+    # the child itself is below the ABAWD age range.
+    is_subject_to_snap_abawd: [false, false]
+
+# Post-HR1 dependent-age boundary (7 U.S.C. 2015(o)(3)(C): under 14).
+- name: Case 7, household child aged 13 is under the post-HR1 threshold and gates the adult.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 62
+      child:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: [false, false]
+
+- name: Case 8, household child aged exactly 14 does not gate the adult post-HR1.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 62
+      teen:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+    households:
+      household:
+        members: [adult, teen]
+        state_code: TX
+  output:
+    # The 14-year-old is not under the post-HR1 threshold (14), so the adult
+    # is subject; the 14-year-old is below the ABAWD age range (18) and is
+    # not subject themselves.
+    is_subject_to_snap_abawd: [true, false]
+
+# Pre-HR1 the dependent-age threshold is 18 (7 CFR 273.24(c)(4)).
+- name: Case 9, pre-HR1 a household child aged 16 gates the adult.
+  period: 2025-01
+  input:
+    people:
+      adult:
+        age: 30
+      teen:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+    households:
+      household:
+        members: [adult, teen]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: [false, false]
+
+# During Alaska's good-faith-effort exemption window (7 U.S.C. 2015(o)(7),
+# 2025-11-01 through 2026-10-31), the pre-HR1 dependent threshold (18) is
+# retained even though HR1 is in effect; the same household in Texas uses
+# the post-HR1 threshold (14).
+- name: Case 10, good-faith window retains the pre-HR1 dependent threshold in Alaska.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      teen:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+    households:
+      household:
+        members: [adult, teen]
+        state_code: AK
+  output:
+    is_subject_to_snap_abawd: [false, false]
+
+- name: Case 11, the same 16-year-old does not gate the adult in Texas post-HR1.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      teen:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+    households:
+      household:
+        members: [adult, teen]
+        state_code: TX
+  output:
+    # The 16-year-old is not under the post-HR1 threshold (14) but is below
+    # the ABAWD age range (18) and so is not subject themselves.
+    is_subject_to_snap_abawd: [true, false]
+
+# 7 CFR 273.7(b)(1)(vii): working 30+ hours weekly exempts a person from
+# work registration and therefore from the ABAWD time limit via
+# 7 U.S.C. 2015(o)(3)(D) — the status test nets this exemption out.
+- name: Case 12, post-HR1 age 62 working 35 hours weekly is registration-exempt and not subject.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+# ABAWD age-range boundaries (7 U.S.C. 2015(o)(3)(A)).
+- name: Case 13, post-HR1 lower age boundary — 18 is subject, 17 is not.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 18
+      minor:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [adult, minor]
+    households:
+      household:
+        members: [adult, minor]
+        state_code: TX
+  output:
+    # The 17-year-old is age-exempt but, being 14 or older, does not gate
+    # the 18-year-old under the post-HR1 dependent threshold.
+    is_subject_to_snap_abawd: [true, false]
+
+- name: Case 14, pre-HR1 upper age boundary — 54 is subject, 55 is not.
+  period: 2025-01
+  input:
+    people:
+      younger:
+        age: 54
+      older:
+        age: 55
+    spm_units:
+      spm_unit:
+        members: [younger, older]
+    households:
+      household:
+        members: [younger, older]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: [true, false]

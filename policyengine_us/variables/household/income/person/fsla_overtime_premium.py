@@ -13,4 +13,5 @@ class fsla_overtime_premium(Variable):
     )
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"
     reference = "https://www.law.cornell.edu/uscode/text/29/207"

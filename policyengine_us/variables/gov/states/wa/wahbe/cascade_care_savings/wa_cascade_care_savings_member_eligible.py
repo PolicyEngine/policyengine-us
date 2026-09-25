@@ -9,8 +9,8 @@ class wa_cascade_care_savings_member_eligible(Variable):
     defined_for = StateCode.WA
     reference = (
         "https://app.leg.wa.gov/rcw/default.aspx?cite=43.71.110",
-        "https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=8",
-        "https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=5",
+        "https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=11",
+        "https://www.wahbexchange.org/content/dam/materials/communications/legislative/2025/WAHBE_Final_PY_2026_Cascade_Care_Savings_Maximum_Per_Member_Per_Month_Methodology.pdf#page=5",
     )
     documentation = (
         "A person is a Cascade Care Savings enrollee if they fall in Group 1 "

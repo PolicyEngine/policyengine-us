@@ -84,6 +84,16 @@ class tn_ccap_max_weekly_benefit(Variable):
         part_time_rate = np.ceil(full_time_rate * p.part_time_share)
         rate = where(is_part_time & age_allows_halving, part_time_rate, full_time_rate)
 
-        # A child not in care draws no rate.
-        hours = person("childcare_hours_per_week", period.this_year)
-        return where(hours > 0, rate, 0)
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
+        return where(in_care, rate, 0)

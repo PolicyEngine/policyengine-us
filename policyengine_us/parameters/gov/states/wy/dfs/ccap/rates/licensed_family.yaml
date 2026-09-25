@@ -4,6 +4,7 @@ description: Wyoming pays up to these maximum daily rates for licensed-family-se
 # Child Care Homes and Family Child Care Centers. The part-day rate for
 # 6-13 years (20.00) exceeding 4-5 years (18.64) is as printed on the charts.
 metadata:
+  propagate_metadata_to_children: true
   period: day
   unit: currency-USD
   label: Wyoming CCAP licensed family setting daily maximum rates

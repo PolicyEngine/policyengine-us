@@ -17,8 +17,16 @@ class meets_tanf_non_cash_net_income_test(Variable):
         net_limit_applies = where(
             hheod, applies.hheod[state], applies.non_hheod[state]
         ).astype(bool)
-        # All limits and incomes here expressed as % of FPG.
-        net_income = spm_unit("snap_net_income_fpg_ratio", period)
+        net_income = spm_unit("snap_net_income", period)
+        fpg = spm_unit("snap_fpg", period)
         net_limit = parameters(period).gov.usda.snap.income.limit.net
+        # Mirror meets_snap_net_income_test: the monthly standard is the
+        # poverty guideline times the net limit, rounded up to the next
+        # whole dollar, compared against the whole-dollar rounded net
+        # income. A raw ratio comparison would deny households sitting
+        # exactly at the published standard.
+        # Pre-round to 4 decimals so float error on an exact whole-dollar
+        # standard cannot push the ceiling up an extra dollar.
+        limit = np.ceil(np.round(net_limit * fpg, 4))
         # Either the net limit doesn't apply or they pass it.
-        return ~net_limit_applies | (net_income <= net_limit)
+        return ~net_limit_applies | (net_income <= limit)

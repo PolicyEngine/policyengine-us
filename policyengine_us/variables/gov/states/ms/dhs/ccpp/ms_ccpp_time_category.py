@@ -22,4 +22,9 @@ class ms_ccpp_time_category(Variable):
         # Part-time = care for fewer than 6 hours of a 24-hour day; full-time is
         # 6 or more hours. The bracket returns 0=PART_TIME, 1=FULL_TIME, which
         # PolicyEngine maps to the enum index.
-        return p.hours.calc(hours_per_day)
+        # Zero is the input default for unknown hours, not a short day.
+        return where(
+            hours_per_day == 0,
+            MSCCPPTimeCategory.FULL_TIME,
+            p.hours.calc(hours_per_day),
+        )

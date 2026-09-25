@@ -3,14 +3,24 @@ values:
   2023-01-01: 1_000_000
   2024-01-01: 1_053_750
   2025-01-01: 1_083_150
+  2026-01-01: 1_107_750
 
 metadata:
   period: year
   unit: currency-USD
   label: Minnesota standard deduction alternate reduction income threshold
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. (b)
     href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 6. Inflation adjustment
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.6
+  - title: Minnesota Department of Revenue 2026 Inflation-Adjusted Amounts (page 2)
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-12/inflation-adjusted-amounts-2026.pdf#page=2
   - title: 2023 Minnesota Schedule M1SA form, Worksheet for Line 26
     href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1sa-23.pdf#page=7
   - title: 2024 Minnesota Schedule M1SA form, Worksheet for Line 26

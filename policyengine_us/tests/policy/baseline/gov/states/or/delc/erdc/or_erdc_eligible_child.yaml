@@ -49,3 +49,32 @@
     state_code: OR
   output:
     or_erdc_eligible_child: true
+
+- name: Undocumented child becomes eligible when OAR 414-175-0021 sunsets in May 2024.
+  period: 2024
+  input:
+    age: 5
+    immigration_status: UNDOCUMENTED
+    state_code: OR
+  output:
+    or_erdc_eligible_child:
+      2024-04: false
+      2024-05: true
+
+- name: Undocumented child is eligible under current law.
+  period: 2027-01
+  input:
+    age: 5
+    immigration_status: UNDOCUMENTED
+    state_code: OR
+  output:
+    or_erdc_eligible_child: true
+
+- name: Over-age undocumented child stays ineligible after the immigration test sunsets.
+  period: 2027-01
+  input:
+    age: 13
+    immigration_status: UNDOCUMENTED
+    state_code: OR
+  output:
+    or_erdc_eligible_child: false

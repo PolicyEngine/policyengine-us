@@ -1,6 +1,7 @@
 description: Minnesota raises the maximum child care rate by this fraction for higher-quality providers under the Child Care Assistance Program.
 # Applied as max_rate x (1 + differential), capped at the provider's actual charge.
 metadata:
+  propagate_metadata_to_children: true
   unit: /1
   period: year
   label: Minnesota CCAP quality differential

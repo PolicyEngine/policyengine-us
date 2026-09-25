@@ -1,0 +1,84 @@
+# With no provider type given, a child is priced as center-based care and the
+# age category picks the early education or school age columns. These cases
+# mirror the scenarios in PolicyEngine/policyengine-us#9505.
+- name: Case 1, preschooler with no provider type is priced from the early education columns.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # The adult is school age too, which is harmless: only a child's care is
+    # reimbursed.
+    ma_ccfa_child_age_category: [SCHOOL_AGE, PRESCHOOL]
+    ma_ccfa_care_provider_type: [CENTER_BASED_CARE, CENTER_BASED_CARE]
+    # Default Barnstable County is in the Western, Central and Southeast
+    # region: school age full day 49.94, preschool 58.78.
+    ma_ccfa_uncapped_daily_payment: [49.94, 58.78]
+
+- name: Case 2, school-age child with no provider type is priced from the school age columns.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_ccfa_child_age_category: SCHOOL_AGE
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE
+    ma_ccfa_uncapped_daily_payment: 49.94
+
+- name: Case 3, a named provider type is kept whatever the child's age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+
+- name: Case 4, single parent's 3-year-old with no provider type draws the full $12,000 bill.
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # The preschool rate of 58.78 for 20 days is $1,175.60, above the $1,000
+    # monthly bill, and the family owes no fee, so the subsidy covers the bill.
+    ma_child_care_subsidies: 12_000

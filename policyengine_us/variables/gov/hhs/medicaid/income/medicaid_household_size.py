@@ -13,6 +13,9 @@ class medicaid_household_size(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.603#b",
         "https://www.law.cornell.edu/cfr/text/42/435.603#f",
+        # California (ACWDL 20-10) counts the unborn children of every member of
+        # the applicant's MAGI household; see ca_medicaid_household_pregnancies.
+        "https://www.dhcs.ca.gov/wp-content/uploads/2025/10/c20-10.pdf#page=3",
     )
 
     def formula(person, period, parameters):
@@ -54,15 +57,23 @@ class medicaid_household_size(Variable):
             person, period, tax_household_size
         ).astype(int)
 
-        # Count the applicant's unborn children in their own household size.
-        # The treatment of another household member's pregnancy is state-optional
-        # and is not yet parameterized here.
-        return where(
-            non_filer_rules,
-            non_filer_household_size,
+        # California counts the unborn children of all members included in the
+        # applicant's MAGI household. Preserve the existing treatment elsewhere.
+        state = person.household("state_code", period)
+        pregnancies = where(
+            state == StateCode.CA,
+            person("ca_medicaid_household_pregnancies", period),
+            person("current_pregnancies", period),
+        )
+        return (
             where(
-                known_claiming_tax_unit,
-                claimant_tax_household_size,
-                tax_household_size,
-            ),
-        ) + person("current_pregnancies", period)
+                non_filer_rules,
+                non_filer_household_size,
+                where(
+                    known_claiming_tax_unit,
+                    claimant_tax_household_size,
+                    tax_household_size,
+                ),
+            )
+            + pregnancies
+        )

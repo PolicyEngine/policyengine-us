@@ -14,6 +14,19 @@
   period: 2024
   input:
     irs_gross_income: 2_001
+    heat_expense_included_in_rent: true
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 4
+    state_code: DC
+  output:
+    # heat_expense_included_in_rent maps to the HEAT_IN_RENT matrix row.
+    dc_liheap_heating_type: HEAT_IN_RENT
+    dc_liheap_payment: 250
+
+- name: Some income, household size of 4, deprecated direct heating-type override.
+  period: 2024
+  input:
+    irs_gross_income: 2_001
     dc_liheap_heating_type: HEAT_IN_RENT
     dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 4
@@ -33,8 +46,10 @@
   output:
     dc_liheap_payment: 1_386
 
-# Legacy fallback tests — verify pre-PR-#7986 per-fuel inputs still cap the benefit.
-- name: Legacy fallback, electricity heating uses pre_subsidy_electricity_expense.
+# Legacy adapter tests — with heating_type UNSPECIFIED, DC's pre-canonical
+# arbitration applies exactly (person-level total, else the per-fuel bill
+# matching the DC heating type).
+- name: Legacy adapter, electricity heating uses pre_subsidy_electricity_expense.
   period: 2024
   input:
     irs_gross_income: 0
@@ -44,11 +59,12 @@
     spm_unit_size: 1
     state_code: DC
   output:
-    # heating_expense_person unset → falls back to pre_subsidy_electricity_expense (999)
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to pre_subsidy_electricity_expense (999)
     # min(matrix_amount, 999) = 948
     dc_liheap_payment: 948
 
-- name: Legacy fallback, gas heating uses gas_expense.
+- name: Legacy adapter, gas heating uses gas_expense.
   period: 2024
   input:
     irs_gross_income: 4_001
@@ -58,6 +74,266 @@
     spm_unit_size: 3
     state_code: DC
   output:
-    # heating_expense_person unset → falls back to gas_expense (1_400)
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to gas_expense (1_400)
     # min(matrix_amount, 1_400) = 1_386
     dc_liheap_payment: 1_386
+
+# Canonical vocabulary tests — heating_type selects the per-fuel expense.
+- name: Canonical inputs, electricity heating uses pre_subsidy_electricity_expense.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # heating_expense = pre_subsidy_electricity_expense (999)
+    # min(matrix_amount, 999) = 948
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 948
+
+- name: Canonical inputs, natural gas heating uses gas_expense.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    heating_type: NATURAL_GAS
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    # NATURAL_GAS maps to DC's GAS matrix row; heating_expense = gas_expense (1_400)
+    # min(matrix_amount, 1_400) = 1_386
+    dc_liheap_heating_type: GAS
+    dc_liheap_payment: 1_386
+
+# Every canonical heating type has a pinned DC matrix row. DC's matrix has
+# electricity, gas, oil and heat-in-rent rows only; wood, coal, other, solar
+# and no-heating households take the electricity row (documented assumption).
+- name: Heat included in rent wins over a known canonical fuel.
+  period: 2024
+  input:
+    irs_gross_income: 2_001
+    heat_expense_included_in_rent: true
+    heating_type: NATURAL_GAS
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 4
+    state_code: DC
+  output:
+    dc_liheap_heating_type: HEAT_IN_RENT
+    dc_liheap_payment: 250
+
+- name: Known heating type with only the deprecated person-level input has no heating cost.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: ELECTRICITY
+    heating_expense_person: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # heating_expense reads pre_subsidy_electricity_expense only (unset → 0);
+    # the person-level input is never read once heating_type is known.
+    # min(948, 0) = 0
+    dc_liheap_payment: 0
+
+- name: Canonical propane takes the oil row.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: PROPANE
+    bottled_gas_expense: 2_000
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # Oil row is a flat 1_500; min(1_500, 2_000) = 1_500
+    dc_liheap_heating_type: OIL
+    dc_liheap_payment: 1_500
+
+- name: Canonical kerosene takes the oil row, capped at the fuel oil bill.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: KEROSENE
+    fuel_oil_expense: 600
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # min(1_500, 600) = 600
+    dc_liheap_heating_type: OIL
+    dc_liheap_payment: 600
+
+- name: Canonical fuel oil takes the oil row.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_000
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    dc_liheap_heating_type: OIL
+    dc_liheap_payment: 1_500
+
+- name: Canonical wood has no DC row, takes the electricity row, capped at the wood bill.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: WOOD
+    wood_expense: 500
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # Electricity row 948; heating_expense = wood_expense (500)
+    # min(948, 500) = 500
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 500
+
+- name: Canonical coal takes the electricity row.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: COAL
+    coal_expense: 2_000
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # min(948, 2_000) = 948
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 948
+
+- name: Canonical other fuel takes the electricity row, capped at the other-fuel bill.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: OTHER
+    other_heating_fuel_expense: 300
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 300
+
+- name: Canonical solar takes the electricity row and reads the electricity bill.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 948
+
+- name: Canonical no heating takes the electricity row with a zero heating cost.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    heating_type: NONE
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # NONE: heating_expense = 0 regardless of other bills → min(948, 0) = 0
+    dc_liheap_heating_type: ELECTRICITY
+    dc_liheap_payment: 0
+
+- name: No heating with heat included in rent is contradictory; the heat-in-rent row still applies.
+  period: 2024
+  input:
+    irs_gross_income: 2_001
+    heating_type: NONE
+    heat_expense_included_in_rent: true
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 4
+    state_code: DC
+  output:
+    # heat_expense_included_in_rent is checked first and bypasses the cap.
+    dc_liheap_heating_type: HEAT_IN_RENT
+    dc_liheap_payment: 250
+
+# Legacy adapter precedence and the mixed-vocabulary override.
+- name: Legacy adapter, person-level total takes precedence over the per-fuel bill.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    dc_liheap_heating_type: GAS
+    heating_expense_person: 300
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    # heating_expense_person > 0 wins: min(1_386, 300) = 300
+    dc_liheap_payment: 300
+
+- name: Legacy adapter, an explicit zero person-level input falls through to the per-fuel bill.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    dc_liheap_heating_type: GAS
+    heating_expense_person: 0
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    # heating_expense_person == 0 is treated as unset → gas_expense (1_400)
+    # min(1_386, 1_400) = 1_386
+    dc_liheap_payment: 1_386
+
+- name: Legacy adapter, person-level inputs sum across members.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        irs_gross_income: 4_001
+        heating_expense_person: 700
+      person2:
+        age: 28
+        heating_expense_person: 500
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        dc_liheap_heating_type: GAS
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    # 700 + 500 = 1_200 < gas row 1_386 → 1_200
+    dc_liheap_payment: 1_200
+
+- name: Mixed vocabularies, the deprecated state override moves only the matrix row.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    heating_type: NATURAL_GAS
+    dc_liheap_heating_type: OIL
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    # Direct enum input wins for the row (oil, 1_500); the cap follows the
+    # canonical heating_type (gas bill 1_400): min(1_500, 1_400) = 1_400
+    dc_liheap_heating_type: OIL
+    dc_liheap_payment: 1_400

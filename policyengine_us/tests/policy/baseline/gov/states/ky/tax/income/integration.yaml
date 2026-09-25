@@ -452,3 +452,354 @@
     # 66-year-old spouse's $40 over-65 credit dies in her near-zero column
     # rather than pooling into the head's column.
     ky_income_tax: 1_353.50
+
+- name: Combined-separate election with a low-income age-65 head keeps the joint filing
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 400
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # Head now has $400 of income so the two paths differ, making this case
+    # discriminating (the old $0-income head was a pre-credit tie that passed on
+    # OLD code too). On the combined-separate path the 65-year-old head's $40
+    # personal credit is nearly capped in their tiny column and largely wasted,
+    # so if_separate (1,432.95) exceeds joint. Joint keeps the full credit:
+    # (31,829 - 2,770) x 5% - 40 = 1,412.95. Since if_separate > if_joint, the
+    # couple does NOT file separately, and ky_income_tax equals the joint value.
+    ky_income_tax: 1_412.95
+
+# Boolean election gate for the same one-earner age-65 household, asserted
+# margin-free. Under KRS 141.0205(2), Form 740 applies credits per column on the
+# combined-separate path, so the head's $40 age-65 personal credit is nearly
+# wasted in their tiny column; joint keeps the full credit and wins.
+- name: Combined-separate election preserves the age-65 credit - boolean gate
+  period: 2022
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 400
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # if_separate (1,432.95) > if_joint (1,412.95), so joint wins: not separate.
+    ky_files_separately: false
+
+# Zero-tax married couple. Both spouses have $0 income, so both columns are $0 on
+# either path; the strict "<" election test (KRS 141.0205(2)) is not met, and
+# total Kentucky income tax is $0.
+- name: Zero-tax married couple does not elect combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    ky_income_tax: 0
+
+# The same one-earner age-65 household at the 2025 law (rate 4%, standard
+# deduction $3,270). The combined-separate path still wastes the head's age-65
+# personal credit in their tiny column (per-column application under KRS
+# 141.0205(2) / Form 740 Line 19), so joint wins and the couple does not elect.
+- name: Combined-separate election preserves the age-65 credit at 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 400
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    # Joint path (2025 rate 4%, standard deduction $3,270): taxable income
+    # (400 + 31,429) - 3,270 = 28,559; tax 28,559 x 4% = 1,142.36; less the head's
+    # $40 age-65 personal credit = 1,102.36; family size tax credit (rate 0.5 at
+    # ~1.17x the 3-person modified poverty line) removes half, leaving 551.18.
+    # CI-RISK: the FSTC rate bracket depends on the exact 2025 modified poverty
+    # line; pin the CI actual if this differs.
+    ky_income_tax: 551.18
+
+# Married couple near the federal poverty line where the family size tax credit
+# (FSTC) rate is nonzero, so the elected path's ky_income_tax reflects FSTC. Both
+# spouses have equal income, so combined-separate offers no advantage and joint is
+# chosen (ky_files_separately: false). With total modified gross income $18,000 for
+# a 2-person family below the FPL, the FSTC rate is 100%, fully offsetting the tax.
+- name: KY married couple near FPL with nonzero FSTC does not elect combined-separate
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 9_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 9_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    # Modified gross income below the 2-person FPL puts the FSTC rate at 100%, so
+    # Kentucky income tax is fully offset.
+    ky_income_tax: 0
+
+# Married couple with a child and a federal CDCC (Kentucky matches 20%),
+# exercising the helper's dependent-care credit step in the election comparison.
+# With two equal $30k earners, the combined-separate path gives each column its
+# own standard deduction (2 x $2,770 vs a single one on the joint return), so it
+# is cheaper pre-credit and the couple elects it under KRS 141.0205(2). Kentucky
+# is a flat 5% tax, so splitting income does not change the bracket.
+- name: KY married couple with child and CDCC elects combined-separate (two standard deductions)
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        cdcc: 1_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # Two standard deductions on the separate path make it cheaper, so the couple
+    # elects combined-separate. The CDCC still flows through both path
+    # computations via the helper's dependent-care step.
+    ky_files_separately: true
+    # Separate path (2022 rate 5%, standard deduction $2,770 per column): each
+    # column (30,000 - 2,770) x 5% = 1,361.50, total 2,723.00; no personal credit
+    # (ages 40), family size credit rate 0 at $60,000 modified gross income for a
+    # 3-person family, then the Kentucky CDCC (20% x federal $1,000) = $200,
+    # leaving 2,523.00.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax: 2_523.00
+
+# Issue 9342 anchor household, end to end: an age-65 head with $0 income, a spouse
+# earning $31,429, and one dependent, filing so the couple can elect
+# combined-separate. On the separate path the head's $40 age-65 personal credit
+# dies in their $0 column (per-column credit application, KRS 141.0205(2) / Form
+# 740 Line 19); on the joint path the credit is preserved. Joint is therefore
+# cheaper and the couple does not elect. The joint liability is
+# (31,429 - 2,770) x 5% - 40 = 1,392.95 (externally cross-checked in TaxAct).
+- name: Issue 9342 anchor household keeps joint filing and preserves the age-65 credit
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 0
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    ky_income_tax: 1_392.95
+
+# Married couple with a nonzero Kentucky tuition tax credit (25% of the federal
+# American Opportunity credit), exercising the helper's tuition step 3. Incomes
+# are unequal so the combined-separate path (two standard deductions) is cheaper
+# and the couple elects it (KRS 141.0205(2)).
+- name: KY married couple with tuition credit elects combined-separate
+  period: 2022
+  # Margin 2 for KY tax-table rounding, as the other KY integration cases use.
+  absolute_error_margin: 2
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        # Tuition credit is a TaxUnit-level federal credit (Form 740 Line 23
+        # potential derives from it); set it on the tax unit, not a person.
+        american_opportunity_credit: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: true
+    # Two earners each get a $2,770 standard deduction on the combined-separate
+    # path, so it is cheaper pre-credit and the tuition credit (Form 740 Line 23,
+    # KRS 141.069) is applied on the elected path. Separate base
+    # (50,000 - 2,770) x 5% + (10,000 - 2,770) x 5% = 2,723.00, less the 25%
+    # tuition credit on $2,000 = 500, leaves 2,223.00. This exercises helper
+    # step 3 (tuition) in the election.
+    ky_income_tax: 2_223.00
+
+# Married couple at a partial family size tax credit bracket (rate 0.5), so the
+# FSTC step 2 (KRS 141.0205(2)(b)) is exercised in the election. A 7-person
+# family of two equal earners at ~119% of the modified poverty line lands in the
+# 0.5 bracket (matching the FSTC-rate unit test). Two earners each take a $2,770
+# standard deduction on the combined-separate path, so it is cheaper pre-credit
+# and the couple elects it; the 0.5 FSTC then applies on the elected path.
+- name: KY married couple at partial FSTC bracket elects combined-separate
+  period: 2022
+  # Margin 2 for KY tax-table rounding, as the other KY integration cases use.
+  absolute_error_margin: 2
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 16_500
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 16_500
+        is_tax_unit_spouse: true
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+      child4:
+        age: 7
+        is_tax_unit_dependent: true
+      child5:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5]
+        state_code: KY
+  output:
+    ky_files_separately: true
+    # Separate path: two columns each (16,500 - 2,770) x 5% = 686.50, base
+    # 1,373.00; the 0.5 family-size credit (MGI $33,000, family capped at 4 ->
+    # ~119% of the modified poverty line) removes half, leaving 686.50. The joint
+    # path is (33,000 - 2,770) x 5% = 1,511.50, less 0.5 FSTC = 755.75, so
+    # separate (686.50) is cheaper and is elected.
+    ky_income_tax: 686.50
+
+# One combined-separate election case at the 2024 law (KY rate 4%), showing the
+# path variables read period-correct parameters. Unequal incomes make the
+# separate path (two $3,160 standard deductions) cheaper, so the couple elects.
+- name: KY combined-separate election at 2024 rate reads period-correct params
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: true
+    # Separate path (2024 rate 4%, SD $3,160 per column): head (50,000 - 3,160) x
+    # 4% = 1,873.60, spouse (10,000 - 3,160) x 4% = 273.60, total 2,147.20; family
+    # size credit rate 0 at $60,000 for a 2-person family; no personal credit.
+    # Joint path (56,840 x 4%) = 2,273.60, so separate is cheaper.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax: 2_147.20

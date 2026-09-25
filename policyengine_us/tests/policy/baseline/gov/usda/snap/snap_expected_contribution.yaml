@@ -1,6 +1,5 @@
 - name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
@@ -26,11 +25,11 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_expected_contribution: (833 * 0.3) * 12
+    # 30% of the $833 rounded net income is $249.90, rounded up to $250.
+    snap_expected_contribution: 250 * 12
 
 - name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
@@ -57,4 +56,6 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_expected_contribution: (428 * 0.3) * 12 # Net income is rounded down each month
+    # Net income of $428.50 rounds half-up to $429 each month; 30% is
+    # $128.70, rounded up to $129.
+    snap_expected_contribution: 129 * 12

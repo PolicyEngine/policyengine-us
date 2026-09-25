@@ -9,10 +9,11 @@ values:
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
-  rounding:
-    type: downwards
-    interval: 10
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 10
   label: South Carolina dependent exemption reform amount
   reference:
     - title: SC 1040 tax form instructions (2025)

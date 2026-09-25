@@ -567,3 +567,96 @@
     # Files separately: 5,099.51 - 1,250 + 3,719.51 - 1,250 = 6,319.02
     # (old double-count subtracted $2,500 per column, understating tax by $2,500)
     mt_income_tax: 6_319.02
+
+- name: MT property tax rebate is not a Form 2 credit and is not tripled (issue 9347)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 26
+        employment_income: 110_625.07
+        taxable_interest_income: 204.41
+        real_estate_taxes: 2_754.52
+      person2:
+        is_tax_unit_spouse: true
+        age: 25
+        employment_income: 3_414.32
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The $675 standalone property tax rebate is still computed as its own variable
+    mt_property_tax_rebate: 675
+    # but it is not a Form 2 non-refundable credit. Before the fix it was booked
+    # as a credit and projected onto every household member (675 x 3 = 2,025),
+    # understating Montana income tax; it must contribute 0 to each person.
+    mt_non_refundable_credits: [0, 0, 0]
+    # TaxAct-verified Montana income tax: pre-fix 3,683.16 wrongly subtracted the
+    # 2,025 phantom credit; post-fix the full 5,708.16 is owed.
+    mt_income_tax: 5_708.16
+
+- name: MT property tax rebate is not a Form 2 credit in 2022 either (issue 9347)
+  # The removed non-refundable list entry governed TY2022 and TY2023; 2023 is
+  # covered above, this case pins the 2022 tax year. In 2022 the non-refundable
+  # list is [mt_capital_gain_credit] only, so wage earners get 0 per person.
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 26
+        employment_income: 110_625.07
+        taxable_interest_income: 204.41
+        real_estate_taxes: 2_754.52
+      person2:
+        is_tax_unit_spouse: true
+        age: 25
+        employment_income: 3_414.32
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The $675 standalone property tax rebate is computed (amount defined 2022-01-01)
+    mt_property_tax_rebate: 675
+    # but it is not a Form 2 non-refundable credit, so it contributes 0 per person.
+    mt_non_refundable_credits: [0, 0, 0]
+
+- name: MT non-refundable credit list is empty in 2024 (issue 9347)
+  # The 2024-01-01 band of the non-refundable list is [], so the aggregate is a
+  # scalar 0 regardless of the property tax rebate.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        long_term_capital_gains: 10_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_non_refundable_credits: 0

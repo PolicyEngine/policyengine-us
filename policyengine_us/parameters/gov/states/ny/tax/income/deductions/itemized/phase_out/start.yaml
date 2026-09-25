@@ -6,12 +6,6 @@ SINGLE:
     2023-01-01: 313_200
     2024-01-01: 330_200
     2025-01-01: 340_700
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 50
 JOINT:
   values:
     2021-01-01: 338_850
@@ -19,12 +13,6 @@ JOINT:
     2023-01-01: 375_850
     2024-01-01: 396_250
     2025-01-01: 408_850
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 50
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 338_850
@@ -32,12 +20,6 @@ SURVIVING_SPOUSE:
     2023-01-01: 375_850
     2024-01-01: 396_250
     2025-01-01: 408_850
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 50
 SEPARATE:
   values:
     2021-01-01: 169_400
@@ -45,12 +27,6 @@ SEPARATE:
     2023-01-01: 187_900
     2024-01-01: 198_100
     2025-01-01: 204_400
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 310_600
@@ -58,13 +34,8 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 344_500
     2024-01-01: 363_250
     2025-01-01: 374_800
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 50
 metadata:
+  propagate_metadata_to_children: true
   label: New York itemized deduction AGI phase out threshold
   breakdown:
     - filing_status

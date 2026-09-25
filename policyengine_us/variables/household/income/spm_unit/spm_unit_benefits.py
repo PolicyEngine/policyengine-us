@@ -35,6 +35,10 @@ class spm_unit_benefits(Variable):
             "ne_aabd",  # Nebraska benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
+            # California SSI state supplement (SSP). The formula nets federal
+            # SSI and countable income out of the state payment standard, so
+            # summing it with ssi does not double-count.
+            "ca_state_supplement",
             # Colorado programs.
             "co_ccap_subsidy",
             "co_state_supplement",
@@ -75,6 +79,7 @@ class spm_unit_benefits(Variable):
             "ak_energy_relief",
             # Contributed.
             "basic_income",
+            "trump_dividend",
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:

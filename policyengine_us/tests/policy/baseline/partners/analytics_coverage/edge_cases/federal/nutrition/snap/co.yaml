@@ -68,9 +68,10 @@
         # stays under CO's 200% limit all year (Jan-Sep: 2 x 26,650 = 53,300).
         # Jan-Sep: pre-shelter net = 46,000/12 x 0.8 - 209 = 2,857.67; shelter
         # expense = 1,500 housing + 594 CO SUA = 2,094 - 1,428.83 = 665.17 ->
-        # net = 2,192.50 -> EC 657.60 -> 785 - 657.60 = 127.40/month; Oct-Dec:
-        # 812.72 - 654.30 = 158.42. Annual = 9 x 127.40 + 3 x 158.42 = 1,621.86.
-        snap: 1621.86
+        # net = 2,192.50 -> EC 658 (30% rounded up) -> 785 - 658 = 127.00/month;
+        # Oct-Dec: 812.72 - 655 = 157.72. Annual = 9 x 127.00 + 3 x 157.72 =
+        # 1,616.17.
+        snap: 1616.17
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (co)
   period: 2026

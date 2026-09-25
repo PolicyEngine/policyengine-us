@@ -1,0 +1,42 @@
+- name: Case 1, metered gas bill.
+  period: 2026
+  input:
+    gas_expense: 600
+  output:
+    has_gas_and_fuel_expense: true
+
+- name: Case 2, propane bill.
+  period: 2026
+  input:
+    bottled_gas_expense: 300
+  output:
+    has_gas_and_fuel_expense: true
+
+- name: Case 3, cooking fuel bill.
+  period: 2026
+  input:
+    cooking_fuel_expense: 108
+  output:
+    has_gas_and_fuel_expense: true
+
+- name: Case 4, other heating fuel bill.
+  period: 2026
+  input:
+    other_heating_fuel_expense: 50
+  output:
+    has_gas_and_fuel_expense: true
+
+- name: Case 5, electricity alone is not a gas or fuel bill.
+  period: 2026
+  input:
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 0
+  output:
+    has_gas_and_fuel_expense: false
+
+- name: Case 6, no bills.
+  period: 2026
+  input:
+    gas_expense: 0
+  output:
+    has_gas_and_fuel_expense: false

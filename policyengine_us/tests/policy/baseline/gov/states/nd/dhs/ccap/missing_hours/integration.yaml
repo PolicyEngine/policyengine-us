@@ -1,0 +1,149 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: ND
+    childcare_attending_days_per_month: 20
+  output:
+    nd_ccap_time_category: FULL_TIME
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_week: 24.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_week: 25
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: ND
+  output:
+    nd_ccap_time_category:
+    - FULL_TIME
+    - PART_TIME
+    - PART_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: ND
+    childcare_hours_per_week: 40
+    nd_ccap_time_category: PART_TIME
+  output:
+    nd_ccap_time_category: PART_TIME
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    nd_ccap: 1454.89
+    nd_child_care_subsidies: 1454.89
+    nd_ccap_copay: 47.11
+    nd_ccap_qris_step_bonus:
+    - 0
+    - 62
+    nd_ccap_infant_toddler_bonus:
+    - 0
+    - 200
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: ND
+  output:
+    nd_ccap: 0
+
+- name: A sibling outside care cannot add a rate ceiling or provider bonuses.
+  period: 2026-01
+  input:
+    people:
+      receiving_care:
+        childcare_attending_days_per_month: 20
+        nd_ccap_state_max_rate: 100
+        nd_ccap_qris_step_bonus: 5
+        nd_ccap_infant_toddler_bonus: 20
+      outside_care:
+        nd_ccap_state_max_rate: 1000
+        nd_ccap_qris_step_bonus: 50
+        nd_ccap_infant_toddler_bonus: 200
+    spm_units:
+      family:
+        members: [receiving_care, outside_care]
+        nd_ccap_eligible: true
+        nd_ccap_copay: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members: [receiving_care, outside_care]
+        state_code: ND
+  output:
+    nd_ccap_base_subsidy: 100
+    nd_ccap: 125

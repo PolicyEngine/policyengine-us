@@ -28,3 +28,167 @@
   output:
     me_property_tax_fairness_credit: 0
 
+- name: Case 4, rent includes utilities but amount unknown flows through to a positive credit via the 15% line-5c estimate.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Amount unknown (0) -> line 5c estimate = 15% * 6000 = 900.
+    # Countable rent = 15% * (6000 - 900) = 15% * 5100 = 765.
+    # No real estate taxes -> countable_rent_property_tax = 765.
+    # Single benefit base (2200) >= 765, income 0 so no phase-out,
+    # non-senior cap 1000 does not bind: credit = min(765, 1000) = 765.
+    # Without the estimate the credit would be 15% * 6000 = 900, so the
+    # line-5c estimate reduces the credit to 765.
+    me_property_tax_fairness_credit: 765
+  absolute_error_margin: 0.01
+
+- name: Case 5, renter and owner combined, rent with unknown utilities plus real estate taxes.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 4_000
+        real_estate_taxes: 200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Amount unknown (0) -> line 5c estimate = 15% * 4000 = 600.
+    # Countable rent = 15% * (4000 - 600) = 15% * 3400 = 510.
+    # Property tax equivalent = countable rent 510 + real estate taxes 200 = 710.
+    # Single benefit base (2200) >= 710, income 0 so no phase-out, non-senior cap
+    # 1000 does not bind: credit = min(710, 1000) = 710.
+    me_property_tax_fairness_credit: 710
+  absolute_error_margin: 0.01
+
+- name: Case 6, rent includes utilities with a known amount, flows to a positive credit.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Known amount 1000 subtracted from rent paid 6000.
+    # Countable rent = 15% * (6000 - 1000) = 15% * 5000 = 750.
+    # No real estate taxes -> countable_rent_property_tax = 750.
+    # Single benefit base (2200) >= 750, income 0 so no phase-out, non-senior cap
+    # 1000 does not bind: credit = min(750, 1000) = 750.
+    me_property_tax_fairness_credit: 750
+  absolute_error_margin: 0.01
+
+- name: Case 7, unknown-amount line-5c estimate composes with a binding non-senior cap.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Amount unknown (0) -> line 5c estimate = 15% * 60000 = 9000.
+    # Countable rent = 15% * (60000 - 9000) = 15% * 51000 = 7650.
+    # No real estate taxes -> countable_rent_property_tax = 7650.
+    # Single benefit base (2200) caps to min(2200, 7650) = 2200; income 0 so no
+    # phase-out -> uncapped credit 2200. Non-senior cap 1000 binds:
+    # credit = min(2200, 1000) = 1000.
+    me_property_tax_fairness_credit: 1_000
+  absolute_error_margin: 0.01
+
+- name: Case 8, unknown-amount line-5c estimate composes with a binding income phase-out.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 12_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Amount unknown (0) -> line 5c estimate = 15% * 12000 = 1800.
+    # Countable rent = 15% * (12000 - 1800) = 15% * 10200 = 1530.
+    # No real estate taxes -> countable_rent_property_tax = 1530.
+    # Income base = irs_gross_income = 20000.
+    me_sales_and_property_tax_fairness_credit_income: 20_000
+    # Single benefit base (2200) caps to min(2200, 1530) = 1530.
+    # Phase-out: 1530 - 4% * 20000 = 1530 - 800 = 730.
+    # Non-senior cap 1000 does not bind: credit = min(730, 1000) = 730.
+    me_property_tax_fairness_credit: 730
+  absolute_error_margin: 0.01
+
+- name: Case 9, senior unknown-amount line-5c estimate composes with the binding senior cap band.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Amount unknown (0) -> line 5c estimate = 15% * 60000 = 9000.
+    # Countable rent = 15% * (60000 - 9000) = 15% * 51000 = 7650.
+    # No real estate taxes -> countable_rent_property_tax = 7650.
+    # Senior (age 70) benefit base 2024 = 4000; caps to min(4000, 7650) = 4000.
+    # Income 0 so no phase-out -> uncapped credit 4000.
+    # Senior cap band 2024 (age >= 65) = 2000 binds: credit = min(4000, 2000) = 2000.
+    me_property_tax_fairness_credit: 2_000
+  absolute_error_margin: 0.01

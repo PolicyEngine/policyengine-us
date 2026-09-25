@@ -7,3 +7,4 @@ class homeowners_association_fees(Variable):
     label = "Homeowners association fees"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

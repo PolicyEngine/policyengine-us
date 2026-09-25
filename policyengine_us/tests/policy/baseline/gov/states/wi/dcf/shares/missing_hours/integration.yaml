@@ -1,0 +1,136 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: WI
+    childcare_attending_days_per_month: 20
+  output:
+    wi_shares_time_category: FULL_TIME
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_week: 20
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_week: 20.01
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: WI
+  output:
+    wi_shares_time_category:
+    - FULL_TIME
+    - PART_TIME
+    - PART_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: WI
+    childcare_hours_per_week: 40
+    wi_shares_time_category: PART_TIME
+  output:
+    wi_shares_time_category: PART_TIME
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30
+        employment_income: 47775
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 20
+      person3:
+        age: 2
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_fpg: 27300
+        hhs_smi: 96000
+        spm_unit_pre_subsidy_childcare_expenses: 60000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: WI
+        county_str: DANE_COUNTY_WI
+  output:
+    wi_shares_eligible: true
+    wi_shares_copay: 376.96
+    wi_shares_child_subsidy:
+    - 0
+    - 1369.55
+    - 1559.47
+    wi_shares: 2929.02
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30
+        employment_income: 47775
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 4
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person3:
+        age: 2
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_fpg: 27300
+        hhs_smi: 96000
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: WI
+        county_str: DANE_COUNTY_WI
+  output:
+    wi_shares: 0

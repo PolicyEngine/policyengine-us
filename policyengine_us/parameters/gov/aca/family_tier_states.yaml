@@ -1,5 +1,6 @@
 description: States that use family tier rating rather than summing individual age-rated premiums
 metadata:
+  propagate_metadata_to_children: true
   period: year
   breakdown:
     - state_code

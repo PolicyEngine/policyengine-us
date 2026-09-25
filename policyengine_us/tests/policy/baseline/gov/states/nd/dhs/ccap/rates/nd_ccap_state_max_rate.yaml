@@ -282,7 +282,7 @@
 
 # --- Degenerate / edge inputs ---
 
-- name: Case 17, child with zero child care hours falls to the part-time rate.
+- name: Case 17, unknown hours select the full-time rate ceiling.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -290,15 +290,12 @@
       person1:
         age: 0.5
         nd_ccap_provider_type: CENTER
-        childcare_hours_per_week: 0  # no hours in care
+        childcare_hours_per_week: 0  # unknown hours
     households:
       household:
         members: [person1]
         state_code: ND
   output:
-    # We do not track an explicit "not in care" flag, so a child with zero
-    # hours is classified part-time (hours < 25) and receives the Center infant
-    # part-time rate 546 rather than zero. Families with a child not in care
-    # would supply zero pre-subsidy expenses, so the expense cap in
-    # nd_ccap_base_subsidy keeps the benefit from counting unused capacity.
-    nd_ccap_state_max_rate: 546
+    # Unknown hours select the full-time ceiling. The final subsidy and
+    # provider bonuses separately require positive care days or hours.
+    nd_ccap_state_max_rate: 1_240

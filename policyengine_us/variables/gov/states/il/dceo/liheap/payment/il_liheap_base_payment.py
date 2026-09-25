@@ -34,9 +34,17 @@ class il_liheap_base_payment(Variable):
         )
         # Cap non-cash benefits at actual heating expenses.
         # Cash (heat in rent) is a direct payment — no expense cap.
+        # Deprecated adapter: households without a canonical heating_type
+        # keep IL's pre-canonical arbitration exactly (person-level total,
+        # else heating_cooling_expense).
+        canonical_type = spm_unit("heating_type", period)
+        unspecified = canonical_type == canonical_type.possible_values.UNSPECIFIED
         heating_person = add(spm_unit, period, ["heating_expense_person"])
         heating_cooling = spm_unit("heating_cooling_expense", period)
-        heating_expenses = where(heating_person > 0, heating_person, heating_cooling)
+        legacy_expense = where(heating_person > 0, heating_person, heating_cooling)
+        heating_expenses = where(
+            unspecified, legacy_expense, spm_unit("heating_expense", period)
+        )
         return where(
             is_cash,
             matrix_amount,

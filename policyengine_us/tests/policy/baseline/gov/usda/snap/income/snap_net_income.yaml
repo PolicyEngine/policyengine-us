@@ -1,7 +1,9 @@
 - name: SNAP net income subtracts deductions
   period: 2020
   input:
-    snap_gross_income: 2
-    snap_deductions: 1
+    # Use amounts divisible by 12 so the monthly values are whole dollars
+    # and unaffected by the 7 CFR 273.10(e)(1)(ii)(A) rounding.
+    snap_gross_income: 24
+    snap_deductions: 12
   output:
-    snap_net_income: 1
+    snap_net_income: 12

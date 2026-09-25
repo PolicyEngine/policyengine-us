@@ -2,7 +2,7 @@
 # Tests gross unearned income minus child support deduction
 # Source: 22 M.R.S. Section 3762(3)(B)(7-D)
 #
-# Note: tanf_gross_unearned_income is a MONTH variable
+# Note: me_tanf_gross_unearned_income is a MONTH variable
 
 - name: Case 1, zero unearned income.
   period: 2025-01

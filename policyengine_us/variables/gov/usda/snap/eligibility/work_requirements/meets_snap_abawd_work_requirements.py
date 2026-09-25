@@ -25,109 +25,33 @@ class meets_snap_abawd_work_requirements(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
-        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=11",
     )
 
     def formula(person, period, parameters):
-        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(period).gov.usda.snap.work_requirements.abawd
-        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
-        p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
-        # (A) Age — 7 U.S.C. 2015(o)(3)(A)
-        age = person("monthly_age", period)
-        working_age_exempt = where(
-            hr1_in_effect,
-            p.age_threshold.exempted.calc(age),
-            p_pre.age_threshold.exempted.calc(age),
-        )
         # Work activity — 7 U.S.C. 2015(o)(2); 7 CFR 273.24(a)(1):
         # (i) work 20+ hours per week, (ii) participate in and comply
         # with a qualifying work program 20+ hours per week, or
-        # (iii) any combination of work and work program participation
-        # totaling 20+ hours per week. Compliance is defined monthly
-        # (20 hours per week averaged monthly, i.e., 80 hours per month);
-        # annual average weekly hours are used as a proxy since survey
-        # data lack monthly work histories.
+        # (iii) any combination totaling 20+ hours per week. Compliance is
+        # defined monthly (80 hours per month); annual average weekly hours
+        # are used as a proxy since survey data lack monthly work histories.
         weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         work_program_hours = person("weekly_snap_work_program_hours", period.this_year)
         combined_weekly_hours = weekly_hours_worked + work_program_hours
         meets_hours_threshold = combined_weekly_hours >= p.weekly_hours_threshold
         # (iv) participate in and comply with a workfare program under
-        # 7 CFR 273.7(m), which satisfies the requirement regardless of
-        # hours.
+        # 7 CFR 273.7(m), which satisfies the requirement regardless of hours.
         is_workfare_participant = person(
             "is_snap_workfare_participant", period.this_year
         )
         is_working = meets_hours_threshold | is_workfare_participant
-        # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
-        is_disabled = person("is_disabled", period)
-        # (C) Parent with qualifying child — 7 U.S.C. 2015(o)(3)(C),
-        # 7 CFR 273.24(c)(3)-(c)(4). This exception is handled upstream in
-        # meets_snap_work_requirements_person, which is the single source of
-        # truth: a person residing in a household with a member under the age
-        # threshold is routed around the ABAWD test entirely (regardless of
-        # tax-unit dependency, per (c)(4)). Duplicating it here as
-        # "is_parent & has_child" was dead code — whenever it was true, the
-        # upstream gate had already exempted the person — and it was narrower
-        # than the regulation (it required parental status and tax-unit
-        # dependency). It has been removed.
-        # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
-        work_reg_exempt = person("is_snap_work_registration_exempt_non_age", period)
-        # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
-        is_pregnant = person("is_pregnant", period)
-        # (F)-(G) Indian, Urban Indian, or California Indian.
-        is_indian_exempt = person("is_snap_abawd_indian_exempt", period)
-        # State discretionary exemption — 7 U.S.C. 2015(o)(6).
-        # Assigned at data-construction time among covered individuals.
-        is_discretionary_exempt = person("is_snap_abawd_discretionary_exempt", period)
-        # Area waiver — 7 U.S.C. 2015(o)(4), 7 CFR 273.24(f). The time limit
-        # is waived for residents of areas with an approved FNS waiver.
-        in_waived_area = person("is_in_snap_abawd_waived_area", period)
-        base_conditions = (
-            is_working
-            | working_age_exempt
-            | is_disabled
-            | work_reg_exempt
-            | is_pregnant
-            | is_discretionary_exempt
-            | in_waived_area
-        )
-        # Pre-HR1 exemptions: homeless, veteran, former foster youth
-        is_homeless = person.household("is_homeless", period)
-        is_veteran = person("is_veteran", period)
-        # 7 CFR 273.24(c)(9): aged 24 or younger and in foster care under
-        # State responsibility on their 18th birthday (added by the Fiscal
-        # Responsibility Act of 2023, removed by P.L. 119-21).
-        was_in_foster_care = person("was_in_foster_care", period)
-        former_foster_youth = was_in_foster_care & (
-            age <= p_pre.age_threshold.former_foster_care
-        )
-        post_hr1_conditions = base_conditions | is_indian_exempt
-        pre_hr1_conditions = (
-            base_conditions | is_homeless | is_veteran | former_foster_youth
-        )
-        # Good-faith-effort exemption window — 7 U.S.C. 2015(o)(7). A
-        # noncontiguous State (currently only Alaska, 2025-11-01 through
-        # 2026-10-31) that has adopted HR1 may temporarily retain a specified
-        # set of pre-HR1 exceptions ON TOP OF the post-HR1 set: an older-adult
-        # age band (56-64 in Alaska; ages 65+ are already exempt post-HR1, so
-        # the retained minimum age reproduces the band), homeless individuals,
-        # veterans, and former foster youth. HR1's new Alaska Native/Indian
-        # exception (in post_hr1_conditions) stays in effect throughout, and
-        # the entire pre-HR1 exception set is NOT restored.
-        in_good_faith_window = person(
-            "is_snap_abawd_in_good_faith_exemption_window", period
-        )
-        retained_age_exempt = age >= p.good_faith_exemption.retained_age_minimum
-        window_conditions = (
-            post_hr1_conditions
-            | retained_age_exempt
-            | is_homeless
-            | is_veteran
-            | former_foster_youth
-        )
-        return where(
-            hr1_in_effect,
-            where(in_good_faith_window, window_conditions, post_hr1_conditions),
-            pre_hr1_conditions,
-        )
+        # A person satisfies the ABAWD requirement if they are
+        # working/compliant OR exempt from the time limit. The full exemption
+        # set (age, disability, pregnancy, work-registration exemptions,
+        # Indian status, discretionary and area waivers, and the pre-HR1 and
+        # good-faith-window variations) lives in is_snap_abawd_exempt so the
+        # subject-to-ABAWD status can be reused (e.g. by the Medicaid
+        # community engagement pass-through).
+        is_exempt = person("is_snap_abawd_exempt", period)
+        return is_working | is_exempt

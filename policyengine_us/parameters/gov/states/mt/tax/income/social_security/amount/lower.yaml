@@ -1,5 +1,6 @@
 description: Montana uses this amount when calculating the taxable social security benefits, based on filing status.
 metadata:
+  propagate_metadata_to_children: true
   period: year
   unit: currency-USD
   label: Montana social security benefits amount

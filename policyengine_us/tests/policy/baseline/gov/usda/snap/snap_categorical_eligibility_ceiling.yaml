@@ -1,0 +1,113 @@
+# Categorical eligibility above the issuance-table maximum.
+# FY2026 (2025-10-01) contiguous-US values: max allotment 2 persons $546,
+# 3 persons $785; standard deduction 1-3 persons $209; earned income
+# deduction 20%; minimum allotment round(8% x $298) = $24 for 1-2 persons only.
+# The reported TANF grant ($100/month) confers categorical eligibility and is
+# counted as unearned income.
+- name: Categorically eligible 2-person household above the income limit receives the minimum allotment
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 60_000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 1_200
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    meets_snap_categorical_eligibility: true
+    meets_snap_gross_income_test: false
+    is_snap_eligible: true
+    # Gross 5,000 + 100 = 5,100; net 5,100 - 1,000 (20%) - 209 = 3,891;
+    # 546 - 30% x 3,891 < 0, floored to the minimum allotment.
+    snap_net_income: 3_891
+    snap_min_allotment: 24
+    snap_normal_allotment: 24
+    snap: 24
+
+- name: Categorically eligible 3-person household above the issuance-table maximum receives zero
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 60_000
+        weekly_hours_worked_before_lsr: 40
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 1_200
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    meets_snap_categorical_eligibility: true
+    meets_snap_gross_income_test: false
+    # Still flagged eligible: PE does not convert a zero-benefit 3+ unit
+    # into a denial (7 CFR 273.10(e)(2)(iii)).
+    is_snap_eligible: true
+    # Net income 3,891; 785 - 30% x 3,891 < 0 and no minimum allotment
+    # applies to households of 3 or more.
+    snap_net_income: 3_891
+    snap_min_allotment: 0
+    snap_normal_allotment: 0
+    snap: 0
+
+- name: Categorically eligible 3-person household just under the issuance-table maximum receives a small allotment
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_500
+        weekly_hours_worked_before_lsr: 40
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 1_200
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    meets_snap_categorical_eligibility: true
+    meets_snap_gross_income_test: false
+    is_snap_eligible: true
+    # Gross 3,375 + 100 = 3,475; net 3,475 - 675 - 209 = 2,591;
+    # 30% = 777.30, rounded up to 778 (7 CFR 273.10(e)(2)(ii)(A)(1)); 785 - 778 = 7.
+    snap_net_income: 2_591
+    snap_expected_contribution: 778
+    snap_normal_allotment: 7
+    snap: 7

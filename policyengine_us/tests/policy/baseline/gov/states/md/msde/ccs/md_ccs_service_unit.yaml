@@ -85,3 +85,55 @@
         state_code: MD
   output:
     md_ccs_service_unit: [UNIT_3]
+
+# Out-of-range hours. The unit_hours bracket returns 0 for negative hours,
+# which none of the three units match. The select's explicit UNIT_1 default
+# keeps those rows a valid MDCCSServiceUnit instead of an integer 0 that
+# cannot be encoded as one; UNIT_1 matches the treatment of zero hours.
+
+- name: Negative hours is UNIT_1 (out-of-range input falls to the lowest unit).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: -2
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_1]
+
+- name: Adult with no hours listed first, child with negative hours second.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_day: -1
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_1, UNIT_1]
+
+- name: Child with negative hours listed first, full-time sibling second.
+  period: 2025-01
+  input:
+    people:
+      child1:
+        age: 3
+        childcare_hours_per_day: -1
+      child2:
+        age: 5
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [child1, child2]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_1, UNIT_3]

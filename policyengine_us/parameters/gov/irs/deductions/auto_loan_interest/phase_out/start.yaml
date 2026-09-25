@@ -1,5 +1,6 @@
 description: The IRS reduces the auto loan interest deduction for filers with adjusted gross income above this threshold, based on filing status.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Auto loan interest deduction reduction start

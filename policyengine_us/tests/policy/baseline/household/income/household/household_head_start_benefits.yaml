@@ -1,0 +1,85 @@
+- name: Case 1, flag off excludes Head Start values from household benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: false
+    head_start: 8_000
+    early_head_start: 21_000
+    snap: 0
+  output:
+    household_head_start_benefits: 0
+    household_benefits: 0
+
+- name: Case 2, flag on includes Head Start and Early Head Start values.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    head_start: 8_000
+    early_head_start: 21_000
+    snap: 0
+  output:
+    household_head_start_benefits: 29_000
+    household_benefits: 29_000
+
+- name: Case 3, flag on composes through the pre-2024 household_benefits bracket.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    head_start: 8_000
+    early_head_start: 21_000
+    snap: 0
+    acp: 0
+    ebb: 0
+  output:
+    household_head_start_benefits: 29_000
+    household_benefits: 29_000
+
+- name: Case 4, the Head Start flag does not activate health benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    head_start: 8_000
+    medicaid_cost: 500
+    chip: 300
+    snap: 0
+  output:
+    household_head_start_benefits: 8_000
+    household_health_benefits: 0
+    household_benefits: 8_000
+
+- name: Case 5, the health flag does not activate Head Start benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    head_start: 8_000
+    early_head_start: 21_000
+    medicaid_cost: 500
+    snap: 0
+  output:
+    household_health_benefits: 500
+    household_head_start_benefits: 0
+    household_benefits: 500
+
+- name: Case 6, per-person values aggregate to the household level.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 4
+        head_start: 8_000
+      child2:
+        age: 1
+        early_head_start: 21_000
+    households:
+      household:
+        members: [parent, child1, child2]
+  output:
+    household_head_start_benefits: 29_000

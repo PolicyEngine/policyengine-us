@@ -94,9 +94,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1,000, 795) = 795; copay = 795 x 0.09 = 71.55
-    # subsidy = 795 - 71.55 = 723.45
-    hi_ccap: 723.45
+    # capped = min(1,000, 795) = 795; copay = 4,666.67 x 0.09 = 420.00
+    # subsidy = 795 - 420.00 = 375.00
+    hi_ccap: 375
 
 - name: Case 4, two children sum their rates.
   period: 2025-01
@@ -230,9 +230,9 @@
         state_code: HI
   output:
     # capped = min(500 charge, 795 rate) = 500
-    # copay = 795 x 0.09 = 71.55 (always on the dept max rate)
-    # subsidy = max(500 - 71.55, 0) = 428.45 (lesser is the charge, not rate)
-    hi_ccap: 428.45
+    # copay = 4,666.67 x 0.09 = 420.00 (on gross income)
+    # subsidy = max(500 - 420.00, 0) = 80.00 (lesser is the charge, not rate)
+    hi_ccap: 80
 
 - name: Case 8, copay larger than the lesser-of amount floors the subsidy at zero.
   period: 2025-01
@@ -262,8 +262,8 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1 charge, 795 rate) = 1; copay = 795 x 0.09 = 71.55
-    # subsidy = max(1 - 71.55, 0) = 0 (no negative benefit)
+    # capped = min(1 charge, 795 rate) = 1; copay = 4,666.67 x 0.09 = 420.00
+    # subsidy = max(1 - 420.00, 0) = 0 (no negative benefit)
     hi_ccap: 0
 
 - name: Case 9, household with no children produces a graceful zero.
@@ -401,3 +401,44 @@
     hi_ccap_maximum_monthly_rate: [0, 86]
     # subsidy = min(1,000 expenses, 86 rate) - 0 copay = 86
     hi_ccap: 86
+
+# === Pre-August-2021 co-payment method (HAR 17-798.2-14(b)(4)) ===
+
+- name: Case 13, before August 2021 the copay on the maximum rate reduces the subsidy.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 2021: HI SMI 104,242 x 0.68 (family of 2) x 0.85 / 12 = 5,020.99
+    # >= 4,666.67 -> income eligible; FPG family of 2 = 1,670/mo, ratio
+    # 2.79 -> 9%.
+    hi_ccap_eligible: true
+    # Same household as Case 3, but the copay is 9% of the 795 maximum
+    # rate rather than of income: 795 x 0.09 = 71.55.
+    hi_ccap_copay: 71.55
+    # capped = min(1,000, 795) = 795; subsidy = 795 - 71.55 = 723.45
+    # (versus 375 under the gross-income method in Case 3)
+    hi_ccap: 723.45

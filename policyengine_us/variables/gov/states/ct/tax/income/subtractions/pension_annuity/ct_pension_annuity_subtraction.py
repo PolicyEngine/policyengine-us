@@ -29,9 +29,14 @@ class ct_pension_annuity_subtraction(Variable):
 
         rate = where(is_joint, p.joint.calc(agi), p.non_joint.calc(agi))
 
-        # Apply the rate to eligible pension income
-        pension_income = person("taxable_pension_income", period)
-        eligible_pension = pension_income * head_or_spouse
-        total_pension = tax_unit.sum(eligible_pension)
+        # Qualifying pension/annuity income (Line 48b)
+        pension_income = add(person, period, p.sources)
+        # Qualifying non-Roth IRA distributions (Line 48a, statutory phase-in percentage)
+        ira_income = add(person, period, p.ira_sources)
+        ira_rate = p.ira_rate
+        qualifying_retirement_income = (
+            pension_income + ira_income * ira_rate
+        ) * head_or_spouse
+        total_qualifying = tax_unit.sum(qualifying_retirement_income)
 
-        return total_pension * rate
+        return total_qualifying * rate

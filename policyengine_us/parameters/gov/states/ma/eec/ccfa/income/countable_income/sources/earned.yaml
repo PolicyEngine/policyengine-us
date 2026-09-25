@@ -1,0 +1,19 @@
+description: Massachusetts counts these sources as earned income under the Child Care Financial Assistance program.
+values:
+  2020-01-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    - sstb_self_employment_income_before_lsr
+    # Appendix A of the procedures manual lists farmers, partnerships, and
+    # S-corporations as self-employment types.
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts CCFA earned income sources
+  reference:
+    - title: EEC Financial Assistance Policy Guide, section 4.2.B.2
+      href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37
+    - title: EEC Financial Assistance Procedures Manual, Appendix A, self-employment
+      href: https://www.mass.gov/doc/financial-assistance-procedures-manual-for-subsidy-administrators/download#page=114

@@ -1,0 +1,288 @@
+# Missing-hours convention: zero is the numeric default, not evidence of part-time care.
+# Benefit expectations reuse the documented full-time arithmetic in ../integration.yaml.
+- name: Omitted hours use the full-time fallback for classification.
+  period: 2026-01
+  input:
+    state_code: FL
+    childcare_attending_days_per_month: 20
+  output:
+    fl_sr_time_category: FULL_TIME
+- name: Zero is unknown while positive hours retain the daily threshold in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_day: 3
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_day: 5.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_day: 6
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: FL
+  output:
+    fl_sr_time_category:
+    - FULL_TIME
+    - PART_TIME
+    - PART_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: Explicit part-time schedule overrides reported full-time hours.
+  period: 2026-01
+  input:
+    state_code: FL
+    childcare_hours_per_day: 8
+    fl_sr_time_category: PART_TIME
+  output:
+    fl_sr_time_category: PART_TIME
+- name: Billable care with unknown hours uses the full-time rate and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43200
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_attending_days_per_month: 45
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr_copay: 144
+    is_fl_sr_eligible: true
+    fl_sr: 856
+    fl_child_care_subsidies: 856
+    child_care_subsidies: 856
+- name: Zero hours, care days, and expenses do not create a subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43200
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr: 0
+- name: A sibling outside care does not turn a part-time family copay into full time.
+  period: 2026-01
+  input:
+    people:
+      child1:
+        is_fl_sr_child_eligible: true
+        childcare_hours_per_day: 3
+        childcare_attending_days_per_month: 20
+      child2:
+        is_fl_sr_child_eligible: true
+    spm_units:
+      spm:
+        members:
+        - child1
+        - child2
+        fl_sr_countable_income: 3600
+        fl_sr_smi: 7200
+        fl_sr_copay_waived: false
+    households:
+      household:
+        members:
+        - child1
+        - child2
+        state_code: FL
+  output:
+    fl_sr_time_category:
+    - PART_TIME
+    - FULL_TIME
+    fl_sr_copay: 72
+
+# FT/PT amounts use the same published rate and copay arithmetic as above.
+- name: Independent households with unknown, part-time, and no care keep separate benefits and copays.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      unknown_person1:
+        age: 30
+        employment_income: 43200
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      unknown_person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      unknown_person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 20
+      part_person1:
+        age: 30
+        employment_income: 43200
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      part_person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      part_person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 3
+        childcare_attending_days_per_month: 20
+      none_person1:
+        age: 30
+        employment_income: 43200
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      none_person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_day: 0
+      none_person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+    tax_units:
+      unknown_tax_unit:
+        members:
+        - unknown_person1
+        - unknown_person2
+        - unknown_person3
+      part_tax_unit:
+        members:
+        - part_person1
+        - part_person2
+        - part_person3
+      none_tax_unit:
+        members:
+        - none_person1
+        - none_person2
+        - none_person3
+    spm_units:
+      unknown_spm_unit:
+        members:
+        - unknown_person1
+        - unknown_person2
+        - unknown_person3
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+      part_spm_unit:
+        members:
+        - part_person1
+        - part_person2
+        - part_person3
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+      none_spm_unit:
+        members:
+        - none_person1
+        - none_person2
+        - none_person3
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      unknown_household:
+        members:
+        - unknown_person1
+        - unknown_person2
+        - unknown_person3
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+      part_household:
+        members:
+        - part_person1
+        - part_person2
+        - part_person3
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+      none_household:
+        members:
+        - none_person1
+        - none_person2
+        - none_person3
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr:
+    - 416
+    - 453
+    - 0
+    fl_sr_copay:
+    - 144
+    - 72
+    - 0

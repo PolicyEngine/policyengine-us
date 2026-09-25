@@ -7,7 +7,7 @@ class is_snap_abawd_hr1_in_effect(Variable):
     label = "HR1 ABAWD work requirement changes are in effect for this person"
     definition_period = MONTH
     reference = (
-        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=11",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf",
     )
 

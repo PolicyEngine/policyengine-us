@@ -7,7 +7,12 @@ class is_lifeline_eligible(Variable):
     label = "Eligible for Lifeline"
     documentation = "Eligible for Lifeline phone or broadband subsidy"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/47/54.409"
+    reference = [
+        # 47 CFR 54.409(a): income and program-based qualification.
+        "https://www.law.cornell.edu/cfr/text/47/54.409#a",
+        # 47 CFR 54.409(b): Tribal-specific programs add to the routes in (a).
+        "https://www.law.cornell.edu/cfr/text/47/54.409#b",
+    ]
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.fcc.lifeline
@@ -17,10 +22,10 @@ class is_lifeline_eligible(Variable):
         tribal_lifeline_programs = add(
             spm_unit, period, p.tribal_categorical_eligibility
         )
-        categorically_eligible = np.where(
-            is_on_tribal_land,
-            tribal_lifeline_programs > 0,
-            non_tribal_lifeline_programs > 0,
+        # 47 CFR 54.409(b): households on Tribal lands qualify through the
+        # standard programs in (a) or through the Tribal-specific programs.
+        categorically_eligible = (non_tribal_lifeline_programs > 0) | (
+            is_on_tribal_land & (tribal_lifeline_programs > 0)
         )
         # Use the new unified income eligibility variable
         income_eligible = spm_unit("is_lifeline_income_eligible", period)

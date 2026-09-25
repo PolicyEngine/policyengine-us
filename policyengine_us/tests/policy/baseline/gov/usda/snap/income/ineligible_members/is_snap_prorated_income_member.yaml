@@ -73,3 +73,18 @@
     state_code: MA
   output:
     is_snap_prorated_income_member: false
+
+- name: Case 9, citizen sanctioned under the general work requirements is counted in full, not prorated.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_snap_work_registration_noncompliant: true
+    state_code: TX
+  output:
+    # 7 CFR 273.11(c)(1): a member sanctioned for failing the general work
+    # requirements has income counted in full - not prorated, which applies
+    # only to ABAWD time-limit ineligibles under (c)(2) - while still being
+    # removed from the SNAP unit (issue #8968 acceptance criterion).
+    is_snap_prorated_income_member: false
+    is_snap_excluded_member: true

@@ -90,14 +90,19 @@
     snap_net_income: 154
     # Step 5 — Family’s Expected Contribution Toward Food:
     # 30 percent of the household’s net income ($154) is about $46.
-    snap_expected_contribution: 154 * 0.3
+    # (Model note, not CBPP: 7 CFR 273.10(e)(2)(ii)(A)(1) rounds the 30%
+    # up to the next dollar, so the model returns ceil(46.20) = 47.)
+    snap_expected_contribution: 47
     # Step 6 — SNAP Benefit:
     # The maximum benefit in 2022 for a family of three is $658.
     # The maximum benefit minus the household contribution ($658 minus $46)
     # equals about $612.
     snap_max_allotment: 658
     # The family’s monthly SNAP benefit is $612.
-    snap_normal_allotment: 612
+    # (Model note, not CBPP: with the rounded expected contribution of $47,
+    # the model returns 658 - 47 = 611; the ~$1 divergence from CBPP's
+    # arithmetic is the expected effect of the regulatory rounding rule.)
+    snap_normal_allotment: 611
 
 - name: Test for exclude child income, same as case 1 but adding income to one child.
   period: 2022-01

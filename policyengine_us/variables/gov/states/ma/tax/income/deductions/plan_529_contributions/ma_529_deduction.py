@@ -18,6 +18,6 @@ class ma_529_deduction(Variable):
             period
         ).gov.states.ma.tax.income.deductions.plan_529_contributions
         contributions = tax_unit("investment_in_529_plan", period)
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         cap = p.cap[filing_status]
         return min_(contributions, cap)

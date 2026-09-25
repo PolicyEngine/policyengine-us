@@ -8,10 +8,10 @@ class nd_mpc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=2"  # line 22
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=16"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/form-nd-1-2022.pdf#page=2"  # line 22
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=2",  # line 22
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=16",
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/form-nd-1-2022.pdf#page=2",  # line 22
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16",
     )
     defined_for = StateCode.ND
 
@@ -26,11 +26,7 @@ class nd_mpc(Variable):
         hi_taxinc = taxinc > p.marriage_penalty.taxable_income_threshold
         eligible = joint & hi_taxinc
         # determine minimum qualified income between head and spouse
-        qinc_sources = [
-            "irs_employment_income",
-            "total_self_employment_income",
-            "taxable_pension_income",
-        ]
+        qinc_sources = p.marriage_penalty.qualified_income_sources
         person = tax_unit.members
         setax_ded = person("self_employment_tax_ald_person", period)
         qinc_person = add(person, period, qinc_sources) - setax_ded

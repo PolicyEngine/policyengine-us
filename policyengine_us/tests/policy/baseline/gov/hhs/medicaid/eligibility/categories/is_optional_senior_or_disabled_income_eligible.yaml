@@ -23,6 +23,9 @@
         medicaid_optional_senior_or_disabled_countable_income: 9_000
       person2:
         medicaid_optional_senior_or_disabled_countable_income: 9_000
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -42,6 +45,9 @@
         medicaid_optional_senior_or_disabled_countable_income: 6_700
       person2:
         medicaid_optional_senior_or_disabled_countable_income: 6_700
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -84,7 +90,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -101,7 +106,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -115,11 +119,10 @@
     people:
       person1:
         is_blind: true
-        medicaid_optional_senior_or_disabled_countable_income: 15_100
+        medicaid_optional_senior_or_disabled_countable_income: 15_700
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -135,11 +138,10 @@
     people:
       person1:
         is_blind: true
-        medicaid_optional_senior_or_disabled_countable_income: 15_000
+        medicaid_optional_senior_or_disabled_countable_income: 15_660
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -152,11 +154,10 @@
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 12_750
+        medicaid_optional_senior_or_disabled_countable_income: 13_308
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -166,17 +167,17 @@
 
 # The limits are inclusive maxima in every state, not just Missouri:
 # 42 U.S.C. § 1396a(m)(1)(B) covers income that "does not exceed" the
-# state's standard. Florida's individual limit is 88% FPL.
+# state's standard. Florida's limit is 88% FPL: 0.88 x 15,650 = 13,772
+# for one person and 0.88 x 21,150 = 18,612 for a couple in 2025.
 - name: Income exactly at Florida's limit is eligible
   period: 2025
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 13_200
+        medicaid_optional_senior_or_disabled_countable_income: 13_772
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -189,11 +190,10 @@
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 13_201
+        medicaid_optional_senior_or_disabled_countable_income: 13_773
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg: 15_000
     households:
       household:
         members: [person1]
@@ -206,14 +206,16 @@
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 6_600
+        medicaid_optional_senior_or_disabled_countable_income: 9_306
       person2:
-        medicaid_optional_senior_or_disabled_countable_income: 6_600
+        medicaid_optional_senior_or_disabled_countable_income: 9_306
     tax_units:
       tax_unit:
         members: [person1, person2]
         tax_unit_is_joint: true
-        tax_unit_fpg: 15_000
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -226,17 +228,103 @@
   input:
     people:
       person1:
-        medicaid_optional_senior_or_disabled_countable_income: 6_601
+        medicaid_optional_senior_or_disabled_countable_income: 9_307
       person2:
-        medicaid_optional_senior_or_disabled_countable_income: 6_601
+        medicaid_optional_senior_or_disabled_countable_income: 9_307
     tax_units:
       tax_unit:
         members: [person1, person2]
         tax_unit_is_joint: true
-        tax_unit_fpg: 15_000
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: FL
   output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# The couple standard applies to the couple's combined countable income
+# even when the spouses file separate returns (42 CFR 435.602; Missouri
+# DSS Manual § 0805.015.05).
+- name: Missouri married couple filing separately is tested on combined income against the couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 29,760 combined exceeds the 18,396 couple standard.
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Missouri unmarried adults in separate tax units are each tested on their own income
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Each 13,500 is under the 13,572 individual standard.
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# Each spouse is under the 13,572 individual standard, so only the couple
+# sum makes this ineligible; a per-person test would return [true, true].
+- name: Missouri couple each under the individual standard but over the couple standard combined is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 18,600 combined exceeds the 18,396 couple standard.
     is_optional_senior_or_disabled_income_eligible: [false, false]

@@ -2,7 +2,7 @@ description: New York sets this maximum real property tax credit for filers with
 
 brackets:
   - threshold:
-      2000-01-01: 0
+      2000-01-01: -.inf
     amount:
       2000-01-01: 75
   - threshold:
@@ -42,7 +42,7 @@ brackets:
     amount:
       2000-01-01: 57
   - threshold:
-      2000-01-01: 1_0000
+      2000-01-01: 10_000
     amount:
       2000-01-01: 55
   - threshold:

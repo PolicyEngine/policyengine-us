@@ -130,7 +130,11 @@
   output:
     va_age_deduction: 7_000
 
-# married: jointly: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: $12,000 + $12,000 - (AFAGI - $75,000)
+# married: jointly: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958.
+# Per Va. Code § 58.1-322.03(5), the born-before-1939 spouse's $12,000 is a
+# fixed deduction that is NOT income-tested; only the income-based spouse's
+# $12,000 is reduced by (AFAGI - $75,000). So the total is
+# $12,000 (fixed) + max($12,000 - ($90,000 - $75,000), 0) = $12,000 + $0 = $12,000.
 - name: If in Virginia, filed jointly as a married couple, both eligible for deduction, one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958
   period: 2022
   input:
@@ -140,7 +144,20 @@
     age_head: 89
     age_spouse: 75
   output:
-    va_age_deduction: 9_000
+    va_age_deduction: 12_000
+
+# married: jointly: mixed ages, income-based spouse phases out but the fixed
+# born-before-1939 deduction is protected (taxsim issue #1140).
+- name: VA joint elderly couple, one born before 1939 (fixed $12,000) and one income-based who fully phases out
+  period: 2022
+  input:
+    state_code: VA
+    va_age_deduction_agi: 160_294
+    filing_status: JOINT
+    age_head: 85  # born 1937, before 01/01/1939 -> fixed $12,000
+    age_spouse: 77  # born 1945, income-based -> max($12,000 - ($160,294 - $75,000), 0) = $0
+  output:
+    va_age_deduction: 12_000
 
 
 # married: separate, both born after 01/02/1958: $0

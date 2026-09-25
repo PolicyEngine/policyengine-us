@@ -1,7 +1,8 @@
 # Shorthand for the batch runner so each target is easier to read.
-# --mode per-subdir = each immediate subdir runs in its own subprocess
-#                     (loose yamls get a trailing batch). New subdirs
-#                     auto-route, no Makefile edit needed.
+# --mode per-subdir = each immediate subdir runs in its own subprocess,
+#                     split by reform-combo weight when it exceeds the
+#                     batcher's budget (loose yamls get a trailing batch).
+#                     New subdirs auto-route, no Makefile edit needed.
 # --mode per-file   = each yaml runs in its own subprocess. Used for
 #                     microsim-heavy folders where one file per subprocess
 #                     is needed to keep peak RAM under the 16 GB runner.
@@ -13,6 +14,12 @@
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
 TESTS := policyengine_us/tests
+# Run the expensive SPM construction/isolation tests in a separate process
+# before the remaining files on the same CI runner, releasing their heap.
+# The remaining group discovers every other Python test, including future files.
+REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
+	$(TESTS)/core/test_spm_simulation_isolation.py \
+	$(TESTS)/core/test_spm_system.py
 
 all: build
 format:
@@ -70,7 +77,8 @@ test-yaml-structural-other-shard-3:
 	# one peak resident at a time.
 	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file --workers 1
 test-yaml-structural-congress:
-	# One subprocess per congress proposal; new proposals auto-route.
+	# One subprocess per congress proposal, split when a proposal's reform
+	# combos exceed the batcher's budget; new proposals auto-route.
 	# --workers 1: congress OOM'd two-wide on CI run 28698452678 — the
 	# romney batch alone peaked 7.1 GB.
 	$(BATCH) $(TESTS)/policy/contrib/congress --mode per-subdir --workers 1
@@ -170,9 +178,13 @@ test-yaml-no-structural-other-partners:
 # The old single-process test-other run was OOM-killed at ~94% on CI run
 # 28698452678: cumulative RSS from the python tests plus the
 # microsimulation suite in one pytest process exceeded the 16 GB runner.
-# Two pytest processes (run as two CI jobs) bound each peak separately.
+# The microsimulation suite stays in its own process/job to bound its peak.
 test-other-python:
 	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation
+test-other-python-spm:
+	pytest $(REST_SPM_TESTS) --maxfail=0
+test-other-python-rest:
+	pytest $(TESTS)/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation $(addprefix --ignore=,$(REST_SPM_TESTS))
 test-microsimulation:
 	pytest $(TESTS)/microsimulation --maxfail=0
 # Local convenience: run both halves back to back.

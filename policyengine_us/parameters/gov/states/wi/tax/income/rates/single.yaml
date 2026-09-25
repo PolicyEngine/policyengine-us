@@ -17,6 +17,8 @@ metadata:
       href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1-inst.pdf#page=38
     - title: 2025 Form 1 instructions
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=38
+    - title: 2026 Form 1-ES instructions
+      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=7
 brackets:
   - threshold:
       2021-01-01: 0
@@ -30,11 +32,13 @@ brackets:
         2023-01-01: 13_810
         2024-01-01: 14_320
         2025-01-01: 14_680
+        2026-01-01: 15_110
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 10
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0465
       2023-01-01: 0.044
@@ -45,11 +49,13 @@ brackets:
         2023-01-01: 27_630
         2024-01-01: 28_640
         2025-01-01: 51_130
+        2026-01-01: 51_950
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 10
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.053
   - threshold:
@@ -59,10 +65,12 @@ brackets:
         2023-01-01: 304_170
         2024-01-01: 315_310
         2025-01-01: 323_290
+        2026-01-01: 332_720
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 10
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0765

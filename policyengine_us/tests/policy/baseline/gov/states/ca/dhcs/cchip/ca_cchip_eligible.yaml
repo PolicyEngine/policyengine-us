@@ -1,0 +1,362 @@
+# California County Children's Health Initiative Program (CCHIP): children under
+# 19 in San Francisco, San Mateo, or Santa Clara County who are not eligible for
+# no-cost Medi-Cal and have household income at or below 322 percent of the FPL
+# (state plan SPA CA-24-0012, Section 4.1 Population 1).
+- name: Case 1, child in Santa Clara County at 300 percent FPL is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 2, child in San Mateo County at 300 percent FPL is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SAN_MATEO_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 3, child in San Francisco County at 300 percent FPL is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 4, child in Los Angeles County is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 5, child with an unknown county is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 6, income exactly at the 322 percent FPL limit is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.22
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 7, income above the 322 percent FPL limit is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.23
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 8, child eligible for Medi-Cal is not eligible for CCHIP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: true
+        medicaid_income_level: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 9, 18-year-old is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 10, 19-year-old is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 19
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 11, undocumented child is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 12, child with employer coverage is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+        has_esi: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 13, child outside California is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    ca_cchip_eligible: false
+
+# The county handbook excludes children with employer-sponsored coverage
+# available, even when not enrolled; the ACA offer input is the model's proxy.
+- name: Case 14, uninsured child with employer coverage available is not eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+    has_esi: false
+    offered_aca_disqualifying_esi: true
+  output:
+    has_chip_disqualifying_health_coverage: false
+    ca_cchip_eligible: false
+
+# CMS SHO #12-002 excludes DACA from the CHIP lawfully residing option.
+- name: Case 15, child with DACA status is not eligible.
+  period: 2025
+  input:
+    age: 18
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: DACA
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: false
+
+- name: Case 16, lawful permanent resident child is eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 17, child with temporary protected status is eligible.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: TPS
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    ca_cchip_eligible: true
+
+# Cases 18 and 19 let is_medicaid_eligible run from income instead of taking it
+# as an input, proving that the 2.66 FPL Medi-Cal child limit is the CCHIP
+# floor without a separate lower-bound parameter. Married parents with one
+# child in 2025: the three-person FPG is 15,650 + 2 x 5,500 = 26,650. The
+# published monthly Medi-Cal child ceiling is 2.66 x 26,650 / 12 = 5,907.42,
+# rounded up to 5,908 (70,896 a year); the CCHIP ceiling is 3.22 x 26,650 / 12
+# = 7,151.08, rounded up to 7,152 (85,824 a year).
+- name: Case 18, child at 250 percent FPL is Medi-Cal eligible, so CCHIP excludes him without a lower-bound parameter.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 2.5 x 26,650 = 66,625, at or below the 70,896 Medi-Cal child ceiling.
+        employment_income: 66_625
+      person2:
+        age: 35
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [3, 3, 3]
+    medicaid_income_level: [2.5, 2.5, 2.5]
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+
+- name: Case 19, child at 300 percent FPL is above the Medi-Cal child ceiling and inside the CCHIP band.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 3 x 26,650 = 79,950: above the 70,896 Medi-Cal child ceiling and at
+        # or below the 85,824 CCHIP ceiling.
+        employment_income: 79_950
+      person2:
+        age: 35
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [3, 3, 3]
+    medicaid_income_level: [3, 3, 3]
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]

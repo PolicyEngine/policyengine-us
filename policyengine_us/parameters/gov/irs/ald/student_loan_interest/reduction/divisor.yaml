@@ -1,6 +1,7 @@
 description: IRS reduces the student loan interest deduction for filers with modified adjusted income over this threshold, based on filing status.
 
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Student loan interest deduction reduction divisor

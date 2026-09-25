@@ -1,4 +1,4 @@
-description: Pennsylvania treats distributions from non-employer retirement plans with no specific retirement criteria as retirement income after this age.
+description: Proxy retirement age applied where a plan's own retirement criteria are not modeled. The Pennsylvania Personal Income Tax Guide applies this age to plans that are not employer provided and have no specific retirement criteria, such as an IRA. Employer-plan payments are exempt once the recipient retires after meeting the plan's own age or years-of-service condition, which the model approximates with this age.
 values:
   2021-01-01: 59.5
 metadata:
@@ -8,3 +8,9 @@ metadata:
   reference:
     - title: Pennsylvania Personal Income Tax Guide - Gross Compensation
       href: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html
+    - title: Pennsylvania Personal Income Tax Guide - Gross Compensation (PDF, DSM-12 08-2025), Pennsylvania Eligible Retirement Plans
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_grosscompensation.pdf
+    - title: 2023 PA-40 IN, Retirement, Pensions, and Deferred Compensation
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40in.pdf
+    - title: 61 Pa. Code Sec. 101.6(c)(8), Old Age or Retirement Benefit Plans
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html

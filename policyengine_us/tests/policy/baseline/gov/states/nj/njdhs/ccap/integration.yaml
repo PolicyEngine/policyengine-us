@@ -56,7 +56,7 @@
     # Parent (age 28 = 336 mo >= 60) -> SCHOOL_AGE; Child (age 1 = 12 mo < 18) -> INFANT
     nj_ccap_age_group: [SCHOOL_AGE, INFANT]
     # Parent: 0 hrs -> PART_TIME; Child: 40 hrs -> FULL_TIME
-    nj_ccap_time_category: [PART_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME]
     # Center FT Base Infant = $366.67/wk
     nj_ccap_maximum_weekly_benefit: [0, 366.67]
 
@@ -122,7 +122,7 @@
     # child2 (age 7 = 84 mo): >= 60 -> SCHOOL_AGE
     nj_ccap_age_group: [SCHOOL_AGE, TODDLER, SCHOOL_AGE]
     # Parent: 0 hrs -> PT; child1: 20 hrs -> PT; child2: 15 hrs -> PT
-    nj_ccap_time_category: [PART_TIME, PART_TIME, PART_TIME]
+    nj_ccap_time_category: [FULL_TIME, PART_TIME, PART_TIME]
     # Registered family PT base toddler = $140.60; school age = $122.63
     nj_ccap_maximum_weekly_benefit: [0, 140.60, 122.63]
 
@@ -255,7 +255,7 @@
     # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
     # child1 (age 4 = 48 mo): PRESCHOOL; child2 (age 8 = 96 mo): SCHOOL_AGE
     nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL, SCHOOL_AGE]
-    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME, FULL_TIME, FULL_TIME]
     # Center FT Star 4 Preschool = 312.71; Center FT Star 4 School Age = 274.96 (base)
     nj_ccap_maximum_weekly_benefit: [0, 0, 312.71, 274.96]
 
@@ -382,7 +382,7 @@
     # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
     # Child (age 1 = 12 mo < 18) -> INFANT
     nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, INFANT]
-    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME, FULL_TIME]
     # Center FT Star 3 Infant = $391.32
     nj_ccap_maximum_weekly_benefit: [0, 0, 391.32]
 

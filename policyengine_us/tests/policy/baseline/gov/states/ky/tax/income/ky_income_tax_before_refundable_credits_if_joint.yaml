@@ -1,0 +1,34 @@
+# Unit tests for the joint path of the Kentucky combined-separate election. On
+# the joint return only one standard deduction is allowed and personal credits
+# are pooled across the tax unit (contrast the per-column cap on the separate
+# path; KRS 141.0205(2), Form 740 Line 19).
+
+# Same two age-65 spouses as the combined-separate unit test. On the joint path a
+# single standard deduction applies and both $40 personal credits pool.
+- name: Joint path pools personal credits and allows one standard deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 2_800
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Joint taxable (2,800 + 40,000) - 2,770 = 40,030; tax 40,030 x 5% =
+    # 2,001.50; pooled personal credits min(80, 2,001.50) = 80; family size
+    # credit rate 0 at $42,800 modified gross income for a 2-person family.
+    # 2,001.50 - 80.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax_before_refundable_credits_if_joint: 1_921.50

@@ -1,0 +1,26 @@
+# Pins that the Montana property tax rebate is REROUTED into the state property
+# tax credits aggregate (taxsim_state_property_tax_credit), not dropped, after it
+# was removed from the Form 2 non-refundable credit list (issue 9347 / PR 9348).
+# mt_property_tax_rebate is in the year-keyed aggregate list from 2022-01-01.
+
+- name: MT property tax rebate flows into the state property tax credits aggregate
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    # Non-elderly single filer: elderly homeowner/renter credit = 0, so the only
+    # contributor to the aggregate is the $675 property tax rebate.
+    mt_property_tax_rebate: 675
+    taxsim_state_property_tax_credit: 675

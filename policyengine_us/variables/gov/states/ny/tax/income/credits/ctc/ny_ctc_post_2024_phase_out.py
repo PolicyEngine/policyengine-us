@@ -20,9 +20,10 @@ class ny_ctc_post_2024_phase_out(Variable):
         # Only apply phase-out if there's a base credit and phase-out rate > 0
         phase_out_threshold = p.post_2024.phase_out.threshold[filing_status]
         excess_income = max_(agi - phase_out_threshold, 0)
-        # Round up to nearest increment for phase-out calculation
+        # Round down to nearest increment for phase-out calculation
+        # (Form IT-213 line 6: round down to the nearest $1,000)
         increment = p.post_2024.phase_out.increment
-        excess_increments = (excess_income + increment - 1) // increment
+        excess_increments = excess_income // increment
         phase_out_amount = excess_increments * p.post_2024.phase_out.rate
 
         # Apply phase-out only where there's a base credit and phase-out rate > 0

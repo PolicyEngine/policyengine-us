@@ -1,6 +1,4 @@
-description: Utility allowance for households whose utility expenses are only phone-related
-  (or, if the state does not have a defined limited utility allowance, households
-  with phone expenses but not heating/cooling expenses).
+description: Telephone standard under the Supplemental Nutrition Assistance Program, applied to households whose only utility expense is a phone, to households with phone but no heating or cooling expenses in states without a limited utility allowance, and on top of the limited utility allowance in states that exclude telephone from it.
 metadata:
   unit: currency-USD
   period: month
@@ -16,6 +14,14 @@ metadata:
     href: https://docs.google.com/spreadsheets/d/10otJJisAYUDyZ0d7XpZPn8rEql-rteVE/edit?gid=1837348310#gid=1837348310
   - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
+  - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
+    href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+  - title: Wisconsin DHS Operations Memo 25-13 (FFY 2026 standard utility allowances effective October 1, 2025)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2025-13.pdf#page=3
+  - title: Maine SNAP Rule #244 Chart 8 (FFY 2026 phone only utility allowance, retroactive to October 1, 2025)
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2026-02/SNAP%20244P%20Rule%20Pages%20%28TC%29.pdf#page=8
+  - title: Wisconsin DHS Operations Memo 26-30 (revised SUAs effective May 1, 2026)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-30.pdf#page=2
   - title: FY 2018 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177
   - title: FY 2019 SNAP QC Technical Documentation, Table F.7
@@ -24,6 +30,8 @@ metadata:
     href: https://snapqcdata.net/sites/default/files/2022-12/FY%202020%20SNAP%20QC%20Technical%20Documentation.pdf#page=175
   - title: FY 2021 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2024-05/FY%202021%20Tech%20Doc.pdf#page=138
+  - title: AZ DES CNAP manual FAA6.J Standards, Fees, and Amounts, 09 Utility Allowance Current Amount (archived 10/01/2020 page under Previous Years; $41 Telephone Utility Allowance)
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA6/Utility_Allowance_Current_Amount.html
 AK_C:
   2010-01-01: 0
   2017-10-01: 40
@@ -108,7 +116,10 @@ AZ:
   2017-10-01: 32
   2018-10-01: 36
   2019-10-01: 36
-  2020-10-01: 0
+  # The DES manual's archived FAA6.J page for 10/01/20-09/30/21 sets the
+  # Telephone Utility Allowance at $41; the value was previously misfiled
+  # into limited/main.yaml.
+  2020-10-01: 41
   2021-10-01: 44
   2022-10-01: 47
   2023-10-01: 47
@@ -235,7 +246,7 @@ ID:
   2021-10-01: 29
   2023-10-01: 42
   2024-10-01: 47
-  2025-10-01: 48
+  2025-10-01: 49
 IL:
   2010-01-01: 0
   2017-10-01: 28
@@ -304,13 +315,14 @@ MA:
   2025-10-01: 64
 MD:
   # Maryland SUA is effective January 1, not the federal fiscal year.
-  # Starting FY2026 (10/1/2025), Maryland aligned with the federal cycle.
+  # The FNS FY2026 table footnotes Maryland as still effective January 1,
+  # so its FY2026 values take effect on 2026-01-01.
   2010-01-01: 0
   2017-10-01: 40
   2019-01-01: 40
   2021-01-01: 40
   2023-01-01: 40
-  2025-10-01: 40
+  2026-01-01: 41
 ME:
   2010-01-01: 0
   2017-10-01: 45
@@ -322,6 +334,10 @@ ME:
   2022-10-01: 62
   2023-10-01: 58
   2024-10-01: 60
+  # Maine SNAP Rule #244 Chart 8: the FFY 2026 Phone Only Utility
+  # Allowance (PhUA) is $114, retroactive to 10/1/2025. The FNS FY2026
+  # table misaligns Maine's row, printing the $114 under the adjacent
+  # SMD Offset column and $0 under Phone; the state rule governs.
   2025-10-01: 114
 MI:
   2010-01-01: 0
@@ -550,7 +566,7 @@ SD:
   2022-10-01: 54
   2023-10-01: 57
   2024-10-01: 59
-  2025-10-01: 61
+  2025-10-01: 60
 TN:
   2010-01-01: 0
   2017-10-01: 27
@@ -592,7 +608,8 @@ VA:
   2022-10-01: 52
   2023-10-01: 51
   2024-10-01: 52
-  2025-10-01: 53
+  # The FNS FY2026 table lists $54 for Virginia (all household sizes).
+  2025-10-01: 54
 VI:
   2010-01-01: 0
   2017-10-01: 32
@@ -630,7 +647,11 @@ WI:
   2020-10-01: 29
   2021-10-01: 29
   2023-10-01: 30
+  # WI DHS Ops Memo 25-13: FFY 2026 value effective 10/1/2025.
   2025-10-01: 31
+  # WI DHS Ops Memo 26-22: new FNS-approved SUA values; Ops Memo 26-30
+  # sets the effective date to 2026-05-01.
+  2026-05-01: 106
 WV:
   2010-01-01: 0
   2017-10-01: 74

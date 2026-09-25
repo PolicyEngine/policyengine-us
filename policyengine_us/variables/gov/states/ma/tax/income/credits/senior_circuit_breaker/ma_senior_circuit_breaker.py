@@ -8,7 +8,9 @@ class ma_senior_circuit_breaker(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6",  # Part (k)
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6",  # c.62 s.6(k)(5)
+        "https://www.mass.gov/doc/2023-schedule-cb-circuit-breaker-credit/download",
     )
     defined_for = StateCode.MA
 
@@ -35,7 +37,7 @@ class ma_senior_circuit_breaker(Variable):
         max_payment = min_(ret_over_threshold, scb.amount.max)
 
         # Means-test conditions based on income (cliff).
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         meets_max_income_condition = income <= scb.eligibility.max_income[filing_status]
 
         # Means-tested conditions based on property value (cliff).
@@ -43,10 +45,16 @@ class ma_senior_circuit_breaker(Variable):
         meets_max_property_value_condition = (
             assessed_value <= scb.eligibility.max_property_value
         )
+        # Married taxpayers filing separately do not qualify. M.G.L. c.62
+        # Section 6(k)(5) ("No credit shall be allowed for a married
+        # individual unless a joint return is filed") is the all-years
+        # statutory authority; annual Schedule CB guidance restates it.
+        separate = filing_status == filing_status.possible_values.SEPARATE
         eligible = (
             meets_age_condition
             & meets_max_income_condition
             & meets_max_property_value_condition
+            & ~separate
         )
 
         return eligible * max_payment

@@ -1,4 +1,4 @@
-description: Connecticut provides a child tax rebate of this amount, for each eligible child.
+description: Connecticut provides a child tax rebate of this amount for each eligible child under the Child Tax Rebate program.
 metadata:
   period: year
   unit: currency-USD
@@ -6,10 +6,20 @@ metadata:
   reference:
     - title: 2022 Child Tax Rebate
       href: https://portal.ct.gov/drs/credit-programs/child-tax-rebate/overview
-    - title: TSSB 2022-5 - Frequently Asked Questions Concerning the Child Tax Rebate (4)
+    - title: TSSB 2022-5 - Frequently Asked Questions Concerning the Child Tax Rebate Q4
       href: https://portal.ct.gov/-/media/drs/publications/tssb/2022/tssb-2022-5.pdf#page=1
-    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 410 (xxvi)
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411(b)(2)
+      href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=549
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411(b)(1)
       href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=548
-    # The legal code section has been repealed
+    # PA 22-118 Sec. 411 is uncodified session law, keyed to TY2021, never added to
+    # the General Statutes; it sunsets to 0 in 2022. The $250 amount is set in the
+    # opening clause of Sec. 411(b)(2) (p. 549); the one-time/TY2021 character is
+    # stated in Sec. 411(b)(1) (p. 548). TSSB 2022-5 cites this as H.B. 5506
+    # Sec. 415; the enrolled act renumbers it Sec. 411 (same provision).
 values:
-  2022-01-01: 250
+  # No rebate before the 2021 tax year; the explicit 0 blocks backdating from
+  # phantoming the 2021 value into prior years at system build.
+  2015-01-01: 0
+  2021-01-01: 250
+  2022-01-01: 0

@@ -70,10 +70,11 @@
         # Jan-Sep: pre-shelter net = 2,857.67; shelter expense = 1,500 + 515
         # WA SUA = 2,015 - 1,428.83 = 586.17 -> net = 2,271.50, which is ABOVE
         # the regular 100%-FPG net limit (2,220.83) - WA's BBCE has no net
-        # test, so the unit is still eligible. EC 681.30 -> 785 - 681.30 =
-        # 103.70/month; Oct-Dec: 812.72 - 678.00 = 134.72.
-        # Annual = 9 x 103.70 + 3 x 134.72 = 1,337.46.
-        snap: 1337.46
+        # test, so the unit is still eligible. EC ceil(2,271 x 0.3) = 682 ->
+        # 785 - 682 = 103.00/month; Oct-Dec: net rounds to 2,260 -> EC = 678
+        # exactly -> 812.72 - 678 = 134.72.
+        # Annual = 9 x 103.00 + 3 x 134.72 = 1,331.17.
+        snap: 1331.17
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (wa)
   period: 2026

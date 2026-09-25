@@ -79,7 +79,7 @@
     # === Time categories ===
     # person1 (adult, 0 hrs): HT; person2 (adult, 0 hrs): HT
     # person3: 35 hrs -> FULL_TIME; person4: 30 hrs -> FULL_TIME
-    sc_ccap_time_category: [HALF_TIME, HALF_TIME, FULL_TIME, FULL_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME, FULL_TIME, FULL_TIME]
 
     # === Provider rates ===
     # Child1 (age 3): Center C, Urban, FT = $195/wk
@@ -96,7 +96,7 @@
     # Annual benefit = 1,404.67 * 12 = 16,856.04
     sc_ccap: 16_856
 
-- name: Case 2, low income family at zero copay tier.
+- name: Case 2, unknown hours retain full-time pricing.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -142,7 +142,7 @@
 
     # === Provider rates ===
     # person1 (adult, 0 hrs): HT; person2 (age 1, 30 hrs): FT
-    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME]
 
     # === Benefit ===
     # Center C, Urban, FT, Age 1 = $213/wk
@@ -247,7 +247,7 @@
 
     # === Provider rates ===
     # person1 (adult, 0 hrs): HT; person2 (age 2, 30 hrs): FT
-    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME]
     # MONTH var at YEAR period -> values * 12
     sc_ccap_maximum_weekly_benefit: [0, 600]
 
@@ -303,7 +303,7 @@
 
     # === Provider rates ===
     # person1 (adult, 0 hrs): HT; person2 (child, 30 hrs): FT
-    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME]
 
     # === Benefit (MONTH formula, YEAR test period) ===
     # Age 5 defaults in-school (is_in_k12_school True for ages 5-17)
@@ -315,7 +315,7 @@
     # Annual benefit = $801.67 * 12 = $9,620
     sc_ccap: 9_620
 
-- name: Case 6, foster care family with zero copay and surcharge.
+- name: Case 6, unknown hours retain full-time pricing.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -360,7 +360,7 @@
 
     # === Provider rates ===
     # person1 (adult, 0 hrs): HT; person2 (child, 35 hrs): FT
-    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    sc_ccap_time_category: [FULL_TIME, FULL_TIME]
     # Center C, Urban, FT, Age 3 = $195 + $30 foster surcharge = $225/wk
     # MONTH var at YEAR period -> values * 12
     sc_ccap_maximum_weekly_benefit: [0, 2_700]
@@ -416,7 +416,7 @@
 
     # === Provider rates ===
     # person1 (adult, 0 hrs): HT; person2 (child, 20 hrs < 25): HT
-    sc_ccap_time_category: [HALF_TIME, HALF_TIME]
+    sc_ccap_time_category: [FULL_TIME, HALF_TIME]
     # FFN, HT, Under 3 = $30/wk
     # MONTH var at YEAR period -> values * 12
     sc_ccap_maximum_weekly_benefit: [0, 360]

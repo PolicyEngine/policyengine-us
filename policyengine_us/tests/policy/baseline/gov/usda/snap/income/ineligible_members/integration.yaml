@@ -27,7 +27,7 @@
   output:
     snap_unit_size: 3
     snap_earned_income: 2_000
-    snap: 367.7
+    snap: 367
 
 - name: Case 2, refugee earner is prorated after OBBBA.
   period: 2026-01
@@ -55,7 +55,7 @@
     # Counted share: 2 eligible / 3 household members.
     # $2,000 x 2/3 = $1,333.33
     snap_earned_income: 1_333.33
-    snap: 288.9
+    snap: 288
 
 - name: Case 3, undocumented earner in a prorating state.
   period: 2026-01
@@ -81,7 +81,7 @@
   output:
     snap_unit_size: 2
     snap_earned_income: 1_333.33
-    snap: 288.9
+    snap: 288
 
 - name: Case 4, undocumented earner in a count-all state.
   period: 2026-01
@@ -108,7 +108,7 @@
     snap_unit_size: 2
     # Massachusetts counts all of the undocumented member's income.
     snap_earned_income: 2_000
-    snap: 194.4
+    snap: 194
 
 - name: Case 5, undocumented earner in a hybrid gross-test state.
   period: 2026-01
@@ -136,7 +136,7 @@
     # Net side prorated, gross test counts the full income.
     snap_earned_income: 1_333.33
     snap_gross_test_income: 2_000
-    snap: 288.9
+    snap: 288
 
 - name: Case 6, prorated member's shares of shelter and dependent care expenses are not deductible.
   period: 2026-01
@@ -201,7 +201,7 @@
     snap_earned_income: 1_000
     # The ineligible student's dividend income is excluded entirely.
     snap_unearned_income: 0
-    snap: 120.7
+    snap: 120
 
 - name: Case 8, California delays OBBBA so refugees remain eligible in January 2026.
   period: 2026-01
@@ -228,7 +228,7 @@
     snap_unit_size: 3
     snap_income_counted_share: [1, 1, 1]
     snap_earned_income: 2_000
-    snap: 225.2
+    snap: 225
 
 - name: Case 9, household with no eligible members receives nothing.
   period: 2026-01
@@ -277,8 +277,8 @@
     # excluded under 7 CFR 273.9(c)(7).
     snap_earned_income: 2_000
     # Net income: $2,000 - $400 earned income deduction - $209 standard
-    # deduction = $1,391; benefit: $546 - 0.3 x $1,391 = $128.70.
-    snap: 128.7
+    # deduction = $1,391; benefit: $546 - $418 (30% of $1,391 rounded up) = $128.
+    snap: 128
 
 - name: Case 11, prorated member's self-employment income is prorated like employment income.
   period: 2026-01
@@ -305,7 +305,7 @@
     snap_unit_size: 2
     # $2,000 monthly self-employment income x 2/3, mirroring Case 3.
     snap_earned_income: 1_333.33
-    snap: 288.9
+    snap: 288
 
 - name: Case 12, prorated member's self-employment loss does not offset other members' income.
   period: 2026-01
@@ -338,8 +338,8 @@
     # member's $2,000 monthly income counts in full.
     snap_earned_income: 2_000
     # Net income: $2,000 - $400 earned income deduction - $209 standard
-    # deduction = $1,391; benefit: $546 - 0.3 x $1,391 = $128.70.
-    snap: 128.7
+    # deduction = $1,391; benefit: $546 - $418 (30% of $1,391 rounded up) = $128.
+    snap: 128
 
 - name: Case 13, excluded elderly member does not confer the gross income test exemption.
   period: 2026-01

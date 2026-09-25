@@ -404,12 +404,22 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
+        # These high earners have no family size tax credit. Income is supplied
+        # directly as Kentucky taxable income, leaving modelled gross income at
+        # $0, which would otherwise give a spurious 100% family-size credit rate
+        # and zero the tax on both filing paths.
+        ky_family_size_tax_credit_rate: 0
     households:
       household:
         members: [person1, person2]
         state_code: KY
   output:
+    # The election is made on tax after non-refundable credits.
     # Separate: p1=250k*3.5%+30k*6%=10550, p2=20k*3.5%=700, total=11250
     # Joint: p1=250k*3.5%+50k*6%=11750, p2=0, total=11750
     # ky_files_separately = (11250 < 11750) = True
     ky_files_separately: true
+    # No non-refundable credits apply (FSTC rate forced to 0, high earners have no
+    # personal credit), so ky_income_tax equals the elected separate total.
+    # CI-RISK: hand-derived; pin the CI actual if it differs.
+    ky_income_tax: 11_250

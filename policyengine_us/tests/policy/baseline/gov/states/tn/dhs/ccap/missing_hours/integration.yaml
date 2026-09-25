@@ -1,0 +1,243 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_attending_days_per_month: 20
+  output:
+    tn_ccap_part_time: false
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_week: 19.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_week: 20
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: TN
+  output:
+    tn_ccap_part_time:
+    - false
+    - true
+    - true
+    - false
+    - false
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_week: 40
+    tn_ccap_part_time: true
+  output:
+    tn_ccap_part_time: true
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child:
+    - false
+    - true
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    tn_ccap_copay: 98.9
+    tn_ccap_max_weekly_benefit:
+    - 0
+    - 208
+    tn_ccap: 802.43
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 0
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap: 0
+
+# FT/PT amounts use the same published rate and copay arithmetic as above.
+- name: Independent households with unknown, part-time, and no care keep separate benefits and copays.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      unknown_person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_week: 0
+      unknown_person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 0
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+        childcare_attending_days_per_month: 20
+      part_person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_week: 0
+      part_person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 10
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+        childcare_attending_days_per_month: 20
+      none_person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_week: 0
+      none_person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 0
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+        childcare_attending_days_per_month: 0
+    tax_units:
+      unknown_tax_unit:
+        members:
+        - unknown_person1
+        - unknown_person2
+      part_tax_unit:
+        members:
+        - part_person1
+        - part_person2
+      none_tax_unit:
+        members:
+        - none_person1
+        - none_person2
+    spm_units:
+      unknown_spm_unit:
+        members:
+        - unknown_person1
+        - unknown_person2
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+      part_spm_unit:
+        members:
+        - part_person1
+        - part_person2
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+      none_spm_unit:
+        members:
+        - none_person1
+        - none_person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      unknown_household:
+        members:
+        - unknown_person1
+        - unknown_person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+      part_household:
+        members:
+        - part_person1
+        - part_person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+      none_household:
+        members:
+        - none_person1
+        - none_person2
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap:
+    - 802.43
+    - 401.22
+    - 0
+    tn_ccap_copay:
+    - 98.9
+    - 49.45
+    - 0

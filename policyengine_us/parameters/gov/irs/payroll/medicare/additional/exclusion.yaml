@@ -10,6 +10,7 @@ HEAD_OF_HOUSEHOLD:
 SURVIVING_SPOUSE:
   2013-01-01: 200_000
 metadata:
+  propagate_metadata_to_children: true
   label: Additional Medicare Tax rate exclusion
   breakdown:
     - filing_status

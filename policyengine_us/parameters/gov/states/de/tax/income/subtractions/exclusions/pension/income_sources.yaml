@@ -6,6 +6,12 @@ values:
     - taxable_interest_income
     - rental_income
     - taxable_pension_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+    - taxable_roth_conversions
 metadata:
   unit: list
   period: year
