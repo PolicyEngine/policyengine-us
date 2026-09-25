@@ -11,16 +11,21 @@ catch that kind of transcription error:
   whole columns from one state to another, which a monotonicity check misses
   when the copied state's own row happens to rise.
 
-The variable-level tests enumerate every state, family size (1 to 8), and
-income row or row boundary, so they cover the formulas' whole input domain:
+The variable-level tests run grids of single-person households through the
+formulas that read the table:
 
-- state_sales_tax returns the table cell for its state, family size (capped at
-  the "Over 5" column), and income row, and never falls as income or family
-  size rises.
+- state_sales_tax returns the table cell for every state, family size 1 to 8
+  (capped at the "Over 5" column), and income row, in each IRS table year.
+- The income row is the IRS row whose "At least" floor the income has reached,
+  on both sides of every row boundary, and every income source counts toward
+  it.
+- state_sales_tax never falls as adjusted gross income or family size rises.
 - local_sales_tax is zero in the ten jurisdictions whose residents the
   worksheet sends to -0- on line 6, and 20% of state_sales_tax elsewhere.
-- state_and_local_sales_or_income_tax is the larger of the income tax and the
-  sales tax amounts.
+- state_and_local_sales_or_income_tax is the larger of the income tax (state
+  withholding plus local income tax) and the sales tax (state plus local).
+
+Each test's docstring gives its grid and the inputs it holds fixed.
 """
 
 from bisect import bisect_right
@@ -64,6 +69,22 @@ IRS_ROW_FLOORS = [
 ]  # fmt: skip
 # Family sizes above 6 use the "Over 5" column.
 SIMULATED_FAMILY_SIZES = range(1, 9)
+# The IRS counts income as "the amount shown on your Form 1040 or 1040-SR,
+# line 11 [line 11b in 2025], plus any nontaxable items, such as" tax-exempt
+# interest, veterans' benefits, workers' compensation, the nontaxable part of
+# social security and of IRA, pension, or annuity distributions, and public
+# assistance payments. These are the PolicyEngine variables for those items.
+TABLE_INCOME_SOURCES = [
+    "adjusted_gross_income",
+    "tax_exempt_interest_income",
+    "veterans_benefits",
+    "workers_compensation",
+    "tax_exempt_social_security",
+    "tax_exempt_pension_income",
+    "tax_exempt_retirement_distributions",
+    "tanf",
+    "ssi",
+]
 
 
 @pytest.fixture(scope="module")
@@ -158,12 +179,23 @@ def _grid_simulation(year, states, sizes, **inputs):
     simulation.set_input("state_code", year, np.array(states))
     simulation.set_input("tax_unit_size", year, np.array(sizes))
     for name, values in inputs.items():
-        simulation.set_input(name, year, np.array(values))
+        if system.variables[name].definition_period == "month":
+            for month in range(1, 13):
+                simulation.set_input(name, f"{year}-{month:02d}", np.array(values) / 12)
+        else:
+            simulation.set_input(name, year, np.array(values))
     return simulation
+
+
+def _income_inputs(**amounts):
+    """Every table income source, zero unless given."""
+    size = len(next(iter(amounts.values())))
+    return {name: amounts.get(name, np.zeros(size)) for name in TABLE_INCOME_SOURCES}
 
 
 @pytest.mark.parametrize("year", IRS_TABLE_YEARS)
 def test_state_sales_tax_returns_the_table_cell(table_yaml, year):
+    """Every state, family size 1 to 8, and income row (7,144 points)."""
     grid = list(
         product(
             sorted(IRS_JURISDICTIONS | {"AK"}),
@@ -185,20 +217,17 @@ def test_state_sales_tax_returns_the_table_cell(table_yaml, year):
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
 def test_state_sales_tax_never_falls_as_income_or_family_size_rises(year):
+    """Every state and family size 1 to 8, at $0, $1 million, and both sides of
+    every income row floor; income is adjusted gross income only."""
     incomes = sorted({0, 1_000_000} | {f + d for f in IRS_ROW_FLOORS for d in (-1, 0)})
     states = sorted(IRS_JURISDICTIONS | {"AK"})
     grid = list(product(states, SIMULATED_FAMILY_SIZES, incomes))
     grid_states, sizes, grid_incomes = zip(*grid)
-    sources = get_parameter(system.parameters, f"{TABLE_PATH}.income_sources")(
-        f"{year}-01-01"
-    )
-    zero = np.zeros(len(grid))
     simulation = _grid_simulation(
         year,
         grid_states,
         sizes,
-        adjusted_gross_income=grid_incomes,
-        **{name: zero for name in sources if name != "adjusted_gross_income"},
+        **_income_inputs(adjusted_gross_income=np.array(grid_incomes)),
     )
     brackets = simulation.calculate("state_sales_tax_income_bracket", year)
     expected_brackets = [
@@ -213,11 +242,37 @@ def test_state_sales_tax_never_falls_as_income_or_family_size_rises(year):
 
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
-def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
-    grid = list(product(sorted(IRS_JURISDICTIONS | {"AK"}), INCOME_BRACKETS))
-    states, brackets = zip(*grid)
+def test_every_income_source_counts_toward_the_income_row(year):
+    """$25,000 from one source at a time, and from none; the rest are zero."""
+    sources = TABLE_INCOME_SOURCES
+    count = len(sources) + 1
+    amounts = {
+        name: np.array([25_000 if row == column else 0 for row in range(count)])
+        for column, name in enumerate(sources)
+    }
     simulation = _grid_simulation(
-        year, states, [2] * len(grid), state_sales_tax_income_bracket=brackets
+        year, ["TX"] * count, [1] * count, **_income_inputs(**amounts)
+    )
+    brackets = simulation.calculate("state_sales_tax_income_bracket", year)
+    # $25,000 is in the $20,000-$30,000 row; no income is in the first row.
+    assert list(brackets) == [2] * len(sources) + [1], dict(
+        zip(sources + ["none"], brackets)
+    )
+
+
+@pytest.mark.parametrize("year", CHECKED_YEARS)
+def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
+    """Every state, family size 1 to 8, and income row."""
+    grid = list(
+        product(
+            sorted(IRS_JURISDICTIONS | {"AK"}),
+            SIMULATED_FAMILY_SIZES,
+            INCOME_BRACKETS,
+        )
+    )
+    states, sizes, brackets = zip(*grid)
+    simulation = _grid_simulation(
+        year, states, sizes, state_sales_tax_income_bracket=brackets
     )
     state_amount = simulation.calculate("state_sales_tax", year)
     local_amount = simulation.calculate("local_sales_tax", year)
@@ -228,19 +283,30 @@ def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
 
 @pytest.mark.parametrize("year", IRS_TABLE_YEARS)
 def test_sales_or_income_tax_is_the_larger_amount(year):
-    income_taxes = (0, 400, 900, 5_000)
-    grid = list(product(sorted(IRS_JURISDICTIONS | {"AK"}), (1, 10, 19), income_taxes))
-    states, brackets, withheld = zip(*grid)
+    """Every state at family sizes 1, 4, and 8 and income rows 1, 10, and 19,
+    crossed with state withholding of $0-$5,000 and local income tax of $0 or
+    $300."""
+    grid = list(
+        product(
+            sorted(IRS_JURISDICTIONS | {"AK"}),
+            (1, 4, 8),
+            (1, 10, 19),
+            (0, 400, 900, 5_000),
+            (0, 300),
+        )
+    )
+    states, sizes, brackets, withheld, local_income = zip(*grid)
     simulation = _grid_simulation(
         year,
         states,
-        [3] * len(grid),
+        sizes,
         state_sales_tax_income_bracket=brackets,
         state_withheld_income_tax=withheld,
-        local_income_tax=np.zeros(len(grid)),
+        local_income_tax=local_income,
     )
+    income_tax = np.add(withheld, local_income)
     sales_tax = simulation.calculate("state_sales_tax", year) + simulation.calculate(
         "local_sales_tax", year
     )
     actual = simulation.calculate("state_and_local_sales_or_income_tax", year)
-    assert np.allclose(actual, np.maximum(withheld, sales_tax))
+    assert np.allclose(actual, np.maximum(income_tax, sales_tax))
