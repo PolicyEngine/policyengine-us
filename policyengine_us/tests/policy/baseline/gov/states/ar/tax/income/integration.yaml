@@ -389,3 +389,152 @@
     # Tax: max($321.44 - $236, 0) = $85.44
     # TaxAct reference: $86 (from TAXSIM issue #493)
     ar_income_tax: 85
+
+# Married couples filing jointly: all income goes in Column A, so one spouse's
+# partnership/S-corporation loss offsets the other spouse's wages (AR1000F
+# instructions). 2024 values: joint standard deduction $4,820; personal credit
+# $29 each; the joint low income table tops out at $28,300.
+
+- name: Married joint couple, spouse loss offsets wages, positive combined income on the regular table
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+      person2:
+        age: 38
+        partnership_s_corp_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_agi_joint: [60_000, -20_000]
+    # Combined AGI = 60,000 - 20,000 = 40,000; taxable income =
+    # 40,000 - 4,820 = 35,180, held by the head.
+    ar_taxable_income_joint: [35_180, 0]
+    # 40,000 is above the low income table, so the regular table applies.
+    ar_uses_low_income_tax_tables: false
+    ar_net_taxable_income_joint: [35_180, 0]
+    # 35,180 x 3.9% - 409.86 = 1,372.02 - 409.86 = 962.16
+    ar_income_tax_before_non_refundable_credits_joint: [962.16, 0]
+    # Separately, person1 alone: (60,000 - 2,410) x 3.9% - 409.86 = 1,836.15.
+    ar_files_separately: false
+    ar_income_tax_before_non_refundable_credits_unit: 962.16
+    # Personal credits 2 x 29 = 58; additional credit
+    # 120 - ceil((35,180 - 25,800) / 100) x 5 x 2 = 120 - 940 -> 0.
+    ar_non_refundable_credits: 58
+    # 962.16 - 58 = 904.16
+    ar_income_tax: 904.16
+
+- name: Married joint couple, spouse loss offsets wages, positive combined income on the low income table
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 47_050
+      person2:
+        age: 38
+        partnership_s_corp_income: -21_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_agi_joint: [47_050, -21_000]
+    # Combined AGI = 47,050 - 21,000 = 26,050; taxable income =
+    # 26,050 - 4,820 = 21,230.
+    ar_taxable_income_joint: [21_230, 0]
+    # Low income table (joint, 0-1 dependents), 26,000 < 26,050 <= 26,100: 283.
+    ar_low_income_tax_joint: [283, 0]
+    # Regular table: 21,230 x 3.4% - 281.37 = 721.82 - 281.37 = 440.45 > 283.
+    ar_uses_low_income_tax_tables: true
+    # The low income table uses AGI rather than taxable income.
+    ar_net_taxable_income_joint: [26_050, 0]
+    ar_income_tax_before_non_refundable_credits_joint: [283, 0]
+    ar_files_separately: false
+    ar_income_tax_before_non_refundable_credits_unit: 283
+    # Additional credit: 120 - ceil((26,050 - 25,800) / 100) x 5 x 2 = 120 - 30 = 90.
+    ar_additional_tax_credit_for_qualified_individuals: 90
+    # Personal credits 2 x 29 = 58; 58 + 90 = 148.
+    ar_non_refundable_credits: 148
+    # 283 - 148 = 135
+    ar_income_tax: 135
+
+- name: Married joint couple, spouse loss exactly cancels wages, zero combined income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 38
+        partnership_s_corp_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_agi_joint: [20_000, -20_000]
+    # Combined AGI = 20,000 - 20,000 = 0; max(0, 0 - 4,820) = 0.
+    ar_taxable_income_joint: [0, 0]
+    ar_low_income_tax_joint: [0, 0]
+    # Both tables give 0 tax, so the low income table is not selected.
+    ar_uses_low_income_tax_tables: false
+    ar_net_taxable_income_joint: [0, 0]
+    ar_income_tax_before_non_refundable_credits_joint: [0, 0]
+    # Separately, person1 alone: (20,000 - 2,410) x 3.4% - 281.37 = 316.69.
+    ar_files_separately: false
+    ar_income_tax_before_non_refundable_credits_unit: 0
+    ar_income_tax: 0
+
+- name: Married joint couple, spouse loss exceeds wages, negative combined income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+      person2:
+        age: 38
+        partnership_s_corp_income: -25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_agi_joint: [10_000, -25_000]
+    # Combined AGI = 10,000 - 25,000 = -15,000; max(0, -15,000 - 4,820) = 0.
+    ar_taxable_income_joint: [0, 0]
+    # The low income table is looked up at max(-15,000, 0) = 0, giving 0.
+    ar_low_income_tax_joint: [0, 0]
+    ar_uses_low_income_tax_tables: false
+    ar_net_taxable_income_joint: [0, 0]
+    ar_income_tax_before_non_refundable_credits_joint: [0, 0]
+    # Separately, person1 alone: (10,000 - 2,410) x 2% - 109.98 = 41.82.
+    ar_files_separately: false
+    ar_income_tax_before_non_refundable_credits_unit: 0
+    ar_income_tax: 0
