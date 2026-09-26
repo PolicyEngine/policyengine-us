@@ -1,0 +1,1 @@
+Replace the documentation's TAXSIM validation page, which showed an ImportError, with the current results published by the policyengine-taxsim dashboard, render the book's stored Plotly charts, and build and deploy the documentation from CI again.
