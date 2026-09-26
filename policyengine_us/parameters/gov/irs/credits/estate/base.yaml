@@ -1,7 +1,7 @@
-description: The IRS provides this base exclusion amount under the estate tax credit. 
+description: The IRS sets this basic exclusion amount for the estate tax unified credit.
 metadata:
   unit: currency-USD
-  label: Estate tax credit base exclusion amount  
+  label: Estate tax basic exclusion amount
   period: year
   reference:
     - title: H.R.1 - One Big Beautiful Bill Act
@@ -14,8 +14,10 @@ metadata:
       href: https://www.irs.gov/businesses/small-businesses-self-employed/whats-new-estate-and-gift-tax
     - title: "26 CFR 601.602: Tax forms and instructions."
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=18
+    - title: Instructions for Form 706 (Rev. October 2024), Lines 9a through 9e
+      href: https://www.irs.gov/pub/irs-prior/i706--2024.pdf#page=9
     - title: Instructions for Form 706 (Rev. September 2023) (1977-2023)
-      href: https://www.irs.gov/pub/irs-pdf/i706.pdf#page=9
+      href: https://www.irs.gov/pub/irs-prior/i706--2023.pdf#page=9
     - title: Instructions for Form 706 (Rev. September 2022) (1977-2022)
       href: https://www.irs.gov/pub/irs-prior/i706--2022.pdf#page=9
     - title: Instructions for Form 706 (Rev. September 2021) (1977-2021)
@@ -57,5 +59,5 @@ values:
   2023-01-01: 12_920_000  
   2024-01-01: 13_610_000
   2025-01-01: 13_990_000
-  # OBBB sets estate credit value to $15M.
+  # OBBBA sets the basic exclusion amount to $15M.
   2026-01-01: 15_000_000
