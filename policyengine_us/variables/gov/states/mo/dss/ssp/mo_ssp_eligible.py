@@ -10,6 +10,7 @@ class mo_ssp_eligible(Variable):
     reference = (
         "https://revisor.mo.gov/main/OneSection.aspx?section=208.030",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
+        "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-020-00/",
     )
 
     def formula(person, period, parameters):
@@ -28,14 +29,10 @@ class mo_ssp_eligible(Variable):
             living_arrangement != categories.NONE
         )
         p = parameters(period).gov.states.mo.dss.ssp
-        # mo_sab_countable_income applies SSI-style exclusions without the
-        # eligibility zero-out in ssi_countable_income — so SAB applicants
-        # who fail federal SSI on resources or immigration are still
-        # income-tested against the MO consolidated standard.
+        # The claimant meets the SAB need determination only if income leaves
+        # a remainder under the consolidated standard (§ 0410.020.00).
         countable_income = person("mo_sab_countable_income", period)
-        sab_income_eligible = ~is_sab | (
-            countable_income <= p.sab.consolidated_standard
-        )
+        sab_income_eligible = ~is_sab | (countable_income < p.sab.consolidated_standard)
         snc_countable_income = person("mo_snc_countable_income", period)
         facility_base_charge = person("mo_snc_facility_base_charge", period)
         snc_need_eligible = ~is_snc | (snc_countable_income < facility_base_charge)

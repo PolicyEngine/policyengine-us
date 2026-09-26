@@ -1,5 +1,5 @@
-- name: Zero income gives zero SAB countable income.
-  period: 2026
+- name: Case 1, zero income gives zero SAB countable income.
+  period: 2026-01
   input:
     people:
       person1:
@@ -12,8 +12,9 @@
   output:
     mo_sab_countable_income: 0
 
-- name: $12,000 annual employment income gives ~$5,490 annual SAB countable income after SSI-style exclusions.
-  period: 2026
+- name: Case 2, earnings get the $85 plus half exemption and the 10% personal standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -24,22 +25,157 @@
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $1,000. After $20 general + $65 earned exclusion =
-    # $915, then 50% remainder = $457.50/month, annualized to $5,490.
-    mo_sab_countable_income: 5_490
+    # Monthly earned = $1,000. ($1,000 - $85) x 0.5 = $457.50, less the
+    # $100 personal standard (10% of $1,000) = $357.50.
+    mo_sab_countable_income: 357.5
 
-- name: $30,000 annual employment income gives ~$14,490 annual SAB countable income.
-  period: 2026
+- name: Case 3, higher earnings above the consolidated standard after exemptions.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 50
-        employment_income: 30_000
+        employment_income: 36_000
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $2,500. After $20 + $65 = $2,415, then 50% = $1,207.50,
-    # annualized to $14,490. Monthly $1,207.50 exceeds $1,073 SAB limit.
-    mo_sab_countable_income: 14_490
+    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 = $1,457.50, less the
+    # $300 personal standard = $1,157.50.
+    mo_sab_countable_income: 1_157.5
+
+- name: Case 4, earnings below the $85 exemption are fully exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 960
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $80, all within the $85 exemption; the personal
+    # standard cannot push countable earnings below zero.
+    mo_sab_countable_income: 0
+
+- name: Case 5, unearned income counts in full with no $20 general disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pension_income: 12_876
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,073 monthly pension is fully countable under 13 CSR 40-2.120(2)(B).
+    mo_sab_countable_income: 1_073
+
+- name: Case 6, earned and unearned income combine.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 6_000
+        pension_income: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Earned $500: ($500 - $85) x 0.5 = $207.50, less the $50 personal
+    # standard = $157.50. Plus $300 pension = $457.50.
+    mo_sab_countable_income: 457.5
+
+- name: Case 7, a spouse's income is not deemed to the SAB claimant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        pension_income: 6_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        employment_income: 15_600
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # SAB income test is individual regardless of marital status (Appendix
+    # K), so person1 counts only the own $500 pension. Person2's own figure is
+    # ($1,300 - $85) x 0.5 - $130 = $477.50.
+    mo_sab_countable_income: [500, 477.5]
+
+- name: Case 8, the SSI student earned income exclusion does not apply.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        is_blind: true
+        is_full_time_student: true
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SSI would exclude all $1,000 for a blind student under 22; SAB applies
+    # only the Standard Earned Income Exemption Table: $457.50 - $100 = $357.50.
+    mo_sab_countable_income: 357.5
+
+- name: Case 9, in-kind support and maintenance is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        ssi_in_kind_support_and_maintenance: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.15 excludes income in kind such as food, utilities, and rent.
+    mo_sab_countable_income: 0
+
+- name: Case 10, negative self-employment income does not offset unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        self_employment_income: -12_000
+        pension_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 500

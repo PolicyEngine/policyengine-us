@@ -78,3 +78,155 @@
         state_code: MO
   output:
     mo_ssp_resource_eligible: false
+
+- name: Case 5, SAB applicant at the $6,220.50 individual limit becomes eligible in July 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 6_220.50
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The individual limit rises from $6,068.80 to $6,220.50 on 2026-07-01.
+    mo_ssp_resource_eligible:
+      2026-06: false
+      2026-07: true
+
+- name: Case 6, SAB applicant above the July 2026 individual limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 6_220.51
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_resource_eligible:
+      2026-07: false
+
+- name: Case 7, SNC applicant at the $6,220.50 individual limit becomes eligible in July 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        ssi_countable_resources: 6_220.50
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The SNC individual limit also rises from $6,068.80 to $6,220.50.
+    mo_ssp_resource_eligible:
+      2026-06: false
+      2026-07: true
+
+- name: Case 8, unmarried adult child in a parent's tax unit uses the individual limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        mo_ssp_living_arrangement: NONE
+      person2:
+        age: 22
+        is_blind: true
+        ssi_countable_resources: 8_000
+        mo_ssp_living_arrangement: SAB
+    marital_units:
+      parent_marital_unit:
+        members: [person1]
+      child_marital_unit:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # is_tax_unit_spouse ranks the 22-year-old as the spouse, so the SPM
+    # unit reads as married, but the claimant's own marital unit has one
+    # person. $8,000 exceeds the $6,220.50 individual limit.
+    mo_ssp_resource_eligible:
+      2026-07: [true, false]
+
+- name: Case 9, married SAB claimant living with a spouse uses the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 8_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        mo_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # $8,000 is below the $12,441.00 couple limit.
+    mo_ssp_resource_eligible:
+      2026-07: [true, true]
+
+- name: Case 10, married couple at the July 2026 couple limit becomes eligible in July.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 8_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        ssi_countable_resources: 4_441
+        mo_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Combined $12,441 exceeds the $12,137.55 June couple limit and equals the
+    # $12,441.00 limit effective 2026-07-01.
+    mo_ssp_resource_eligible:
+      2026-06: [false, true]
+      2026-07: [true, true]
