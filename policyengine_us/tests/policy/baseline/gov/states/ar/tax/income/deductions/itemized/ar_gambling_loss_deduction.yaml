@@ -1,0 +1,94 @@
+# DFA Subject 208 applied the same cap and 2% exemption before Act 155 of 2017
+# codified it from 2015, so the deduction is not limited to 2015 and later.
+- name: 2014 gambling losses are deductible only to the extent of winnings
+  period: 2014
+  input:
+    gambling_winnings: 4_000
+    gambling_losses: 6_000
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 4_000
+
+- name: 2015 gambling losses below winnings are deductible in full
+  period: 2015
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 8_000
+
+- name: 2015 gambling losses are deductible only to the extent of winnings
+  period: 2015
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 12_000
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 10_000
+
+- name: 2019 gambling losses without winnings are not deductible
+  period: 2019
+  input:
+    gambling_winnings: 0
+    gambling_losses: 5_000
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 0
+
+- name: 2019 gambling losses are deductible only to the extent of winnings
+  period: 2019
+  input:
+    gambling_winnings: 3_000
+    gambling_losses: 4_500
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 3_000
+
+- name: 2020 joint return caps combined losses at combined winnings
+  period: 2020
+  input:
+    people:
+      person1:
+        gambling_winnings: 3_000
+        gambling_losses: 1_000
+      person2:
+        gambling_winnings: 0
+        gambling_losses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # min(1,000 + 4,000, 3,000 + 0)
+    ar_gambling_loss_deduction: 3_000
+
+- name: 2025 gambling losses below winnings are deductible in full
+  period: 2025
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 8_000
+
+- name: 2025 gambling losses equal to winnings are deductible in full
+  period: 2025
+  input:
+    gambling_winnings: 7_500
+    gambling_losses: 7_500
+    state_code: AR
+  output:
+    ar_gambling_loss_deduction: 7_500
+
+- name: No Arkansas gambling loss deduction outside Arkansas
+  period: 2025
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: TX
+  output:
+    ar_gambling_loss_deduction: 0
