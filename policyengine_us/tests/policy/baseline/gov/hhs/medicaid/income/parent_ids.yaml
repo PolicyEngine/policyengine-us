@@ -625,7 +625,8 @@
       household:
         members: [adult, child, sibling, unrelated_child]
   output:
-    is_parent: [false, false, false, false]
+    # The adult's own child count still marks a parent; no child's ids name them.
+    is_parent: [true, false, false, false]
     medicaid_uses_non_filer_rules: [false, true, true, true]
     medicaid_household_size: [4, 2, 2, 1]
     medicaid_household_income: [98_000, 18_000, 18_000, 0]

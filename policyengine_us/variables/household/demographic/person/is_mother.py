@@ -8,8 +8,8 @@ class is_mother(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # is_parent uses co-resident parent links when available and otherwise
-        # the child count. Breastfeeding independently identifies a mother.
+        # is_parent combines the child count with co-resident parent links.
+        # Breastfeeding independently identifies a mother.
         female = person("is_female", period)
         has_children = person("is_parent", period)
         breastfeeding = person("is_breastfeeding", period)

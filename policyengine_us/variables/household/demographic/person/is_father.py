@@ -8,8 +8,7 @@ class is_father(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # is_parent uses co-resident parent links when available and otherwise
-        # the child count.
+        # is_parent combines the child count with co-resident parent links.
         female = person("is_female", period)
         has_children = person("is_parent", period)
         return ~female & has_children

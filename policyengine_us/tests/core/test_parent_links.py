@@ -61,15 +61,19 @@ def test_parent_links_are_scoped_to_interleaved_households():
         simulation.calculate("is_parent", 2026),
         [True, True, False, False, False, False],
     )
+    # In the linked household, the adult's household is the adult and the child
+    # whose id names them (42 CFR 435.603(f)(3)(ii)); the unrelated child is
+    # nobody's child there. The unrelated child has no ids and no family member
+    # reports a child the links omit, so no parent or sibling can be inferred.
+    # The legacy household has no ids and keeps the family-sum proxy.
     np.testing.assert_array_equal(
         simulation.calculate("medicaid_household_size", 2026),
-        [3, 3, 2, 3, 3, 3],
+        [2, 3, 2, 3, 1, 3],
     )
     # Exact binary fractions expose cross-household joins without tolerances.
-    # The unrelated child has no links and retains the family-sum fallback.
     np.testing.assert_array_equal(
         simulation.calculate("medicaid_household_income", 2026),
-        [10_300.875, 20_700.75, 10_100.375, 20_700.75, 10_300.875, 20_700.75],
+        [10_100.375, 20_700.75, 10_100.375, 20_700.75, 200.5, 20_700.75],
     )
 
 

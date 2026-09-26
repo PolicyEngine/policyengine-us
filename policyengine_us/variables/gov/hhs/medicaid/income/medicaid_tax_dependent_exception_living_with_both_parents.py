@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
+    has_parent_ids,
+    household_has_parent_ids,
+    reports_unlinked_children,
 )
 
 
@@ -12,8 +15,9 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/42/435.603#f_2_ii"
 
     def formula(person, period, parameters):
+        # Living with both parents requires both to resolve in the household.
         first, second = co_resident_parent_indices(person, period)
-        two_parents = (first >= 0) & (second >= 0) & (first != second)
+        two_parents = (first >= 0) & (second >= 0)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         tax_unit = person.tax_unit.reference_entity.members_entity_id
@@ -25,15 +29,26 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
             & joint[first]
             & person.tax_unit("tax_unit_is_filer", period)[first]
         )
-        has_parent_ids = (person("parent_1_id", period) != 0) | (
-            person("parent_2_id", period) != 0
-        )
         legacy_proxy = (person.family.sum(person("is_parent", period)) > 1) & (
             person.tax_unit.sum(person("is_parent", period)) == 1
+        )
+        # In a household with parent links, the family proxy for a child
+        # without ids counts only parents with children the links omit.
+        unlinked_parent = reports_unlinked_children(person, period)
+        residual_proxy = (person.family.sum(unlinked_parent) > 1) & (
+            person.tax_unit.sum(unlinked_parent) == 1
         )
         return (
             person("is_tax_unit_dependent", period)
             & person("medicaid_non_filer_child_age_eligible", period)
             & person("medicaid_claimed_by_parent_in_tax_unit", period)
-            & where(has_parent_ids, two_parents & ~parents_file_jointly, legacy_proxy)
+            & where(
+                has_parent_ids(person, period),
+                two_parents & ~parents_file_jointly,
+                where(
+                    household_has_parent_ids(person, period),
+                    residual_proxy,
+                    legacy_proxy,
+                ),
+            )
         )
