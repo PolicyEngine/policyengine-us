@@ -152,3 +152,48 @@ def test_explicit_zero_parent_ids_exactly_match_omitted_inputs():
     np.testing.assert_array_equal(
         zeros.calculate("medicaid_household_size", 2026), [2, 1, 3]
     )
+
+
+def test_linked_household_income_accumulates_in_float64():
+    # float32 accumulation rounds 2**24 + 1 back to 2**24 after each addition;
+    # the exact total 2**24 + 2 is representable in float32 storage.
+    def household_income(order):
+        inputs = {
+            "parent": {"age": 40, "person_id": 1, "income": 16_777_216},
+            "first_child": {"age": 10, "person_id": 2, "income": 1, "parent": 1},
+            "second_child": {"age": 8, "person_id": 3, "income": 1, "parent": 1},
+        }
+        people = {
+            name: {
+                "age": {"2026": inputs[name]["age"]},
+                "person_id": {"2026": inputs[name]["person_id"]},
+                "parent_1_id": {"2026": inputs[name].get("parent", 0)},
+                "medicaid_uses_non_filer_rules": {"2026": True},
+                "medicaid_household_income_member": {"2026": inputs[name]["income"]},
+            }
+            for name in order
+        }
+        simulation = Simulation(
+            situation={
+                "people": people,
+                "tax_units": {name: {"members": [name]} for name in order},
+                "families": {"family": {"members": order}},
+                "marital_units": {name: {"members": [name]} for name in order},
+                "households": {
+                    "household": {"members": order, "state_code": {"2026": "OH"}}
+                },
+            }
+        )
+        values = simulation.calculate("medicaid_household_income", 2026)
+        return dict(zip(simulation.persons.ids, values))
+
+    for order in (
+        ["parent", "first_child", "second_child"],
+        ["second_child", "first_child", "parent"],
+    ):
+        income = household_income(order)
+        assert income == {
+            "parent": 16_777_218,
+            "first_child": 16_777_218,
+            "second_child": 16_777_218,
+        }, order
