@@ -289,9 +289,9 @@
     # Under threshold, so full deduction
     loss_ald: 500_000
 
-- name: Section 461(l) remains in effect in 2027 under OBBBA (permanent)
+- name: Section 461(l) remains in effect in 2030 under OBBBA (permanent)
   # OBBBA § 70601 made the excess business loss limitation permanent.
-  period: 2027
+  period: 2030
   absolute_error_margin: 1
   input:
     people:
@@ -310,5 +310,5 @@
         members: [person1]
         state_code: TX
   output:
-    # 461(l) threshold carries forward from 2024 ($305,000 single) under OBBBA.
-    loss_ald: 305_000
+    # Inflation projection, not an IRS-published 2030 threshold.
+    loss_ald: 280000
