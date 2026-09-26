@@ -90,43 +90,43 @@
 
 - name: Case 10, 2025 taxable income in 2% bracket.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     ar_taxable_income_indiv: 10_000
     state_code: AR
   output:
-    # 10_000 * 0.02 - 112 = 88
-    ar_income_tax_before_non_refundable_credits_indiv: 88
+    # DFA 2025 bracket: 10_000 * 0.02 - 111.98 = 88.02
+    ar_income_tax_before_non_refundable_credits_indiv: 88.02
 
 - name: Case 11, 2025 taxable income in 3.4% bracket.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     ar_taxable_income_indiv: 20_000
     state_code: AR
   output:
-    # 20_000 * 0.034 - 288 = 392
-    ar_income_tax_before_non_refundable_credits_indiv: 392
+    # DFA 2025 bracket: 20_000 * 0.034 - 287.97 = 392.03
+    ar_income_tax_before_non_refundable_credits_indiv: 392.03
 
 - name: Case 12, 2025 taxable income in 3.9% bracket.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     ar_taxable_income_indiv: 50_000
     state_code: AR
   output:
-    # 50_000 * 0.039 - 420 = 1_530
-    ar_income_tax_before_non_refundable_credits_indiv: 1_530
+    # DFA 2025 bracket: 50_000 * 0.039 - 419.96 = 1_530.04
+    ar_income_tax_before_non_refundable_credits_indiv: 1_530.04
 
 - name: Case 13, 2025 taxable income at $100,000.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     ar_taxable_income_indiv: 100_000
     state_code: AR
   output:
-    # 100_000 * 0.039 - 89 = 3_811
-    ar_income_tax_before_non_refundable_credits_indiv: 3_811
+    # DFA 2025 bracket "$97,801 and over": 100_000 * 0.039 - 89.30 = 3_810.70
+    ar_income_tax_before_non_refundable_credits_indiv: 3_810.70
 
 # 2026 tests follow A.C.A. § 26-51-201(a)(4) as amended by HB1001 (2026 1st Extraordinary Session).
 # Bill schedules: (a)(4)(A) for net income <= $94,700, (a)(4)(B) for > $94,700, plus
@@ -299,3 +299,328 @@
     # 0.047 x 91,750 - 393.70 = 3,918.55 (previously the two duplicated
     # thresholds summed to a 787.40 reduction -> 3,524.85)
     ar_income_tax_before_non_refundable_credits_indiv: 3_918.55
+
+# 2025 and 2024 bracket adjustments, keyed to the DFA Indexed Tax Brackets cards
+# (2025_TaxBrackets.pdf and 2024_TaxBrackets.pdf, p1-2). Tax = 3.9% x net taxable
+# income - the row's minus adjustment.
+- name: AR 2025 bracket adjustment - top of the $26,400-$94,700 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_700
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$26,400 $94,700 3.90% $419.96":
+    # 0.039 x 94,700 - 419.96 = 3,273.34
+    ar_income_tax_before_non_refundable_credits_indiv: 3_273.34
+
+- name: AR 2025 bracket adjustment - first $94,701-$94,800 row PE previously skipped
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_701
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
+    # 0.039 x 94,701 - 399.30 = 3,294.04
+    # (PE previously applied the $419.96-row amount, 420, here -> 3,273.34)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_294.04
+
+- name: AR 2025 bracket adjustment - midpoint of the $94,701-$94,800 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_751
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
+    # 0.039 x 94,751 - 399.30 = 3,295.99
+    # (2025 Regular Income Tax Table, $94,701-$94,801: $3,296)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_295.99
+
+- name: AR 2025 bracket adjustment - top of the $94,701-$94,800 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_800
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
+    # 0.039 x 94,800 - 399.30 = 3,297.90
+    ar_income_tax_before_non_refundable_credits_indiv: 3_297.90
+
+- name: AR 2025 bracket adjustment - first income in the $94,801-$94,900 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_801
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,801 $94,900 3.90% $389.30":
+    # 0.039 x 94,801 - 389.30 = 3,307.94
+    ar_income_tax_before_non_refundable_credits_indiv: 3_307.94
+
+- name: AR 2025 bracket adjustment - midpoint of the $94,801-$94,900 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_851
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,801 $94,900 3.90% $389.30":
+    # 0.039 x 94,851 - 389.30 = 3,309.89
+    # (2025 Regular Income Tax Table, $94,801-$94,901: $3,310)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_309.89
+
+- name: AR 2025 bracket adjustment - first income in the $94,901-$95,000 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_901
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
+    # 0.039 x 94,901 - 379.30 = 3,321.84
+    ar_income_tax_before_non_refundable_credits_indiv: 3_321.84
+
+- name: AR 2025 bracket adjustment - midpoint of the $94,901-$95,000 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_951
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
+    # 0.039 x 94,951 - 379.30 = 3,323.79
+    # (2025 Regular Income Tax Table, $94,901-$95,001: $3,324)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_323.79
+
+- name: AR 2025 bracket adjustment - top of the $94,901-$95,000 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 95_000
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
+    # 0.039 x 95,000 - 379.30 = 3,325.70
+    ar_income_tax_before_non_refundable_credits_indiv: 3_325.70
+
+- name: AR 2025 bracket adjustment - first income in the $95,001-$95,100 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 95_001
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$95,001 $95,100 3.90% $369.30":
+    # 0.039 x 95,001 - 369.30 = 3,335.74
+    ar_income_tax_before_non_refundable_credits_indiv: 3_335.74
+
+- name: AR 2025 bracket adjustment - top of the last $10-step row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_800
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$97,701 $97,800 3.90% $99.30":
+    # 0.039 x 97,800 - 99.30 = 3,714.90
+    ar_income_tax_before_non_refundable_credits_indiv: 3_714.90
+
+- name: AR 2025 bracket adjustment - first income in the and-over row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_801
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets row "$97,801 and over 3.90% $89.30":
+    # 0.039 x 97,801 - 89.30 = 3,724.94
+    ar_income_tax_before_non_refundable_credits_indiv: 3_724.94
+
+- name: AR 2024 bracket adjustment - inside the asterisked $94,301-$94,500 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_450
+    state_code: AR
+  output:
+    # DFA 2024 Indexed Tax Brackets row "*$94,301 *$94,500 3.90% $197.40" (asterisked, $200 wide):
+    # 0.039 x 94,450 - 197.40 = 3,486.15
+    # (2024 Regular Income Tax Table, $94,401-$94,501: $3,486; PE previously applied $187.40 here -> 3,496.15)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_486.15
+
+- name: AR 2024 bracket adjustment - top of the asterisked $94,301-$94,500 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_500
+    state_code: AR
+  output:
+    # DFA 2024 Indexed Tax Brackets row "*$94,301 *$94,500 3.90% $197.40":
+    # 0.039 x 94,500 - 197.40 = 3,488.10
+    ar_income_tax_before_non_refundable_credits_indiv: 3_488.10
+
+- name: AR 2024 bracket adjustment - first income after the asterisked row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_501
+    state_code: AR
+  output:
+    # DFA 2024 Indexed Tax Brackets row "$94,501 $94,600 3.90% $187.40":
+    # 0.039 x 94,501 - 187.40 = 3,498.14
+    ar_income_tax_before_non_refundable_credits_indiv: 3_498.14
+
+- name: AR 2024 bracket adjustment - top of the last $10-step row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 95_500
+    state_code: AR
+  output:
+    # DFA 2024 Indexed Tax Brackets row "$95,401 $95,500 3.90% $97.40":
+    # 0.039 x 95,500 - 97.40 = 3,627.10
+    ar_income_tax_before_non_refundable_credits_indiv: 3_627.10
+
+- name: AR 2024 bracket adjustment - first income in the and-over row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 95_501
+    state_code: AR
+  output:
+    # DFA 2024 Indexed Tax Brackets row "$95,501 and over 3.90% $87.40":
+    # 0.039 x 95,501 - 87.40 = 3,637.14
+    ar_income_tax_before_non_refundable_credits_indiv: 3_637.14
+
+- name: AR 2027 indexed Act 1 of 2026 tables - top of the 0% row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 5_799
+    state_code: AR
+  output:
+    # the indexed 2% row starts at $5,800 (5,600 x 1.0298 = 5,767, nearest $100)
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: AR 2027 indexed Act 1 of 2026 tables - 2% row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 5_900
+    state_code: AR
+  output:
+    # (5,900 - 5,800) x 2% = 2.00
+    ar_income_tax_before_non_refundable_credits_indiv: 2
+
+- name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $108
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 11_300
+    state_code: AR
+  output:
+    # (11,300 - 5,800) x 2% = 110.00; the frozen 2026 reduction schedule gave 2% x 11,300 - 224 = 2.00
+    ar_income_tax_before_non_refundable_credits_indiv: 110
+
+- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3% row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 11_500
+    state_code: AR
+  output:
+    # (11,500 - 5,800) x 2% = 114.00
+    ar_income_tax_before_non_refundable_credits_indiv: 114
+
+- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.4% row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 16_500
+    state_code: AR
+  output:
+    # 114 + (16,500 - 11,500) x 3% = 264.00
+    ar_income_tax_before_non_refundable_credits_indiv: 264
+
+- name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $70.20
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 26_500
+    state_code: AR
+  output:
+    # 264 + (26,500 - 16,500) x 3.4% = 604.00; the frozen 2026 reduction schedule gave 3.4% x 26,500 - 367.20 = 533.80
+    ar_income_tax_before_non_refundable_credits_indiv: 604
+
+- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.7% row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 27_200
+    state_code: AR
+  output:
+    # 264 + (27,200 - 16,500) x 3.4% = 627.80
+    ar_income_tax_before_non_refundable_credits_indiv: 627.80
+
+- name: AR 2027 indexed Act 1 of 2026 tables - top of table (A) at the indexed high-income threshold
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_500
+    state_code: AR
+  output:
+    # 627.80 + (97,500 - 27,200) x 3.7% = 3,228.90; the threshold is 94,700 x 1.0298 = 97,522, nearest $100
+    ar_income_tax_before_non_refundable_credits_indiv: 3_228.90
+
+- name: AR 2027 indexed Act 1 of 2026 tables - first bracket adjustment row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_501
+    state_code: AR
+  output:
+    # 4,800 x 2% + (97,501 - 4,800) x 3.7% - 290 = 3,235.94; the 2% row top is 4,700 x 1.0298 = 4,840, nearest $100
+    ar_income_tax_before_non_refundable_credits_indiv: 3_235.94
+
+- name: AR 2027 indexed Act 1 of 2026 tables - second bracket adjustment row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_601
+    state_code: AR
+  output:
+    # 96 + (97,601 - 4,800) x 3.7% - 280 = 3,249.64; the row bound is 94,800 x 1.0298 = 97,625, nearest $100
+    ar_income_tax_before_non_refundable_credits_indiv: 3_249.64
+
+- name: AR 2027 indexed Act 1 of 2026 tables - top of the last bracket adjustment row
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 100_500
+    state_code: AR
+  output:
+    # 96 + (100,500 - 4,800) x 3.7% - 10 = 3,626.90; the last bound is 97,600 x 1.0298 = 100,509, nearest $100
+    ar_income_tax_before_non_refundable_credits_indiv: 3_626.90
+
+- name: AR 2027 indexed Act 1 of 2026 tables - above the bracket adjustment rows
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 100_501
+    state_code: AR
+  output:
+    # 96 + (100,501 - 4,800) x 3.7% = 3,636.94
+    ar_income_tax_before_non_refundable_credits_indiv: 3_636.94
+
+- name: AR 2027 indexed Act 1 of 2026 tables - high income
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 96 + (150,000 - 4,800) x 3.7% = 5,468.40
+    ar_income_tax_before_non_refundable_credits_indiv: 5_468.40
