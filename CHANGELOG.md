@@ -1,3 +1,13 @@
+## [2.15.4] - 2026-09-26
+
+### Fixed
+
+- Arkansas itemized medical expense deduction now uses Arkansas's own floor under Ark. Code § 26-51-423: 10% of Arkansas AGI from 2013 (7.5% when the filer or spouse is 65 or older in 2013-2016), instead of the federal 7.5% from 2017 on.
+- Arkansas 2015-2020 income tax parameters no longer fall back on 2021-2022 values: add each year's low income tax tables, personal tax credit amount ($26 through 2019), and tuition deduction caps; exempt unemployment compensation through 2017; before 2018, make military retirement share the $6,000 retirement exemption and block the 65 Special credit for filers who claim it; and zero the 2022 credits before they existed.
+- Fix Arkansas 2025 and 2024 income tax minus-adjustment schedules to match the DFA Indexed Tax Brackets: add the missing 2025 $94,701-$95,000 rows (previously taxed with the $419.96 adjustment), use DFA's exact cents for 2025, and honor the 2024 asterisked $94,301-$94,500 row.
+- Arkansas 2014-2020 income tax schedules now follow DFA's Indexed Tax Brackets, which reproduce every row of DFA's Regular Tax Tables: the 2014-2020 subtraction amounts are added, and the 2016-2018 rates, thresholds and high-income bracket adjustments are corrected.
+
+
 ## [2.15.3] - 2026-09-26
 
 ### Fixed
