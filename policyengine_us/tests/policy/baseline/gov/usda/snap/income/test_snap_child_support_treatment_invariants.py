@@ -46,6 +46,12 @@ start later (gov.usda.snap.eligibility.eligible_immigration_statuses starts in
 2018). Before 2015 the model cannot compute snap_income_counted_share or SNAP
 earned income, so these households set snap_income_counted_share to 1 and,
 for invariants 1 to 5, give SNAP earned and unearned income as inputs.
+
+These invariants check that the formulas carry out whatever the parameter
+file says, so they cannot tell a wrong value from a right one. The YAML cases
+in gross/snap_child_support_gross_income_deduction.yaml pin selected values,
+and test_every_jurisdiction_has_a_treatment_from_the_first_date pins that
+every jurisdiction has one.
 """
 
 from datetime import date
@@ -108,6 +114,24 @@ SCHEDULE = _load_schedule()
 STATES = sorted(SCHEDULE)
 DATES = sorted({day for values in SCHEDULE.values() for day, _ in values})
 FIRST_DATE = DATES[0]
+
+# The jurisdictions the parameter covers: the 50 states, the District of
+# Columbia, Guam and the U.S. Virgin Islands.
+JURISDICTIONS = frozenset(
+    """
+    AK AL AR AZ CA CO CT DC DE FL GA GU HI IA ID IL IN KS KY LA MA MD ME MI MN
+    MO MS MT NC ND NE NH NJ NM NV NY OH OK OR PA RI SC SD TN TX UT VA VI VT WA
+    WI WV WY
+    """.split()
+)
+
+
+def test_every_jurisdiction_has_a_treatment_from_the_first_date():
+    """Coverage the invariants cannot check, since they read the same file."""
+    assert set(SCHEDULE) == JURISDICTIONS
+    assert FIRST_DATE == date(2010, 1, 1)
+    first_dates = {state: values[0][0] for state, values in SCHEDULE.items()}
+    assert all(day == FIRST_DATE for day in first_dates.values()), first_dates
 
 
 def _add_months(day: date, months: int) -> date:
