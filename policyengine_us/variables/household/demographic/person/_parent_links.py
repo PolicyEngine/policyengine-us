@@ -11,10 +11,12 @@ Rules shared by every formula that reads the links:
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep
   their original expressions in households without links.
-- In a household with links, a person reports unlinked children when
-  own_children_in_household exceeds the co-resident people whose ids name
-  them. Such a person is the only kind of parent the family-level proxy may
-  still assign to a child-age member without ids.
+- A person reports unlinked children when own_children_in_household exceeds
+  the co-resident people whose ids name them; without links this is
+  own_children_in_household > 0. Such a person is the only kind of parent the
+  family-level and tax-unit-level proxies may still assign to a person
+  without ids, so a link in one household never makes its parent the
+  presumed parent of someone else's child in another.
 
 Temporary memory is linear in the number of people, and work is linear in
 people times the largest household or tax unit size.

@@ -546,3 +546,165 @@
     medicaid_non_filer_child_age_eligible: [false, true, false, true]
     medicaid_household_size: [3, 3, 1, 3]
     medicaid_household_income: [35_000, 35_000, 2_000, 35_000]
+
+# Regressions for the r2 review of the rework.
+
+- name: A married dependent living with both parents counts a spouse who files separately.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+      mother:
+        person_id: 2
+        age: 44
+      teen:
+        person_id: 3
+        age: 17
+        parent_1_id: 1
+        parent_2_id: 2
+      teen_spouse:
+        person_id: 4
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [father, mother, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      mother:
+        members: [mother]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, mother, teen, teen_spouse]
+        state_code: OH
+  output:
+    # The teen is claimed by one parent and lives with both, who file
+    # separately, so 42 CFR 435.603(f)(2)(ii) applies and (f)(3) gives the
+    # teen, the spouse and both parents. The spouse's income counts because
+    # the spouse must file.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true, false]
+    medicaid_household_size: [2, 1, 4, 2]
+    medicaid_household_income: [0, 0, 30_000, 30_000]
+
+- name: A link in one household does not make its parent another household's presumed parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 55
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      nephew:
+        person_id: 3
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, nephew]
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+    families:
+      parent_family:
+        members: [parent, child]
+      nephew_family:
+        members: [nephew]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      nephew:
+        members: [nephew]
+    households:
+      parent_home:
+        members: [parent, child]
+        state_code: OH
+      nephew_home:
+        members: [nephew]
+        state_code: OH
+  output:
+    # Nobody reports the nephew as their own child and he has no ids, so he
+    # is a dependent other than a child: 42 CFR 435.603(f)(2)(i) sends him to
+    # the non-filer rules, where he lives alone.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, true]
+    medicaid_uses_non_filer_rules: [false, true, true]
+    medicaid_household_size: [2, 2, 1]
+    medicaid_household_income: [20_000, 20_000, 0]
+
+- name: A child claimed on a parent's return elsewhere still gets the both-parents exception.
+  period: 2026
+  input:
+    people:
+      parent_p:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      parent_q:
+        person_id: 2
+        age: 39
+        employment_income: 30_000
+      child:
+        person_id: 3
+        age: 18
+        parent_1_id: 1
+        parent_2_id: 2
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      p_unit:
+        members: [parent_p]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      q_unit:
+        members: [parent_q]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 3
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [parent_p, parent_q, child]
+    marital_units:
+      parent_p:
+        members: [parent_p]
+      parent_q:
+        members: [parent_q]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_p, parent_q, child]
+        state_code: OH
+  output:
+    # P claims the child, the child lives with both unmarried parents, so
+    # 42 CFR 435.603(f)(2)(ii) applies and (f)(3) gives the child and both
+    # parents. P's own household includes the claimed child under (f)(1).
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 1, 3]
+    medicaid_household_income: [20_000, 30_000, 50_000]

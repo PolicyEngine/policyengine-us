@@ -24,11 +24,15 @@ def medicaid_non_filer_member_sum(person, period, values):
     Links identify parents, children and siblings (siblings share a nonzero
     parent id, including an absent parent). A child-age person without ids is
     unlinked. The original family-level proxy still relates unlinked children
-    to each other and to family members who report unlinked children, so one
-    family's links never add or remove another family's relatives.
+    to each other and to family members who report unlinked children. So a
+    parent that a child count reports is never erased, though moving a
+    household onto this rule can remove another family's legacy over-count,
+    such as an adult's child-age sibling.
 
-    A spouse is the other head or spouse of a joint return, or a cohabiting
-    spouse under the separate-filer rule, and counts only when co-resident.
+    A spouse is a co-resident partner in a two-person marital unit, whatever
+    either partner's tax role, or the other head or spouse of a joint return.
+    People linked as parent and child are never spouses, since PE puts
+    everyone in one marital unit when a situation omits marital units.
 
     Values accumulate in float64; variable storage rounds the result.
     """
@@ -56,29 +60,29 @@ def medicaid_non_filer_member_sum(person, period, values):
     tax_unit = person.tax_unit.reference_entity.members_entity_id
     head_spouse_count = person.tax_unit("head_spouse_count", period)
     joint = head_or_spouse & (head_spouse_count == 2)
-    separate_spouse = (
-        person.tax_unit("cohabitating_spouses", period)
-        & (head_spouse_count == 1)
-        & (head_or_spouse | person("claimed_as_dependent_on_another_return", period))
-    )
+    married = person.marital_unit.nb_persons() == 2
     marital_unit = person.marital_unit.reference_entity.members_entity_id
 
     own_index = np.arange(person.count)
     for member in household_member_indices(person):
         is_self = member == own_index
         same_family = family[member] == family
-        spouse = ~is_self & (
-            (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-            | (separate_spouse & (marital_unit[member] == marital_unit))
+        names_applicant = (first[member] == own_index) | (second[member] == own_index)
+        named_by_applicant = (first == member) | (second == member)
+        spouse = (
+            ~is_self
+            & ~names_applicant
+            & ~named_by_applicant
+            & (
+                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
+                | (married & (marital_unit[member] == marital_unit))
+            )
         )
         own_child = child[member] & (
-            (first[member] == own_index)
-            | (second[member] == own_index)
-            | (reports_unlinked & unlinked_child[member] & same_family)
+            names_applicant | (reports_unlinked & unlinked_child[member] & same_family)
         )
         parent = child & (
-            (first == member)
-            | (second == member)
+            named_by_applicant
             | (unlinked_child & reports_unlinked[member] & same_family)
         )
         shares_parent_id = (

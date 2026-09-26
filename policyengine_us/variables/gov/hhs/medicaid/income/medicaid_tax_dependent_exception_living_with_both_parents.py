@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
     has_parent_ids,
-    household_has_parent_ids,
     reports_unlinked_children,
 )
 
@@ -20,12 +19,14 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
             & person("medicaid_non_filer_child_age_eligible", period)
             & person("medicaid_claimed_by_parent_in_tax_unit", period)
         )
-        legacy_proxy = (person.family.sum(person("is_parent", period)) > 1) & (
-            person.tax_unit.sum(person("is_parent", period)) == 1
-        )
+        # Without ids, the family and tax unit proxies count parents who report
+        # own children that no parent id names; without links this is
+        # own_children_in_household > 0, the original is_parent.
+        parent = reports_unlinked_children(person, period)
+        proxy = (person.family.sum(parent) > 1) & (person.tax_unit.sum(parent) == 1)
         own_ids = has_parent_ids(person, period)
         if not np.any(own_ids):
-            return claimed_child & legacy_proxy
+            return claimed_child & proxy
 
         # Living with both parents requires both to resolve in the household.
         first, second = co_resident_parent_indices(person, period)
@@ -41,18 +42,35 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
             & joint[first]
             & person.tax_unit("tax_unit_is_filer", period)[first]
         )
-        # In a household with parent links, the family proxy for a child
-        # without ids counts only parents with children the links omit.
-        unlinked_parent = reports_unlinked_children(person, period)
-        residual_proxy = (person.family.sum(unlinked_parent) > 1) & (
-            person.tax_unit.sum(unlinked_parent) == 1
+        # A known claiming tax unit elsewhere claims the child by a parent when
+        # a co-resident parent is its head or spouse.
+        tax_unit_id = person.tax_unit("tax_unit_id", period)
+        claiming_tax_unit_id = person("medicaid_claiming_tax_unit_id", period)
+        head_or_spouse = head | spouse
+        claimed_elsewhere = person("medicaid_has_known_claiming_tax_unit", period) & (
+            claiming_tax_unit_id != tax_unit_id
         )
-        return claimed_child & where(
-            own_ids,
-            two_parents & ~parents_file_jointly,
-            where(
-                household_has_parent_ids(person, period),
-                residual_proxy,
-                legacy_proxy,
-            ),
+        claimed_elsewhere_by_parent = claimed_elsewhere & (
+            (
+                (first >= 0)
+                & head_or_spouse[first]
+                & (tax_unit_id[first] == claiming_tax_unit_id)
+            )
+            | (
+                (second >= 0)
+                & head_or_spouse[second]
+                & (tax_unit_id[second] == claiming_tax_unit_id)
+            )
         )
+        linked = (
+            (
+                claimed_child
+                | (
+                    person("medicaid_non_filer_child_age_eligible", period)
+                    & claimed_elsewhere_by_parent
+                )
+            )
+            & two_parents
+            & ~parents_file_jointly
+        )
+        return where(own_ids, linked, claimed_child & proxy)
