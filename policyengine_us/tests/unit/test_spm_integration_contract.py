@@ -452,8 +452,18 @@ def test_generic_benefit_consumers_do_not_use_spm_measurement_composition(
 # form.
 
 
+def pays_own_utilities(situation):
+    # CARE requires the household to pay its own utilities. Zero the HUD
+    # utility allowance directly so the housing amounts stay those of the
+    # no-allowance household that household() builds.
+    location = situation["households"]["household"]
+    location["tenant_pays_utilities"] = {YEAR: True}
+    location["hud_utility_allowance"] = {YEAR: 0}
+    return situation
+
+
 def assisted_la_renter(earnings, *, county=None):
-    situation = household(earnings=earnings, county=county)
+    situation = pays_own_utilities(household(earnings=earnings, county=county))
     situation["spm_units"]["spm_unit"]["pre_subsidy_electricity_expense"] = {
         YEAR: 1_800
     }
@@ -550,7 +560,9 @@ def income_eligible_la_renter(*, receives, county="06037"):
     assistance whatever it reports, and `takes_up_housing_assistance_if_eligible`
     defaults to true.
     """
-    situation = household(earnings=35_000, county=county, rent=24_000)
+    situation = pays_own_utilities(
+        household(earnings=35_000, county=county, rent=24_000)
+    )
     situation["spm_units"]["spm_unit"]["receives_housing_assistance"] = {YEAR: receives}
     situation["spm_units"]["spm_unit"]["pre_subsidy_electricity_expense"] = {
         YEAR: 1_800

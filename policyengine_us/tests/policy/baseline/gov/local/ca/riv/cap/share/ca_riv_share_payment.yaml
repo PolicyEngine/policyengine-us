@@ -72,3 +72,30 @@
   output:
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_payment: 0 
+
+- name: Case 5, integration, utilities included in rent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+        tenant_pays_utilities: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_riv_share_eligible_for_emergency_payment: true
+        pre_subsidy_electricity_expense: 50 * 12
+        water_expense: 5 * 12
+        trash_expense: 5 * 12
+  output:
+    # The RPU bill is in the landlord's name, so neither the monthly
+    # credits nor the emergency payment apply.
+    ca_riv_share_eligible: false
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_payment: 0

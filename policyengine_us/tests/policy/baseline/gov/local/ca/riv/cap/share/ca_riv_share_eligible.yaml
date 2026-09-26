@@ -19,3 +19,13 @@
   output:
     spm_unit_fpg: 2_220.83
     ca_riv_share_eligible: false
+
+- name: Case 3, household size of 3 with $66000 income and utilities included in rent, ineligible.
+  period: 2025-01
+  input:
+    ca_riv_share_countable_income: 66_000
+    spm_unit_size: 3
+    in_riv: true
+    tenant_pays_utilities: false
+  output:
+    ca_riv_share_eligible: false

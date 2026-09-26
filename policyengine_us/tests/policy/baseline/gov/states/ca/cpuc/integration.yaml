@@ -169,3 +169,95 @@
     ca_fera_eligible: true
     # FERA discount = 18% of $1,200.
     ca_fera: 216
+
+- name: Case 8, income-eligible renter with utilities included in rent gets no CARE discount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 30_000
+    ca_care_income_eligible: true
+    # The landlord, not the tenant, is the utility customer of record.
+    ca_care_amount_if_eligible: 390
+    ca_care_eligible: false
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 9, three-person household below the CARE income limit with utilities included in rent gets neither CARE nor FERA.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+      person2:
+        age: 40
+        employment_income: 15_000
+      person3:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 45_000
+    ca_care_income_eligible: true
+    ca_care_eligible: false
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 10, three-person household in the FERA income range with utilities included in rent gets no FERA discount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 40
+        employment_income: 20_000
+      person3:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 60_000
+    ca_care_income_eligible: false
+    ca_care_eligible: false
+    ca_fera_amount_if_eligible: 216
+    ca_fera_eligible: false
+    ca_fera: 0
