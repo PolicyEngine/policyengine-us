@@ -32,10 +32,13 @@ class ms_hmw_other_coverage_ineligible(Variable):
         income_limit = p.income_limit[state_code]
         istatus = person("immigration_status", period)
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
+        daca = istatus == istatus.possible_values.DACA
+        # Mirror the immigration gate in is_chip_eligible_child.
+        immigration_eligible = ~(undocumented | daca)
         potentially_chip_child_eligible = (
             (age < p.max_age)
             & (income_limit > 0)
-            & ~undocumented
+            & immigration_eligible
             & (person("medicaid_income_level", period) <= income_limit)
             & ~person("has_esi", period)
         )

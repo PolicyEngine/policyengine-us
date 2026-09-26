@@ -411,6 +411,11 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         temporary patch for structural reforms, and must be set to the start
         date of a structural reform parameter if it begins on a date other
         than the first day of the current year.
+        dataset_end_year(int | None): Optional; The final year to create when
+        automatically extending an entity-level single-year dataset. Defaults
+        to the latest supported economic-assumption year. This option applies
+        only to the default dataset, entity-level HDFStore paths, and
+        USSingleYearDataset instances.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -425,6 +430,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
         )
+        dataset_end_year: int | None = kwargs.pop("dataset_end_year", None)
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
         )
@@ -462,15 +468,24 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
                 )
 
                 single = USSingleYearDataset(file_path=local_path)
-                multi = extend_single_year_dataset(single)
+                multi = extend_single_year_dataset(single, end_year=dataset_end_year)
                 kwargs["dataset"] = multi
+            elif dataset_end_year is not None:
+                raise ValueError(
+                    "dataset_end_year applies only to entity-level "
+                    "single-year datasets."
+                )
         elif isinstance(dataset, USSingleYearDataset):
             from policyengine_us.data.economic_assumptions import (
                 extend_single_year_dataset,
             )
 
-            multi = extend_single_year_dataset(dataset)
+            multi = extend_single_year_dataset(dataset, end_year=dataset_end_year)
             kwargs["dataset"] = multi
+        elif dataset_end_year is not None:
+            raise ValueError(
+                "dataset_end_year applies only to entity-level single-year datasets."
+            )
         # USMultiYearDataset instances are already extended and pass
         # through to core unchanged.
 

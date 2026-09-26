@@ -21,22 +21,29 @@ class nj_njhps_member_eligible(Variable):
         "is_aca_ptc_eligible is False and aca_ptc is 0 above 400% FPL), which "
         "would drop the 400-600% band that NJHPS covers and that is the single "
         "most PY2026-relevant band because federal APTC is $0 there. Instead "
-        "the gate reproduces every NON-INCOME component of federal APTC "
-        "eligibility via pays_aca_premium (TIN, lawful-presence/immigration "
-        "status, no ineligible minimum essential coverage, and the age-based "
-        "premium test) plus the married-filing-separately exclusion, and "
-        "substitutes NJHPS's own 138-600% FPL income band for the federal 400% "
-        "cliff. This mirrors the non-income internals pattern used for the "
-        "above-400% bands in New Mexico and Washington."
+        "the gate reproduces the Marketplace enrollment test via "
+        "pays_aca_premium (TIN, lawful-presence/immigration status, no "
+        "ineligible minimum essential coverage, the age-based premium test "
+        "and, since policyengine-us #9506, the Medicaid coverage gap) plus "
+        "the married-filing-separately exclusion, and substitutes NJHPS's own "
+        "138-600% FPL income band for the federal 400% cliff. The coverage-gap "
+        "exclusion carried by pays_aca_premium is non-binding here, because "
+        "the NJHPS band starts at 138% FPL, above the federal PTC floor the "
+        "gap sits under. This mirrors the enrollment-internals pattern used "
+        "for the above-400% bands in New Mexico and Washington."
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.dobi.njhps
         # aca_magi_fraction is a TaxUnit variable read at the person level.
         magi_fraction = person.tax_unit("aca_magi_fraction", period)
-        # pays_aca_premium is a Person-level test with no income component:
+        # pays_aca_premium is the Person-level Marketplace enrollment test:
         # TIN, immigration/lawful-presence status, no ineligible minimum
-        # essential coverage, and the age-based premium requirement.
+        # essential coverage, the age-based premium requirement and, since
+        # policyengine-us #9506, the Medicaid coverage gap. That last piece is
+        # the only income component and it cannot bind here: it excludes
+        # income under the federal PTC floor of 100% FPL, and within_band
+        # already starts at the 138% FPL NJHPS floor.
         pays_premium = person("pays_aca_premium", period)
         fstatus = person.tax_unit("filing_status", period)
         not_separate = fstatus != fstatus.possible_values.SEPARATE

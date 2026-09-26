@@ -1,3 +1,153 @@
+## [2.15.2] - 2026-09-26
+
+### Changed
+
+- Cite the Hawaii, Maryland, Pennsylvania, Vermont and Arkansas rules that deduct child support paid in SNAP from 2010 to 2017, although some USDA State Options Report editions list these states as excluding it (no parameter values change). Add tests for the pre-2015 child support values and for the invariant that each state either excludes child support paid from SNAP gross income or deducts it from net income, never both and never neither.
+
+
+## [2.15.1] - 2026-09-25
+
+### Fixed
+
+- Correct the 2022 single 37% bracket threshold from $539,000 to $539,900.
+
+
+## [2.15.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision child-care age eligibility in Georgia, Idaho, Indiana, Michigan, North Dakota, South Dakota, and Wyoming, including the Michigan and South Dakota age-18 student extensions, and verify that Nebraska does not elect the extension.
+
+
+## [2.14.1] - 2026-09-25
+
+### Fixed
+
+- Repoint Arkansas DFA references from the dead images/uploads/incomeTaxOffice path to wp-content/uploads, and replace the removed 2014 tax bracket sheet with the 2014 instruction booklet.
+
+
+## [2.14.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision age eligibility to child-care assistance in Maine, North Carolina, Virginia, Vermont, and Washington.
+
+
+## [2.13.0] - 2026-09-25
+
+### Added
+
+- Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021, following Maryland's CCDF plan elections, using the new `is_under_court_supervision` input (COMAR itself does not provide the route).
+
+
+## [2.12.0] - 2026-09-25
+
+### Added
+
+- Add a reusable court-supervision status input and apply verified child-care age rules in Kansas, Kentucky, Louisiana, Missouri, Montana, New Mexico, New York, Oklahoma, Oregon, Tennessee, Utah, and West Virginia, including Kentucky's special-care supplement and Missouri's special-needs treatment.
+
+### Changed
+
+- Include age 18 in New Mexico child-care special-supervision eligibility effective May 20, 2026 (applied from June 2026 in the monthly model), under the Child Care Assistance Program Act.
+
+### Fixed
+
+- Correct the start date of Kentucky's $5 child-care special-care supplement to August 1, 2022, and require secondary-school enrollment for New York's age-18 special-needs child-care route.
+
+
+## [2.11.4] - 2026-09-24
+
+### Fixed
+
+- Correct which states exclude legally obligated child support payments from SNAP gross income instead of deducting them from net income. The state values were inverted, so 46 jurisdictions had the wrong treatment in 2026. They now follow the USDA SNAP State Options Report (14th through 17th editions), with overrides where state rules for California, Delaware, Illinois, Louisiana, Massachusetts, Missouri, North Carolina, Oregon and Virginia contradict an edition, and with Michigan (fiscal year 2023) and Vermont (fiscal year 2024) kept as deduction states where a single edition lists an exclusion. Before October 2017 the values follow the 9th to 13th editions and state rules: Iowa, Maine, New York and South Dakota exclude from 2010 as every edition lists; Arizona excludes until the 11th edition (September 2013) lists a deduction; state rules set the exclusions for Colorado, Iowa, Massachusetts, Rhode Island and Washington (in effect by 2010) and New Jersey (from November 1, 2013, under P.L. 2013, c.45).
+
+
+## [2.11.3] - 2026-09-24
+
+### Changed
+
+- Booked the 2023 Virginia rebate to tax year 2022, whose return determines it, in line with other one-time state rebates, and defaulted the Oregon kicker's prior-year tax liability to the current-year liability instead of $0.
+
+
+## [2.11.2] - 2026-09-24
+
+### Changed
+
+- Massachusetts Commonwealth Credit reform now phases out on adjusted gross income and extends eligibility to separate filers at the non-joint threshold.
+
+
+## [2.11.1] - 2026-09-23
+
+### Fixed
+
+- Include taxable Roth conversions in South Carolina retirement deduction (#9523); exclude Roth conversions from Oklahoma age-65 special exemption AGI limit (#9522); add retirement distributions and Roth conversions to Iowa gross income (#9521); enforce age 59½ requirement and disability exception on IRA distributions and Roth conversions in Michigan retirement deductions under MCL § 206.30(8)(a)(ii) (partially addressing #9520); update retirement citation links for NY, WI, GA, and KY.
+
+
+## [2.11.0] - 2026-09-23
+
+### Added
+
+- Allow callers to limit automatic single-year dataset extension with the
+  `Microsimulation` `dataset_end_year` argument.
+
+
+## [2.10.1] - 2026-09-23
+
+### Fixed
+
+- Count qualified dividends once in the capital-gains worksheet used for alternative minimum tax.
+- Prevent passive and capital losses from offsetting portfolio income in the EITC investment-income eligibility test.
+
+
+## [2.10.0] - 2026-09-23
+
+### Added
+
+- Add Massachusetts tiered Child and Family Tax Credit and Commonwealth Credit contributed reforms.
+
+
+## [2.9.0] - 2026-09-22
+
+### Added
+
+- Implement California's County Children's Health Initiative Program (CCHIP) for children in San Francisco, San Mateo, and Santa Clara counties, integrate it with CHIP eligibility, count pregnancies throughout California MAGI Medi-Cal households, and apply the existing-coverage check to California's Medi-Cal Access Program.
+
+
+## [2.8.2] - 2026-09-22
+
+### Fixed
+
+- Excluded DACA recipients from general CHIP child and standard pregnancy eligibility, and from the Healthier Mississippi Waiver's potentially-CHIP-eligible child check, while preserving FCEP coverage regardless of the pregnant parent's immigration status.
+
+
+## [2.8.1] - 2026-09-22
+
+### Fixed
+
+- Apply inclusive monthly income ceilings across the MAGI Medicaid categories and CHIP, remove the Missouri income and parent-limit workarounds, and make older-child eligibility use its financial and nonfinancial checks. The uniform rounding convention approximates state dollar tables without adding state rounding parameters.
+
+
+## [2.8.0] - 2026-09-22
+
+### Added
+
+- Contributed reforms paying Arizona's dependent tax credit as refundable and age-splitting the Massachusetts and Utah dependent exemptions (repeal or reprice for dependents under a threshold while preserving the baseline for older dependents).
+
+
+## [2.7.0] - 2026-09-21
+
+### Added
+
+- Add Alabama federal income tax deduction Part II (Act 2022-37): recompute the CTC, CDCC, and EITC as if the 2020 IRC applied and take the greater deduction.
+
+
+## [2.6.21] - 2026-09-21
+
+### Fixed
+
+- Stopped charging a marketplace premium to a person in the Medicaid coverage gap — under the premium tax credit's income floor, income-ineligible under the eligibility scale itself, and with no Medicaid pathway — who has no subsidy to buy the plan with.
+
+
 ## [2.6.20] - 2026-09-20
 
 ### Fixed

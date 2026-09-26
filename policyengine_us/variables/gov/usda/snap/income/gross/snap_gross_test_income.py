@@ -49,7 +49,8 @@ class snap_gross_test_income(Variable):
         p = parameters(period).gov.usda.snap.income
         unit_level_unearned = add(spm_unit, period, p.sources.unearned_spm_unit)
         # Count these aliens' child support payments in full as well, in
-        # states that deduct child support when computing gross income.
+        # states that exclude child support from gross income
+        # (7 CFR 273.9(c)(17)).
         child_support = person("child_support_expense", period)
         state = spm_unit.household("state_code_str", period)
         cs_deductible = p.deductions.child_support[state]
