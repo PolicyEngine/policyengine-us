@@ -334,3 +334,252 @@
         state_code: AR
   output:
     ar_uses_low_income_tax_tables: false
+
+# The 2024 Head of Household/Surviving Spouse with 2 or More Dependents table
+# (2024 AR1000F/AR1000NR instructions, PDF page 28) reads: $0-$24,176 -> $0,
+# $24,177-$24,200 -> $92, $24,201-$24,300 -> $104, $24,301-$24,400 -> $116,
+# $24,401-$24,500 -> $129. The $92 row's threshold was once keyed at $24,200,
+# equal to the next row's, and policyengine-core sums the amounts of brackets
+# with equal thresholds, so $24,201-$24,300 got $196 and the $92 row vanished.
+# One single-member tax unit per income covers every row edge in the range.
+- name: Case 19, 2024 head of household with 2 dependents from $24,100 to $24,401.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 24_100
+      person2:
+        ar_agi_joint: 24_176
+      person3:
+        ar_agi_joint: 24_177
+      person4:
+        ar_agi_joint: 24_200
+      person5:
+        ar_agi_joint: 24_201
+      person6:
+        ar_agi_joint: 24_250
+      person7:
+        ar_agi_joint: 24_300
+      person8:
+        ar_agi_joint: 24_301
+      person9:
+        ar_agi_joint: 24_400
+      person10:
+        ar_agi_joint: 24_401
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit3:
+        members: [person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit4:
+        members: [person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit5:
+        members: [person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit6:
+        members: [person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit7:
+        members: [person7]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit8:
+        members: [person8]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit9:
+        members: [person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit10:
+        members: [person10]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: [0, 0, 92, 92, 104, 104, 104, 116, 116, 129]
+
+- name: Case 20, 2024 surviving spouse with 2 dependents from $24,100 to $24,401.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 24_100
+      person2:
+        ar_agi_joint: 24_176
+      person3:
+        ar_agi_joint: 24_177
+      person4:
+        ar_agi_joint: 24_200
+      person5:
+        ar_agi_joint: 24_201
+      person6:
+        ar_agi_joint: 24_250
+      person7:
+        ar_agi_joint: 24_300
+      person8:
+        ar_agi_joint: 24_301
+      person9:
+        ar_agi_joint: 24_400
+      person10:
+        ar_agi_joint: 24_401
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit2:
+        members: [person2]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit3:
+        members: [person3]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit4:
+        members: [person4]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit5:
+        members: [person5]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit6:
+        members: [person6]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit7:
+        members: [person7]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit8:
+        members: [person8]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit9:
+        members: [person9]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit10:
+        members: [person10]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: [0, 0, 92, 92, 104, 104, 104, 116, 116, 129]
+
+- name: Case 21, 2024 head of household and surviving spouse with 2 dependents in the last table rows.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 28_100
+      person2:
+        ar_agi_joint: 28_101
+      person3:
+        ar_agi_joint: 28_200
+      person4:
+        ar_agi_joint: 28_100
+      person5:
+        ar_agi_joint: 28_101
+      person6:
+        ar_agi_joint: 28_200
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit3:
+        members: [person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit4:
+        members: [person4]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit5:
+        members: [person5]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+      tax_unit6:
+        members: [person6]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AR
+  output:
+    # $28,001-$28,100 -> $575; $28,101-$28,200 -> $588.
+    ar_low_income_tax_joint: [575, 588, 588, 575, 588, 588]
+
+- name: Case 22, 2024 head of household and surviving spouse with 2 dependents above the $28,200 cutoff.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 28_201
+      person2:
+        ar_agi_joint: 28_201
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit2:
+        members: [person2]
+        filing_status: SURVIVING_SPOUSE
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: [false, false]
+
+- name: Case 23, 2024 head of household with 2 dependents pays the table tax before credits.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 24_190
+      person2:
+        ar_agi_joint: 24_250
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: [92, 104]
+    ar_income_tax_before_non_refundable_credits_joint: [92, 104]
