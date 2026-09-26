@@ -33,3 +33,23 @@
     snap_net_income: 26_652
   output:
     meets_tanf_non_cash_net_income_test: true
+
+- name: California nine-person household at the published FY 2026 net standard meets the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # The eight-person standard of $4,513 plus a rounded-up $459
+        # increment gives $4,972 under 7 CFR 273.9(a)(3)(ii), not the $4,971
+        # from rounding up the whole nine-person guideline.
+        snap_net_income: 4_972
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    meets_tanf_non_cash_net_income_test: true

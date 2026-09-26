@@ -91,3 +91,62 @@
         state_code: MO
   output:
     meets_snap_gross_income_test: false
+
+- name: Ten-person Kansas household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # 7 CFR 273.9(a)(3)(i) adds a separately rounded-up increment to
+        # the eight-person standard: 130% x $54,150 / 12 = $5,866.25,
+        # rounded up to $5,867, plus 2 x (130% x $5,500 / 12 = $595.83,
+        # rounded up to $596) gives $7,059, matching the USDA FY 2026 table.
+        # Rounding up the whole ten-person amount ($7,057.92) gives $7,058.
+        snap_gross_test_income: 7_059
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Ten-person Washington household just above the published FY 2026 gross limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        snap_gross_test_income: 7_060
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Twelve-person North Carolina household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $5,867 + 4 x $596 = $8,251 under 7 CFR 273.9(a)(3)(i); rounding
+        # up the whole twelve-person amount (130% x $76,150 / 12 =
+        # $8,249.58) would give $8,250.
+        snap_gross_test_income: 8_251
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    meets_snap_gross_income_test: true

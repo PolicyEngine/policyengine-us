@@ -1434,11 +1434,11 @@
         # Two non-heating utility bills (electricity + water, partner-sent
         # expense inputs) select TX's Limited Utility Allowance ($400 FY2026)
         # instead of the SUA: shelter expense = 600 housing + 400 LUA = 1,000 -
-        # 0.5 x 1,124.33 = 437.83 (uncapped) -> net = 686.50 (686.4998 unrounded,
-        # so it rounds to 686) -> EC ceil(205.80) = 206 -> 785 - 206 =
-        # 579.00/month Jan-Sep; Oct-Dec (LUA uprated to 414.13): 812.72 - 199 =
-        # 613.72. Annual = 9 x 579.00 + 3 x 613.72 = 7,052.17.
-        snap: 7052.17
+        # 0.5 x 1,124.33 = 437.83 (uncapped) -> net = 686.50 exactly, which
+        # rounds half-up to 687 -> EC ceil(206.10) = 207 -> 785 - 207 =
+        # 578.00/month Jan-Sep; Oct-Dec (LUA uprated to 414.13): 812.72 - 199 =
+        # 613.72. Annual = 9 x 578.00 + 3 x 613.72 = 7,043.17.
+        snap: 7043.17
         is_snap_eligible: true
 
 - name: snap_ineligible_student_income_excluded_mixed_household (federal)

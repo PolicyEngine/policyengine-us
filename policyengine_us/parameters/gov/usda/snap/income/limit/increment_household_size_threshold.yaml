@@ -1,0 +1,14 @@
+description: The Supplemental Nutrition Assistance Program builds the monthly gross and net income standards for households larger than this size by adding a separately rounded per-person increment to the standard for this size.
+
+values:
+  2005-01-01: 8
+
+metadata:
+  unit: person
+  period: year
+  label: SNAP income standard per-person increment household size threshold
+  reference:
+    - title: 7 CFR 273.9(a)(3)(i)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#a_3_i
+    - title: 7 CFR 273.9(a)(3)(ii)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#a_3_ii
