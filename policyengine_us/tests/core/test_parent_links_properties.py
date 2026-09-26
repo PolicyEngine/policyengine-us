@@ -202,7 +202,9 @@ def random_linked_households(
                 spouse=None,
             )
         if married:
+            # A married couple living together is one family.
             people[0]["spouse"], people[1]["spouse"] = 1, 0
+            people[1]["family"] = people[0]["family"]
         households.append(people)
     return households
 
@@ -310,7 +312,7 @@ def rule_members(members, i):
         if m == i:
             continue
         same_family = family[m] == family[i]
-        spouse = members[i]["spouse"] == m
+        spouse = members[i]["spouse"] == m and same_family
         own_child = child[m] and (
             i in parents[m] or (reports[i] and unlinked[m] and same_family)
         )

@@ -821,3 +821,94 @@
     medicaid_uses_non_filer_rules: [true, true]
     medicaid_household_size: [1, 1]
     medicaid_household_income: [2_000, 1_000]
+
+# Regressions for the r4 review of the rework.
+
+- name: Unrelated roommates in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      roommate_a:
+        person_id: 1
+        age: 25
+        employment_income: 1_000
+        parent_1_id: 99
+      roommate_b:
+        person_id: 2
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 98
+    tax_units:
+      a_unit:
+        members: [roommate_a]
+        tax_unit_is_filer: false
+      b_unit:
+        members: [roommate_b]
+        tax_unit_is_filer: false
+    families:
+      a_family:
+        members: [roommate_a]
+      b_family:
+        members: [roommate_b]
+    households:
+      household:
+        members: [roommate_a, roommate_b]
+        state_code: OH
+  output:
+    # Marital units are omitted, so PE puts both in one, but they are separate
+    # families; a married couple living together is one family. Each lives
+    # alone under 42 CFR 435.603(f)(3).
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [1_000, 2_000]
+
+- name: A filer whose only child is linked elsewhere is not a dependent's presumed parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 55
+        employment_income: 20_000
+        own_children_in_household: 1
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      nephew:
+        person_id: 3
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, nephew]
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+    families:
+      parent_family:
+        members: [parent, child]
+      nephew_family:
+        members: [nephew]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      nephew:
+        members: [nephew]
+    households:
+      parent_home:
+        members: [parent, child]
+        state_code: OH
+      nephew_home:
+        members: [nephew]
+        state_code: OH
+  output:
+    # The parent reports one own child and the child's id names them, so the
+    # nephew is a dependent other than a child even though his own household
+    # has no ids: 42 CFR 435.603(f)(2)(i) and (f)(3) give him alone. Without
+    # any ids the model would presume the parent is his parent (2/$20,000).
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, true]
+    medicaid_household_size: [2, 2, 1]
+    medicaid_household_income: [20_000, 20_000, 0]

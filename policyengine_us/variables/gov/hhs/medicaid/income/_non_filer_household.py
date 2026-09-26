@@ -29,11 +29,12 @@ def medicaid_non_filer_member_sum(person, period, values):
     never erased, though moving a household onto this rule can remove another
     family's legacy over-count, such as an adult's child-age sibling.
 
-    A spouse is a co-resident partner in a two-person marital unit, whatever
-    either partner's tax role, or the other head or spouse of a joint return.
-    People linked as parent and child, or sharing a parent id, are never
-    spouses: PE puts everyone in one marital unit when a situation omits
-    marital units, so supply marital units with parent ids.
+    A spouse is the other head or spouse of a joint return, or a co-resident
+    partner in a two-person marital unit (PE's spouse convention) who is in
+    the same family, whatever either partner's tax role. People linked as
+    parent and child, or sharing a parent id, are never spouses. PE puts
+    everyone in one marital unit, family and tax unit when a situation omits
+    them, so supply those entities with parent ids.
 
     Values accumulate in float64; variable storage rounds the result.
     """
@@ -84,7 +85,7 @@ def medicaid_non_filer_member_sum(person, period, values):
             & ~shares_parent_id
             & (
                 (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-                | (married & (marital_unit[member] == marital_unit))
+                | (married & (marital_unit[member] == marital_unit) & same_family)
             )
         )
         own_child = child[member] & (
