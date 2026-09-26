@@ -1,0 +1,143 @@
+- name: Supplied roles keep an adult student a dependent rather than a spouse.
+  # By age ordering the 20-year-old would be the parent's spouse and the unit
+  # would file jointly. As a dependent full-time student under 24 they are the
+  # parent's qualifying child (26 USC 152(c)(3)(A)(ii)), so the parent files as
+  # head of household (26 USC 2(b)(1)(A)(i)).
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        tax_unit_role_input: HEAD
+      student:
+        age: 20
+        is_full_time_student: true
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: A supplied head can be younger than the spouse.
+  period: 2024
+  input:
+    people:
+      reference_person:
+        age: 30
+        tax_unit_role_input: HEAD
+      partner:
+        age: 60
+        tax_unit_role_input: SPOUSE
+    tax_units:
+      tax_unit:
+        members: [reference_person, partner]
+    households:
+      household:
+        members: [reference_person, partner]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, true]
+    age_head: 30
+    age_spouse: 60
+    filing_status: JOINT
+
+- name: A minor supplied as head heads their own return.
+  # By age ordering a lone 16-year-old heads nothing: they count as the unit's
+  # dependent and it files as head of household with them as the qualifying child.
+  period: 2024
+  input:
+    people:
+      minor:
+        age: 16
+        tax_unit_role_input: HEAD
+    tax_units:
+      tax_unit:
+        members: [minor]
+    households:
+      household:
+        members: [minor]
+  output:
+    is_tax_unit_head: true
+    is_tax_unit_dependent: false
+    filing_status: SINGLE
+
+- name: A separated dependent does not unpair a supplied couple.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        tax_unit_role_input: HEAD
+      spouse:
+        age: 48
+        tax_unit_role_input: SPOUSE
+      adult_child:
+        age: 25
+        is_separated: true
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [head, spouse, adult_child]
+    households:
+      household:
+        members: [head, spouse, adult_child]
+  output:
+    is_tax_unit_spouse: [false, true, false]
+    is_tax_unit_dependent: [false, false, true]
+    filing_status: JOINT
+
+- name: Each tax unit uses its own supplied roles, or age ordering without them.
+  period: 2024
+  input:
+    people:
+      supplied_head:
+        age: 30
+        tax_unit_role_input: HEAD
+      supplied_spouse:
+        age: 60
+        tax_unit_role_input: SPOUSE
+      unsupplied_younger:
+        age: 30
+      unsupplied_older:
+        age: 60
+    tax_units:
+      supplied_unit:
+        members: [supplied_head, supplied_spouse]
+      unsupplied_unit:
+        members: [unsupplied_younger, unsupplied_older]
+    households:
+      household:
+        members: [supplied_head, supplied_spouse, unsupplied_younger, unsupplied_older]
+  output:
+    is_tax_unit_head: [true, false, false, true]
+    is_tax_unit_spouse: [false, true, true, false]
+    tax_unit_roles_supplied: [true, false]
+
+- name: Without supplied roles the oldest adult is the head.
+  period: 2024
+  input:
+    people:
+      younger:
+        age: 30
+      older:
+        age: 60
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [younger, older, child]
+    households:
+      household:
+        members: [younger, older, child]
+  output:
+    tax_unit_roles_supplied: false
+    is_tax_unit_head: [false, true, false]
+    is_tax_unit_spouse: [true, false, false]
+    is_tax_unit_dependent: [false, false, true]
