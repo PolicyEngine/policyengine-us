@@ -955,3 +955,124 @@
     # Each spouse includes the other under 42 CFR 435.603(f)(3)(i) and (f)(4).
     medicaid_household_size: [2, 2]
     medicaid_household_income: [3_000, 3_000]
+
+# Spouse branches, one case each (from the mutation check).
+
+- name: A joint return shows the marriage when marital units are omitted.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 38
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      father:
+        person_id: 2
+        age: 40
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      child:
+        person_id: 3
+        age: 10
+        parent_1_id: 1
+        parent_2_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      unit:
+        members: [mother, father, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: OH
+  output:
+    # PE puts all three in one marital unit, so only the joint return shows
+    # the marriage; each spouse includes the other and their child.
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [50_000, 50_000, 50_000]
+
+- name: A two-person marital unit in one family is a marriage without a flag or joint return.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+      mother:
+        person_id: 2
+        age: 44
+      teen:
+        person_id: 3
+        age: 17
+        parent_1_id: 1
+        parent_2_id: 2
+      teen_spouse:
+        person_id: 4
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [father, mother, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      mother:
+        members: [mother]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, mother, teen, teen_spouse]
+        state_code: OH
+  output:
+    # As in the r2 case, but no cohabiting-spouses flag and the spouse does
+    # not file: each spouse includes the other under 42 CFR 435.603(f)(3)(i),
+    # and the teen also includes both parents.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true, true]
+    medicaid_household_size: [2, 1, 4, 2]
+    medicaid_household_income: [0, 0, 30_000, 30_000]
+
+- name: A parent and adult child in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 45
+        employment_income: 20_000
+      adult_child:
+        person_id: 2
+        age: 20
+        employment_income: 5_000
+        parent_1_id: 1
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_is_filer: false
+      child_unit:
+        members: [adult_child]
+        tax_unit_is_filer: false
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: OH
+  output:
+    # PE puts both in one marital unit and one family, but the id makes them
+    # parent and child. A 20-year-old is over the age limit, so each lives
+    # alone under 42 CFR 435.603(f)(3).
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [20_000, 5_000]
