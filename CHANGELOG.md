@@ -1,3 +1,10 @@
+## [2.15.6] - 2026-09-26
+
+### Fixed
+
+- Set the Maine pension income deduction cap to 49,824 for 2026 and limit the deduction to pension income included in federal adjusted gross income.
+
+
 ## [2.15.5] - 2026-09-26
 
 ### Fixed
