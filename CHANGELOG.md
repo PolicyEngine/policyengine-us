@@ -1,3 +1,10 @@
+## [2.15.5] - 2026-09-26
+
+### Fixed
+
+- Route a DC filer whose only qualifying child is a permanently and totally disabled adult to the DC EITC with-child branch.
+
+
 ## [2.15.4] - 2026-09-26
 
 ### Fixed
