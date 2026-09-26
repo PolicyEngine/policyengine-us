@@ -8,7 +8,7 @@ class ny_agi_subtractions(Variable):
     unit = USD
     documentation = "Subtractions from NY AGI over federal AGI."
     definition_period = YEAR
-    dict(
+    reference = dict(
         title="N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3",
         href="https://www.law.cornell.edu/regulations/new-york/20-NYCRR-112.3",
     )

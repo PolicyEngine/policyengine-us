@@ -7,7 +7,9 @@ class or_retirement_credit_household_income(Variable):
     label = "Household income for the Oregon Retirement Income Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"
+    reference = (
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # ORS 316.157
+    )
     defined_for = StateCode.OR
 
     adds = ["adjusted_gross_income", "tax_exempt_interest_income"]

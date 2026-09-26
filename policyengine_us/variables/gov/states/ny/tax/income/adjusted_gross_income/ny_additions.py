@@ -8,7 +8,7 @@ class ny_additions(Variable):
     unit = USD
     documentation = "Additions to NY AGI over federal AGI."
     definition_period = YEAR
-    dict(
+    reference = dict(
         title="N.Y. Comp. Codes R. & Regs. tit. 20 § 112.2",
         href="https://www.law.cornell.edu/regulations/new-york/20-NYCRR-112.2",
     )

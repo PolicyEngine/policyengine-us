@@ -9,7 +9,7 @@ class ok_military_retirement_exclusion(Variable):
     definition_period = YEAR
     reference = (
         # (g)
-        "https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/rules-and-policies/agency-rules/2026/Chapter50-Income-2026.pdf#page=52",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-49",
     )
     defined_for = StateCode.OK
 

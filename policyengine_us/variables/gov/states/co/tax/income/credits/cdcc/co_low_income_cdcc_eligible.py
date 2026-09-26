@@ -10,9 +10,10 @@ class co_low_income_cdcc_eligible(Variable):
     # the insufficient-federal-liability condition (no federal CDCC allowed
     # after the section 26 liability limitation), and the IRC 21(e)(2)
     # joint-return requirement. The provider identification / due-diligence
-    # requirements (provider name, address, and TIN under (3)(a)(V)-(VI))
-    # and the dependent identification requirements are administrative
-    # inputs PolicyEngine does not model and are assumed satisfied. The
+    # requirements (provider name, address, and TIN under (5)(a)-(b)) and
+    # the dependent identification requirements under (5)(c) are
+    # administrative inputs PolicyEngine does not model and are assumed
+    # satisfied. The
     # dependent-under-age-13 condition (3)(a)(III) is applied in
     # co_low_income_cdcc.
     reference = (
