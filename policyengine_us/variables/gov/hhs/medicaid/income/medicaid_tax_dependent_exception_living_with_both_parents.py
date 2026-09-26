@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
     has_parent_ids,
-    reports_unlinked_children,
+    unlinked_parent,
 )
 
 
@@ -19,10 +19,10 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
             & person("medicaid_non_filer_child_age_eligible", period)
             & person("medicaid_claimed_by_parent_in_tax_unit", period)
         )
-        # Without ids, the family and tax unit proxies count parents who report
-        # own children that no parent id names; without links this is
-        # own_children_in_household > 0, the original is_parent.
-        parent = reports_unlinked_children(person, period)
+        # For a child without ids, the family and tax unit proxies count only
+        # parents some of whose children no parent id names; without links
+        # this is is_parent.
+        parent = unlinked_parent(person, period)
         proxy = (person.family.sum(parent) > 1) & (person.tax_unit.sum(parent) == 1)
         own_ids = has_parent_ids(person, period)
         if not np.any(own_ids):

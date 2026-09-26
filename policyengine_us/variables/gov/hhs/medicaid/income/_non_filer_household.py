@@ -6,7 +6,7 @@ from policyengine_us.variables.household.demographic.person._parent_links import
     co_resident_parent_indices,
     has_parent_ids,
     household_member_indices,
-    reports_unlinked_children,
+    unlinked_parent,
 )
 
 
@@ -24,15 +24,16 @@ def medicaid_non_filer_member_sum(person, period, values):
     Links identify parents, children and siblings (siblings share a nonzero
     parent id, including an absent parent). A child-age person without ids is
     unlinked. The original family-level proxy still relates unlinked children
-    to each other and to family members who report unlinked children. So a
-    parent that a child count reports is never erased, though moving a
-    household onto this rule can remove another family's legacy over-count,
-    such as an adult's child-age sibling.
+    to each other and to unlinked parents in their family (parents some of
+    whose children no id names). So a parent that a child count reports is
+    never erased, though moving a household onto this rule can remove another
+    family's legacy over-count, such as an adult's child-age sibling.
 
     A spouse is a co-resident partner in a two-person marital unit, whatever
     either partner's tax role, or the other head or spouse of a joint return.
-    People linked as parent and child are never spouses, since PE puts
-    everyone in one marital unit when a situation omits marital units.
+    People linked as parent and child, or sharing a parent id, are never
+    spouses: PE puts everyone in one marital unit when a situation omits
+    marital units, so supply marital units with parent ids.
 
     Values accumulate in float64; variable storage rounds the result.
     """
@@ -45,16 +46,16 @@ def medicaid_non_filer_member_sum(person, period, values):
 
     child = person("medicaid_non_filer_child_age_eligible", period)
     unlinked_child = child & ~has_parent_ids(person, period)
-    reports_unlinked = reports_unlinked_children(person, period)
+    unlinked_parents = unlinked_parent(person, period)
     first, second = co_resident_parent_indices(person, period)
     family = person.family.reference_entity.members_entity_id
 
-    def reporting_parent_family(parent):
-        # Family of a linked parent who also reports unlinked children.
-        return np.where((parent >= 0) & reports_unlinked[parent], family[parent], -1)
+    def unlinked_parent_family(parent):
+        # Family of a linked parent who is also an unlinked parent.
+        return np.where((parent >= 0) & unlinked_parents[parent], family[parent], -1)
 
-    parent_family_1 = reporting_parent_family(first)
-    parent_family_2 = reporting_parent_family(second)
+    parent_family_1 = unlinked_parent_family(first)
+    parent_family_2 = unlinked_parent_family(second)
 
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
     tax_unit = person.tax_unit.reference_entity.members_entity_id
@@ -69,28 +70,29 @@ def medicaid_non_filer_member_sum(person, period, values):
         same_family = family[member] == family
         names_applicant = (first[member] == own_index) | (second[member] == own_index)
         named_by_applicant = (first == member) | (second == member)
-        spouse = (
-            ~is_self
-            & ~names_applicant
-            & ~named_by_applicant
-            & (
-                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-                | (married & (marital_unit[member] == marital_unit))
-            )
-        )
-        own_child = child[member] & (
-            names_applicant | (reports_unlinked & unlinked_child[member] & same_family)
-        )
-        parent = child & (
-            named_by_applicant
-            | (unlinked_child & reports_unlinked[member] & same_family)
-        )
         shares_parent_id = (
             (parent_1 != 0)
             & ((parent_1 == parent_1[member]) | (parent_1 == parent_2[member]))
         ) | (
             (parent_2 != 0)
             & ((parent_2 == parent_1[member]) | (parent_2 == parent_2[member]))
+        )
+        spouse = (
+            ~is_self
+            & ~names_applicant
+            & ~named_by_applicant
+            & ~shares_parent_id
+            & (
+                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
+                | (married & (marital_unit[member] == marital_unit))
+            )
+        )
+        own_child = child[member] & (
+            names_applicant | (unlinked_parents & unlinked_child[member] & same_family)
+        )
+        parent = child & (
+            named_by_applicant
+            | (unlinked_child & unlinked_parents[member] & same_family)
         )
         sibling = (
             child

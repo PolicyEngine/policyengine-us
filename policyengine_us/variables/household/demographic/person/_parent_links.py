@@ -11,12 +11,13 @@ Rules shared by every formula that reads the links:
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep
   their original expressions in households without links.
-- A person reports unlinked children when own_children_in_household exceeds
-  the co-resident people whose ids name them; without links this is
-  own_children_in_household > 0. Such a person is the only kind of parent the
-  family-level and tax-unit-level proxies may still assign to a person
-  without ids, so a link in one household never makes its parent the
-  presumed parent of someone else's child in another.
+- An unlinked parent is a parent (is_parent, formula or input) some of whose
+  children no id names: nobody's id names them, or own_children_in_household
+  exceeds the co-resident ids that do. Without links this is is_parent
+  itself. Unlinked parents are the only parents the family-level and
+  tax-unit-level proxies may still assign to a person without ids, so a link
+  in one household never makes its parent the presumed parent of someone
+  else's child in another.
 
 Temporary memory is linear in the number of people, and work is linear in
 people times the largest household or tax unit size.
@@ -101,11 +102,13 @@ def linked_child_count(person, period):
     return np.bincount(parents[parents >= 0], minlength=person.count)
 
 
-def reports_unlinked_children(person, period):
-    """Whether a person reports more own children than the links identify.
+def unlinked_parent(person, period):
+    """Whether a person is a parent some of whose children no id names.
 
-    In a household without links this equals own_children_in_household > 0.
+    Without links this is is_parent, including an is_parent input.
     """
-    return person("own_children_in_household", period) > linked_child_count(
-        person, period
+    is_parent = person("is_parent", period)
+    linked = linked_child_count(person, period)
+    return is_parent & (
+        (linked == 0) | (person("own_children_in_household", period) > linked)
     )

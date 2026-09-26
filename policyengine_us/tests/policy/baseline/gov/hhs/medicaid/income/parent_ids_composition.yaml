@@ -708,3 +708,116 @@
     medicaid_uses_non_filer_rules: [false, false, true]
     medicaid_household_size: [2, 1, 3]
     medicaid_household_income: [20_000, 30_000, 50_000]
+
+# Regressions for the r3 review of the rework.
+
+- name: Without parent ids, explicit is_parent inputs still give the both-parents exception.
+  period: 2026
+  input:
+    people:
+      parent_p:
+        age: 40
+        employment_income: 20_000
+        is_parent: true
+      parent_q:
+        age: 39
+        employment_income: 30_000
+        is_parent: true
+      child:
+        age: 10
+    tax_units:
+      p_unit:
+        members: [parent_p, child]
+        tax_unit_is_filer: true
+      q_unit:
+        members: [parent_q]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent_p, parent_q, child]
+    marital_units:
+      parent_p:
+        members: [parent_p]
+      parent_q:
+        members: [parent_q]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_p, parent_q, child]
+        state_code: OH
+  output:
+    # The child is claimed by P and lives with both unmarried parents, so
+    # 42 CFR 435.603(f)(2)(ii) and (f)(3) give the child and both parents.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 1, 3]
+    medicaid_household_income: [20_000, 30_000, 50_000]
+
+- name: Without parent ids, an explicit is_parent input still marks the claiming parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 55
+        employment_income: 20_000
+        is_parent: true
+      adult_child:
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent, adult_child]
+    marital_units:
+      parent:
+        members: [parent]
+      adult_child:
+        members: [adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: OH
+  output:
+    # Claimed by a parent, so 42 CFR 435.603(f)(2) gives the claimant's
+    # household.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [20_000, 20_000]
+
+- name: Siblings in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      older:
+        person_id: 1
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 99
+      younger:
+        person_id: 2
+        age: 25
+        employment_income: 1_000
+        parent_1_id: 99
+    tax_units:
+      older_unit:
+        members: [older]
+        tax_unit_is_filer: false
+      younger_unit:
+        members: [younger]
+        tax_unit_is_filer: false
+    households:
+      household:
+        members: [older, younger]
+        state_code: OH
+  output:
+    # Marital units are omitted, so PE puts both in one. They share a parent,
+    # so they are siblings over the age limit and each lives alone under
+    # 42 CFR 435.603(f)(3).
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [2_000, 1_000]
