@@ -1,5 +1,21 @@
 description: Arkansas accounts for these sources when calculating the gross income.
 values:
+  # Unemployment compensation was exempt income through tax year 2017.
+  2015-01-01:
+    - irs_employment_income # Line 8
+    - self_employment_income # Line 8
+    - sstb_self_employment_income
+    - interest_income # Line 10
+    - dividend_income # Line 11
+    - alimony_income # Line 12
+    - ar_taxable_capital_gains_indiv # Line 13
+    - taxable_ira_distributions # Line 16
+    - taxable_roth_conversions # Line 16
+    - military_retirement_pay # Line 17
+    - taxable_pension_income # Line 18
+    - disability_benefits # Line 18b
+    - rental_income # Line 19
+    - farm_rent_income # Line 20
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
   # it for calendar years 2020 and 2021, after which it is taxable again.
@@ -60,6 +76,14 @@ metadata:
   period: year
   label: Arkansas gross income sources when married filing separately
   reference:
+    - title: Arkansas 2015 Individual Income Tax Instructions (unemployment compensation is exempt from tax)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=12
+    - title: Arkansas 2016 Individual Income Tax Instructions (unemployment compensation is exempt from tax)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=10
+    - title: Arkansas 2017 Individual Income Tax Instructions (unemployment compensation is exempt from tax)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=10
+    - title: Arkansas 2017 Individual Income Tax Instructions (Act 141 of 2017 makes unemployment compensation taxable from tax year 2018)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=5
     - title: Arkansas 2025 Individual Income Tax Forms and Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=13
     - title: Arkansas 2022 AR1000F Instructions

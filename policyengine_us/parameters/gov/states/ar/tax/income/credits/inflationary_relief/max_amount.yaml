@@ -5,6 +5,8 @@ metadata:
   unit: currency-USD
   label: Arkansas inflation relief credit maximum amount
   reference:
+    - title: Arkansas 2022 Individual Income Tax Instructions, Special Information for Tax Year 2022 (new credits)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=6
     # The inflation relief credit is not mentioned in the Arkansas statutes
     - title: Arkansas 2022 Individual Income Tax Forms and Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=25
@@ -17,22 +19,27 @@ metadata:
   breakdown:
     - filing_status
 JOINT:
+  2015-01-01: 0
   2022-01-01: 300
   2023-01-01: 300
   2024-01-01: 0
 SURVIVING_SPOUSE:
+  2015-01-01: 0
   2022-01-01: 150
   2023-01-01: 150
   2024-01-01: 0
 HEAD_OF_HOUSEHOLD:
+  2015-01-01: 0
   2022-01-01: 150
   2023-01-01: 150
   2024-01-01: 0
 SINGLE:
+  2015-01-01: 0
   2022-01-01: 150
   2023-01-01: 150
   2024-01-01: 0
 SEPARATE:
+  2015-01-01: 0
   2022-01-01: 150
   2023-01-01: 150
   2024-01-01: 0
