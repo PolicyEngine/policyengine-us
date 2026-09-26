@@ -1,11 +1,18 @@
 """Test unified uprating extensions through 2100."""
 
+import math
+from types import SimpleNamespace
 import pytest
+
+from policyengine_core.parameters import Parameter
 
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
+    DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
+    get_irs_cola,
+    get_irs_cola_denominator,
     round_social_security_amount,
     round_social_security_payroll_cap,
 )
@@ -445,3 +452,118 @@ def test_retirement_contribution_limits_include_latest_explicit_irs_values():
 
     assert limits2027["401k"] >= limits2026["401k"]
     assert limits2027.annual_additions >= limits2026.annual_additions
+
+
+def _synthetic_irs_parameters():
+    """A synthetic CPI-U / C-CPI-U tree with round Sep-Aug window averages.
+
+    The window-averaging branches themselves are pinned on synthetic series
+    by the Oregon Kids' Credit COLA tests, which share the helper.
+    """
+
+    def months(start_year, start_month, end_year, end_month, level):
+        year, month = start_year, start_month
+        values = {}
+        while (year, month) <= (end_year, end_month):
+            values[f"{year}-{month:02d}-01"] = level
+            year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+        return values
+
+    cpi_u = {
+        **months(1996, 9, 1997, 8, 100),
+        **months(2015, 9, 2016, 8, 200),
+    }
+    c_cpi_u = {
+        **months(2015, 9, 2016, 8, 150),
+        **months(2019, 9, 2020, 8, 60),
+        # Monthly observations end in August 2030; later years hold annual
+        # projection points at February instants.
+        **months(2029, 9, 2030, 8, 180),
+        "2032-02-01": 195,
+    }
+    cpi = SimpleNamespace(
+        cpi_u=Parameter("cpi_u", data=cpi_u),
+        c_cpi_u=Parameter("c_cpi_u", data=c_cpi_u),
+    )
+    return SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
+
+
+def test_irs_cola_follows_1f3_on_a_synthetic_index():
+    """COLA = C-CPI-U(prior year) / (CPI(base) x C-CPI-U(2016) / CPI(2016)) - 1."""
+    parameters = _synthetic_irs_parameters()
+    # CPI-U averages 100 over Sep 1996-Aug 1997 and 200 over Sep 2015-Aug
+    # 2016; C-CPI-U averages 150 over Sep 2015-Aug 2016: 100 x 150 / 200 = 75.
+    assert get_irs_cola_denominator(parameters, 1997) == pytest.approx(75)
+    # Tax year 2031 reads the fully observed Sep 2029-Aug 2030 window (180).
+    assert get_irs_cola(parameters, 2031, 1997) == pytest.approx(180 / 75 - 1)
+    # Tax year 2033 has no observed month and reads the 2032 projection point.
+    assert get_irs_cola(parameters, 2033, 1997) == pytest.approx(195 / 75 - 1)
+    # "The percentage (if any)": the Sep 2019-Aug 2020 window (60) is below
+    # the denominator, so the tax year 2021 COLA is zero, not negative.
+    assert get_irs_cola(parameters, 2021, 1997) == 0
+
+
+def test_irs_cola_denominator_uses_2016_ratio_for_pre_2017_base_years():
+    """1(f)(3)(A)(ii) and (B): CPI(base year) x C-CPI-U(2016) / CPI(2016)."""
+    # CPI-U Sep-Aug averages: 1986-87 111.983, 1996-97 159.492, 2015-16 238.649.
+    assert get_irs_cola_denominator(PARAMETERS, 1997) == pytest.approx(
+        1_913.9 / 12 * 135.993 / 238.649
+    )
+    assert get_irs_cola_denominator(PARAMETERS, 1987) == pytest.approx(
+        1_343.8 / 12 * 135.993 / 238.649
+    )
+    with pytest.raises(ValueError):
+        get_irs_cola_denominator(PARAMETERS, 2017)
+
+
+def statutory_dependent_standard_deduction_amount(base, base_year, year):
+    cola = get_irs_cola(PARAMETERS, year, base_year)
+    return base + math.floor(base * cola / 50) * 50
+
+
+def test_irs_cola_reproduces_published_dependent_standard_deduction_amounts():
+    """The 63(c)(4) computation matches every IRS-published value, 2018-2026."""
+    # As encoded in dependent/amount.yaml and additional_earned_income.yaml.
+    published = {
+        # year: (63(c)(5)(A) floor, 63(c)(5)(B) earned income addition)
+        2018: (1_050, 350),
+        2019: (1_100, 350),
+        2020: (1_100, 350),
+        2021: (1_100, 350),
+        2022: (1_150, 400),
+        2023: (1_250, 400),
+        2024: (1_300, 450),
+        2025: (1_350, 450),
+        2026: (1_350, 450),
+    }
+    for year, amounts in published.items():
+        computed = tuple(
+            statutory_dependent_standard_deduction_amount(base, base_year, year)
+            for _, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES
+        )
+        assert computed == amounts, year
+
+
+def test_dependent_standard_deduction_projections_follow_statute():
+    """Projected years come from the statutory bases, not the rounded last value."""
+    dependent = PARAMETERS.gov.irs.deductions.standard.dependent
+    last_explicit_years = {"amount": 2036, "additional_earned_income": 2026}
+    for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
+        parameter = getattr(dependent, name)
+        previous = parameter(f"{last_explicit_years[name]}-01-01")
+        for year in range(last_explicit_years[name] + 1, 2101):
+            value = parameter(f"{year}-01-01")
+            assert value == statutory_dependent_standard_deduction_amount(
+                base, base_year, year
+            ), (name, year)
+            assert value % 50 == 0, (name, year)
+            assert value >= previous, (name, year)
+            previous = value
+
+    # Hand-derived anchors (derivations in basic_standard_deduction.yaml).
+    # Chaining from the rounded 2026 $450 ($450 x 1.03 = $463) would keep
+    # 2027 at $450; the $250 base gives $500.
+    assert dependent.additional_earned_income("2027-01-01") == 500
+    assert dependent.additional_earned_income("2032-01-01") == 550
+    assert dependent.additional_earned_income("2042-01-01") == 650
+    assert dependent.amount("2042-01-01") == 1_900

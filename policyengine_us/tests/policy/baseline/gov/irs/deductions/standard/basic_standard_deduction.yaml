@@ -39,3 +39,144 @@
     filing_status: SINGLE
   output:
     basic_standard_deduction: 16_550
+
+- name: 2023 dependent filer with $3,000 of wages gets $400 plus earned income
+  # Rev. Proc. 2022-38 sec. 3.15(2): greater of $1,250 or $400 plus earned
+  # income; max($1,250, $400 + $3,000) = $3,400, below the $13,850 cap.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_400
+
+- name: 2024 dependent filer with $3,000 of wages gets $450 plus earned income
+  # Rev. Proc. 2023-34 sec. 3.15(2): greater of $1,300 or $450 plus earned
+  # income; max($1,300, $450 + $3,000) = $3,450, below the $14,600 cap.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_450
+
+- name: 2027 dependent filer with $3,000 of wages gets $500 plus earned income
+  # 26 U.S.C. 63(c)(4)(B)(ii) increases the 63(c)(5)(B) $250 by the 1(f)(3)
+  # cost-of-living adjustment with calendar year 1997 as the base year, and
+  # 1(f)(7)(A) rounds the increase down to the next lowest multiple of $50.
+  # C-CPI-U for the 12 months ending August 2026 (c_cpi_u.yaml; unpublished
+  # October 2025 carries September's 180.196, and July-August 2026 carry
+  # June's 184.992): 2,189.091 / 12 = 182.424.
+  # 1(f)(3)(A)(ii) and (B): CPI-U Sep 1996-Aug 1997 average 159.492 x
+  # C-CPI-U Sep 2015-Aug 2016 average 135.993 / CPI-U Sep 2015-Aug 2016
+  # average 238.649 = 90.886.
+  # Increase = $250 x (182.424 / 90.886 - 1) = $251.80, rounded down to
+  # $250, so $500. Floor: CBO's $1,400.
+  # max($1,400, $500 + $3,000) = $3,500, below the $16,550 cap.
+  period: 2027
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_500
+
+- name: 2032 dependent filer with $3,000 of wages gets $550 plus earned income
+  # Same 63(c)(4)(B)(ii) adjustment. The 12 months ending August 2031 have
+  # no observed month, so the window reads the c_cpi_u.yaml projection point
+  # at 2031-02-01: 202.7.
+  # Increase = $250 x (202.7 / 90.886 - 1) = $307.57, rounded down to $300,
+  # so $550. Floor: CBO's $1,550.
+  # max($1,550, $550 + $3,000) = $3,550, below the $18,250 cap.
+  period: 2032
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_550
+
+- name: 2042 dependent filer without earned income gets the indexed $1,900 floor
+  # Past CBO's 2036 horizon, 63(c)(4)(B)(i) increases the 63(c)(5)(A) $500
+  # by the 1(f)(3) adjustment with calendar year 1987 as the base year.
+  # C-CPI-U for the 12 months ending August 2041: uprating_extensions.py
+  # extends c_cpi_u.yaml past 2034 at its 2033-2034 growth rate,
+  # 214.9 x (214.9 / 210.8)^7 = 245.922.
+  # 1(f)(3)(A)(ii) and (B): CPI-U Sep 1986-Aug 1987 average 111.983 x
+  # 135.993 / 238.649 = 63.813.
+  # Increase = $500 x (245.922 / 63.813 - 1) = $1,426.89, rounded down to
+  # $1,400, so $1,900.
+  period: 2042
+  input:
+    people:
+      head:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 1_900
+
+- name: 2042 dependent filer with $3,000 of wages gets $650 plus earned income
+  # Same 2041 C-CPI-U of 245.922 and 1997 denominator of 90.886.
+  # Increase = $250 x (245.922 / 90.886 - 1) = $426.46, rounded down to
+  # $400, so $650. max($1,900, $650 + $3,000) = $3,650.
+  period: 2042
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_650
