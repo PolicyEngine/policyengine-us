@@ -16,3 +16,47 @@
         state_code: AR 
   output:
     ar_itemized_deductions_joint: [1_000, 0]
+
+- name: 2019 gambling losses are not reduced by the 2% floor on miscellaneous deductions
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        # 2% of this AGI (20,000) exceeds the losses, so a 2% floor would erase them.
+        ar_agi_joint: 1_000_000
+        gambling_winnings: 20_000
+        gambling_losses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_misc_deduction_joint: 0
+    ar_gambling_loss_deduction: 5_000
+    ar_itemized_deductions_joint: 5_000
+
+- name: 2025 gambling losses add to other itemized deductions, capped at winnings
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        gambling_winnings: 4_000
+      person2:
+        is_tax_unit_head: false
+        gambling_losses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_medical_expense_deduction_joint: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_gambling_loss_deduction: 4_000
+    ar_itemized_deductions_joint: [5_000, 0]
