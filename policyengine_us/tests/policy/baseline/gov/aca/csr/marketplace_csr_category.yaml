@@ -90,7 +90,7 @@
     marketplace_csr_actuarial_value: 0.94
     marketplace_effective_actuarial_value: 0.94
 
-- name: Case 6, below-FPL lawfully present silver enrollee receives no CSR after 2026 repeal.
+- name: Case 6, below-FPL lawfully present person is in the coverage gap after the 2026 repeal - no plan, so no CSR.
   absolute_error_margin: 0.001
   period: 2026
   input:
@@ -120,6 +120,9 @@
     person_receives_aca: [false]
     marketplace_csr_eligible: false
     marketplace_csr_category: NONE
-    selected_marketplace_plan_actuarial_value: 0.7
+    # Under the premium tax credit's floor with no Medicaid pathway and, from
+    # 2026, no below-poverty exception, nobody buys the full-price plan.
+    pays_aca_premium: [false]
+    selected_marketplace_plan_actuarial_value: 0
     marketplace_csr_actuarial_value: 0
-    marketplace_effective_actuarial_value: 0.7
+    marketplace_effective_actuarial_value: 0

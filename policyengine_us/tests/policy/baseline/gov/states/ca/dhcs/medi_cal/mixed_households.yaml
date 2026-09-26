@@ -1,0 +1,111 @@
+# Mixed-state populations: California's pregnancy counting and MCAP insurance
+# exclusion must apply only to California persons within one simulation.
+- name: Case 1, California pregnancy counting remains isolated in a mixed-state population.
+  period: 2025
+  input:
+    people:
+      # person1 to person3 live in California; person4 to person6 in Kansas.
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        current_pregnancies: 2
+      person3:
+        age: 8
+      person4:
+        age: 35
+        employment_income: 80_000
+      person5:
+        age: 35
+        current_pregnancies: 1
+      person6:
+        age: 8
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4, person5]
+      marital_unit4:
+        members: [person6]
+    families:
+      family1:
+        members: [person1, person2, person3]
+      family2:
+        members: [person4, person5, person6]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+      spm_unit2:
+        members: [person4, person5, person6]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+      household2:
+        members: [person4, person5, person6]
+        state_code: KS
+  output:
+    # California: 3 members plus 2 expected children for everyone. Kansas: only
+    # the pregnant member's own household grows.
+    medicaid_household_size: [5, 5, 5, 3, 4, 3]
+    ca_medicaid_household_pregnancies: [2, 2, 2, 0, 0, 0]
+
+- name: Case 2, California MCAP insurance exclusion is applied per person in a mixed-state population.
+  period: 2025
+  input:
+    people:
+      # person1: insured Californian; person2: insured Texan control;
+      # person3: uninsured Californian.
+      person1:
+        age: 30
+        is_pregnant: true
+        has_esi: true
+        medicaid_income_level: 2.5
+        is_medicaid_eligible: false
+      person2:
+        age: 30
+        is_pregnant: true
+        has_esi: true
+        medicaid_income_level: 2
+        is_medicaid_eligible: false
+      person3:
+        age: 30
+        is_pregnant: true
+        medicaid_income_level: 2.5
+        is_medicaid_eligible: false
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: TX
+      household3:
+        members: [person3]
+        state_code: CA
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+  output:
+    is_chip_fcep_eligible_person: [false, true, true]
+    chip_category: [NONE, PREGNANT_FCEP, PREGNANT_FCEP]

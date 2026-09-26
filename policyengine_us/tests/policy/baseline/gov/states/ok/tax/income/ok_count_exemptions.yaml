@@ -31,3 +31,88 @@
     state_code: OK
   output:
     ok_count_exemptions: 6
+
+- name: Elderly single filer qualifying for special exemption when Roth conversions excluded from AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_interest_income: 12_000
+        taxable_roth_conversions: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_count_exemptions: 2
+
+- name: Elderly single filer exceeding AGI limit even after excluding Roth conversions
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_interest_income: 17_000
+        taxable_roth_conversions: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_count_exemptions: 1
+
+- name: Dependent Roth conversion not subtracted from filer AGI for special exemption
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 66
+        employment_income: 20_000
+      child:
+        age: 17
+        taxable_roth_conversions: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: OK
+  output:
+    ok_count_exemptions: 2
+
+- name: Dependent Roth conversion not subtracted from filer AGI under repeal dependent exemptions reform
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 66
+        employment_income: 20_000
+      child:
+        age: 17
+        taxable_roth_conversions: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: OK
+  output:
+    ok_count_exemptions: 1
+
+
+

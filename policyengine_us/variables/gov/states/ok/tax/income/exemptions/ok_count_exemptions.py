@@ -8,15 +8,20 @@ class ok_count_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf#page=9",
+        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=9",
     )
     defined_for = StateCode.OK
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ok.tax.income.exemptions
-        # special exemption AGI eligibility
-        fagi = tax_unit("adjusted_gross_income", period)
+        # special exemption AGI eligibility (excluding Roth conversion income included in federal AGI per Form 511 instructions)
+        person = tax_unit.members
+        is_not_dependent = ~person("is_tax_unit_dependent", period)
+        roth_conversions = tax_unit.sum(
+            person("taxable_roth_conversions", period) * is_not_dependent
+        )
+        fagi = tax_unit("adjusted_gross_income", period) - roth_conversions
         filing_status = tax_unit("filing_status", period)
         agi_eligible = fagi <= p.special_agi_limit[filing_status]
         # head exemptions

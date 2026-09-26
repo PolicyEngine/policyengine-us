@@ -56,3 +56,80 @@
     is_working_disabled_buy_in_for_medicaid: false
   output:
     ms_hmw_other_coverage_ineligible: false
+
+# CMS SHO #12-002 excludes DACA from CHIP, so a DACA child is not
+# potentially CHIP-eligible and passes the other-coverage check. Each case
+# also asserts is_chip_eligible_child so the mirrored immigration gate here
+# cannot drift from the federal CHIP formula unnoticed.
+# https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf
+- name: Case 4, DACA child otherwise within CHIP limits is not CHIP eligible and passes.
+  period: 2026
+  input:
+    state_code: MS
+    age: 10
+    immigration_status: DACA
+    medicaid_income_level: 1
+    has_esi: false
+    is_medicaid_eligible: false
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+  output:
+    is_chip_eligible_child: false
+    ms_hmw_other_coverage_ineligible: true
+
+- name: Case 5, undocumented child otherwise within CHIP limits is not CHIP eligible and passes.
+  period: 2026
+  input:
+    state_code: MS
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1
+    has_esi: false
+    is_medicaid_eligible: false
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+  output:
+    is_chip_eligible_child: false
+    ms_hmw_other_coverage_ineligible: true
+
+- name: Case 6, citizen child within CHIP limits is CHIP eligible and fails.
+  period: 2026
+  input:
+    state_code: MS
+    age: 10
+    immigration_status: CITIZEN
+    medicaid_income_level: 1
+    has_esi: false
+    is_medicaid_eligible: false
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+  output:
+    is_chip_eligible_child: true
+    ms_hmw_other_coverage_ineligible: false

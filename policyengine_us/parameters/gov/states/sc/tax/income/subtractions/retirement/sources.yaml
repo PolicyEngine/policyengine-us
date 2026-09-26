@@ -3,12 +3,15 @@ values:
   2021-01-01:
     - taxable_pension_income
     - taxable_retirement_distributions
+    - taxable_roth_conversions
 metadata:
   unit: list
   period: year
   label: South Carolina retirement deduction sources
   reference:
     - title: SC Code Section 12-6-1170(A)(1)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC Code Section 12-6-1170(A)(2)
       href: https://www.scstatehouse.gov/code/t12c006.php
     - title: SC Code Section 12-6-1170(C)
       href: https://www.scstatehouse.gov/code/t12c006.php

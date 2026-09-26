@@ -206,15 +206,16 @@
     ny_ccap_eligible_child: false
 
 # 415.1(b)(3) reaches a full-time secondary student under 19 with special
-# needs; an eighteen year old without student status falls outside it.
-- name: Case 11, an eighteen year old student with special needs is eligible.
+# needs; is_in_secondary_school stands in for that enrollment. An eighteen
+# year old without secondary-school status falls outside it.
+- name: Case 11, an eighteen year old secondary student with special needs is eligible.
   period: 2025-01
   input:
     people:
       child:
         age: 18
         is_disabled: true
-        is_full_time_student: true
+        is_in_secondary_school: true
     spm_units:
       spm_unit:
         members: [child]

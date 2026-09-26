@@ -7,7 +7,7 @@ class ar_medical_expense_deduction_joint(Variable):
     label = "Arkansas medical and dental expense deduction when married filing jointly"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
+    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
