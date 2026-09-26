@@ -15,14 +15,13 @@ class ne_child_care_subsidy_categorical_waived(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         foster = person("is_in_foster_care", period)
-        # 392 NAC 2-011.02 through 2-011.03 grant eligibility without regard
-        # to income to parents and foster parents of Department or tribal
-        # wards, and 392 NAC 1-001.32 defines the category as families
-        # requiring Child Protective Services. State Plan question 2.2.2(f)
-        # counts foster-care and court-supervised children as protective
-        # services, and questions 2.2.2(g) and 2.2.6(b) waive the income and
-        # asset tests for them. Question 2.2.6(b) also extends the waiver to
-        # subsidized guardianship and adoption families, which the model
-        # cannot separately identify, so they are not modeled.
+        # 392 NAC 2-011.02-.03 concerns Department/tribal wards. The Plan's
+        # 2.2.2(f)-(g) includes families under court supervision in protective
+        # services and permits case-by-case income waivers. An individual's
+        # supervision alone does not establish that family/case status; that
+        # determination stays in receives_or_needs_protective_services.
+        # 2.2.6(b)'s asset-waiver narrative and 3.3.1(vi)'s fee waiver are
+        # narrower (wards, subsidized adoption/guardianship). The existing
+        # shared protective-services approximation is retained, not expanded.
         protective = person("receives_or_needs_protective_services", period.this_year)
         return spm_unit.sum(foster | protective) > 0
