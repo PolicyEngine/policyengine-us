@@ -110,6 +110,48 @@ def test_magi_reads_income_two_years_prior_within_the_model(year):
 
 
 @pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)
+def test_income_provided_for_unmodeled_lag_year_counts(year):
+    lag_year = year - 2
+    sim = senior_household(
+        year,
+        30_000,
+        person_inputs={
+            "tax_exempt_interest_income": {lag_year: 5_000, year: 0},
+        },
+        tax_unit_inputs={"adjusted_gross_income": {lag_year: 500_000}},
+    )
+    assert sim.calculate("medicare_irmaa_magi_two_years_prior", year)[
+        0
+    ] == pytest.approx(505_000)
+    sim.calculate("income_tax", year)
+    # Only the provided values exist for the early year.
+    assert sorted(cached_periods_before_first_modeled_year(sim)) == [
+        ("adjusted_gross_income", str(lag_year)),
+        ("tax_exempt_interest_income", str(lag_year)),
+    ]
+
+
+@pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)
+def test_provided_lag_year_agi_alone_does_not_break_later_calculations(year):
+    # On main, reading the provided AGI also computed tax-exempt interest for
+    # the early year and cached it; a later income_tax in the same simulation
+    # then uprated that cached value with a parameter undefined in that year.
+    lag_year = year - 2
+    sim = senior_household(
+        year,
+        30_000,
+        tax_unit_inputs={"adjusted_gross_income": {lag_year: 500_000}},
+    )
+    assert sim.calculate("medicare_irmaa_magi_two_years_prior", year)[
+        0
+    ] == pytest.approx(500_000)
+    sim.calculate("income_tax", year)
+    assert cached_periods_before_first_modeled_year(sim) == [
+        ("adjusted_gross_income", str(lag_year))
+    ]
+
+
+@pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)
 def test_provided_magi_still_overrides(year):
     sim = senior_household(
         year,
@@ -130,7 +172,7 @@ def test_senior_household_computes_without_reading_unmodeled_years(
     sim = senior_household(year, employment_income)
     for variable in ["income_tax", "household_net_income"]:
         sim.calculate(variable, year)
-    # Nothing is computed or cached for a year before the model begins. A
-    # value cached there would also be uprated from an undefined parameter
-    # when a later year reads it.
+    # With no early-year income provided, nothing is computed or cached for a
+    # year before the model begins. A value cached there would also be uprated
+    # from an undefined parameter when a later year reads it.
     assert cached_periods_before_first_modeled_year(sim) == []
