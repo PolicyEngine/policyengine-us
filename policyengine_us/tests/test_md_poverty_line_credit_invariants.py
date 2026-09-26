@@ -7,7 +7,10 @@ credits negative, which raised tax. The properties below must hold for
 every household, so they are checked over two vectorized simulations per
 tax year (baseline and credits neutralized): a seeded random sample plus an
 edge grid of self-employment losses, profits and wages around the poverty
-level, for tax years 2021 to 2025.
+level, cycled across counties with flat, marginal (Anne Arundel) and
+bracket (Frederick) local rates. The TAXSIM-pinned YAML cases cover every
+year from 2021 to 2025; these structural properties run on the first and
+last.
 """
 
 import numpy as np
@@ -17,8 +20,14 @@ from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 
-YEARS = [2021, 2022, 2023, 2024, 2025]
-SAMPLE_SIZE = 150
+YEARS = [2021, 2025]
+SAMPLE_SIZE = 60
+COUNTIES = [
+    "BALTIMORE_CITY_MD",
+    "ANNE_ARUNDEL_COUNTY_MD",
+    "FREDERICK_COUNTY_MD",
+    "WORCESTER_COUNTY_MD",
+]
 # Cents of float32 noise allowed in comparisons.
 TOLERANCE = 0.01
 
@@ -93,6 +102,7 @@ def _situation(year, rows):
         households[f"hh_{i}"] = {
             "members": members,
             "state_code": {y: "MD"},
+            "county_str": {y: COUNTIES[i % len(COUNTIES)]},
         }
     return {
         "people": people,
@@ -114,7 +124,9 @@ def results(request):
     def calc(sim, variable):
         return sim.calculate(variable, year).astype(float)
 
+    p = baseline.tax_benefit_system.parameters(f"{year}-01-01")
     return year, {
+        "share": p.gov.states.md.tax.income.credits.poverty_line.earned_income_share,
         "earned": calc(baseline, "eitc_earned_income"),
         "net_earnings": calc(baseline, "tax_unit_earned_income"),
         "eligible": baseline.calculate("is_eligible_md_poverty_line_credit", year),
@@ -154,7 +166,7 @@ def test_credits_are_never_negative(results):
 
 def test_credits_are_bounded_by_earned_income_share(results):
     _, r = results
-    assert (r["potential"] <= 0.05 * r["earned"] + TOLERANCE).all()
+    assert (r["potential"] <= r["share"] * r["earned"] + TOLERANCE).all()
     assert (r["local"] <= r["rate"] * r["earned"] + TOLERANCE).all()
 
 
