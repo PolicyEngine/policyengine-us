@@ -10,8 +10,10 @@ values:
     - snap
     - receives_snap
     - fdpir
-    # msp reflects computed Medicare Savings Program eligibility; the model
-    # has no reported-receipt input for it, unlike receives_ssi and receives_snap.
+    # msp requires computed eligibility and participation, including the
+    # existing SSI-related buy-in treatment. Discretionary take-up defaults
+    # to true until assigned by the microdata, so the MSP route assumes full
+    # take-up by default. There is no separate reported MSP receipt input.
     - msp
     # Low Income Subsidy also qualifies under the state plan but is not modeled.
 

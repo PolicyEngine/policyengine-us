@@ -1,0 +1,39 @@
+- name: Case 1, take-up false zeroes MSP but preserves the benefit value.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    msp_eligible: true
+    msp_benefit_value: 150
+    takes_up_msp_if_eligible: false
+  output:
+    msp_benefit_value: 150
+    msp: 0
+
+- name: Case 2, take-up true passes the benefit value through.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    msp_eligible: true
+    msp_benefit_value: 150
+    takes_up_msp_if_eligible: true
+  output:
+    msp_benefit_value: 150
+    msp: 150
+
+- name: Case 3, take-up defaults to true.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    msp_eligible: true
+    msp_benefit_value: 150
+  output:
+    msp: 150
+
+- name: Case 4, an overridden estimate cannot bypass MSP eligibility.
+  period: 2026-01
+  input:
+    msp_eligible: false
+    msp_benefit_value: 150
+    takes_up_msp_if_eligible: true
+  output:
+    msp: 0
