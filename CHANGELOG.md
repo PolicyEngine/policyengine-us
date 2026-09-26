@@ -1,3 +1,10 @@
+## [2.15.3] - 2026-09-26
+
+### Fixed
+
+- Arkansas miscellaneous itemized deductions and casualty and theft losses now follow Arkansas law instead of the federal deductions: TCJA suspended the federal miscellaneous deduction and limited federal casualty losses to federally declared disasters from 2018, and Arkansas adopted neither change. The 2% floor applies once, to Arkansas AGI, and casualty losses take the $100 exclusion and a 10% floor on Arkansas AGI.
+
+
 ## [2.15.2] - 2026-09-26
 
 ### Changed
