@@ -7,7 +7,12 @@ class is_eligible_md_poverty_line_credit(Variable):
     label = "Eligible for MD Poverty Line Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
+    reference = (
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-709&enactments=false",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_2",
+        "https://www.law.cornell.edu/cfr/text/26/1.32-2",
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-107&enactments=false",
+    )
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
@@ -27,7 +32,11 @@ class is_eligible_md_poverty_line_credit(Variable):
         # (ii)    whose earned income as defined under § 32(c)(2) of the
         # Internal Revenue Code does not exceed the applicable poverty
         # income level;
-        earnings = tax_unit("tax_unit_earned_income", period)
+        # eitc_earned_income is PolicyEngine's § 32(c)(2) measure, the one the
+        # federal EITC uses: wages plus net earnings from self-employment
+        # (including farm and partnership earnings) after the § 164(f)
+        # deduction, netted across the filers and floored at zero.
+        earnings = tax_unit("eitc_earned_income", period)
         earnings_below_fpg = earnings <= fpg
         # (iii)    who is not claimed as an exemption on another individual’s
         #  tax return under § 10–211 of this title;
