@@ -5,21 +5,20 @@ class co_low_income_cdcc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Colorado Low-income Child Care Expenses Credit"
-    documentation = (
-        # C.R.S. 39-22-119.5(3)(a) eligibility conditions and statutory window.
-        # PolicyEngine models the availability window, the $25,000 AGI limit,
-        # the insufficient-federal-liability condition (no federal CDCC allowed
-        # after the section 26 liability limitation), and the IRC 21(e)(2)
-        # joint-return requirement. The provider identification / due-diligence
-        # requirements (provider name, address, and TIN under (3)(a)(V)-(VI))
-        # and the dependent identification requirements are administrative
-        # inputs PolicyEngine does not model and are assumed satisfied. The
-        # dependent-under-age-13 condition (3)(a)(III) is applied in
-        # co_low_income_cdcc.
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-1195-child-care-expenses-tax-credit-legislative-declaration-definitions"
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=46"
-    )
+    # C.R.S. 39-22-119.5(3)(a) eligibility conditions and statutory window.
+    # PolicyEngine models the availability window, the $25,000 AGI limit,
+    # the insufficient-federal-liability condition (no federal CDCC allowed
+    # after the section 26 liability limitation), and the IRC 21(e)(2)
+    # joint-return requirement. The provider identification / due-diligence
+    # requirements (provider name, address, and TIN under (5)(a)-(b)) and
+    # the dependent identification requirements under (5)(c) are
+    # administrative inputs PolicyEngine does not model and are assumed
+    # satisfied. The
+    # dependent-under-age-13 condition (3)(a)(III) is applied in
+    # co_low_income_cdcc.
     reference = (
+        "https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-119-5/",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=46",
         # C.R.S. 39-22-119.5(3)(a) (window narrowed to before 2026 by HB24-1134)
         "https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=3",
     )

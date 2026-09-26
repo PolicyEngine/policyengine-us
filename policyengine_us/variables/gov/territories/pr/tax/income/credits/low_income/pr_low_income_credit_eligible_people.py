@@ -6,7 +6,7 @@ class pr_low_income_credit_eligible_people(Variable):
     entity = TaxUnit
     label = "Eligible people for the Puerto Rico low income credit"
     definition_period = YEAR
-    reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30212-credit-for-low-income-individuals-older-than-sixty-five-65-years-of-age"
+    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30212/"
     defined_for = StateCode.PR
 
     adds = ["pr_low_income_credit_eligible_person"]

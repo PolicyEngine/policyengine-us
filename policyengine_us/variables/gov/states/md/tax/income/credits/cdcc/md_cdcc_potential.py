@@ -8,7 +8,7 @@ class md_cdcc_potential(Variable):
     documentation = "Maryland Child and Dependent Care Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care"
+    reference = "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-716&enactments=false"
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):

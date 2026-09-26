@@ -8,7 +8,7 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-14-low-income-comprehensive-tax-rebate?sort=relevance&type=regulation&tab=keyword&jxs=&resultsNav=false",
+        "https://law.justia.com/codes/new-mexico/chapter-7/article-2/section-7-2-14/",
     )
     defined_for = StateCode.NM
 
