@@ -14,8 +14,12 @@ and trust inputs:
    members (Form 8960 lines 4a and 7).
 3. When every member's estate income is nonnegative and nothing else produces
    a loss, AGI rises by exactly the non-dependents' estate income.
-4. A dependent's estate income and adjustment leave the filer's AGI, net
-   investment income, and NIIT unchanged.
+4. A dependent's estate income and adjustment, of either sign, leave the
+   filer's net investment income unchanged. When the dependent's estate income
+   is nonnegative they also leave the filer's AGI and NIIT unchanged. A
+   dependent's estate LOSS still reaches the filer's AGI because loss_ald pools
+   every member's losses; that is a pre-existing treatment outside this change,
+   recorded below as a strict expected failure so it surfaces when fixed.
 5. The NIIT is nonnegative and never exceeds the rate times either net
    investment income or AGI in excess of the filing-status threshold
    (§ 1411(a)(1)).
@@ -63,10 +67,6 @@ def _draw_units():
             "head_adjustment": head_adjustment,
             "spouse_estate": 0.0,
             "spouse_adjustment": 0.0,
-            # Dependents' estate income is nonnegative here so that it cannot
-            # reach the filer's AGI through loss_ald, which already pools
-            # losses across all tax unit members (a separate, pre-existing
-            # treatment outside these properties).
             "dependent_estate": 0.0,
             "dependent_adjustment": 0.0,
         }
@@ -76,9 +76,22 @@ def _draw_units():
                 -rng.uniform(0, max(unit["spouse_estate"], 0.0))
             )
         if kind == "dependent":
-            unit["dependent_estate"] = float(rng.uniform(0, 150_000))
+            # Both signs: losses test the net investment income property on
+            # the full domain and feed the loss_ald expected-failure test.
+            unit["dependent_estate"] = float(
+                rng.choice(
+                    [rng.uniform(-80_000, 0), rng.uniform(0, 150_000)],
+                    p=[0.3, 0.7],
+                )
+            )
             unit["dependent_adjustment"] = float(
-                -rng.uniform(0, unit["dependent_estate"])
+                rng.choice(
+                    [
+                        -rng.uniform(0, max(unit["dependent_estate"], 0.0)),
+                        rng.uniform(0, 10_000),
+                    ],
+                    p=[0.8, 0.2],
+                )
             )
         # Whole dollars keep every sum exact in float32 (integers below 2**24),
         # so the identities below can be checked to the cent.
@@ -107,6 +120,9 @@ def _draw_units():
         # Dependent carries all the estate income.
         {**edge, "kind": "dependent", "head_wages": 300_000.0,
          "dependent_estate": 100_000.0},
+        # Dependent carries an estate loss and a positive code H adjustment.
+        {**edge, "kind": "dependent", "head_wages": 300_000.0,
+         "dependent_estate": -60_000.0, "dependent_adjustment": 5_000.0},
     ]  # fmt: skip
     return units
 
@@ -246,18 +262,47 @@ def test_agi_rises_by_nonnegative_estate_income(runs, units):
     np.testing.assert_allclose(delta[clean], expected[clean], atol=TOLERANCE)
 
 
-def test_dependent_estate_income_does_not_reach_the_filer(runs):
-    for variable in [
-        "adjusted_gross_income",
-        "net_investment_income",
-        "net_investment_income_tax",
-    ]:
+def _dependent_estate_by_unit(units):
+    return np.array([u["dependent_estate"] for u in units])
+
+
+def test_dependent_estate_income_stays_out_of_filer_nii(runs, units):
+    dependent_estate = _dependent_estate_by_unit(units)
+    assert (dependent_estate < 0).any() and (dependent_estate > 0).any()
+    np.testing.assert_allclose(
+        runs["with"]["net_investment_income"],
+        runs["no_dependent"]["net_investment_income"],
+        atol=TOLERANCE,
+    )
+
+
+def test_nonnegative_dependent_estate_income_stays_off_filer_return(runs, units):
+    nonnegative = _dependent_estate_by_unit(units) >= 0
+    for variable in ["adjusted_gross_income", "net_investment_income_tax"]:
         np.testing.assert_allclose(
-            runs["with"][variable],
-            runs["no_dependent"][variable],
+            runs["with"][variable][nonnegative],
+            runs["no_dependent"][variable][nonnegative],
             atol=TOLERANCE,
             err_msg=variable,
         )
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason=(
+        "Pre-existing: loss_ald pools every tax unit member's business and "
+        "estate losses, so a dependent's estate loss lowers the filer's AGI. "
+        "Tracked as a separate follow-up; this test flips to passing when "
+        "loss_ald excludes dependents."
+    ),
+)
+def test_dependent_estate_loss_stays_off_filer_agi(runs, units):
+    negative = _dependent_estate_by_unit(units) < 0
+    np.testing.assert_allclose(
+        runs["with"]["adjusted_gross_income"][negative],
+        runs["no_dependent"]["adjusted_gross_income"][negative],
+        atol=TOLERANCE,
+    )
 
 
 def test_niit_within_statutory_bounds(runs):
