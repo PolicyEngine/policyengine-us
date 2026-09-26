@@ -3,7 +3,15 @@ values:
   # NJHPS extends premium assistance up to 600% FPL, applied as a "<=" comparison.
   # The dollar ceilings ($93,900 individual / $192,900 family of four in 2026)
   # auto-derive from the federal poverty line and are not hard-coded. The DOBI
-  # FY2026 budget confirms the program continues "up to 600% FPL" for PY2026.
+  # FY2025-2026 budget response said the Department "intends to continue"
+  # NJHPS to 600% FPL if the enhanced federal credits were extended; they were
+  # not, and the FY2026-2027 response (p.4) states the outcome: "While the
+  # enhanced APTCs were not extended by the federal government in 2026, the
+  # Department continued providing NJ Health Plan Savings subsidies up to 600%
+  # FPL." The 2026-08-18 letter to the Assembly Budget Committee (p.5) fixes the
+  # poverty-guideline vintage: "For plan year 2026 (using 2025 FPL levels), for
+  # a family of four, the 400 percent of FPL is $128,600, and 600 percent of
+  # FPL is $192,900".
   2026-01-01: 6
 
 metadata:
@@ -15,5 +23,9 @@ metadata:
       href: https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=12
     - title: NJ DOBI FY2025-2026 Budget Discussion Points
       href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=6
+    - title: NJ DOBI FY2026-2027 Budget Discussion Points, p.4 ("continued providing NJ Health Plan Savings subsidies up to 600% FPL" in 2026)
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2027/dobi_response_2027.pdf#page=4
+    - title: NJ DOBI follow-up response to the Assembly Budget Committee, 2026-08-18, p.5 (plan year 2026 uses the 2025 poverty guidelines; 600% FPL is $192,900 for four)
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2027/dobi_follow_up_response_abu.pdf#page=5
     - title: Get Covered NJ - New Jersey Health Plan Savings
       href: https://www.nj.gov/getcoverednj/financialhelp/premiums/

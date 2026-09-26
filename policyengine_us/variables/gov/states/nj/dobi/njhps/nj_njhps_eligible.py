@@ -8,8 +8,13 @@ class nj_njhps_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
     reference = (
-        "https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=8",
+        # Treasury OTA 1332 addendum (Nov 2021): the enhanced schedule's
+        # bullets on PDF page 9 (printed page 8), Table 2 on page 12.
+        "https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=9",
         "https://pub.njleg.gov/bills/2020/AL20/61_.HTM",
+        # DOBI FY2026-2027 budget response, p.4: NJHPS continued to 600% FPL
+        # in 2026 after the enhanced federal credits lapsed.
+        "https://pub.njleg.state.nj.us/publications/budget/governors-budget/2027/dobi_response_2027.pdf#page=4",
     )
     documentation = (
         "A tax unit is eligible for New Jersey Health Plan Savings when the "
