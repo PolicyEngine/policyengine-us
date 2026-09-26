@@ -29,12 +29,13 @@ def medicaid_non_filer_member_sum(person, period, values):
     never erased, though moving a household onto this rule can remove another
     family's legacy over-count, such as an adult's child-age sibling.
 
-    A spouse is the other head or spouse of a joint return, or a co-resident
-    partner in a two-person marital unit (PE's spouse convention) who is in
-    the same family, whatever either partner's tax role. People linked as
-    parent and child, or sharing a parent id, are never spouses. PE puts
-    everyone in one marital unit, family and tax unit when a situation omits
-    them, so supply those entities with parent ids.
+    A spouse is a co-resident partner in a two-person marital unit (PE's
+    spouse convention), whatever either partner's tax role, or the other head
+    or spouse of a joint return. A joint return or a cohabiting-spouses flag
+    on either partner's tax unit shows the marriage. Otherwise the partners
+    must share a family and no parent id, since PE puts everyone in one
+    marital unit when a situation omits marital units. People linked as
+    parent and child are never spouses.
 
     Values accumulate in float64; variable storage rounds the result.
     """
@@ -64,6 +65,7 @@ def medicaid_non_filer_member_sum(person, period, values):
     joint = head_or_spouse & (head_spouse_count == 2)
     married = person.marital_unit.nb_persons() == 2
     marital_unit = person.marital_unit.reference_entity.members_entity_id
+    cohabiting = person.tax_unit("cohabitating_spouses", period)
 
     own_index = np.arange(person.count)
     for member in household_member_indices(person):
@@ -78,14 +80,15 @@ def medicaid_non_filer_member_sum(person, period, values):
             (parent_2 != 0)
             & ((parent_2 == parent_1[member]) | (parent_2 == parent_2[member]))
         )
+        partner = married & (marital_unit[member] == marital_unit)
         spouse = (
             ~is_self
             & ~names_applicant
             & ~named_by_applicant
-            & ~shares_parent_id
             & (
                 (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-                | (married & (marital_unit[member] == marital_unit) & same_family)
+                | (partner & (cohabiting | cohabiting[member]))
+                | (partner & same_family & ~shares_parent_id)
             )
         )
         own_child = child[member] & (

@@ -912,3 +912,46 @@
     medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, true]
     medicaid_household_size: [2, 2, 1]
     medicaid_household_income: [20_000, 20_000, 0]
+
+# Regression for the r5 review of the rework.
+
+- name: Spouses who are also step siblings stay spouses when the marriage is shown.
+  period: 2026
+  input:
+    people:
+      spouse_a:
+        person_id: 1
+        age: 25
+        employment_income: 1_000
+        # Natural parent 10 and step parent 11, both living elsewhere.
+        parent_1_id: 10
+        parent_2_id: 11
+      spouse_b:
+        person_id: 2
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 11
+        parent_2_id: 10
+    tax_units:
+      a_unit:
+        members: [spouse_a]
+        tax_unit_is_filer: false
+        cohabitating_spouses: true
+      b_unit:
+        members: [spouse_b]
+        tax_unit_is_filer: false
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [spouse_a, spouse_b]
+    marital_units:
+      couple:
+        members: [spouse_a, spouse_b]
+    households:
+      household:
+        members: [spouse_a, spouse_b]
+        state_code: CA
+  output:
+    # Each spouse includes the other under 42 CFR 435.603(f)(3)(i) and (f)(4).
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [3_000, 3_000]
