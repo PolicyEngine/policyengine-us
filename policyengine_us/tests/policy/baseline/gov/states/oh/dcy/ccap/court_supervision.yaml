@@ -1,0 +1,62 @@
+# Authority: https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Providers/CCDF/Approved_State_Plan_2025-2027.pdf#page=21
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: OH ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    oh_ccap_eligible_child: true
+
+- name: OH court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    oh_ccap_eligible_child: false
+
+- name: OH court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    oh_ccap_eligible_child: false
+
+- name: OH court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    oh_ccap_eligible_child: false
+
+- name: OH court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    oh_ccap_eligible_child: false

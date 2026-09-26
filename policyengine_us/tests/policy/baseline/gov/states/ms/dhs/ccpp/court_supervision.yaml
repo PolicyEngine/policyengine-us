@@ -1,0 +1,62 @@
+# Authority: https://www.mdhs.ms.gov/document/2025-2027-ccdf-triennial-state-plan/#page=18
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: MS ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ms_ccpp_eligible_child: true
+
+- name: MS court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ms_ccpp_eligible_child: false
+
+- name: MS court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ms_ccpp_eligible_child: false
+
+- name: MS court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ms_ccpp_eligible_child: false
+
+- name: MS court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ms_ccpp_eligible_child: false

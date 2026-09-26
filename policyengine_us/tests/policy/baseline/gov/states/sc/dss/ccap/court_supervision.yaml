@@ -1,0 +1,86 @@
+# Authority: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=21
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: SC court-supervised child at age 12.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: true
+
+- name: SC court-supervised child at age 13.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: true
+
+- name: SC court-supervised child at age 17.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: true
+
+- name: SC court-supervised child at age 18.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: true
+
+- name: SC court-supervised child at age 19.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: false
+
+- name: SC court-supervised child at age 40.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    sc_ccap_eligible_child: false
+
+- name: SC older child without court supervision.
+  period: 2026-01
+  input:
+    state_code: SC
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    sc_ccap_eligible_child: false

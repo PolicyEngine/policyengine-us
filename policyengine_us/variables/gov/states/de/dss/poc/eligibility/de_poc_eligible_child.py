@@ -10,13 +10,25 @@ class de_poc_eligible_child(Variable):
     reference = (
         "https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml",
         "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
+        "https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21",
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.de.dss.poc.age_threshold
+        p = parameters(period).gov.states.de.dss.poc
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        age_eligible = where(is_disabled, age < p.disabled_child, age < p.child)
+        # The approved FFY 2025-2027 plan, section 2.2.1(c), elects the
+        # 45 CFR 98.20(a)(1)(ii) court-supervision age extension through 18.
+        # Ordinary income, activity and copay rules still apply.
+        court_supervision = (
+            person("is_under_court_supervision", period.this_year)
+            & p.eligibility.court_supervision_extension
+        )
+        age_eligible = where(
+            is_disabled | court_supervision,
+            age < p.age_threshold.disabled_child,
+            age < p.age_threshold.child,
+        )
         is_dependent = person("is_tax_unit_dependent", period.this_year)
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year

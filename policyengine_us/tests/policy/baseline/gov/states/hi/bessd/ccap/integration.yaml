@@ -131,7 +131,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # CPS child eligible at any age; income test waived despite high income
+    # Child under 13; CPS waives the income test despite high income
     hi_ccap_eligible_child: [false, true]
     hi_ccap_income_eligible: true
     hi_ccap_eligible: true

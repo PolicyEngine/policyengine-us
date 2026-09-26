@@ -1,0 +1,62 @@
+# Authority: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/children/documents/2025-2027-ocdel-ccdf-state-plan.pdf#page=18
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: PA ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    pa_ccw_eligible_child: true
+
+- name: PA court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    pa_ccw_eligible_child: false
+
+- name: PA court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    pa_ccw_eligible_child: false
+
+- name: PA court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    pa_ccw_eligible_child: false
+
+- name: PA court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    pa_ccw_eligible_child: false

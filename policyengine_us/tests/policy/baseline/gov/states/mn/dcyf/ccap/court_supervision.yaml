@@ -1,0 +1,62 @@
+# Authority: https://dcyf.mn.gov/sites/default/files/2026-04/25-27_Plan_round_2_amendments.pdf#page=25
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: MN ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    mn_ccap_eligible_child: true
+
+- name: MN court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    mn_ccap_eligible_child: false
+
+- name: MN court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    mn_ccap_eligible_child: false
+
+- name: MN court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    mn_ccap_eligible_child: false
+
+- name: MN court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    mn_ccap_eligible_child: false

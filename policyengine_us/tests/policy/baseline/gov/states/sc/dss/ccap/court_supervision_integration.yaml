@@ -1,0 +1,29 @@
+# Court supervision extends the age limit only. Activity and copay waivers
+# require separate DSS approval, which is not modeled, so a court-supervised
+# child does not waive the family activity requirement.
+- name: Case 1, court supervision does not waive the activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+    sc_ccap_activity_eligible: false

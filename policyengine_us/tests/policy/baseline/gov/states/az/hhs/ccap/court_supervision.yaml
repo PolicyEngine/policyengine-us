@@ -1,0 +1,67 @@
+# Authority: https://des.az.gov/sites/default/files/media/AZ-CCDF-State-Plan-FFY-2025-2027.pdf#page=20
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: AZ ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: AZ
+    childcare_attending_days_per_month: 20
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    az_ccap_eligible_child: true
+
+- name: AZ court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: AZ
+    childcare_attending_days_per_month: 20
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    az_ccap_eligible_child: false
+
+- name: AZ court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: AZ
+    childcare_attending_days_per_month: 20
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    az_ccap_eligible_child: false
+
+- name: AZ court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: AZ
+    childcare_attending_days_per_month: 20
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    az_ccap_eligible_child: false
+
+- name: AZ court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: AZ
+    childcare_attending_days_per_month: 20
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    az_ccap_eligible_child: false

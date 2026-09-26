@@ -1,0 +1,62 @@
+# Authority: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=20
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: AL ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    al_ccsp_eligible_child: true
+
+- name: AL court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    al_ccsp_eligible_child: false
+
+- name: AL court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    al_ccsp_eligible_child: false
+
+- name: AL court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    al_ccsp_eligible_child: false
+
+- name: AL court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: AL
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    al_ccsp_eligible_child: false

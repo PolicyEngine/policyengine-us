@@ -1,0 +1,97 @@
+# Iowa has no general court-supervision age extension. Child care directed in
+# a court order (IAC 441-170.2(1)"b"(4)) is an income exception; court
+# supervision stands in for the order and HHS approval. It covers only an
+# otherwise eligible child, and it does not fund siblings who fail the
+# ordinary family requirements.
+- name: Case 1, court supervision does not extend the age limit.
+  period: 2026-01
+  input:
+    state_code: [IA, IA, IA, IA, IA]
+    age: [12, 13, 17, 18, 19]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    ia_cca_eligible_child: [true, false, false, false, false]
+
+- name: Case 2, a court-supervised child is paid without funding a sibling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240_000
+        ia_cca_max_rate: 0
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        pre_subsidy_childcare_expenses: 4_800
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        pre_subsidy_childcare_expenses: 12_000
+        childcare_hours_per_week: 40
+        ia_cca_max_rate: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # The court-supervised child's exception makes the family eligible with
+    # no fee. Only that child is paid: $4,800 / 12 = $400 per month, below
+    # the rate ceiling. The sibling fails the ordinary income and activity
+    # requirements, so the sibling's $1,000 monthly expense is not paid.
+    ia_cca_eligible_child: [false, true, true]
+    ia_cca_income_exception: true
+    ia_cca_eligible: true
+    ia_cca_copay: 0
+    ia_cca: 400
+
+- name: Case 3, an over-age court-supervised child creates no exception.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240_000
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_cca_eligible_child: [false, false]
+    ia_cca_income_exception: false
+    ia_cca_eligible: false
+    ia_cca: 0

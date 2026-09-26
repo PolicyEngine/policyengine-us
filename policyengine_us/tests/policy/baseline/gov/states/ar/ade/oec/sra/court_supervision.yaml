@@ -1,0 +1,86 @@
+# Authority: https://dese.ade.arkansas.gov/Files/CCDF_FFY_2025-2027_Final_June_DL_OEC.pdf#page=17
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: AR court-supervised child at age 12.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: true
+
+- name: AR court-supervised child at age 13.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: true
+
+- name: AR court-supervised child at age 17.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: true
+
+- name: AR court-supervised child at age 18.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: true
+
+- name: AR court-supervised child at age 19.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: false
+
+- name: AR court-supervised child at age 40.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    is_ar_sra_age_eligible: false
+
+- name: AR older child without court supervision.
+  period: 2026-01
+  input:
+    state_code: AR
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    is_ar_sra_age_eligible: false

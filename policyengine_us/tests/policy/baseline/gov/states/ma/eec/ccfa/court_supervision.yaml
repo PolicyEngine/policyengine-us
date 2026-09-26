@@ -1,0 +1,62 @@
+# Authority: https://www.mass.gov/doc/ma-eec-ccdf-state-plan-ffy-2025-2027-amend-2/download#page=26
+# Court status is distinct from protective-services or child-care authorization.
+
+- name: MA ordinary age remains eligible.
+  period: 2026-01
+  input:
+    state_code: MA
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ma_ccfa_eligible_child: true
+
+- name: MA court supervision alone does not extend eligibility at age 13.
+  period: 2026-01
+  input:
+    state_code: MA
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ma_ccfa_eligible_child: false
+
+- name: MA court supervision alone does not extend eligibility at age 18.
+  period: 2026-01
+  input:
+    state_code: MA
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ma_ccfa_eligible_child: false
+
+- name: MA court supervision alone does not extend eligibility at age 19.
+  period: 2026-01
+  input:
+    state_code: MA
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ma_ccfa_eligible_child: false
+
+- name: MA court supervision alone does not extend eligibility at age 40.
+  period: 2026-01
+  input:
+    state_code: MA
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    ma_ccfa_eligible_child: false

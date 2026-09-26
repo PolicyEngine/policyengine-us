@@ -15,11 +15,18 @@ class ia_cca_income_exception(Variable):
         # in protective child care, and licensed foster parents needing
         # care for a foster child. We use is_tanf_enrolled (a bare input)
         # for the FIP path to break the CCAP-to-TANF circular dependency.
-        # PROMISE JOBS and court-ordered care have no PolicyEngine input at
-        # the moment, so we don't model those exception paths.
+        # PROMISE JOBS has no PolicyEngine input at the moment, so we don't
+        # model that exception path.
         on_fip = spm_unit("is_tanf_enrolled", period)
         person = spm_unit.members
         protective = person("receives_or_needs_protective_services", period)
         foster = person("is_in_foster_care", period)
         has_protective_or_foster = spm_unit.any(protective | foster)
-        return on_fip | has_protective_or_foster
+        # Child care directed in a court order (IAC 441-170.2(1)"b"(4)) uses
+        # court supervision, treating the order's child-care direction and
+        # HHS approval as verification details. It covers only an otherwise
+        # eligible child: the ordinary age and immigration tests remain.
+        court_child = person("is_under_court_supervision", period.this_year) & person(
+            "ia_cca_eligible_child", period
+        )
+        return on_fip | has_protective_or_foster | spm_unit.any(court_child)

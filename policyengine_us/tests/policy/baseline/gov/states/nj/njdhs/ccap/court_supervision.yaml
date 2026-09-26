@@ -1,0 +1,159 @@
+# Authority: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20
+# The approved FFY 2025-2027 plan, section 2.2.1(c), elects the 45 CFR
+# 98.20(a)(1)(ii) court-supervision age extension through 18 from 2024-10-01.
+# Ordinary income, activity, immigration and copay rules still apply.
+
+- name: NJ court status alone qualifies under the plan election at age 13.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child: true
+
+- name: NJ court status alone qualifies under the plan election at age 18.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child: true
+
+- name: NJ court status alone at age 19 is past the under-19 ceiling.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child: false
+
+- name: NJ court status alone before the FFY 2025-2027 election is insufficient.
+  period: 2024-06
+  input:
+    state_code:
+      2024: NJ
+    age:
+      2024: 13
+    is_tax_unit_dependent:
+      2024: true
+    immigration_status:
+      2024: CITIZEN
+    is_disabled:
+      2024: false
+    is_under_court_supervision:
+      2024: true
+  output:
+    nj_ccap_eligible_child: false
+
+- name: NJ court-supervision election takes effect with the FFY 2025 plan period.
+  period: 2024
+  input:
+    state_code: NJ
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child:
+      2024-09: false
+      2024-10: true
+
+- name: NJ court-supervised 16-year-old in an income-eligible working family pays an ordinary copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 36_000
+        weekly_hours_worked: 40
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # The court route only extends the age limit; the family still passes
+    # the ordinary income and activity tests and pays the schedule copay.
+    # Countable income: $36,000 / 12 = $3,000 (adult earnings only).
+    # 2026 FPG, 2 persons: $15,960 + $5,680 = $21,640 / 12 = $1,803.33.
+    # Initial limit: 200% FPG = $3,606.67 >= $3,000 -> income eligible.
+    # Activity: 40 weekly hours >= the 30-hour requirement.
+    # Copay: FPL ratio 3,000 / 1,803.33 = 1.66 (100-200% tier); one
+    # full-time child (40 hours) -> 2% first-child rate before March 2026:
+    # $3,000 * 0.02 = $60.
+    # Maximum: licensed center, full time, no rating, school age (16 years
+    # = 192 months) = $274.96/week * 52 / 12 = $1,191.49/month.
+    # Expenses: $12,000 / 12 = $1,000 < $1,191.49 -> capped at $1,000.
+    # Benefit: $1,000 - $60 = $940.
+    nj_ccap_eligible_child: [false, true]
+    nj_ccap_countable_income: 3_000
+    nj_ccap_income_eligible: true
+    nj_ccap_activity_eligible: true
+    nj_ccap_eligible: true
+    nj_ccap_maximum_weekly_benefit: [0, 274.96]
+    nj_ccap_copay: 60
+    nj_ccap: 940
+
+- name: NJ over-income family with a court-supervised child gets no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240_000
+        weekly_hours_worked: 40
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Countable income $240,000 / 12 = $20,000 > 200% FPG ($3,606.67).
+    # Court supervision alone does not waive the income test.
+    nj_ccap_eligible_child: [false, true]
+    nj_ccap_income_eligible: false
+    nj_ccap_eligible: false
+    nj_ccap: 0
