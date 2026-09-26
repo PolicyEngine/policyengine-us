@@ -39,3 +39,43 @@
     filing_status: SINGLE
   output:
     basic_standard_deduction: 16_550
+
+- name: 2023 dependent filer with $3,000 of wages gets $400 plus earned income
+  # Rev. Proc. 2022-38 sec. 3.15(2): greater of $1,250 or $400 plus earned
+  # income; max($1,250, $400 + $3,000) = $3,400, below the $13,850 cap.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_400
+
+- name: 2024 dependent filer with $3,000 of wages gets $450 plus earned income
+  # Rev. Proc. 2023-34 sec. 3.15(2): greater of $1,300 or $450 plus earned
+  # income; max($1,300, $450 + $3,000) = $3,450, below the $14,600 cap.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_450

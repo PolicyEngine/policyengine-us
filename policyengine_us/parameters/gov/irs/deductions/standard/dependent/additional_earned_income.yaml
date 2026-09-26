@@ -2,12 +2,17 @@ description: Addition to earned income for the standard deduction if claimed as 
 values:
   0001-01-01: 350
   2022-01-01: 400
+  2024-01-01: 450
   2025-01-01: 450
 metadata:
   unit: currency-USD
   reference:
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12  
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=12
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=13
     - title: 2022 IRS data release
