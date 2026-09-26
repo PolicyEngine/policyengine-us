@@ -8,8 +8,8 @@ class ne_cdcc_refundable(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_2441n.pdf"
-        "https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/Form_2441N_Ne_Child_and_Dependent_Care_Expenses_8-618-2022_final_2.pdf"
+        "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_2441n.pdf",
+        "https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/Form_2441N_Ne_Child_and_Dependent_Care_Expenses_8-618-2022_final_2.pdf",
     )
     defined_for = "ne_cdcc_refundable_eligible"
 

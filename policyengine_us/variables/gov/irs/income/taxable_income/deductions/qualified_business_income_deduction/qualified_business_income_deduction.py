@@ -8,8 +8,8 @@ class qualified_business_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
-        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
+        "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
     )
 
     def formula(tax_unit, period, parameters):

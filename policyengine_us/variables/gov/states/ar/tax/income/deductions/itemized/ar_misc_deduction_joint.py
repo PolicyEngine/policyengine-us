@@ -7,7 +7,10 @@ class ar_misc_deduction_joint(Variable):
     label = "Arkansas miscellaneous deduction when married filing jointly"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/AR1075_2022.pdf#page=1"
+    reference = (
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR3_ItemizedDeduction.pdf#page=1",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21",
+    )
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):

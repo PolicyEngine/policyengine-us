@@ -8,8 +8,8 @@ class vt_charitable_contribution_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/vermont/2022/title-32/chapter-151/section-5822/"
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf#page=1"
+        "https://law.justia.com/codes/vermont/2022/title-32/chapter-151/section-5822/",
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf#page=1",
     )
     defined_for = StateCode.VT
 

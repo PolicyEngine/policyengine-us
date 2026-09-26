@@ -10,8 +10,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -30,8 +30,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf"
+            "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -68,8 +68,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -96,10 +96,10 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf",
         )
         defined_for = StateCode.MN
 
@@ -136,8 +136,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf"
-            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf",
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf",
         )
         defined_for = StateCode.MN
 

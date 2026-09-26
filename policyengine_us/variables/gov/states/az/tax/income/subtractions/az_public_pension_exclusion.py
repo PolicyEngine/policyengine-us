@@ -8,9 +8,9 @@ class az_public_pension_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=18"
-        "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=23"
-        "https://www.azleg.gov/ars/43/01022.htm"
+        "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=18",
+        "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=23",
+        "https://www.azleg.gov/ars/43/01022.htm",
     )
     defined_for = StateCode.AZ
 

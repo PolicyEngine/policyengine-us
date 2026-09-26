@@ -69,8 +69,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf"
-            "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
+            "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf",
+            "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf",
         )
         defined_for = StateCode.NE
 
@@ -105,8 +105,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf",
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf",
         )
         defined_for = StateCode.OK
 
@@ -292,8 +292,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
-            "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
+            "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf",
+            "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf",
         )
         defined_for = StateCode.IA
 
@@ -381,11 +381,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
-            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
-            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
-            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
-            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf",
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf",
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf",
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf",
+            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf",
         )
         defined_for = StateCode.WI
 
@@ -439,8 +439,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf",
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf",
         )
         defined_for = StateCode.OK
 

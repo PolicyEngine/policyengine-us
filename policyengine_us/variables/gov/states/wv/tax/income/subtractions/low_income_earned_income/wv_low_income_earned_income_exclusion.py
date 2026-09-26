@@ -9,9 +9,9 @@ class wv_low_income_earned_income_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://code.wvlegislature.gov/11-21-10/"
-        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20"
-        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27"
+        "https://code.wvlegislature.gov/11-21-10/",
+        "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20",
+        "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27",
     )
 
     def formula(tax_unit, period, parameters):

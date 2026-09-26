@@ -8,8 +8,8 @@ class snap_countable_earner(Variable):
     documentation = "Whether this person's earned income is counted for SNAP"
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/uscode/text/7/2014, "
-        "https://www.law.cornell.edu/cfr/text/7/273.9#c_3"
+        "https://www.law.cornell.edu/uscode/text/7/2014",
+        "https://www.law.cornell.edu/cfr/text/7/273.9#c_3",
     )
 
     def formula(person, period, parameters):

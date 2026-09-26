@@ -8,8 +8,8 @@ class tax_unit_combined_income_for_social_security_taxability(Variable):
     label = "Taxable Social Security combined income"
     unit = USD
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/86"
-        "https://www.ssa.gov/benefits/retirement/planner/taxes.html"
+        "https://www.law.cornell.edu/uscode/text/26/86",
+        "https://www.ssa.gov/benefits/retirement/planner/taxes.html",
     )
 
     def formula(tax_unit, period, parameters):
