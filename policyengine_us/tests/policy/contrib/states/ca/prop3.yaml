@@ -1,0 +1,75 @@
+# California Proposition 3 (2026) keeps the 10.3%, 11.3% and 12.3% rates after 2030.
+# Expected values apply the 2031 bracket thresholds by hand.
+
+- name: Prop 3 keeps the higher rates for a single filer with $1 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Baseline 2031 is 88,942.90; Prop 3 adds 1% on 84,633.30, 2% on 338,549.15 and 3% on 153,629.41.
+    ca_income_tax_before_credits: 101_169.10
+
+- name: Prop 3 keeps the higher rates for a single filer with $2 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 2_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_income_tax_before_credits: 224_169.10
+
+- name: Prop 3 keeps the higher rates for joint filers with $2 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 2_000_000
+    filing_status: JOINT
+    state_code: CA
+  output:
+    ca_income_tax_before_credits: 202_338.20
+
+- name: Prop 3 does not change tax below the 10.3% threshold in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 300_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_income_tax_before_credits: 23_842.90
+
+- name: Prop 3 does not change 2030 tax, when the higher rates already apply
+  period: 2030
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_income_tax_before_credits: 101_596.07
+
+- name: Prop 3 leaves the 1% Mental Health Services Tax unchanged
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    gov.contrib.states.ca.prop3.in_effect: true
+    ca_taxable_income: 2_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_mental_health_services_tax: 10_000

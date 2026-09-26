@@ -21,3 +21,35 @@
   output:
   # 82_046.3 + (12.30% of (1_000_000 - 850_503)) = 100_434.131
     ca_income_tax_before_credits: 100_434.131
+
+- name: Single filer with $1 million in 2030 pays the 10.3%, 11.3% and 12.3% rates
+  period: 2030
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Cal. Const. art. XIII, § 36(f)(2): the rates above 9.3% apply before January 1, 2031.
+    ca_income_tax_before_credits: 101_596.07
+
+- name: Single filer with $1 million in 2031 pays 9.3% on all income above the 9.3% threshold
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # 2031 thresholds: 9.3% starts at 82,847.04; the three higher brackets revert to 9.3%.
+    ca_income_tax_before_credits: 88_942.90
+
+- name: Joint filers with $2 million in 2031 pay 9.3% on all income above the 9.3% threshold
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 2_000_000
+    filing_status: JOINT
+    state_code: CA
+  output:
+    ca_income_tax_before_credits: 177_885.81
