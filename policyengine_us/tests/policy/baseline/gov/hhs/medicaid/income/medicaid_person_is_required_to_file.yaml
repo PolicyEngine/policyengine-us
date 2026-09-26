@@ -39,3 +39,52 @@
         members: [person1, person2]
   output:
     medicaid_person_is_required_to_file: [true, false]
+
+- name: Case 3, single dependent with gross income at the 2024 earned income plus $450 limit is not required to file.
+  # IRS Pub. 501 (2024), Table 2, single dependents not 65 or older or blind:
+  # must file if gross income is more than the larger of $1,300 or earned
+  # income (up to $14,150) plus $450. $3,000 + $425 = $3,425 <= $3,450.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 3_000
+        taxable_interest_income: 425
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 4, single dependent with gross income above the 2024 earned income plus $450 limit is required to file.
+  # Same Pub. 501 (2024) Table 2 test: $3,000 + $451 = $3,451 > $3,450.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 3_000
+        taxable_interest_income: 451
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 5, single dependent with gross income within the 2027 earned income plus $500 limit is not required to file.
+  # 26 U.S.C. 63(c)(4)(B)(ii) raises the earned income addition to $500 for
+  # 2027 (derivation in basic_standard_deduction.yaml): $3,000 + $480 =
+  # $3,480 <= $3,500. At the 2026 $450 this filer would be over the limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 3_000
+        taxable_interest_income: 480
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
