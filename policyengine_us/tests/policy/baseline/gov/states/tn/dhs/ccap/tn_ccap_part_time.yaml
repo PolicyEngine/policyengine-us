@@ -75,3 +75,108 @@
     # Zero represents unknown hours. Participation is checked separately
     # using reported care days or hours in the rate and copay formulas.
     tn_ccap_part_time: false
+
+# Two hours per day cannot exceed 14 hours per week.
+- name: Case 6, two daily hours remain part time even across seven days.
+  period: 2026-01
+  input:
+    state_code: TN
+    age: 3
+    childcare_hours_per_day: 2
+  output:
+    tn_ccap_part_time: true
+- name: Case 7, daily hours and monthly attendance determine weekly pricing.
+  period: 2026-01
+  input:
+    state_code: TN
+    age: 3
+    childcare_hours_per_day: 3
+    childcare_attending_days_per_month: 20
+  output:
+    tn_ccap_part_time: true
+- name: Case 8, reported weekly hours take precedence over daily conversion.
+  period: 2026-01
+  input:
+    state_code: TN
+    age: 3
+    childcare_hours_per_day: 2
+    childcare_hours_per_week: 40
+  output:
+    tn_ccap_part_time: false
+- name: Case 9, care days without hours retain the full-time fallback.
+  period: 2026-01
+  input:
+    state_code: TN
+    age: 3
+    childcare_days_per_week: 5
+  output:
+    tn_ccap_part_time: false
+
+# Do not silently assume a five-day week; weekly schedules use the seven-day upper bound only when days are missing.
+- name: Case 10, three daily hours without frequency retain the ambiguous full-time fallback.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 3
+  output:
+    tn_ccap_part_time: false
+- name: Case 11, three daily hours over five days are part time.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 5
+  output:
+    tn_ccap_part_time: true
+- name: Case 12, three daily hours over seven days are full time.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 7
+  output:
+    tn_ccap_part_time: false
+- name: Case 13, explicit weekly days take precedence over monthly attendance.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 7
+    childcare_attending_days_per_month: 20
+  output:
+    tn_ccap_part_time: false
+- name: Case 14, exactly twenty converted weekly hours are full time.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 4
+    childcare_attending_days_per_month: 20
+    childcare_days_per_week: 5
+  output:
+    tn_ccap_part_time: false
+- name: Case 15, daily inputs still resolve when a sibling supplies weekly hours.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 10
+      person2:
+        childcare_hours_per_day: 2
+        childcare_days_per_week: 5
+      person3:
+        childcare_hours_per_day: 2
+      person4: {}
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TN
+  output:
+    tn_ccap_part_time:
+    - true
+    - true
+    - true
+    - false

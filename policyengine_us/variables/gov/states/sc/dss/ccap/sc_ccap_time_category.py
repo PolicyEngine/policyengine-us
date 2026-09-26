@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 
 
 class SCCCAPTimeCategory(Enum):
@@ -17,7 +18,7 @@ class sc_ccap_time_category(Variable):
     reference = "https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=1"
 
     def formula(person, period, parameters):
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = childcare_hours_for_weekly_schedule(person, period)
         p = parameters(period).gov.states.sc.dss.ccap.time_category
         # Unknown hours retain full-time pricing, subject to Head Start below.
         standard_category = where(

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class PACCWTimeCategory(Enum):
@@ -18,9 +19,9 @@ class pa_ccw_time_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.pa.dhs.ccw
-        # Zero is also the input default for unknown hours. Use full-time
-        # pricing; attendance and expense rules still determine payment.
-        hours_per_day = person("childcare_hours_per_day", period.this_year)
+        # Unresolved hours retain full-time pricing; attendance and expense
+        # rules still determine payment.
+        hours_per_day = childcare_hours_for_daily_schedule(person, period)
         return where(
             (hours_per_day == 0) | (hours_per_day >= p.full_time_hours_per_day),
             PACCWTimeCategory.FULL_TIME,
