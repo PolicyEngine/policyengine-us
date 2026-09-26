@@ -38,9 +38,11 @@
   output:
     snap_unit_size: 1
     is_snap_eligible: true
-    # 1-person allotment on the compliant worker's income; strictly below
-    # the ~4,466 the unit receives when both members comply.
-    snap: 1_477.57
+    # Monthly earned income is $1,000, less the 20% earned deduction.
+    # Jan-Sep: $298 - ceil(0.3 * ($800 - $209)) = $120.
+    # Oct-Dec: $306 - ceil(0.3 * ($800 - $217)) = $131.
+    # Annual benefit: 9 * $120 + 3 * $131 = $1,473.
+    snap: 1_473
 
 - name: Case 2, over-income household newly qualifies when the earner fails the time limit and income is prorated.
   period: 2026
@@ -66,9 +68,8 @@
     # exceed the 2-person limits. When the earner fails the ABAWD time
     # limit, 273.11(c)(2) counts half his income toward the remaining
     # 1-person unit, which qualifies: proration can create eligibility.
-    # The unit receives the minimum allotment, rounded to the nearest
-    # whole dollar per 7 CFR 273.10(e)(2)(ii)(C): $24 for the nine
-    # FY 2026 months plus $25 for the three uprated FY 2027 months.
+    # The unit receives the minimum allotment: $24 for the nine
+    # FY2026 months plus the published $25 for the three FY2027 months.
     is_snap_eligible: true
     snap: 291
 

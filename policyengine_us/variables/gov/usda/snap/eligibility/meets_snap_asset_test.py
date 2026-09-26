@@ -8,7 +8,7 @@ class meets_snap_asset_test(Variable):
     documentation = (
         "Whether the SPM unit's financial resources are within SNAP's allowable limit"
     )
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2014#g",
         "https://www.law.cornell.edu/cfr/text/7/273.11#c",
@@ -24,11 +24,9 @@ class meets_snap_asset_test(Variable):
         # are not considered available to the household (273.11(d)), but
         # assets are modeled at the unit level, so we do not carve out
         # their share at the moment.
-        has_elderly_or_disabled = spm_unit(
-            "has_snap_elderly_disabled_member", period.first_month
-        )
+        has_elderly_or_disabled = spm_unit("has_snap_elderly_disabled_member", period)
         asset_test = parameters(period).gov.usda.snap.asset_test
-        assets = spm_unit("snap_assets", period)
+        assets = spm_unit("snap_assets", period.this_year)
         asset_limit = where(
             has_elderly_or_disabled,
             asset_test.limit.elderly_disabled,
