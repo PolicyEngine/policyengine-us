@@ -1,3 +1,10 @@
+## [2.15.8] - 2026-09-27
+
+### Fixed
+
+- Make Arkansas income tax projections for 2027 and later consistent. The model now derives the minus adjustments from Act 1 of 2026's indexed statutory tables: table (A), the high-income table (B), and the (C) bracket-adjustment rows. Before, the minus adjustments stayed at their 2026 values while the rate thresholds rose, so tax fell by as much as $111.98 as income crossed a 2026 bound. Rate-table bracket bounds now round to the nearest $100 instead of down, per A.C.A. § 26-51-201(d)(1); this also moves the bounds that projected Arkansas withholding reads. The $94,700 high-income threshold, the (B) 2% row top and each (C) row bound, which were not indexed before, are now indexed and rounded the same way. The (C) dollar amounts stay fixed.
+
+
 ## [2.15.7] - 2026-09-27
 
 ### Fixed
