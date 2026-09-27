@@ -18,7 +18,9 @@ values:
     - taxable_pension_income 
     # Pension income includes annuities and endowment contracts
     - debt_relief
-    # Income in respect of a decedent (§ 61(a)(13)) is not modeled.
+    # Income in respect of a decedent (§ 61(a)(13)) has no dedicated input;
+    # IRD a beneficiary receives through an estate or trust (K-1 box 5) is
+    # part of estate_income.
     # Income from an interest in an estate or trust (§ 61(a)(14), numbered
     # (15) before Pub. L. 115-97 § 11051): Schedule E Part III, carried to
     # Schedule 1 line 5. Losses are deducted in loss_ald.

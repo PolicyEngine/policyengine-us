@@ -54,3 +54,17 @@
         state_code: TX
   output:
     estate_net_investment_income: [3_000, 0]
+
+- name: The MAGI adjustment defaults to the positive part of code H
+  period: 2024
+  input:
+    estate_income_net_investment_income_adjustment: 5_000
+  output:
+    estate_income_niit_magi_adjustment: 5_000
+
+- name: A negative code H does not change MAGI by default
+  period: 2024
+  input:
+    estate_income_net_investment_income_adjustment: -3_000
+  output:
+    estate_income_niit_magi_adjustment: 0

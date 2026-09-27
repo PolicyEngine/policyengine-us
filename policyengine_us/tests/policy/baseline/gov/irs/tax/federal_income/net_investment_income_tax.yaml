@@ -123,11 +123,12 @@
     # 3.8% of min(30,000 NII, 220,000 - 200,000 excess AGI)
     net_investment_income_tax: 760
 
-- name: Treas. Reg. 1.1411-3(e)(5) Example 1 beneficiary with the code H adjustment
-  # The trust passes $1,000 of interest (K-1 box 1), $1,500 of dividends
-  # (box 2a), and $7,500 of IRA income (box 5, Schedule E Part III) to the
-  # beneficiary. The IRA income is excluded from net investment income under
-  # section 1411(c)(5), so the fiduciary reports -7,500 in box 14 code H.
+- name: Beneficiary from Treas. Reg. 1.1411-3(e)(5) Example 1 with a code H adjustment
+  # The regulation's beneficiary receives $1,000 of interest, $1,500 of
+  # dividends, and $7,500 of IRA income, and only the $2,500 is net investment
+  # income. Illustratively, the K-1 would carry the interest in box 1, the
+  # dividends in box 2a, and the IRA income (IRD) in box 5 (Schedule E Part
+  # III), with -7,500 in box 14 code H to remove it on Form 8960 line 7.
   period: 2024
   input:
     people:
@@ -203,3 +204,107 @@
     estate_net_investment_income: [0, 0]
     net_investment_income: 0
     net_investment_income_tax: 0
+
+- name: A positive code H adjustment also increases MAGI
+  # Form 8960 line 7 instructions: enter a positive box 14 code H amount on
+  # line 7 and increase MAGI by the same amount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 195_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 205_000
+    net_investment_income: 15_000
+    # MAGI 205,000 + 5,000 = 210,000; 3.8% of min(15,000, 10,000)
+    net_investment_income_tax: 380
+
+- name: A dependent's positive code H adjustment does not change the filer's MAGI
+  # The filer's AGI is below the threshold, so any leak of the child's
+  # +30,000 into MAGI would produce tax (3.8% of min(20,000, 25,000) = 760).
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 175_000
+        taxable_interest_income: 20_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income_net_investment_income_adjustment: 30_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 195_000
+    net_investment_income: 20_000
+    net_investment_income_tax: 0
+
+- name: Several K-1s keep the positive MAGI increase that netting would lose
+  # Trust A reports code H +10,000 (MAGI +10,000). Trust B passes $7,500 of
+  # IRA income in box 5 with code H -7,500 and no MAGI adjustment. The code H
+  # inputs net to +2,500, but MAGI rises by 10,000.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 187_500
+        estate_income: 7_500
+        estate_income_net_investment_income_adjustment: 2_500
+        estate_income_niit_magi_adjustment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 195_000
+    net_investment_income: 10_000
+    # MAGI 195,000 + 10,000 = 205,000; 3.8% of min(10,000, 5,000)
+    net_investment_income_tax: 190
+
+- name: A trust-indicated negative MAGI adjustment lowers MAGI
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 190_000
+        taxable_interest_income: 20_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: -10_000
+        estate_income_niit_magi_adjustment: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 220_000
+    net_investment_income: 20_000
+    # MAGI 220,000 - 10,000 = 210,000; 3.8% of min(20,000, 10,000)
+    net_investment_income_tax: 380
