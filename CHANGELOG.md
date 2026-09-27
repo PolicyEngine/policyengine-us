@@ -1,3 +1,55 @@
+## [2.15.9] - 2026-09-27
+
+### Fixed
+
+- Apply the federal EITC investment income test, with rental and passive losses floored at zero, to New Jersey's age-expanded childless EITC.
+
+
+## [2.15.8] - 2026-09-27
+
+### Fixed
+
+- Make Arkansas income tax projections for 2027 and later consistent. The model now derives the minus adjustments from Act 1 of 2026's indexed statutory tables: table (A), the high-income table (B), and the (C) bracket-adjustment rows. Before, the minus adjustments stayed at their 2026 values while the rate thresholds rose, so tax fell by as much as $111.98 as income crossed a 2026 bound. Rate-table bracket bounds now round to the nearest $100 instead of down, per A.C.A. § 26-51-201(d)(1); this also moves the bounds that projected Arkansas withholding reads. The $94,700 high-income threshold, the (B) 2% row top and each (C) row bound, which were not indexed before, are now indexed and rounded the same way. The (C) dollar amounts stay fixed.
+
+
+## [2.15.7] - 2026-09-27
+
+### Fixed
+
+- Encode USDA's FY2027 SNAP maximum and minimum allotments, deductions, and asset limits effective October 2026, including large-household allotment caps. `meets_snap_asset_test` is now monthly, so the new asset limit takes effect in October and an annual request returns December's status.
+
+
+## [2.15.6] - 2026-09-26
+
+### Fixed
+
+- Set the Maine pension income deduction cap to 49,824 for 2026 and limit the deduction to pension income included in federal adjusted gross income.
+
+
+## [2.15.5] - 2026-09-26
+
+### Fixed
+
+- Route a DC filer whose only qualifying child is a permanently and totally disabled adult to the DC EITC with-child branch.
+
+
+## [2.15.4] - 2026-09-26
+
+### Fixed
+
+- Arkansas itemized medical expense deduction now uses Arkansas's own floor under Ark. Code § 26-51-423: 10% of Arkansas AGI from 2013 (7.5% when the filer or spouse is 65 or older in 2013-2016), instead of the federal 7.5% from 2017 on.
+- Arkansas 2015-2020 income tax parameters no longer fall back on 2021-2022 values: add each year's low income tax tables, personal tax credit amount ($26 through 2019), and tuition deduction caps; exempt unemployment compensation through 2017; before 2018, make military retirement share the $6,000 retirement exemption and block the 65 Special credit for filers who claim it; and zero the 2022 credits before they existed.
+- Fix Arkansas 2025 and 2024 income tax minus-adjustment schedules to match the DFA Indexed Tax Brackets: add the missing 2025 $94,701-$95,000 rows (previously taxed with the $419.96 adjustment), use DFA's exact cents for 2025, and honor the 2024 asterisked $94,301-$94,500 row.
+- Arkansas 2014-2020 income tax schedules now follow DFA's Indexed Tax Brackets, which reproduce every row of DFA's Regular Tax Tables: the 2014-2020 subtraction amounts are added, and the 2016-2018 rates, thresholds and high-income bracket adjustments are corrected.
+
+
+## [2.15.3] - 2026-09-26
+
+### Fixed
+
+- Arkansas miscellaneous itemized deductions and casualty and theft losses now follow Arkansas law instead of the federal deductions: TCJA suspended the federal miscellaneous deduction and limited federal casualty losses to federally declared disasters from 2018, and Arkansas adopted neither change. The 2% floor applies once, to Arkansas AGI, and casualty losses take the $100 exclusion and a 10% floor on Arkansas AGI.
+
+
 ## [2.15.2] - 2026-09-26
 
 ### Changed
