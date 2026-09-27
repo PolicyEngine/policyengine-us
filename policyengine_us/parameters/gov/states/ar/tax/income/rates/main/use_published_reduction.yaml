@@ -1,6 +1,6 @@
 description: Arkansas computes the regular income tax as the published rate times net taxable income minus the published reduction if this is true, and from the statutory tax tables as indexed otherwise.
 values:
-  2014-01-01: true
+  0000-01-01: true
   # No Indexed Tax Brackets card has been published for 2026 or later, so the
   # model derives those years from A.C.A. § 26-51-201(a)(4), indexed under (d).
   2026-01-01: false

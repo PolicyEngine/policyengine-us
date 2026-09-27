@@ -240,6 +240,14 @@ def test_ar_published_reduction_applies_through_2025_only():
     ] == [True] * 5 + [False] * 2
 
 
+@pytest.mark.parametrize("year", [2000, 2013])
+def test_ar_schedule_before_modeled_years_still_computes(year):
+    # rate.yaml starts in 2014; earlier years must not hit the statutory path,
+    # whose parameters start in 2026.
+    assert bool(P.use_published_reduction(f"{year}-01-01"))
+    assert (model_tax(year, TAXABLE_INCOME) == 0).all()
+
+
 # {income: change in tax from income to income + 1} where the statute itself
 # makes tax fall: A.C.A. 26-51-201(a)(4)(A) vs (a)(4)(B)-(C), Act 1 of 2026.
 STATUTORY_DROPS = {2026: {94_700: -2.66}}
