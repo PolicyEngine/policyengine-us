@@ -1,3 +1,10 @@
+## [2.15.9] - 2026-09-27
+
+### Fixed
+
+- Apply the federal EITC investment income test, with rental and passive losses floored at zero, to New Jersey's age-expanded childless EITC.
+
+
 ## [2.15.8] - 2026-09-27
 
 ### Fixed
