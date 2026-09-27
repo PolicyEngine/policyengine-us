@@ -290,7 +290,7 @@
     loss_ald: 500_000
 
 - name: Section 461(l) remains in effect in 2030 under OBBBA (permanent)
-  # OBBBA § 70601 made the excess business loss limitation permanent.
+  # OBBBA § 70_601 made the excess business loss limitation permanent.
   period: 2030
   absolute_error_margin: 1
   input:
@@ -311,4 +311,4 @@
         state_code: TX
   output:
     # Inflation projection, not an IRS-published 2030 threshold.
-    loss_ald: 280000
+    loss_ald: 280_000

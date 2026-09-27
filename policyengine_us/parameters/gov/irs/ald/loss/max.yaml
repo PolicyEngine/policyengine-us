@@ -6,14 +6,9 @@ metadata:
     - filing_status
   unit: currency-USD
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 1_000
   reference:
-    - title: CARES Act section 2304(a), retroactive suspension through 2020
-      href: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf
+    - title: 26 U.S. Code § 461(l)(1)(B), business loss limitation begins after 2020
+      href: https://www.law.cornell.edu/uscode/text/26/461#l_1_B
     - title: 26 U.S. Code § 461 - General rule for taxable year of deduction (l)(3)(A)(ii)(II)
       href: https://www.law.cornell.edu/uscode/text/26/461#l_3_A_ii_II
     - title: OBBBA § 70601 - Permanent extension of limitation on excess business losses of noncorporate taxpayers
@@ -33,6 +28,12 @@ metadata:
     - title: 2020 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=18
 HEAD_OF_HOUSEHOLD:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
   values:
     2013-01-01: .inf
     # CARES Act section 2304 suspends the limitation through 2020.
@@ -44,6 +45,13 @@ HEAD_OF_HOUSEHOLD:
     2025-01-01: 313_000
     2026-01-01: 256_000
 JOINT:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        # Twice the rounded nonjoint threshold under section 461(l)(3).
+        type: nearest
+        interval: 2_000
   values:
     2013-01-01: .inf
     2018-01-01: .inf
@@ -54,6 +62,12 @@ JOINT:
     2025-01-01: 626_000
     2026-01-01: 512_000
 SEPARATE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
   values:
     2013-01-01: .inf
     # CARES Act section 2304 suspends the limitation through 2020.
@@ -65,6 +79,12 @@ SEPARATE:
     2025-01-01: 313_000
     2026-01-01: 256_000
 SINGLE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
   values:
     2013-01-01: .inf
     # CARES Act section 2304 suspends the limitation through 2020.
@@ -76,6 +96,12 @@ SINGLE:
     2025-01-01: 313_000
     2026-01-01: 256_000
 SURVIVING_SPOUSE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
   # Section 461(l)(3)(A) doubles the threshold only for a joint return.
   values:
     2013-01-01: .inf
