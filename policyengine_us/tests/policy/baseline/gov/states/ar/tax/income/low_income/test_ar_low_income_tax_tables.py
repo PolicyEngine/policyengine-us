@@ -21,7 +21,7 @@ SCALES = {
     for node in TABLES.get_descendants()
     if isinstance(node, ParameterScale)
 }
-YEARS = range(2021, 2031)
+YEARS = range(2015, 2031)
 
 
 def _tax_by_integer_agi(scale, year):
