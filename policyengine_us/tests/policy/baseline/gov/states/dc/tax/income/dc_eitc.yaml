@@ -74,6 +74,7 @@
       disabled_adult:
         age: 30
         is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
         is_permanently_and_totally_disabled: true
         ssn_card_type: NONE
         has_tin: true
@@ -86,11 +87,415 @@
         members: [head, disabled_adult]
         state_code: DC
   output:
-    # The federal credit needs a Social Security number, D.C. Law 23-149
-    # does not. The childless branch also counts this dependent as a child,
+    # The federal credit needs a Social Security number; from 2023 D.C. Code
+    # 47-1806.04(f)(1)(D)(ii), added by D.C. Law 24-167 section 7012, accepts
+    # an ITIN. The childless branch also counts this dependent as a child,
     # so before the router matched it the unit got neither credit.
     eitc_child_count: 0
     dc_eitc_without_qualifying_child: 0
     dc_eitc_with_qualifying_child: 2_796.5
     dc_eitc: 2_796.5
 
+
+- name: DC EITC does not count an ITIN child before 2023 (TY2022)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # (f)(1)(D)(ii) applies only to tax years beginning after December 31,
+    # 2022. Before then IRC 32(c)(3)(D) keeps the ITIN child out of the
+    # federal credit, which for this filer is the childless amount:
+    # 560 - 7.65% x (20,000 - 9,160) < 0. The child is still a qualifying
+    # child, so the (f)(1)(C) childless schedule does not apply.
+    eitc: 0
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 0
+
+- name: DC EITC counts an ITIN child from 2023 (TY2023)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 70% x the one-child federal-like credit of 3,995, as if the ITIN met
+    # IRC 32(m).
+    eitc: 0
+    dc_eitc_with_qualifying_child: 2_796.5
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 2_796.5
+
+- name: DC EITC matches the childless federal credit for a filer with only an ITIN child in TY2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # ARPA's 2021 childless credit: 1,502 - 15.3% x (20,000 - 11,610) =
+    # 218.33 is the federal credit allowed; DC matches 40% of it.
+    eitc: 218.33
+    dc_eitc_with_qualifying_child: 87.33
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 87.33
+
+- name: DC EITC matches the childless federal credit for a filer with only an ITIN child in TY2022 at low earnings
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # Federal credit allowed: 7.65% x 6,000 = 459. DC matches 70% of it.
+    eitc: 459
+    dc_eitc_with_qualifying_child: 321.3
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 321.3
+
+- name: DC EITC uses the one-child credit for an ITIN child in TY2023 at low earnings
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 70% x 34% x 6,000 = 1,428, not 70% of the 459 federal credit allowed.
+    eitc: 459
+    dc_eitc_with_qualifying_child: 1_428
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 1_428
+
+- name: DC EITC denies an ITIN filer with a Social Security number child before 2023
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: NONE
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # The filer has no Social Security number and (f)(1)(D) is not yet in
+    # force.
+    eitc_child_count: 1
+    eitc: 0
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc: 0
+
+- name: DC EITC allows an ITIN filer with a Social Security number child from 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: NONE
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 70% x 3,995.
+    eitc_child_count: 1
+    eitc: 0
+    dc_eitc_with_qualifying_child: 2_796.5
+    dc_eitc: 2_796.5
+
+- name: DC EITC with-child branch for a disabled adult child with a Social Security number
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # IRC 152(c)(3)(B) waives the age test for the disabled adult child.
+    eitc_child_count: 1
+    eitc: 3_995
+    dc_eitc_with_qualifying_child: 2_796.5
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 2_796.5
+
+- name: DC EITC childless amount for a disabled parent dependent
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # A parent fails the IRC 152(c)(2) relationship test, so the disabled
+    # parent is a qualifying relative, not a qualifying child. (f)(1)(C):
+    # min(7.65% x 20,000, 600) - 8.48% x max(0, 20,000 - 21,888) = 600.
+    is_eitc_qualifying_child: [false, false]
+    eitc_child_count: 0
+    dc_eitc_has_qualifying_child: false
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 600
+    dc_eitc: 600
+
+- name: DC EITC childless amount for a disabled parent dependent at low earnings
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 7.65% x 6,000 = 459 under both the federal and DC childless rules.
+    eitc_child_count: 0
+    eitc: 459
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 459
+    dc_eitc: 459
+
+- name: DC EITC childless amount for a disabled grandparent dependent
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 80
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+        is_grandparent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # A grandparent also fails the IRC 152(c)(2) relationship test.
+    eitc_child_count: 0
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 600
+    dc_eitc: 600
+
+- name: DC EITC childless amount for a disabled parent dependent with an ITIN
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # Before this fix the ITIN parent routed the unit to the with-child
+    # branch and received 70% x 3,995 = 2,796.50.
+    dc_eitc_has_qualifying_child: false
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 600
+    dc_eitc: 600
