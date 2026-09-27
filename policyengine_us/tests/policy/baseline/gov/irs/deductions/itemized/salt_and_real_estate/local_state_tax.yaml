@@ -1,4 +1,4 @@
-- name: 2% of state sales tax
+- name: 20% of state sales tax in a state with local sales taxes
   period: 2023
   input:
     state_sales_tax: 1_000
@@ -9,5 +9,98 @@
   period: 2023
   input:
     state_sales_tax: 0
+  output:
+    local_sales_tax: 0
+
+- name: Texas has local sales taxes, so the 20% estimate applies
+  period: 2025
+  input:
+    state_code: TX
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 200
+
+# The worksheet enters -0- on line 6 for residents of these ten states, whose
+# table entries carry footnote 4: "This state does not have a local general
+# sales tax, so the amount in the state table is the only amount to be
+# deducted." (Instructions for Schedule A (Form 1040), 2022-2025.)
+
+- name: No local sales tax in CT, 2022
+  period: 2022
+  input:
+    state_code: CT
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in DC, 2023
+  period: 2023
+  input:
+    state_code: DC
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in IN, 2024
+  period: 2024
+  input:
+    state_code: IN
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in KY, 2025
+  period: 2025
+  input:
+    state_code: KY
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in MA, 2022
+  period: 2022
+  input:
+    state_code: MA
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in MD, 2023
+  period: 2023
+  input:
+    state_code: MD
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in ME, 2024
+  period: 2024
+  input:
+    state_code: ME
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in MI, 2025
+  period: 2025
+  input:
+    state_code: MI
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in NJ, 2023
+  period: 2023
+  input:
+    state_code: NJ
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in RI, 2024
+  period: 2024
+  input:
+    state_code: RI
+    state_sales_tax: 1_000
   output:
     local_sales_tax: 0
