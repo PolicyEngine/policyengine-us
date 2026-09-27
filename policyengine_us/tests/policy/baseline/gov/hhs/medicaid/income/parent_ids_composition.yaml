@@ -1339,3 +1339,99 @@
     medicaid_uses_non_filer_rules: [false, false, false]
     medicaid_household_size: [2, 3, 2]
     medicaid_household_income: [20_000, 50_000, 30_000]
+
+- name: A minor claimed by a parent's tax unit elsewhere uses the parent's household.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 30_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+    families:
+      parent_family:
+        members: [parent]
+      child_family:
+        members: [child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      child_home:
+        members: [child]
+        state_code: OH
+  output:
+    # The child has no head in a unit of its own, so PE makes it that unit's
+    # dependent, but the known claiming unit is the parent's, whose head the
+    # id names. So (f)(2)(i) does not apply, and under (f)(2) the child's
+    # household is the parent's: the parent and the child, with the parent's
+    # $30,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false]
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [30_000, 30_000]
+
+- name: A minor claimed by a grandparent's tax unit uses the non-filer rules.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 30_000
+      grandchild:
+        person_id: 2
+        age: 10
+        # Both parents live elsewhere.
+        parent_1_id: 50
+        parent_2_id: 51
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      grandchild_unit:
+        members: [grandchild]
+        tax_unit_id: 2
+    families:
+      family:
+        members: [grandparent, grandchild]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      grandchild:
+        members: [grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: OH
+  output:
+    # The ids name no one in the claiming unit, so the claimant is not a
+    # parent and (f)(2)(i) applies. Under (f)(3) the grandchild lives with no
+    # parent, sibling, spouse or child: a household of one with no income.
+    # The grandparent's household is the grandparent and the claimed child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true]
+    medicaid_uses_non_filer_rules: [false, true]
+    medicaid_household_size: [2, 1]
+    medicaid_household_income: [30_000, 0]

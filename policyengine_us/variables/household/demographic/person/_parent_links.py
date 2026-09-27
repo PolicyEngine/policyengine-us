@@ -5,8 +5,9 @@ Rules shared by every formula that reads the links:
 - Each id names the person_id of one of the person's parents (natural,
   adoptive or step); 0 means unknown, so real person ids must be nonzero.
 - Parenthood is identity and residence is a separate condition. Ids resolve
-  against the members of one group entity: the household when a rule requires
-  living together, the tax unit when a rule asks who claims the person.
+  against the members of one group: the household when a rule requires
+  living together, the claiming tax unit when a rule asks who claims the
+  person.
 - A person is a parent when own_children_in_household is positive or when a
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep

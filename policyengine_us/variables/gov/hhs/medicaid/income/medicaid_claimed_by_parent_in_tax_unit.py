@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
+    medicaid_known_claim_by_named_parent,
+)
 from policyengine_us.variables.household.demographic.person._parent_links import (
     has_parent_ids,
     tax_unit_parent_indices,
@@ -31,13 +34,20 @@ class medicaid_claimed_by_parent_in_tax_unit(Variable):
             | has_parent_filer_in_tax_unit
         )
         # A dependent's own ids name their parents. Parenthood does not depend
-        # on residence, so resolve the ids among the dependent's tax unit
-        # members, wherever each lives, and require a parent to be the head or
-        # spouse of that unit.
+        # on residence, so resolve the ids among the members of the claiming
+        # tax unit, wherever each lives, and require a parent to be the head
+        # or spouse of that unit. The claiming unit is the dependent's own
+        # unless a known claiming tax unit elsewhere claims them.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         first, second = tax_unit_parent_indices(person, period)
         linked_parent = ((first >= 0) & head_or_spouse[first]) | (
             (second >= 0) & head_or_spouse[second]
+        )
+        claimed_elsewhere, claimed_elsewhere_by_parent = (
+            medicaid_known_claim_by_named_parent(person, period)
+        )
+        linked_parent = where(
+            claimed_elsewhere, claimed_elsewhere_by_parent, linked_parent
         )
         return dependent & where(
             has_parent_ids(person, period), linked_parent, inferred_parent

@@ -401,3 +401,215 @@ def test_is_parent_is_the_union_of_the_child_count_and_the_links():
             counted = sum(i in other["parents"] for other in people) + person["extra"]
             named = any(i + 1 in other["recorded"] for other in people)
             assert is_parent[person["name"]] == (counted > 0 or named), person["name"]
+
+
+# A tax dependent's co-resident spouse on the tax-household route.
+
+SPOUSE_PLACEMENTS = [
+    "unmarried",
+    # Living with the child, filing alone with the cohabiting-spouses flag.
+    "flagged",
+    # Living with the child in one family, filing alone without the flag.
+    "same_family",
+    # Living with the child and claimed on the parent's return too.
+    "same_return",
+    # Living with the child, filing alone, claimed by the parent's return.
+    "claimed_into",
+    # Married to the child but living in another household.
+    "elsewhere",
+]
+
+
+def random_married_dependents(seed, n=60):
+    """Parents claiming a child whose id names them; the child may be married.
+
+    The parent claims the child either on the parent's own return or, as a
+    known claiming tax unit, from the child's separate unit. Every tax unit
+    gets a distinct tax_unit_id. Incomes are multiples of 1/8 below 2**20.
+    """
+    rng = np.random.default_rng(seed)
+    return [
+        {
+            "parent_income": float(rng.integers(0, 80_000 * 8)) / 8,
+            "child_age": int(rng.integers(15, 26)),
+            "child_with_parent": bool(rng.random() < 0.5),
+            "known_claim": bool(rng.random() < 0.5),
+            "placement": SPOUSE_PLACEMENTS[int(rng.integers(len(SPOUSE_PLACEMENTS)))],
+            "spouse_age": int(rng.integers(16, 31)),
+            "spouse_income": float(rng.integers(0, 80_000 * 8)) / 8,
+            "spouse_must_file": bool(rng.random() < 0.5),
+            "pregnancies": [int(rng.random() < 0.2) for _ in range(3)],
+        }
+        for _ in range(n)
+    ]
+
+
+def married_dependent_situation(scenarios, reverse=False):
+    people, households, families, tax_units, marital_units = {}, {}, {}, {}, {}
+
+    def ordered(members):
+        return members[::-1] if reverse else members
+
+    for s, scenario in enumerate(scenarios):
+        parent, child, spouse = f"s{s}_parent", f"s{s}_child", f"s{s}_spouse"
+        placement = scenario["placement"]
+        spouse_income = scenario["spouse_income"]
+        # Countable income follows 42 CFR 435.603(d)(2)(i)'s child-age proxy.
+        spouse_member_income = spouse_income * (
+            scenario["spouse_must_file"] or scenario["spouse_age"] >= AGE_LIMIT
+        )
+        for name, person_id, age, magi, member_income, must_file in [
+            (parent, 1, 45, scenario["parent_income"], scenario["parent_income"], True),
+            (child, 2, scenario["child_age"], 0, 0, False),
+            (
+                spouse,
+                3,
+                scenario["spouse_age"],
+                spouse_income,
+                spouse_member_income,
+                scenario["spouse_must_file"],
+            ),
+        ]:
+            people[name] = {
+                "age": {PERIOD: age},
+                "person_id": {PERIOD: person_id},
+                "is_tax_unit_spouse": {PERIOD: False},
+                "medicaid_magi_person": {PERIOD: magi},
+                "medicaid_household_income_member": {PERIOD: member_income},
+                "medicaid_person_is_required_to_file": {PERIOD: must_file},
+                "current_pregnancies": {PERIOD: scenario["pregnancies"][person_id - 1]},
+            }
+        people[child]["parent_1_id"] = {PERIOD: 1}
+        parent_unit_id = 10 * s + 1
+
+        # The parent's return, and the child's own unit under a known claim.
+        parent_return = [parent]
+        if scenario["known_claim"]:
+            people[child]["claimed_as_dependent_on_another_return"] = {PERIOD: True}
+            people[child]["medicaid_claiming_tax_unit_id"] = {PERIOD: parent_unit_id}
+            tax_units[f"s{s}_child_unit"] = {
+                "members": [child],
+                "tax_unit_id": {PERIOD: 10 * s + 2},
+                "tax_unit_is_filer": {PERIOD: False},
+            }
+        else:
+            parent_return.append(child)
+        if placement == "same_return":
+            parent_return.append(spouse)
+        else:
+            tax_units[f"s{s}_spouse_unit"] = {
+                "members": [spouse],
+                "tax_unit_id": {PERIOD: 10 * s + 3},
+                "tax_unit_is_filer": {PERIOD: True},
+                "cohabitating_spouses": {PERIOD: placement == "flagged"},
+            }
+        if placement == "claimed_into":
+            people[spouse]["claimed_as_dependent_on_another_return"] = {PERIOD: True}
+            people[spouse]["medicaid_claiming_tax_unit_id"] = {PERIOD: parent_unit_id}
+        tax_units[f"s{s}_parent_unit"] = {
+            "members": ordered(parent_return),
+            "tax_unit_id": {PERIOD: parent_unit_id},
+            "tax_unit_is_filer": {PERIOD: True},
+        }
+
+        # Homes and families.
+        couple_home = [child] + ([spouse] if placement != "elsewhere" else [])
+        couple_family = [child] + ([spouse] if placement == "same_family" else [])
+        if scenario["child_with_parent"]:
+            homes = [[parent] + couple_home]
+            family_groups = [[parent] + couple_family]
+        else:
+            homes = [[parent], couple_home]
+            family_groups = [[parent], couple_family]
+        if placement == "elsewhere":
+            homes.append([spouse])
+        if placement != "same_family":
+            family_groups.append([spouse])
+        for k, members in enumerate(homes):
+            households[f"s{s}_home{k}"] = {
+                "members": ordered(members),
+                "state_code": {PERIOD: "CA"},
+            }
+        for k, members in enumerate(family_groups):
+            families[f"s{s}_family{k}"] = {"members": ordered(members)}
+        if placement == "unmarried":
+            marital_units[f"s{s}_child"] = {"members": [child]}
+            marital_units[f"s{s}_spouse"] = {"members": [spouse]}
+        else:
+            marital_units[f"s{s}_couple"] = {"members": ordered([child, spouse])}
+        marital_units[f"s{s}_parent"] = {"members": [parent]}
+    return {
+        "people": people,
+        "households": households,
+        "families": families,
+        "tax_units": tax_units,
+        "spm_units": {k: {"members": v["members"]} for k, v in households.items()},
+        "marital_units": marital_units,
+    }
+
+
+def expected_tax_households(scenario):
+    """Members of the parent's and the child's households, by role."""
+    placement = scenario["placement"]
+    # 42 CFR 435.603(f)(1)-(2): the parent's return and whoever it claims
+    # from elsewhere form the parent's household, which the claimed child's
+    # household copies.
+    parent_household = {"parent", "child"}
+    if placement in ("same_return", "claimed_into"):
+        parent_household.add("spouse")
+    # (f)(4): a co-resident spouse joins the child's household, once.
+    child_household = set(parent_household)
+    if placement in ("flagged", "same_family"):
+        child_household.add("spouse")
+    return parent_household, child_household
+
+
+def test_tax_dependent_counts_a_co_resident_spouse_exactly_once():
+    scenarios = random_married_dependents(seed=435604)
+    simulation = Simulation(situation=married_dependent_situation(scenarios))
+    non_filer = by_name(simulation, "medicaid_uses_non_filer_rules")
+    size = by_name(simulation, "medicaid_household_size")
+    income = by_name(simulation, "medicaid_household_income")
+    pregnancies = by_name(simulation, "ca_medicaid_household_pregnancies")
+    placements = {scenario["placement"] for scenario in scenarios}
+    assert placements == set(SPOUSE_PLACEMENTS)
+    for s, scenario in enumerate(scenarios):
+        roles = {"parent": 0, "child": 1, "spouse": 2}
+        preg = {role: scenario["pregnancies"][k] for role, k in roles.items()}
+        spouse_is_dependent = scenario["placement"] in ("same_return", "claimed_into")
+        # (d)(2): a dependent who need not file adds no income to the
+        # claiming taxpayer's household; the spouse the child adds under
+        # (f)(4) counts with its countable income.
+        tax_income = {
+            "parent": scenario["parent_income"],
+            "child": 0.0,
+            "spouse": 0.0
+            if spouse_is_dependent and not scenario["spouse_must_file"]
+            else scenario["spouse_income"],
+        }
+        spouse_member_income = scenario["spouse_income"] * (
+            scenario["spouse_must_file"] or scenario["spouse_age"] >= AGE_LIMIT
+        )
+        parent_household, child_household = expected_tax_households(scenario)
+        for role, members in [("parent", parent_household), ("child", child_household)]:
+            name = f"s{s}_{role}"
+            assert not non_filer[name], name
+            expected_pregnancies = sum(preg[m] for m in members)
+            assert pregnancies[name] == expected_pregnancies, name
+            # California counts each member's unborn children in the size.
+            assert size[name] == len(members) + expected_pregnancies, name
+            expected_income = sum(tax_income[m] for m in parent_household)
+            if members != parent_household:
+                expected_income += spouse_member_income
+            assert income[name] == np.float32(expected_income), name
+
+    # Member order within every group does not change any result.
+    reversed_ = Simulation(
+        situation=married_dependent_situation(scenarios, reverse=True)
+    )
+    for variable in [
+        "medicaid_household_size",
+        "medicaid_household_income",
+        "ca_medicaid_household_pregnancies",
+    ]:
+        assert by_name(simulation, variable) == by_name(reversed_, variable), variable

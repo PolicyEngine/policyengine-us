@@ -75,3 +75,46 @@ def medicaid_claiming_tax_unit_value(person, period, values):
         values,
         tax_unit_head,
     )
+
+
+def medicaid_known_claim_by_named_parent(person, period):
+    """Resolve parent ids against a known claiming tax unit elsewhere.
+
+    Returns two person arrays: whether a known claiming tax unit other than
+    the person's own claims them, and whether that unit's head or spouse is a
+    parent the person's ids name. Person ids are distinct within a tax unit,
+    so an id resolves among the claiming unit's members wherever they live.
+    Both are false for everyone when no parent id is set.
+    """
+    parent_1 = person("parent_1_id", period)
+    parent_2 = person("parent_2_id", period)
+    none = np.zeros(person.count, dtype=bool)
+    if not np.any((parent_1 != 0) | (parent_2 != 0)):
+        return none, none
+
+    tax_unit_id = person.tax_unit("tax_unit_id", period)
+    claiming_tax_unit_id = person("medicaid_claiming_tax_unit_id", period)
+    claimed_elsewhere = person("medicaid_has_known_claiming_tax_unit", period) & (
+        claiming_tax_unit_id != tax_unit_id
+    )
+    person_id = person("person_id", period)
+    named = none
+    for role in ["is_tax_unit_head", "is_tax_unit_spouse"]:
+        selector = person(role, period)
+        present = (
+            _value_by_positive_id(
+                claiming_tax_unit_id, tax_unit_id, np.ones(person.count), selector
+            )
+            > 0
+        )
+        claimant_id = _value_by_positive_id(
+            claiming_tax_unit_id, tax_unit_id, person_id, selector
+        )
+        named = named | (
+            present
+            & (
+                ((parent_1 != 0) & (parent_1 == claimant_id))
+                | ((parent_2 != 0) & (parent_2 == claimant_id))
+            )
+        )
+    return claimed_elsewhere, claimed_elsewhere & named
