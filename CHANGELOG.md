@@ -1,3 +1,10 @@
+## [2.15.7] - 2026-09-27
+
+### Fixed
+
+- Encode USDA's FY2027 SNAP maximum and minimum allotments, deductions, and asset limits effective October 2026, including large-household allotment caps. `meets_snap_asset_test` is now monthly, so the new asset limit takes effect in October and an annual request returns December's status.
+
+
 ## [2.15.6] - 2026-09-26
 
 ### Fixed
