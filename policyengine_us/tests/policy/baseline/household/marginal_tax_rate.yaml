@@ -35,7 +35,7 @@
   absolute_error_margin: 0.0001
   period: 2021
   input:
-    simulation.marginal_tax_rate_adults: 1  # the default value
+    simulation.marginal_tax_rate_adults: 1  # below the default of 2
     people:
       person1:
         age: 43
@@ -88,3 +88,80 @@
         state_fips: 48  # TX
   output:
     marginal_tax_rate: [0.3165, -0.0765]
+
+# Three single roommates in Texas in 2024, each filing alone. Taxable income is
+# earnings less the $14,600 standard deduction, so the $90,000 earner is in the
+# 22% bracket and the $60,000 and $30,000 earners are in the 12% bracket; each
+# also pays 7.65% employee payroll tax.
+- name: Third earner in a household gets a placeholder zero under the default cap
+  absolute_error_margin: 0.0001
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+      person2:
+        age: 35
+        employment_income: 60_000
+      person3:
+        age: 30
+        employment_income: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    marginal_tax_rate: [0.2965, 0.1965, 0]
+    marginal_tax_rate_computed: [true, true, false]
+
+- name: Raising the cap simulates the third earner's marginal tax rate
+  absolute_error_margin: 0.0001
+  period: 2024
+  input:
+    simulation.marginal_tax_rate_adults: 3
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+      person2:
+        age: 35
+        employment_income: 60_000
+      person3:
+        age: 30
+        employment_income: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    marginal_tax_rate: [0.2965, 0.1965, 0.1965]
+    marginal_tax_rate_computed: [true, true, true]
