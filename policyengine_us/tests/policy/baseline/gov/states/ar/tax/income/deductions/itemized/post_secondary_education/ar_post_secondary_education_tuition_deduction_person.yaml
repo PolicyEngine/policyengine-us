@@ -89,3 +89,56 @@
   output:
     ar_post_secondary_education_tuition_deduction_person: 4_602
 
+- name: Post-secondary education tuition deduction is capped at the 2015 weighted average tuition for a four-year college
+  period: 2015
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        four_year_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # min(50% * 10_000, 3_936); 2015 Form AR1075 "50% of Weighted Average Tuition" table
+    ar_post_secondary_education_tuition_deduction_person: 3_936
+
+- name: Post-secondary education tuition deduction is capped at the 2016 weighted average tuition for a two-year college
+  period: 2016
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        four_year_college_student: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # min(50% * 10_000, 1_965); 2016 Form AR1075 "50% of Weighted Average Tuition" table
+    ar_post_secondary_education_tuition_deduction_person: 1_965
+
+- name: Post-secondary education tuition deduction is capped at the 2020 weighted average tuition for a technical institute
+  period: 2020
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        technical_institution_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # min(50% * 10_000, 800); 2020 Form AR1075 "50% of Weighted Average Tuition" table
+    ar_post_secondary_education_tuition_deduction_person: 800
