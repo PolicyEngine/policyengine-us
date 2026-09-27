@@ -48,7 +48,7 @@
 # each. Cases cover the 1st, 2nd, and 3rd state of a block in every year,
 # because a column shift within blocks misassigned 30 states (#9595).
 
-- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2015
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2015
   period: 2015
   input:
     state_code: TX
@@ -57,7 +57,7 @@
   output:
     state_sales_tax: 912
 
-- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2016
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2016
   period: 2016
   input:
     state_code: TX
@@ -66,7 +66,7 @@
   output:
     state_sales_tax: 970
 
-- name: Texas (3rd state in its IRS block), family size 2, $80,000-$90,000, 2017
+- name: Texas (3rd state in its IRS block), 2 exemptions, $80,000-$90,000, 2017
   period: 2017
   input:
     state_code: TX
@@ -147,7 +147,7 @@
   output:
     state_sales_tax: 987
 
-- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2015
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2015
   period: 2015
   input:
     state_code: AZ
@@ -156,7 +156,7 @@
   output:
     state_sales_tax: 198
 
-- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2016
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2016
   period: 2016
   input:
     state_code: AZ
@@ -165,7 +165,7 @@
   output:
     state_sales_tax: 231
 
-- name: Arizona (2nd state in its IRS block), family size 1, $0-$20,000, 2017
+- name: Arizona (2nd state in its IRS block), 1 exemption, $0-$20,000, 2017
   period: 2017
   input:
     state_code: AZ
@@ -246,7 +246,7 @@
   output:
     state_sales_tax: 335
 
-- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2015
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2015
   period: 2015
   input:
     state_code: AR
@@ -255,7 +255,7 @@
   output:
     state_sales_tax: 3_233
 
-- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2016
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2016
   period: 2016
   input:
     state_code: AR
@@ -264,7 +264,7 @@
   output:
     state_sales_tax: 3_192
 
-- name: Arkansas (3rd state in its IRS block), family size 6, $300,000 or more, 2017
+- name: Arkansas (3rd state in its IRS block), 6 exemptions, $300,000 or more, 2017
   period: 2017
   input:
     state_code: AR
@@ -345,7 +345,7 @@
   output:
     state_sales_tax: 2_693
 
-- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2015
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2015
   period: 2015
   input:
     state_code: AL
@@ -354,7 +354,7 @@
   output:
     state_sales_tax: 873
 
-- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2016
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2016
   period: 2016
   input:
     state_code: AL
@@ -363,7 +363,7 @@
   output:
     state_sales_tax: 892
 
-- name: Alabama (1st state in its IRS block), family size 4, $100,000-$120,000, 2017
+- name: Alabama (1st state in its IRS block), 4 exemptions, $100,000-$120,000, 2017
   period: 2017
   input:
     state_code: AL
@@ -444,7 +444,7 @@
   output:
     state_sales_tax: 964
 
-- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2015
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2015
   period: 2015
   input:
     state_code: TN
@@ -453,7 +453,7 @@
   output:
     state_sales_tax: 1_046
 
-- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2016
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2016
   period: 2016
   input:
     state_code: TN
@@ -462,7 +462,7 @@
   output:
     state_sales_tax: 1_086
 
-- name: Tennessee (2nd state in its IRS block), family size 3, $50,000-$60,000, 2017
+- name: Tennessee (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2017
   period: 2017
   input:
     state_code: TN
@@ -543,7 +543,7 @@
   output:
     state_sales_tax: 1_273
 
-- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2015
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2015
   period: 2015
   input:
     state_code: FL
@@ -552,7 +552,7 @@
   output:
     state_sales_tax: 1_194
 
-- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2016
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2016
   period: 2016
   input:
     state_code: FL
@@ -561,7 +561,7 @@
   output:
     state_sales_tax: 1_261
 
-- name: Florida (2nd state in its IRS block), family size 2, $140,000-$160,000, 2017
+- name: Florida (2nd state in its IRS block), 2 exemptions, $140,000-$160,000, 2017
   period: 2017
   input:
     state_code: FL
@@ -642,7 +642,7 @@
   output:
     state_sales_tax: 1_182
 
-- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2015
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2015
   period: 2015
   input:
     state_code: WA
@@ -651,7 +651,7 @@
   output:
     state_sales_tax: 1_873
 
-- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2016
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2016
   period: 2016
   input:
     state_code: WA
@@ -660,7 +660,7 @@
   output:
     state_sales_tax: 1_888
 
-- name: Washington (1st state in its IRS block), family size 5, $200,000-$225,000, 2017
+- name: Washington (1st state in its IRS block), 5 exemptions, $200,000-$225,000, 2017
   period: 2017
   input:
     state_code: WA
@@ -741,7 +741,7 @@
   output:
     state_sales_tax: 1_838
 
-- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2015
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2015
   period: 2015
   input:
     state_code: NV
@@ -750,7 +750,7 @@
   output:
     state_sales_tax: 1_944
 
-- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2016
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2016
   period: 2016
   input:
     state_code: NV
@@ -759,7 +759,7 @@
   output:
     state_sales_tax: 2_141
 
-- name: Nevada (2nd state in its IRS block), family size 1, $300,000 or more, 2017
+- name: Nevada (2nd state in its IRS block), 1 exemption, $300,000 or more, 2017
   period: 2017
   input:
     state_code: NV
@@ -840,7 +840,7 @@
   output:
     state_sales_tax: 1_550
 
-- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2015
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2015
   period: 2015
   input:
     state_code: CT
@@ -849,7 +849,7 @@
   output:
     state_sales_tax: 325
 
-- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2016
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2016
   period: 2016
   input:
     state_code: CT
@@ -858,7 +858,7 @@
   output:
     state_sales_tax: 337
 
-- name: Connecticut (3rd state in its IRS block), family size 6, $0-$20,000, 2017
+- name: Connecticut (3rd state in its IRS block), 6 exemptions, $0-$20,000, 2017
   period: 2017
   input:
     state_code: CT
@@ -939,7 +939,7 @@
   output:
     state_sales_tax: 495
 
-- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2015
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2015
   period: 2015
   input:
     state_code: WY
@@ -948,7 +948,7 @@
   output:
     state_sales_tax: 1_803
 
-- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2016
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2016
   period: 2016
   input:
     state_code: WY
@@ -957,7 +957,7 @@
   output:
     state_sales_tax: 1_811
 
-- name: Wyoming (alone in its IRS block), family size 6, $300,000 or more, 2017
+- name: Wyoming (alone in its IRS block), 6 exemptions, $300,000 or more, 2017
   period: 2017
   input:
     state_code: WY
@@ -1049,7 +1049,7 @@
   output:
     state_sales_tax: 1_511
 
-- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2015
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2015
   period: 2015
   input:
     state_code: MA
@@ -1058,7 +1058,7 @@
   output:
     state_sales_tax: 538
 
-- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2016
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2016
   period: 2016
   input:
     state_code: MA
@@ -1067,7 +1067,7 @@
   output:
     state_sales_tax: 562
 
-- name: Massachusetts (2nd state in its IRS block), family size 3, $50,000-$60,000, 2017
+- name: Massachusetts (2nd state in its IRS block), 3 exemptions, $50,000-$60,000, 2017
   period: 2017
   input:
     state_code: MA
@@ -1148,7 +1148,7 @@
   output:
     state_sales_tax: 702
 
-- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2015
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2015
   period: 2015
   input:
     state_code: NY
@@ -1157,7 +1157,7 @@
   output:
     state_sales_tax: 591
 
-- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2016
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2016
   period: 2016
   input:
     state_code: NY
@@ -1166,7 +1166,7 @@
   output:
     state_sales_tax: 620
 
-- name: New York (2nd state in its IRS block), family size 4, $90,000-$100,000, 2017
+- name: New York (2nd state in its IRS block), 4 exemptions, $90,000-$100,000, 2017
   period: 2017
   input:
     state_code: NY
@@ -1247,7 +1247,7 @@
   output:
     state_sales_tax: 703
 
-- name: Family size above 6 uses the IRS "Over 5" column, 2015
+- name: More than 6 exemptions use the IRS "Over 5" column, 2015
   period: 2015
   input:
     state_code: TX
@@ -1256,7 +1256,7 @@
   output:
     state_sales_tax: 1_125
 
-- name: Family size above 6 uses the IRS "Over 5" column, 2016
+- name: More than 6 exemptions use the IRS "Over 5" column, 2016
   period: 2016
   input:
     state_code: TX
@@ -1265,7 +1265,7 @@
   output:
     state_sales_tax: 1_160
 
-- name: Family size above 6 uses the IRS "Over 5" column, 2017
+- name: More than 6 exemptions use the IRS "Over 5" column, 2017
   period: 2017
   input:
     state_code: TX
