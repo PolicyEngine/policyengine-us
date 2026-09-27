@@ -5,6 +5,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
     medicaid_non_filer_member_sum,
+    medicaid_tax_dependent_spouse_sum,
 )
 from policyengine_us.variables.household.demographic.person._parent_links import (
     household_has_parent_ids,
@@ -111,12 +112,23 @@ class ca_medicaid_household_pregnancies(Variable):
         claimant_pregnancies = medicaid_claiming_tax_unit_value(
             person, period, tax_pregnancies
         ).astype(int)
+        tax_route_pregnancies = where(
+            person("medicaid_has_known_claiming_tax_unit", period),
+            claimant_pregnancies,
+            tax_pregnancies,
+        )
+        # With parent links in the household, add the pregnancies of a tax
+        # dependent's co-resident spouse, whom medicaid_household_size adds.
+        tax_route_pregnancies = where(
+            household_has_parent_ids(person, period),
+            tax_route_pregnancies
+            + medicaid_tax_dependent_spouse_sum(person, period, pregnancies).astype(
+                int
+            ),
+            tax_route_pregnancies,
+        )
         return where(
             person("medicaid_uses_non_filer_rules", period),
             non_filer_pregnancies,
-            where(
-                person("medicaid_has_known_claiming_tax_unit", period),
-                claimant_pregnancies,
-                tax_pregnancies,
-            ),
+            tax_route_pregnancies,
         )

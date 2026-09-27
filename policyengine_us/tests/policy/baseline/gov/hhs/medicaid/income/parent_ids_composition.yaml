@@ -1076,3 +1076,266 @@
     medicaid_uses_non_filer_rules: [true, true]
     medicaid_household_size: [1, 1]
     medicaid_household_income: [20_000, 5_000]
+
+# Regressions for the r6 review: a tax dependent's co-resident spouse. Under
+# 42 CFR 435.603(f)(2) a tax dependent's household is the claiming taxpayer's,
+# and (f)(4) adds a spouse the dependent lives with, even when one spouse is
+# claimed as a dependent. Household income is (d)'s sum over those members.
+
+- name: A married adult child claimed by a parent elsewhere counts the spouse they live with.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The id names the claiming parent, so (f)(2)(i) does not apply and the
+    # child's household is the parent's tax household (parent and child) plus
+    # the spouse under (f)(4): 3 people. The spouse must file, so the $30,000
+    # counts. The parent's household is the parent and the claimed child. The
+    # spouse's is the spouse and the child, whose income is zero.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: California counts the pregnancy of a claimed dependent's spouse once.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+        current_pregnancies: 1
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: CA
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: CA
+  output:
+    # As above, and California (ACWDL 20-10) adds the unborn child of every
+    # pregnant member of the household. The child's household is the parent,
+    # the child, the spouse and the spouse's unborn child: 4. The spouse's is
+    # the spouse, the child and her unborn child: 3. The pregnant spouse is
+    # not in the parent's household.
+    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_size: [2, 4, 3]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: A married dependent claimed by the one parent they live with counts their spouse.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+        employment_income: 20_000
+      teen:
+        person_id: 2
+        age: 17
+        parent_1_id: 1
+      teen_spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [father, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, teen, teen_spouse]
+        state_code: OH
+  output:
+    # The teen lives with only the parent who claims her, so neither (f)(2)(i)
+    # nor (f)(2)(ii) applies. Her household is her father's tax household plus
+    # her spouse under (f)(4): 3 people and $20,000 + $30,000. Her father's is
+    # himself and her; her spouse's is the spouse and her.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [20_000, 50_000, 30_000]
+
+- name: A spouse on the same return as the married dependent counts once.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 25
+        employment_income: 4_000
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child, spouse]
+        tax_unit_is_filer: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The parent claims the child and the child's spouse. The child's
+    # household is the parent's tax household, which already holds the
+    # spouse: 3 people, not 4. The spouse is a dependent other than a spouse
+    # or child who need not file, so (d)(2)(ii) leaves out the $4,000, and
+    # both dependents' incomes are excluded from the parent's household
+    # income. The spouse is not the parent's child, so (f)(2)(i) gives the
+    # spouse the non-filer household of the spouse and the child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [3, 3, 2]
+    medicaid_household_income: [0, 0, 4_000]
+
+- name: A married dependent claimed from another tax unit counts the spouse they live with.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      child_unit:
+        members: [adult_child]
+        tax_unit_id: 3
+        tax_unit_is_filer: false
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The parent's return claims the child. The child's household is the
+    # parent's (the parent and the child) plus the spouse under (f)(4): 3
+    # people and $20,000 + $30,000.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [20_000, 50_000, 30_000]

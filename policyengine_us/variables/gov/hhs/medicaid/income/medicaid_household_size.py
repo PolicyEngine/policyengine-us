@@ -5,6 +5,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
     medicaid_non_filer_member_sum,
+    medicaid_tax_dependent_spouse_sum,
 )
 from policyengine_us.variables.household.demographic.person._parent_links import (
     household_has_parent_ids,
@@ -69,6 +70,21 @@ class medicaid_household_size(Variable):
         claimant_tax_household_size = medicaid_claiming_tax_unit_value(
             person, period, tax_household_size
         ).astype(int)
+        tax_route_size = where(
+            known_claiming_tax_unit,
+            claimant_tax_household_size,
+            tax_household_size,
+        )
+        # With parent links in the household, a tax dependent's co-resident
+        # spouse joins their tax household once (42 CFR 435.603(f)(4)).
+        tax_route_size = where(
+            household_has_parent_ids(person, period),
+            tax_route_size
+            + medicaid_tax_dependent_spouse_sum(
+                person, period, np.ones(person.count)
+            ).astype(int),
+            tax_route_size,
+        )
 
         # California counts the unborn children of all members included in the
         # applicant's MAGI household. Preserve the existing treatment elsewhere.
@@ -79,14 +95,6 @@ class medicaid_household_size(Variable):
             person("current_pregnancies", period),
         )
         return (
-            where(
-                non_filer_rules,
-                non_filer_household_size,
-                where(
-                    known_claiming_tax_unit,
-                    claimant_tax_household_size,
-                    tax_household_size,
-                ),
-            )
+            where(non_filer_rules, non_filer_household_size, tax_route_size)
             + pregnancies
         )

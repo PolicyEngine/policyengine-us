@@ -1,4 +1,4 @@
-"""Medicaid MAGI non-filer household membership from parent links."""
+"""Medicaid MAGI household membership from parent links."""
 
 import numpy as np
 
@@ -8,6 +8,63 @@ from policyengine_us.variables.household.demographic.person._parent_links import
     household_member_indices,
     unlinked_parent,
 )
+
+
+def _shares_parent_id(parent_1, parent_2, member):
+    """Whether each person shares a nonzero parent id with a co-resident."""
+    return (
+        (parent_1 != 0)
+        & ((parent_1 == parent_1[member]) | (parent_1 == parent_2[member]))
+    ) | (
+        (parent_2 != 0)
+        & ((parent_2 == parent_1[member]) | (parent_2 == parent_2[member]))
+    )
+
+
+def _spouse_rule(person, period, first, second):
+    """Return a test of whether a co-resident is each person's spouse.
+
+    ``first`` and ``second`` are the co-resident parent rows. A spouse is a
+    co-resident partner in a two-person marital unit (PE's spouse
+    convention), whatever either partner's tax role, or the other head or
+    spouse of a joint return. A joint return or a cohabiting-spouses flag on
+    either partner's tax unit shows the marriage. Otherwise the partners must
+    share a family and no parent id, since PE puts everyone in one marital
+    unit when a situation omits marital units. People linked as parent and
+    child are never spouses.
+    """
+    parent_1 = person("parent_1_id", period)
+    parent_2 = person("parent_2_id", period)
+    family = person.family.reference_entity.members_entity_id
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    tax_unit = person.tax_unit.reference_entity.members_entity_id
+    head_spouse_count = person.tax_unit("head_spouse_count", period)
+    joint = head_or_spouse & (head_spouse_count == 2)
+    married = person.marital_unit.nb_persons() == 2
+    marital_unit = person.marital_unit.reference_entity.members_entity_id
+    cohabiting = person.tax_unit("cohabitating_spouses", period)
+    own_index = np.arange(person.count)
+
+    def is_spouse(member):
+        names_applicant = (first[member] == own_index) | (second[member] == own_index)
+        named_by_applicant = (first == member) | (second == member)
+        partner = married & (marital_unit[member] == marital_unit)
+        return (
+            (member != own_index)
+            & ~names_applicant
+            & ~named_by_applicant
+            & (
+                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
+                | (partner & (cohabiting | cohabiting[member]))
+                | (
+                    partner
+                    & (family[member] == family)
+                    & ~_shares_parent_id(parent_1, parent_2, member)
+                )
+            )
+        )
+
+    return is_spouse
 
 
 def medicaid_non_filer_member_sum(person, period, values):
@@ -29,13 +86,7 @@ def medicaid_non_filer_member_sum(person, period, values):
     never erased, though moving a household onto this rule can remove another
     family's legacy over-count, such as an adult's child-age sibling.
 
-    A spouse is a co-resident partner in a two-person marital unit (PE's
-    spouse convention), whatever either partner's tax role, or the other head
-    or spouse of a joint return. A joint return or a cohabiting-spouses flag
-    on either partner's tax unit shows the marriage. Otherwise the partners
-    must share a family and no parent id, since PE puts everyone in one
-    marital unit when a situation omits marital units. People linked as
-    parent and child are never spouses.
+    Spouses follow _spouse_rule.
 
     Values accumulate in float64; variable storage rounds the result.
     """
@@ -59,13 +110,7 @@ def medicaid_non_filer_member_sum(person, period, values):
     parent_family_1 = unlinked_parent_family(first)
     parent_family_2 = unlinked_parent_family(second)
 
-    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-    tax_unit = person.tax_unit.reference_entity.members_entity_id
-    head_spouse_count = person.tax_unit("head_spouse_count", period)
-    joint = head_or_spouse & (head_spouse_count == 2)
-    married = person.marital_unit.nb_persons() == 2
-    marital_unit = person.marital_unit.reference_entity.members_entity_id
-    cohabiting = person.tax_unit("cohabitating_spouses", period)
+    is_spouse = _spouse_rule(person, period, first, second)
 
     own_index = np.arange(person.count)
     for member in household_member_indices(person):
@@ -73,24 +118,8 @@ def medicaid_non_filer_member_sum(person, period, values):
         same_family = family[member] == family
         names_applicant = (first[member] == own_index) | (second[member] == own_index)
         named_by_applicant = (first == member) | (second == member)
-        shares_parent_id = (
-            (parent_1 != 0)
-            & ((parent_1 == parent_1[member]) | (parent_1 == parent_2[member]))
-        ) | (
-            (parent_2 != 0)
-            & ((parent_2 == parent_1[member]) | (parent_2 == parent_2[member]))
-        )
-        partner = married & (marital_unit[member] == marital_unit)
-        spouse = (
-            ~is_self
-            & ~names_applicant
-            & ~named_by_applicant
-            & (
-                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-                | (partner & (cohabiting | cohabiting[member]))
-                | (partner & same_family & ~shares_parent_id)
-            )
-        )
+        shares_parent_id = _shares_parent_id(parent_1, parent_2, member)
+        spouse = is_spouse(member)
         own_child = child[member] & (
             names_applicant | (unlinked_parents & unlinked_child[member] & same_family)
         )
@@ -122,5 +151,61 @@ def medicaid_non_filer_member_sum(person, period, values):
             )
         )
         included = (member >= 0) & (is_self | spouse | own_child | parent | sibling)
+        total += np.where(included, values[member], 0.0)
+    return total
+
+
+def medicaid_tax_dependent_spouse_sum(person, period, values):
+    """Sum ``values`` over a tax dependent's spouse missing from their tax household.
+
+    Callers add this to the tax-household branch in households with parent
+    links and keep their original expressions elsewhere. Under 42 CFR
+    435.603(f)(2) a tax dependent's household is the household of the
+    taxpayer claiming them, and under (f)(4) each spouse of a married couple
+    living together is in the other's household even when one is claimed as
+    a dependent. The tax-household branch counts the members of the claiming
+    tax unit, the people that unit claims from other units and a separately
+    filing spouse of its head, but never the dependent's own spouse. So for a
+    tax dependent who uses that branch, this sums over the co-resident spouse
+    _spouse_rule finds, unless the spouse already belongs to the tax
+    household. It is zero for everyone else.
+
+    Values accumulate in float64.
+    """
+    values = np.asarray(values, dtype=np.float64)
+    total = np.zeros(person.count, dtype=np.float64)
+    parent_1 = person("parent_1_id", period)
+    parent_2 = person("parent_2_id", period)
+    if not np.any((parent_1 != 0) | (parent_2 != 0)):
+        return total
+
+    tax_unit = person.tax_unit.reference_entity.members_entity_id
+    tax_unit_id = person.tax_unit("tax_unit_id", period)
+    known_claim = person("medicaid_has_known_claiming_tax_unit", period)
+    claiming_tax_unit_id = person("medicaid_claiming_tax_unit_id", period)
+    claimed_elsewhere = known_claim & (claiming_tax_unit_id != tax_unit_id)
+    # The tax unit whose household the tax-household branch gives each person.
+    household_tax_unit_id = np.where(known_claim, claiming_tax_unit_id, tax_unit_id)
+    # A head or spouse whose tax household is their own unit's keeps that
+    # unit's cohabiting-spouses channel for their own spouse.
+    dependent = person("medicaid_is_tax_dependent", period) & (
+        claimed_elsewhere | ~person("is_tax_unit_head_or_spouse", period)
+    )
+    applies = dependent & ~person("medicaid_uses_non_filer_rules", period)
+    if not np.any(applies):
+        return total
+
+    first, second = co_resident_parent_indices(person, period)
+    is_spouse = _spouse_rule(person, period, first, second)
+    for member in household_member_indices(person):
+        in_tax_household = np.where(
+            known_claim,
+            tax_unit_id[member] == claiming_tax_unit_id,
+            tax_unit[member] == tax_unit,
+        ) | (
+            claimed_elsewhere[member]
+            & (claiming_tax_unit_id[member] == household_tax_unit_id)
+        )
+        included = (member >= 0) & applies & is_spouse(member) & ~in_tax_household
         total += np.where(included, values[member], 0.0)
     return total
