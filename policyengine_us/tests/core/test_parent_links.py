@@ -197,3 +197,57 @@ def test_linked_household_income_accumulates_in_float64():
             "first_child": 16_777_218,
             "second_child": 16_777_218,
         }, order
+
+
+def test_a_head_claimed_by_their_own_unit_counts_their_spouse_once():
+    # A known claiming tax unit that is the person's own is odd input, but the
+    # spouse must still count once: for a head, the unit's cohabiting-spouses
+    # flag already adds the separately filing spouse, so the tax-dependent
+    # spouse rule must not add them again.
+    simulation = Simulation(
+        situation={
+            "people": {
+                "head": {
+                    "age": {"2026": 25},
+                    "person_id": {"2026": 1},
+                    # An absent parent, so the household has links.
+                    "parent_1_id": {"2026": 9},
+                    "employment_income": {"2026": 30_000},
+                    "medicaid_claiming_tax_unit_id": {"2026": 5},
+                },
+                "spouse": {
+                    "age": {"2026": 26},
+                    "person_id": {"2026": 2},
+                    "employment_income": {"2026": 20_000},
+                },
+            },
+            "tax_units": {
+                "head_unit": {
+                    "members": ["head"],
+                    "tax_unit_id": {"2026": 5},
+                    "tax_unit_is_filer": {"2026": True},
+                    "cohabitating_spouses": {"2026": True},
+                },
+                "spouse_unit": {
+                    "members": ["spouse"],
+                    "tax_unit_id": {"2026": 6},
+                    "tax_unit_is_filer": {"2026": True},
+                    "cohabitating_spouses": {"2026": True},
+                },
+            },
+            "families": {"family": {"members": ["head", "spouse"]}},
+            "marital_units": {"couple": {"members": ["head", "spouse"]}},
+            "households": {
+                "home": {"members": ["head", "spouse"], "state_code": {"2026": "OH"}}
+            },
+        }
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("medicaid_uses_non_filer_rules", 2026), [False, False]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("medicaid_household_size", 2026), [2, 2]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("medicaid_household_income", 2026), [50_000, 50_000]
+    )

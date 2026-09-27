@@ -1435,3 +1435,56 @@
     medicaid_uses_non_filer_rules: [false, true]
     medicaid_household_size: [2, 1]
     medicaid_household_income: [30_000, 0]
+
+- name: A minor claimed by a joint return is claimed by a parent who is the return's spouse.
+  period: 2026
+  input:
+    people:
+      stepfather:
+        person_id: 1
+        age: 45
+        employment_income: 40_000
+      mother:
+        person_id: 2
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 3
+        age: 10
+        # The ids record only the mother, the spouse on the claiming return.
+        parent_1_id: 2
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      couple_unit:
+        members: [stepfather, mother]
+        tax_unit_id: 1
+        filing_status: JOINT
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+    families:
+      couple_family:
+        members: [stepfather, mother]
+      child_family:
+        members: [child]
+    marital_units:
+      couple:
+        members: [stepfather, mother]
+      child:
+        members: [child]
+    households:
+      couple_home:
+        members: [stepfather, mother]
+        state_code: OH
+      child_home:
+        members: [child]
+        state_code: OH
+  output:
+    # A parent claims the child, so (f)(2)(i) does not apply, and under
+    # (f)(2) the child's household is the couple's tax household: the couple
+    # and the child, with $60,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]

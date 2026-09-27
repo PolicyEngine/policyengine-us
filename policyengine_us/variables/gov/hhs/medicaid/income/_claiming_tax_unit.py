@@ -100,21 +100,12 @@ def medicaid_known_claim_by_named_parent(person, period):
     person_id = person("person_id", period)
     named = none
     for role in ["is_tax_unit_head", "is_tax_unit_spouse"]:
-        selector = person(role, period)
-        present = (
-            _value_by_positive_id(
-                claiming_tax_unit_id, tax_unit_id, np.ones(person.count), selector
-            )
-            > 0
-        )
+        # 0 when the claiming unit has nobody in the role; ids are nonzero.
         claimant_id = _value_by_positive_id(
-            claiming_tax_unit_id, tax_unit_id, person_id, selector
+            claiming_tax_unit_id, tax_unit_id, person_id, person(role, period)
         )
         named = named | (
-            present
-            & (
-                ((parent_1 != 0) & (parent_1 == claimant_id))
-                | ((parent_2 != 0) & (parent_2 == claimant_id))
-            )
+            ((parent_1 != 0) & (parent_1 == claimant_id))
+            | ((parent_2 != 0) & (parent_2 == claimant_id))
         )
     return claimed_elsewhere, claimed_elsewhere & named

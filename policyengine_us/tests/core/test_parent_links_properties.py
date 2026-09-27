@@ -444,14 +444,17 @@ def random_married_dependents(seed, n=60):
     ]
 
 
-def married_dependent_situation(scenarios, reverse=False):
+def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix="s"):
+    """Scenarios as a situation; ``prefix`` keeps names and tax unit ids apart."""
     people, households, families, tax_units, marital_units = {}, {}, {}, {}, {}
+    id_offset = 0 if prefix == "s" else 10_000
 
     def ordered(members):
         return members[::-1] if reverse else members
 
     for s, scenario in enumerate(scenarios):
-        parent, child, spouse = f"s{s}_parent", f"s{s}_child", f"s{s}_spouse"
+        name = f"{prefix}{s}"
+        parent, child, spouse = f"{name}_parent", f"{name}_child", f"{name}_spouse"
         placement = scenario["placement"]
         spouse_income = scenario["spouse_income"]
         # Countable income follows 42 CFR 435.603(d)(2)(i)'s child-age proxy.
@@ -479,17 +482,18 @@ def married_dependent_situation(scenarios, reverse=False):
                 "medicaid_person_is_required_to_file": {PERIOD: must_file},
                 "current_pregnancies": {PERIOD: scenario["pregnancies"][person_id - 1]},
             }
-        people[child]["parent_1_id"] = {PERIOD: 1}
-        parent_unit_id = 10 * s + 1
+        if with_ids:
+            people[child]["parent_1_id"] = {PERIOD: 1}
+        parent_unit_id = id_offset + 10 * s + 1
 
         # The parent's return, and the child's own unit under a known claim.
         parent_return = [parent]
         if scenario["known_claim"]:
             people[child]["claimed_as_dependent_on_another_return"] = {PERIOD: True}
             people[child]["medicaid_claiming_tax_unit_id"] = {PERIOD: parent_unit_id}
-            tax_units[f"s{s}_child_unit"] = {
+            tax_units[f"{name}_child_unit"] = {
                 "members": [child],
-                "tax_unit_id": {PERIOD: 10 * s + 2},
+                "tax_unit_id": {PERIOD: id_offset + 10 * s + 2},
                 "tax_unit_is_filer": {PERIOD: False},
             }
         else:
@@ -497,16 +501,16 @@ def married_dependent_situation(scenarios, reverse=False):
         if placement == "same_return":
             parent_return.append(spouse)
         else:
-            tax_units[f"s{s}_spouse_unit"] = {
+            tax_units[f"{name}_spouse_unit"] = {
                 "members": [spouse],
-                "tax_unit_id": {PERIOD: 10 * s + 3},
+                "tax_unit_id": {PERIOD: id_offset + 10 * s + 3},
                 "tax_unit_is_filer": {PERIOD: True},
                 "cohabitating_spouses": {PERIOD: placement == "flagged"},
             }
         if placement == "claimed_into":
             people[spouse]["claimed_as_dependent_on_another_return"] = {PERIOD: True}
             people[spouse]["medicaid_claiming_tax_unit_id"] = {PERIOD: parent_unit_id}
-        tax_units[f"s{s}_parent_unit"] = {
+        tax_units[f"{name}_parent_unit"] = {
             "members": ordered(parent_return),
             "tax_unit_id": {PERIOD: parent_unit_id},
             "tax_unit_is_filer": {PERIOD: True},
@@ -526,18 +530,18 @@ def married_dependent_situation(scenarios, reverse=False):
         if placement != "same_family":
             family_groups.append([spouse])
         for k, members in enumerate(homes):
-            households[f"s{s}_home{k}"] = {
+            households[f"{name}_home{k}"] = {
                 "members": ordered(members),
                 "state_code": {PERIOD: "CA"},
             }
         for k, members in enumerate(family_groups):
-            families[f"s{s}_family{k}"] = {"members": ordered(members)}
+            families[f"{name}_family{k}"] = {"members": ordered(members)}
         if placement == "unmarried":
-            marital_units[f"s{s}_child"] = {"members": [child]}
-            marital_units[f"s{s}_spouse"] = {"members": [spouse]}
+            marital_units[f"{name}_child"] = {"members": [child]}
+            marital_units[f"{name}_spouse"] = {"members": [spouse]}
         else:
-            marital_units[f"s{s}_couple"] = {"members": ordered([child, spouse])}
-        marital_units[f"s{s}_parent"] = {"members": [parent]}
+            marital_units[f"{name}_couple"] = {"members": ordered([child, spouse])}
+        marital_units[f"{name}_parent"] = {"members": [parent]}
     return {
         "people": people,
         "households": households,
@@ -613,3 +617,27 @@ def test_tax_dependent_counts_a_co_resident_spouse_exactly_once():
         "ca_medicaid_household_pregnancies",
     ]:
         assert by_name(simulation, variable) == by_name(reversed_, variable), variable
+
+
+def test_households_without_ids_keep_their_values_next_to_linked_ones():
+    # The same scenarios without ids give the same values whether or not the
+    # simulation also holds linked households: the tax-dependent spouse rule
+    # applies only in households with links.
+    scenarios = random_married_dependents(seed=435605)
+    alone = Simulation(
+        situation=married_dependent_situation(scenarios, with_ids=False, prefix="z")
+    )
+    linked = married_dependent_situation(scenarios)
+    unlinked = married_dependent_situation(scenarios, with_ids=False, prefix="z")
+    mixed = Simulation(
+        situation={key: {**linked[key], **unlinked[key]} for key in linked}
+    )
+    for variable in [
+        "medicaid_uses_non_filer_rules",
+        "medicaid_household_size",
+        "medicaid_household_income",
+        "ca_medicaid_household_pregnancies",
+    ]:
+        in_mixed = by_name(mixed, variable)
+        for name, value in by_name(alone, variable).items():
+            assert in_mixed[name] == value, (variable, name)
