@@ -251,3 +251,50 @@ def test_a_head_claimed_by_their_own_unit_counts_their_spouse_once():
     np.testing.assert_array_equal(
         simulation.calculate("medicaid_household_income", 2026), [50_000, 50_000]
     )
+
+
+def test_a_repeated_id_naming_a_co_resident_does_not_match_a_claimant_elsewhere():
+    # Both slots name the co-resident mother (person_id 1). The grandparent
+    # who claims the child from another household also has person_id 1, but
+    # neither slot names them, so the claimant is not a parent.
+    simulation = Simulation(
+        situation={
+            "people": {
+                "mother": {"age": {"2026": 35}, "person_id": {"2026": 1}},
+                "child": {
+                    "age": {"2026": 10},
+                    "person_id": {"2026": 2},
+                    "parent_1_id": {"2026": 1},
+                    "parent_2_id": {"2026": 1},
+                    "medicaid_claiming_tax_unit_id": {"2026": 1},
+                },
+                "grandparent": {"age": {"2026": 65}, "person_id": {"2026": 1}},
+            },
+            "tax_units": {
+                "grandparent_unit": {
+                    "members": ["grandparent"],
+                    "tax_unit_id": {"2026": 1},
+                },
+                "child_unit": {"members": ["child"], "tax_unit_id": {"2026": 2}},
+                "mother_unit": {"members": ["mother"], "tax_unit_id": {"2026": 3}},
+            },
+            "families": {
+                "family": {"members": ["mother", "child"]},
+                "grandparent_family": {"members": ["grandparent"]},
+            },
+            "marital_units": {
+                name: {"members": [name]} for name in ["mother", "child", "grandparent"]
+            },
+            "households": {
+                "home": {"members": ["mother", "child"], "state_code": {"2026": "OH"}},
+                "grandparent_home": {
+                    "members": ["grandparent"],
+                    "state_code": {"2026": "OH"},
+                },
+            },
+        }
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("medicaid_claimed_by_parent_in_tax_unit", 2026),
+        [False, False, False],
+    )

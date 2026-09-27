@@ -7,7 +7,8 @@ Rules shared by every formula that reads the links:
 - Parenthood is identity and residence is a separate condition. Ids resolve
   against the members of one group: the household when a rule requires
   living together, the claiming tax unit when a rule asks who claims the
-  person.
+  person. An id that names a co-resident names that person, wherever else
+  the same person_id appears.
 - A person is a parent when own_children_in_household is positive or when a
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep
@@ -92,8 +93,14 @@ def tax_unit_parent_indices(person, period):
     """Rows of the parents each person's ids name within their tax unit.
 
     A parent who claims the person is recognized wherever either one lives.
+    An id that names a co-resident names that person, so a tax unit member
+    elsewhere who shares the person_id is not the parent.
     """
-    return _parent_indices(person, period, person.tax_unit)
+    first, second = _parent_indices(person, period, person.tax_unit)
+    home_first, home_second = co_resident_parent_indices(person, period)
+    first = np.where((home_first >= 0) & (first != home_first), -1, first)
+    second = np.where((home_second >= 0) & (second != home_second), -1, second)
+    return first, second
 
 
 def linked_child_count(person, period):

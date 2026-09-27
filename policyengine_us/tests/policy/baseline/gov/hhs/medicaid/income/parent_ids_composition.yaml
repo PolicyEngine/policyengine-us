@@ -1273,11 +1273,12 @@
   output:
     # The parent claims the child and the child's spouse. The child's
     # household is the parent's tax household, which already holds the
-    # spouse: 3 people, not 4. The spouse is a dependent other than a spouse
-    # or child who need not file, so (d)(2)(ii) leaves out the $4,000, and
-    # both dependents' incomes are excluded from the parent's household
-    # income. The spouse is not the parent's child, so (f)(2)(i) gives the
-    # spouse the non-filer household of the spouse and the child.
+    # spouse: 3 people, not 4. The tax-household branch leaves out a claimed
+    # dependent's income when the dependent need not file, reading (d)(2)(ii)
+    # as reaching every household that is the taxpayer's; that is main's
+    # treatment, and a literal reading would count the spouse's $4,000 in the
+    # child's household. The spouse is not the parent's child, so (f)(2)(i)
+    # gives the spouse the non-filer household of the spouse and the child.
     medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
     medicaid_uses_non_filer_rules: [false, false, true]
     medicaid_household_size: [3, 3, 2]
@@ -1488,3 +1489,117 @@
     medicaid_uses_non_filer_rules: [false, false, false]
     medicaid_household_size: [3, 3, 3]
     medicaid_household_income: [60_000, 60_000, 60_000]
+
+# Regressions for the r7 review: an id that names a co-resident names that
+# person, even when a claimant elsewhere has the same person_id.
+
+- name: A claimant elsewhere who shares a co-resident parent's id is not the parent.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_claiming_tax_unit_id: 1
+      grandparent:
+        # Ids are distinct only within a household and a tax unit.
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+      mother_unit:
+        members: [mother]
+        tax_unit_id: 3
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [mother, child]
+      grandparent_family:
+        members: [grandparent]
+    marital_units:
+      mother:
+        members: [mother]
+      child:
+        members: [child]
+      grandparent:
+        members: [grandparent]
+    households:
+      home:
+        members: [mother, child]
+        state_code: OH
+      grandparent_home:
+        members: [grandparent]
+        state_code: OH
+  output:
+    # The id names the mother the child lives with, not the grandparent who
+    # claims the child, so (f)(2)(i) applies. Under (f)(3) the child's
+    # household is the child and the mother: 2 people and $20,000. The
+    # mother's is herself; the grandparent's is the grandparent and the
+    # claimed child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
+
+- name: A tax unit member elsewhere who shares a co-resident parent's id is not the parent.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      grandparent:
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent, child]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [mother, child]
+      grandparent_family:
+        members: [grandparent]
+    marital_units:
+      mother:
+        members: [mother]
+      child:
+        members: [child]
+      grandparent:
+        members: [grandparent]
+    households:
+      home:
+        members: [mother, child]
+        state_code: OH
+      grandparent_home:
+        members: [grandparent]
+        state_code: OH
+  output:
+    # As above, with the grandparent claiming the child on the same return.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
