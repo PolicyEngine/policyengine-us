@@ -41,7 +41,7 @@ PUB_596 = {
 }
 # (age, wages) profiles. Age 20 fails the federal no-child age test except
 # in 2021, so it reaches New Jersey's age-expanded path; age 30 passes it, so
-# with $3,000 of wages the federal credit turns only on investment income.
+# age is not what blocks that profile's federal credit.
 # The higher wages put tax units that pass the investment income test above
 # the single, and then the joint, income limit.
 PROFILES = [(20, 3_000), (30, 3_000), (30, 15_000), (20, 24_000)]
@@ -210,9 +210,10 @@ def test_losses_do_not_change_the_investment_income_test(case):
     assert not case["nj_eligible"][fails_on_interest].any()
     np.testing.assert_array_equal(eitc[fails_on_interest], 0)
     np.testing.assert_array_equal(nj_eitc[fails_on_interest], 0)
-    # Guard against a vacuous pass: filers with the same profiles and losses
-    # who pass the investment income test do get a federal and a New Jersey
-    # credit, so the zeros above come from the investment income test.
+    # Guard against a vacuous pass: some filers with losses who pass the
+    # investment income test do get a federal credit and, at age 20, a New
+    # Jersey credit, so the zeros above are not the only outcome the grid
+    # can produce.
     assert fails_on_interest.any()
     passes_on_interest = losses & (interest <= case["investment_limit"])
     assert (eitc[passes_on_interest] > 0).any()
