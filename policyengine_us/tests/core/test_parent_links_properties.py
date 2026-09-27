@@ -411,13 +411,17 @@ SPOUSE_PLACEMENTS = [
     "flagged",
     # Living with the child in one family, filing alone without the flag.
     "same_family",
-    # Living with the child and claimed on the parent's return too.
+    # Living with the child in one family, claimed on the parent's return too.
     "same_return",
-    # Living with the child, filing alone, claimed by the parent's return.
+    # Living with the child in one family, filing alone, claimed by the
+    # parent's return from the spouse's own unit.
     "claimed_into",
     # Married to the child but living in another household.
     "elsewhere",
 ]
+# Placements whose marriage the family shows, since no flag or joint return
+# does; the last two already belong to the parent's tax household.
+IN_CHILDS_FAMILY = ("same_family", "same_return", "claimed_into")
 
 
 def random_married_dependents(seed, n=60):
@@ -518,7 +522,7 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
 
         # Homes and families.
         couple_home = [child] + ([spouse] if placement != "elsewhere" else [])
-        couple_family = [child] + ([spouse] if placement == "same_family" else [])
+        couple_family = [child] + ([spouse] if placement in IN_CHILDS_FAMILY else [])
         if scenario["child_with_parent"]:
             homes = [[parent] + couple_home]
             family_groups = [[parent] + couple_family]
@@ -527,7 +531,7 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
             family_groups = [[parent], couple_family]
         if placement == "elsewhere":
             homes.append([spouse])
-        if placement != "same_family":
+        if placement not in IN_CHILDS_FAMILY:
             family_groups.append([spouse])
         for k, members in enumerate(homes):
             households[f"{name}_home{k}"] = {
