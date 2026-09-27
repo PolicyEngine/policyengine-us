@@ -495,6 +495,10 @@
     # 0.039 x 95,501 - 87.40 = 3,637.14
     ar_income_tax_before_non_refundable_credits_indiv: 3_637.14
 
+# 2027 cases use incomes whose tax survives a one-step change in the projected
+# uprating factor. The (B)-(C) rows near the indexed threshold (about $97,500)
+# sit within a few hundredths of a percent of a rounding flip, so
+# test_ar_income_tax_schedule.py checks them against the loaded index instead.
 - name: AR 2027 indexed Act 1 of 2026 tables - top of the 0% row
   period: 2027
   absolute_error_margin: 0.01
@@ -574,46 +578,6 @@
   output:
     # 627.80 + (97,500 - 27,200) x 3.7% = 3,228.90; the threshold is 94,700 x 1.0298 = 97,522, nearest $100
     ar_income_tax_before_non_refundable_credits_indiv: 3_228.90
-
-- name: AR 2027 indexed Act 1 of 2026 tables - first bracket adjustment row
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    ar_taxable_income_indiv: 97_501
-    state_code: AR
-  output:
-    # 4,800 x 2% + (97,501 - 4,800) x 3.7% - 290 = 3,235.94; the 2% row top is 4,700 x 1.0298 = 4,840, nearest $100
-    ar_income_tax_before_non_refundable_credits_indiv: 3_235.94
-
-- name: AR 2027 indexed Act 1 of 2026 tables - second bracket adjustment row
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    ar_taxable_income_indiv: 97_601
-    state_code: AR
-  output:
-    # 96 + (97,601 - 4,800) x 3.7% - 280 = 3,249.64; the row bound is 94,800 x 1.0298 = 97,625, nearest $100
-    ar_income_tax_before_non_refundable_credits_indiv: 3_249.64
-
-- name: AR 2027 indexed Act 1 of 2026 tables - top of the last bracket adjustment row
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    ar_taxable_income_indiv: 100_500
-    state_code: AR
-  output:
-    # 96 + (100,500 - 4,800) x 3.7% - 10 = 3,626.90; the last bound is 97,600 x 1.0298 = 100,509, nearest $100
-    ar_income_tax_before_non_refundable_credits_indiv: 3_626.90
-
-- name: AR 2027 indexed Act 1 of 2026 tables - above the bracket adjustment rows
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    ar_taxable_income_indiv: 100_501
-    state_code: AR
-  output:
-    # 96 + (100,501 - 4,800) x 3.7% = 3,636.94
-    ar_income_tax_before_non_refundable_credits_indiv: 3_636.94
 
 - name: AR 2027 indexed Act 1 of 2026 tables - high income
   period: 2027

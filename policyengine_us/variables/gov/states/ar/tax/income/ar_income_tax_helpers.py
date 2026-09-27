@@ -14,10 +14,13 @@ def ar_main_income_tax(taxable_income, p):
     nearest $100:
     - (A) net income at or below the high-income threshold: the rate table at
       marginal rates, each from its row's lower bound;
-    - (B) net income above it: the high-income marginal rate table,
+    - (B) net income above it: the high-income marginal rate table, applied to
+      all of that income,
     - (C) less the fixed bracket adjustment for the row the income falls in.
-    Deriving the reduction from the indexed tables keeps tax continuous at every
-    indexed bound; a stored reduction would not move with the thresholds.
+    Taxing at marginal rates keeps tax continuous at every (A) and (B) row bound
+    wherever indexing moves them; a stored reduction would not move with them.
+    As in the statute, tax still steps where (A) meets (B)-(C) (down $2.66 at
+    2026's $94,700) and rises by the $10 adjustment step at each (C) row bound.
     """
     if p.use_published_reduction:
         rate = p.rate.calc(taxable_income)

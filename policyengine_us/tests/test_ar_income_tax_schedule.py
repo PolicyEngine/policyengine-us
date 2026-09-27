@@ -43,8 +43,9 @@ Invariants:
 - Property tests over random tables: the derived (A) tax equals
   rate x income - the sum of (rate step x row start), is continuous at every
   row start, and tax never falls within either regime.
-- A reform to the rate table in a projected year keeps the schedule
-  continuous, because the reduction is derived rather than stored.
+- A reform to the rate table in a projected year keeps tax from falling
+  anywhere except where (A) meets (B)-(C), because the reduction is derived
+  rather than stored.
 """
 
 from types import SimpleNamespace
@@ -361,7 +362,7 @@ def test_ar_derived_schedule_properties_on_random_tables(seed):
     assert (change[within_regime] >= -1e-9).all()
 
 
-def test_ar_rate_table_reform_keeps_projected_schedule_continuous():
+def test_ar_rate_table_reform_keeps_projected_tax_from_falling():
     # A stored 2027 reduction would ignore this reform and make tax fall at
     # the moved bounds; the derived one follows it.
     reformed = P.clone()
