@@ -7,10 +7,10 @@
     head_is_dependent_elsewhere: false
     adjusted_gross_income: 99_999
     hi_agi: 99_999
-    state_withheld_income_tax: 15_000
-    local_income_tax: 1_000
-    state_sales_tax: 12_000
-    local_sales_tax: 2_400
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 3_000
+    local_sales_tax: 375
     real_estate_taxes: 3_000
     charitable_deduction: 0
     hi_medical_expense_deduction: 0
@@ -18,13 +18,13 @@
     hi_casualty_loss_deduction: 0
     hi_exemptions: 0
   output:
-    state_and_local_sales_or_income_tax: 16_000
-    hi_salt_deduction: 19_000
-    hi_total_itemized_deductions: 19_000
-    hi_itemized_deductions: 19_000
+    state_and_local_sales_or_income_tax: 6_000
+    hi_salt_deduction: 9_000
+    hi_total_itemized_deductions: 9_000
+    hi_itemized_deductions: 9_000
     hi_standard_deduction: 4_400
-    hi_deductions: 19_000
-    hi_taxable_income: 80_999
+    hi_deductions: 9_000
+    hi_taxable_income: 90_999
 
 - name: Income tax exclusion at limit with standard deduction fallback
   period: 2025
@@ -35,10 +35,10 @@
     head_is_dependent_elsewhere: false
     adjusted_gross_income: 100_000
     hi_agi: 100_000
-    state_withheld_income_tax: 15_000
-    local_income_tax: 1_000
-    state_sales_tax: 12_000
-    local_sales_tax: 2_400
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 3_000
+    local_sales_tax: 375
     real_estate_taxes: 3_000
     charitable_deduction: 0
     hi_medical_expense_deduction: 0
@@ -46,7 +46,7 @@
     hi_casualty_loss_deduction: 0
     hi_exemptions: 0
   output:
-    state_and_local_sales_or_income_tax: 16_000
+    state_and_local_sales_or_income_tax: 6_000
     hi_salt_deduction: 3_000
     hi_total_itemized_deductions: 3_000
     hi_itemized_deductions: 3_000
@@ -63,10 +63,10 @@
     head_is_dependent_elsewhere: false
     adjusted_gross_income: 99_999
     hi_agi: 99_999
-    state_withheld_income_tax: 8_000
+    state_withheld_income_tax: 2_000
     local_income_tax: 0
-    state_sales_tax: 12_000
-    local_sales_tax: 2_400
+    state_sales_tax: 3_000
+    local_sales_tax: 375
     real_estate_taxes: 3_000
     charitable_deduction: 0
     hi_medical_expense_deduction: 0
@@ -74,11 +74,11 @@
     hi_casualty_loss_deduction: 0
     hi_exemptions: 0
   output:
-    state_and_local_sales_or_income_tax: 14_400
-    hi_salt_deduction: 17_400
-    hi_total_itemized_deductions: 17_400
-    hi_itemized_deductions: 17_400
+    state_and_local_sales_or_income_tax: 3_375
+    hi_salt_deduction: 6_375
+    hi_total_itemized_deductions: 6_375
+    hi_itemized_deductions: 6_375
     hi_standard_deduction: 4_400
-    hi_deductions: 17_400
-    hi_taxable_income: 82_599
+    hi_deductions: 6_375
+    hi_taxable_income: 93_624
 
