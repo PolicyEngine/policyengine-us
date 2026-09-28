@@ -6,14 +6,16 @@ class marginal_tax_rate_computed(Variable):
     entity = Person
     label = "marginal tax rate computed"
     documentation = (
-        "Whether the marginal tax rate variables are simulated for this "
-        "person. They are simulated only for adults whose "
-        "adult_earnings_index (rank by market income within the household) "
-        "is at most simulation.marginal_tax_rate_adults. Everyone else, "
-        "including children with earnings, gets a marginal tax rate of zero "
-        "that is a placeholder, not a simulated result. Filter on this flag "
-        "before averaging or taking quantiles of marginal tax rates across "
-        "people."
+        "Whether marginal_tax_rate, marginal_tax_rate_including_health_benefits, "
+        "federal_marginal_tax_rate, state_marginal_tax_rate and "
+        "fica_marginal_tax_rate are simulated for this person. They are "
+        "simulated only for adults whose adult_earnings_index (rank by market "
+        "income within the household) is at most "
+        "simulation.marginal_tax_rate_adults. Everyone else, including "
+        "children with earnings, gets a zero that is a placeholder, not a "
+        "simulated result. Filter on this flag before summarizing those "
+        "variables across people. marginal_tax_rate_on_capital_gains ranks "
+        "adults separately and is not covered by this flag."
     )
     definition_period = YEAR
 

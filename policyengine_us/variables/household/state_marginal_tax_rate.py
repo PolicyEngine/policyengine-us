@@ -8,9 +8,9 @@ class state_marginal_tax_rate(Variable):
     label = "state marginal tax rate"
     documentation = (
         "Marginal change in state income tax per dollar of additional earnings."
-        " Simulated only where marginal_tax_rate_computed is true, that is,"
-        " for the top simulation.marginal_tax_rate_adults earners among the"
-        " adults in each household; zero for everyone else."
+        " Simulated only where marginal_tax_rate_computed is true: for up to"
+        " simulation.marginal_tax_rate_adults adults per household, those with"
+        " the highest market income. Zero for everyone else."
     )
     entity = Person
     definition_period = YEAR

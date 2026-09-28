@@ -7,16 +7,18 @@ rank. Everyone else keeps a placeholder of zero. marginal_tax_rate_computed
 flags the simulated people, and cliff_evaluated must agree with it because the
 cliff gap is derived from marginal_tax_rate.
 
-Every household in a grid of adult counts, earnings orders, ties, teen earners
-and children shares one simulation per cap, and is checked against that rule,
-restated here without adult_earnings_index:
+Every household in a grid of adult counts, earnings orders, ties, negative
+market income, teen earners and children shares one simulation per cap, and is
+checked against that rule, restated here without adult_earnings_index:
 
 1. Each household flags min(cap, adults) people, all adults, and every flagged
    adult has at least the market income of every unflagged adult.
 2. cliff_evaluated equals marginal_tax_rate_computed.
 3. Every marginal tax rate variable is exactly zero wherever the flag is false.
 4. Raising the cap only adds people: anyone flagged under a lower cap keeps the
-   same flag and the same marginal tax rates under a higher one.
+   same flag and the same marginal tax rates under a higher one. This holds with
+   behavioral responses off, as here; with labor supply responses on, the cap
+   changes measured marginal tax rates and so earnings and ranks.
 """
 
 from itertools import product
@@ -36,6 +38,8 @@ MTR_VARIABLES = (
     "marginal_tax_rate_including_health_benefits",
     "federal_marginal_tax_rate",
 )
+# Employment income per adult; a negative entry is a self-employment loss, which
+# makes that adult's market income negative.
 ADULT_EARNINGS = (
     (0,),
     (40_000,),
@@ -46,6 +50,8 @@ ADULT_EARNINGS = (
     (30_000, 90_000, 60_000),
     (20_000, 0, 20_000, 70_000),
     (10_000, 45_000, 0, 45_000, 120_000),
+    (-20_000, 30_000),
+    (10_000, -5_000, 0, 60_000),
 )
 TEEN_EARNINGS = (None, 0, 8_000)
 HAS_CHILD = (False, True)
@@ -58,10 +64,8 @@ def _situation():
         members = []
         for a, earnings in enumerate(adults):
             name = f"h{h}_adult{a}"
-            people[name] = {
-                "age": {YEAR: 25 + 7 * a},
-                "employment_income": {YEAR: earnings},
-            }
+            income = "employment_income" if earnings >= 0 else "self_employment_income"
+            people[name] = {"age": {YEAR: 25 + 7 * a}, income: {YEAR: earnings}}
             tax_units[f"{name}_tax_unit"] = {"members": [name]}
             members.append(name)
         dependents = []
