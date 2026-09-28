@@ -1,0 +1,77 @@
+- name: Case 1, general assistance is counted monthly and the federal baseline is unchanged.
+  period: 2026-01
+  input:
+    state_code: ND
+    general_assistance: 2_400
+  output:
+    nd_tanf_gross_unearned_income: 200
+    tanf_gross_unearned_income: 0
+
+- name: Case 2, existing unearned sources are preserved without general assistance.
+  period: 2026-01
+  input:
+    state_code: ND
+    general_assistance: 0
+    social_security: 3_600
+    child_support_received: 1_200
+    financial_assistance: 600
+  output:
+    nd_tanf_gross_unearned_income: 450
+    tanf_gross_unearned_income: 450
+
+- name: Case 3, earnings and SSI are excluded from gross unearned income.
+  period: 2026-01
+  input:
+    state_code: ND
+    employment_income_before_lsr: 12_000
+    ssi: 6_000
+    general_assistance: 2_400
+  output:
+    nd_tanf_gross_unearned_income: 200
+
+- name: Case 4, state gross unearned income is zero outside the state.
+  period: 2026-01
+  input:
+    state_code: ME
+    general_assistance: 2_400
+  output:
+    nd_tanf_gross_unearned_income: 0
+
+- name: Workers compensation is countable unearned income.
+  period: 2026-01
+  input:
+    state_code: ND
+    workers_compensation: 2400
+  output:
+    nd_tanf_gross_unearned_income: 200
+
+- name: Ordinary savings and investment interest and dividends are excluded.
+  period: 2026-01
+  input:
+    state_code: ND
+    taxable_interest_income: 1200
+    tax_exempt_interest_income: 1200
+    dividend_income: 2400
+  output:
+    nd_tanf_gross_unearned_income: 0
+
+- name: Regular pension payments remain countable alongside excluded investment income.
+  period: 2026-01
+  input:
+    state_code: ND
+    pension_income: 2400
+    taxable_interest_income: 1200
+    dividend_income: 1200
+  output:
+    nd_tanf_gross_unearned_income: 200
+
+- name: Excluded investment income does not offset workers compensation or general assistance.
+  period: 2026-01
+  input:
+    state_code: ND
+    workers_compensation: 2400
+    general_assistance: 1200
+    taxable_interest_income: 1200
+    dividend_income: 1200
+  output:
+    nd_tanf_gross_unearned_income: 300

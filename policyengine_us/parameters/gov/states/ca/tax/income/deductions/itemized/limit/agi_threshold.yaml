@@ -1,6 +1,7 @@
 description: Federal AGI above which CA itemized deductions are limited.
 metadata:
   propagate_metadata_to_children: true
+  uprating: gov.states.ca.cpi
   label: California itemized deduction limitation threshold
   period: year
   unit: currency-USD
@@ -28,8 +29,6 @@ JOINT:
     2023-01-01: 474_075
     2024-01-01: 489_719
     2025-01-01: 504_411
-  metadata:
-    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 318_437
@@ -37,8 +36,6 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 355_558
     2024-01-01: 367_291
     2025-01-01: 378_310
-  metadata:
-    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 424_581
@@ -46,8 +43,6 @@ SURVIVING_SPOUSE:
     2023-01-01: 474_075
     2024-01-01: 489_719
     2025-01-01: 504_411
-  metadata:
-    uprating: gov.states.ca.cpi
 SINGLE:
   values:
     2021-01-01: 212_288
@@ -55,8 +50,6 @@ SINGLE:
     2023-01-01: 237_035
     2024-01-01: 244_857
     2025-01-01: 252_203
-  metadata:
-    uprating: gov.states.ca.cpi
 SEPARATE:
   values:
     2021-01-01: 212_288
@@ -64,5 +57,3 @@ SEPARATE:
     2023-01-01: 237_035
     2024-01-01: 244_857
     2025-01-01: 252_203
-  metadata:
-    uprating: gov.states.ca.cpi

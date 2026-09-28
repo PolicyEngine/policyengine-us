@@ -243,3 +243,69 @@
         state_code: MO
   output:
     is_chip_eligible_child: [false, false]
+
+# CMS SHO #12-002 excludes DACA from the CHIPRA lawfully residing option.
+# https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf
+- name: Case 15, CHIP excludes only DACA and undocumented children; citizens, refugees and asylees remain covered.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person2:
+        age: 17
+        immigration_status: UNDOCUMENTED
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person4:
+        age: 17
+        immigration_status: REFUGEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person5:
+        age: 17
+        immigration_status: ASYLEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [false, false, true, true, true]
+    chip_category: [NONE, NONE, CHILD, CHILD, CHILD]
+    is_chip_eligible: [false, false, true, true, true]
+
+- name: Case 16, DACA child at qualifying income receives no CHIP payment.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_chip_eligible: false
+    chip_enrolled: false
+    per_capita_chip: 0
+    chip: 0

@@ -7,4 +7,5 @@ class wood_expense(Variable):
     label = "Wood expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     documentation = "Annual expense for wood or wood pellet heating fuel."

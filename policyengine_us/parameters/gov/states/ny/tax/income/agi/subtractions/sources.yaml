@@ -5,14 +5,25 @@ values:
     - us_govt_interest
     - investment_in_529_plan
     - ny_pension_exclusion
+    - salt_refund_income
+    # N.Y. Tax Law § 612(c)(3) / Form IT-201 Line 26: subtracts pensions paid by NY state,
+    # local governments, or the federal government. Pensions from other states are not exempt.
+    # PolicyEngine subtracts taxable_public_pension_income as an in-state/federal proxy.
+    - taxable_public_pension_income
 metadata:
-  unit: currency-USD
+  unit: list
   period: year
   label: New York AGI Subtractions
   reference:
+    - title: N.Y. Tax Law § 612(c)(3)
+      href: https://newyork.public.law/laws/n.y._tax_law_section_612
     - title: 2023 New York Instructions for Form IT-201 Line 29
       href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=12
     - title: 2024 NY Form IT-201 Instructions Line 29
       href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=9
+    - title: 2024 NY Form IT-201, Line 25 (Taxable refunds, credits, or offsets of state and local income taxes)
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201_2024_fill_in.pdf#page=2
+    - title: N.Y. Tax Law § 612(c)(7)
+      href: https://newyork.public.law/laws/n.y._tax_law_section_612
     - title: N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3
       href: https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income

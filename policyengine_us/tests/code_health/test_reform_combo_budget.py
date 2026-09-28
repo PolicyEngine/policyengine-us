@@ -17,8 +17,9 @@ instead of raising the budget.
 """
 
 import importlib.util
+from pathlib import Path
 
-from policyengine_us.model_api import REPO
+REPO = Path(__file__).resolve().parents[2]
 
 _spec = importlib.util.spec_from_file_location(
     "test_batched", REPO / "tests" / "test_batched.py"
@@ -31,7 +32,7 @@ POLICY_TESTS_ROOT = REPO / "tests" / "policy"
 
 def test_no_test_file_exceeds_reform_combo_budget():
     over_budget = []
-    for yaml_file in sorted(POLICY_TESTS_ROOT.rglob("*.yaml")):
+    for yaml_file in _test_batched.yaml_files(POLICY_TESTS_ROOT):
         combos = _test_batched.file_reform_combos(yaml_file)
         weight = _test_batched.combo_weight(combos)
         if weight > _test_batched.MAX_BATCH_COMBO_WEIGHT:

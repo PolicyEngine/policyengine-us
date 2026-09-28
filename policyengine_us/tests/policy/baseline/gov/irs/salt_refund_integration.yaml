@@ -1,0 +1,404 @@
+- name: Case 1, Federal AGI includes state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+  output:
+    adjusted_gross_income: 52_000
+
+- name: Case 2, California subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CA
+  output:
+    adjusted_gross_income: 52_000
+    ca_agi_subtractions: 2_000
+    ca_agi: 50_000
+
+- name: Case 3, Colorado subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CO
+  output:
+    adjusted_gross_income: 52_000
+    co_subtractions: 2_000
+    co_taxable_income: 35_400
+
+- name: Case 4, Connecticut subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: CT
+  output:
+    adjusted_gross_income: 52_000
+    ct_agi_subtractions: 2_000
+    ct_agi: 50_000
+
+- name: Case 5, District of Columbia subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: DC
+  output:
+    adjusted_gross_income: 52_000
+    dc_income_subtractions: 2_000
+    dc_taxable_income: 35_400
+
+- name: Case 6, Delaware subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: DE
+  output:
+    adjusted_gross_income: 52_000
+    de_subtractions: 2_000
+    de_agi: 50_000
+
+- name: Case 7, Idaho subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: ID
+  output:
+    adjusted_gross_income: 52_000
+    id_subtractions: 2_000
+    id_agi: 50_000
+
+- name: Case 8, Illinois subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IL
+  output:
+    adjusted_gross_income: 52_000
+    il_base_income_subtractions: 2_000
+    il_base_income: 50_000
+
+- name: Case 9, Indiana includes state and local tax refund income in deductions.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IN
+  output:
+    adjusted_gross_income: 52_000
+    in_deductions: 2_000
+    in_agi: 49_000
+
+- name: Case 10, Kansas subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: KS
+  output:
+    adjusted_gross_income: 52_000
+    ks_agi_subtractions: 2_000
+    ks_agi: 50_000
+
+- name: Case 11, Kentucky subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: KY
+  output:
+    adjusted_gross_income: 52_000
+    ky_subtractions: 2_000
+    ky_taxable_income: 46_840
+
+- name: Case 12, Massachusetts excludes state and local tax refund income from gross income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MA
+  output:
+    ma_gross_income: 50_000
+
+- name: Case 13, Maryland subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MD
+  output:
+    adjusted_gross_income: 52_000
+    md_total_subtractions: 2_000
+    md_agi: 50_000
+
+- name: Case 14, Maine subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: ME
+  output:
+    adjusted_gross_income: 52_000
+    me_agi_subtractions: 2_000
+    me_agi: 50_000
+
+- name: Case 15, Michigan subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MI
+  output:
+    adjusted_gross_income: 52_000
+    mi_subtractions: 2_000
+    mi_taxable_income: 44_400
+
+- name: Case 16, Minnesota subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MN
+  output:
+    adjusted_gross_income: 52_000
+    mn_subtractions: 2_000
+    mn_taxable_income: 35_425
+
+- name: Case 17, Missouri subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MO
+  output:
+    adjusted_gross_income: 52_000
+    mo_adjusted_gross_income: 50_000
+
+- name: Case 18, Montana subtracts state and local tax refund income from AGI.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: MT
+  output:
+    adjusted_gross_income: 52_000
+    mt_agi_joint: 50_000
+
+- name: Case 19, North Carolina deductions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    nc_standard_or_itemized_deductions: 0
+    state_code: NC
+  output:
+    nc_deductions: 2_000
+    nc_taxable_income: 50_000
+
+- name: Case 20, Nebraska subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: NE
+  output:
+    adjusted_gross_income: 52_000
+    ne_agi_subtractions: 2_000
+    ne_taxable_income: 41_650
+
+- name: Case 21, New Mexico deductions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: NM
+  output:
+    adjusted_gross_income: 52_000
+    nm_taxable_income: 35_400
+
+- name: Case 22, New York subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: NY
+  output:
+    adjusted_gross_income: 52_000
+    ny_agi_subtractions: 2_000
+    ny_agi: 50_000
+
+- name: Case 23, Ohio deductions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: OH
+  output:
+    adjusted_gross_income: 52_000
+    oh_deductions: 2_000
+    oh_agi: 50_000
+
+- name: Case 24, Oklahoma subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: OK
+  output:
+    adjusted_gross_income: 52_000
+    ok_agi_subtractions: 2_000
+    ok_agi: 50_000
+
+- name: Case 25, Oregon subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    or_federal_tax_liability_subtraction: 0
+    state_code: OR
+  output:
+    adjusted_gross_income: 52_000
+    or_income_subtractions: 2_000
+    or_taxable_income: 47_255
+
+- name: Case 26, Pennsylvania nontaxable income includes state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: PA
+  output:
+    pa_total_taxable_income: 50_000
+
+- name: Case 27, South Carolina subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: SC
+  output:
+    adjusted_gross_income: 52_000
+    sc_subtractions: 2_000
+    sc_taxable_income: 35_400
+
+- name: Case 28, Utah subtracts state and local tax refund income from taxable income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: UT
+  output:
+    ut_state_tax_refund: 2_000
+    ut_taxable_income: 50_000
+
+- name: Case 29, Virginia subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: VA
+  output:
+    adjusted_gross_income: 52_000
+    va_subtractions: 2_000
+    va_agi: 50_000
+
+- name: Case 30, Vermont subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: VT
+  output:
+    adjusted_gross_income: 52_000
+    vt_subtractions: 2_000
+    vt_taxable_income: 37_500
+
+- name: Case 31, Wisconsin subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: WI
+  output:
+    adjusted_gross_income: 52_000
+    wi_income_subtractions: 2_000
+
+- name: Case 32, West Virginia subtractions include state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: WV
+  output:
+    adjusted_gross_income: 52_000
+    wv_subtractions: 2_000
+    wv_taxable_income: 48_000
+
+- name: Case 33, Arizona does not subtract state and local tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: AZ
+  output:
+    adjusted_gross_income: 52_000
+    az_subtractions: 0
+    az_agi: 52_000
+
+- name: Case 34, Georgia does not subtract Georgia state tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: GA
+  output:
+    adjusted_gross_income: 52_000
+    ga_subtractions: 0
+    ga_agi: 52_000
+
+- name: Case 35, Hawaii does not subtract Hawaii state tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: HI
+  output:
+    adjusted_gross_income: 52_000
+    hi_subtractions: 0
+    hi_agi: 52_000
+
+- name: Case 36, Iowa consolidated regime does not subtract state tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: IA
+  output:
+    ia_subtractions_consolidated: 0
+    ia_taxable_income_consolidated: 37_400
+
+- name: Case 37, North Dakota does not subtract state tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: ND
+  output:
+    nd_subtractions: 0
+    nd_taxable_income: 37_400
+
+- name: Case 38, Rhode Island does not subtract state tax refund income.
+  period: 2024
+  input:
+    employment_income: 50_000
+    salt_refund_income: 2_000
+    state_code: RI
+  output:
+    adjusted_gross_income: 52_000
+    ri_subtractions: 0
+    ri_agi: 52_000

@@ -23,3 +23,58 @@
     sewage_expense: 0
   output:
     count_distinct_utility_expenses: 0
+
+# Gas and fuel bills are one SNAP individual-standard category
+# (7 CFR 273.9(d)(6)(iii)(A)(1)), so metered gas plus a deliverable fuel
+# counts once, while a deliverable fuel with no metered gas still counts.
+- name: Fuel oil and electricity count as two utilities.
+  period: 2026
+  input:
+    fuel_oil_expense: 1_500
+    pre_subsidy_electricity_expense: 1_200
+  output:
+    count_distinct_utility_expenses: 2
+
+- name: Metered gas plus propane count as one gas and fuel utility.
+  period: 2026
+  input:
+    gas_expense: 600
+    bottled_gas_expense: 300
+  output:
+    count_distinct_utility_expenses: 1
+
+- name: Cooking fuel counts as the gas and fuel utility.
+  period: 2026
+  input:
+    cooking_fuel_expense: 108
+  output:
+    count_distinct_utility_expenses: 1
+
+- name: Wood, coal, and other fuel bills with water count as two utilities.
+  period: 2026
+  input:
+    wood_expense: 400
+    coal_expense: 100
+    other_heating_fuel_expense: 50
+    water_expense: 240
+  output:
+    count_distinct_utility_expenses: 2
+
+# The deprecated heating_cooling_expense input is read only for households
+# whose heating_type is UNSPECIFIED.
+- name: A known heating type does not count a leftover legacy heating amount.
+  period: 2026
+  input:
+    heating_type: NONE
+    heating_cooling_expense: 600
+    water_expense: 240
+  output:
+    count_distinct_utility_expenses: 1
+
+- name: An unspecified heating type still counts the legacy heating amount.
+  period: 2026
+  input:
+    heating_cooling_expense: 600
+    water_expense: 240
+  output:
+    count_distinct_utility_expenses: 2

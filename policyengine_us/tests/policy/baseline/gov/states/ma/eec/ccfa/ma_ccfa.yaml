@@ -40,7 +40,7 @@
         age: 1
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: INFANT
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 10
         childcare_hours_per_day: 6
     spm_units:
@@ -56,6 +56,8 @@
         state_code: MA
         county_str: BERKSHIRE_COUNTY_MA
   output:
+    # Six hours per day is full-day care under the FY2025 definition
+    # (more than 5 hours), so the full $3.88 fee applies.
     ma_ccfa_total_copay: 3.88
     ma_ccfa_maximum_reimbursement: [0, 1_050]
     ma_ccfa_eligible: true
@@ -63,7 +65,7 @@
     # benefit = max(1050 - 3.88, 0) = $1,046.12
     ma_ccfa: 1_046.12
 
-- name: Case 4, TAFDC recipient integration test - automatic eligibility and zero copay.
+- name: Case 4, TANF enrollment establishes categorical eligibility and zero copay.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -76,21 +78,21 @@
         age: 3
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: PRESCHOOL
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 22
         childcare_hours_per_day: 8
       person3:
         age: 5
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: PRESCHOOL
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 22
         childcare_hours_per_day: 8
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_pre_subsidy_childcare_expenses: 2_400 * 12
-        ma_tafdc_eligible: true
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -126,14 +128,14 @@
         age: 1
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: INFANT
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 20
         childcare_hours_per_day: 8
       person4:
         age: 4
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: PRESCHOOL
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 22
         childcare_hours_per_day: 7
     spm_units:
@@ -203,7 +205,7 @@
         age: 6
         is_tax_unit_dependent: true
         ma_ccfa_child_age_category: SCHOOL_AGE
-        ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE
         childcare_attending_days_per_month: 18
         childcare_hours_per_day: 6
     spm_units:
@@ -222,8 +224,8 @@
     ma_ccfa_eligible: true
     ma_ccfa_activity_eligible: true
     # monthly expense $950 < monthly max ~$950.58 -> capped = $950
-    # computed copay ~$2.25; benefit = max(950 - 2.25, 0) = $947.75
-    ma_ccfa: 947.75
+    # Excluded benefits no longer raise income above the no-fee level.
+    ma_ccfa: 950
 
 - name: Case 8, income at edge of new applicant limit (50% SMI).
   period: 2025-01
@@ -271,3 +273,44 @@
     # monthly expense $1,600 < monthly max ~$2,074.38 -> capped = $1,600
     # benefit = max(1600 - 363.12, 0) = $1,236.88
     ma_ccfa: 1_236.88
+
+- name: Case 9, full resident parent support deduction reaches the final CCFA benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000
+        child_support_expense: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 35
+        employment_income_before_lsr: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_tafdc_eligible: false
+    ma_ccfa_countable_income: 2_000
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 0
+    # Both incomes less full support paid: (12000 + 36000 - 24000) / 12.
+    # Income below fee floor; provider cap above $1,000 monthly expense.
+    ma_ccfa: 1_000

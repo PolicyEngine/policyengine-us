@@ -7,4 +7,5 @@ class other_heating_fuel_expense(Variable):
     label = "Other heating fuel expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
     documentation = "Annual expense for a heating fuel with no dedicated expense input; pairs with the OTHER heating type."

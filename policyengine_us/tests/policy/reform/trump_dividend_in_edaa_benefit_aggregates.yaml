@@ -1,0 +1,50 @@
+# The Trump dividend must survive stacking with the Economic Dignity for All
+# Agenda version of the End Child Poverty Act. That reform rebuilds
+# household_benefits from the gov.household.household_benefits parameter but
+# keeps a static spm_unit_benefits list, so only the SPM side could drop the
+# dividend. Two adult citizens at $500,000 of employment income so no other
+# benefit fires and each aggregate isolates the dividend.
+#
+# NOTE: This lives under tests/policy/reform (one subprocess per file) rather
+# than contrib/congress/tlaib because the congress structural batch runs each
+# proposal directory in a single process at its memory ceiling, and the extra
+# reformed-system variants these stacked cases need stalled that job.
+
+- name: Without the dividend, the EDAA benefit aggregates are empty for this household.
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [0, 0]
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: Stacked with the EDAA ECPA, the dividend counts in both benefit aggregates.
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act.in_effect: true
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [5_000, 5_000]
+    household_benefits: 10_000
+    spm_unit_benefits: 10_000

@@ -1,0 +1,48 @@
+- name: Massachusetts excludes public pension income from gross income
+  period: 2024
+  input:
+    state_code: MA
+    taxable_public_pension_income: 50_000
+  output:
+    irs_gross_income: 50_000
+    ma_gross_income: 0
+    ma_income_tax: 0
+
+- name: Massachusetts taxes employment income but excludes public pension
+  period: 2024
+  input:
+    state_code: MA
+    employment_income: 50_000
+    taxable_public_pension_income: 30_000
+  output:
+    irs_gross_income: 80_000
+    ma_gross_income: 50_000
+
+- name: Massachusetts taxes private pension while excluding public pension
+  period: 2024
+  input:
+    state_code: MA
+    taxable_private_pension_income: 30_000
+    taxable_public_pension_income: 20_000
+  output:
+    irs_gross_income: 50_000
+    ma_gross_income: 30_000
+
+- name: Massachusetts Senior Circuit Breaker re-adds public pension into total income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_public_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_gross_income: 0
+    ma_scb_total_income: 29_300  # 30,000 public pension add-back - 700 aged exemption
+

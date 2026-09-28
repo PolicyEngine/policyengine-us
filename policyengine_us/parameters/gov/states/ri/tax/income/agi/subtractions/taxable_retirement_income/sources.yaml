@@ -1,0 +1,15 @@
+description: Rhode Island subtracts these retirement income sources from adjusted gross income under the individual income tax retirement income subtraction program.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island retirement income subtraction sources
+  reference:
+    - title: R.I. Gen. Laws § 44-30-12(c)(9)
+      href: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm
+    - title: Rhode Island Division of Taxation Publication 2021-02 Line 5b
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/notice/Pub_2021_02_pension_income_guide_04_06_21.pdf#page=5

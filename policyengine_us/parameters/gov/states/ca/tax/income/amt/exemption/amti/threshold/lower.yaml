@@ -1,6 +1,7 @@
 description: California provides a flat alternative minimum tax exemption amount for filers with alternative minimum taxable income below this amount, based on filing status.
 metadata:
   propagate_metadata_to_children: true
+  uprating: gov.states.ca.cpi
   label: California alternative minimum tax exemption lower AMTI threshold
   period: year
   unit: currency-USD
@@ -28,8 +29,6 @@ JOINT:
     2023-01-01: 435_855
     2024-01-01: 450_238
     2025-01-01: 463_745
-  metadata:
-    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 292_763
@@ -37,8 +36,6 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 326_891
     2024-01-01: 337_678
     2025-01-01: 347_808
-  metadata:
-    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 390_351
@@ -46,8 +43,6 @@ SURVIVING_SPOUSE:
     2023-01-01: 435_855
     2024-01-01: 450_238
     2025-01-01: 463_745
-  metadata:
-    uprating: gov.states.ca.cpi
 SINGLE:
   values:
     2021-01-01: 292_763
@@ -55,8 +50,6 @@ SINGLE:
     2023-01-01: 326_891
     2024-01-01: 337_678
     2025-01-01: 347_808
-  metadata:
-    uprating: gov.states.ca.cpi
 SEPARATE:
   values:
     2021-01-01: 195_172
@@ -64,5 +57,3 @@ SEPARATE:
     2023-01-01: 217_924
     2024-01-01: 225_115
     2025-01-01: 231_868
-  metadata:
-    uprating: gov.states.ca.cpi

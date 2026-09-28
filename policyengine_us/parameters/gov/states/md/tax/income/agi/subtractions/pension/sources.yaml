@@ -1,0 +1,13 @@
+description: Maryland subtracts these retirement system income sources from adjusted gross income under the individual income tax pension subtraction program.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+metadata:
+  unit: list
+  period: year
+  label: Maryland pension subtraction income sources
+  reference:
+    - title: Md. Code Ann., Tax-Gen. § 10-209
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-209

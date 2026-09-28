@@ -10,3 +10,4 @@ class traditional_403b_contributions_desired(Variable):
         "Traditional 403(b) contributions before statutory contribution limits."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

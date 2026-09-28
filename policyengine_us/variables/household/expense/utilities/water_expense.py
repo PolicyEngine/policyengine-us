@@ -7,3 +7,4 @@ class water_expense(Variable):
     label = "Water expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

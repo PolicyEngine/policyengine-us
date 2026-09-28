@@ -16,7 +16,7 @@ class ma_part_b_taxable_income_exemption(Variable):
         # NB: The law only mentions FICA and FRRA, but mass.gov includes SECA.
         # https://www.mass.gov/service-details/learn-about-business-and-professional-income
         person = tax_unit.members
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         # (B)(b): Exemptions.
         # (1A) and (2A): Personal exemption based on filing status.
         personal_exemption = tax.exemptions.personal[filing_status]

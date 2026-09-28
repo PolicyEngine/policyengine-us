@@ -10,20 +10,32 @@ class me_standard_deduction(Variable):
     reference = (
         "https://www.mainelegislature.org/legis/statutes/36/title36sec111.html",
         "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html",
-        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf",
+        "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=138",
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/legischange26.pdf#page=9",
     )
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        # Maine conforms to the Internal Revenue Code as of December 31, 2024
-        # (36 MRSA Sec. 111), so it did not adopt the One Big Beautiful Bill
-        # Act (OBBBA) increase to the federal standard deduction starting in
-        # 2025. Maine publishes its own Standard Deduction Chart in the Form
-        # 1040ME instructions.
+        # Maine conforms to the Internal Revenue Code as amended through
+        # December 31, 2025 (36 M.R.S. Sec. 111(1-A)), but for tax years 2025
+        # and 2026 Sec. 5124-C(1-B) and (1-C) set Maine's own basic standard
+        # deduction amounts, which are lower than the federal amounts. From tax
+        # year 2027 on, Sec. 5124-C(1-D) sets the Maine standard deduction equal
+        # to the federal standard deduction.
         p = parameters(period).gov.states.me.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        basic = p.amount[filing_status]
-        additional = p.aged_or_blind[filing_status] * tax_unit(
-            "aged_blind_count", period
+        aged_blind_count = tax_unit("aged_blind_count", period)
+        me_amount = (
+            p.amount[filing_status] + p.aged_or_blind[filing_status] * aged_blind_count
         )
-        return basic + additional
+        # From 2027 Maine takes the federal standard deduction itself, not a
+        # re-addition of the federal basic and aged-or-blind parameters. Reading
+        # the federal variable carries the rest of IRC Section 63(c): the zero
+        # basic deduction for a separate filer whose spouse itemizes
+        # (Section 63(c)(6)) and the cap for a filer who is a dependent of
+        # another taxpayer (Section 63(c)(5)).
+        return where(
+            p.follows_federal,
+            tax_unit("standard_deduction", period),
+            me_amount,
+        )

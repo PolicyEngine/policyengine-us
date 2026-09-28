@@ -20,12 +20,6 @@ JOINT:
     2033-01-01: 468_600
     2034-01-01: 477_900
     2035-01-01: 487_400
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SINGLE:
   values:
     2009-01-01: 166_800
@@ -47,12 +41,6 @@ SINGLE:
     2033-01-01: 390_500
     2034-01-01: 398_250
     2035-01-01: 406_200
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SEPARATE:
   values:
     2009-01-01: 125_100
@@ -74,12 +62,6 @@ SEPARATE:
     2033-01-01: 234_300
     2034-01-01: 238_950
     2035-01-01: 243_700
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2009-01-01: 208_500
@@ -101,12 +83,6 @@ HEAD_OF_HOUSEHOLD:
     2033-01-01: 429_550
     2034-01-01: 438_100
     2035-01-01: 446_800
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SURVIVING_SPOUSE: # Same as joint
   values:
     2009-01-01: 250_200
@@ -128,14 +104,13 @@ SURVIVING_SPOUSE: # Same as joint
     2033-01-01: 468_600
     2034-01-01: 477_900
     2035-01-01: 487_400
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Itemized deductions applicable amount
   period: year
   unit: currency-USD
@@ -143,23 +118,23 @@ metadata:
   - filing_status
   reference:
     # This section of the legal code was repealed between 2010-2012 and 2018-2025.
-    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
-      href: https://www.law.cornell.edu/uscode/text/26/68#b_1
-    - title: 2009 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2009.pdf#page=6
-    - title: 2013 Instruction 1040 Schedule A
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2013.pdf#page=13
-    - title: 2014 Instruction 1040 Schedule A
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2014.pdf#page=12
-    - title: 2015 Instruction 1040 Schedule A
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=12
-    - title: 2016 Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=12
-    - title: 2017 Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=1
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+  - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
+    href: https://www.law.cornell.edu/uscode/text/26/68#b_1
+  - title: 2009 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2009.pdf#page=6
+  - title: 2013 Instruction 1040 Schedule A
+    href: https://www.irs.gov/pub/irs-prior/i1040sca--2013.pdf#page=13
+  - title: 2014 Instruction 1040 Schedule A
+    href: https://www.irs.gov/pub/irs-prior/i1040sca--2014.pdf#page=12
+  - title: 2015 Instruction 1040 Schedule A
+    href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=12
+  - title: 2016 Instructions for Schedule A (Form 1040)
+    href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=12
+  - title: 2017 Instructions for Schedule A (Form 1040)
+    href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=1
+  - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
       # 1. Tax Parameters.
-      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
+    href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+  - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
-      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
+    href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx

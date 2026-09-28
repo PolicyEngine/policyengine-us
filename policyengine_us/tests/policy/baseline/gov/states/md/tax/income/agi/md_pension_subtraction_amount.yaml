@@ -58,3 +58,17 @@
     state_code: MD
   output:
     md_pension_subtraction_amount: 40_600
+
+- name: MD pension subtraction includes 401k and 403b but excludes IRA
+  period: 2024
+  input:
+    is_tax_unit_dependent: false
+    age: 66
+    is_disabled: false
+    taxable_401k_distributions: 10_000
+    taxable_403b_distributions: 5_000
+    taxable_ira_distributions: 20_000
+    social_security: 0
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 15_000

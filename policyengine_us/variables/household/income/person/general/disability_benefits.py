@@ -8,3 +8,4 @@ class disability_benefits(Variable):
     unit = USD
     documentation = "Disability benefits from employment (not Social Security), except for worker's compensation."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

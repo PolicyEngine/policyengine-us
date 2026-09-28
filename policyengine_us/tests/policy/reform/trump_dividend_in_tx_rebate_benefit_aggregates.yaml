@@ -1,0 +1,61 @@
+# The Trump dividend must survive stacking with the Texas rebate, which
+# replaces spm_unit_benefits with its own static list. The rebate itself is
+# $1,500 per Texas household, and the reform also appends tx_rebate to the
+# gov.household.household_state_benefits parameter, so both aggregates are the
+# rebate plus the two $5,000 dividends. household_benefits is not replaced by
+# this reform and so still reads the gov.household.household_benefits
+# parameter list, which already carries trump_dividend. Two adult citizens at
+# $500,000 of employment income so no other benefit fires.
+#
+# NOTE: This lives under tests/policy/reform (one subprocess per file) rather
+# than contrib/states/tx because the contrib states batches pack whole state
+# folders into one process at their memory ceiling.
+
+- name: Without the dividend, the Texas rebate is the whole benefit total.
+  period: 2027
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+    households:
+      household:
+        members: [adult_one, adult_two]
+        state_code: TX
+  output:
+    trump_dividend: [0, 0]
+    tx_rebate: 1_500
+    household_benefits: 1_500
+    spm_unit_benefits: 1_500
+
+- name: Stacked with the Texas rebate, the dividend counts in both benefit aggregates.
+  period: 2027
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+    households:
+      household:
+        members: [adult_one, adult_two]
+        state_code: TX
+  output:
+    trump_dividend: [5_000, 5_000]
+    tx_rebate: 1_500
+    household_benefits: 11_500
+    spm_unit_benefits: 11_500

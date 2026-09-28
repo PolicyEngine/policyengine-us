@@ -38,8 +38,12 @@ class is_snap_abawd_exempt(Variable):
             p.age_threshold.exempted.calc(age),
             p_pre.age_threshold.exempted.calc(age),
         )
-        # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
-        is_disabled = person("is_disabled", period)
+        # (B) Disability — 7 U.S.C. 2015(o)(3)(B); 7 CFR 273.24(c)(2) treats
+        # receipt of government or private disability benefits as unfitness
+        # for employment, so the USDA receipt-based definition also exempts.
+        is_disabled = person("is_disabled", period) | person(
+            "is_usda_disabled", period.this_year
+        )
         # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D),
         # including the 7 CFR 273.7(b)(1)(vii) exemption for people working
         # 30 or more hours weekly.

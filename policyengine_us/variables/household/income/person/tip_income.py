@@ -7,6 +7,7 @@ class tip_income(Variable):
     label = "Tip income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"
     reference = "https://www.law.cornell.edu/cfr/text/26/31.3402(k)-1"
 
     # This variable only exists for the purpose of the tax_exempt_reform

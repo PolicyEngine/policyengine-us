@@ -4,27 +4,47 @@ from math import isinf
 
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem
-
-
-SYSTEM = CountryTaxBenefitSystem()
+from policyengine_us.system import system as SYSTEM
 
 
 def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
     return tuple(scale.brackets[index].threshold(period) for index in bracket_indexes)
 
 
-def test_ar_income_tax_thresholds_round_down_after_last_published_year():
-    scale = SYSTEM.parameters.gov.states.ar.tax.income.rates.main.rate
-
-    assert _thresholds(scale, "2027-01-01", (1, 2, 3, 4)) == (
-        5_700,
-        11_500,
-        16_400,
-        27_100,
-    )
-    assert isinf(scale.brackets[5].threshold("2027-01-01"))
-    assert isinf(scale.brackets[6].threshold("2027-01-01"))
+def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
+    # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
+    # nearest one hundred dollars ($100)". Expected values follow the loaded
+    # index, so a CPI refresh moves them without breaking the test.
+    main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
+    uprating = SYSTEM.parameters.gov.irs.uprating
+    high_income = main.high_income
+    bounds_2026 = {
+        "rate": (main.rate, (1, 2, 3, 4), (5_600, 11_200, 16_000, 26_400)),
+        "high-income threshold": (None, None, (94_700,)),
+        "(B) 2% row top": (high_income.rate, (1,), (4_700,)),
+        "(C) rows": (
+            high_income.bracket_adjustment,
+            tuple(range(30)),
+            tuple(range(94_700, 97_601, 100)),
+        ),
+    }
+    differs_from_rounding_down = False
+    for year in range(2027, 2036):
+        period = f"{year}-01-01"
+        factor = uprating(period) / uprating("2026-01-01")
+        for name, (scale, indexes, bases) in bounds_2026.items():
+            if scale is None:
+                loaded = (high_income.threshold(period),)
+            else:
+                loaded = _thresholds(scale, period, indexes)
+            expected = tuple(round(base * factor / 100) * 100 for base in bases)
+            assert loaded == expected, (year, name)
+            rounded_down = tuple(base * factor // 100 * 100 for base in bases)
+            differs_from_rounding_down |= loaded != rounded_down
+        assert isinf(main.rate.brackets[5].threshold(period))
+        assert isinf(main.rate.brackets[6].threshold(period))
+    # With 2027's factor, 5,600 x 1.0298 = 5,766.9 rounds up to 5,800.
+    assert differs_from_rounding_down
 
 
 def test_nm_low_income_rebate_amounts_round_to_whole_dollars():
@@ -188,3 +208,53 @@ def test_wa_millionaires_standard_deduction_uses_biennial_schedule():
         1_070_000,
         1_070_000,
     )
+
+
+def test_me_standard_deductions_published_2026():
+    standard = SYSTEM.parameters.gov.states.me.tax.income.deductions.standard
+    base = standard.amount("2026-01-01")
+    aged_or_blind = standard.aged_or_blind("2026-01-01")
+
+    expected_base = {
+        "SINGLE": 15_700,
+        "JOINT": 31_400,
+        "SEPARATE": 15_700,
+        "HEAD_OF_HOUSEHOLD": 23_550,
+        "SURVIVING_SPOUSE": 31_400,
+    }
+    assert {status: base[status] for status in expected_base} == expected_base
+
+    expected_additional = {
+        "SINGLE": 2_050,
+        "JOINT": 1_650,
+        "SEPARATE": 1_650,
+        "HEAD_OF_HOUSEHOLD": 2_050,
+        "SURVIVING_SPOUSE": 1_650,
+    }
+    assert {
+        status: aged_or_blind[status] for status in expected_additional
+    } == expected_additional
+
+
+def test_mn_alternate_deduction_reductions_round_down_to_fifty_dollars():
+    deductions = SYSTEM.parameters.gov.states.mn.tax.income.deductions
+    itemized = deductions.itemized.reduction.alternate.income_threshold("2026-01-01")
+    standard = deductions.standard.reduction.alternate.income_threshold("2026-01-01")
+
+    assert itemized == 1_107_750
+    assert standard == 1_107_750
+
+
+def test_mn_marriage_credit_thresholds_use_published_2025():
+    marriage = SYSTEM.parameters.gov.states.mn.tax.income.credits.marriage
+
+    assert marriage.minimum_individual_income("2025-01-01") == 31_000
+    assert marriage.minimum_taxable_income("2025-01-01") == 48_000
+
+
+def test_mt_old_age_subtraction_uses_published_2025():
+    amount = SYSTEM.parameters.gov.states.mt.tax.income.subtractions.old_age.amount
+
+    assert amount.brackets[0].amount("2025-01-01") == 0
+    assert amount.brackets[1].amount("2024-01-01") == 5_500
+    assert amount.brackets[1].amount("2025-01-01") == 5_660

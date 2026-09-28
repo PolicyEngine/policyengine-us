@@ -1,0 +1,11 @@
+description: Massachusetts counts only parents' income under the Child Care Financial Assistance program when this is in effect.
+values:
+  2020-01-01: false
+  2023-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts CCFA parent-only income in effect
+  reference:
+    - title: Massachusetts CCDF State Plan FY 2022-2024 Amendment 4, section 3.1.3(a), effective October 1, 2023
+      href: https://www.mass.gov/doc/ma-eec-ccdf-state-plan-fy-2022-2024-amend-4/download#page=61

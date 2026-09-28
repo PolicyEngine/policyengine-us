@@ -17,3 +17,13 @@
     is_tax_unit_head_or_spouse: false
   output:
     ms_retirement_income_exemption: 0
+
+- name: Head, exemption applies with IRA and 401k
+  period: 2024
+  input:
+    state_code: MS
+    taxable_ira_distributions: 15_000
+    taxable_401k_distributions: 25_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    ms_retirement_income_exemption: 40_000

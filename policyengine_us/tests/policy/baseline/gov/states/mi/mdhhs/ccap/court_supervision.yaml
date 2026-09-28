@@ -1,0 +1,318 @@
+# Court-supervision route for mi_ccap_eligible_child (BEM 703 pp.1-2): a child
+# 13 to under 18 with court-ordered supervision is eligible; an 18-year-old
+# under court supervision is eligible while a full-time high school student.
+# is_in_k12_school is imputed only through 17, so age-18 cases set a school
+# input explicitly. Court status does not waive income, activity, or
+# immigration requirements.
+- name: Case 1, court supervision extends the age limit to under 18 without school facts.
+  period: 2026-01
+  input:
+    state_code: [MI, MI, MI, MI, MI, MI]
+    age: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision: [true, true, true, true, true, true]
+    is_tax_unit_dependent: [true, true, true, true, true, true]
+  output:
+    mi_ccap_eligible_child: [true, true, true, false, false, false]
+
+- name: Case 2, supervised 18-year-old in secondary school is eligible.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_secondary_school: true
+  output:
+    mi_ccap_eligible_child: true
+
+- name: Case 3, supervised 18-year-old flagged through the K-12 input is eligible.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_k12_school: true
+  output:
+    mi_ccap_eligible_child: true
+
+- name: Case 4, age-18 route requires high-school enrollment.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_secondary_school: false
+    is_in_k12_school: false
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 5, a part-time secondary student at 18 fails the full-time test.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_k12_school: true
+    is_full_time_student: false
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 6, an 18-year-old student without constant care or court supervision is ineligible.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 7, a 19-year-old student under court supervision is too old.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 19
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    is_in_secondary_school: true
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 8, an 18-year-old student requiring constant care for a condition is also eligible.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 18
+    is_tax_unit_dependent: true
+    is_disabled: true
+    is_in_secondary_school: true
+  output:
+    mi_ccap_eligible_child: true
+
+- name: Case 9, court supervision does not bypass the immigration requirement.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 17
+    is_tax_unit_dependent: true
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    mi_ccap_eligible_child: false
+
+- name: Case 10, court supervision does not bypass the dependency requirement.
+  period: 2026-01
+  input:
+    state_code: MI
+    age: 17
+    is_tax_unit_dependent: false
+    is_under_court_supervision: true
+  output:
+    mi_ccap_eligible_child: false
+
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge.
+- name: Case 11, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        county_str: WAYNE_COUNTY_MI
+  output:
+    mi_ccap_eligible_child: [false, true]
+    mi_ccap_eligible: true
+    mi_ccap: 100
+
+- name: Case 12, supervised 18-year-old high school student receives the same benefit.
+  # An 18-year-old is a non-child adult, so the head/spouse roles are set
+  # explicitly to keep the parent as the only caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_tax_unit_head_or_spouse: false
+        is_in_secondary_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        county_str: WAYNE_COUNTY_MI
+  output:
+    mi_ccap_eligible_child: [false, true]
+    mi_ccap_eligible: true
+    mi_ccap: 100
+
+- name: Case 13, court supervision does not waive the income requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 500_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        county_str: WAYNE_COUNTY_MI
+  output:
+    mi_ccap_income_eligible: false
+    mi_ccap: 0
+
+- name: Case 14, court supervision does not waive the parent activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        county_str: WAYNE_COUNTY_MI
+  output:
+    mi_ccap_activity_eligible: false
+    mi_ccap: 0
+
+- name: Case 15, eligible supervised child without care receives zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        county_str: WAYNE_COUNTY_MI
+  output:
+    mi_ccap_eligible: true
+    mi_ccap: 0
+
+- name: Case 16, court supervision is specific to the child in a mixed household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_under_court_supervision: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    mi_ccap_eligible_child: [false, true, false]

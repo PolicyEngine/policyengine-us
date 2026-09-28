@@ -7,3 +7,4 @@ class homeowners_insurance(Variable):
     label = "Homeowners insurance"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

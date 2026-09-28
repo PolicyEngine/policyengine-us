@@ -57,6 +57,11 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         )
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
+        # ESSB 6346 Sec. 901(2)(a)(ii)(C) makes the age-expansion path eligible
+        # when income is "equal to or less than" the maximum qualifying income,
+        # so this ceiling test is inclusive (`<=`) -- unlike the main
+        # wa_working_families_tax_credit variable, whose pre-2028 baseline path
+        # uses the strict `<` of WAC 458-20-285(4) / Answer 4C.
         income_eligible = (earnings > 0) & (
             max_(earnings, agi)
             <= tax_unit(

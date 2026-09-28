@@ -60,7 +60,7 @@
 
 # ---- Edge cases ----
 
-- name: Case 5, zero hours reads as part-time.
+- name: Case 5, unknown hours retain full-time pricing.
   period: 2026-01
   input:
     people:
@@ -72,6 +72,6 @@
         members: [person1]
         state_code: TN
   output:
-    # 0 < 20 -> part-time. Whether the child is actually in care (hours > 0) is
-    # gated separately in the rate and copay formulas, not here.
-    tn_ccap_part_time: true
+    # Zero represents unknown hours. Participation is checked separately
+    # using reported care days or hours in the rate and copay formulas.
+    tn_ccap_part_time: false

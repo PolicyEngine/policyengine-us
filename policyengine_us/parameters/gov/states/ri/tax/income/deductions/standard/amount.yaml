@@ -1,13 +1,18 @@
 description: Rhode Island provides filers a standard deduction of this amount, depending on filing status.
 metadata:
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Rhode Island standard deduction amount
   period: year
   unit: currency-USD
   breakdown:
-    - filing_status
+  - filing_status
   breakdown_label:
-    - Filing status
+  - Filing status
   reference:
   - title: Rhode Island RI-1040 Instructions 2025
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=4
@@ -27,12 +32,6 @@ SINGLE:
     2024-01-01: 10_550
     2025-01-01: 10_900
     2026-01-01: 11_200
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 JOINT:
   values:
     2021-01-01: 18_100
@@ -41,12 +40,6 @@ JOINT:
     2024-01-01: 21_150
     2025-01-01: 21_800
     2026-01-01: 22_400
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 13_550
@@ -55,12 +48,6 @@ HEAD_OF_HOUSEHOLD:
     2024-01-01: 15_850
     2025-01-01: 16_350
     2026-01-01: 16_800
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SEPARATE:
   values:
     2021-01-01: 9_050
@@ -69,12 +56,6 @@ SEPARATE:
     2024-01-01: 10_575
     2025-01-01: 10_900
     2026-01-01: 11_200
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 18_100
@@ -83,9 +64,3 @@ SURVIVING_SPOUSE:
     2024-01-01: 21_150
     2025-01-01: 21_800
     2026-01-01: 22_400
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50

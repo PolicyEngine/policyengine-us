@@ -62,7 +62,7 @@
     # daily benefit = min(47, 33.33) = $33.33.
     ky_ccap_daily_benefit: [0, 33.33]
 
-- name: Case 3, special-needs child adds the one dollar special-care supplement.
+- name: Case 3, special-needs child adds the five dollar special-care supplement.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -90,9 +90,10 @@
         state_code: KY
         county_str: JEFFERSON_COUNTY_KY
   output:
-    # Rate (R4 LicI IT full) = $47; +$1 special-care supplement = $48.
-    # Daily charge = (24_000/12)/20 = $100/day > $48 -> daily benefit = $48.
-    ky_ccap_daily_benefit: [0, 48]
+    # Rate (R4 LicI IT full) = $47; +$5 special-care supplement (Section
+    # 10(3), $5 from 8-1-2022 under 49 Ky.R. 300) = $52.
+    # Daily charge = (24_000/12)/20 = $100/day > $52 -> daily benefit = $52.
+    ky_ccap_daily_benefit: [0, 52]
 
 - name: Case 4, zero care days yields a zero daily benefit.
   period: 2024-01
@@ -123,7 +124,7 @@
     # No care days -> daily charge is 0 -> min(rate, 0) = $0.
     ky_ccap_daily_benefit: [0, 0]
 
-- name: Case 5 (11-18-2024 edition), special-care supplement rises to five dollars.
+- name: Case 5, special-care supplement stays at five dollars under the 11-18-2024 edition.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -153,6 +154,59 @@
         county_str: ADAIR_COUNTY_KY
   output:
     # Region 2, Licensed Type I, Preschool, Full Day = $36 + $5 special-care
-    # supplement (Section 10(3), eff. 11-18-2024) = $41; daily charge
-    # 24_000/12/20 = $100 > $41 -> daily benefit = $41.
+    # supplement (Section 10(3), $5 since 8-1-2022 and unchanged by the
+    # 11-18-2024 edition) = $41; daily charge 24_000/12/20 = $100 > $41 ->
+    # daily benefit = $41.
     ky_ccap_daily_benefit: [0, 41]
+
+# 922 KAR 2:160E (49 Ky.R. 300) raised the special-care supplement from $1 to
+# $5 effective 8-1-2022. Cases 6 and 7 check both sides of that date with the
+# same disabled 15-year-old, a $30 daily rate, and a $100 daily charge
+# (24_000 / 12 / 20).
+- name: Case 6, special-care supplement is one dollar in July 2022.
+  period: 2022-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2022: 15
+        is_disabled:
+          2022: true
+        ky_ccap_daily_rate: 30
+        pre_subsidy_childcare_expenses:
+          2022: 24_000
+        childcare_attending_days_per_month:
+          2022: 20
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2022: KY
+  output:
+    # min(30 + 1, 100) = 31.
+    ky_ccap_daily_benefit: 31
+
+- name: Case 7, special-care supplement is five dollars from August 2022.
+  period: 2022-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2022: 15
+        is_disabled:
+          2022: true
+        ky_ccap_daily_rate: 30
+        pre_subsidy_childcare_expenses:
+          2022: 24_000
+        childcare_attending_days_per_month:
+          2022: 20
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2022: KY
+  output:
+    # min(30 + 5, 100) = 35.
+    ky_ccap_daily_benefit: 35

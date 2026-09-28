@@ -1,0 +1,25 @@
+description: Massachusetts adds dependent exemptions to the income tax exemption threshold for these filing statuses.
+SINGLE:
+  2020-01-01: false
+JOINT:
+  2020-01-01: true
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: true
+SEPARATE:
+  2020-01-01: false
+metadata:
+  propagate_metadata_to_children: true
+  reference:
+    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+    # The No Tax Status and Limited Income Credit worksheets add $1,000 per
+    # dependent only on the head of household and married filing jointly lines.
+    - title: Form 1 2023 Massachusetts Resident Income Tax (No Tax Status and Limited Income Credit worksheets)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=12
+    - title: Form 1 2024 Massachusetts Resident Income Tax (No Tax Status and Limited Income Credit worksheets)
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=12
+  unit: bool
+  period: year
+  breakdown:
+  - ma_filing_status
+  label: Massachusetts income tax exemption limit includes dependent exemptions

@@ -1,0 +1,42 @@
+- name: Single filer maps to Massachusetts single
+  period: 2024
+  input:
+    state_code: MA
+    filing_status: SINGLE
+  output:
+    ma_filing_status: SINGLE
+
+- name: Joint filer maps to Massachusetts joint
+  period: 2024
+  input:
+    state_code: MA
+    filing_status: JOINT
+  output:
+    ma_filing_status: JOINT
+
+- name: Separate filer maps to Massachusetts separate
+  period: 2024
+  input:
+    state_code: MA
+    filing_status: SEPARATE
+  output:
+    ma_filing_status: SEPARATE
+
+- name: Head of household filer maps to Massachusetts head of household
+  period: 2024
+  input:
+    state_code: MA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ma_filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Surviving spouse filer is treated as head of household
+  period: 2024
+  input:
+    state_code: MA
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Massachusetts has no surviving spouse filing status; federal qualifying
+    # surviving spouses file as head of household for two years after the year
+    # the spouse died.
+    ma_filing_status: HEAD_OF_HOUSEHOLD

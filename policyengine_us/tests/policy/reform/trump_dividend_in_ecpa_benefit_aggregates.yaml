@@ -1,0 +1,48 @@
+# The Trump dividend must survive stacking with the End Child Poverty Act,
+# which replaces household_benefits and spm_unit_benefits with its own static
+# lists. Two adult citizens at $500,000 of employment income so no other
+# benefit fires and each aggregate isolates the dividend.
+#
+# NOTE: This lives under tests/policy/reform (one subprocess per file) rather
+# than contrib/congress/tlaib because the congress structural batch runs each
+# proposal directory in a single process at its memory ceiling, and the extra
+# reformed-system variants these stacked cases need stalled that job.
+
+- name: Without the dividend, the ECPA benefit aggregates are empty for this household.
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [0, 0]
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: Stacked with ECPA, the dividend counts in both benefit aggregates.
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    gov.contrib.trump.dividend.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+  output:
+    trump_dividend: [5_000, 5_000]
+    household_benefits: 10_000
+    spm_unit_benefits: 10_000

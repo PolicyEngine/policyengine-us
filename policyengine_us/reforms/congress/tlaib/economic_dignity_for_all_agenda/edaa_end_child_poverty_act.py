@@ -98,9 +98,7 @@ def create_ecpa_only() -> Reform:
             BENEFITS = list(parameters(period).gov.household.household_benefits)
             if parameters(period).gov.hud.abolition:
                 BENEFITS = [
-                    benefit
-                    for benefit in BENEFITS
-                    if benefit != "spm_unit_capped_housing_subsidy"
+                    benefit for benefit in BENEFITS if benefit != "housing_assistance"
                 ]
 
             # Add ECPA child benefit
@@ -143,6 +141,7 @@ def create_ecpa_only() -> Reform:
                 "unemployment_compensation",
                 "ak_energy_relief",
                 "basic_income",
+                "trump_dividend",
                 "ny_drive_clean_rebate",
             ]
 

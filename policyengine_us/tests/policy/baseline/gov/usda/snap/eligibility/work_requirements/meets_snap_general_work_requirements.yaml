@@ -225,3 +225,30 @@
   output:
     # Participation is affirmative compliance under 7 CFR 273.7(a)(1)(ii).
     meets_snap_general_work_requirements: true
+
+# Receipt of disability benefits establishes unfitness for employment under
+# 7 CFR 273.7(b)(1)(ii), so the exemption applies even when the generic
+# disability flag is off and the person is flagged noncompliant.
+- name: Case 15, noncompliant 30-year-old receiving SSDI is exempt through benefit receipt.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+    social_security_disability: 12_000
+    is_snap_work_registration_noncompliant: true
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 16, noncompliant 30-year-old with an SSI amount is exempt through benefit receipt.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+    ssi: 6_000
+    is_snap_work_registration_noncompliant: true
+  output:
+    meets_snap_general_work_requirements: true

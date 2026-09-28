@@ -1,0 +1,1288 @@
+# Arkansas individual income tax schedules for 2014-2020, checked against DFA's
+# Regular Tax Tables. Each table row is computed at its midpoint with the year's
+# Indexed Tax Brackets (rate times income minus a subtraction amount) and rounded
+# to whole dollars, so inputs are row midpoints and outputs are the table cells.
+# Every row of the 2014-2020 tables (5,330 rows) matches the bracket formulas.
+
+- name: AR 2014 regular tax table, net taxable income $2,100 to $2,200
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_150
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $2,100 to $2,200 -> $19
+    # 2,150 * 0.9% - 0.00 = 19.35, rounded by DFA to 19
+    ar_income_tax_before_non_refundable_credits_indiv: 19
+
+- name: AR 2014 regular tax table, net taxable income $6,300 to $6,400
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_350
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $6,300 to $6,400 -> $90
+    # 6,350 * 2.5% - 68.78 = 89.97, rounded by DFA to 90
+    ar_income_tax_before_non_refundable_credits_indiv: 90
+
+- name: AR 2014 regular tax table, net taxable income $10,500 to $10,600
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 10_550
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $10,500 to $10,600 -> $216
+    # 10,550 * 3.5% - 152.77 = 216.48, rounded by DFA to 216
+    ar_income_tax_before_non_refundable_credits_indiv: 216
+
+- name: AR 2014 regular tax table, net taxable income $14,800 to $14,900
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $14,800 to $14,900 -> $389
+    # 14,850 * 4.5% - 278.76 = 389.49, rounded by DFA to 389
+    ar_income_tax_before_non_refundable_credits_indiv: 389
+
+- name: AR 2014 regular tax table, net taxable income $16,800 to $16,900
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 16_850
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $16,800 to $16,900 -> $479
+    # 16,850 * 4.5% - 278.76 = 479.49, rounded by DFA to 479
+    ar_income_tax_before_non_refundable_credits_indiv: 479
+
+- name: AR 2014 regular tax table, net taxable income $28,000 to $28,100
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 28_050
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $28,000 to $28,100 -> $1,089
+    # 28,050 * 6% - 593.75 = 1089.25, rounded by DFA to 1089
+    ar_income_tax_before_non_refundable_credits_indiv: 1_089
+
+- name: AR 2014 regular tax table, net taxable income $42,500 to $42,600
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 42_550
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $42,500 to $42,600 -> $2,034
+    # 42,550 * 7% - 944.74 = 2033.76, rounded by DFA to 2034
+    ar_income_tax_before_non_refundable_credits_indiv: 2_034
+
+- name: AR 2014 regular tax table, net taxable income $49,900 to $50,000
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 49_950
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $49,900 to $50,000 -> $2,552
+    # 49,950 * 7% - 944.74 = 2551.76, rounded by DFA to 2552
+    ar_income_tax_before_non_refundable_credits_indiv: 2_552
+
+- name: AR 2014 bracket formula above the regular tax table
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2014 Indexed Tax Brackets: 150_000 * 7% - 944.74 = 9555.26
+    # The booklet's shortcut for $50,000 and over ($2,552 + 7% of the excess over $49,999) gives 9552.07.
+    ar_income_tax_before_non_refundable_credits_indiv: 9555.26
+
+- name: AR 2015 regular tax table, net taxable income $2,100 to $2,200
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_150
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $2,100 to $2,200 -> $19
+    # 2,150 * 0.9% - 0 = 19.35, rounded by DFA to 19
+    ar_income_tax_before_non_refundable_credits_indiv: 19
+
+- name: AR 2015 regular tax table, net taxable income $6,300 to $6,400
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_350
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $6,300 to $6,400 -> $88
+    # 6,350 * 2.4% - 64.49 = 87.91, rounded by DFA to 88
+    ar_income_tax_before_non_refundable_credits_indiv: 88
+
+- name: AR 2015 regular tax table, net taxable income $10,500 to $10,600
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 10_550
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $10,500 to $10,600 -> $210
+    # 10,550 * 3.4% - 148.48 = 210.22, rounded by DFA to 210
+    ar_income_tax_before_non_refundable_credits_indiv: 210
+
+- name: AR 2015 regular tax table, net taxable income $14,800 to $14,900
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $14,800 to $14,900 -> $378
+    # 14,850 * 4.4% - 275.47 = 377.93, rounded by DFA to 378
+    ar_income_tax_before_non_refundable_credits_indiv: 378
+
+- name: AR 2015 regular tax table, net taxable income $16,900 to $17,000
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 16_950
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $16,900 to $17,000 -> $470
+    # 16,950 * 4.4% - 275.47 = 470.33, rounded by DFA to 470
+    ar_income_tax_before_non_refundable_credits_indiv: 470
+
+- name: AR 2015 regular tax table, net taxable income $20,000 to $20,100
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 20_050
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $20,000 to $20,100 -> $607
+    # 20,050 * 4.4% - 275.47 = 606.73, rounded by DFA to 607
+    ar_income_tax_before_non_refundable_credits_indiv: 607
+
+- name: AR 2015 regular tax table, net taxable income $28,200 to $28,300
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 28_250
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $28,200 to $28,300 -> $1,099
+    # 28,250 * 6% - 596.25 = 1098.75, rounded by DFA to 1099
+    ar_income_tax_before_non_refundable_credits_indiv: 1_099
+
+- name: AR 2015 regular tax table, net taxable income $42,600 to $42,700
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 42_650
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $42,600 to $42,700 -> $2,036
+    # 42,650 * 7% - 949.24 = 2036.26, rounded by DFA to 2036
+    ar_income_tax_before_non_refundable_credits_indiv: 2_036
+
+- name: AR 2015 regular tax table, net taxable income $49,900 to $50,000
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 49_950
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $49,900 to $50,000 -> $2,547
+    # 49,950 * 7% - 949.24 = 2547.26, rounded by DFA to 2547
+    ar_income_tax_before_non_refundable_credits_indiv: 2_547
+
+- name: AR 2015 bracket formula above the regular tax table
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2015 Indexed Tax Brackets: 150_000 * 7% - 949.24 = 9550.76
+    # The booklet's shortcut for $50,000 and over ($2,547 + 7% of the excess over $49,999) gives 9547.07.
+    ar_income_tax_before_non_refundable_credits_indiv: 9550.76
+
+- name: AR 2016 regular tax table, net taxable income $2,100 to $2,200
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_150
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $2,100 to $2,200 -> $19
+    # 2,150 * 0.9% - 0 = 19.35, rounded by DFA to 19
+    ar_income_tax_before_non_refundable_credits_indiv: 19
+
+- name: AR 2016 regular tax table, net taxable income $6,400 to $6,500
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_450
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $6,400 to $6,500 -> $90
+    # 6,450 * 2.4% - 64.49 = 90.31, rounded by DFA to 90
+    ar_income_tax_before_non_refundable_credits_indiv: 90
+
+- name: AR 2016 regular tax table, net taxable income $10,600 to $10,700
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 10_650
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $10,600 to $10,700 -> $213
+    # 10,650 * 3.4% - 149.48 = 212.62, rounded by DFA to 213
+    ar_income_tax_before_non_refundable_credits_indiv: 213
+
+- name: AR 2016 regular tax table, net taxable income $14,800 to $14,900
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $14,800 to $14,900 -> $377
+    # 14,850 * 4.4% - 276.47 = 376.93, rounded by DFA to 377
+    ar_income_tax_before_non_refundable_credits_indiv: 377
+
+- name: AR 2016 regular tax table, net taxable income $16,900 to $17,000
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 16_950
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $16,900 to $17,000 -> $469
+    # 16,950 * 4.4% - 276.47 = 469.33, rounded by DFA to 469
+    ar_income_tax_before_non_refundable_credits_indiv: 469
+
+- name: AR 2016 regular tax table, net taxable income $28,100 to $28,200
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 28_150
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $28,100 to $28,200 -> $1,024
+    # 28,150 * 5% - 383.76 = 1023.74, rounded by DFA to 1024
+    ar_income_tax_before_non_refundable_credits_indiv: 1_024
+
+- name: AR 2016 regular tax table, net taxable income $55,000 to $55,100
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 55_050
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $55,000 to $55,100 -> $2,568
+    # 55,050 * 6% - 734.75 = 2568.25, rounded by DFA to 2568
+    ar_income_tax_before_non_refundable_credits_indiv: 2_568
+
+- name: AR 2016 regular tax table, net taxable income $74,900 to $75,001
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 74_950.5
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $74,900 to $75,001 -> $3,762
+    # 74,950.5 * 6% - 734.75 = 3762.28, rounded by DFA to 3762
+    ar_income_tax_before_non_refundable_credits_indiv: 3_762
+
+- name: AR 2016 regular tax table, net taxable income $75,001 to $75,101
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_051
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $75,001 to $75,101 -> $3,829
+    # 75,051 * 6.9% - 1349.64 = 3828.88, rounded by DFA to 3829
+    ar_income_tax_before_non_refundable_credits_indiv: 3_829
+
+- name: AR 2016 regular tax table, net taxable income $75,501 to $75,601
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_551
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $75,501 to $75,601 -> $3,863
+    # 75,551 * 6.9% - 1349.64 = 3863.38, rounded by DFA to 3863
+    ar_income_tax_before_non_refundable_credits_indiv: 3_863
+
+- name: AR 2016 regular tax table, net taxable income $75,901 to $76,001
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_951
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $75,901 to $76,001 -> $3,891
+    # 75,951 * 6.9% - 1349.64 = 3890.98, rounded by DFA to 3891
+    ar_income_tax_before_non_refundable_credits_indiv: 3_891
+
+- name: AR 2016 regular tax table, net taxable income $76,501 to $76,601
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 76_551
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $76,501 to $76,601 -> $4,032
+    # 76,551 * 6.9% - 1249.64 = 4032.38, rounded by DFA to 4032
+    ar_income_tax_before_non_refundable_credits_indiv: 4_032
+
+- name: AR 2016 regular tax table, net taxable income $77,501 to $77,601
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 77_551
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $77,501 to $77,601 -> $4,201
+    # 77,551 * 6.9% - 1149.64 = 4201.38, rounded by DFA to 4201
+    ar_income_tax_before_non_refundable_credits_indiv: 4_201
+
+- name: AR 2016 regular tax table, net taxable income $78,501 to $78,601
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 78_551
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $78,501 to $78,601 -> $4,370
+    # 78,551 * 6.9% - 1049.64 = 4370.38, rounded by DFA to 4370
+    ar_income_tax_before_non_refundable_credits_indiv: 4_370
+
+- name: AR 2016 regular tax table, net taxable income $79,501 to $79,601
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 79_551
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $79,501 to $79,601 -> $4,539
+    # 79,551 * 6.9% - 949.64 = 4539.38, rounded by DFA to 4539
+    ar_income_tax_before_non_refundable_credits_indiv: 4_539
+
+- name: AR 2016 regular tax table, net taxable income $83,001 to $83,101
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 83_051
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $83,001 to $83,101 -> $4,821
+    # 83,051 * 6.9% - 909.64 = 4820.88, rounded by DFA to 4821
+    ar_income_tax_before_non_refundable_credits_indiv: 4_821
+
+- name: AR 2016 regular tax table, net taxable income $85,901 to $86,001
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_951
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $85,901 to $86,001 -> $5,021
+    # 85,951 * 6.9% - 909.64 = 5020.98, rounded by DFA to 5021
+    ar_income_tax_before_non_refundable_credits_indiv: 5_021
+
+- name: AR 2016 bracket formula above the regular tax table
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2016 Indexed Tax Brackets: 150_000 * 6.9% - 909.64 = 9440.36
+    # The booklet's shortcut for $86,001 and over ($5,021 + 6.9% of the excess over $86,000) gives 9437.00.
+    ar_income_tax_before_non_refundable_credits_indiv: 9440.36
+
+- name: AR 2017 regular tax table, net taxable income $2,200 to $2,300
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_250
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $2,200 to $2,300 -> $20
+    # 2,250 * 0.9% - 0 = 20.25, rounded by DFA to 20
+    ar_income_tax_before_non_refundable_credits_indiv: 20
+
+- name: AR 2017 regular tax table, net taxable income $6,500 to $6,600
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_550
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $6,500 to $6,600 -> $91
+    # 6,550 * 2.4% - 65.99 = 91.21, rounded by DFA to 91
+    ar_income_tax_before_non_refundable_credits_indiv: 91
+
+- name: AR 2017 regular tax table, net taxable income $10,900 to $11,000
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 10_950
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $10,900 to $11,000 -> $219
+    # 10,950 * 3.4% - 152.98 = 219.32, rounded by DFA to 219
+    ar_income_tax_before_non_refundable_credits_indiv: 219
+
+- name: AR 2017 regular tax table, net taxable income $14,800 to $14,900
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $14,800 to $14,900 -> $369
+    # 14,850 * 4.4% - 283.97 = 369.43, rounded by DFA to 369
+    ar_income_tax_before_non_refundable_credits_indiv: 369
+
+- name: AR 2017 regular tax table, net taxable income $17,400 to $17,500
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 17_450
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $17,400 to $17,500 -> $484
+    # 17,450 * 4.4% - 283.97 = 483.83, rounded by DFA to 484
+    ar_income_tax_before_non_refundable_credits_indiv: 484
+
+- name: AR 2017 regular tax table, net taxable income $29,000 to $29,100
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 29_050
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $29,000 to $29,100 -> $1,056
+    # 29,050 * 5% - 396.86 = 1055.64, rounded by DFA to 1056
+    ar_income_tax_before_non_refundable_credits_indiv: 1_056
+
+- name: AR 2017 regular tax table, net taxable income $56,800 to $56,900
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 56_850
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $56,800 to $56,900 -> $2,651
+    # 56,850 * 6% - 759.85 = 2651.15, rounded by DFA to 2651
+    ar_income_tax_before_non_refundable_credits_indiv: 2_651
+
+- name: AR 2017 regular tax table, net taxable income $75,901 to $76,001
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_951
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $75,901 to $76,001 -> $3,797
+    # 75,951 * 6% - 759.85 = 3797.21, rounded by DFA to 3797
+    ar_income_tax_before_non_refundable_credits_indiv: 3_797
+
+- name: AR 2017 regular tax table, net taxable income $77,301 to $77,401
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 77_351
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $77,301 to $77,401 -> $3,881
+    # 77,351 * 6% - 759.85 = 3881.21, rounded by DFA to 3881
+    ar_income_tax_before_non_refundable_credits_indiv: 3_881
+
+- name: AR 2017 regular tax table, net taxable income $77,401 to $77,501
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 77_451
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $77,401 to $77,501 -> $3,964
+    # 77,451 * 6.9% - 1380.54 = 3963.58, rounded by DFA to 3964
+    ar_income_tax_before_non_refundable_credits_indiv: 3_964
+
+- name: AR 2017 regular tax table, net taxable income $77,901 to $78,001
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 77_951
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $77,901 to $78,001 -> $3,998
+    # 77,951 * 6.9% - 1380.54 = 3998.08, rounded by DFA to 3998
+    ar_income_tax_before_non_refundable_credits_indiv: 3_998
+
+- name: AR 2017 regular tax table, net taxable income $78,901 to $79,001
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 78_951
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $78,901 to $79,001 -> $4,167
+    # 78,951 * 6.9% - 1280.54 = 4167.08, rounded by DFA to 4167
+    ar_income_tax_before_non_refundable_credits_indiv: 4_167
+
+- name: AR 2017 regular tax table, net taxable income $80,001 to $80,101
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 80_051
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $80,001 to $80,101 -> $4,343
+    # 80,051 * 6.9% - 1180.54 = 4342.98, rounded by DFA to 4343
+    ar_income_tax_before_non_refundable_credits_indiv: 4_343
+
+- name: AR 2017 regular tax table, net taxable income $81,101 to $81,201
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 81_151
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $81,101 to $81,201 -> $4,519
+    # 81,151 * 6.9% - 1080.54 = 4518.88, rounded by DFA to 4519
+    ar_income_tax_before_non_refundable_credits_indiv: 4_519
+
+- name: AR 2017 regular tax table, net taxable income $82,101 to $82,201
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 82_151
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $82,101 to $82,201 -> $4,688
+    # 82,151 * 6.9% - 980.54 = 4687.88, rounded by DFA to 4688
+    ar_income_tax_before_non_refundable_credits_indiv: 4_688
+
+- name: AR 2017 regular tax table, net taxable income $84,301 to $84,401
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 84_351
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $84,301 to $84,401 -> $4,880
+    # 84,351 * 6.9% - 940.54 = 4879.68, rounded by DFA to 4880
+    ar_income_tax_before_non_refundable_credits_indiv: 4_880
+
+- name: AR 2017 regular tax table, net taxable income $85,901 to $86,001
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_951
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $85,901 to $86,001 -> $4,990
+    # 85,951 * 6.9% - 940.54 = 4990.08, rounded by DFA to 4990
+    ar_income_tax_before_non_refundable_credits_indiv: 4_990
+
+- name: AR 2017 bracket formula above the regular tax table
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2017 Indexed Tax Brackets: 150_000 * 6.9% - 940.54 = 9409.46
+    # The booklet's shortcut for $86,001 and over ($4,990 + 6.9% of the excess over $86,000) gives 9406.00.
+    ar_income_tax_before_non_refundable_credits_indiv: 9409.46
+
+- name: AR 2018 regular tax table, net taxable income $2,200 to $2,300
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_250
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $2,200 to $2,300 -> $20
+    # 2,250 * 0.9% - 0 = 20.25, rounded by DFA to 20
+    ar_income_tax_before_non_refundable_credits_indiv: 20
+
+- name: AR 2018 regular tax table, net taxable income $6,700 to $6,800
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_750
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $6,700 to $6,800 -> $95
+    # 6,750 * 2.4% - 67.49 = 94.51, rounded by DFA to 95
+    ar_income_tax_before_non_refundable_credits_indiv: 95
+
+- name: AR 2018 regular tax table, net taxable income $11,100 to $11,200
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 11_150
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $11,100 to $11,200 -> $223
+    # 11,150 * 3.4% - 156.48 = 222.62, rounded by DFA to 223
+    ar_income_tax_before_non_refundable_credits_indiv: 223
+
+- name: AR 2018 regular tax table, net taxable income $14,800 to $14,900
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $14,800 to $14,900 -> $363
+    # 14,850 * 4.4% - 290.47 = 362.93, rounded by DFA to 363
+    ar_income_tax_before_non_refundable_credits_indiv: 363
+
+- name: AR 2018 regular tax table, net taxable income $17,800 to $17,900
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 17_850
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $17,800 to $17,900 -> $495
+    # 17,850 * 4.4% - 290.47 = 494.93, rounded by DFA to 495
+    ar_income_tax_before_non_refundable_credits_indiv: 495
+
+- name: AR 2018 regular tax table, net taxable income $29,700 to $29,800
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 29_750
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $29,700 to $29,800 -> $1,082
+    # 29,750 * 5% - 405.96 = 1081.54, rounded by DFA to 1082
+    ar_income_tax_before_non_refundable_credits_indiv: 1_082
+
+- name: AR 2018 regular tax table, net taxable income $58,200 to $58,300
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 58_250
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $58,200 to $58,300 -> $2,717
+    # 58,250 * 6% - 777.95 = 2717.05, rounded by DFA to 2717
+    ar_income_tax_before_non_refundable_credits_indiv: 2_717
+
+- name: AR 2018 regular tax table, net taxable income $75,901 to $76,001
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_951
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $75,901 to $76,001 -> $3,779
+    # 75,951 * 6% - 777.95 = 3779.11, rounded by DFA to 3779
+    ar_income_tax_before_non_refundable_credits_indiv: 3_779
+
+- name: AR 2018 regular tax table, net taxable income $79,201 to $79,301
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 79_251
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $79,201 to $79,301 -> $3,977
+    # 79,251 * 6% - 777.95 = 3977.11, rounded by DFA to 3977
+    ar_income_tax_before_non_refundable_credits_indiv: 3_977
+
+- name: AR 2018 regular tax table, net taxable income $79,301 to $79,401
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 79_351
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $79,301 to $79,401 -> $4,072
+    # 79,351 * 6.9% - 1402.74 = 4072.48, rounded by DFA to 4072
+    ar_income_tax_before_non_refundable_credits_indiv: 4_072
+
+- name: AR 2018 regular tax table, net taxable income $79,801 to $79,901
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 79_851
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $79,801 to $79,901 -> $4,107
+    # 79,851 * 6.9% - 1402.74 = 4106.98, rounded by DFA to 4107
+    ar_income_tax_before_non_refundable_credits_indiv: 4_107
+
+- name: AR 2018 regular tax table, net taxable income $80,801 to $80,901
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 80_851
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $80,801 to $80,901 -> $4,276
+    # 80,851 * 6.9% - 1302.74 = 4275.98, rounded by DFA to 4276
+    ar_income_tax_before_non_refundable_credits_indiv: 4_276
+
+- name: AR 2018 regular tax table, net taxable income $81,901 to $82,001
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 81_951
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $81,901 to $82,001 -> $4,452
+    # 81,951 * 6.9% - 1202.74 = 4451.88, rounded by DFA to 4452
+    ar_income_tax_before_non_refundable_credits_indiv: 4_452
+
+- name: AR 2018 regular tax table, net taxable income $83,001 to $83,101
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 83_051
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $83,001 to $83,101 -> $4,628
+    # 83,051 * 6.9% - 1102.74 = 4627.78, rounded by DFA to 4628
+    ar_income_tax_before_non_refundable_credits_indiv: 4_628
+
+- name: AR 2018 regular tax table, net taxable income $84,101 to $84,201
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 84_151
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $84,101 to $84,201 -> $4,804
+    # 84,151 * 6.9% - 1002.74 = 4803.68, rounded by DFA to 4804
+    ar_income_tax_before_non_refundable_credits_indiv: 4_804
+
+- name: AR 2018 regular tax table, net taxable income $85,301 to $85,401
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_351
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $85,301 to $85,401 -> $4,926
+    # 85,351 * 6.9% - 962.74 = 4926.48, rounded by DFA to 4926
+    ar_income_tax_before_non_refundable_credits_indiv: 4_926
+
+- name: AR 2018 regular tax table, net taxable income $85,901 to $86,001
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_951
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $85,901 to $86,001 -> $4,968
+    # 85,951 * 6.9% - 962.74 = 4967.88, rounded by DFA to 4968
+    ar_income_tax_before_non_refundable_credits_indiv: 4_968
+
+- name: AR 2018 bracket formula above the regular tax table
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2018 Indexed Tax Brackets: 150_000 * 6.9% - 962.74 = 9387.26
+    # The booklet's shortcut for $86,001 and over ($4,968 + 6.9% of the excess over $86,000) gives 9384.00.
+    ar_income_tax_before_non_refundable_credits_indiv: 9387.26
+
+- name: AR 2019 regular tax table, net taxable income $2,300 to $2,400
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_350
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $2,300 to $2,400 -> $0
+    # 2,350 * % - 0 = 0.00, rounded by DFA to 0
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: AR 2019 regular tax table, net taxable income $6,800 to $6,900
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_850
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $6,800 to $6,900 -> $45
+    # 6,850 * 2% - 91.98 = 45.02, rounded by DFA to 45
+    ar_income_tax_before_non_refundable_credits_indiv: 45
+
+- name: AR 2019 regular tax table, net taxable income $11,400 to $11,500
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 11_450
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $11,400 to $11,500 -> $161
+    # 11,450 * 3% - 182.97 = 160.53, rounded by DFA to 161
+    ar_income_tax_before_non_refundable_credits_indiv: 161
+
+- name: AR 2019 regular tax table, net taxable income $14,800 to $14,900
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $14,800 to $14,900 -> $267
+    # 14,850 * 3.4% - 237.77 = 267.13, rounded by DFA to 267
+    ar_income_tax_before_non_refundable_credits_indiv: 267
+
+- name: AR 2019 regular tax table, net taxable income $18,100 to $18,200
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 18_150
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $18,100 to $18,200 -> $379
+    # 18,150 * 3.4% - 237.77 = 379.33, rounded by DFA to 379
+    ar_income_tax_before_non_refundable_credits_indiv: 379
+
+- name: AR 2019 regular tax table, net taxable income $30,200 to $30,300
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 30_250
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $30,200 to $30,300 -> $1,091
+    # 30,250 * 5% - 421.46 = 1091.04, rounded by DFA to 1091
+    ar_income_tax_before_non_refundable_credits_indiv: 1_091
+
+- name: AR 2019 regular tax table, net taxable income $59,300 to $59,400
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 59_350
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $59,300 to $59,400 -> $2,761
+    # 59,350 * 6% - 800.45 = 2760.55, rounded by DFA to 2761
+    ar_income_tax_before_non_refundable_credits_indiv: 2_761
+
+- name: AR 2019 regular tax table, net taxable income $75,901 to $76,001
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_951
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $75,901 to $76,001 -> $3,757
+    # 75,951 * 6% - 800.45 = 3756.61, rounded by DFA to 3757
+    ar_income_tax_before_non_refundable_credits_indiv: 3_757
+
+- name: AR 2019 regular tax table, net taxable income $80,701 to $80,801
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 80_751
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $80,701 to $80,801 -> $4,045
+    # 80,751 * 6% - 800.45 = 4044.61, rounded by DFA to 4045
+    ar_income_tax_before_non_refundable_credits_indiv: 4_045
+
+- name: AR 2019 regular tax table, net taxable income $80,801 to $80,901
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 80_851
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $80,801 to $80,901 -> $4,157
+    # 80,851 * 6.9% - 1421.64 = 4157.08, rounded by DFA to 4157
+    ar_income_tax_before_non_refundable_credits_indiv: 4_157
+
+- name: AR 2019 regular tax table, net taxable income $81,301 to $81,401
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 81_351
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $81,301 to $81,401 -> $4,192
+    # 81,351 * 6.9% - 1421.64 = 4191.58, rounded by DFA to 4192
+    ar_income_tax_before_non_refundable_credits_indiv: 4_192
+
+- name: AR 2019 regular tax table, net taxable income $82,301 to $82,401
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 82_351
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $82,301 to $82,401 -> $4,361
+    # 82,351 * 6.9% - 1321.64 = 4360.58, rounded by DFA to 4361
+    ar_income_tax_before_non_refundable_credits_indiv: 4_361
+
+- name: AR 2019 regular tax table, net taxable income $83,401 to $83,501
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 83_451
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $83,401 to $83,501 -> $4,536
+    # 83,451 * 6.9% - 1221.64 = 4536.48, rounded by DFA to 4536
+    ar_income_tax_before_non_refundable_credits_indiv: 4_536
+
+- name: AR 2019 regular tax table, net taxable income $84,601 to $84,701
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 84_651
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $84,601 to $84,701 -> $4,719
+    # 84,651 * 6.9% - 1121.64 = 4719.28, rounded by DFA to 4719
+    ar_income_tax_before_non_refundable_credits_indiv: 4_719
+
+- name: AR 2019 regular tax table, net taxable income $85,701 to $85,801
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_751
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $85,701 to $85,801 -> $4,895
+    # 85,751 * 6.9% - 1021.64 = 4895.18, rounded by DFA to 4895
+    ar_income_tax_before_non_refundable_credits_indiv: 4_895
+
+- name: AR 2019 regular tax table, net taxable income $86,601 to $86,701
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 86_651
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $86,601 to $86,701 -> $4,997
+    # 86,651 * 6.9% - 981.64 = 4997.28, rounded by DFA to 4997
+    ar_income_tax_before_non_refundable_credits_indiv: 4_997
+
+- name: AR 2019 regular tax table, net taxable income $86,901 to $87,001
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 86_951
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $86,901 to $87,001 -> $5,018
+    # 86,951 * 6.9% - 981.64 = 5017.98, rounded by DFA to 5018
+    ar_income_tax_before_non_refundable_credits_indiv: 5_018
+
+- name: AR 2019 bracket formula above the regular tax table
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2019 Indexed Tax Brackets: 150_000 * 6.9% - 981.64 = 9368.36
+    # The booklet's shortcut for $87,001 and over ($5,018 + 6.9% of the excess over $87,000) gives 9365.00.
+    ar_income_tax_before_non_refundable_credits_indiv: 9368.36
+
+- name: AR 2020 regular tax table, net taxable income $2,300 to $2,400
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 2_350
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $2,300 to $2,400 -> $0
+    # 2,350 * % - 0 = 0.00, rounded by DFA to 0
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: AR 2020 regular tax table, net taxable income $6,900 to $7,000
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 6_950
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $6,900 to $7,000 -> $45
+    # 6,950 * 2% - 93.98 = 45.02, rounded by DFA to 45
+    ar_income_tax_before_non_refundable_credits_indiv: 45
+
+- name: AR 2020 regular tax table, net taxable income $11,500 to $11,600
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 11_550
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $11,500 to $11,600 -> $161
+    # 11,550 * 3% - 185.97 = 160.53, rounded by DFA to 161
+    ar_income_tax_before_non_refundable_credits_indiv: 161
+
+- name: AR 2020 regular tax table, net taxable income $14,800 to $14,900
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 14_850
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $14,800 to $14,900 -> $263
+    # 14,850 * 3.4% - 241.57 = 263.33, rounded by DFA to 263
+    ar_income_tax_before_non_refundable_credits_indiv: 263
+
+- name: AR 2020 regular tax table, net taxable income $18,400 to $18,500
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 18_450
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $18,400 to $18,500 -> $386
+    # 18,450 * 3.4% - 241.57 = 385.73, rounded by DFA to 386
+    ar_income_tax_before_non_refundable_credits_indiv: 386
+
+- name: AR 2020 regular tax table, net taxable income $30,700 to $30,800
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 30_750
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $30,700 to $30,800 -> $1,110
+    # 30,750 * 5% - 427.71 = 1109.79, rounded by DFA to 1110
+    ar_income_tax_before_non_refundable_credits_indiv: 1_110
+
+- name: AR 2020 regular tax table, net taxable income $60,200 to $60,300
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 60_250
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $60,200 to $60,300 -> $2,781
+    # 60,250 * 5.9% - 774.20 = 2780.55, rounded by DFA to 2781
+    ar_income_tax_before_non_refundable_credits_indiv: 2_781
+
+- name: AR 2020 regular tax table, net taxable income $75,901 to $76,001
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 75_951
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $75,901 to $76,001 -> $3,707
+    # 75,951 * 5.9% - 774.20 = 3706.91, rounded by DFA to 3707
+    ar_income_tax_before_non_refundable_credits_indiv: 3_707
+
+- name: AR 2020 regular tax table, net taxable income $81,901 to $82,001
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 81_951
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $81,901 to $82,001 -> $4,061
+    # 81,951 * 5.9% - 774.20 = 4060.91, rounded by DFA to 4061
+    ar_income_tax_before_non_refundable_credits_indiv: 4_061
+
+- name: AR 2020 regular tax table, net taxable income $82,001 to $82,101
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 82_051
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $82,001 to $82,101 -> $4,160
+    # 82,051 * 6.6% - 1255.70 = 4159.67, rounded by DFA to 4160
+    ar_income_tax_before_non_refundable_credits_indiv: 4_160
+
+- name: AR 2020 regular tax table, net taxable income $82,501 to $82,601
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 82_551
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $82,501 to $82,601 -> $4,193
+    # 82,551 * 6.6% - 1255.70 = 4192.67, rounded by DFA to 4193
+    ar_income_tax_before_non_refundable_credits_indiv: 4_193
+
+- name: AR 2020 regular tax table, net taxable income $83,501 to $83,601
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 83_551
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $83,501 to $83,601 -> $4,359
+    # 83,551 * 6.6% - 1155.70 = 4358.67, rounded by DFA to 4359
+    ar_income_tax_before_non_refundable_credits_indiv: 4_359
+
+- name: AR 2020 regular tax table, net taxable income $84,601 to $84,701
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 84_651
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $84,601 to $84,701 -> $4,531
+    # 84,651 * 6.6% - 1055.70 = 4531.27, rounded by DFA to 4531
+    ar_income_tax_before_non_refundable_credits_indiv: 4_531
+
+- name: AR 2020 regular tax table, net taxable income $85,801 to $85,901
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 85_851
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $85,801 to $85,901 -> $4,710
+    # 85,851 * 6.6% - 955.70 = 4710.47, rounded by DFA to 4710
+    ar_income_tax_before_non_refundable_credits_indiv: 4_710
+
+- name: AR 2020 regular tax table, net taxable income $86,901 to $87,001
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 86_951
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $86,901 to $87,001 -> $4,883
+    # 86,951 * 6.6% - 855.70 = 4883.07, rounded by DFA to 4883
+    ar_income_tax_before_non_refundable_credits_indiv: 4_883
+
+- name: AR 2020 regular tax table, net taxable income $87,701 to $87,801
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 87_751
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $87,701 to $87,801 -> $4,976
+    # 87,751 * 6.6% - 815.70 = 4975.87, rounded by DFA to 4976
+    ar_income_tax_before_non_refundable_credits_indiv: 4_976
+
+- name: AR 2020 regular tax table, net taxable income $87,901 to $88,001
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_indiv: 87_951
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $87,901 to $88,001 -> $4,989
+    # 87,951 * 6.6% - 815.70 = 4989.07, rounded by DFA to 4989
+    ar_income_tax_before_non_refundable_credits_indiv: 4_989
+
+- name: AR 2020 bracket formula above the regular tax table
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 2020 Indexed Tax Brackets: 150_000 * 6.6% - 815.70 = 9084.30
+    # The booklet's shortcut for $88,001 and over ($4,989 + 6.6% of the excess over $88,000) gives 9081.00.
+    ar_income_tax_before_non_refundable_credits_indiv: 9084.30
+
+- name: AR 2014 joint return uses the regular tax table when the low income table does not apply
+  period: 2014
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 28_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2014 Regular Tax Table, LongBookwTaxTables_2014.pdf: $28,000 to $28,100 -> $1,089
+    # 28,050 * 6% - 593.75 = 1089.25, rounded by DFA to 1089
+    ar_income_tax_before_non_refundable_credits_joint: 1_089
+
+- name: AR 2015 joint return uses the regular tax table when the low income table does not apply
+  period: 2015
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 28_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2015 Regular Tax Table, TaxTables_2015.pdf: $28,000 to $28,100 -> $1,087
+    # 28,050 * 6% - 596.25 = 1086.75, rounded by DFA to 1087
+    ar_income_tax_before_non_refundable_credits_joint: 1_087
+
+- name: AR 2016 joint return uses the regular tax table when the low income table does not apply
+  period: 2016
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 60_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2016 Regular Tax Table, LongBookwTaxTables_2016.pdf: $60,000 to $60,100 -> $2,868
+    # 60,050 * 6% - 734.75 = 2868.25, rounded by DFA to 2868
+    ar_income_tax_before_non_refundable_credits_joint: 2_868
+
+- name: AR 2017 joint return uses the regular tax table when the low income table does not apply
+  period: 2017
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 60_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2017 Regular Tax Table, AR1000F/AR1000NR instructions: $60,000 to $60,100 -> $2,843
+    # 60,050 * 6% - 759.85 = 2843.15, rounded by DFA to 2843
+    ar_income_tax_before_non_refundable_credits_joint: 2_843
+
+- name: AR 2018 joint return uses the regular tax table when the low income table does not apply
+  period: 2018
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 60_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2018 Regular Tax Table, 2018_Final_TaxTable_with_Cover_Sheet.pdf: $60,000 to $60,100 -> $2,825
+    # 60,050 * 6% - 777.95 = 2825.05, rounded by DFA to 2825
+    ar_income_tax_before_non_refundable_credits_joint: 2_825
+
+- name: AR 2019 joint return uses the regular tax table when the low income table does not apply
+  period: 2019
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 60_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2019 Regular Income Tax Table: $60,000 to $60,100 -> $2,803
+    # 60,050 * 6% - 800.45 = 2802.55, rounded by DFA to 2803
+    ar_income_tax_before_non_refundable_credits_joint: 2_803
+
+- name: AR 2020 joint return uses the regular tax table when the low income table does not apply
+  period: 2020
+  absolute_error_margin: 0.5
+  input:
+    ar_taxable_income_joint: 60_050
+    ar_low_income_tax_joint: 100_000
+    state_code: AR
+  output:
+    # 2020 Regular Income Tax Table: $60,000 to $60,100 -> $2,769
+    # 60,050 * 5.9% - 774.20 = 2768.75, rounded by DFA to 2769
+    ar_income_tax_before_non_refundable_credits_joint: 2_769

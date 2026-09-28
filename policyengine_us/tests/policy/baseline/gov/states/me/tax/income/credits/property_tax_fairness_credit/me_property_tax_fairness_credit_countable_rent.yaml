@@ -193,8 +193,9 @@
     rent: 1_000
   output:
     me_property_tax_fairness_credit_countable_rent: 150
-    # utilities_included_in_rent defaults to false -> utility portion 0;
-    # 1000 * 0.15 = 150. This is the path the microdata population takes.
+    # utilities_included_in_rent derives to false from the default
+    # tenant_pays_utilities (true) -> utility portion 0; 1000 * 0.15 = 150.
+    # This is the path the microdata population takes.
   absolute_error_margin: 0.01
 
 - name: Case 15, unknown branch at the 2014 program start pins the start date.
@@ -219,5 +220,18 @@
     me_property_tax_fairness_credit_utilities_in_rent_amount: 0
   output:
     me_property_tax_fairness_credit_countable_rent: 127.5
+    # estimate = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5.
+  absolute_error_margin: 0.01
+
+- name: Case 17, a tenant who does not pay utilities reaches the unknown-amount branch without setting the flag directly.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    tenant_pays_utilities: false
+  output:
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # utilities_included_in_rent derives to true from the household input;
     # estimate = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5.
   absolute_error_margin: 0.01

@@ -8,3 +8,4 @@ class roth_403b_contributions_desired(Variable):
     unit = USD
     documentation = "Roth 403(b) contributions before statutory contribution limits."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

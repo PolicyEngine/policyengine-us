@@ -1,0 +1,30 @@
+description: Kansas provides categorical income eligibility for the Commodity Supplemental Food Program to participants in these programs.
+# Any positive amount or reported receipt in a listed variable confers
+# eligibility for the month. fdpir is annual and enters the monthly sum as
+# one twelfth of the yearly amount.
+values:
+  2000-01-01: []
+  2025-04-11:
+    - ssi
+    - receives_ssi
+    - snap
+    - receives_snap
+    - fdpir
+    # msp reflects computed Medicare Savings Program eligibility; the model
+    # has no reported-receipt input for it, unlike receives_ssi and receives_snap.
+    - msp
+    # Low Income Subsidy also qualifies under the state plan but is not modeled.
+
+metadata:
+  unit: list
+  period: month
+  label: Kansas Commodity Supplemental Food Program categorical income eligibility programs
+  reference:
+    - title: Kansas CSFP State Plan - Categorical eligibility program list
+      href: https://www.dcf.ks.gov/services/ees/Documents/Food_Distribution_Programs/CSFPStatePlan.pdf#page=4
+    - title: Kansas CSFP State Plan - Effective date
+      href: https://www.dcf.ks.gov/services/ees/Documents/Food_Distribution_Programs/CSFPStatePlan.pdf#page=2
+    - title: 7 CFR 247.9(b)(1) and (3) - Eligibility requirements
+      href: https://www.law.cornell.edu/cfr/text/7/247.9#b
+    - title: 7 CFR 247.6(a) - An approved State Plan is permanent until amended
+      href: https://www.law.cornell.edu/cfr/text/7/247.6#a
