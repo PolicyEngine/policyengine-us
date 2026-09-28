@@ -453,7 +453,7 @@ def test_generic_benefit_consumers_do_not_use_spm_measurement_composition(
 
 
 def pays_own_utilities(situation):
-    # CARE requires the household to pay its own utilities. Zero the HUD
+    # The model's CARE gate requires tenant_pays_utilities. Zero the HUD
     # utility allowance directly so the housing amounts stay those of the
     # no-allowance household that household() builds.
     location = situation["households"]["household"]

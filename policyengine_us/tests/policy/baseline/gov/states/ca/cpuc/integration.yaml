@@ -191,12 +191,16 @@
   output:
     ca_cpuc_countable_income: 30_000
     ca_care_income_eligible: true
-    # The landlord, not the tenant, is the utility customer of record.
+    # CARE discount if eligible = 32.5% of $1,200.
     ca_care_amount_if_eligible: 390
+    # The model's CARE gate treats a household with utilities included in
+    # rent as ineligible, so the discount is not applied.
     ca_care_eligible: false
     ca_care: 0
     ca_fera_eligible: false
     ca_fera: 0
+    # Electricity expense stays at the full $1,200 with no subsidy.
+    electricity_expense: 1_200
 
 - name: Case 9, three-person household below the CARE income limit with utilities included in rent gets neither CARE nor FERA.
   period: 2024

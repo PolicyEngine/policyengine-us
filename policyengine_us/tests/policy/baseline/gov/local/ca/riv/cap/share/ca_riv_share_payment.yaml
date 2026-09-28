@@ -94,8 +94,9 @@
         water_expense: 5 * 12
         trash_expense: 5 * 12
   output:
-    # The RPU bill is in the landlord's name, so neither the monthly
-    # credits nor the emergency payment apply.
+    # The model treats a household with utilities included in rent as not
+    # holding the RPU account, so neither the monthly credits nor the
+    # emergency payment apply.
     ca_riv_share_eligible: false
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_payment: 0

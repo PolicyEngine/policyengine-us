@@ -7,7 +7,10 @@ class ca_la_ez_save_eligible(Variable):
     definition_period = MONTH
     label = "Eligible for the Los Angeles County EZ Save program"
     defined_for = "in_la"
-    reference = "https://www.ladwp.com/sites/default/files/2023-10/2023_EZ-SAVE_Application_and_Information_05_0.pdf#page=2"
+    reference = (
+        "https://www.ladwp.com/residential-services/assistance-programs/ez-save-program",
+        "https://www.ladwp.com/sites/default/files/2023-10/2023_EZ-SAVE_Application_and_Information_05_0.pdf#page=2",
+    )
 
     def formula(household, period, parameters):
         income = household("ca_la_ez_save_countable_income", period)

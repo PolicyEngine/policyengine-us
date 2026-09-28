@@ -29,3 +29,13 @@
     tenant_pays_utilities: false
   output:
     ca_riv_share_eligible: false
+
+- name: Case 4, household size of 3 with $66000 income that pays its own utilities, eligible.
+  period: 2025-01
+  input:
+    ca_riv_share_countable_income: 66_000
+    spm_unit_size: 3
+    in_riv: true
+    tenant_pays_utilities: true
+  output:
+    ca_riv_share_eligible: true

@@ -13,7 +13,9 @@ class ca_fera_eligible(Variable):
         "master-metered customers without sub-metering. As with CARE, the model "
         "uses tenant_pays_utilities as a proxy, which over-excludes PG&E "
         "residents of individually metered units whose landlord holds the "
-        "account."
+        "account. FERA discounts electricity only, but the flag covers any "
+        "utility, so a household with electricity in rent and its own gas "
+        "account still passes."
     )
     reference = (
         "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
@@ -22,8 +24,8 @@ class ca_fera_eligible(Variable):
         # and sub-metered tenants; bars master-metered customers without
         # sub-metering.
         "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1",
-        # Special Condition 3: other qualifying applicants in individually
-        # metered units.
+        # Special Condition 3 (certification): other qualifying applicants in
+        # individually metered units.
         "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=2",
     )
     defined_for = StateCode.CA

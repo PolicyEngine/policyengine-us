@@ -46,3 +46,22 @@
     tenant_pays_utilities: true
   output:
     ca_care_eligible: false
+
+- name: Case 6, household that meets both tests and pays its own utilities by default is eligible.
+  period: 2025
+  input:
+    state_code: CA
+    ca_care_categorically_eligible: true
+    ca_care_income_eligible: true
+  output:
+    ca_care_eligible: true
+
+- name: Case 7, household outside California that meets both tests is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    ca_care_categorically_eligible: true
+    ca_care_income_eligible: true
+    tenant_pays_utilities: true
+  output:
+    ca_care_eligible: false

@@ -31,7 +31,7 @@
   output:
     ca_la_ez_save: 8
 
-- name: Income-eligible household paying its own utilities receives the monthly discount
+- name: Income-eligible household paying its own utilities (default) receives the monthly discount
   period: 2023-01
   input:
     in_la: true
@@ -55,6 +55,7 @@
       2023: 1_200
     tenant_pays_utilities: false
   output:
-    # The household is not the LADWP customer of record.
+    # The model treats a household with utilities included in rent as not
+    # the LADWP customer of record.
     ca_la_ez_save_eligible: false
     ca_la_ez_save: 0

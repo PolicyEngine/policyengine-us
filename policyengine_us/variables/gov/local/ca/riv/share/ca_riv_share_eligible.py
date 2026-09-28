@@ -8,7 +8,10 @@ class ca_riv_share_eligible(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
     reference = (
-        "https://riversideca.gov/utilities/residents/assistance-programs/share-english"
+        "https://riversideca.gov/utilities/residents/assistance-programs/share-english",
+        # Certification 4: the applicant is solely or jointly responsible for
+        # paying the utilities at the address.
+        "https://riversideca.gov/utilities/sites/riversideca.gov.utilities/files/images/RPU%20SHARE%20Program%20Applications_ENG_7-26_Fillable.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):
