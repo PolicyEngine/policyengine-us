@@ -21,7 +21,7 @@ independent transcriptions of:
   chapter 127 of 2026 (https://www.nysenate.gov/legislation/laws/TAX/1304);
 - the 2025 IT-201-I New York City tax rate schedule, which already includes
   the additional tax
-  (https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=40).
+  (https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=40).
 
 The tables state each bracket's base tax in whole dollars, so the model, which
 accumulates exact marginal amounts, may differ from them by up to half a

@@ -44,7 +44,8 @@
   output:
     # 12,000 * 3.078% + 13,000 * 3.762% + 25,000 * 3.819% + 50,000 * 3.876%
     # = 369.36 + 489.06 + 954.75 + 1,938 = 3,751.17
-    # (2025 IT-201-I schedule: $1,813 plus 3.876% of the excess over $50,000)
+    # The 2025 IT-201-I schedule rounds the bracket base to whole dollars:
+    # $1,813 plus 3.876% of the excess over $50,000 = $3,751.
     nyc_income_tax_before_credits: 3_751.17
 
 - name: Joint filer in 2027 pays the extended rates.
@@ -109,7 +110,8 @@
   output:
     # 12,000 * 1.18% + 13,000 * 1.435% + 25,000 * 1.455% + 50,000 * 1.48%
     # = 141.6 + 186.55 + 363.75 + 740 = 1,431.9
-    # (Tax Law 1304(b)(3): $692 plus 1.48% of the excess over $50,000)
+    # Tax Law 1304(b)(3) rounds the bracket base to whole dollars:
+    # $692 plus 1.48% of the excess over $50,000 = $1,432.
     nyc_income_tax_before_credits: 1_431.9
 
 - name: Joint filer in 2030 pays the base rates without the additional tax.
@@ -123,7 +125,8 @@
   output:
     # 21,600 * 1.18% + 23,400 * 1.435% + 45,000 * 1.455% + 60,000 * 1.48%
     # = 254.88 + 335.79 + 654.75 + 888 = 2,133.42
-    # (Tax Law 1304(b)(1): $1,245 plus 1.48% of the excess over $90,000)
+    # Tax Law 1304(b)(1) rounds the bracket base to whole dollars:
+    # $1,245 plus 1.48% of the excess over $90,000 = $2,133.
     nyc_income_tax_before_credits: 2_133.42
 
 - name: Head of household in 2030 pays the base rates without the additional tax.
