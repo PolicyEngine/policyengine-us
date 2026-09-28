@@ -1,3 +1,11 @@
+## [2.15.12] - 2026-09-28
+
+### Fixed
+
+- Net eligible qualified business losses before component limits, preserve the minimum deduction after SSTB exclusions, and floor Missouri business income separately for each spouse.
+- Update the Michigan home heating credit funding factor to 60 percent for 2025.
+
+
 ## [2.15.11] - 2026-09-27
 
 ### Fixed
