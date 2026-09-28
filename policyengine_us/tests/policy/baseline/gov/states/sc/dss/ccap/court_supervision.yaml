@@ -233,3 +233,45 @@
     sc_ccap_copay:
       2024-09: 60
       2024-10: 0
+
+- name: Case 12, a court-supervised parent does not waive the copay for an ordinary child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        weekly_hours_worked: 40
+        employment_income: 36_000
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+      person2:
+        age: 8
+        is_disabled: false
+        is_under_court_supervision: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # The waiver needs an eligible child under court supervision; the parent
+    # is not an eligible child, so the ordinary copay applies.
+    sc_ccap_eligible_child: [false, true]
+    # Income 3,000 falls in the first paid fee-scale tier, $6 per week.
+    # Copay: 6 * 52 / 12 = 26; 2% cap: 3,000 * 0.02 = 60 => 26
+    sc_ccap_copay: 26
+    # Benefit: min(1,000, 165 * 52 / 12 = 715) - 26 = 689
+    sc_ccap: 689
