@@ -17,8 +17,11 @@ class vt_ccfap_eligible_child(Variable):
         p = parameters(period).gov.states.vt.dcf.ccfap
         age = person("age", period.this_year)
         has_special_needs = person("is_disabled", period.this_year)
+        court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(
-            has_special_needs, p.age_threshold.special_needs, p.age_threshold.base
+            has_special_needs | court_supervision,
+            p.age_threshold.special_needs,
+            p.age_threshold.base,
         )
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period.this_year)

@@ -17,7 +17,10 @@ from policyengine_us.variables.household.demographic.geographic.state.in_state i
 from policyengine_us.variables.household.demographic.geographic.state_code import (
     StateCode,
 )
-from policyengine_us.tools.parameters import backdate_parameters
+from policyengine_us.tools.parameters import (
+    FIRST_MODELED_YEAR,
+    backdate_parameters,
+)
 from policyengine_us.reforms import create_structural_reforms_from_parameters
 from policyengine_core.parameters.operations.homogenize_parameters import (
     homogenize_parameter_structures,
@@ -140,7 +143,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         reform = (reform, structural_reform)
 
         self.parameters = backdate_parameters(
-            self.parameters, first_instant="2015-01-01"
+            self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
         )
 
         for parameter in self.parameters.get_descendants():

@@ -1,11 +1,17 @@
 description: Virginia provides the following non-refundable tax credits.
 values:
+  # va_rebate is booked to the tax year whose return determines it (see
+  # rebate/amount.yaml): 2021 (2022 rebate), 2022 (2023 rebate), 2024
+  # (HB1600 TY2024 rebate). No rebate is determined by the 2023 or 2025 return.
   2021-01-01:
     - va_non_refundable_eitc
     - va_rebate
   2022-01-01:
     - va_non_refundable_eitc
+    - va_rebate
   2023-01-01:
+    - va_non_refundable_eitc
+  2024-01-01:
     - va_non_refundable_eitc
     - va_rebate
   2025-01-01:
