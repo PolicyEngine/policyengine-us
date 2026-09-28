@@ -77,10 +77,14 @@
   period: 2026-07
   absolute_error_margin: 0.01
   input:
-    pre_subsidy_electricity_expense: 50 * 12
-    water_expense: 10 * 12
-    trash_expense: 10 * 12
-    ca_riv_share_electricity_emergency_payment: 0
+    pre_subsidy_electricity_expense:
+      2026: 600
+    water_expense:
+      2026: 120
+    trash_expense:
+      2026: 120
+    ca_riv_share_electricity_emergency_payment:
+      2026: 0
     ca_riv_share_eligible: true
   output:
     # 28 + 5.75 + 5.75
@@ -103,10 +107,14 @@
   period: 2023-07
   absolute_error_margin: 0.01
   input:
-    pre_subsidy_electricity_expense: 50 * 12
-    water_expense: 10 * 12
-    trash_expense: 10 * 12
-    ca_riv_share_electricity_emergency_payment: 0
+    pre_subsidy_electricity_expense:
+      2023: 600
+    water_expense:
+      2023: 120
+    trash_expense:
+      2023: 120
+    ca_riv_share_electricity_emergency_payment:
+      2023: 0
     ca_riv_share_eligible: true
   output:
     # 16 + 3.25 + 0
