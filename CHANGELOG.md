@@ -1,3 +1,11 @@
+## [2.15.16] - 2026-09-28
+
+### Fixed
+
+- Apply Hawaii federal AGI limits to the itemized income or sales tax deduction while preserving real estate tax deductions.
+- Apply the Maryland child tax credit income phaseout per qualifying child.
+
+
 ## [2.15.15] - 2026-09-28
 
 ### Fixed
