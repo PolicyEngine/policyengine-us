@@ -1703,7 +1703,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-core"
-version = "3.30.2"
+version = "3.32.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dpath" },
@@ -1723,9 +1723,9 @@ dependencies = [
     { name = "standard-imghdr" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/19/6b/f3e845e64401f329d2dd43ed4ea4f6663810b0e22879e13e3cec997caeab/policyengine_core-3.30.2.tar.gz", hash = "sha256:1272a08c432e3c26eb0cc6eabdabed1cf1bf16a837c006d006816ad8e665a33d", size = 501156, upload-time = "2026-07-20T12:20:58.184Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/86/52f789bcf42c1593988e36b3499c49e38f1fc77f4efdeb59a11fd5733bf9/policyengine_core-3.32.6.tar.gz", hash = "sha256:5a19a6940d5318648063bec5daddaf68d732e964e25c14cc2d9c8452aa831461", size = 421867, upload-time = "2026-09-16T18:11:17.374Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/6e/f8b6af58c701a05d4afd2956747364618bc4ffdf40f37b28d450b2223a27/policyengine_core-3.30.2-py3-none-any.whl", hash = "sha256:ba187b4cf459c337c4bfe02b1f6b2491d45240ea1bd41a1148a1ec9ca8c51fe9", size = 245046, upload-time = "2026-07-20T12:20:56.553Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/39/b52ce31a2ae2a70d9cc5035eaeb75506cc096c43599177dd9dc7bf88db49/policyengine_core-3.32.6-py3-none-any.whl", hash = "sha256:a29acfc7e3feb4bc311a03440c8576df7dd5b9793e81a5dcf95169b473dd6b90", size = 246251, upload-time = "2026-09-16T18:11:16.01Z" },
 ]
 
 [[package]]
@@ -1760,7 +1760,7 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=3.0" },
-    { name = "policyengine-core", specifier = ">=3.30.1" },
+    { name = "policyengine-core", specifier = ">=3.31.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "spm-calculator", specifier = ">=1.0.0,<=1.0.0.post1" },
