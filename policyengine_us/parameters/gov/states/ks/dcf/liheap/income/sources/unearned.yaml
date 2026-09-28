@@ -15,11 +15,11 @@ values:
     # Plan counts "insurance payments made directly to the insured".
     - workers_compensation
     - veterans_benefits
-    # Not counted (plan boxes unchecked): loans, savings balances, one-time
-    # lump sums, WIA and work-study income, interest, dividends and
-    # royalties, insurance payments for repayment of a bill, retirement
-    # account balances, tax refunds, VISTA stipends, foster care payments,
-    # AmeriCorps payments and reimbursements.
+    - ks_liheap_countable_interest_dividend_income
+    # KEESM 13360-13361 explicitly count interest except for specific
+    # exemptions; the plan's unchecked combined interest/dividend/royalty
+    # box is not a blanket exclusion. Other irregular receipts and source-
+    # specific exclusions require a direct countable-income input.
 
 metadata:
   unit: list
@@ -28,7 +28,7 @@ metadata:
   reference:
     - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (countable income sources)
       href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=6
-    - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (income sources not counted)
-      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=7
+    - title: KEESM 13360-13361 (countable income and specific exemptions)
+      href: https://content.dcf.ks.gov/ees/keesm/current/keesm13360.htm
     - title: KEESM 13320 Household Definition (income of all household members living together is used)
       href: https://content.dcf.ks.gov/ees/keesm/current/keesm13300.htm

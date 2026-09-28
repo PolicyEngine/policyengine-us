@@ -19,10 +19,12 @@ class ks_liheap_matrix_amount(Variable):
         p = parameters(period).gov.states.ks.dcf.liheap.payment.matrix
         fuel = spm_unit("ks_liheap_fuel_category", period)
         fuels = fuel.possible_values
-        band = spm_unit("ks_liheap_income_band", period)
+        # State-masked helpers return zero outside Kansas. Keep lookup keys
+        # valid while the framework evaluates mixed-state arrays.
+        band = max_(spm_unit("ks_liheap_income_band", period), 1)
         tier = spm_unit("ks_liheap_utility_rate_tier", period)
         dwelling = spm_unit("ks_liheap_dwelling_type", period)
-        size_group = spm_unit("ks_liheap_household_size_group", period)
+        size_group = max_(spm_unit("ks_liheap_household_size_group", period), 1)
         return select(
             [
                 fuel == fuels.NATURAL_GAS,

@@ -1,0 +1,46 @@
+# KEESM 13361: child interest exclusion and year-specific interest exemptions.
+- name: FY2025 exactly at monthly exemption
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    interest_income: 360
+    dividend_income: 240
+  output:
+    ks_liheap_countable_interest_dividend_income: 0
+- name: FY2025 above exemption counts the full amount
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    interest_income: 361
+    dividend_income: 240
+  output:
+    ks_liheap_countable_interest_dividend_income: 601
+- name: FY2026 regular small interest has no blanket exemption
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    interest_income: 120
+    dividend_income: 0
+  output:
+    ks_liheap_countable_interest_dividend_income: 120
+- name: FY2026 interest of a 17-year-old is exempt but dividends count
+  period: 2026
+  input:
+    state_code: KS
+    age: 17
+    interest_income: 1000
+    dividend_income: 300
+  output:
+    ks_liheap_countable_interest_dividend_income: 300
+- name: FY2026 interest counts at age 18
+  period: 2026
+  input:
+    state_code: KS
+    age: 18
+    interest_income: 1000
+    dividend_income: 300
+  output:
+    ks_liheap_countable_interest_dividend_income: 1300

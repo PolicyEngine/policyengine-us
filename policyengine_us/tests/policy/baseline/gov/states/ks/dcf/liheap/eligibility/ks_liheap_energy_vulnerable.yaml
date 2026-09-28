@@ -1,0 +1,76 @@
+# KEESM 13340, including facts that cannot be inferred from fuel bills.
+- name: Purchased wood qualifies
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heating_type: WOOD
+    wood_expense: 600
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+- name: An unknown heating fuel with no cost information does not establish vulnerability
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: Unsubsidized heat included in rent qualifies
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heat_expense_included_in_rent: true
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+- name: Subsidized heat included in rent does not qualify by default
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: Subsidized excess heating charges can establish vulnerability
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+    ks_liheap_energy_vulnerable: true
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+- name: Shared unmetered heat can be explicitly excluded
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heat_expense_included_in_rent: true
+    ks_liheap_energy_vulnerable: false
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: A homeless household with qualifying prior-address heating debt can qualify
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10000
+    heating_type: NONE
+    ks_liheap_energy_vulnerable: true
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true

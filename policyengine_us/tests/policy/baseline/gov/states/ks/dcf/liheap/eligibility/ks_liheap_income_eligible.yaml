@@ -1,280 +1,137 @@
-# Kansas LIEAP income eligibility (KEESM 13100; KS LIHEAP State Plan FY2026
-# 2.1, #page=8): combined gross income of all persons at the address must not
-# exceed 150% of the HHS poverty guideline for the household size. The season
-# runs January-March, so the program-year Y table equals 150% of the year Y-1
-# guidelines (the 2026 flyer's $1,956/month for one person = 1.5 x 15,650 / 12).
-# Contiguous-US guidelines: 2025 = 15,650 + 5,500 per additional person;
-# 2024 = 15,060 + 5,380. Households with a member receiving TANF, SSI or SNAP
-# are income eligible regardless (plan 1.4, #page=5).
-
-- name: Case 1, one person in 2026 exactly at 150% of the 2025 guideline is eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 23_475
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 1.5 x 15,650 = 23,475; 23,475 <= 23,475
-    ks_liheap_income_eligible: true
-
-- name: Case 2, one person in 2026 one dollar over the limit is ineligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 23_476
-    spm_units:
-      spm_unit:
-        members: [person1]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 23,476 > 23,475
-    ks_liheap_income_eligible: false
-
-- name: Case 3, one person in 2026 under the current-year limit but over the prior-year limit is ineligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 23_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # Prior-year (2025) guideline: 1.5 x 15,650 = 23,475 < 23,600 -> ineligible.
-    # The 2026 guideline would give 1.5 x 15,960 = 23,940 and wrongly pass.
-    ks_liheap_income_eligible: false
-
-- name: Case 4, four-person household in 2026 exactly at the limit is eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 30_000
-      person2:
-        age: 38
-        employment_income: 18_225
-      person3:
-        age: 10
-      person4:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: KS
-  output:
-    # 2025 guideline size 4: 15,650 + 3 x 5,500 = 32,150; x 1.5 = 48,225.
-    # 30,000 + 18,225 = 48,225 <= 48,225
-    ks_liheap_income_eligible: true
-
-- name: Case 5, four-person household in 2026 one dollar over the limit is ineligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 30_000
-      person2:
-        age: 38
-        employment_income: 18_226
-      person3:
-        age: 10
-      person4:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: KS
-  output:
-    # 48,226 > 48,225
-    ks_liheap_income_eligible: false
-
-- name: Case 6, one person in 2025 exactly at 150% of the 2024 guideline is eligible.
+# KEESM 13360-13362, October 2024 and January 2026 editions.
+# Values annualize the published monthly limits; FY2026 includes rounding.
+- name: 2025 household size 1, income 0 dollar above the published limit.
   period: 2025
   input:
-    people:
-      person1:
-        age: 35
-        employment_income: 22_590
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 22590
   output:
-    # 1.5 x 15,060 = 22,590
+    ks_liheap_income_limit: 22590
     ks_liheap_income_eligible: true
-
-- name: Case 7, one person in 2025 one dollar over the limit is ineligible.
+- name: 2025 household size 1, income 1 dollar above the published limit.
   period: 2025
   input:
-    people:
-      person1:
-        age: 35
-        employment_income: 22_591
-    spm_units:
-      spm_unit:
-        members: [person1]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 22591
   output:
-    # 22,591 > 22,590 (the 2025 guideline would give 23,475 and wrongly pass)
+    ks_liheap_income_limit: 22590
     ks_liheap_income_eligible: false
-
-- name: Case 8, excluded interest income does not count toward the limit.
-  period: 2026
+- name: 2025 household size 4, income 0 dollar above the published limit.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 60
-        employment_income: 23_000
-        interest_income: 5_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 4
+    ks_liheap_countable_income: 46800
   output:
-    # Countable 23,000 <= 23,475 (28,000 gross with interest would fail).
+    ks_liheap_income_limit: 46800
     ks_liheap_income_eligible: true
-
-- name: Case 9, household over the limit with an SSI recipient is categorically eligible.
-  period: 2026
+- name: 2025 household size 4, income 1 dollar above the published limit.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 45
-        employment_income: 40_000
-      person2:
-        age: 70
-        social_security: 8_000
-        ssi: 1_200
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 4
+    ks_liheap_countable_income: 46801
   output:
-    # Size 2 limit: 1.5 x (15,650 + 5,500) = 31,725 < 49,200 gross, but
-    # person2 receives SSI -> income eligible (plan 1.4).
-    ks_liheap_income_eligible: true
-
-- name: Case 10, the same household without SSI receipt is ineligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 40_000
-      person2:
-        age: 70
-        social_security: 8_000
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
-  output:
-    # 48,000 > 31,725 and no categorical route.
+    ks_liheap_income_limit: 46800
     ks_liheap_income_eligible: false
-
-- name: Case 11, household over the limit receiving SNAP is categorically eligible.
+- name: 2026 household size 1, income 0 dollar above the published limit.
   period: 2026
   input:
-    people:
-      person1:
-        age: 45
-        employment_income: 40_000
-      person2:
-        age: 12
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ks_tanf: 0
-        snap: 1_200
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 23472
   output:
-    # 40,000 > 31,725, but the household receives SNAP -> income eligible.
+    ks_liheap_income_limit: 23472
     ks_liheap_income_eligible: true
-
-- name: Case 12, five members with one undocumented member use the four-person limit.
+- name: 2026 household size 1, income 1 dollar above the published limit.
   period: 2026
   input:
-    people:
-      person1:
-        age: 35
-        immigration_status: CITIZEN
-        employment_income: 30_000
-      person2:
-        age: 33
-        immigration_status: UNDOCUMENTED
-        employment_income: 20_000
-      person3:
-        age: 10
-      person4:
-        age: 7
-      person5:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: KS
+    state_code: KS
+    ks_liheap_household_size: 1
+    ks_liheap_countable_income: 23473
   output:
-    # KEESM 13330: the undocumented member is not counted in household size
-    # but their income is. Size 4 limit = 48,225 < 50,000 gross -> ineligible
-    # (the five-person limit of 56,475 would wrongly pass).
+    ks_liheap_income_limit: 23472
+    ks_liheap_income_eligible: false
+- name: 2026 household size 4, income 0 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 4
+    ks_liheap_countable_income: 48228
+  output:
+    ks_liheap_income_limit: 48228
+    ks_liheap_income_eligible: true
+- name: 2026 household size 4, income 1 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 4
+    ks_liheap_countable_income: 48229
+  output:
+    ks_liheap_income_limit: 48228
+    ks_liheap_income_eligible: false
+- name: 2026 household size 9, income 0 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 9
+    ks_liheap_countable_income: 89484
+  output:
+    ks_liheap_income_limit: 89484
+    ks_liheap_income_eligible: true
+- name: 2026 household size 9, income 1 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 9
+    ks_liheap_countable_income: 89485
+  output:
+    ks_liheap_income_limit: 89484
+    ks_liheap_income_eligible: false
+- name: 2026 household size 10, income 0 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 10
+    ks_liheap_countable_income: 97740
+  output:
+    ks_liheap_income_limit: 97740
+    ks_liheap_income_eligible: true
+- name: 2026 household size 10, income 1 dollar above the published limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 10
+    ks_liheap_countable_income: 97741
+  output:
+    ks_liheap_income_limit: 97740
+    ks_liheap_income_eligible: false
+- name: snap receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40000
+    snap: 1200
+  output:
+    ks_liheap_income_eligible: false
+- name: ssi receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40000
+    ssi: 1200
+  output:
+    ks_liheap_income_eligible: false
+- name: ks_tanf receipt does not waive the household income limit.
+  period: 2026
+  input:
+    state_code: KS
+    ks_liheap_household_size: 2
+    ks_liheap_countable_income: 40000
+    ks_tanf: 1200
+  output:
     ks_liheap_income_eligible: false

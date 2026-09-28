@@ -17,6 +17,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
     households:
@@ -39,6 +40,7 @@
       spm_unit:
         members: [person1]
         heating_type: PROPANE
+        bottled_gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
     households:
@@ -62,6 +64,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
     households:
@@ -94,6 +97,7 @@
         members: [person1, person2, person3, person4, person5]
         ks_tanf: 0
         heating_type: WOOD
+        wood_expense: 1_200
         ks_liheap_dwelling_type: TRAILER_OTHER
     households:
       household:
@@ -125,6 +129,7 @@
         members: [person1, person2, person3, person4, person5]
         ks_tanf: 0
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
     households:
@@ -167,6 +172,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         snap: 0
         ks_tanf: 0
     households:
@@ -174,7 +180,7 @@
         members: [person1]
         state_code: KS
   output:
-    # 30,000 > 1.5 x 15,650 = 23,475
+    # 30,000 > 1,956 x 12 = 23,472
     ks_liheap: 0
 
 - name: Case 8, subsidized-housing renter with heat in rent receives nothing.
@@ -189,6 +195,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         receives_housing_assistance: true
         heat_expense_included_in_rent: true
     households:
@@ -210,6 +217,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
     households:
@@ -233,6 +241,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
     households:
@@ -255,6 +264,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -274,6 +284,7 @@
       spm_unit:
         members: [person1]
         heating_type: PROPANE
+        bottled_gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
         snap: 0
@@ -302,6 +313,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
         snap: 0

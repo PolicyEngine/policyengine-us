@@ -1,0 +1,140 @@
+# KEESM 13360, October 2024 and January 2026: gross receipts less 25%
+# or elected actual costs. Tax-net fallback is a documented approximation.
+- name: 2025 self-employment, standard deduction.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 0
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 18000
+    ks_liheap_countable_earned_income: 18000
+- name: 2025 self-employment, higher actual costs.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 10000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 14000
+    ks_liheap_countable_earned_income: 14000
+- name: 2025 self-employment, lower actual costs retain standard deduction.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 1000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 18000
+    ks_liheap_countable_earned_income: 18000
+- name: 2025 self-employment, expenses exceed receipts.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 12000
+    ks_liheap_self_employment_expenses: 15000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 0
+    ks_liheap_countable_earned_income: 0
+- name: 2025 self-employment, explicit zero gross receipts.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 0
+    ks_liheap_self_employment_expenses: 0
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 0
+    ks_liheap_countable_earned_income: 0
+- name: 2026 self-employment, standard deduction.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 0
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 18000
+    ks_liheap_countable_earned_income: 18000
+- name: 2026 self-employment, higher actual costs.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 10000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 14000
+    ks_liheap_countable_earned_income: 14000
+- name: 2026 self-employment, lower actual costs retain standard deduction.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 24000
+    ks_liheap_self_employment_expenses: 1000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 18000
+    ks_liheap_countable_earned_income: 18000
+- name: 2026 self-employment, expenses exceed receipts.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 12000
+    ks_liheap_self_employment_expenses: 15000
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 0
+    ks_liheap_countable_earned_income: 0
+- name: 2026 self-employment, explicit zero gross receipts.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_self_employment_gross_income: 0
+    ks_liheap_self_employment_expenses: 0
+    self_employment_income: 5000
+  output:
+    ks_liheap_countable_self_employment_income: 0
+    ks_liheap_countable_earned_income: 0
+- name: Net income fallback does not deduct business costs a second time.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: 5000
+    sstb_self_employment_income: 2000
+    farm_operations_income: 3000
+  output:
+    ks_liheap_countable_self_employment_income: 10000
+- name: A non-farm business loss does not offset wages or another business.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    employment_income: 15000
+    self_employment_income: -5000
+    sstb_self_employment_income: 2000
+  output:
+    ks_liheap_countable_earned_income: 17000
+- name: Self-employment income of a child under 18 is excluded.
+  period: 2026
+  input:
+    state_code: KS
+    age: 17
+    ks_liheap_self_employment_gross_income: 24000
+  output:
+    ks_liheap_countable_earned_income: 0

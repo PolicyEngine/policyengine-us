@@ -158,7 +158,7 @@
     # 60,000 / 12 = 5,000 -> "1,700 & over"
     ks_liheap_income_band: 4
 
-- name: Case 9, band uses countable income so excluded interest does not move it.
+- name: Case 9, band uses countable income so counted adult interest can move it.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -175,9 +175,8 @@
         members: [person1]
         state_code: KS
   output:
-    # Countable 10,800 / 12 = 900 -> band 2 (interest excluded; 16,800 / 12
-    # = 1,400 would wrongly be band 3).
-    ks_liheap_income_band: 2
+    # Countable (10,800 + 6,000) / 12 = 1,400 -> band 3 (KEESM 13360).
+    ks_liheap_income_band: 3
 
 - name: Case 10, FY2025 season uses the same band thresholds.
   period: 2025

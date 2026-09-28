@@ -824,10 +824,13 @@ programs:
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
       - state: KS
-        status: complete
+        status: partial
         name: Kansas LIEAP
         full_name: Kansas Low Income Energy Assistance Program
         variable: ks_liheap
+        parameter_prefix: gov.states.ks.dcf.liheap
+        verified_years: "2025-2026"
+        notes: Models regular heating assistance using FY2025 and FY2026 benefit matrices and published income limits. Annual income approximates the application month; the SPM unit approximates the energy household. Utility tier defaults to E and dwelling type to house/mobile. Gross self-employment receipts and allowable costs enable the expense deduction; otherwise net earnings are a fallback. Special energy-vulnerability cases require a direct input. Some irregular receipts and source-specific income exemptions are not modeled. Cooling, crisis, weatherization, and equipment assistance are outside scope.
       - state: TX
         status: partial
         name: Texas CEAP

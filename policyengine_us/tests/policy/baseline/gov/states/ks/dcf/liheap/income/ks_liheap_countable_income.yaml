@@ -1,12 +1,12 @@
 # Kansas LIEAP countable gross income (KS LIHEAP State Plan FY2026 sections
 # 1.8-1.9, #page=5-6; KEESM 13320). Counted: wages, self-employment,
 # unemployment insurance, SSA benefits, SSI, retirement/pension, TANF, child
-# support, alimony, rental income, VA benefits. Not counted: interest,
-# dividends, royalties, earned income of a child under 18. Income of all
+# support, alimony, rental income, VA benefits and recurring adult interest.
+# Earned income of children under 18 is excluded. Income of other
 # household members counts, including non-qualified noncitizens (KEESM 13330).
 # All amounts are annual (YEAR variable).
 
-- name: Case 1, interest and dividends are not counted.
+- name: Case 1, recurring adult interest and dividends are counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -24,8 +24,8 @@
         members: [person1]
         state_code: KS
   output:
-    # 20,000 wages; 3,000 interest + 2,000 dividends excluded (plan 1.9).
-    ks_liheap_countable_income: 20_000
+    # 20,000 wages + 3,000 interest + 2,000 dividends (KEESM 13360).
+    ks_liheap_countable_income: 25_000
 
 - name: Case 2, earned income of a child under 18 is not counted.
   period: 2026

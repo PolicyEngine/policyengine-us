@@ -1,6 +1,6 @@
 description: Kansas pays at least this annual benefit to eligible households under the Low Income Energy Assistance Program.
 # The state plans also report a maximum benefit ($2,232 for FY2025, $4,301 for
-# FY2026) that exceeds every matrix cell in its year and is therefore not applied.
+# FY2026) that is at least every matrix cell in its year, so an additional cap cannot bind.
 values:
   2024-10-01: 100
   2025-10-01: 130

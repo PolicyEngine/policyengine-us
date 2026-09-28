@@ -1,0 +1,129 @@
+# Published FY2026 adjusted matrix cells (pages 1-4) and KEESM 13340/13362.
+# Seven SPM units evaluate mixed inputs and a non-Kansas mask together.
+- name: Mixed households evaluate Kansas LIEAP in one vectorized simulation.
+  period: 2026
+  input:
+    people:
+      gas:
+        age: 40
+        employment_income: 9600
+      electric:
+        age: 40
+        employment_income: 22000
+      propane:
+        age: 40
+        employment_income: 21600
+      wood:
+        age: 40
+        employment_income: 12000
+      over_limit:
+        age: 40
+        employment_income: 30000
+      free_wood:
+        age: 40
+        employment_income: 12000
+      missouri:
+        age: 40
+        employment_income: 9600
+    spm_units:
+      gas:
+        members:
+        - gas
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+      electric:
+        members:
+        - electric
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: APARTMENT
+        ks_tanf: 0
+      propane:
+        members:
+        - propane
+        heating_type: PROPANE
+        bottled_gas_expense: 1200
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: TRAILER_OTHER
+        ks_tanf: 0
+      wood:
+        members:
+        - wood
+        heating_type: WOOD
+        wood_expense: 1200
+        ks_liheap_utility_rate_tier: J
+        ks_liheap_dwelling_type: DUPLEX
+        ks_tanf: 0
+      over_limit:
+        members:
+        - over_limit
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ks_liheap_utility_rate_tier: B
+        ks_liheap_dwelling_type: DUPLEX
+        ks_tanf: 0
+      free_wood:
+        members:
+        - free_wood
+        heating_type: WOOD
+        wood_expense: 0
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+      missouri:
+        members:
+        - missouri
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+    households:
+      gas:
+        members:
+        - gas
+        state_code: KS
+      electric:
+        members:
+        - electric
+        state_code: KS
+      propane:
+        members:
+        - propane
+        state_code: KS
+      wood:
+        members:
+        - wood
+        state_code: KS
+      over_limit:
+        members:
+        - over_limit
+        state_code: KS
+      free_wood:
+        members:
+        - free_wood
+        state_code: KS
+      missouri:
+        members:
+        - missouri
+        state_code: MO
+  output:
+    spm_units:
+      gas:
+        ks_liheap: 709
+      electric:
+        ks_liheap: 365
+      propane:
+        ks_liheap: 130
+      wood:
+        ks_liheap: 431
+      over_limit:
+        ks_liheap: 0
+      free_wood:
+        ks_liheap: 0
+      missouri:
+        ks_liheap: 0

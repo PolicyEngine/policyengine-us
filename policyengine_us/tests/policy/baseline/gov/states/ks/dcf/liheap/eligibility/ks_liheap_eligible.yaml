@@ -17,6 +17,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -35,6 +36,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -75,6 +77,7 @@
       spm_unit:
         members: [person1, person2]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
@@ -98,12 +101,13 @@
         members: [person1, person2]
         ks_tanf: 0
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
         state_code: KS
   output:
-    # KEESM 13330: at least one citizen (the child); size 1 limit 23,475 >
+    # KEESM 13330: at least one citizen (the child); size 1 limit 23,472 >
     # 12,000 (the parent's income counts).
     ks_liheap_eligible: true
 
@@ -118,6 +122,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         receives_housing_assistance: true
         heat_expense_included_in_rent: true
     households:
@@ -138,6 +143,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         receives_housing_assistance: true
         heat_expense_included_in_rent: false
     households:
@@ -159,6 +165,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         receives_housing_assistance: false
         heat_expense_included_in_rent: true
     households:
@@ -180,6 +187,7 @@
       spm_unit:
         members: [person1]
         heating_type: NATURAL_GAS
+        gas_expense: 1_200
         snap: 0
         ks_tanf: 0
     households:
@@ -187,7 +195,7 @@
         members: [person1]
         state_code: KS
   output:
-    # 30,000 > 23,475 and no categorical route.
+    # 30,000 > 23,472 and no categorical route.
     ks_liheap_eligible: false
 
 - name: Case 10, no asset test so large savings do not disqualify.
@@ -202,6 +210,7 @@
         members: [person1]
         spm_unit_cash_assets: 50_000
         heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
     households:
       household:
         members: [person1]
@@ -210,7 +219,7 @@
     # Plan 2.3: "Do you require an Assets test? No".
     ks_liheap_eligible: true
 
-- name: Case 11, household over the limit but receiving TANF is eligible.
+- name: Case 11, TANF receipt does not waive the household income limit.
   period: 2025
   input:
     people:
@@ -223,6 +232,7 @@
       spm_unit:
         members: [person1, person2]
         heating_type: PROPANE
+        bottled_gas_expense: 1_200
         ks_tanf: 1_200
     households:
       household:
@@ -230,6 +240,5 @@
         state_code: KS
   output:
     # 2025 season size 2 limit: 1.5 x (15,060 + 5,380) = 30,660 < 33,200
-    # gross, but TANF receipt makes the household categorically income
-    # eligible (plan 1.4).
-    ks_liheap_eligible: true
+    # gross; verified TANF income still enters the household test (KEESM 13360).
+    ks_liheap_eligible: false
