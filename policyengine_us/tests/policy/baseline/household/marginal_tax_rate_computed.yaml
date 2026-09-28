@@ -1,6 +1,9 @@
 # The marginal tax rate loop simulates adults whose adult_earnings_index (rank
 # by market income within the household) is 1 through
 # simulation.marginal_tax_rate_adults; everyone else gets a placeholder zero.
+# Cases here use the default cap of 2: every distinct parameter override pins
+# another copy of the tax-benefit system in the batched YAML runner, so cases
+# that vary the cap live in tests/core/test_marginal_tax_rate_coverage.py.
 
 - name: Default cap simulates the top two earners, not the two oldest adults
   period: 2024
@@ -25,67 +28,22 @@
     adult_earnings_index: [4, 1, 2, 3]
     marginal_tax_rate_computed: [false, true, true, false]
 
-- name: Raising the cap to the number of adults simulates every adult
-  period: 2024
-  input:
-    simulation.marginal_tax_rate_adults: 4
-    people:
-      person1:
-        age: 70
-      person2:
-        age: 40
-        employment_income: 80_000
-      person3:
-        age: 38
-        employment_income: 50_000
-      person4:
-        age: 22
-        employment_income: 30_000
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: TX
-  output:
-    marginal_tax_rate_computed: [true, true, true, true]
-
-- name: A cap of zero simulates nobody
-  period: 2024
-  input:
-    simulation.marginal_tax_rate_adults: 0
-    people:
-      person1:
-        age: 40
-        employment_income: 80_000
-      person2:
-        age: 38
-        employment_income: 50_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TX
-  output:
-    marginal_tax_rate_computed: [false, false]
-
 - name: Children are never simulated, even with earnings and room under the cap
   period: 2024
   input:
-    simulation.marginal_tax_rate_adults: 5
     people:
       person1:
         age: 40
         employment_income: 60_000
       person2:
-        age: 39
-        employment_income: 20_000
-      person3:
         age: 16
         employment_income: 8_000
-      person4:
+      person3:
         age: 10
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3]
         state_code: TX
   output:
-    adult_earnings_index: [1, 2, 0, 0]
-    marginal_tax_rate_computed: [true, true, false, false]
+    adult_earnings_index: [1, 0, 0]
+    marginal_tax_rate_computed: [true, false, false]

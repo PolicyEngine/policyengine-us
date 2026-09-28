@@ -155,3 +155,41 @@ def test_raising_the_cap_only_adds_people(mtr_by_cap, variable):
     assert (higher_flag[lower_flag]).all()
     assert higher_flag.sum() > lower_flag.sum()
     assert np.array_equal(lower[variable][lower_flag], higher[variable][lower_flag])
+
+
+# Three single roommates in Texas in 2024, each filing alone. Taxable income is
+# wages less the $14,600 standard deduction ($75,400, $45,400, $15,400), so a
+# $1,000 raise is taxed at 22%, 12% and 12%, plus 7.65% employee payroll tax.
+# Nobody crosses a bracket or payroll threshold, and Texas has no income tax.
+ROOMMATE_WAGES = (90_000, 60_000, 30_000)
+ROOMMATE_RATES = {
+    "marginal_tax_rate": (0.2965, 0.1965, 0.1965),
+    "federal_marginal_tax_rate": (0.22, 0.12, 0.12),
+    "fica_marginal_tax_rate": (0.0765, 0.0765, 0.0765),
+    "state_marginal_tax_rate": (0, 0, 0),
+}
+
+
+@pytest.mark.parametrize("cap", [2, 3])
+def test_roommates_match_hand_computed_rates(cap):
+    names = [f"roommate{i}" for i in range(len(ROOMMATE_WAGES))]
+    situation = {
+        "people": {
+            name: {"age": {YEAR: 40 - 5 * i}, "employment_income": {YEAR: wages}}
+            for i, (name, wages) in enumerate(zip(names, ROOMMATE_WAGES))
+        },
+        "tax_units": {f"{name}_tax_unit": {"members": [name]} for name in names},
+        "spm_units": {f"{name}_spm_unit": {"members": [name]} for name in names},
+        "households": {"home": {"members": names, "state_code": {YEAR: "TX"}}},
+    }
+    simulation = Simulation(
+        situation=situation,
+        reform=Reform.from_dict({CAP: {str(YEAR): cap}}, country_id="us"),
+    )
+    simulated = np.arange(len(names)) < cap
+    assert np.array_equal(
+        _calc(simulation, "marginal_tax_rate_computed").astype(bool), simulated
+    )
+    for variable, rates in ROOMMATE_RATES.items():
+        expected = np.where(simulated, rates, 0)
+        assert np.allclose(_calc(simulation, variable), expected, atol=1e-4)
