@@ -1,0 +1,43 @@
+- name: Case 1, reconstruct business income without including wages or changing net profit.
+  period: 2026
+  input:
+    employment_income: 36_000
+    self_employment_income: 18_000
+    work_expense: 6_000
+  output:
+    self_employment_gross_income: 24_000
+    self_employment_income: 18_000
+
+- name: Case 2, business expenses cover regular, SSTB, and farm self-employment together.
+  period: 2026
+  input:
+    self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
+    farm_operations_income: 5_000
+    work_expense: 4_000
+  output:
+    self_employment_gross_income: 18_000
+
+- name: Case 3, preserve a business loss when adding back its expenses.
+  period: 2026
+  input:
+    self_employment_income: -3_000
+    work_expense: 12_000
+  output:
+    self_employment_gross_income: 9_000
+    self_employment_income: -3_000
+
+- name: Case 4, omitted expenses use the ordinary zero default.
+  period: 2026
+  input:
+    self_employment_income: 12_000
+  output:
+    self_employment_gross_income: 12_000
+    work_expense: 0
+
+- name: Case 5, a loss without reported expenses cannot create negative gross income.
+  period: 2026
+  input:
+    self_employment_income: -3_000
+  output:
+    self_employment_gross_income: 0

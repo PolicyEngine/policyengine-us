@@ -1,1 +1,1 @@
-Add shared inputs for person-level work expenses and gross self-employment receipts, and household dwelling type.
+Add a shared person-level work expense input and derive gross self-employment income from existing net income and reported business expenses.
