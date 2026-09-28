@@ -19,7 +19,7 @@ class ks_liheap_countable_self_employment_income(Variable):
         expenses = person("ks_liheap_self_employment_expenses", period)
         deduction = max_(gross * p.self_employment_expense_rate, expenses)
         # Tax-net earnings cannot identify gross receipts or allowable costs.
-        net_fallback = sum(
-            max_(person(source, period), 0) for source in p.sources.self_employment
-        )
+        net_fallback = 0
+        for source in p.sources.self_employment:
+            net_fallback = net_fallback + max_(person(source, period), 0)
         return where(gross >= 0, max_(gross - deduction, 0), net_fallback)
