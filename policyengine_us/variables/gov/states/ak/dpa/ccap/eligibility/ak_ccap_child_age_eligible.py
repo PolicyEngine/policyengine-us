@@ -14,7 +14,7 @@ class ak_ccap_child_age_eligible(Variable):
 
     def formula(person, period, parameters):
         # This models PASS II/III under 7 AAC 41, with the under-13 limit
-        # in 7 AAC 41.060(a) and manual 4070-2. Court status alone does not
+        # in 7 AAC 41.350(a)(1) and manual 4070-2. Court status alone does not
         # extend this limit. PASS I (TANF, 7 AAC 45) and PASS IV protective
         # care are separate pathways, not established by this age test.
         p = parameters(period).gov.states.ak.dpa.ccap.age_threshold

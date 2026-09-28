@@ -6,7 +6,10 @@ class dc_ccsp_income_test_waived(Variable):
     entity = SPMUnit
     label = "Income test exemption under DC Child Care Subsidy Program (CCSP)"
     definition_period = MONTH
-    reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=11"
+    reference = (
+        "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=10",
+        "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=11",
+    )
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):

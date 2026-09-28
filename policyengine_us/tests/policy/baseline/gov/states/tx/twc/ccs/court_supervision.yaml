@@ -1,7 +1,10 @@
-# Texas has no general court-supervision age extension. Its older-child route
-# is DFPS-authorized protective child care (40 TAC 809.49), an agency
-# authorization that is not modeled, so is_under_court_supervision alone has
-# no effect on Texas CCS.
+# Texas's approved CCDF Plan 2.2.1(c) elects the court-supervision option
+# through 18 and lists court supervision as protective, but 40 TAC 809.41(a)
+# and 809.49(a)(2) deliver it only through DFPS-authorized protective child
+# care, an agency authorization that is not modeled. So
+# is_under_court_supervision alone has no effect on Texas CCS.
+# Authority: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=20
+# Authority: https://www.twc.texas.gov/sites/default/files/ogc/docs/rules-chapter-809-child-care-services-twc.pdf#page=30
 - name: Case 1, court supervision does not extend the age limit.
   period: 2026-01
   input:

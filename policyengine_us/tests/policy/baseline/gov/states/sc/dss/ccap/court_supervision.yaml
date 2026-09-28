@@ -1,5 +1,8 @@
 # Authority: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=21
-# Court status is distinct from protective-services or child-care authorization.
+# Court supervision extends the age limit through 18. From October 2024 the
+# protective services definition includes court supervision, so the copay is
+# waived (manual 2.4 and 3.4.2; plan 2.2.2(f) and 3.3.1(vi)). Income and
+# activity waivers are case-by-case (plan 2.2.2(g)-(h)) and not modeled.
 
 - name: Case 1, court-supervised child at age 12.
   period: 2026-01
@@ -143,17 +146,14 @@
     sc_ccap_age_group: [AGE_5_12_IN_SCHOOL, AGE_5_12_IN_SCHOOL]
     # Center, level C, full time (30 hours >= 25), age 5-12 in school, urban = $165
     sc_ccap_maximum_weekly_benefit: [0, 165]
-    # Fee scale for 2 people:
-    #   150% FPG floor: (15,960 + 5,680) * 1.5 / 12 = 2,705
-    #   85% SMI ceiling: 4,939.11 rounds to 4,939
-    #   Band width: ceil((4,939 - 2,705) / 5) = 447
-    #   3,000 > 2,705 and <= 2,705 + 447 = 3,152 => first paid tier, $6 per week
-    # Copay: 6 * 52 / 12 = 26; 2% cap: 3,000 * 0.02 = 60 => 26
-    sc_ccap_copay: 26
+    # Income 3,000 falls in the first paid fee-scale tier ($6 per week), but a
+    # court-supervised child falls in the protective services definition, so
+    # the copay is waived.
+    sc_ccap_copay: 0
     # Maximum monthly benefit: 165 * 52 / 12 = 715
     # Expense: 12,000 / 12 = 1,000
-    # Benefit: min(1,000, 715) - 26 = 689
-    sc_ccap: 689
+    # Benefit: min(1,000, 715) - 0 = 715
+    sc_ccap: 715
 
 - name: Case 10, without court supervision the same teenager receives nothing.
   period: 2026-01
@@ -191,3 +191,45 @@
     sc_ccap_eligible_child: [false, false]
     sc_ccap_eligible: false
     sc_ccap: 0
+
+- name: Case 11, the court-supervision copay waiver starts in October 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        weekly_hours_worked: 40
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # September 2024, before the waiver:
+    #   2-person SMI: 89,725 * (0.52 + 0.16) / 12 = 5,084.42 per month
+    #   Tier thresholds at 45% and 55% SMI: 2,288 and 2,796; at 65%: 3,305
+    #   Income 3,000 > 2,796 and <= 3,305 => third tier, $14 per week
+    #   Copay: 14 * 52 / 12 = 60.67; 2% cap: 3,000 * 0.02 = 60 => 60
+    # October 2024: the protective services definition waives the copay.
+    sc_ccap_copay:
+      2024-09: 60
+      2024-10: 0

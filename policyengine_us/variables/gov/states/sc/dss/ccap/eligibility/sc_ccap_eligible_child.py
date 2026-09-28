@@ -9,8 +9,7 @@ class sc_ccap_eligible_child(Variable):
     defined_for = StateCode.SC
     reference = (
         "https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=21",
-        "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=14",
-        "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=19",
+        "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=31",
     )
 
     def formula(person, period, parameters):

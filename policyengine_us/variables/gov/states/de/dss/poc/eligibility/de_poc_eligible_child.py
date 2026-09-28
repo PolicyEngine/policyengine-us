@@ -9,7 +9,7 @@ class de_poc_eligible_child(Variable):
     defined_for = StateCode.DE
     reference = (
         "https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml",
-        "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14",
+        "https://web.archive.org/web/20250830082037id_/https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=17",
         "https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21",
     )
 
@@ -17,7 +17,7 @@ class de_poc_eligible_child(Variable):
         p = parameters(period).gov.states.de.dss.poc
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        # The approved FFY 2025-2027 plan, section 2.2.1(c), elects the
+        # The FFY 2019-2021 through FFY 2025-2027 plans elect the
         # 45 CFR 98.20(a)(1)(ii) court-supervision age extension through 18.
         # Ordinary income, activity and copay rules still apply.
         court_supervision = (
@@ -36,7 +36,7 @@ class de_poc_eligible_child(Variable):
         standard_eligible = age_eligible & is_dependent & immigration_eligible
         # Foster care, protective services (DFS referral), and homeless
         # children are eligible regardless of dependency or immigration
-        # status (DSSM 11003.7).
+        # status (DSSM 11003.7.x).
         foster = person("is_in_foster_care", period)
         protective = person("receives_or_needs_protective_services", period)
         homeless = person.household("is_homeless", period.this_year)

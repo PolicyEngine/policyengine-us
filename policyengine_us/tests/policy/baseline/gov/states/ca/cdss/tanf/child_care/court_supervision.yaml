@@ -1,6 +1,9 @@
 # WIC 11323.2(a)(1)(A) and MPP 47-201.2 provide Stage One child care for a
 # child under court supervision, up to the MPP 42-101 age: under 18, or 18
-# and a full-time high school student. The ordinary limit is 12 or under.
+# and a full-time high school student (MPP 42-101.2). A disabled 18-year-old
+# may attend any school full-time (MPP 42-101.4-.6). The ordinary limit is 12
+# or under.
+# Authority: https://www.cdss.ca.gov/ord/entres/getinfo/pdf/4EAS.pdf#page=43
 - name: Case 1, court supervision extends the age limit through 17.
   period: 2026
   input:
@@ -125,3 +128,30 @@
     ca_calworks_child_care_child_age_eligible: [false, false]
     ca_calworks_child_care_eligible: false
     ca_calworks_child_care: 0
+
+- name: Case 7, full-time college extends the disabled route but not the court route at 18.
+  period: 2026
+  input:
+    state_code: [CA, CA]
+    age: [18, 18]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [true, false]
+    is_under_court_supervision: [false, true]
+    is_in_secondary_school: [false, false]
+    is_full_time_college_student: [true, true]
+  output:
+    ca_calworks_child_care_child_age_eligible: [true, false]
+
+- name: Case 8, a court-supervised 18-year-old in high school must attend full-time.
+  period: 2026
+  input:
+    state_code: [CA, CA]
+    age: [18, 18]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [true, true]
+    is_in_secondary_school: [false, false]
+    is_in_k12_school: [true, true]
+    is_full_time_student: [false, true]
+  output:
+    ca_calworks_child_care_child_age_eligible: [false, true]

@@ -1,6 +1,6 @@
 # Authority: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20
-# The FFY 2019-2021, 2022-2024 and 2025-2027 plans each elect the 45 CFR
-# 98.20(a)(1)(ii) court-supervision age extension through 18.
+# The FFY 2016-2018, 2019-2021, 2022-2024 and 2025-2027 plans each elect the
+# 45 CFR 98.20(a)(1)(ii) court-supervision age extension through 18.
 # Ordinary income, activity, immigration and copay rules still apply.
 
 - name: Case 1, court status alone qualifies under the plan election at age 13.
@@ -40,38 +40,26 @@
     nj_ccap_eligible_child: false
 
 - name: Case 4, the court route applies under the FFY 2019-2021 plan.
-  period: 2019-06
+  period: 2019-01
   input:
-    state_code:
-      2019: NJ
-    age:
-      2019: 13
-    is_tax_unit_dependent:
-      2019: true
-    immigration_status:
-      2019: CITIZEN
-    is_disabled:
-      2019: false
-    is_under_court_supervision:
-      2019: true
+    state_code: NJ
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
   output:
     nj_ccap_eligible_child: true
 
 - name: Case 5, the court route applies under the FFY 2022-2024 plan.
-  period: 2022-06
+  period: 2022-01
   input:
-    state_code:
-      2022: NJ
-    age:
-      2022: 17
-    is_tax_unit_dependent:
-      2022: true
-    immigration_status:
-      2022: CITIZEN
-    is_disabled:
-      2022: false
-    is_under_court_supervision:
-      2022: true
+    state_code: NJ
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
   output:
     nj_ccap_eligible_child: true
 
@@ -173,3 +161,15 @@
     is_under_court_supervision: [true, true, true, true]
   output:
     nj_ccap_eligible_child: [true, true, true, false]
+
+- name: Case 9, the court route applies under the FFY 2016-2018 plan.
+  period: 2017-01
+  input:
+    state_code: NJ
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nj_ccap_eligible_child: true

@@ -16,10 +16,13 @@ class nj_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.nj.njdhs.ccap
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        # The approved FFY 2025-2027 plan, section 2.2.1(c), elects the
-        # 45 CFR 98.20(a)(1)(ii) court-supervision age extension through 18;
-        # N.J.A.C. 10:15-1.3(a) lists only the under-13 and under-19 disabled
-        # definitions. Ordinary income, activity and copay rules still apply.
+        # The FFY 2025-2027 Initial Plan (certified 2024-09-27; approved
+        # 2024-11-09), section 2.2.1(c), and earlier plans elect the
+        # 45 CFR 98.20(a)(1)(ii) court-supervision age extension through 18.
+        # N.J.A.C. 10:15-1.3(a) lists the under-13 and under-19 disabled
+        # children and the SSI, Title IV-E and N.J.A.C. 10:90-2.7
+        # dependent-child cases, but no court route. Ordinary income, activity
+        # and copay rules still apply.
         court_supervision = (
             person("is_under_court_supervision", period.this_year)
             & p.eligibility.court_supervision_extension

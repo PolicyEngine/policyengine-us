@@ -13,11 +13,20 @@ class dc_ccsp_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.dc.dhs.ccsp.age_threshold
+        p = parameters(period).gov.states.dc.dhs.ccsp
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period)
-        court_supervision = person("is_under_court_supervision", period.this_year)
-        age_limit = where(is_disabled | court_supervision, p.disabled_child, p.child)
+        # The court-supervision route follows the CCDF plan elections, which
+        # start in FFY 2025-2027.
+        court_supervision = (
+            person("is_under_court_supervision", period.this_year)
+            & p.eligibility.court_supervision_extension
+        )
+        age_limit = where(
+            is_disabled | court_supervision,
+            p.age_threshold.disabled_child,
+            p.age_threshold.child,
+        )
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period)
         immigration_status_eligible = person(

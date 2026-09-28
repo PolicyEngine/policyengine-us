@@ -1,5 +1,6 @@
-# Authority: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/2025-2027_CCDF_State_Plan._For_Remediation._no_markup__2.pdf#page=17
-# Court status is distinct from protective-services or child-care authorization.
+# Authority: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=18
+# The FFY 2016-2018 and FFY 2025-2027 plans elect the court-supervision option
+# through 18; the FFY 2019-2021 and 2022-2024 plans decline it.
 
 - name: Case 1, court-supervised child at age 12.
   period: 2026-01
@@ -197,3 +198,27 @@
     nv_ccdp_eligible_child: [false, false]
     nv_ccdp_eligible: false
     nv_ccdp: 0
+
+- name: Case 12, the court route applies under the FFY 2016-2018 plan.
+  period: 2017-01
+  input:
+    state_code: NV
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 13, the court route does not apply under the FFY 2019-2021 plan.
+  period: 2019-01
+  input:
+    state_code: NV
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false

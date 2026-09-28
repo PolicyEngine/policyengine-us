@@ -1,8 +1,10 @@
-description: Delaware extends Purchase of Care age eligibility to children under court supervision.
+description: Delaware extends Purchase of Care age eligibility to children under court supervision up to the disabled child age threshold if this is true.
 values:
+  # The approved FFY 2016-2018 plan (effective June 1, 2016) answers No to the
+  # 45 CFR 98.20(a)(1)(ii) court-supervision option; earlier periods follow it.
+  2016-06-01: false
   # The FFY 2019-2021, FFY 2022-2024 and FFY 2025-2027 plans each elect the
-  # 45 CFR 98.20(a)(1)(ii) court-supervision extension with an upper age of
-  # 18 (under 19). Earlier plans were not reviewed.
+  # option with an upper age of 18 (under 19).
   2018-10-01: true
 metadata:
   unit: bool
@@ -10,7 +12,9 @@ metadata:
   label: Delaware Purchase of Care court-supervision age extension
   reference:
     - title: 45 CFR 98.20(a)(1)(ii)
-      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-C/section-98.20
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-C/section-98.20#p-98.20(a)(1)(ii)
+    - title: Delaware CCDF Plan FFY 2016-2018, Section 3.1.1(c)
+      href: https://web.archive.org/web/20170125085912id_/https://www.acf.hhs.gov/sites/default/files/occ/delaware_stplan_pdf_2016.pdf#page=60
     - title: Delaware CCDF Plan FFY 2019-2021, Section 3.1.1(c), upper age 18
       href: https://web.archive.org/web/2021id_/https://dhss.delaware.gov/dhss/dss/files/CC_StatePlan_2019-2021.pdf#page=63
     - title: Delaware CCDF Plan FFY 2022-2024, Section 3.1.1(c), upper age 18
