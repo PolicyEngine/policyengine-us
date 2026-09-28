@@ -8,7 +8,7 @@ class sd_cca_reason_for_care_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.SD
     reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8",
+        "https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=21",
         "https://sdlegislature.gov/Rules/Administrative/67:47:01:03",
     )
 

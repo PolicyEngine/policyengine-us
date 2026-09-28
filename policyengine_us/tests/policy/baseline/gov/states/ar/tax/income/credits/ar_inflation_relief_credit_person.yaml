@@ -450,3 +450,23 @@
     # Credit sunset after TY2023 -> $0 max for every status -> $0 per spouse.
     ar_inflation_relief_credit_person: [0, 0]
   absolute_error_margin: 0.01
+
+- name: The inflationary relief credit does not exist before 2022
+  period: 2021
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # Created for tax year 2022 by Act 1 of the Third Extraordinary Session of 2022
+    ar_inflation_relief_credit_person: 0
