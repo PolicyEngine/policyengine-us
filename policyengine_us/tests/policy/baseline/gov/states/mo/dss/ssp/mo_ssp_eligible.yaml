@@ -302,15 +302,17 @@
         age: 50
         is_blind: true
         ssi: 200
-        employment_income: 36_000
+        employment_income: 96_000
+        mo_sab_tax_exemption: 1_912
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 - $300 personal standard
-    # = $1,157.50, which leaves no remainder under the $1,073 consolidated
+    # Monthly earned = $8,000. ($8,000 - $85) x 0.5 = $3,957.50, less $1,912
+    # reported tax withholdings and the $800 personal standard =
+    # $1,245.50, which leaves no remainder under the $1,073 consolidated
     # standard.
     mo_ssp_eligible: false
 
@@ -475,3 +477,101 @@
   output:
     # $1,044 monthly pension leaves no remainder under the $1,044 standard.
     mo_ssp_eligible: false
+
+- name: Case 25, the tax exemption brings a blind worker under the consolidated standard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        employment_income: 36_000
+        mo_sab_tax_exemption: 529.5
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 = $1,457.50, less the $300
+    # personal standard = $1,157.50 before taxes, above the $1,073 standard.
+    # Less $529.50 reported tax withholdings, countable income is $628.
+    mo_ssp_eligible: true
+
+- name: Case 26, an undocumented SAB applicant is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        pension_income: 6_000
+        immigration_status: UNDOCUMENTED
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0405.030.00 applies the MO HealthNet for Families immigrant rule.
+    mo_ssp_eligible: false
+
+- name: Case 27, a permanent resident within the five-year bar is not eligible for SAB.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        pension_income: 6_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 3
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: false
+
+- name: Case 28, a permanent resident past the five-year bar is eligible for SAB.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        pension_income: 6_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: true
+
+- name: Case 29, a refugee within five years of entry is eligible for SAB.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        pension_income: 6_000
+        immigration_status: REFUGEE
+        years_since_us_entry: 1
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Refugees are exempt from the five-year bar.
+    mo_ssp_eligible: true

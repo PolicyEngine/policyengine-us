@@ -1,0 +1,42 @@
+- name: Case 1, a blind citizen meets the SAB immigrant status requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_immigration_status_eligible: true
+
+- name: Case 2, a blind undocumented person does not meet the requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_immigration_status_eligible: false
+
+- name: Case 3, the test only runs for blind people.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_immigration_status_eligible: false

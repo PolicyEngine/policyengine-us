@@ -10,8 +10,10 @@ class mo_ssp_resource_eligible(Variable):
     reference = (
         "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-050-00/",
         "https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1035-000-00/1035-005-00/",
-        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf",
-        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=4",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=5",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
     )
 

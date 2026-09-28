@@ -12,7 +12,7 @@
   output:
     mo_sab_countable_income: 0
 
-- name: Case 2, earnings get the $85 plus half exemption and the 10% personal standard.
+- name: Case 2, earnings get the $85 plus half and 10% personal standard when no taxes are reported.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -20,16 +20,23 @@
       person1:
         age: 50
         employment_income: 12_000
+        mo_withheld_income_tax: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_credits: 2_400
     households:
       household:
         members: [person1]
         state_code: MO
   output:
+    mo_sab_tax_exemption: 0
     # Monthly earned = $1,000. ($1,000 - $85) x 0.5 = $457.50, less the
-    # $100 personal standard (10% of $1,000) = $357.50.
+    # $100 personal standard = $357.50. Modeled taxes do not create an
+    # SAB deduction when no amount is reported.
     mo_sab_countable_income: 357.5
 
-- name: Case 3, higher earnings above the consolidated standard after exemptions.
+- name: Case 3, higher earnings net of reported tax withholdings.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -37,14 +44,15 @@
       person1:
         age: 50
         employment_income: 36_000
+        mo_sab_tax_exemption: 529.5
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 = $1,457.50, less the
-    # $300 personal standard = $1,157.50.
-    mo_sab_countable_income: 1_157.5
+    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 = $1,457.50, less $529.50
+    # reported tax withholdings and the $300 personal standard = $628.
+    mo_sab_countable_income: 628
 
 - name: Case 4, earnings below the $85 exemption are fully exempt.
   period: 2026-01
@@ -63,7 +71,7 @@
     # standard cannot push countable earnings below zero.
     mo_sab_countable_income: 0
 
-- name: Case 5, unearned income counts in full with no $20 general disregard.
+- name: Case 5, unearned income counts in full with no general disregard or tax deduction.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -71,12 +79,14 @@
       person1:
         age: 50
         pension_income: 12_876
+        mo_sab_tax_exemption: 100
     households:
       household:
         members: [person1]
         state_code: MO
   output:
     # $1,073 monthly pension is fully countable under 13 CSR 40-2.120(2)(B).
+    # Reported taxes cannot reduce income when there are no earnings.
     mo_sab_countable_income: 1_073
 
 - name: Case 6, earned and unearned income combine.
@@ -145,7 +155,8 @@
         state_code: MO
   output:
     # SSI would exclude all $1,000 for a blind student under 22; SAB applies
-    # only the Standard Earned Income Exemption Table: $457.50 - $100 = $357.50.
+    # the $85-plus-half exemption and personal standard without reported
+    # taxes: $457.50 - $100 = $357.50.
     mo_sab_countable_income: 357.5
 
 - name: Case 9, in-kind support and maintenance is excluded.
@@ -179,3 +190,141 @@
         state_code: MO
   output:
     mo_sab_countable_income: 500
+
+- name: Case 11, court-ordered child support paid is an expense of producing income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_tax_exemption: 529.5
+        child_support_expense: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Case 3's $628 less $300 monthly child support paid = $328.
+    mo_sab_countable_income: 328
+
+- name: Case 12, expenses of producing income do not reduce unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        pension_income: 6_000
+        alimony_expense: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Countable earnings of $357.50 (Case 2) less $500 alimony floor at $0; the
+    # $500 pension still counts in full.
+    mo_sab_countable_income: 500
+
+- name: Case 13, spouses keep their reported deductions including mandatory city earnings tax.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        traditional_ira_contributions: 6_000
+        mo_sab_tax_exemption: 329.5
+      person2:
+        age: 50
+        employment_income: 36_000
+        traditional_ira_contributions: 6_000
+        # $529.50 federal, state, and Social Security tax plus $30 city tax.
+        mo_sab_tax_exemption: 559.5
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_credits: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Each person's $1,157.50 countable earnings before taxes are reduced
+    # only by that person's reported amount, without AGI-based allocation.
+    mo_sab_countable_income: [828, 598]
+
+- name: Case 14, a dependent claimant keeps their own reported tax deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 60_000
+      person2:
+        age: 20
+        is_blind: true
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 36_000
+        mo_sab_tax_exemption: 329.5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_credits: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: ($5,000 - $85) x 0.5 - $500, without reported withholdings.
+    # Claimant: ($3,000 - $85) x 0.5 - $300 - $329.50.
+    mo_sab_countable_income: [1_957.5, 828]
+
+- name: Case 15, reported taxes cannot make countable earnings negative or reduce unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 12_000
+    pension_income: 6_000
+    mo_sab_tax_exemption: 1_000
+  output:
+    # The tax deduction exceeds $357.50 countable earnings; the pension remains.
+    mo_sab_countable_income: 500
+
+- name: Case 16, monthly tax deductions can change and be explicitly cleared.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 12_000
+    mo_sab_tax_exemption:
+      2026-01: 100
+      2026-02: 200
+      2026-03: 0
+  output:
+    mo_sab_countable_income:
+      2026-01: 257.5
+      2026-02: 157.5
+      2026-03: 357.5
+
+- name: Case 17, historical earnings accept reported taxes without calculating tax liability.
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    employment_income: 12_000
+    mo_sab_tax_exemption: 76.5
+  output:
+    mo_sab_countable_income: 281

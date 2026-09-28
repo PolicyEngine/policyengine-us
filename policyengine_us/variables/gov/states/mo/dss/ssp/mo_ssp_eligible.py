@@ -36,10 +36,17 @@ class mo_ssp_eligible(Variable):
         snc_countable_income = person("mo_snc_countable_income", period)
         facility_base_charge = person("mo_snc_facility_base_charge", period)
         snc_need_eligible = ~is_snc | (snc_countable_income < facility_base_charge)
+        # SAB is paid regardless of SSI receipt, so SSI does not screen
+        # immigration status.
+        immigration_eligible = person(
+            "mo_sab_immigration_status_eligible", period.this_year
+        )
+        sab_immigration_eligible = ~is_sab | immigration_eligible
         return (
             in_category
             & age_eligible
             & resource_eligible
             & sab_income_eligible
             & snc_need_eligible
+            & sab_immigration_eligible
         )
