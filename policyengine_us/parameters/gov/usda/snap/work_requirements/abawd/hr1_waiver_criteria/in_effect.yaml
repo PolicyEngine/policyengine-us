@@ -1,0 +1,49 @@
+# P.L. 119-21 section 10102(b) (approved July 4, 2025; FNS: "effective upon
+# enactment") struck the 7 U.S.C. 2015(o)(4)(A)(ii) "does not have a
+# sufficient number of jobs" waiver criterion and replaced it with a
+# noncontiguous-State criterion (unemployment at or above 1.5 times the
+# national rate). The dated waived_states and waived_counties lists already
+# record the actual post-enactment geography, so this switch changes nothing
+# under current law. Setting it to false models the pre-enactment criteria:
+# is_in_snap_abawd_waived_area then also treats as waived every area that
+# held a waiver on 2025-07-03, the last day before enactment, indefinitely
+# (assuming each such waiver would have been renewed). Months before
+# 2025-07-04 are unaffected.
+#
+# This switch is federal and independent of is_snap_abawd_hr1_in_effect: the
+# waiver-criteria change took effect on enactment in every State, including
+# California, Hawaii, and Alaska, whose other HR1 ABAWD changes start later.
+# It changes only the waiver geography; the age, dependent-child, and
+# exemption changes stay on is_snap_abawd_hr1_in_effect. To model all
+# pre-HR1 ABAWD rules, also set gov.usda.snap.work_requirements.abawd.in_effect
+# and the CA, HI, and AK hr1_in_effect parameters
+# (gov.states.{ca.cdss,hi.dhs,ak.dpa}.snap.work_requirements.abawd.hr1_in_effect)
+# to false.
+#
+# Counterfactual limits: the freeze assumes every waiver in effect on
+# 2025-07-03 is renewed indefinitely, although several would otherwise have
+# lapsed (PA on 2025-08-31; AZ, CO, DE, SD, and WI on 2025-09-30; AK on
+# 2025-10-31; KY on 2025-11-30), and FNS actually denied Delaware's FY2026
+# lack-of-sufficient-jobs renewal. New pre-enactment-criteria approvals after
+# 2025-07-03 are not modeled, except through the union with the current
+# lists. Secretary discretion (April 17, 2025 memorandum), the 12-month
+# duration limit, and Guam and the U.S. Virgin Islands are not modeled.
+description: The Department of Agriculture limits Supplemental Nutrition Assistance Program Able-Bodied Adult Without Dependents (ABAWD) time limit waivers to the Public Law 119-21 criteria when this is true.
+
+values:
+  0000-01-01: false
+  2025-07-04: true
+
+metadata:
+  unit: bool
+  period: month
+  label: SNAP ABAWD HR1 waiver criteria in effect
+  reference:
+    - title: Public Law 119-21, Section 10102(b) - Standardizing enforcement (7 U.S.C. 2015(o)(4) waiver criteria)
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=12
+    - title: Public Law 119-21 - Approved July 4, 2025
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=331
+    - title: 7 U.S.C. 2015(o)(4) (2023 edition, before P.L. 119-21) - Waiver
+      href: https://www.govinfo.gov/content/pkg/USCODE-2023-title7/pdf/USCODE-2023-title7-chap51-sec2015.pdf#page=10
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=1

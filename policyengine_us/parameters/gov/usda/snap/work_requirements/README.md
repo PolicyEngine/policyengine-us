@@ -4,8 +4,8 @@ This document records which SNAP work-requirement rules are modeled in
 PolicyEngine US, which are partially modeled, and which are pending, on a
 rule-by-rule and state-by-state basis. It covers general work registration
 (7 CFR 273.7), the Able-Bodied Adult Without Dependents (ABAWD) time limit
-(7 CFR 273.24), and the HR1/OBBBA changes (P.L. 119-21, Section 10102(a),
-effective 2025-07-04).
+(7 CFR 273.24), and the HR1/OBBBA changes (P.L. 119-21, Section 10102(a)
+and (b), effective 2025-07-04).
 
 Maintenance: this document and the accompanying coverage tests
 (`policyengine_us/tests/policy/baseline/gov/usda/snap/eligibility/work_requirements/state_coverage.yaml`)
@@ -29,6 +29,7 @@ land.
 | Removal of pre-HR1 homeless and veteran ABAWD exemptions | Modeled | Applied where HR1 is in effect via `is_snap_abawd_hr1_in_effect` |
 | Pregnancy exemption — 7 U.S.C. 2015(o)(3)(E) | Modeled | Uses the `is_pregnant` input variable |
 | Indian, Urban Indian, and California Indian ABAWD exemption — 7 U.S.C. 2015(o)(3)(F)-(G) | Partially modeled | `is_snap_abawd_indian_exempt` is consumed by the ABAWD formula but is an input variable with no formula; it defaults to false unless supplied |
+| ABAWD area waiver criteria, including the HR1 removal of the lack-of-sufficient-jobs criterion — P.L. 119-21, Section 10102(b); 7 U.S.C. 2015(o)(4) | Modeled | Dated waiver geography in `gov.usda.snap.work_requirements.abawd.waived_states` and `gov.usda.snap.work_requirements.abawd.waived_counties`. The pre-OBBBA counterfactual is available through `gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect`: setting it to false keeps every area waived on 2025-07-03 waived afterward, in every state, independent of `is_snap_abawd_hr1_in_effect`. It changes only waiver geography; a full pre-OBBBA ABAWD run also sets `gov.usda.snap.work_requirements.abawd.in_effect` and `gov.states.{ca.cdss,hi.dhs,ak.dpa}.snap.work_requirements.abawd.hr1_in_effect` to false |
 | Qualifying work-program participation or hours counting toward the ABAWD requirement | Pending | [#8823](https://github.com/PolicyEngine/policyengine-us/issues/8823); only employment hours (`weekly_hours_worked_before_lsr`) are counted |
 
 ## State-by-state HR1 ABAWD effective dates
@@ -40,8 +41,8 @@ to a person, based on their state.
 | --- | --- | --- | --- |
 | All states except CA, HI, AK | HR1 in effect from 2025-07-04 (`gov.usda.snap.work_requirements.abawd.in_effect`) | Federal effective date 2025-07-04 | Modeled |
 | CA | HR1 in effect from 2026-06-01 (`gov.states.ca.cdss.snap.work_requirements.abawd.hr1_in_effect`, per ACL 25-93) | Delayed implementation to 2026-06-01 | Modeled |
-| HI, AK | HR1 applied at the federal 2025-07-04 date | Delayed implementation to 2025-11-01 | Pending [#8821](https://github.com/PolicyEngine/policyengine-us/issues/8821); the `gov.usda.snap.work_requirements.abawd.exempt_states` parameter exists but is not consumed by any formula |
-| AK boroughs with high-unemployment waivers | No sub-state waiver geography | Borough-level ABAWD waivers | Pending [#8822](https://github.com/PolicyEngine/policyengine-us/issues/8822) |
+| HI, AK | HR1 in effect from 2025-11-01 (`gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect`, `gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect`) | Delayed implementation to 2025-11-01 | Modeled |
+| AK boroughs with ABAWD waivers | Borough and census-area waivers in `gov.usda.snap.work_requirements.abawd.waived_counties.ak` | Borough-level ABAWD waivers | Modeled; the FY2026 FNS approval lists 20 boroughs and census areas, while the parameter keeps all 29 FY2025 areas through 2026-10-31 (follow-up) |
 
 ## Data-dependent input limitations
 
