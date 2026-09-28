@@ -1,0 +1,22 @@
+description: Missouri limits eligibility to citizens and these qualified immigrant statuses under the Supplemental Aid to the Blind program.
+values:
+  # Battered immigrants, American Indians born in Canada, Amerasian
+  # immigrants, and trafficking victims are also qualified but have no
+  # immigration_status value.
+  1996-08-22:
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - PAROLED_ONE_YEAR
+    - CONDITIONAL_ENTRANT
+    - CUBAN_HAITIAN_ENTRANT
+metadata:
+  unit: list
+  period: year
+  label: Missouri SAB qualified immigrant statuses
+  reference:
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0405.030.00 — Citizenship and Immigrant Status
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/
+    - title: MO HealthNet for Families Manual § 1805.020.10 — Qualified Immigrant
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/

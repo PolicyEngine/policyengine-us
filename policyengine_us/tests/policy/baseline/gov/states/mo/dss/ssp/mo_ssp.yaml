@@ -552,3 +552,62 @@
     mo_ssp:
       2026-06: 917
       2026-07: 949
+
+- name: Case 28, the July 2026 SAB grant rounds a half dollar up.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi:
+          2026-07: 900.5
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $949 - $900.50 = $48.50, rounded to the nearest dollar (13 CSR 40-2.130(2)).
+    mo_ssp:
+      2026-07: 49
+
+- name: Case 29, SSI between the June and July 2026 maximums pays a grant only from July.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi:
+          2026-06: 930
+          2026-07: 930
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # June: $917 < $930 SSI. July: $949 - $930 = $19.
+    mo_ssp:
+      2026-06: 0
+      2026-07: 19
+
+- name: Case 30, a July 2026 SAB remainder under one dollar pays the $1 minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi:
+          2026-07: 948.6
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $949 - $948.60 = $0.40, raised to the $1 minimum.
+    mo_ssp:
+      2026-07: 1

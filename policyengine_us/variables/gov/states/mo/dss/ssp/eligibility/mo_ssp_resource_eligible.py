@@ -15,6 +15,7 @@ class mo_ssp_resource_eligible(Variable):
         "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3",
         "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=5",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=208.010",
     )
 
     def formula(person, period, parameters):
@@ -29,11 +30,15 @@ class mo_ssp_resource_eligible(Variable):
         # claimant is married and living with the spouse (§ 1035.005.00), so
         # the test follows the claimant's marital unit rather than the SPM unit.
         personal_resources = person("ssi_countable_resources", period.this_year)
-        countable_resources = person.marital_unit.sum(personal_resources)
         married = person.marital_unit.nb_persons() == 2
+        countable_resources = where(
+            married, person.marital_unit.sum(personal_resources), personal_resources
+        )
 
         p = parameters(period).gov.states.mo.dss.ssp.eligibility.resource_limit
         sab_limit = where(married, p.sab.couple, p.sab.individual)
         snc_limit = where(married, p.snc.couple, p.snc.individual)
         resource_limit = where(is_sab, sab_limit, snc_limit)
+        # RSMo 208.010.2(7) allows resources "not to exceed" the limit, so a
+        # claimant exactly at the limit passes.
         return ~(is_sab | is_snc) | (countable_resources <= resource_limit)

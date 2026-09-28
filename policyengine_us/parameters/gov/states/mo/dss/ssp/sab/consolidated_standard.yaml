@@ -1,10 +1,10 @@
 description: Missouri provides this amount as the consolidated standard under the Supplemental Aid to the Blind program.
 values:
   2011-01-01: 510
+  # 13 CSR 40-2.120(3)(A)2 raises the standard by each Title II COLA and
+  # rounds to the next highest dollar, but DSS publishes nearest-dollar
+  # figures ($1,019 x 1.025 = $1,044.48, published as $1,044).
   2022-01-01: 908
-  # No archived Appendix J shows the 2023 value; 13 CSR 40-2.120(3)(A)2
-  # raises the standard by the January 2023 Title II COLA of 8.7%, and
-  # $908 x 1.087 = $986.996 rounds to $987 ($987 x 1.032 = $1,019 in 2024).
   2023-01-01: 987
   2024-01-01: 1_019
   2025-01-01: 1_044
@@ -14,16 +14,16 @@ metadata:
   period: month
   label: Missouri SAB consolidated standard
   reference:
-    - title: 13 CSR 40-2.120(3) — Methods Used to Determine the Amount of Cash Payments
-      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
-    - title: RSMo § 208.030(4) — Aid to the blind supplemental payments
-      href: https://revisor.mo.gov/main/OneSection.aspx?section=208.030
+    - title: 13 CSR 40-2.120(3)(A)2 — Annual increase in the SAB consolidated standard
+      href: https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=14
     - title: MO DSS MHABD Appendix J (07/2022) — SAB consolidated standard $908 effective 01-01-22
-      href: https://web.archive.org/web/20220802064906/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
+      href: https://web.archive.org/web/20220802064906id_/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
+    - title: MO DSS IM-143 (12/05/2022) — SAB standard $987 for 2023
+      href: https://web.archive.org/web/20230130014550/https://dssmanuals.mo.gov/2022/12/05/im-143-2/
     - title: MO DSS MHABD Appendix J (07/2024) — SAB consolidated standard $1,019 effective 01-01-24
-      href: https://web.archive.org/web/20240612134513/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
-    - title: MO DSS MHABD Appendix J (2025) — SAB consolidated standard $1,044 effective 01-01-25
-      href: https://web.archive.org/web/20250831223642/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
+      href: https://web.archive.org/web/20240612134513id_/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
+    - title: MO DSS MHABD Appendix J (07/2025) — SAB consolidated standard $1,044 effective 01-01-25
+      href: https://web.archive.org/web/20250831223642id_/https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
     - title: MO DSS MHABD Appendix J (10/2026) — SAB consolidated standard $1,073 effective 01-01-26
       href: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
     - title: SSA State Assistance Programs for SSI Recipients, January 2011 — Missouri

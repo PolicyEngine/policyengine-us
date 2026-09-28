@@ -1,0 +1,37 @@
+description: Missouri uses these sources of unearned income under the Supplemental Aid to the Blind program.
+values:
+  # SSI is not income for the need test (§ 0410.020.00). Child support
+  # received counts for the person who holds it; § 0410.015.10 treats support
+  # for a child in the home as the child's income, but the model does not
+  # record whom it is paid for. Veterans benefits count in full because the
+  # excluded Aid and Attendance portion (§ 0410.015.15) is not separable.
+  1974-01-01:
+    - pension_income
+    - social_security
+    - disability_benefits
+    - veterans_benefits
+    - survivor_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - railroad_benefits
+    - strike_benefits
+    - gi_cash_assistance
+    - financial_assistance
+    - alimony_income
+    - child_support_received
+    - dividend_income
+    - interest_income
+    - rental_income
+    - gambling_winnings
+metadata:
+  unit: list
+  period: year
+  label: Missouri SAB unearned income sources
+  reference:
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.10 — Unearned Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-10/
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.15 — Excluded Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-15/
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.020.00 — Need Determination
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-020-00/

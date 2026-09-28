@@ -1,0 +1,16 @@
+description: Missouri uses these sources of earned income under the Supplemental Aid to the Blind program.
+values:
+  1974-01-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Missouri SAB earned income sources
+  reference:
+    - title: 13 CSR 40-2.050(1) — Definition of Earned Income
+      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-050
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.05 — Earned Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/

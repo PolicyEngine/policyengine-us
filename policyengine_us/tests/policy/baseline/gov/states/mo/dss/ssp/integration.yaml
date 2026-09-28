@@ -251,71 +251,108 @@
     mo_ssp: [342, 342]
 
 - name: Case 9, a blind worker receives the July SAB grant after reported taxes and support expenses.
-  period: 2026-07
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age:
-          2026: 50
-        is_blind:
-          2026: true
-        employment_income:
-          2026: 36_000
-        child_support_expense:
-          2026: 3_600
-        alimony_expense:
-          2026: 1_200
+        age: 50
+        is_blind: true
+        employment_income: 36_000
+        child_support_expense: 3_600
+        alimony_expense: 1_200
         # $529.50 federal, state, and Social Security tax plus $30 city tax.
-        mo_sab_tax_exemption: 559.5
+        mo_sab_reported_earnings_taxes:
+          2026-07: 559.5
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
-        state_code:
-          2026: MO
+        state_code: MO
   output:
-    # Manual §§ 0410.015.05.20 and 0410.015.05.25:
-    # ($3,000 - $85) x 0.5 - $300 personal standard - $559.50 taxes
-    # - $300 child support - $100 alimony = $198, below the $1,073 standard.
-    ssi_earned_income: 3_000
-    mo_sab_countable_income: 198
-    mo_ssp_category_eligible: true
-    mo_ssp_age_eligible: true
-    mo_ssp_resource_eligible: true
-    mo_ssp_eligible: true
+    # §§ 0410.015.05.20 and 0410.015.05.25: ($3,000 - $85) x 0.5 - $300
+    # personal standard - $559.50 reported taxes - $300 child support - $100
+    # alimony = $198, below the $1,073 standard.
+    ssi_earned_income:
+      2026-07: 3_000
+    mo_sab_countable_income:
+      2026-07: 198
+    mo_ssp_category_eligible:
+      2026-07: true
+    mo_ssp_age_eligible:
+      2026-07: true
+    mo_ssp_resource_eligible:
+      2026-07: true
+    mo_ssp_eligible:
+      2026-07: true
     # Earnings exceed the federal SSI limit. The July SAB maximum is $949.
-    ssi: 0
-    mo_ssp_personal_needs_allowance: 0
-    mo_ssp: 949
+    ssi:
+      2026-07: 0
+    mo_ssp_personal_needs_allowance:
+      2026-07: 0
+    mo_ssp:
+      2026-07: 949
 
-- name: Case 10, a blind worker with no reported deductions remains above the SAB income limit.
-  period: 2026-07
+- name: Case 10, a blind worker with no reported taxes remains above the SAB income limit.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age:
-          2026: 50
-        is_blind:
-          2026: true
-        employment_income:
-          2026: 36_000
+        age: 50
+        is_blind: true
+        employment_income: 36_000
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
-        state_code:
-          2026: MO
+        state_code: MO
   output:
     # ($3,000 - $85) x 0.5 - $300 = $1,157.50, above the $1,073 standard.
     # No tax deduction is inferred from the person's wages.
-    mo_sab_tax_exemption: 0
-    mo_sab_countable_income: 1_157.5
-    mo_ssp_category_eligible: true
-    mo_ssp_age_eligible: true
-    mo_ssp_resource_eligible: true
-    mo_ssp_eligible: false
-    ssi: 0
-    mo_ssp_personal_needs_allowance: 0
-    mo_ssp: 0
+    mo_sab_reported_earnings_taxes:
+      2026-07: 0
+    mo_sab_countable_income:
+      2026-07: 1_157.5
+    mo_ssp_category_eligible:
+      2026-07: true
+    mo_ssp_age_eligible:
+      2026-07: true
+    mo_ssp_resource_eligible:
+      2026-07: true
+    mo_ssp_eligible:
+      2026-07: false
+    ssi:
+      2026-07: 0
+    mo_ssp_personal_needs_allowance:
+      2026-07: 0
+    mo_ssp:
+      2026-07: 0
+
+- name: Case 11, an SSI recipient with $600 monthly earnings receives a partial July SAB grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        employment_income: 7_200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SSI: $994 - ($600 - $20 - $65) x 0.5 = $736.50.
+    # SAB: ($600 - $85) x 0.5 = $257.50, less the $60 personal standard =
+    # $197.50, below the $1,073 standard. No taxes are reported.
+    # Grant: $949 - $736.50 = $212.50, rounded to $213.
+    ssi:
+      2026-07: 736.5
+    mo_sab_countable_income:
+      2026-07: 197.5
+    mo_ssp_eligible:
+      2026-07: true
+    mo_ssp:
+      2026-07: 213

@@ -230,3 +230,124 @@
     mo_ssp_resource_eligible:
       2026-06: [false, true]
       2026-07: [true, true]
+
+- name: Case 11, a married SAB couple one cent over the July 2026 couple limit is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 8_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        ssi_countable_resources: 4_441.01
+        mo_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Combined $12,441.01 exceeds the $12,441 couple limit.
+    mo_ssp_resource_eligible:
+      2026-07: [false, true]
+
+- name: Case 12, a married SNC couple at the July 2026 couple limit becomes eligible in July.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 8_000
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+      person2:
+        age: 70
+        ssi_countable_resources: 4_441
+        mo_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Combined $12,441 exceeds the $12,137.55 June SNC couple limit and
+    # equals the $12,441 limit effective 2026-07-01.
+    mo_ssp_resource_eligible:
+      2026-06: [false, true]
+      2026-07: [true, true]
+
+- name: Case 13, a married SNC couple over the individual limit but under the couple limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_000
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+      person2:
+        age: 70
+        ssi_countable_resources: 500
+        mo_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Combined $1,500 exceeds the $999.99 individual limit but not the
+    # $2,000 couple limit.
+    mo_ssp_resource_eligible: [true, true]
+
+- name: Case 14, resources of unmarried household members are not pooled.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi_countable_resources: 5_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        ssi_countable_resources: 5_000
+        mo_ssp_living_arrangement: NONE
+      person3:
+        age: 20
+        ssi_countable_resources: 5_000
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # With no marital units declared, all three share one default unit, so
+    # nobody is married and person1's own $5,000 is tested against the
+    # $6,220.50 individual limit.
+    mo_ssp_resource_eligible:
+      2026-07: [true, true, true]
