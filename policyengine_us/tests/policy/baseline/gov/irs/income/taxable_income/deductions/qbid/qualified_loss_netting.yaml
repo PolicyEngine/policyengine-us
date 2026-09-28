@@ -1,0 +1,150 @@
+# Current-year allowed qualified losses; no suspended losses/carryforwards.
+- name: Spouse qualified loss reduces the joint QBI deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 400_000
+        self_employment_income: 200_000
+        w2_wages_from_qualified_business: 200_000
+      spouse:
+        age: 45
+        self_employment_income: -100_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    qualified_business_income: [197_321.85, -100_000]
+    qualified_business_income_deduction: 19_464.37
+
+- name: Net losses before wage limits with two spouses and three businesses
+  period: 2022
+  input:
+    people:
+      head:
+        qualified_business_income: 100_000
+        sstb_qualified_business_income: 400_000
+        w2_wages_from_qualified_business: 102_000
+        sstb_w2_wages_from_qualified_business: 100_000
+      spouse:
+        qualified_business_income: -150_000
+        w2_wages_from_qualified_business: 1_000_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        taxable_income_less_qbid: 390_100
+  output:
+    # SSTB applicability leaves 200,000; the 150,000 loss halves both profits.
+    # Non-SSTB: 10,000 - 50% * (10,000 - 1,000) = 5,500.
+    # SSTB: 20,000, below its applicable wage cap of 25,000.
+    qbid_amount: [25_500, 0]
+    qualified_business_income_deduction: 25_500
+
+- name: SSTB applicability precedes loss allocation and REIT stays separate
+  period: 2022
+  input:
+    filing_status: [SINGLE, HEAD_OF_HOUSEHOLD, SINGLE, HEAD_OF_HOUSEHOLD, SINGLE]
+    taxable_income_less_qbid: [195_050, 220_050, 195_050, 150_000, 150_000]
+    qualified_business_income: [100_000, 100_000, -20_000, -100_000, 0]
+    sstb_qualified_business_income: [-100_000, -100_000, 100_000, 50_000, 0]
+    w2_wages_from_qualified_business: [100_000, 100_000, 100_000, 100_000, 0]
+    sstb_w2_wages_from_qualified_business: [0, 0, 100_000, 100_000, 0]
+    qualified_reit_and_ptp_income: [0, 0, 0, 1_000, 0]
+  output:
+    qbid_amount: [10_000, 20_000, 6_000, 200, 0]
+
+- name: Qualified SE losses remain signed in both categories
+  period: 2022
+  input:
+    self_employment_income: [-50_000, 0]
+    sstb_self_employment_income: [0, -50_000]
+  output:
+    qualified_business_income: [-50_000, 0]
+    sstb_qualified_business_income: [0, -50_000]
+    qbid_amount: [0, 0]
+
+- name: Wages assigned to a loss-making SSTB cannot support the profitable non-SSTB
+  period: 2022
+  input:
+    filing_status: SINGLE
+    taxable_income_less_qbid: 195_050
+    qualified_business_income: 100_000
+    sstb_qualified_business_income: -20_000
+    w2_wages_from_qualified_business: 100_000
+    sstb_w2_wages_from_qualified_business: 80_000
+  output:
+    # SSTB loss after 50% applicability = 10,000; remaining QBI = 90,000.
+    # Non-SSTB wage cap = 50% * 20,000 = 10,000.
+    # Halfway through phase-in: 18,000 - 50% * (18,000 - 10,000).
+    qbid_amount: 14_000
+
+- name: Legacy SSTB flag preserves losses for netting across spouses
+  period: 2022
+  input:
+    people:
+      head:
+        qualified_business_income: 100_000
+        w2_wages_from_qualified_business: 100_000
+      spouse:
+        qualified_business_income: -20_000
+        business_is_sstb: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        taxable_income_less_qbid: 390_100
+  output:
+    qbid_amount: [18_000, 0]
+    qualified_business_income_deduction: 18_000
+
+- name: Minimum deduction nets only applicable SSTB income and losses
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    taxable_income_less_qbid: [300_000, 300_000, 239_250, 239_250, 300_000, 300_000]
+    qualified_business_income: [1_500, 500, 1_500, 1_499, 1_500, -1_000]
+    sstb_qualified_business_income: [-1_000, 1_000, -1_000, -1_000, 0, 1_500]
+    business_is_sstb: [false, false, false, false, true, true]
+  output:
+    qualified_business_income_deduction: [400, 0, 400, 99.9, 0, 0]
+
+- name: Fully excluded spouse SSTB loss does not remove the minimum deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 800_000
+        self_employment_income: 1_500
+      spouse:
+        age: 45
+        sstb_self_employment_income: -1_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    qualified_business_income_deduction: 400
+
+- name: Joint qualified losses greater than profits eliminate the business component
+  period: 2022
+  input:
+    people:
+      head:
+        qualified_business_income: 10_000
+      spouse:
+        qualified_business_income: -20_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        taxable_income_less_qbid: 100_000
+  output:
+    qbid_amount: [0, 0]
+    qualified_business_income_deduction: 0

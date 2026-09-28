@@ -8,6 +8,7 @@ class mt_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.MT
     reference = (
+        "https://dphhs.mt.gov/assets/ecfsd/childcare/documentsandresources/MontanaCCDFStatePlan.pdf#page=18",
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.201",
         "https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC21Eligibility070718.pdf#page=4",
     )
@@ -16,8 +17,11 @@ class mt_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.mt.dphhs.ccap.eligibility
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_limit = where(
-            is_disabled, p.special_needs_child_age_limit, p.child_age_limit
+            is_disabled | under_court_supervision,
+            p.special_needs_child_age_limit,
+            p.child_age_limit,
         )
         age_eligible = age < age_limit
         immigration_eligible = person(

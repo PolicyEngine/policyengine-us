@@ -282,14 +282,8 @@
   output:
     is_adult_for_medicaid_fc: [true, true, true, true]
 
-# KNOWN LIMITATION: medicaid_income_level measures Missouri income from the
-# whole dollar just below monthly income (ceil(m) - 1). When the exact
-# threshold is a whole dollar, the household $1 above it measures at exactly
-# the limit ($3,795 x 12 / 33,000 = 1.38), and the strict-less-than test
-# still passes because the float32 level compares below the float64
-# parameter, although Missouri would find $3,796 ineligible. This case pins
-# that behavior so a change to it is deliberate rather than silent.
-- name: MO adult $1 above the whole-dollar maximum ($3,796) still measures at the limit (known limitation)
+# A whole-dollar ceiling does not allow an additional dollar of income.
+- name: MO adult $1 above the whole-dollar maximum ($3,796), ineligible
   period: 2026
   input:
     people:
@@ -310,7 +304,7 @@
         members: [person1, person2, person3, person4]
         state_code: MO
   output:
-    is_adult_for_medicaid_fc: [true, true, true, true]
+    is_adult_for_medicaid_fc: [false, false, false, false]
 
 - name: MO adult $2 above the whole-dollar maximum ($3,797), ineligible
   period: 2026

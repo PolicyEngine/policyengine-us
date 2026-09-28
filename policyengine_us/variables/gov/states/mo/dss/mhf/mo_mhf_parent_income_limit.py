@@ -35,7 +35,4 @@ class mo_mhf_parent_income_limit(Variable):
         published_limit = np.ceil(
             np.round(monthly_limit + p.fpl_disregard * monthly_fpg, 2)
         )
-        # medicaid_income_level measures Missouri income from the whole dollar
-        # just below monthly income, so the limit is expressed on the same
-        # scale: income at the published dollar maximum is eligible.
-        return (published_limit - 1) / monthly_fpg
+        return published_limit / monthly_fpg

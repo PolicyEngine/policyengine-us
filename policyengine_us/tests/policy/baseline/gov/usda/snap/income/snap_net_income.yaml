@@ -7,3 +7,22 @@
     snap_deductions: 12
   output:
     snap_net_income: 12
+
+- name: Net income ending in exactly 50 cents rounds up despite float error
+  period: 2026-01
+  input:
+    # $2,048.65 - $743.15 = $1,305.50, rounded up to $1,306 under
+    # 7 CFR 273.10(e)(1)(ii)(A); single precision stores the difference
+    # as $1,305.4999.
+    snap_gross_income: 2_048.65
+    snap_deductions: 743.15
+  output:
+    snap_net_income: 1_306
+
+- name: Net income ending in 49 cents rounds down
+  period: 2026-01
+  input:
+    snap_gross_income: 2_048.64
+    snap_deductions: 743.15
+  output:
+    snap_net_income: 1_305
