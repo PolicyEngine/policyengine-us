@@ -6,12 +6,25 @@ class ca_fera_eligible(Variable):
     entity = Household
     definition_period = YEAR
     label = "Eligible for California FERA program"
-    documentation = "Eligible for California Alternate Rates for Energy"
+    documentation = (
+        "Eligible for California Family Electric Rate Assistance. PG&E Schedule "
+        "E-FERA admits separately metered residences, sub-metered tenants, and "
+        "other qualifying applicants in individually metered units, and bars "
+        "master-metered customers without sub-metering. As with CARE, the model "
+        "uses tenant_pays_utilities as a proxy, which over-excludes PG&E "
+        "residents of individually metered units whose landlord holds the "
+        "account."
+    )
     reference = (
         "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12",
-        # Applies to separately metered residences and sub-metered tenants.
+        # Applicability and Special Condition 2: separately metered residences
+        # and sub-metered tenants; bars master-metered customers without
+        # sub-metering.
         "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1",
+        # Special Condition 3: other qualifying applicants in individually
+        # metered units.
+        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=2",
     )
     defined_for = StateCode.CA
 
@@ -29,11 +42,11 @@ class ca_fera_eligible(Variable):
         ca_care_poverty_line = household("ca_care_poverty_line", period)
         income_limit = ca_care_poverty_line * p.fpl_limit
         income_eligible = income <= income_limit
-        # Check the household pays its own utilities, the model's proxy for
-        # the tariff's exclusion of non-sub-metered tenants of master-metered
-        # customers. This gate also keeps a household below the CARE income
-        # limit from passing ~care_eligible when CARE is denied only because
-        # utilities are included in rent.
+        # Check the household pays its own utilities, a proxy for the tariff's
+        # metering rules that over-excludes PG&E residents of individually
+        # metered units whose landlord holds the account. This gate also keeps
+        # a household below the CARE income limit from passing ~care_eligible
+        # when CARE is denied only because utilities are included in rent.
         pays_utilities = household("tenant_pays_utilities", period)
         return (
             income_eligible & eligible_household_size & ~care_eligible & pays_utilities
