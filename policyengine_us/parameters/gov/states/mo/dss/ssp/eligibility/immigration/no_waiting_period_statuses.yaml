@@ -1,0 +1,20 @@
+description: Missouri excludes these qualified immigrant statuses from the waiting period under the Supplemental Aid to the Blind and Supplemental Nursing Care programs.
+values:
+  1996-08-22:
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+metadata:
+  unit: list
+  period: year
+  label: Missouri SSP immigrant statuses with no waiting period
+  reference:
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0405.030.00 — Citizenship and Immigrant Status
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/
+    - title: MO HealthNet for Families Manual § 1805.020.10.10.05 — Qualified Immigrants With No Waiting Period
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/1805-020-10-10/1805-020-10-10-05/
+    - title: MO DSS MHABD Appendix K (07/2026) — Supplemental Nursing Care eligibility same as MO HealthNet Non-Spend Down
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3
+    - title: MO DSS MHABD Appendix K (07/2026) — MO HealthNet Non-Spend Down citizen or qualified non-citizen requirement
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=1

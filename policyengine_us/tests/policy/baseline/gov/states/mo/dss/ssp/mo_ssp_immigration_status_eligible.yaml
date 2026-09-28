@@ -1,4 +1,4 @@
-- name: Case 1, a citizen meets the SAB citizenship and immigrant status requirement.
+- name: Case 1, a citizen meets the Missouri SSP citizenship and immigrant status requirement.
   period: 2026
   input:
     people:
@@ -9,7 +9,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 2, an undocumented person does not meet the requirement.
   period: 2026
@@ -23,7 +23,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: false
+    mo_ssp_immigration_status_eligible: false
 
 - name: Case 3, a DACA recipient is not a qualified immigrant.
   period: 2026
@@ -37,7 +37,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: false
+    mo_ssp_immigration_status_eligible: false
 
 - name: Case 4, a permanent resident within five years of entry does not meet the requirement.
   period: 2026
@@ -52,7 +52,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: false
+    mo_ssp_immigration_status_eligible: false
 
 - name: Case 5, a permanent resident five years after entry meets the requirement.
   period: 2026
@@ -67,7 +67,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 6, a refugee has no waiting period, including after the 2026 federal Medicaid change.
   period: 2027
@@ -83,7 +83,7 @@
         state_code: MO
   output:
     # § 1805.020.10.10.05 lists refugees with no waiting period.
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 7, a Cuban or Haitian entrant has no waiting period.
   period: 2026
@@ -98,7 +98,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 8, a conditional entrant within five years does not meet the requirement.
   period: 2026
@@ -113,7 +113,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: false
+    mo_ssp_immigration_status_eligible: false
 
 - name: Case 9, an active-duty permanent resident has no waiting period.
   period: 2026
@@ -130,7 +130,7 @@
         state_code: MO
   output:
     # § 1805.020.10.10.10 waives the five-year period for active duty members.
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 10, the spouse of a veteran has no waiting period.
   period: 2026
@@ -154,7 +154,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: [true, true]
+    mo_ssp_immigration_status_eligible: [true, true]
 
 - name: Case 11, the dependent child of a veteran has no waiting period.
   period: 2026
@@ -181,7 +181,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: [true, true]
+    mo_ssp_immigration_status_eligible: [true, true]
 
 - name: Case 12, the requirement applies in years before the federal Medicaid status parameters.
   period: 2013
@@ -196,7 +196,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_sab_immigration_status_eligible: true
+    mo_ssp_immigration_status_eligible: true
 
 - name: Case 13, a non-Missouri resident is not evaluated.
   period: 2026
@@ -209,4 +209,4 @@
         members: [person1]
         state_code: KS
   output:
-    mo_sab_immigration_status_eligible: false
+    mo_ssp_immigration_status_eligible: false

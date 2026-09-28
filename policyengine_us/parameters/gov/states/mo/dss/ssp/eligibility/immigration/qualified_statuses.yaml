@@ -1,4 +1,4 @@
-description: Missouri limits eligibility to citizens and these qualified immigrant statuses under the Supplemental Aid to the Blind program.
+description: Missouri limits eligibility to citizens and these qualified immigrant statuses under the Supplemental Aid to the Blind and Supplemental Nursing Care programs.
 values:
   # Battered immigrants, American Indians born in Canada, Amerasian
   # immigrants, and trafficking victims are also qualified but have no
@@ -14,9 +14,13 @@ values:
 metadata:
   unit: list
   period: year
-  label: Missouri SAB qualified immigrant statuses
+  label: Missouri SSP qualified immigrant statuses
   reference:
     - title: MO DSS Supplemental Aid to the Blind Manual § 0405.030.00 — Citizenship and Immigrant Status
       href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/
     - title: MO HealthNet for Families Manual § 1805.020.10 — Qualified Immigrant
       href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/
+    - title: MO DSS MHABD Appendix K (07/2026) — Supplemental Nursing Care eligibility same as MO HealthNet Non-Spend Down
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3
+    - title: MO DSS MHABD Appendix K (07/2026) — MO HealthNet Non-Spend Down citizen or qualified non-citizen requirement
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=1

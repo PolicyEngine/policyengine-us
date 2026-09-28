@@ -1,25 +1,30 @@
 from policyengine_us.model_api import *
 
 
-class mo_sab_immigration_status_eligible(Variable):
+class mo_ssp_immigration_status_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Meets the Missouri SAB citizenship and immigrant status requirement"
+    label = "Meets the Missouri SSP citizenship and immigrant status requirement"
     definition_period = YEAR
     defined_for = StateCode.MO
     reference = (
         "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0804-000-00/0804-005-00/",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=1",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=5",
         "https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/",
         "https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/1805-020-10-10/1805-020-10-10-05/",
         "https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/1805-020-10-10/1805-020-10-10-10/",
-        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=5",
     )
 
     def formula(person, period, parameters):
-        # SAB applies the MO HealthNet for Families citizenship and immigrant
-        # status rules (§ 0405.030.00, § 1805.020.10). SAB is state-funded, so
+        # SAB (§ 0405.030.00) and Supplemental Nursing Care, which uses the
+        # OAA and PTD eligibility requirements (MHABD § 0804.005.00 and
+        # Appendix K), apply the MO HealthNet for Families citizenship and
+        # immigrant status rules (§ 1805.020.10). Both are state-funded, so
         # the federal Medicaid status changes of October 2026 do not apply.
-        p = parameters(period).gov.states.mo.dss.ssp.sab.immigration
+        p = parameters(period).gov.states.mo.dss.ssp.eligibility.immigration
         status = person("immigration_status", period)
         status_str = status.decode_to_str()
         citizen = status == status.possible_values.CITIZEN

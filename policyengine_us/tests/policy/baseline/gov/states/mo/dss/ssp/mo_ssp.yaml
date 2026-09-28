@@ -611,3 +611,24 @@
     # $949 - $948.60 = $0.40, raised to the $1 minimum.
     mo_ssp:
       2026-07: 1
+
+- name: Case 31, an undocumented RCF Level I resident receives no SNC grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400
+        immigration_status: UNDOCUMENTED
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # A citizen would receive min($1,300 - $1,200, $156) = $100 plus the PNA.
+    mo_ssp_eligible: false
+    mo_ssp: 0

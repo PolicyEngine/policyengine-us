@@ -831,3 +831,61 @@
         state_code: MO
   output:
     mo_ssp_eligible: true
+
+- name: Case 44, an undocumented SNC resident is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Appendix K: SNC requirements are the same as MO HealthNet Non-Spend Down,
+    # which requires a U.S. citizen or qualified non-citizen.
+    mo_ssp_eligible: false
+
+- name: Case 45, an SNC resident who is a permanent resident within five years is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: false
+
+- name: Case 46, an SNC resident who is a refugee within five years is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+        immigration_status: REFUGEE
+        years_since_us_entry: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: true
