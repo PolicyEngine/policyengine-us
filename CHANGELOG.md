@@ -1,3 +1,15 @@
+## [2.15.13] - 2026-09-28
+
+### Changed
+
+- Document that policy changes must be mirrored in Axiom RuleSpec (rulespec-us), and add a pull request template with the required `axiom:` line.
+
+### Fixed
+
+- Inputs to uprated variables supplied only for a year before 2015 no longer raise a TypeError when a later year reads them; they carry over unchanged to 2015 and are uprated from there.
+- Correct the SPM methodology page's account of which series each uprated input follows, and test that the page links every series an input follows.
+
+
 ## [2.15.12] - 2026-09-28
 
 ### Fixed
