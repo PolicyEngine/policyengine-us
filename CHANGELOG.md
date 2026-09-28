@@ -1,3 +1,30 @@
+## [2.15.14] - 2026-09-28
+
+### Fixed
+
+- Correct historical business-loss thresholds, suspend the limit for 2018–2020, and index future thresholds with IRS inflation rounding.
+
+
+## [2.15.13] - 2026-09-28
+
+### Changed
+
+- Document that policy changes must be mirrored in Axiom RuleSpec (rulespec-us), and add a pull request template with the required `axiom:` line.
+
+### Fixed
+
+- Inputs to uprated variables supplied only for a year before 2015 no longer raise a TypeError when a later year reads them; they carry over unchanged to 2015 and are uprated from there.
+- Correct the SPM methodology page's account of which series each uprated input follows, and test that the page links every series an input follows.
+
+
+## [2.15.12] - 2026-09-28
+
+### Fixed
+
+- Net eligible qualified business losses before component limits, preserve the minimum deduction after SSTB exclusions, and floor Missouri business income separately for each spouse.
+- Update the Michigan home heating credit funding factor to 60 percent for 2025.
+
+
 ## [2.15.11] - 2026-09-27
 
 ### Fixed
