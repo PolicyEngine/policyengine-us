@@ -1,7 +1,7 @@
 # Authority: https://des.az.gov/sites/default/files/media/AZ-CCDF-State-Plan-FFY-2025-2027.pdf#page=20
 # Court status is distinct from protective-services or child-care authorization.
 
-- name: AZ ordinary age remains eligible.
+- name: Case 1, ordinary age remains eligible.
   period: 2026-01
   input:
     state_code: AZ
@@ -14,7 +14,7 @@
   output:
     az_ccap_eligible_child: true
 
-- name: AZ court supervision alone does not extend eligibility at age 13.
+- name: Case 2, court supervision alone does not extend eligibility at age 13.
   period: 2026-01
   input:
     state_code: AZ
@@ -27,7 +27,7 @@
   output:
     az_ccap_eligible_child: false
 
-- name: AZ court supervision alone does not extend eligibility at age 18.
+- name: Case 3, court supervision alone does not extend eligibility at age 18.
   period: 2026-01
   input:
     state_code: AZ
@@ -40,7 +40,7 @@
   output:
     az_ccap_eligible_child: false
 
-- name: AZ court supervision alone does not extend eligibility at age 19.
+- name: Case 4, court supervision alone does not extend eligibility at age 19.
   period: 2026-01
   input:
     state_code: AZ
@@ -53,7 +53,7 @@
   output:
     az_ccap_eligible_child: false
 
-- name: AZ court supervision alone does not extend eligibility at age 40.
+- name: Case 5, court supervision alone does not extend eligibility at age 40.
   period: 2026-01
   input:
     state_code: AZ

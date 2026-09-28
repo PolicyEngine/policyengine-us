@@ -1,13 +1,16 @@
-description: Delaware limits the Purchase of Care program to disabled children younger than this age.
+description: Delaware limits the Purchase of Care program to children younger than this age who are disabled or, where the court-supervision extension applies, under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2024-01-01: 19
 
 metadata:
   unit: year
   period: year
-  label: Delaware Purchase of Care disabled child age threshold
+  label: Delaware Purchase of Care special needs or court supervision child age threshold
   reference:
     - title: 16 Del. Admin. Code 11003, Section 11003.3
       href: https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml
     - title: Delaware DSS Provider Handbook, Section C - Eligibility Requirements
       href: https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf#page=14
+    - title: Delaware CCDF Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18
+      href: https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21

@@ -1,7 +1,7 @@
 # Authority: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/CCDF%20FFY%202025-2027%20For%20District%20of%20Columbia.pdf#page=18
 # Court status is distinct from protective-services or child-care authorization.
 
-- name: DC court-supervised child at age 12.
+- name: Case 1, court-supervised child at age 12.
   period: 2026-01
   input:
     state_code: DC
@@ -13,7 +13,7 @@
   output:
     dc_ccsp_eligible_child: true
 
-- name: DC court-supervised child at age 13.
+- name: Case 2, court-supervised child at age 13.
   period: 2026-01
   input:
     state_code: DC
@@ -25,7 +25,7 @@
   output:
     dc_ccsp_eligible_child: true
 
-- name: DC court-supervised child at age 17.
+- name: Case 3, court-supervised child at age 17.
   period: 2026-01
   input:
     state_code: DC
@@ -37,7 +37,7 @@
   output:
     dc_ccsp_eligible_child: true
 
-- name: DC court-supervised child at age 18.
+- name: Case 4, court-supervised child at age 18.
   period: 2026-01
   input:
     state_code: DC
@@ -49,7 +49,7 @@
   output:
     dc_ccsp_eligible_child: true
 
-- name: DC court-supervised child at age 19.
+- name: Case 5, court-supervised child at age 19.
   period: 2026-01
   input:
     state_code: DC
@@ -61,7 +61,7 @@
   output:
     dc_ccsp_eligible_child: false
 
-- name: DC court-supervised child at age 40.
+- name: Case 6, court-supervised child at age 40.
   period: 2026-01
   input:
     state_code: DC
@@ -73,7 +73,7 @@
   output:
     dc_ccsp_eligible_child: false
 
-- name: DC older child without court supervision.
+- name: Case 7, older child without court supervision.
   period: 2026-01
   input:
     state_code: DC
@@ -85,7 +85,7 @@
   output:
     dc_ccsp_eligible_child: false
 
-- name: DC foster-care placement waives the income test only in the placement month.
+- name: Case 8, foster-care placement waives the income test only in the placement month.
   period: 2026
   input:
     people:
@@ -114,3 +114,109 @@
     dc_ccsp_income_test_waived:
       2026-01: false
       2026-06: true
+
+- name: Case 9, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [DC, DC, DC, DC]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    dc_ccsp_eligible_child: [true, true, true, false]
+
+- name: Case 10, a court-supervised 15-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # person2: age 15 >= 13 child limit, but not disabled and under court
+    # supervision, so the under-19 ceiling applies => eligible child.
+    dc_ccsp_eligible_child: [false, true]
+    # Manual 2.4.2.1: a court-supervised eligible child waives income, activity
+    # and copayment requirements.
+    dc_ccsp_income_test_waived: true
+    dc_ccsp_qualified_need_eligible: true
+    # 2026 FPG, 2 people: 15,960 + 5,680 = 21,640/yr = 1,803.33/mo.
+    # Income 45,000 / 12 = 3,750 <= 3 * 1,803.33 = 5,410, so eligible anyway.
+    dc_ccsp_income_eligible: true
+    dc_ccsp_eligible: true
+    # Age 15 * 12 = 180 months >= 60 => school-age band => before-or-after row.
+    dc_ccsp_child_category:
+      [SCHOOL_AGE_BEFORE_OR_AFTER, SCHOOL_AGE_BEFORE_OR_AFTER]
+    # Child center, school-age before or after, full-time traditional:
+    # $36.74/day * 20 days = 734.80.
+    dc_ccsp_maximum_subsidy_amount: [0, 734.80]
+    # The sliding fee still computes a per-child fee: ratio 3,750 / 1,803.33
+    # = 2.08, in the 2.01 bracket => $4.87/day full time * 20 days = 97.40.
+    # Income 3,750 is not below 1.5 * 1,803.33 = 2,705, so only the waiver
+    # exempts the family.
+    dc_ccsp_first_child_copay: [0, 97.40]
+    # The court-supervision waiver makes the family qualified-need eligible,
+    # which exempts the copay.
+    dc_ccsp_copay: 0
+    # Benefit: min(12,000 / 12 = 1,000, 734.80) - 0 = 734.80.
+    dc_ccsp: 734.80
+
+- name: Case 11, without court supervision the same teenager receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_under_court_supervision: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # person2: age 15 is not under the ordinary child limit of 13.
+    dc_ccsp_eligible_child: [false, false]
+    dc_ccsp_income_test_waived: false
+    dc_ccsp_eligible: false
+    dc_ccsp: 0

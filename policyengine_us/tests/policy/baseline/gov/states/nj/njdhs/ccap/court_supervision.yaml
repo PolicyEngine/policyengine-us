@@ -1,9 +1,9 @@
 # Authority: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20
-# The approved FFY 2025-2027 plan, section 2.2.1(c), elects the 45 CFR
-# 98.20(a)(1)(ii) court-supervision age extension through 18 from 2024-10-01.
+# The FFY 2019-2021, 2022-2024 and 2025-2027 plans each elect the 45 CFR
+# 98.20(a)(1)(ii) court-supervision age extension through 18.
 # Ordinary income, activity, immigration and copay rules still apply.
 
-- name: NJ court status alone qualifies under the plan election at age 13.
+- name: Case 1, court status alone qualifies under the plan election at age 13.
   period: 2026-01
   input:
     state_code: NJ
@@ -15,7 +15,7 @@
   output:
     nj_ccap_eligible_child: true
 
-- name: NJ court status alone qualifies under the plan election at age 18.
+- name: Case 2, court status alone qualifies under the plan election at age 18.
   period: 2026-01
   input:
     state_code: NJ
@@ -27,7 +27,7 @@
   output:
     nj_ccap_eligible_child: true
 
-- name: NJ court status alone at age 19 is past the under-19 ceiling.
+- name: Case 3, court status alone at age 19 is past the under-19 ceiling.
   period: 2026-01
   input:
     state_code: NJ
@@ -39,39 +39,43 @@
   output:
     nj_ccap_eligible_child: false
 
-- name: NJ court status alone before the FFY 2025-2027 election is insufficient.
-  period: 2024-06
+- name: Case 4, the court route applies under the FFY 2019-2021 plan.
+  period: 2019-06
   input:
     state_code:
-      2024: NJ
+      2019: NJ
     age:
-      2024: 13
+      2019: 13
     is_tax_unit_dependent:
-      2024: true
+      2019: true
     immigration_status:
-      2024: CITIZEN
+      2019: CITIZEN
     is_disabled:
-      2024: false
+      2019: false
     is_under_court_supervision:
-      2024: true
+      2019: true
   output:
-    nj_ccap_eligible_child: false
+    nj_ccap_eligible_child: true
 
-- name: NJ court-supervision election takes effect with the FFY 2025 plan period.
-  period: 2024
+- name: Case 5, the court route applies under the FFY 2022-2024 plan.
+  period: 2022-06
   input:
-    state_code: NJ
-    age: 13
-    is_tax_unit_dependent: true
-    immigration_status: CITIZEN
-    is_disabled: false
-    is_under_court_supervision: true
+    state_code:
+      2022: NJ
+    age:
+      2022: 17
+    is_tax_unit_dependent:
+      2022: true
+    immigration_status:
+      2022: CITIZEN
+    is_disabled:
+      2022: false
+    is_under_court_supervision:
+      2022: true
   output:
-    nj_ccap_eligible_child:
-      2024-09: false
-      2024-10: true
+    nj_ccap_eligible_child: true
 
-- name: NJ court-supervised 16-year-old in an income-eligible working family pays an ordinary copay.
+- name: Case 6, court-supervised 16-year-old in an income-eligible working family pays an ordinary copay.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -122,7 +126,7 @@
     nj_ccap_copay: 60
     nj_ccap: 940
 
-- name: NJ over-income family with a court-supervised child gets no benefit.
+- name: Case 7, over-income family with a court-supervised child gets no benefit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -157,3 +161,15 @@
     nj_ccap_income_eligible: false
     nj_ccap_eligible: false
     nj_ccap: 0
+
+- name: Case 8, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [NJ, NJ, NJ, NJ]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    nj_ccap_eligible_child: [true, true, true, false]

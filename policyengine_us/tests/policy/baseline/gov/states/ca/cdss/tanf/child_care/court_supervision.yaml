@@ -35,3 +35,93 @@
     is_under_court_supervision: [false, false]
   output:
     ca_calworks_child_care_child_age_eligible: [true, false]
+
+- name: Case 4, court supervision combines with disability under the same age limits.
+  period: 2026
+  input:
+    state_code: [CA, CA, CA, CA]
+    age: [17, 18, 18, 19]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [true, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+    is_in_secondary_school: [false, false, true, true]
+  output:
+    ca_calworks_child_care_child_age_eligible: [true, false, true, false]
+
+- name: Case 5, a court-supervised 16-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+      person2:
+        age: 16
+        is_disabled: false
+        is_under_court_supervision: true
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: WEEKLY
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Stage One requires CalWORKs cash aid; receipt is supplied as an
+        # input because the cash grant is not under test here.
+        ca_tanf: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person2: age 16, not disabled, under court supervision;
+    # 16 < disabled_age_threshold 18 => eligible child.
+    ca_calworks_child_care_child_age_eligible: [false, true]
+    ca_calworks_child_care_age_eligible: true
+    # person1 earned income 12,000 > 0.
+    ca_calworks_child_care_meets_work_requirement: true
+    ca_calworks_child_care_eligible: true
+    # 5 days * 8 hours = 40 hours/week >= 30-hour weekly threshold.
+    ca_calworks_child_care_full_time: [false, true]
+    # Age 16 > higher age threshold 5 => older rate; child care center,
+    # weekly, full time = 277.15.
+    ca_calworks_child_care_payment_standard: [0, 277.15]
+    # Weekly billing: 52 / 12 = 4.33 weeks per month.
+    ca_calworks_child_care_time_coefficient: [0, 4.33]
+    # min(277.15 * 52 / 12 = 1,200.98, expenses 18,000 / 12 = 1,500)
+    # * standard payment factor 1 = 1,200.98
+    ca_calworks_child_care_payment: [0, 1_200.98]
+    ca_calworks_child_care: 1_200.98
+
+- name: Case 6, without court supervision the same teenager receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+      person2:
+        age: 16
+        is_disabled: false
+        is_under_court_supervision: false
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: WEEKLY
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person2: age 16 >= ordinary age threshold 13, no extended route.
+    ca_calworks_child_care_child_age_eligible: [false, false]
+    ca_calworks_child_care_eligible: false
+    ca_calworks_child_care: 0

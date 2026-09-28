@@ -1,5 +1,5 @@
 # Court/referral approvals are child-specific; rates are fixed here to isolate eligibility and payment scope.
-- name: DC court-supervised dependent age 18 and family waivers
+- name: Case 1, court-supervised dependent age 18 and family waivers.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -28,7 +28,7 @@
   output:
     dc_ccsp_income_test_waived: true
     dc_ccsp_eligible: true
-- name: DC court-supervised dependent age 19 and family waivers
+- name: Case 2, court-supervised dependent age 19 and family waivers.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -57,7 +57,7 @@
   output:
     dc_ccsp_income_test_waived: false
     dc_ccsp_eligible: false
-- name: DC court-supervised dependent age 40 and family waivers
+- name: Case 3, court-supervised dependent age 40 and family waivers.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -86,7 +86,7 @@
   output:
     dc_ccsp_income_test_waived: false
     dc_ccsp_eligible: false
-- name: DC parent court status does not waive child-care family requirements
+- name: Case 4, parent court status does not waive child-care family requirements.
   period: 2026-01
   absolute_error_margin: 0.01
   input:

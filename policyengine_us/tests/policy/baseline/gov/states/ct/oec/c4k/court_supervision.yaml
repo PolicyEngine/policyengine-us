@@ -1,7 +1,7 @@
 # Authority: https://www.ctoec.org/forms-documents/25-27-ccdf-plan.pdf#page=17
 # Court status is distinct from protective-services or child-care authorization.
 
-- name: CT ordinary age remains eligible.
+- name: Case 1, ordinary age remains eligible.
   period: 2026-01
   input:
     state_code: CT
@@ -13,7 +13,7 @@
   output:
     ct_c4k_eligible_child: true
 
-- name: CT court supervision alone does not extend eligibility at age 13.
+- name: Case 2, court supervision alone does not extend eligibility at age 13.
   period: 2026-01
   input:
     state_code: CT
@@ -25,7 +25,7 @@
   output:
     ct_c4k_eligible_child: false
 
-- name: CT court supervision alone does not extend eligibility at age 18.
+- name: Case 3, court supervision alone does not extend eligibility at age 18.
   period: 2026-01
   input:
     state_code: CT
@@ -37,7 +37,7 @@
   output:
     ct_c4k_eligible_child: false
 
-- name: CT court supervision alone does not extend eligibility at age 19.
+- name: Case 4, court supervision alone does not extend eligibility at age 19.
   period: 2026-01
   input:
     state_code: CT
@@ -49,7 +49,7 @@
   output:
     ct_c4k_eligible_child: false
 
-- name: CT court supervision alone does not extend eligibility at age 40.
+- name: Case 5, court supervision alone does not extend eligibility at age 40.
   period: 2026-01
   input:
     state_code: CT

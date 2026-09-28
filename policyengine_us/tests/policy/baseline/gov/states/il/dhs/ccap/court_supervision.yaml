@@ -35,3 +35,108 @@
     is_under_court_supervision: true
   output:
     il_ccap_eligible_child: false
+
+- name: Case 4, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [IL, IL, IL, IL]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    il_ccap_eligible_child: [true, true, true, false]
+
+- name: Case 5, a court-supervised 16-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_200
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 16
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # person2: age 16 >= 13 child limit, but not disabled and under court
+    # supervision, so the under-19 ceiling applies => eligible child.
+    il_ccap_eligible_child: [false, true]
+    # Countable income: 31,200 / 12 = 2,600.
+    il_ccap_countable_income: 2_600
+    # 2026 FPG, 2 people: 15,960 + 5,680 = 21,640/yr = 1,803.33/mo.
+    # New-applicant limit: 2.25 * 1,803.33 = 4,057.50 >= 2,600.
+    il_ccap_income_eligible: true
+    il_ccap_parent_meets_working_requirements: true
+    il_ccap_eligible: true
+    # Cook County => Group 1A; DCC_SACC => licensed center.
+    il_ccap_county_group: GROUP_1A
+    il_ccap_provider_type: [LICENSED_CENTER, LICENSED_CENTER]
+    il_ccap_child_age_group: [AGE_THREE_OR_OLDER, AGE_THREE_OR_OLDER]
+    # 8 hours/day is from 5 through 12 hours => one full day unit.
+    il_ccap_care_duration: [NONE, FULL_DAY]
+    # Licensed center, Group 1A, age three or older, full day: $46/day.
+    il_ccap_max_daily_rate: [0, 46]
+    # 46 * 20 days = 920.
+    il_ccap_max_monthly_reimbursement: [0, 920]
+    # A 16-year-old is above the Table B school-age maximum of 13 and in
+    # full-day care, so Table A applies.
+    il_ccap_table_b_applies: false
+    # Table A, family size 2, $2,600 falls in the $2,469 bracket => $123.
+    il_ccap_copay: 123
+    # Benefit: min(14,400 / 12 = 1,200, 920) - 123 = 797.
+    il_ccap: 797
+
+- name: Case 6, without court supervision the same teenager receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_200
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 16
+        is_disabled: false
+        is_under_court_supervision: false
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # person2: age 16 is not under the ordinary child limit of 13.
+    il_ccap_eligible_child: [false, false]
+    il_ccap_eligible: false
+    il_ccap: 0

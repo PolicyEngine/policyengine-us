@@ -1,11 +1,14 @@
-description: South Carolina limits the Child Care Scholarship Program to disabled children younger than this age.
+description: South Carolina limits the Child Care Scholarship Program to children younger than this age who are disabled or under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2022-10-01: 19
 
 metadata:
   unit: year
   period: year
-  label: South Carolina CCAP disabled child age limit
+  label: South Carolina CCAP special needs or court supervision child age limit
   reference:
     - title: SC CCAP Policy Manual Vol. 038 Section 2.1.2
       href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=30
+    - title: South Carolina CCDF Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18.00
+      href: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=21

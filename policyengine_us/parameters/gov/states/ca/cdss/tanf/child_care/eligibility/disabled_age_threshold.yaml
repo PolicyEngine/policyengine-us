@@ -1,12 +1,17 @@
-description: California provides the CalWORKs Child Care to disabled children below this age.
-
+description: California limits CalWORKs Stage One child care for a disabled or court-supervised child to children younger than this age, or of this age and a full-time high school student, under the CalWORKs program.
+# MPP 47-201.2 limits both routes to the MPP 42-101 age: under 18, or 18 and a
+# full-time high school or vocational student expected to finish before 19.
 values:
   2017-11-16: 18
 
 metadata:
   unit: year
   period: year
-  label: California CalWORKs Child Care disabled age threshold
+  label: California CalWORKs Child Care disabled or court supervision age threshold
   reference:
-  - title: Los Angeles Department of Public Social Services E-Policy | Child Care Overview
-    href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2
+    - title: Welf. & Inst. Code 11323.2(a)(1)(A) (as amended by AB 119, 2025, Section 12)
+      href: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260AB119
+    - title: MPP 47-201.2, Stage One Child Care Eligibility, Age Requirements
+      href: https://www.cdss.ca.gov/ord/entres/getinfo/pdf/14EAS.pdf#page=34
+    - title: MPP 42-101, Age Requirement
+      href: https://www.cdss.ca.gov/ord/entres/getinfo/pdf/4EAS.pdf#page=43

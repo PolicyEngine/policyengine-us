@@ -1,11 +1,14 @@
-description: New Jersey limits the Child Care Assistance Program to children with special needs younger than this age.
+description: New Jersey limits the Child Care Assistance Program to children younger than this age who have special needs or, where the court-supervision extension applies, are under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2024-01-01: 19
 
 metadata:
   unit: year
   period: year
-  label: New Jersey CCAP special needs child age threshold
+  label: New Jersey CCAP special needs or court supervision child age threshold
   reference:
     - title: CCDF State Plan for NJ FFY 2025-2027, Section 2.2.1b
       href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=19
+    - title: CCDF State Plan for NJ FFY 2025-2027, Section 2.2.1c, upper age 18
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=20

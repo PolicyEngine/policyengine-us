@@ -1,13 +1,16 @@
-description: Arkansas extends School Readiness Assistance eligibility to children with verified disabilities under this age.
+description: Arkansas extends School Readiness Assistance eligibility to children under this age who have verified disabilities or are under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2025-10-01: 19
 
 metadata:
   unit: year
   period: year
-  label: Arkansas SRA child age limit (disabled extension)
+  label: Arkansas SRA special needs or court supervision child age limit
   reference:
     - title: Arkansas CCDF Plan 2025-2027, Section 2.2.1 Eligibility Definitions
       href: https://dese.ade.arkansas.gov/Files/2025-2027_CCDF_State_Plan_Final_4.26.24.1REV_OEC.pdf#page=18
+    - title: Arkansas CCDF Plan FFY 2025-2027 (final), Section 2.2.1(b)-(c), upper age 18.00
+      href: https://dese.ade.arkansas.gov/Files/CCDF_FFY_2025-2027_Final_June_DL_OEC.pdf#page=17
     - title: Arkansas FSU Procedural Manual, Section 5.6.1 Priority and Waiver Types — Children with Special Needs
       href: https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=32

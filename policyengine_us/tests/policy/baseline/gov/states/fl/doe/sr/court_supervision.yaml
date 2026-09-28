@@ -1,7 +1,7 @@
 # Authority: https://www.fldoe.org/core/fileparse.php/20628/urlt/2025-2027CCDFStatePlan.pdf#page=23
 # Court status is distinct from protective-services or child-care authorization.
 
-- name: FL ordinary age remains eligible.
+- name: Case 1, ordinary age remains eligible.
   period: 2026-01
   input:
     state_code: FL
@@ -13,7 +13,7 @@
   output:
     is_fl_sr_age_eligible: true
 
-- name: FL court supervision alone does not extend eligibility at age 13.
+- name: Case 2, court supervision alone does not extend eligibility at age 13.
   period: 2026-01
   input:
     state_code: FL
@@ -25,7 +25,7 @@
   output:
     is_fl_sr_age_eligible: false
 
-- name: FL court supervision alone does not extend eligibility at age 18.
+- name: Case 3, court supervision alone does not extend eligibility at age 18.
   period: 2026-01
   input:
     state_code: FL
@@ -37,7 +37,7 @@
   output:
     is_fl_sr_age_eligible: false
 
-- name: FL court supervision alone does not extend eligibility at age 19.
+- name: Case 4, court supervision alone does not extend eligibility at age 19.
   period: 2026-01
   input:
     state_code: FL
@@ -49,7 +49,7 @@
   output:
     is_fl_sr_age_eligible: false
 
-- name: FL court supervision alone does not extend eligibility at age 40.
+- name: Case 5, court supervision alone does not extend eligibility at age 40.
   period: 2026-01
   input:
     state_code: FL

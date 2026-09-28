@@ -1,11 +1,14 @@
-description: Nevada limits special needs child eligibility to under this age under the Child Care and Development Program.
+description: Nevada limits eligibility for a child with a special need or, where the court-supervision extension applies, under court supervision to under this age under the Child Care and Development Program.
+# The FFY 2025-2027 CCDF Plan 2.2.1(b)-(c) serves both routes up to 19.
 values:
   2024-01-01: 19
 
 metadata:
   unit: year
   period: year
-  label: Nevada CCDP special needs child age limit
+  label: Nevada CCDP special needs or court supervision child age limit
   reference:
     - title: Nevada Child Care Policy Manual, MS 210 — Age (special-needs children eligible until age 19; special need defined in MS 211)
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=36
+    - title: Nevada CCDF Plan FFY 2025-2027, Section 2.2.1(b)-(c), children 13 up to 19
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/2025-2027_CCDF_State_Plan._For_Remediation._no_markup__2.pdf#page=17
