@@ -1,3 +1,10 @@
+## [2.15.14] - 2026-09-28
+
+### Fixed
+
+- Correct historical business-loss thresholds, suspend the limit for 2018–2020, and index future thresholds with IRS inflation rounding.
+
+
 ## [2.15.13] - 2026-09-28
 
 ### Changed
