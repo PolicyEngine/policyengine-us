@@ -1,0 +1,1 @@
+Required the household to pay its own utilities (`tenant_pays_utilities`) for California CARE and FERA, which serve the utility customer or a sub-metered tenant, and for LADWP EZ-SAVE and Riverside SHARE, which require the applicant to hold the utility account.
