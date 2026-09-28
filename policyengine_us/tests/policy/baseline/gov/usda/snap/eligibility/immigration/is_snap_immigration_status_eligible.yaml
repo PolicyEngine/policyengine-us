@@ -116,3 +116,514 @@
         state_code: CA
   output:
     is_snap_immigration_status_eligible: false
+
+# Cases 11 onward apply the qualified alien waiting period of 8 USC
+# 1612(a)(2)(L) and 7 CFR 273.4(a)(6) on top of the 7 USC 2015(f) status
+# list. years_since_us_entry defaults to 5, which satisfies the waiting
+# period, so Cases 1-10 are unchanged and every case below that exercises
+# the waiting period sets it explicitly.
+
+- name: Case 11, adult LPR inside the five-year waiting period is ineligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 12, adult LPR with five years in qualified status is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 5
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 13, LPR child inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 1
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 14, adult LPR receiving disability benefits inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 45
+    years_since_us_entry: 2
+    social_security_disability: 12_000
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 15, adult LPR with 40 qualifying quarters inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 40
+    years_since_us_entry: 3
+    snap_alien_qualifying_quarters: 40
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 16, California LPR inside the waiting period is ineligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    state_code: CA
+  output:
+    # The California status list still includes LPRs, but the waiting
+    # period applies after the California override (CDSS ACL 25-92).
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 17, California refugee remains eligible before April 2026 regardless of years in status.
+  period: 2026-01
+  input:
+    immigration_status: REFUGEE
+    age: 30
+    years_since_us_entry: 0
+    state_code: CA
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 18, parolee inside the waiting period is ineligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 19, parolee past the waiting period is eligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 5
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 20, parolee past the waiting period is ineligible after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 5
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 21, adult LPR inside the waiting period was also ineligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 22, Cuban and Haitian entrant is eligible immediately after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    age: 30
+    years_since_us_entry: 0
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 23, California parolee inside the waiting period is ineligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    state_code: CA
+  output:
+    # California still lists parolees until April 2026, but the waiting
+    # period is applied after the California override, so it binds for
+    # non-LPR statuses as well.
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 24, California parolee past the waiting period is eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 5
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 25, conditional entrant inside the waiting period is ineligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 26, conditional entrant past the waiting period is eligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 5
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 27, asylee is eligible before OBBBA regardless of years in status.
+  period: 2025-01
+  input:
+    immigration_status: ASYLEE
+    age: 30
+    years_since_us_entry: 0
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 28, alien with deportation withheld is eligible before OBBBA regardless of years in status.
+  period: 2025-01
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+    age: 30
+    years_since_us_entry: 0
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 29, years in the United States do not make an undocumented immigrant eligible.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    years_since_us_entry: 10
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 30, adult LPR on active duty inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 25
+    years_since_us_entry: 1
+    is_military: true
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 31, former refugee who adjusted to LPR inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    lpr_adjusted_from_bar_exempt_status: true
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 32, adult LPR inside the waiting period is ineligible in 2019.
+  period: 2019-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    # The waiting period has applied since 2003-04-01, before the first
+    # year of the SNAP status list (2018).
+    is_snap_immigration_status_eligible: false
+
+- name: Case 33, adult LPR at four years in qualified status is ineligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 4
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 34, adult LPR at six years in qualified status is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 6
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 35, parolee at four years is ineligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 4
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 36, parolee at six years is eligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 6
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 37, conditional entrant at four years is ineligible before OBBBA.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 4
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 38, refugee, asylee and deportation-withheld aliens at one year are eligible before OBBBA.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+        age: 30
+        years_since_us_entry: 1
+      person2:
+        immigration_status: ASYLEE
+        age: 30
+        years_since_us_entry: 1
+      person3:
+        immigration_status: DEPORTATION_WITHHELD
+        age: 30
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: [true, true, true]
+
+- name: Case 39, Cuban and Haitian entrant at one year is eligible after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    age: 30
+    years_since_us_entry: 1
+    state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 40, LPR siblings age 17 and 18 inside the waiting period split at the under-18 exception.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 17
+        years_since_us_entry: 1
+      person2:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 18
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: [true, false]
+
+- name: Case 41, California conditional entrant inside the waiting period is ineligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 2
+    state_code: CA
+  output:
+    # California still lists conditional entrants until April 2026, but the
+    # waiting period applies after the California override.
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 42, California conditional entrant at five years is eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 5
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 43, California asylee and deportation-withheld alien at zero years are eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        immigration_status: ASYLEE
+        age: 30
+        years_since_us_entry: 0
+      person2:
+        immigration_status: DEPORTATION_WITHHELD
+        age: 30
+        years_since_us_entry: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Exempt by status, so the California override is not clocked.
+    ca_snap_immigration_status_eligible: [true, true]
+    is_snap_immigration_status_eligible: [true, true]
+
+- name: Case 44, California LPR at four years is ineligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 4
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 45, California LPR at exactly five years is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 5
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 46, California LPR age 17 inside the waiting period is eligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 17
+    years_since_us_entry: 1
+    state_code: CA
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 47, California parolee with 40 quarters and the adjusted-status flag stays ineligible inside the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    snap_alien_qualifying_quarters: 40
+    lpr_adjusted_from_bar_exempt_status: true
+    state_code: CA
+  output:
+    # Both exceptions are limited to LPRs, and the California override does
+    # not widen them.
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 48, California parolee with default years in status is eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    state_code: CA
+  output:
+    # years_since_us_entry defaults to 5, so the pre-existing California
+    # result is unchanged.
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 49, California parolee past the waiting period is ineligible after the delayed implementation ends.
+  period: 2027-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 5
+    state_code: CA
+  output:
+    # The status list, not the waiting period, bars the parolee from
+    # 2026-04-01.
+    ca_snap_immigration_status_eligible: false
+    is_snap_immigration_status_eligible: false
+
+- name: Case 50, California LPR inside the waiting period stays ineligible after the delayed implementation ends.
+  period: 2027-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 51, parolee and conditional entrant with default years in status are eligible before OBBBA.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: PAROLED_ONE_YEAR
+        age: 30
+      person2:
+        immigration_status: CONDITIONAL_ENTRANT
+        age: 30
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Default inertness: unchanged from the result before the waiting
+    # period was added.
+    is_snap_immigration_status_eligible: [true, true]

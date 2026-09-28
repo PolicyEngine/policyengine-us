@@ -1,0 +1,423 @@
+# 7 CFR 273.4(a)(6)(ii)(G): veteran or active-duty member, spouse, and
+# unmarried dependent children (under 18, full-time student under 22, or
+# disabled). is_veteran and is_military stand in for the service test; the
+# spouse link runs through the marital unit and the child link through tax
+# unit dependency on a head or spouse who served. Tax unit roles are set
+# explicitly so adult dependents are not assigned as spouses.
+
+- name: Case 1, no service member in the family.
+  period: 2026
+  input:
+    age: 30
+  output:
+    is_snap_alien_military_connected: false
+
+- name: Case 2, spouse and student dependent of an active-duty member.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+      person3:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+      person4:
+        age: 20
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+  output:
+    # person4 is 20, not a student, and not disabled, so not a dependent child.
+    is_snap_alien_military_connected: [true, true, true, false]
+
+- name: Case 3, dependent student at the age threshold is not covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # 22 is not below the full-time student age threshold of 22.
+    is_snap_alien_military_connected: [true, false]
+
+- name: Case 4, disabled adult dependent child of a veteran is covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 30
+        is_disabled: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    is_snap_alien_military_connected: [true, true]
+
+- name: Case 5, full-time college student dependent under 22 of a veteran is covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 21
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # is_full_time_student follows is_full_time_college_student.
+    is_full_time_student: [false, true]
+    is_snap_alien_military_connected: [true, true]
+
+- name: Case 6, dependent age 17 of an active-duty member is covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Under the dependent child age threshold of 18, without student status.
+    is_snap_alien_military_connected: [true, true]
+
+- name: Case 7, dependent age 18 who is not a student or disabled is not covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    is_snap_alien_military_connected: [true, false]
+
+- name: Case 8, veterans benefits make the recipient and spouse military connected.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        veterans_benefits: 6_000
+        is_tax_unit_head: true
+      person2:
+        age: 58
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # is_veteran defaults to veterans_benefits > 0.
+    is_veteran: [true, false]
+    is_snap_alien_military_connected: [true, true]
+
+- name: Case 9, veteran spouse covers the tax unit head and a dependent child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_veteran: true
+        is_tax_unit_spouse: true
+      person3:
+        age: 19
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    is_snap_alien_military_connected: [true, true, true]
+
+- name: Case 10, a dependent's own service does not cover other dependents.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+      person2:
+        age: 21
+        is_military: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        age: 19
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    # Only service by a tax unit head or spouse extends to dependent
+    # children; person2 is covered by their own active duty.
+    is_snap_alien_military_connected: [false, true, false]
+
+- name: Case 11, adult sibling claimed as a dependent by a veteran is not covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    # person3 is the veteran's adult sibling. They are outside the veteran's
+    # marital unit, so they are not a spouse. They are a dependent aged 18 or
+    # older who is neither a full-time student nor disabled, so they are not a
+    # dependent child either. Without explicit marital units, all three would
+    # share one default marital unit and person3 would wrongly count as a
+    # spouse.
+    is_snap_alien_military_connected: [true, true, false]
+
+- name: Case 12, disabled adult sibling who files a separate return is not covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Disability extends the exception only to a dependent child of the
+    # service member. person2 heads their own tax unit and is not the
+    # veteran's spouse.
+    is_snap_alien_military_connected: [true, false]
+
+- name: Case 13, spouse of a veteran who files a separate return is covered through the marital unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 48
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # The spouse link runs through the marital unit, not the tax unit.
+    is_snap_alien_military_connected: [true, true]
+
+- name: Case 14, dependent age and student boundaries are applied person by person in one tax unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 18
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person4:
+        age: 21
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person5:
+        age: 22
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person6:
+        age: 25
+        is_disabled: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+      marital_unit5:
+        members: [person5]
+      marital_unit6:
+        members: [person6]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # 17 < 18 (covered); 18 non-student (not covered); student 21 < 22
+    # (covered); student 22 (not covered); disabled 25 (covered).
+    is_snap_alien_military_connected: [true, true, false, true, false, true]

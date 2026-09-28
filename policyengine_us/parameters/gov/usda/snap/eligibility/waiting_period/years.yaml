@@ -1,0 +1,24 @@
+description: The Department of Agriculture sets this threshold of years for the qualified alien waiting period under the Supplemental Nutrition Assistance Program.
+
+# 8 USC 1612(a)(2)(L), added by P.L. 107-171 sec. 4401(c)(1), effective
+# 2003-04-01 (sec. 4401(c)(2)). The count is years in qualified alien status
+# since the person first obtained that status (7 CFR 273.4(a)(6)(iii); FNS
+# Question and Answer #1 REVISED, Question 4). 7 CFR 273.4(a)(6)(iii) sets no
+# entry-date limit, so the "on or after August 22, 1996" entry condition in
+# 8 USC 1613(a) does not narrow this SNAP rule.
+values:
+  2003-04-01: 5
+
+metadata:
+  unit: year
+  period: year
+  label: SNAP qualified alien waiting period
+  reference:
+    - title: 8 USC 1612(a)(2)(L) - Food stamp exception for certain qualified aliens
+      href: https://www.law.cornell.edu/uscode/text/8/1612#a_2_L
+    - title: 7 CFR 273.4(a)(6)(iii) - Qualified aliens who must be in a qualified status for 5 years
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_iii
+    - title: USDA FNS, Alien SNAP Eligibility - Question and Answer #1 REVISED (December 9, 2025), Question 3
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=2
+    - title: USDA FNS, Alien SNAP Eligibility - Question and Answer #1 REVISED (December 9, 2025), Question 4
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=3

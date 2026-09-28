@@ -1,0 +1,577 @@
+# Integration tests for the SNAP qualified alien waiting period
+# (8 USC 1612(a)(2)(L); 7 CFR 273.4(a)(6)).
+# Unless noted, the family matches income/ineligible_members/integration.yaml:
+# a working parent earning $24,000/year ($2,000/month), a non-working spouse
+# age 33, and a child age 8. An adult LPR (or, before OBBBA, a parolee)
+# inside the waiting period is an ineligible alien. Because 7 CFR
+# 273.11(c)(3)(i)(A) and (D) exclude LPRs and parolees from the state
+# count-all option, their income is prorated in every state; a conditional
+# entrant is not listed there, so count-all states count its income in full.
+
+- name: Case 1, LPR earner inside the waiting period is excluded and prorated in Texas.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 2 years < 5, age 35, no disability benefits, service, quarters, or
+    # prior exempt status, so person1 fails the waiting period.
+    is_snap_alien_waiting_period_exempt: [false, false, true]
+    meets_snap_qualified_alien_waiting_period: [false, true, true]
+    is_snap_immigration_status_eligible: [false, true, true]
+    is_snap_excluded_member: [true, false, false]
+    is_snap_prorated_income_member: [true, false, false]
+    snap_unit_size: 2
+    # Counted share: 2 eligible / 3 household members.
+    snap_prorated_income_fraction: 0.6667
+    snap_income_counted_share: [0.6667, 1, 1]
+    # $2,000 x 2/3 = $1,333.33; same as the refugee earner in
+    # income/ineligible_members/integration.yaml Case 2.
+    snap_earned_income: 1_333.33
+    # 20% earned income deduction: $1,333.33 x 0.2 = $266.67.
+    snap_earned_income_deduction: 266.67
+    snap_standard_deduction: 209
+    # $1,333.33 - $266.67 - $209 = $857.67, rounded to $858.
+    snap_net_income: 858
+    # 30% of $858 = $257.40, rounded up to $258.
+    snap_expected_contribution: 258
+    # Two-person maximum allotment $546 - $258 = $288.
+    snap_max_allotment: 546
+    snap: 288
+
+- name: Case 2, LPR earner past the waiting period matches the all-citizen household.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 5 years >= 5, so person1 meets the waiting period.
+    meets_snap_qualified_alien_waiting_period: [true, true, true]
+    is_snap_immigration_status_eligible: [true, true, true]
+    is_snap_excluded_member: [false, false, false]
+    is_snap_prorated_income_member: [false, false, false]
+    snap_unit_size: 3
+    snap_earned_income: 2_000
+    # $2,000 x 0.2 = $400.
+    snap_earned_income_deduction: 400
+    # $2,000 - $400 - $209 = $1,391.
+    snap_net_income: 1_391
+    # 30% of $1,391 = $417.30, rounded up to $418.
+    snap_expected_contribution: 418
+    # Three-person maximum allotment $785 - $418 = $367; same as
+    # income/ineligible_members/integration.yaml Case 1.
+    snap_max_allotment: 785
+    snap: 367
+
+- name: Case 3, LPR earner inside the waiting period is prorated even in a count-all state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    is_snap_immigration_status_eligible: [false, true, true]
+    # Massachusetts counts all income only for aliens outside
+    # 273.11(c)(3)(i)(A)-(G); an LPR is listed in (A), so it is prorated.
+    is_snap_state_discretion_ineligible_alien: [false, false, false]
+    is_snap_prorated_income_member: [true, false, false]
+    snap_unit_size: 2
+    # $2,000 x 2/3 = $1,333.33.
+    snap_earned_income: 1_333.33
+    snap_earned_income_deduction: 266.67
+    snap_standard_deduction: 209
+    # Massachusetts standard utility allowance $914 - 50% of the $857.67
+    # net income before the shelter deduction ($428.83) = $485.17.
+    snap_utility_allowance: 914
+    snap_excess_shelter_expense_deduction: 485.17
+    # $857.67 - $485.17 = $372.50, rounded to $373.
+    snap_net_income: 373
+    # 30% of $373 = $111.90, rounded up to $112; $546 - $112 = $434.
+    snap_expected_contribution: 112
+    snap: 434
+
+- name: Case 4, LPR earner inside the waiting period is prorated under both tests in a hybrid gross-test state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    is_snap_immigration_status_eligible: [false, true, true]
+    # North Carolina counts full income under the gross test only for
+    # state-discretion aliens; an LPR is not one, so both tests use the
+    # prorated income (compare the undocumented earner in
+    # income/ineligible_members/integration.yaml Case 5).
+    is_snap_state_discretion_ineligible_alien: [false, false, false]
+    is_snap_gross_test_full_income_count_alien: [false, false, false]
+    is_snap_prorated_income_member: [true, false, false]
+    snap_unit_size: 2
+    snap_earned_income: 1_333.33
+    snap_gross_income: 1_333.33
+    snap_gross_test_income: 1_333.33
+    # $1,333.33 - $266.67 - $209 = $857.67, rounded to $858.
+    snap_net_income: 858
+    # $546 - $258 (30% of $858, rounded up) = $288.
+    snap: 288
+
+- name: Case 5, California LPR earner inside the waiting period is excluded despite the delayed implementation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # The California status list admits the LPR, but the waiting period
+    # applies after the California override (CDSS ACL 25-92).
+    ca_snap_immigration_status_eligible: [true, true, true]
+    meets_snap_qualified_alien_waiting_period: [false, true, true]
+    is_snap_immigration_status_eligible: [false, true, true]
+    is_snap_excluded_member: [true, false, false]
+    is_snap_prorated_income_member: [true, false, false]
+    snap_unit_size: 2
+    snap_earned_income: 1_333.33
+    # The $475 monthly CalWORKs grant is paid to the unit as a whole and
+    # counts in full.
+    snap_unearned_income: 475
+    # $1,333.33 + $475 = $1,808.33.
+    snap_gross_income: 1_808.33
+    # $1,808.33 - $266.67 - $209 = $1,332.67; the $663 utility allowance
+    # is below 50% of that ($666.33), so there is no shelter deduction.
+    snap_excess_shelter_expense_deduction: 0
+    # $1,332.67 rounded to $1,333.
+    snap_net_income: 1_333
+    # 30% of $1,333 = $399.90, rounded up to $400; $546 - $400 = $146.
+    snap_expected_contribution: 400
+    snap: 146
+
+- name: Case 6, parolee earner inside the waiting period is excluded and prorated before OBBBA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Parolees pass the pre-OBBBA status list but are subject to the
+    # waiting period (7 CFR 273.4(a)(6)(iii)(B)).
+    meets_snap_qualified_alien_waiting_period: [false, true, true]
+    is_snap_immigration_status_eligible: [false, true, true]
+    is_snap_excluded_member: [true, false, false]
+    # 273.11(c)(3)(i)(D) excludes parolees from the count-all option.
+    is_snap_state_discretion_ineligible_alien: [false, false, false]
+    is_snap_prorated_income_member: [true, false, false]
+    snap_unit_size: 2
+    snap_earned_income: 1_333.33
+    # Fiscal year 2025 two-person standard deduction.
+    snap_standard_deduction: 204
+    # $1,333.33 - $266.67 - $204 = $862.67, rounded to $863.
+    snap_net_income: 863
+    # 30% of $863 = $258.90, rounded up to $259.
+    snap_expected_contribution: 259
+    # Fiscal year 2025 two-person maximum allotment $536 - $259 = $277.
+    snap_max_allotment: 536
+    snap: 277
+
+- name: Case 7, conditional entrant earner inside the waiting period has income counted in full in a count-all state before OBBBA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: CONDITIONAL_ENTRANT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    meets_snap_qualified_alien_waiting_period: [false, true, true]
+    is_snap_immigration_status_eligible: [false, true, true]
+    is_snap_excluded_member: [true, false, false]
+    # Conditional entrants are not in 273.11(c)(3)(i)(A)-(G), so
+    # Massachusetts counts all of the member's income.
+    is_snap_state_discretion_ineligible_alien: [true, false, false]
+    is_snap_prorated_income_member: [false, false, false]
+    snap_income_counted_share: [1, 1, 1]
+    snap_unit_size: 2
+    snap_earned_income: 2_000
+    snap_earned_income_deduction: 400
+    snap_standard_deduction: 204
+    # Massachusetts standard utility allowance $890 - 50% of the $1,396
+    # net income before the shelter deduction ($698) = $192.
+    snap_excess_shelter_expense_deduction: 192
+    # $1,396 - $192 = $1,204.
+    snap_net_income: 1_204
+    # 30% of $1,204 = $361.20, rounded up to $362; $536 - $362 = $174.
+    snap_expected_contribution: 362
+    snap: 174
+
+- name: Case 8, active-duty LPR earner and LPR family inside the waiting period are all exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_military: true
+      person2:
+        age: 33
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+      person3:
+        age: 8
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # person1 is on active duty, person2 is the spouse of an active-duty
+    # member, and person3 is a dependent child under 18 (also exempt under
+    # the general under-18 exception).
+    is_snap_alien_military_connected: [true, true, true]
+    is_snap_alien_waiting_period_exempt: [true, true, true]
+    meets_snap_qualified_alien_waiting_period: [true, true, true]
+    is_snap_immigration_status_eligible: [true, true, true]
+    is_snap_excluded_member: [false, false, false]
+    snap_unit_size: 3
+    snap_earned_income: 2_000
+    # $2,000 - $400 - $209 = $1,391; $785 - $418 = $367, as in Case 2.
+    snap_net_income: 1_391
+    snap: 367
+
+- name: Case 9, elderly LPR inside the waiting period does not confer elderly household status.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 62
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # person3 is 62, receives no SSI or disability benefits, and has no
+    # other exception, so the waiting period bars them. As an excluded
+    # member they do not make the household elderly (7 CFR 271.2),
+    # mirroring the undocumented grandparent in
+    # income/ineligible_members/integration.yaml Case 13.
+    is_snap_alien_waiting_period_exempt: [false, false, false, true]
+    meets_snap_qualified_alien_waiting_period: [true, true, false, true]
+    is_snap_excluded_member: [false, false, true, false]
+    snap_unit_size: 3
+    # 3 eligible / 4 household members.
+    snap_prorated_income_fraction: 0.75
+    has_snap_elderly_disabled_member: false
+    # The $4,000 monthly gross income faces, and fails, the gross income
+    # test.
+    snap_gross_income: 4_000
+    meets_snap_gross_income_test: false
+    snap: 0
+
+- name: Case 10, elderly LPR past the waiting period confers elderly household status.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 62
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    meets_snap_qualified_alien_waiting_period: [true, true, true, true]
+    is_snap_excluded_member: [false, false, false, false]
+    snap_unit_size: 4
+    # The eligible 62-year-old makes the household elderly, which waives
+    # the gross income test.
+    has_snap_elderly_disabled_member: true
+    meets_snap_gross_income_test: true
+    # The household fails the net income test but is categorically
+    # eligible in Texas.
+    meets_snap_net_income_test: false
+    meets_snap_categorical_eligibility: true
+    # $4,000 - $800 earned income deduction - $223 four-person standard
+    # deduction = $2,977.
+    snap_net_income: 2_977
+    # 30% of $2,977 = $893.10, rounded up to $894.
+    snap_expected_contribution: 894
+    # Four-person maximum allotment $994 - $894 = $100.
+    snap_max_allotment: 994
+    snap: 100
+
+- name: Case 11, adult sibling of an LPR veteran inside the waiting period is excluded while the veteran's spouse is not.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 33
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_tax_unit_spouse: true
+      person3:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # person1 is a veteran and person2 is the veteran's spouse (same marital
+    # unit). person3, the veteran's adult sibling, has a separate marital unit
+    # and, as a dependent, is 18 or older, not a full-time student, and not
+    # disabled, so no military connection reaches them. person4 is a citizen
+    # child (also a dependent child of the veteran).
+    is_snap_alien_military_connected: [true, true, false, true]
+    is_snap_alien_waiting_period_exempt: [true, true, false, true]
+    meets_snap_qualified_alien_waiting_period: [true, true, false, true]
+    is_snap_immigration_status_eligible: [true, true, false, true]
+    is_snap_excluded_member: [false, false, true, false]
+    snap_unit_size: 3
+    # 3 eligible / 4 household members; person3 has no income to prorate.
+    snap_prorated_income_fraction: 0.75
+    snap_earned_income: 2_000
+    # $2,000 - $400 earned income deduction - $209 standard deduction
+    # = $1,391.
+    snap_net_income: 1_391
+    # 30% of $1,391 = $417.30, rounded up to $418.
+    snap_expected_contribution: 418
+    # Three-person maximum allotment $785 - $418 = $367, as in Cases 2 and 8.
+    snap_max_allotment: 785
+    snap: 367
+
+- name: Case 12, LPR siblings age 17 and 18 inside the waiting period split at the under-18 exception.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 18
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # person1 is a citizen earner and person4 a citizen child. The child
+    # under 14 keeps every adult clear of the ABAWD time limit, so person3's
+    # exclusion comes only from the waiting period.
+    is_snap_alien_waiting_period_exempt: [false, true, false, true]
+    meets_snap_qualified_alien_waiting_period: [true, true, false, true]
+    is_snap_immigration_status_eligible: [true, true, false, true]
+    is_snap_excluded_member: [false, false, true, false]
+    snap_unit_size: 3
+    snap_earned_income: 2_000
+    # $2,000 - $400 - $209 = $1,391. Were person3 eligible, the four-person
+    # unit would have $2,000 - $400 - $223 = $1,377 and receive
+    # $994 - $414 = $580.
+    snap_net_income: 1_391
+    snap_expected_contribution: 418
+    snap_max_allotment: 785
+    snap: 367

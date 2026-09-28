@@ -1,0 +1,22 @@
+description: The Department of Agriculture excludes qualified aliens below this age threshold from the waiting period under the Supplemental Nutrition Assistance Program.
+
+# 8 USC 1612(a)(2)(J), added by P.L. 105-185 sec. 507, effective 1998-11-01
+# (sec. 510(b)). Its condition that the child was lawfully residing in the
+# United States on August 22, 1996, was struck by P.L. 107-171 sec. 4401(b)(1),
+# effective 2003-10-01 (sec. 4401(b)(3)); that condition is not modeled.
+values:
+  1998-11-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: SNAP qualified alien waiting period child age threshold
+  reference:
+    - title: 8 USC 1612(a)(2)(J) - Food stamp exception for certain children
+      href: https://www.law.cornell.edu/uscode/text/8/1612#a_2_J
+    - title: 8 USC 1613(c)(2)(L) - Food stamp assistance for individuals under the age of 18
+      href: https://www.law.cornell.edu/uscode/text/8/1613#c_2_L
+    - title: 7 CFR 273.4(a)(6)(ii)(J) - Individual under 18 years of age
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_J
+    - title: USDA FNS, Alien SNAP Eligibility - Question and Answer #1 REVISED (December 9, 2025), Question 5 exceptions
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=4

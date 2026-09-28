@@ -1,0 +1,17 @@
+description: The Department of Agriculture excludes military-connected dependent children below this age threshold from the waiting period under the Supplemental Nutrition Assistance Program.
+
+# Covers the unmarried dependent child of a veteran or active duty member.
+# Start date is a modeling choice; the age definitions come from
+# 7 CFR 273.4(a)(6)(ii)(G)(3) (65 FR 70200, November 21, 2000), while the
+# statute (8 USC 1612(a)(2)(C)(iii)) sets no ages. Children under this age are
+# also exempt under 7 CFR 273.4(a)(6)(ii)(J).
+values:
+  1996-08-22: 18
+
+metadata:
+  unit: year
+  period: year
+  label: SNAP qualified alien waiting period military dependent child age threshold
+  reference:
+    - title: 7 CFR 273.4(a)(6)(ii)(G)(3) - Spouse and unmarried dependent children of a veteran or active duty member
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_G_3
