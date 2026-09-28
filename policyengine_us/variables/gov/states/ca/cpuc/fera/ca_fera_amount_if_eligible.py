@@ -7,7 +7,7 @@ class ca_fera_amount_if_eligible(Variable):
     definition_period = YEAR
     unit = USD
     label = "California FERA discounted amount"
-    documentation = "California's CARE program provides this electricity discount to eligible households."
+    documentation = "California's FERA program provides this electricity discount to eligible households."
     reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
     defined_for = StateCode.CA
 

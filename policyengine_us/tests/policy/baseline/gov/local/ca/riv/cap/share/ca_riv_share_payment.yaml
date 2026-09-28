@@ -8,8 +8,8 @@
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_eligible: true
   output:
-    ca_riv_share_payment: 33.21
-    # 24 + 4.75 + 4.46 
+    ca_riv_share_payment: 31.99
+    # 24 + 4.75 + 3.24
 
 - name: Case 2, expense less than payment allowance. 
   period: 2025-01
@@ -46,8 +46,8 @@
   output:
     ca_riv_share_countable_income: 50_000 / 12 
     ca_riv_share_electricity_emergency_payment: 250 / 12
-    ca_riv_share_payment: 54.04 
-    # 33.21 + 250/12 
+    ca_riv_share_payment: 52.82
+    # 31.99 + 250/12
 
 - name: Case 4, integration, not in Riverside. 
   period: 2025-01
@@ -72,3 +72,42 @@
   output:
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_payment: 0 
+
+- name: Case 5, credits after the July 2026 steps.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 28 + 5.75 + 5.75
+    ca_riv_share_payment: 39.5
+
+- name: Case 6, electric credit rises in January 2026 before the July water and trash steps.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 28 + 5.25 + 4.46
+    ca_riv_share_payment: 37.71
+
+- name: Case 7, no trash credit before November 2023.
+  period: 2023-07
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 16 + 3.25 + 0
+    ca_riv_share_payment: 19.25

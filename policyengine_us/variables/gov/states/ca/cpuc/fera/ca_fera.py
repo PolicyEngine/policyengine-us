@@ -7,7 +7,13 @@ class ca_fera(Variable):
     definition_period = YEAR
     unit = USD
     label = "California FERA"
-    documentation = "California's FERA program provides this electricity discount to eligible households."
+    documentation = (
+        "California's FERA program provides this electricity discount to "
+        "eligible households. Only customers of Pacific Gas and Electric, "
+        "Southern California Edison, and San Diego Gas & Electric can enroll. "
+        "The model has no utility-territory input, so it applies FERA to every "
+        "eligible California household."
+    )
     reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
     defined_for = StateCode.CA
 

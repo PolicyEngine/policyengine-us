@@ -1,0 +1,1 @@
+Extend California FERA to one- and two-person households under SB 1130, let every household qualify for CARE through CalWORKs (TANF) and tribal households through all listed programs, update Riverside SHARE electric and trash credits, source the LADWP EZ-SAVE amount, and correct CARE and FERA metadata.

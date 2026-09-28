@@ -1,18 +1,17 @@
-description: California provides CARE eligibility to tribal households that are enrolled in these programs.
+description: California provides CARE eligibility to households on tribal land that are enrolled in these programs, in addition to the programs that qualify every household.
 values:
   2022-06-01:
-    - tanf
-    - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     - head_start
-    # Also these, not in our model:
-    # Bureau of Indian Affairs General Assistance
 metadata:
   reference:
     # Legal code establishes categorical eligibility in general, not specific programs.
     - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(f)(1)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
-    # Program defines categorical eligibility programs.
-    - title: CARE/FERA Program
-      href: https://www.cpuc.ca.gov/lowincomerates/
+    # Program defines categorical eligibility programs; only Head Start is
+    # limited to tribal households.
+    - title: CPUC CARE/FERA Program, Public Assistance Eligibility
+      href: https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program
+    - title: PG&E Form 01-9077, CARE/FERA Program Application, Section 2A
+      href: https://www.pge.com/assets/pge/localized/en/docs/account/billing-and-assistance/care-fera-application.pdf#page=2
   unit: list
-  label: CARE tribal categorical eligibility programs
+  label: California CARE tribal categorical eligibility programs

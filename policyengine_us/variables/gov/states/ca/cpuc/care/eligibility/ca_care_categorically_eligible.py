@@ -13,10 +13,8 @@ class ca_care_categorically_eligible(Variable):
     def formula(household, period, parameters):
         p = parameters(period).gov.states.ca.cpuc.care.eligibility
         is_on_tribal_land = household("is_on_tribal_land", period)
-        non_tribal_lifeline_programs = add(household, period, p.categorical)
-        tribal_lifeline_programs = add(household, period, p.tribal_categorical)
-        return np.where(
-            is_on_tribal_land,
-            tribal_lifeline_programs > 0,
-            non_tribal_lifeline_programs > 0,
-        )
+        general_programs = add(household, period, p.categorical)
+        tribal_programs = add(household, period, p.tribal_categorical)
+        # Tribal households qualify through every general program as well as
+        # the tribal-only additions.
+        return (general_programs > 0) | (is_on_tribal_land & (tribal_programs > 0))

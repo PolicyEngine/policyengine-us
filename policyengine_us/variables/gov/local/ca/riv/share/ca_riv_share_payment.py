@@ -7,6 +7,13 @@ class ca_riv_share_payment(Variable):
     label = "Riverside County Sharing Households Assist Riverside's Energy program (SHARE) payment"
     unit = USD
     definition_period = MONTH
+    documentation = (
+        "Riverside Public Utilities' SHARE program credits electric, water, and "
+        "trash bills for income-qualified customers. The utility serves the "
+        "City of Riverside rather than the whole county, but the model has no "
+        "utility-territory input, so it applies SHARE to every eligible "
+        "Riverside County household."
+    )
     defined_for = "ca_riv_share_eligible"
     reference = (
         "https://riversideca.gov/utilities/residents/assistance-programs/share-english"

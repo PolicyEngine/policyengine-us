@@ -1,12 +1,14 @@
-description: California CARE recipient households recieve a discount on their energy expenses between 30 and 35%, ballparked here at 32.5% for simplicity.
+description: California discounts electricity bills by this rate under the California Alternate Rates for Energy program.
+# The statute sets an average effective discount between 30% and 35%; the
+# model uses the midpoint.
 values:
   2021-06-01: 0.325
 metadata:
   reference:
-    - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(c)(1)
-      href: https://law.justia.com/codes/california/2021/code-puc/division-1/part-1/chapter-4/article-2/section-739-1/
-    - title: CARE/FERA Program
-      href: https://www.cpuc.ca.gov/lowincomerates/
+    - title: California Public Utilities Code 739.1(c)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
+    - title: CPUC CARE/FERA Program
+      href: https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program
   unit: /1
-  period: year 
-  label: CARE poverty line threshold
+  period: year
+  label: California CARE discount rate

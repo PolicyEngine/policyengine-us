@@ -1,12 +1,20 @@
-description: Eligibility for California's FERA program requires a minimum household of this size to qualify.
+description: California limits the Family Electric Rate Assistance program to households with at least this many people.
 values:
   2022-06-01: 3
+  # SB 1130 removed the three-person minimum from Public Utilities Code
+  # 739.12(a) effective January 1, 2025; the utilities began enrolling one- and
+  # two-person households on June 1, 2025.
+  2025-06-01: 1
 metadata:
   reference:
-    - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(a)
+    - title: California Public Utilities Code 739.12(a)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12
-    - title: CARE/FERA Program
-      href: https://www.cpuc.ca.gov/lowincomerates/
-  unit: /1
+    - title: SB 1130 (Stats. 2024, Ch. 457), Section 1
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB1130
+    - title: PG&E Advice Letter 7594-E, Schedule E-FERA, households of one or more members, effective June 1, 2025
+      href: https://www.pge.com/tariffs/assets/pdf/adviceletter/ELEC_7594-E.pdf#page=7
+    - title: CPUC Draft Resolution E-5448, one- and two-person households eligible from June 1, 2025
+      href: https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M596/K024/596024420.PDF#page=3
+  unit: person
   period: year
-  label: CARE poverty line threshold
+  label: California FERA minimum household size

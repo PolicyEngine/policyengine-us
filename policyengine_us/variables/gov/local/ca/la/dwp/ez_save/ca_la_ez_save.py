@@ -6,6 +6,13 @@ class ca_la_ez_save(Variable):
     entity = Household
     definition_period = MONTH
     label = "Los Angeles County EZ Save program"
+    documentation = (
+        "The Los Angeles Department of Water and Power's EZ-SAVE program "
+        "discounts electricity bills for income-qualified customers. The "
+        "department serves the City of Los Angeles rather than the whole "
+        "county, but the model has no utility-territory input, so it applies "
+        "EZ-SAVE to every eligible Los Angeles County household."
+    )
     defined_for = "ca_la_ez_save_eligible"
 
     def formula(household, period, parameters):

@@ -16,7 +16,7 @@ class ca_fera_eligible(Variable):
     def formula(household, period, parameters):
         # Check not eligible for CARE
         care_eligible = household("ca_care_eligible", period)
-        # Check at least 3 people in household
+        # Check the minimum household size
         n = household("household_size", period)
         p = parameters(period).gov.states.ca.cpuc.fera.eligibility
         eligible_household_size = n >= p.minimum_household_size
