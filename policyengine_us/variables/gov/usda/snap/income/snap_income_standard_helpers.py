@@ -21,10 +21,11 @@ def snap_monthly_fpg_amounts(spm_unit, period, parameters):
 def snap_monthly_income_standard(spm_unit, period, parameters, rate):
     """Monthly SNAP income standard at `rate` times the poverty guideline.
 
-    7 CFR 273.9(a)(3) rounds the monthly standard up to the next whole dollar.
-    For households larger than the threshold size, it rounds the per-person
-    increment up separately and adds it to the standard for the threshold
-    size, so the standard can exceed rounding up the whole product.
+    Per 7 CFR 273.9(a)(3)(i)-(ii) and (a)(4), the monthly standard is rounded
+    up to the next whole dollar. For households larger than the threshold
+    size, the per-person increment is rounded up separately and added to the
+    standard for the threshold size, so the standard can exceed rounding up
+    the whole product.
     """
     p = parameters(period).gov.usda.snap.income.limit
     fpg = spm_unit("snap_fpg", period)
@@ -34,8 +35,13 @@ def snap_monthly_income_standard(spm_unit, period, parameters, rate):
     # Derive the threshold-size guideline from snap_fpg so that inputs
     # overriding snap_fpg still determine the standard.
     threshold_size_fpg = fpg - additional_people * increment
-    # Round to cents before taking the ceiling so float error on an exact
-    # whole-dollar amount cannot push it up an extra dollar.
+    # Round to cents before taking the ceiling so single-precision error in
+    # snap_fpg cannot push an exact whole-dollar amount up an extra dollar.
+    # Annual guidelines are $10 multiples, so at rates of 1.0 and 1.3 the
+    # exact monthly amounts are multiples of $1/120 and never carry a
+    # fraction in (0, 0.005) that cent rounding would drop. A rate with three
+    # or more decimals, or a snap_fpg override with a sub-half-cent remainder,
+    # could round the standard $1 low.
     standard = np.ceil(np.round(rate * threshold_size_fpg, 2))
     rounded_increment = np.ceil(np.round(rate * increment, 2))
     return standard + additional_people * rounded_increment

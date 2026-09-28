@@ -11,6 +11,10 @@ class snap_fpg(Variable):
     unit = USD
     documentation = "The federal poverty guideline used to determine SNAP eligibility."
     definition_period = MONTH
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.9#a_3",
+        "https://www.law.cornell.edu/uscode/text/7/2014#c",
+    )
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("snap_unit_size", period)
