@@ -15,11 +15,15 @@ class sc_ccap_time_category(Variable):
     definition_period = MONTH
     label = "South Carolina CCAP care schedule category"
     defined_for = StateCode.SC
-    reference = "https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=1"
+    reference = (
+        "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=37"
+    )
 
     def formula(person, period, parameters):
         hours = childcare_hours_for_weekly_schedule(person, period)
         p = parameters(period).gov.states.sc.dss.ccap.time_category
+        # Policy Manual Section 2.1.6: full-time care requires 25 or more hours
+        # per week (reduced from 30 effective 10/01/2024).
         # Unknown hours retain full-time pricing, subject to Head Start below.
         standard_category = where(
             hours == 0, SCCCAPTimeCategory.FULL_TIME, p.hours.calc(hours)

@@ -6,12 +6,22 @@ DAYS_IN_WEEK = 7
 
 
 def _care_days_per_week(person, period):
-    """Prefer weekly attendance; otherwise annualize monthly attendance."""
+    """Prefer weekly attendance; otherwise annualize monthly attendance.
+
+    Reported weekly days take precedence and are never rounded. Monthly
+    attendance is annualized with 12/52, but calendar months have 20 to 23
+    weekdays, so that ratio never yields exactly five days a week (20 days
+    give 4.6, 22 give 5.1). Without rounding, a five-weekday schedule sitting
+    on a legal threshold (5 h/day in KY/WY, 20 h/wk in TN/WI, 7 h/day in AR)
+    would flip pricing category, so derived weekly days of at least one day
+    are rounded to whole days. Sparser attendance keeps its fractional weekly
+    average so weekly hours still concentrate on the actual care days.
+    """
     weekly_days = person("childcare_days_per_week", period.this_year)
     monthly_days = person("childcare_attending_days_per_month", period.this_year)
-    return where(
-        weekly_days > 0, weekly_days, monthly_days * MONTHS_IN_YEAR / WEEKS_IN_YEAR
-    )
+    derived_days = monthly_days * MONTHS_IN_YEAR / WEEKS_IN_YEAR
+    rounded_days = where(derived_days >= 1, np.round(derived_days), derived_days)
+    return where(weekly_days > 0, weekly_days, rounded_days)
 
 
 def childcare_hours_for_daily_schedule(person, period):

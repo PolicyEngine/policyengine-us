@@ -180,3 +180,13 @@
     - true
     - true
     - false
+
+# Calendar months have 20-23 weekdays, so 20 days a month annualize to 4.62 days a week and round to five care days; four daily hours are then exactly 20 weekly hours, full time under CCDF State Plan Section 3.2.1(b)(i).
+- name: Case 16, monthly attendance rounds to five care days so daily hours at the weekly threshold are full time.
+  period: 2026-01
+  input:
+    state_code: TN
+    childcare_hours_per_day: 4
+    childcare_attending_days_per_month: 20
+  output:
+    tn_ccap_part_time: false

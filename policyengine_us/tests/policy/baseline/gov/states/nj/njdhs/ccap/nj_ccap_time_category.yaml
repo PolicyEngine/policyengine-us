@@ -117,3 +117,14 @@
     childcare_days_per_week: 5
   output:
     nj_ccap_time_category: FULL_TIME
+
+# Calendar months have 20-23 weekdays, so 21 days a month annualize to 4.85 days a week and round to five care days; six daily hours are then exactly 30 weekly hours, FULL_TIME under the CC-230 rate notes (30 or more hours).
+- name: Case 11, monthly attendance rounds to five care days so daily hours at the weekly threshold are FULL_TIME.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 3
+    childcare_hours_per_day: 6
+    childcare_attending_days_per_month: 21
+  output:
+    nj_ccap_time_category: FULL_TIME

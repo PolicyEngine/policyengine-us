@@ -92,3 +92,14 @@
     childcare_days_per_week: 5
   output:
     wi_shares_time_category: FULL_TIME
+
+# Calendar months have 20-23 weekdays, so 22 days a month annualize to 5.08 days a week and round to five care days; four daily hours are then exactly 20 weekly hours, still part time under Handbook Section 16.1.1 (20 hours or less).
+- name: Case 9, monthly attendance rounds to five care days so daily hours at the part-time maximum stay part time.
+  period: 2026-01
+  input:
+    state_code: WI
+    age: 3
+    childcare_hours_per_day: 4
+    childcare_attending_days_per_month: 22
+  output:
+    wi_shares_time_category: PART_TIME
