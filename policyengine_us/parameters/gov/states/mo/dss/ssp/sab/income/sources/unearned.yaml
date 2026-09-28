@@ -1,10 +1,13 @@
 description: Missouri uses these sources of unearned income under the Supplemental Aid to the Blind program.
 values:
-  # SSI is not income for the need test (§ 0410.020.00). Child support
-  # received counts for the person who holds it; § 0410.015.10 treats support
-  # for a child in the home as the child's income, but the model does not
-  # record whom it is paid for. Veterans benefits count in full because the
-  # excluded Aid and Attendance portion (§ 0410.015.15) is not separable.
+  # SAB began on January 1, 1974 (SSA, State Assistance Programs for SSI
+  # Recipients, January 2011); the manual section is undated. SSI is not
+  # income for the need test (§ 0410.020.00). Child support received is
+  # added in mo_sab_countable_income only when no child is in the home
+  # (§ 0410.015.10). Veterans benefits count in full because the excluded
+  # Aid and Attendance portion (§ 0410.015.15) is not separable. Rent from
+  # property the claimant actively manages is earned income under 13 CSR
+  # 40-2.050(1)(C) but is counted here as unearned.
   1974-01-01:
     - pension_income
     - social_security
@@ -19,7 +22,6 @@ values:
     - gi_cash_assistance
     - financial_assistance
     - alimony_income
-    - child_support_received
     - dividend_income
     - interest_income
     - rental_income

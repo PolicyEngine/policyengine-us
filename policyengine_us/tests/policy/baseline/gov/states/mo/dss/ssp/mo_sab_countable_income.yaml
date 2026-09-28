@@ -135,7 +135,7 @@
   output:
     mo_sab_countable_income: 1_157.5
 
-- name: Case 9, reported taxes apply at any earnings level.
+- name: Case 9, reported taxes reduce countable earnings; the 13 CSR tax table is not modeled.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -337,7 +337,7 @@
     # § 0410.015.10 lists each source; $100 a month each.
     mo_sab_countable_income: 300
 
-- name: Case 20, child support received counts as unearned income.
+- name: Case 20, child support received counts when no child lives in the home.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -350,7 +350,8 @@
         members: [person1]
         state_code: MO
   output:
-    # § 0410.015.10 lists child support as unearned income; $500 a month.
+    # § 0410.015.10 counts child support paid for someone outside the home;
+    # $500 a month.
     mo_sab_countable_income: 500
 
 - name: Case 21, court-ordered child support paid is an expense of producing income.
@@ -555,3 +556,43 @@
         state_code: MO
   output:
     mo_sab_countable_income: 281
+
+- name: Case 31, child support received for a child in the home is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 7_200
+        child_support_received: 6_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # § 0410.015.10: support for a child in the home is the child's income.
+    mo_sab_countable_income: [600, 0]
+
+- name: Case 32, an annual reported tax amount is spread across months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        mo_sab_reported_earnings_taxes: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,200 a year is $100 a month: $457.50 - $100 - $100 = $257.50.
+    mo_sab_countable_income:
+      2026-01: 257.5

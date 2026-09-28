@@ -4,9 +4,10 @@ from policyengine_us.model_api import *
 class mo_sab_reported_earnings_taxes(Variable):
     value_type = float
     entity = Person
-    label = "Missouri SAB taxes on earnings"
+    label = "Missouri SAB reported taxes on earnings"
     documentation = (
-        "Monthly federal and state income tax and Social Security tax withheld "
+        "Monthly federal and state income tax and Social Security and Medicare "
+        "(FICA) tax withheld "
         "from or paid on this person's earnings, plus mandatory city earnings "
         "tax paid. Do not include taxes on unearned income. Defaults to zero; "
         "no tax deduction is estimated when no amount is entered. For gross "
@@ -22,4 +23,6 @@ class mo_sab_reported_earnings_taxes(Variable):
         "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/0410-015-05-20/",
         "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/0410-015-05-25/",
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120",
+        "https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=15",
+        "https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=16",
     )

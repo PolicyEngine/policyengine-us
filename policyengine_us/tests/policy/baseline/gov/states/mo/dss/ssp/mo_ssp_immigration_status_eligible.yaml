@@ -164,7 +164,7 @@
         age: 50
         is_veteran: true
       person2:
-        age: 19
+        age: 16
         is_tax_unit_dependent: true
         immigration_status: LEGAL_PERMANENT_RESIDENT
         years_since_us_entry: 1
@@ -210,3 +210,85 @@
         state_code: KS
   output:
     mo_ssp_immigration_status_eligible: false
+
+- name: Case 14, a veteran's dependent parent is not a dependent child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+      person2:
+        age: 75
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # § 1805.020.10.10.10 waives the waiting period only for a spouse or a
+    # dependent child; a 75-year-old dependent fails the qualifying child age
+    # test.
+    mo_ssp_immigration_status_eligible: [true, false]
+
+- name: Case 15, sharing a default marital unit with a veteran does not make someone a spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+      person2:
+        age: 45
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+      person3:
+        age: 30
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # With no marital units declared, all three share one unit, so nobody is
+    # married and person2 gets no spouse exception.
+    mo_ssp_immigration_status_eligible: [true, false, true]
+
+- name: Case 16, a veteran's dependent full-time student child has no waiting period.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+      person2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # A 20-year-old full-time student claimed as a dependent is a dependent
+    # child (under 24 if a student).
+    mo_ssp_immigration_status_eligible: [true, true]

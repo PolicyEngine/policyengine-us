@@ -46,7 +46,14 @@ class mo_sab_countable_income(Variable):
         # SAB has no general income disregard, so unearned income counts in
         # full. In-kind income is excluded under § 0410.015.15, and SSI is not
         # income for the need test under § 0410.020.00.
-        unearned = max_(add(person, period, p.sources.unearned), 0)
+        # § 0410.015.10 treats child support as income to the child for whom
+        # it is paid when the child is in the home, so it counts for the
+        # claimant only when no child lives in the claimant's SPM unit.
+        child_in_home = person.spm_unit.any(person("is_child", period.this_year))
+        child_support = where(
+            child_in_home, 0, person("child_support_received", period)
+        )
+        unearned = max_(add(person, period, p.sources.unearned) + child_support, 0)
         # Court-ordered alimony and child support paid are expenses of
         # producing income (§ 0410.015.05.25), which § 0410.015.10 also applies
         # to unearned income. Garnished wages are also allowed but not modeled.

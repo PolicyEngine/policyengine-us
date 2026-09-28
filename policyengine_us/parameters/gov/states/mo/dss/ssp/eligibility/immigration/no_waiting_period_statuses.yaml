@@ -1,5 +1,11 @@
 description: Missouri excludes these qualified immigrant statuses from the waiting period under the Supplemental Aid to the Blind and Supplemental Nursing Care programs.
 values:
+  # These lists follow MO HealthNet for Families § 1805.020.10 (IM-97), which
+  # has not been amended for the October 2026 federal Medicaid changes.
+  # Revisit them if the Family Support Division amends that section.
+  # Amerasian immigrants, American Indians born in Canada, Iraqi and Afghan
+  # special immigrants, and trafficking victims also have no waiting period
+  # but have no immigration_status value.
   1996-08-22:
     - REFUGEE
     - ASYLEE
@@ -14,7 +20,7 @@ metadata:
       href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/
     - title: MO HealthNet for Families Manual § 1805.020.10.10.05 — Qualified Immigrants With No Waiting Period
       href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/1805-020-10-10/1805-020-10-10-05/
-    - title: MO DSS MHABD Appendix K (07/2026) — Supplemental Nursing Care eligibility same as MO HealthNet Non-Spend Down
-      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=3
-    - title: MO DSS MHABD Appendix K (07/2026) — MO HealthNet Non-Spend Down citizen or qualified non-citizen requirement
-      href: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=1
+    - title: MO DSS December 1973 Eligibility Requirements Manual § 1010.000.00 — Citizenship and Alien Status (SNC same as Family MO HealthNet)
+      href: https://web.archive.org/web/20220519212253/https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1010-000-00/
+    - title: MO DSS Supplemental Nursing Care Manual § 0605.010.00 — December 1973 Eligibility Requirements
+      href: https://dssmanuals.mo.gov/supplemental-nursing-care/0605-000-00/0605-010-00/

@@ -591,6 +591,7 @@
         members: [person1]
         state_code: MO
   output:
+    # The $400 SSI is a stand-in input.
     # § 0410.020.00: countable income is the $800 pension only. Counting SSI
     # would give $1,200, above the $1,073 standard. Grant = $917 - $400 SSI.
     mo_sab_countable_income: 800
@@ -619,6 +620,7 @@
     mo_ssp_eligible: true
 
 - name: Case 32, a blind SAB applicant is evaluated in 2014.
+  # Smoke test: the formulas run in early years without missing parameters.
   period: 2014-01
   input:
     people:
@@ -636,6 +638,7 @@
     mo_ssp_eligible: true
 
 - name: Case 33, a blind SAB applicant is evaluated in 2019.
+  # Smoke test: the formulas run in early years without missing parameters.
   period: 2019-01
   input:
     people:
@@ -889,3 +892,85 @@
         state_code: MO
   output:
     mo_ssp_eligible: true
+
+- name: Case 47, an SNC resident who is a refugee remains eligible in 2027.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400
+        immigration_status: REFUGEE
+        years_since_us_entry: 1
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 1805.020.10 still lists refugees with no waiting period.
+    mo_ssp_eligible: true
+
+- name: Case 48, child support for a child in the home is not the blind parent's income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        ssi: 0
+        pension_income: 7_200
+        child_support_received: 6_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # § 0410.015.10: the $500 support is the child's income, so the parent
+    # counts only the $600 pension, below the $1,073 standard.
+    mo_sab_countable_income: [600, 0]
+    mo_ssp_eligible: [true, false]
+    mo_ssp: [917, 0]
+
+- name: Case 49, two blind SAB spouses are each tested on their own income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 60
+        is_blind: true
+        ssi: 0
+        pension_income: 6_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 60
+        is_blind: true
+        ssi: 0
+        pension_income: 9_600
+        mo_ssp_living_arrangement: SAB
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Appendix K: the SAB income test is individual regardless of marital
+    # status: $500 and $800, both below the $1,073 standard.
+    mo_sab_countable_income: [500, 800]
+    mo_ssp_eligible: [true, true]
