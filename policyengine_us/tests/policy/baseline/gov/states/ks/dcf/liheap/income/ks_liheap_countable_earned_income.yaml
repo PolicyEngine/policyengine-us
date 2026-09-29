@@ -2,6 +2,8 @@
 # 1.8-1.9, #page=6-7): gross wages and self-employment income are counted,
 # except the earned income of a child under 18. KEESM 13320: a member who is
 # or turns 18 in the application month has countable income.
+# Modeling simplification: use existing net business income directly, without
+# applying KEESM 13360's gross-receipts expense deduction a second time.
 
 - name: Case 1, adult wages are counted in full.
   period: 2026
@@ -102,3 +104,94 @@
         state_code: KS
   output:
     ks_liheap_countable_earned_income: 0
+
+- name: Case 6, FY2025 reported net business income receives no additional deduction.
+  period: 2025
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: 24_000
+  output:
+    ks_liheap_countable_earned_income: 24_000
+    self_employment_income: 24_000
+
+- name: Case 7, FY2026 includes regular, SSTB, and farm net income alongside wages.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
+    farm_operations_income: 5_000
+    ks_tanf: 0
+  output:
+    ks_liheap_countable_earned_income: 26_000
+    ks_liheap_countable_income: 26_000
+
+- name: Case 8, a farm loss does not offset wages or other positive business income.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: 4_000
+    farm_operations_income: -15_000
+  output:
+    ks_liheap_countable_earned_income: 22_000
+    farm_operations_income: -15_000
+
+- name: Case 9, an adult with only business losses has no countable earnings.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: -3_000
+    sstb_self_employment_income: -2_000
+    farm_operations_income: -1_000
+  output:
+    ks_liheap_countable_earned_income: 0
+
+- name: Case 10, child business income is excluded and adult losses do not affect other people.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12_000
+        self_employment_income: -4_000
+      child:
+        age: 17
+        employment_income: 5_000
+        self_employment_income: 4_000
+        sstb_self_employment_income: 3_000
+        farm_operations_income: 2_000
+      adult_child:
+        age: 18
+        self_employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+        ks_tanf: 0
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: [12_000, 0, 6_000]
+    ks_liheap_countable_income: 18_000
+    self_employment_income: [-4_000, 4_000, 6_000]
+
+- name: Case 11, an explicitly supplied Kansas countable amount overrides the net approximation.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: 5_000
+    # Known gross receipts of 24,000 less the 25% standard expense deduction.
+    ks_liheap_countable_earned_income: 18_000
+    ks_tanf: 0
+  output:
+    ks_liheap_countable_income: 18_000
+    self_employment_income: 5_000

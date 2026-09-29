@@ -1,14 +1,21 @@
-description: Kansas counts these earned income sources in gross household income under the Low Income Energy Assistance Program.
+description: Kansas uses these earned income sources to approximate countable household earnings under the Low Income Energy Assistance Program.
+# Existing net self-employment inputs are used without an additional expense
+# deduction. They approximate KEESM 13360's gross-receipts calculation and do
+# not reproduce its standard deduction or actual-cost election in every case.
 values:
   2024-10-01:
     - employment_income
-    - ks_liheap_countable_self_employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
 
 metadata:
   unit: list
   period: year
   label: Kansas LIEAP countable earned income sources
   reference:
+    - title: KEESM 13360 Income Eligibility, January 2026 edition (self-employment expense rule approximated using existing net income)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
     - title: Kansas LIHEAP FY2026 State Plan, Section 1.8-1.9 (gross income; wages, self-employment income, contract income and commissions counted)
       href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=6
     - title: KEESM 13320 Household Definition (income of all household members living together is used)
