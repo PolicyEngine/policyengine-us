@@ -13,7 +13,9 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "Defaults to having one's own children in the household "
         "(own_children_in_household), which also counts adult children and "
         "children outside the tax unit; set this input directly when that "
-        "count does not match."
+        "count does not match. Heads and spouses not marked as non-parent "
+        "caretakers are always treated as parents; this input applies to "
+        "other tax-unit members."
     )
     definition_period = YEAR
     reference = (

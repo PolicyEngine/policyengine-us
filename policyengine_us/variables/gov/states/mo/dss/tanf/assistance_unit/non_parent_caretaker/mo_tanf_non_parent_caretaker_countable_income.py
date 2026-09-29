@@ -37,8 +37,9 @@ class mo_tanf_non_parent_caretaker_countable_income(Variable):
         # reduced further by the work expense.
         work_expense = min_(earned, p.earned_income_disregard.amount)
         net_earned = spm_unit.sum((earned - work_expense) * member)
-        # The child care is the unit's deduction: care for the children the
-        # caretaker looks after, which the caretaker pays in order to work.
+        # The child care is the unit's deduction. Assumes the caretaker pays
+        # the children's care in order to work; 0210.005.35 allows "all
+        # expenses of producing income".
         child_care = spm_unit("mo_tanf_child_care_deduction", period)
         countable_earned = max_(net_earned - child_care, 0)
         unearned = add(person, period, p.income.sources.unearned)
