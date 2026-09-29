@@ -50,3 +50,20 @@
         state_code: TX
   output:
     snap_unearned_income: 1_000
+
+- name: A rental loss does not reduce SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        weekly_hours_worked_before_lsr: 40
+        financial_assistance: 12_000
+        rental_income: -6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_unearned_income: 1_000
