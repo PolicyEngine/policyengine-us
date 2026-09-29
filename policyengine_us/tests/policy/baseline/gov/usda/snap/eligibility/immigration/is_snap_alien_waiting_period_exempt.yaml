@@ -135,7 +135,7 @@
     # alone under (iv).
     is_snap_alien_waiting_period_exempt: false
 
-- name: Case 13, parolee with the adjusted-status flag is not exempt.
+- name: Case 13, parolee with the exempt-category flag is not exempt.
   period: 2025-01
   input:
     immigration_status: PAROLED_ONE_YEAR
@@ -145,7 +145,7 @@
   output:
     is_snap_alien_waiting_period_exempt: false
 
-- name: Case 14, conditional entrant with 40 quarters and the adjusted-status flag is not exempt.
+- name: Case 14, conditional entrant with 40 quarters and the exempt-category flag is not exempt.
   period: 2025-01
   input:
     immigration_status: CONDITIONAL_ENTRANT
@@ -468,3 +468,85 @@
     ssi: 967
     is_usda_disabled: true
     is_snap_alien_waiting_period_exempt: false
+
+# Cases 40 and 41 pin that blindness or an SSI disability qualifies only SSI
+# that is actually received: 7 CFR 273.4(a)(6)(ii)(H) covers an individual
+# "receiving benefits or assistance for blindness or disability", so the
+# status alone does not exempt. Income zeroes SSI in every month rather than
+# an ssi input, because the formula sums SSI over the calendar year and a
+# monthly input would set only January.
+
+- name: Case 40, blind LPR age 67 with no SSI is not exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 67
+    years_since_us_entry: 2
+    is_blind: true
+    employment_income: 60_000
+  output:
+    # $60,000 / 12 = $5,000 a month of earnings; ($5,000 - $20 - $65) / 2 =
+    # $2,457.50 of countable earned income, above the $994 federal benefit
+    # rate, so SSI is $0 in every month.
+    is_ssi_aged: true
+    is_ssi_disabled: false
+    ssi: 0
+    is_snap_alien_military_connected: false
+    is_snap_alien_waiting_period_exempt: false
+
+- name: Case 41, SSI-disabled LPR age 67 with no SSI is not exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 67
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_retirement: 30_000
+  output:
+    # Unearned income leaves is_ssi_disabled on, because earnings above
+    # substantial gainful activity would switch it off. $30,000 / 12 = $2,500
+    # a month, less the $20 general income exclusion = $2,480, above the $994
+    # federal benefit rate, so SSI is $0 in every month.
+    is_ssi_aged: true
+    is_blind: false
+    is_ssi_disabled: true
+    ssi: 0
+    is_snap_alien_military_connected: false
+    is_snap_alien_waiting_period_exempt: false
+
+# Cases 42 and 43 cover the survivor entries on the disability_programs list.
+# Following gov.usda.disabled_programs, each flag stands for a survivor who
+# personally meets 7 CFR 271.2 paragraph (8) or (9); the veteran's disability
+# alone does not qualify.
+
+- name: Case 42, LPR age 67 who is a qualifying surviving spouse of a veteran is exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 67
+    years_since_us_entry: 2
+    is_surviving_spouse_of_disabled_veteran: true
+  output:
+    # Computed SSI pays $994 on the basis of age alone, which does not
+    # qualify, so the exemption comes from the survivor entry.
+    is_ssi_aged: true
+    is_blind: false
+    is_ssi_disabled: false
+    ssi: 994
+    is_snap_alien_military_connected: false
+    is_snap_alien_waiting_period_exempt: true
+
+- name: Case 43, LPR age 30 who is a qualifying surviving child of a veteran is exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    is_surviving_child_of_disabled_veteran: true
+  output:
+    # At 30 the under-18 exception does not apply and no SSI is paid, so the
+    # exemption comes from the survivor entry.
+    ssi: 0
+    is_snap_alien_military_connected: false
+    is_snap_alien_waiting_period_exempt: true

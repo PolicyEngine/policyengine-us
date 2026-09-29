@@ -217,7 +217,7 @@
   output:
     meets_snap_qualified_alien_waiting_period: true
 
-- name: Case 23, the adjusted-status exception applies only to LPRs.
+- name: Case 23, the exempt-category exception applies only to LPRs.
   period: 2025-01
   input:
     immigration_status: PAROLED_ONE_YEAR
@@ -533,7 +533,7 @@
     # 7 CFR 273.4(a)(6)(ii)(A) is limited to LPRs.
     meets_snap_qualified_alien_waiting_period: false
 
-- name: Case 47, conditional entrant with the adjusted-status flag does not meet the waiting period.
+- name: Case 47, conditional entrant with the exempt-category flag does not meet the waiting period.
   period: 2025-01
   input:
     immigration_status: CONDITIONAL_ENTRANT

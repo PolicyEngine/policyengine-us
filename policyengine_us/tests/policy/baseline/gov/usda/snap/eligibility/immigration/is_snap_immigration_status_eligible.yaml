@@ -553,7 +553,7 @@
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 47, California parolee with 40 quarters and the adjusted-status flag stays ineligible inside the waiting period.
+- name: Case 47, California parolee with 40 quarters and the exempt-category flag stays ineligible inside the waiting period.
   period: 2026-01
   input:
     immigration_status: PAROLED_ONE_YEAR

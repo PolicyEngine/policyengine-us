@@ -4,10 +4,13 @@ description: The Department of Agriculture excludes qualified aliens receiving t
 # (sec. 510(b)), covers only benefits received for blindness or disability, as
 # specified in 7 CFR 271.2 paragraphs (2)-(11). Age-based qualification does not
 # count (75 FR 4915), so this list holds the gov.usda.disabled_programs entries
-# that are disability-based by construction. Supplemental Security Income is
-# left out here because it can be paid on the basis of age; the formula counts
-# it only when it is paid for blindness or disability. Amount entries count
-# when positive.
+# other than Supplemental Security Income, which can be paid on the basis of
+# age; the formula counts SSI only when it is paid for blindness or disability.
+# The two survivor entries follow the survivor-prong convention of
+# gov.usda.disabled_programs: they stand for 7 CFR 271.2 paragraphs (8)-(9) and
+# should be true only when the surviving spouse or child personally meets one
+# of those conditions, not merely because the veteran was disabled. Amount
+# entries count when positive.
 values:
   1998-11-01:
     - social_security_disability
