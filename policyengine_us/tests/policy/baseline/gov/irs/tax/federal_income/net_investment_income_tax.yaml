@@ -305,6 +305,7 @@
         state_code: TX
   output:
     adjusted_gross_income: 220_000
+    niit_magi: 210_000
     net_investment_income: 20_000
     # MAGI 220,000 - 10,000 = 210,000; 3.8% of min(20,000, 10,000)
     net_investment_income_tax: 380

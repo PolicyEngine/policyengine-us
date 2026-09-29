@@ -10,13 +10,15 @@ class niit_magi(Variable):
         "Form 8960 line 13 modified adjusted gross income: adjusted gross "
         "income plus the MAGI change that comes with Schedule K-1 (Form 1041) "
         "box 14 code H amounts. A dependent's amounts stay on the dependent's "
-        "own return. The foreign earned income exclusion add-back is not "
-        "modeled."
+        "own return. The foreign earned income exclusion add-back and the "
+        "CFC and PFIC adjustments of Treas. Reg. 1.1411-10(e) are not modeled."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/1411#d",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11",
+        "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=19",
+        "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=20",
     )
 
     def formula(tax_unit, period, parameters):

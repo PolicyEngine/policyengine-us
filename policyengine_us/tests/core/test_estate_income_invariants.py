@@ -437,3 +437,38 @@ def test_market_income_rises_by_estate_income_of_every_member(runs, units):
 def _all_member_estate(units):
     estate, _, _ = _person_inputs(units)
     return estate
+
+
+def test_estate_income_raises_household_net_income_by_its_after_tax_amount():
+    """Taxing estate income must not make a household look poorer.
+
+    A single Texas filer with $50,000 of wages in 2024 receives $10,000 of
+    estate income. Federal income tax rises by 12% of $10,000 less the $2,000
+    QBI deduction, or $960; Texas has no income tax and estate income carries
+    no payroll tax. So household net income rises by $9,040.
+    """
+
+    def net_income(estate):
+        situation = {
+            "people": {
+                "head": {
+                    "age": {2024: 40},
+                    "employment_income": {2024: 50_000},
+                    "estate_income": {2024: estate},
+                }
+            },
+            "tax_units": {"tax_unit": {"members": ["head"]}},
+            "households": {
+                "household": {"members": ["head"], "state_code": {2024: "TX"}}
+            },
+        }
+        sim = Simulation(situation=situation)
+        return (
+            float(sim.calculate("household_net_income", 2024)[0]),
+            float(sim.calculate("income_tax", 2024)[0]),
+        )
+
+    net_without, tax_without = net_income(0)
+    net_with, tax_with = net_income(10_000)
+    assert abs((tax_with - tax_without) - 960) < TOLERANCE
+    assert abs((net_with - net_without) - 9_040) < TOLERANCE
