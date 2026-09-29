@@ -357,3 +357,37 @@
     # benefit = max(100 - 150, 0) = 0 (the max_(..., 0) floor binds).
     nv_ccdp_copay: 150
     nv_ccdp: 0
+
+- name: Preschool child in March 2015 uses the FFY 2015 SMI table.
+  period: 2015-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Monthly SMI (2014-10-01 table) = 65_832 * 0.68 / 12 = 3_730.48.
+    # Income 12_000 / 12 = 1_000 <= 41% * 3_730.48 = 1_529.50 -> eligible.
+    # Ratio 1_000 / 3_730.48 = 0.268 < 0.33 -> $0 copay.
+    # Age 5 -> PRESCHOOL; max rate = 51.50 * 21.67 = 1_116.005.
+    # benefit = min(24_000 / 12, 1_116.005) - 0 = 1_116.005.
+    nv_ccdp_smi: 3_730.48
+    nv_ccdp_income_eligible: true
+    nv_ccdp_copay: 0
+    nv_ccdp: 1_116.005
