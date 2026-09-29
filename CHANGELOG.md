@@ -1,3 +1,31 @@
+## [2.17.1] - 2026-09-29
+
+### Fixed
+
+- Add FFY 2014-2017 HHS state median income estimates, so SMI-based programs such as Nevada CCDP compute for January-September 2015 instead of raising ParameterNotFoundError.
+
+
+## [2.17.0] - 2026-09-29
+
+### Added
+
+- Missouri TANF applies the non-parent caretaker relative (NPCR) rules when `mo_tanf_is_non_parent_caretaker` marks a grandparent, other relative or legal guardian caring for the children: the caretaker is excluded when a parent is in the home or when their neediness budget shows no need, and a needy caretaker joins the assistance group only when that neither makes the unit ineligible nor reduces the grant, unless they opt out with `mo_tanf_non_parent_caretaker_opts_out`.
+
+
+## [2.16.0] - 2026-09-29
+
+### Added
+
+- Add court-supervision child-care routes in Arkansas, California, Colorado, Delaware, DC, Hawaii, Illinois, New Jersey, Nevada, and South Carolina; waive South Carolina copays for court-supervised children and DC income, activity, and copay requirements for court-supervised, protective, and foster children; limit Hawaii's protective route to court-supervised children under 18; and correct California's age rules for ordinary and disabled children.
+
+
+## [2.15.17] - 2026-09-28
+
+### Fixed
+
+- Required the household to pay its own utilities (`tenant_pays_utilities`) for California CARE and FERA, which serve the utility customer or a sub-metered tenant, and for LADWP EZ-SAVE and Riverside SHARE, which require the applicant to hold the utility account.
+
+
 ## [2.15.16] - 2026-09-28
 
 ### Fixed
