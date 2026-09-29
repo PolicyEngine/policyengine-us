@@ -225,8 +225,9 @@
         members: [person1]
         state_code: KS
   output:
-    # Negative gross income is in the 0-899 band: matrix p.1 (80%) tier E,
-    # House, size 1-4 = 709, the same as zero income.
+    # The business loss is floored at zero in countable earned income, so
+    # countable income is 0 and the household falls in the lowest income band
+    # (0-899): matrix p.1 (80%) tier E, House, size 1-4 = 709.
     ks_liheap: 709
 
 - name: Case 10, FY2025 season pays the 100 percent value.

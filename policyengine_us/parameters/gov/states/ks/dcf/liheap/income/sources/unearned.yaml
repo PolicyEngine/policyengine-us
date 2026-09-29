@@ -14,12 +14,16 @@ values:
     - child_support_received
     # Plan counts "insurance payments made directly to the insured".
     - workers_compensation
+    # KEESM 13361 exempts only the incomes it lists; employer disability benefits are not among them.
+    - disability_benefits
     - veterans_benefits
     - ks_liheap_countable_interest_dividend_income
     # KEESM 13360-13361 explicitly count interest except for specific
     # exemptions; the plan's unchecked combined interest/dividend/royalty
     # box is not a blanket exclusion. Other irregular receipts and source-
     # specific exclusions require a direct countable-income input.
+    # Contract or mortgage payments, legal settlements and adoption support
+    # have no model input and also require a direct countable-income input.
 
 metadata:
   unit: list
@@ -28,7 +32,11 @@ metadata:
   reference:
     - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (countable income sources)
       href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=6
-    - title: KEESM 13360-13361 (countable income and specific exemptions)
-      href: https://content.dcf.ks.gov/ees/keesm/current/keesm13360.htm
-    - title: KEESM 13320 Household Definition (income of all household members living together is used)
-      href: https://content.dcf.ks.gov/ees/keesm/current/keesm13300.htm
+    - title: KEESM 13360-13361, October 2024 edition (countable income and specific exemptions)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
+    - title: KEESM 13360-13361, January 2026 edition (countable income and specific exemptions)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
+    - title: KEESM 13320 Household Definition, October 2024 edition (income of all household members living together is used)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13300.htm
+    - title: KEESM 13320 Household Definition, January 2026 edition (income of all household members living together is used)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13300.htm

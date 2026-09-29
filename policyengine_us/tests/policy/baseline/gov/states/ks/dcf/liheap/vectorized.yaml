@@ -1,115 +1,102 @@
 # Published FY2026 adjusted matrix cells (pages 1-4) and KEESM 13340/13362.
 # Seven SPM units evaluate mixed inputs and a non-Kansas mask together.
-- name: Mixed households evaluate Kansas LIEAP in one vectorized simulation.
+- name: Case 1, mixed households evaluate Kansas LIEAP in one vectorized simulation.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
-      gas:
+      person1:
         age: 40
-        employment_income: 9600
-      electric:
+        employment_income: 9_600
+      person2:
         age: 40
-        employment_income: 22000
-      propane:
+        employment_income: 22_000
+      person3:
         age: 40
-        employment_income: 21600
-      wood:
+        employment_income: 21_600
+      person4:
         age: 40
-        employment_income: 12000
-      over_limit:
+        employment_income: 12_000
+      person5:
         age: 40
-        employment_income: 30000
-      free_wood:
+        employment_income: 30_000
+      person6:
         age: 40
-        employment_income: 12000
-      missouri:
+        employment_income: 12_000
+      person7:
         age: 40
-        employment_income: 9600
+        employment_income: 9_600
     spm_units:
       gas:
-        members:
-        - gas
+        members: [person1]
         heating_type: NATURAL_GAS
-        gas_expense: 1200
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
         ks_tanf: 0
       electric:
-        members:
-        - electric
+        members: [person2]
         heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 1200
+        pre_subsidy_electricity_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: APARTMENT
         ks_tanf: 0
       propane:
-        members:
-        - propane
+        members: [person3]
         heating_type: PROPANE
-        bottled_gas_expense: 1200
+        bottled_gas_expense: 1_200
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: TRAILER_OTHER
         ks_tanf: 0
       wood:
-        members:
-        - wood
+        members: [person4]
         heating_type: WOOD
-        wood_expense: 1200
+        wood_expense: 1_200
         ks_liheap_utility_rate_tier: J
         ks_liheap_dwelling_type: DUPLEX
         ks_tanf: 0
       over_limit:
-        members:
-        - over_limit
+        members: [person5]
         heating_type: NATURAL_GAS
-        gas_expense: 1200
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: B
         ks_liheap_dwelling_type: DUPLEX
         ks_tanf: 0
       free_wood:
-        members:
-        - free_wood
+        members: [person6]
         heating_type: WOOD
         wood_expense: 0
         ks_liheap_utility_rate_tier: A
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
         ks_tanf: 0
       missouri:
-        members:
-        - missouri
+        members: [person7]
         heating_type: NATURAL_GAS
-        gas_expense: 1200
+        gas_expense: 1_200
         ks_liheap_utility_rate_tier: E
         ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
         ks_tanf: 0
     households:
       gas:
-        members:
-        - gas
+        members: [person1]
         state_code: KS
       electric:
-        members:
-        - electric
+        members: [person2]
         state_code: KS
       propane:
-        members:
-        - propane
+        members: [person3]
         state_code: KS
       wood:
-        members:
-        - wood
+        members: [person4]
         state_code: KS
       over_limit:
-        members:
-        - over_limit
+        members: [person5]
         state_code: KS
       free_wood:
-        members:
-        - free_wood
+        members: [person6]
         state_code: KS
       missouri:
-        members:
-        - missouri
+        members: [person7]
         state_code: MO
   output:
     spm_units:

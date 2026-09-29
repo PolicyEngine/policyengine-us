@@ -189,3 +189,49 @@
   output:
     # KEESM 13330: income from non-qualified members is counted -> 18,000.
     ks_liheap_countable_income: 18_000
+
+- name: Case 9, countable earned income supplied by the caller is used as given.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 5_000
+        # The caller supplies the countable earned income amount.
+        ks_liheap_countable_earned_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18,000 supplied countable earned income + 0 unearned income = 18,000.
+    ks_liheap_countable_income: 18_000
+
+- name: Case 10, employer disability benefits are counted as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        # Example amount: 1,200 a month of employer disability benefits.
+        disability_benefits: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # disability_benefits is in the unearned source list: 1,200 x 12 = 14,400;
+    # every other listed source is 0.
+    ks_liheap_countable_unearned_income: 14_400
+    # 0 earned income + 14,400 unearned income = 14,400.
+    ks_liheap_countable_income: 14_400

@@ -2,7 +2,7 @@
 # KEESM 13361(29)-(30): only specified interest/dividend income is exempt.
 # KEESM 13340: heating equipment alone does not establish fuel responsibility.
 # KEESM 13362: FY2026 uses the published monthly limits, including rounding.
-- name: SNAP receipt does not exempt an over-income household from the income test.
+- name: Case 1, SNAP receipt does not exempt an over-income household from the income test.
   period: 2026
   input:
     state_code: KS
@@ -13,8 +13,9 @@
   output:
     ks_liheap_income_eligible: false
 
-- name: Regular adult interest and dividends count toward household income.
+- name: Case 2, regular adult interest and dividends count toward household income.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     state_code: KS
     age: 40
@@ -25,8 +26,9 @@
   output:
     ks_liheap_countable_income: 25_000
 
-- name: A household gathering its own wood has no purchased heating costs.
+- name: Case 3, a household gathering its own wood has no purchased heating costs.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     state_code: KS
     age: 40
@@ -38,7 +40,7 @@
     ks_liheap_eligible: false
     ks_liheap: 0
 
-- name: FY2026 one-person income above the published monthly limit is ineligible.
+- name: Case 4, FY2026 one-person income above the published monthly limit is ineligible.
   period: 2026
   input:
     state_code: KS
@@ -51,7 +53,7 @@
   output:
     ks_liheap_income_eligible: false
 
-- name: FY2026 four-person household exactly at the published monthly limit qualifies.
+- name: Case 5, FY2026 four-person household exactly at the published monthly limit qualifies.
   period: 2026
   input:
     state_code: KS
