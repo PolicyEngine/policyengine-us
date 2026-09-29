@@ -1,3 +1,10 @@
+## [2.17.2] - 2026-09-29
+
+### Fixed
+
+- Fixed the Missouri Supplemental Aid to the Blind income, resource, and immigration tests, and applied the immigration test to Supplemental Nursing Care.
+
+
 ## [2.17.1] - 2026-09-29
 
 ### Fixed
