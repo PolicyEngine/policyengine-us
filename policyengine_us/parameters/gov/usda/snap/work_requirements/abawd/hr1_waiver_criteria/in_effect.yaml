@@ -2,13 +2,21 @@
 # enactment") struck the 7 U.S.C. 2015(o)(4)(A)(ii) "does not have a
 # sufficient number of jobs" waiver criterion and replaced it with a
 # noncontiguous-State criterion (unemployment at or above 1.5 times the
-# national rate). The dated waived_states and waived_counties lists already
-# record the actual post-enactment geography, so this switch changes nothing
-# under current law. Setting it to false models the pre-enactment criteria:
-# is_in_snap_abawd_waived_area then also treats as waived every area that
-# held a waiver on 2025-07-03, the last day before enactment, indefinitely
-# (assuming each such waiver would have been renewed). Months before
-# 2025-07-04 are unaffected.
+# national rate). The dated waived_states and waived_counties lists record
+# FNS approvals verified to date; known list gaps are tracked in
+# https://github.com/PolicyEngine/policyengine-us/issues/9659. This switch
+# changes nothing under current law, and true never removes a listed
+# waiver: for example, the Minnesota and North Dakota lack-of-sufficient-jobs
+# waivers stay listed through 2026-06-30, as the USDA February 26, 2026
+# memorandum reinstated them. Setting it to false approximates the
+# pre-enactment criteria by freezing the 2025-07-03 geography; no criterion
+# is evaluated. is_in_snap_abawd_waived_area then also treats as waived
+# every area that held a waiver on 2025-07-03, the last day before
+# enactment, indefinitely (assuming each such waiver would have been
+# renewed). That day is PRE_HR1_WAIVER_SNAPSHOT in
+# is_in_snap_abawd_waived_area.py and must stay one day before the first
+# true value below (test_snap_abawd_waived_counties.py checks this). Months
+# before 2025-07-04 are unaffected.
 #
 # This switch is federal and independent of is_snap_abawd_hr1_in_effect: the
 # waiver-criteria change took effect on enactment in every State, including
@@ -18,7 +26,9 @@
 # pre-HR1 ABAWD rules, also set gov.usda.snap.work_requirements.abawd.in_effect
 # and the CA, HI, and AK hr1_in_effect parameters
 # (gov.states.{ca.cdss,hi.dhs,ak.dpa}.snap.work_requirements.abawd.hr1_in_effect)
-# to false.
+# to false. Through is_snap_abawd_exempt, the switch also changes
+# medicaid_community_engagement_pass_through_eligible, which uses the ABAWD
+# exemption set.
 #
 # Counterfactual limits: the freeze assumes every waiver in effect on
 # 2025-07-03 is renewed indefinitely, although several would otherwise have
@@ -26,9 +36,11 @@
 # 2025-10-31; KY on 2025-11-30), and FNS actually denied Delaware's FY2026
 # lack-of-sufficient-jobs renewal. New pre-enactment-criteria approvals after
 # 2025-07-03 are not modeled, except through the union with the current
-# lists. Secretary discretion (April 17, 2025 memorandum), the 12-month
-# duration limit, and Guam and the U.S. Virgin Islands are not modeled.
-description: The Department of Agriculture limits Supplemental Nutrition Assistance Program Able-Bodied Adult Without Dependents (ABAWD) time limit waivers to the Public Law 119-21 criteria when this is true.
+# lists. That union also keeps any area waived only under post-enactment
+# authority, such as the noncontiguous-State criterion P.L. 119-21 added
+# for Alaska and Hawaii. Secretary discretion, the 12-month duration limit,
+# and Guam and the U.S. Virgin Islands are not modeled.
+description: The Department of Agriculture limits Supplemental Nutrition Assistance Program Able-Bodied Adult Without Dependents (ABAWD) time limit waivers to areas on the current waiver lists, rather than also every area waived on July 3, 2025, when this is true.
 
 values:
   0000-01-01: false
@@ -37,13 +49,17 @@ values:
 metadata:
   unit: bool
   period: month
-  label: SNAP ABAWD HR1 waiver criteria in effect
+  label: SNAP ABAWD HR1 waiver geography in effect
   reference:
     - title: Public Law 119-21, Section 10102(b) - Standardizing enforcement (7 U.S.C. 2015(o)(4) waiver criteria)
       href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=12
     - title: Public Law 119-21 - Approved July 4, 2025
       href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=331
-    - title: 7 U.S.C. 2015(o)(4) (2023 edition, before P.L. 119-21) - Waiver
+    - title: 7 U.S.C. 2015(o)(4) - Waiver
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_4
+    - title: 7 U.S.C. 2015(o)(4)(A)(ii) (2023 edition, before P.L. 119-21) - Waiver where an area does not have a sufficient number of jobs
       href: https://www.govinfo.gov/content/pkg/USCODE-2023-title7/pdf/USCODE-2023-title7-chap51-sec2015.pdf#page=10
     - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025)
       href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=1
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (terminated waivers remain in effect through their original expiration dates)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=1

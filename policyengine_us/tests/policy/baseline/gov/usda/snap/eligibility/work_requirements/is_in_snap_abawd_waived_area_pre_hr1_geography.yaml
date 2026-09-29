@@ -66,7 +66,8 @@
 
 # Changes that took effect before 2025-07-03 carry into the snapshot:
 # North Dakota's 2025-07-01 replacement dropped Bottineau County, and the
-# Massachusetts and Hawaii waivers ended 2025-06-30. None is revived.
+# Massachusetts, Hawaii, and Virginia waivers ended 2025-06-30. None is
+# revived.
 
 - name: Case 4, ND resident of Bottineau County is not waived after the 2025-07-01 replacement waiver dropped it.
   period: 2025
@@ -367,13 +368,154 @@
       2025-09: true
       2025-10: true
 
-- name: Case 24, AK resident of Fairbanks North Star Borough stays waived after the Alaska waiver's actual 2026-10-31 end.
+- name: Case 24, AK resident of Bethel Census Area stays waived after the Alaska waiver's actual 2026-10-31 end.
   period: 2026
   input:
     gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
     state_code: AK
-    county_fips: "02090"
+    county_fips: "02050"
   output:
     is_in_snap_abawd_waived_area:
       2026-10: true
       2026-11: true
+
+# No-county fallback with the switch off. A household with no county
+# geography falls back to the first county in its state. Delaware's
+# fallback, Kent County, is in the 2025-07-03 geography, so it stays waived
+# after the actual waiver's 2025-09-30 end (current law: not waived, Case 69
+# in is_in_snap_abawd_waived_area.yaml). New Mexico's fallback, Bernalillo
+# County, is outside both the 29-county FY2025 list and the FY2026 Luna
+# County list, so it is waived only while the FY2024 statewide waiver runs.
+
+- name: Case 25, DE household without county geography falls back to Kent County and stays waived after the county waiver's actual 2025-09-30 end.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2025: DE
+      2026: DE
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-10: true
+      2026-07: true
+
+- name: Case 26, NM household without county geography falls back to Bernalillo County, waived only under the December 2024 statewide waiver.
+  period: 2024
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2024: NM
+      2025: NM
+      2026: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-06: false
+      2026-07: false
+
+# The switch changes geography only. A 58-year-old who works 1 hour a week
+# is exempt by age under the pre-HR1 bracket (55 and older) but not under
+# the HR1 bracket (65 and older). Texas applies the HR1 age rules from
+# 2025-07-04 through gov.usda.snap.work_requirements.abawd.in_effect, which
+# this switch leaves on, and Texas is outside the 2025-07-03 geography, so
+# the person is subject to the time limit. The same person in Kings County,
+# NY is waived through the frozen 61-county waiver.
+
+- name: Case 27, TX resident of Harris County aged 58 (2026-07) is neither waived nor exempt by age because the switch leaves the HR1 age rules in place.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 58
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    county_fips: "48201"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+    is_snap_abawd_exempt:
+      2026-07: false
+    meets_snap_abawd_work_requirements:
+      2026-07: false
+
+- name: Case 28, NY resident of Kings County aged 58 (2026-07) meets the ABAWD requirement through the frozen 61-county waiver.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 58
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+    is_snap_abawd_exempt:
+      2026-07: true
+    meets_snap_abawd_work_requirements:
+      2026-07: true
+
+# Statewide and boundary checks with the switch off. The 2025-07-03
+# geography includes DC's districtwide waiver (waived_states 2025-03-01
+# list), which the May 21, 2025 reissue letter had shortened to
+# 2025-12-31. For July 2025 the lists are read at 2025-07-01, which
+# already includes Minnesota's 2025-07-01 replacement list with Norman
+# County.
+
+- name: Case 29, DC resident (2026-07) stays waived after the districtwide waiver's actual 2025-12-31 end.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: DC
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+
+- name: Case 30, MN resident of Norman County is waived in the enactment month under the 2025-07-01 replacement waiver.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: MN
+    county_fips: "27107"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-07: true
+
+# Several households in one simulation exercise the vectorized path: only
+# Kings County is in the 2025-07-03 geography; Saratoga County is outside
+# the frozen NY list, Texas had no waiver, and New Castle County is outside
+# the frozen DE list.
+
+- name: Case 31, four households in NY Kings, NY Saratoga, TX Harris, and DE New Castle counties (2026-07) are evaluated together and only Kings County is waived.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 30
+      person4:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+        county_fips: "36047"
+      household2:
+        members: [person2]
+        state_code: NY
+        county_fips: "36091"
+      household3:
+        members: [person3]
+        state_code: TX
+        county_fips: "48201"
+      household4:
+        members: [person4]
+        state_code: DE
+        county_fips: "10003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: [true, false, false, false]
