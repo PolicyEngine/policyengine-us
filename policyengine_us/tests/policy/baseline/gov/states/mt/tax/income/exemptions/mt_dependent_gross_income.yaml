@@ -1,0 +1,188 @@
+# Montana gross income (MCA 15-30-2101(10)) for the dependent income test in
+# MCA 15-30-2114(5)(a): federal gross income excluding unemployment
+# compensation, with only the IRC 86 taxable part of Social Security, and with
+# gains but not losses (Pub. 501 (2022), p.2). Each case is 2022: the taxpayer
+# (tax unit head) has $50,000 of wages, and the dependent is an adult who is
+# not a qualifying child. is_tax_unit_spouse: false is required on each
+# dependent; otherwise the adult is inferred as the spouse, whose income is
+# not counted. 2022 IRC 86 single base amounts: $25,000 and $34,000.
+
+- name: Case 1, unemployment compensation is excluded.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        unemployment_compensation: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 3,000 unemployment compensation - 3,000 excluded = 0.
+    mt_dependent_gross_income: [0, 0]
+
+- name: Case 2, wages still count when unemployment compensation is excluded.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        unemployment_compensation: 3_000
+        employment_income: 2_711
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,711 wages + 0 of the 3,000 unemployment compensation
+    # = 2,711.
+    mt_dependent_gross_income: [0, 2_711]
+
+- name: Case 3, Social Security below the base amount is not gross income.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0 other gross income + 0.5 x 12,000 = 6,000
+    # < 25,000 base amount, so taxable Social Security = 0.
+    # Gross income = 0 + 0 = 0.
+    mt_dependent_gross_income: [0, 0]
+
+- name: Case 4, taxable Social Security exactly at the exemption amount.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        social_security_retirement: 60_840
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0.5 x 60,840 = 30,420, between 25,000 and 34,000.
+    # Taxable = min(0.5 x 60,840, 0.5 x (30,420 - 25,000))
+    # = min(30,420, 2,710) = 2,710.
+    mt_dependent_gross_income: [0, 2_710]
+
+- name: Case 5, taxable Social Security one dollar above the exemption amount.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        social_security_retirement: 60_844
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0.5 x 60,844 = 30,422.
+    # Taxable = min(30,422, 0.5 x (30,422 - 25,000)) = min(30,422, 2,711)
+    # = 2,711.
+    mt_dependent_gross_income: [0, 2_711]
+
+- name: Case 6, a short-term loss does not offset a long-term gain.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        long_term_capital_gains: 3_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = max(0, 3,000) + max(0, -2,000) = 3,000 + 0 = 3,000,
+    # not the net gain of 1,000.
+    mt_dependent_gross_income: [0, 3_000]
+
+- name: Case 7, a long-term loss does not offset a short-term gain.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_qualifying_child_dependent: false
+        short_term_capital_gains: 2_711
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = max(0, 2,711) + max(0, -3,000) = 2,711 + 0 = 2,711,
+    # not the net loss of 289.
+    mt_dependent_gross_income: [0, 2_711]

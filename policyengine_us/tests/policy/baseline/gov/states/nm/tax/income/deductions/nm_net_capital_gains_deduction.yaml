@@ -75,11 +75,13 @@
     nm_net_capital_gains_deduction: 1_200_000
 
 # "Net capital gains" follow IRC Section 1222(11): net long-term capital gain
-# less any net short-term capital loss. NMSA 7-2-34(D) has adopted that
-# definition since 2019 HB6, section 14, so it applies in every supported year.
-# PIT-ADJ instructions (2023 and 2024): "that section defines 'net capital
-# gains' as only net long-term capital gains less any net short-term capital
-# losses."
+# less any net short-term capital loss. NMSA 7-2-34 has adopted that
+# definition since tax year 2019 (2019 HB6, section 14; applicability in
+# section 59(A), p.105): in subsection (D) for 2019 through 2024 and in
+# subsection (C) from 2025 (2024 HB252, section 8, p.30; section 42(B),
+# p.147). PIT-1 line 15 instructions (2023 PIT instruction book, p.32): "that
+# section defines 'net capital gains' as only net long-term capital gains
+# less any net short-term capital losses."
 
 - name: Short-term gains are excluded from net capital gains
   period: 2023
@@ -132,7 +134,8 @@
     short_term_capital_gains: 5_000
     state_code: NM
   output:
-    # NMSA 7-2-34(D) (2019 HB6, section 14) already used IRC 1222(11) in 2022.
+    # NMSA 7-2-34(D) (2019 HB6, sections 14 and 59(A)) already used IRC
+    # 1222(11) in 2022.
     # Net capital gains = 10,000 - max(0, -5,000) = 10,000 (the 5,000
     # short-term gain is excluded).
     # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000.
@@ -226,3 +229,52 @@
     # Net short-term = 3,000 - 5,000 = -2,000, a net short-term loss of 2,000.
     # Net capital gains = 10,000 - 2,000 = 8,000; 40% x 8,000 = 3,200.
     nm_net_capital_gains_deduction: 3_200
+
+- name: Short-term gains are also excluded in 2021
+  period: 2021
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # 2019 HB6, section 59(A), p.105: the IRC 1222(11) definition applies
+    # from 2019. Net capital gains = 10,000 - max(0, -5,000) = 10,000.
+    # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000
+    # (counting the short-term gain would give 40% x 15,000 = 6,000).
+    nm_net_capital_gains_deduction: 4_000
+
+- name: Only short-term gains in 2021 means no net capital gains
+  period: 2021
+  input:
+    filing_status: SINGLE
+    short_term_capital_gains: 10_000
+    state_code: NM
+  output:
+    # Net capital gains = max(0, 0 - max(0, -10,000)) = 0, so no deduction
+    # (counting the short-term gain would give 40% x 10,000 = 4,000).
+    nm_net_capital_gains_deduction: 0
+
+- name: Short-term gains are excluded in 2024
+  period: 2024
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # Net capital gains = 10,000 - max(0, -5,000) = 10,000.
+    # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000.
+    nm_net_capital_gains_deduction: 4_000
+
+- name: Capital gain distributions are long-term capital gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    non_sch_d_capital_gains: 5_000
+    state_code: NM
+  output:
+    # Capital gain distributions are long-term capital gains under IRC
+    # 852(b)(3)(B), so net capital gains = 5,000.
+    # max(40% x 5,000, min(5,000, 1,000)) = max(2,000, 1,000) = 2,000.
+    nm_net_capital_gains_deduction: 2_000
