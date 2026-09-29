@@ -21,13 +21,21 @@ class snap_alien_qualifying_quarters(Variable):
         "(273.4(a)(6)(ii)(A)(2)). Consulted only for lawful permanent "
         "residents inside the SNAP qualified alien waiting period. Defaults "
         "to 0, so the 40-quarter exception applies only when this input is "
-        "supplied. This is separate from ssi_qualifying_quarters_earnings, "
-        "whose default of 40 would exempt every lawful permanent resident."
+        "supplied. This is the same legal count as "
+        "ssi_qualifying_quarters_earnings. 8 USC 1612(a)(2)(B) is one "
+        "exception, which 1612(a)(3) applies to both SSI and SNAP. 8 USC "
+        "1645 sets one crediting rule for both programs. When both inputs "
+        "are supplied for a person, they should hold the same number. The "
+        "SNAP input is separate only because of the defaults: "
+        "ssi_qualifying_quarters_earnings defaults to 40, so reusing it would "
+        "exempt every lawful permanent resident and the waiting period would "
+        "never apply."
     )
     definition_period = YEAR
     default_value = 0
     reference = (
         "https://www.law.cornell.edu/uscode/text/8/1612#a_2_B",
+        "https://www.law.cornell.edu/uscode/text/8/1612#a_3",
         "https://www.law.cornell.edu/uscode/text/8/1645",
         "https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_A",
     )

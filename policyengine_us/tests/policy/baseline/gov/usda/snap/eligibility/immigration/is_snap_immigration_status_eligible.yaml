@@ -340,7 +340,7 @@
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
     state_code: TX
   output:
     is_snap_immigration_status_eligible: true
@@ -560,7 +560,7 @@
     age: 30
     years_since_us_entry: 2
     snap_alien_qualifying_quarters: 40
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
     state_code: CA
   output:
     # Both exceptions are limited to LPRs, and the California override does
@@ -682,7 +682,7 @@
     meets_snap_qualified_alien_waiting_period: true
     is_snap_immigration_status_eligible: false
 
-- name: Case 56, LPR age 67 on age-based SSI inside the waiting period is ineligible.
+- name: Case 56, LPR age 67 on age-based SSI inside the waiting period is eligible.
   period: 2026-01
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
@@ -690,8 +690,8 @@
     years_since_us_entry: 2
     state_code: TX
   output:
-    # Computed SSI is paid on the basis of age, which does not meet the
-    # blindness or disability exception.
+    # Computed SSI is paid on the basis of age, and any SSI receipt meets
+    # the blindness or disability exception (7 CFR 271.2 paragraph (2)).
     is_usda_disabled: true
-    is_snap_alien_waiting_period_exempt: false
-    is_snap_immigration_status_eligible: false
+    is_snap_alien_waiting_period_exempt: true
+    is_snap_immigration_status_eligible: true

@@ -198,6 +198,9 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        # The CalWORKs grant is an input, so CalWORKs parameter changes do
+        # not move this SNAP case: $5,700 / 12 = $475 a month.
+        ca_tanf: 5_700
     households:
       household:
         members: [person1, person2, person3]
@@ -576,7 +579,7 @@
     snap_max_allotment: 785
     snap: 367
 
-- name: Case 13, single LPR age 67 on age-based SSI inside the waiting period is barred.
+- name: Case 13, single LPR age 67 on age-based SSI inside the waiting period is exempt and receives SNAP.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -599,22 +602,29 @@
     is_ssi_disabled: false
     ssi_category: AGED
     ssi: 994
-    # Age-based SSI still meets the broad 7 CFR 271.2 test, but it is not a
-    # benefit for blindness or disability under 7 CFR 273.4(a)(6)(ii)(H), so
-    # 2 years < 5 bars person1.
+    # Any SSI receipt meets 7 CFR 271.2 paragraph (2), so person1 is exempt
+    # from the waiting period even though 2 years < 5.
     is_usda_disabled: true
-    is_snap_alien_waiting_period_exempt: false
-    meets_snap_qualified_alien_waiting_period: false
-    is_snap_immigration_status_eligible: false
-    is_snap_excluded_member: true
-    # The only member is excluded, so no one is left in the SNAP unit and
-    # none of the SSI is counted (0 eligible / 1 household member).
-    snap_unit_size: 0
-    snap_unearned_income: 0
-    is_snap_eligible: false
-    # Before the age-based SSI fix, the SSI exempted person1 and the
-    # household received the $62 shown in Case 14.
-    snap: 0
+    is_snap_alien_waiting_period_exempt: true
+    meets_snap_qualified_alien_waiting_period: true
+    is_snap_immigration_status_eligible: true
+    is_snap_excluded_member: false
+    snap_unit_size: 1
+    # The member is 60 or older, so the household is elderly and skips the
+    # gross income test.
+    has_snap_elderly_disabled_member: true
+    # $994 of SSI counts as unearned income.
+    snap_unearned_income: 994
+    snap_gross_income: 994
+    snap_standard_deduction: 209
+    # $994 - $209 standard deduction = $785; no shelter or medical costs.
+    snap_net_income: 785
+    # 30% of $785 = $235.50, rounded up to $236.
+    snap_expected_contribution: 236
+    # One-person maximum allotment $298 - $236 = $62, the same as Case 14.
+    snap_max_allotment: 298
+    is_snap_eligible: true
+    snap: 62
 
 - name: Case 14, single LPR age 67 on age-based SSI past the waiting period receives SNAP.
   period: 2026-01
@@ -633,8 +643,9 @@
         members: [person1]
         state_code: TX
   output:
-    # Still not exempt, but 5 years >= 5 completes the waiting period.
-    is_snap_alien_waiting_period_exempt: false
+    # Exempt through the SSI receipt, and 5 years >= 5 also completes the
+    # waiting period.
+    is_snap_alien_waiting_period_exempt: true
     meets_snap_qualified_alien_waiting_period: true
     is_snap_immigration_status_eligible: true
     is_snap_excluded_member: false
@@ -702,3 +713,36 @@
     # One-person maximum allotment $298 - $98 = $200.
     snap_max_allotment: 298
     snap: 200
+
+- name: Case 16, single LPR age 67 whose retirement income rules out SSI is barred inside the waiting period.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 13_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # $13,200 / 12 = $1,100 a month, less the $20 general income exclusion
+    # = $1,080, above the $994 federal benefit rate, so SSI is $0 in every
+    # month. With no SSI or disability benefit, the exception does not apply
+    # and 2 years < 5 bars person1.
+    ssi: 0
+    is_usda_disabled: false
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+    is_snap_immigration_status_eligible: false
+    is_snap_excluded_member: true
+    # The only member is excluded, so no one is left in the SNAP unit.
+    snap_unit_size: 0
+    is_snap_eligible: false
+    snap: 0

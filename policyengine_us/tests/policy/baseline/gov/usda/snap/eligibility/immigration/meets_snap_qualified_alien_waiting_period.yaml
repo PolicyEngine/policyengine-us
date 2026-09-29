@@ -129,7 +129,7 @@
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     meets_snap_qualified_alien_waiting_period: true
 
@@ -223,7 +223,7 @@
     immigration_status: PAROLED_ONE_YEAR
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     is_snap_alien_waiting_period_exempt: false
     meets_snap_qualified_alien_waiting_period: false
@@ -539,7 +539,7 @@
     immigration_status: CONDITIONAL_ENTRANT
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     meets_snap_qualified_alien_waiting_period: false
 
@@ -549,7 +549,7 @@
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
     years_since_us_entry: 0
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     meets_snap_qualified_alien_waiting_period: true
 

@@ -1,9 +1,9 @@
 # 7 CFR 273.4(a)(6)(ii); 8 USC 1612(a)(2). Exceptions to the SNAP qualified
 # alien waiting period: under 18 ((ii)(J)), receipt of blindness or
-# disability benefits ((ii)(H): SSI paid for blindness or disability, or a
-# benefit on the disability_programs list), a military connection
-# ((ii)(G)), and, for LPRs only, 40 qualifying quarters ((ii)(A)) or
-# admission in, or adjustment from, an exempt category ((ii)(B)-(F), (iv)).
+# disability benefits ((ii)(H): the 7 CFR 271.2 benefit-receipt test in
+# is_usda_disabled, which counts any SSI), a military connection ((ii)(G)),
+# and, for LPRs only, 40 qualifying quarters ((ii)(A)) or admission in, or
+# adjustment from, an exempt category ((ii)(B)-(F), (iv)).
 
 - name: Case 1, adult LPR with no exception is not exempt.
   period: 2026-01
@@ -119,7 +119,7 @@
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     is_snap_alien_waiting_period_exempt: true
 
@@ -141,7 +141,7 @@
     immigration_status: PAROLED_ONE_YEAR
     age: 30
     years_since_us_entry: 2
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     is_snap_alien_waiting_period_exempt: false
 
@@ -152,7 +152,7 @@
     age: 60
     years_since_us_entry: 2
     snap_alien_qualifying_quarters: 40
-    snap_lpr_waiting_period_exempt_category: true
+    is_snap_lpr_in_waiting_period_exempt_category: true
   output:
     is_snap_alien_waiting_period_exempt: false
 
@@ -192,7 +192,8 @@
     age: 10
     years_since_us_entry: 2
   output:
-    # The under-18 exception took effect 1998-11-01.
+    # The under-18 exception, without its 1996 residence condition, took
+    # effect 2003-10-01.
     is_snap_alien_waiting_period_exempt: true
 
 - name: Case 19, the 40-quarter exception applies in 2018.
@@ -222,28 +223,6 @@
     years_since_us_entry: 0
   output:
     is_snap_alien_waiting_period_exempt: true
-
-- name: Case 22, the child exception follows monthly age when it is below 18.
-  period: 2026-01
-  input:
-    immigration_status: LEGAL_PERMANENT_RESIDENT
-    age: 18
-    monthly_age: 17
-    years_since_us_entry: 2
-  output:
-    # The formula reads monthly_age, so a person who is 17 in the month is
-    # exempt even though their yearly age is 18.
-    is_snap_alien_waiting_period_exempt: true
-
-- name: Case 23, the child exception follows monthly age when it reaches 18.
-  period: 2026-01
-  input:
-    immigration_status: LEGAL_PERMANENT_RESIDENT
-    age: 17
-    monthly_age: 18
-    years_since_us_entry: 2
-  output:
-    is_snap_alien_waiting_period_exempt: false
 
 - name: Case 24, parolee age 18 is not exempt as a child.
   period: 2025-01
@@ -333,12 +312,12 @@
     is_snap_alien_waiting_period_exempt: true
 
 # Cases 32 onward cover people at or above the SSI aged threshold of 65.
-# 8 USC 1612(a)(2)(F)(ii) and 7 CFR 273.4(a)(6)(ii)(H) require benefits
-# received for blindness or disability, not age (75 FR 4915). SSI therefore
-# counts only when the person is under 65, blind, or SSI disabled; the
-# benefits on the disability_programs list count at any age.
+# 8 USC 1612(a)(2)(F)(ii) defines the qualifying benefits by reference to
+# 7 USC 2012(j), and 7 CFR 273.4(a)(6)(ii)(H) by reference to 7 CFR 271.2.
+# Both list SSI receipt with no disability condition, so the exception reads
+# is_usda_disabled and counts SSI paid on the basis of age.
 
-- name: Case 32, LPR age 67 receiving only age-based SSI is not exempt.
+- name: Case 32, LPR age 67 receiving age-based SSI is exempt.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -353,10 +332,9 @@
     is_ssi_disabled: false
     ssi_category: AGED
     ssi: 994
-    # The broad 7 CFR 271.2 elderly-or-disabled test still counts any SSI,
-    # but the waiting period exception does not.
+    # 7 CFR 271.2 paragraph (2) counts any SSI receipt.
     is_usda_disabled: true
-    is_snap_alien_waiting_period_exempt: false
+    is_snap_alien_waiting_period_exempt: true
 
 - name: Case 33, blind LPR age 67 receiving SSI is exempt.
   period: 2026-01
@@ -381,8 +359,8 @@
     years_since_us_entry: 2
     meets_ssi_disability_criteria: true
   output:
-    # ssi_category gives AGED priority over DISABLED, so the exception reads
-    # is_ssi_disabled directly rather than the category.
+    # ssi_category gives AGED priority over DISABLED; the exception counts
+    # the SSI receipt whatever the category.
     is_ssi_aged: true
     is_ssi_disabled: true
     ssi_category: AGED
@@ -400,8 +378,7 @@
   output:
     # $12,000 / 12 = $1,000 a month of SSDI, less the $20 general income
     # exclusion = $980; $994 - $980 = $14 of SSI, paid on the basis of age.
-    # That SSI does not qualify, but SSDI is on the disability_programs list
-    # and counts at any age.
+    # The SSDI and the SSI are each on gov.usda.disabled_programs.
     is_ssi_aged: true
     is_ssi_disabled: false
     ssi_category: AGED
@@ -417,8 +394,8 @@
     is_permanently_disabled_veteran: true
     is_veteran: false
   output:
-    # The disability_programs entry applies on its own; the military
-    # connection is switched off to isolate it.
+    # The military connection is switched off. Computed age-based SSI also
+    # qualifies at 67; Case 6 isolates the disabled-veteran entry.
     is_ssi_aged: true
     is_snap_alien_military_connected: false
     is_snap_alien_waiting_period_exempt: true
@@ -431,14 +408,14 @@
     years_since_us_entry: 2
     receives_ssi: true
   output:
-    # Below the SSI aged threshold of 65, SSI can only rest on blindness or
-    # disability, so reported receipt qualifies without either flag.
+    # Reported SSI receipt qualifies without the blindness or disability
+    # flags.
     is_ssi_aged: false
     is_blind: false
     is_ssi_disabled: false
     is_snap_alien_waiting_period_exempt: true
 
-- name: Case 38, LPR age 65 reported to receive SSI is not exempt.
+- name: Case 38, LPR age 65 reported to receive SSI is exempt.
   period: 2026-01
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
@@ -447,14 +424,14 @@
     receives_ssi: true
   output:
     # At the SSI aged threshold, SSI without blindness or an SSI disability
-    # is treated as age-based.
+    # rests on age, and it still counts.
     is_ssi_aged: true
     is_blind: false
     is_ssi_disabled: false
     is_usda_disabled: true
-    is_snap_alien_waiting_period_exempt: false
+    is_snap_alien_waiting_period_exempt: true
 
-- name: Case 39, parolee age 67 receiving only age-based SSI is not exempt before OBBBA.
+- name: Case 39, parolee age 67 receiving computed age-based SSI is exempt before OBBBA.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -463,18 +440,19 @@
     years_since_us_entry: 2
   output:
     # Computed SSI pays the full 2025 federal benefit rate of $967 a month on
-    # the basis of age, which does not lift the parolee's waiting period.
+    # the basis of age, and that receipt lifts the waiting period. SSI's own
+    # rules would generally deny this parolee SSI (8 USC 1612(a)(1)); the
+    # exemption variable documents this SSI modeling gap.
     ssi_category: AGED
     ssi: 967
     is_usda_disabled: true
-    is_snap_alien_waiting_period_exempt: false
+    is_snap_alien_waiting_period_exempt: true
 
-# Cases 40 and 41 pin that blindness or an SSI disability qualifies only SSI
-# that is actually received: 7 CFR 273.4(a)(6)(ii)(H) covers an individual
-# "receiving benefits or assistance for blindness or disability", so the
-# status alone does not exempt. Income zeroes SSI in every month rather than
-# an ssi input, because the formula sums SSI over the calendar year and a
-# monthly input would set only January.
+# Cases 40 and 41 pin that blindness or an SSI disability without a benefit
+# does not exempt: 7 CFR 273.4(a)(6)(ii)(H) covers an individual "receiving
+# benefits or assistance for blindness or disability". Income zeroes SSI in
+# every month rather than an ssi input, because is_usda_disabled sums SSI
+# over the calendar year and a monthly input would set only January.
 
 - name: Case 40, blind LPR age 67 with no SSI is not exempt.
   period: 2026-01
@@ -514,26 +492,21 @@
     is_snap_alien_military_connected: false
     is_snap_alien_waiting_period_exempt: false
 
-# Cases 42 and 43 cover the survivor entries on the disability_programs list.
-# Following gov.usda.disabled_programs, each flag stands for a survivor who
-# personally meets 7 CFR 271.2 paragraph (8) or (9); the veteran's disability
-# alone does not qualify.
+# Cases 42 and 43 cover the survivor entries on gov.usda.disabled_programs.
+# Each flag stands for a survivor who personally meets 7 CFR 271.2 paragraph
+# (8) or (9); the veteran's disability alone does not qualify.
 
-- name: Case 42, LPR age 67 who is a qualifying surviving spouse of a veteran is exempt.
+- name: Case 42, LPR age 40 who is a qualifying surviving spouse of a veteran is exempt.
   period: 2026-01
-  absolute_error_margin: 0.01
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
-    age: 67
+    age: 40
     years_since_us_entry: 2
     is_surviving_spouse_of_disabled_veteran: true
   output:
-    # Computed SSI pays $994 on the basis of age alone, which does not
-    # qualify, so the exemption comes from the survivor entry.
-    is_ssi_aged: true
-    is_blind: false
-    is_ssi_disabled: false
-    ssi: 994
+    # At 40 the under-18 exception does not apply and no SSI is paid, so the
+    # exemption comes from the survivor entry.
+    ssi: 0
     is_snap_alien_military_connected: false
     is_snap_alien_waiting_period_exempt: true
 

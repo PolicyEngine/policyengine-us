@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class snap_lpr_waiting_period_exempt_category(Variable):
+class is_snap_lpr_in_waiting_period_exempt_category(Variable):
     value_type = bool
     entity = Person
     label = "Lawful permanent resident admitted in or adjusted from a category exempt from the SNAP waiting period"
