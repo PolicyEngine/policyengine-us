@@ -1,11 +1,11 @@
 description: The US Department of Health and Human Services household size adjustments for state median income.
 
 first_person:
-  2013-10-01: 0.52
+  1988-04-04: 0.52
 second_to_sixth_person:
-  2013-10-01: 0.16
+  1988-04-04: 0.16
 additional_person:
-  2013-10-01: 0.03
+  1988-04-04: 0.03
 
 metadata:
   unit: /1
@@ -14,11 +14,11 @@ metadata:
   reference:
     - title: 45 CFR 96.85(b), Adjustment of annual median income for household size
       href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-96/subpart-H/section-96.85#p-96.85(b)
-    - title: Estimated State Median Income for Four-Person Families, by State, FFY 2014 (78 FR 28597), footnote 3
-      href: https://www.govinfo.gov/content/pkg/FR-2013-05-15/pdf/2013-11575.pdf#page=3
+    - title: 53 FR 6824, Block Grant Programs final rule (effective April 4, 1988), 45 CFR 96.85(b)
+      href: https://www.govinfo.gov/content/pkg/FR-1988-03-03/pdf/FR-1988-03-03.pdf#page=53
     - title: State Median Income (SMI) by household size FFY 2022
       href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM03%20Attachment1%20SMITable_FY2022.pdf
 
-# 45 CFR 96.85(b) has set these household-size percentages since the 1988 rule
-# (53 FR 6827); the 1999 amendment (64 FR 55858) changed only paragraph (a).
-# They start with the earliest State Median Income table in amount.yaml.
+# The 1988 rule (53 FR 6824, effective April 4, 1988) set these household-size
+# percentages in 45 CFR 96.85(b); the 1999 amendment (64 FR 55858) changed only
+# paragraph (a).

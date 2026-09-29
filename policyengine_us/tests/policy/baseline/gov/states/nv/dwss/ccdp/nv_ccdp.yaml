@@ -358,14 +358,16 @@
     nv_ccdp_copay: 150
     nv_ccdp: 0
 
-- name: Preschool child in March 2015 uses the FFY 2015 SMI table.
-  period: 2015-03
+- name: Single parent at the 2015 minimum wage with a preschooler in a Clark County center.
+  period: 2015
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        employment_income: 12_000
+        # Full time at Nevada's 2015 minimum wage without employer health
+        # benefits: 8.25 * 40 * 52 = 17_160.
+        employment_income: 17_160
       person2:
         age: 5
         immigration_status: CITIZEN
@@ -375,19 +377,29 @@
         members: [person1, person2]
         meets_ccdf_activity_test: true
         nv_ccdp_enrolled: false
-        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        # 2015 average annual cost of licensed-center preschool care in Nevada.
+        spm_unit_pre_subsidy_childcare_expenses: 7_894
     households:
       household:
         members: [person1, person2]
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # Monthly SMI (2014-10-01 table) = 65_832 * 0.68 / 12 = 3_730.48.
-    # Income 12_000 / 12 = 1_000 <= 41% * 3_730.48 = 1_529.50 -> eligible.
-    # Ratio 1_000 / 3_730.48 = 0.268 < 0.33 -> $0 copay.
-    # Age 5 -> PRESCHOOL; max rate = 51.50 * 21.67 = 1_116.005.
-    # benefit = min(24_000 / 12, 1_116.005) - 0 = 1_116.005.
-    nv_ccdp_smi: 3_730.48
-    nv_ccdp_income_eligible: true
-    nv_ccdp_copay: 0
-    nv_ccdp: 1_116.005
+    # Income 17_160 / 12 = 1_430 per month; care 7_894 / 12 = 657.83 per month.
+    # Age 5 -> PRESCHOOL; max rate = 51.50 * 21.67 = 1_116.005, so the charge binds.
+    # 2015-09, FFY 2015 table: SMI = 65_832 * 0.68 / 12 = 3_730.48.
+    #   1_430 <= 41% * 3_730.48 = 1_529.50 -> eligible.
+    #   Ratio 1_430 / 3_730.48 = 0.3833 -> $90 copay (33% to 42% band).
+    # 2015-10, FFY 2016 table: SMI = 66_461 * 0.68 / 12 = 3_766.12.
+    #   1_430 <= 41% * 3_766.12 = 1_544.11 -> eligible.
+    #   Ratio 1_430 / 3_766.12 = 0.3797 -> $90 copay.
+    # benefit = min(657.83, 1_116.005) - 90 = 567.83 in both months.
+    nv_ccdp_smi:
+      2015-09: 3_730.48
+      2015-10: 3_766.12
+    nv_ccdp_copay:
+      2015-09: 90
+      2015-10: 90
+    nv_ccdp:
+      2015-09: 567.83
+      2015-10: 567.83
