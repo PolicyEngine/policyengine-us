@@ -7,24 +7,21 @@ class ky_ccap_eligible_child(Variable):
     label = "Eligible child for Kentucky CCAP"
     definition_period = MONTH
     defined_for = StateCode.KY
-    reference = "https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=4"
+    reference = "https://apps.legislature.ky.gov/law/kar/downloads/docs/10239/document.engrossed.pdf#page=4"
 
     def formula(person, period, parameters):
-        # 922 KAR 2:160 Section 3(1)(b): a child must be under 13, or under 19 if
-        # physically/mentally incapable of self-care, under court supervision, or a
-        # federal-priority child. We don't track court-supervision or
-        # federal-priority status at the moment, so the 13-18 extension applies
-        # only via the special-need branch (is_disabled / has_developmental_delay).
-        # We also don't track the immunization-certificate requirement
-        # (Section 3(1)(c)) or provider-relationship restrictions (Section 3(3)) at
-        # the moment.
+        # 922 KAR 2:160 Section 3(1)(b): under 13, or under 19 if incapable
+        # of self-care or under court supervision. Federal-priority status,
+        # immunization verification, and provider-relationship restrictions
+        # remain unmodeled.
         p = parameters(period).gov.states.ky.dcbs.ccap.eligibility
         age = person("age", period.this_year)
         has_special_need = person("is_disabled", period.this_year) | person(
             "has_developmental_delay", period.this_year
         )
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            has_special_need,
+            has_special_need | under_court_supervision,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )

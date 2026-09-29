@@ -3,12 +3,21 @@ metadata:
   period: year
   unit: list
   label: State sales tax table income sources
+  # "Your 2025 income is the amount shown on your Form 1040 or 1040-SR, line
+  # 11b, plus any nontaxable items, such as the following." The 2022-2024
+  # instructions cite line 11 and list the same items.
   reference:
-    - title: Instructions for Schedule A (2024)
-      href: https://www.irs.gov/instructions/i1040sca#en_US_2024_publink1000131499
+    - title: 2022 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=4
+    - title: 2023 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=4
+    - title: 2024 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=5
+    - title: 2025 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5
 
 values:
-  2023-01-01:
+  2022-01-01:
     - adjusted_gross_income
     - tax_exempt_interest_income
     - veterans_benefits

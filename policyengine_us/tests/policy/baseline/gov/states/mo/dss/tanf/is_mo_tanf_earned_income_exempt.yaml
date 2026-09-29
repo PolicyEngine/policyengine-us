@@ -125,3 +125,30 @@
     # attendance, and the parent is not a dependent child under
     # (9)(A)1.
     is_mo_tanf_earned_income_exempt: [false, false]
+
+- name: An 18-year-old non-parent caretaker in school is not exempt as a teen parent
+  period: 2024-01
+  input:
+    people:
+      older_sibling:
+        age: 18
+        is_in_secondary_school: true
+        mo_tanf_is_non_parent_caretaker: true
+      younger_sibling:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [older_sibling, younger_sibling]
+    spm_units:
+      spm_unit:
+        members: [older_sibling, younger_sibling]
+    households:
+      household:
+        members: [older_sibling, younger_sibling]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(9)(A)6. exempts a parent; a sibling caring for a
+    # younger sibling is a non-parent caretaker relative. The younger
+    # sibling is a student dependent child, exempt under (9)(A)1.
+    is_mo_tanf_earned_income_exempt: [false, true]

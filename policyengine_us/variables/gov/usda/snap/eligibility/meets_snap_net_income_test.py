@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.usda.snap.income.snap_income_standard_helpers import (
+    snap_monthly_income_standard,
+)
 
 
 class meets_snap_net_income_test(Variable):
@@ -10,15 +13,14 @@ class meets_snap_net_income_test(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
+        "https://www.law.cornell.edu/cfr/text/7/273.9#a_3_ii",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.usda.snap.income.limit
         net_income = spm_unit("snap_net_income", period)
-        fpg = spm_unit("snap_fpg", period)
-        # 7 CFR 273.9(a)(3): the monthly standard is the poverty guideline
-        # divided by 12, rounded up to the next whole dollar.
-        # Pre-round to 4 decimals so float error on an exact whole-dollar
-        # standard cannot push the ceiling up an extra dollar.
-        limit = np.ceil(np.round(p.net * fpg, 4))
+        # 7 CFR 273.9(a)(3)(ii): the monthly standard is the poverty
+        # guideline divided by 12, rounded up to the next whole dollar, with
+        # a separately rounded per-person increment for large households.
+        limit = snap_monthly_income_standard(spm_unit, period, parameters, p.net)
         return net_income <= limit
