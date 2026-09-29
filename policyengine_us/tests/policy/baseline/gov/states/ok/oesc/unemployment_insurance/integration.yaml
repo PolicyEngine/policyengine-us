@@ -239,6 +239,8 @@
     tax_unit_unemployment_compensation: 8_000
     taxable_unemployment_compensation: 8_000
     tax_unit_taxable_unemployment_compensation: 8_000
+    # 100,000 wages + 8,000 taxable UC.
+    adjusted_gross_income: 108_000
 
 - name: Case 9, reported UC preserved when present (no OK UI inputs).
   period: 2024
@@ -278,3 +280,48 @@
     # Reported wins; total is 3,200 (not 3,200 + 8,000).
     total_unemployment_compensation: 3_200
     tax_unit_unemployment_compensation: 3_200
+
+- name: Case 11, OK UI counts as UC in its 2022 start year.
+  # Case 8 inputs in 2022, the first year ok_ui is in the modeled list.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: OK
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ok_ui_high_quarter_taxable_wages: 11_500
+    ok_ui_high_quarter_total_wages: 11_500
+    ok_ui_base_period_taxable_wages: 11_500
+    ok_ui_base_period_total_wages: 35_000
+    ok_ui_gross_weekly_earnings: 0
+    weeks_unemployed: 16
+  output:
+    # WBA = min(floor(11,500 / 23) = 500, 2022 maximum 476) = 476.
+    # MBA = min(476 * 26, 9,900, 0.4 * 35,000) = 9,900, not binding.
+    # Annual = 476 * 16 weeks = 7,616.
+    ok_ui: 7_616
+    modeled_state_unemployment_compensation: 7_616
+    total_unemployment_compensation: 7_616
+    tax_unit_unemployment_compensation: 7_616
+    taxable_unemployment_compensation: 7_616
+
+- name: Case 12, OK UI does not count as UC before its 2022 start year.
+  # Case 8 inputs in 2021, when the modeled list is still empty.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: OK
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ok_ui_high_quarter_taxable_wages: 11_500
+    ok_ui_high_quarter_total_wages: 11_500
+    ok_ui_base_period_taxable_wages: 11_500
+    ok_ui_base_period_total_wages: 35_000
+    ok_ui_gross_weekly_earnings: 0
+    weeks_unemployed: 16
+  output:
+    ok_ui: 7_616
+    modeled_state_unemployment_compensation: 0
+    total_unemployment_compensation: 0

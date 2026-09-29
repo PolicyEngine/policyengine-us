@@ -12,5 +12,7 @@ class taxsim_ui(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_spouse = person("is_tax_unit_spouse", period)
-        unemployment_compensation = person("total_unemployment_compensation", period)
-        return tax_unit.sum(unemployment_compensation * is_spouse)
+        total_unemployment_compensation = person(
+            "total_unemployment_compensation", period
+        )
+        return tax_unit.sum(total_unemployment_compensation * is_spouse)

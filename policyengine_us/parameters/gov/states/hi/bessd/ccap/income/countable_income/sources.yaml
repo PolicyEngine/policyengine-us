@@ -19,6 +19,8 @@ values:
     # (pensions and annuities), not item (7) (allotments).
     - military_retirement_pay
     - total_unemployment_compensation
+    # Strike benefits (item (3)(B)) are not unemployment compensation.
+    - strike_benefits
     - workers_compensation
     - alimony_income
     - child_support_received
@@ -30,7 +32,6 @@ values:
     # - royalties (item (17))
     # - free rent converted to cost compensation (item (19));
     #   we don't track in-kind rent-for-activity at the moment
-    # - strike benefits (item (3)(B); captured via unemployment_compensation)
     # HAR 17-798.2-10(b)(11) counts Hawaii public assistance (TANF), but we do
     # NOT add `tanf` here to avoid the CCAP<->TANF circular dependency (CCAP
     # income -> tanf -> TANF dependent-care deduction -> childcare_expenses ->

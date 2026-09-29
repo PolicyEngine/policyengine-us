@@ -10,7 +10,8 @@ class total_unemployment_compensation(Variable):
         "Unemployment compensation used in downstream income flows, using "
         "the reported (uprated) amount when present and otherwise falling "
         "back to the modeled state unemployment insurance programs. A "
-        "reported amount above 0 overrides modeled unemployment insurance; a "
+        "reported nonzero amount (including a negative one) overrides "
+        "modeled unemployment insurance and passes through unchanged; a "
         "reported 0 is treated as not reported. To suppress modeled "
         "unemployment insurance, leave the state unemployment insurance wage "
         "and weeks inputs at 0."
@@ -20,4 +21,4 @@ class total_unemployment_compensation(Variable):
     def formula(person, period, parameters):
         reported = person("unemployment_compensation", period)
         modeled = person("modeled_state_unemployment_compensation", period)
-        return where(reported > 0, reported, modeled)
+        return where(reported != 0, reported, modeled)

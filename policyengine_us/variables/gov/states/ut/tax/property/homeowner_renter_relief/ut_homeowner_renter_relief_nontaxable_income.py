@@ -21,13 +21,15 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         nontaxable_social_security = max_(
             0, social_security - ssdi - taxable_social_security
         )
-        unemployment_compensation = person("total_unemployment_compensation", period)
+        total_unemployment_compensation = person(
+            "total_unemployment_compensation", period
+        )
         taxable_unemployment_compensation = person(
             "taxable_unemployment_compensation", period
         )
         nontaxable_unemployment_compensation = max_(
             0,
-            unemployment_compensation - taxable_unemployment_compensation,
+            total_unemployment_compensation - taxable_unemployment_compensation,
         )
         return (
             listed_sources

@@ -393,6 +393,8 @@
     tax_unit_unemployment_compensation: 3_850
     taxable_unemployment_compensation: 3_850
     tax_unit_taxable_unemployment_compensation: 3_850
+    # 100,000 wages + 3,850 taxable UC.
+    adjusted_gross_income: 103_850
 
 - name: Case 14, reported UC preserved when present (no state UI inputs).
   # Reported unemployment_compensation is supplied and no AL UI wage inputs are
@@ -437,3 +439,47 @@
     # Reported wins; total is 5,000 (not 5,000 + 3,850).
     total_unemployment_compensation: 5_000
     tax_unit_unemployment_compensation: 5_000
+
+- name: Case 16, AL UI computes but does not count as UC before its 2024 start year.
+  # Case 13 inputs in 2023, before al_ui enters the modeled list in 2024.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: AL
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    al_ui_high_quarter_wages: 10_000
+    al_ui_second_high_quarter_wages: 10_000
+    al_ui_base_period_wages: 40_000
+    al_ui_quarters_with_wages: 4
+    al_ui_weekly_earnings: 0
+    weeks_unemployed: 20
+  output:
+    # UR (2023-01) = 0.023 -> max_weeks = 14; al_ui = 275 * 14 = 3,850.
+    al_ui: 3_850
+    modeled_state_unemployment_compensation: 0
+    total_unemployment_compensation: 0
+    tax_unit_unemployment_compensation: 0
+    taxable_unemployment_compensation: 0
+    adjusted_gross_income: 100_000
+
+- name: Case 17, modeled UC is zero in an early year before any state UI parameters exist.
+  # The empty base list keeps 2010 from reaching AL UI parameters, which start
+  # in 2020. al_ui itself is not asserted: its parameters do not exist in 2010.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: AL
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    al_ui_high_quarter_wages: 10_000
+    al_ui_second_high_quarter_wages: 10_000
+    al_ui_base_period_wages: 40_000
+    al_ui_quarters_with_wages: 4
+    al_ui_weekly_earnings: 0
+    weeks_unemployed: 20
+  output:
+    modeled_state_unemployment_compensation: 0
+    total_unemployment_compensation: 0

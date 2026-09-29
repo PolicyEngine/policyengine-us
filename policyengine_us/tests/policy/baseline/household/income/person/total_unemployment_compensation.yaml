@@ -1,5 +1,5 @@
 # total_unemployment_compensation uses reported unemployment_compensation when it
-# is above 0 and otherwise falls back to the modeled state UI programs. These
+# is nonzero and otherwise falls back to the modeled state UI programs. These
 # cases follow modeled UI into means tests (SNAP) and the remaining direct
 # consumers. PA inputs below give pa_uc = 10,218 per year (see the PA UC
 # integration tests); a MONTH test period reports YEAR amounts divided by 12.
@@ -182,12 +182,15 @@
     weeks_unemployed: 26
     pa_uc_gross_weekly_earnings: 0
   output:
-    # A reported 0 is treated as not reported; only a reported amount above 0
+    # A reported 0 is treated as not reported; only a nonzero reported amount
     # overrides modeled UI.
     unemployment_compensation: 0
     total_unemployment_compensation: 10_218
 
-- name: Case 7, modeled UT UI is taxable so it adds nothing to UT homeowner/renter relief nontaxable income.
+- name: Case 7, modeled UT UI counts in total and taxable UC.
+  # Modeled UI is fully taxable, so the
+  # ut_homeowner_renter_relief_nontaxable_income: 0 assertion below cannot tell
+  # total UC from reported UC; this case covers total and taxable UC only.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -230,11 +233,10 @@
     # The 2020 exclusion (up to 10,200) makes all 10,000 of UC tax-exempt.
     tax_exempt_unemployment_compensation: 10_000
     taxable_unemployment_compensation: 0
-    # Existing model behavior carried over from main, not the statutory result:
-    # the local MAGI counts all UC, including the tax-exempt part, giving
-    # 60,000 + 10,000 = 70,000, inside the 65,000-80,000 band, so the cap is
-    # 2,000. Excluding tax-exempt UC under IRC 85(c) would give 60,000 and a
-    # cap of 4,000. Kept to cover the pre-2021 path of this variable.
+    # ARPA § 9042(b)(7) (Pub. L. 117-2) added § 85(c) to the
+    # § 222(b)(2)(C)(i) MAGI definition, so excluded 2020 UC counts:
+    # MAGI = 60,000 + 10,000 = 70,000, inside the 65,000-80,000 band, so the
+    # statutory cap is 2,000 (same for § 86(b)(2)(A) SS MAGI).
     capped_qualified_tuition_expenses_ald: 2_000
 
 - name: Case 9, tuition deduction is zero after its 2021 repeal.
@@ -294,3 +296,131 @@
         county: CONTRA_COSTA_COUNTY_CA
   output:
     ca_cc_general_assistance_eligible_person: false
+
+- name: Case 12, modeled NY UI counts as SSI unearned income and in federal and NY AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: NY
+    ny_ui_high_quarter_wages: 8_000
+    ny_ui_base_period_wages: 28_000
+    ny_ui_quarters_with_wages: 4
+    weeks_unemployed: 26
+    ny_ui_weekly_hours_worked: 0
+    ny_ui_gross_weekly_earnings: 0
+  output:
+    # NY UI integration inputs give ny_ui = 7,982; with no reported UC and no
+    # earnings, total UC and all income below are the modeled 7,982.
+    ny_ui: 7_982
+    total_unemployment_compensation: 7_982
+    ssi_unearned_income: 7_982
+    adjusted_gross_income: 7_982
+    ny_agi: 7_982
+
+- name: Case 13, modeled NY UI counts as TANF gross unearned income in a month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: NY
+    ny_ui_high_quarter_wages: 8_000
+    ny_ui_base_period_wages: 28_000
+    ny_ui_quarters_with_wages: 4
+    weeks_unemployed: 26
+    ny_ui_weekly_hours_worked: 0
+    ny_ui_gross_weekly_earnings: 0
+  output:
+    # 7,982 / 12 = 665.17 per month.
+    total_unemployment_compensation: 665.17
+    tanf_gross_unearned_income: 665.17
+
+- name: Case 14, modeled PA UC counts in Social Security MAGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    social_security_retirement: 20_000
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    pa_uc: 10_218
+    # 26 U.S.C. 86(b)(2): MAGI = AGI before taxable SS = 10,218 of total UC.
+    taxable_ss_magi: 10_218
+    # Provisional income = 10,218 + 20,000 / 2 = 20,218, below the 25,000
+    # single base amount, so no benefits are taxable.
+    taxable_social_security: 0
+
+- name: Case 15, a negative reported UC amount passes through instead of modeled PA UC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    unemployment_compensation: -1_000
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    pa_uc: 10_218
+    modeled_state_unemployment_compensation: 10_218
+    # Any nonzero reported amount overrides modeled UI unchanged, as before
+    # modeled UI was integrated.
+    total_unemployment_compensation: -1_000
+
+- name: Case 16, Virginia subtracts only taxable UC, so 2020 tax-exempt UC is not subtracted again.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: VA
+    employment_income: 50_000
+    unemployment_compensation: 5_000
+  output:
+    # The 2020 federal exclusion (up to 10,200) makes all 5,000 of UC
+    # tax-exempt, so federal AGI is 50,000.
+    tax_exempt_unemployment_compensation: 5_000
+    taxable_unemployment_compensation: 0
+    adjusted_gross_income: 50_000
+    # Va. Code § 58.1-322.02(17) subtracts UC taxable under IRC 85: 0 here.
+    va_subtractions: 0
+    va_agi: 50_000
+    # Taxable = 50,000 - 4,500 standard deduction - 930 exemption = 44,570.
+    # Tax = 60 + 60 + 600 + 0.0575 * 27,570 = 2,305.28, less 250 of
+    # nonrefundable credits = 2,055.28 (1,767.78 when all UC was subtracted).
+    va_income_tax: 2_055.28
+
+- name: Case 17, Hawaii CCAP counts strike benefits, which are not unemployment compensation.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: HI
+    strike_benefits: 12_000
+  output:
+    # Strike benefits do not enter total UC.
+    total_unemployment_compensation: 0
+    # HAR 17-798.3-10(b) counts strike benefits: 12,000 / 12 = 1,000 per month.
+    hi_ccap_countable_income: 1_000
+
+- name: Case 18, modeled NJ UI computes but does not count as UC before its 2024 start year.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: NJ
+    nj_unemployment_insurance_base_period_weeks: 20
+    nj_unemployment_insurance_base_period_wages: 5_660
+    nj_unemployment_insurance_weeks_claimed: 26
+  output:
+    # Case 2 inputs: 169 weekly * 20 weeks = 3,380.
+    nj_unemployment_insurance: 3_380
+    # NJ enters the modeled list in 2024.
+    modeled_state_unemployment_compensation: 0
+    total_unemployment_compensation: 0

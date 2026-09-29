@@ -285,6 +285,8 @@
     tax_unit_unemployment_compensation: 10_218
     taxable_unemployment_compensation: 10_218
     tax_unit_taxable_unemployment_compensation: 10_218
+    # 100,000 wages + 10,218 taxable UC.
+    adjusted_gross_income: 110_218
     spm_unit_benefits: 10_218
     household_benefits: 10_218
 
@@ -327,3 +329,22 @@
     total_unemployment_compensation: 6_000
     tax_unit_unemployment_compensation: 6_000
     spm_unit_benefits: 6_000
+
+- name: Case 11, PA UC computes but does not count as UC before its 2025 start year.
+  # Case 8 inputs in 2024, before pa_uc enters the modeled list in 2025.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    pa_uc: 10_218
+    modeled_state_unemployment_compensation: 0
+    total_unemployment_compensation: 0
