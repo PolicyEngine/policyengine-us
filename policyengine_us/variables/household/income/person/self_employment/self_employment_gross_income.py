@@ -8,31 +8,19 @@ class self_employment_gross_income(Variable):
     unit = USD
     label = "Gross self-employment income"
     documentation = (
-        "Schedule C line 7 and Schedule F line 9 gross income (after cost of "
-        "goods sold and before other business expenses), reconstructed "
-        "as net Schedule C (regular and SSTB) and Schedule F profit plus "
-        "self_employment_expense. Covers sole-proprietor Schedule C and "
-        "Schedule F businesses only; partnership_self_employment_net_earnings "
-        "is excluded because partnership expenses are deducted on Form 1065, "
-        "so consumers needing partnership earnings handle it separately. "
-        "A modeling floor prevents the result from falling below the sum of "
-        "the three net sources individually floored at zero: a loss in one "
-        "source does not offset another when expenses are omitted. Complete "
-        "expenses matching the reported net amounts reconstruct tax-reported "
-        "gross income only when this floor does not bind. The floor is not "
-        "an IRS rule; tax-reported gross income can be negative. With no "
-        "expenses supplied, the result is the sum of the per-source floors. "
-        "The non-farm sources are post-labor-supply-response. This calculation "
-        "does not change net self-employment income or employment income. "
-        "Consumers apply their own expense deductions to the appropriate "
-        "gross-income base, then combine countable self-employment income "
-        "with separately treated wages."
+        "Gross income after cost of goods sold and before other business "
+        "expenses (tax year 2025 Schedule C line 7 and Schedule F line 9), "
+        "reconstructed from regular, SSTB, and farm net income plus "
+        "self_employment_expense. Excludes separately reported partnership "
+        "earnings. The result is floored at the sum of the three net sources "
+        "individually floored at zero; this modeling fallback can differ from "
+        "tax-reported gross income and is not an IRS rule. Non-farm net income "
+        "includes labor-supply responses."
     )
     reference = (
-        "https://www.irs.gov/instructions/i1040sc",
-        "https://www.irs.gov/instructions/i1040sf",
-        "https://www.irs.gov/pub/irs-pdf/f1040sc.pdf#page=1",
-        "https://www.irs.gov/pub/irs-pdf/f1040sf.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/f1040sc--2025.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/f1040sf--2025.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/f1040sf--2025.pdf#page=2",
     )
 
     def formula(person, period, parameters):
