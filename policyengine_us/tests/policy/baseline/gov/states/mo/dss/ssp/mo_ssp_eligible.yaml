@@ -518,7 +518,7 @@
     # § 0405.030.00 applies the MO HealthNet for Families immigrant rule.
     mo_ssp_eligible: false
 
-- name: Case 27, a permanent resident within the five-year bar is not eligible for SAB.
+- name: Case 27, a permanent resident is eligible for SAB.
   period: 2026-01
   input:
     people:
@@ -528,26 +528,6 @@
         ssi: 0
         pension_income: 6_000
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        years_since_us_entry: 3
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: false
-
-- name: Case 28, a permanent resident past the five-year bar is eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: LEGAL_PERMANENT_RESIDENT
-        years_since_us_entry: 6
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -556,27 +536,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 29, a refugee within five years of entry is eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: REFUGEE
-        years_since_us_entry: 1
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    # Refugees are exempt from the five-year bar.
-    mo_ssp_eligible: true
-
-- name: Case 30, SSI is left out of the SAB need test.
+- name: Case 28, SSI is left out of the SAB need test.
   period: 2026-01
   input:
     people:
@@ -598,7 +558,7 @@
     mo_ssp_eligible: true
     mo_ssp: 517
 
-- name: Case 31, a refugee remains eligible for SAB in 2027.
+- name: Case 29, a refugee remains eligible for SAB in 2027.
   period: 2027-01
   input:
     people:
@@ -608,18 +568,17 @@
         ssi: 0
         pension_income: 6_000
         immigration_status: REFUGEE
-        years_since_us_entry: 1
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # SAB follows § 1805.020.10, which still lists refugees as qualified with
-    # no waiting period; the October 2026 federal Medicaid change does not apply.
+    # SAB follows § 1805.020.10, which still lists refugees as qualified; the
+    # October 2026 federal Medicaid change does not apply.
     mo_ssp_eligible: true
 
-- name: Case 32, a blind SAB applicant is evaluated in 2014.
+- name: Case 30, a blind SAB applicant is evaluated in 2014.
   # Smoke test: the formulas run in early years without missing parameters.
   period: 2014-01
   input:
@@ -637,7 +596,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 33, a blind SAB applicant is evaluated in 2019.
+- name: Case 31, a blind SAB applicant is evaluated in 2019.
   # Smoke test: the formulas run in early years without missing parameters.
   period: 2019-01
   input:
@@ -655,85 +614,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 34, a permanent resident at exactly five years is eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: LEGAL_PERMANENT_RESIDENT
-        years_since_us_entry: 5
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: true
-
-- name: Case 35, a veteran permanent resident within five years is eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: LEGAL_PERMANENT_RESIDENT
-        years_since_us_entry: 2
-        is_veteran: true
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    # § 1805.020.10.10.10 waives the five-year period for veterans.
-    mo_ssp_eligible: true
-
-- name: Case 36, an asylee within five years is eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: ASYLEE
-        years_since_us_entry: 1
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: true
-
-- name: Case 37, a parolee within five years is not eligible for SAB.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 50
-        is_blind: true
-        ssi: 0
-        pension_income: 6_000
-        immigration_status: PAROLED_ONE_YEAR
-        years_since_us_entry: 3
-        mo_ssp_living_arrangement: SAB
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: false
-
-- name: Case 38, 2022 SAB applicant at the $908 consolidated standard is not eligible.
+- name: Case 32, 2022 SAB applicant at the $908 consolidated standard is not eligible.
   period: 2022-01
   input:
     people:
@@ -750,7 +631,7 @@
   output:
     mo_ssp_eligible: false
 
-- name: Case 39, 2022 SAB applicant one dollar under the $908 standard is eligible.
+- name: Case 33, 2022 SAB applicant one dollar under the $908 standard is eligible.
   period: 2022-01
   input:
     people:
@@ -767,7 +648,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 40, 2023 SAB applicant at the $987 consolidated standard is not eligible.
+- name: Case 34, 2023 SAB applicant at the $987 consolidated standard is not eligible.
   period: 2023-01
   input:
     people:
@@ -784,7 +665,7 @@
   output:
     mo_ssp_eligible: false
 
-- name: Case 41, 2023 SAB applicant one dollar under the $987 standard is eligible.
+- name: Case 35, 2023 SAB applicant one dollar under the $987 standard is eligible.
   period: 2023-01
   input:
     people:
@@ -801,7 +682,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 42, 2024 SAB applicant at the $1,019 consolidated standard is not eligible.
+- name: Case 36, 2024 SAB applicant at the $1,019 consolidated standard is not eligible.
   period: 2024-01
   input:
     people:
@@ -818,7 +699,7 @@
   output:
     mo_ssp_eligible: false
 
-- name: Case 43, 2024 SAB applicant one dollar under the $1,019 standard is eligible.
+- name: Case 37, 2024 SAB applicant one dollar under the $1,019 standard is eligible.
   period: 2024-01
   input:
     people:
@@ -835,7 +716,7 @@
   output:
     mo_ssp_eligible: true
 
-- name: Case 44, an undocumented SNC resident is not eligible.
+- name: Case 38, an undocumented SNC resident is not eligible.
   period: 2026-01
   input:
     people:
@@ -851,49 +732,12 @@
         members: [person1]
         state_code: MO
   output:
-    # Appendix K: SNC requirements are the same as MO HealthNet Non-Spend Down,
-    # which requires a U.S. citizen or qualified non-citizen.
+    # SNC uses the December 1973 requirements (§ 0605.010.00), whose
+    # citizenship rule is the MO HealthNet for Families rule of § 1805.020.10
+    # (December 1973 § 1010.000.00).
     mo_ssp_eligible: false
 
-- name: Case 45, an SNC resident who is a permanent resident within five years is not eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        ssi: 0
-        social_security: 14_400
-        mo_ssp_living_arrangement: RCF_LEVEL_I
-        mo_snc_facility_base_charge: 1_300
-        immigration_status: LEGAL_PERMANENT_RESIDENT
-        years_since_us_entry: 3
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: false
-
-- name: Case 46, an SNC resident who is a refugee within five years is eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        ssi: 0
-        social_security: 14_400
-        mo_ssp_living_arrangement: RCF_LEVEL_I
-        mo_snc_facility_base_charge: 1_300
-        immigration_status: REFUGEE
-        years_since_us_entry: 1
-    households:
-      household:
-        members: [person1]
-        state_code: MO
-  output:
-    mo_ssp_eligible: true
-
-- name: Case 47, an SNC resident who is a refugee remains eligible in 2027.
+- name: Case 39, an SNC resident who is a refugee remains eligible in 2027.
   period: 2027-01
   input:
     people:
@@ -902,7 +746,6 @@
         ssi: 0
         social_security: 14_400
         immigration_status: REFUGEE
-        years_since_us_entry: 1
         mo_ssp_living_arrangement: RCF_LEVEL_I
         mo_snc_facility_base_charge: 1_300
     households:
@@ -910,10 +753,10 @@
         members: [person1]
         state_code: MO
   output:
-    # § 1805.020.10 still lists refugees with no waiting period.
+    # § 1805.020.10 still lists refugees as qualified immigrants.
     mo_ssp_eligible: true
 
-- name: Case 48, child support for a child in the home is not the blind parent's income.
+- name: Case 40, child support for a child in the home is not the blind parent's income.
   period: 2026-01
   input:
     people:
@@ -940,7 +783,7 @@
     mo_ssp_eligible: [true, false]
     mo_ssp: [917, 0]
 
-- name: Case 49, two blind SAB spouses are each tested on their own income.
+- name: Case 41, two blind SAB spouses are each tested on their own income.
   period: 2026-01
   input:
     people:
