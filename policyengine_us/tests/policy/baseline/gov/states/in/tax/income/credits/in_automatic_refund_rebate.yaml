@@ -61,3 +61,26 @@
     head_spouse_count: 2
   output:
     in_automatic_refund_rebate: 0
+
+- name: Couple with a dependent child receives rebate for head and spouse only
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    head_spouse_count: 2
+    # (125 base + 200 additional) * 2; the dependent is not counted.
+    in_automatic_refund_rebate: 650

@@ -1,11 +1,14 @@
-description: Indiana provides a base automatic refund rebate of this amount.
+description: Indiana provides a base automatic refund rebate of this amount to each eligible individual under the Indiana automatic taxpayer refund program.
 values:
   # IC 4-10-22-4 / IB 110: the $125 ATR and the automatic $200 ATR
   # (IC 4-10-22-4.5(a)) went to individuals who filed a 2020 Indiana resident
-  # return by Dec. 31, 2021, so both are booked to 2020 (eligibility year),
-  # although paid in 2022. The $200 refundable credit on the 2022 return for
-  # Social Security recipients not eligible for the $125 ATR
-  # (IC 4-10-22-4.5(b)) is not modeled. Bracketed with zeros so the amount
+  # return by Dec. 31, 2021 (IC 4-10-22-4(1); IB 110 p.2 accepted postmarks
+  # through Jan. 3, 2022), so both are booked to 2020 (eligibility year),
+  # although paid in 2022. IB 110 and IC 4-10-22-4.5(c) call this the
+  # tax-year-2021 refund. It is booked to the 2020 eligibility return, so
+  # `2021-01-01: 0` does not contradict the bulletin. The $200 refundable credit
+  # on the 2022 return for Social Security recipients not eligible for the $125
+  # ATR (IC 4-10-22-4.5(b)) is not modeled. Bracketed with zeros so the amount
   # applies only in 2020.
   2019-01-01: 0
   2020-01-01: 125
@@ -15,7 +18,7 @@ metadata:
   period: year
   label: Indiana base automatic refund rebate amount
   reference:
-    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-2
-    # The actual rebate amount is based on the excess reserves and the number of eligible taxpayers
-    # https://www.in.gov/dor/files/ib110.pdf
-      href: https://law.justia.com/codes/indiana/2022/title-4/article-10/chapter-22/section-4-10-22-2/
+    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-4
+      href: https://iga.in.gov/laws/2022/ic/titles/4#4-10-22
+    - title: Indiana Department of Revenue Income Tax Information Bulletin 110, Introduction
+      href: https://www.in.gov/dor/files/ib110.pdf#page=1

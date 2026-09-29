@@ -1,8 +1,10 @@
 description: Colorado provides the following Taxpayer's Bill of Rights cash back amount for single filers.
 values:
-  # SB 22-233 was a one-time refund of the 2021 surplus, based on the 2021
-  # return and paid in 2022. Bracketed with zeros so the amount applies only
-  # in 2021, matching the 2021-only entry in the refundable credits list.
+  # SB 22-233 was a one-time refund of the state fiscal year 2021-22 TABOR
+  # surplus, based on the 2021 return and paid in 2022, so it is booked to
+  # 2021. The explicit zeros keep it out of other years. Without the 2020 zero,
+  # backdating would copy the 2021 value into 2015-2020, where the backdated
+  # 2021 refundable credits list would pay it.
   2020-01-01: 0
   2021-01-01: 750
   2022-01-01: 0
@@ -11,9 +13,13 @@ metadata:
   period: year
   label: Colorado TABOR cash back single amount
   reference:
-    - title: State of Colorado House Bill SB 22-233
-    # The house bill initially appropriated a $400 rebate which was increased to $750 due to sufficient funds
-    # https://www.colorado.gov/governor/news/providing-immediate-relief-governor-polis-state-leaders-announce-millions-colorado-cash-back
-      href: https://leg.colorado.gov/sites/default/files/documents/2022A/bills/2022a_233_01.pdf
-    - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Line 4
-      href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=24
+    # The act sets $400 plus a mandatory increase toward 85% of excess state
+    # revenues, rounded to the nearest $50; DOR set the single amount at $750.
+    - title: Colorado Senate Bill 22-233 (signed), Section 2, C.R.S. 39-22-2004(1)(c)(I)
+      href: https://leg.colorado.gov/sites/default/files/2022a_233_signed.pdf#page=3
+    - title: Colorado Senate Bill 22-233 (signed), Section 2, C.R.S. 39-22-2004(2)(d)(I)
+      href: https://leg.colorado.gov/sites/default/files/2022a_233_signed.pdf#page=4
+    - title: Colorado Senate Bill 22-233 (signed), Section 2, C.R.S. 39-22-2004(2)(d)(III)
+      href: https://leg.colorado.gov/sites/default/files/2022a_233_signed.pdf#page=5
+    - title: Colorado Legislative Council Staff, SB 22-233 Final Fiscal Note, Summary of Legislation
+      href: https://leg.colorado.gov/sites/default/files/documents/2022A/bills/fn/2022a_sb233_f1.pdf#page=2

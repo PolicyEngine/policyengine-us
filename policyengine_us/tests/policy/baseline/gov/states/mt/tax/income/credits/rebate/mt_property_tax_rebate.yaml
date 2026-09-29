@@ -37,3 +37,19 @@
     state_code: MT
   output:
     mt_property_tax_rebate: 0
+
+- name: Property tax above rebate amount in the first program year
+  period: 2022
+  input:
+    real_estate_taxes: 700
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 675  # min(675, 700)
+
+- name: Property tax below rebate amount in the first program year
+  period: 2022
+  input:
+    real_estate_taxes: 600
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 600  # min(675, 600)
