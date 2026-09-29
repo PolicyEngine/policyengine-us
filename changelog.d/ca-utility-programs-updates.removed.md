@@ -1,0 +1,1 @@
+Remove ca_care_amount_if_eligible and ca_fera_amount_if_eligible; ca_care_electricity_discount and ca_fera now compute the electricity discounts directly for eligible households.

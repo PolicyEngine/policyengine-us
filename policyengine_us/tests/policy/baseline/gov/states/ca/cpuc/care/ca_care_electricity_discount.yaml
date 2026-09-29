@@ -1,14 +1,14 @@
-- name: Case 1, FERA-eligible household with $100 in electricity expenses is discounted $18.
+- name: Case 1, CARE-eligible household with $100 in electricity expenses is discounted $32.50.
   period: 2023
   absolute_error_margin: 0.01
   input:
     state_code: CA
-    ca_fera_eligible: true
+    ca_care_eligible: true
     pre_subsidy_electricity_expense: 100
   output:
-    ca_fera: 18
+    ca_care_electricity_discount: 32.5
 
-- name: Case 2, FERA-eligible household with multiple SPM units.
+- name: Case 2, CARE-eligible household with multiple SPM units.
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -26,16 +26,16 @@
       household:
         members: [p1, p2]
         state_code: CA
-        ca_fera_eligible: true
+        ca_care_eligible: true
   output:
-    ca_fera: 36
+    ca_care_electricity_discount: 65
 
-- name: Case 3, household not eligible for FERA gets $0.
+- name: Case 3, household not eligible for CARE gets no electricity discount.
   period: 2023
   absolute_error_margin: 0.01
   input:
     state_code: CA
-    ca_fera_eligible: false
+    ca_care_eligible: false
     pre_subsidy_electricity_expense: 100
   output:
-    ca_fera: 0
+    ca_care_electricity_discount: 0

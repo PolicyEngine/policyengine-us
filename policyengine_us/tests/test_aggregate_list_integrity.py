@@ -36,7 +36,7 @@ AGGREGATE_LISTS = [
 
 # Gates that restrict a variable geographically without a StateCode
 # defined_for (locality booleans).
-GEOGRAPHIC_GATES = {"in_la", "in_nyc"}
+GEOGRAPHIC_GATES = {"in_la", "in_nyc", "in_riv"}
 
 # Members intentionally removed in a year block, keyed by (list, block date).
 # Add an entry here when a credit genuinely ends; do not silently drop
