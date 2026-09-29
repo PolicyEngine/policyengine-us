@@ -8,7 +8,6 @@
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: false
-    ca_care_amount_if_eligible: 32.5
     ca_care: 0
     ca_fera_eligible: true
     ca_fera_amount_if_eligible: 18
@@ -25,7 +24,7 @@
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: true
-    ca_care_amount_if_eligible: 32.5
+    ca_care_electricity: 32.5
     ca_care: 32.5
     ca_fera_eligible: false
     ca_fera_amount_if_eligible: 18
@@ -191,8 +190,6 @@
   output:
     ca_cpuc_countable_income: 30_000
     ca_care_income_eligible: true
-    # CARE discount if eligible = 32.5% of $1,200.
-    ca_care_amount_if_eligible: 390
     # The model's CARE gate treats a household with utilities included in
     # rent as ineligible, so the discount is not applied.
     ca_care_eligible: false
@@ -265,3 +262,36 @@
     ca_fera_amount_if_eligible: 216
     ca_fera_eligible: false
     ca_fera: 0
+
+- name: Case 11, income-eligible household gets both the CARE electricity and gas discounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # $30,000 is below the 2024 one-person CARE limit of $40,880, which uses
+    # the two-person poverty line.
+    ca_care_income_eligible: true
+    ca_care_eligible: true
+    # Electricity discount = 32.5% of $1,200.
+    ca_care_electricity: 390
+    # Gas discount = 20% of $600.
+    ca_care_gas: 120
+    # CARE total = $390 + $120.
+    ca_care: 510
+    # Only the electricity discount reduces the electricity expense.
+    electricity_expense: 810
+    ca_fera_eligible: false

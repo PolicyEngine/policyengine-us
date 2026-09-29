@@ -1,0 +1,30 @@
+- name: Case 1, CARE-eligible household gets the gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: true
+    gas_expense: 1_200
+  output:
+    # 20% of $1,200.
+    ca_care_gas: 240
+
+- name: Case 2, household not eligible for CARE gets no gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: false
+    gas_expense: 1_200
+  output:
+    ca_care_gas: 0
+
+- name: Case 3, CARE-eligible household without a gas expense gets no gas discount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_care_eligible: true
+    gas_expense: 0
+  output:
+    ca_care_gas: 0
