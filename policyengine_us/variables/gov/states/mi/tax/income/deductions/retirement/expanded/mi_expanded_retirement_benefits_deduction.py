@@ -17,10 +17,31 @@ class mi_expanded_retirement_benefits_deduction(Variable):
     def formula(tax_unit, period, parameters):
         # Modeled after 2023 MICHIGAN Pension Schedule (Form 4884) Section D
         p = parameters(period).gov.states.mi.tax.income.deductions.retirement_benefits
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        uncapped_pension_income = add(person, period, p.sources)
+        # Under MCL 206.30(8)(a)(ii), distributions from individual retirement accounts
+        # qualify if made after age 59½, or in the case of disability.
+        # Exceptions for death and IRC § 72(t)(2)(A)(iv) periodic payments are unmodeled.
+        ira_eligible = (person("age", period) >= p_irs.age_threshold) | person(
+            "is_disabled", period
+        )
+        ira_sources = [
+            s
+            for s in p.sources
+            if s
+            in {
+                "taxable_ira_distributions",
+                "taxable_roth_conversions",
+                "taxable_sep_distributions",
+            }
+        ]
+        pension_sources = [s for s in p.sources if s not in ira_sources]
+        uncapped_pension_income = (
+            add(person, period, pension_sources)
+            + add(person, period, ira_sources) * ira_eligible
+        )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse

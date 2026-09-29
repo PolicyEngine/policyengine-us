@@ -141,3 +141,17 @@
   output:
     co_pension_subtraction_income: 15_000
     co_pension_subtraction_indv: 15_000
+
+- name: Eligible with taxable Roth conversions at age 55
+  period: 2026
+  input:
+    age: 55
+    taxable_roth_conversions: 15_000
+    co_social_security_subtraction_indv: 0
+    pension_survivors: 0
+    co_pension_subtraction_indv_eligible: true
+    state_code: CO
+  output:
+    co_pension_subtraction_income: 15_000
+    co_pension_subtraction_indv: 15_000
+

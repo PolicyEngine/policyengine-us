@@ -8,7 +8,7 @@ class ar_net_taxable_income_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2024_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf",
         "https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-5/section-26-51-501/",
     )
     defined_for = StateCode.AR

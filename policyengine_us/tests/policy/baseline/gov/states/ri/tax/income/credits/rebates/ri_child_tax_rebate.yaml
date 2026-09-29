@@ -1,5 +1,5 @@
 - name: Not eligible for child tax rebate, one child
-  period: 2022
+  period: 2021
   input:
     people:
       head:
@@ -22,7 +22,7 @@
     ri_child_tax_rebate: 0
 
 - name: Eligible for child tax rebate, one child
-  period: 2022
+  period: 2021
   input:
     people:
       head:
@@ -45,7 +45,7 @@
     ri_child_tax_rebate: 250
 
 - name: Eligible for child tax rebate, four children
-  period: 2022
+  period: 2021
   input:
     people:
       head:
@@ -74,7 +74,7 @@
     ri_child_tax_rebate: 750
 
 - name: Eligible for child tax rebate, five children
-  period: 2022
+  period: 2021
   input:
     people:
       head:
