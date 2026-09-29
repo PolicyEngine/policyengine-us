@@ -47,7 +47,7 @@ class self_employment_gross_income(Variable):
         expenses = person("self_employment_expense", period)
         reconstructed = net_income + expenses
         # Apply the modeling fallback separately to each net-income source.
-        source_floor = sum(
-            max_(person(source, period), 0) for source in net_income_sources
-        )
+        source_floor = 0
+        for source in net_income_sources:
+            source_floor = source_floor + max_(person(source, period), 0)
         return max_(reconstructed, source_floor)
