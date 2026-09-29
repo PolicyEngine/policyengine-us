@@ -1,3 +1,10 @@
+## [2.17.3] - 2026-09-29
+
+### Fixed
+
+- Levy the Mamdani NYC income tax contributed reform once per tax unit instead of once per member, and only in years when it is in effect.
+
+
 ## [2.17.2] - 2026-09-29
 
 ### Fixed
