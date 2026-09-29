@@ -41,3 +41,28 @@
     self_employment_income: -3_000
   output:
     self_employment_gross_income: 0
+
+- name: Case 6, a farm loss offsets non-farm profit under the combined zero floor.
+  period: 2026
+  input:
+    self_employment_income: 6_000
+    farm_operations_income: -10_000
+  output:
+    self_employment_gross_income: 0
+    farm_operations_income: -10_000
+
+- name: Case 7, employee work expenses do not belong in this business-cost input, which is added back unconditionally.
+  period: 2026
+  input:
+    employment_income: 36_000
+    work_expense: 6_000
+  output:
+    self_employment_gross_income: 6_000
+
+- name: Case 8, cost of goods sold is part of the add-back so the result is gross receipts.
+  period: 2026
+  input:
+    self_employment_income: 15_000
+    work_expense: 85_000
+  output:
+    self_employment_gross_income: 100_000
