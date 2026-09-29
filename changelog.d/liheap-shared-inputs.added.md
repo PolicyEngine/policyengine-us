@@ -1,1 +1,1 @@
-Add a shared person-level self-employment expense input and derive gross self-employment income from existing net income and reported business expenses other than cost of goods sold.
+Add a shared person-level self-employment expense input and derive gross self-employment income from existing net income and reported business expenses other than cost of goods sold. Document the one-way calculation and distinguish tax-expense add-backs from program-specific allowable deductions.

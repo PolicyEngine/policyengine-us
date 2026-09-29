@@ -14,10 +14,15 @@ class self_employment_expense(Variable):
         "28 total expenses plus line 30 business use of the home, and Schedule "
         "F line 33 total expenses. Exclude cost of goods sold (Schedule C line "
         "4; Schedule F line 1b, or Part III line 49 for accrual-method farms), "
-        "so that net profit plus this input equals Schedule C line 7 and "
-        "Schedule F line 9 gross income. Exclude employee work-related "
-        "expenses and personal income and self-employment taxes. Treated as "
-        "zero when not reported."
+        "so that matching net profit before tax loss limitations plus this "
+        "input reconstructs Schedule C line 7 and Schedule F line 9 gross "
+        "income before the model's gross-income floor. Exclude employee work-related "
+        "expenses and personal income and self-employment taxes. This input "
+        "adds back expenses already deducted from reported net profit; it "
+        "does not reduce that net profit again. Tax-return expenses are not "
+        "necessarily allowable expenses for a benefit program. Treated as "
+        "zero when not reported, which does not establish that actual "
+        "expenses were zero."
     )
     reference = (
         "https://www.irs.gov/instructions/i1040sc",

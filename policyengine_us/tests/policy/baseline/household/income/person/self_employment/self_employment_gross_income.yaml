@@ -98,3 +98,78 @@
   output:
     # Regular floor 0 + SSTB floor 9,000; the reconstruction is 5,000.
     self_employment_gross_income: 9_000
+
+- name: Case 12, reconstruct gross from the existing net-income chain without changing wages or the SE tax base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 36_000
+    self_employment_income_before_lsr: 15_000
+    self_employment_expense: 25_000
+  output:
+    self_employment_gross_income: 40_000
+    self_employment_income: 15_000
+    employment_income: 36_000
+    # The tax base still uses net profit: 15,000 * 0.9235.
+    taxable_self_employment_income: 13_852.50
+
+- name: Case 13, directly supplied gross income does not infer net profit or expenses.
+  period: 2026
+  input:
+    self_employment_gross_income: 40_000
+  output:
+    self_employment_gross_income: 40_000
+    self_employment_income: 0
+    sstb_self_employment_income: 0
+    farm_operations_income: 0
+    self_employment_expense: 0
+    taxable_self_employment_income: 0
+
+- name: Case 14, partnership earnings remain separate from reconstructed sole-proprietor gross income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income_before_lsr: 10_000
+    partnership_self_employment_net_earnings: 5_000
+    self_employment_expense: 3_000
+  output:
+    self_employment_gross_income: 13_000
+    partnership_self_employment_net_earnings: 5_000
+    # Partnership SE earnings remain in the tax base, not in the add-back.
+    taxable_self_employment_income: 13_852.50
+
+- name: Case 15, expense reconstruction and loss floors operate independently for each person.
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income_before_lsr: 15_000
+        self_employment_expense: 25_000
+      person2:
+        sstb_self_employment_income_before_lsr: -3_000
+        self_employment_expense: 12_000
+      person3:
+        self_employment_income_before_lsr: 6_000
+        farm_operations_income: -10_000
+        self_employment_expense: 3_000
+      person4:
+        employment_income: 36_000
+  output:
+    self_employment_gross_income: [40_000, 9_000, 6_000, 0]
+    self_employment_income: [15_000, 0, 6_000, 0]
+    sstb_self_employment_income: [0, -3_000, 0, 0]
+    farm_operations_income: [0, 0, -10_000, 0]
+    employment_income: [0, 0, 0, 36_000]
+
+- name: Case 16, annual net income and expenses convert consistently for monthly consumers.
+  period: 2026-07
+  input:
+    self_employment_income_before_lsr:
+      2026: 15_000
+    self_employment_expense:
+      2026: 21_000
+  output:
+    # Annual gross is 15,000 + 21,000 = 36,000; July receives one twelfth.
+    self_employment_gross_income: 3_000
+    self_employment_income: 1_250
+    self_employment_expense: 1_750

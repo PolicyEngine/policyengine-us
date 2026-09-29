@@ -8,19 +8,25 @@ class self_employment_gross_income(Variable):
     unit = USD
     label = "Gross self-employment income"
     documentation = (
-        "Schedule C line 7 and Schedule F line 9 gross income (receipts after "
-        "cost of goods sold and before other business expenses), reconstructed "
+        "Schedule C line 7 and Schedule F line 9 gross income (after cost of "
+        "goods sold and before other business expenses), reconstructed "
         "as net Schedule C (regular and SSTB) and Schedule F profit plus "
         "self_employment_expense. Covers sole-proprietor Schedule C and "
         "Schedule F businesses only; partnership_self_employment_net_earnings "
         "is excluded because partnership expenses are deducted on Form 1065, "
-        "so consumers needing partnership earnings add it separately. Each "
-        "source's gross income is at least its net profit floored at zero, so "
-        "the result is never below the sum of those floors: a loss in one "
-        "source does not offset another when expenses are omitted. With "
-        "complete expenses the reconstruction is exact; with none, as in "
-        "microsimulation, the result is the sum of the per-source floors. "
-        "The non-farm sources are post-labor-supply-response."
+        "so consumers needing partnership earnings handle it separately. "
+        "A modeling floor prevents the result from falling below the sum of "
+        "the three net sources individually floored at zero: a loss in one "
+        "source does not offset another when expenses are omitted. Complete "
+        "expenses matching the reported net amounts reconstruct tax-reported "
+        "gross income only when this floor does not bind. The floor is not "
+        "an IRS rule; tax-reported gross income can be negative. With no "
+        "expenses supplied, the result is the sum of the per-source floors. "
+        "The non-farm sources are post-labor-supply-response. This calculation "
+        "does not change net self-employment income or employment income. "
+        "Consumers apply their own expense deductions to the appropriate "
+        "gross-income base, then combine countable self-employment income "
+        "with separately treated wages."
     )
     reference = (
         "https://www.irs.gov/instructions/i1040sc",
@@ -30,14 +36,18 @@ class self_employment_gross_income(Variable):
     )
 
     def formula(person, period, parameters):
-        sources = [
+        net_income_sources = [
             "self_employment_income",
             "sstb_self_employment_income",
             "farm_operations_income",
         ]
         # Add back the expenses deducted from net profit, preserving losses
         # until after the add-back.
-        reconstructed = add(person, period, sources + ["self_employment_expense"])
-        # Each source's gross income is at least its net profit floored at zero.
-        source_floor = sum(max_(person(source, period), 0) for source in sources)
+        net_income = add(person, period, net_income_sources)
+        expenses = person("self_employment_expense", period)
+        reconstructed = net_income + expenses
+        # Apply the modeling fallback separately to each net-income source.
+        source_floor = sum(
+            max_(person(source, period), 0) for source in net_income_sources
+        )
         return max_(reconstructed, source_floor)
