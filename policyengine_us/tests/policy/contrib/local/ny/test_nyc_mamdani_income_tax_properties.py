@@ -12,14 +12,16 @@ switching the reform on through ``gov.local.ny.mamdani_income_tax.in_effect``
   2% of NYC taxable income above $1 million, for every filing status (so the
   reform's copy of the regular rate schedule agrees with the baseline formula);
 - that change does not depend on how many people are in the tax unit;
-- it equals the reform's ``nyc_mamdani_income_tax`` output, is non-negative, is
-  zero at or below the threshold and rises with taxable income;
+- it equals the reform's ``nyc_mamdani_income_tax`` output, which matches the
+  reference to the cent, so the threshold edge is pinned; the change is
+  non-negative, zero at or below the threshold and rises with taxable income;
 - it is zero outside NYC; and
 - it is zero in years before ``in_effect`` turns on, even though the factory
-  installs the reform for the whole simulation from the first of the next five
-  years in which it is in effect.
+  installs the reform for the whole simulation when ``in_effect`` is true on
+  January 1 of any of the five years from the simulation's start instant.
 """
 
+import functools
 import itertools
 
 import numpy as np
@@ -124,10 +126,18 @@ def grid_columns():
     return income, filing_status, members
 
 
-def tax_change(year, reform, in_nyc=True, years=None):
-    situation = grid_situation(years or [str(year)], in_nyc)
+@functools.lru_cache(maxsize=None)
+def simulations(start, in_nyc, years):
+    """Baseline and reformed simulations of the grid, built once per scenario
+    and shared across tests (each caches what it calculates)."""
+    situation = grid_situation(years, in_nyc)
     baseline = Simulation(situation=situation)
-    reformed = Simulation(situation=situation, reform=reform)
+    reformed = Simulation(situation=situation, reform=activate_from(start))
+    return baseline, reformed
+
+
+def tax_change(year, start, in_nyc=True, years=None):
+    baseline, reformed = simulations(start, in_nyc, tuple(years or [str(year)]))
     variable = "nyc_income_tax_before_credits"
     change = reformed.calculate(variable, year) - baseline.calculate(variable, year)
     return change, reformed.calculate("nyc_mamdani_income_tax", year)
@@ -135,14 +145,17 @@ def tax_change(year, reform, in_nyc=True, years=None):
 
 def test_tax_change_matches_reference_for_every_household_size():
     income, _, _ = grid_columns()
-    change, surtax = tax_change(2026, activate_from("2026-01-01"))
+    change, surtax = tax_change(2026, "2026-01-01")
     np.testing.assert_allclose(change, reference_surtax(income), atol=TOLERANCE)
     np.testing.assert_allclose(surtax, change, atol=TOLERANCE)
+    # The surtax itself carries no rate-schedule rounding, so check it tightly
+    # enough to catch a threshold moved by even a few dollars.
+    np.testing.assert_allclose(surtax, reference_surtax(income), rtol=1e-6, atol=1e-3)
 
 
 def test_tax_change_is_invariant_to_number_of_members():
     income, filing_status, members = grid_columns()
-    change, _ = tax_change(2026, activate_from("2026-01-01"))
+    change, _ = tax_change(2026, "2026-01-01")
     for value, status in itertools.product(TAXABLE_INCOMES, FILING_STATUSES):
         cell = (income == value) & (filing_status == status)
         assert len(set(members[cell])) > 1
@@ -156,7 +169,7 @@ def test_tax_change_is_invariant_to_number_of_members():
 
 def test_tax_change_bounds_and_monotonicity():
     income, filing_status, members = grid_columns()
-    change, _ = tax_change(2026, activate_from("2026-01-01"))
+    change, _ = tax_change(2026, "2026-01-01")
     assert np.all(change >= -TOLERANCE)
     assert np.all(np.abs(change[income <= THRESHOLD]) <= TOLERANCE)
     for status, count in {(g[1], g[2]) for g in GRID}:
@@ -166,7 +179,7 @@ def test_tax_change_bounds_and_monotonicity():
 
 
 def test_no_tax_change_outside_nyc():
-    change, surtax = tax_change(2026, activate_from("2026-01-01"), in_nyc=False)
+    change, surtax = tax_change(2026, "2026-01-01", in_nyc=False)
     np.testing.assert_allclose(change, 0, atol=TOLERANCE)
     np.testing.assert_allclose(surtax, 0, atol=TOLERANCE)
 
@@ -174,9 +187,8 @@ def test_no_tax_change_outside_nyc():
 def test_no_tax_change_before_delayed_activation():
     income, _, _ = grid_columns()
     years = ["2026", "2028"]
-    reform = activate_from("2028-01-01")
-    change_2026, surtax_2026 = tax_change(2026, reform, years=years)
+    change_2026, surtax_2026 = tax_change(2026, "2028-01-01", years=years)
     np.testing.assert_allclose(change_2026, 0, atol=TOLERANCE)
     np.testing.assert_allclose(surtax_2026, 0, atol=TOLERANCE)
-    change_2028, _ = tax_change(2028, reform, years=years)
+    change_2028, _ = tax_change(2028, "2028-01-01", years=years)
     np.testing.assert_allclose(change_2028, reference_surtax(income), atol=TOLERANCE)
