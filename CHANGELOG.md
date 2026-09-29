@@ -1,3 +1,10 @@
+## [2.17.1] - 2026-09-29
+
+### Fixed
+
+- Add FFY 2014-2017 HHS state median income estimates, so SMI-based programs such as Nevada CCDP compute for January-September 2015 instead of raising ParameterNotFoundError.
+
+
 ## [2.17.0] - 2026-09-29
 
 ### Added
