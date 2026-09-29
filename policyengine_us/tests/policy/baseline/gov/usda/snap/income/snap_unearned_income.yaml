@@ -17,3 +17,36 @@
     weekly_hours_worked_before_lsr: 40
   output:
     snap_unearned_income: 1_000
+
+- name: SNAP unearned income counts farm rent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        weekly_hours_worked_before_lsr: 40
+        farm_rent_income: 1_920
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_unearned_income: 160
+
+- name: A farm rent loss does not reduce SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        weekly_hours_worked_before_lsr: 40
+        financial_assistance: 12_000
+        farm_rent_income: -6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_unearned_income: 1_000
