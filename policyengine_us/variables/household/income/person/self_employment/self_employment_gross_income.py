@@ -8,40 +8,36 @@ class self_employment_gross_income(Variable):
     unit = USD
     label = "Gross self-employment income"
     documentation = (
-        "Gross self-employment receipts, reconstructed as net Schedule C "
-        "(regular and SSTB) and Schedule F profit plus work_expense, the "
-        "business costs already deducted in arriving at that net profit. Covers "
-        "sole-proprietor Schedule C and Schedule F businesses only; "
-        "partnership_self_employment_net_earnings is excluded by design because "
-        "partnership expenses are deducted on Form 1065 and that variable is not "
-        "an additional gross source, so consumers needing partnership earnings "
-        "add it separately. The zero floor applies to the combined farm plus "
-        "non-farm sum. work_expense is the person-level counterpart of the "
-        "SPM-unit SNAP input snap_self_employment_income_expense and is not "
-        "derived from it. Omitted expenses are assumed to be zero, which biases "
-        "the result downward and zeroes business losses; with no data source for "
-        "work_expense, microsimulation yields max(net, 0). This variable reads "
-        "total_self_employment_income, so it is post-labor-supply-response, "
-        "unlike the pre-response snap_gross_self_employment_income_person."
+        "Schedule C line 7 and Schedule F line 9 gross income (receipts after "
+        "cost of goods sold and before other business expenses), reconstructed "
+        "as net Schedule C (regular and SSTB) and Schedule F profit plus "
+        "self_employment_expense. Covers sole-proprietor Schedule C and "
+        "Schedule F businesses only; partnership_self_employment_net_earnings "
+        "is excluded because partnership expenses are deducted on Form 1065, "
+        "so consumers needing partnership earnings add it separately. Each "
+        "source's gross income is at least its net profit floored at zero, so "
+        "the result is never below the sum of those floors: a loss in one "
+        "source does not offset another when expenses are omitted. With "
+        "complete expenses the reconstruction is exact; with none, as in "
+        "microsimulation, the result is the sum of the per-source floors. "
+        "The non-farm sources are post-labor-supply-response."
     )
     reference = (
         "https://www.irs.gov/instructions/i1040sc",
         "https://www.irs.gov/instructions/i1040sf",
-        "https://www.irs.gov/pub/irs-pdf/f1040sc.pdf",
-        "https://www.irs.gov/pub/irs-pdf/f1040sf.pdf",
+        "https://www.irs.gov/pub/irs-pdf/f1040sc.pdf#page=1",
+        "https://www.irs.gov/pub/irs-pdf/f1040sf.pdf#page=1",
     )
 
     def formula(person, period, parameters):
-        # Add back the same business expenses deducted from the reported net
-        # income. Preserve losses until after expenses have been added back.
-        # With no reported expenses, this assumes expenses are zero.
-        gross = add(
-            person,
-            period,
-            [
-                "total_self_employment_income",
-                "farm_operations_income",
-                "work_expense",
-            ],
-        )
-        return max_(gross, 0)
+        sources = [
+            "self_employment_income",
+            "sstb_self_employment_income",
+            "farm_operations_income",
+        ]
+        # Add back the expenses deducted from net profit, preserving losses
+        # until after the add-back.
+        reconstructed = add(person, period, sources + ["self_employment_expense"])
+        # Each source's gross income is at least its net profit floored at zero.
+        source_floor = sum(max_(person(source, period), 0) for source in sources)
+        return max_(reconstructed, source_floor)

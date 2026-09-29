@@ -3,7 +3,7 @@
   input:
     employment_income: 36_000
     self_employment_income: 18_000
-    work_expense: 6_000
+    self_employment_expense: 6_000
   output:
     self_employment_gross_income: 24_000
     self_employment_income: 18_000
@@ -14,7 +14,7 @@
     self_employment_income: 6_000
     sstb_self_employment_income: 3_000
     farm_operations_income: 5_000
-    work_expense: 4_000
+    self_employment_expense: 4_000
   output:
     self_employment_gross_income: 18_000
 
@@ -22,7 +22,7 @@
   period: 2026
   input:
     self_employment_income: -3_000
-    work_expense: 12_000
+    self_employment_expense: 12_000
   output:
     self_employment_gross_income: 9_000
     self_employment_income: -3_000
@@ -33,7 +33,7 @@
     self_employment_income: 12_000
   output:
     self_employment_gross_income: 12_000
-    work_expense: 0
+    self_employment_expense: 0
 
 - name: Case 5, a loss without reported expenses cannot create negative gross income.
   period: 2026
@@ -42,27 +42,59 @@
   output:
     self_employment_gross_income: 0
 
-- name: Case 6, a farm loss offsets non-farm profit under the combined zero floor.
+- name: Case 6, a farm loss does not offset non-farm profit when expenses are omitted.
   period: 2026
   input:
     self_employment_income: 6_000
     farm_operations_income: -10_000
   output:
-    self_employment_gross_income: 0
+    # Non-farm floor 6,000 + farm floor 0; the reconstruction is -4,000.
+    self_employment_gross_income: 6_000
     farm_operations_income: -10_000
 
 - name: Case 7, employee work expenses do not belong in this business-cost input, which is added back unconditionally.
   period: 2026
   input:
     employment_income: 36_000
-    work_expense: 6_000
+    self_employment_expense: 6_000
   output:
     self_employment_gross_income: 6_000
 
-- name: Case 8, cost of goods sold is part of the add-back so the result is gross receipts.
+- name: Case 8, cost of goods sold stays out of the add-back, so the result is gross income after it.
   period: 2026
   input:
+    # Receipts 100,000 - cost of goods sold 60,000 = gross income 40,000.
+    # Gross income 40,000 - other expenses 25,000 = net profit 15,000.
     self_employment_income: 15_000
-    work_expense: 85_000
+    self_employment_expense: 25_000
   output:
-    self_employment_gross_income: 100_000
+    self_employment_gross_income: 40_000
+
+- name: Case 9, fully reported expenses reconstruct a farm loss alongside non-farm profit.
+  period: 2026
+  input:
+    self_employment_income: 6_000
+    farm_operations_income: -10_000
+    self_employment_expense: 12_000
+  output:
+    # 6,000 - 10,000 + 12,000 = 8,000, above the 6,000 per-source floor.
+    self_employment_gross_income: 8_000
+
+- name: Case 10, partially reported expenses fall back to the per-source floor.
+  period: 2026
+  input:
+    self_employment_income: 6_000
+    farm_operations_income: -10_000
+    self_employment_expense: 3_000
+  output:
+    # The reconstruction is -1,000, below the 6,000 per-source floor.
+    self_employment_gross_income: 6_000
+
+- name: Case 11, a regular business loss does not offset SSTB profit when expenses are omitted.
+  period: 2026
+  input:
+    self_employment_income: -4_000
+    sstb_self_employment_income: 9_000
+  output:
+    # Regular floor 0 + SSTB floor 9,000; the reconstruction is 5,000.
+    self_employment_gross_income: 9_000
