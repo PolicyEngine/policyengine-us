@@ -1,8 +1,10 @@
 # California FERA electricity discount (gov/states/ca/cpuc/fera).
 # 18% discount for households with income above the CARE limit (200% of the
 # CARE poverty line) but at or below 250%. SB 1130 removed the three-person
-# minimum from June 1, 2025. 2026 PL(3) = 15,960 + 2 x 5,680 = 27,320, so the
-# 3-person FERA band is (54,640, 68,300].
+# minimum from June 1, 2025; FERA eligibility is yearly, so model year 2025
+# keeps the three-person minimum and one- and two-person households qualify
+# from 2026. 2026 PL(3) = 15,960 + 2 x 5,680 = 27,320, so the 3-person FERA
+# band is (54,640, 68,300].
 # The third member is a working adult dependent: every member needs own or
 # tax-unit MAGI above 138% FPL, because a Medicaid (Medi-Cal) eligible member
 # would make the household CARE-categorically eligible and therefore
@@ -76,7 +78,7 @@
         is_tax_unit_head: true
         immigration_status_str: CITIZEN
         # 2-person band is (43,280, 54,100]; 50,000 is inside it, and SB 1130
-        # admits two-person households from June 1, 2025.
+        # admits two-person households from June 1, 2025 (model year 2026).
         employment_income_before_lsr: 50_000
       spouse:
         age: 28

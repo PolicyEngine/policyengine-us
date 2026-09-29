@@ -69,7 +69,7 @@
     pre_subsidy_electricity_expense: 1_200
     # Overriding electricity_expense to 0 pins that the formula reads the
     # pre-subsidy variable. No naturally occurring household can distinguish
-    # the two by value: the only subsidies (ca_care_electricity, ca_fera, ca_la_ez_save)
+    # the two by value: the only subsidies (ca_care_electricity_discount, ca_fera, ca_la_ez_save)
     # are California-only and CA's electricity standard is 0.
     electricity_expense: 0
   output:

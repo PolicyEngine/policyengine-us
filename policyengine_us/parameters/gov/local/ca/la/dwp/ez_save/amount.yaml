@@ -1,8 +1,8 @@
-description: The Los Angeles Department of Water and Power discounts electricity bills by this amount each month for EZ Save participants.
+description: The Los Angeles Department of Water and Power provides this monthly credit on electricity bills under the EZ-SAVE program.
 metadata:
   unit: currency-USD
   period: month
-  label: Los Angeles County EZ Save amount
+  label: Los Angeles EZ-SAVE amount
   reference:
     - title: LADWP Electric Rate Ordinance 180127, as amended, Schedule R-1, Section 2.d, Rate D - Low Income Service
       href: https://www.ladwp.com/sites/default/files/documents/LADWP_Electric_Rates.pdf#page=4
@@ -10,4 +10,7 @@ metadata:
       href: https://www.ladwp.com/account/customer-service/electric-rates/residential-rates#ez-save
 
 values:
+  # The ordinance also lists $6.81 "upon enactment", but it was enacted in
+  # August 2008, after the July 1, 2008 step, so that step is omitted.
+  2008-07-01: 7.49
   2009-07-01: 8.17

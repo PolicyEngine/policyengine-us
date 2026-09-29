@@ -10,12 +10,15 @@ class ca_care(Variable):
     documentation = (
         "California's CARE program discounts electricity and natural gas bills "
         "for eligible households. Only customers of utilities the California "
-        "Public Utilities Commission regulates can enroll; municipal utilities "
-        "such as the Los Angeles Department of Water and Power and Riverside "
-        "Public Utilities run their own programs. The model has no "
-        "utility-territory input, so it applies CARE to every eligible "
-        "California household."
+        "Public Utilities Commission regulates can enroll. Municipal electric "
+        "utilities such as the Los Angeles Department of Water and Power and "
+        "Riverside Public Utilities run their own programs, so the electricity "
+        "discount does not apply there, while gas customers of Southern "
+        "California Gas in those cities do receive the gas discount. The model "
+        "has no utility-territory input, so it applies both discounts to every "
+        "eligible California household; in Los Angeles and Riverside counties "
+        "the electricity discount therefore also stacks with EZ-SAVE or SHARE."
     )
     reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
     defined_for = "ca_care_eligible"
-    adds = ["ca_care_electricity", "ca_care_gas"]
+    adds = ["ca_care_electricity_discount", "ca_care_gas_discount"]

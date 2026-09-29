@@ -20,13 +20,11 @@ class ca_fera_eligible(Variable):
     reference = (
         "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12",
-        # Applicability and Special Condition 2: separately metered residences
-        # and sub-metered tenants; bars master-metered customers without
-        # sub-metering.
-        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1",
-        # Special Condition 3 (certification): other qualifying applicants in
-        # individually metered units.
-        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=2",
+        # Page 1, Applicability and Special Condition 2: separately metered
+        # residences and sub-metered tenants; bars master-metered customers
+        # without sub-metering. Page 2, Special Condition 3 (certification):
+        # other qualifying applicants in individually metered units.
+        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1, 2",
     )
     defined_for = StateCode.CA
 

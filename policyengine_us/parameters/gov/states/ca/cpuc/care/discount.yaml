@@ -1,6 +1,7 @@
-description: California discounts electricity bills by this rate under the California Alternate Rates for Energy program.
-# The statute sets an average effective discount between 30% and 35%; the
-# model uses the midpoint.
+description: California provides this discount rate on electricity bills under the California Alternate Rates for Energy program.
+# The statute sets an average effective discount between 30% and 35% for
+# electrical corporations with 100,000 or more customer accounts; the model uses
+# the midpoint. Smaller CPUC-regulated utilities provide 20%.
 values:
   2021-06-01: 0.325
 metadata:

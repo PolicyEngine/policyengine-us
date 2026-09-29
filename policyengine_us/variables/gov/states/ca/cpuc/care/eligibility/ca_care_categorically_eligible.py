@@ -7,7 +7,13 @@ class ca_care_categorically_eligible(Variable):
     definition_period = YEAR
     label = "Eligible for California CARE program by virtue of participation in a qualifying program"
     documentation = "Eligible for California Alternate Rates for Energy"
-    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
+    reference = (
+        # Public Utilities Code 739.1(f)(1): categorical eligibility.
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1",
+        "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
+        # Section 2A: qualifying programs; only Head Start is tribal-only.
+        "https://www.pge.com/assets/pge/localized/en/docs/account/billing-and-assistance/care-fera-application.pdf#page=2",
+    )
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):

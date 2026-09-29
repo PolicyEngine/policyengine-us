@@ -1,18 +1,18 @@
-description: Riverside Public Utilities credits electricity bills by up to this amount each month under the Sharing Households Assist Riverside's Energy program.
+description: Riverside Public Utilities provides up to this monthly credit on electricity bills under the Sharing Households Assist Riverside's Energy program.
 
 values:
-  2022-07-01: 16
+  2023-01-01: 16
   2024-01-01: 20
+  # The City Council ratified the 2025 through 2028 steps on January 27, 2026.
   2025-01-01: 24
   2026-01-01: 28
-  # Scheduled steps the City Council ratified on January 27, 2026.
   2027-01-01: 29
   2028-01-01: 30
 
 metadata:
   unit: currency-USD
   period: month
-  label: Riverside County SHARE electricity payment amount
+  label: Riverside SHARE electricity payment amount
   reference:
     - title: Riverside City Council Minutes, September 19, 2023, SHARE electric credit increase from $16 to $20 per month
       href: https://riversideca.legistar.com/View.ashx?M=M&ID=1120223&GUID=A56B5473-52B4-4018-B49D-0A8291D795E8#page=13

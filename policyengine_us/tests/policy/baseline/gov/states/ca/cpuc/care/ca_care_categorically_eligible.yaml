@@ -71,7 +71,7 @@
   output:
     ca_care_categorically_eligible: true
 
-- name: Tribal household reporting TANF receipt with a zero modeled benefit is categorically eligible.
+- name: Tribal household reporting TANF receipt with a zero modeled benefit qualifies through the general list.
   period: 2023
   input:
     state_code: CA

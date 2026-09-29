@@ -2,10 +2,11 @@ description: California provides CARE eligibility to households on tribal land t
 values:
   2022-06-01:
     - head_start
+    - early_head_start # Early Head Start is part of the Head Start program.
 metadata:
   reference:
     # Legal code establishes categorical eligibility in general, not specific programs.
-    - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(f)(1)
+    - title: California Public Utilities Code 739.1(f)(1)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
     # Program defines categorical eligibility programs; only Head Start is
     # limited to tribal households.
