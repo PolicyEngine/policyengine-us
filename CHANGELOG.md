@@ -1,3 +1,18 @@
+## [2.18.0] - 2026-09-29
+
+### Added
+
+- Add California CARE's 20% natural gas discount; ca_care now sums the electricity discount (ca_care_electricity_discount) and the gas discount (ca_care_gas_discount).
+
+### Fixed
+
+- Extend California FERA to one- and two-person households under SB 1130 from model year 2026, let every household qualify for CARE through CalWORKs (TANF) and tribal households through all listed programs plus Head Start and Early Head Start, update Riverside SHARE electric and trash credits and count SHARE in household benefits, source the LADWP EZ-SAVE amount, and correct CARE, FERA, EZ-SAVE, and SHARE metadata.
+
+### Removed
+
+- Remove ca_care_amount_if_eligible and ca_fera_amount_if_eligible; ca_care_electricity_discount and ca_fera now compute the electricity discounts directly for eligible households.
+
+
 ## [2.17.3] - 2026-09-29
 
 ### Fixed
