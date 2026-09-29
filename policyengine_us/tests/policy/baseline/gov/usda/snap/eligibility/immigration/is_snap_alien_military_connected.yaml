@@ -421,3 +421,71 @@
     # 17 < 18 (covered); 18 non-student (not covered); student 21 < 22
     # (covered); student 22 (not covered); disabled 25 (covered).
     is_snap_alien_military_connected: [true, true, false, true, false, true]
+
+- name: Case 15, unrelated adult roommate of a veteran with separate marital and tax units is not covered.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # The spouse link relies on explicit marital units. person2 is in a
+    # separate marital unit, heads their own tax unit, and is not a
+    # dependent, so no military connection reaches them.
+    is_snap_alien_military_connected: [true, false]
+
+- name: Case 16, married dependent student of a veteran is covered because tax unit dependency stands in for an unmarried child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        age: 21
+        is_tax_unit_head: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    # 7 CFR 273.4(a)(6)(ii)(G)(3) limits the exception to an unmarried
+    # dependent child. The formula does not test marital status, so this
+    # pins the disclosed proxy: person2, married to person3, is still covered
+    # as a full-time student dependent under 22. person3 has no connection
+    # of their own and is not the spouse of a service member. If a
+    # not-married condition is added, person2's expected value becomes false.
+    is_snap_alien_military_connected: [true, true, false]

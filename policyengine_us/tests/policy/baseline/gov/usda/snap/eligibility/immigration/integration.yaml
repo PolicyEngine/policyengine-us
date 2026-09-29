@@ -575,3 +575,130 @@
     snap_expected_contribution: 418
     snap_max_allotment: 785
     snap: 367
+
+- name: Case 13, single LPR age 67 on age-based SSI inside the waiting period is barred.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # With no other income, computed SSI pays the full 2026 federal benefit
+    # rate of $994 a month on the basis of age alone.
+    is_ssi_aged: true
+    is_ssi_disabled: false
+    ssi_category: AGED
+    ssi: 994
+    # Age-based SSI still meets the broad 7 CFR 271.2 test, but it is not a
+    # benefit for blindness or disability under 7 CFR 273.4(a)(6)(ii)(H), so
+    # 2 years < 5 bars person1.
+    is_usda_disabled: true
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+    is_snap_immigration_status_eligible: false
+    is_snap_excluded_member: true
+    # The only member is excluded, so no one is left in the SNAP unit and
+    # none of the SSI is counted (0 eligible / 1 household member).
+    snap_unit_size: 0
+    snap_unearned_income: 0
+    is_snap_eligible: false
+    # Before the age-based SSI fix, the SSI exempted person1 and the
+    # household received the $62 shown in Case 14.
+    snap: 0
+
+- name: Case 14, single LPR age 67 on age-based SSI past the waiting period receives SNAP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Still not exempt, but 5 years >= 5 completes the waiting period.
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: true
+    is_snap_immigration_status_eligible: true
+    is_snap_excluded_member: false
+    snap_unit_size: 1
+    # The member is 60 or older, so the household is elderly and skips the
+    # gross income test.
+    has_snap_elderly_disabled_member: true
+    # $994 of SSI counts as unearned income.
+    snap_unearned_income: 994
+    snap_gross_income: 994
+    snap_standard_deduction: 209
+    # $994 - $209 standard deduction = $785; no shelter or medical costs.
+    snap_net_income: 785
+    # 30% of $785 = $235.50, rounded up to $236.
+    snap_expected_contribution: 236
+    # One-person maximum allotment $298 - $236 = $62.
+    snap_max_allotment: 298
+    is_snap_eligible: true
+    snap: 62
+
+- name: Case 15, both LPR adults inside the waiting period are barred and the citizen child forms a one-person unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 33
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Neither adult has an exception, so both are barred; the citizen child
+    # is the only eligible member.
+    is_snap_alien_waiting_period_exempt: [false, false, true]
+    meets_snap_qualified_alien_waiting_period: [false, false, true]
+    is_snap_immigration_status_eligible: [false, false, true]
+    is_snap_excluded_member: [true, true, false]
+    is_snap_prorated_income_member: [true, true, false]
+    snap_unit_size: 1
+    # Counted share: 1 eligible / 3 household members.
+    snap_prorated_income_fraction: 0.3333
+    # $2,000 x 1/3 = $666.67.
+    snap_earned_income: 666.67
+    # 20% earned income deduction: $666.67 x 0.2 = $133.33.
+    snap_earned_income_deduction: 133.33
+    snap_standard_deduction: 209
+    # $666.67 - $133.33 - $209 = $324.33, rounded to $324.
+    snap_net_income: 324
+    # 30% of $324 = $97.20, rounded up to $98.
+    snap_expected_contribution: 98
+    # One-person maximum allotment $298 - $98 = $200.
+    snap_max_allotment: 298
+    snap: 200

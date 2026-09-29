@@ -8,31 +8,45 @@ class is_snap_alien_waiting_period_exempt(Variable):
     documentation = (
         "Whether a qualified alien meets an exception to the SNAP five-year "
         "waiting period under 7 CFR 273.4(a)(6)(ii) and 8 USC 1612(a)(2). "
-        "Modeled exceptions: under 18 ((ii)(J)); receiving blindness or "
-        "disability benefits as specified in 7 CFR 271.2 ((ii)(H)), via "
-        "is_usda_disabled, which counts any SSI receipt, including age-based "
-        "SSI, and does not apply SSI's own noncitizen restrictions to "
-        "computed SSI; a military connection via "
-        "is_snap_alien_military_connected ((ii)(G)); and, for lawful "
-        "permanent residents only, 40 qualifying quarters ((ii)(A)) or "
-        "adjustment to lawful permanent residence from a status exempt from "
-        "the waiting period ((iv)). Each category stands alone ((iv)), so a "
-        "parolee with 40 quarters or a prior exempt status stays subject. "
-        "Not modeled, so the waiting period is over-applied to these groups "
-        "when years_since_us_entry is below the threshold: people lawfully "
-        "residing in the United States on August 22, 1996, and born on or "
-        "before August 22, 1931 ((ii)(I)); American Indians born in Canada "
-        "and members of federally recognized tribes (8 USC 1612(a)(2)(G)); "
-        "Hmong and Highland Laotian tribe members and their families (8 USC "
-        "1612(a)(2)(K)); the unremarried surviving spouse and dependent "
-        "child of a deceased veteran; and the historic August 22, 1996 "
-        "residence conditions on the under-18 and disability exceptions."
+        "Modeled exceptions: under 18 ((ii)(J)); receiving benefits for "
+        "blindness or disability as specified in 7 CFR 271.2 ((ii)(H)); a "
+        "military connection via is_snap_alien_military_connected ((ii)(G)); "
+        "and, for lawful permanent residents only, 40 qualifying quarters "
+        "((ii)(A)) or admission in, or adjustment from, an exempt category "
+        "via snap_lpr_waiting_period_exempt_category ((ii)(B)-(F), (iv)). "
+        "The disability exception requires benefits based on blindness or "
+        "disability, not age (75 FR 4915), so it does not use "
+        "is_usda_disabled, which counts any SSI. It counts the "
+        "disability-based benefits listed in "
+        "gov.usda.snap.eligibility.waiting_period.exceptions.disability_programs, "
+        "and SSI only when the person is under the SSI aged "
+        "threshold, blind, or SSI disabled; SSI paid on the basis of age "
+        "alone does not qualify. Computed SSI applies SSI's qualified "
+        "noncitizen list and its lawful permanent resident 40-quarter test "
+        "(ssi_qualifying_quarters_earnings, default 40) but not SSI's own "
+        "five-year bar (8 USC 1613), so a blind or disabled lawful permanent "
+        "resident can be exempted through SSI that the bar would deny. Each "
+        "category stands alone ((iv)), so a parolee with 40 quarters or a "
+        "prior exempt status stays subject. Not modeled, so the waiting "
+        "period is over-applied to these groups when years_since_us_entry is "
+        "below the threshold: people lawfully residing in the United States "
+        "on August 22, 1996, and born on or before August 22, 1931 "
+        "((ii)(I)); American Indians born in Canada and members of federally "
+        "recognized tribes (8 USC 1612(a)(2)(G)) and Hmong and Highland "
+        "Laotian tribe members and their families (8 USC 1612(a)(2)(K)) who "
+        "are not lawful permanent residents (those who are lawful permanent "
+        "residents are exempt when snap_lpr_waiting_period_exempt_category "
+        "is set); the unremarried surviving spouse and dependent child of a "
+        "deceased veteran; and the historic August 22, 1996 residence "
+        "conditions on the under-18 and disability exceptions."
     )
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/8/1612#a_2",
         "https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii",
         "https://www.law.cornell.edu/cfr/text/7/273.4#a_6_iv",
+        "https://www.law.cornell.edu/cfr/text/7/271.2",
+        "https://www.govinfo.gov/content/pkg/FR-2010-01-29/pdf/2010-815.pdf#page=4",
         "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=3",
         "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=4",
         "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=5",
@@ -40,18 +54,34 @@ class is_snap_alien_waiting_period_exempt(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.eligibility.waiting_period.exceptions
+        year = period.this_year
         # 8 USC 1612(a)(2)(J); 7 CFR 273.4(a)(6)(ii)(J).
         child = person("monthly_age", period) < p.child_age_threshold
-        # 8 USC 1612(a)(2)(F)(ii); 7 CFR 273.4(a)(6)(ii)(H) and 271.2.
-        disability_benefits = person("is_usda_disabled", period.this_year)
+        # 8 USC 1612(a)(2)(F)(ii); 7 CFR 273.4(a)(6)(ii)(H) and 271.2: benefits
+        # for blindness or disability, not age (75 FR 4915). SSI paid below the
+        # SSI aged threshold rests on blindness or disability; at or above it,
+        # the person must be blind or SSI disabled.
+        receives_ssi = (person("ssi", year) > 0) | (
+            add(person, year, ["receives_ssi"]) > 0
+        )
+        ssi_blind_or_disabled_basis = (
+            ~person("is_ssi_aged", year)
+            | person("is_blind", year)
+            | person("is_ssi_disabled", year)
+        )
+        other_disability_benefits = add(person, year, p.disability_programs) > 0
+        disability_benefits = (
+            receives_ssi & ssi_blind_or_disabled_basis
+        ) | other_disability_benefits
         # 8 USC 1612(a)(2)(C); 7 CFR 273.4(a)(6)(ii)(G).
-        military = person("is_snap_alien_military_connected", period.this_year)
-        status = person("immigration_status", period.this_year)
+        military = person("is_snap_alien_military_connected", year)
+        status = person("immigration_status", year)
         lpr = status == status.possible_values.LEGAL_PERMANENT_RESIDENT
         # 8 USC 1612(a)(2)(B), 1645; 7 CFR 273.4(a)(6)(ii)(A).
-        quarters = person("snap_alien_qualifying_quarters", period.this_year)
+        quarters = person("snap_alien_qualifying_quarters", year)
         has_qualifying_quarters = quarters >= p.qualifying_quarters
-        # 7 CFR 273.4(a)(6)(iv); FNS Question and Answer #1 REVISED, Question 5.
-        adjusted = person("lpr_adjusted_from_bar_exempt_status", period.this_year)
-        lpr_exempt = lpr & (has_qualifying_quarters | adjusted)
+        # 7 CFR 273.4(a)(6)(ii)(B)-(F) and (iv); FNS Question and Answer #1
+        # REVISED, Question 5.
+        exempt_category = person("snap_lpr_waiting_period_exempt_category", year)
+        lpr_exempt = lpr & (has_qualifying_quarters | exempt_category)
         return child | disability_benefits | military | lpr_exempt

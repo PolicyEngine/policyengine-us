@@ -35,6 +35,7 @@ class is_snap_alien_military_connected(Variable):
         "https://www.law.cornell.edu/uscode/text/8/1612#a_2_C",
         "https://www.law.cornell.edu/uscode/text/8/1613#b_2",
         "https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_G",
+        "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility.pdf#page=10",
         "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility.pdf#page=11",
         "https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=5",
     )

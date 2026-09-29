@@ -340,7 +340,7 @@
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
     years_since_us_entry: 2
-    lpr_adjusted_from_bar_exempt_status: true
+    snap_lpr_waiting_period_exempt_category: true
     state_code: TX
   output:
     is_snap_immigration_status_eligible: true
@@ -560,7 +560,7 @@
     age: 30
     years_since_us_entry: 2
     snap_alien_qualifying_quarters: 40
-    lpr_adjusted_from_bar_exempt_status: true
+    snap_lpr_waiting_period_exempt_category: true
     state_code: CA
   output:
     # Both exceptions are limited to LPRs, and the California override does
@@ -627,3 +627,71 @@
     # Default inertness: unchanged from the result before the waiting
     # period was added.
     is_snap_immigration_status_eligible: [true, true]
+
+- name: Case 52, California parolee child inside the waiting period is eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 10
+    years_since_us_entry: 2
+    state_code: CA
+  output:
+    # The California status list still admits parolees before 2026-04-01,
+    # and the under-18 exception lifts the waiting period.
+    ca_snap_immigration_status_eligible: true
+    is_snap_alien_waiting_period_exempt: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 53, California conditional entrant receiving disability benefits inside the waiting period is eligible during the delayed implementation.
+  period: 2026-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 45
+    years_since_us_entry: 2
+    social_security_disability: 12_000
+    state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+    is_snap_alien_waiting_period_exempt: true
+    is_snap_immigration_status_eligible: true
+
+- name: Case 54, conditional entrant past the waiting period is ineligible after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 5
+    state_code: TX
+  output:
+    # The waiting period is met, but conditional entrants are off the
+    # post-OBBBA status list.
+    meets_snap_qualified_alien_waiting_period: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 55, parolee child exempt from the waiting period is ineligible after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 10
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    # The under-18 exception lifts only the waiting period; it does not
+    # restore a status the post-OBBBA list excludes.
+    is_snap_alien_waiting_period_exempt: true
+    meets_snap_qualified_alien_waiting_period: true
+    is_snap_immigration_status_eligible: false
+
+- name: Case 56, LPR age 67 on age-based SSI inside the waiting period is ineligible.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 67
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    # Computed SSI is paid on the basis of age, which does not meet the
+    # blindness or disability exception.
+    is_usda_disabled: true
+    is_snap_alien_waiting_period_exempt: false
+    is_snap_immigration_status_eligible: false
