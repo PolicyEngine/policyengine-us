@@ -1,11 +1,11 @@
-- name: A child age 13 is eligible.
+- name: A child age 13 without an exception is ineligible.
   period: 2023
   input:
     age: 13
     is_disabled: false
     immigration_status: LEGAL_PERMANENT_RESIDENT
   output:
-    ca_calworks_child_care_child_age_eligible: true
+    ca_calworks_child_care_child_age_eligible: false
 
 - name: A child age 14 is ineligible.
   period: 2023
@@ -21,6 +21,7 @@
     age: 18
     is_disabled: true
     immigration_status: CITIZEN
+    is_in_secondary_school: true
   output:
     ca_calworks_child_care_child_age_eligible: true
 
@@ -32,3 +33,12 @@
   output:
     ca_calworks_child_care_child_age_eligible: false
 
+- name: A disabled child age 18 without the school requirement is ineligible.
+  period: 2023
+  input:
+    age: 18
+    is_disabled: true
+    immigration_status: CITIZEN
+    is_in_secondary_school: false
+  output:
+    ca_calworks_child_care_child_age_eligible: false
