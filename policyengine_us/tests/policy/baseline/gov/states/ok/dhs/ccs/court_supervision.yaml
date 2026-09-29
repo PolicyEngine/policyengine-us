@@ -1,0 +1,28 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, OK court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    ok_ccs_eligible_child: [true, false, true, true, true, false, false, false]
+    # OK CCS reads is_disabled only in the age test, which court supervision
+    # already extends, so this row only records that the court flag leaves
+    # it unset.
+    is_disabled: [false, false, false, false, false, false, false, false]
+    # Protective or preventive care would satisfy the activity test. No one
+    # reports work or study, so every unit fails it, including the
+    # court-supervised ones.
+    ok_ccs_activity_eligible: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, OK court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: OK
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ok_ccs_eligible_child: false

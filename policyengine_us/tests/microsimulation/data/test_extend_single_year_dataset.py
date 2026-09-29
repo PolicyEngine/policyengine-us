@@ -996,6 +996,33 @@ class TestMicrosimulationDatasetRouting:
         assert extend_called["value"] is True
         assert isinstance(original_dataset[0], USSingleYearDataset)
 
+    def test_string_hdfstore_path_passes_dataset_end_year(
+        self, base_dataset, tmp_path, monkeypatch
+    ):
+        path = str(tmp_path / "entity_level.h5")
+        base_dataset.save(path)
+        captured_end_year = [None]
+
+        def mock_extend(ds, *, end_year=None, **kwargs):
+            captured_end_year[0] = end_year
+            return USMultiYearDataset(datasets=[ds])
+
+        monkeypatch.setattr(
+            "policyengine_us.data.economic_assumptions.extend_single_year_dataset",
+            mock_extend,
+        )
+
+        from policyengine_us import system as system_module
+
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        system_module.Microsimulation(dataset=path, dataset_end_year=BASE_YEAR)
+        assert captured_end_year[0] == BASE_YEAR
+
     def test_single_year_dataset_triggers_extend(self, base_dataset, monkeypatch):
         extend_called = {"value": False}
 
@@ -1018,6 +1045,31 @@ class TestMicrosimulationDatasetRouting:
 
         sim = system_module.Microsimulation(dataset=base_dataset)
         assert extend_called["value"] is True
+
+    def test_single_year_dataset_passes_dataset_end_year(
+        self, base_dataset, monkeypatch
+    ):
+        captured_end_year = [None]
+
+        def mock_extend(ds, *, end_year=None, **kwargs):
+            captured_end_year[0] = end_year
+            return USMultiYearDataset(datasets=[ds])
+
+        monkeypatch.setattr(
+            "policyengine_us.data.economic_assumptions.extend_single_year_dataset",
+            mock_extend,
+        )
+
+        from policyengine_us import system as system_module
+
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        system_module.Microsimulation(dataset=base_dataset, dataset_end_year=BASE_YEAR)
+        assert captured_end_year[0] == BASE_YEAR
 
     def test_multi_year_dataset_passes_through(self, base_dataset, monkeypatch):
         multi = USMultiYearDataset(datasets=[base_dataset])
@@ -1046,6 +1098,42 @@ class TestMicrosimulationDatasetRouting:
         sim = system_module.Microsimulation(dataset=multi)
         assert extend_called["value"] is False
         assert captured_dataset[0] is multi
+
+    def test_multi_year_dataset_rejects_dataset_end_year(
+        self, base_dataset, monkeypatch
+    ):
+        from policyengine_us import system as system_module
+
+        multi = USMultiYearDataset(datasets=[base_dataset])
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        with pytest.raises(
+            ValueError, match="applies only to entity-level single-year datasets"
+        ):
+            system_module.Microsimulation(dataset=multi, dataset_end_year=BASE_YEAR)
+
+    def test_legacy_h5_rejects_dataset_end_year(self, tmp_path, monkeypatch):
+        import h5py
+
+        from policyengine_us import system as system_module
+
+        path = str(tmp_path / "legacy.h5")
+        with h5py.File(path, "w") as file:
+            file.create_dataset("employment_income/2024", data=np.array([50_000.0]))
+        monkeypatch.setattr(
+            system_module.CoreMicrosimulation,
+            "__init__",
+            make_mock_super_init(system_module),
+        )
+
+        with pytest.raises(
+            ValueError, match="applies only to entity-level single-year datasets"
+        ):
+            system_module.Microsimulation(dataset=path, dataset_end_year=BASE_YEAR)
 
 
 # ---------------------------------------------------------------------------
