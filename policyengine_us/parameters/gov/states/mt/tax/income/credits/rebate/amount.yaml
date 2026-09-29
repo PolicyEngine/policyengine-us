@@ -7,9 +7,11 @@ metadata:
   reference:
     - title: MCA 15-30-2191(1)(b)(i)-(ii) (rebate amounts) and (2) (line-20 cap)
       href: https://web.archive.org/web/20250210203531/https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0910/0150-0300-0210-0910.html
-    - title: Montana HB 192 (Ch. 44, L. 2023), enrolled bill, sec. 2
-      href: https://web.archive.org/web/20230626082025/https://leg.mt.gov/bills/2023/billpdf/HB0192.pdf
-    - title: Montana Department of Revenue, Income tax and property tax rebate report, May 2024, p. 8
+    - title: Montana HB 192 (Ch. 44, L. 2023), enrolled bill, Sec. 2(1)(b)(i)-(ii)
+      href: https://web.archive.org/web/20230626082025/https://leg.mt.gov/bills/2023/billpdf/HB0192.pdf#page=2
+    - title: 2021 Montana Form 2 Instructions, Filing Status, Head of Household (qualifying widow(er))
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11
+    - title: Montana Department of Revenue, Income tax and property tax rebate report, May 2024, Income Tax Rebate Criteria
       href: https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=8
   breakdown:
     - filing_status
@@ -25,13 +27,20 @@ HEAD_OF_HOUSEHOLD:
   0000-01-01: 0
   2021-01-01: 1_250
   2022-01-01: 0
+# JOINT is never read: mt_income_tax_rebate applies the SEPARATE amount to each
+# spouse column of a joint return, so the return's total is 2 x 1_250 = 2_500.
 JOINT:
   0000-01-01: 0
   2021-01-01: 2_500
   2022-01-01: 0
+# HB 192 Sec. 2(1)(b) gives $2,500 only to "a married couple filing a joint
+# return" and $1,250 to "a single taxpayer, a head of household, or a married
+# taxpayer filing a separate return". The 2021 Form 2 has no qualifying
+# surviving spouse status; its instructions send a federal qualifying
+# widow(er) to head of household, so the cap is $1,250.
 SURVIVING_SPOUSE:
   0000-01-01: 0
-  2021-01-01: 2_500
+  2021-01-01: 1_250
   2022-01-01: 0
 SEPARATE:
   0000-01-01: 0

@@ -672,7 +672,7 @@
   # through state_income_tax and household refundable credits into household
   # net income (and SPM resources via spm_unit_state_tax).
   period: 2021
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -705,10 +705,13 @@
     household_tax_before_refundable_credits: 10_459.51
     # 50,000 + 2,650 - 10,459.51 = 42,190.49 (40,940.49 without the rebate).
     household_net_income: 42_190.49
+    # SPM resources rise by the same 1,250 through spm_unit_state_tax:
+    # 36,802.99 without the rebate + 1,250 = 38,052.99.
+    spm_unit_net_income: 38_052.99
 
 - name: MT 2021 income tax rebate raises household net income, joint filers
   period: 2021
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -748,3 +751,6 @@
     household_tax_before_refundable_credits: 10_898.22
     # 60,000 + 5,300 - 10,898.22 = 54,401.78 (51,901.78 without the rebate).
     household_net_income: 54_401.78
+    # SPM resources rise by the same 2,500 through spm_unit_state_tax:
+    # 47,581.78 without the rebate + 2,500 = 50,081.78.
+    spm_unit_net_income: 50_081.78

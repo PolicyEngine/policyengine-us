@@ -2,8 +2,6 @@
 # tax-unit level. While married-filing-separately-on-same-return (status 2a) is
 # allowed it is the smaller of the separate (indiv) and joint computations;
 # after that option is repealed (2024) it is always the joint computation.
-# Restored per Max's review: the unit variable's own test was renamed onto
-# mt_income_tax_before_2021_rebate, leaving this (still-used) variable untested.
 
 - name: MFSS era picks the minimum (indiv lower)
   period: 2021

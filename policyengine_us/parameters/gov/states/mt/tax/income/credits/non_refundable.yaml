@@ -1,8 +1,10 @@
 description: Montana provides the following non-refundable tax credits.
+# Never list mt_income_tax_rebate here. The 2021 rebate's cap base
+# (mt_income_tax_before_2021_rebate) reads Form 2 line 20 after these credits,
+# so listing the rebate would make it an input to its own cap and create a
+# cycle. The rebate is a refundable payment (mt_refundable_credits).
 values:
   2021-01-01:
-    - mt_capital_gain_credit
-  2022-01-01:
     - mt_capital_gain_credit
   2024-01-01: []
 metadata:
@@ -20,4 +22,3 @@ metadata:
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
     - title: 2025 Montana Form 2 Instructions, Schedule III - Tax Credits, Part I - Nonrefundable Credits
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=36
-
