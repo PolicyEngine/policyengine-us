@@ -48,7 +48,12 @@ class mo_sab_countable_income(Variable):
         # income for the need test under § 0410.020.00.
         # § 0410.015.10 treats child support as income to the child for whom
         # it is paid when the child is in the home, so it counts for the
-        # claimant only when no child lives in the claimant's SPM unit.
+        # claimant only when no child lives in the claimant's SPM unit. The
+        # model does not record whom support is paid for, so this proxy
+        # counts support for an 18- to 20-year-old child in the home, and
+        # drops support whenever another minor lives in the unit, including
+        # support paid for a child elsewhere or an adult claimant's own
+        # support.
         child_in_home = person.spm_unit.any(person("is_child", period.this_year))
         child_support = where(
             child_in_home, 0, person("child_support_received", period)

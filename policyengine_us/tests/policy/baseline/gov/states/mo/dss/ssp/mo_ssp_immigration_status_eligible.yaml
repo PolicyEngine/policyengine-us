@@ -53,13 +53,14 @@
   output:
     mo_ssp_immigration_status_eligible: false
 
-- name: Case 5, a permanent resident meets the requirement.
+- name: Case 5, a permanent resident five years after entry meets the requirement.
   period: 2026
   input:
     people:
       person1:
         age: 50
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
     households:
       household:
         members: [person1]
@@ -74,21 +75,23 @@
       person1:
         age: 50
         immigration_status: REFUGEE
+        years_since_us_entry: 1
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # § 1805.020.10 still lists refugees as qualified immigrants.
+    # § 1805.020.10.10.05 still lists refugees with no waiting period.
     mo_ssp_immigration_status_eligible: true
 
-- name: Case 7, a person paroled for at least one year meets the requirement.
+- name: Case 7, a person paroled for at least one year meets the requirement after five years.
   period: 2026
   input:
     people:
       person1:
         age: 50
         immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 6
     households:
       household:
         members: [person1]
@@ -103,6 +106,7 @@
       person1:
         age: 50
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
     households:
       household:
         members: [person1]
@@ -122,3 +126,160 @@
         state_code: KS
   output:
     mo_ssp_immigration_status_eligible: false
+
+- name: Case 10, a permanent resident within five years of entry does not meet the requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 1805.020.10.10.10: five years of ineligibility after entry.
+    mo_ssp_immigration_status_eligible: false
+
+- name: Case 11, a veteran permanent resident within five years of entry meets the requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_veteran: true
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 1805.020.10.10.10 waives the five-year period for veterans.
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 12, an active-duty permanent resident within five years of entry meets the requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_military: true
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 13, a parolee within five years of entry does not meet the requirement.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: false
+
+- name: Case 14, a parolee five years after entry meets the requirement in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The Missouri list keeps parolees after the October 2026 federal Medicaid
+    # change.
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 15, a conditional entrant within five years of entry does not meet the requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CONDITIONAL_ENTRANT
+        years_since_us_entry: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: false
+
+- name: Case 16, a conditional entrant five years after entry meets the requirement in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CONDITIONAL_ENTRANT
+        years_since_us_entry: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 17, an asylee has no waiting period in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: ASYLEE
+        years_since_us_entry: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 1805.020.10.10.05 lists asylees with no waiting period.
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 18, a person granted withholding of deportation has no waiting period in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: DEPORTATION_WITHHELD
+        years_since_us_entry: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: true
+
+- name: Case 19, a Cuban or Haitian entrant has no waiting period in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        years_since_us_entry: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_immigration_status_eligible: true

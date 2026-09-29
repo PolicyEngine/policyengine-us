@@ -6,6 +6,9 @@ values:
   # Battered immigrants, American Indians born in Canada, Amerasian
   # immigrants, and trafficking victims are also qualified but have no
   # immigration_status value.
+  # NOTE: This list matches gov.dhs.immigration.qualified_noncitizen_status
+  # today, but SAB and SNC follow the state manual rather than 8 USC 1641,
+  # so it is kept separate. § 1805.020.10.05 sets the August 22, 1996 date.
   1996-08-22:
     - LEGAL_PERMANENT_RESIDENT
     - REFUGEE
@@ -23,7 +26,9 @@ metadata:
       href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0405-000-00/0405-030-00/
     - title: MO HealthNet for Families Manual § 1805.020.10 — Qualified Immigrant
       href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/
-    - title: MO DSS December 1973 Eligibility Requirements Manual § 1010.000.00 — Citizenship and Alien Status (SNC same as Family MO HealthNet)
-      href: https://web.archive.org/web/20220519212253/https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1010-000-00/
+    - title: MO HealthNet for Families Manual § 1805.020.10.05 — Qualified Immigrants Entering Prior to 8/22/96
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-020-00/1805-020-10/1805-020-10-05/
+    - title: MO DSS December 1973 Eligibility Requirements Manual § 1010.000.00 — Reasonable Opportunity, Citizenship, and Immigrant Status (IM-97, 07/11/2022; archived 08/2025)
+      href: https://web.archive.org/web/20250809181856/https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1010-000-00/
     - title: MO DSS Supplemental Nursing Care Manual § 0605.010.00 — December 1973 Eligibility Requirements
       href: https://dssmanuals.mo.gov/supplemental-nursing-care/0605-000-00/0605-010-00/

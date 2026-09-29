@@ -596,3 +596,93 @@
     # $1,200 a year is $100 a month: $457.50 - $100 - $100 = $257.50.
     mo_sab_countable_income:
       2026-01: 257.5
+
+- name: Case 33, military retirement pay is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        military_retirement_pay: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists military retirement.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 34, farm rental income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        farm_rent_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists property rental.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 35, estate and trust income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        estate_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists income from trusts.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 36, partnership and S corporation income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        partnership_s_corp_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Counted as a passive return on investment.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 37, general assistance is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        general_assistance: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists other need-based assistance programs.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500

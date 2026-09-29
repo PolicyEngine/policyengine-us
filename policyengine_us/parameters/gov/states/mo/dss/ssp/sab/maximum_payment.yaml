@@ -1,5 +1,8 @@
 description: Missouri provides this amount as the maximum payment under the Supplemental Aid to the Blind program.
 values:
+  # The $510 row is out of date: IM-57 shows a $750 grant before July 2023,
+  # and archived Appendix K editions show $750 from at least August 2020.
+  # Correcting the history before July 2023 is left for a separate change.
   2011-01-01: 510
   2023-07-01: 789
   2024-07-01: 828

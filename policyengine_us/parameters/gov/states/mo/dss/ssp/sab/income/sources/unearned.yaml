@@ -7,9 +7,14 @@ values:
   # (§ 0410.015.10). Veterans benefits count in full because the excluded
   # Aid and Attendance portion (§ 0410.015.15) is not separable. Rent from
   # property the claimant actively manages is earned income under 13 CSR
-  # 40-2.050(1)(C) but is counted here as unearned.
+  # 40-2.050(1)(C) but is counted here as unearned. Military retirement
+  # is listed separately because pension_income excludes it. Partnership
+  # and S corporation income is counted here as a passive return on
+  # investment; an active owner's share is earned income under 13 CSR
+  # 40-2.050(1), where the $85-plus-half exemption would apply instead.
   1974-01-01:
     - pension_income
+    - military_retirement_pay
     - social_security
     - disability_benefits
     - veterans_benefits
@@ -25,6 +30,10 @@ values:
     - dividend_income
     - interest_income
     - rental_income
+    - farm_rent_income
+    - estate_income
+    - partnership_s_corp_income
+    - general_assistance
     - gambling_winnings
 metadata:
   unit: list

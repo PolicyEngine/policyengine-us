@@ -320,8 +320,10 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Combined $1,500 exceeds the $999.99 individual limit but not the
-    # $2,000 couple limit.
+    # Combined $1,500 exceeds the encoded $999.99 individual limit but not the
+    # $2,000 couple limit. Those rows are out of date: DSS applied $5,909.25
+    # and $11,818.45 in January 2025 (Appendix J, 07/2024). The result is the
+    # same under either limit.
     mo_ssp_resource_eligible: [true, true]
 
 - name: Case 14, resources of unmarried household members are not pooled.
