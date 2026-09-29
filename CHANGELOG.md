@@ -1,3 +1,52 @@
+## [2.15.17] - 2026-09-28
+
+### Fixed
+
+- Required the household to pay its own utilities (`tenant_pays_utilities`) for California CARE and FERA, which serve the utility customer or a sub-metered tenant, and for LADWP EZ-SAVE and Riverside SHARE, which require the applicant to hold the utility account.
+
+
+## [2.15.16] - 2026-09-28
+
+### Fixed
+
+- Apply Hawaii federal AGI limits to the itemized income or sales tax deduction while preserving real estate tax deductions.
+- Apply the Maryland child tax credit income phaseout per qualifying child.
+
+
+## [2.15.15] - 2026-09-28
+
+### Fixed
+
+- Build SNAP gross and net income standards for households larger than eight from a separately rounded-up per-person increment per 7 CFR 273.9(a)(3), and stop single-precision error from rounding SNAP net income ending in exactly 50 cents down.
+
+
+## [2.15.14] - 2026-09-28
+
+### Fixed
+
+- Correct historical business-loss thresholds, suspend the limit for 2018–2020, and index future thresholds with IRS inflation rounding.
+
+
+## [2.15.13] - 2026-09-28
+
+### Changed
+
+- Document that policy changes must be mirrored in Axiom RuleSpec (rulespec-us), and add a pull request template with the required `axiom:` line.
+
+### Fixed
+
+- Inputs to uprated variables supplied only for a year before 2015 no longer raise a TypeError when a later year reads them; they carry over unchanged to 2015 and are uprated from there.
+- Correct the SPM methodology page's account of which series each uprated input follows, and test that the page links every series an input follows.
+
+
+## [2.15.12] - 2026-09-28
+
+### Fixed
+
+- Net eligible qualified business losses before component limits, preserve the minimum deduction after SSTB exclusions, and floor Missouri business income separately for each spouse.
+- Update the Michigan home heating credit funding factor to 60 percent for 2025.
+
+
 ## [2.15.11] - 2026-09-27
 
 ### Fixed
