@@ -49,3 +49,163 @@
     in_nyc: false
   output:
     nyc_mamdani_income_tax: 0
+
+# The surtax is levied once per return, so it must not scale with the number
+# of people in the tax unit. 2026 NYC joint schedule (3.078% to 21,600,
+# 3.762% to 45,000, 3.819% to 90,000, 3.876% above) on 2,000,000:
+#   21_600 * 0.03078 + 23_400 * 0.03762 + 45_000 * 0.03819
+#   + 1_910_000 * 0.03876
+#   = 664.848 + 880.308 + 1_718.55 + 74_031.6 = 77_295.306
+- name: Joint couple with two dependents above threshold in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        nyc_taxable_income: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+        in_nyc: true
+  output:
+    # (2_000_000 - 1_000_000) * 0.02 = 20_000, once for the whole tax unit.
+    nyc_mamdani_income_tax: 20_000
+    # 77_295.306 + 20_000 = 97_295.306
+    nyc_income_tax_before_credits: 97_295
+
+- name: Head of household with three dependents above threshold in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        nyc_taxable_income: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_mamdani_income_tax: 20_000
+    # 2026 NYC head of household schedule (3.078% to 14,400, 3.762% to 30,000,
+    # 3.819% to 60,000, 3.876% above) on 2,000,000:
+    #   443.232 + 586.872 + 1_145.7 + 75_194.4 = 77_370.204
+    # 77_370.204 + 20_000 = 97_370.204
+    nyc_income_tax_before_credits: 97_370
+
+- name: Joint couple with two dependents below threshold in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        nyc_taxable_income: 900_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_mamdani_income_tax: 0
+    # Regular tax only: 664.848 + 880.308 + 1_718.55 + 810_000 * 0.03876
+    #   = 3_263.706 + 31_395.6 = 34_659.306
+    nyc_income_tax_before_credits: 34_659
+
+- name: Joint couple with two dependents outside NYC in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        nyc_taxable_income: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+        in_nyc: false
+  output:
+    nyc_mamdani_income_tax: 0
+    nyc_income_tax_before_credits: 0
+
+- name: Reform installed but not in effect in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: False
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        nyc_taxable_income: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_mamdani_income_tax: 0
+    # Baseline joint tax only: 77_295.306
+    nyc_income_tax_before_credits: 77_295

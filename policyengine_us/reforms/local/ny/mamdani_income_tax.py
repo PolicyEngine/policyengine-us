@@ -5,16 +5,20 @@ from policyengine_core.periods import period as period_
 def create_nyc_mamdani_income_tax() -> Reform:
     class nyc_mamdani_income_tax(Variable):
         value_type = float
-        entity = Person
+        entity = TaxUnit
         label = "Zohran Mamdani NYC income tax"
         unit = USD
         definition_period = YEAR
         defined_for = "in_nyc"
 
-        def formula(person, period, parameters):
-            taxable_income = person.tax_unit("nyc_taxable_income", period)
+        def formula(tax_unit, period, parameters):
+            # Levied once per return on the tax unit's NYC taxable income.
+            taxable_income = tax_unit("nyc_taxable_income", period)
             p = parameters(period).gov.local.ny.mamdani_income_tax
-            return p.rate.calc(taxable_income)
+            # The factory installs the reform for the whole simulation when
+            # in_effect is true in any of the next five years, so gate each
+            # period on its own in_effect value.
+            return where(p.in_effect, p.rate.calc(taxable_income), 0)
 
     class nyc_income_tax_before_credits(Variable):
         value_type = float
@@ -45,7 +49,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
                     p.separate.calc(taxable_income),
                 ],
             )
-            mamdani_tax = add(tax_unit, period, ["nyc_mamdani_income_tax"])
+            mamdani_tax = tax_unit("nyc_mamdani_income_tax", period)
             return regular_tax + mamdani_tax
 
     class reform(Reform):
