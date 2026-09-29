@@ -1,0 +1,32 @@
+- name: Capital gains worksheet counts dividends once across gain and loss cases
+  period: 2025
+  input:
+    long_term_capital_gains: [100_000, 100_000, 100_000, 0, 0]
+    short_term_capital_gains: [50_000, -50_000, -150_000, 0, 50_000]
+    qualified_dividend_income: [20_000, 20_000, 20_000, 20_000, 0]
+  output:
+    dwks09: [100_000, 50_000, 0, 0, 0]
+    dwks10: [120_000, 70_000, 20_000, 20_000, 0]
+    dwks13: [120_000, 70_000, 20_000, 20_000, 0]
+
+- name: Positive short-term gains must not double count dividends in AMT
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    age: 75
+    filing_status: SINGLE
+    long_term_capital_gains: 1_259_627.91
+    short_term_capital_gains: 171_723.97
+    qualified_dividend_income: 82_236.83
+    taxable_interest_income: 40_229.32
+    taxable_private_pension_income: 77_954.43
+    social_security_retirement: 41_310.90
+    state_code: TX
+  output:
+    # Independently calculated from 2025 Form 6251 and the QDCG worksheet.
+    adjusted_gross_income: 1_666_886.73
+    taxable_income: 1_649_136.73
+    dwks13: 1_341_864.74
+    amt_income_less_exemptions: 1_666_886.73
+    amt_tax_including_cg: 343_290.70
+    alternative_minimum_tax: 9_131.71

@@ -1,0 +1,150 @@
+- name: Under-18 repeal zeroes the young dependent, preserves the older one.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 0
+    gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.age_limit.threshold: 18
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: UT
+  output:
+    # Only the 19-year-old keeps the uprated baseline per-dependent
+    # exemption (about $2,159 in 2026).
+    ut_personal_exemption: 2_159
+    # About $130 above the same household's baseline tax of $1,379: the
+    # taxpayer credit shrinks by 6% of the repealed ~$2,159 exemption.
+    # Asserts the exemption flows through to the bottom line.
+    ut_income_tax: 1_508
+
+- name: Reform at defaults reproduces the baseline (sentinel amount).
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: UT
+  output:
+    # Two dependents at the uprated baseline amount.
+    ut_personal_exemption: 4_318
+
+- name: A flat reform amount applies to every dependent when the age limit is off.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 500
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: UT
+  output:
+    ut_personal_exemption: 1_000
+
+- name: The newborn additional exemption follows the reform amount.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 0
+    gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.age_limit.threshold: 18
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1]
+        state_code: UT
+  output:
+    # The under-18 repeal zeroes both the newborn's base exemption and the
+    # 59-10-1018(1)(g) additional newborn exemption.
+    ut_personal_exemption: 0
+
+- name: The reform amount is inert in periods where the reform is off.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.amount: 0
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1, person2]
+        state_code: UT
+  output:
+    # in_effect is false, so the $0 amount does not apply: two dependents
+    # at the uprated baseline amount.
+    ut_personal_exemption: 4_318
