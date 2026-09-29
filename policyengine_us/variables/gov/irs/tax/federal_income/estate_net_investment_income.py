@@ -16,6 +16,7 @@ class estate_net_investment_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/1411#c_1_A",
+        "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11",
     )

@@ -25,8 +25,14 @@ Security under § 86, which is correct and outside what is drawn here.
    investment income or MAGI in excess of the filing-status threshold
    (§ 1411(a)(1)), where MAGI is AGI plus the non-dependents' estate and
    trust MAGI adjustments, which default to the positive part of code H
-   (Form 8960 line 7 instructions).
+   (Form 8960 line 7 instructions). niit_magi equals that MAGI, and the NIIT
+   equals the rate times the lesser of the two amounts, checked against an
+   independent numpy computation.
 6. The NIIT is nondecreasing in the head's estate income.
+7. Person and household market income rise by exactly the signed estate
+   income of every member, dependents included: market income is a household
+   resource concept, not a tax one, so a household never looks poorer because
+   estate income is taxed.
 
 Two cases fall outside property 4 because loss_ald pools every tax unit
 member's business income and losses into one section 461(l) computation, a
@@ -226,6 +232,9 @@ def runs(request, units):
                 "adjusted_gross_income",
                 "net_investment_income",
                 "net_investment_income_tax",
+                "niit_magi",
+                "market_income",
+                "household_market_income",
             ]
         }
         out[name]["is_tax_unit_dependent"] = np.asarray(
@@ -376,11 +385,24 @@ def test_niit_within_statutory_bounds(runs, units):
         threshold = p.threshold[r["filing_status"]]
         magi = r["adjusted_gross_income"] + magi_increase
         niit = r["net_investment_income_tax"]
+        nii = np.maximum(r["net_investment_income"], 0)
+        excess_magi = np.maximum(magi - threshold, 0)
         assert np.all(niit >= -TOLERANCE)
-        assert np.all(
-            niit <= p.rate * np.maximum(r["net_investment_income"], 0) + TOLERANCE
+        assert np.all(niit <= p.rate * nii + TOLERANCE)
+        assert np.all(niit <= p.rate * excess_magi + TOLERANCE)
+        # Differential check against an independent reference computation.
+        np.testing.assert_allclose(r["niit_magi"], magi, atol=TOLERANCE, err_msg=name)
+        np.testing.assert_allclose(
+            niit, p.rate * np.minimum(nii, excess_magi), atol=TOLERANCE, err_msg=name
         )
-        assert np.all(niit <= p.rate * np.maximum(magi - threshold, 0) + TOLERANCE)
+    # The MAGI adjustment must bind for some units, or the check is vacuous.
+    r = runs["with"]
+    threshold = p.threshold[r["filing_status"]]
+    agi_only = p.rate * np.minimum(
+        np.maximum(r["net_investment_income"], 0),
+        np.maximum(r["adjusted_gross_income"] - threshold, 0),
+    )
+    assert np.any(r["net_investment_income_tax"] > agi_only + 1)
 
 
 def test_niit_nondecreasing_in_estate_income(runs):
@@ -394,3 +416,24 @@ def test_niit_nondecreasing_in_estate_income(runs):
         runs["bump"]["net_investment_income_tax"]
         > runs["with"]["net_investment_income_tax"] + 1
     )
+
+
+def test_market_income_rises_by_estate_income_of_every_member(runs, units):
+    estate = _all_member_estate(units)
+    person_delta = runs["with"]["market_income"] - runs["zero"]["market_income"]
+    np.testing.assert_allclose(person_delta, estate, atol=TOLERANCE)
+    household_delta = (
+        runs["with"]["household_market_income"]
+        - runs["zero"]["household_market_income"]
+    )
+    # One household per tax unit, in the same order.
+    expected = np.bincount(
+        runs["with"]["person_tax_unit"], weights=estate, minlength=len(units)
+    )
+    np.testing.assert_allclose(household_delta, expected, atol=TOLERANCE)
+    assert (estate < 0).any() and (estate > 0).any()
+
+
+def _all_member_estate(units):
+    estate, _, _ = _person_inputs(units)
+    return estate

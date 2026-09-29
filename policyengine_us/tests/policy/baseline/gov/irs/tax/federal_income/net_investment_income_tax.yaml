@@ -308,3 +308,33 @@
     net_investment_income: 20_000
     # MAGI 220,000 - 10,000 = 210,000; 3.8% of min(20,000, 10,000)
     net_investment_income_tax: 380
+
+- name: A spouse's positive code H raises joint MAGI
+  # MFJ threshold 250,000. AGI 240,000 + 10,000 = 250,000; NII 10,000 + 5,000
+  # = 15,000; MAGI 250,000 + 5,000 = 255,000; 3.8% of min(15,000, 5,000).
+  # Counting only the head's MAGI adjustment would give 0.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    adjusted_gross_income: 250_000
+    niit_magi: 255_000
+    net_investment_income: 15_000
+    net_investment_income_tax: 190
