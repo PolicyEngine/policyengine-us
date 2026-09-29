@@ -4,6 +4,12 @@ from policyengine_us.data.dataset_schema import (
     USSingleYearDataset,
     USMultiYearDataset,
 )
+from policyengine_us.tools.per_capita_uprating import (
+    DERIVED_FROM,
+    check_per_capita_series_is_current,
+    is_national_total_path,
+    per_capita_path,
+)
 
 # The default end year for dataset extension is derived at runtime from
 # the CPI-U parameter YAML (gov.bls.cpi.cpi_u).  When the CPI-U YAML
@@ -174,10 +180,16 @@ def _apply_single_year_uprating(current, previous, system):
             if uprating_path is None:
                 continue
 
-            param = _resolve_parameter(system.parameters, uprating_path)
+            param = _resolve_uprating_parameter(system.parameters, uprating_path)
             if param is None:
                 continue
 
+            derived_from = getattr(param, "metadata", {}).get(DERIVED_FROM)
+            if derived_from:
+                for period in (previous_period, current_period):
+                    check_per_capita_series_is_current(
+                        system.parameters, derived_from, period
+                    )
             prev_val = param(previous_period)
             curr_val = param(current_period)
             if prev_val == 0:
@@ -189,6 +201,30 @@ def _apply_single_year_uprating(current, previous, system):
             # copy-on-write), and assignment replaces just this column in
             # just this year's frame, leaving the shared buffers intact.
             current_df[col] = prev_df[col] * factor
+
+
+def _resolve_uprating_parameter(parameters, path):
+    """Resolve an uprating path, using the per-capita series for a national
+    total.
+
+    Weights grow with population, so a column uprated by a national total
+    uses the total's per-capita sibling (see ``per_capita_uprating``). The
+    overrides above name national totals and resolve through here. A tree
+    that holds the total but not its sibling raises: falling back to the
+    total would quietly count population growth twice.
+    """
+    if is_national_total_path(path):
+        if _resolve_parameter(parameters, path) is None:
+            return None
+        per_capita = _resolve_parameter(parameters, per_capita_path(path))
+        if per_capita is None:
+            raise ValueError(
+                f"{path} is a national total but {per_capita_path(path)} is "
+                "missing from the parameter tree. Build the system with "
+                "CountryTaxBenefitSystem, or call add_per_capita_uprating."
+            )
+        return per_capita
+    return _resolve_parameter(parameters, path)
 
 
 def _resolve_parameter(parameters, path):

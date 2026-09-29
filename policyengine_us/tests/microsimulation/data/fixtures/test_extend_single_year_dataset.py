@@ -114,11 +114,32 @@ class _ParameterNode:
             raise AttributeError(name)
 
 
-def build_mock_parameters(param_specs: dict[str, dict[str, float]]):
-    """Build a mock parameter tree from {dotted_path: {period: value}}."""
+def build_mock_parameters(
+    param_specs: dict[str, dict[str, float]],
+    per_capita_siblings: bool = True,
+):
+    """Build a mock parameter tree from {dotted_path: {period: value}}.
+
+    Dataset extension reads a national total through its per-capita sibling,
+    which the real system derives. The mock gives each national total a
+    sibling with the same values, as if population were constant, unless the
+    spec supplies one or ``per_capita_siblings`` is False.
+    """
+    from policyengine_us.tools.per_capita_uprating import (
+        is_national_total_path,
+        per_capita_path,
+    )
+
     root = _ParameterNode()
     for path, values in param_specs.items():
         root._add_path(path, MockParameter(values))
+        sibling = per_capita_path(path)
+        if (
+            per_capita_siblings
+            and is_national_total_path(path)
+            and sibling not in param_specs
+        ):
+            root._add_path(sibling, MockParameter(values))
     return root
 
 

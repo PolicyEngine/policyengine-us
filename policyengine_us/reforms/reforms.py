@@ -96,6 +96,12 @@ from .states.mt.hb268 import (
 from .states.mt.ctc import (
     create_mt_ctc_reform,
 )
+from .states.ma.tiered_child_and_family_credit import (
+    create_ma_tiered_child_and_family_credit_reform,
+)
+from .states.ma.commonwealth_credit import (
+    create_ma_commonwealth_credit_reform,
+)
 from .states.mt.newborn_credit import (
     create_mt_newborn_credit_reform,
 )
@@ -197,6 +203,13 @@ from .states.ia.dependent_credit.ia_dependent_credit_reform import (
 )
 from .states.az.dependent_credit.az_dependent_credit_reform import (
     create_az_dependent_credit_reform_fn,
+    create_az_refundable_dependent_credit_reform_fn,
+)
+from .states.ma.dependent_exemption.ma_dependent_exemption_reform import (
+    create_ma_dependent_exemption_reform_fn,
+)
+from .states.ut.dependent_exemption.ut_dependent_exemption_reform import (
+    create_ut_dependent_exemption_reform_fn,
 )
 from .states.md.dependent_exemption.md_dependent_exemption_reform import (
     create_md_dependent_exemption_reform_fn,
@@ -436,6 +449,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_hb268 = create_mt_hb268_reform(parameters, period)
     mt_ctc = create_mt_ctc_reform(parameters, period)
+    ma_tiered_child_and_family_credit = create_ma_tiered_child_and_family_credit_reform(
+        parameters, period
+    )
+    ma_commonwealth_credit = create_ma_commonwealth_credit_reform(parameters, period)
     mt_newborn_credit = create_mt_newborn_credit_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
     tax_employer_social_security_tax = create_tax_employer_social_security_tax_reform(
@@ -505,6 +522,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     ca_dependent_credit = create_ca_dependent_credit_reform_fn(parameters, period)
     ia_dependent_credit = create_ia_dependent_credit_reform_fn(parameters, period)
     az_dependent_credit = create_az_dependent_credit_reform_fn(parameters, period)
+    az_refundable_dependent_credit = create_az_refundable_dependent_credit_reform_fn(
+        parameters, period
+    )
+    ma_dependent_exemption = create_ma_dependent_exemption_reform_fn(parameters, period)
+    ut_dependent_exemption = create_ut_dependent_exemption_reform_fn(parameters, period)
     md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
     oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
     ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
@@ -616,6 +638,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_school_tax_credit_with_phase_out,
         mt_hb268,
         mt_ctc,
+        ma_tiered_child_and_family_credit,
+        ma_commonwealth_credit,
         mt_newborn_credit,
         fisc_act,
         tax_employer_social_security_tax,
@@ -660,6 +684,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         ca_dependent_credit,
         ia_dependent_credit,
         az_dependent_credit,
+        az_refundable_dependent_credit,
+        ma_dependent_exemption,
+        ut_dependent_exemption,
         md_dependent_exemption,
         oh_dependent_exemption,
         ar_dependent_credit,

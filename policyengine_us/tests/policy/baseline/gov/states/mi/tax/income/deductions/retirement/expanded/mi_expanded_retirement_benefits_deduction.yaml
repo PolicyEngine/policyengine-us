@@ -107,6 +107,7 @@
   input:
     people:
       person1:
+        age: 65
         taxable_401k_distributions: 30_000
         taxable_ira_distributions: 30_000
         is_tax_unit_head_or_spouse: true
@@ -126,11 +127,11 @@
   input:
     people:
       person1:
+        age: 65
         taxable_roth_conversions: 20_000
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        mi_expanded_retirement_benefits_deduction_eligible: true
         members: [person1]
         filing_status: SINGLE
     household:
@@ -138,3 +139,64 @@
       state_code: MI
   output:
     mi_pension_benefit: 20_000
+
+- name: 2026 single filer under age 59.5 with taxable Roth conversions not eligible for deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_roth_conversions: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction: 0
+    mi_pension_benefit: 0
+
+- name: 2026 single filer under age 59.5 with taxable IRA distributions not eligible for deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_ira_distributions: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_expanded_retirement_benefits_deduction: 0
+    mi_pension_benefit: 0
+
+- name: 2026 disabled single filer under age 59.5 with taxable IRA distributions eligible for deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        taxable_ira_distributions: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Disabled filer: IRA distributions qualify under MCL 206.30(8)(a)(ii) despite age < 59.5.
+    mi_expanded_retirement_benefits_deduction: 20_000
+    mi_pension_benefit: 20_000
+
+

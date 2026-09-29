@@ -29,7 +29,11 @@ class fl_sr_copay(Variable):
         is_eligible_child = person("is_fl_sr_child_eligible", period)
         time_category = person("fl_sr_time_category", period)
         is_full_time = time_category == time_category.possible_values.FULL_TIME
-        any_full_time = spm_unit.sum(is_eligible_child & is_full_time) > 0
+        hours = person("childcare_hours_per_day", period.this_year)
+        care_days = person("childcare_attending_days_per_month", period.this_year)
+        in_care = is_eligible_child & ((hours > 0) | (care_days > 0))
+        # A sibling outside care must not trigger the full-time fallback fee.
+        any_full_time = spm_unit.any(in_care & is_full_time)
 
         copay_rate = where(
             any_full_time,
@@ -42,4 +46,4 @@ class fl_sr_copay(Variable):
         # Waive the copay for the families listed in State Plan s. 3.3.1
         # (<=150% FPL, homeless, child with a disability, Head Start, foster care).
         waived = spm_unit("fl_sr_copay_waived", period)
-        return where(waived, 0, capped_copay)
+        return where(waived | ~spm_unit.any(in_care), 0, capped_copay)

@@ -1,4 +1,5 @@
-# KY CCAP day length: FULL_DAY when hours/day >= 5 (Section 1(13)), else PART_DAY.
+# KY CCAP: five or more hours is FULL_DAY; positive shorter days are PART_DAY.
+# Unknown (zero) hours retain the full-day fallback.
 
 - name: Case 1, five or more hours per day is a full day.
   period: 2025-01
@@ -49,7 +50,7 @@
   output:
     ky_ccap_day_length: PART_DAY
 
-- name: Case 5, zero hours of care is a part day.
+- name: Case 5, unknown hours retain full-time pricing.
   period: 2025-01
   input:
     people:
@@ -59,4 +60,4 @@
       household:
         state_code: KY
   output:
-    ky_ccap_day_length: PART_DAY
+    ky_ccap_day_length: FULL_DAY

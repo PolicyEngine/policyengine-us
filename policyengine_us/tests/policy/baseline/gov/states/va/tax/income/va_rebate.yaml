@@ -1,46 +1,64 @@
-- name: 2023 single rebate
-  period: 2023
+# Virginia rebates are booked to the tax year whose return determines them,
+# not the calendar year the check is paid:
+#   2021 -> 2022 rebate ($250/$500), 2022 -> 2023 rebate ($200/$400),
+#   2024 -> HB1600 TY2024 rebate ($200/$400); 2023 and 2025 carry no rebate.
+- name: 2022 rebate booked to the 2021 return (single)
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 250
+
+- name: 2022 rebate booked to the 2021 return (joint)
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 500
+
+- name: 2023 rebate booked to the 2022 return (single)
+  period: 2022
   input:
     filing_status: SINGLE
     state_code: VA
   output:
     va_rebate: 200
 
-- name: 2023 joint rebate
+- name: 2023 rebate booked to the 2022 return (joint)
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 400
+
+- name: No rebate determined by the 2023 return
   period: 2023
   input:
     filing_status: JOINT
-    state_code: VA
-  output:
-    va_rebate: 400
-
-# 2024 tests - values inherited from 2023 per HB 1600 reauthorization
-- name: 2024 single rebate
-  period: 2024
-  input:
-    filing_status: SINGLE
-    state_code: VA
-  output:
-    va_rebate: 200
-
-- name: 2024 joint rebate
-  period: 2024
-  input:
-    filing_status: JOINT
-    state_code: VA
-  output:
-    va_rebate: 400
-
-# 2025 tests - no rebate for 2025
-- name: 2025 single rebate discontinued
-  period: 2025
-  input:
-    filing_status: SINGLE
     state_code: VA
   output:
     va_rebate: 0
 
-- name: 2025 joint rebate discontinued
+- name: HB1600 TY2024 rebate booked to the 2024 return (single)
+  period: 2024
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 200
+
+- name: HB1600 TY2024 rebate booked to the 2024 return (joint)
+  period: 2024
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 400
+
+- name: Rebate sunsets after the 2024 return
   period: 2025
   input:
     filing_status: JOINT

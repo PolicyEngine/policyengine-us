@@ -1,0 +1,167 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: AL
+    childcare_attending_days_per_month: 20
+    al_ccsp_eligible_child: true
+    al_ccsp_provider_type: INFORMAL
+  output:
+    al_ccsp_maximum_weekly_rate: 50
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_week: 0
+        childcare_attending_days_per_month: 20
+        al_ccsp_eligible_child: true
+        al_ccsp_provider_type: INFORMAL
+      child1:
+        childcare_hours_per_week: 1
+        childcare_attending_days_per_month: 20
+        al_ccsp_eligible_child: true
+        al_ccsp_provider_type: INFORMAL
+      child2:
+        childcare_hours_per_week: 25
+        childcare_attending_days_per_month: 20
+        al_ccsp_eligible_child: true
+        al_ccsp_provider_type: INFORMAL
+      child3:
+        childcare_hours_per_week: 25.01
+        childcare_attending_days_per_month: 20
+        al_ccsp_eligible_child: true
+        al_ccsp_provider_type: INFORMAL
+      child4:
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+        al_ccsp_eligible_child: true
+        al_ccsp_provider_type: INFORMAL
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: AL
+  output:
+    al_ccsp_maximum_weekly_rate:
+    - 50
+    - 25
+    - 25
+    - 50
+    - 50
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 37290
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+        pre_subsidy_childcare_expenses: 10000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_pre_subsidy_childcare_expenses: 10000
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_eligible_child:
+    - false
+    - false
+    - true
+    al_ccsp_income_eligible: true
+    al_ccsp_eligible: true
+    al_ccsp_weekly_copay_per_child: 30
+    al_ccsp_maximum_weekly_rate:
+    - 0
+    - 0
+    - 191
+    al_ccsp: 697.67
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 37290
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+        pre_subsidy_childcare_expenses: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp: 0

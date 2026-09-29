@@ -1,6 +1,8 @@
 # Child eligibility (KEESM 2810):
-#   under 13 generally; under 19 if disabled / developmentally delayed
-#   (the 14-18 special-needs extension). Must be CCDF-immigration-eligible.
+#   under 13 generally; under 19 if disabled / developmentally delayed or
+#   under court supervision (the 14-18 extension). Must be
+#   CCDF-immigration-eligible. Court-supervision cases are in
+#   ../court_supervision.yaml.
 
 - name: Case 1, citizen child under 13 is eligible.
   period: 2025-01
@@ -174,9 +176,9 @@
     # 12 < 13 age limit.
     ks_ccap_eligible_child: [false, true]
 
-# Edge case: a non-special-needs child age 14 (in the 14-18 band) is ineligible
-# because the extension only applies to disabled / developmentally delayed
-# children; we don't track court supervision.
+# Edge case: a child age 14 (in the 14-18 band) with no special need and no
+# court supervision is ineligible, because the extension applies only to
+# disabled / developmentally delayed or court-supervised children.
 - name: Case 8, non-special-needs child age 14 is ineligible.
   period: 2025-01
   input:

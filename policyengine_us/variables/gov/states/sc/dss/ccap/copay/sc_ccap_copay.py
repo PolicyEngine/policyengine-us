@@ -14,6 +14,7 @@ class sc_ccap_copay(Variable):
         "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=86",
         "https://www.scchildcare.org/media/n3qmcb5u/sc-child-care-scholarship-program-fee-scale-2023-2024.pdf#page=1",
         "https://www.scchildcare.org/media/ih2mrjw5/fee-scale-2025-2026.pdf#page=1",
+        "https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=108",
     )
 
     def formula(spm_unit, period, parameters):
@@ -38,6 +39,14 @@ class sc_ccap_copay(Variable):
         is_young = person("age", period.this_year) < p_elig.disabled_child_age_limit
         is_dependent = person("is_tax_unit_dependent", period.this_year)
         has_disabled_child = spm_unit.any(is_disabled & is_young & is_dependent)
+        # The protective services definition includes a child under court
+        # supervision (Section 2.4, p.65; CCDF Plan 2.2.2(f), 3.3.1(vi)).
+        is_eligible = person("sc_ccap_eligible_child", period)
+        court_supervision = person("is_under_court_supervision", period.this_year)
+        has_court_child = (
+            spm_unit.any(is_eligible & court_supervision)
+            & p.court_supervision_exempt_in_effect
+        )
 
         # Compute copay tier from income position in the fee scale.
         # Pre-2024-10-01: tiers at fixed SMI ratios (45/55/65/75% mark
@@ -101,7 +110,13 @@ class sc_ccap_copay(Variable):
                 threshold = np.floor(monthly_smi * ratio + 0.5)
                 tier = tier + (monthly_income > threshold).astype(int)
 
-        exempt = protective | is_tanf | below_fpl_threshold | has_disabled_child
+        exempt = (
+            protective
+            | is_tanf
+            | below_fpl_threshold
+            | has_disabled_child
+            | has_court_child
+        )
 
         weekly_copay_per_child = where(
             zero_only_row,
@@ -114,9 +129,19 @@ class sc_ccap_copay(Variable):
         # Non-Head-Start children are only covered when the unit qualifies
         # through the standard or protective pathway (income + activity
         # or protective services).  Head Start-only units pay $0.
-        is_eligible = person("sc_ccap_eligible_child", period)
         is_head_start = person("is_enrolled_in_head_start", period.this_year)
-        in_care = person("childcare_hours_per_week", period) > 0
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
         income_eligible = spm_unit("sc_ccap_income_eligible", period)
         activity_eligible = spm_unit("sc_ccap_activity_eligible", period)
         covers_non_hs = (income_eligible & activity_eligible) | protective

@@ -30,6 +30,16 @@ class wi_shares_monthly_subsidized_hours(Variable):
             p.part_time_weekly_conversion,
         )
         monthly_hours = np.ceil(conversion_hours * p.weeks_per_month)
-        # A child with no hours of care has no authorization.
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
         weekly_hours = person("childcare_hours_per_week", period.this_year)
-        return where(weekly_hours > 0, monthly_hours, 0)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
+        return where(in_care, monthly_hours, 0)

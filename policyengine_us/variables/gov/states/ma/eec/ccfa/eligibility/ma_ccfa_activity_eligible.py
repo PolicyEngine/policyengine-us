@@ -19,8 +19,9 @@ class ma_ccfa_activity_eligible(Variable):
         hours = person("weekly_hours_worked_before_lsr", period.this_year)
         student = person("is_full_time_student", period.this_year)
         disabled = person("is_disabled", period.this_year)
-        # Retirement is a service need only for parents aged 65 or older, so
-        # the age gate is kept alongside the reported retirement status.
+        # Retirement is a service need only for parents aged 65 or older.
+        # is_retired defaults to age 65 or older, so this matches the age gate
+        # unless a caller reports that the parent is not retired.
         retired = (person("age", period.this_year) >= p.work_exempt_age) & person(
             "is_retired", period.this_year
         )

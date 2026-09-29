@@ -2,9 +2,8 @@ import pytest
 from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us.system import system as SYSTEM
 
-
-SYSTEM = CountryTaxBenefitSystem()
 PERIOD = "2026"
 WAGES = 100_000
 

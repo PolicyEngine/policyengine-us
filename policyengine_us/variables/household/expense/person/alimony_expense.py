@@ -7,3 +7,4 @@ class alimony_expense(Variable):
     label = "Alimony expense"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.alimony_income"
