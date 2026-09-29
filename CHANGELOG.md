@@ -1,3 +1,10 @@
+## [2.16.0] - 2026-09-29
+
+### Added
+
+- Add court-supervision child-care routes in Arkansas, California, Colorado, Delaware, DC, Hawaii, Illinois, New Jersey, Nevada, and South Carolina; waive South Carolina copays for court-supervised children and DC income, activity, and copay requirements for court-supervised, protective, and foster children; limit Hawaii's protective route to court-supervised children under 18; and correct California's age rules for ordinary and disabled children.
+
+
 ## [2.15.17] - 2026-09-28
 
 ### Fixed
