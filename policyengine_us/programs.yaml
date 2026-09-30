@@ -868,6 +868,8 @@ programs:
         name: California SSP
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
+        parameter_prefix: gov.states.ca.cdss.state_supplement
+        verified_years: "2025-2026"
       - state: CT
         status: complete
         name: Connecticut SSP
