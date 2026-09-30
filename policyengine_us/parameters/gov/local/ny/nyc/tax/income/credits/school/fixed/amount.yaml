@@ -15,6 +15,8 @@ metadata:
       href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
   breakdown:
     - filing_status
+# IT-201-I Table 1 rounds the statutory $62.50 (§ 606(ggg)(4-a)(B)) to $63:
+# "The statutory credit amounts have been rounded."
 SINGLE:
   2022-01-01: 63
 SEPARATE:

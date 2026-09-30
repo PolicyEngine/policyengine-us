@@ -11,6 +11,7 @@ class nyc_school_tax_credit_rate_reduction_amount_eligible(Variable):
         # NY Tax Law § 606(ggg)(2), (4-b)
         "https://www.nysenate.gov/legislation/laws/TAX/606",
         "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20",
+        "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=21",
     )
 
     def formula(tax_unit, period, parameters):
