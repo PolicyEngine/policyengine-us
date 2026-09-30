@@ -32,26 +32,23 @@ def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
     return sum(monthly_cpi_values) / MONTHS_IN_YEAR
 
 
-def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
-    """Calculate the Oregon Kids' Credit cost-of-living adjustment.
-
-    ORS 315.273(5)(b)-(c): the percentage (if any) by which the monthly
-    averaged unchained U.S. City Average CPI-U for the 12 consecutive months
-    ending August 31 of the prior calendar year exceeds the monthly averaged
-    index for the second quarter of calendar year 2022.
+def get_cpi_u_average_for_12_months_ending_august(
+    parameters: ParameterNode, year: int
+) -> float:
+    """Average the unchained U.S. City Average CPI-U over the 12 months from
+    September of ``year - 1`` through August of ``year``.
 
     The CPI-U series holds monthly observations through the latest BLS
     release, then annual projection points at February instants; a monthly
     refresh that reaches a February replaces that instant's projection with
     the observed value. Windows with observed months average them, carrying
     the last observation flat through any unobserved tail; windows with no
-    observed month read the tax year's annual projection point, whose
+    observed month read the annual projection point for ``year``, whose
     February instant necessarily lies beyond the last observation and so
     can only hold a projection. No branch reads an instant a refresh could
     have turned from projection into observation.
     """
     cpi = parameters.gov.bls.cpi.cpi_u
-    base = sum(cpi(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
     # February instants can hold annual projections, so only non-February
     # instants identify the end of the observed monthly series (one month
     # conservative when observations end exactly on a February).
@@ -60,18 +57,30 @@ def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
         for value in cpi.values_list
         if not value.instant_str.endswith("-02-01")
     )
-    window_start = instant(f"{tax_year - 2}-09-01")
+    window_start = instant(f"{year - 1}-09-01")
     window_months = [
         window_start.offset(month, MONTH) for month in range(MONTHS_IN_YEAR)
     ]
     observed = [month for month in window_months if month <= last_observation]
     if not observed:
-        window = cpi(f"{tax_year - 1}-02-01")
-    else:
-        unobserved_tail = MONTHS_IN_YEAR - len(observed)
-        window = (
-            sum(cpi(month) for month in observed) + cpi(observed[-1]) * unobserved_tail
-        ) / MONTHS_IN_YEAR
+        return cpi(f"{year}-02-01")
+    unobserved_tail = MONTHS_IN_YEAR - len(observed)
+    return (
+        sum(cpi(month) for month in observed) + cpi(observed[-1]) * unobserved_tail
+    ) / MONTHS_IN_YEAR
+
+
+def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
+    """Calculate the Oregon Kids' Credit cost-of-living adjustment.
+
+    ORS 315.273(5)(b)-(c): the percentage (if any) by which the monthly
+    averaged unchained U.S. City Average CPI-U for the 12 consecutive months
+    ending August 31 of the prior calendar year exceeds the monthly averaged
+    index for the second quarter of calendar year 2022.
+    """
+    cpi = parameters.gov.bls.cpi.cpi_u
+    base = sum(cpi(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
+    window = get_cpi_u_average_for_12_months_ending_august(parameters, tax_year - 1)
     return max(window / base - 1, 0)
 
 
@@ -105,6 +114,56 @@ def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
             start=instant(f"{end_year}-01-01"),
             value=parameter(f"{end_year}-01-01"),
         )
+
+
+def get_nyc_income_tax_elimination_credit_cola(
+    parameters: ParameterNode, tax_year: int
+) -> float:
+    """Calculate the NYC income tax elimination credit cost-of-living adjustment.
+
+    Tax Law § 1310(h)(1)(B)(iii): the percentage by which the consumer price
+    index for the calendar year preceding the tax year exceeds the consumer
+    price index for calendar year 2024. Section 1310(h)(3)(A) defines a
+    calendar year's index as the average CPI-U for all urban consumers for
+    the 12 months ending August 31 of that year.
+    """
+    CPI_BASE_YEAR = 2024
+    base = get_cpi_u_average_for_12_months_ending_august(parameters, CPI_BASE_YEAR)
+    window = get_cpi_u_average_for_12_months_ending_august(parameters, tax_year - 1)
+    return max(window / base - 1, 0)
+
+
+def extend_nyc_income_tax_elimination_credit_thresholds(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project the NYC income tax elimination credit income thresholds.
+
+    Tax Law § 1310(h)(1)(B)(iii) multiplies the statutory amounts, which
+    apply to tax year 2025, by one plus the cost-of-living adjustment for
+    each tax year from 2026. Each year is computed from the statutory
+    amounts rather than chained from the prior year. The statute specifies
+    no rounding, so none is applied. Department of Taxation and Finance
+    published values encoded in the YAML take precedence for their own
+    years.
+    """
+    STATUTORY_YEAR = 2025
+    thresholds = parameters.gov.local.ny.nyc.tax.income.credits.income_tax_elimination.income_threshold
+    for scale in thresholds.children.values():
+        for bracket in scale.brackets:
+            amount = bracket.amount
+            base = amount(f"{STATUTORY_YEAR}-01-01")
+            first_projected_year = 1 + max(
+                int(value.instant_str[:4]) for value in amount.values_list
+            )
+            for year in range(first_projected_year, end_year + 1):
+                cola = get_nyc_income_tax_elimination_credit_cola(parameters, year)
+                amount.update(
+                    period=f"year:{year}-01-01:1", value=float(base * (1 + cola))
+                )
+            amount.update(
+                start=instant(f"{end_year}-01-01"),
+                value=amount(f"{end_year}-01-01"),
+            )
 
 
 def extend_wa_millionaires_standard_deduction(
@@ -537,5 +596,11 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # from the statutory base amounts. Must run after the CPI-U extension
     # above so projected windows are available.
     extend_or_ctc_parameters(parameters, end_year=END_YEAR)
+
+    # NYC income tax elimination credit thresholds follow the Tax Law
+    # § 1310(h)(1)(B)(iii) schedule (CPI-U for the 12 months ending August 31
+    # over the 2024 index), computed from the statutory 2025 amounts. Must run
+    # after the CPI-U extension above so projected windows are available.
+    extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=END_YEAR)
 
     return parameters
