@@ -91,8 +91,16 @@
       household:
         members: [person1, person2]
         state_fips: 5  # AR
-  output:  # expected results from patched TAXSIM35 2024-02-09 version
-    ar_income_tax: 4427.88
+  output:
+    # Patched TAXSIM35 (2024-02-09) gives 4,427.88 from the bracket formula at
+    # the exact incomes. Filing separately, each spouse looks up the 2021
+    # Regular Income Tax Table instead:
+    # person1: 77,010 + 5,505 - 2,200 = 80,315, row $80,301-$80,401: $3,943 (p.32)
+    #   (midpoint 80,351 x 5.9% - 797.25 = 3,943.46 -> 3,943)
+    # person2: 20,010 + 5,505 - 2,200 = 23,315, row $23,300-$23,400: $546 (p.29)
+    #   (midpoint 23,350 x 3.4% - 248.17 = 545.73 -> 546)
+    # 3,943 + 546 = 4,489, less 2 x 29 personal credits = 4,431
+    ar_income_tax: 4_431
 
 - name: Tax unit with taxsimid 77552 in e21.its.csv and e21.ots.csv
   # High error margin because of rounding in the tax tables
@@ -196,7 +204,14 @@
         members: [person1, person2, person3]
         state_fips: 5
   output:
-    ar_income_tax: 1_085
+    # Each spouse: 10,068.22 + 28,857.35 x 50% + 4,218.73 = 28,715.63 of
+    # gross income, less the 2,410 standard deduction = 26,305.63. Filing
+    # separately, each looks up the 2024 Regular Income Tax Table row
+    # $26,300-$26,400: $618 (p.31; midpoint 26,349.50 x 3.9% - 409.86 = 617.77).
+    # 2 x 618 = 1,236, less 3 x 29 personal credits and 2 x 30 additional
+    # credits (60 - ceil(505.63 / 100) x 5) = 1,236 - 147 = 1,089. The bracket
+    # formula at the exact incomes gave 2 x 616.06 - 147 = 1,085.12.
+    ar_income_tax: 1_089
 
 - name: 3864-AR.yaml
   absolute_error_margin: 2
@@ -424,19 +439,19 @@
     # 40,000 is above the low income table, so the regular table applies.
     ar_uses_low_income_tax_tables: false
     ar_net_taxable_income_joint: [35_180, 0]
-    # 35,180 x 3.9% - 409.86 = 1,372.02 - 409.86 = 962.16
-    # The model uses the bracket formula. The 2024 tax table band
-    # 35,100-35,200 gives 961 (p.31), or 903 after credits; the gap between
-    # the formula and the table is at most about 2.45 below 100,000.
-    ar_income_tax_before_non_refundable_credits_joint: [962.16, 0]
-    # Separately, person1 alone: (60,000 - 2,410) x 3.9% - 409.86 = 1,836.15.
+    # 2024 Regular Income Tax Table row $35,100-$35,200: $961 (p.31).
+    # Midpoint 35,149.50 x 3.9% - 409.86 = 1,370.83 - 409.86 = 960.97 -> 961
+    # (the bracket formula at the exact income gave 962.16)
+    ar_income_tax_before_non_refundable_credits_joint: [961, 0]
+    # Person2's total income is negative, so the couple must file jointly
+    # (2024 AR1000F instructions, p.12).
     ar_files_separately: false
-    ar_income_tax_before_non_refundable_credits_unit: 962.16
+    ar_income_tax_before_non_refundable_credits_unit: 961
     # Personal credits 2 x 29 = 58; additional credit
     # 120 - ceil((35,180 - 25,800) / 100) x 5 x 2 = 120 - 940 -> 0.
     ar_non_refundable_credits: 58
-    # 962.16 - 58 = 904.16
-    ar_income_tax: 904.16
+    # 961 - 58 = 903
+    ar_income_tax: 903
 
 - name: Married joint couple, spouse loss offsets wages, positive combined income on the low income table
   absolute_error_margin: 0.01
@@ -506,7 +521,8 @@
     ar_uses_low_income_tax_tables: false
     ar_net_taxable_income_joint: [0, 0]
     ar_income_tax_before_non_refundable_credits_joint: [0, 0]
-    # Separately, person1 alone: (20,000 - 2,410) x 3.4% - 281.37 = 316.69.
+    # Person2's total income is negative, so the couple must file jointly
+    # (2024 AR1000F instructions, p.12).
     ar_files_separately: false
     ar_income_tax_before_non_refundable_credits_unit: 0
     ar_income_tax: 0
@@ -539,7 +555,8 @@
     ar_uses_low_income_tax_tables: false
     ar_net_taxable_income_joint: [0, 0]
     ar_income_tax_before_non_refundable_credits_joint: [0, 0]
-    # Separately, person1 alone: (10,000 - 2,410) x 2% - 109.98 = 41.82.
+    # Person2's total income is negative, so the couple must file jointly
+    # (2024 AR1000F instructions, p.12).
     ar_files_separately: false
     ar_income_tax_before_non_refundable_credits_unit: 0
     ar_income_tax: 0
@@ -570,7 +587,8 @@
     ar_low_income_tax_joint: [0, 0]
     ar_net_taxable_income_joint: [0, 0]
     ar_income_tax_before_non_refundable_credits_joint: [0, 0]
-    # Separately, person1 alone: (30,000 - 2,410) x 3.9% - 409.86 = 666.15.
+    # Person2's total income is negative, so the couple must file jointly
+    # (2024 AR1000F instructions, p.12).
     ar_files_separately: false
     ar_income_tax_before_non_refundable_credits_unit: 0
     # Flooring each spouse at zero would tax the 30,000 on its own:
@@ -604,15 +622,16 @@
     ar_taxable_income_joint: [35_180, 0]
     ar_uses_low_income_tax_tables: false
     ar_net_taxable_income_joint: [35_180, 0]
-    # 35,180 x 3.9% - 409.86 = 962.16
-    ar_income_tax_before_non_refundable_credits_joint: [962.16, 0]
-    # Separately, person2 alone: (60,000 - 2,410) x 3.9% - 409.86 = 1,836.15.
+    # 2024 Regular Income Tax Table row $35,100-$35,200: $961 (p.31).
+    ar_income_tax_before_non_refundable_credits_joint: [961, 0]
+    # Person1 (the head) has a negative total income, so the couple must
+    # file jointly (2024 AR1000F instructions, p.12).
     ar_files_separately: false
-    ar_income_tax_before_non_refundable_credits_unit: 962.16
+    ar_income_tax_before_non_refundable_credits_unit: 961
     # Personal credits 2 x 29 = 58; the additional credit phases out to 0.
     ar_non_refundable_credits: 58
-    # 962.16 - 58 = 904.16
-    ar_income_tax: 904.16
+    # 961 - 58 = 903
+    ar_income_tax: 903
 
 - name: Married joint couple in 2021, partnership loss is in the earlier gross income source list
   absolute_error_margin: 0.01

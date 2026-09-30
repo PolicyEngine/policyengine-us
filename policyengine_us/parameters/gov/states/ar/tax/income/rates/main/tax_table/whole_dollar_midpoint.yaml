@@ -1,0 +1,25 @@
+description: Arkansas uses the midpoint of the whole-dollar incomes in each regular income tax table band if this is true, and the midpoint of the band's bounds otherwise.
+# DFA computes each row at the band midpoint and rounds to whole dollars. At
+# the midpoint of the bounds ($14,850 for the $14,800-$14,900 row), some rows
+# land exactly on 50 cents. Through 2021 the table rounds these up (2021:
+# $40,250 x 5.9% - $797.25 = $1,577.50, printed as $1,578). From 2022 it
+# rounds them down (2022: $24,750 x 4.9% - $628.25 = $584.50, printed as $584).
+# That matches evaluating at the midpoint of the whole-dollar incomes the row
+# covers ($24,700 to $24,799: $24,749.50 x 4.9% - $628.25 = $584.48, or $584).
+# With these settings every 2014-2025 row matches the published table.
+values:
+  2014-01-01: false
+  2022-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Arkansas regular income tax table whole-dollar midpoint
+  reference:
+  - title: 2021 Indexed Tax Brackets (the calculations in the table are made at the midpoint of each income level)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2021.pdf#page=1
+  - title: 2021 AR1000F and AR1000NR Instructions, 2021 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=30
+  - title: 2022 AR1000F and AR1000NR Instructions, 2022 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=32
+  - title: 2024 Indexed Tax Brackets (the calculations in the table are made at the midpoint of each income level)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1

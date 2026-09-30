@@ -231,3 +231,207 @@
         state_code: AR
   output:
     ar_files_separately: false
+
+# A married couple must file jointly if either spouse had a total negative
+# income: "IF ONE SPOUSE HAD A TOTAL NEGATIVE INCOME, YOU MUST FILE MARRIED
+# FILING JOINTLY." (2024 AR1000F/AR1000NR instructions, Filing Status 4, p.12:
+# https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=12;
+# same wording in 2025, p.12).
+- name: Separate tax lower, but the spouse's total income is negative, files jointly
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 0
+        ar_income_tax_before_non_refundable_credits_joint: 100
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 50_000
+        ar_gross_income_indiv: 50_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 100
+        ar_income_tax_before_non_refundable_credits_joint: 500
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+        ar_gross_income_indiv: -1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Separate tax 100 < joint tax 600, but person2's total income is -1 < 0.
+    ar_files_separately: false
+
+- name: Spouse partnership loss of $10 forces a joint return that costs more (issue 9680)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_850
+      person2:
+        age: 38
+        partnership_s_corp_income: -10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: [27_850, -10]
+    # Separate path: person1 27,850 - 2,410 = 25,440, 2024 Regular Income Tax
+    # Table row $25,400-$25,500: $584 (p.31); person2 has no taxable income.
+    ar_income_tax_before_non_refundable_credits_indiv: [584, 0]
+    # Separate additional credit: 60 each (25,440 and 0 are below 25,800) = 120,
+    # so the separate path nets 584 - 120 = 464.
+    # Joint path: AGI 27,850 - 10 = 27,840, joint low income table (0-1
+    # dependents) row $27,801-$27,900: $470 (p.29); the joint additional credit
+    # 120 - ceil((27,840 - 25,800) / 100) x 10 phases out to 0, so it nets 470.
+    ar_low_income_tax_joint: [470, 0]
+    # Separate (464) < joint (470), but person2's total income is negative.
+    ar_files_separately: false
+    ar_income_tax_before_non_refundable_credits_unit: 470
+    # 470 - 2 x 29 personal credits = 412
+    ar_non_refundable_credits: 58
+    ar_income_tax: 412
+
+- name: Head partnership loss of $10 also forces a joint return
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        partnership_s_corp_income: -10
+      person2:
+        age: 38
+        employment_income: 27_850
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_gross_income_indiv: [-10, 27_850]
+    ar_income_tax_before_non_refundable_credits_indiv: [0, 584]
+    # Same as above with the spouses swapped: joint 470 - 58 = 412.
+    ar_files_separately: false
+    ar_income_tax: 412
+
+- name: Spouse with zero total income can still file separately (regression)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_850
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Zero is not negative. Separate 584 - 120 = 464 < joint 470 (AGI 27,850,
+    # row $27,801-$27,900), so the couple files separately.
+    ar_files_separately: true
+    ar_income_tax_before_non_refundable_credits_unit: 584
+    # 584 - 58 personal credits - 120 additional credits = 406
+    ar_income_tax: 406
+
+- name: Both spouses with positive income keep the cheaper separate election (regression)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 38
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Separate: each 40,000 - 2,410 = 37,590, row $37,500-$37,600: $1,055 (p.31).
+    ar_income_tax_before_non_refundable_credits_indiv: [1_055, 1_055]
+    # Joint: 80,000 - 4,820 = 75,180, row $75,101-$75,201: $2,521 (p.33).
+    ar_income_tax_before_non_refundable_credits_joint: [2_521, 0]
+    # Separate 2,110 < joint 2,521; neither total income is negative.
+    ar_files_separately: true
+    ar_income_tax_before_non_refundable_credits_unit: 2_110
+    # 2,110 - 58 = 2,052
+    ar_income_tax: 2_052
+
+- name: Spouse partnership loss of $300 files jointly (issue 9680)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_450
+      person2:
+        age: 38
+        partnership_s_corp_income: -300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint AGI 28,450 - 300 = 28,150, joint low income table row
+    # $28,101-$28,200: $501 (p.29). Separately, person1's 26,040 falls in the
+    # regular row $26,000-$26,100: $606 (p.31), less 45 + 60 of additional
+    # credits = 501, a tie; the negative total income requires the joint return.
+    ar_low_income_tax_joint: [501, 0]
+    ar_income_tax_before_non_refundable_credits_indiv: [606, 0]
+    ar_files_separately: false
+    # 501 - 58 = 443
+    ar_income_tax: 443
+
+- name: Spouse capital loss makes total income negative, files jointly
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_850
+      person2:
+        age: 38
+        short_term_capital_gains: -500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # person2's total income is the -500 capital loss.
+    ar_gross_income_indiv: [27_850, -500]
+    ar_files_separately: false
+    # Joint AGI 27,850 - 500 = 27,350, joint low income table row
+    # $27,301-$27,400: $418 (p.29); 418 - 58 = 360.
+    ar_low_income_tax_joint: [418, 0]
+    ar_income_tax: 360

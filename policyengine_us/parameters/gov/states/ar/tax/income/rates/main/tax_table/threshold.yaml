@@ -1,0 +1,41 @@
+description: Arkansas uses the regular income tax table for net taxable income below this amount.
+# Each value is the "But Less Than" bound of the table's last row, where the
+# table's note starts ("For $100,001 and over, your tax is ..."). At and above
+# it, the model applies the bracket formula to the exact income.
+values:
+  2014-01-01: 50_000
+  2016-01-01: 86_001
+  2019-01-01: 87_001
+  2020-01-01: 88_001
+  2021-01-01: 91_001
+  2022-01-01: 94_001
+  2023-01-01: 100_001
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arkansas regular income tax table threshold
+  reference:
+  - title: 2014 AR1000F and AR1000NR Instructions, 2014 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=30
+  - title: 2015 Arkansas Tax Tables, 2015 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxTables_2015.pdf#page=6
+  - title: 2016 AR1000F and AR1000NR Instructions, 2016 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=50
+  - title: 2017 AR1000F and AR1000NR Instructions, 2017 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=50
+  - title: 2018 Arkansas Tax Tables, 2018 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2018_Final_TaxTable_with_Cover_Sheet.pdf#page=8
+  - title: 2019 AR1000F and AR1000NR Instructions, 2019 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2019_AR1000F_and_AR1000NR_Instructions.pdf#page=32
+  - title: 2020 AR1000F and AR1000NR Instructions, 2020 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2020_AR1000F_and_AR1000NR_Instructions.pdf#page=32
+  - title: 2021 AR1000F and AR1000NR Instructions, 2021 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=32
+  - title: 2022 AR1000F and AR1000NR Instructions, 2022 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=35
+  - title: 2023 AR1000F and AR1000NR Instructions, 2023 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_and_AR1000NR_Instructions.pdf#page=35
+  - title: 2024 AR1000F and AR1000NR Instructions, 2024 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=34
+  - title: 2025 AR1000F and AR1000NR Instructions, 2025 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=34

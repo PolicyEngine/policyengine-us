@@ -1,0 +1,41 @@
+description: Arkansas sets the start of each regular income tax table income band this amount above a multiple of the band width.
+# From $75,000 the table's rows run "As Much As $75,001 But Less Than $75,101",
+# so each band starts $1 above a multiple of $100. The row below them spans
+# $74,900 to $75,001, so the $1 offset starts at $75,000. The 2014 and 2015
+# tables end at $50,000, below this row.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Arkansas regular income tax table band offset
+  reference:
+  - title: 2016 AR1000F and AR1000NR Instructions, 2016 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=50
+  - title: 2017 AR1000F and AR1000NR Instructions, 2017 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=50
+  - title: 2018 Arkansas Tax Tables, 2018 Regular Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2018_Final_TaxTable_with_Cover_Sheet.pdf#page=8
+  - title: 2019 AR1000F and AR1000NR Instructions, 2019 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2019_AR1000F_and_AR1000NR_Instructions.pdf#page=31
+  - title: 2020 AR1000F and AR1000NR Instructions, 2020 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2020_AR1000F_and_AR1000NR_Instructions.pdf#page=31
+  - title: 2021 AR1000F and AR1000NR Instructions, 2021 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=31
+  - title: 2022 AR1000F and AR1000NR Instructions, 2022 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=34
+  - title: 2023 AR1000F and AR1000NR Instructions, 2023 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_and_AR1000NR_Instructions.pdf#page=34
+  - title: 2024 AR1000F and AR1000NR Instructions, 2024 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=33
+  - title: 2025 AR1000F and AR1000NR Instructions, 2025 Regular Income Tax Table
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=33
+brackets:
+  - threshold:
+      2014-01-01: 0
+    amount:
+      2014-01-01: 0
+  - threshold:
+      2014-01-01: 75_000
+    amount:
+      2014-01-01: 1
