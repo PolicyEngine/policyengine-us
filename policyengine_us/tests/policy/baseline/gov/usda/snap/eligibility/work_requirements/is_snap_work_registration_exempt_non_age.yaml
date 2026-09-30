@@ -256,7 +256,7 @@
     weeks_unemployed:
       2026: 13
   output:
-    # months = ceil(13 x 12 / 52) = 3; person_id 0 -> Jan, Feb, Mar
+    # months = ceil(13 x 12 / 52) = 3; household position 0 (no person_id input) -> Jan, Feb, Mar
     is_snap_work_registration_exempt_non_age: true
 
 - name: Case 20, UI recipient whose 13-week block starts in February is not exempt in January.

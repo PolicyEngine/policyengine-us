@@ -28,7 +28,7 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # (iii) Subject to and complying with TANF work requirements.
         # TANF enrollment is an existing SPM-unit input; person-level
         # compliance is a documented input the data layer may not yet
-        # populate (PolicyEngine/populace#244). We gate on enrollment
+        # populate (PolicyEngine/populace#248). We gate on enrollment
         # because a person cannot be subject to TANF work requirements
         # without receiving TANF.
         complying_with_tanf_work_requirements = person.spm_unit(
