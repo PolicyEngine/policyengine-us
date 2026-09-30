@@ -1,0 +1,53 @@
+- name: Schedule C net profits and losses count without a second business deduction
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS]
+    age: [40, 40, 40]
+    employment_income: [12_000, 12_000, 12_000]
+    self_employment_income: [6_000, -6_000, -18_000]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+  output:
+    ms_liheap_income: [18_000, 6_000, 0]
+- name: Child support, TANF, and tax refunds are excluded; recurring gifts and interest count
+  period: 2_026
+  input:
+    state_code: MS
+    age: 40
+    employment_income: 10_000
+    child_support_received: 3_000
+    tanf: 3_000
+    salt_refund_income: 1_000
+    financial_assistance: 600
+    interest_income: 400
+    ssi: 0
+    social_security: 0
+  output:
+    ms_liheap_income: 11_000
+- name: Excluded adult income and child unearned income count, while child wages do not
+  period: 2_026
+  input:
+    people:
+      adult:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+        ssi: 0
+        social_security: 0
+      child:
+        age: 15
+        employment_income: 6_000
+        ssi: 2_400
+        social_security: 1_200
+    spm_units:
+      unit:
+        members: [adult, child]
+        heating_expense: 1_000
+    households:
+      home:
+        members: [adult, child]
+        state_code: MS
+  output:
+    ms_liheap_household_size: 1
+    ms_liheap_income: 15_600
+    ms_liheap_eligible: true

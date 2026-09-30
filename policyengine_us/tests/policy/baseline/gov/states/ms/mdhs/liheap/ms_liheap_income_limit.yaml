@@ -1,0 +1,8 @@
+- name: Published FY2026 sixty percent SMI limits for all twenty listed household sizes
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  output:
+    ms_liheap_income_limit: [26_740, 34_968, 43_196, 51_424, 59_651, 67_879, 69_422, 70_965, 72_507, 74_050, 75_593,
+      77_136, 78_678, 80_221, 81_764, 83_306, 84_849, 86_392, 87_935, 89_477]

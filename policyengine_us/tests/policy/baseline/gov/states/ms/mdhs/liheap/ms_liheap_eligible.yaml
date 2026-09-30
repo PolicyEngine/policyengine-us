@@ -1,0 +1,20 @@
+- name: Income at and above the published limit
+  period: 2_026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [26_740, 26_741]
+    heating_expense: [1_000, 1_000]
+  output:
+    ms_liheap_eligible: [true, false]
+- name: Subsidized heat in rent, independent energy responsibility, and adulthood
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS]
+    age: [40, 40, 40, 40, 17]
+    ms_liheap_income: [0, 0, 0, 0, 0]
+    heating_expense: [0, 0, 0, 1_000, 1_000]
+    heat_expense_included_in_rent: [false, true, true, false, false]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ms_liheap_eligible: [false, true, false, true, false]

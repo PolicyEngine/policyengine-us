@@ -1,0 +1,56 @@
+- name: Published one-person income boundaries reduce propane payments
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ms_liheap_income: [3_913, 3_914, 7_825, 7_826, 11_738, 11_739, 15_650, 15_651, 19_563, 19_564, 26_740]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    ms_liheap: [800, 750, 750, 700, 700, 650, 650, 600, 600, 550, 550]
+- name: Main fuel caps exclude ancillary electricity for other heating fuels
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ms_liheap_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, WOOD, COAL, FUEL_OIL, KEROSENE, OTHER, SOLAR, NONE, UNSPECIFIED]
+    heating_expense: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    ms_liheap: [1_500, 700, 800, 400, 400, 400, 400, 400, 0, 0, 0]
+- name: Annual regular heating payment is limited to reported heating bills
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true]
+    ms_liheap_household_size: [1, 1, 1, 1, 1]
+    ms_liheap_income: [0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [0, 100, 1_499, 1_500, 1_501]
+  output:
+    ms_liheap: [0, 100, 1_499, 1_500, 1_500]
+- name: Preserve published size-sixteen propane exception
+  period: 2_026
+  input:
+    state_code: [MS, MS]
+    ms_liheap_eligible: [true, true]
+    ms_liheap_household_size: [16, 16]
+    ms_liheap_income: [73_613, 73_614]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [2_000, 2_000]
+  output:
+    ms_liheap: [700, 350]
+- name: Unpublished income intervals and household sizes have no encoded payment
+  period: 2_026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [11, 11, 11, 15, 15, 15, 10, 18, 20, 21]
+    ms_liheap_income: [17_633, 17_634, 17_664, 68_488, 68_489, 69_489, 72_508, 84_850, 60_076, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY]
+    heating_expense: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    ms_liheap: [1_500, 0, 1_400, 1_300, 0, 1_200, 0, 0, 0, 0]

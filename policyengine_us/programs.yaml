@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, MS
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,13 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: MS
+        status: partial
+        name: Mississippi LIHEAP
+        full_name: Mississippi Low Income Home Energy Assistance Program
+        variable: ms_liheap
+        parameter_prefix: gov.states.ms.mdhs.liheap
+        notes: FY2026 regular heating only. Uses existing inputs and preserves published matrix anomalies. Unpublished income intervals and household sizes, unspecified heat-in-rent charges, propane delivery rules, prior awards, detailed household/income classifications, and administrative checks remain incomplete.
       - state: TX
         status: partial
         name: Texas CEAP

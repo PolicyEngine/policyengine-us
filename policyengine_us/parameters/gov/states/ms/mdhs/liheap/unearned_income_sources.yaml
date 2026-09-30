@@ -1,0 +1,22 @@
+description: Mississippi counts these available regular unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - social_security
+    - ssi
+    - pension_income
+    - retirement_distributions
+    - alimony_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - financial_assistance
+    - dividend_income
+    - interest_income
+    - rental_income
+metadata:
+  unit: list
+  label: Mississippi LIHEAP unearned income sources
+  reference:
+    - title: Mississippi LIHEAP Policy Manual, Rules 6.11 C, D, F and J
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=29,30,32,33
