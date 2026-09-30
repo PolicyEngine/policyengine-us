@@ -1,0 +1,333 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+
+- name: Case 1, fuel oil single-family schedule at 0 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: FUEL_OIL
+  output:
+    ne_liheap: 1_050
+- name: Case 2, fuel oil single-family schedule at 1 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_650
+    ne_liheap_earned_income: 0
+    heating_type: FUEL_OIL
+  output:
+    ne_liheap: 650
+- name: Case 3, fuel oil single-family schedule at 1.3 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_345
+    ne_liheap_earned_income: 0
+    heating_type: FUEL_OIL
+  output:
+    ne_liheap: 350
+- name: Case 4, fuel oil single-family schedule at 1.5 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_475
+    ne_liheap_earned_income: 0
+    heating_type: FUEL_OIL
+  output:
+    ne_liheap: 175
+- name: Case 5, wood single-family schedule at 0 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: WOOD
+  output:
+    ne_liheap: 800
+- name: Case 6, wood single-family schedule at 1 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_650
+    ne_liheap_earned_income: 0
+    heating_type: WOOD
+  output:
+    ne_liheap: 600
+- name: Case 7, wood single-family schedule at 1.3 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_345
+    ne_liheap_earned_income: 0
+    heating_type: WOOD
+  output:
+    ne_liheap: 350
+- name: Case 8, wood single-family schedule at 1.5 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_475
+    ne_liheap_earned_income: 0
+    heating_type: WOOD
+  output:
+    ne_liheap: 175
+- name: Case 9, propane single-family schedule at 0 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: PROPANE
+  output:
+    ne_liheap: 850
+- name: Case 10, propane single-family schedule at 1 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_650
+    ne_liheap_earned_income: 0
+    heating_type: PROPANE
+  output:
+    ne_liheap: 580
+- name: Case 11, propane single-family schedule at 1.3 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_345
+    ne_liheap_earned_income: 0
+    heating_type: PROPANE
+  output:
+    ne_liheap: 330
+- name: Case 12, propane single-family schedule at 1.5 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_475
+    ne_liheap_earned_income: 0
+    heating_type: PROPANE
+  output:
+    ne_liheap: 165
+- name: Case 13, natural gas single-family schedule at 0 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 700
+- name: Case 14, natural gas single-family schedule at 1 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_650
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 550
+- name: Case 15, natural gas single-family schedule at 1.3 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_345
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 400
+- name: Case 16, natural gas single-family schedule at 1.5 FPG.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_475
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 280
+- name: Case 17, countable income of 10955 respects the closed upper tier boundary.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 10_955
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 700
+- name: Case 18, countable income of 10955 respects the closed upper tier boundary.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 10_955.01
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 550
+- name: Case 19, countable income of 15650 respects the closed upper tier boundary.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_650.01
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 400
+- name: Case 20, countable income of 20345 respects the closed upper tier boundary.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_345.01
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 280
+- name: Case 21, countable income of -100 respects the closed upper tier boundary.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: -100
+    ne_liheap_earned_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 700
+- name: Case 22, kerosene fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: KEROSENE
+  output:
+    ne_liheap: 1_050
+- name: Case 23, electricity fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: ELECTRICITY
+  output:
+    ne_liheap: 700
+- name: Case 24, coal fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: COAL
+  output:
+    ne_liheap: 700
+- name: Case 25, other fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: OTHER
+  output:
+    ne_liheap: 0
+- name: Case 26, solar fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: SOLAR
+  output:
+    ne_liheap: 0
+- name: Case 27, unspecified fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: UNSPECIFIED
+  output:
+    ne_liheap: 0
+- name: Case 28, none fuel mapping.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 0
+    ne_liheap_earned_income: 0
+    heating_type: NONE
+  output:
+    ne_liheap: 0
+- name: Case 29, seventh person increases eligibility but not payment bands.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 7
+    ne_liheap_gross_income: 31_000
+    ne_liheap_earned_income: 0
+    heating_type: PROPANE
+  output:
+    ne_liheap: 580
+- name: Case 30, earned disregard lowers the payment tier only.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_eligible: true
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 20_000
+    ne_liheap_earned_income: 20_000
+    heating_type: NATURAL_GAS
+  output:
+    ne_liheap: 400

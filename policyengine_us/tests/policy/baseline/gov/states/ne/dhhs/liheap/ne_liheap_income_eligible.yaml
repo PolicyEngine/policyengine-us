@@ -1,0 +1,41 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+
+- name: Case 1, gross income exactly at the FY2026 one-person limit.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_475
+  output:
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+
+- name: Case 2, earned-income disregard cannot establish income eligibility.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 23_476
+    ne_liheap_earned_income: 23_476
+  output:
+    ne_liheap_income_eligible: false
+
+- name: Case 3, ninth member increases the income limit without monthly rounding.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 9
+    ne_liheap_gross_income: 89_475
+  output:
+    ne_liheap_fpg: 59_650
+    ne_liheap_income_eligible: true
+
+- name: Case 4, ninth member income limit is exceeded.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 9
+    ne_liheap_gross_income: 89_476
+  output:
+    ne_liheap_income_eligible: false

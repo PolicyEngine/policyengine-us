@@ -1,0 +1,182 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+
+- name: Case 1, wages receive the earned disregard only after gross eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: &id001
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id001
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    ne_liheap: 550
+- name: Case 2, unearned income does not receive the earned disregard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: &id002
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id002
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 0
+    ne_liheap_gross_income: 18_000
+    ne_liheap_income_eligible: true
+    ne_liheap: 400
+- name: Case 3, business losses do not offset wages in the documented net-income approximation.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 10_000
+        self_employment_income: -5_000
+    spm_units:
+      spm_unit:
+        members: &id003
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id003
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 10_000
+    ne_liheap_gross_income: 10_000
+    ne_liheap: 700
+- name: Case 4, existing net business income is counted without another business deduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        self_employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: &id004
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id004
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap: 550
+- name: Case 5, student child earnings are excluded until age eighteen.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 17
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        is_in_k12_school: true
+        employment_income: 30_000
+      person2:
+        age: 18
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        is_in_k12_school: true
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: &id005
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id005
+        state_code: NE
+  output:
+    ne_liheap_household_size: 2
+    ne_liheap_earned_income: 10_000
+    ne_liheap_gross_income: 10_000
+    ne_liheap_fpg: 21_150
+    ne_liheap: 700
+- name: Case 6, ineligible immigrant is excluded from size and their income is prorated.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 10_000
+      person2:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+        employment_income: 10_000
+        interest_income: 1_000
+    spm_units:
+      spm_unit:
+        members: &id006
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: *id006
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 15_000
+    ne_liheap_gross_income: 15_500
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    ne_liheap: 550

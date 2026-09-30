@@ -1,0 +1,27 @@
+from policyengine_us.model_api import *
+
+
+class ne_liheap_earned_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    unit = USD
+    label = "Nebraska LIHEAP gross countable earned income"
+    defined_for = StateCode.NE
+    reference = "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7"
+
+    def formula_2026(spm_unit, period, parameters):
+        person = spm_unit.members
+        countable = person("snap_countable_earner", period.first_month)
+        included = person("is_snap_immigration_status_eligible", period.first_month)
+        size = spm_unit("ne_liheap_household_size", period)
+        fraction = size / max_(spm_unit("spm_unit_size", period), 1)
+        share = where(included, 1, spm_unit.project(fraction))
+        # Use existing net self-employment income without another business
+        # expense deduction. Nebraska's tax-return/49%-ledger distinction,
+        # capital gains from business assets, and farm-loss offsets require
+        # additional source information and are not modeled here.
+        earned = max_(person("employment_income", period), 0) + max_(
+            person("self_employment_income", period), 0
+        )
+        return spm_unit.sum(earned * countable * share)

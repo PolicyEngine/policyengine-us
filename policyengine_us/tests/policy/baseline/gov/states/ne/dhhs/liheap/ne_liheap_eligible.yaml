@@ -1,0 +1,40 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+
+- name: Case 1, direct heating bill establishes energy responsibility.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    ne_liheap_eligible: true
+- name: Case 2, heat in rent does not by itself establish economic vulnerability.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heat_expense_included_in_rent: true
+    pre_subsidy_rent: 10_000
+  output:
+    ne_liheap_eligible: false
+- name: Case 3, income failure excludes household with heating expenses.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: false
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    ne_liheap_eligible: false
+- name: Case 4, another state receives no Nebraska benefit.
+  period: 2026
+  input:
+    state_code: KS
+    ne_liheap_income_eligible: true
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    ne_liheap_eligible: false
+    ne_liheap: 0

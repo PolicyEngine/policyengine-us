@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, NE
     state_implementations:
       - state: OR
         status: in_progress
@@ -830,6 +830,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: NE
+        status: partial
+        name: Nebraska LIHEAP
+        full_name: Nebraska Low Income Home Energy Assistance Program
+        variable: ne_liheap
+        parameter_prefix: gov.states.ne.dhhs.liheap
+        verified_start_year: 2026
+        notes: FY2026 regular single-family heating schedule, gross-income eligibility, and earned-income disregard. Uses existing SNAP income sources and immigration-status eligibility with an SPM-unit household approximation; counts existing net self-employment income without another business deduction. Multifamily rates, economic vulnerability for heat included in rent, program disqualifications, detailed immigration conditions, business-record expense alternatives, farm-loss offsets, and discretionary heating supplements are not modeled. Requires a positive heating expense and a supported primary fuel. Calendar 2026 represents the season ending in 2026; earlier years have no verified formula. No cooling, crisis, weatherization, or equipment assistance.
 
   # --- SSA programs ---
   - id: ssi

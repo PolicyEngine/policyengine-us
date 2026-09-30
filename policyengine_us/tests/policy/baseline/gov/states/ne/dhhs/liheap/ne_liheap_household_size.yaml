@@ -1,0 +1,69 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+
+- name: Case 1, mixed households keep Nebraska eligibility and payments separate.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+      person2:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm1:
+        members:
+        - person1
+        tanf: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+      spm2:
+        members:
+        - person2
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm3:
+        members:
+        - person3
+        tanf: 0
+        heating_type: WOOD
+        wood_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: NE
+      household2:
+        members:
+        - person2
+        state_code: NE
+      household3:
+        members:
+        - person3
+        state_code: KS
+  output:
+    ne_liheap_household_size:
+    - 1
+    - 0
+    - 0
+    ne_liheap_eligible:
+    - true
+    - false
+    - false
+    ne_liheap:
+    - 580
+    - 0
+    - 0
