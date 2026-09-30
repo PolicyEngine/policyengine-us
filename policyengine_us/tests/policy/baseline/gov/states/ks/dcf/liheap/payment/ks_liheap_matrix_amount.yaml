@@ -1,5 +1,5 @@
 # Kansas LIEAP benefit matrix lookup (KEESM 13410; KS LIHEAP State Plan FY2026
-# 2.5, #page=8-9). Dimensions: primary fuel table (natural gas p.1,
+# 2.5, #page=8,9). Dimensions: primary fuel table (natural gas p.1,
 # electricity p.2, propane p.3, other p.4 of KS_BenefitMatrix_2026.pdf),
 # one-month income band, utility range tier A-J (no tier on the Other table),
 # dwelling type (House/Modular/Mobile, Duplex, Apt, Trailer/Other) and
@@ -8,6 +8,9 @@
 # KS_BenefitMatrix_2025.pdf values at 100%. Raw cell values: the $130 minimum
 # benefit floor is applied in ks_liheap, not here. Inputs are annual; monthly
 # income = annual / 12. Defaults: tier E, dwelling House/Modular/Mobile.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 1, natural gas, band 1, default tier E and house, size 1.
   period: 2026

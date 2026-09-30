@@ -1,10 +1,13 @@
 # Kansas LIEAP countable gross income (KS LIHEAP State Plan FY2026 sections
-# 1.8-1.9, #page=5-6; KEESM 13320). Counted: wages, self-employment,
+# 1.8-1.9, #page=5,6; KEESM 13320). Counted: wages, self-employment,
 # unemployment insurance, SSA benefits, SSI, retirement/pension, TANF, child
 # support, alimony, rental income, VA benefits and recurring adult interest.
 # Earned income of children under 18 is excluded. Income of other
 # household members counts, including non-qualified noncitizens (KEESM 13330).
 # All amounts are annual (YEAR variable).
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 1, recurring adult interest and dividends are counted.
   period: 2026

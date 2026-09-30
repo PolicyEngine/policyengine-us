@@ -9,7 +9,8 @@ class ks_liheap_income_band(Variable):
     documentation = "Benefit matrix income band (1-4) from one-month gross countable income, taken as one twelfth of annual countable income."
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=1",
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm13200.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13200.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13200.htm",
     )
     defined_for = StateCode.KS
 

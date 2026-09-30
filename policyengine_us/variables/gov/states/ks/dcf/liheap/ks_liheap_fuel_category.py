@@ -18,7 +18,8 @@ class ks_liheap_fuel_category(Variable):
     documentation = "Benefit matrix fuel table derived from the canonical heating_type input: natural gas; electricity (including solar); propane; and other for fuel oil, kerosene, wood, coal, other fuels, no heating and an unspecified fuel."
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=4",
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13400.htm",
     )
     defined_for = StateCode.KS
 

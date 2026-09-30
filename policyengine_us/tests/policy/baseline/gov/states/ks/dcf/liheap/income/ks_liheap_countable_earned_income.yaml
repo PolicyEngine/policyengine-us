@@ -1,9 +1,12 @@
 # Kansas LIEAP countable earned income per person (KS LIHEAP State Plan FY2026
-# 1.8-1.9, #page=6-7): gross wages and self-employment income are counted,
+# 1.8-1.9, #page=6,7): gross wages and self-employment income are counted,
 # except the earned income of a child under 18. KEESM 13320: a member who is
 # or turns 18 in the application month has countable income.
 # Modeling simplification: use existing net business income directly, without
 # applying KEESM 13360's gross-receipts expense deduction a second time.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 1, adult wages are counted in full.
   period: 2026

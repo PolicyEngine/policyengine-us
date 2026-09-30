@@ -11,7 +11,8 @@ class ks_liheap_matrix_amount(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=1",
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/KS_BenefitMatrix_2025.pdf#page=1",
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13400.htm",
     )
     defined_for = StateCode.KS
 

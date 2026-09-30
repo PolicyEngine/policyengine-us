@@ -8,7 +8,8 @@ class ks_liheap_eligible(Variable):
     label = "Eligible for Kansas LIEAP"
     documentation = "Kansas household that is income eligible, contains at least one citizen or qualified noncitizen, and meets the heating energy vulnerability requirement."
     reference = (
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm13300.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13300.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13300.htm",
         "https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=8",
     )
     defined_for = StateCode.KS

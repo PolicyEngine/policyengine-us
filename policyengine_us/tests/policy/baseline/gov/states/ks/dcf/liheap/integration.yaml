@@ -1,7 +1,7 @@
 # Kansas LIEAP end-to-end integration tests.
 # Sources: KEESM 13100-13400 (eligibility, household, citizenship, energy
 # vulnerability, benefit levels); KS LIHEAP State Plan FY2026 (income sources
-# 1.8-1.9 #page=5-6, income verification 1.4 #page=5, 150% FPG 2.1 and
+# 1.8-1.9 #page=5,6, income verification 1.4 #page=5, 150% FPG 2.1 and
 # subsidized housing 2.3 #page=8, $130 minimum 2.6 #page=9);
 # KS_BenefitMatrix_2026.pdf (FY2026 season, "Benefit Adjustment @ 80%" table);
 # KS_BenefitMatrix_2025.pdf (FY2025 season, 100%).
@@ -10,6 +10,9 @@
 # 2025: 22,590 (1) / 46,800 (4).
 # Monthly income band = annual countable income / 12:
 # 1 = 0-899, 2 = 900-1,199, 3 = 1,200-1,699, 4 = 1,700+.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 1, single adult renting an apartment with natural gas heat.
   period: 2026

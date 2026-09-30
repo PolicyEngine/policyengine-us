@@ -11,7 +11,8 @@ class ks_liheap(Variable):
     defined_for = "ks_liheap_eligible"
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=9",
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13400.htm",
+        "https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13400.htm",
     )
 
     def formula(spm_unit, period, parameters):

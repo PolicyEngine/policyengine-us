@@ -1,8 +1,11 @@
 # Kansas LIEAP primary heating fuel category (KEESM 13410; KS LIHEAP State
-# Plan FY2026 2.5, #page=8-9; KS_BenefitMatrix_2026.pdf pages 1-4: Natural Gas,
+# Plan FY2026 2.5, #page=8,9; KS_BenefitMatrix_2026.pdf pages 1-4: Natural Gas,
 # Electricity, Propane, Other). Mapping from the canonical heating_type input:
 # NATURAL_GAS -> natural gas; ELECTRICITY, SOLAR -> electricity; PROPANE ->
 # propane; FUEL_OIL, KEROSENE, WOOD, COAL, OTHER, UNSPECIFIED -> other.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 1, natural gas maps to the natural gas table.
   period: 2026

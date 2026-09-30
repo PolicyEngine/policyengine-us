@@ -4,6 +4,9 @@
 # as a floor (KS LIHEAP State Plan FY2026 2.6, #page=9). The FY2025 season
 # minimum is $100 (KS LIHEAP State Plan FY2025 2.6, #page=9). Zero when
 # ineligible.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
 - name: Case 4, other fuel trailer cell of 128 for a large family is raised to 130.
   period: 2026
@@ -142,8 +145,10 @@
     # minimum, KS LIHEAP State Plan FY2025 2.6, #page=9 gives $100).
     ks_liheap: 112
 
-# Published FY2026 adjusted matrix cells (pages 1-4) and KEESM 13340/13362.
-# Seven SPM units evaluate mixed inputs and a non-Kansas mask together.
+# Case 15 evaluates seven SPM units in one simulation, including a Missouri
+# unit that the Kansas mask must zero: FY2026 adjusted matrix cells
+# (KS_BenefitMatrix_2026.pdf pages 1-4), the income limit (KEESM 13362) and
+# the energy-vulnerability gate (KEESM 13340).
 - name: Case 15, mixed households evaluate Kansas LIEAP in one vectorized simulation.
   period: 2026
   absolute_error_margin: 0.01
