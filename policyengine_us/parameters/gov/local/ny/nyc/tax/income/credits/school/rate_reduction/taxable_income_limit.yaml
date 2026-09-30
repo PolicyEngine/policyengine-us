@@ -1,11 +1,9 @@
-description: NYC provides a School Tax Credit reduction amount based on filing status.
+description: New York limits the New York City school tax credit rate reduction amount to filers with city taxable income of up to this amount.
 metadata:
-  type: marginal_rate
-  threshold_unit: currency-USD
-  rate_unit: /1
-  label: NYC School Tax Credit Reduction Amount (Single)
+  unit: currency-USD
+  label: NYC School Tax Credit Rate Reduction Amount City Taxable Income Limit
   reference:
-    - title: NY Tax Law § 606(ggg)(4-b)(C)
+    - title: NY Tax Law § 606(ggg)(4-b)(A)-(C)
       href: https://www.nysenate.gov/legislation/laws/TAX/606
     - title: Instructions for Form IT-201, 2022, Line 69a
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
@@ -15,12 +13,5 @@ metadata:
       href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=21
     - title: Instructions for Form IT-201, 2025, Line 69a
       href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=21
-brackets:
-  - rate:
-      2022-01-01: 0.00171
-    threshold:
-      2022-01-01: 0
-  - rate:
-      2022-01-01: 0.00228
-    threshold:
-      2022-01-01: 12_000
+values:
+  2022-01-01: 500_000

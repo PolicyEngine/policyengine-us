@@ -1,0 +1,64 @@
+# Income for the NYC school tax credit is federal adjusted gross income minus
+# IRA distributions included in it (NY Tax Law § 606(ggg)(2); RPTL
+# § 425(4)(b)(ii); IT-201 line 19 minus line 9).
+# https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+
+- name: Income equals federal AGI without IRA distributions.
+  period: 2025
+  input:
+    in_nyc: true
+    adjusted_gross_income: 300_000
+  output:
+    nyc_school_credit_income: 300_000
+
+- name: IRA and SEP distributions of the head and spouse are subtracted, but not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        taxable_ira_distributions: 30_000
+        taxable_sep_distributions: 10_000
+      spouse:
+        taxable_ira_distributions: 20_000
+      child:
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [head, spouse, child]
+        in_nyc: true
+  output:
+    # 600,000 - (30,000 + 10,000 + 20,000) = 540,000. Federal gross income
+    # excludes the dependent's distribution, so it is not subtracted.
+    nyc_school_credit_income: 540_000
+
+- name: 401(k) distributions are not IRA distributions and stay in income.
+  period: 2025
+  input:
+    people:
+      head:
+        taxable_401k_distributions: 50_000
+        taxable_ira_distributions: 25_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 275_000
+    households:
+      household:
+        members: [head]
+        in_nyc: true
+  output:
+    # 275,000 - 25,000 = 250,000.
+    nyc_school_credit_income: 250_000
+
+- name: Income is zero outside NYC.
+  period: 2025
+  input:
+    in_nyc: false
+    adjusted_gross_income: 300_000
+  output:
+    nyc_school_credit_income: 0
