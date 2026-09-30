@@ -133,9 +133,10 @@ nine that only the good-faith exemption covers. The same approval supplies
 the retained pre-HR1 exceptions in the `good_faith_exemption` parameters
 (for example, the 56-to-64 age band).
 
-Limitation: no FNS approval letter states the good-faith exemption's
-geographic scope. The nine marked entries follow the Alaska Division of
-Public Assistance FAQ (all areas except Anchorage), although FNS Q&A #1
+Limitation: FNS has posted no approval document for Alaska's good-faith
+exemption, so the geographic scope rests on the Alaska Division of Public
+Assistance FAQ. The nine marked entries follow that FAQ (all areas except
+Anchorage), although FNS Q&A #1
 (June 11, 2026, question 17) describes (o)(7) exemptions as applying to
 individuals rather than to areas. If FNS terminates the exemption early
 (7 U.S.C. 2015(o)(7)(D)(ii)), remove the nine marked entries from that

@@ -4,8 +4,10 @@
 # pre-HR1 ABAWD exceptions (see the good_faith_exemption parameters and
 # meets_snap_abawd_work_requirements) on top of the post-HR1 exception set,
 # while HR1's new Alaska Native/Indian exception remains in effect. This
-# toggle is TRUE only during that window; the geographic area waiver for
-# the 29 non-Anchorage boroughs is carried separately by waived_counties.
+# toggle is TRUE only during that window; the waived geography for the 29
+# non-Anchorage boroughs and census areas (20 under the FNS area waiver,
+# nine under the good-faith exemption only) is carried separately by
+# waived_counties.
 description: Alaska temporarily retains the approved pre-HR1 Able-Bodied Adult Without Dependents exceptions under its Supplemental Nutrition Assistance Program good-faith-effort exemption when this is true.
 
 values:

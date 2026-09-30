@@ -4,8 +4,8 @@
 # (FIPS 02020). From 2025-11-01 through 2026-10-31, the FY2026 waiver (20
 # boroughs and census areas) and the 7 U.S.C. 2015(o)(7) good-faith
 # exemption (every area except Anchorage) together keep the same 29 areas
-# waived. No FNS approval letter states the good-faith exemption's
-# geographic scope; the list follows the Alaska Division of Public
+# waived. FNS has posted no approval document for Alaska's good-faith
+# exemption, so the geographic scope rests on the Alaska Division of Public
 # Assistance FAQ (all areas except Anchorage).
 # From 2025-11-01 through 2026-10-31, FNS waived the time limit in seven
 # California counties (CDSS ACL 25-79 and ACL 26-15).
@@ -31,7 +31,7 @@
 # list ends), New Jersey (Cape May, 2026-02-01 through 2027-01-31), and
 # Nevada (Mineral, 2026-02-01 through 2027-01-31).
 
-- name: Case 1, post-HR1 AK resident of waived borough (Fairbanks North Star) meets ABAWD requirements via area waiver.
+- name: Case 1, post-HR1 AK resident of Fairbanks North Star Borough, listed only through the good-faith exemption and not the FY2026 area waiver, meets ABAWD requirements.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -204,7 +204,7 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-- name: Case 12, NV resident (2026-02) is no longer exempt after the statewide waiver expires on 2026-01-31.
+- name: Case 12, NV resident without county geography (2026-02) is not exempt after the statewide waiver expires on 2026-01-31 because the Carson City fallback is outside the FY2026 Mineral County waiver.
   period: 2026-02
   input:
     age:
@@ -444,11 +444,12 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-# Alaska county block split (2025-11-01 good faith exemption waiver under
-# P.L. 119-21 section 10102): the waived-borough list continues after the
-# 2025-11-01 renewal, so Fairbanks remains waived.
+# Alaska county block split at 2025-11-01, when the FY2025 area waiver ends
+# and the FY2026 area waiver (20 areas) and the 7 U.S.C. 2015(o)(7)
+# good-faith exemption begin. Fairbanks is not among the 20 FNS-waived
+# areas; it remains listed through the good-faith exemption only.
 
-- name: Case 26, AK resident of waived Fairbanks North Star Borough (2025-11, after the good faith exemption waiver renewal) is exempt via the area waiver.
+- name: Case 26, AK resident of Fairbanks North Star Borough (2025-11, after the FY2025 area waiver ends) is exempt via the good-faith exemption, not the FY2026 area waiver.
   period: 2025-11
   input:
     age:
@@ -1161,12 +1162,14 @@
 
 # Modeling start boundaries. Months before 2024-11 are incomplete: waivers
 # that ended before 2024-11-01 are not modeled, and earlier waivers still
-# running on 2024-11-01 are keyed at that date, while approvals that took
-# effect from mid-2024 on keep their implementation dates (for example,
+# running on 2024-11-01 are keyed at that date, while county approvals that
+# took effect from mid-2024 on keep their implementation dates (for example,
 # Delaware's FY2025 county waiver, from 2024-10-01). Delaware's FY2024
 # statewide waiver (through 2024-09-30) is therefore absent, and the New
 # Mexico and New York FY2024 statewide waivers read as not waived before
-# 2024-11-01.
+# 2024-11-01. The implementation-date rule covers county lists only:
+# Nevada's statewide waiver, in effect from 2024-07-01, is keyed at
+# 2024-11-01 in waived_states.
 
 - name: Case 73, DE resident of Kent County is not waived in 2024-09 because Delaware's FY2024 statewide waiver is not modeled, and is waived from the FY2025 county waiver's 2024-10-01 start.
   period: 2024
