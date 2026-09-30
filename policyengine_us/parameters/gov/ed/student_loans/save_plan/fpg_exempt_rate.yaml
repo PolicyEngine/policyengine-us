@@ -1,0 +1,25 @@
+description: The Department of Education exempts income up to this multiple of the federal poverty guideline from discretionary income under the Saving on a Valuable Education plan.
+# The Revised Pay As You Earn (REPAYE) plan exempted 150 percent. The 2023 rule
+# renamed it the Saving on a Valuable Education (SAVE) plan and raised the
+# exemption to 225 percent, which the Department implemented early on July 30,
+# 2023 (88 FR 43821). Courts have blocked the SAVE plan; this parameter records
+# the codified rule for counterfactual analysis.
+values:
+  2016-07-01: 1.5
+  2023-07-30: 2.25
+
+metadata:
+  unit: /1
+  period: year
+  label: SAVE plan poverty guideline exemption rate
+  reference:
+    - title: 34 CFR 685.209(b)(4)(i), (f)(1)(i)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(1)(i)
+    - title: 91 FR 23890, 34 CFR 685.209(f)(1)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=123
+    - title: 88 FR 43821, early implementation of the 225 percent exemption
+      href: https://www.govinfo.gov/content/pkg/FR-2023-07-10/pdf/2023-13112.pdf#page=2
+    - title: 88 FR 43901, 34 CFR 685.209(f)(1)(i) (2023 SAVE plan rule)
+      href: https://www.govinfo.gov/content/pkg/FR-2023-07-10/pdf/2023-13112.pdf#page=82
+    - title: 80 FR 67239, 34 CFR 685.209(c)(2)(i) (2015 REPAYE plan rule)
+      href: https://www.govinfo.gov/content/pkg/FR-2015-10-30/pdf/2015-27143.pdf#page=36

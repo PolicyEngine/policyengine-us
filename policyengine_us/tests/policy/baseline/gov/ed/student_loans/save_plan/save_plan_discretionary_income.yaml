@@ -1,0 +1,61 @@
+- name: Case 1, AGI above 225 percent of the guideline, per month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 40,000 - 2.25 x 15,960 = 4,090 per year; 4,090 / 12 = 340.83.
+    save_plan_discretionary_income: 340.83
+
+- name: Case 2, AGI exactly 225 percent of the guideline gives zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 35_910
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2.25 x 15,960 = 35,910 (685.209(f)(1)(i): "less than or equal to").
+    save_plan_discretionary_income: 0
+
+- name: Case 3, the exemption rose from 150 to 225 percent on July 30, 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2023 guideline 14,580. Through July (parameters read on the first of
+    # the month): 40,000 - 1.5 x 14,580 = 18,130; / 12 = 1,510.83.
+    # From August: 40,000 - 2.25 x 14,580 = 7,195; / 12 = 599.58.
+    save_plan_discretionary_income:
+      2023-06: 1_510.83
+      2023-07: 1_510.83
+      2023-08: 599.58
+      2023-12: 599.58

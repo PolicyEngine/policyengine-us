@@ -1,0 +1,132 @@
+# 2026 HHS poverty guidelines: 48 states 15,960 + 5,680 per additional person;
+# Alaska 19,950 + 7,100; Hawaii 18,360 + 6,530 (34 CFR 685.209(b)(14)).
+
+- name: Case 1, single filer in the 48 contiguous states.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    income_driven_repayment_poverty_guideline: 15_960
+
+- name: Case 2, a family of three uses the three-person guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 15,960 + 2 x 5,680 = 27,320.
+    income_driven_repayment_poverty_guideline: 27_320
+
+- name: Case 3, an Alaska resident uses the Alaska guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    income_driven_repayment_poverty_guideline: 19_950
+
+- name: Case 4, a Hawaii couple uses the Hawaii two-person guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 18,360 + 6,530 = 24,890.
+    income_driven_repayment_poverty_guideline: 24_890
+
+- name: Case 5, a Puerto Rico resident uses the 48 contiguous states' guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    # Puerto Rico is not a State in the HHS guidelines, so (b)(14) points to
+    # the 48 contiguous states' guideline.
+    income_driven_repayment_poverty_guideline: 15_960
+
+- name: Case 6, households in four places in one simulation.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 30
+      person4:
+        age: 30
+      person5:
+        age: 4
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4, person5]
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+      household2:
+        members: [person2]
+        state_code: HI
+      household3:
+        members: [person3]
+        state_code: PR
+      household4:
+        members: [person4, person5]
+        state_code: TX
+  output:
+    # Alaska 19,950; Hawaii 18,360; Puerto Rico 15,960; Texas 15,960 + 5,680.
+    income_driven_repayment_poverty_guideline: [19_950, 18_360, 15_960, 21_640]

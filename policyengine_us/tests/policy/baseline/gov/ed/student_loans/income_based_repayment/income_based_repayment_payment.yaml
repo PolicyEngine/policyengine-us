@@ -1,0 +1,318 @@
+# Monthly payment under 20 U.S.C. 1098e and 34 CFR 685.209(f)(2)-(3), (g)(1):
+#   discretionary income = max(AGI - 1.5 x poverty guideline, 0)
+#   payment = 15% (new borrowers 10%) x discretionary income / 12
+#   x own share of the couple's eligible balance (joint filers)
+#   capped at the 10-year standard payment; under 5 -> 0; 5 to under 10 -> 10.
+# 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
+# Standard payment on 30,000 at 6 percent: 333.06.
+
+- name: Case 1, single filer who is not a new borrower pays 15 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 15% x (40,000 - 23,940) = 2,409 / 12 = 200.75; below the 333.06 cap.
+    income_based_repayment_payment: 200.75
+
+- name: Case 2, a new borrower pays 10 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        is_income_based_repayment_new_borrower: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 10% x 16,060 = 1,606 / 12 = 133.83.
+    income_based_repayment_payment: 133.83
+
+- name: Case 3, the standard payment caps a high earner with a small balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 15% x 76,060 / 12 = 950.75 > 10,000 x 0.005 / (1 - 1.005 ^ -120) = 111.02.
+    income_based_repayment_payment: 111.02
+
+- name: Case 4, income below 150 percent of the guideline pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 20,000 < 23,940. The Repayment Assistance Plan would charge 16.67.
+    income_based_repayment_payment: 0
+
+- name: Case 5, a payment under 5 dollars becomes zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 15% x 260 / 12 = 3.25 < 5 -> 0 (685.209(g)(1)(iii)(A)).
+    income_based_repayment_payment: 0
+
+- name: Case 6, a payment from 5 to under 10 dollars becomes 10 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_500
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 15% x 560 / 12 = 7.00 -> 10 (685.209(g)(1)(iii)(B)).
+    income_based_repayment_payment: 10
+
+- name: Case 7, head of household with two children uses a family of three.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 1.5 x 27,320 = 40,980; 15% x 14,020 / 12 = 175.25.
+    income_based_repayment_payment: [175.25, 0, 0]
+
+- name: Case 8, joint filers who both borrowed split the payment by balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 60_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 1.5 x 21,640 = 32,460; 15% x 47,540 / 12 = 594.25.
+    # Shares 75% and 25%: 445.69 and 148.56, below the caps of 666.12 and
+    # 222.04.
+    income_based_repayment_payment: [445.69, 148.56]
+
+- name: Case 9, married filing separately excludes the spouse's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 80_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Own AGI and a family of one (1098e(d)): 200.75, as in Case 1.
+    income_based_repayment_payment: [200.75, 0]
+
+- name: Case 10, an Alaska resident uses the Alaska guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 1.5 x 19,950 = 29,925; 15% x 10,075 / 12 = 125.94.
+    income_based_repayment_payment: 125.94
+
+- name: Case 11, a Hawaii resident uses the Hawaii guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 1.5 x 18,360 = 27,540; 15% x 12,460 / 12 = 155.75.
+    income_based_repayment_payment: 155.75
+
+- name: Case 12, a balance below the payment caps the payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # The standard payment on a 30 dollar balance is 30, which caps 200.75.
+    income_based_repayment_payment: 30
+
+- name: Case 13, a tax dependent with loans owes nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    income_based_repayment_payment: [0, 0]
