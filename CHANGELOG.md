@@ -1,3 +1,10 @@
+## [2.18.2] - 2026-09-30
+
+### Fixed
+
+- Replace dead New York tax department reference links (2023 printable IT-201, IT-196, and IT-213 instruction PDFs, IT-558 instructions, and retired inflation refund and child credit payment pages) with the 2023 HTML instructions or archived copies, and add an offline check against known-dead reference URLs.
+
+
 ## [2.18.1] - 2026-09-30
 
 ### Fixed
