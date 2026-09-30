@@ -1,0 +1,38 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Regular subsidy can exceed the bill and applies to heat included in rent
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY, KY, IN]
+    age: [35, 35, 35, 35, 35, 35]
+    employment_income: [0, 0, 0, 30_000, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [10, 0, 0, 1_000, 1_000, 1_000]
+    heat_expense_included_in_rent: [false, true, false, false, false, false]
+    is_citizen_or_legal_immigrant: [true, true, true, true, false, true]
+    hud_utility_allowance: [0, 0, 0, 0, 0, 0]
+  output:
+    ky_liheap_eligible: [true, true, false, false, false, false]
+    ky_liheap: [134, 134, 0, 0, 0, 0]
+- name: Existing public housing and utility allowance inputs select reduced schedule
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY]
+    ky_liheap_income: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+    is_in_public_housing: [true, false, false]
+    receives_housing_assistance: [false, true, false]
+    hud_utility_allowance: [0, 0, 100]
+  output:
+    ky_liheap: [26, 26, 26]
+- name: Earlier years have no encoded payment schedule
+  period: 2_022
+  input:
+    state_code: KY
+    heating_type: ELECTRICITY
+    heating_expense: 1_000
+  output:
+    ky_liheap: 0

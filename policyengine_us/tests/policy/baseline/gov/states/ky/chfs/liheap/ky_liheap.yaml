@@ -1,0 +1,71 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Published fuel amounts for one-person households
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1, 1]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, COAL, WOOD, FUEL_OIL]
+    ky_liheap_income: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    receives_housing_assistance: [false, false, false, false, false, false]
+    hud_utility_allowance: [0, 0, 0, 0, 0, 0]
+  output:
+    ky_liheap: [184, 134, 167, 117, 100, 150]
+- name: Two-person coal exception and the five-person points cap
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [2, 4, 5, 6, 7, 8]
+    heating_type: [COAL, COAL, COAL, COAL, COAL, COAL]
+    ky_liheap_income: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    receives_housing_assistance: [false, false, false, false, false, false]
+    hud_utility_allowance: [0, 0, 0, 0, 0, 0]
+  output:
+    ky_liheap: [117, 167, 184, 184, 184, 184]
+- name: Subsidized matrix increases across income bands
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ky_liheap_income: [0.0, 11_748.12, 15_660.12, 19_572.12]
+    receives_housing_assistance: [true, true, true, true]
+    hud_utility_allowance: [0, 0, 0, 0]
+  output:
+    ky_liheap: [41, 45, 51, 56]
+- name: Unsubsidized matrix decreases across income bands
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ky_liheap_income: [0.0, 11_748.12, 15_660.12, 19_572.12]
+    receives_housing_assistance: [false, false, false, false]
+    hud_utility_allowance: [0, 0, 0, 0]
+  output:
+    ky_liheap: [184, 167, 150, 134]
+- name: Closed upper income bands use rounded monthly boundaries
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    hud_utility_allowance: [0, 0, 0, 0, 0, 0]
+    ky_liheap_income: [11_748, 11_748.12, 15_660, 15_660.12, 19_572, 19_572.12]
+  output:
+    ky_liheap: [184, 167, 167, 150, 150, 134]
+- name: Kerosene matches oil; unspecified and unsupported fuels have no schedule
+  period: 2_026
+  input:
+    state_code: [KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1]
+    ky_liheap_income: [0, 0, 0, 0, 0]
+    hud_utility_allowance: [0, 0, 0, 0, 0]
+    heating_type: [KEROSENE, OTHER, SOLAR, NONE, UNSPECIFIED]
+  output:
+    ky_liheap: [150, 0, 0, 0, 0]

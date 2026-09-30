@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, KY
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,13 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: KY
+        status: partial
+        name: Kentucky LIHEAP
+        full_name: Kentucky Low Income Home Energy Assistance Program
+        variable: ky_liheap
+        parameter_prefix: gov.states.ky.chfs.liheap
+        notes: Regular heating only, FY2026 coverage. Uses the published regular benefit worksheet despite its stale title and anomalous cells. Annual income and SPM units approximate application-month energy households. Detailed income exclusions, lump sums, mixed-immigration adjustments, and administrative eligibility remain incomplete; no new inputs are added.
       - state: TX
         status: partial
         name: Texas CEAP

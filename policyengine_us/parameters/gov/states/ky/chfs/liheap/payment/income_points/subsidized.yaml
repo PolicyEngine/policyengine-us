@@ -1,0 +1,26 @@
+description: Kentucky assigns these income points for heating assistance to households in subsidized housing, by monthly income band, under the Low Income Home Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 4
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  label: Kentucky LIHEAP subsidized housing income points
+  reference:
+    - title: Kentucky FY2026 benefit matrix, rev benefit income range worksheet
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
