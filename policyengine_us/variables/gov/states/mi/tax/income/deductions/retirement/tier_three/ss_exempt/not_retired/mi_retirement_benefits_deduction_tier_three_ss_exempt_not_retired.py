@@ -13,6 +13,9 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/4884.pdf",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/Form-4884-Section-C-worksheet.pdf",
+        # 2025 MI-1040 booklet: Form 4884 line 18 instructions (page 22) and Worksheet 3.2 (page 24)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=22",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=24",
     )
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
@@ -58,8 +61,11 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
 
         # If a filer is recieving military retirement pay, the calculation includes the smaller of
         # the tier one or tier three deduction amount
+        # Worksheet 3.2 counts only military retirement pay on the filer's Schedule 1, line 11,
+        # which excludes a dependent's pay (not in the filer's AGI).
         military_retirement_pay_received = (
-            tax_unit.sum(person("military_retirement_pay", period)) > 0
+            tax_unit.sum(person("military_retirement_pay", period) * is_head_or_spouse)
+            > 0
         )
         # Line 8
         tier_one_amount = tax_unit(

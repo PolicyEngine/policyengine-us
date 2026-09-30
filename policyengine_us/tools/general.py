@@ -15,6 +15,24 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
     )
 
 
+def tax_unit_non_dep_add(tax_unit, period, variables):
+    """Like add(tax_unit, period, variables), but person-level variables count
+    only the head and spouse.
+
+    irs_gross_income excludes each tax-unit dependent's income, so that income
+    never enters the tax unit's federal AGI; the dependent reports it on their
+    own return. Subtractions from federal AGI therefore must not count a
+    dependent's amounts either. Tax-unit-level variables are added as-is.
+    """
+    total = np.zeros(tax_unit.count)
+    for variable in variables:
+        if tax_unit.entity.get_variable(variable).entity.is_person:
+            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
+        else:
+            total = total + add(tax_unit, period, [variable])
+    return total
+
+
 def sum_contained_tax_units(var, population, period):
     tax_unit = population.members.tax_unit.reference_entity
     values = tax_unit(var, period)
