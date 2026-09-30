@@ -37,8 +37,10 @@ class nyc_income_tax_elimination_credit_eligible(Variable):
         claims_ptet_credit = tax_unit(
             "ny_pass_through_entity_tax_credit_claimed", period
         )
+        # § 1310(h)(1): taxable years beginning on or after January 1, 2025.
         return (
-            has_dependent
+            p.in_effect
+            & has_dependent
             & income_eligible
             & investment_income_eligible
             & ~claims_ptet_credit
