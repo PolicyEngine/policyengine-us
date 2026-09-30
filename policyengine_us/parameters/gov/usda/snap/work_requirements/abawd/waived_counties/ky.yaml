@@ -2,6 +2,111 @@ description: Counties in Kentucky with an approved USDA FNS waiver of the SNAP A
 
 values:
   2018-01-01: []
+  # FY2024 waiver: 98 counties, 2023-12-01 through 2024-11-30. Modeled from
+  # 2024-11-01, the waiver parameters' modeling start date (as
+  # waived_states does for the DC, NY, and NM FY2024 waivers).
+  2024-11-01:
+    - ADAIR_COUNTY_KY # FIPS 21001
+    - ALLEN_COUNTY_KY # FIPS 21003
+    - BALLARD_COUNTY_KY # FIPS 21007
+    - BARREN_COUNTY_KY # FIPS 21009
+    - BATH_COUNTY_KY # FIPS 21011
+    - BELL_COUNTY_KY # FIPS 21013
+    - BOURBON_COUNTY_KY # FIPS 21017
+    - BOYD_COUNTY_KY # FIPS 21019
+    - BOYLE_COUNTY_KY # FIPS 21021
+    - BRACKEN_COUNTY_KY # FIPS 21023
+    - BREATHITT_COUNTY_KY # FIPS 21025
+    - BRECKINRIDGE_COUNTY_KY # FIPS 21027
+    - BUTLER_COUNTY_KY # FIPS 21031
+    - CALDWELL_COUNTY_KY # FIPS 21033
+    - CALLOWAY_COUNTY_KY # FIPS 21035
+    - CARLISLE_COUNTY_KY # FIPS 21039
+    - CARTER_COUNTY_KY # FIPS 21043
+    - CASEY_COUNTY_KY # FIPS 21045
+    - CHRISTIAN_COUNTY_KY # FIPS 21047
+    - CLARK_COUNTY_KY # FIPS 21049
+    - CLAY_COUNTY_KY # FIPS 21051
+    - CLINTON_COUNTY_KY # FIPS 21053
+    - CRITTENDEN_COUNTY_KY # FIPS 21055
+    - CUMBERLAND_COUNTY_KY # FIPS 21057
+    - DAVIESS_COUNTY_KY # FIPS 21059
+    - EDMONSON_COUNTY_KY # FIPS 21061
+    - ELLIOTT_COUNTY_KY # FIPS 21063
+    - ESTILL_COUNTY_KY # FIPS 21065
+    - FLEMING_COUNTY_KY # FIPS 21069
+    - FLOYD_COUNTY_KY # FIPS 21071
+    - FULTON_COUNTY_KY # FIPS 21075
+    - GARRARD_COUNTY_KY # FIPS 21079
+    - GRANT_COUNTY_KY # FIPS 21081
+    - GRAVES_COUNTY_KY # FIPS 21083
+    - GRAYSON_COUNTY_KY # FIPS 21085
+    - GREEN_COUNTY_KY # FIPS 21087
+    - GREENUP_COUNTY_KY # FIPS 21089
+    - HANCOCK_COUNTY_KY # FIPS 21091
+    - HARDIN_COUNTY_KY # FIPS 21093
+    - HARLAN_COUNTY_KY # FIPS 21095
+    - HARRISON_COUNTY_KY # FIPS 21097
+    - HART_COUNTY_KY # FIPS 21099
+    - HENDERSON_COUNTY_KY # FIPS 21101
+    - HICKMAN_COUNTY_KY # FIPS 21105
+    - HOPKINS_COUNTY_KY # FIPS 21107
+    - JACKSON_COUNTY_KY # FIPS 21109
+    - JOHNSON_COUNTY_KY # FIPS 21115
+    - KNOTT_COUNTY_KY # FIPS 21119
+    - KNOX_COUNTY_KY # FIPS 21121
+    - LARUE_COUNTY_KY # FIPS 21123
+    - LAUREL_COUNTY_KY # FIPS 21125
+    - LAWRENCE_COUNTY_KY # FIPS 21127
+    - LEE_COUNTY_KY # FIPS 21129
+    - LESLIE_COUNTY_KY # FIPS 21131
+    - LETCHER_COUNTY_KY # FIPS 21133
+    - LEWIS_COUNTY_KY # FIPS 21135
+    - LINCOLN_COUNTY_KY # FIPS 21137
+    - LIVINGSTON_COUNTY_KY # FIPS 21139
+    - LOGAN_COUNTY_KY # FIPS 21141
+    - LYON_COUNTY_KY # FIPS 21143
+    - MCCRACKEN_COUNTY_KY # FIPS 21145
+    - MCCREARY_COUNTY_KY # FIPS 21147
+    - MCLEAN_COUNTY_KY # FIPS 21149
+    - MADISON_COUNTY_KY # FIPS 21151
+    - MAGOFFIN_COUNTY_KY # FIPS 21153
+    - MARSHALL_COUNTY_KY # FIPS 21157
+    - MARTIN_COUNTY_KY # FIPS 21159
+    - MASON_COUNTY_KY # FIPS 21161
+    - MEADE_COUNTY_KY # FIPS 21163
+    - MENIFEE_COUNTY_KY # FIPS 21165
+    - MERCER_COUNTY_KY # FIPS 21167
+    - METCALFE_COUNTY_KY # FIPS 21169
+    - MONROE_COUNTY_KY # FIPS 21171
+    - MONTGOMERY_COUNTY_KY # FIPS 21173
+    - MORGAN_COUNTY_KY # FIPS 21175
+    - MUHLENBERG_COUNTY_KY # FIPS 21177
+    - NICHOLAS_COUNTY_KY # FIPS 21181
+    - OHIO_COUNTY_KY # FIPS 21183
+    - OWSLEY_COUNTY_KY # FIPS 21189
+    - PENDLETON_COUNTY_KY # FIPS 21191
+    - PERRY_COUNTY_KY # FIPS 21193
+    - PIKE_COUNTY_KY # FIPS 21195
+    - POWELL_COUNTY_KY # FIPS 21197
+    - PULASKI_COUNTY_KY # FIPS 21199
+    - ROBERTSON_COUNTY_KY # FIPS 21201
+    - ROCKCASTLE_COUNTY_KY # FIPS 21203
+    - ROWAN_COUNTY_KY # FIPS 21205
+    - RUSSELL_COUNTY_KY # FIPS 21207
+    - SIMPSON_COUNTY_KY # FIPS 21213
+    - TAYLOR_COUNTY_KY # FIPS 21217
+    - TODD_COUNTY_KY # FIPS 21219
+    - TRIGG_COUNTY_KY # FIPS 21221
+    - UNION_COUNTY_KY # FIPS 21225
+    - WARREN_COUNTY_KY # FIPS 21227
+    - WAYNE_COUNTY_KY # FIPS 21231
+    - WEBSTER_COUNTY_KY # FIPS 21233
+    - WHITLEY_COUNTY_KY # FIPS 21235
+    - WOLFE_COUNTY_KY # FIPS 21237
+  # FY2025 waiver: 117 counties, 2024-12-01 through 2025-11-30 (terminated
+  # November 2, 2025 and reinstated through its original expiration date;
+  # USDA February 26, 2026 memorandum, Appendix A).
   2024-12-01:
     - ADAIR_COUNTY_KY # FIPS 21001
     - ALLEN_COUNTY_KY # FIPS 21003
@@ -120,12 +225,43 @@ values:
     - WHITLEY_COUNTY_KY # FIPS 21235
     - WOLFE_COUNTY_KY # FIPS 21237
     - WOODFORD_COUNTY_KY # FIPS 21239
-  2025-12-01: []
+  # FY2026 waiver (unemployment over 10 percent): five counties,
+  # 2025-12-01 through 2026-11-30 (FNS response, February 9, 2026). The
+  # letter's text layer garbles three names (for example "Lewis Countynty,
+  # KY"); the rendered page reads Elliott, Lewis, Magoffin, Martin, and
+  # Wolfe counties.
+  2025-12-01:
+    - ELLIOTT_COUNTY_KY # FIPS 21063
+    - LEWIS_COUNTY_KY # FIPS 21135
+    - MAGOFFIN_COUNTY_KY # FIPS 21153
+    - MARTIN_COUNTY_KY # FIPS 21159
+    - WOLFE_COUNTY_KY # FIPS 21237
+  2026-12-01: []
 
 metadata:
   unit: list
   period: month
   label: SNAP ABAWD waived counties in Kentucky
   reference:
-    - title: USDA FNS Kentucky FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2025.pdf
+    - title: USDA FNS Kentucky ABAWD Waiver Response, December 21, 2023 - requested area (98 counties) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Kentucky ABAWD Waiver Response, December 21, 2023 - county list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Kentucky ABAWD Waiver Response, December 21, 2023 - county list (Lincoln through Wolfe)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Kentucky ABAWD Waiver Response, December 21, 2023 - implementation date (2023-12-01) and expiration date (2024-11-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2024.pdf#page=5
+    - title: USDA FNS Kentucky ABAWD Waiver Response, November 27, 2024 - requested area (117 counties) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Kentucky ABAWD Waiver Response, November 27, 2024 - implementation date (2024-12-01)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2025.pdf#page=5
+    - title: USDA FNS Kentucky ABAWD Waiver Response, November 27, 2024 - expiration date (2025-11-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2025.pdf#page=6
+    # Appendix A is on file page 2 of the Google Drive copy of this memo;
+    # the canonical usda.gov URL returns 403, so #page=2 is unconfirmed there.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, Kentucky through 2025-11-30)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS Kentucky ABAWD Waiver Response, February 9, 2026 - requested area and county list (five counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Kentucky ABAWD Waiver Response, February 9, 2026 - implementation date (2025-12-01) and expiration date (2026-11-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ky-abawd-response-fy2026.pdf#page=3

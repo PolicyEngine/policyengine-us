@@ -2,6 +2,31 @@ description: Counties in New Jersey with an approved USDA FNS waiver of the SNAP
 
 values:
   2018-01-01: []
+  # FY2024 waiver: a combined area of 17 counties plus Trenton city
+  # (sub-county, not modeled), 2024-02-01 through 2025-01-31. Modeled from
+  # 2024-11-01, the waiver parameters' modeling start date.
+  2024-11-01:
+    - ATLANTIC_COUNTY_NJ # FIPS 34001
+    - BERGEN_COUNTY_NJ # FIPS 34003
+    - BURLINGTON_COUNTY_NJ # FIPS 34005
+    - CAMDEN_COUNTY_NJ # FIPS 34007
+    - CAPE_MAY_COUNTY_NJ # FIPS 34009
+    - CUMBERLAND_COUNTY_NJ # FIPS 34011
+    - ESSEX_COUNTY_NJ # FIPS 34013
+    - GLOUCESTER_COUNTY_NJ # FIPS 34015
+    - HUDSON_COUNTY_NJ # FIPS 34017
+    - MIDDLESEX_COUNTY_NJ # FIPS 34023
+    - MONMOUTH_COUNTY_NJ # FIPS 34025
+    - OCEAN_COUNTY_NJ # FIPS 34029
+    - PASSAIC_COUNTY_NJ # FIPS 34031
+    - SALEM_COUNTY_NJ # FIPS 34033
+    - SUSSEX_COUNTY_NJ # FIPS 34037
+    - UNION_COUNTY_NJ # FIPS 34039
+    - WARREN_COUNTY_NJ # FIPS 34041
+  # FY2025 waiver: 20 counties (adds Hunterdon, Mercer, and Somerset),
+  # 2025-02-01 through 2026-01-31 (terminated November 2, 2025 and
+  # reinstated through its original expiration date; USDA February 26, 2026
+  # memorandum, Appendix A).
   2025-02-01:
     - ATLANTIC_COUNTY_NJ # FIPS 34001
     - BERGEN_COUNTY_NJ # FIPS 34003
@@ -23,12 +48,33 @@ values:
     - SUSSEX_COUNTY_NJ # FIPS 34037
     - UNION_COUNTY_NJ # FIPS 34039
     - WARREN_COUNTY_NJ # FIPS 34041
-  2026-02-01: []
+  # FY2026 waiver (unemployment over 10 percent): Cape May County plus
+  # Camden city (sub-county, not modeled), 2026-02-01 through 2027-01-31
+  # (FNS response, February 10, 2026).
+  2026-02-01:
+    - CAPE_MAY_COUNTY_NJ # FIPS 34009
+  2027-02-01: []
 
 metadata:
   unit: list
   period: month
   label: SNAP ABAWD waived counties in New Jersey
   reference:
-    - title: USDA FNS New Jersey FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2025.pdf
+    - title: USDA FNS New Jersey ABAWD Waiver Response, December 18, 2023 - requested area (combined area of 17 counties and one city) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS New Jersey ABAWD Waiver Response, December 18, 2023 - county list (continued), Trenton city, implementation date (2024-02-01), and expiration date (2025-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS New Jersey ABAWD Waiver Response, December 16, 2024 - requested area (20 counties) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS New Jersey ABAWD Waiver Response, December 16, 2024 - county list (continued), implementation date (2025-02-01), and expiration date (2026-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2025.pdf#page=3
+    # Appendix A is on file page 2 of the Google Drive copy of this memo;
+    # the canonical usda.gov URL returns 403, so #page=2 is unconfirmed there.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, New Jersey through 2026-01-31)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS New Jersey ABAWD Waiver Response, February 10, 2026 - approved areas (Cape May County and Camden city)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2026.pdf#page=1
+    - title: USDA FNS New Jersey ABAWD Waiver Response, February 10, 2026 - requested area and Table 1 (Cape May County)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2026.pdf#page=3
+    - title: USDA FNS New Jersey ABAWD Waiver Response, February 10, 2026 - Camden city, implementation date (2026-02-01), and expiration date (2027-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2026.pdf#page=4

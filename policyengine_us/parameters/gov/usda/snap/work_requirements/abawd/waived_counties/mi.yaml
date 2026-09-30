@@ -2,6 +2,98 @@ description: Counties in Michigan with an approved USDA FNS waiver of the SNAP A
 
 values:
   2018-01-01: []
+  # FY2024 waiver: 82 counties (all but Oakland) plus Oak Park city
+  # (sub-county, not modeled), 2024-03-01 through 2025-02-28. Modeled from
+  # 2024-11-01, the waiver parameters' modeling start date.
+  2024-11-01:
+    - ALCONA_COUNTY_MI # FIPS 26001
+    - ALGER_COUNTY_MI # FIPS 26003
+    - ALLEGAN_COUNTY_MI # FIPS 26005
+    - ALPENA_COUNTY_MI # FIPS 26007
+    - ANTRIM_COUNTY_MI # FIPS 26009
+    - ARENAC_COUNTY_MI # FIPS 26011
+    - BARAGA_COUNTY_MI # FIPS 26013
+    - BARRY_COUNTY_MI # FIPS 26015
+    - BAY_COUNTY_MI # FIPS 26017
+    - BENZIE_COUNTY_MI # FIPS 26019
+    - BERRIEN_COUNTY_MI # FIPS 26021
+    - BRANCH_COUNTY_MI # FIPS 26023
+    - CALHOUN_COUNTY_MI # FIPS 26025
+    - CASS_COUNTY_MI # FIPS 26027
+    - CHARLEVOIX_COUNTY_MI # FIPS 26029
+    - CHEBOYGAN_COUNTY_MI # FIPS 26031
+    - CHIPPEWA_COUNTY_MI # FIPS 26033
+    - CLARE_COUNTY_MI # FIPS 26035
+    - CLINTON_COUNTY_MI # FIPS 26037
+    - CRAWFORD_COUNTY_MI # FIPS 26039
+    - DELTA_COUNTY_MI # FIPS 26041
+    - DICKINSON_COUNTY_MI # FIPS 26043
+    - EATON_COUNTY_MI # FIPS 26045
+    - EMMET_COUNTY_MI # FIPS 26047
+    - GENESEE_COUNTY_MI # FIPS 26049
+    - GLADWIN_COUNTY_MI # FIPS 26051
+    - GOGEBIC_COUNTY_MI # FIPS 26053
+    - GRAND_TRAVERSE_COUNTY_MI # FIPS 26055
+    - GRATIOT_COUNTY_MI # FIPS 26057
+    - HILLSDALE_COUNTY_MI # FIPS 26059
+    - HOUGHTON_COUNTY_MI # FIPS 26061
+    - HURON_COUNTY_MI # FIPS 26063
+    - INGHAM_COUNTY_MI # FIPS 26065
+    - IONIA_COUNTY_MI # FIPS 26067
+    - IOSCO_COUNTY_MI # FIPS 26069
+    - IRON_COUNTY_MI # FIPS 26071
+    - ISABELLA_COUNTY_MI # FIPS 26073
+    - JACKSON_COUNTY_MI # FIPS 26075
+    - KALAMAZOO_COUNTY_MI # FIPS 26077
+    - KALKASKA_COUNTY_MI # FIPS 26079
+    - KENT_COUNTY_MI # FIPS 26081
+    - KEWEENAW_COUNTY_MI # FIPS 26083
+    - LAKE_COUNTY_MI # FIPS 26085
+    - LAPEER_COUNTY_MI # FIPS 26087
+    - LEELANAU_COUNTY_MI # FIPS 26089
+    - LENAWEE_COUNTY_MI # FIPS 26091
+    - LIVINGSTON_COUNTY_MI # FIPS 26093
+    - LUCE_COUNTY_MI # FIPS 26095
+    - MACKINAC_COUNTY_MI # FIPS 26097
+    - MACOMB_COUNTY_MI # FIPS 26099
+    - MANISTEE_COUNTY_MI # FIPS 26101
+    - MARQUETTE_COUNTY_MI # FIPS 26103
+    - MASON_COUNTY_MI # FIPS 26105
+    - MECOSTA_COUNTY_MI # FIPS 26107
+    - MENOMINEE_COUNTY_MI # FIPS 26109
+    - MIDLAND_COUNTY_MI # FIPS 26111
+    - MISSAUKEE_COUNTY_MI # FIPS 26113
+    - MONROE_COUNTY_MI # FIPS 26115
+    - MONTCALM_COUNTY_MI # FIPS 26117
+    - MONTMORENCY_COUNTY_MI # FIPS 26119
+    - MUSKEGON_COUNTY_MI # FIPS 26121
+    - NEWAYGO_COUNTY_MI # FIPS 26123
+    - OCEANA_COUNTY_MI # FIPS 26127
+    - OGEMAW_COUNTY_MI # FIPS 26129
+    - ONTONAGON_COUNTY_MI # FIPS 26131
+    - OSCEOLA_COUNTY_MI # FIPS 26133
+    - OSCODA_COUNTY_MI # FIPS 26135
+    - OTSEGO_COUNTY_MI # FIPS 26137
+    - OTTAWA_COUNTY_MI # FIPS 26139
+    - PRESQUE_ISLE_COUNTY_MI # FIPS 26141
+    - ROSCOMMON_COUNTY_MI # FIPS 26143
+    - SAGINAW_COUNTY_MI # FIPS 26145
+    - ST_CLAIR_COUNTY_MI # FIPS 26147
+    - ST_JOSEPH_COUNTY_MI # FIPS 26149
+    - SANILAC_COUNTY_MI # FIPS 26151
+    - SCHOOLCRAFT_COUNTY_MI # FIPS 26153
+    - SHIAWASSEE_COUNTY_MI # FIPS 26155
+    - TUSCOLA_COUNTY_MI # FIPS 26157
+    - VAN_BUREN_COUNTY_MI # FIPS 26159
+    - WASHTENAW_COUNTY_MI # FIPS 26161
+    - WAYNE_COUNTY_MI # FIPS 26163
+    - WEXFORD_COUNTY_MI # FIPS 26165
+  # FY2025 waiver: 80 counties (drops Kent and Livingston) plus three cities
+  # and 10 reservations (sub-county, not modeled), 2025-03-01 through
+  # 2026-02-28 (terminated November 2, 2025 and reinstated through its
+  # original expiration date; USDA February 26, 2026 memorandum, Appendix A).
+  # The FY2026 waiver below took effect 2025-11-01, but its 15 counties are
+  # all in this list, so the union is unchanged until 2026-03-01.
   2025-03-01:
     - ALCONA_COUNTY_MI # FIPS 26001
     - ALGER_COUNTY_MI # FIPS 26003
@@ -83,12 +175,51 @@ values:
     - WASHTENAW_COUNTY_MI # FIPS 26161
     - WAYNE_COUNTY_MI # FIPS 26163
     - WEXFORD_COUNTY_MI # FIPS 26165
-  2026-03-01: []
+  # FY2026 waiver (unemployment over 10 percent): 15 counties plus six cities
+  # and eight reservation areas (sub-county, not modeled), 2025-11-01
+  # through 2026-10-31 (FNS response, November 20, 2025).
+  2026-03-01:
+    - ALCONA_COUNTY_MI # FIPS 26001
+    - ALGER_COUNTY_MI # FIPS 26003
+    - ARENAC_COUNTY_MI # FIPS 26011
+    - CHEBOYGAN_COUNTY_MI # FIPS 26031
+    - IOSCO_COUNTY_MI # FIPS 26069
+    - IRON_COUNTY_MI # FIPS 26071
+    - LUCE_COUNTY_MI # FIPS 26095
+    - MACKINAC_COUNTY_MI # FIPS 26097
+    - MONTMORENCY_COUNTY_MI # FIPS 26119
+    - OCEANA_COUNTY_MI # FIPS 26127
+    - OGEMAW_COUNTY_MI # FIPS 26129
+    - OSCODA_COUNTY_MI # FIPS 26135
+    - PRESQUE_ISLE_COUNTY_MI # FIPS 26141
+    - ROSCOMMON_COUNTY_MI # FIPS 26143
+    - SCHOOLCRAFT_COUNTY_MI # FIPS 26153
+  2026-11-01: []
 
 metadata:
   unit: list
   period: month
   label: SNAP ABAWD waived counties in Michigan
   reference:
-    - title: USDA FNS Michigan FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2025.pdf
+    - title: USDA FNS Michigan ABAWD Waiver Response, October 19, 2023 - requested area (82 counties and one city) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Michigan ABAWD Waiver Response, October 19, 2023 - county list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Michigan ABAWD Waiver Response, October 19, 2023 - county list (continued) and Oak Park city
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Michigan ABAWD Waiver Response, October 19, 2023 - implementation date (2024-03-01) and expiration date (2025-02-28)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2024.pdf#page=5
+    - title: USDA FNS Michigan ABAWD Waiver Response, December 16, 2024 - requested area (80 counties, three cities, and 10 reservation areas) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Michigan ABAWD Waiver Response, December 16, 2024 - implementation date (2025-03-01) and expiration date (2026-02-28)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2025.pdf#page=6
+    # Appendix A is on file page 2 of the Google Drive copy of this memo;
+    # the canonical usda.gov URL returns 403, so #page=2 is unconfirmed there.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, Michigan through 2026-02-28)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS Michigan ABAWD Waiver Response, November 20, 2025 - requested area and Table 1 (Mackinac, Oscoda, and Presque Isle counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Michigan ABAWD Waiver Response, November 20, 2025 - reservation areas and Table 3 (Alcona, Alger, Cheboygan, and Ogemaw counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2026.pdf#page=3
+    - title: USDA FNS Michigan ABAWD Waiver Response, November 20, 2025 - Tables 4 and 5 (eight counties), implementation date (2025-11-01), and expiration date (2026-10-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mi-abawd-response-fy2026.pdf#page=4
