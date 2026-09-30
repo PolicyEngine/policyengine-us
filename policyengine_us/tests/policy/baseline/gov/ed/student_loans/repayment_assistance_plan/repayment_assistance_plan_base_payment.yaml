@@ -1,0 +1,124 @@
+# 20 U.S.C. 1087e(q)(4)(B)(iv); 34 CFR 685.209(b)(2). The annual base payment is
+# $120 if AGI is not more than $10,000; otherwise the bracket rate times the
+# WHOLE AGI, where each bracket runs from "more than" its lower bound to "not
+# more than" its upper bound (ED rejected a marginal reading at 91 FR 23838).
+
+- name: Case 1, AGI exactly 10,000 receives the flat low-income base payment.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+  output:
+    # (iv)(I): AGI not more than $10,000 -> $120.
+    repayment_assistance_plan_base_payment: 120
+
+- name: Case 2, AGI one dollar over 10,000 drops below the low-income base payment.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_001
+  output:
+    # (iv)(II): 1% x 10,001 = 100.01, less than the $120 at AGI 10,000.
+    repayment_assistance_plan_base_payment: 100.01
+
+- name: Case 3, AGI exactly 20,000 stays in the 1 percent bracket.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_000
+  output:
+    # (iv)(II) "not more than $20,000": 1% x 20,000 = 200.
+    repayment_assistance_plan_base_payment: 200
+
+- name: Case 4, AGI one dollar over 20,000 applies 2 percent to the whole AGI.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_001
+  output:
+    # (iv)(III): 2% x 20,001 = 400.02.
+    repayment_assistance_plan_base_payment: 400.02
+
+- name: Case 5, AGI of 55,000 applies 5 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 55_000
+  output:
+    # (iv)(VI): 5% x 55,000 = 2,750.
+    repayment_assistance_plan_base_payment: 2_750
+
+- name: Case 6, AGI exactly 100,000 stays in the 9 percent bracket.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_000
+  output:
+    # (iv)(X) "not more than $100,000": 9% x 100,000 = 9,000.
+    repayment_assistance_plan_base_payment: 9_000
+
+- name: Case 7, AGI one dollar over 100,000 applies the top 10 percent rate.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_001
+  output:
+    # (iv)(XI): 10% x 100,001 = 10,000.10.
+    repayment_assistance_plan_base_payment: 10_000.1
+
+- name: Case 8, negative AGI receives the flat low-income base payment.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: -20_000
+  output:
+    # (iv)(I): -20,000 is not more than $10,000 -> $120.
+    repayment_assistance_plan_base_payment: 120
