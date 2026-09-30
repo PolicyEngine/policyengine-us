@@ -829,7 +829,8 @@ programs:
         full_name: Indiana Energy Assistance Program
         variable: in_eap
         parameter_prefix: gov.states.in.ihcda.eap
-        notes: FY2026 regular heating and ordinary winter electric allowance only. Uses existing inputs and the site-built single-family schedule. Other dwelling types, gross business income, detailed household/income classifications, electricity-only inclusion in rent, account credits and administrative checks remain incomplete.
+        verified_years: "2026"
+        notes: FY2026 regular heating and ordinary winter electric allowance only. A state-specific dwelling-type input selects single-family, mobile-home, or multi-unit points, defaulting to single-family when omitted; heat included in rent receives zero dwelling points for every type. Gross business income, detailed household/income classifications, electricity-only inclusion in rent, account credits and administrative checks remain incomplete. Earlier results use parameter backfilling and are unverified historical estimates.
       - state: TX
         status: partial
         name: Texas CEAP

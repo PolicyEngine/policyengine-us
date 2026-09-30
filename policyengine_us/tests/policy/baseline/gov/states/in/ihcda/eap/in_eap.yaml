@@ -163,3 +163,48 @@
     pre_subsidy_electricity_expense: [0, 1]
   output:
     in_eap: [325, 450]
+
+- name: Dwelling type applies the published three, two, and one point awards
+  # Section 8.4: single-family 3, mobile home 2, multi-unit 1; $25 per point.
+  # Low band: (9 + dwelling + 1 gas) * $25 + $125 electricity.
+  # High band: (2 + dwelling + 1 gas) * $25 + $50 electricity.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true]
+    in_eap_household_size: [1, 1, 1, 1, 1, 1]
+    in_eap_income: [0, 0, 0, 30_000, 30_000, 30_000]
+    in_eap_dwelling_type: [SINGLE_FAMILY, MOBILE_HOME, MULTI_UNIT,
+      SINGLE_FAMILY, MOBILE_HOME, MULTI_UNIT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [450, 425, 400, 200, 175, 150]
+
+- name: Dwelling type does not change zero dwelling points when heat is in rent
+  # Section 8.4: zero dwelling points for every type when heat is in rent.
+  # Two income points * $25 plus the $50 electricity-in-rent allowance.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [1_200, 1_200, 1_200]
+    in_eap_eligible: [true, true, true]
+    in_eap_income: [0, 0, 0]
+    in_eap_dwelling_type: [SINGLE_FAMILY, MOBILE_HOME, MULTI_UNIT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true]
+    tenant_pays_utilities: [false, false, false]
+  output:
+    in_eap: [100, 100, 100]

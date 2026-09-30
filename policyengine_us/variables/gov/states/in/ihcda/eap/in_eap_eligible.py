@@ -9,7 +9,7 @@ class in_eap_eligible(Variable):
     defined_for = StateCode.IN
     reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=23,29,69,70,73,74,75"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
         income = spm_unit("in_eap_income", period)
         limit = np.floor(spm_unit("in_eap_smi", period) * p.income_limit)

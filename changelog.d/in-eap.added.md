@@ -1,1 +1,1 @@
-Added partial Indiana EAP regular heating assistance using existing inputs, with unsupported dwelling and income details documented.
+Added partial Indiana EAP regular heating assistance with state-specific dwelling types for single-family homes, mobile homes, and multi-unit dwellings, with remaining income and administrative gaps documented.

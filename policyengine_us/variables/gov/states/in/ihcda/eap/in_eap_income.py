@@ -10,7 +10,7 @@ class in_eap_income(Variable):
     defined_for = StateCode.IN
     reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=47,48,49,50,51,52,53,54,55,56,57,58,59,60,61"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
         person = spm_unit.members
         age = person("age", period)

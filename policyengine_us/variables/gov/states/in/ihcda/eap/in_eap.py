@@ -7,11 +7,14 @@ class in_eap(Variable):
     definition_period = YEAR
     unit = USD
     label = "Indiana EAP regular heating assistance"
+    documentation = (
+        "Verified for FY2026. Earlier years use model parameter backfilling "
+        "and are unverified historical estimates."
+    )
     defined_for = "in_eap_eligible"
     reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=26,27,32,33,69,70,71,72,73,74,75,77,78"
 
-    def formula_2026(spm_unit, period, parameters):
-        # FY2026 is the beginning of researched coverage, not the program's inception.
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
         person = spm_unit.members
         smi_amount = spm_unit("in_eap_smi", period)
@@ -35,11 +38,9 @@ class in_eap(Variable):
             [p.higher_income_points, p.lower_income_points, p.middle_income_points],
             default=p.higher_income_points,
         )
-        # No existing input identifies site-built, mobile, and multi-unit dwellings.
-        # This draft uses the site-built single-family schedule, overestimating mobile
-        # homes by $25 and multi-unit homes by $50 when heat is billed separately.
-        # Heat included in rent receives zero dwelling and fuel points for every type.
-        dwelling_points = where(heat_in_rent, 0, p.single_family_points)
+        dwelling = spm_unit("in_eap_dwelling_type", period)
+        # Section 8.4 awards zero dwelling points whenever heat is included in rent.
+        dwelling_points = where(heat_in_rent, 0, p.dwelling_points[dwelling])
         fuel_points = where(heat_in_rent, 0, fuel_points)
         age = person("age", period)
         # Reuse available benefit-receipt evidence. Doctor certification with a pending

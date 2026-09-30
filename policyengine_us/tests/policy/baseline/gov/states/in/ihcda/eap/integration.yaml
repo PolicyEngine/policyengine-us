@@ -72,7 +72,9 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
   output:
     in_eap: [450, 0, 0]
-- name: Unresearched earlier years have no formula
+# Backfilling checks the model convention, not verified historical Indiana policy.
+# 2022 uses FY2022 SMI, with the earliest available state benefit schedule.
+- name: Parameter backfill uses period-specific SMI for a 2022 estimate
   period: 2_022
   input:
     state_code: IN
@@ -82,7 +84,11 @@
     receives_ssi: false
     receives_medicaid: false
     rent: 0
+    employment_income: 0
     heating_type: NATURAL_GAS
     gas_expense: 1_000
   output:
-    in_eap: 0
+    in_eap: 325
+    in_eap_household_size: 1
+    in_eap_smi: 45_020
+    in_eap_eligible: true

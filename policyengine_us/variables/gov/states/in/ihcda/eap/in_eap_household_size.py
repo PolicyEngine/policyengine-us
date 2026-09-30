@@ -9,7 +9,7 @@ class in_eap_household_size(Variable):
     defined_for = StateCode.IN
     reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=23,24,25,29,30"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         # SPM units approximate the residence-based unit. Current inputs cannot identify
         # all excluded foster children, exchange students, transient guests, or changes
         # in residence during the three-month budget period. Citizenship is approximated
