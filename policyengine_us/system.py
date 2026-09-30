@@ -22,6 +22,9 @@ from policyengine_us.tools.parameters import (
     backdate_parameters,
 )
 from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    PRE_RESPONSE_INPUTS,
+)
 from policyengine_core.parameters.operations.homogenize_parameters import (
     homogenize_parameter_structures,
 )
@@ -174,6 +177,48 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 system = CountryTaxBenefitSystem()
 
 
+def _move_inputs_to_pre_response_variables(simulation):
+    """Store aggregate inputs on the pre-response variables they derive from."""
+    for aggregate, pre_response in PRE_RESPONSE_INPUTS.items():
+        holder = simulation.get_holder(aggregate)
+        for known_period in holder.get_known_periods():
+            array = holder.get_array(known_period)
+            simulation.set_input(pre_response, known_period, array)
+            holder.delete_arrays(known_period)
+
+
+def _sync_input_variables(simulation):
+    """List the variables that hold inputs after the moves and backfill.
+
+    Core records ``input_variables`` before the pre-response moves and the
+    ``state_code`` backfill run, so the recorded list still names the emptied
+    aggregates and ``state_code_str`` and omits the variables that now hold
+    their values. Branch-based variables such as ``marginal_tax_rate`` delete
+    every variable outside this list, so a stale list erases those inputs in
+    the branch: a wage-earning parent's TANF then counts no earnings.
+    """
+    moved = (
+        *PRE_RESPONSE_INPUTS,
+        *PRE_RESPONSE_INPUTS.values(),
+        "state_code_str",
+        "state_code",
+    )
+
+    def holds_input(variable):
+        return len(simulation.get_holder(variable).get_known_periods()) > 0
+
+    input_variables = [
+        variable
+        for variable in simulation.input_variables
+        if variable not in moved or holds_input(variable)
+    ]
+    simulation.input_variables = input_variables + [
+        variable
+        for variable in moved
+        if variable not in input_variables and holds_input(variable)
+    ]
+
+
 def _backfill_state_code_from_str(simulation):
     """Backfill the ``state_code`` enum from a ``state_code_str`` input.
 
@@ -240,46 +285,10 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labor supply responses
-
-        employment_income = self.get_holder("employment_income")
-        for known_period in employment_income.get_known_periods():
-            array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
-            employment_income.delete_arrays(known_period)
-
-        self_employment_income = self.get_holder("self_employment_income")
-        for known_period in self_employment_income.get_known_periods():
-            array = self_employment_income.get_array(known_period)
-            self.set_input("self_employment_income_before_lsr", known_period, array)
-            self_employment_income.delete_arrays(known_period)
-
-        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
-        for known_period in sstb_self_employment_income.get_known_periods():
-            array = sstb_self_employment_income.get_array(known_period)
-            self.set_input(
-                "sstb_self_employment_income_before_lsr", known_period, array
-            )
-            sstb_self_employment_income.delete_arrays(known_period)
-
-        weekly_hours = self.get_holder("weekly_hours_worked")
-        for known_period in weekly_hours.get_known_periods():
-            array = weekly_hours.get_array(known_period)
-            self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            weekly_hours.delete_arrays(known_period)
-
-        # Capital gains responses
-
-        cg_holder = self.get_holder("long_term_capital_gains")
-        for known_period in cg_holder.get_known_periods():
-            array = cg_holder.get_array(known_period)
-            self.set_input(
-                "long_term_capital_gains_before_response", known_period, array
-            )
-            cg_holder.delete_arrays(known_period)
-
+        _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
+        _sync_input_variables(self)
 
 
 def _download_or_explain(dataset_str, download):
@@ -500,67 +509,12 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labor supply responses
-
-        employment_income = self.get_holder("employment_income")
-        for known_period in employment_income.get_known_periods():
-            array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
-            employment_income.delete_arrays(known_period)
-
-        self_employment_income = self.get_holder("self_employment_income")
-        for known_period in self_employment_income.get_known_periods():
-            array = self_employment_income.get_array(known_period)
-            self.set_input("self_employment_income_before_lsr", known_period, array)
-            self_employment_income.delete_arrays(known_period)
-
-        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
-        for known_period in sstb_self_employment_income.get_known_periods():
-            array = sstb_self_employment_income.get_array(known_period)
-            self.set_input(
-                "sstb_self_employment_income_before_lsr", known_period, array
-            )
-            sstb_self_employment_income.delete_arrays(known_period)
-
-        weekly_hours = self.get_holder("weekly_hours_worked")
-        for known_period in weekly_hours.get_known_periods():
-            array = weekly_hours.get_array(known_period)
-            self.set_input("weekly_hours_worked_before_lsr", known_period, array)
-            weekly_hours.delete_arrays(known_period)
-
-        # Capital gains responses
-
-        cg_holder = self.get_holder("long_term_capital_gains")
-        for known_period in cg_holder.get_known_periods():
-            array = cg_holder.get_array(known_period)
-            self.set_input(
-                "long_term_capital_gains_before_response", known_period, array
-            )
-            cg_holder.delete_arrays(known_period)
-
+        _move_inputs_to_pre_response_variables(self)
         # Geography backfill: state_code_str-only input -> state_code enum.
         # Datasets carry state_fips, so this only fires for situations that
         # explicitly supply state_code_str.
         _backfill_state_code_from_str(self)
-
-        self.input_variables = [
-            variable
-            for variable in self.input_variables
-            if variable
-            not in [
-                "employment_income",
-                "self_employment_income",
-                "sstb_self_employment_income",
-                "weekly_hours_worked",
-                "capital_gains",
-            ]
-        ] + [
-            "employment_income_before_lsr",
-            "self_employment_income_before_lsr",
-            "sstb_self_employment_income_before_lsr",
-            "weekly_hours_worked_before_lsr",
-            "long_term_capital_gains_before_response",
-        ]
+        _sync_input_variables(self)
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated

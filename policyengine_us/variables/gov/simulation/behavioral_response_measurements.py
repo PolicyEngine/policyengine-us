@@ -11,6 +11,16 @@ NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES = (
     "sstb_self_employment_income_behavioral_response",
     "capital_gains_behavioral_response",
 )
+# Situations and datasets name these aggregates, but each aggregate adds a
+# behavioral response to a pre-response input. Simulations store the value on
+# the pre-response input and derive the aggregate from it.
+PRE_RESPONSE_INPUTS = {
+    "employment_income": "employment_income_before_lsr",
+    "self_employment_income": "self_employment_income_before_lsr",
+    "sstb_self_employment_income": "sstb_self_employment_income_before_lsr",
+    "weekly_hours_worked": "weekly_hours_worked_before_lsr",
+    "long_term_capital_gains": "long_term_capital_gains_before_response",
+}
 BEHAVIORAL_RESPONSE_INPUT_VARIABLES = (
     "employment_income_before_lsr",
     "self_employment_income_before_lsr",
