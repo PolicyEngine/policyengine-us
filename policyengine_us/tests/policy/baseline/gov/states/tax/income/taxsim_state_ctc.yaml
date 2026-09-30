@@ -123,8 +123,10 @@
     taxsim_state_ctc: 0
 
 - name: MN child tax credit is reported within the combined credit, not the state CTC
-  # From 2023 Minn. Stat. 290.0661 subd. 4 phases the child tax credit down
-  # jointly with the working family credit; taxsim_state_eitc carries the total.
+  # From 2023 Minnesota's child tax credit (Minn. Stat. 290.0661) and working
+  # family credit (290.0671) are phased down jointly (290.0661, subd. 4) and
+  # claimed on one Schedule M1REF line, so taxsim_state_eitc reports the whole
+  # credit and no separate state CTC is reported. Injected values are arbitrary.
   period: 2024
   input:
     people:
