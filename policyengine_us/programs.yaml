@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, IN
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,13 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: IN
+        status: partial
+        name: Indiana EAP
+        full_name: Indiana Energy Assistance Program
+        variable: in_eap
+        parameter_prefix: gov.states.in.ihcda.eap
+        notes: FY2026 regular heating and ordinary winter electric allowance only. Uses existing inputs and the site-built single-family schedule. Other dwelling types, gross business income, detailed household/income classifications, electricity-only inclusion in rent, account credits and administrative checks remain incomplete.
       - state: TX
         status: partial
         name: Texas CEAP

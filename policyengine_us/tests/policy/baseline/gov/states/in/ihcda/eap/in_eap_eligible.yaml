@@ -1,0 +1,56 @@
+- name: Published annual sixty percent SMI limits, at the boundary
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [33_556, 43_882, 54_207, 64_533, 74_857, 85_183, 87_119, 89_055, 90_991, 92_927]
+  output:
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+- name: Published annual sixty percent SMI limits, one dollar above
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [33_557, 43_883, 54_208, 64_534, 74_858, 85_184, 87_120, 89_056, 90_992, 92_928]
+  output:
+    in_eap_eligible: [false, false, false, false, false, false, false, false, false, false]
+- name: Federal household adjustment extends to households larger than the printed chart
+  period: 2_026
+  input:
+    state_code: [IN, IN]
+    age: [40, 40]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    receives_ssi: [false, false]
+    receives_medicaid: [false, false]
+    rent: [0, 0]
+    in_eap_household_size: [11, 11]
+    in_eap_income: [94_863, 94_864]
+  output:
+    in_eap_eligible: [true, false]
+- name: Household eligibility requires an adult and an eligible member, independently of a utility bill
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN]
+    age: [17, 18, 18]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [0, 0, 0]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED]
+    in_eap_income: [0, 0, 0]
+  output:
+    in_eap_eligible: [false, true, false]

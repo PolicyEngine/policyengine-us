@@ -1,0 +1,88 @@
+- name: Pregnancy increases household size and supplies a single vulnerability bonus
+  period: 2_026
+  input:
+    state_code: IN
+    age: 40
+    ssi: 0
+    social_security: 0
+    receives_ssi: false
+    receives_medicaid: false
+    rent: 0
+    current_pregnancies: 1
+    employment_income: 0
+    heating_type: PROPANE
+    bottled_gas_expense: 1_000
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    in_eap_household_size: 2
+    in_eap: 625
+- name: Young-child vulnerability stops after age five
+  period: 2_026
+  input:
+    people:
+      adult1:
+        age: 40
+        ssi: 0
+        social_security: 0
+      child1:
+        age: 5
+        ssi: 0
+        social_security: 0
+      adult2:
+        age: 40
+        ssi: 0
+        social_security: 0
+      child2:
+        age: 6
+        ssi: 0
+        social_security: 0
+    spm_units:
+      unit1:
+        members: [adult1, child1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+      unit2:
+        members: [adult2, child2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      home1:
+        members: [adult1, child1]
+        state_code: IN
+      home2:
+        members: [adult2, child2]
+        state_code: IN
+  output:
+    in_eap: [625, 575]
+- name: Mixed-state and over-income households receive zero
+  period: 2_026
+  input:
+    state_code: [IN, IN, IL]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [0, 0, 0]
+    employment_income: [0, 33_557, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
+  output:
+    in_eap: [450, 0, 0]
+- name: Unresearched earlier years have no formula
+  period: 2_022
+  input:
+    state_code: IN
+    age: 40
+    ssi: 0
+    social_security: 0
+    receives_ssi: false
+    receives_medicaid: false
+    rent: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    in_eap: 0

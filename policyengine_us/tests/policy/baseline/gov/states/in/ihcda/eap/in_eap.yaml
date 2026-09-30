@@ -1,0 +1,165 @@
+- name: Published quarterly band 1 ceilings, at the boundary
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [16_776, 21_940, 27_100, 32_264, 37_428, 42_588, 43_556, 44_524, 45_492, 46_460]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [450, 450, 450, 450, 450, 450, 450, 450, 450, 450]
+- name: Published quarterly band 1 ceilings, one dollar above
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [16_780, 21_944, 27_104, 32_268, 37_432, 42_592, 43_560, 44_528, 45_496, 46_464]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [325, 325, 325, 325, 325, 325, 325, 325, 325, 325]
+- name: Published quarterly band 2 ceilings, at the boundary
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [25_164, 32_908, 40_652, 48_396, 56_140, 63_884, 65_336, 66_788, 68_240, 69_692]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [325, 325, 325, 325, 325, 325, 325, 325, 325, 325]
+- name: Published quarterly band 2 ceilings, one dollar above
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [25_168, 32_912, 40_656, 48_400, 56_144, 63_888, 65_340, 66_792, 68_244, 69_696]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
+- name: Regular heating fuel points and excluded unspecified fuels
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    in_eap_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, FUEL_OIL, KEROSENE, COAL, WOOD, OTHER, SOLAR, UNSPECIFIED,
+      NONE]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap: [450, 450, 575, 575, 575, 575, 575, 125, 125, 125, 125]
+- name: Vulnerability points are awarded once across age, disability, military and pregnancy categories
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [59, 60, 40, 40, 40, 40, 40, 60]
+    ssi: [0, 0, 0, 0, 0, 1, 0, 1]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, true, true]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_eligible: [true, true, true, true, true, true, true, true]
+    in_eap_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    is_veteran: [false, false, true, false, false, false, false, true]
+    is_military: [false, false, false, true, false, false, false, true]
+    current_pregnancies: [0, 0, 0, 0, 1, 0, 0, 0]
+    is_disabled: [false, false, false, false, false, false, true, true]
+  output:
+    in_eap: [575, 625, 625, 625, 625, 625, 625, 625]
+- name: Utilities included in rent require one dollar monthly out-of-pocket rent
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [0, 11, 12]
+    in_eap_eligible: [true, true, true]
+    in_eap_income: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true]
+    tenant_pays_utilities: [false, false, false]
+  output:
+    in_eap: [0, 0, 100]
+- name: Heat in rent with separately billed electricity preserves the income-based electric supplement
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [1_200, 1_200, 1_200]
+    in_eap_eligible: [true, true, true]
+    in_eap_income: [0, 20_000, 30_000]
+    heat_expense_included_in_rent: [true, true, true]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
+  output:
+    in_eap: [175, 150, 100]
+- name: Regular benefits are not capped at current bills, and absent electric service receives no supplement
+  period: 2_026
+  input:
+    state_code: [IN, IN]
+    age: [40, 40]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    receives_ssi: [false, false]
+    receives_medicaid: [false, false]
+    rent: [0, 0]
+    in_eap_eligible: [true, true]
+    in_eap_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [10, 10]
+    pre_subsidy_electricity_expense: [0, 1]
+  output:
+    in_eap: [325, 450]

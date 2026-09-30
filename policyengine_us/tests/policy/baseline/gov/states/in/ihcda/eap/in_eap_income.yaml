@@ -1,0 +1,77 @@
+- name: Existing net business income remains an approximation without a new business deduction
+  period: 2_026
+  input:
+    state_code: IN
+    age: 40
+    ssi: 0
+    social_security: 0
+    receives_ssi: false
+    receives_medicaid: false
+    rent: 0
+    employment_income: 12_000
+    self_employment_income: 6_000
+  output:
+    in_eap_income: 18_000
+- name: Adult dependent secondary and college student exemptions do not extend past age twenty-three for college
+  period: 2_026
+  input:
+    state_code: [IN, IN, IN, IN]
+    age: [18, 23, 24, 23]
+    ssi: [0, 0, 0, 0]
+    social_security: [0, 0, 0, 0]
+    receives_ssi: [false, false, false, false]
+    receives_medicaid: [false, false, false, false]
+    rent: [0, 0, 0, 0]
+    is_tax_unit_dependent: [true, true, true, false]
+    is_in_secondary_school: [true, false, false, false]
+    is_full_time_college_student: [false, true, true, true]
+    employment_income: [12_000, 12_000, 12_000, 12_000]
+    interest_income: [1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap_income: [0, 0, 13_000, 13_000]
+- name: Reported Medicare premium and support paid reduce income, while TANF, support received and capital gains
+    are excluded
+  period: 2_026
+  input:
+    state_code: IN
+    age: 40
+    ssi: 1_200
+    social_security: 12_000
+    receives_ssi: false
+    receives_medicaid: false
+    rent: 0
+    employment_income: 12_000
+    medicare_part_b_premiums_reported: 2_400
+    child_support_expense: 2_400
+    child_support_received: 4_000
+    tanf: 4_000
+    long_term_capital_gains: 4_000
+  output:
+    in_eap_income: 20_400
+- name: Immigration excludes an adult from size but counts earnings, and child SSA counts despite excluded child
+    wages
+  period: 2_026
+  input:
+    people:
+      adult:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+        ssi: 0
+        social_security: 0
+      child:
+        age: 10
+        employment_income: 6_000
+        social_security: 2_400
+        ssi: 1_200
+    spm_units:
+      unit:
+        members: [adult, child]
+    households:
+      home:
+        members: [adult, child]
+        state_code: IN
+  output:
+    in_eap_household_size: 1
+    in_eap_income: 15_600
+    in_eap_eligible: true

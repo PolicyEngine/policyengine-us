@@ -1,0 +1,31 @@
+description: Indiana awards these regular heating points by primary fuel under the Energy Assistance Program.
+UNSPECIFIED:
+  2025-10-01: 0
+ELECTRICITY:
+  2025-10-01: 1
+NATURAL_GAS:
+  2025-10-01: 1
+FUEL_OIL:
+  2025-10-01: 6
+KEROSENE:
+  2025-10-01: 6
+PROPANE:
+  2025-10-01: 6
+WOOD:
+  2025-10-01: 6
+COAL:
+  2025-10-01: 6
+SOLAR:
+  2025-10-01: 0
+OTHER:
+  2025-10-01: 0
+NONE:
+  2025-10-01: 0
+metadata:
+  unit: /1
+  breakdown:
+    - heating_type
+  label: Indiana EAP heating fuel points
+  reference:
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Section 8.5
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=71
