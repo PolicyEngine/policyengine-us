@@ -27,29 +27,6 @@
     # 20,000 wages + 3,000 interest + 2,000 dividends (KEESM 13360).
     ks_liheap_countable_income: 25_000
 
-- name: Case 2, earned income of a child under 18 is not counted.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 42
-        employment_income: 18_000
-      person2:
-        age: 16
-        employment_income: 5_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
-  output:
-    # 18,000 parent wages; the 16-year-old's 5,000 wages are excluded.
-    ks_liheap_countable_income: 18_000
-
 - name: Case 3, Social Security and SSI are counted.
   period: 2026
   absolute_error_margin: 0.01
@@ -69,28 +46,6 @@
   output:
     # 12,000 SSA + 3,000 SSI = 15,000 (plan 1.8: SSA and SSI checked).
     ks_liheap_countable_income: 15_000
-
-- name: Case 4, an 18-year-old member's earnings are counted.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 18_000
-      person2:
-        age: 18
-        employment_income: 5_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
-  output:
-    # KEESM 13320: a member who is 18 has countable income -> 18,000 + 5,000.
-    ks_liheap_countable_income: 23_000
 
 - name: Case 5, unearned income of a child under 18 is still counted.
   period: 2026

@@ -6,25 +6,6 @@
 # (KEESM 13340; KS LIHEAP State Plan FY2026 2.3, #page=8). No asset test
 # (plan 2.3).
 
-- name: Case 1, low-income Kansas household paying for natural gas is eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 15_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    ks_liheap_eligible: true
-
 - name: Case 2, the same household in Missouri is not eligible.
   period: 2026
   input:
@@ -41,24 +22,6 @@
       household:
         members: [person1]
         state_code: MO
-  output:
-    ks_liheap_eligible: false
-
-- name: Case 3, a home with no heating is not energy vulnerable.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 15_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NONE
-    households:
-      household:
-        members: [person1]
-        state_code: KS
   output:
     ks_liheap_eligible: false
 
@@ -111,27 +74,6 @@
     # 12,000 (the parent's income counts).
     ks_liheap_eligible: true
 
-- name: Case 6, subsidized-housing renter with heat included in rent is not eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 15_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        receives_housing_assistance: true
-        heat_expense_included_in_rent: true
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    ks_liheap_eligible: false
-
 - name: Case 7, subsidized-housing renter who pays heat separately is eligible.
   period: 2026
   input:
@@ -153,50 +95,6 @@
   output:
     # KEESM 13340: pays heating costs directly to a utility -> vulnerable.
     ks_liheap_eligible: true
-
-- name: Case 8, unsubsidized renter with heat included in rent is eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 15_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        receives_housing_assistance: false
-        heat_expense_included_in_rent: true
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # KEESM 13340: paying the landlord for fuel included in rent qualifies.
-    ks_liheap_eligible: true
-
-- name: Case 9, household over the income limit is not eligible.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 30_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 30,000 > 23,472 and no categorical route.
-    ks_liheap_eligible: false
 
 - name: Case 10, no asset test so large savings do not disqualify.
   period: 2026

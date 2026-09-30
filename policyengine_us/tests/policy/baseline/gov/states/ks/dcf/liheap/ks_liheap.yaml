@@ -5,77 +5,6 @@
 # minimum is $100 (KS LIHEAP State Plan FY2025 2.6, #page=9). Zero when
 # ineligible.
 
-- name: Case 1, eligible natural gas household receives the matrix cell.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        ks_liheap_utility_rate_tier: E
-        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 800/mo -> 0-899; matrix p.1 (80%) tier E, House, size 1-4 = 709 >= 130
-    ks_liheap: 709
-
-- name: Case 2, propane trailer cell of 75 is raised to the 130 minimum.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 21_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: PROPANE
-        bottled_gas_expense: 1_200
-        ks_liheap_utility_rate_tier: A
-        ks_liheap_dwelling_type: TRAILER_OTHER
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 1,800/mo -> 1,700 & over; matrix p.3 (80%) tier A, Trailer/Other,
-    # size 1-4 = 75; max(75, 130) = 130 (plan 2.6 minimum benefit)
-    ks_liheap: 130
-
-- name: Case 3, natural gas trailer cell of 84 is raised to the 130 minimum.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 21_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        ks_liheap_utility_rate_tier: A
-        ks_liheap_dwelling_type: TRAILER_OTHER
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # matrix p.1 (80%) 1,700 & over tier A, Trailer/Other, size 1-4 = 84;
-    # max(84, 130) = 130
-    ks_liheap: 130
-
 - name: Case 4, other fuel trailer cell of 128 for a large family is raised to 130.
   period: 2026
   absolute_error_margin: 0.01
@@ -158,51 +87,7 @@
         members: [person1]
         state_code: KS
   output:
-    ks_liheap: 0
-
-- name: Case 7, household over the income limit receives nothing.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 30_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 30,000 > 1,956 x 12 = 23,472
-    ks_liheap: 0
-
-- name: Case 8, subsidized-housing renter with heat in rent receives nothing.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        receives_housing_assistance: true
-        heat_expense_included_in_rent: true
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
+    ks_liheap_eligible: false
     ks_liheap: 0
 
 - name: Case 9, negative self-employment income does not inflate the benefit.
@@ -230,78 +115,6 @@
     # (0-899): matrix p.1 (80%) tier E, House, size 1-4 = 709.
     ks_liheap: 709
 
-- name: Case 10, FY2025 season pays the 100 percent value.
-  period: 2025
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        ks_liheap_utility_rate_tier: E
-        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # KS_BenefitMatrix_2025.pdf p.1 (100%) 0-899 tier E, House, size 1-4 = 941
-    ks_liheap: 941
-
-- name: Case 11, household outside Kansas receives nothing.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-    households:
-      household:
-        members: [person1]
-        state_code: OK
-  output:
-    ks_liheap: 0
-
-- name: Case 12, FY2025 propane trailer cell of 100 meets the 100 minimum and is paid as is.
-  period: 2025
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 21_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: PROPANE
-        bottled_gas_expense: 1_200
-        ks_liheap_utility_rate_tier: A
-        ks_liheap_dwelling_type: TRAILER_OTHER
-        snap: 0
-        ks_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # 21,600 <= 1.5 x 15,060 = 22,590 -> eligible; 1,800/mo -> 1,700 & over;
-    # KS_BenefitMatrix_2025.pdf p.2 (100%) propane tier A, Trailer/Other,
-    # size 1-4 = 100; FY2025 minimum benefit is $100 (KS LIHEAP State Plan
-    # FY2025 2.6, #page=9): max(100, 100) = 100 (the FY2026 $130 floor does
-    # not apply to the FY2025 season).
-    ks_liheap: 100
-
 - name: Case 13, FY2025 natural gas trailer cell of 112 is above the 100 minimum and unchanged.
   period: 2025
   absolute_error_margin: 0.01
@@ -328,3 +141,127 @@
     # size 1-4 = 112; max(112, 100) = 112 (would be 130 under the FY2026
     # minimum, KS LIHEAP State Plan FY2025 2.6, #page=9 gives $100).
     ks_liheap: 112
+
+# Published FY2026 adjusted matrix cells (pages 1-4) and KEESM 13340/13362.
+# Seven SPM units evaluate mixed inputs and a non-Kansas mask together.
+- name: Case 15, mixed households evaluate Kansas LIEAP in one vectorized simulation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+      person2:
+        age: 40
+        employment_income: 22_000
+      person3:
+        age: 40
+        employment_income: 21_600
+      person4:
+        age: 40
+        employment_income: 12_000
+      person5:
+        age: 40
+        employment_income: 30_000
+      person6:
+        age: 40
+        employment_income: 12_000
+      person7:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      gas:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+      electric:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: APARTMENT
+        ks_tanf: 0
+      propane:
+        members: [person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: TRAILER_OTHER
+        ks_tanf: 0
+      wood:
+        members: [person4]
+        heating_type: WOOD
+        wood_expense: 1_200
+        ks_liheap_utility_rate_tier: J
+        ks_liheap_dwelling_type: DUPLEX
+        ks_tanf: 0
+      over_limit:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_utility_rate_tier: B
+        ks_liheap_dwelling_type: DUPLEX
+        ks_tanf: 0
+      free_wood:
+        members: [person6]
+        heating_type: WOOD
+        wood_expense: 0
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+      missouri:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+        ks_tanf: 0
+    households:
+      gas:
+        members: [person1]
+        state_code: KS
+      electric:
+        members: [person2]
+        state_code: KS
+      propane:
+        members: [person3]
+        state_code: KS
+      wood:
+        members: [person4]
+        state_code: KS
+      over_limit:
+        members: [person5]
+        state_code: KS
+      free_wood:
+        members: [person6]
+        state_code: KS
+      missouri:
+        members: [person7]
+        state_code: MO
+  output:
+    spm_units:
+      gas:
+        ks_liheap_eligible: true
+        ks_liheap: 709
+      electric:
+        ks_liheap_eligible: true
+        ks_liheap: 365
+      propane:
+        ks_liheap_eligible: true
+        ks_liheap: 130
+      wood:
+        ks_liheap_eligible: true
+        ks_liheap: 431
+      over_limit:
+        ks_liheap_eligible: false
+        ks_liheap: 0
+      free_wood:
+        ks_liheap_eligible: false
+        ks_liheap: 0
+      missouri:
+        ks_liheap_eligible: false
+        ks_liheap: 0

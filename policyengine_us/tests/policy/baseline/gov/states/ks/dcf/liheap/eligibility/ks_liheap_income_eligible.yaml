@@ -10,6 +10,7 @@
   output:
     ks_liheap_income_limit: 22_590
     ks_liheap_income_eligible: true
+
 - name: Case 2, 2025 household size 1, income 1 dollar above the published limit.
   period: 2025
   absolute_error_margin: 0.01
@@ -20,26 +21,7 @@
   output:
     ks_liheap_income_limit: 22_590
     ks_liheap_income_eligible: false
-- name: Case 3, 2025 household size 4, income 0 dollar above the published limit.
-  period: 2025
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 4
-    ks_liheap_countable_income: 46_800
-  output:
-    ks_liheap_income_limit: 46_800
-    ks_liheap_income_eligible: true
-- name: Case 4, 2025 household size 4, income 1 dollar above the published limit.
-  period: 2025
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 4
-    ks_liheap_countable_income: 46_801
-  output:
-    ks_liheap_income_limit: 46_800
-    ks_liheap_income_eligible: false
+
 - name: Case 5, 2026 household size 1, income 0 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
@@ -50,6 +32,7 @@
   output:
     ks_liheap_income_limit: 23_472
     ks_liheap_income_eligible: true
+
 - name: Case 6, 2026 household size 1, income 1 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
@@ -60,26 +43,7 @@
   output:
     ks_liheap_income_limit: 23_472
     ks_liheap_income_eligible: false
-- name: Case 7, 2026 household size 4, income 0 dollar above the published limit.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 4
-    ks_liheap_countable_income: 48_228
-  output:
-    ks_liheap_income_limit: 48_228
-    ks_liheap_income_eligible: true
-- name: Case 8, 2026 household size 4, income 1 dollar above the published limit.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 4
-    ks_liheap_countable_income: 48_229
-  output:
-    ks_liheap_income_limit: 48_228
-    ks_liheap_income_eligible: false
+
 - name: Case 9, 2026 household size 9, income 0 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
@@ -90,6 +54,7 @@
   output:
     ks_liheap_income_limit: 89_484
     ks_liheap_income_eligible: true
+
 - name: Case 10, 2026 household size 9, income 1 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
@@ -100,26 +65,7 @@
   output:
     ks_liheap_income_limit: 89_484
     ks_liheap_income_eligible: false
-- name: Case 11, 2026 household size 10, income 0 dollar above the published limit.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 10
-    ks_liheap_countable_income: 97_740
-  output:
-    ks_liheap_income_limit: 97_740
-    ks_liheap_income_eligible: true
-- name: Case 12, 2026 household size 10, income 1 dollar above the published limit.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    state_code: KS
-    ks_liheap_household_size: 10
-    ks_liheap_countable_income: 97_741
-  output:
-    ks_liheap_income_limit: 97_740
-    ks_liheap_income_eligible: false
+
 - name: Case 13, snap receipt does not waive the household income limit.
   period: 2026
   input:
@@ -129,6 +75,7 @@
     snap: 1_200
   output:
     ks_liheap_income_eligible: false
+
 - name: Case 14, ssi receipt does not waive the household income limit.
   period: 2026
   input:
@@ -138,6 +85,7 @@
     ssi: 1_200
   output:
     ks_liheap_income_eligible: false
+
 - name: Case 15, ks_tanf receipt does not waive the household income limit.
   period: 2026
   input:

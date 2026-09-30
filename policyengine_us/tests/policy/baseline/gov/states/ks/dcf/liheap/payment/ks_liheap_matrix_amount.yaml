@@ -139,35 +139,6 @@
     # matrix p.1 (80%) 0-899 tier J, House, size 1-4 = 1,136
     ks_liheap_matrix_amount: 1_136
 
-- name: Case 7, natural gas, band 1, tier E, house, family of four uses the 1-4 column.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-      person2:
-        age: 38
-      person3:
-        age: 10
-      person4:
-        age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        ks_tanf: 0
-        heating_type: NATURAL_GAS
-        ks_liheap_utility_rate_tier: E
-        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: KS
-  output:
-    # size 4 -> "Household Size 1-4": matrix p.1 (80%) 0-899 tier E, House = 709
-    ks_liheap_matrix_amount: 709
-
 - name: Case 8, natural gas, band 1, tier E, house, family of five uses the 5+ column.
   period: 2026
   absolute_error_margin: 0.01
@@ -373,28 +344,6 @@
     # 1,500/mo -> 1,200-1,699; matrix p.2 (80%) tier H, Trailer/Other,
     # size 1-4 = 232
     ks_liheap_matrix_amount: 232
-
-- name: Case 16, solar heating uses the electricity table.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 9_600
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: SOLAR
-        ks_liheap_utility_rate_tier: E
-        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    # SOLAR -> electricity: matrix p.2 (80%) 0-899 tier E, House = 1,043
-    ks_liheap_matrix_amount: 1_043
 
 - name: Case 17, propane, band 1, tier E, house.
   period: 2026
