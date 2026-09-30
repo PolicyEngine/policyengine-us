@@ -870,6 +870,7 @@ programs:
         variable: ca_state_supplement
         parameter_prefix: gov.states.ca.cdss.state_supplement
         verified_years: "2025-2026"
+        notes: Payment standards verified against CDSS and SSA POMS SI 01415.057/.058 for independent living, no cooking facilities, blind, and disabled minor categories. Not modeled correctly - non-medical out-of-home care and Medicaid facility standards are added to the independent-living standard instead of replacing it, and household-of-another (reduced needs) standards are not modeled (issue 7892)
       - state: CT
         status: complete
         name: Connecticut SSP
