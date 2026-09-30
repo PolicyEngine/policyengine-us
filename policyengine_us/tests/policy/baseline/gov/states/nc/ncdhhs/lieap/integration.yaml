@@ -1,0 +1,41 @@
+# Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
+- name: Housing vulnerability, state filtering, and uncapped payments
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, SC]
+    age: [40, 40, 40, 40, 40]
+    employment_income: [0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [10, 100, 100, 0, 100]
+    heat_expense_included_in_rent: [false, true, true, true, false]
+    is_in_public_housing: [false, false, true, true, false]
+  output:
+    nc_lieap: [400, 0, 400, 0, 0]
+- name: All members excluded means no payment
+  period: 2_026
+  input:
+    state_code: NC
+    age: 40
+    immigration_status: UNDOCUMENTED
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    nc_lieap_household_size: 0
+    nc_lieap: 0
+- name: Years before encoded coverage have no formula
+  period: 2_022
+  input:
+    state_code: NC
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    nc_lieap: 0

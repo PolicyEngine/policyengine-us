@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, NC
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,13 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: NC
+        status: partial
+        name: North Carolina LIEAP
+        full_name: North Carolina Low Income Energy Assistance Program
+        variable: nc_lieap
+        parameter_prefix: gov.states.nc.ncdhhs.lieap
+        notes: Regular heating from FY2026. Includes income deductions, eligible-member proration, heating payments, and the dated resource waiver. DAAS service receipt, detailed immigration/document categories, foster-child election, childcare payer/transport costs, categorical reenrollment, tribal administration, and discretionary supplements remain incomplete. No new inputs.
       - state: TX
         status: partial
         name: Texas CEAP

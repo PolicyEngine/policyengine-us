@@ -1,0 +1,121 @@
+# Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
+- name: Work deductions use closed upper bands then twenty percent
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    employment_income: [0, 600, 600.12, 1_200, 1_200.12, 1_800, 1_800.12, 2_400, 2_400.12, 3_600, 3_600.12, 4_800, 4_800.12]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    nc_lieap_income: [0, 480, 360.12, 960, 840.12, 1_440, 1_320.12, 1_920, 1_680.12, 2_880, 2_640.12, 3_840, 3_840.1]
+  absolute_error_margin: 0.02
+- name: Net self-employment and rental income receive the work deduction once
+  period: 2_026
+  input:
+    state_code: NC
+    age: 40
+    self_employment_income: 6_000
+    rental_income: 6_000
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+  output:
+    nc_lieap_earned_income: 12_000
+    nc_lieap_gross_income_person: 12_000
+    nc_lieap_income: 9_600
+- name: Elderly medical allowance, actual support, and unreimbursed care reduce income
+  period: 2_026
+  input:
+    state_code: NC
+    age: 60
+    employment_income: 12_000
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    child_support_expense: 1_200
+    childcare_expenses: 1_200
+    care_expenses: 600
+  output:
+    nc_lieap_income: 5_580
+- name: Child K12 earnings and business losses do not offset adult income
+  period: 2_026
+  input:
+    state_code: [NC, NC]
+    age: [17, 35]
+    is_in_k12_school: [true, false]
+    employment_income: [12_000, 12_000]
+    self_employment_income: [-6_000, -6_000]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+  output:
+    nc_lieap_income: [0, 9_600]
+- name: Excluded-member wages are prorated before the work deduction, within the manual gross test
+  period: 2_026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 3_600
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        social_security: 0
+      member1:
+        age: 30
+        ssi: 0
+        social_security: 0
+      member2:
+        age: 30
+        ssi: 0
+        social_security: 0
+    spm_units:
+      unit:
+        members: [adult, member1, member2]
+        tanf: 0
+        childcare_expenses: 0
+        heating_expense: 1_000
+    households:
+      home:
+        members: [adult, member1, member2]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 2
+    nc_lieap_income: 1_920
+    nc_lieap_eligible: true
+- name: Excluded-member wages are prorated before the work deduction, above the manual gross test
+  period: 2_026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 60_000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        social_security: 0
+      member1:
+        age: 30
+        ssi: 0
+        social_security: 0
+      member2:
+        age: 30
+        ssi: 0
+        social_security: 0
+    spm_units:
+      unit:
+        members: [adult, member1, member2]
+        tanf: 0
+        childcare_expenses: 0
+        heating_expense: 1_000
+    households:
+      home:
+        members: [adult, member1, member2]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 2
+    nc_lieap_income: 32_000
+    nc_lieap_eligible: false

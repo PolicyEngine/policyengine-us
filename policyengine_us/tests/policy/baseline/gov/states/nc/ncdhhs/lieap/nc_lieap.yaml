@@ -1,0 +1,72 @@
+# Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
+- name: Regular heating payments at the published lower-band maximum
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    nc_lieap_income: [10_176, 13_752, 17_328, 20_892, 24_468, 28_044, 31_620, 35_196, 38_772, 42_348, 45_924, 49_500,
+      53_076, 56_652, 60_228]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [400, 400, 400, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+- name: Regular heating payments at the next income band
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    nc_lieap_income: [10_188, 13_764, 17_340, 20_904, 24_480, 28_056, 31_632, 35_208, 38_784, 42_360, 45_936, 49_512,
+      53_088, 56_664, 60_240]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [300, 300, 300, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400]
+- name: Elderly heating payments at the published lower-band maximum
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    nc_lieap_income: [11_736, 15_864, 19_992, 24_108, 28_236, 32_364, 36_492, 40_608, 44_736, 48_864, 52_992]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [400, 400, 400, 500, 500, 500, 500, 500, 500, 500, 500]
+- name: Elderly heating payments at the next income band
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    nc_lieap_income: [11_748, 15_876, 20_004, 24_120, 28_248, 32_376, 36_504, 40_620, 44_748, 48_876, 53_004]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [300, 300, 300, 400, 400, 400, 400, 400, 400, 400, 400]
+- name: Coal and wood use a fixed award and retain the 130 percent ceiling
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true]
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_income: [0, 0, 20_340, 20_352]
+    heating_type: [COAL, WOOD, WOOD, COAL]
+  output:
+    nc_lieap: [300, 300, 300, 0]
+- name: Known non-solid heat sources share the schedule; no heat and unknown fuel return zero
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true]
+    nc_lieap_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, SOLAR, OTHER, NONE, UNSPECIFIED]
+  output:
+    nc_lieap: [400, 400, 400, 400, 400, 400, 0, 0]

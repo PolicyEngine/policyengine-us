@@ -1,0 +1,120 @@
+# Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
+- name: Published regular monthly limits, at the boundary
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
+      NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26]
+    nc_lieap_income: [20_340, 27_492, 34_644, 41_796, 48_948, 56_100, 63_240, 70_392, 77_544, 84_696, 91_848, 99_000,
+      106_140, 113_292, 120_444, 127_596, 134_748, 141_900, 149_040, 156_192, 163_344, 170_496, 177_648, 184_800, 191_940,
+      199_092]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+      true, true, true, true, true, true, true, true, true, true]
+- name: Published regular monthly limits, one dollar above
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
+      NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26]
+    nc_lieap_income: [20_352, 27_504, 34_656, 41_808, 48_960, 56_112, 63_252, 70_404, 77_556, 84_708, 91_860, 99_012,
+      106_152, 113_304, 120_456, 127_608, 134_760, 141_912, 149_052, 156_204, 163_356, 170_508, 177_660, 184_812, 191_952,
+      199_104]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false]
+- name: Published elderly monthly limits, at the boundary
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
+      NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26]
+    nc_lieap_income: [23_472, 31_728, 39_972, 48_228, 56_472, 64_728, 72_972, 81_228, 89_472, 97_728, 105_972, 114_228,
+      122_472, 130_728, 138_972, 147_228, 155_472, 163_728, 171_972, 180_228, 188_472, 196_728, 204_972, 213_228, 221_472,
+      229_728]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+      true, true, true, true, true, true, true, true, true, true]
+- name: Published elderly monthly limits, one dollar above
+  period: 2_026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
+      NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26]
+    nc_lieap_income: [23_484, 31_740, 39_984, 48_240, 56_484, 64_740, 72_984, 81_240, 89_484, 97_740, 105_984, 114_240,
+      122_484, 130_740, 138_984, 147_240, 155_484, 163_740, 171_984, 180_240, 188_484, 196_740, 204_984, 213_240, 221_484,
+      229_740]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false]
+- name: DAAS service receipt cannot be inferred from generic disability
+  period: 2_026
+  input:
+    state_code: NC
+    age: 59
+    is_disabled: true
+    nc_lieap_income: 22_200
+    nc_lieap_gross_income_person: 0
+    tanf: 0
+    heating_expense: 1_000
+  output:
+    nc_lieap_eligible: false
+- name: FY2026 resource waiver applies to large bank balances
+  period: 2_026
+  input:
+    state_code: NC
+    age: 40
+    bank_account_assets: 100_000
+    nc_lieap_income: 0
+    nc_lieap_gross_income_person: 0
+    tanf: 0
+    heating_expense: 1_000
+  output:
+    nc_lieap_eligible: true
+- name: Resource waiver expires before FY2027
+  period: 2_027
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 40, 60, 60]
+    bank_account_assets: [3_000, 3_001, 4_500, 4_501]
+    nc_lieap_income: [0, 0, 0, 0]
+    nc_lieap_gross_income_person: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [true, false, true, false]
+- name: FY2027 regular and special limits follow the October 2026 amendment
+  period: 2_027
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 40, 60, 60]
+    nc_lieap_income: [20_748, 20_760, 23_940, 23_952]
+    nc_lieap_gross_income_person: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_expense: [1_000, 1_000, 1_000, 1_000]
+  output:
+    nc_lieap_eligible: [true, false, true, false]

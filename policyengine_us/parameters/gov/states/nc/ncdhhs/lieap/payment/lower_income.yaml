@@ -1,0 +1,18 @@
+description: North Carolina pays this regular heating subsidy to lower income households by eligible household size under the Low Income Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 400
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 500
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  label: North Carolina LIEAP lower income heating payment
+  reference:
+    - title: North Carolina FY2026 heating benefit matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/NC_BenefitMatrix_Heat-Cool_2026.pdf#page=1,2,3
