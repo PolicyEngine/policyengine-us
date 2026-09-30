@@ -65,3 +65,212 @@
   output:
     # Sum of all income sources
     dependent_gross_income: [0, 3_500]
+
+- name: Dependent parent's Social Security below the IRC 86 base amount is not gross income.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 0 other gross income + 0.5 * 12,000 = 6,000,
+    # below the $25,000 single base amount, so no benefits are taxable.
+    # Previously all 12,000 of benefits counted.
+    dependent_gross_income: [0, 0]
+
+- name: Dependent's capital losses do not offset capital gains.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 5_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Gross income = max(0, 5,000) + max(0, -2,000) = 5,000.
+    # Netting would give 5,000 - 2,000 = 3,000.
+    dependent_gross_income: [0, 5_000]
+
+- name: Dependent's net capital losses give no capital gains gross income.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: -1_000
+        short_term_capital_gains: -500
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Gross income = 2,000 + max(0, -1,000) + max(0, -500) = 2,000.
+    dependent_gross_income: [0, 2_000]
+
+- name: Dependent's capital gains supplied as a net amount still count.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Long-term and short-term gains are both 0, so the larger of
+    # max(0, 0) + max(0, 0) = 0 and the net 3,000 is 3,000.
+    dependent_gross_income: [0, 3_000]
+
+- name: Dependent's Social Security is partly taxable above the IRC 86 base amount.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        taxable_interest_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 4,000 + 0.5 * 44,000 = 26,000.
+    # 26,000 is between the 25,000 base and the 34,000 adjusted base.
+    # Taxable benefits = min(0.5 * 44,000, 0.5 * (26,000 - 25,000))
+    # = min(22,000, 500) = 500.
+    # Gross income = 4,000 + 500 = 4,500.
+    dependent_gross_income: [0, 4_500]
+
+- name: Dependent's Social Security above the IRC 86 adjusted base amount.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 50_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 20,000 + 0.5 * 50,000 = 45,000,
+    # above the 34,000 adjusted base amount.
+    # Paragraph (1) amount = min(0.5 * 50,000, 0.5 * (45,000 - 25,000))
+    # = min(25,000, 10,000) = 10,000.
+    # Bracket amount = min(10,000, 0.5 * (34,000 - 25,000)) = 4,500.
+    # Taxable benefits = min(0.85 * (45,000 - 34,000) + 4,500, 0.85 * 50,000)
+    # = min(9,350 + 4,500, 42,500) = 13,850.
+    # Gross income = 20,000 + 13,850 = 33,850.
+    dependent_gross_income: [0, 33_850]
+
+- name: Unemployment compensation and tax-exempt interest count toward a dependent's provisional income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        unemployment_compensation: 3_000
+        tax_exempt_interest_income: 13_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 3,000 + 13,000 + 0.5 * 20,000 = 26,000.
+    # Taxable benefits = min(0.5 * 20,000, 0.5 * (26,000 - 25,000)) = 500.
+    # Tax-exempt interest is not gross income, but unemployment compensation is.
+    # Gross income = 3,000 + 500 = 3,500.
+    dependent_gross_income: [0, 3_500]
+
+- name: Head's Social Security does not count toward dependent gross income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 60_000
+        taxable_interest_income: 30_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # The head is not a dependent, so their gross income is not tested.
+    # The dependent has no benefits: provisional income = 1,000 < 25,000.
+    dependent_gross_income: [0, 1_000]

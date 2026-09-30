@@ -144,3 +144,51 @@
         members: [person1, person2]
   output:
     filing_status: SINGLE
+
+- name: Taxpayer with a dependent parent receiving only Social Security files as head of household.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # The parent's provisional income is 0.5 * 12,000 = 6,000 < 25,000, so
+    # their gross income is 0 < 4,400 and they are a qualifying relative.
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Taxpayer whose dependent has gross capital gains above the limit files as single.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 5_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Gross income = 5,000 (losses are not netted), not below 4,400.
+    filing_status: SINGLE

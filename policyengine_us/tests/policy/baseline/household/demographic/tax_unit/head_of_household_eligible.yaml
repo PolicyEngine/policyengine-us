@@ -231,3 +231,53 @@
         members: [parent, spouse, child]
   output:
     head_of_household_eligible: false
+
+- name: Dependent parent with nontaxable Social Security qualifies the taxpayer for HOH.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 0.5 * 12,000 = 6,000 < 25,000, so the parent's
+    # gross income is 0 < 4,400 and the parent is a qualifying relative.
+    head_of_household_eligible: true
+
+- name: Dependent parent with taxable Social Security above the limit does not qualify the taxpayer for HOH.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        taxable_interest_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 4,000 + 0.5 * 44,000 = 26,000.
+    # Taxable benefits = min(22,000, 0.5 * (26,000 - 25,000)) = 500.
+    # Gross income = 4,000 + 500 = 4,500, not below 4,400.
+    head_of_household_eligible: false

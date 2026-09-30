@@ -161,3 +161,133 @@
     # relatives. Per IRC 152(d)(1)(D), qualifying children cannot be
     # qualifying relatives.
     is_qualifying_relative_dependent: [false, false]
+
+- name: Parent with nontaxable Social Security is a qualifying relative.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 0.5 * 12,000 = 6,000 < 25,000, so gross income is 0.
+    # 0 < 4,400 exemption amount for 2022.
+    dependent_gross_income: [0, 0]
+    is_qualifying_relative_dependent: [false, true]
+
+- name: Capital gains net of losses below the limit but gross gains above it fail the income test.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 5_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Gross income = 5,000 (the 2,000 loss is not netted), not below 4,400.
+    dependent_gross_income: [0, 5_000]
+    is_qualifying_relative_dependent: [false, false]
+
+- name: Taxable Social Security pushes gross income above the limit.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        taxable_interest_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 4,000 + 0.5 * 44,000 = 26,000.
+    # Taxable benefits = min(22,000, 0.5 * (26,000 - 25,000)) = 500.
+    # Gross income = 4,000 + 500 = 4,500, not below 4,400.
+    dependent_gross_income: [0, 4_500]
+    is_qualifying_relative_dependent: [false, false]
+
+- name: Gross income one dollar below the exemption amount passes the income test.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 5_049
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 5,049 + 0.5 * 10,000 = 10,049 < 25,000,
+    # so no benefits are taxable. Gross income = 5,049 < 5,050 for 2024.
+    dependent_gross_income: [0, 5_049]
+    is_qualifying_relative_dependent: [false, true]
+
+- name: Gross income equal to the exemption amount fails the income test.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 5_050
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 5,050 + 0.5 * 10,000 = 10,050 < 25,000,
+    # so no benefits are taxable. Gross income = 5,050, which is not less
+    # than the 5,050 exemption amount for 2024 (IRC 152(d)(1)(B)).
+    dependent_gross_income: [0, 5_050]
+    is_qualifying_relative_dependent: [false, false]
