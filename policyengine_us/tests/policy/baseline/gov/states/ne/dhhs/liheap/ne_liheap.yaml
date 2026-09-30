@@ -331,3 +331,34 @@
     heating_type: NATURAL_GAS
   output:
     ne_liheap: 400
+
+- name: Case 31, multifamily dwelling payments at each closed income boundary.
+  # FY2026 heating table, multifamily all-fuel column: $380/$300/$220/$154.
+  period: 2026
+  input:
+    state_code: [NE, NE, NE, NE, NE, NE, NE, NE]
+    ne_liheap_eligible: [true, true, true, true, true, true, true, true]
+    ne_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    ne_liheap_gross_income: [0, 10_955, 10_955.01, 15_650, 15_650.01, 20_345, 20_345.01, 23_475]
+    ne_liheap_earned_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    ne_liheap_dwelling_type: [MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY,
+      MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+  output:
+    ne_liheap: [380, 380, 300, 300, 220, 220, 154, 154]
+
+- name: Case 32, dwelling type selects multifamily payments for every fuel.
+  # Multifamily has one all-fuel column; single-family has fuel-specific columns.
+  period: 2026
+  input:
+    state_code: [NE, NE, NE, NE, NE, NE]
+    ne_liheap_eligible: [true, true, true, true, true, true]
+    ne_liheap_household_size: [1, 1, 1, 1, 1, 1]
+    ne_liheap_gross_income: [0, 0, 0, 0, 0, 0]
+    ne_liheap_earned_income: [0, 0, 0, 0, 0, 0]
+    ne_liheap_dwelling_type: [SINGLE_FAMILY, MULTI_FAMILY, SINGLE_FAMILY,
+      MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY]
+    heating_type: [FUEL_OIL, FUEL_OIL, WOOD, WOOD, OTHER, SOLAR]
+  output:
+    ne_liheap: [1_050, 380, 800, 380, 380, 380]

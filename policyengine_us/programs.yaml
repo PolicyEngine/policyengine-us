@@ -836,8 +836,8 @@ programs:
         full_name: Nebraska Low Income Home Energy Assistance Program
         variable: ne_liheap
         parameter_prefix: gov.states.ne.dhhs.liheap
-        verified_start_year: 2026
-        notes: FY2026 regular single-family heating schedule, gross-income eligibility, and earned-income disregard. Uses existing SNAP income sources and immigration-status eligibility with an SPM-unit household approximation; counts existing net self-employment income without another business deduction. Multifamily rates, economic vulnerability for heat included in rent, program disqualifications, detailed immigration conditions, business-record expense alternatives, farm-loss offsets, and discretionary heating supplements are not modeled. Requires a positive heating expense and a supported primary fuel. Calendar 2026 represents the season ending in 2026; earlier years have no verified formula. No cooling, crisis, weatherization, or equipment assistance.
+        verified_years: "2026"
+        notes: FY2026 regular single-family and multifamily heating schedules, gross-income eligibility, and earned-income disregard. A state-specific dwelling-type input selects the schedule, defaulting to single-family when omitted. Uses existing SNAP income sources and immigration-status eligibility with an SPM-unit household approximation; counts existing net self-employment income without another business deduction. Economic vulnerability for heat included in rent, program disqualifications, detailed immigration conditions, business-record expense alternatives, farm-loss offsets, and discretionary heating supplements are not modeled. Requires a positive heating expense; single-family payments require a supported primary fuel, while multifamily payments cover all fuels. Calendar 2026 represents the season ending in 2026; earlier results use parameter backfilling and are unverified historical estimates. No cooling, crisis, weatherization, or equipment assistance.
 
   # --- SSA programs ---
   - id: ssi

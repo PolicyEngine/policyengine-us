@@ -7,14 +7,19 @@ class ne_liheap_eligible(Variable):
     definition_period = YEAR
     label = "Nebraska LIHEAP regular heating assistance eligibility"
     defined_for = StateCode.NE
-    reference = "https://rules.nebraska.gov/rules?agencyId=37&titleId=231"
+    reference = (
+        "https://rules.nebraska.gov/rules?agencyId=37&titleId=231",
+        "https://dhhs.ne.gov/Documents/LIHEAP%20State%20Plan.pdf#page=9",
+    )
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("ne_liheap_income_eligible", period)
-        # A positive heating bill demonstrates responsibility for energy
-        # costs. Heat included in rent can also qualify, but rent alone does
-        # not establish exposure to energy-price increases (476 NAC 1-004.06).
-        # That vulnerability and administrative disqualifications are not
-        # identifiable from existing inputs; no new inputs are introduced.
+        # 476 NAC 1-004.09 includes energy paid through rent; FY2026 plan 2.3
+        # allows such renters when responsible for a portion of heating costs.
+        # Economic vulnerability still requires exposure to energy-cost increases
+        # (1-004.06 and 2-002(A)); the heat-in-rent flag cannot establish this.
+        # The positive-bill proxy below misses eligible renters without a separate
+        # bill. This is a coverage gap, not a legal exclusion of heat-in-rent
+        # households. Administrative disqualifications also remain unmodeled.
         responsible = spm_unit("heating_expense", period) > 0
         return income_eligible & responsible

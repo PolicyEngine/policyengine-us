@@ -8,15 +8,19 @@ class ne_liheap_gross_income(Variable):
     unit = USD
     label = "Nebraska LIHEAP gross countable household income"
     defined_for = StateCode.NE
-    reference = "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7"
+    reference = (
+        "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
+        "https://rules.nebraska.gov/rules?agencyId=37&titleId=230",
+    )
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         # 476 NAC 2-002.01 incorporates SNAP's income treatment, but not
         # SNAP's net-income deductions or student/work eligibility tests.
         p = parameters(period).gov.usda.snap.income.sources
         person = spm_unit.members
         included = person("is_snap_immigration_status_eligible", period.first_month)
         size = spm_unit("ne_liheap_household_size", period)
+        # The same 475 NAC 3-002.06(A)-(B) proration applies to unearned income.
         fraction = size / max_(spm_unit("spm_unit_size", period), 1)
         share = where(included, 1, spm_unit.project(fraction))
         unearned = max_(add(person, period, p.unearned), 0)

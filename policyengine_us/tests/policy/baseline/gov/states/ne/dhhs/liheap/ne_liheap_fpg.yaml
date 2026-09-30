@@ -79,13 +79,20 @@
   output:
     ne_liheap_fpg: 0
     ne_liheap_income_eligible: false
-- name: Case 12, unverified earlier years do not use the FY2026 schedule.
+# Backfilling checks the model convention, not verified historical Nebraska policy.
+# The state schedule is backfilled, but the guideline uses the requested year - 1.
+- name: Case 12, parameter backfill uses the 2021 guideline for a 2022 estimate.
   period: 2022
   input:
     state_code: NE
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
     heating_type: NATURAL_GAS
     gas_expense: 1_000
   output:
-    ne_liheap: 0
-    ne_liheap_fpg: 0
-    ne_liheap_income_eligible: false
+    ne_liheap: 700
+    ne_liheap_household_size: 1
+    ne_liheap_fpg: 12_880
+    ne_liheap_income_eligible: true

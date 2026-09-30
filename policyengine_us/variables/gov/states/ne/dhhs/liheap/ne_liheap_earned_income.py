@@ -8,13 +8,19 @@ class ne_liheap_earned_income(Variable):
     unit = USD
     label = "Nebraska LIHEAP gross countable earned income"
     defined_for = StateCode.NE
-    reference = "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7"
+    reference = (
+        "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
+        "https://rules.nebraska.gov/rules?agencyId=37&titleId=230",
+    )
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         person = spm_unit.members
         countable = person("snap_countable_earner", period.first_month)
         included = person("is_snap_immigration_status_eligible", period.first_month)
         size = spm_unit("ne_liheap_household_size", period)
+        # 475 NAC 3-002.06(A)-(B), incorporated by 476 NAC 2-002.01:
+        # prorate excluded members' countable income across all members and
+        # retain the eligible members' shares. Eligible members count in full.
         fraction = size / max_(spm_unit("spm_unit_size", period), 1)
         share = where(included, 1, spm_unit.project(fraction))
         # Use existing net self-employment income without another business
