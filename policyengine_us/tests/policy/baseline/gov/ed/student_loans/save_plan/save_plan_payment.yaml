@@ -1,0 +1,230 @@
+# Monthly payment under the SAVE plan as codified in 34 CFR 685.209(f)(1), (g)(1):
+#   discretionary income = max(AGI - 2.25 x poverty guideline, 0)
+#   rate = 5% x undergraduate share + 10% x graduate share (from July 1, 2024)
+#   payment = rate x discretionary income / 12 x own share of the couple's
+#   eligible balance (joint filers); under 5 -> 0; 5 to under 10 -> 10.
+# 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
+
+- name: Case 1, single filer with only undergraduate loans pays 5 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2.25 x 15,960 = 35,910; 5% x 4,090 / 12 = 17.04.
+    save_plan_payment: 17.04
+
+- name: Case 2, income exactly 225 percent of the guideline pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_910
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    save_plan_payment: 0
+
+- name: Case 3, a borrower with only graduate loans pays 10 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_graduate_share: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 10% x 4,090 / 12 = 34.08.
+    save_plan_payment: 34.08
+
+- name: Case 4, mixed undergraduate and graduate loans weight the two rates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_graduate_share: 0.4
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (5% x 0.6 + 10% x 0.4) = 7%; 7% x 4,090 / 12 = 23.86.
+    save_plan_payment: 23.86
+
+- name: Case 5, a payment under 5 dollars becomes zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 36_900
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 5% x 990 / 12 = 4.125 < 5 -> 0.
+    save_plan_payment: 0
+
+- name: Case 6, a payment from 5 to under 10 dollars becomes 10 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 37_500
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 5% x 1,590 / 12 = 6.625 -> 10.
+    save_plan_payment: 10
+
+- name: Case 7, a single parent of two below 225 percent pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 2.25 x 27,320 = 61,470 > 55,000.
+    save_plan_payment: [0, 0, 0]
+
+- name: Case 8, joint filers who both borrowed split the payment by balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 60_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 120_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 2.25 x 21,640 = 48,690; 5% x 71,310 / 12 = 297.13; x 75% and x 25%.
+    save_plan_payment: [222.84, 74.28]
+
+- name: Case 9, the undergraduate rate falls from 10 to 5 percent in July 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2024 guideline 15,060: 2.25 x 15,060 = 33,885; discretionary income 6,115.
+    # January to June: 10% x 6,115 / 12 = 50.96. July on: 5% -> 25.48.
+    # Year: 6 x 50.9583 + 6 x 25.4792 = 458.63.
+    save_plan_payment:
+      2024-01: 50.96
+      2024-06: 50.96
+      2024-07: 25.48
+      2024-12: 25.48
+      2024: 458.63
+
+- name: Case 10, a borrower with only Parent PLUS loans owes nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    save_plan_payment: 0
