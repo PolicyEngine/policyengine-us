@@ -9,10 +9,11 @@ class ky_liheap_income(Variable):
     label = "Kentucky LIHEAP countable household income"
     defined_for = StateCode.KY
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=5,6,7"
+        "https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=5,6,7",
+        "https://apps.legislature.ky.gov/law/kar/titles/921/004/116/",
     )
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.chfs.liheap
         person = spm_unit.members
         # Annual income divided by twelve approximates the calendar month before
@@ -34,4 +35,7 @@ class ky_liheap_income(Variable):
         # Detailed excluded WIA/work-study earnings, jury duty, settlements,
         # insurance payments, royalties, deposits, and non-taxable refunds cannot
         # be isolated with existing inputs. Do not add new inputs for this draft.
+        # 921 KAR 4:116 Section 1(8) counts income received. The annual tanf
+        # aggregate includes ky_ktap and applies take-up; ky_ktap alone represents
+        # monthly entitlement and would count benefits a nonrecipient could get.
         return spm_unit.sum(earned + max_(unearned, 0) + ssa) + spm_unit("tanf", period)

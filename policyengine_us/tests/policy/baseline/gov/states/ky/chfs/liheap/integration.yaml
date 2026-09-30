@@ -28,11 +28,22 @@
     hud_utility_allowance: [0, 0, 100]
   output:
     ky_liheap: [26, 26, 26]
-- name: Earlier years have no encoded payment schedule
+# Backfilling checks the model convention, not verified historical Kentucky policy.
+- name: Parameter backfill uses the 2021 guideline for a 2022 estimate
   period: 2_022
   input:
     state_code: KY
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    tanf: 0
     heating_type: ELECTRICITY
     heating_expense: 1_000
+    receives_housing_assistance: false
+    is_in_public_housing: false
+    hud_utility_allowance: 0
   output:
-    ky_liheap: 0
+    ky_liheap: 184
+    ky_liheap_fpg: 12_880
+    ky_liheap_eligible: true

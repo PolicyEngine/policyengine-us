@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class ky_liheap_fpg(Variable):
@@ -10,14 +11,12 @@ class ky_liheap_fpg(Variable):
     defined_for = StateCode.KY
     reference = "https://www.mkcap.org/uploads/3/4/8/3/34834615/2025-2026-liheap-fact-sheet-v2.jpg"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.chfs.liheap
         size = spm_unit("spm_unit_size", period)
         state_group = spm_unit.household("state_group_str", period)
-        # Annual 2026 represents the heating season ending in 2026. Only the
-        # guideline year is lagged; household composition remains current.
-        fpg_year = period.start.year - int(p.fpg_year_lag)
-        fpg = parameters(f"{fpg_year}-01-01").gov.hhs.fpg
-        return fpg.first_person[state_group] + fpg.additional_person[
-            state_group
-        ] * max_(size - 1, 0)
+        # The annual period represents the heating season ending in that year.
+        # Only the guideline is lagged; household composition remains current.
+        return fpg(
+            max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag
+        )

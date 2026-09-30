@@ -7,10 +7,14 @@ class ky_liheap(Variable):
     definition_period = YEAR
     unit = USD
     label = "Kentucky LIHEAP regular heating assistance"
+    documentation = (
+        "Verified for FY2026. Earlier years use model parameter backfilling "
+        "and are unverified historical estimates."
+    )
     defined_for = "ky_liheap_eligible"
     reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.chfs.liheap.payment
         income = spm_unit("ky_liheap_income", period) / MONTHS_IN_YEAR
         fpg = spm_unit("ky_liheap_fpg", period) / MONTHS_IN_YEAR
@@ -47,5 +51,5 @@ class ky_liheap(Variable):
         amount = where(subsidized, np.ceil(amount * p.subsidized_housing_rate), amount)
         # No verified table mapping exists for OTHER/SOLAR/UNSPECIFIED/NONE.
         # The full seasonal subsidy may credit the account, so it is not capped
-        # at the current bill. Coverage starts in 2026, not program inception.
+        # at the current bill.
         return where(fuel_points > 0, amount, 0)
