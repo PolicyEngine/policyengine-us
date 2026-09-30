@@ -21,9 +21,11 @@ class local_income_tax(Variable):
     #   (a) Exclude from SALT. Levy the local tax only via
     #       local_income_tax_before_refundable_credits and leave it out of this
     #       list. Exact for non-itemizers; understates SALT (never understates
-    #       federal tax) for itemizers. This is the Yonkers approach: the
-    #       resident surcharge is a fraction of NY State tax, so it is levied in
-    #       the pre-refundable aggregate but omitted here.
+    #       federal tax) for itemizers. This is the Yonkers and Multnomah County
+    #       PFA approach: Yonkers depends on NY State tax, and Multnomah County
+    #       PFA tax depends on OR taxable income (which subtracts federal tax
+    #       liability), so they are levied in the pre-refundable aggregate but
+    #       omitted here to prevent circular dependencies.
     #   (b) Withheld-estimate proxy. Where a state's withholding form combines
     #       state and local withholding (so a state-side withheld-tax estimate
     #       already carries the local component), route the local tax into SALT
@@ -37,7 +39,6 @@ class local_income_tax(Variable):
     adds = [
         "nyc_income_tax",
         "in_county_tax",
-        "or_multnomah_pfa_tax",
         "pa_philadelphia_wage_tax",
         "mo_kansas_city_earnings_tax",
         "mo_st_louis_earnings_tax",

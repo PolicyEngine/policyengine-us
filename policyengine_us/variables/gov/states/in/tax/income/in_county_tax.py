@@ -17,4 +17,4 @@ class in_county_tax(Variable):
         rate = np.zeros_like(county, dtype=float)
         rates = parameters(period).gov.states["in"].tax.income.county_rates
         rate[in_in] = rates[county[in_in]]
-        return rate * tax_unit("in_agi", period)
+        return rate * max_(0, tax_unit("in_agi", period))
