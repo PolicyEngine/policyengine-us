@@ -10,7 +10,7 @@ class nc_lieap_earned_income(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,11,12,13,15,16,17"
 
-    def formula_2026(person, period, parameters):
+    def formula(person, period, parameters):
         countable = person("snap_countable_earner", period.first_month)
         # Existing net self-employment income approximates receipts less allowed
         # costs. No second business-expense deduction or new input is introduced.

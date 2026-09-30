@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class nc_lieap_income_limit(Variable):
@@ -10,21 +11,23 @@ class nc_lieap_income_limit(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,14,15,19,20"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap
         person = spm_unit.members
         size = spm_unit("nc_lieap_household_size", period)
         included = person("is_citizen_or_legal_immigrant", period)
-        elderly = spm_unit.any((person("age", period) >= p.elderly_age) & included)
-        # The 150% disability pathway also requires DAAS service receipt, which
-        # existing inputs do not identify. Do not infer it from generic disability.
-        rate = where(elderly, p.special_income_limit, p.income_limit)
-        fpg_year = period.start.year - int(p.fpg_year_lag)
-        fpg = parameters(f"{fpg_year}-01-01").gov.hhs.fpg
+        special = spm_unit.any(
+            (
+                (person("age", period) >= p.elderly_age)
+                | person("nc_lieap_is_daas_disabled", period)
+            )
+            & included
+        )
+        rate = where(special, p.special_income_limit, p.income_limit)
         state_group = spm_unit.household("state_group_str", period)
-        amount = fpg.first_person[state_group] + fpg.additional_person[
-            state_group
-        ] * max_(size - 1, 0)
+        amount = fpg(
+            max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag
+        )
         # Keep the unrounded amount: the published eligibility and payment-band
         # tables each round their own monthly threshold to the nearest dollar.
         return where(size > 0, amount * rate, 0)

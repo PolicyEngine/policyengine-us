@@ -89,6 +89,7 @@
     state_code: NC
     age: 40
     bank_account_assets: 100_000
+    nc_lieap_nonbank_resources: 100_000
     nc_lieap_income: 0
     nc_lieap_gross_income_person: 0
     tanf: 0
@@ -118,3 +119,79 @@
     heating_expense: [1_000, 1_000, 1_000, 1_000]
   output:
     nc_lieap_eligible: [true, false, true, false]
+
+- name: Public housing requires paid excess heating charges when heat is in rent
+  # EP-300.08: a bill alone is insufficient; a qualifying past payment suffices
+  # even if the household has no separate heating bill in the modeled year.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40]
+    nc_lieap_income: [0, 0, 0, 0, 0, 0]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    heating_expense: [100, 100, 0, 100, 100, 100]
+    heat_expense_included_in_rent: [true, true, true, true, false, false]
+    is_in_public_housing: [true, true, true, false, true, false]
+    nc_lieap_has_paid_excess_heating_costs: [false, true, true, true, false, false]
+  output:
+    nc_lieap_eligible: [false, true, true, false, true, true]
+
+- name: Countable resources include nonbank cash and net bank balances
+  # EP-300.11: $3,000 ordinary limit; bank exclusions do not offset cash.
+  period: 2027
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40]
+    nc_lieap_income: [0, 0, 0, 0, 0, 0]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    heating_expense: [100, 100, 100, 100, 100, 100]
+    bank_account_assets: [2_500, 2_500, 5_000, 5_000, 0, 0]
+    nc_lieap_nonbank_resources: [500, 501, 1_000, 1_001, 3_001, 3_000]
+    nc_lieap_bank_account_exclusions: [0, 0, 3_000, 3_000, 9_999, 9_999]
+  output:
+    nc_lieap_eligible: [true, false, true, false, false, true]
+
+- name: Excluded members retain their resources in the household resource test
+  # EP-300.11 expressly counts ineligible aliens' resources: $2,000 + $1,001.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        bank_account_assets: 2_000
+        nc_lieap_gross_income_person: 0
+      person2:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        nc_lieap_nonbank_resources: 1_001
+        nc_lieap_gross_income_person: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nc_lieap_income: 0
+        tanf: 0
+        heating_expense: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_lieap_eligible: false
+
+- name: DAAS-qualified disability receives the higher resource limit
+  period: 2027
+  input:
+    state_code: [NC, NC]
+    age: [40, 40]
+    nc_lieap_is_daas_disabled: [true, true]
+    is_usda_disabled: [false, false]
+    nc_lieap_income: [0, 0]
+    nc_lieap_gross_income_person: [0, 0]
+    tanf: [0, 0]
+    heating_expense: [100, 100]
+    bank_account_assets: [4_500, 4_501]
+  output:
+    nc_lieap_eligible: [true, false]

@@ -1,0 +1,12 @@
+# EP-300.02 and 300.09: age 60+ or qualified disability plus DAAS services.
+- name: DAAS disability qualifies for the special income limit independently of age
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 40, 60, 40]
+    is_disabled: [true, true, false, true]
+    is_citizen_or_legal_immigrant: [true, true, true, false]
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_is_daas_disabled: [true, false, false, true]
+  output:
+    nc_lieap_income_limit: [23_475, 20_345, 23_475, 20_345]

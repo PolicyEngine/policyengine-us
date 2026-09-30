@@ -10,7 +10,7 @@ class nc_lieap_gross_income_person(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,11,12,13,15,16,17"
 
-    def formula_2026(person, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.income.sources
         # Section 300.09 incorporates FNS income types, not its base periods or
         # net-income deductions. Rental income is already in LIEAP earned income.

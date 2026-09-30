@@ -70,3 +70,18 @@
     heating_type: [NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, SOLAR, OTHER, NONE, UNSPECIFIED]
   output:
     nc_lieap: [400, 400, 400, 400, 400, 400, 0, 0]
+
+- name: DAAS disability uses special payment bands but retains the coal and wood ceiling
+  # Special lower band ends at $978/month; solid fuel still has the $1,695
+  # regular income ceiling even when the household qualifies for 150% FPG.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 40, 40, 40]
+    nc_lieap_is_daas_disabled: [true, true, true, true]
+    nc_lieap_eligible: [true, true, true, true]
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_income: [11_736, 11_748, 20_340, 20_352]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, WOOD, COAL]
+  output:
+    nc_lieap: [400, 300, 300, 0]

@@ -10,7 +10,7 @@ class nc_lieap_income(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,11,12,13,15,16,17"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap
         person = spm_unit.members
         included = person("is_citizen_or_legal_immigrant", period)

@@ -13,6 +13,7 @@
     gas_expense: [10, 100, 100, 0, 100]
     heat_expense_included_in_rent: [false, true, true, true, false]
     is_in_public_housing: [false, false, true, true, false]
+    nc_lieap_has_paid_excess_heating_costs: [false, false, true, false, false]
   output:
     nc_lieap: [400, 0, 400, 0, 0]
 - name: All members excluded means no payment
@@ -31,11 +32,22 @@
   output:
     nc_lieap_household_size: 0
     nc_lieap: 0
-- name: Years before encoded coverage have no formula
+# Backfilling checks the model convention, not verified historical NC policy.
+- name: Parameter backfill uses the 2021 guideline for a 2022 estimate
   period: 2_022
   input:
     state_code: NC
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+    bank_account_assets: 0
     heating_type: NATURAL_GAS
     gas_expense: 1_000
   output:
-    nc_lieap: 0
+    nc_lieap: 400
+    nc_lieap_household_size: 1
+    nc_lieap_income_limit: 16_744
+    nc_lieap_eligible: true

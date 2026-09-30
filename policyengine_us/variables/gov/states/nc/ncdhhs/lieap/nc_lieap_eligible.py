@@ -9,7 +9,7 @@ class nc_lieap_eligible(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=9,15,16,17,18"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap
         person = spm_unit.members
         size = spm_unit("nc_lieap_household_size", period)
@@ -25,25 +25,35 @@ class nc_lieap_eligible(Variable):
             spm_unit, period, sources
         )
         gross_eligible = ~nonqualified | (gross / MONTHS_IN_YEAR <= limit)
-        # Positive heat costs approximate a separate bill. For public housing with
-        # heat in rent, a positive reported heat bill approximates an excess charge.
-        # Private heat-in-rent households do not qualify. Institutions, utility
-        # account ownership, and the exact public-housing excess history are gaps.
-        heat = spm_unit("heating_expense", period) > 0
+        # EP-300.08 accepts the applicant's statement of vulnerability. Public
+        # heat-in-rent housing requires excess heating charges paid within the
+        # prior 12 months at the current address, not merely a positive fuel bill.
+        # Section 8 remains a private arrangement. Institutional status and
+        # the agency's vendor/account checks are outside this calculation.
+        heat = spm_unit("has_heating_expense", period)
         included_rent = spm_unit("heat_expense_included_in_rent", period)
         public_housing = spm_unit.household("is_in_public_housing", period)
-        vulnerable = heat & (~included_rent | public_housing)
+        excess_paid = spm_unit("nc_lieap_has_paid_excess_heating_costs", period)
+        vulnerable = where(included_rent, public_housing & excess_paid, heat)
         resource_eligible = True
         if p.resource_test:
             special = spm_unit.any(
                 (person("age", period) >= p.elderly_age)
                 | person("is_usda_disabled", period)
+                | person("nc_lieap_is_daas_disabled", period)
             )
             resource_limit = where(special, p.special_resource_limit, p.resource_limit)
-            # Bank balances approximate the countable cash/checking/savings total;
-            # cash on hand and offsets for income already counted are not available.
+            # EP-300.11 deducts outstanding withdrawals and already-counted income
+            # only from bank accounts; those offsets cannot reduce nonbank cash.
+            # Include ineligible members' assets without income-style proration.
+            countable_banks = max_(
+                person("bank_account_assets", period)
+                - max_(person("nc_lieap_bank_account_exclusions", period), 0),
+                0,
+            )
+            nonbank = max_(person("nc_lieap_nonbank_resources", period), 0)
             resource_eligible = (
-                add(spm_unit, period, ["bank_account_assets"]) <= resource_limit
+                spm_unit.sum(countable_banks + nonbank) <= resource_limit
             )
         # The plan marks SNAP categorical eligibility but does not define a waiver
         # of the manual's financial tests. Automatic reenrollment/prior-year awards,
