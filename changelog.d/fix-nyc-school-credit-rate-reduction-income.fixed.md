@@ -1,0 +1,1 @@
+Deny the NYC school tax credit rate reduction amount when school tax credit income (federal AGI minus IRA distributions) exceeds $500,000, in addition to when city taxable income does, and subtract the head's and spouse's IRA and SEP distributions from school tax credit income, per NY Tax Law § 606(ggg)(2) and (4-b).
