@@ -124,7 +124,7 @@ LEGACY_UMBRELLA_CASES = [
     ),
     (
         "taxsim_state_eitc",
-        ["mn_wfc"],
+        ["mn_child_and_working_families_credits"],
         make_tax_unit_situation(
             year=2023,
             state="MN",
@@ -192,16 +192,6 @@ def test_state_property_tax_credit_matches_configured_component_sum():
                 wages=40_000.0,
                 childcare=2_000.0,
                 dependent_ages=(5,),
-            ),
-        ),
-        (
-            ["mn_wfc", "taxsim_mn_child_tax_credit_component"],
-            "mn_child_and_working_families_credits",
-            make_tax_unit_situation(
-                year=2023,
-                state="MN",
-                wages=20_050.0,
-                dependent_ages=(9, 7),
             ),
         ),
     ],

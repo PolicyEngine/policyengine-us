@@ -33,3 +33,63 @@
         state_code: NY
   output:
     taxsim_state_eitc: 300
+
+- name: MN combined Child and Working Family Credit is the state EITC from 2023
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        mn_child_and_working_families_credits: 2_118.8
+        mn_wfc: 1_182.78
+    households:
+      household:
+        members: [parent]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 2_118.8
+
+- name: MN working family credit is the state EITC before 2023
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        mn_child_and_working_families_credits: 2_100
+        mn_wfc: 1_182.78
+    households:
+      household:
+        members: [parent]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 1_182.78
+
+- name: MN childless couple 2024 reports the whole combined credit as the state EITC
+  # 2024 Schedule M1CWFC: 4% (line 4) of earned income up to $9,220 (line 3),
+  # below the $36,880 joint phase-out start (line 11): 0.04 * 9,220 = 368.80.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 9_220
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 368.8
+    taxsim_state_ctc: 0

@@ -121,3 +121,23 @@
         state_code: RI
   output:
     taxsim_state_ctc: 0
+
+- name: MN child tax credit is reported within the combined credit, not the state CTC
+  # From 2023 Minn. Stat. 290.0661 subd. 4 phases the child tax credit down
+  # jointly with the working family credit; taxsim_state_eitc carries the total.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        mn_child_and_working_families_credits: 2_118.8
+        mn_wfc: 1_182.78
+    households:
+      household:
+        members: [parent]
+        state_code: MN
+  output:
+    taxsim_state_ctc: 0
