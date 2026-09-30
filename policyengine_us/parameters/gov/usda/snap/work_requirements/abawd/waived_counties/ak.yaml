@@ -43,13 +43,13 @@ values:
   #   which per the Alaska Division of Public Assistance "exempts all Alaska
   #   census areas and boroughs from the ABAWD time-limit criteria, except
   #   the Municipality of Anchorage". It covers the nine areas marked below.
-  # Maintainers should confirm the good-faith exemption's geographic scope.
-  # FNS has posted no approval document for it, and FNS Q&A #1 (June 11,
-  # 2026, question 17) describes (o)(7) exemptions as applying to
-  # individuals rather than to areas, so the scope rests on the Alaska
-  # Division of Public Assistance page. If the exemption ends early
-  # (7 U.S.C. 2015(o)(7)(D)(ii)) or does not cover these areas, delete the
-  # nine marked entries.
+  # Limitation: no FNS approval letter states the good-faith exemption's
+  # geographic scope, so the nine marked entries follow the Alaska Division
+  # of Public Assistance FAQ (all areas except Anchorage). FNS Q&A #1
+  # (June 11, 2026, question 17) describes (o)(7) exemptions as applying to
+  # individuals rather than to areas. If FNS terminates the exemption early
+  # (7 U.S.C. 2015(o)(7)(D)(ii)), remove the nine marked entries from that
+  # date.
   2025-11-01:
     - ALEUTIANS_EAST_BOROUGH_AK # FIPS 02013; good-faith exemption only
     - ALEUTIANS_WEST_CENSUS_AREA_AK # FIPS 02016; good-faith exemption only
@@ -104,7 +104,10 @@ metadata:
       href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=12
     - title: Public Law 119-21, Section 10102(c) - expiration and early termination of noncontiguous State exemptions (7 U.S.C. 2015(o)(7)(D))
       href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=13
-    - title: USDA FNS SNAP Provisions of the OBBB Act of 2025 - ABAWD Waivers Implementation Memorandum, October 3, 2025 - ABAWD good faith exemptions for Alaska and Hawaii
-      href: https://web.archive.org/web/20260313032048id_/https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf#page=3
-    - title: USDA FNS SNAP Provisions of the OBBB Act of 2025 - ABAWD Waivers Implementation Memorandum, October 3, 2025 - termination of ABAWD good faith exemption approvals
-      href: https://web.archive.org/web/20260313032048id_/https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf#page=4
+    # Archived copy of the same 4-page memo, against which both page anchors
+    # were checked:
+    # https://web.archive.org/web/20260313032048id_/https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf#page=3
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025) - ABAWD good faith exemptions for Alaska and Hawaii
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=3
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025) - termination of ABAWD good faith exemption approvals
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=4

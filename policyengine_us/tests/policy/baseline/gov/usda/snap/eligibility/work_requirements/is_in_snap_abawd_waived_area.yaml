@@ -4,7 +4,9 @@
 # (FIPS 02020). From 2025-11-01 through 2026-10-31, the FY2026 waiver (20
 # boroughs and census areas) and the 7 U.S.C. 2015(o)(7) good-faith
 # exemption (every area except Anchorage) together keep the same 29 areas
-# waived.
+# waived. No FNS approval letter states the good-faith exemption's
+# geographic scope; the list follows the Alaska Division of Public
+# Assistance FAQ (all areas except Anchorage).
 # From 2025-11-01 through 2026-10-31, FNS waived the time limit in seven
 # California counties (CDSS ACL 25-79 and ACL 26-15).
 # Statewide waivers (CA, DC, IL, NV, NM through 2024-12-31, and NY through
@@ -568,10 +570,10 @@
 
 # FY2025 partial-state waivers (FNS FY2025 Q1 status report; USDA February 26,
 # 2026 Appendix A terminations). Kentucky's 117-county waiver runs 2024-12-01
-# through 2025-11-30, so a Kentucky county is waived within the window and
-# reverts to the time limit the month after termination. Adair County (FIPS
-# 21001) appears in every KY block from 2024-12-01 through 2025-11-01, and is
-# absent from the 2025-12-01 block onward.
+# through 2025-11-30. Adair County (FIPS 21001) is waived under the FY2024
+# list from 2024-11-01 and under the FY2025 list through 2025-11-30. It is
+# outside the five-county FY2026 waiver (2025-12-01 through 2026-11-30), so
+# it reverts to the time limit from 2025-12.
 
 - name: Case 33, KY resident of waived Adair County (2025-01, within the FY2025 waiver window) is exempt via the county waiver.
   period: 2025-01
@@ -724,7 +726,7 @@
       2025-08: true
       2025-09: false
 
-- name: Case 43, AZ waiver starts in October 2024.
+- name: Case 43, AZ resident of Apache County is not waived in 2024-09 because Arizona's FY2024 waiver (the same 14 counties, through 2024-09-30) is not modeled, and is waived from the FY2025 waiver's 2024-10-01 start.
   period: 2024
   input:
     state_code: AZ
@@ -1157,11 +1159,14 @@
     is_in_snap_abawd_waived_area:
       2026-01: false
 
-# Modeling start boundaries. Waivers in effect before 2024-11-01 are not
-# modeled, except Delaware's FY2025 county waiver, which starts 2024-10-01.
-# Delaware's FY2024 statewide waiver (through 2024-09-30) and the New Mexico
-# and New York FY2024 statewide waivers before 2024-11-01 are therefore
-# absent, so these months read as not waived.
+# Modeling start boundaries. Months before 2024-11 are incomplete: waivers
+# that ended before 2024-11-01 are not modeled, and earlier waivers still
+# running on 2024-11-01 are keyed at that date, while approvals that took
+# effect from mid-2024 on keep their implementation dates (for example,
+# Delaware's FY2025 county waiver, from 2024-10-01). Delaware's FY2024
+# statewide waiver (through 2024-09-30) is therefore absent, and the New
+# Mexico and New York FY2024 statewide waivers read as not waived before
+# 2024-11-01.
 
 - name: Case 73, DE resident of Kent County is not waived in 2024-09 because Delaware's FY2024 statewide waiver is not modeled, and is waived from the FY2025 county waiver's 2024-10-01 start.
   period: 2024
