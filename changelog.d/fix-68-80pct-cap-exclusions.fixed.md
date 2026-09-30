@@ -1,0 +1,1 @@
+Exclude medical expenses, investment interest, and casualty and theft losses from the itemized deductions that the pre-2026 section 68 80 percent ceiling applies to, per section 68(c) and the Schedule A Itemized Deductions Worksheet—Line 29.

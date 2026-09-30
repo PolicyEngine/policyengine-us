@@ -1,0 +1,24 @@
+description: The US excludes these deductions from the itemized deductions that the 80 percent ceiling on the itemized deductions limitation applies to, under the section 68 structure in effect before the One Big Beautiful Bill Act.
+values:
+  # Section 68(c) excludes the medical expense deduction (section 213), any
+  # deduction for investment interest (section 163(d)), and casualty, theft
+  # and wagering losses (section 165(c)(2), (c)(3) and (d)).
+  # investment_interest_expense is the investment interest that
+  # interest_deduction includes through non_mortgage_interest.
+  # wagering_losses_deduction is deducted outside
+  # total_itemized_taxable_income_deductions, so it never enters the base.
+  2009-01-01:
+    - medical_expense_deduction
+    - investment_interest_expense
+    - casualty_loss_deduction
+metadata:
+  unit: list
+  period: year
+  label: Itemized deductions excluded from the limitation ceiling
+  reference:
+    - title: 26 U.S. Code § 68(c) (2016 edition) - Exception for certain itemized deductions
+      href: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partI-sec68.htm
+    - title: 2016 Instructions for Schedule A (Form 1040), Itemized Deductions Worksheet—Line 29, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=13
+    - title: 2017 Instructions for Schedule A (Form 1040), Itemized Deductions Worksheet—Line 29, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=14
