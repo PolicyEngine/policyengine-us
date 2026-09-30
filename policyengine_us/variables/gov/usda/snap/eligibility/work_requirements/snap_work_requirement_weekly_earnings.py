@@ -16,7 +16,7 @@ class snap_work_requirement_weekly_earnings(Variable):
         "snap_work_requirement_weekly_hours uses: earnings per week worked "
         "would restore the exemption for every part-year worker whose usual "
         "hours are 30 or more at a wage of at least the minimum. With "
-        "gov.simulation.snap_work_hours_use_weeks_worked set to false, "
+        "gov.simulation.snap_work_tests_average_over_year set to false, "
         "earnings are divided by weeks worked instead (52 when weeks worked "
         "are not reported). Before-labor-supply-response inputs avoid a "
         "SNAP to labor supply to SNAP cycle, and self-employment losses are "
@@ -37,7 +37,7 @@ class snap_work_requirement_weekly_earnings(Variable):
             + max_(person("self_employment_income_before_lsr", period), 0)
             + max_(person("sstb_self_employment_income_before_lsr", period), 0)
         )
-        if parameters(period).gov.simulation.snap_work_hours_use_weeks_worked:
+        if parameters(period).gov.simulation.snap_work_tests_average_over_year:
             return earnings / WEEKS_IN_YEAR
         weeks = person("weeks_worked", period)
         weeks_divisor = where(weeks > 0, min_(weeks, WEEKS_IN_YEAR), WEEKS_IN_YEAR)

@@ -1,7 +1,9 @@
 # is_receiving_unemployment_compensation: the unemployment_compensation_months
 # of the year form one contiguous block of calendar months that wraps within
-# the year. The block starts at splitmix64(person_id) mod 12 (0 = January).
-# Start months used below: person_id 0 -> Jan, 1 -> Feb, 2 -> Nov,
+# the year. The block starts at splitmix64(key) mod 12 (0 = January). The key
+# is person_id when it is supplied (microdata or an explicit input) and the
+# person's position in the household otherwise, so axis copies match.
+# Start months used below: key 0 -> Jan, 1 -> Feb, 2 -> Nov,
 # 6 -> May, 14 -> Oct, 19 -> Dec.
 # Every case runs in January, so the January position is
 # (0 - start) mod 12 and the person receives when that position < months.
@@ -175,7 +177,7 @@
     # months = 0 -> position 0, not < 0
     is_receiving_unemployment_compensation: false
 
-- name: Case 14, default person IDs rotate the block start between household members.
+- name: Case 14, without supplied person IDs the household position rotates the block start between members.
   period: 2026-01
   input:
     people:
@@ -199,6 +201,82 @@
       household:
         members: [person1, person2]
   output:
-    # person_id defaults to [0, 1] -> starts Jan and Feb; 3 months each.
+    # No person_id input -> key = position in the household [0, 1] -> starts
+    # Jan and Feb; 3 months each.
     # person1: Jan-Mar covers January; person2: Feb-Apr does not.
     is_receiving_unemployment_compensation: [true, false]
+
+- name: Case 15, axis copies of a household keep each member's start month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 60_000
+          count: 3
+          period: 2026
+  output:
+    # The default person_id runs 0-5 across the three copies, but the key is
+    # the position in the household, so every copy matches Case 14:
+    # person1 starts in January (covered) and person2 in February (not).
+    # Hashing the default IDs would give starts Jan, Feb, Nov, Sep, Sep, Jan
+    # -> [true, false, true, false, false, true].
+    is_receiving_unemployment_compensation: [true, false, true, false, true, false]
+
+- name: Case 16, supplied person IDs are hashed as given in every axis copy.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        person_id:
+          2026: 1
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        person_id:
+          2026: 19
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 60_000
+          count: 2
+          period: 2026
+  output:
+    # person_id 1 -> Feb-Apr, not January; person_id 19 -> Dec-Feb, covers
+    # January (position (0 - 11) mod 12 = 1 < 3). Both copies repeat this.
+    is_receiving_unemployment_compensation: [false, true, false, true]

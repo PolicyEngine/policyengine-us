@@ -53,7 +53,7 @@
 - name: Case 6, toggle off uses usual hours even when weeks are reported.
   period: 2026
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     weekly_hours_worked_before_lsr: 40
     weeks_worked: 10
   output:

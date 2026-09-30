@@ -47,7 +47,7 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     employment_income_before_lsr: 6_000
     weeks_worked: 10
   output:
@@ -58,7 +58,7 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     employment_income_before_lsr: 12_000
   output:
     # weeks_worked = 0 -> divisor 52; 12,000 / 52 = 230.77
@@ -87,7 +87,7 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     employment_income_before_lsr: 12_000
     weeks_worked: 60
   output:

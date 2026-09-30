@@ -19,7 +19,7 @@ class snap_work_requirement_weekly_hours(Variable):
         "it. When weeks_worked is 0 (not reported or did not work) usual "
         "hours are used unchanged, so datasets and households without weeks "
         "worked see no change; an explicit 0 for a worker is also read as a "
-        "full year. Setting gov.simulation.snap_work_hours_use_weeks_worked "
+        "full year. Setting gov.simulation.snap_work_tests_average_over_year "
         "to false returns usual hours. Known limitations: averaging "
         "misclassifies people near the thresholds, for example 40 hours for "
         "26 weeks averages 20 hours a week and passes in every month although "
@@ -37,7 +37,7 @@ class snap_work_requirement_weekly_hours(Variable):
 
     def formula(person, period, parameters):
         usual_hours = person("weekly_hours_worked_before_lsr", period)
-        if not parameters(period).gov.simulation.snap_work_hours_use_weeks_worked:
+        if not parameters(period).gov.simulation.snap_work_tests_average_over_year:
             return usual_hours
         weeks = person("weeks_worked", period)
         averaged_hours = usual_hours * min_(weeks, WEEKS_IN_YEAR) / WEEKS_IN_YEAR

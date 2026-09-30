@@ -241,7 +241,8 @@
 
 # --- (v) Unemployment compensation only in the months of receipt ---
 # months = ceil(weeks unemployed x 12 / 52), placed as one block from the
-# start month splitmix64(person_id) mod 12 (person_id 0 -> Jan, 1 -> Feb).
+# start month splitmix64(key) mod 12, where the key is a supplied person_id or
+# else the position in the household (key 0 -> Jan, 1 -> Feb).
 
 - name: Case 19, UI recipient with 13 weeks unemployed from a January start is exempt in January.
   period: 2026-01

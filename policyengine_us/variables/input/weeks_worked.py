@@ -16,5 +16,5 @@ class weeks_worked(Variable):
     )
     reference = (
         "https://api.census.gov/data/2023/acs/acs1/pums/variables/WKWN.json",
-        "https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar24.pdf",
+        "https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar24.pdf#page=52",
     )

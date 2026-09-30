@@ -10,13 +10,16 @@ SPLITMIX64_MULTIPLIERS = (
 )
 
 
-def unemployment_compensation_start_month_index(person_id):
-    """Map person IDs to a calendar-month index (0 = January) by hashing."""
+def unemployment_compensation_start_month_index(key):
+    """Map integer keys to a calendar-month index (0 = January) by hashing."""
     first_shift, second_shift, third_shift = SPLITMIX64_SHIFTS
     first_multiplier, second_multiplier = SPLITMIX64_MULTIPLIERS
-    x = np.asarray(person_id).astype(np.uint64)
-    x = (x ^ (x >> first_shift)) * first_multiplier
-    x = (x ^ (x >> second_shift)) * second_multiplier
+    x = np.asarray(key).astype(np.uint64)
+    # NOTE: the multiplications wrap modulo 2**64 by design. numpy warns on
+    # that overflow only for 0-d (scalar) inputs, so the warning is silenced.
+    with np.errstate(over="ignore"):
+        x = (x ^ (x >> first_shift)) * first_multiplier
+        x = (x ^ (x >> second_shift)) * second_multiplier
     x = x ^ (x >> third_shift)
     return (x % np.uint64(MONTHS_IN_YEAR)).astype(int)
 
@@ -32,13 +35,19 @@ class is_receiving_unemployment_compensation(Variable):
         "which describes a current status. The unemployment_compensation_months "
         "of the year are placed as one contiguous block of calendar months "
         "that wraps within the year. The block starts in a month drawn from a "
-        "deterministic hash of person_id (the splitmix64 finalizer, modulo "
-        "12), so each calendar month carries about one twelfth of "
-        "unemployment compensation person-months across microdata; person_id "
-        "0, the first person in a household situation, starts in January and "
-        "person_id 1 in February. A person with 12 months (including anyone "
-        "with unemployment compensation but no weeks unemployed) receives in "
-        "every month. Known limitations: the block is an allocation device, "
+        "deterministic hash (the splitmix64 finalizer, modulo 12) of a key. "
+        "When person_id is supplied, as in microdata or an explicit input, "
+        "the key is person_id, so each calendar month carries about one "
+        "twelfth of unemployment compensation person-months across "
+        "microdata. Otherwise the default person_id numbers people across "
+        "the whole situation and changes with each axis copy of a household, "
+        "so the key is the person's position in their household (0 for the "
+        "first member), which is the same in every axis copy and equals the "
+        "default person_id in a one-household situation: the first member "
+        "starts in January and the second in February. A person with 12 "
+        "months (including anyone with unemployment compensation but no "
+        "weeks unemployed) receives in every month. Known limitations: the "
+        "block is an allocation device, "
         "not observed timing, so the January value that the Medicaid "
         "community engagement pass-through reads changes for recipients whose "
         "block excludes January; ACS-based rows keep the all-year exemption "
@@ -55,6 +64,16 @@ class is_receiving_unemployment_compensation(Variable):
     def formula(person, period, parameters):
         months = person("unemployment_compensation_months", period.this_year)
         person_id = person("person_id", period.this_year)
-        start = unemployment_compensation_start_month_index(person_id)
+        simulation = person.simulation
+        if simulation.is_over_dataset or "person_id" in simulation.input_variables:
+            key = person_id
+        else:
+            # NOTE: the default person_id is np.arange over the whole
+            # situation, so each axis copy of a household gets new IDs. The
+            # rank of the default ID within the household is the same in
+            # every copy and equals the default ID in a one-household
+            # situation.
+            key = person.get_rank(person.household, person_id)
+        start = unemployment_compensation_start_month_index(key)
         position = (period.start.month - 1 - start) % MONTHS_IN_YEAR
         return position < months

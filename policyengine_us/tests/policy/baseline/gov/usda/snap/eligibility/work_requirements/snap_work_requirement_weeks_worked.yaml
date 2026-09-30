@@ -13,9 +13,10 @@
 # - 30-hour exemption (7 CFR 273.7(b)(1)(vii)): averaged hours >= 30, or
 #   earnings / 52 >= 7.25 x 30 = 217.50 a week (11,310 a year).
 # - UI exemption (7 CFR 273.7(b)(1)(v)): months = ceil(weeks unemployed x
-#   12 / 52), placed from the start month splitmix64(person_id) mod 12.
-#   Start months used: person_id 0 -> Jan, 1 -> Feb, 6 -> May, 14 -> Oct,
-#   19 -> Dec.
+#   12 / 52), placed from the start month splitmix64(key) mod 12. The key is
+#   a supplied person_id, or else the position in the household (0 for a
+#   lone person). Start months used: key 0 -> Jan, 1 -> Feb, 6 -> May,
+#   14 -> Oct, 19 -> Dec.
 #
 # The issue ran some of these cases in March, April, May or July. They run
 # here in January, and the month placement is set through person_id instead.
@@ -390,7 +391,7 @@
 - name: Case 19, toggle off restores usual-hours behavior for a 10-week 40-hour worker.
   period: 2026-01
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     age:
       2026: 30
     is_disabled:
@@ -408,7 +409,7 @@
     is_snap_work_registration_exempt_employed: true
     meets_snap_abawd_work_requirements: true
 
-- name: Case 20, UI block start rotates with person_id across household members.
+- name: Case 20, UI block start rotates with household position across members.
   period: 2026-01
   input:
     people:
@@ -442,7 +443,8 @@
         state_code:
           2026: TX
   output:
-    # person_id = [0, 1] -> starts Jan and Feb; 3 months each.
+    # No person_id input -> key = household position [0, 1] -> starts Jan
+    # and Feb; 3 months each.
     # person1: Jan-Mar covers January; person2: Feb-Apr does not.
     # (A January-anchored block would give [true, true].)
     is_receiving_unemployment_compensation: [true, false]
@@ -591,7 +593,7 @@
 - name: Case 28, toggle off exempts a part-year worker through earnings per week worked.
   period: 2026-01
   input:
-    gov.simulation.snap_work_hours_use_weeks_worked: false
+    gov.simulation.snap_work_tests_average_over_year: false
     age:
       2026: 30
     is_disabled:
