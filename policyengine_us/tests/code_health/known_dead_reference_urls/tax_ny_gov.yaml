@@ -1,0 +1,19 @@
+# Dead New York State Department of Taxation and Finance reference URLs.
+# Each prefix returned HTTP 404 to a GET request on the date given.
+# See test_known_dead_reference_urls.py for the format.
+- prefix: https://www.tax.ny.gov/pdf/2023/printable-pdfs/
+  verified: "2026-09-28"
+  replacement: >-
+    The 2023 HTML instructions at
+    https://www.tax.ny.gov/forms/html-instructions/2023/it/<form>i-2023.htm
+    (use a section anchor such as #step-8), or an archived copy of the same
+    PDF with the same #page.
+- prefix: https://www.tax.ny.gov/pit/inflation-refund-checks.htm
+  verified: "2026-09-28"
+  replacement: https://web.archive.org/web/20260617073750/https://www.tax.ny.gov/pit/inflation-refund-checks.htm
+- prefix: https://www.tax.ny.gov/pit/child-earned-payments.htm
+  verified: "2026-09-28"
+  replacement: https://web.archive.org/web/20221020033542/https://www.tax.ny.gov/pit/child-earned-payments.htm
+- prefix: https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdf
+  verified: "2026-09-28"
+  replacement: https://www.tax.ny.gov/pdf/2022/inc/it558i_2022.pdf
