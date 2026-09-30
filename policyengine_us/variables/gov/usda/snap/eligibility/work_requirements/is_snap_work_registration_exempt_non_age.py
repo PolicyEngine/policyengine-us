@@ -8,6 +8,7 @@ class is_snap_work_registration_exempt_non_age(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.7#b_1",
+        "https://www.law.cornell.edu/uscode/text/7/2015#d_2",
         "https://www.law.cornell.edu/cfr/text/7/273.24#c_2",
         "https://www.law.cornell.edu/uscode/text/7/2015#o_3",
     )
@@ -45,22 +46,17 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # (viii) Enrolled at least half-time in school/training/higher ed
         is_student = person("is_snap_higher_ed_student", period)
         # (v) Receiving unemployment compensation, or has applied for it
-        # but not yet begun receiving it — 7 CFR 273.7(b)(1)(v).
-        # Simplification: any UC receipt during the year exempts the person
-        # in all months of that year, since survey data lack monthly UC
-        # receipt histories.
-        receiving_ui = person("unemployment_compensation", period.this_year) > 0
+        # but not yet begun receiving it — 7 CFR 273.7(b)(1)(v). Receipt is
+        # limited to the months allocated from weeks unemployed (all 12
+        # months when weeks unemployed are not reported).
+        receiving_ui = person("is_receiving_unemployment_compensation", period)
         applied_for_ui = person("has_applied_for_unemployment_compensation", period)
         # (vi) Regular participant in a drug addiction or alcoholic
         # treatment and rehabilitation program — 7 CFR 273.7(b)(1)(vi).
         in_treatment_program = person("is_in_substance_use_treatment_program", period)
         # (vii) Employed or self-employed and working at least 30 hours
-        # weekly. The earnings-equivalent prong (weekly earnings of at least
-        # the federal minimum wage multiplied by 30 hours) is not modeled.
-        # Annual average weekly hours are used as a proxy since survey data
-        # lack monthly work histories.
-        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
-        is_working_30_hours = weekly_hours_worked >= p.weekly_hours_threshold
+        # weekly or earning at least the federal minimum wage times 30 hours.
+        is_employed_exempt = person("is_snap_work_registration_exempt_employed", period)
         return (
             is_disabled
             | complying_with_tanf_work_requirements
@@ -70,5 +66,5 @@ class is_snap_work_registration_exempt_non_age(Variable):
             | receiving_ui
             | applied_for_ui
             | in_treatment_program
-            | is_working_30_hours
+            | is_employed_exempt
         )

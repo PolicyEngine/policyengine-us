@@ -1,0 +1,633 @@
+# SNAP work tests with weeks worked, the earnings-equivalent 30-hour prong
+# and months of unemployment compensation receipt (issue #9660).
+#
+# Every case is a childless 30-year-old without a disability in TX, which has
+# no ABAWD area waiver (the default state, CA, is statewide-waived through
+# 2026-01-31), at 2026-01, where the post-HR1 rules apply in TX.
+#
+# - Averaged weekly hours = usual hours x min(weeks worked, 52) / 52, or usual
+#   hours when weeks worked are 0 or absent.
+# - ABAWD test (7 CFR 273.24(a)(1)(i)): 20 hours a week averaged monthly
+#   means 80 hours a month: (averaged hours + work program hours) x 52 / 12
+#   >= 80.
+# - 30-hour exemption (7 CFR 273.7(b)(1)(vii)): averaged hours >= 30, or
+#   earnings / 52 >= 7.25 x 30 = 217.50 a week (11,310 a year).
+# - UI exemption (7 CFR 273.7(b)(1)(v)): months = ceil(weeks unemployed x
+#   12 / 52), placed from the start month splitmix64(person_id) mod 12.
+#   Start months used: person_id 0 -> Jan, 1 -> Feb, 6 -> May, 14 -> Oct,
+#   19 -> Dec.
+#
+# The issue ran some of these cases in March, April, May or July. They run
+# here in January, and the month placement is set through person_id instead.
+
+# --- 7 CFR 273.24(a)(1)(i): 20 hours per week, averaged monthly ---
+
+- name: Case 1, full-year 25-hour worker passes the ABAWD 20-hour test.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 25
+    weeks_worked:
+      2026: 52
+    employment_income_before_lsr:
+      2026: 9_425
+  output:
+    # hours = 25 x 52 / 52 = 25 < 30; 25 x 52 / 12 = 108.3 >= 80
+    # earnings = 9,425 / 52 = 181.25 < 217.50
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 2, 10-week worker at 40 usual hours fails the ABAWD 20-hour test.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 10
+    employment_income_before_lsr:
+      2026: 6_000
+  output:
+    # hours = 40 x 10 / 52 = 7.69 < 30; 7.69 x 52 / 12 = 33.3 < 80
+    # earnings = 6,000 / 52 = 115.38 < 217.50
+    # Before this change: 40 >= 30 -> exempt and passing in every month.
+    is_snap_work_registration_exempt_employed: false
+    is_snap_work_registration_exempt_non_age: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: false
+
+# --- 7 CFR 273.7(b)(1)(vii): 30 hours weekly ---
+
+- name: Case 3, full-year 30-hour worker is exempt from work registration and the time limit.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 30
+    weeks_worked:
+      2026: 52
+  output:
+    # hours = 30 x 52 / 52 = 30 >= 30
+    is_snap_work_registration_exempt_employed: true
+    is_snap_work_registration_exempt_non_age: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+# --- 7 CFR 273.7(b)(1)(vii): earnings equivalent ---
+
+- name: Case 4, 15-hour worker earning above the minimum wage times 30 is exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 15
+    weeks_worked:
+      2026: 52
+    employment_income_before_lsr:
+      2026: 12_000
+  output:
+    # hours = 15 < 30; earnings = 12,000 / 52 = 230.77 >= 217.50
+    # Before this change: fails (15 x 52 / 12 = 65 < 80, earnings prong not modeled).
+    is_snap_work_registration_exempt_employed: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+# --- 7 CFR 273.7(b)(1)(v): receiving unemployment compensation ---
+
+- name: Case 5, UI recipient with 13 weeks unemployed from a January start is exempt in January.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 13
+  output:
+    # months = ceil(13 x 12 / 52) = 3; person_id 0 starts in January -> Jan-Mar
+    is_receiving_unemployment_compensation: true
+    is_snap_work_registration_exempt_non_age: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 6, UI recipient whose 13-week block starts in February is not exempt in January.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 1
+  output:
+    # 3 months from February -> Feb-Apr, so January is outside the block;
+    # no hours -> 0 x 52 / 12 = 0 < 80. Before this change: exempt in every month.
+    is_receiving_unemployment_compensation: false
+    is_snap_work_registration_exempt_non_age: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: false
+
+# --- Inertness: no weeks_worked / weeks_unemployed reproduces usual-hours results ---
+
+- name: Case 7, no weeks worked keeps usual hours, so 40 hours is still exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+  output:
+    # hours = 40 (weeks not reported) >= 30
+    is_snap_work_registration_exempt_employed: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 8, no weeks worked keeps usual hours, so 25 hours passes but is not exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 25
+  output:
+    # hours = 25 < 30; 25 x 52 / 12 = 108.3 >= 80
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 9, no weeks worked keeps usual hours, and 19 hours meets 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 19
+  output:
+    # 7 CFR 273.24(a)(1)(i): 20 hours a week averaged monthly means 80 hours
+    # a month. 19 x 52 / 12 = 82.3 >= 80, so this passes (the issue expected a
+    # failure under a weekly 20-hour threshold).
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 10, UI with no weeks unemployed still exempts every month, even from a May start.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    unemployment_compensation:
+      2026: 5_000
+    person_id:
+      2026: 6
+  output:
+    # weeks_unemployed = 0 -> 12 months; person_id 6 starts in May, and a
+    # 12-month block covers January as well.
+    is_receiving_unemployment_compensation: true
+    is_snap_work_registration_exempt_non_age: true
+    meets_snap_abawd_work_requirements: true
+
+# --- Boundaries and additional paths ---
+
+- name: Case 11, 30 usual hours for 51 weeks is not 30-hour exempt but passes 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 30
+    weeks_worked:
+      2026: 51
+  output:
+    # hours = 30 x 51 / 52 = 29.42 < 30; 29.42 x 52 / 12 = 127.5 >= 80
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 12, annual earnings of exactly 11,310 meet the earnings equivalent.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    employment_income_before_lsr:
+      2026: 11_310
+  output:
+    # 11,310 / 52 = 217.50 >= 7.25 x 30 = 217.50 ("at least equal")
+    is_snap_work_registration_exempt_employed: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 13, annual earnings of 11,300 fall just short.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    employment_income_before_lsr:
+      2026: 11_300
+  output:
+    # 11,300 / 52 = 217.31 < 217.50; no hours -> 0 < 80
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 14, self-employed 10-hour worker earning 12,000 is exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 10
+    self_employment_income_before_lsr:
+      2026: 12_000
+  output:
+    # hours = 10 < 30; earnings = 12,000 / 52 = 230.77 >= 217.50
+    is_snap_work_registration_exempt_employed: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 15, part-year worker earning 12,000 is exempt all year through earnings (known limitation).
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 20
+    employment_income_before_lsr:
+      2026: 12_000
+  output:
+    # hours = 40 x 20 / 52 = 15.38; 15.38 x 52 / 12 = 66.7 < 80
+    # earnings = 12,000 / 52 = 230.77 >= 217.50 -> exempt
+    is_snap_work_registration_exempt_employed: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 16, earnings-only household input of 20,000 with no hours is exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    employment_income_before_lsr:
+      2026: 20_000
+  output:
+    # 20,000 / 52 = 384.62 >= 217.50. Before this change: fails (0 hours).
+    is_snap_work_registration_exempt_non_age: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 17, 14 weeks unemployed from an October start rounds up to a fourth month in January.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 14
+    person_id:
+      2026: 14
+  output:
+    # months = ceil(14 x 12 / 52) = ceil(3.23) = 4; person_id 14 starts in
+    # October -> Oct, Nov, Dec, Jan (the rounded-up fourth month)
+    is_receiving_unemployment_compensation: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 18, one week unemployed from a December start covers December only.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    unemployment_compensation:
+      2026: 5_000
+    weeks_unemployed:
+      2026: 1
+    person_id:
+      2026: 19
+  output:
+    # months = ceil(1 x 12 / 52) = 1; person_id 19 starts in December -> Dec
+    # only; no hours -> fails the 80-hour test in January
+    is_receiving_unemployment_compensation: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 19, toggle off restores usual-hours behavior for a 10-week 40-hour worker.
+  period: 2026-01
+  input:
+    gov.simulation.snap_work_hours_use_weeks_worked: false
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 10
+    employment_income_before_lsr:
+      2026: 6_000
+  output:
+    # hours = 40 >= 30 (earnings per week worked = 6,000 / 10 = 600 also >= 217.50)
+    is_snap_work_registration_exempt_employed: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 20, UI block start rotates with person_id across household members.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        is_disabled:
+          2026: false
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        age:
+          2026: 30
+        is_disabled:
+          2026: false
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: TX
+  output:
+    # person_id = [0, 1] -> starts Jan and Feb; 3 months each.
+    # person1: Jan-Mar covers January; person2: Feb-Apr does not.
+    # (A January-anchored block would give [true, true].)
+    is_receiving_unemployment_compensation: [true, false]
+    meets_snap_abawd_work_requirements: [true, false]
+
+- name: Case 21, second member's 11-month UI block from February does not wrap into January.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        is_disabled:
+          2026: false
+      person2:
+        age:
+          2026: 30
+        is_disabled:
+          2026: false
+        unemployment_compensation:
+          2026: 15_000
+        weeks_unemployed:
+          2026: 47
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: TX
+  output:
+    # person2: months = ceil(47 x 12 / 52) = 11 -> Feb through Dec, so January
+    # is outside the block; person1 has no UI.
+    is_receiving_unemployment_compensation: [false, false]
+
+- name: Case 22, 40 usual hours for 24 weeks is exactly 80 hours a month and passes.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 24
+  output:
+    # hours = 40 x 24 / 52 = 18.46; 18.46 x 52 / 12 = 40 x 24 / 12 = 80 >= 80
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 23, 39.95 usual hours for 24 weeks falls just under 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 39.95
+    weeks_worked:
+      2026: 24
+  output:
+    # hours = 39.95 x 24 / 52 = 18.44; x 52 / 12 = 39.95 x 24 / 12 = 79.9 < 80
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 24, 18.47 usual hours without weeks worked is just over 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 18.47
+  output:
+    # 18.47 x 52 / 12 = 80.04 >= 80
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 25, 18.46 usual hours without weeks worked is just under 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 18.46
+  output:
+    # 18.46 x 52 / 12 = 79.99 < 80
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 26, 40 usual hours for 26 weeks averages 20 hours and passes in every month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 26
+  output:
+    # hours = 40 x 26 / 52 = 20 < 30; 20 x 52 / 12 = 86.7 >= 80
+    is_snap_work_registration_exempt_employed: false
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 27, 25 usual hours for 40 weeks averages 19.23 hours and meets 80 hours a month.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 25
+    weeks_worked:
+      2026: 40
+  output:
+    # 7 CFR 273.24(a)(1)(i): hours = 25 x 40 / 52 = 19.23;
+    # 19.23 x 52 / 12 = 25 x 40 / 12 = 83.3 >= 80, so this passes (the issue's
+    # section E table expected a failure under a weekly 20-hour threshold).
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 28, toggle off exempts a part-year worker through earnings per week worked.
+  period: 2026-01
+  input:
+    gov.simulation.snap_work_hours_use_weeks_worked: false
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 20
+    weeks_worked:
+      2026: 20
+    employment_income_before_lsr:
+      2026: 6_000
+  output:
+    # hours = 20 (usual) < 30; earnings = 6,000 / 20 = 300 >= 217.50 -> exempt.
+    # With the toggle on: 20 x 20 / 52 = 7.69 hours and 6,000 / 52 = 115.38,
+    # so the person would be neither exempt nor passing (33.3 < 80).
+    is_snap_work_registration_exempt_employed: true
+    is_subject_to_snap_abawd: false
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 29, work program hours add to averaged hours worked.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 13
+    weekly_snap_work_program_hours:
+      2026: 9
+  output:
+    # hours = 40 x 13 / 52 = 10; (10 + 9) x 52 / 12 = 82.3 >= 80
+    is_subject_to_snap_abawd: true
+    meets_snap_abawd_work_requirements: true

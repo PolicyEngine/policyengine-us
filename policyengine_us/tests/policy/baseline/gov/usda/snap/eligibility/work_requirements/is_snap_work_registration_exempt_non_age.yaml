@@ -238,3 +238,88 @@
     receives_ssi: true
   output:
     is_snap_work_registration_exempt_non_age: true
+
+# --- (v) Unemployment compensation only in the months of receipt ---
+# months = ceil(weeks unemployed x 12 / 52), placed as one block from the
+# start month splitmix64(person_id) mod 12 (person_id 0 -> Jan, 1 -> Feb).
+
+- name: Case 19, UI recipient with 13 weeks unemployed from a January start is exempt in January.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    unemployment_compensation:
+      2026: 12_000
+    weeks_unemployed:
+      2026: 13
+  output:
+    # months = ceil(13 x 12 / 52) = 3; person_id 0 -> Jan, Feb, Mar
+    is_snap_work_registration_exempt_non_age: true
+
+- name: Case 20, UI recipient whose 13-week block starts in February is not exempt in January.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    unemployment_compensation:
+      2026: 12_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 1
+  output:
+    # 3 months from February -> Feb, Mar, Apr; January is outside the block.
+    is_snap_work_registration_exempt_non_age: false
+
+# --- (vii) Earning at least the federal minimum wage times 30 hours ---
+
+- name: Case 21, earnings at least the minimum wage times 30 exempt without hours.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    employment_income_before_lsr:
+      2026: 12_000
+  output:
+    # 12,000 / 52 = 230.77 >= 7.25 x 30 = 217.50
+    is_snap_work_registration_exempt_non_age: true
+
+- name: Case 22, 30 usual hours for 51 weeks averages under 30 and is not exempt.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    weekly_hours_worked_before_lsr:
+      2026: 30
+    weeks_worked:
+      2026: 51
+  output:
+    # 30 x 51 / 52 = 29.42 < 30; no earnings
+    is_snap_work_registration_exempt_non_age: false
+
+- name: Case 23, applying for UI still exempts in a month outside the receipt block.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    unemployment_compensation:
+      2026: 12_000
+    weeks_unemployed:
+      2026: 13
+    person_id:
+      2026: 1
+    has_applied_for_unemployment_compensation: true
+  output:
+    # The receipt block (Feb-Apr) excludes January, but the applicant prong
+    # of 7 CFR 273.7(b)(1)(v) still applies.
+    is_snap_work_registration_exempt_non_age: true

@@ -1,0 +1,104 @@
+# snap_work_requirement_weekly_earnings: annual employment plus non-farm
+# self-employment earnings (before labor supply responses, losses floored at
+# zero) divided by 52, compared with the federal minimum wage x 30 hours =
+# 7.25 x 30 = 217.50 a week (11,310 a year) in 7 U.S.C. 2015(d)(2)(E) and
+# 7 CFR 273.7(b)(1)(vii). With the toggle off, earnings are divided by weeks
+# worked (capped at 52; 52 when not reported).
+
+- name: Case 1, wages averaged over 52 weeks.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income_before_lsr: 12_000
+  output:
+    # 12,000 / 52 = 230.77
+    snap_work_requirement_weekly_earnings: 230.77
+
+- name: Case 2, self-employment income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income_before_lsr: 12_000
+  output:
+    # 12,000 / 52 = 230.77
+    snap_work_requirement_weekly_earnings: 230.77
+
+- name: Case 3, self-employment losses are floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income_before_lsr: 6_000
+    self_employment_income_before_lsr: -5_000
+  output:
+    # (6,000 + max(-5,000, 0)) / 52 = 6,000 / 52 = 115.38
+    snap_work_requirement_weekly_earnings: 115.38
+
+- name: Case 4, averaging ignores weeks worked so it shares the hours denominator.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income_before_lsr: 6_000
+    weeks_worked: 10
+  output:
+    # 6,000 / 52 = 115.38 (not 6,000 / 10 = 600)
+    snap_work_requirement_weekly_earnings: 115.38
+
+- name: Case 5, toggle off uses earnings per week worked.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.snap_work_hours_use_weeks_worked: false
+    employment_income_before_lsr: 6_000
+    weeks_worked: 10
+  output:
+    # 6,000 / 10 = 600
+    snap_work_requirement_weekly_earnings: 600
+
+- name: Case 6, toggle off with no weeks reported falls back to 52 weeks.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.snap_work_hours_use_weeks_worked: false
+    employment_income_before_lsr: 12_000
+  output:
+    # weeks_worked = 0 -> divisor 52; 12,000 / 52 = 230.77
+    snap_work_requirement_weekly_earnings: 230.77
+
+- name: Case 7, annual earnings of 11,310 average exactly the 217.50 weekly threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income_before_lsr: 11_310
+  output:
+    # 11,310 / 52 = 217.50 = 7.25 x 30
+    snap_work_requirement_weekly_earnings: 217.5
+
+- name: Case 8, wages and specified service self-employment income are summed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income_before_lsr: 5_200
+    sstb_self_employment_income_before_lsr: 5_200
+  output:
+    # (5,200 + 5,200) / 52 = 200
+    snap_work_requirement_weekly_earnings: 200
+
+- name: Case 9, toggle off caps weeks worked above 52 at 52.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.snap_work_hours_use_weeks_worked: false
+    employment_income_before_lsr: 12_000
+    weeks_worked: 60
+  output:
+    # divisor min(60, 52) = 52; 12,000 / 52 = 230.77 (not 12,000 / 60 = 200)
+    snap_work_requirement_weekly_earnings: 230.77
+
+- name: Case 10, no earnings gives zero weekly earnings.
+  period: 2026
+  input:
+    employment_income_before_lsr: 0
+    weeks_worked: 20
+  output:
+    # 0 / 52 = 0
+    snap_work_requirement_weekly_earnings: 0
