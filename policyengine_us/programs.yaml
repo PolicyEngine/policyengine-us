@@ -1601,8 +1601,8 @@ programs:
 
   # --- Local programs ---
   - id: ez_save
-    name: Los Angeles County EZ Save
-    full_name: Los Angeles County EZ Save
+    name: Los Angeles EZ-SAVE
+    full_name: Los Angeles Department of Water and Power EZ-SAVE Program
     category: Energy
     agency: Local
     status: complete
@@ -1682,14 +1682,14 @@ programs:
     notes: Only includes eligibility rules
 
   - id: share
-    name: Riverside County SHARE
-    full_name: Riverside County Sharing Households Assist Riverside Energy program
+    name: Riverside SHARE
+    full_name: Riverside Public Utilities Sharing Households Assist Riverside's Energy Program
     category: Energy
     agency: Local
     status: complete
     coverage: Riverside County
     variable: ca_riv_share_payment
-    parameter_prefix: gov.local.ca.riv.share
+    parameter_prefix: gov.local.ca.riv.cap.share
 
   - id: ca_sbd_general_relief
     name: San Bernardino County General Relief

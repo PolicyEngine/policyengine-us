@@ -1,3 +1,46 @@
+## [2.18.2] - 2026-09-30
+
+### Fixed
+
+- Replace dead New York tax department reference links (2023 printable IT-201, IT-196, and IT-213 instruction PDFs, IT-558 instructions, and retired inflation refund and child credit payment pages) with the 2023 HTML instructions or archived copies, and add an offline check against known-dead reference URLs.
+
+
+## [2.18.1] - 2026-09-30
+
+### Fixed
+
+- Lapse the Yonkers resident income tax surcharge and nonresident earnings tax after tax year 2027, when their authorization under New York Tax Law §§ 1321 and 1340 expires.
+
+
+## [2.18.0] - 2026-09-29
+
+### Added
+
+- Add California CARE's 20% natural gas discount; ca_care now sums the electricity discount (ca_care_electricity_discount) and the gas discount (ca_care_gas_discount).
+
+### Fixed
+
+- Extend California FERA to one- and two-person households under SB 1130 from model year 2026, let every household qualify for CARE through CalWORKs (TANF) and tribal households through all listed programs plus Head Start and Early Head Start, update Riverside SHARE electric and trash credits and count SHARE in household benefits, source the LADWP EZ-SAVE amount, and correct CARE, FERA, EZ-SAVE, and SHARE metadata.
+
+### Removed
+
+- Remove ca_care_amount_if_eligible and ca_fera_amount_if_eligible; ca_care_electricity_discount and ca_fera now compute the electricity discounts directly for eligible households.
+
+
+## [2.17.3] - 2026-09-29
+
+### Fixed
+
+- Levy the Mamdani NYC income tax contributed reform once per tax unit instead of once per member, and only in years when it is in effect.
+
+
+## [2.17.2] - 2026-09-29
+
+### Fixed
+
+- Fixed the Missouri Supplemental Aid to the Blind income, resource, and immigration tests, and applied the immigration test to Supplemental Nursing Care.
+
+
 ## [2.17.1] - 2026-09-29
 
 ### Fixed
