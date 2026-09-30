@@ -1,3 +1,10 @@
+## [2.18.1] - 2026-09-30
+
+### Fixed
+
+- Lapse the Yonkers resident income tax surcharge and nonresident earnings tax after tax year 2027, when their authorization under New York Tax Law §§ 1321 and 1340 expires.
+
+
 ## [2.18.0] - 2026-09-29
 
 ### Added
