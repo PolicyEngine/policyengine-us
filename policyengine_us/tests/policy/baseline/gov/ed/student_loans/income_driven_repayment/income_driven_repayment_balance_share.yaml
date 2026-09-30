@@ -1,0 +1,56 @@
+# Share of the couple's eligible balance (34 CFR 685.209(e)(2)(i), (g)(1)(i)).
+
+- name: Case 1, joint filers who both borrowed split by balance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 60_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 60,000 / 80,000 and 20,000 / 80,000.
+    income_driven_repayment_balance_share: [0.75, 0.25]
+
+- name: Case 2, a single borrower owes the whole payment.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    income_driven_repayment_balance_share: [1, 0]
+
+- name: Case 3, a tax dependent's balance does not dilute the parent's share.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    income_driven_repayment_balance_share: [1, 0]

@@ -1,0 +1,22 @@
+description: The Department of Education limits annual payments to this share of discretionary income under the Saving on a Valuable Education plan, weighted by the share of the borrower's original loan balance received for undergraduate study.
+# The 5 percent rate took effect July 1, 2024 (88 FR 43820); before that, all
+# loans were charged the REPAYE plan's 10 percent.
+values:
+  2016-07-01: 0.1
+  2024-07-01: 0.05
+
+metadata:
+  unit: /1
+  period: year
+  label: SAVE plan undergraduate payment rate
+  reference:
+    - title: 34 CFR 685.209(f)(1)(ii)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(1)(ii)
+    - title: 91 FR 23890, 34 CFR 685.209(f)(1)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=123
+    - title: 88 FR 43820, effective date July 1, 2024
+      href: https://www.govinfo.gov/content/pkg/FR-2023-07-10/pdf/2023-13112.pdf#page=1
+    - title: 88 FR 43901, 34 CFR 685.209(f)(1)(ii) (2023 SAVE plan rule)
+      href: https://www.govinfo.gov/content/pkg/FR-2023-07-10/pdf/2023-13112.pdf#page=82
+    - title: 80 FR 67239, 34 CFR 685.209(c)(2)(i) (2015 REPAYE plan rule)
+      href: https://www.govinfo.gov/content/pkg/FR-2015-10-30/pdf/2015-27143.pdf#page=36
