@@ -5,6 +5,7 @@ from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 class ma_liheap_fpg(Variable):
     value_type = float
     entity = SPMUnit
+    unit = USD
     label = "Massachusetts LIHEAP federal poverty guideline"
     definition_period = YEAR
     defined_for = StateCode.MA
