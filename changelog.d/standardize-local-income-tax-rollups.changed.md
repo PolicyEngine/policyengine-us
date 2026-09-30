@@ -1,0 +1,1 @@
+Standardize local income tax aggregation across states: extract NYC and Maryland county taxes from state income tax aggregates into local income tax aggregates, and wire Indiana and Multnomah County local income taxes into local aggregates.

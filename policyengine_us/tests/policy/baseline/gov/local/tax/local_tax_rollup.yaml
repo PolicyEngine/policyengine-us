@@ -71,3 +71,27 @@
     local_income_tax_before_refundable_credits: 167.5
     household_tax_before_refundable_credits: 167.5
     household_tax: 167.5
+
+- name: Indiana county tax flows into local income tax aggregates
+  period: 2021
+  input:
+    state_code_str: IN
+    in_agi: 10_000
+    county_str: BOONE_COUNTY_IN
+  output:
+    in_county_tax: 150  # 10,000 * 1.5%
+    local_income_tax: 150
+    local_income_tax_before_refundable_credits: 150
+
+- name: Multnomah County PFA tax flows into local income tax aggregates
+  period: 2025
+  input:
+    state_code: OR
+    in_multnomah_county_or: true
+    or_taxable_income: 200_000
+    filing_status: SINGLE
+  output:
+    or_multnomah_pfa_tax: 1_125  # (200,000 - 125,000) * 1.5%
+    local_income_tax: 1_125
+    local_income_tax_before_refundable_credits: 1_125
+

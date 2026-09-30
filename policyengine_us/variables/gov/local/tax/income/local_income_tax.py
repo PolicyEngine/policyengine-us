@@ -36,6 +36,8 @@ class local_income_tax(Variable):
     # go directly in this list.
     adds = [
         "nyc_income_tax",
+        "in_county_tax",
+        "or_multnomah_pfa_tax",
         "pa_philadelphia_wage_tax",
         "mo_kansas_city_earnings_tax",
         "mo_st_louis_earnings_tax",
