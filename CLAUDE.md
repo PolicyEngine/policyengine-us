@@ -112,7 +112,8 @@ changelog.d/medicaid-ce-exclusions.md
 - **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
 - **When extending year coverage**: update the entry's year field — most entries use `verified_start_year`, a few use a `verified_years` range (e.g., `"2022-2026"`) — after verifying parameters and tests cover the new year
 - **When adding state implementations**: add to `state_implementations` list under the parent federal program
-- **Status values**: `complete`, `partial`, `in_progress`
+- **Status values**: `complete`, `partial`, `in_progress`. There is no not-started value: when an `in_progress` entry's PR closes unmerged and no code is on main, remove the entry (and its state from `coverage`)
+- `policyengine_us/tests/test_programs_registry.py` checks statuses, state codes, and that every `variable` exists and every `parameter_prefix` resolves in the parameter tree. Never add keys to its `KNOWN_UNRESOLVED` list; delete them as entries are fixed
 - Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local
 
 ## State Program Patterns
