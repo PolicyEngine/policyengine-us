@@ -829,7 +829,8 @@ programs:
         full_name: Mississippi Low Income Home Energy Assistance Program
         variable: ms_liheap
         parameter_prefix: gov.states.ms.mdhs.liheap
-        notes: FY2026 regular heating only. Uses existing inputs and preserves published matrix anomalies. Unpublished income intervals and household sizes, unspecified heat-in-rent charges, propane delivery rules, prior awards, detailed household/income classifications, and administrative checks remain incomplete.
+        verified_years: "2026"
+        notes: FY2026 regular heating only. Uses existing inputs and preserves published matrix anomalies. Unpublished income intervals and household sizes, unspecified heat-in-rent charges, propane delivery rules, prior awards, detailed household/income classifications, and administrative checks remain incomplete. Earlier results use parameter backfilling and are unverified historical estimates.
       - state: TX
         status: partial
         name: Texas CEAP

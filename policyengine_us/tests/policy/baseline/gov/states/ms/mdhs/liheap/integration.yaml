@@ -24,11 +24,20 @@
   output:
     ms_liheap_household_size: 0
     ms_liheap: 0
-- name: Years preceding researched coverage have no formula
+# Backfilling checks the model convention, not verified historical MS policy.
+# 2022 uses FY2022 SMI, with the earliest available state benefit matrix.
+- name: Parameter backfill uses period-specific SMI for a 2022 estimate
   period: 2_022
   input:
     state_code: MS
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
     heating_type: ELECTRICITY
     pre_subsidy_electricity_expense: 1_000
   output:
-    ms_liheap: 0
+    ms_liheap: 1_000
+    ms_liheap_household_size: 1
+    ms_liheap_income_limit: 21_487
+    ms_liheap_eligible: true

@@ -9,7 +9,7 @@ class ms_liheap_eligible(Variable):
     defined_for = StateCode.MS
     reference = "https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=22,23,24,29,30,31,32,33"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ms.mdhs.liheap
         size = spm_unit("ms_liheap_household_size", period)
         income = spm_unit("ms_liheap_income", period)

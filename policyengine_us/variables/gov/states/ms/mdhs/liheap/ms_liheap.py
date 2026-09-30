@@ -7,14 +7,21 @@ class ms_liheap(Variable):
     definition_period = YEAR
     unit = USD
     label = "Mississippi LIHEAP regular heating assistance"
+    documentation = (
+        "Verified for FY2026. Earlier years use model parameter backfilling "
+        "and are unverified historical estimates."
+    )
     defined_for = "ms_liheap_eligible"
     reference = "https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=24,36,37,39,58,59,60,61,62,63,64"
 
-    def formula_2026(spm_unit, period, parameters):
-        # Coverage starts with the researched FY2026 schedule, not program inception.
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ms.mdhs.liheap
         size = spm_unit("ms_liheap_household_size", period)
         income = spm_unit("ms_liheap_income", period)
+        # Rule 7.8 A directs use of the attached matrix (PDF pp. 59-64). Neither
+        # the manual nor FY2026 plan section 2.5 defines 25% FPG bands or rounding.
+        # That numerical pattern is not an authorized replacement: the matrix
+        # prints $31,313 for size 3, five bands for size 8, and four for size 12.
         band = 0
         for table_size in range(1, int(p.maximum_table_size) + 1):
             band = where(
@@ -44,5 +51,4 @@ class ms_liheap(Variable):
         # charge documentation/intake counts cannot be inferred, so that pathway is
         # not modeled. Source gaps (sizes 11/15 and upper ranges for 10/18/20) and
         # sizes above 20 also return zero as coverage gaps, not legal ineligibility.
-        # The table is retained because a smooth FPG formula does not reproduce it.
         return where(band > 0, min_(cap, expense), 0)

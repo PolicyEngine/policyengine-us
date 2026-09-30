@@ -11,7 +11,7 @@ class ms_liheap_income_limit(Variable):
     defined_for = StateCode.MS
     reference = "https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=58"
 
-    def formula_2026(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ms.mdhs.liheap
         size = spm_unit("ms_liheap_household_size", period)
         state = spm_unit.household("state_code_str", period)
@@ -20,6 +20,8 @@ class ms_liheap_income_limit(Variable):
         # The published FY2026 limits truncate the four-person 60% SMI amount
         # first, then the household-adjusted amount. This reproduces all 20 rows;
         # it is a reconciled numerical pattern, not an explicit rounding rule.
+        # Indiana's size-first truncation raises the FY2026 limits for sizes
+        # 5 through 20 by $1. Keep this ordering in state code.
         amount = (
             smi(size, state, period, parameters)
             * np.floor(base * p.income_limit)
