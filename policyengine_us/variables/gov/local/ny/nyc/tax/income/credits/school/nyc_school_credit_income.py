@@ -20,13 +20,18 @@ class nyc_school_credit_income(Variable):
         # The credit uses income as defined in RPTL § 425(4)(b)(ii): federal
         # adjusted gross income reduced by distributions from individual
         # retirement accounts and annuities, to the extent included in
-        # federal adjusted gross income (IT-201 line 19 minus line 9).
-        # Recomputed federal AGI is not modeled separately.
+        # federal adjusted gross income (IT-201 line 19 minus line 9; the
+        # 2022 instructions used recomputed federal AGI, line 19a, which is
+        # not modeled separately).
+        # Roth conversions and individual retirement annuities are not
+        # identified separately from employer-plan amounts, so they stay in
+        # income.
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.school
         person = tax_unit.members
-        # Federal gross income excludes dependents' income and negative
-        # amounts, so only those distributions are included in AGI.
+        # Federal gross income excludes dependents' income, so only the
+        # head's and spouse's distributions are included in AGI. Taxable
+        # distributions are non-negative, so the floor only guards inputs.
         not_dependent = ~person("is_tax_unit_dependent", period)
         ira_distributions = add(person, period, p.ira_distribution_sources)
         included_ira_distributions = tax_unit.sum(
