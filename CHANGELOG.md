@@ -1,3 +1,10 @@
+## [2.18.3] - 2026-09-30
+
+### Changed
+
+- Extend the federal poverty guideline helper to support lagged guideline years and reuse it for Massachusetts LIHEAP without changing its October lookup date.
+
+
 ## [2.18.2] - 2026-09-30
 
 ### Fixed
