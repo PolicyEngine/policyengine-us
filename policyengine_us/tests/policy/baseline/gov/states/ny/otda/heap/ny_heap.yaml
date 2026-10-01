@@ -94,6 +94,7 @@
 - name: Published group and ineligible residence categories
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY]
     ny_heap_countable_income: [0, 0]
     ny_heap_categorically_eligible: [false, false]

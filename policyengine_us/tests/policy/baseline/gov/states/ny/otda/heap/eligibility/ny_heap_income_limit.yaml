@@ -1,6 +1,7 @@
 - name: All published size one through thirteen income limits
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
     ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
   output:
@@ -8,6 +9,7 @@
 - name: Size fourteen follows the plan poverty rate rather than the inconsistent incremental row
   period: 2026
   input:
+    heating_type: NATURAL_GAS
     state_code: NY
     ny_heap_household_size: 14
   output:

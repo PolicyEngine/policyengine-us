@@ -1,14 +1,16 @@
-# 12,001 earnings + 11,400 net SSA/railroad + 4,080 other income = 27,481.
-# floor(27,481 / 12) * 12 = 27,480.
+# 12,001 earnings + 11,400 net SSA/railroad + 4,440 other income = 27,841.
+# floor(27,841 / 12) * 12 = 27,840.
 - name: Deduct paid Medicare Part B premiums and round monthly household income down
   period: 2026
   input:
+    heating_type: NATURAL_GAS
     state_code: NY
     ny_heap_countable_earned_income: 12001
     social_security: 12000
     medicare_part_b_premium: 1200
     railroad_benefits: 600
     pension_income: 240
+    retirement_distributions: 360
     interest_income: 120
     dividend_income: 240
     rental_income: 360
@@ -22,4 +24,4 @@
     estate_income: 120
     ssi: 0
   output:
-    ny_heap_countable_income: 27480
+    ny_heap_countable_income: 27840

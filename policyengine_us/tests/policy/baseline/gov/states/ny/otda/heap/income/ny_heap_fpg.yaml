@@ -1,6 +1,7 @@
 - name: Backfilled estimates still use the guideline one year before the requested period
   period: 2022
   input:
+    heating_type: NATURAL_GAS
     state_code: NY
     ny_heap_household_size: 2
   output:

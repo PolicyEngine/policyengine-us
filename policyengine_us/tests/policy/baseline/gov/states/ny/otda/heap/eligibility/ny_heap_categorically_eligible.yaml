@@ -1,6 +1,7 @@
 - name: SNAP and federally funded TANF each confer categorical eligibility
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY]
     snap: [1, 0, 0]
     ny_tanf: [0, 1, 0]
@@ -10,6 +11,7 @@
 - name: SSI own-household federal code approximates Code A
   period: 2026
   input:
+    heating_type: NATURAL_GAS
     state_code: NY
     snap: 0
     ny_tanf: 0

@@ -1,6 +1,7 @@
 - name: Dependent children and full-time dependent students have exempt earnings
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY, NY]
     age: [17, 18, 30, 30]
     is_tax_unit_dependent: [true, true, false, false]
