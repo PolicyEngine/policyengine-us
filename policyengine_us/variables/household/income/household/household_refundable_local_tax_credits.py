@@ -7,4 +7,7 @@ class household_refundable_local_tax_credits(Variable):
     label = "refundable local income tax credits"
     unit = USD
     definition_period = YEAR
-    adds = ["nyc_refundable_credits"]
+    adds = [
+        "nyc_refundable_credits",
+        "md_montgomery_eitc",
+    ]
