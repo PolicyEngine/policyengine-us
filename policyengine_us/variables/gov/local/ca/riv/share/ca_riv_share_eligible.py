@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_riv_share_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for the Riverside County Sharing Households Assist Riverside's Energy program (SHARE)"
+    label = "Eligible for the Riverside Sharing Households Assist Riverside's Energy program (SHARE)"
     definition_period = MONTH
     defined_for = "in_riv"
     reference = (
