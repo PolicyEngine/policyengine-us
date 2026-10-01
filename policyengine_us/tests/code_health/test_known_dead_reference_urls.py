@@ -1,12 +1,16 @@
 """Keep reference URLs that are known to be dead out of the package and docs.
 
-This check is offline: it never requests a URL. Each YAML file in
+This check is offline: it never requests a URL. Each TOML file in
 known_dead_reference_urls/ lists URL prefixes that were dead when last
 checked, and where their content lives now:
 
-    - prefix: https://www.example.gov/forms/2021/instructions.pdf
-      verified: "2026-09-30"
-      replacement: https://web.archive.org/web/20220101000000/https://www.example.gov/forms/2021/instructions.pdf
+    [[dead]]
+    prefix = "https://www.example.gov/forms/2021/instructions.pdf"
+    verified = "2026-09-30"
+    replacement = "https://web.archive.org/web/20220101000000/https://www.example.gov/forms/2021/instructions.pdf"
+
+The files are TOML, not YAML, because pytest collects every YAML file in the
+package as a policy test.
 
 A prefix ending in "/" covers everything under it; any other prefix covers
 that URL and anything after it except a longer file name (`.htm` does not
@@ -17,16 +21,16 @@ allowed, because the dead URL follows a slash inside them.
 To add an entry, confirm the URL is dead with a GET request
 (`curl -sL -o /dev/null -w '%{http_code}' -A "Mozilla/5.0" <url>`; treat
 403 and 429 as unknown and recheck in a browser), replace every reference in
-the repo, then list the prefix in the YAML file for its agency or host.
+the repo, then list the prefix in the TOML file for its agency or host.
 """
 
 import random
 import re
+import tomllib
 from collections import defaultdict
 from pathlib import Path
 
 import pytest
-import yaml
 
 from policyengine_us.model_api import REPO
 
@@ -37,8 +41,8 @@ DATA_DIR = Path(__file__).resolve().parent / "known_dead_reference_urls"
 def load_known_dead_url_prefixes() -> tuple:
     """Return (dead URL prefix, date verified dead, replacement) entries."""
     entries = []
-    for path in sorted(DATA_DIR.glob("*.yaml")):
-        for entry in yaml.safe_load(path.read_text(encoding="utf-8")) or []:
+    for path in sorted(DATA_DIR.glob("*.toml")):
+        for entry in tomllib.loads(path.read_text(encoding="utf-8")).get("dead", []):
             prefix = entry["prefix"]
             if not re.match(r"https?://[^/\s]+/", prefix):
                 raise ValueError(
