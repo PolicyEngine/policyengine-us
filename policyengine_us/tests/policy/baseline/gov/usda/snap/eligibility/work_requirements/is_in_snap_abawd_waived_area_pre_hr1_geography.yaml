@@ -1,0 +1,521 @@
+# SNAP ABAWD area waivers under the pre-P.L. 119-21 waiver criteria.
+# P.L. 119-21 section 10102(b), effective on enactment (2025-07-04), struck
+# the "does not have a sufficient number of jobs" criterion from
+# 7 U.S.C. 2015(o)(4)(A)(ii). Setting
+# gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect to
+# false keeps every area waived on 2025-07-03, the last day before
+# enactment, waived indefinitely, in addition to the areas waived under
+# current law. The 2025-07-03 geography is statewide CA, DC, IL, and NV plus
+# the county lists in effect that day (including NY's 61 counties, NM's 29,
+# and DE's Kent and Sussex). Months before 2025-07-04 keep current law.
+# The switch is federal: it does not depend on the CA, HI, or AK dates for
+# adopting the other HR1 ABAWD rules.
+
+- name: Case 1, IL single adult with no work stays waived after the statewide waiver's 2026-01-31 expiration when the pre-HR1 waiver criteria apply.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_disabled: false
+    state_code: IL
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-07: true
+    meets_snap_abawd_work_requirements:
+      2026-01: true
+      2026-07: true
+    meets_snap_work_requirements:
+      2026-01: true
+      2026-07: true
+    snap_unit_size:
+      2026-01: 1
+      2026-07: 1
+
+- name: Case 2, IL single adult with no work (2030-01) is still waived because the pre-enactment geography is frozen indefinitely.
+  period: 2030-01
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_disabled: false
+    state_code: IL
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Months before enactment keep current law. Minnesota's replacement waiver
+# added Norman County on 2025-07-01, so Norman is in the 2025-07-03
+# snapshot but was not waived in June 2025; reading the snapshot for every
+# month with the switch off would wrongly waive it in June.
+
+- name: Case 3, MN resident of Norman County is not waived before the 2025-07-01 replacement waiver and is waived after enactment.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: MN
+    county_fips: "27107"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: false
+      2025-08: true
+
+# Changes that took effect before 2025-07-03 carry into the snapshot:
+# North Dakota's 2025-07-01 replacement dropped Bottineau County, and the
+# Massachusetts, Hawaii, and Virginia waivers ended 2025-06-30. None is
+# revived.
+
+- name: Case 4, ND resident of Bottineau County is not waived after the 2025-07-01 replacement waiver dropped it.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: ND
+    county_fips: "38009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-08: false
+
+- name: Case 5, MA resident of Berkshire County is not waived after the waiver ended on 2025-06-30.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: MA
+    county_fips: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-08: false
+
+- name: Case 6, HI resident of Kauai County stays unwaived after the waiver ended on 2025-06-30, including during Hawaii's HR1 pre-adoption months.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: HI
+    county_fips: "15007"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-08: false
+      2025-12: false
+
+# Areas waived on 2025-07-03 stay waived after their actual waivers ended.
+# Contrast with the current-law cases in is_in_snap_abawd_waived_area.yaml:
+# CA Los Angeles County in 2026-03 (Case 8) and KY Adair County in 2025-12
+# (Case 34) are not waived there.
+
+- name: Case 7, CA resident of Los Angeles County stays waived through the frozen statewide waiver, both before and after California adopts the other HR1 ABAWD rules on 2026-06-01.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: CA
+    county_fips: "06037"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-03: true
+      2026-07: true
+    meets_snap_abawd_work_requirements:
+      2026-03: true
+      2026-07: true
+
+- name: Case 8, KY resident of Adair County (2025-12) stays waived after the county waiver ended on 2025-11-30.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: KY
+    county_fips: "21001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-12: true
+
+# The FY2025 NY, NM, and DE county waivers were in effect on 2025-07-03, so
+# they are frozen too. Counties left out of those waivers stay unwaived.
+
+- name: Case 9, NY resident of Kings County (2026-07) stays waived through the frozen 61-county waiver.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+
+- name: Case 10, NY resident of Saratoga County (2025-02) keeps the current-law statewide waiver in a month before enactment.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36091"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-02: true
+
+- name: Case 11, NY resident of Saratoga County (2026-07) is not waived because the frozen 61-county waiver excludes Saratoga.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36091"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+
+- name: Case 12, NM resident of Dona Ana County (2026-07) stays waived through the frozen 29-county waiver.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+    county_fips: "35013"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+
+- name: Case 13, NM resident of Bernalillo County (2026-07) is not waived because the frozen 29-county waiver excludes Bernalillo.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+    county_fips: "35001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+
+- name: Case 14, DE resident of Sussex County (2026-07) stays waived through the frozen FY2025 waiver although the actual FY2026 renewal was denied.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+    county_fips: "10005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+
+- name: Case 15, DE resident of New Castle County (2026-07) is not waived because the frozen waiver covers only Kent and Sussex counties.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+    county_fips: "10003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+
+# Areas outside the 2025-07-03 geography stay unwaived.
+
+- name: Case 16, AK resident of the Municipality of Anchorage (2026-01) is not waived because Anchorage was not waived on 2025-07-03.
+  period: 2026-01
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 17, TX resident of Harris County (2026-07) is not waived because Texas had no waiver on 2025-07-03.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    county_fips: "48201"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+
+# Snapshot boundary. For July 2025 the lists are read at 2025-07-01, the
+# earlier of the period start and 2025-07-03. A waiver that ended on
+# 2025-06-30 is on neither list, so it is not revived in July 2025 or
+# later. A waiver still active on 2025-07-03 stays waived after its actual
+# end (Pennsylvania's ended 2025-08-31).
+
+- name: Case 18, MA resident of Berkshire County is not waived in the enactment month or in 2026 because the waiver ended on 2025-06-30.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2025: MA
+      2026: MA
+    county_fips:
+      2025: "25003"
+      2026: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-07: false
+      2026-01: false
+
+- name: Case 19, PA resident of Armstrong County stays waived through the enactment month and after the waiver's actual 2025-08-31 end.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2025: PA
+      2026: PA
+    county_fips:
+      2025: "42005"
+      2026: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: true
+      2025-09: true
+      2026-01: true
+
+# The switch adds areas and never removes one. Bernalillo County is outside
+# the 2025-07-03 geography (NM's 29-county waiver excludes it), but the NM
+# statewide waiver covered it in December 2024. Months before enactment
+# read the lists at the period start, so it stays waived then.
+
+- name: Case 20, NM resident of Bernalillo County keeps the December 2024 statewide waiver and is not waived from 2025-01.
+  period: 2024
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2024: NM
+      2025: NM
+    county_fips:
+      2024: "35001"
+      2025: "35001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-01: false
+
+# County waivers in effect on 2025-07-03 stay waived past their actual end
+# dates. Contrast with the current-law cases in
+# is_in_snap_abawd_waived_area.yaml: NM Case 56, NY Case 66, DE Case 69,
+# and AK Case 6 are not waived after the waiver ends.
+
+- name: Case 21, NM resident of Dona Ana County stays waived after the county waiver's actual 2025-12-31 end.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2025: NM
+      2026: NM
+    county_fips:
+      2025: "35013"
+      2026: "35013"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-12: true
+      2026-01: true
+
+- name: Case 22, NY household without county geography falls back to Albany County and stays waived after the county waiver's actual 2026-02-28 end.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: NY
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-03: true
+
+- name: Case 23, DE resident of Kent County stays waived after the county waiver's actual 2025-09-30 end.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: DE
+    county_fips: "10001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-09: true
+      2025-10: true
+
+- name: Case 24, AK resident of Bethel Census Area stays waived after the Alaska waiver's actual 2026-10-31 end.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: AK
+    county_fips: "02050"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-10: true
+      2026-11: true
+
+# No-county fallback with the switch off. A household with no county
+# geography falls back to the first county in its state. Delaware's
+# fallback, Kent County, is in the 2025-07-03 geography, so it stays waived
+# after the actual waiver's 2025-09-30 end (current law: not waived, Case 69
+# in is_in_snap_abawd_waived_area.yaml). New Mexico's fallback, Bernalillo
+# County, is outside both the 29-county FY2025 list and the FY2026 Luna
+# County list, so it is waived only while the FY2024 statewide waiver runs.
+
+- name: Case 25, DE household without county geography falls back to Kent County and stays waived after the county waiver's actual 2025-09-30 end.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2025: DE
+      2026: DE
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-10: true
+      2026-07: true
+
+- name: Case 26, NM household without county geography falls back to Bernalillo County, waived only under the December 2024 statewide waiver.
+  period: 2024
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2024: NM
+      2025: NM
+      2026: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-06: false
+      2026-07: false
+
+# The switch changes geography only. A 58-year-old who works 1 hour a week
+# is exempt by age under the pre-HR1 bracket (55 and older) but not under
+# the HR1 bracket (65 and older). Texas applies the HR1 age rules from
+# 2025-07-04 through gov.usda.snap.work_requirements.abawd.in_effect, which
+# this switch leaves on, and Texas is outside the 2025-07-03 geography, so
+# the person is subject to the time limit. The same person in Kings County,
+# NY is waived through the frozen 61-county waiver.
+
+- name: Case 27, TX resident of Harris County aged 58 (2026-07) is neither waived nor exempt by age because the switch leaves the HR1 age rules in place.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 58
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    county_fips: "48201"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: false
+    is_snap_abawd_exempt:
+      2026-07: false
+    meets_snap_abawd_work_requirements:
+      2026-07: false
+
+- name: Case 28, NY resident of Kings County aged 58 (2026-07) meets the ABAWD requirement through the frozen 61-county waiver.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    age: 58
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+    is_snap_abawd_exempt:
+      2026-07: true
+    meets_snap_abawd_work_requirements:
+      2026-07: true
+
+# Statewide and boundary checks with the switch off. The 2025-07-03
+# geography includes DC's districtwide waiver (waived_states 2025-03-01
+# list), which the May 21, 2025 reissue letter had shortened to
+# 2025-12-31. For July 2025 the lists are read at 2025-07-01, which
+# already includes Minnesota's 2025-07-01 replacement list with Norman
+# County.
+
+- name: Case 29, DC resident (2026-07) stays waived after the districtwide waiver's actual 2025-12-31 end.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: DC
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: true
+
+- name: Case 30, MN resident of Norman County is waived in the enactment month under the 2025-07-01 replacement waiver.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: MN
+    county_fips: "27107"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-07: true
+
+# Several households in one simulation exercise the vectorized path: only
+# Kings County is in the 2025-07-03 geography; Saratoga County is outside
+# the frozen NY list, Texas had no waiver, and New Castle County is outside
+# the frozen DE list.
+
+- name: Case 31, four households in NY Kings, NY Saratoga, TX Harris, and DE New Castle counties (2026-07) are evaluated together and only Kings County is waived.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 30
+      person4:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+        county_fips: "36047"
+      household2:
+        members: [person2]
+        state_code: NY
+        county_fips: "36091"
+      household3:
+        members: [person3]
+        state_code: TX
+        county_fips: "48201"
+      household4:
+        members: [person4]
+        state_code: DE
+        county_fips: "10003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-07: [true, false, false, false]
