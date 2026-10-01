@@ -10,8 +10,10 @@
     rent: 0
     employment_income: 12_000
     self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
   output:
-    in_eap_income: 18_000
+    # 12,000 wages + 6,000 ordinary business + 3,000 specified service business.
+    in_eap_income: 21_000
 - name: Adult dependent secondary and college student exemptions do not extend past age twenty-three for college
   period: 2_026
   input:
@@ -26,9 +28,10 @@
     is_in_secondary_school: [true, false, false, false]
     is_full_time_college_student: [false, true, true, true]
     employment_income: [12_000, 12_000, 12_000, 12_000]
+    sstb_self_employment_income: [3_000, 3_000, 3_000, 3_000]
     interest_income: [1_000, 1_000, 1_000, 1_000]
   output:
-    in_eap_income: [0, 0, 13_000, 13_000]
+    in_eap_income: [0, 0, 16_000, 16_000]
 - name: Reported Medicare premium and support paid reduce income, while TANF, support received and capital gains
     are excluded
   period: 2_026
@@ -103,6 +106,7 @@
   # Household 1: max($29,120, 0) + max(-$15,000 self-employment, 0) = $29,120.
   # Household 2: max($29,120, 0) + max(-$6,000 rental, 0) = $29,120.
   # Household 3: max($29,120, 0) + max(-$9,000 farm operations, 0) = $29,120.
+  # Each also has a $2,000 specified service business loss, floored at zero.
   # $29,120 is within the size 1 limit of $33,556. Three-month income $29,120 x 3 / 12
   # = $7,280 exceeds the band 2 ceiling floor($55,928 x 0.45 x 3 / 12) = $6,291: band 3.
   # Natural gas, single-family: (2 + 3 + 1) x $25 + $50 electric = $200.
@@ -112,6 +116,7 @@
     age: [40, 40, 40]
     employment_income: [29_120, 29_120, 29_120]
     self_employment_income: [-15_000, 0, 0]
+    sstb_self_employment_income: [-2_000, -2_000, -2_000]
     rental_income: [0, -6_000, 0]
     farm_operations_income: [0, 0, -9_000]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -121,3 +126,24 @@
     in_eap_income: [29_120, 29_120, 29_120]
     in_eap_eligible: [true, true, true]
     in_eap: [200, 200, 200]
+
+- name: Service business profits above the income limit prevent a heating award
+  # Section 6.1 counts business income; a specified service business is not
+  # exempt. Existing net profits remain the documented gross-income approximation.
+  period: 2026
+  input:
+    state_code: IN
+    age: 40
+    sstb_self_employment_income: 60_000
+    ssi: 0
+    social_security: 0
+    receives_ssi: false
+    receives_medicaid: false
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    in_eap_income: 60_000
+    # Above the published one-person annual limit of 33,556.
+    in_eap_eligible: false
+    in_eap: 0
