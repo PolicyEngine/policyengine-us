@@ -25,10 +25,13 @@ class nc_lieap_earned_income(Variable):
         # NOTE: the federal variable does not test head-of-unit status and
         # excludes all earnings of a federal work-study participant.
         countable = person("snap_countable_earner", period.first_month)
-        # Existing net self-employment income approximates receipts less allowed
+        # Existing net business and farm income approximates receipts less allowed
         # costs. No second business-expense deduction or new input is introduced.
-        earnings = max_(person("employment_income", period), 0) + max_(
-            person("self_employment_income", period), 0
+        earnings = (
+            max_(person("employment_income", period), 0)
+            + max_(person("self_employment_income", period), 0)
+            + max_(person("sstb_self_employment_income", period), 0)
+            + max_(person("farm_operations_income", period), 0)
         )
         # Section 300.09 B.3 includes rental income in the work deduction.
         return earnings * countable + max_(person("rental_income", period), 0)

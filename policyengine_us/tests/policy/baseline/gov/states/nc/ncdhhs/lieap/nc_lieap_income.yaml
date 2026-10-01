@@ -12,21 +12,25 @@
   output:
     nc_lieap_income: [0, 480, 360.12, 960, 840.12, 1_440, 1_320.12, 1_920, 1_680.12, 2_880, 2_640.12, 3_840, 3_840.1]
   absolute_error_margin: 0.02
-- name: Net self-employment and rental income receive the work deduction once
+- name: Net business, farm and rental income receive the work deduction once
   period: 2_026
   input:
     state_code: NC
     age: 40
     self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
+    farm_operations_income: 3_000
     rental_income: 6_000
     ssi: 0
     social_security: 0
     tanf: 0
     childcare_expenses: 0
   output:
-    nc_lieap_earned_income: 12_000
-    nc_lieap_gross_income_person: 12_000
-    nc_lieap_income: 9_600
+    # EP-300.09 B.3 counts farm, self-employment and rental income for
+    # the work deduction: (6,000 + 3,000 + 3,000 + 6,000) * 0.8 = 14,400.
+    nc_lieap_earned_income: 18_000
+    nc_lieap_gross_income_person: 18_000
+    nc_lieap_income: 14_400
 - name: Elderly medical allowance, actual support, and unreimbursed care reduce income
   period: 2_026
   input:
@@ -49,6 +53,8 @@
     is_in_k12_school: [true, false]
     employment_income: [12_000, 12_000]
     self_employment_income: [-6_000, -6_000]
+    sstb_self_employment_income: [2_000, -2_000]
+    farm_operations_income: [3_000, -3_000]
     ssi: [0, 0]
     social_security: [0, 0]
     tanf: [0, 0]
@@ -121,3 +127,23 @@
     nc_lieap_household_size: 2
     nc_lieap_income: 32_000
     nc_lieap_eligible: false
+
+- name: Service business and farm profits can exceed the income limit after the work deduction
+  period: 2026
+  input:
+    state_code: [NC, NC]
+    age: [40, 40]
+    sstb_self_employment_income: [60_000, 0]
+    farm_operations_income: [0, 60_000]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000]
+  output:
+    nc_lieap_earned_income: [60_000, 60_000]
+    nc_lieap_gross_income_person: [60_000, 60_000]
+    # 60,000 * (1 - 0.2) = 48,000, above the regular one-person limit.
+    nc_lieap_income: [48_000, 48_000]
+    nc_lieap_eligible: [false, false]
+    nc_lieap: [0, 0]
