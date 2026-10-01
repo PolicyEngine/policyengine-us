@@ -22,7 +22,13 @@ class ms_liheap_income(Variable):
         # annualized preceding 30 days; pay-frequency changes and court-emancipated
         # minors are not identified by existing inputs.
         self_employment = add(
-            person, period, ["self_employment_income", "farm_operations_income"]
+            person,
+            period,
+            [
+                "self_employment_income",
+                "sstb_self_employment_income",
+                "farm_operations_income",
+            ],
         )
         wages = max_(person("employment_income", period), 0)
         earned = (wages + self_employment) * adult

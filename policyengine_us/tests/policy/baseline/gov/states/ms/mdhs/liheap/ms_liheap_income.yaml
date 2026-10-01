@@ -4,7 +4,8 @@
     state_code: [MS, MS, MS]
     age: [40, 40, 40]
     employment_income: [12_000, 12_000, 12_000]
-    self_employment_income: [6_000, -6_000, -18_000]
+    self_employment_income: [4_000, -4_000, -12_000]
+    sstb_self_employment_income: [2_000, -2_000, -6_000]
     ssi: [0, 0, 0]
     social_security: [0, 0, 0]
   output:
@@ -37,6 +38,7 @@
       child:
         age: 15
         employment_income: 6_000
+        sstb_self_employment_income: 2_000
         ssi: 2_400
         social_security: 1_200
     spm_units:
@@ -113,6 +115,24 @@
     # Size-3 band 4 is 19,989-26,650 (matrix page 1).
     # Propane cap: 800 - 50 * (4 - 1) = 650. Payment: min(650, 1,200) = 650.
     ms_liheap: 650
+
+- name: Service business profits above the income limit prevent a heating award
+  # Rule 6.11 C(2) and I(1): existing net business profits count regardless
+  # of whether the business is a specified service trade or business.
+  period: 2026
+  input:
+    state_code: MS
+    age: 40
+    sstb_self_employment_income: 60_000
+    ssi: 0
+    social_security: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    ms_liheap_income: 60_000
+    # floor(floor(85,708 * 0.6) * 0.52) = 26,740 < 60,000.
+    ms_liheap_eligible: false
+    ms_liheap: 0
 - name: Case 6, farm loss offsets a spouse's wages.
   period: 2026
   input:
