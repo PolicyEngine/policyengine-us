@@ -1,0 +1,51 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Case 1, mixed-status household with citizen children counts every member.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        # $12.50 an hour, 40 hours a week: 12.5 * 2_080 = 26_000.
+        employment_income: 26_000
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_560
+        receives_housing_assistance: false
+        # The household does not receive K-TAP.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    is_citizen_or_legal_immigrant: [false, false, true, true]
+    # Modeling assumption: one citizen or qualified member is enough, and all
+    # four members count for household size and income.
+    spm_unit_size: 4
+    # The undocumented parent's wages are counted.
+    ky_liheap_income: 26_000
+    # Fact sheet limit for four: ceil(32_150 * 1.5 / 12 = 4_018.75) = 4_019;
+    # income is 2_166.67 a month.
+    ky_liheap_income_eligible: true
+    heating_expense: 1_560
+    ky_liheap_eligible: true
+    # 2_166.67 a month is above ceil(32_150 * 0.75 / 12 = 2_009.375) = 2_010
+    # and not above ceil(32_150 / 12 = 2_679.17) = 2_680, so the 75.01-100%
+    # band gives 3 income points.
+    # 4 (size) + 3 (income) + 6 (electricity) = 13 points;
+    # ceil(13 * 16.66 = 216.58) = 217, the workbook cell for four people,
+    # 75.01-100%, electricity.
+    ky_liheap: 217

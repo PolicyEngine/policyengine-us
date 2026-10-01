@@ -17,11 +17,13 @@ class ky_liheap_eligible(Variable):
         has_eligible_member = spm_unit.any(
             spm_unit.members("is_citizen_or_legal_immigrant", period)
         )
-        # 921 KAR 4:116 Section 1(10) defines the energy-purchasing household;
-        # it does not establish the treatment of ineligible immigrants. Counting
-        # all SPM members for size while requiring one qualified member is a
-        # provisional assumption, not a verified Kentucky mixed-status rule.
-        # Confirm household-size and income adjustments with the operational
-        # manual before treating this pathway as supported. Documentation and
-        # enrollment windows are unmodeled. No categorical or resource test applies.
+        # The "at least one qualified member" gate is a modeling assumption with
+        # no Kentucky source. 921 KAR 4:116 Section 2(1)(d) requires a Social
+        # Security number or permanent residency card for each household member,
+        # and Section 2(2) treats the application as incomplete until that is
+        # received; neither says whether a mixed-status household is denied,
+        # served in full, or served without that member. Section 1(10) defines
+        # the energy-purchasing household with no immigration carve-out, so all
+        # SPM members count for size and income. Documentation and enrollment
+        # windows are unmodeled. No categorical or resource test applies.
         return income_eligible & responsible & has_eligible_member

@@ -69,3 +69,35 @@
     heating_type: [KEROSENE, OTHER, SOLAR, NONE, UNSPECIFIED]
   output:
     ky_liheap: [150, 0, 0, 0, 0]
+- name: Case 7, subsidized cells where 30 percent of the unsubsidized amount is a whole dollar.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 2, 5, 5]
+    heating_type: [WOOD, NATURAL_GAS, ELECTRICITY, ELECTRICITY]
+    # Monthly income: 900, 1_200, 2_000 and 4_300.
+    ky_liheap_income: [10_800, 14_400, 24_000, 51_600]
+    receives_housing_assistance: [true, true, false, false]
+    is_in_public_housing: [false, false, true, true]
+  output:
+    # Each published subsidized cell is 30% of an unsubsidized cell, rounded
+    # up. These four have a whole-dollar product, so rounding must not add a
+    # dollar.
+    # Household 1: one person, wood, 0-75% (900 <= 979).
+    # 1 + 1 + 1 = 3 points; ceil(3 * 16.66 = 49.98) = 50; 50 * 0.3 = 15.
+    # Workbook subsidized cell = 15; unsubsidized one-person, 126.01-150%,
+    # wood cell = 50.
+    # Household 2: two people, natural gas, 0-75% (1_200 <= 1_322).
+    # 2 + 1 + 3 = 6 points; ceil(6 * 16.66 = 99.96) = 100; 100 * 0.3 = 30.
+    # Workbook subsidized cell = 30; unsubsidized two-person, 126.01-150%,
+    # natural gas cell = 100.
+    # Household 3: five people, electricity, 0-75% (2_000 <= 2_354).
+    # 5 + 1 + 6 = 12 points; ceil(12 * 16.66 = 199.92) = 200; 200 * 0.3 = 60.
+    # Workbook subsidized cell = 60; unsubsidized five-person, 126.01-150%,
+    # electricity cell = 200.
+    # Household 4: five people, electricity, 126.01-150% (4_300 > 3_922).
+    # 5 + 4 + 6 = 15 points; ceil(15 * 16.66 = 249.9) = 250; 250 * 0.3 = 75.
+    # Workbook subsidized cell = 75; unsubsidized five-person, 0-75%,
+    # electricity cell = 250.
+    ky_liheap: [15, 30, 60, 75]

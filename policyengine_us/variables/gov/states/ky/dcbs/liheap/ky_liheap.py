@@ -15,17 +15,18 @@ class ky_liheap(Variable):
     reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ky.chfs.liheap.payment
+        p = parameters(period).gov.states.ky.dcbs.liheap.payment
         income = spm_unit("ky_liheap_income", period) / MONTHS_IN_YEAR
         fpg = spm_unit("ky_liheap_fpg", period) / MONTHS_IN_YEAR
         size = spm_unit("spm_unit_size", period)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
-        subsidized = (
-            spm_unit("receives_housing_assistance", period)
-            | spm_unit.household("is_in_public_housing", period)
-            | (spm_unit.household("hud_utility_allowance", period) > 0)
-        )
+        # 921 KAR 4:116 Section 4(1)(e) lowers benefits for federally assisted
+        # housing or receipt of a utility allowance. A household receiving a
+        # utility allowance is already an assisted household.
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         band = 0
         for rate in p.income_bands:
             band = band + (income > np.ceil(fpg * rate))

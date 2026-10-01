@@ -1,0 +1,132 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Adult business loss does not offset wages; child earnings are excluded
+  period: 2_026
+  input:
+    people:
+      adult:
+        age: 35
+        employment_income: 12_000
+        self_employment_income: -3_000
+        unemployment_compensation: 1_200
+        strike_benefits: 600
+        ssi: 0
+        social_security: 0
+      child:
+        age: 17
+        employment_income: 4_000
+        self_employment_income: 2_000
+        child_support_received: 2_400
+        ssi: 0
+        social_security: 0
+    spm_units:
+      unit:
+        members: [adult, child]
+        tanf: 0
+    households:
+      household:
+        members: [adult, child]
+        state_code: KY
+  output:
+    ky_liheap_income: 16_200
+- name: Net business income is counted once without an additional expense deduction
+  period: 2_026
+  input:
+    state_code: KY
+    age: 18
+    employment_income: 12_000
+    self_employment_income: 6_000
+    ssi: 0
+    social_security: 0
+    tanf: 0
+  output:
+    ky_liheap_income: 18_000
+- name: Reported Medicare premium deduction cannot make SSA income negative
+  period: 2_026
+  input:
+    state_code: [KY, KY]
+    age: [70, 70]
+    social_security: [12_000, 1_000]
+    medicare_part_b_premiums_reported: [2_000, 2_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+  output:
+    ky_liheap_income: [10_000, 0]
+- name: Case 4, a rental loss or a farm loss does not offset other income.
+  period: 2026
+  input:
+    state_code: [KY, KY]
+    age: [60, 45]
+    # Household 1: a 1_000 a month pension and a net loss on a rented house.
+    taxable_private_pension_income: [12_000, 0]
+    rental_income: [-3_000, 0]
+    # Household 2: $13.00 an hour, 40 hours a week (13 * 2_080 = 27_040) and
+    # a net loss from a small farm.
+    employment_income: [0, 27_040]
+    farm_operations_income: [0, -5_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+  output:
+    # Each source is floored at zero before the sources are added.
+    # Household 1: max(12_000, 0) + max(-3_000, 0) = 12_000.
+    # Household 2: max(27_040, 0) + max(-5_000, 0) = 27_040.
+    ky_liheap_income: [12_000, 27_040]
+- name: Case 5, SSI, State Supplementation and K-TAP are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+        # 2026 SSI federal benefit rate: 994 a month.
+        ssi: 11_928
+        # State Supplementation for caretaker services at home: the 1_056
+        # standard less 994 of SSI is 62 a month.
+        ky_ssp: 744
+      person2:
+        age: 35
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # K-TAP maximum payment for two eligible persons: 293 a month.
+        tanf: 3_516
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # 11_928 (SSI) + 744 (State Supplementation) + 3_516 (K-TAP) = 16_188.
+    ky_liheap_income: 16_188
+- name: Case 6, farm income, dividends, workers compensation and disability pay are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        farm_operations_income: 14_400
+        farm_rent_income: 3_600
+        qualified_dividend_income: 240
+        non_qualified_dividend_income: 60
+        ssi: 0
+      person2:
+        age: 55
+        workers_compensation: 7_800
+        disability_benefits: 2_400
+      person3:
+        age: 16
+        # Farm earnings of a member under 18 are not counted.
+        farm_operations_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Adult farm earnings: 14_400.
+    # Unearned: 3_600 (farm rent) + 240 + 60 (ordinary dividends)
+    # + 7_800 (workers compensation) + 2_400 (disability pay) = 14_100.
+    # 14_400 + 14_100 = 28_500.
+    ky_liheap_income: 28_500

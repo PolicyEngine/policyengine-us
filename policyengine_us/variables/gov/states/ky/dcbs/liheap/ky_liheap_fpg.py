@@ -9,10 +9,10 @@ class ky_liheap_fpg(Variable):
     unit = USD
     label = "Kentucky LIHEAP annual federal poverty guideline"
     defined_for = StateCode.KY
-    reference = "https://www.mkcap.org/uploads/3/4/8/3/34834615/2025-2026-liheap-fact-sheet-v2.jpg"
+    reference = "https://www.capky.org/wp-content/uploads/2026/01/2025-2026-LIHEAP-Fact-Sheet-V2.pdf"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ky.chfs.liheap
+        p = parameters(period).gov.states.ky.dcbs.liheap
         size = spm_unit("spm_unit_size", period)
         state_group = spm_unit.household("state_group_str", period)
         # The annual period represents the heating season ending in that year.

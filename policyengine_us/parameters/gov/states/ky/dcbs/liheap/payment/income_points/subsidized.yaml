@@ -1,0 +1,35 @@
+description: Kentucky uses these income points to reproduce its published subsidized-housing heating payments under the Low Income Home Energy Assistance Program.
+# These values reproduce the published FY2026 workbook. Its subsidized rows
+# reference the unsubsidized rows in reverse order (the lowest-income
+# subsidized row takes 30% of the highest-income unsubsidized row, and so on),
+# so the published subsidized payment rises with income. 921 KAR 4:116 Section
+# 4(1)(c) says the household with the lowest income receives the highest
+# benefit. Which ordering agencies pay is unconfirmed.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 4
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Kentucky LIHEAP subsidized housing income points
+  reference:
+    - title: Kentucky FY2026 benefit matrix, rev benefit income range worksheet
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
+    - title: 921 KAR 4:116 Section 4(1)(c)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
