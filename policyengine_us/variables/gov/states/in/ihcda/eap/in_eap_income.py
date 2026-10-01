@@ -20,17 +20,17 @@ class in_eap_income(Variable):
             | person("is_in_k12_school", period)
             | (
                 person("is_full_time_college_student", period)
-                & (age <= p.student_age_limit)
+                & (age <= p.income.student_age_limit)
             )
         )
-        counted = (age >= p.adult_age) & ~(dependent & student)
+        counted = (age >= p.eligibility.adult_age) & ~(dependent & student)
         # Use annual inputs as an approximation to the annualized preceding three months.
         # Section 6.1 prefers paystub federal taxable gross when supplied; current wages
         # do not identify that paystub field. Existing self_employment_income is net,
         # whereas the manual asks for Schedule C gross profit (line 5) and Schedule F
         # gross income. Keep the existing net-income approximation: no new gross inputs
         # or separate business/work-expense adjustments are introduced in this project.
-        other = max_(add(person, period, p.income_sources), 0) * counted
+        other = max_(add(person, period, p.income.sources), 0) * counted
         # Child SSA benefits count despite the general under-18 exclusion. Only reported
         # Part B premiums are available to approximate the required net SSA payment;
         # Part D, withholding, overpayment recovery, and exact garnishment are unavailable.

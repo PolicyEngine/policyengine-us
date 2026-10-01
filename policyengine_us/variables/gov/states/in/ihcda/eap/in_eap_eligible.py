@@ -12,13 +12,13 @@ class in_eap_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
         income = spm_unit("in_eap_income", period)
-        limit = np.floor(spm_unit("in_eap_smi", period) * p.income_limit)
+        limit = np.floor(spm_unit("in_eap_smi", period) * p.eligibility.income_limit)
         # Section 4.4 permits an ineligible adult to apply for eligible household members.
         # Emancipated minors, residency duration, eviction writs, SSNs, and sanctions
         # cannot be determined here. Section 8.8 separates household eligibility from
         # whether each utility can receive a benefit; burden is checked in in_eap.
         return (
             spm_unit.any(spm_unit.members("is_citizen_or_legal_immigrant", period))
-            & spm_unit.any(spm_unit.members("age", period) >= p.adult_age)
+            & spm_unit.any(spm_unit.members("age", period) >= p.eligibility.adult_age)
             & (income <= limit)
         )
