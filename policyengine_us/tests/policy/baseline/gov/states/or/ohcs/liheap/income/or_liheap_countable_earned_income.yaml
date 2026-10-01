@@ -1,6 +1,7 @@
 - name: Adult earnings exclude secondary students and do not offset wages with business losses
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [OR, OR, OR, OR]
     age: [17, 18, 19, 40]
     is_in_secondary_school: [false, true, false, false]

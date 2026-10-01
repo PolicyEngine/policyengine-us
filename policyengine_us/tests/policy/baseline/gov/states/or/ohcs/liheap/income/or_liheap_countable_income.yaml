@@ -1,12 +1,14 @@
 - name: Interest threshold and counted benefits, including child support and Oregon TANF
   period: 2026
   input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
     state_code: [OR, OR]
     or_liheap_countable_earned_income: [0, 0]
     interest_income: [200, 201]
     dividend_income: [100, 100]
     rental_income: [300, 300]
     social_security: [1000, 1000]
+    railroad_benefits: [120, 120]
     ssi: [0, 0]
     or_tanf: [500, 500]
     pension_income: [200, 200]
@@ -20,4 +22,4 @@
     general_assistance: [0, 0]
     estate_income: [0, 0]
   output:
-    or_liheap_countable_income: [2760, 2961]
+    or_liheap_countable_income: [2880, 3081]
