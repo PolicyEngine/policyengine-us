@@ -15,8 +15,9 @@ period)``, so a formula that wrote into it (``x += y``) changed variable
 
 Each test below calculates the consumer first, then checks the source
 variable against its own value. The last test calculates households of
-every kind above in every state with every cached array read-only, so any
-formula on that path that writes into a cached array raises at that line.
+every kind above in every state with every cached array read-only, in the
+simulation and in every branch it creates, so any formula on that path that
+writes into a cached array raises at that line.
 """
 
 import numpy as np
@@ -32,7 +33,8 @@ from policyengine_us.variables.household.demographic.geographic.state_code impor
 )
 
 YEAR = 2026
-ALWAYS = {"2026-01-01.2100-12-31": True}
+FROM_2026 = "2026-01-01.2100-12-31"
+ALWAYS = {FROM_2026: True}
 CRFB_INCREASED_BASE = {
     "gov.contrib.crfb.surtax.in_effect": ALWAYS,
     "gov.contrib.crfb.surtax.increased_base.in_effect": ALWAYS,
@@ -175,6 +177,34 @@ def test_basic_income_phase_in_leaves_earned_income_unchanged():
     assert simulation.calculate("basic_income_phase_in", YEAR)[0] == 30_000
 
 
+def test_ma_ccfa_income_leaves_a_single_earned_source_unchanged():
+    # add() over a one-variable list returns that variable's cached array;
+    # the minor earnings exclusion used to subtract from it in place.
+    sources = "gov.states.ma.eec.ccfa.income.countable_income.sources"
+    reform = {
+        f"{sources}.earned": {FROM_2026: ["self_employment_income"]},
+        f"{sources}.unearned": {FROM_2026: []},
+    }
+    members = ["parent", "minor"]
+    situation = {
+        "people": {
+            "parent": {"age": {YEAR: 40}},
+            "minor": {
+                "age": {YEAR: 15},
+                "is_tax_unit_dependent": {YEAR: True},
+                "self_employment_income": {YEAR: -1_200},
+            },
+        },
+        "tax_units": {"tax_unit": {"members": members}},
+        "spm_units": {"spm_unit": {"members": members}},
+        "households": {"household": {"members": members, "state_name": {YEAR: "MA"}}},
+    }
+    simulation = Simulation(situation=situation, reform=reform)
+    month = f"{YEAR}-01"
+    simulation.calculate("ma_ccfa_countable_income_person", month)
+    assert simulation.calculate("self_employment_income", month)[1] == -100
+
+
 def every_state():
     """Each household above, plus a retiree, in every state and DC."""
     situation = {"people": {}, "tax_units": {}, "spm_units": {}, "households": {}}
@@ -210,15 +240,34 @@ def every_state():
 
 @pytest.fixture
 def read_only_cache(monkeypatch):
-    """Make every array a simulation stores read-only as it is stored."""
-    put = InMemoryStorage.put
+    """Make every cached array read-only as it is stored and as it is read.
 
-    def read_only_put(self, value, period, branch_name="default"):
+    Freezing on read as well covers the arrays a branch inherits: cloning
+    a holder's storage copies its arrays without going through ``put``.
+    """
+    put, get = InMemoryStorage.put, InMemoryStorage.get
+
+    def read_only(value):
         if isinstance(value, np.ndarray):
             value.flags.writeable = False
-        return put(self, value, period, branch_name)
+        return value
+
+    def read_only_put(self, value, period, branch_name="default"):
+        return put(self, read_only(value), period, branch_name)
+
+    def read_only_get(self, period, branch_name="default"):
+        return read_only(get(self, period, branch_name))
 
     monkeypatch.setattr(InMemoryStorage, "put", read_only_put)
+    monkeypatch.setattr(InMemoryStorage, "get", read_only_get)
+
+
+def test_read_only_cache_covers_arrays_a_branch_inherits(read_only_cache):
+    simulation = Simulation(situation=household("TX", {"employment_income": 50_000}))
+    simulation.calculate("adjusted_gross_income", YEAR)
+    inherited = simulation.get_branch("probe").calculate("adjusted_gross_income", YEAR)
+    with pytest.raises(ValueError, match="read-only"):
+        inherited += 1
 
 
 @pytest.mark.parametrize(
