@@ -1,0 +1,33 @@
+description: The United States limits the lawfully residing children and pregnant individuals option to these immigration statuses under the Medicaid program.
+# CMS treats qualified aliens and other lawfully present noncitizens, including
+# Temporary Protected Status holders, as lawfully residing, and excludes Deferred
+# Action for Childhood Arrivals recipients. Section 71109 of Public Law 119-21
+# leaves this option unchanged.
+values:
+  2009-04-01:
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    - TPS
+
+metadata:
+  unit: list
+  period: year
+  label: Medicaid lawfully residing option immigration statuses
+  reference:
+    - title: 42 U.S.C. 1396b(v)(4)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/1396b#v_4_A
+    - title: Public Law 111-3, section 3(a)
+      href: https://www.govinfo.gov/content/pkg/PLAW-111publ3/pdf/PLAW-111publ3.pdf#page=4
+    - title: Public Law 111-3, section 214(a)
+      href: https://www.govinfo.gov/content/pkg/PLAW-111publ3/pdf/PLAW-111publ3.pdf#page=50
+    - title: "CMS SHO #10-006, definition of lawfully present"
+      href: https://downloads.cms.gov/cmsgov/archived-downloads/smdl/downloads/sho10006.pdf#page=3
+    - title: "CMS SHO #12-002, Individuals with Deferred Action for Childhood Arrivals"
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/SHO-12-002.pdf#page=1
+    - title: "CMS SHO #26-001, section IV, footnote 44"
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=10

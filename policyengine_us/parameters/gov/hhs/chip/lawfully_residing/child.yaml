@@ -1,0 +1,161 @@
+description: States provide the lawfully residing children option under the Children's Health Insurance Program if this is true.
+# The option reaches separate CHIP only where the state also elected it in Medicaid
+# for the same group (42 U.S.C. 1397gg(e)(1)(Q)). States that cover their option
+# population through Medicaid-expansion CHIP are false, because this model treats
+# that coverage as Medicaid.
+# Values before 2022 extrapolate from the January 1, 2022 KFF and Georgetown CCF
+# 50-state survey, the earliest state-level source. Later changes come from state
+# plan amendments, bulletins and testimony, and current values match the CMS list
+# updated April 2, 2026.
+AK:
+  2022-01-01: false
+AL:
+  2022-01-01: false
+AR:
+  2022-01-01: true
+AZ:
+  2022-01-01: false
+CA:
+  2022-01-01: true
+CO:
+  2022-01-01: true
+CT:
+  2022-01-01: true
+DC:
+  2022-01-01: false
+DE:
+  2022-01-01: true
+FL:
+  2022-01-01: true
+# SPA GA-23-0002 covers lawfully residing children in Medicaid and CHIP from
+# January 1, 2024.
+GA:
+  2022-01-01: false
+  2024-01-01: true
+HI:
+  2022-01-01: false
+IA:
+  2022-01-01: true
+ID:
+  2022-01-01: false
+# Illinois elected the option in its separate CHIP until that program
+# ended for children (gov.hhs.chip.child.income_limit); CMS now lists its
+# option children under Medicaid-expansion CHIP, which this model treats
+# as Medicaid.
+IL:
+  2022-01-01: true
+  2022-07-01: false
+IN:
+  2022-01-01: false
+KS:
+  2022-01-01: false
+# Kentucky elected the option in its separate CHIP until that program
+# ended for children (gov.hhs.chip.child.income_limit); CMS now lists its
+# option children under Medicaid-expansion CHIP, which this model treats
+# as Medicaid.
+KY:
+  2022-01-01: true
+  2022-07-01: false
+LA:
+  2022-01-01: true
+MA:
+  2022-01-01: true
+MD:
+  2022-01-01: false
+# Maine elected the option in its separate CHIP until that program
+# ended for children (gov.hhs.chip.child.income_limit); CMS now lists its
+# option children under Medicaid-expansion CHIP, which this model treats
+# as Medicaid.
+ME:
+  2022-01-01: true
+  2023-03-28: false
+MI:
+  2022-01-01: false
+MN:
+  2022-01-01: false
+MO:
+  2022-01-01: false
+MS:
+  2022-01-01: false
+MT:
+  2022-01-01: true
+# North Carolina elected the option in its separate CHIP until that program
+# ended for children (gov.hhs.chip.child.income_limit); CMS now lists its
+# option children under Medicaid-expansion CHIP, which this model treats
+# as Medicaid.
+NC:
+  2022-01-01: true
+  2023-04-01: false
+ND:
+  2022-01-01: false
+NE:
+  2022-01-01: false
+NH:
+  2022-01-01: false
+NJ:
+  2022-01-01: true
+NM:
+  2022-01-01: false
+NV:
+  2022-01-01: true
+NY:
+  2022-01-01: true
+OH:
+  2022-01-01: false
+OK:
+  2022-01-01: false
+# CMS lists Oregon's option children under Medicaid-expansion CHIP, and KFF reports
+# that Oregon moved its separate CHIP to Medicaid-expansion CHIP on January 1, 2024.
+# This model still covers Oregon children from 138% to 305% of the poverty line
+# through separate CHIP (gov.hhs.chip.child.income_limit), so the election stays
+# true to keep the option's reach until those income limits reflect the move.
+OR:
+  2022-01-01: true
+PA:
+  2022-01-01: true
+RI:
+  2022-01-01: false
+SC:
+  2022-01-01: false
+SD:
+  2022-01-01: false
+TN:
+  2022-01-01: false
+TX:
+  2022-01-01: true
+UT:
+  2022-01-01: true
+VA:
+  2022-01-01: true
+VT:
+  2022-01-01: false
+WA:
+  2022-01-01: true
+WI:
+  2022-01-01: true
+WV:
+  2022-01-01: true
+WY:
+  2022-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: CHIP lawfully residing children option election
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 U.S.C. 1397gg(e)(1)(Q)
+      href: https://www.law.cornell.edu/uscode/text/42/1397gg#e_1_Q
+    - title: "CMS SHO #10-006, Medicaid and CHIP Coverage of Lawfully Residing Children and Pregnant Women"
+      href: https://downloads.cms.gov/cmsgov/archived-downloads/smdl/downloads/sho10006.pdf#page=2
+    - title: CMS, Medicaid and CHIP Coverage of Lawfully Residing Children and Pregnant Individuals (updated April 2, 2026)
+      href: https://www.medicaid.gov/medicaid/enrollment-strategies/medicaid-and-chip-coverage-lawfully-residing-children-pregnant-individuals
+    - title: CMS, Georgia State Plan Amendment GA-23-0002
+      href: https://www.medicaid.gov/medicaid-spa/2023-11-22/156086
+    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022, Table 3
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=1
+    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as of January 2023, Table 3 and footnote 7
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf#page=2
+    - title: KFF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as States Prepare for Major Medicaid Policy Changes (January 2026)
+      href: https://www.kff.org/medicaid/medicaid-and-chip-eligibility-enrollment-and-renewal-policies-as-states-prepare-for-major-medicaid-policy-changes/

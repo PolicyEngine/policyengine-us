@@ -1,0 +1,464 @@
+# 42 USC 1396b(v)(4)(A): states may cover lawfully residing children (California
+# under 21, Texas under 19) and pregnant individuals without the five-year bar.
+# State elections follow the CMS list updated April 2, 2026.
+- name: Case 1, recent permanent resident child in California qualifies through the option.
+  period: 2025
+  input:
+    state_code: CA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 2
+  output:
+    is_medicaid_lawfully_residing_option_eligible: true
+
+- name: Case 2, child age limits are 21 in California and 19 in Texas.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 20
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 18
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: TX
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, false, true]
+
+- name: Case 3, Wyoming elected the option only for pregnant individuals and Texas only for children.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+      household2:
+        members: [person2]
+        state_code: WY
+      household3:
+        members: [person3]
+        state_code: WY
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, true, false]
+
+- name: Case 4, Alabama has not elected the option.
+  period: 2025
+  input:
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 2
+  output:
+    is_medicaid_lawfully_residing_option_eligible: false
+
+- name: Case 5, option covers temporary protected status but not DACA recipients or undocumented immigrants.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: TPS
+      person2:
+        age: 10
+        immigration_status: DACA
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+      household2:
+        members: [person2]
+        state_code: NY
+      household3:
+        members: [person3]
+        state_code: FL
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, false, false]
+
+- name: Case 6, adult who is not pregnant is outside the option, and past-bar children qualify either way.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: CA
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, true]
+    is_medicaid_immigration_status_eligible: [false, true]
+
+# The pregnancy category runs through the state's Medicaid postpartum period:
+# 365 days in New Jersey and 60 days in California in this model.
+- name: Case 7, postpartum coverage at 90 days follows New Jersey's 12-month extension.
+  period: 2025
+  input:
+    state_code: NJ
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    is_pregnant: false
+    count_days_postpartum: 90
+  output:
+    is_medicaid_lawfully_residing_option_eligible: true
+
+- name: Case 8, postpartum coverage in California ends after 60 days.
+  period: 2025
+  input:
+    state_code: CA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    is_pregnant: false
+    count_days_postpartum: 90
+  output:
+    is_medicaid_lawfully_residing_option_eligible: false
+
+- name: Case 9, California postpartum coverage holds at 59 days and ends at 60.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        count_days_postpartum: 59
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: false
+        count_days_postpartum: 60
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: CA
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, false]
+
+# MDHHS Bulletin MMP 24-20 starts Michigan's election on August 1, 2024, so
+# annual 2024 values still read the pre-election rule.
+- name: Case 10, Michigan child election applies from 2025 in annual simulations.
+  period: 2024
+  input:
+    state_code: MI
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 2
+  output:
+    is_medicaid_lawfully_residing_option_eligible: false
+
+- name: Case 11, Michigan child election applies in 2025.
+  period: 2025
+  input:
+    state_code: MI
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 2
+  output:
+    is_medicaid_lawfully_residing_option_eligible: true
+
+- name: Case 12, Georgia and New Hampshire elections do not apply in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+      household2:
+        members: [person2]
+        state_code: GA
+      household3:
+        members: [person3]
+        state_code: NH
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, false, false]
+
+- name: Case 13, Georgia and New Hampshire elections apply from January 1, 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+      household2:
+        members: [person2]
+        state_code: GA
+      household3:
+        members: [person3]
+        state_code: NH
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, true, true]
+
+# North Dakota began covering lawfully residing pregnant individuals on
+# October 1, 2023; Nevada and Kentucky did so from January 1, 2023.
+- name: Case 14, pregnancy elections in North Dakota, Nevada and Kentucky before they apply.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: ND
+      household2:
+        members: [person2]
+        state_code: NV
+      household3:
+        members: [person3]
+        state_code: KY
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, false, false]
+
+- name: Case 15, North Dakota pregnancy election still off in 2023 while Nevada and Kentucky apply.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: ND
+      household2:
+        members: [person2]
+        state_code: NV
+      household3:
+        members: [person3]
+        state_code: KY
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, true, true]
+
+- name: Case 16, North Dakota pregnancy election applies in 2024 but not to children.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 10
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: ND
+      household2:
+        members: [person2]
+        state_code: ND
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, false]
+
+# H.R.1 section 71109 drops refugees from federal Medicaid funding from
+# October 1, 2026 (read from 2027 in annual simulations) but leaves the option.
+- name: Case 17, after section 71109 refugee children keep Medicaid only in electing states.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        is_pregnant: false
+        immigration_status: REFUGEE
+      person2:
+        age: 40
+        is_pregnant: false
+        immigration_status: REFUGEE
+      person3:
+        age: 10
+        is_pregnant: false
+        immigration_status: REFUGEE
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+      household2:
+        members: [person2]
+        state_code: NY
+      household3:
+        members: [person3]
+        state_code: AL
+      household4:
+        members: [person4]
+        state_code: FL
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, false, false, false]
+    is_medicaid_immigration_status_eligible: [true, false, false, false]
+
+- name: Case 18, refugees are bar-exempt qualified aliens before section 71109 applies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: REFUGEE
+      person2:
+        age: 10
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+      household2:
+        members: [person2]
+        state_code: AL
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, false]
+    is_medicaid_immigration_status_eligible: [true, true]
+
+- name: Case 19, child election stops at the state age limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 21
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 19
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [false, false]
+
+- name: Case 20, Rhode Island pregnancy election applies from 2024.
+  period: 2024
+  input:
+    state_code: RI
+    immigration_status: TPS
+    age: 30
+    is_pregnant: true
+  output:
+    is_medicaid_lawfully_residing_option_eligible: true
+
+- name: Case 21, Rhode Island pregnancy election does not apply in 2023.
+  period: 2023
+  input:
+    state_code: RI
+    immigration_status: TPS
+    age: 30
+    is_pregnant: true
+  output:
+    is_medicaid_lawfully_residing_option_eligible: false
