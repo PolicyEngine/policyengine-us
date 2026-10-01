@@ -7,8 +7,9 @@ later year depend on the years calculated before it.
 - ``monthly_age`` reads ``age`` one month at a time, and core caches each of
   those month values as a twelfth of the year's age. policyengine-core 3.24.0
   through 3.32.11 carried the latest-starting cached period of any unit into a
-  later year, so once a month of 2024 had been calculated every person's 2025
-  age was a twelfth of their 2024 age. Fixed in policyengine-core.
+  later year, so once a month of 2024 after January had been calculated,
+  every person's 2025 age was a twelfth of their 2024 age. Fixed in
+  policyengine-core.
 - The itemization, SALT and state refundability branches were kept across
   periods. A branch copies its parent's cached arrays when it is created, so
   a branch created in 2024 answered 2025 from a copy without any of the
@@ -148,6 +149,8 @@ def test_later_year_matches_single_year_simulation(year):
 
     simulation = Simulation(situation=_situation())
     _later_year_values(simulation, BASE_YEAR)
+    BRANCHES = ("itemizing", "not_itemizing", "no_salt")
+    base_year_branches = {name: simulation.branches[name] for name in BRANCHES}
     # Request every month of the base year too, as monthly programs do for
     # people they cover.
     for month in range(1, 13):
@@ -156,5 +159,6 @@ def test_later_year_matches_single_year_simulation(year):
     _assert_same(_later_year_values(simulation, year), fresh, year)
     # The itemization branches were created again for the later year rather
     # than kept from the base year.
-    for name in ("itemizing", "not_itemizing", "no_salt"):
+    for name in BRANCHES:
+        assert simulation.branches[name] is not base_year_branches[name]
         assert simulation.branches[name].branch_period == period(year)
