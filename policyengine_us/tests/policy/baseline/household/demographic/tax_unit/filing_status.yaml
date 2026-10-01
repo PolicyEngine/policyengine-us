@@ -192,3 +192,62 @@
   output:
     # Gross income = 5,000 (losses are not netted), not below 4,400.
     filing_status: SINGLE
+
+- name: Taxpayer whose dependent parent's capital losses keep benefits nontaxable files as head of household.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        long_term_capital_gains: 4_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Provisional income = 2,000 + 22,000 = 24,000 < 25,000, so the parent's
+    # gross income is 4,000 < 4,400.
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Taxpayer whose married dependent parents live together files as single.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # Each parent has 5,100 of taxable benefits, not below 4,400.
+    filing_status: SINGLE

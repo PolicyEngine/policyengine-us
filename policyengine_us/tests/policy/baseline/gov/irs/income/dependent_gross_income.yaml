@@ -274,3 +274,139 @@
     # The head is not a dependent, so their gross income is not tested.
     # The dependent has no benefits: provisional income = 1,000 < 25,000.
     dependent_gross_income: [0, 1_000]
+
+- name: Capital losses reduce a dependent's modified AGI for Social Security but not their gross income.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        long_term_capital_gains: 4_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # IRC 86(b)(2) modified AGI = net capital gain 4,000 - 2,000 = 2,000.
+    # Provisional income = 2,000 + 0.5 * 44,000 = 24,000 < 25,000 base,
+    # so no benefits are taxable.
+    # Gross income = 4,000 gross gains (the loss is not netted) + 0 = 4,000.
+    dependent_taxable_ss_magi: [0, 2_000]
+    dependent_taxable_social_security: [0, 0]
+    dependent_gross_income: [0, 4_000]
+
+- name: Married dependent parents who live together have zero IRC 86 base amounts.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # Each parent: provisional income = 0 + 0.5 * 12,000 = 6,000.
+    # Married, living together and not filing jointly, so the base and
+    # adjusted base amounts are 0 (IRC 86(c)(1)(C), (c)(2)(C)).
+    # Bracket amount = min(min(6,000, 0.5 * 6,000), 0.5 * (0 - 0)) = 0.
+    # Taxable = min(0.85 * (6,000 - 0) + 0, 0.85 * 12,000)
+    # = min(5,100, 10,200) = 5,100.
+    dependent_lives_with_spouse: [false, true, true]
+    dependent_gross_income: [0, 5_100, 5_100]
+
+- name: Married dependent whose spouse files their own return has zero IRC 86 base amounts.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+      father:
+        age: 72
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        employment_income: 30_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      head_tax_unit:
+        members: [head, mother]
+      father_tax_unit:
+        members: [father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # The mother lives with her spouse and does not file jointly, so her
+    # provisional income of 0.5 * 12,000 = 6,000 is all over the 0 base:
+    # taxable = min(0.85 * 6,000, 0.85 * 12,000) = 5,100.
+    # The father heads his own tax unit, so his income is not tested.
+    dependent_gross_income: [0, 5_100, 0]
+
+- name: The IRC 1211(b) capital loss limit applies to a dependent's modified AGI.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 30_000
+        taxable_pension_income: 14_000
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 14,000 - min(5,000, 3,000) = 11,000.
+    # Provisional income = 11,000 + 0.5 * 30,000 = 26,000.
+    # Taxable = min(0.5 * 30,000, 0.5 * (26,000 - 25,000)) = 500.
+    # Gross income = 14,000 + 0 gains + 500 = 14,500.
+    dependent_taxable_ss_magi: [0, 11_000]
+    dependent_gross_income: [0, 14_500]

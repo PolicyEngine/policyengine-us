@@ -291,3 +291,66 @@
     # than the 5,050 exemption amount for 2024 (IRC 152(d)(1)(B)).
     dependent_gross_income: [0, 5_050]
     is_qualifying_relative_dependent: [false, false]
+
+- name: Capital losses keep a dependent's Social Security nontaxable, so they pass the income test.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 44_000
+        long_term_capital_gains: 4_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 4,000 - 2,000 = 2,000; provisional income
+    # = 2,000 + 0.5 * 44,000 = 24,000 < 25,000, so no benefits are taxable.
+    # Gross income = 4,000 gross gains < 4,400 for 2022.
+    dependent_gross_income: [0, 4_000]
+    is_qualifying_relative_dependent: [false, true]
+
+- name: Married parents who live together fail the income test on taxable Social Security.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # Zero base amounts: taxable = min(0.85 * 6,000, 0.85 * 12,000) = 5,100
+    # for each parent, not below 4,400 for 2022.
+    dependent_gross_income: [0, 5_100, 5_100]
+    is_qualifying_relative_dependent: [false, false, false]
