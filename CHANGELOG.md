@@ -1,3 +1,31 @@
+## [2.18.4] - 2026-10-01
+
+### Changed
+
+- Load the known-dead reference URL list from per-agency YAML files and scan only the patterns whose host appears in a line, so the offline guard stays fast as the list grows.
+
+
+## [2.18.3] - 2026-09-30
+
+### Changed
+
+- Extend the federal poverty guideline helper to support lagged guideline years and reuse it for Massachusetts LIHEAP without changing its October lookup date.
+
+
+## [2.18.2] - 2026-09-30
+
+### Fixed
+
+- Replace dead New York tax department reference links (2023 printable IT-201, IT-196, and IT-213 instruction PDFs, IT-558 instructions, and retired inflation refund and child credit payment pages) with the 2023 HTML instructions or archived copies, and add an offline check against known-dead reference URLs.
+
+
+## [2.18.1] - 2026-09-30
+
+### Fixed
+
+- Lapse the Yonkers resident income tax surcharge and nonresident earnings tax after tax year 2027, when their authorization under New York Tax Law §§ 1321 and 1340 expires.
+
+
 ## [2.18.0] - 2026-09-29
 
 ### Added
