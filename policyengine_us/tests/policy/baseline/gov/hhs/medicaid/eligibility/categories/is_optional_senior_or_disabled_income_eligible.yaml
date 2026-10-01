@@ -328,3 +328,104 @@
   output:
     # 18,600 combined exceeds the 18,396 couple standard.
     is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# Montana tests aged, blind, and disabled people who do not receive SSI
+# against the SSI payment amounts: "Applicants with monthly countable
+# income equal to or less than these income standards are categorically
+# needy Medicaid eligible" and those "in excess of these income standards
+# are not categorically needy eligible" (DPHHS Medicaid manual ABD 008).
+# In 2026 that is $994 a month ($11,928 a year) for an individual and
+# $1,491 a month ($17,892 a year) for a couple.
+- name: Income exactly at Montana's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Income one dollar over Montana's individual standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_929
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+# $996 a month is over the $994 standard, although it is under 75% of the
+# 2026 poverty guideline ($11,970 a year).
+- name: Montana income between the SSI rate and 75% of poverty is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_952
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Joint income exactly at Montana's couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Joint income over Montana's couple standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_947
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_947
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]

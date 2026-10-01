@@ -61,3 +61,43 @@
     is_medicaid_1115_mec_adult: true
   output:
     medicaid_category: ADULT
+
+# Montana, 2026: the SSI rate is $994 a month ($11,928 a year), and so is
+# the categorically needy income standard for aged people who do not
+# receive SSI (DPHHS Medicaid manual ABD 008). Countable income is Social
+# Security less the $20 a month general exclusion ($240 a year).
+- name: Case 8, aged Montanan one dollar a month under the SSI rate is an SSI recipient.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    social_security_retirement: 12_156
+  output:
+    ssi: 12
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_eligible: true
+
+- name: Case 9, aged Montanan exactly at the SSI rate gets no SSI but is categorically needy.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    social_security_retirement: 12_168
+  output:
+    ssi: 0
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+- name: Case 10, aged Montanan two dollars a month over the SSI rate is not categorically needy.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    # Countable income 11,952: over 11,928 but under 75% of the poverty
+    # guideline (11,970).
+    social_security_retirement: 12_192
+  output:
+    ssi: 0
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
