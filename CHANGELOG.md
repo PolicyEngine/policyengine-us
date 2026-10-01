@@ -1,3 +1,16 @@
+## [2.19.0] - 2026-10-01
+
+### Added
+
+- Add a switch to evaluate SNAP ABAWD time-limit waivers under the pre-P.L. 119-21 waiver geography.
+
+### Fixed
+
+- Apply the SNAP qualified-alien five-year waiting period and its exceptions (8 U.S.C. 1612(a)(2); 7 CFR 273.4(a)(6)) to lawful permanent residents, parolees and conditional entrants.
+- Encode the FY2025 SNAP ABAWD county waivers for New York, New Mexico, and Delaware, New Mexico's FY2026 Luna County waiver, and the District of Columbia's November 2024 districtwide waiver.
+- Stop the one-time 2021 South Carolina rebate, Maine relief rebate and Rhode Island child tax rebate amounts from backdating into 2015-2020 state income tax or carrying into 2022 and later.
+
+
 ## [2.18.4] - 2026-10-01
 
 ### Changed
