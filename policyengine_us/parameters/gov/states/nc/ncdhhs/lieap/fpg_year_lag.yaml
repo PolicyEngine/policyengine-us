@@ -1,9 +1,10 @@
-description: North Carolina uses poverty guidelines from this many years before the heating season ending year under the Low Income Energy Assistance Program.
+description: North Carolina uses poverty guidelines from this many years before the heating season ending year, as inferred from the published income limit tables, under the Low Income Energy Assistance Program.
 values:
   2025-10-01: 1
 metadata:
   unit: year
-  label: North Carolina LIEAP fpg year lag
+  period: year
+  label: North Carolina LIEAP federal poverty guideline year lag
   reference:
-    - title: North Carolina Energy Programs Manual, Section 300
+    - title: North Carolina Energy Programs Manual, Section 300.09, maximum countable income tables
       href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=14,15

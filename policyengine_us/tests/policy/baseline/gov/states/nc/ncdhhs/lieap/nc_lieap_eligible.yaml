@@ -12,6 +12,10 @@
       199_092]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
       1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
@@ -30,6 +34,10 @@
       199_104]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
       1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
@@ -48,6 +56,10 @@
       229_728]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
       1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
@@ -66,6 +78,10 @@
       229_740]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
       1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
@@ -80,6 +96,7 @@
     nc_lieap_income: 22_200
     nc_lieap_gross_income_person: 0
     tanf: 0
+    heating_type: NATURAL_GAS
     heating_expense: 1_000
   output:
     nc_lieap_eligible: false
@@ -93,6 +110,7 @@
     nc_lieap_income: 0
     nc_lieap_gross_income_person: 0
     tanf: 0
+    heating_type: ELECTRICITY
     heating_expense: 1_000
   output:
     nc_lieap_eligible: true
@@ -105,6 +123,7 @@
     nc_lieap_income: [0, 0, 0, 0]
     nc_lieap_gross_income_person: [0, 0, 0, 0]
     tanf: [0, 0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE]
     heating_expense: [1_000, 1_000, 1_000, 1_000]
   output:
     nc_lieap_eligible: [true, false, true, false]
@@ -116,6 +135,7 @@
     nc_lieap_income: [20_748, 20_760, 23_940, 23_952]
     nc_lieap_gross_income_person: [0, 0, 0, 0]
     tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     heating_expense: [1_000, 1_000, 1_000, 1_000]
   output:
     nc_lieap_eligible: [true, false, true, false]
@@ -130,6 +150,7 @@
     nc_lieap_income: [0, 0, 0, 0, 0, 0]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [100, 100, 0, 100, 100, 100]
     heat_expense_included_in_rent: [true, true, true, true, false, false]
     is_in_public_housing: [true, true, true, false, true, false]
@@ -146,6 +167,7 @@
     nc_lieap_income: [0, 0, 0, 0, 0, 0]
     nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
     heating_expense: [100, 100, 100, 100, 100, 100]
     bank_account_assets: [2_500, 2_500, 5_000, 5_000, 0, 0]
     nc_lieap_nonbank_resources: [500, 501, 1_000, 1_001, 3_001, 3_000]
@@ -173,6 +195,7 @@
         members: [person1, person2]
         nc_lieap_income: 0
         tanf: 0
+        heating_type: ELECTRICITY
         heating_expense: 100
     households:
       household:
@@ -191,7 +214,53 @@
     nc_lieap_income: [0, 0]
     nc_lieap_gross_income_person: [0, 0]
     tanf: [0, 0]
+    heating_type: [KEROSENE, KEROSENE]
     heating_expense: [100, 100]
     bank_account_assets: [4_500, 4_501]
   output:
     nc_lieap_eligible: [true, false]
+
+- name: Case 13, excluded parent's wages pass the prorated net test but fail the unprorated gross test.
+  # EP-300.10 A.2.b (page 15): count all of a non-qualified member's income in
+  # the manual gross income test at the eligible household size, before any
+  # proration; if it exceeds the limit, deny. Two of three members are eligible.
+  # Limit, size 2: (15_650 + 5_500) x 1.3 = 27_495 a year; 27_495 / 12 = 2,291.25,
+  #   rounded to $2,291 a month (EP-300 page 14).
+  # Gross test: 36_000 / 12 = $3,000 > $2,291 -> fails.
+  # Net test, taken alone, passes: 36_000 x 2/3 = 24_000 prorated (page 16);
+  #   $2,000 a month is over $400, so the work deduction is 20% = $400;
+  #   net $1,600 a month <= $2,291. nc_lieap_income = 1_600 x 12 = 19_200.
+  # Only the gross test makes this household ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 38
+        ssi: 0
+      person3:
+        age: 10
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 2
+    nc_lieap_gross_income_person: [36_000, 0, 0]
+    nc_lieap_income: 19_200
+    nc_lieap_income_limit: 27_495
+    has_heating_expense: true
+    nc_lieap_eligible: false
+    nc_lieap: 0

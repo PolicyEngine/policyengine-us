@@ -1,9 +1,10 @@
 description: North Carolina limits elderly or disabled household countable resources to this amount under the Low Income Energy Assistance Program.
 values:
-  2025-10-01: 4500
+  2025-10-01: 4_500
 metadata:
   unit: currency-USD
+  period: year
   label: North Carolina LIEAP special resource limit
   reference:
-    - title: North Carolina Energy Programs Manual, Section 300
+    - title: North Carolina Energy Programs Manual, Section 300.11
       href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=17,18

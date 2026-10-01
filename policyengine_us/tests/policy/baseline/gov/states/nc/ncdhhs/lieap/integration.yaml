@@ -51,3 +51,268 @@
     nc_lieap_household_size: 1
     nc_lieap_income_limit: 16_744
     nc_lieap_eligible: true
+
+# Cases 4-9 run from household inputs (wages, benefits received, ages,
+# immigration status, fuel and its bill, resources) through to the payment.
+# ssi and tanf are reported amounts here, so the cases do not depend on those
+# program models. Monthly limits and payment bands: EP-300 pages 14, 19, 20.
+# 2025 poverty guideline (one-year lag): $15,650 plus $5,500 per added person.
+- name: Case 4, public housing family with heat in rent and an unspecified fuel is eligible but gets no payment.
+  # EP-300.08 item 4 (page 9): public housing with heat included in the rent is
+  # fully vulnerable when excess heat charges were paid in the last 12 months
+  # at the current address. The payment needs a known heating fuel: with
+  # heating_type UNSPECIFIED the household is eligible and nc_lieap is $0.
+  # Case 5 is the same household with the fuel reported.
+  # Wages: $12.00 an hour x 30 hours x 52 weeks = 18_720, or $1,560 a month.
+  # Work deduction: over $400 a month -> 20% = $312 (page 13).
+  # nc_lieap_income = (1_560 - 312) x 12 = 14_976, or $1,248 a month.
+  # Limit, size 3: (15_650 + 2 x 5_500) x 1.3 = 34_645; / 12 = 2,887.08 -> $2,887.
+  # $1,248 <= $2,887 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 18_720
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+      person3:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        nc_lieap_has_paid_excess_heating_costs: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+        is_in_public_housing: true
+  output:
+    nc_lieap_household_size: 3
+    nc_lieap_earned_income: [18_720, 0, 0]
+    nc_lieap_gross_income_person: [18_720, 0, 0]
+    nc_lieap_income: 14_976
+    nc_lieap_income_limit: 34_645
+    has_heating_expense: false
+    nc_lieap_eligible: true
+    nc_lieap: 0
+
+- name: Case 5, the same public housing family with electric heat reported gets the lower-band payment.
+  # Same household and arithmetic as Case 4; only heating_type differs.
+  # Lower band, size 3: 2,887.08 x 0.5 = 1,443.54 -> $1,444 (page 19).
+  # $1,248 <= $1,444 -> $400 for a household of 1 to 3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 18_720
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+      person3:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        nc_lieap_has_paid_excess_heating_costs: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+        is_in_public_housing: true
+  output:
+    nc_lieap_household_size: 3
+    nc_lieap_gross_income_person: [18_720, 0, 0]
+    nc_lieap_income: 14_976
+    nc_lieap_income_limit: 34_645
+    has_heating_expense: false
+    nc_lieap_eligible: true
+    nc_lieap: 400
+
+- name: Case 6, working couple with a toddler, child care costs and natural gas heat.
+  # person1: $13.00 x 40 hours x 52 weeks = 27_040 ($2,253.33 a month).
+  #   Work deduction 20% = 5_408 a year -> 21_632.
+  # person2: $12.00 x 15 hours x 52 weeks = 9_360 ($780 a month).
+  #   Work deduction 20% = 1_872 a year -> 7_488.
+  # Out-of-pocket child care (page 11): $250 a month = 3_000.
+  # nc_lieap_income = 21_632 + 7_488 - 3_000 = 26_120, or $2,176.67 a month.
+  # Limit, size 3: 34_645 a year -> $2,887 a month; $2,176.67 <= $2,887.
+  # Gross wages of $3,033.33 a month exceed $2,887: the household qualifies
+  # only because of the deductions.
+  # Lower band ends at $1,444; $2,176.67 is above it -> $300 for size 1 to 3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 27_040
+        ssi: 0
+      person2:
+        age: 29
+        employment_income: 9_360
+        ssi: 0
+      person3:
+        age: 3
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 3_000
+        heating_type: NATURAL_GAS
+        gas_expense: 960
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 3
+    nc_lieap_earned_income: [27_040, 9_360, 0]
+    nc_lieap_gross_income_person: [27_040, 9_360, 0]
+    nc_lieap_income: 26_120
+    nc_lieap_income_limit: 34_645
+    has_heating_expense: true
+    nc_lieap_eligible: true
+    nc_lieap: 300
+
+- name: Case 7, one-person households between 130 and 150 percent of poverty with and without the special population.
+  # Limits, size 1: 15_650 x 1.3 = 20_345 -> $1,695 a month;
+  #   15_650 x 1.5 = 23_475 -> $1,956 a month (EP-300 pages 10, 14).
+  # Household 1, age 62: wages $12.00 x 15 hours x 52 = 9_360 ($780 a month,
+  #   20% deduction = 1_872 a year) plus Social Security retirement of $1,300
+  #   a month = 15_600. Standard medical deduction for age 60+: 85 x 12 = 1_020.
+  #   nc_lieap_income = 9_360 + 15_600 - 1_872 - 1_020 = 22_068 ($1,839).
+  #   $1,695 < $1,839 <= $1,956 -> eligible through the 150 percent limit.
+  #   Special lower band ends at $978 (page 20) -> $300.
+  # Households 2 and 3, age 52: Social Security disability of $1,850 a month
+  #   = 22_200; medical deduction 1_020 (disability payment recipient).
+  #   nc_lieap_income = 22_200 - 1_020 = 21_180 ($1,765).
+  #   Household 2 receives DAAS services -> $1,956 limit -> eligible, $300.
+  #   Household 3 does not -> $1,695 limit -> ineligible, $0.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC]
+    age: [62, 52, 52]
+    employment_income: [9_360, 0, 0]
+    social_security_retirement: [15_600, 0, 0]
+    social_security_disability: [0, 22_200, 22_200]
+    nc_lieap_is_daas_disabled: [false, true, false]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    heating_type: [PROPANE, ELECTRICITY, NATURAL_GAS]
+    bottled_gas_expense: [1_500, 0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_680, 1_200]
+    gas_expense: [0, 0, 900]
+  output:
+    nc_lieap_household_size: [1, 1, 1]
+    nc_lieap_gross_income_person: [24_960, 22_200, 22_200]
+    nc_lieap_income: [22_068, 21_180, 21_180]
+    nc_lieap_income_limit: [23_475, 23_475, 20_345]
+    has_heating_expense: [true, true, true]
+    nc_lieap_eligible: [true, true, false]
+    nc_lieap: [300, 300, 0]
+
+- name: Case 8, mixed-immigration family prorates the excluded parent's wages and is paid for three eligible members.
+  # person1 is undocumented: excluded from the size, income tested gross and
+  # then prorated (EP-300.10, pages 15-17). Three of four members are eligible.
+  # Wages: $12.50 x 40 hours x 52 weeks = 26_000 ($2,166.67 a month).
+  # Limit, size 3: 34_645 a year -> $2,887 a month.
+  # Gross test: $2,166.67 <= $2,887 -> passes.
+  # Proration: 26_000 x 3/4 = 19_500 ($1,625 a month).
+  # Work deduction on the prorated amount: 20% = $325 -> $1,300 a month.
+  # nc_lieap_income = 1_300 x 12 = 15_600; $1,300 <= $2,887 -> eligible.
+  # Lower band, size 3, ends at $1,444; $1,300 <= $1,444 -> $400.
+  # (Unprorated, the net would be $1,733.33 and the payment $300.)
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 37
+        employment_income: 26_000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        childcare_expenses: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NC
+  output:
+    spm_unit_size: 4
+    nc_lieap_household_size: 3
+    nc_lieap_gross_income_person: [26_000, 0, 0, 0]
+    nc_lieap_income: 15_600
+    nc_lieap_income_limit: 34_645
+    has_heating_expense: true
+    nc_lieap_eligible: true
+    nc_lieap: 400
+
+- name: Case 9, FY2027 one-person households under and over the resource limits.
+  # The resource waiver ends June 30, 2026 (EP-300.11, page 17): $3,000, or
+  # $4,500 with a member aged 60 or older or disabled. FY2027 limits use the
+  # 2026 guideline of $15,960 (October 2026 reissue, pages 14, 19, 20).
+  # Households 1 and 2, age 45: wages $11.00 x 20 hours x 52 = 11_440
+  #   ($953.33 a month); 20% deduction = 2_288 -> nc_lieap_income 9_152
+  #   ($762.67). Limit 15_960 x 1.3 = 20_748 -> $1,729. Lower band ends at
+  #   $865 -> $400 when eligible.
+  #   Household 1: $2,400 in the bank <= $3,000 -> eligible, $400.
+  #   Household 2: $3,600 in the bank > $3,000 -> ineligible, $0.
+  # Households 3 and 4, age 67: Social Security retirement of $1,400 a month
+  #   = 16_800; medical deduction 1_020 -> nc_lieap_income 15_780 ($1,315).
+  #   Limit 15_960 x 1.5 = 23_940 -> $1,995. Special lower band ends at $998
+  #   -> $300 when eligible.
+  #   Household 3: $3,600 in the bank <= $4,500 -> eligible, $300.
+  #   Household 4: $4,200 in the bank + $600 cash = $4,800 > $4,500 -> $0.
+  period: 2027
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [45, 45, 67, 67]
+    employment_income: [11_440, 11_440, 0, 0]
+    social_security_retirement: [0, 0, 16_800, 16_800]
+    ssi: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0]
+    bank_account_assets: [2_400, 3_600, 3_600, 4_200]
+    nc_lieap_nonbank_resources: [0, 0, 0, 600]
+    heating_type: [KEROSENE, KEROSENE, FUEL_OIL, FUEL_OIL]
+    fuel_oil_expense: [1_100, 1_100, 1_400, 1_400]
+  output:
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_gross_income_person: [11_440, 11_440, 16_800, 16_800]
+    nc_lieap_income: [9_152, 9_152, 15_780, 15_780]
+    nc_lieap_income_limit: [20_748, 20_748, 23_940, 23_940]
+    has_heating_expense: [true, true, true, true]
+    nc_lieap_eligible: [true, false, true, false]
+    nc_lieap: [400, 0, 300, 0]

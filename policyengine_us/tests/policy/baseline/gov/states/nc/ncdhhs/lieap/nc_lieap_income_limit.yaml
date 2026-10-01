@@ -2,11 +2,40 @@
 - name: DAAS disability qualifies for the special income limit independently of age
   period: 2026
   input:
-    state_code: [NC, NC, NC, NC]
-    age: [40, 40, 60, 40]
-    is_disabled: [true, true, false, true]
-    is_citizen_or_legal_immigrant: [true, true, true, false]
-    nc_lieap_household_size: [1, 1, 1, 1]
-    nc_lieap_is_daas_disabled: [true, false, false, true]
+    state_code: [NC, NC, NC]
+    age: [40, 40, 60]
+    is_disabled: [true, true, false]
+    is_citizen_or_legal_immigrant: [true, true, true]
+    nc_lieap_household_size: [1, 1, 1]
+    nc_lieap_is_daas_disabled: [true, false, false]
   output:
-    nc_lieap_income_limit: [23_475, 20_345, 23_475, 20_345]
+    nc_lieap_income_limit: [23_475, 20_345, 23_475]
+
+- name: Case 2, an excluded member's DAAS disability does not give the household the special limit.
+  # Replaces the former fourth household above, which forced a size of 1 for
+  # a lone excluded member. Here the size is computed: person1 is a citizen;
+  # person2 holds Temporary Protected Status, which is not a qualified status
+  # (8 USC 1641), so one member is eligible (EP-300.10, page 15).
+  # The only DAAS-disabled member is excluded and nobody is aged 60 or over,
+  # so the regular 130 percent limit applies at size 1:
+  #   15_650 x 1.3 = 20_345 (not 15_650 x 1.5 = 23_475).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 45
+        immigration_status: TPS
+        nc_lieap_is_daas_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 1
+    nc_lieap_income_limit: 20_345
