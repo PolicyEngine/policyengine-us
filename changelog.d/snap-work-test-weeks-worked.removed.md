@@ -1,1 +1,0 @@
-Remove gov.usda.snap.work_requirements.abawd.weekly_hours_threshold and replace it with gov.usda.snap.work_requirements.abawd.monthly_hours_threshold (80 hours a month, 7 CFR 273.24(a)(1)(i)); reforms that set the old parameter must switch to the new one.
