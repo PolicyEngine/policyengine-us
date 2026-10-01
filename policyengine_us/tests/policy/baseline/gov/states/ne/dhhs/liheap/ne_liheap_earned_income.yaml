@@ -22,3 +22,26 @@
   output:
     # Each source is floored at zero: 12,000 + 6,000 + max(-4,000, 0) = 18,000.
     ne_liheap_earned_income: 18_000
+
+- name: Case 3, farm profits affect eligibility and payment while unsupported farm-loss offsets are excluded.
+  # 475 NAC 3-002.04(B): count farm profits with other self-employment.
+  # The special loss offset requires gross-receipts and tax-return evidence.
+  period: 2026
+  input:
+    state_code: [NE, NE, NE]
+    age: [40, 40, 40]
+    employment_income: [0, 0, 12_000]
+    farm_operations_income: [18_000, 60_000, -5_000]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+  output:
+    ne_liheap_earned_income: [18_000, 60_000, 12_000]
+    ne_liheap_gross_income: [18_000, 60_000, 12_000]
+    # One-person limit: 15,650 * 1.5 = 23,475.
+    ne_liheap_income_eligible: [true, false, true]
+    # After the 20% earned disregard: 14,400 and 9,600 fall in utility
+    # payment bands 2 and 1, respectively; 60,000 fails gross eligibility.
+    ne_liheap: [550, 0, 700]

@@ -24,15 +24,16 @@ class ne_liheap_earned_income(Variable):
         fraction = size / max_(spm_unit("spm_unit_size", period), 1)
         share = where(included, 1, spm_unit.project(fraction))
         # 475 NAC 3-002.04(B)(i) counts each source of self-employment, so
-        # both existing net non-farm inputs are read, each floored at zero,
-        # without another business expense deduction. Farm self-employment
-        # income is not read: neither positive farm income nor farm-loss
-        # offsets are modeled. Nebraska's tax-return/49%-ledger distinction
-        # and capital gains from business assets require additional source
-        # information and are not modeled here.
+        # existing net business and farm inputs are read, each floored at zero,
+        # without another business expense deduction. The special farm-loss
+        # offset requires tax-return evidence and at least $1,000 of gross farm
+        # income, which existing inputs cannot establish. That offset, Nebraska's
+        # tax-return/49%-ledger distinction, and capital gains from business
+        # assets are not modeled here.
         earned = (
             max_(person("employment_income", period), 0)
             + max_(person("self_employment_income", period), 0)
             + max_(person("sstb_self_employment_income", period), 0)
+            + max_(person("farm_operations_income", period), 0)
         )
         return spm_unit.sum(earned * countable * share)
