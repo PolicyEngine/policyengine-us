@@ -5,7 +5,7 @@ class ks_liheap(Variable):
     value_type = float
     entity = SPMUnit
     label = "Kansas LIEAP"
-    documentation = "Annual Kansas Low Income Energy Assistance Program (LIEAP) heating benefit: the benefit matrix amount, subject to the minimum benefit."
+    documentation = "Annual Kansas Low Income Energy Assistance Program (LIEAP) heating benefit: the benefit matrix amount, subject to the minimum benefit. Verified for FY2025-2026; earlier results use model parameter backfilling and are unverified historical estimates."
     unit = USD
     definition_period = YEAR
     defined_for = "ks_liheap_eligible"

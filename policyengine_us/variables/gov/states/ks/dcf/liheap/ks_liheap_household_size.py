@@ -13,4 +13,6 @@ class ks_liheap_household_size(Variable):
     )
     defined_for = StateCode.KS
 
+    # KEESM 13330 excludes ineligible members from size but retains their income.
+    # It expressly includes refugees/asylees; do not substitute SNAP eligibility.
     adds = ["is_citizen_or_legal_immigrant"]

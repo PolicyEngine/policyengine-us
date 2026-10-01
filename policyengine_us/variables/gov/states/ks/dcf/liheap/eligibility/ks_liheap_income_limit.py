@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.liheap import calculate_liheap_fpg_income_limit
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class ks_liheap_income_limit(Variable):
@@ -18,6 +18,27 @@ class ks_liheap_income_limit(Variable):
         p = parameters(period).gov.states.ks.dcf.liheap.eligibility
         size = spm_unit("ks_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
-        return calculate_liheap_fpg_income_limit(
-            size, state_group, period, parameters, p
+        capped_size = clip(size, 1, p.max_table_size)
+        additional_people = max_(size - p.max_table_size, 0)
+        guideline = fpg(
+            capped_size, state_group, period, parameters, year_lag=p.fpg_year_lag
         )
+        additional_guideline = (
+            fpg(
+                capped_size + 1,
+                state_group,
+                period,
+                parameters,
+                year_lag=p.fpg_year_lag,
+            )
+            - guideline
+        )
+        monthly_factor = p.fpg_rate / MONTHS_IN_YEAR
+        monthly_limit = guideline * monthly_factor
+        monthly_increment = additional_guideline * monthly_factor
+        # Round the base limit and each additional-person increment separately,
+        # to the nearest policy increment with ties rounded up.
+        rounding = p.rounding_increment
+        rounded_limit = np.floor(monthly_limit / rounding + 0.5) * rounding
+        rounded_increment = np.floor(monthly_increment / rounding + 0.5) * rounding
+        return (rounded_limit + additional_people * rounded_increment) * MONTHS_IN_YEAR
