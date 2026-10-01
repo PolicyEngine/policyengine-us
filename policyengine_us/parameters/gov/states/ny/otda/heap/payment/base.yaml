@@ -1,0 +1,32 @@
+description: New York provides this base annual direct heating payment under the Home Energy Assistance Program, by primary heating fuel.
+ELECTRICITY:
+  '2025-10-01': 400
+NATURAL_GAS:
+  '2025-10-01': 400
+FUEL_OIL:
+  '2025-10-01': 900
+KEROSENE:
+  '2025-10-01': 900
+PROPANE:
+  '2025-10-01': 900
+WOOD:
+  '2025-10-01': 635
+COAL:
+  '2025-10-01': 635
+OTHER:
+  '2025-10-01': 635
+SOLAR:
+  '2025-10-01': 635
+UNSPECIFIED:
+  '2025-10-01': 0
+NONE:
+  '2025-10-01': 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York HEAP direct heating base payment
+  breakdown:
+  - heating_type
+  reference:
+  - title: 2025-2026 HEAP regular benefit levels, other fuels include fuels outside the named utility and delivered-fuel groups
+    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx

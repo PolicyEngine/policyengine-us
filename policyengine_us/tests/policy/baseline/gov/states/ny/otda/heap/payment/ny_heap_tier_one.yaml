@@ -1,0 +1,17 @@
+- name: All published Tier I limits are inclusive
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    ny_heap_countable_income: [20340, 27492, 34644, 41784, 48936, 56088, 63240, 70392, 77544, 84684, 91836, 98988, 106140, 20352, 27504, 34656, 41796, 48948, 56100, 63252, 70404, 77556, 84696, 91848, 99000, 106152]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false]
+- name: Categorical eligibility confers Tier I despite high income
+  period: 2026
+  input:
+    state_code: NY
+    ny_heap_countable_income: 200000
+    ny_heap_categorically_eligible: true
+  output:
+    ny_heap_tier_one: true

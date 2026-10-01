@@ -1,0 +1,104 @@
+- name: Every fuel with Tier I supplement
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false, false, false, false, false, false]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true, true, true]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, WOOD, COAL, OTHER, SOLAR, UNSPECIFIED, NONE]
+  output:
+    ny_heap: [461, 461, 961, 961, 961, 696, 696, 696, 696, 0, 0]
+- name: Age vulnerability boundaries, Tier I and Tier II
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY]
+    ny_heap_countable_income: [0, 0, 0, 0, 24000, 24000]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false]
+    has_heating_expense: [true, true, true, true, true, true]
+    age: [5, 6, 59, 60, 40, 40]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    is_permanently_and_totally_disabled: [false, false, false, false, false, true]
+  output:
+    ny_heap: [996, 961, 961, 996, 900, 935]
+- name: Heat included in rent by tier and housing assistance
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY]
+    ny_heap_countable_income: [0, 24000, 0, 24000]
+    ny_heap_categorically_eligible: [false, false, false, false]
+    has_heating_expense: [false, false, false, false]
+    age: [40, 40, 40, 40]
+    heat_expense_included_in_rent: [true, true, true, true]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+    receives_housing_assistance: [false, false, true, true]
+  output:
+    ny_heap: [50, 45, 21, 21]
+- name: Subsidized direct heaters receive ordinary fuel payments
+  period: 2026
+  input:
+    state_code: NY
+    ny_heap_countable_income: 0
+    ny_heap_categorically_eligible: false
+    has_heating_expense: true
+    age: 40
+    heating_type: NATURAL_GAS
+    receives_housing_assistance: true
+  output:
+    ny_heap: 461
+- name: Income eligibility includes the published limit
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    ny_heap_countable_income: [41676, 41688]
+    ny_heap_categorically_eligible: [false, false]
+    has_heating_expense: [true, true]
+    age: [40, 40]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+  output:
+    ny_heap: [400, 0]
+- name: Regular benefit is not capped at the current heating bill
+  period: 2026
+  input:
+    state_code: NY
+    ny_heap_countable_income: 0
+    ny_heap_categorically_eligible: false
+    has_heating_expense: true
+    age: 40
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 1
+  output:
+    ny_heap: 961
+- name: Households with no heat responsibility receive zero
+  period: 2026
+  input:
+    state_code: NY
+    ny_heap_countable_income: 0
+    ny_heap_categorically_eligible: false
+    has_heating_expense: false
+    age: 40
+    heating_type: NATURAL_GAS
+  output:
+    ny_heap: 0
+- name: Other states receive no New York payment
+  period: 2026
+  input:
+    state_code: NJ
+    ny_heap_countable_income: 0
+    ny_heap_categorically_eligible: false
+    has_heating_expense: true
+    age: 40
+    heating_type: NATURAL_GAS
+  output:
+    ny_heap: 0
+- name: Published group and ineligible residence categories
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    ny_heap_countable_income: [0, 0]
+    ny_heap_categorically_eligible: [false, false]
+    has_heating_expense: [false, false]
+    age: [40, 40]
+    ny_heap_dwelling_type: [ELIGIBLE_GROUP_RESIDENCE, INELIGIBLE_RESIDENCE]
+  output:
+    ny_heap: [21, 0]

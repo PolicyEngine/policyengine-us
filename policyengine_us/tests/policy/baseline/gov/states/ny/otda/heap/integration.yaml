@@ -1,0 +1,78 @@
+- name: Excluded adult income counts in full while the citizen child determines size and vulnerability
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 24000
+        immigration_status: UNDOCUMENTED
+      child:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        ny_tanf: 0
+        snap: 0
+    households:
+      home:
+        members:
+        - parent
+        - child
+        state_code: NY
+  output:
+    ny_heap_household_size: 1
+    ny_heap_countable_income: 24000
+    ny_heap_income_limit: 41676
+    ny_heap_tier_one: false
+    ny_heap_vulnerable: true
+    ny_heap_eligible: true
+    ny_heap: 435
+- name: No qualified household members means no benefit
+  period: 2026
+  input:
+    state_code: NY
+    immigration_status: UNDOCUMENTED
+    age: 40
+    employment_income: 0
+    ssi: 0
+    snap: 0
+    ny_tanf: 0
+    has_heating_expense: true
+    heating_type: NATURAL_GAS
+  output:
+    ny_heap_household_size: 0
+    ny_heap_eligible: false
+    ny_heap: 0
+- name: Only a nonqualified elderly member does not confer the vulnerable supplement
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+      elder:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      unit:
+        members:
+        - adult
+        - elder
+        heating_type: NATURAL_GAS
+        has_heating_expense: true
+        ny_heap_countable_income: 24000
+        ny_heap_categorically_eligible: false
+    households:
+      home:
+        members:
+        - adult
+        - elder
+        state_code: NY
+  output:
+    ny_heap_household_size: 1
+    ny_heap_vulnerable: false
+    ny_heap: 400

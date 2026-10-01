@@ -1,0 +1,14 @@
+- name: Dependent children and full-time dependent students have exempt earnings
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [17, 18, 30, 30]
+    is_tax_unit_dependent: [true, true, false, false]
+    is_full_time_student: [false, true, true, false]
+    employment_income: [12000, 12000, 12000, 12000]
+    self_employment_income: [1000, 1000, 1000, -1000]
+    sstb_self_employment_income: [500, 500, 500, 500]
+    farm_operations_income: [600, 600, 600, 600]
+    partnership_s_corp_income: [700, 700, 700, 700]
+  output:
+    ny_heap_countable_earned_income: [0, 0, 14800, 13800]

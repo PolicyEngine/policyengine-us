@@ -1,0 +1,14 @@
+- name: All published size one through thirteen income limits
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+  output:
+    ny_heap_income_limit: [41676, 54504, 67332, 80160, 92988, 105816, 108216, 110616, 113028, 115428, 117840, 120240, 122652]
+- name: Size fourteen follows the plan poverty rate rather than the inconsistent incremental row
+  period: 2026
+  input:
+    state_code: NY
+    ny_heap_household_size: 14
+  output:
+    ny_heap_income_limit: 130716

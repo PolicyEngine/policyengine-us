@@ -802,8 +802,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, NY
     state_implementations:
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2026"
+        notes: Regular heating with categorical eligibility, qualified-member size, full excluded-member income, heating and rent-included payments and Tier I/vulnerability supplements. Annual income and existing net business inputs approximate HEAP accounting; SSI state codes, detailed member exclusions and special income/certification rules remain unsupported. Sizes 14+ follow the stated guideline rule despite an inconsistent published increment. Earlier years are unverified backfilled estimates.
       - state: OR
         status: in_progress
         name: LIHEAP

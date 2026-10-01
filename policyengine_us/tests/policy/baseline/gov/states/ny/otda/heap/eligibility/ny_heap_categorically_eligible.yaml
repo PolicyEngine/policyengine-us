@@ -1,0 +1,20 @@
+- name: SNAP and federally funded TANF each confer categorical eligibility
+  period: 2026
+  input:
+    state_code: [NY, NY, NY]
+    snap: [1, 0, 0]
+    ny_tanf: [0, 1, 0]
+    ssi: [0, 0, 0]
+  output:
+    ny_heap_categorically_eligible: [true, true, false]
+- name: SSI own-household federal code approximates Code A
+  period: 2026
+  input:
+    state_code: NY
+    snap: 0
+    ny_tanf: 0
+    ssi: 1200
+    ssi_federal_living_arrangement:
+      2026-01: OWN_HOUSEHOLD
+  output:
+    ny_heap_categorically_eligible: true
