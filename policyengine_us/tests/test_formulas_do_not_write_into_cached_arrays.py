@@ -141,26 +141,51 @@ UTAH_NEWBORN_AND_CHILD = household(
 )
 
 
+UTAH_NEWBORN_CREDIT_OFF = {
+    "gov.states.ut.tax.income.credits.taxpayer.in_effect": {FROM_2026: False}
+}
+
+
 @pytest.mark.parametrize(
-    "reform",
-    [None, ut_dependent_exemption_reform],
-    ids=["baseline", "dependent_exemption_reform_not_in_effect"],
+    "reform, exemptions",
+    [
+        (None, 3),
+        (ut_dependent_exemption_reform, 3),
+        (UTAH_NEWBORN_CREDIT_OFF, 2),
+    ],
+    ids=["baseline", "dependent_exemption_reform_not_in_effect", "no_newborn_credit"],
 )
-def test_ut_personal_exemption_leaves_total_dependents_unchanged(reform):
+def test_ut_personal_exemption_leaves_total_dependents_unchanged(reform, exemptions):
     simulation = Simulation(situation=UTAH_NEWBORN_AND_CHILD, reform=reform)
     simulation.calculate("household_net_income", YEAR)
-    # Two dependents; the newborn earns a second exemption without
-    # becoming a third dependent.
+    # Two dependents; the newborn earns a second exemption (while the
+    # credit for dependents born that year applies) without becoming a
+    # third dependent.
     assert simulation.calculate("ut_total_dependents", YEAR)[0] == 2
     p = simulation.tax_benefit_system.parameters(
         YEAR
     ).gov.states.ut.tax.income.credits.taxpayer
     assert simulation.calculate("ut_personal_exemption", YEAR)[0] == pytest.approx(
-        3 * p.personal_exemption
+        exemptions * p.personal_exemption
     )
 
 
-def test_basic_income_phase_in_leaves_earned_income_unchanged():
+@pytest.mark.parametrize(
+    "include_ss, per_person, phase_in",
+    [(True, False, 30_000), (True, True, 30_000), (False, False, 10_000)],
+    ids=["ss_as_earnings", "ss_as_earnings_per_person", "earnings_only"],
+)
+def test_basic_income_phase_in_leaves_earned_income_unchanged(
+    include_ss, per_person, phase_in
+):
+    phase_in_parameters = "gov.contrib.ubi_center.basic_income.phase_in"
+    reform = {
+        **BASIC_INCOME_WITH_SS_AS_EARNINGS,
+        f"{phase_in_parameters}.include_ss_benefits_as_earnings": {
+            FROM_2026: include_ss
+        },
+        f"{phase_in_parameters}.per_person": {FROM_2026: per_person},
+    }
     situation = household(
         "TX",
         {
@@ -169,21 +194,30 @@ def test_basic_income_phase_in_leaves_earned_income_unchanged():
             "social_security_retirement": 20_000,
         },
     )
-    simulation = Simulation(
-        situation=situation, reform=BASIC_INCOME_WITH_SS_AS_EARNINGS
-    )
+    simulation = Simulation(situation=situation, reform=reform)
     simulation.calculate("household_net_income", YEAR)
     assert simulation.calculate("tax_unit_earned_income", YEAR)[0] == 10_000
-    assert simulation.calculate("basic_income_phase_in", YEAR)[0] == 30_000
+    assert simulation.calculate("basic_income_phase_in", YEAR)[0] == phase_in
 
 
-def test_ma_ccfa_income_leaves_a_single_earned_source_unchanged():
+@pytest.mark.parametrize(
+    "only_parent_income, minor_earnings_excluded",
+    [(True, True), (False, True), (False, False)],
+    ids=["parent_income_only", "minor_exclusion", "no_minor_exclusion"],
+)
+def test_ma_ccfa_income_leaves_a_single_earned_source_unchanged(
+    only_parent_income, minor_earnings_excluded
+):
     # add() over a one-variable list returns that variable's cached array;
     # the minor earnings exclusion used to subtract from it in place.
-    sources = "gov.states.ma.eec.ccfa.income.countable_income.sources"
+    countable = "gov.states.ma.eec.ccfa.income.countable_income"
     reform = {
-        f"{sources}.earned": {FROM_2026: ["self_employment_income"]},
-        f"{sources}.unearned": {FROM_2026: []},
+        f"{countable}.sources.earned": {FROM_2026: ["self_employment_income"]},
+        f"{countable}.sources.unearned": {FROM_2026: []},
+        f"{countable}.only_parent_income_in_effect": {FROM_2026: only_parent_income},
+        f"{countable}.exclusions.minor_earnings_in_effect": {
+            FROM_2026: minor_earnings_excluded
+        },
     }
     members = ["parent", "minor"]
     situation = {
