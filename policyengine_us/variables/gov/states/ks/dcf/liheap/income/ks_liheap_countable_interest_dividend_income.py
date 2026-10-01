@@ -21,7 +21,7 @@ class ks_liheap_countable_interest_dividend_income(Variable):
         adult_interest = spm_unit.sum(
             where(age >= p.interest_income_min_age, interest, 0)
         )
-        dividends = add(spm_unit, period, ["dividend_income"])
+        dividends = add(spm_unit, period, ["ordinary_dividend_income"])
         total = adult_interest + dividends
         threshold = p.regular_interest_dividend_exemption * MONTHS_IN_YEAR
         return where(total > threshold, total, 0)
