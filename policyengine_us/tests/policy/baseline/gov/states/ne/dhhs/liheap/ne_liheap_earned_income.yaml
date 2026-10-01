@@ -1,0 +1,24 @@
+# Source: 475 NAC 3-002.04(B)(i), incorporated by 476 NAC 2-002.01, counts
+# each source of self-employment of the household.
+# https://rules.nebraska.gov/rules?agencyId=37&titleId=230
+
+- name: Case 1, specified service trade self-employment income counts as earned income.
+  period: 2026
+  input:
+    state_code: NE
+    age: 42
+    sstb_self_employment_income: 40_000
+  output:
+    ne_liheap_earned_income: 40_000
+
+- name: Case 2, a loss in one self-employment source does not offset wages or another business.
+  period: 2026
+  input:
+    state_code: NE
+    age: 42
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: -4_000
+  output:
+    # Each source is floored at zero: 12,000 + 6,000 + max(-4,000, 0) = 18,000.
+    ne_liheap_earned_income: 18_000

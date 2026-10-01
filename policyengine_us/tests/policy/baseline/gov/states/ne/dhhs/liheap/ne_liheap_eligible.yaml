@@ -16,6 +16,7 @@
     state_code: NE
     ne_liheap_income_eligible: true
     heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
     heating_expense: 0
     pre_subsidy_rent: 10_000
   output:
@@ -26,6 +27,7 @@
     state_code: NE
     ne_liheap_income_eligible: false
     heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
     heating_expense: 0
   output:
     ne_liheap_eligible: false
@@ -46,7 +48,69 @@
     state_code: NE
     ne_liheap_income_eligible: true
     heat_expense_included_in_rent: false
+    heating_type: UNSPECIFIED
     heating_expense: 0
   output:
     ne_liheap_eligible: false
     ne_liheap: 0
+
+# Cases 6-9: FY2026 state plan section 2.3. Renters in subsidized housing must
+# be responsible for a portion of the heating payment; market-rate renters with
+# heat included in rent are accepted under the documented modeling assumption.
+# https://dhhs.ne.gov/Documents/LIHEAP%20State%20Plan.pdf#page=9
+- name: Case 6, housing-assisted renter with heat in rent and no heating bill is ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: true
+    heating_type: NATURAL_GAS
+    gas_expense: 0
+  output:
+    # The matching gas bill is zero, so no portion of the heating is paid.
+    heating_expense: 0
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 7, public housing tenant with heat in rent and no heating bill is ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    is_in_public_housing: true
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    # An unspecified fuel has no matching bill.
+    heating_expense: 0
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 8, housing-assisted renter who pays part of the heating cost is eligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: true
+    heating_type: NATURAL_GAS
+    gas_expense: 420
+  output:
+    # A $35 monthly gas charge on top of rent: 35 * 12 = 420.
+    heating_expense: 420
+    ne_liheap_eligible: true
+
+- name: Case 9, market-rate renter with heat in rent and no heating bill stays eligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    receives_housing_assistance: false
+    is_in_public_housing: false
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+    pre_subsidy_rent: 9_600
+  output:
+    heating_expense: 0
+    ne_liheap_eligible: true

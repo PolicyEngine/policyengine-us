@@ -23,11 +23,16 @@ class ne_liheap_earned_income(Variable):
         # retain the eligible members' shares. Eligible members count in full.
         fraction = size / max_(spm_unit("spm_unit_size", period), 1)
         share = where(included, 1, spm_unit.project(fraction))
-        # Use existing net self-employment income without another business
-        # expense deduction. Nebraska's tax-return/49%-ledger distinction,
-        # capital gains from business assets, and farm-loss offsets require
-        # additional source information and are not modeled here.
-        earned = max_(person("employment_income", period), 0) + max_(
-            person("self_employment_income", period), 0
+        # 475 NAC 3-002.04(B)(i) counts each source of self-employment, so
+        # both existing net non-farm inputs are read, each floored at zero,
+        # without another business expense deduction. Farm self-employment
+        # income is not read: neither positive farm income nor farm-loss
+        # offsets are modeled. Nebraska's tax-return/49%-ledger distinction
+        # and capital gains from business assets require additional source
+        # information and are not modeled here.
+        earned = (
+            max_(person("employment_income", period), 0)
+            + max_(person("self_employment_income", period), 0)
+            + max_(person("sstb_self_employment_income", period), 0)
         )
         return spm_unit.sum(earned * countable * share)

@@ -362,3 +362,26 @@
     heating_type: [FUEL_OIL, FUEL_OIL, WOOD, WOOD, OTHER, SOLAR]
   output:
     ne_liheap: [1_050, 380, 800, 380, 380, 380]
+
+- name: Case 33, heat-in-rent renter with unspecified fuel and the default dwelling type is eligible but paid zero.
+  # Documented limitation: an unspecified single-family fuel has no payment
+  # column and no fallback fuel. Reporting MULTI_FAMILY selects the all-fuel
+  # column instead (integration Case 7).
+  period: 2026
+  input:
+    state_code: NE
+    age: 29
+    employment_income: 18_000
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    heating_expense: 0
+    ne_liheap_dwelling_type: SINGLE_FAMILY
+    # 18,000 is under the one-person limit of 150% * 15,650 = 23,475.
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    ne_liheap: 0

@@ -67,3 +67,128 @@
     - 580
     - 0
     - 0
+
+- name: Case 2, refugee and asylee members are excluded in FY2026 while lawful permanent residents count.
+  # 476 NAC 2-002.02 and DHHS OBBBA FAQ Q12: LIHEAP follows the SNAP
+  # citizenship rules, which no longer cover refugee or asylee status alone.
+  # https://dhhs.ne.gov/Documents/OBBB-SNAP-Changes-FAQ.pdf#page=3
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: REFUGEE
+        employment_income: 31_200
+      person2:
+        age: 33
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: REFUGEE
+      person3:
+        age: 2
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person4:
+        age: 29
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: ASYLEE
+        employment_income: 24_000
+      person5:
+        age: 45
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        employment_income: 24_000
+      person6:
+        age: 43
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    spm_units:
+      spm1:
+        members:
+        - person1
+        - person2
+        - person3
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm2:
+        members:
+        - person4
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+      spm3:
+        members:
+        - person5
+        - person6
+        tanf: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 1_500
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: NE
+      household2:
+        members:
+        - person4
+        state_code: NE
+      household3:
+        members:
+        - person5
+        - person6
+        state_code: NE
+  output:
+    # Refugee parents with a citizen child: 1. Asylee alone: 0.
+    # Lawful permanent resident couple: 2.
+    ne_liheap_household_size:
+    - 1
+    - 0
+    - 2
+    # Unit 1: full-time at the $15 minimum wage, 2,080 * 15 = 31,200, prorated
+    # by one eligible member of three: 31,200 / 3 = 10,400.
+    # Unit 2: no eligible member, so the share is 0 / 1.
+    ne_liheap_earned_income:
+    - 10_400
+    - 0
+    - 24_000
+    ne_liheap_gross_income:
+    - 10_400
+    - 0
+    - 24_000
+    # 2025 guideline: 15,650 for one; none without an eligible member;
+    # 15,650 + 5,500 = 21,150 for two.
+    ne_liheap_fpg:
+    - 15_650
+    - 0
+    - 21_150
+    ne_liheap_income_eligible:
+    - true
+    - false
+    - true
+    ne_liheap_eligible:
+    - true
+    - false
+    - true
+    # Unit 1: 10,400 - 0.2 * 10,400 = 8,320; 8,320 / 15,650 = 0.532,
+    # natural gas Tier 1.
+    # Unit 3: 24,000 - 0.2 * 24,000 = 19,200; 19,200 / 21,150 = 0.908,
+    # propane Tier 2.
+    ne_liheap:
+    - 700
+    - 0
+    - 580

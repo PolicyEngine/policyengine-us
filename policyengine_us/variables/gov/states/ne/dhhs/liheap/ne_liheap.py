@@ -38,8 +38,12 @@ class ne_liheap(Variable):
         multifamily = dwelling == dwelling.possible_values.MULTI_FAMILY
         # Corn shares the natural gas/electricity/coal payment column. No
         # separate schedule is needed, but the fuel enum cannot isolate corn
-        # from OTHER. Single-family OTHER/SOLAR/UNSPECIFIED remain unmapped;
-        # the multifamily column covers all fuel types.
+        # from OTHER. The multifamily column covers all fuel types.
+        # Limitation: an eligible single-family household whose heating_type
+        # is UNSPECIFIED, OTHER, SOLAR or NONE is paid $0; there is no
+        # fallback fuel. This includes a heat-in-rent renter who leaves
+        # heating_type at its UNSPECIFIED default and omits the dwelling
+        # type, which defaults to single-family.
         # No FY2026 supplemental heating amount has been verified.
         return select(
             [
