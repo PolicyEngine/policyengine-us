@@ -830,7 +830,7 @@ programs:
         variable: ms_liheap
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating only. Uses existing inputs and preserves published matrix anomalies. Unpublished income intervals and household sizes, unspecified heat-in-rent charges, propane delivery rules, prior awards, detailed household/income classifications, and administrative checks remain incomplete. Earlier results use parameter backfilling and are unverified historical estimates.
+        notes: FY2026 regular heating only. Uses existing inputs and preserves published matrix anomalies. Unpublished income intervals and household sizes, unspecified heat-in-rent charges, propane delivery rules, prior awards, detailed household/income classifications, and administrative checks remain incomplete. FY2026 state plan section 1.9 leaves cash gifts, rental income, and interest, dividends, or royalties unchecked, while manual Rule 6.11 C(13), F(7)-(8) and K(1) count them; the model follows the manual. Earlier results use parameter backfilling and are unverified historical estimates.
       - state: TX
         status: partial
         name: Texas CEAP

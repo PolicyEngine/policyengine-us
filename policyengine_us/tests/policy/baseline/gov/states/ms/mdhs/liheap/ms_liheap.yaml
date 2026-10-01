@@ -54,3 +54,113 @@
     heating_expense: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
   output:
     ms_liheap: [1_500, 0, 1_400, 1_300, 0, 1_200, 0, 0, 0, 0]
+- name: Case 6, published size-three bands keep the 31,313 fifth-band top.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+    ms_liheap_income: [6_663, 6_664, 13_325, 13_326, 19_988, 19_989, 26_650, 26_651, 31_313, 31_314, 43_196]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900]
+  output:
+    # Matrix page 1 (manual PDF page 59), household size 3: 0-6,663, 6,664-13,325,
+    # 13,326-19,988, 19,989-26,650, 26,651-31,313, 31,314-43,196. The fifth band
+    # ends at the printed 31,313 (a 125% poverty guideline step would be 33,313),
+    # so 31,314 is already band 6. 43,196 is the size-3 income limit.
+    # Bands: 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6.
+    # Natural gas cap = 700 - 50 * (band - 1): 700, 650, 600, 550, 500, 450.
+    # The 900 gas bill exceeds every cap, so each payment equals its cap.
+    ms_liheap: [700, 650, 650, 600, 600, 550, 550, 500, 500, 450, 450]
+- name: Case 7, published size-eight table has five bands through the income limit.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+    ms_liheap_income: [13_538, 13_539, 27_075, 27_076, 40_613, 40_614, 54_150, 54_151, 67_689, 70_965]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400]
+  output:
+    # Matrix page 3 (manual PDF page 61), household size 8: 0-13,538,
+    # 13,539-27,075, 27,076-40,613, 40,614-54,150, 54,151-70,965. The table prints
+    # no sixth band: 67,689 (one dollar past a 125% poverty guideline step of
+    # 67,688) and the 70,965 income limit both stay in band 5.
+    # Bands: 1, 2, 2, 3, 3, 4, 4, 5, 5, 5.
+    # Total-electric cap = 1,500 - 100 * (band - 1): 1,500, 1,400, 1,300, 1,200, 1,100.
+    # The 2,400 electricity bill exceeds every cap, so each payment equals its cap.
+    ms_liheap: [1_500, 1_400, 1_400, 1_300, 1_300, 1_200, 1_200, 1_100, 1_100, 1_100]
+- name: Case 8, published size-twelve table has four bands through the income limit.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true]
+    ms_liheap_household_size: [12, 12, 12, 12, 12, 12, 12, 12]
+    ms_liheap_income: [19_038, 19_039, 38_075, 38_076, 57_113, 57_114, 76_151, 77_136]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD]
+    wood_expense: [600, 600, 600, 600, 600, 600, 600, 600]
+  output:
+    # Matrix page 4 (manual PDF page 62), household size 12: 0-19,038,
+    # 19,039-38,075, 38,076-57,113, 57,114-77,136. The table prints no fifth
+    # band: 76,151 (one dollar past the 76,150 poverty guideline) and the 77,136
+    # income limit both stay in band 4.
+    # Bands: 1, 2, 2, 3, 3, 4, 4, 4.
+    # Wood cap = 400 - 40 * (band - 1): 400, 360, 320, 280.
+    # The 600 wood bill exceeds every cap, so each payment equals its cap.
+    ms_liheap: [400, 360, 360, 320, 320, 280, 280, 280]
+- name: Case 9, six-band tables for household sizes two and four through seven.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+      true, true, true, true]
+    ms_liheap_household_size: [2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
+    ms_liheap_income: [5_288, 15_864, 26_438, 34_968, 8_038, 24_114, 40_188, 51_424, 9_413, 28_239, 47_063, 59_651,
+      10_788, 32_364, 53_938, 67_879, 12_163, 36_489, 60_813, 69_422]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    # Four incomes per size: the first band top, the fourth band bottom, the
+    # fifth band top, and the income limit that closes the sixth band.
+    # Matrix page 1, size 2: 0-5,288; 15,864-21,150; 21,151-26,438; 26,439-34,968.
+    # Matrix page 2, size 4: 0-8,038; 24,114-32,150; 32,151-40,188; 40,189-51,424.
+    # Matrix page 2, size 5: 0-9,413; 28,239-37,650; 37,651-47,063; 47,064-59,651.
+    # Matrix page 2, size 6: 0-10,788; 32,364-43,150; 43,151-53,938; 53,939-67,879.
+    # Matrix page 3, size 7: 0-12,163; 36,489-48,650; 48,651-60,813; 60,814-69,422.
+    # Bands for every size: 1, 4, 5, 6.
+    # Propane cap = 800 - 50 * (band - 1): 800, 650, 600, 550.
+    # The 1,200 propane bill exceeds every cap, so each payment equals its cap.
+    ms_liheap: [800, 650, 600, 550, 800, 650, 600, 550, 800, 650, 600, 550, 800, 650, 600, 550, 800, 650, 600, 550]
+- name: Case 10, shorter tables for household sizes nine, thirteen, fourteen, seventeen and nineteen.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS, MS]
+    ms_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+      true, true, true, true]
+    ms_liheap_household_size: [9, 9, 9, 9, 13, 13, 13, 13, 14, 14, 14, 14, 17, 17, 17, 17, 19, 19, 19, 19]
+    ms_liheap_income: [14_913, 29_826, 59_650, 72_507, 20_413, 40_826, 61_238, 78_678, 21_788, 43_576, 65_363, 80_221,
+      25_913, 51_826, 77_738, 84_849, 28_663, 57_325, 57_326, 87_935]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400,
+      2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400]
+  output:
+    # Total-electric cap = 1,500 - 100 * (band - 1): 1,500, 1,400, 1,300, 1,200, 1,100.
+    # The 2,400 electricity bill exceeds every cap, so each payment equals its cap.
+    # Matrix page 3, size 9 (five bands): 0-14,913 band 1; 29,826-44,738 band 3;
+    # 44,739-59,650 band 4; 59,651-72,507 band 5. Bands: 1, 3, 4, 5.
+    # Matrix page 4, size 13 (four bands): 0-20,413 band 1; 40,826-61,238 band 3;
+    # 61,239-78,678 band 4. Bands: 1, 3, 3, 4.
+    # Matrix page 5, size 14 (four bands): 0-21,788 band 1; 43,576-65,363 band 3;
+    # 65,364-80,221 band 4. Bands: 1, 3, 3, 4.
+    # Matrix page 5, size 17 (four bands): 0-25,913 band 1; 51,826-77,738 band 3;
+    # 77,739-84,849 band 4. Bands: 1, 3, 3, 4.
+    # Matrix page 6, size 19 (three bands): 0-28,663 band 1; 28,664-57,325 band 2;
+    # 57,326-87,935 band 3. Bands: 1, 2, 3, 3.
+    ms_liheap: [1_500, 1_300, 1_200, 1_100, 1_500, 1_300, 1_300, 1_200, 1_500, 1_300, 1_300, 1_200, 1_500, 1_300, 1_300,
+      1_200, 1_500, 1_400, 1_300, 1_300]

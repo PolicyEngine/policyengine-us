@@ -41,3 +41,77 @@
     ms_liheap_household_size: 1
     ms_liheap_income_limit: 21_487
     ms_liheap_eligible: true
+- name: Case 4, single parent with two children and full-time wages heats with electricity.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 28_080
+      person2:
+        age: 9
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_860
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Three citizens are counted.
+    ms_liheap_household_size: 3
+    # Wages: 13.50 an hour * 2,080 hours = 28,080; no unearned income.
+    ms_liheap_income: 28_080
+    # floor(0.6 * 85,708) = 51,424; size-3 share 0.52 + 2 * 0.16 = 0.84;
+    # floor(0.84 * 51,424) = floor(43,196.16) = 43,196.
+    ms_liheap_income_limit: 43_196
+    # 28,080 <= 43,196, an adult is present and the household pays its heating bill.
+    ms_liheap_eligible: true
+    # Electricity bill: 155 a month * 12 = 1,860.
+    heating_expense: 1_860
+    # Size-3 band 5 is 26,651-31,313 (matrix page 1).
+    # Total-electric cap: 1,500 - 100 * (5 - 1) = 1,100. Payment: min(1,100, 1,860) = 1,100.
+    ms_liheap: 1_100
+- name: Case 5, mixed-status two-earner family receives its full natural gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 24_960
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        employment_income: 16_640
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 420
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+  output:
+    # Rule 6.3 B-C: the undocumented adult is left out of household size, 4 - 1 = 3.
+    ms_liheap_household_size: 3
+    # Both adults' wages count in full: 12 an hour * 2,080 hours = 24,960, plus
+    # 16 an hour * 1,040 hours = 16,640. 24,960 + 16,640 = 41,600.
+    ms_liheap_income: 41_600
+    # Size 3, not 4: floor(0.84 * 51,424) = 43,196.
+    ms_liheap_income_limit: 43_196
+    # 41,600 <= 43,196.
+    ms_liheap_eligible: true
+    # Natural gas bill: 35 a month * 12 = 420.
+    heating_expense: 420
+    # Size-3 band 6 is 31,314-43,196 (matrix page 1).
+    # Natural gas cap: 700 - 50 * (6 - 1) = 450. Payment: min(450, 420) = 420.
+    ms_liheap: 420

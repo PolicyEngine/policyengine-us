@@ -15,14 +15,17 @@ class ms_liheap_income(Variable):
         person = spm_unit.members
         adult = person("age", period) >= p.adult_age
         # Rule 6.11 I(1) specifies Schedule C's Net Profit or (Loss) line / 12.
+        # Rule 6.11 C(2) counts self-employment income and I(2) uses a farmer as
+        # its example, so farm operations income is counted the same signed way.
         # Preserve the signed net amount: a loss can offset other household income.
         # Do not deduct business expenses again. Annual inputs approximate the
         # annualized preceding 30 days; pay-frequency changes and court-emancipated
         # minors are not identified by existing inputs.
-        earned = (
-            max_(person("employment_income", period), 0)
-            + person("self_employment_income", period)
-        ) * adult
+        self_employment = add(
+            person, period, ["self_employment_income", "farm_operations_income"]
+        )
+        wages = max_(person("employment_income", period), 0)
+        earned = (wages + self_employment) * adult
         # Rule 6.3(B)-(C) retains non-applicants' countable income without
         # headcount proration; Rule 6.11 still controls source/age exclusions.
         # Children's unearned benefits count in full.

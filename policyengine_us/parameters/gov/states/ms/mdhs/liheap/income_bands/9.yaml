@@ -1,4 +1,4 @@
-description: Mississippi assigns these published heating income bands to a household of 9 eligible people under the Low Income Home Energy Assistance Program; zero denotes an interval not covered by the published matrix.
+description: Mississippi assigns these published heating income bands to a household of 9 eligible people under the Low Income Home Energy Assistance Program.
 brackets:
   - threshold:
       2025-10-01: -.inf
@@ -20,14 +20,11 @@ brackets:
       2025-10-01: 59_650
     amount:
       2025-10-01: 5
-  - threshold:
-      2025-10-01: 72_507
-    amount:
-      2025-10-01: 0
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
+  period: year
   label: Mississippi LIHEAP income bands for 9 people
   reference:
     - title: Mississippi FY2026 benefit matrix, household size 9

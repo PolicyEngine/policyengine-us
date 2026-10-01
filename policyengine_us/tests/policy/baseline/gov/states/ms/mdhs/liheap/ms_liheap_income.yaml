@@ -42,6 +42,7 @@
     spm_units:
       unit:
         members: [adult, child]
+        heating_type: ELECTRICITY
         heating_expense: 1_000
     households:
       home:
@@ -51,3 +52,95 @@
     ms_liheap_household_size: 1
     ms_liheap_income: 15_600
     ms_liheap_eligible: true
+- name: Case 4, three-person household with farm income above the limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        farm_operations_income: 48_000
+      person2:
+        age: 43
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_liheap_household_size: 3
+    # Rule 6.11 C(2) and I(1)-(2): Schedule F net farm profit counts with
+    # self-employment income. 48,000 farm + 0 wages + 0 unearned = 48,000.
+    ms_liheap_income: 48_000
+    # floor(0.6 * 85,708) = 51,424; size-3 share 0.52 + 2 * 0.16 = 0.84;
+    # floor(0.84 * 51,424) = floor(43,196.16) = 43,196.
+    ms_liheap_income_limit: 43_196
+    # 48,000 > 43,196.
+    ms_liheap_eligible: false
+    ms_liheap: 0
+- name: Case 5, three-person household with smaller farm income lands in the fourth band.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        farm_operations_income: 24_000
+      person2:
+        age: 43
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_liheap_household_size: 3
+    # 24,000 farm + 0 wages + 0 unearned = 24,000.
+    ms_liheap_income: 24_000
+    ms_liheap_income_limit: 43_196
+    # 24,000 <= 43,196.
+    ms_liheap_eligible: true
+    # Size-3 band 4 is 19,989-26,650 (matrix page 1).
+    # Propane cap: 800 - 50 * (4 - 1) = 650. Payment: min(650, 1,200) = 650.
+    ms_liheap: 650
+- name: Case 6, farm loss offsets a spouse's wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        farm_operations_income: -8_000
+      person2:
+        age: 43
+        employment_income: 30_000
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_liheap_household_size: 3
+    # Rule 6.11 I(1) uses the net profit or (loss) line, so the signed farm
+    # result is counted: 30,000 wages - 8,000 farm loss = 22,000.
+    ms_liheap_income: 22_000
+    ms_liheap_income_limit: 43_196
+    ms_liheap_eligible: true
+    # Size-3 band 4 is 19,989-26,650 (wages alone, 30,000, would be band 5).
+    # Propane cap: 800 - 50 * (4 - 1) = 650. Payment: min(650, 1,200) = 650.
+    ms_liheap: 650

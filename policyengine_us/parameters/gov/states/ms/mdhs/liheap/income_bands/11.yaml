@@ -20,14 +20,11 @@ brackets:
       2025-10-01: 52_988
     amount:
       2025-10-01: 4
-  - threshold:
-      2025-10-01: 75_593
-    amount:
-      2025-10-01: 0
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
+  period: year
   label: Mississippi LIHEAP income bands for 11 people
   reference:
     - title: Mississippi FY2026 benefit matrix, household size 11
