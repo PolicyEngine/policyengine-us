@@ -189,3 +189,44 @@
     tanf: 0
     household_state_benefits: 0
     household_benefits: 0
+
+# Alaska's CCAP was implemented but absent from household state benefits.
+# The federal CCDF aggregate now connects every implemented state program.
+- name: Alaska CCAP reaches household state benefits through the CCDF aggregate
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        ak_child_care_subsidies: 4_800
+    households:
+      household:
+        members: [parent]
+        state_code: AK
+  output:
+    child_care_subsidies: 4_800
+    household_state_benefits: 4_800
+
+# North Carolina was already listed directly. This protects against retaining
+# a direct state entry alongside the new aggregate and counting SCCA twice.
+- name: NC SCCA reaches household state benefits exactly once
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        nc_child_care_subsidies: 3_600
+    households:
+      household:
+        members: [parent]
+        state_code: NC
+        county_str: ALAMANCE_COUNTY_NC
+  output:
+    child_care_subsidies: 3_600
+    household_state_benefits: 3_600
