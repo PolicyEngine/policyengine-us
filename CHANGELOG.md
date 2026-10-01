@@ -1,3 +1,14 @@
+## [2.20.0] - 2026-10-01
+
+### Fixed
+
+- Report Minnesota's Child and Working Family Credits as the state EITC (taxsim_state_eitc) from 2023 instead of the pre-2023 working family credit formula. Minnesota's child tax credit (§290.0661) and working family credit (§290.0671) are phased down jointly and claimed on one Schedule M1REF line, so no separate Minnesota state CTC is reported.
+
+### Removed
+
+- Remove taxsim_mn_child_tax_credit_component, which split Minnesota's combined credit using the pre-2023 working family credit formula.
+
+
 ## [2.19.0] - 2026-10-01
 
 ### Added
