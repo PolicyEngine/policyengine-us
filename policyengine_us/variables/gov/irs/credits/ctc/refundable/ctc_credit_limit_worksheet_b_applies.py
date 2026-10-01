@@ -19,8 +19,9 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
         # 2025 Instructions for Schedule 8812, Credit Limit Worksheet A, line 3.
         "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4",
         "https://www.law.cornell.edu/uscode/text/26/24#d_1_B",
-        # No refundable CTC for filers excluding foreign earned income.
-        "https://www.law.cornell.edu/uscode/text/26/24#d_5",
+        # No refundable CTC for filers excluding foreign earned income under
+        # section 911 (added as 24(d)(5), redesignated (d)(3) in 2018).
+        "https://www.law.cornell.edu/uscode/text/26/24#d_3",
     )
 
     def formula(tax_unit, period, parameters):
