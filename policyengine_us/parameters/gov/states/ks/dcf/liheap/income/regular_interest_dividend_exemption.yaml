@@ -1,4 +1,5 @@
-description: Kansas excludes recurring interest and dividends not exceeding this monthly amount under the Low Income Energy Assistance Program; above it the full amount counts.
+description: Kansas excludes recurring interest and dividends not exceeding this monthly amount under the Low Income Energy Assistance Program.
+# Above this amount the full amount counts.
 values:
   2024-10-01: 50
   2025-10-01: 0
@@ -8,7 +9,9 @@ metadata:
   period: month
   label: Kansas LIEAP recurring interest and dividend exemption
   reference:
-    - title: KEESM 13360-13362, October 2024 edition
+    - title: KEESM 13361 Exempt Income, October 2024 edition (interest and dividend income not exceeding $50 per month is exempt; if in excess the full amount is counted)
       href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
-    - title: KEESM 13360-13362, January 2026 edition
+    - title: KEESM 13361 Exempt Income, July 2025 edition (first edition with the FY2026 rule; only irregular, unpredictable interest and dividends under $30 in a quarter are exempt)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo07-25/Robo_07_01_25/keesm13360.htm
+    - title: KEESM 13361 Exempt Income, January 2026 edition (only irregular, unpredictable interest and dividends under $30 in a quarter are exempt)
       href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm

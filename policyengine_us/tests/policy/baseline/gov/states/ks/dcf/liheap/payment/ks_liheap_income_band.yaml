@@ -199,3 +199,13 @@
   output:
     # 14,400 / 12 = 1,200 -> "1,200 - 1,699" (KS_BenefitMatrix_2025.pdf rows)
     ks_liheap_income_band: 3
+
+- name: Case 11, negative countable income is floored to the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_countable_income: -5_000
+  output:
+    # max(-5,000, 0) / 12 = 0 -> band 1 (0-899).
+    ks_liheap_income_band: 1

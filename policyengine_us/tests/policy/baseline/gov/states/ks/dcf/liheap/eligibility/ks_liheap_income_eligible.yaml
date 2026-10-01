@@ -24,7 +24,7 @@
     ks_liheap_income_limit: 22_590
     ks_liheap_income_eligible: false
 
-- name: Case 5, 2026 household size 1, income 0 dollar above the published limit.
+- name: Case 3, 2026 household size 1, income 0 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -35,7 +35,7 @@
     ks_liheap_income_limit: 23_472
     ks_liheap_income_eligible: true
 
-- name: Case 6, 2026 household size 1, income 1 dollar above the published limit.
+- name: Case 4, 2026 household size 1, income 1 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -46,7 +46,7 @@
     ks_liheap_income_limit: 23_472
     ks_liheap_income_eligible: false
 
-- name: Case 9, 2026 household size 9, income 0 dollar above the published limit.
+- name: Case 5, 2026 household size 9, income 0 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -57,7 +57,7 @@
     ks_liheap_income_limit: 89_484
     ks_liheap_income_eligible: true
 
-- name: Case 10, 2026 household size 9, income 1 dollar above the published limit.
+- name: Case 6, 2026 household size 9, income 1 dollar above the published limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -68,7 +68,7 @@
     ks_liheap_income_limit: 89_484
     ks_liheap_income_eligible: false
 
-- name: Case 13, snap receipt does not waive the household income limit.
+- name: Case 7, snap receipt does not waive the household income limit.
   period: 2026
   input:
     state_code: KS
@@ -78,7 +78,7 @@
   output:
     ks_liheap_income_eligible: false
 
-- name: Case 14, ssi receipt does not waive the household income limit.
+- name: Case 8, ssi receipt does not waive the household income limit.
   period: 2026
   input:
     state_code: KS
@@ -88,7 +88,7 @@
   output:
     ks_liheap_income_eligible: false
 
-- name: Case 15, ks_tanf receipt does not waive the household income limit.
+- name: Case 9, ks_tanf receipt does not waive the household income limit.
   period: 2026
   input:
     state_code: KS

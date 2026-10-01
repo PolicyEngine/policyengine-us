@@ -30,7 +30,7 @@
     # 20,000 wages + 3,000 interest + 2,000 dividends (KEESM 13360).
     ks_liheap_countable_income: 25_000
 
-- name: Case 3, Social Security and SSI are counted.
+- name: Case 2, Social Security and SSI are counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -50,7 +50,7 @@
     # 12,000 SSA + 3,000 SSI = 15,000 (plan 1.8: SSA and SSI checked).
     ks_liheap_countable_income: 15_000
 
-- name: Case 5, unearned income of a child under 18 is still counted.
+- name: Case 3, unearned income of a child under 18 is still counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -75,7 +75,7 @@
     # 4,000 SSA survivor benefit counts: 18,000 + 4,000 = 22,000.
     ks_liheap_countable_income: 22_000
 
-- name: Case 6, other checked income sources are summed.
+- name: Case 4, other checked income sources are summed.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -102,7 +102,7 @@
     # alimony, rental income, VA benefits).
     ks_liheap_countable_income: 38_000
 
-- name: Case 7, TANF cash assistance is counted.
+- name: Case 5, TANF cash assistance is counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -124,7 +124,7 @@
     # 3,000 wages + 2,400 TANF (plan 1.8: TANF checked) = 5,400.
     ks_liheap_countable_income: 5_400
 
-- name: Case 8, income of a non-qualified noncitizen member is counted.
+- name: Case 6, income of a non-qualified noncitizen member is counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -148,7 +148,7 @@
     # KEESM 13330: income from non-qualified members is counted -> 18,000.
     ks_liheap_countable_income: 18_000
 
-- name: Case 9, countable earned income supplied by the caller is used as given.
+- name: Case 7, countable earned income supplied by the caller is used as given.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -170,7 +170,7 @@
     # 18,000 supplied countable earned income + 0 unearned income = 18,000.
     ks_liheap_countable_income: 18_000
 
-- name: Case 10, employer disability benefits are counted as unearned income.
+- name: Case 8, employer disability benefits are counted as unearned income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -193,3 +193,28 @@
     ks_liheap_countable_unearned_income: 14_400
     # 0 earned income + 14,400 unearned income = 14,400.
     ks_liheap_countable_income: 14_400
+
+- name: Case 9, strike benefits, general assistance and workers' compensation are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # Example amounts: 100, 200 and 300 a month.
+        strike_benefits: 1_200
+        general_assistance: 2_400
+        workers_compensation: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # All three are in the unearned source list: 1,200 + 2,400 + 3,600 = 7,200.
+    ks_liheap_countable_unearned_income: 7_200
+    # 0 earned income + 7,200 unearned income = 7,200.
+    ks_liheap_countable_income: 7_200

@@ -295,8 +295,8 @@
     ks_liheap_eligible: true
     ks_liheap_income_band: 1
     ks_liheap_fuel_category: NATURAL_GAS
-    # matrix p.1 (80%) 0-899, tier E, House, size 1-4 = 709 (941 x 0.8 = 752.8;
-    # the published 80% table cell is 709)
+    # matrix p.1 (80%) 0-899, tier E, House, size 1-4 = 709: 80% of the
+    # FY2026 unadjusted cell of 886 (886 x 0.8 = 708.8, rounded to 709)
     ks_liheap_matrix_amount: 709
     ks_liheap: 709
 
@@ -475,7 +475,7 @@
     # 21,600 / 12 = 1,800 -> 1,700 & over
     ks_liheap_income_band: 4
     ks_liheap_fuel_category: PROPANE
-    # KS_BenefitMatrix_2025.pdf p.2 (100%) propane 1,700 & over, tier A,
+    # KS_BenefitMatrix_2025.pdf p.3 (100%) propane 1,700 & over, tier A,
     # Trailer/Other, size 1-4 = 100
     ks_liheap_matrix_amount: 100
     # FY2025 minimum benefit $100 (KS LIHEAP State Plan FY2025 2.6, #page=9):

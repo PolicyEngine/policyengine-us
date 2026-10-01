@@ -31,14 +31,12 @@ class ks_liheap_fuel_category(Variable):
             heating_type == types.SOLAR
         )
         propane = heating_type == types.PROPANE
-        other = ~(natural_gas | electricity | propane)
         return select(
-            [natural_gas, electricity, propane, other],
+            [natural_gas, electricity, propane],
             [
                 KSLIEAPFuelCategory.NATURAL_GAS,
                 KSLIEAPFuelCategory.ELECTRICITY,
                 KSLIEAPFuelCategory.PROPANE,
-                KSLIEAPFuelCategory.OTHER,
             ],
             default=KSLIEAPFuelCategory.OTHER,
         )

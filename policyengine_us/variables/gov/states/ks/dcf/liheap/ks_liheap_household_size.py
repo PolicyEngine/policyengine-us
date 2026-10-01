@@ -15,4 +15,7 @@ class ks_liheap_household_size(Variable):
 
     # KEESM 13330 excludes ineligible members from size but retains their income.
     # It expressly includes refugees/asylees; do not substitute SNAP eligibility.
+    # Its size sentence names "citizens or lawful permanent residents", while
+    # its list of qualified aliens is broader. Counting every qualified status
+    # is an interpretation of that section, not an express instruction.
     adds = ["is_citizen_or_legal_immigrant"]

@@ -9,7 +9,7 @@
 # https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
 # https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
-- name: Case 2, the same household in Missouri is not eligible.
+- name: Case 1, the same household in Missouri is not eligible.
   period: 2026
   input:
     people:
@@ -28,7 +28,7 @@
   output:
     ks_liheap_eligible: false
 
-- name: Case 4, household with no citizen or qualified member is not eligible.
+- name: Case 2, household with no citizen or qualified member is not eligible.
   period: 2026
   input:
     people:
@@ -51,7 +51,7 @@
   output:
     ks_liheap_eligible: false
 
-- name: Case 5, mixed-status household with one citizen member is eligible.
+- name: Case 3, mixed-status household with one citizen member is eligible.
   period: 2026
   input:
     people:
@@ -77,7 +77,7 @@
     # 12,000 (the parent's income counts).
     ks_liheap_eligible: true
 
-- name: Case 7, subsidized-housing renter who pays heat separately is eligible.
+- name: Case 4, subsidized-housing renter who pays heat separately is eligible.
   period: 2026
   input:
     people:
@@ -99,7 +99,7 @@
     # KEESM 13340: pays heating costs directly to a utility -> vulnerable.
     ks_liheap_eligible: true
 
-- name: Case 10, no asset test so large savings do not disqualify.
+- name: Case 5, no asset test so large savings do not disqualify.
   period: 2026
   input:
     people:
@@ -120,7 +120,7 @@
     # Plan 2.3: "Do you require an Assets test? No".
     ks_liheap_eligible: true
 
-- name: Case 11, TANF receipt does not waive the household income limit.
+- name: Case 6, TANF receipt does not waive the household income limit.
   period: 2025
   input:
     people:

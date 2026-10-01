@@ -26,7 +26,7 @@
   output:
     ks_liheap_countable_earned_income: 24_000
 
-- name: Case 4, an 18-year-old's wages are counted.
+- name: Case 2, an 18-year-old's wages are counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -48,7 +48,7 @@
     ks_liheap_countable_earned_income: [18_000, 5_000]
     ks_liheap_countable_income: 23_000
 
-- name: Case 5, unearned income is not part of earned income.
+- name: Case 3, unearned income is not part of earned income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -67,7 +67,7 @@
   output:
     ks_liheap_countable_earned_income: 0
 
-- name: Case 6, FY2025 reported net business income receives no additional deduction.
+- name: Case 4, FY2025 reported net business income receives no additional deduction.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -77,7 +77,7 @@
   output:
     ks_liheap_countable_earned_income: 24_000
 
-- name: Case 7, FY2026 includes regular, SSTB, and farm net income alongside wages.
+- name: Case 5, FY2026 includes regular, SSTB, and farm net income alongside wages.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -92,7 +92,7 @@
     ks_liheap_countable_earned_income: 26_000
     ks_liheap_countable_income: 26_000
 
-- name: Case 8, a farm loss does not offset wages or other positive business income.
+- name: Case 6, a farm loss does not offset wages or other positive business income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -105,7 +105,7 @@
   output:
     ks_liheap_countable_earned_income: 22_000
 
-- name: Case 9, an adult with only business losses has no countable earnings.
+- name: Case 7, an adult with only business losses has no countable earnings.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -117,7 +117,7 @@
   output:
     ks_liheap_countable_earned_income: 0
 
-- name: Case 10, child business income is excluded and adult losses do not affect other people.
+- name: Case 8, child business income is excluded and adult losses do not affect other people.
   period: 2026
   absolute_error_margin: 0.01
   input:

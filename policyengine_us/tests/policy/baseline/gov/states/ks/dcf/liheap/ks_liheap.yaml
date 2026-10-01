@@ -8,7 +8,7 @@
 # https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
 # https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
 
-- name: Case 4, other fuel trailer cell of 128 for a large family is raised to 130.
+- name: Case 1, other fuel trailer cell of 128 for a large family is raised to 130.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -40,7 +40,7 @@
     # size 5+ = 128; max(128, 130) = 130
     ks_liheap: 130
 
-- name: Case 5, cell just above the minimum is paid unchanged.
+- name: Case 2, cell just above the minimum is paid unchanged.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -73,7 +73,7 @@
     # max(138, 130) = 138
     ks_liheap: 138
 
-- name: Case 6, home with no heating receives nothing.
+- name: Case 3, home with no heating receives nothing.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -93,7 +93,7 @@
     ks_liheap_eligible: false
     ks_liheap: 0
 
-- name: Case 9, negative self-employment income does not inflate the benefit.
+- name: Case 4, negative self-employment income does not inflate the benefit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -118,7 +118,7 @@
     # (0-899): matrix p.1 (80%) tier E, House, size 1-4 = 709.
     ks_liheap: 709
 
-- name: Case 13, FY2025 natural gas trailer cell of 112 is above the 100 minimum and unchanged.
+- name: Case 5, FY2025 natural gas trailer cell of 112 is above the 100 minimum and unchanged.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -145,11 +145,11 @@
     # minimum, KS LIHEAP State Plan FY2025 2.6, #page=9 gives $100).
     ks_liheap: 112
 
-# Case 15 evaluates seven SPM units in one simulation, including a Missouri
+# Case 6 evaluates seven SPM units in one simulation, including a Missouri
 # unit that the Kansas mask must zero: FY2026 adjusted matrix cells
 # (KS_BenefitMatrix_2026.pdf pages 1-4), the income limit (KEESM 13362) and
 # the energy-vulnerability gate (KEESM 13340).
-- name: Case 15, mixed households evaluate Kansas LIEAP in one vectorized simulation.
+- name: Case 6, mixed households evaluate Kansas LIEAP in one vectorized simulation.
   period: 2026
   absolute_error_margin: 0.01
   input:

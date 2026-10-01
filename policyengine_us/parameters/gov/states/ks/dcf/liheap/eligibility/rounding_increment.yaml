@@ -1,8 +1,12 @@
-description: Kansas expresses monthly Low Income Energy Assistance Program income limits in increments of this amount.
+description: Kansas sets monthly income limits in increments of this amount under the Low Income Energy Assistance Program.
 # Precision inferred from the published tables, not an express rounding rule:
 # FY2025 retains cents and exactly matches 150% of the 2024 guidelines.
 # FY2026 matches nearest-dollar rounding of 150% of the 2025 guidelines,
 # including a separately rounded $688 increment for each person beyond eight.
+# The July 2025 KEESM edition is the first to carry the FY2026 limits; the
+# 2025-10-01 date matches the federal program year and the FY2026 matrix. All
+# Kansas LIEAP variables are annual, so any date in the 2025 season gives the
+# same result.
 values:
   2024-10-01: 0.01
   2025-10-01: 1
@@ -14,5 +18,7 @@ metadata:
   reference:
     - title: KEESM 13362 Income Guidelines, October 2024 edition
       href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
+    - title: KEESM 13362 Income Guidelines, July 2025 edition (first edition with the FY2026 limits of $1,956 to $6,769 and the $688 increment)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo07-25/Robo_07_01_25/keesm13360.htm
     - title: KEESM 13362 Income Guidelines, January 2026 edition
       href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
