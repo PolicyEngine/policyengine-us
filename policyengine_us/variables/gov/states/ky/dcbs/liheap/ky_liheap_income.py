@@ -26,6 +26,7 @@ class ky_liheap_income(Variable):
         earned = (
             max_(person("employment_income", period), 0)
             + max_(person("self_employment_income", period), 0)
+            + max_(person("sstb_self_employment_income", period), 0)
             + max_(person("farm_operations_income", period), 0)
         ) * adult
         unearned = 0

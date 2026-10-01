@@ -7,6 +7,7 @@
         age: 35
         employment_income: 12_000
         self_employment_income: -3_000
+        sstb_self_employment_income: -1_000
         unemployment_compensation: 1_200
         strike_benefits: 600
         ssi: 0
@@ -15,6 +16,7 @@
         age: 17
         employment_income: 4_000
         self_employment_income: 2_000
+        sstb_self_employment_income: 2_000
         child_support_received: 2_400
         ssi: 0
         social_security: 0
@@ -35,11 +37,13 @@
     age: 18
     employment_income: 12_000
     self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
     ssi: 0
     social_security: 0
     tanf: 0
   output:
-    ky_liheap_income: 18_000
+    # 12,000 wages + 6,000 ordinary business + 3,000 specified service business.
+    ky_liheap_income: 21_000
 - name: Reported Medicare premium deduction cannot make SSA income negative
   period: 2_026
   input:
@@ -127,3 +131,24 @@
     # Unearned: 3_600 (farm rent) + 240 + 60 (ordinary dividends) = 3_900.
     # 14_400 + 3_900 = 18_300.
     ky_liheap_income: 18_300
+
+- name: Case 7, service business profits and wage replacement income can exceed the income limit.
+  # 921 KAR 4:116 Section 1(8) counts earned and unearned income. Plan
+  # Section 1.9 includes insurance payments made directly to the insured.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY]
+    age: [40, 40, 40]
+    sstb_self_employment_income: [60_000, 0, 0]
+    workers_compensation: [0, 30_000, 0]
+    disability_benefits: [0, 0, 30_000]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+  output:
+    ky_liheap_income: [60_000, 30_000, 30_000]
+    # Each exceeds the one-person monthly ceiling of 1,957, annualized.
+    ky_liheap_eligible: [false, false, false]
+    ky_liheap: [0, 0, 0]
