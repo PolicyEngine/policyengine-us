@@ -36,9 +36,10 @@ class ne_liheap(Variable):
         types = fuel.possible_values
         dwelling = spm_unit("ne_liheap_dwelling_type", period)
         multifamily = dwelling == dwelling.possible_values.MULTI_FAMILY
-        # The multi-family column covers all fuel types. For single-family homes,
-        # OTHER cannot isolate corn; SOLAR/UNSPECIFIED lack a table mapping.
-        # Unsupported single-family fuel categories return zero.
+        # Corn shares the natural gas/electricity/coal payment column. No
+        # separate schedule is needed, but the fuel enum cannot isolate corn
+        # from OTHER. Single-family OTHER/SOLAR/UNSPECIFIED remain unmapped;
+        # the multifamily column covers all fuel types.
         # No FY2026 supplemental heating amount has been verified.
         return select(
             [

@@ -10,22 +10,23 @@
     gas_expense: 100
   output:
     ne_liheap_eligible: true
-- name: Case 2, heat in rent does not by itself establish economic vulnerability.
+- name: Case 2, heat in rent qualifies with zero separate heating expense under the vulnerability assumption.
   period: 2026
   input:
     state_code: NE
     ne_liheap_income_eligible: true
     heat_expense_included_in_rent: true
+    heating_expense: 0
     pre_subsidy_rent: 10_000
   output:
-    ne_liheap_eligible: false
-- name: Case 3, income failure excludes household with heating expenses.
+    ne_liheap_eligible: true
+- name: Case 3, heat in rent does not bypass the income test.
   period: 2026
   input:
     state_code: NE
     ne_liheap_income_eligible: false
-    heating_type: NATURAL_GAS
-    gas_expense: 100
+    heat_expense_included_in_rent: true
+    heating_expense: 0
   output:
     ne_liheap_eligible: false
 - name: Case 4, another state receives no Nebraska benefit.
@@ -35,6 +36,17 @@
     ne_liheap_income_eligible: true
     heating_type: NATURAL_GAS
     gas_expense: 100
+  output:
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 5, no reported heating responsibility remains ineligible.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_income_eligible: true
+    heat_expense_included_in_rent: false
+    heating_expense: 0
   output:
     ne_liheap_eligible: false
     ne_liheap: 0

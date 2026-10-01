@@ -1,1 +1,1 @@
-Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with a state-specific dwelling type selecting single-family or multifamily payments.
+Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with single-family and multifamily schedules and assumed economic vulnerability for separately billed or rent-included heating.

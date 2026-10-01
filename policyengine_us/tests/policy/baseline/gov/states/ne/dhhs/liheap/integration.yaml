@@ -180,3 +180,34 @@
     ne_liheap_fpg: 15_650
     ne_liheap_income_eligible: true
     ne_liheap: 550
+
+- name: Case 7, multifamily heat in rent receives the full scheduled benefit with zero separate expense.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ne_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        heating_expense: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    # Income after the 20% disregard is $14,400: multifamily Tier 2.
+    ne_liheap: 300
