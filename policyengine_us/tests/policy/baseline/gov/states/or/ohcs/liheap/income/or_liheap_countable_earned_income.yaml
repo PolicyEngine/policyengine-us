@@ -1,0 +1,12 @@
+- name: Adult earnings exclude secondary students and do not offset wages with business losses
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR]
+    age: [17, 18, 19, 40]
+    is_in_secondary_school: [false, true, false, false]
+    employment_income: [1000, 2000, 3000, 4000]
+    self_employment_income: [100, 200, 300, -5000]
+    sstb_self_employment_income: [0, 0, 400, 500]
+    farm_operations_income: [0, 0, 500, 600]
+  output:
+    or_liheap_countable_earned_income: [0, 0, 4200, 5100]

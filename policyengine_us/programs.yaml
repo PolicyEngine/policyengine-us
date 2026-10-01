@@ -805,9 +805,13 @@ programs:
     coverage: OR, DC, Riverside County, MA, IL, TX
     state_implementations:
       - state: OR
-        status: in_progress
-        name: LIHEAP
-        full_name: Low Income Home Energy Assistance Program (Oregon)
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2026"
+        notes: Regular heating only; annual income, 60% SMI limit, county matrices, housing and roomer payments. Unknown fuels and counties, sizes above 12, identity exclusions, special income details, discretionary fuel payments and local supplements remain unsupported. Earlier years are unverified backfilled estimates.
       - state: DC
         status: complete
         name: DC LIHEAP

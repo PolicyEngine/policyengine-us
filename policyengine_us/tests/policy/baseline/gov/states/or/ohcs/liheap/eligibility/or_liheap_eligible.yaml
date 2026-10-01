@@ -1,0 +1,12 @@
+- name: Heat responsibility and subsidized heat included in rent
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    or_liheap_countable_income: [0, 0, 0, 0, 0, 0]
+    has_heating_expense: [false, false, false, true, true, true]
+    heat_expense_included_in_rent: [false, true, true, false, false, true]
+    receives_housing_assistance: [false, false, true, true, false, true]
+  output:
+    or_liheap_eligible: [false, true, false, true, true, false]

@@ -1,0 +1,23 @@
+- name: Interest threshold and counted benefits, including child support and Oregon TANF
+  period: 2026
+  input:
+    state_code: [OR, OR]
+    or_liheap_countable_earned_income: [0, 0]
+    interest_income: [200, 201]
+    dividend_income: [100, 100]
+    rental_income: [300, 300]
+    social_security: [1000, 1000]
+    ssi: [0, 0]
+    or_tanf: [500, 500]
+    pension_income: [200, 200]
+    unemployment_compensation: [150, 150]
+    child_support_received: [250, 250]
+    workers_compensation: [100, 100]
+    disability_benefits: [75, 75]
+    veterans_benefits: [50, 50]
+    alimony_income: [25, 25]
+    strike_benefits: [10, 10]
+    general_assistance: [0, 0]
+    estate_income: [0, 0]
+  output:
+    or_liheap_countable_income: [2760, 2961]

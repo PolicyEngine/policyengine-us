@@ -1,0 +1,80 @@
+- name: Adult net earnings and child interest count but child wages do not
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 12000
+        self_employment_income: 2400
+        pension_income: 600
+        ssi: 0
+        general_assistance: 0
+      child:
+        age: 17
+        employment_income: 48000
+        interest_income: 201
+        ssi: 0
+        general_assistance: 0
+    spm_units:
+      unit:
+        members:
+        - adult
+        - child
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 120
+        or_tanf: 0
+    households:
+      home:
+        members:
+        - adult
+        - child
+        state_code: OR
+        county: DESCHUTES_COUNTY_OR
+  output:
+    or_liheap_countable_earned_income:
+    - 14400
+    - 0
+    or_liheap_countable_income: 15201
+    or_liheap_income_limit: 50196
+    or_liheap_region: 2
+    or_liheap_income_band: 2
+    or_liheap_eligible: true
+    or_liheap: 505
+- name: Adult secondary-school earnings are excluded for a nonsubsidized heat-in-rent household
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 18
+    is_in_secondary_school: true
+    employment_income: 100000
+    ssi: 0
+    or_tanf: 0
+    general_assistance: 0
+    heat_expense_included_in_rent: true
+    heating_type: ELECTRICITY
+  output:
+    or_liheap_countable_income: 0
+    or_liheap_income_limit: 38385
+    or_liheap_income_band: 1
+    or_liheap_eligible: true
+    or_liheap: 465
+- name: Public-housing household paying its own heat can receive a standard grant
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 40
+    pension_income: 12000
+    ssi: 0
+    or_tanf: 0
+    general_assistance: 0
+    is_in_public_housing: true
+    heating_type: NATURAL_GAS
+    gas_expense: 100
+  output:
+    or_liheap_countable_income: 12000
+    or_liheap_region: 1
+    or_liheap_income_band: 2
+    or_liheap_eligible: true
+    or_liheap: 520
