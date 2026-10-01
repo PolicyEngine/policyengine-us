@@ -830,7 +830,7 @@ programs:
         variable: ky_liheap
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2026"
-        notes: Regular heating only, FY2026 coverage. Uses the published regular benefit worksheet despite its stale title and anomalous cells. Annual income and SPM units approximate application-month energy households. Detailed income exclusions, lump sums, mixed-immigration adjustments, and administrative eligibility remain incomplete; no new inputs are added. Earlier results use parameter backfilling and are unverified historical estimates.
+        notes: FY2026 regular heating only, from the published benefit worksheet. Crisis and cooling assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
