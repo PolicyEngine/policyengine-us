@@ -1,5 +1,9 @@
-# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
-# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+# Source: 476 NAC 1-004.09 (household, including energy paid through rent) and
+# 2-002 (eligibility); FY2026 state plan section 2.3 (renters in subsidized
+# housing and renters with utilities included in rent), page 9.
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1
+# https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=1
+# https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
 
 - name: Case 1, direct heating bill establishes energy responsibility.
   period: 2026
@@ -17,9 +21,8 @@
     ne_liheap_income_eligible: true
     heat_expense_included_in_rent: true
     heating_type: UNSPECIFIED
-    heating_expense: 0
-    pre_subsidy_rent: 10_000
   output:
+    heating_expense: 0
     ne_liheap_eligible: true
 - name: Case 3, heat in rent does not bypass the income test.
   period: 2026
@@ -28,8 +31,8 @@
     ne_liheap_income_eligible: false
     heat_expense_included_in_rent: true
     heating_type: UNSPECIFIED
-    heating_expense: 0
   output:
+    heating_expense: 0
     ne_liheap_eligible: false
 - name: Case 4, another state receives no Nebraska benefit.
   period: 2026
@@ -49,15 +52,21 @@
     ne_liheap_income_eligible: true
     heat_expense_included_in_rent: false
     heating_type: UNSPECIFIED
-    heating_expense: 0
   output:
+    heating_expense: 0
     ne_liheap_eligible: false
     ne_liheap: 0
 
-# Cases 6-9: FY2026 state plan section 2.3. Renters in subsidized housing must
-# be responsible for a portion of the heating payment; market-rate renters with
-# heat included in rent are accepted under the documented modeling assumption.
-# https://dhhs.ne.gov/Documents/LIHEAP%20State%20Plan.pdf#page=9
+# Cases 6-9: FY2026 state plan section 2.3 (page 9): "For subsidized housing,
+# the household must be responsible for a portion of the heating payment to be
+# eligible for heating" and "For renters with utilities included in the rent,
+# the household must be responsible for a portion of the heating." Market-rate
+# renters with heat included in rent are treated as responsible under the
+# documented modeling assumption; 476 NAC 3-002.02 lets the Department pay a
+# household directly if utilities are included in rent, and plan sections 1.1
+# (page 5) and 9.1 (page 25) list such households among those paid directly.
+# https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=5,9,25
+# https://www.law.cornell.edu/regulations/nebraska/476-Neb-Admin-Code-ch-3-SS-002
 - name: Case 6, housing-assisted renter with heat in rent and no heating bill is ineligible.
   period: 2026
   input:
@@ -110,7 +119,6 @@
     is_in_public_housing: false
     heat_expense_included_in_rent: true
     heating_type: UNSPECIFIED
-    pre_subsidy_rent: 9_600
   output:
     heating_expense: 0
     ne_liheap_eligible: true

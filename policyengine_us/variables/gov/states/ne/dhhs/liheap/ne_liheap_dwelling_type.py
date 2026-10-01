@@ -20,4 +20,4 @@ class ne_liheap_dwelling_type(Variable):
         "means one household occupies the structure. If omitted, the model "
         "assumes single-family; report the type to apply the correct schedule."
     )
-    reference = "https://rules.nebraska.gov/rules?agencyId=37&titleId=231"
+    reference = "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=2"

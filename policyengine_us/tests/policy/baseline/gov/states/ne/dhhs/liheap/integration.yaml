@@ -197,7 +197,6 @@
         ne_liheap_dwelling_type: MULTI_FAMILY
         heat_expense_included_in_rent: true
         heating_type: UNSPECIFIED
-        heating_expense: 0
         tanf: 0
     households:
       household:
@@ -209,14 +208,16 @@
     ne_liheap_gross_income: 18_000
     ne_liheap_fpg: 15_650
     ne_liheap_income_eligible: true
+    heating_expense: 0
     ne_liheap_eligible: true
     # Income after the 20% disregard is $14,400: multifamily Tier 2.
     ne_liheap: 300
 
 - name: Case 8, specified service trade self-employment income above the limit is ineligible.
-  # 475 NAC 3-002.04(B)(i), incorporated by 476 NAC 2-002.01, counts each
-  # source of self-employment. A self-employed bookkeeper reports net income
-  # in sstb_self_employment_income.
+  # 475 NAC 3-002.04(B)(i) (text in effect for FY2026), incorporated by
+  # 476 NAC 2-002.01, counts each source of self-employment. A self-employed
+  # bookkeeper reports net income in sstb_self_employment_income.
+  # https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44
   period: 2026
   input:
     people:
@@ -248,9 +249,10 @@
     ne_liheap: 0
 
 - name: Case 9, housing-assisted renter with heat in rent and no heating bill is ineligible.
-  # FY2026 state plan section 2.3: subsidized-housing renters must be
-  # responsible for a portion of the heating payment.
-  # https://dhhs.ne.gov/Documents/LIHEAP%20State%20Plan.pdf#page=9
+  # FY2026 state plan section 2.3 (page 9): "For subsidized housing, the
+  # household must be responsible for a portion of the heating payment to be
+  # eligible for heating."
+  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
   period: 2026
   input:
     people:
@@ -325,3 +327,44 @@
     ne_liheap_eligible: true
     # No earned income to disregard: 13,200 / 15,650 = 0.843, multifamily Tier 2.
     ne_liheap: 300
+
+- name: Case 11, market-rate single-family renter with heat in rent and a zero gas bill receives the single-family payment.
+  # Plan section 2.3 (page 9) also says renters with utilities included in
+  # rent must be responsible for a portion of the heating; the model treats
+  # market-rate heat-in-rent renters as responsible. 476 NAC 3-002.02 lets
+  # the Department pay such a household directly, and plan sections 1.1
+  # (page 5) and 9.1 (page 25) list them among households paid directly.
+  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=5,9,25
+  # https://www.law.cornell.edu/regulations/nebraska/476-Neb-Admin-Code-ch-3-SS-002
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ne_liheap_dwelling_type: SINGLE_FAMILY
+        heat_expense_included_in_rent: true
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    heating_expense: 0
+    ne_liheap_eligible: true
+    # 18,000 - 0.2 * 18,000 = 14,400; 14,400 / 15,650 = 0.920: single-family
+    # natural gas Tier 2.
+    ne_liheap: 550

@@ -10,7 +10,7 @@ class ne_liheap_gross_income(Variable):
     defined_for = StateCode.NE
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
-        "https://rules.nebraska.gov/rules?agencyId=37&titleId=230",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=47",
     )
 
     def formula(spm_unit, period, parameters):

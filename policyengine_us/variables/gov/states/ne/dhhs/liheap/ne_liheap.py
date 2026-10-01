@@ -23,6 +23,10 @@ class ne_liheap(Variable):
         size = spm_unit("ne_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
         # The payment bands stop growing at six people; eligibility does not.
+        # The Guidance footnote states the size-6+ tier cutoffs in "gross
+        # countable income", while the same page bases every payment on
+        # "income after the disregard is applied" with no size exception; the
+        # disregard is applied at every size here.
         payment_fpg = fpg(
             clip(size, 1, p.payment_size_limit),
             state_group,
@@ -30,8 +34,7 @@ class ne_liheap(Variable):
             parameters,
             year_lag=p.fpg_year_lag,
         )
-        payment_fpg = where(size > 0, payment_fpg, 0)
-        income_ratio = income / max_(payment_fpg, 1)
+        income_ratio = income / payment_fpg
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         dwelling = spm_unit("ne_liheap_dwelling_type", period)

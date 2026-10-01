@@ -10,7 +10,7 @@ class ne_liheap_earned_income(Variable):
     defined_for = StateCode.NE
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
-        "https://rules.nebraska.gov/rules?agencyId=37&titleId=230",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44,47",
     )
 
     def formula(spm_unit, period, parameters):
@@ -23,7 +23,8 @@ class ne_liheap_earned_income(Variable):
         # retain the eligible members' shares. Eligible members count in full.
         fraction = size / max_(spm_unit("spm_unit_size", period), 1)
         share = where(included, 1, spm_unit.project(fraction))
-        # 475 NAC 3-002.04(B)(i) counts each source of self-employment, so
+        # 475 NAC 3-002.04(B)(i), in the text in effect for FY2026 (the current
+        # text renumbers it), counts each source of self-employment, so
         # existing net business and farm inputs are read, each floored at zero,
         # without another business expense deduction. The special farm-loss
         # offset requires tax-return evidence and at least $1,000 of gross farm

@@ -188,7 +188,7 @@
     heating_type: NATURAL_GAS
   output:
     ne_liheap: 700
-- name: Case 18, countable income of 10955 respects the closed upper tier boundary.
+- name: Case 18, countable income of 10955.01 falls into the next tier.
   period: 2026
   input:
     state_code: NE
@@ -199,7 +199,7 @@
     heating_type: NATURAL_GAS
   output:
     ne_liheap: 550
-- name: Case 19, countable income of 15650 respects the closed upper tier boundary.
+- name: Case 19, countable income of 15650.01 falls into the next tier.
   period: 2026
   input:
     state_code: NE
@@ -210,7 +210,7 @@
     heating_type: NATURAL_GAS
   output:
     ne_liheap: 400
-- name: Case 20, countable income of 20345 respects the closed upper tier boundary.
+- name: Case 20, countable income of 20345.01 falls into the next tier.
   period: 2026
   input:
     state_code: NE
@@ -221,7 +221,7 @@
     heating_type: NATURAL_GAS
   output:
     ne_liheap: 280
-- name: Case 21, countable income of -100 respects the closed upper tier boundary.
+- name: Case 21, negative countable income is paid at the lowest tier.
   period: 2026
   input:
     state_code: NE
@@ -326,11 +326,13 @@
     state_code: NE
     ne_liheap_eligible: true
     ne_liheap_household_size: 1
-    ne_liheap_gross_income: 20_000
-    ne_liheap_earned_income: 20_000
+    ne_liheap_gross_income: 17_000
+    ne_liheap_earned_income: 17_000
     heating_type: NATURAL_GAS
   output:
-    ne_liheap: 400
+    # 17,000 - 0.2 * 17,000 = 13,600; 13,600 / 15,650 = 0.869 -> Tier 2 (550).
+    # Without the disregard, 17,000 / 15,650 = 1.086 would be Tier 3 (400).
+    ne_liheap: 550
 
 - name: Case 31, multifamily dwelling payments at each closed income boundary.
   # FY2026 heating table, multifamily all-fuel column: $380/$300/$220/$154.
@@ -385,3 +387,20 @@
     ne_liheap_income_eligible: true
     ne_liheap_eligible: true
     ne_liheap: 0
+
+- name: Case 34, seven-person payment bands use the six-person guideline at each closed boundary.
+  # Guidance p. 2 footnote for household sizes of 6 or more: $30,205 or less is
+  # Tier 1; $30,205.01 through $43,150 Tier 2; $43,150.01 through $56,095 Tier 3;
+  # above that Tier 4. These are 70%, 100% and 130% of the six-person 2025
+  # guideline of 43,150. A five-person cap would put 30,205 in Tier 2
+  # (30,205 / 37,650 = 0.802), so this pins the cap at six.
+  period: 2026
+  input:
+    state_code: [NE, NE, NE, NE, NE, NE]
+    ne_liheap_eligible: [true, true, true, true, true, true]
+    ne_liheap_household_size: [7, 7, 7, 7, 7, 7]
+    ne_liheap_gross_income: [30_205, 30_205.01, 43_150, 43_150.01, 56_095, 56_095.01]
+    ne_liheap_earned_income: [0, 0, 0, 0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+  output:
+    ne_liheap: [850, 580, 580, 330, 330, 165]
