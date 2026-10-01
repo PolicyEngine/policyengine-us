@@ -1,3 +1,10 @@
+## [2.18.4] - 2026-10-01
+
+### Changed
+
+- Load the known-dead reference URL list from per-agency YAML files and scan only the patterns whose host appears in a line, so the offline guard stays fast as the list grows.
+
+
 ## [2.18.3] - 2026-09-30
 
 ### Changed
