@@ -258,3 +258,44 @@
         state_code: TX
   output:
     is_subject_to_snap_abawd: [true, false]
+
+# 7 CFR 273.7(b)(1)(vii) with weeks worked: hours are averaged over the year
+# (usual hours x weeks worked / 52) and earnings over 52 weeks, compared with
+# 30 hours and 7.25 x 30 = 217.50 a week.
+- name: Case 15, post-HR1 10-week 40-hour worker is subject (no longer 30-hour exempt).
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 10
+    employment_income_before_lsr:
+      2026: 6_000
+  output:
+    # 40 x 10 / 52 = 7.69 hours < 30; 6,000 / 52 = 115.38 a week < 217.50
+    is_subject_to_snap_abawd: true
+
+- name: Case 16, post-HR1 part-year worker earning 12,000 is exempt through earnings and not subject.
+  period: 2026-01
+  input:
+    age:
+      2026: 30
+    is_disabled:
+      2026: false
+    state_code:
+      2026: TX
+    weekly_hours_worked_before_lsr:
+      2026: 40
+    weeks_worked:
+      2026: 20
+    employment_income_before_lsr:
+      2026: 12_000
+  output:
+    # 40 x 20 / 52 = 15.38 hours < 30, but 12,000 / 52 = 230.77 a week >= 217.50
+    is_subject_to_snap_abawd: false
