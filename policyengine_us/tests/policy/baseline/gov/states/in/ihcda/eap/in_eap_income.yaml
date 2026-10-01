@@ -67,6 +67,7 @@
     spm_units:
       unit:
         members: [adult, child]
+        heating_type: UNSPECIFIED
     households:
       home:
         members: [adult, child]
@@ -75,3 +76,48 @@
     in_eap_household_size: 1
     in_eap_income: 15_600
     in_eap_eligible: true
+
+- name: Farm, partnership and S corporation, estate, farm rental, strike and military retirement income count
+  # Section 6.1 (pages 51-52, 54, 56): Schedule F farm income, Schedule E partnership
+  # and S corporation, estate and trust, and farm rental lines, strike benefits and
+  # pensions count. One counted adult per household, one source each:
+  # farm operations $21,000; partnership $9,000 + S corporation $6,000 = $15,000;
+  # estate $4,800; farm rent $7,200; strike benefits $2,400; military retirement $18,000.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN]
+    age: [45, 45, 45, 45, 45, 45]
+    farm_operations_income: [21_000, 0, 0, 0, 0, 0]
+    partnership_income: [0, 9_000, 0, 0, 0, 0]
+    s_corp_income: [0, 6_000, 0, 0, 0, 0]
+    estate_income: [0, 0, 4_800, 0, 0, 0]
+    farm_rent_income: [0, 0, 0, 7_200, 0, 0]
+    strike_benefits: [0, 0, 0, 0, 2_400, 0]
+    military_retirement_pay: [0, 0, 0, 0, 0, 18_000]
+  output:
+    in_eap_income: [21_000, 15_000, 4_800, 7_200, 2_400, 18_000]
+
+- name: Each income source is floored at zero, so a business, rental or farm loss does not offset wages
+  # Section 6.1 (pages 51-52) counts gross business income before expenses, so a net
+  # loss in one source cannot reduce other income. Wages: $14.00 x 2,080 hours = $29,120.
+  # Household 1: max($29,120, 0) + max(-$15,000 self-employment, 0) = $29,120.
+  # Household 2: max($29,120, 0) + max(-$6,000 rental, 0) = $29,120.
+  # Household 3: max($29,120, 0) + max(-$9,000 farm operations, 0) = $29,120.
+  # $29,120 is within the size 1 limit of $33,556. Three-month income $29,120 x 3 / 12
+  # = $7,280 exceeds the band 2 ceiling floor($55,928 x 0.45 x 3 / 12) = $6,291: band 3.
+  # Natural gas, single-family: (2 + 3 + 1) x $25 + $50 electric = $200.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    employment_income: [29_120, 29_120, 29_120]
+    self_employment_income: [-15_000, 0, 0]
+    rental_income: [0, -6_000, 0]
+    farm_operations_income: [0, 0, -9_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_100, 1_100, 1_100]
+    pre_subsidy_electricity_expense: [1_300, 1_300, 1_300]
+  output:
+    in_eap_income: [29_120, 29_120, 29_120]
+    in_eap_eligible: [true, true, true]
+    in_eap: [200, 200, 200]

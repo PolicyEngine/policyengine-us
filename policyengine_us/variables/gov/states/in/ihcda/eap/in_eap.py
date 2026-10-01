@@ -12,24 +12,34 @@ class in_eap(Variable):
         "and are unverified historical estimates."
     )
     defined_for = "in_eap_eligible"
-    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=26,27,32,33,69,70,71,72,73,74,75,77,78"
+    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=10,26,27,32,33,47,69,70,71,72,73,74,75,77,78"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
         person = spm_unit.members
         smi_amount = spm_unit("in_eap_smi", period)
-        quarterly_income = spm_unit("in_eap_income", period) / 4
-        low = quarterly_income <= np.floor(smi_amount * p.benefit.income.lower_rate / 4)
-        middle = quarterly_income <= np.floor(
-            smi_amount * p.benefit.income.middle_rate / 4
+        # Sections 6 and 8.3 place a household in an income band using the most recent
+        # three months of income, so annual amounts are scaled to that period.
+        months_share = p.income.calculation_months / MONTHS_IN_YEAR
+        calculation_income = spm_unit("in_eap_income", period) * months_share
+        low = calculation_income <= np.floor(
+            smi_amount * p.benefit.income.lower_rate * months_share
         )
-        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        # The shared tenant flag identifies all utilities included in rent. It does not
-        # identify electricity alone included in rent while other utilities are separate;
-        # that mixed arrangement remains unsupported without an electricity-specific input.
+        middle = calculation_income <= np.floor(
+            smi_amount * p.benefit.income.middle_rate * months_share
+        )
+        # The shared tenant flag identifies all utilities included in rent, so Section
+        # 4.7 places both heat and electricity in rent for that household. It does not
+        # identify electricity alone included in rent while heat is billed separately;
+        # that mixed arrangement remains unsupported without an electricity-specific
+        # input.
         electric_in_rent = ~spm_unit.household("tenant_pays_utilities", period)
+        heat_in_rent = (
+            spm_unit("heat_expense_included_in_rent", period) | electric_in_rent
+        )
         rent_paid = (
-            add(spm_unit, period, ["rent"]) >= p.eligibility.minimum_monthly_rent * 12
+            add(spm_unit, period, ["rent"])
+            >= p.eligibility.minimum_monthly_rent * MONTHS_IN_YEAR
         )
         fuel = spm_unit("heating_type", period)
         fuel_points = p.benefit.fuel_points[fuel]

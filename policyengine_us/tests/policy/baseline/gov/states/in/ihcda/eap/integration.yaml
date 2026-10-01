@@ -92,3 +92,185 @@
     in_eap_household_size: 1
     in_eap_smi: 45_020
     in_eap_eligible: true
+
+# The cases below start from raw inputs: SSI, Social Security, rent, household size,
+# income and eligibility are computed by the model rather than supplied.
+- name: Two-earner family with a four-year-old lands in the middle band from wages
+  # Wages: $27,040 ($13.00 x 2,080 hours) + $10,400 ($10.00 x 1,040 hours) = $37,440.
+  # No member is aged, blind or disabled, so SSI is $0; no rent is reported.
+  # Size 3 SMI: floor($107,555 x 0.84) = $90,346; 60% limit floor($54,207.60) = $54,207.
+  # Three-month income: $37,440 x 3 / 12 = $9,360.
+  # Band 1 ceiling floor($90,346 x 0.30 x 3 / 12) = $6,775; band 2 ceiling
+  # floor($90,346 x 0.45 x 3 / 12) = $10,163, so band 2 (5 points, $100 electric).
+  # Points: 5 income + 2 mobile home + 6 propane + 2 vulnerable (child age 4) = 15.
+  # Heating 15 x $25 = $375; electric $100; total $475.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 27_040
+      person2:
+        age: 32
+        employment_income: 10_400
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_800
+        pre_subsidy_electricity_expense: 1_500
+        in_eap_dwelling_type: MOBILE_HOME
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    ssi: [0, 0, 0]
+    rent: [0, 0, 0]
+    heating_expense: 1_800
+    in_eap_household_size: 3
+    in_eap_smi: 90_346
+    in_eap_income: 37_440
+    in_eap_eligible: true
+    in_eap: 475
+
+- name: Single parent with full-time wages lands in the highest band
+  # Wages: $17.50 x 2,080 hours = $36,400; the seven-year-old has no income.
+  # Size 2 SMI: floor($107,555 x 0.68) = $73,137; 60% limit floor($43,882.20) = $43,882.
+  # Three-month income: $36,400 x 3 / 12 = $9,100, above the band 2 ceiling
+  # floor($73,137 x 0.45 x 3 / 12) = $8,227, so band 3 (2 points, $50 electric).
+  # Points: 2 income + 3 single-family + 1 natural gas = 6; a seven-year-old is not
+  # a vulnerable member. Heating 6 x $25 = $150; electric $50; total $200.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 36_400
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        pre_subsidy_electricity_expense: 1_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    heating_expense: 1_100
+    in_eap_household_size: 2
+    in_eap_smi: 73_137
+    in_eap_income: 36_400
+    in_eap_eligible: true
+    in_eap: 200
+
+- name: Elderly widow with Social Security retirement net of Medicare Part B and a pension
+  # Section 6.2 (page 55) counts the Social Security check net of Medicare Part B.
+  # Social Security: $1,300 x 12 = $15,600 retirement; Part B $202.90 x 12 = $2,434.80;
+  # net $13,165.20. Pension: $500 x 12 = $6,000. Income: $19,165.20.
+  # Computed SSI: countable ($15,600 + $6,000) / 12 - $20 = $1,780 a month exceeds the
+  # $994 federal benefit rate, so SSI is $0.
+  # Size 1 SMI: floor($107,555 x 0.52) = $55,928; 60% limit floor($33,556.80) = $33,556.
+  # Three-month income: $19,165.20 x 3 / 12 = $4,791.30, above the band 1 ceiling
+  # floor($55,928 x 0.30 x 3 / 12) = $4,194 and within the band 2 ceiling
+  # floor($55,928 x 0.45 x 3 / 12) = $6,291, so band 2 (5 points, $100 electric).
+  # Points: 5 income + 3 single-family + 6 wood + 2 vulnerable (age 60 or older) = 16.
+  # Heating 16 x $25 = $400; electric $100; total $500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 15_600
+        medicare_part_b_premiums_reported: 2_434.80
+        taxable_private_pension_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 900
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    social_security: 15_600
+    ssi: 0
+    heating_expense: 900
+    in_eap_household_size: 1
+    in_eap_smi: 55_928
+    in_eap_income: 19_165.20
+    in_eap_eligible: true
+    in_eap: 500
+
+- name: Disabled part-time worker qualifies as vulnerable through computed SSI
+  # The adult meets the SSI disability criteria and earns $1,000 a month ($12,000),
+  # below the 2026 substantial gainful activity limit of $1,690 a month.
+  # SSI countable income: ($1,000 - $20 general - $65 earned) x 0.5 = $457.50 a month.
+  # SSI: $994 - $457.50 = $536.50 a month; $6,438 a year.
+  # Income: $12,000 wages + $6,438 SSI = $18,438.
+  # Three-month income: $18,438 x 3 / 12 = $4,609.50, above the band 1 ceiling of
+  # $4,194 and within the band 2 ceiling of $6,291, so band 2 (5 points, $100 electric).
+  # Medicaid receipt is not reported, so the vulnerability points come from SSI > 0.
+  # Points: 5 income + 1 multi-unit + 1 electric heat + 2 vulnerable = 9.
+  # Heating 9 x $25 = $225; electric $100; total $325.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        in_eap_dwelling_type: MULTI_UNIT
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    ssi: 6_438
+    heating_expense: 1_500
+    in_eap_household_size: 1
+    in_eap_smi: 55_928
+    in_eap_income: 18_438
+    in_eap_eligible: true
+    in_eap: 325
+
+- name: All utilities in rent require one dollar of monthly out-of-pocket rent computed from pre-subsidy rent
+  # Section 4.7 (pages 32-33): a tenant with utilities in rent must pay at least $1 a
+  # month in rent, and a tenant who pays all utilities in rent receives both benefits.
+  # Each tenant earns $11.00 x 2,080 hours = $22,880, within the size 1 limit of $33,556,
+  # and receives no rental assistance, so out-of-pocket rent equals pre-subsidy rent.
+  # Heat in rent: 2 income points regardless of income, no dwelling or fuel points;
+  # electricity in rent: $50. With rent of at least $12 a year: 2 x $25 + $50 = $100.
+  # Household 1: $750 a month ($9,000) market rent: $100.
+  # Household 2: exactly $1 a month ($12), the boundary: $100.
+  # Household 3: $11 a year, below $1 a month: $0.
+  # Household 4: no rent paid: $0.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN]
+    age: [26, 26, 26, 26]
+    employment_income: [22_880, 22_880, 22_880, 22_880]
+    pre_subsidy_rent: [9_000, 12, 11, 0]
+    takes_up_housing_assistance_if_eligible: [false, false, false, false]
+    tenant_pays_utilities: [false, false, false, false]
+    in_eap_dwelling_type: [MULTI_UNIT, MULTI_UNIT, MULTI_UNIT, MULTI_UNIT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+  output:
+    rent: [9_000, 12, 11, 0]
+    in_eap_income: [22_880, 22_880, 22_880, 22_880]
+    in_eap_eligible: [true, true, true, true]
+    in_eap: [100, 100, 0, 0]

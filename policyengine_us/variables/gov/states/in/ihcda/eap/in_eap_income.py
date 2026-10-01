@@ -26,11 +26,17 @@ class in_eap_income(Variable):
         counted = (age >= p.eligibility.adult_age) & ~(dependent & student)
         # Use annual inputs as an approximation to the annualized preceding three months.
         # Section 6.1 prefers paystub federal taxable gross when supplied; current wages
-        # do not identify that paystub field. Existing self_employment_income is net,
-        # whereas the manual asks for Schedule C gross profit (line 5) and Schedule F
-        # gross income. Keep the existing net-income approximation: no new gross inputs
-        # or separate business/work-expense adjustments are introduced in this project.
-        other = max_(add(person, period, p.income.sources), 0) * counted
+        # do not identify that paystub field. The manual asks for gross amounts:
+        # Schedule C line 5, Schedule F line 9 and the Schedule E rent, partnership and
+        # S corporation, estate and trust, and farm rental lines. The existing
+        # self-employment, farm and rental inputs are net approximations of those
+        # amounts: no new gross inputs or separate business/work-expense adjustments
+        # are introduced in this project. Each source is floored at zero, so a loss in
+        # one source cannot offset other counted income.
+        other = 0
+        for source in p.income.sources:
+            other = other + max_(person(source, period), 0)
+        other = other * counted
         # Child SSA benefits count despite the general under-18 exclusion. Only reported
         # Part B premiums are available to approximate the required net SSA payment;
         # Part D, withholding, overpayment recovery, and exact garnishment are unavailable.

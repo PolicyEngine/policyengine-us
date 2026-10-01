@@ -7,8 +7,10 @@ NATURAL_GAS:
   2025-10-01: 1
 FUEL_OIL:
   2025-10-01: 6
+# Section 1.1 bars EAP funds for kerosene, and Section 8.5 does not list it as a
+# bulk fuel, so a kerosene-primary household receives the electric allowance only.
 KEROSENE:
-  2025-10-01: 6
+  2025-10-01: 0
 PROPANE:
   2025-10-01: 6
 WOOD:
@@ -17,15 +19,19 @@ COAL:
   2025-10-01: 6
 SOLAR:
   2025-10-01: 0
+# Section 8.5 has no zero-point fuel outside rent. The remaining named fuels (wood
+# pellets, corn and biofuels) are bulk fuels that the heating type input cannot
+# separate within OTHER, so OTHER receives the bulk-fuel points.
 OTHER:
-  2025-10-01: 0
+  2025-10-01: 6
 NONE:
   2025-10-01: 0
 metadata:
   unit: /1
+  period: year
   breakdown:
     - heating_type
   label: Indiana EAP heating fuel points
   reference:
-    - title: Indiana PY2026 EAP Intake and Operations Manual, Section 8.5
-      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=71
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 1.1 and 8.5
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=10,71

@@ -74,7 +74,13 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
-- name: Regular heating fuel points and excluded unspecified fuels
+- name: Regular heating fuel points, with kerosene, solar, unspecified and no heating limited to the electric allowance
+  # One person, $0 income: band 1 (9 income points, $125 electric); single-family: 3 points.
+  # Section 8.5 (page 71): natural gas and electricity 1 point, bulk fuels 6 points.
+  # Electricity, natural gas: (9 + 3 + 1) x $25 + $125 = $450.
+  # Propane, fuel oil, coal, wood and other (pellets, corn, biofuels): (9 + 3 + 6) x $25 + $125 = $575.
+  # Kerosene (Section 1.1, page 10, bars EAP funds for it), solar, unspecified and no
+  # heating earn zero fuel points and no heating award: the $125 electric payment only.
   period: 2_026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
@@ -91,7 +97,7 @@
     heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
-    in_eap: [450, 450, 575, 575, 575, 575, 575, 125, 125, 125, 125]
+    in_eap: [450, 450, 575, 575, 125, 575, 575, 575, 125, 125, 125]
 - name: Vulnerability points are awarded once across age, disability, military and pregnancy categories
   period: 2_026
   input:
@@ -142,6 +148,7 @@
     rent: [1_200, 1_200, 1_200]
     in_eap_eligible: [true, true, true]
     in_eap_income: [0, 20_000, 30_000]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
     heat_expense_included_in_rent: [true, true, true]
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
   output:
@@ -208,3 +215,52 @@
     tenant_pays_utilities: [false, false, false]
   output:
     in_eap: [100, 100, 100]
+
+- name: Other fuel reads the other heating fuel bill for bulk-fuel points, and kerosene earns no heating award
+  # Wages: $7.25 x 2,080 hours = $15,080. Three-month income $15,080 x 3 / 12 = $3,770
+  # is within the size 1 band 1 ceiling floor($55,928 x 0.30 x 3 / 12) = $4,194:
+  # 9 income points and the $125 electric payment. Single-family dwelling: 3 points.
+  # Household 1, OTHER with a $900 other-fuel bill (Section 8.5, page 71: pellets, corn
+  # and biofuels are 6-point bulk fuels): (9 + 3 + 6) x $25 + $125 = $575.
+  # Household 2, OTHER with the bill reported only as wood: heating_expense reads
+  # other_heating_fuel_expense for OTHER, so there is no heating bill: $125 only.
+  # Household 3, KEROSENE with a $1,400 fuel bill (Section 1.1, page 10): zero fuel
+  # points, so no heating award: $125 only.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    employment_income: [15_080, 15_080, 15_080]
+    heating_type: [OTHER, OTHER, KEROSENE]
+    other_heating_fuel_expense: [900, 0, 0]
+    wood_expense: [0, 900, 0]
+    fuel_oil_expense: [0, 0, 1_400]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    heating_expense: [900, 0, 1_400]
+    in_eap_income: [15_080, 15_080, 15_080]
+    in_eap: [575, 125, 125]
+
+- name: All utilities in rent through the tenant flag alone pays both benefits
+  # Section 4.7 (page 33): a tenant who pays all utilities in rent receives both
+  # benefits. tenant_pays_utilities: false, with the heat flag omitted, places heat
+  # and electricity in rent: 2 income points regardless of income (here $12,000, a
+  # band 1 income), no dwelling or fuel points, and the $50 electric-in-rent payment.
+  # Household 1: 2 x $25 + $50 = $100.
+  # Household 2, age 60: (2 + 2 vulnerability) x $25 + $50 = $150.
+  # Household 3, $11 a year in rent, below $1 a month ($12 a year): $0.
+  # Household 4, gas and electric bills also reported: the bills earn no matrix
+  # heating points once heat is in rent, so 2 x $25 + $50 = $100.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN]
+    age: [40, 60, 40, 40]
+    rent: [9_600, 9_600, 11, 9_600]
+    in_eap_eligible: [true, true, true, true]
+    in_eap_income: [12_000, 12_000, 12_000, 12_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    tenant_pays_utilities: [false, false, false, false]
+    gas_expense: [0, 0, 0, 1_000]
+    pre_subsidy_electricity_expense: [0, 0, 0, 1_000]
+  output:
+    in_eap: [100, 150, 0, 100]

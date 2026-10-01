@@ -3,8 +3,18 @@ values:
   2025-10-01:
     - employment_income
     - self_employment_income
+    # Section 6.1 defines self-employment to include farming (Schedule F) and lists
+    # the Schedule E partnership and S corporation, estate and trust, and farm
+    # rental lines.
+    - farm_operations_income
+    - partnership_s_corp_income
+    - estate_income
+    - farm_rent_income
     - unemployment_compensation
+    - strike_benefits
     - pension_income
+    # Military retirement pay is a separate input from pension_income.
+    - military_retirement_pay
     - retirement_distributions
     - railroad_benefits
     - alimony_income
@@ -18,6 +28,7 @@ values:
     - gambling_winnings
 metadata:
   unit: list
+  period: year
   label: Indiana EAP adult income sources
   reference:
     - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 6.1 and 6.2
