@@ -1,0 +1,56 @@
+- name: Income limit does not disappear for SNAP recipients
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [50004, 50016]
+    has_heating_expense: [true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    snap: [100, 100]
+  output:
+    nj_liheap_eligible: [true, false]
+- name: Heat included in subsidized rent remains ineligible even with a reported bill
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0]
+    has_heating_expense: [true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, true]
+  output:
+    nj_liheap_eligible: [true, false]
+- name: A wholly dependent student household is excluded
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    nj_liheap_countable_income: 0
+    has_heating_expense: true
+    heating_type: NATURAL_GAS
+    is_full_time_student: true
+    is_tax_unit_dependent: true
+  output:
+    nj_liheap_eligible: false
+- name: Unknown county cannot select a benefit region
+  period: 2026
+  input:
+    state_code: NJ
+    county: UNKNOWN
+    nj_liheap_countable_income: 0
+    has_heating_expense: true
+    heating_type: NATURAL_GAS
+  output:
+    nj_liheap_eligible: false
+- name: No heat responsibility, no qualified members, and other states are excluded
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NY]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0, 0]
+    has_heating_expense: [false, true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, UNDOCUMENTED, CITIZEN]
+  output:
+    nj_liheap_eligible: [false, false, false]

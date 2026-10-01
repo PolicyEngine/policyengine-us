@@ -1,0 +1,28 @@
+# The first three published income rows have identical payments and are combined.
+description: New Jersey uses these monthly income band boundaries under the Low Income Home Energy Assistance Program.
+brackets:
+- threshold:
+    '2025-10-01': 0
+  amount:
+    '2025-10-01': 1
+- threshold:
+    '2025-10-01': 6440
+  amount:
+    '2025-10-01': 2
+- threshold:
+    '2025-10-01': 8887
+  amount:
+    '2025-10-01': 3
+- threshold:
+    '2025-10-01': 9660
+  amount:
+    '2025-10-01': 4
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: month
+  label: New Jersey LIHEAP monthly income band
+  reference:
+  - title: FY2026 heating benefit grid
+    href: https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf

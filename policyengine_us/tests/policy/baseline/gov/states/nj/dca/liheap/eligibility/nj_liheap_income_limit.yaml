@@ -1,0 +1,8 @@
+- name: All published monthly limits and the stated additional-person increment
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    nj_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    nj_liheap_income_limit: [50004, 65388, 80784, 96168, 111552, 126936, 129828, 132708, 135588, 138480, 141360, 144252, 147144, 150036]

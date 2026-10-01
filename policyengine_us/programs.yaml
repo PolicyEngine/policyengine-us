@@ -802,8 +802,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, NJ
     state_implementations:
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026"
+        notes: Regular heating with qualified-member size, the FY2026 handbook income rules, published monthly SMI limits and county/fuel/income/size grid. Current handbook choices differ from older codified threshold, disregard and subsidized-direct-payer rules. Striker/institution exclusions, landlord fuel charges, special income and complete subsidy coverage remain unsupported. Earlier years are unverified backfilled estimates.
       - state: OR
         status: in_progress
         name: LIHEAP

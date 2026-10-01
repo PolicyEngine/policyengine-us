@@ -1,0 +1,10 @@
+# 11,196 is monthly 933; 11,202 / 12 = 933.5 rounds up to 934.
+- name: Monthly household income rounds half up after TANF is added once
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ]
+    nj_liheap_countable_income_person: [10001, 10002]
+    nj_wfnj: [1200, 1200]
+  output:
+    nj_liheap_countable_income: [11196, 11208]

@@ -1,0 +1,117 @@
+- name: Published Deliverables payments in All Other (19) counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [641, 859, 1025, 1128, 535, 715, 855, 941, 428, 573, 685, 754, 321, 428, 513, 564]
+- name: Published Deliverables payments in Warren & Sussex Counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [961, 983, 1162, 1278, 613, 820, 979, 1077, 491, 657, 784, 862, 366, 493, 587, 646]
+- name: Published Electric payments in All Other (19) counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [529, 710, 846, 931, 442, 591, 705, 776, 352, 473, 564, 620, 265, 354, 424, 466]
+- name: Published Electric payments in Warren & Sussex Counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [606, 821, 970, 1067, 506, 675, 807, 888, 404, 541, 646, 711, 304, 406, 485, 534]
+- name: Published Gas payments in All Other (19) counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [334, 448, 535, 589, 278, 373, 446, 491, 222, 298, 355, 391, 167, 224, 267, 294]
+- name: Published Gas payments in Warren & Sussex Counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    nj_liheap: [383, 512, 612, 673, 318, 427, 509, 560, 254, 341, 408, 445, 191, 256, 306, 337]
+- name: Published Renters payments in All Other (19) counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    nj_liheap: [234, 312, 374, 411, 196, 262, 312, 343, 156, 208, 250, 275, 118, 157, 186, 205]
+- name: Published Renters payments in Warren & Sussex Counties for every distinct income band and size group
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ, WARREN_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13, 1, 5, 9, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0, 77280, 77280, 77280, 77280, 106644, 106644, 106644, 106644, 115920, 115920, 115920, 115920]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    nj_liheap: [267, 360, 428, 471, 222, 299, 358, 394, 179, 240, 286, 315, 134, 179, 216, 238]
+- name: All published heating fuels map to their panel
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, WOOD, COAL, SOLAR, OTHER, UNSPECIFIED, NONE]
+  output:
+    nj_liheap: [529, 334, 641, 641, 641, 641, 641, 0, 0, 0, 0]
+- name: Income bands preserve the printed boundary dollars
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nj_liheap_household_size: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    nj_liheap_countable_income: [0, 12000, 12012, 24000, 24012, 77268, 77280, 106632, 106644, 115908, 115920]
+  output:
+    nj_liheap: [334, 334, 334, 334, 334, 334, 278, 278, 222, 222, 167]

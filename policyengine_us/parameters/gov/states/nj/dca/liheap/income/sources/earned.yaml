@@ -1,0 +1,14 @@
+description: New Jersey uses these reported earnings sources without any additional business expense deduction under the Low Income Home Energy Assistance Program.
+values:
+  '2025-10-01':
+  - employment_income
+  - self_employment_income
+  - sstb_self_employment_income
+  - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: New Jersey LIHEAP earned sources
+  reference:
+  - title: FY2026 LIHEAP Handbook
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7,8,9

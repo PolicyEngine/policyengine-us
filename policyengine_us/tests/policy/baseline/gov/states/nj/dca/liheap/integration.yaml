@@ -1,0 +1,51 @@
+- name: Mixed-status household counts the nonqualified adult income only above the disregard
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 18000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child:
+        age: 5
+        ssi: 0
+    spm_units:
+      unit:
+        members:
+        - adult
+        - child
+        nj_wfnj: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1
+    households:
+      home:
+        members:
+        - adult
+        - child
+        state_code: NJ
+        county: SUSSEX_COUNTY_NJ
+  output:
+    nj_liheap_household_size: 1
+    nj_liheap_countable_income_person: [12000, 0]
+    nj_liheap_countable_income: 12000
+    nj_liheap_income_limit: 50004
+    nj_liheap_income_band: 1
+    nj_liheap_region: 2
+    nj_liheap_eligible: true
+    nj_liheap: 961
+- name: An unsubsidized rent-included household receives the renter schedule without fuel information
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    nj_liheap_countable_income: 12000
+    has_heating_expense: false
+    heating_type: UNSPECIFIED
+    age: 40
+    employment_income: 12000
+    ssi: 0
+    nj_wfnj: 0
+    heat_expense_included_in_rent: true
+  output:
+    nj_liheap: 234

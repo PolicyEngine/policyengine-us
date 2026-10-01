@@ -1,0 +1,38 @@
+- name: Child and student earnings are excluded while adult earnings and net business income count
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ, NJ, NJ]
+    age: [17, 20, 20, 40]
+    spm_unit_size: [1, 2, 1, 1]
+    is_full_time_student: [false, true, true, false]
+    employment_income: [12000, 12000, 12000, 12000]
+    self_employment_income: [1000, 1000, 1000, -1000]
+    sstb_self_employment_income: [600, 600, 600, 600]
+    farm_operations_income: [1200, 1200, 1200, 1200]
+    ssi: [0, 0, 0, 0]
+  output:
+    nj_liheap_countable_income_person: [0, 0, 14800, 13800]
+- name: Children social security is excluded and adults deduct paid Part B premiums
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ, NJ]
+    age: [17, 40, 40]
+    social_security: [12000, 12000, 12000]
+    medicare_part_b_premium: [0, 1200, 0]
+    ssi: [600, 600, 600]
+    veterans_benefits: [5000, 5000, 5000]
+  output:
+    nj_liheap_countable_income_person: [600, 11400, 12600]
+- name: Each excluded member has the handbook monthly disregard
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ, NJ]
+    age: [40, 40, 40]
+    immigration_status: [UNDOCUMENTED, UNDOCUMENTED, UNDOCUMENTED]
+    employment_income: [5000, 6000, 7200]
+    ssi: [0, 0, 0]
+  output:
+    nj_liheap_countable_income_person: [0, 0, 1200]

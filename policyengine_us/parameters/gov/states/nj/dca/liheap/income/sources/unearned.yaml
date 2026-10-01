@@ -1,0 +1,22 @@
+description: New Jersey counts these available unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  '2025-10-01':
+  - unemployment_compensation
+  - strike_benefits
+  - ssi
+  - pension_income
+  - general_assistance
+  - rental_income
+  - alimony_income
+  - child_support_received
+  - interest_income
+  - dividend_income
+  - workers_compensation
+  - disability_benefits
+metadata:
+  unit: list
+  period: year
+  label: New Jersey LIHEAP unearned sources
+  reference:
+  - title: FY2026 LIHEAP Handbook
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7,8,9,10
