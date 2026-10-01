@@ -18,11 +18,8 @@ values:
     - child_support_received
     - interest_income
     - ordinary_dividend_income
-    # The plan has no dedicated row for workers' compensation or employer
-    # disability pay. Section 1.9 counts insurance payments made directly to
-    # the insured, and 921 KAR 4:116 Section 1(8) counts all unearned income.
-    - workers_compensation
-    - disability_benefits
+    # Workers' compensation and employer disability pay are not counted: plan
+    # Section 1.9 has no dedicated row for them. This is a documented gap.
     - veterans_benefits
     - salt_refund_income
 metadata:
