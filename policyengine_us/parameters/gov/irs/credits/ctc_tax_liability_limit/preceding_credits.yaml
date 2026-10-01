@@ -1,0 +1,49 @@
+description: The IRS subtracts these non-refundable credits from income tax before credits to find the tax liability that limits the non-refundable Child Tax Credit.
+values:
+  # The foreign tax credit also precedes the CTC before 2022, but the model
+  # applies it against regular tax only from 2022 (see non_refundable.yaml).
+  2013-01-01:
+    - cdcc
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - elderly_disabled_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - elderly_disabled_credit
+    - new_clean_vehicle_credit
+  2022-01-01:
+    - foreign_tax_credit # Schedule 3, line 1
+    - cdcc # Schedule 3, line 2
+    - non_refundable_american_opportunity_credit # Schedule 3, line 3
+    - lifetime_learning_credit # Schedule 3, line 3
+    - savers_credit # Schedule 3, line 4
+    - energy_efficient_home_improvement_credit # Schedule 3, line 5b
+    - elderly_disabled_credit # Schedule 3, line 6d
+    - new_clean_vehicle_credit # Schedule 3, line 6f
+    - used_clean_vehicle_credit # Schedule 3, line 6m
+  # The residential clean energy credit (Schedule 3, line 5a) is not listed:
+  # section 25D(c) orders it after every other credit in subpart A, including
+  # the Child Tax Credit. See subsequent_credits.yaml for the case in which it
+  # still reduces this limit.
+
+metadata:
+  unit: list
+  period: year
+  label: Non-refundable credits preceding the Child Tax Credit
+  reference:
+    - title: 2025 Instructions for Schedule 8812 (Form 1040), Credit Limit Worksheet A, line 2
+      href: https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4
+    - title: 2022 Instructions for Schedule 8812 (Form 1040), Credit Limit Worksheet A, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040s8--2022.pdf#page=4
+    - title: 2020 Publication 972, Child Tax Credit and Credit for Other Dependents Worksheet, line 10
+      href: https://www.irs.gov/pub/irs-prior/p972--2020.pdf#page=7
+    - title: 26 U.S. Code § 26(a) - Limitation based on amount of tax
+      href: https://www.law.cornell.edu/uscode/text/26/26#a
+    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
+      href: https://www.law.cornell.edu/uscode/text/26/25D#c

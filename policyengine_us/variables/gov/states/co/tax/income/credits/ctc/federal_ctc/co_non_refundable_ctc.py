@@ -23,7 +23,9 @@ class co_non_refundable_ctc(Variable):
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         maximum = tax_unit("co_federal_ctc_maximum", period)  # Line 3
+        # Lines 4 - 6 follow Schedule 8812 Credit Limit Worksheet A, lines 1 - 3,
+        # without Worksheet B: the form subtracts no residential energy credit.
         limiting_tax_liability = tax_unit(
-            "ctc_limiting_tax_liability", period
+            "ctc_tax_liability_after_preceding_credits", period
         )  # Line 4 - 6
         return min_(maximum, limiting_tax_liability)  # Line 7

@@ -101,6 +101,28 @@ def non_refundable_ss_credit_reform() -> Reform:
                 "ss_credit",
             ],
         )
+        # The credit precedes the Child Tax Credit and, like every credit,
+        # the residential clean energy credit (26 U.S.C. 25D(c)).
+        credits = parameters.gov.irs.credits
+        for preceding_credits in (
+            credits.ctc_tax_liability_limit.preceding_credits,
+            credits.residential_clean_energy.preceding_credits,
+        ):
+            preceding_credits.update(
+                start=instant("2026-01-01"),
+                value=[
+                    "foreign_tax_credit",
+                    "cdcc",
+                    "non_refundable_american_opportunity_credit",
+                    "lifetime_learning_credit",
+                    "savers_credit",
+                    "energy_efficient_home_improvement_credit",
+                    "elderly_disabled_credit",
+                    "new_clean_vehicle_credit",
+                    "used_clean_vehicle_credit",
+                    "ss_credit",
+                ],
+            )
         return parameters
 
     class reform(Reform):

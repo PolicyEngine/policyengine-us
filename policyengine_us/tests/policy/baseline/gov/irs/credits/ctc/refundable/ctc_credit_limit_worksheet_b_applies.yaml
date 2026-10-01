@@ -1,0 +1,35 @@
+- name: Applies with a qualifying child.
+  period: 2025
+  input:
+    ctc_qualifying_children: 1
+  output:
+    ctc_credit_limit_worksheet_b_applies: true
+
+- name: Does not apply without a qualifying child (Schedule 8812, line 4 is zero).
+  period: 2025
+  input:
+    ctc_qualifying_children: 0
+  output:
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Does not apply to filers of Form 2555.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 10_000
+  output:
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Does not apply in 2021, when the CTC was fully refundable.
+  period: 2021
+  input:
+    ctc_qualifying_children: 2
+  output:
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Applies before 2021 too (Publication 972, Line 11 Worksheet).
+  period: 2020
+  input:
+    ctc_qualifying_children: 1
+  output:
+    ctc_credit_limit_worksheet_b_applies: true
