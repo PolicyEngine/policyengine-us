@@ -1,0 +1,38 @@
+# 10,000 earnings + 11,400 net SSA/railroad + 9,240 other receipts - 2,400 support = 28,240.
+- name: Count pensions and IRA withdrawals separately, net Medicare and court-ordered support paid
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: MD
+    md_meap_countable_earned_income: 10000
+    social_security: 12000
+    railroad_benefits: 600
+    medicare_part_b_premium: 1200
+    pension_income: 1200
+    retirement_distributions: 2400
+    interest_income: 120
+    dividend_income: 240
+    estate_income: 360
+    rental_income: 1200
+    child_support_received: 600
+    alimony_income: 480
+    workers_compensation: 720
+    unemployment_compensation: 840
+    veterans_benefits: 960
+    strike_benefits: 120
+    ssi: 0
+    md_tca: 0
+    child_support_expense: 2400
+  output:
+    md_meap_countable_income: 28240
+- name: Support deduction cannot make countable income negative
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: MD
+    md_meap_countable_earned_income: 0
+    ssi: 0
+    md_tca: 0
+    child_support_expense: 10000
+  output:
+    md_meap_countable_income: 0

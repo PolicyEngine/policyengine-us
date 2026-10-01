@@ -1,0 +1,16 @@
+- name: All published annual poverty limits and sizes nine and ten follow the stated rate
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    md_meap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  output:
+    md_meap_income_limit: [31300, 42300, 53300, 64300, 75300, 86300, 97300, 108300, 119300, 130300]
+- name: Sizes eleven and twelve use the stated sixty percent SMI rule
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD]
+    md_meap_household_size: [11, 12]
+  output:
+    md_meap_income_limit: [135930, 138705]

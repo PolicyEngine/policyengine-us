@@ -1,0 +1,11 @@
+- name: Receipt of SNAP, TCA or SSI independently waives the income test
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD, MD]
+    snap: [1, 0, 0, 0]
+    md_tca: [0, 1, 0, 0]
+    ssi: [0, 0, 1, 0]
+    veterans_benefits: [0, 0, 0, 1000]
+  output:
+    md_meap_categorically_eligible: [true, true, true, false]

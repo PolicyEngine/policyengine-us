@@ -1,0 +1,8 @@
+- name: Prior-year guideline follows the requested year even when payment parameters backfill
+  period: 2022
+  input:
+    heating_type: NATURAL_GAS
+    state_code: MD
+    md_meap_household_size: 2
+  output:
+    md_meap_fpg: 17420

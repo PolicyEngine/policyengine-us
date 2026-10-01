@@ -1,0 +1,19 @@
+- name: Inclusive poverty-band tops and immediately higher income
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    md_meap_fpg: [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]
+    md_meap_countable_income: [0, 2500, 2501, 5000, 5001, 10000, 10001, 15000, 15001, 20000, 20001]
+  output:
+    md_meap_level: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7]
+- name: Subsidized homes use level six unless above the categorical nominal threshold
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD]
+    md_meap_fpg: [10000, 10000, 10000]
+    md_meap_countable_income: [0, 20000, 20001]
+    receives_housing_assistance: [true, true, true]
+  output:
+    md_meap_level: [6, 6, 7]

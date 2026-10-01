@@ -1,0 +1,69 @@
+- name: Every published FY26 level for electricity
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    md_meap_eligible: [true, true, true, true, true, true, true]
+    md_meap_level: [1, 2, 3, 4, 5, 6, 7]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+  output:
+    md_meap: [100, 100, 100, 100, 100, 100, 25]
+- name: Every published FY26 level for natural_gas
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_eligible: [true, true, true, true, true, true, true]
+    md_meap_level: [1, 2, 3, 4, 5, 6, 7]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+  output:
+    md_meap: [550, 475, 400, 360, 300, 225, 25]
+- name: Every published FY26 level for fuel_oil
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    md_meap_eligible: [true, true, true, true, true, true, true]
+    md_meap_level: [1, 2, 3, 4, 5, 6, 7]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+  output:
+    md_meap: [1100, 990, 880, 770, 650, 225, 25]
+- name: Every published FY26 level for propane
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    md_meap_eligible: [true, true, true, true, true, true, true]
+    md_meap_level: [1, 2, 3, 4, 5, 6, 7]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+  output:
+    md_meap: [1000, 930, 830, 725, 600, 225, 25]
+- name: Every published FY26 level for wood
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD]
+    md_meap_eligible: [true, true, true, true, true, true, true]
+    md_meap_level: [1, 2, 3, 4, 5, 6, 7]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+  output:
+    md_meap: [550, 475, 400, 360, 300, 225, 25]
+- name: Garrett regional multiplier uses half-up dollars while the nominal grant stays flat
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD]
+    county: [GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD]
+    heating_type: [NATURAL_GAS, PROPANE, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    md_meap_eligible: [true, true, true, true, true]
+    md_meap_level: [2, 4, 6, 1, 7]
+  output:
+    md_meap: [523, 798, 248, 1210, 25]
+- name: Kerosene and coal use the oil and wood-coal schedules
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD]
+    heating_type: [KEROSENE, COAL, SOLAR, OTHER, UNSPECIFIED, NONE]
+    md_meap_eligible: [true, true, true, true, true, true]
+    md_meap_level: [1, 1, 1, 1, 1, 1]
+  output:
+    md_meap: [1100, 550, 0, 0, 0, 0]

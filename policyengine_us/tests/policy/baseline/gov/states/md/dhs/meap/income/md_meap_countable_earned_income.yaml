@@ -1,0 +1,13 @@
+- name: Child and full-time student earnings are excluded without a new business expense deduction
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD, MD]
+    age: [17, 18, 40, 40]
+    is_full_time_student: [false, true, false, false]
+    employment_income: [12000, 12000, 12000, 12000]
+    self_employment_income: [1000, 1000, 1000, -1000]
+    sstb_self_employment_income: [600, 600, 600, 600]
+    farm_operations_income: [1200, 1200, 1200, 1200]
+  output:
+    md_meap_countable_earned_income: [0, 0, 14800, 13800]

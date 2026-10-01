@@ -1,0 +1,53 @@
+- name: Annual income limit is inclusive
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_heating_expense: [true, true]
+    md_meap_countable_income: [31300, 31301]
+    md_meap_categorically_eligible: [false, false]
+  output:
+    md_meap_eligible: [true, false]
+- name: Categorical receipt waives only the income test
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_heating_expense: [true, false]
+    md_meap_countable_income: [100000, 100000]
+    md_meap_categorically_eligible: [true, true]
+  output:
+    md_meap_eligible: [true, false]
+- name: Subsidized heat included in rent is ineligible even with a reported bill
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_heating_expense: [true, true]
+    md_meap_countable_income: [0, 0]
+    md_meap_categorically_eligible: [false, false]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, true]
+  output:
+    md_meap_eligible: [true, false]
+- name: Qualified member is still required with categorical income eligibility
+  period: 2026
+  input:
+    state_code: MD
+    heating_type: NATURAL_GAS
+    has_heating_expense: true
+    md_meap_countable_income: 0
+    md_meap_categorically_eligible: true
+    immigration_status: UNDOCUMENTED
+  output:
+    md_meap_eligible: false
+- name: Other states receive no Maryland benefit
+  period: 2026
+  input:
+    state_code: VA
+    heating_type: NATURAL_GAS
+    has_heating_expense: true
+    md_meap_countable_income: 0
+    md_meap_categorically_eligible: false
+  output:
+    md_meap_eligible: false

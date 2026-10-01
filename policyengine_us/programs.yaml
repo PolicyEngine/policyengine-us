@@ -802,8 +802,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, TX, MD
     state_implementations:
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2026"
+        notes: Regular heating with annual income limits, categorical eligibility, fuel/poverty/subsidy payments and Garrett multiplier. Uses COMAR qualified-member size despite the manual child exception; income-source conflicts are resolved to COMAR. Sub-metering, means-tested VA, special income and precise subsidy definitions remain unsupported. Garrett rounding and heat-in-rent fuel assignment are documented inferences. Earlier years are unverified backfilled estimates.
       - state: OR
         status: in_progress
         name: LIHEAP
