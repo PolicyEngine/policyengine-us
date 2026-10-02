@@ -16,5 +16,6 @@ class nc_lieap_bank_account_exclusions(Variable):
         "cannot reduce cash or lump sums held outside bank accounts."
     )
     reference = (
-        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=17,18"
+        # Section 300.11 (pages 17-18); the bank-account offsets are on page 18.
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=18",
     )

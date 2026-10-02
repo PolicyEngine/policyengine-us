@@ -7,7 +7,11 @@ class nc_lieap_eligible(Variable):
     definition_period = YEAR
     label = "North Carolina LIEAP regular heating eligibility"
     defined_for = StateCode.NC
-    reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=9,15,16,17,18"
+    reference = (
+        # Section 300.08 (page 9), Section 300.10 A.2.b (pages 15-16) and Section
+        # 300.11 (pages 17-18).
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=9",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap
@@ -21,9 +25,7 @@ class nc_lieap_eligible(Variable):
         # using eligible household size (300.10 A.2.b), before the net proration.
         nonqualified = spm_unit.any(~person("is_citizen_or_legal_immigrant", period))
         sources = parameters(period).gov.usda.snap.income.sources.unearned_spm_unit
-        gross = add(spm_unit, period, ["nc_lieap_gross_income_person"]) + add(
-            spm_unit, period, sources
-        )
+        gross = add(spm_unit, period, ["nc_lieap_gross_income_person", *sources])
         gross_eligible = ~nonqualified | (gross / MONTHS_IN_YEAR <= limit)
         # EP-300.08 accepts the applicant's statement of vulnerability. Public
         # heat-in-rent housing requires excess heating charges paid within the
@@ -37,6 +39,20 @@ class nc_lieap_eligible(Variable):
         vulnerable = where(included_rent, public_housing & excess_paid, heat)
         resource_eligible = True
         if p.resource_test:
+            # The special population differs from the income limit's on purpose.
+            # Section 300.09 (page 10) gives the 150% income limit to households
+            # with a member aged 60 or over or a disabled person "receiving
+            # services through the Division of Aging and Adult Services", so
+            # nc_lieap_income_limit tests age or the DAAS input only. Section
+            # 300.11 (page 17) gives the higher resource limit to households
+            # "with member aged 60 or older or disabled", with no DAAS
+            # condition, so a generally disabled member also qualifies here.
+            # The manual does not say whether an ineligible alien can confer
+            # either limit. The income limit looks only at members counted in
+            # the eligible household size, the unit the Section 300.09 tables
+            # are keyed to. The resource test looks at every member because
+            # Section 300.11 (page 18) counts ineligible aliens' assets in the
+            # household's total resources.
             special = spm_unit.any(
                 (person("age", period) >= p.elderly_age)
                 | person("is_usda_disabled", period)

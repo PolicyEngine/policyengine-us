@@ -8,11 +8,21 @@ class nc_lieap(Variable):
     unit = USD
     label = "North Carolina LIEAP regular heating assistance"
     documentation = (
-        "Verified for FY2026. Earlier years use model parameter backfilling "
-        "and are unverified historical estimates."
+        "Verified for FY2026 and FY2027. The year is the heating season ending "
+        "in that year, so 2026 is federal fiscal year 2026, with applications "
+        "from December 2025 through March 2026. Earlier years use model "
+        "parameter backfilling and are unverified historical estimates. The "
+        "manual publishes income limits for 1 to 26 eligible members and "
+        "payment bands for 1 to 15 members (130% limit) or 1 to 11 members "
+        "(150% limit); for larger households the limits and bands are "
+        "extrapolated with the same poverty guideline formula."
     )
     defined_for = "nc_lieap_eligible"
-    reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,18,19,20"
+    reference = (
+        # Section 300.09 (page 10), Section 300.12 A (page 18) and the Section
+        # 300.12 B payment charts (pages 19-20).
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=18",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap.payment
@@ -32,9 +42,11 @@ class nc_lieap(Variable):
         # income eligibility; Section 300.09 sets that limit at 150% for the
         # special population, which therefore qualifies up to its own limit.
         # A subsidy can leave an account credit; no current-bill cap is imposed.
-        # NONE/UNSPECIFIED do not establish a heating arrangement.
-        return where(
-            (fuel == types.NONE) | (fuel == types.UNSPECIFIED),
-            0,
-            where(solid_fuel, p.coal_wood, amount),
+        # NONE means the home has no heat. UNSPECIFIED is paid only when heat is
+        # included in rent: EP-300.08 item 4 makes that public housing household
+        # fully vulnerable, and the payment does not depend on its fuel.
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        no_schedule = (fuel == types.NONE) | (
+            (fuel == types.UNSPECIFIED) & ~heat_in_rent
         )
+        return where(no_schedule, 0, where(solid_fuel, p.coal_wood, amount))

@@ -1,4 +1,14 @@
-description: North Carolina applies a resource test under the Low Income Energy Assistance Program, except during the expressly waived fiscal year.
+description: North Carolina uses a resource test under the Low Income Energy Assistance Program if this is true.
+# Section 300.11 waives the test for July 1, 2025 through June 30, 2026, and
+# the values follow those literal dates, so the test applies again from July
+# 1, 2026. The October 2026 edition of the manual (page 18) still prints the
+# expired waiver line and no FY2027 state plan was posted as of October 2026,
+# so the FY2027 value is provisional.
+# The first value also applies to earlier years, which are unverified backfill.
+# It follows the state plans, which report no assets test in item 2.3 (FY2025
+# plan page 8, FY2026 plan page 9). The October 1, 2025 edition of the manual
+# printed the limits without a waiver (page 17) until Change Notice 06-2025,
+# effective November 1, 2025, added it.
 values:
   2025-07-01: false
   2026-07-01: true
@@ -7,5 +17,5 @@ metadata:
   period: year
   label: North Carolina LIEAP resource test applies
   reference:
-    - title: North Carolina Energy Programs Manual, Section 300.11, FY2025-2026 waiver
-      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=17,18
+    - title: North Carolina Energy Programs Manual, Section 300.11, FY2025-2026 waiver, page 17
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=17

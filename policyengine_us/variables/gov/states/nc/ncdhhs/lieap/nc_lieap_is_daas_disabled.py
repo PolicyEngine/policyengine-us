@@ -14,5 +14,6 @@ class nc_lieap_is_daas_disabled(Variable):
         "This reported fact is not inferred from generic disability or Medicaid."
     )
     reference = (
-        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=1,2,10"
+        # Section 300.02 A (pages 1-2) and Section 300.09 (page 10).
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=1",
     )

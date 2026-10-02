@@ -1,6 +1,16 @@
 # Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
-- name: Housing vulnerability, state filtering, and uncapped payments
-  period: 2_026
+# Page numbers are those of EP-300 Change 2-2026 (May 1, 2026) for FY2026
+# cases and of Change 04-2026 (October 1, 2026) for the FY2027 case.
+- name: Case 1, vulnerability by housing arrangement, with nothing for a South Carolina household.
+  # EP-300.08 (page 9). One-person households with no income are in the lower
+  # band: $400 (page 19).
+  # Household 1: private housing with a separate gas bill -> vulnerable, $400.
+  # Household 2: heat in rent outside public housing -> not vulnerable, $0.
+  # Household 3: public housing with heat in rent and excess heat charges paid
+  #   -> vulnerable (item 4), $400.
+  # Household 4: public housing with heat in rent and no excess paid -> $0.
+  # Household 5: lives in South Carolina -> $0.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, SC]
     age: [40, 40, 40, 40, 40]
@@ -16,8 +26,10 @@
     nc_lieap_has_paid_excess_heating_costs: [false, false, true, false, false]
   output:
     nc_lieap: [400, 0, 400, 0, 0]
-- name: All members excluded means no payment
-  period: 2_026
+- name: Case 2, a household with no eligible member gets no payment.
+  # EP-175.01 (page 1): a household must include at least one citizen or
+  # eligible alien.
+  period: 2026
   input:
     state_code: NC
     age: 40
@@ -33,8 +45,10 @@
     nc_lieap_household_size: 0
     nc_lieap: 0
 # Backfilling checks the model convention, not verified historical NC policy.
-- name: Parameter backfill uses the 2021 guideline for a 2022 estimate
-  period: 2_022
+- name: Case 3, parameter backfill uses the 2021 guideline for a 2022 estimate.
+  # 2021 guideline for one person: 12_880 x 1.3 = 16_744. No income -> lower
+  # band -> $400.
+  period: 2022
   input:
     state_code: NC
     age: 40
@@ -55,19 +69,22 @@
 # Cases 4-9 run from household inputs (wages, benefits received, ages,
 # immigration status, fuel and its bill, resources) through to the payment.
 # ssi and tanf are reported amounts here, so the cases do not depend on those
-# program models. Monthly limits and payment bands: EP-300 pages 14, 19, 20.
+# program models. Monthly limits: EP-300 pages 14-15. Payment bands: pages
+# 19-20.
 # 2025 poverty guideline (one-year lag): $15,650 plus $5,500 per added person.
-- name: Case 4, public housing family with heat in rent and an unspecified fuel is eligible but gets no payment.
+- name: Case 4, public housing family with heat in rent and an unspecified fuel gets the lower-band payment.
   # EP-300.08 item 4 (page 9): public housing with heat included in the rent is
   # fully vulnerable when excess heat charges were paid in the last 12 months
-  # at the current address. The payment needs a known heating fuel: with
-  # heating_type UNSPECIFIED the household is eligible and nc_lieap is $0.
-  # Case 5 is the same household with the fuel reported.
+  # at the current address. The tenant does not know the building's fuel, so
+  # heating_type is UNSPECIFIED; the payment depends on size and income only
+  # (EP-300.12 A, page 18). Case 5 is the same household with the fuel reported.
   # Wages: $12.00 an hour x 30 hours x 52 weeks = 18_720, or $1,560 a month.
   # Work deduction: over $400 a month -> 20% = $312 (page 13).
   # nc_lieap_income = (1_560 - 312) x 12 = 14_976, or $1,248 a month.
   # Limit, size 3: (15_650 + 2 x 5_500) x 1.3 = 34_645; / 12 = 2,887.08 -> $2,887.
   # $1,248 <= $2,887 -> eligible.
+  # Lower band, size 3: 2,887.08 x 0.5 = 1,443.54 -> $1,444 (page 19).
+  # $1,248 <= $1,444 -> $400 for a household of 1 to 3.
   period: 2026
   input:
     people:
@@ -102,12 +119,10 @@
     nc_lieap_income_limit: 34_645
     has_heating_expense: false
     nc_lieap_eligible: true
-    nc_lieap: 0
+    nc_lieap: 400
 
-- name: Case 5, the same public housing family with electric heat reported gets the lower-band payment.
+- name: Case 5, the same public housing family with electric heat reported gets the same payment.
   # Same household and arithmetic as Case 4; only heating_type differs.
-  # Lower band, size 3: 2,887.08 x 0.5 = 1,443.54 -> $1,444 (page 19).
-  # $1,248 <= $1,444 -> $400 for a household of 1 to 3.
   period: 2026
   input:
     people:
@@ -280,9 +295,11 @@
     nc_lieap: 400
 
 - name: Case 9, FY2027 one-person households under and over the resource limits.
-  # The resource waiver ends June 30, 2026 (EP-300.11, page 17): $3,000, or
+  # Cited from EP-300, Change 04-2026 (October 1, 2026).
+  # The resource waiver ends June 30, 2026 (EP-300.11, page 18): $3,000, or
   # $4,500 with a member aged 60 or older or disabled. FY2027 limits use the
-  # 2026 guideline of $15,960 (October 2026 reissue, pages 14, 19, 20).
+  # 2026 guideline of $15,960 (limits on pages 14-15, payment bands on page
+  # 20).
   # Households 1 and 2, age 45: wages $11.00 x 20 hours x 52 = 11_440
   #   ($953.33 a month); 20% deduction = 2_288 -> nc_lieap_income 9_152
   #   ($762.67). Limit 15_960 x 1.3 = 20_748 -> $1,729. Lower band ends at

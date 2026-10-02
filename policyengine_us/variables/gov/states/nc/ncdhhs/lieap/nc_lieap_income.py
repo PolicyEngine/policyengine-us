@@ -8,9 +8,16 @@ class nc_lieap_income(Variable):
     unit = USD
     label = "North Carolina LIEAP countable household income"
     defined_for = StateCode.NC
-    reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,11,12,13,15,16,17"
+    reference = (
+        # Section 300.09 income and deductions (pages 10-13) and Section 300.10
+        # households with an ineligible alien (pages 15-17).
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10",
+    )
 
     def formula(spm_unit, period, parameters):
+        # The FY2026 state plan (item 1.8, page 5) reports gross income, while
+        # Section 300.09 B (pages 11-13) nets out the deductions below. The model
+        # follows the manual.
         p = parameters(period).gov.states.nc.ncdhhs.lieap
         person = spm_unit.members
         included = person("is_citizen_or_legal_immigrant", period)
@@ -19,14 +26,15 @@ class nc_lieap_income(Variable):
         share = where(included, 1, spm_unit.project(fraction))
         earned = person("nc_lieap_earned_income", period) * share
         monthly = earned / MONTHS_IN_YEAR
-        work_deduction = (
-            where(
-                monthly > p.earned_income_deduction_threshold,
-                monthly * p.earned_income_deduction_rate,
-                p.earned_income_deduction.calc(monthly, right=True),
-            )
-            * MONTHS_IN_YEAR
+        table_deduction = where(
+            monthly > p.earned_income_deduction_threshold,
+            monthly * p.earned_income_deduction_rate,
+            p.earned_income_deduction.calc(monthly, right=True),
         )
+        # The lowest band's standard deduction can exceed very small monthly
+        # earnings. Cap the deduction at the earnings so that it cannot offset
+        # unearned income.
+        work_deduction = min_(table_deduction, monthly) * MONTHS_IN_YEAR
         specified = (person("age", period) >= p.elderly_age) | person(
             "is_usda_disabled", period
         )
@@ -39,6 +47,9 @@ class nc_lieap_income(Variable):
         # Childcare expenses already exclude modeled subsidies. The payer and
         # additional transport costs cannot be identified, so childcare paid by an
         # excluded member is not prorated. Adult care uses its reported person.
+        # Section 300.09 B.1.b (page 11) verifies childcare costs for each member
+        # with earned income, while B.1.a allows out-of-pocket childcare without
+        # that condition. The care deductions are not tied to earnings here.
         childcare = max_(spm_unit("childcare_expenses", period), 0)
         # Annual income approximates the prior application month; terminated-income
         # exceptions and room/board transfers within the unit are not modeled.

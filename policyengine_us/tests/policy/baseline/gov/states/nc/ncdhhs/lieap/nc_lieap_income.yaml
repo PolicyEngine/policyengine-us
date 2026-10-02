@@ -1,6 +1,13 @@
 # Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
-- name: Work deductions use closed upper bands then twenty percent
-  period: 2_026
+- name: Case 1, work deductions use closed upper bands, then twenty percent of earnings.
+  # EP-300.09 B.3 table (pages 12-13), by monthly earnings: $1-$50 -> $10,
+  # $51-$100 -> $20, $101-$150 -> $30, $151-$200 -> $40, $201-$300 -> $60,
+  # $301-$400 -> $80, $401 and over -> 20%.
+  # Monthly earnings of $0, $50, $50.01, $100, $100.01, $150, $150.01, $200,
+  # $200.01, $300, $300.01, $400 and $400.01 leave $0, $40, $30.01, $80,
+  # $70.01, $120, $110.01, $160, $140.01, $240, $220.01, $320 and $320.008 a
+  # month, times 12.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -12,8 +19,8 @@
   output:
     nc_lieap_income: [0, 480, 360.12, 960, 840.12, 1_440, 1_320.12, 1_920, 1_680.12, 2_880, 2_640.12, 3_840, 3_840.1]
   absolute_error_margin: 0.02
-- name: Net business, farm and rental income receive the work deduction once
-  period: 2_026
+- name: Case 2, business, farm and rental income get the work deduction once.
+  period: 2026
   input:
     state_code: NC
     age: 40
@@ -31,8 +38,13 @@
     nc_lieap_earned_income: 18_000
     nc_lieap_gross_income_person: 18_000
     nc_lieap_income: 14_400
-- name: Elderly medical allowance, actual support, and unreimbursed care reduce income
-  period: 2_026
+- name: Case 3, the medical deduction, child support paid and care costs reduce income.
+  # Wages of $1,000 a month: 20% work deduction leaves $800, or 9_600 a year
+  # (EP-300.09 B.3, page 13). Standard medical deduction at age 60:
+  # 85 x 12 = 1_020 (B.4, page 13). Child support paid 1_200 (B.2, page 12),
+  # adult care 600 and child care 1_200 (B.1, page 11).
+  # nc_lieap_income = 9_600 - 1_020 - 1_200 - 600 - 1_200 = 5_580.
+  period: 2026
   input:
     state_code: NC
     age: 60
@@ -45,8 +57,12 @@
     care_expenses: 600
   output:
     nc_lieap_income: 5_580
-- name: Child K12 earnings and business losses do not offset adult income
-  period: 2_026
+- name: Case 4, a K-12 child's earnings are excluded and business losses do not offset wages.
+  # Household 1, a 17-year-old K-12 student: earned income is excluded (FNS
+  # 350.01 D, page 2) -> 0.
+  # Household 2, age 35: wages of $1,000 a month with each business or farm
+  # loss counted as zero; 20% work deduction leaves 12_000 x 0.8 = 9_600.
+  period: 2026
   input:
     state_code: [NC, NC]
     age: [17, 35]
@@ -61,74 +77,81 @@
     childcare_expenses: [0, 0]
   output:
     nc_lieap_income: [0, 9_600]
-- name: Excluded-member wages are prorated before the work deduction, within the manual gross test
-  period: 2_026
+- name: Case 5, an excluded member's wages are prorated before the work deduction and pass the gross test.
+  # EP-300.10 (pages 15-17): two of three members are eligible.
+  # Gross test: 3_600 / 12 = $300 <= the $2,291 limit for two (page 14).
+  # Proration: 3_600 x 2/3 = 2_400, or $200 a month. Work deduction on the
+  # prorated amount: $151-$200 -> $40 (page 12). (200 - 40) x 12 = 1_920.
+  period: 2026
   input:
     people:
-      adult:
+      person1:
         age: 40
         employment_income: 3_600
         immigration_status: UNDOCUMENTED
         ssi: 0
         social_security: 0
-      member1:
+      person2:
         age: 30
         ssi: 0
         social_security: 0
-      member2:
+      person3:
         age: 30
         ssi: 0
         social_security: 0
     spm_units:
-      unit:
-        members: [adult, member1, member2]
+      spm_unit:
+        members: [person1, person2, person3]
         tanf: 0
         childcare_expenses: 0
         heating_type: ELECTRICITY
         heating_expense: 1_000
     households:
-      home:
-        members: [adult, member1, member2]
+      household:
+        members: [person1, person2, person3]
         state_code: NC
   output:
     nc_lieap_household_size: 2
     nc_lieap_income: 1_920
     nc_lieap_eligible: true
-- name: Excluded-member wages are prorated before the work deduction, above the manual gross test
-  period: 2_026
+- name: Case 6, an excluded member's wages are prorated before the work deduction and fail the gross test.
+  # Gross test: 60_000 / 12 = $5,000 > the $2,291 limit for two (page 14), so
+  # the household is ineligible (EP-300.10 A.2.b, page 15).
+  # Proration: 60_000 x 2/3 = 40_000; 20% work deduction leaves 32_000.
+  period: 2026
   input:
     people:
-      adult:
+      person1:
         age: 40
         employment_income: 60_000
         immigration_status: UNDOCUMENTED
         ssi: 0
         social_security: 0
-      member1:
+      person2:
         age: 30
         ssi: 0
         social_security: 0
-      member2:
+      person3:
         age: 30
         ssi: 0
         social_security: 0
     spm_units:
-      unit:
-        members: [adult, member1, member2]
+      spm_unit:
+        members: [person1, person2, person3]
         tanf: 0
         childcare_expenses: 0
         heating_type: ELECTRICITY
         heating_expense: 1_000
     households:
-      home:
-        members: [adult, member1, member2]
+      household:
+        members: [person1, person2, person3]
         state_code: NC
   output:
     nc_lieap_household_size: 2
     nc_lieap_income: 32_000
     nc_lieap_eligible: false
 
-- name: Service business and farm profits can exceed the income limit after the work deduction
+- name: Case 7, service business and farm profits exceed the income limit after the work deduction.
   period: 2026
   input:
     state_code: [NC, NC]
@@ -147,3 +170,79 @@
     nc_lieap_income: [48_000, 48_000]
     nc_lieap_eligible: [false, false]
     nc_lieap: [0, 0]
+
+- name: Case 8, an excluded member aged 61 gets no medical deduction and has support and care payments prorated.
+  # EP-300.10 B.1 (page 17): no medical deduction for an ineligible alien, even
+  # a specified person. EP-300.10 A.2.d-e (page 16) and B.3 (page 17): prorate
+  # the member's income and the payments they make by eligible members over
+  # all members, here 3 of 4.
+  # person1, age 61 and undocumented: wages of $1,600 a month = 19_200.
+  #   Prorated: 19_200 x 3/4 = 14_400, or $1,200 a month.
+  #   Work deduction on the prorated amount: over $400 -> 20% = $240 a month
+  #   (page 13); 240 x 12 = 2_880.
+  #   Child support paid: $200 a month = 2_400; x 3/4 = 1_800.
+  #   Adult care paid: $100 a month = 1_200; x 3/4 = 900.
+  # nc_lieap_income = 14_400 - 2_880 - 1_800 - 900 = 8_820.
+  # (An $85 medical deduction would give 7_800; unprorated payments, 7_920.)
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+        immigration_status: UNDOCUMENTED
+        employment_income: 19_200
+        child_support_expense: 2_400
+        care_expenses: 1_200
+        ssi: 0
+        social_security: 0
+      person2:
+        age: 36
+        ssi: 0
+        social_security: 0
+      person3:
+        age: 9
+        ssi: 0
+        social_security: 0
+      person4:
+        age: 6
+        ssi: 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NC
+  output:
+    nc_lieap_household_size: 3
+    nc_lieap_gross_income_person: [19_200, 0, 0, 0]
+    nc_lieap_income: 8_820
+
+- name: Case 9, the work deduction cannot exceed monthly earnings under ten dollars.
+  # EP-300.09 B.3 (page 12) deducts $10 from monthly earnings of $1 to $50. It
+  # does not say what happens below $10; the model caps the deduction at the
+  # earnings so that it cannot reduce other income.
+  # Each household is one person aged 67 with Social Security retirement of
+  # $1,200 a month = 14_400 and the standard medical deduction of
+  # 85 x 12 = 1_020 (page 13): 14_400 - 1_020 = 13_380 before earnings.
+  # Household 1: wages of 84 a year, or $7 a month; the deduction is capped
+  #   at $7 -> net earnings $0 -> 13_380 (an uncapped $10 would give 13_344).
+  # Household 2: wages of 120, or $10 a month; deduction $10 -> $0 -> 13_380.
+  # Household 3: wages of 132, or $11 a month; deduction $10 -> $1 a month,
+  #   12 a year -> 13_392.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC]
+    age: [67, 67, 67]
+    employment_income: [84, 120, 132]
+    social_security_retirement: [14_400, 14_400, 14_400]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+  output:
+    nc_lieap_earned_income: [84, 120, 132]
+    nc_lieap_gross_income_person: [14_484, 14_520, 14_532]
+    nc_lieap_income: [13_380, 13_380, 13_392]

@@ -9,7 +9,11 @@ class nc_lieap_income_limit(Variable):
     unit = USD
     label = "North Carolina LIEAP annual income limit before monthly rounding"
     defined_for = StateCode.NC
-    reference = "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10,14,15,19,20"
+    reference = (
+        # Section 300.09 (page 10), its maximum countable income tables (pages
+        # 14-15) and the Section 300.12 B payment charts (pages 19-20).
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap

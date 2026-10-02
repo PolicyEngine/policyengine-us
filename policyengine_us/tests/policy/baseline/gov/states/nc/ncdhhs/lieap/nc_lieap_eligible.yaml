@@ -1,6 +1,11 @@
 # Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
-- name: Published regular monthly limits, at the boundary
-  period: 2_026
+# Page numbers are those of EP-300 Change 2-2026 (May 1, 2026) for FY2026
+# cases and of Change 04-2026 (October 1, 2026) for FY2027 cases.
+- name: Case 1, regular households at the published monthly limits are eligible.
+  # Annual incomes are 12 times the 130% maximum countable income for 1 to 26
+  # eligible members (EP-300 page 14): $1,695, $2,291, $2,887 and so on to
+  # $16,591.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
       NC]
@@ -21,8 +26,10 @@
   output:
     nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
       true, true, true, true, true, true, true, true, true, true]
-- name: Published regular monthly limits, one dollar above
-  period: 2_026
+- name: Case 2, regular households one dollar above the published monthly limits are ineligible.
+  # Annual incomes are 12 times one dollar more than each 130% limit (EP-300
+  # page 14): $1,696, $2,292, $2,888 and so on to $16,592.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
       NC]
@@ -43,8 +50,11 @@
   output:
     nc_lieap_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false,
       false, false, false, false, false, false, false, false, false, false, false, false]
-- name: Published elderly monthly limits, at the boundary
-  period: 2_026
+- name: Case 3, elderly households at the published monthly limits are eligible.
+  # Annual incomes are 12 times the 150% maximum countable income for 1 to 26
+  # eligible members (EP-300 pages 14-15): $1,956, $2,644, $3,331 and so on to
+  # $19,144.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
       NC]
@@ -65,8 +75,10 @@
   output:
     nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
       true, true, true, true, true, true, true, true, true, true]
-- name: Published elderly monthly limits, one dollar above
-  period: 2_026
+- name: Case 4, elderly households one dollar above the published monthly limits are ineligible.
+  # Annual incomes are 12 times one dollar more than each 150% limit (EP-300
+  # pages 14-15): $1,957, $2,645, $3,332 and so on to $19,145.
+  period: 2026
   input:
     state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC,
       NC]
@@ -87,8 +99,11 @@
   output:
     nc_lieap_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false,
       false, false, false, false, false, false, false, false, false, false, false, false]
-- name: DAAS service receipt cannot be inferred from generic disability
-  period: 2_026
+- name: Case 5, a disabled member not served by DAAS does not get the special income limit.
+  # EP-300.09 (page 10): the 150% limit needs a member aged 60 or over or a
+  # disabled person receiving DAAS services. 22_200 / 12 = $1,850 a month is
+  # over the $1,695 regular limit for one person (page 14).
+  period: 2026
   input:
     state_code: NC
     age: 59
@@ -100,8 +115,10 @@
     heating_expense: 1_000
   output:
     nc_lieap_eligible: false
-- name: FY2026 resource waiver applies to large bank balances
-  period: 2_026
+- name: Case 6, large resources do not affect eligibility during the FY2026 waiver.
+  # EP-300.11 (page 17): resources are not countable from July 1, 2025 through
+  # June 30, 2026.
+  period: 2026
   input:
     state_code: NC
     age: 40
@@ -114,8 +131,10 @@
     heating_expense: 1_000
   output:
     nc_lieap_eligible: true
-- name: Resource waiver expires before FY2027
-  period: 2_027
+- name: Case 7, the resource limits apply again in FY2027.
+  # EP-300.11 (page 18): the waiver ends June 30, 2026. The limit is $4,500
+  # with a member aged 60 or older or disabled and $3,000 otherwise.
+  period: 2027
   input:
     state_code: [NC, NC, NC, NC]
     age: [40, 40, 60, 60]
@@ -127,8 +146,12 @@
     heating_expense: [1_000, 1_000, 1_000, 1_000]
   output:
     nc_lieap_eligible: [true, false, true, false]
-- name: FY2027 regular and special limits follow the October 2026 amendment
-  period: 2_027
+- name: Case 8, FY2027 income limits for one person, regular and special.
+  # EP-300 pages 14-15: one eligible member has a limit of $1,729 at 130%
+  # (page 14) and $1,995 at 150% (page 15), from the 2026 guideline
+  # of $15,960. 20_748 / 12 = $1,729 and 20_760 / 12 = $1,730;
+  # 23_940 / 12 = $1,995 and 23_952 / 12 = $1,996.
+  period: 2027
   input:
     state_code: [NC, NC, NC, NC]
     age: [40, 40, 60, 60]
@@ -140,8 +163,8 @@
   output:
     nc_lieap_eligible: [true, false, true, false]
 
-- name: Public housing requires paid excess heating charges when heat is in rent
-  # EP-300.08: a bill alone is insufficient; a qualifying past payment suffices
+- name: Case 9, public housing with heat in rent requires paid excess heating charges.
+  # EP-300.08 (page 9): a bill alone is insufficient; a qualifying past payment suffices
   # even if the household has no separate heating bill in the modeled year.
   period: 2026
   input:
@@ -158,8 +181,9 @@
   output:
     nc_lieap_eligible: [false, true, true, false, true, true]
 
-- name: Countable resources include nonbank cash and net bank balances
-  # EP-300.11: $3,000 ordinary limit; bank exclusions do not offset cash.
+- name: Case 10, countable resources include cash outside banks and net bank balances.
+  # EP-300.11 (page 18): $3,000 ordinary limit; bank exclusions do not offset
+  # cash.
   period: 2027
   input:
     state_code: [NC, NC, NC, NC, NC, NC]
@@ -175,8 +199,9 @@
   output:
     nc_lieap_eligible: [true, false, true, false, false, true]
 
-- name: Excluded members retain their resources in the household resource test
-  # EP-300.11 expressly counts ineligible aliens' resources: $2,000 + $1,001.
+- name: Case 11, an excluded member's resources count in the household resource test.
+  # EP-300.11 (page 18) expressly counts ineligible aliens' resources:
+  # $2,000 + $1,001 = $3,001, over the $3,000 limit.
   period: 2027
   input:
     people:
@@ -204,7 +229,8 @@
   output:
     nc_lieap_eligible: false
 
-- name: DAAS-qualified disability receives the higher resource limit
+- name: Case 12, a DAAS-disabled member gives the higher resource limit.
+  # EP-300.11 (page 18): $4,500 with a member aged 60 or older or disabled.
   period: 2027
   input:
     state_code: [NC, NC]
@@ -264,3 +290,63 @@
     has_heating_expense: true
     nc_lieap_eligible: false
     nc_lieap: 0
+
+- name: Case 14, a disabled member not served by DAAS gets the higher resource limit but the regular income limit.
+  # EP-300.11 (page 18): $4,500 for "households with member aged 60 or older
+  # or disabled", $3,000 for all others. The 150% income limit instead needs
+  # a member aged 60 or over or a disabled person receiving DAAS services
+  # (EP-300.09, page 10), so these one-person households keep the 130% limit.
+  # Social Security disability of $1,300 a month = 15_600. Standard medical
+  # deduction for a disability payment recipient: 85 x 12 = 1_020 (page 13).
+  # nc_lieap_income = 15_600 - 1_020 = 14_580, or $1,215 a month.
+  # Limit, one member: 15_960 x 1.3 = 20_748 a year -> $1,729 a month (page
+  # 14); $1,215 <= $1,729.
+  # Household 1: $4,500 in the bank <= $4,500 -> eligible.
+  # Household 2: $4,501 in the bank > $4,500 -> ineligible.
+  period: 2027
+  input:
+    state_code: [NC, NC]
+    age: [40, 40]
+    is_usda_disabled: [true, true]
+    nc_lieap_is_daas_disabled: [false, false]
+    social_security_disability: [15_600, 15_600]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+    bank_account_assets: [4_500, 4_501]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000]
+  output:
+    nc_lieap_income: [14_580, 14_580]
+    nc_lieap_income_limit: [20_748, 20_748]
+    nc_lieap_eligible: [true, false]
+
+- name: Case 15, a household that pays no heating bill and does not have heat in rent is not vulnerable.
+  # EP-300.08 (page 9): a household is vulnerable if it has a heating source
+  # billed separately. Item 3: a private living arrangement with no separate
+  # bill from the energy provider is not vulnerable. Heat is not included in
+  # the rent, so the public housing rule in item 4 does not apply.
+  # Wages: $12.00 an hour x 25 hours x 52 weeks = 15_600, or $1,300 a month.
+  # Work deduction: over $400 a month -> 20% = $260 (page 13).
+  # nc_lieap_income = (1_300 - 260) x 12 = 12_480, or $1,040 a month.
+  # Limit, one member: 15_650 x 1.3 = 20_345 a year -> $1,695 a month (page
+  # 14); $1,040 <= $1,695, so income does not decide the result.
+  # Household 1 pays nothing for natural gas -> not vulnerable -> ineligible.
+  # Household 2 pays $900 a year -> vulnerable -> eligible. The lower band for
+  # one member ends at $848 (page 19); $1,040 is above it -> $300.
+  period: 2026
+  input:
+    state_code: [NC, NC]
+    age: [45, 45]
+    employment_income: [15_600, 15_600]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 900]
+    heat_expense_included_in_rent: [false, false]
+  output:
+    nc_lieap_income: [12_480, 12_480]
+    has_heating_expense: [false, true]
+    nc_lieap_eligible: [false, true]
+    nc_lieap: [0, 300]

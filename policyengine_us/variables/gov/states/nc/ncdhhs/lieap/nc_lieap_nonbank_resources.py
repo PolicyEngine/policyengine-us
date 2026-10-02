@@ -15,5 +15,7 @@ class nc_lieap_nonbank_resources(Variable):
         "Include resources of ineligible household members."
     )
     reference = (
-        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=17,18"
+        # Section 300.11 (pages 17-18); the counted resources are listed on
+        # page 18.
+        "https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=18",
     )
