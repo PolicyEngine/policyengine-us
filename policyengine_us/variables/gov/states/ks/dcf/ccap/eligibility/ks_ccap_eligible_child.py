@@ -10,19 +10,17 @@ class ks_ccap_eligible_child(Variable):
     reference = "https://content.dcf.ks.gov/ees/keesm/Current/keesm2810.htm"
 
     def formula(person, period, parameters):
-        # KEESM 2810: eligible from birth through the eligibility period in which
-        # the child turns 13. Children 14-18 qualify only if they are incapable
-        # of self-care (modeled via the special-needs branch) or under court
-        # supervision. We don't track court supervision or eligibility-period
-        # boundaries at the moment, so the 14-18 extension applies only to
-        # children with a disability or developmental delay.
+        # KEESM 2810 permits ages 13-18 when incapable of self-care or under
+        # court supervision. Eligibility-period extensions after the ordinary
+        # age cutoff remain unmodeled.
         p = parameters(period).gov.states.ks.dcf.ccap.eligibility
         age = person("age", period.this_year)
         has_special_needs = person("is_disabled", period.this_year) | person(
             "has_developmental_delay", period.this_year
         )
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
         age_eligible = where(
-            has_special_needs,
+            has_special_needs | under_court_supervision,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )

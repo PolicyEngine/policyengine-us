@@ -329,3 +329,188 @@
         members: [head]
   output:
     is_chip_fcep_eligible_person: True
+
+# California's FCEP population above the Medi-Cal pregnancy limit is the Medi-Cal
+# Access Program. WIC § 15833 excludes applicants eligible for no-cost Medi-Cal
+# or Medicare and WIC § 15834 excludes services already covered by private
+# coverage, so the CHIP disqualifying coverage list applies in California only.
+- name: California MCAP applicant without other coverage is eligible
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+  output:
+    is_chip_fcep_eligible_person: true
+    chip_category: PREGNANT_FCEP
+
+- name: California MCAP applicant with employer coverage is excluded (WIC § 15834)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+  output:
+    is_chip_fcep_eligible_person: false
+    chip_category: NONE
+
+- name: California MCAP applicant with direct purchase coverage is excluded (WIC § 15834)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+  output:
+    is_chip_fcep_eligible_person: false
+    chip_category: NONE
+
+- name: California MCAP applicant reporting Medi-Cal coverage is excluded (WIC § 15833)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+        receives_medicaid: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+  output:
+    is_chip_fcep_eligible_person: false
+    chip_category: NONE
+
+- name: An employer offer without enrollment does not exclude a California MCAP applicant
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 3
+        offered_aca_disqualifying_esi: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+  output:
+    is_chip_fcep_eligible_person: true
+    chip_category: PREGNANT_FCEP
+
+- name: The California MCAP insurance exclusion does not reach Texas FCEP
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_pregnant: true
+        is_medicaid_eligible: false
+        medicaid_income_level: 2
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+  output:
+    is_chip_fcep_eligible_person: true
+
+# FCEP covers the unborn child regardless of the parent's immigration status.
+# https://www.medicaid.gov/chip/chip-eligibility-enrollment
+- name: Case 17, FCEP preserves CHIP pregnancy eligibility for DACA, undocumented, citizen, refugee and asylee parents.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: REFUGEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: ASYLEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CA
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false]
+    is_chip_fcep_eligible_person: [true, true, true, true, true]
+    is_chip_eligible_pregnant: [true, true, true, true, true]
