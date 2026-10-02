@@ -7,7 +7,9 @@ class ar_itemized_deductions_indiv(Variable):
     label = "Arkansas itemized deductions when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR3_ItemizedDeduction.pdf"
+    reference = (
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR3_ItemizedDeduction.pdf"
+    )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):

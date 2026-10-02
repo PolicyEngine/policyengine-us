@@ -17,9 +17,14 @@ class dc_eitc(Variable):
         # D.C. Law 23-149 extends EITC eligibility to filers and qualifying
         # children with ITINs.
         person = tax_unit.members
-        dc_qualifying_child = person("is_qualifying_child_dependent", period) & person(
-            "has_tin", period
+        # IRC 152(c)(3)(B) waives the age test for a permanently and totally
+        # disabled dependent, as both branch variables do.
+        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
+            "is_permanently_and_totally_disabled", period
         )
+        dc_qualifying_child = (
+            person("is_qualifying_child_dependent", period) | is_disabled_dependent
+        ) & person("has_tin", period)
         return where(
             tax_unit.sum(dc_qualifying_child) > 0,
             tax_unit("dc_eitc_with_qualifying_child", period),

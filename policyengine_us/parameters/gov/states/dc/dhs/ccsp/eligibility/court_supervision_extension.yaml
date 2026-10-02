@@ -1,0 +1,21 @@
+description: The District of Columbia extends Child Care Subsidy Program age eligibility to children under court supervision up to the disabled child age threshold if this is true.
+values:
+  # The FFY 2019-2021 and FFY 2022-2024 plans answer No to the 45 CFR
+  # 98.20(a)(1)(ii) court-supervision option; the FFY 2025-2027 plan elects it
+  # with an upper age of 18 (under 19).
+  2018-10-01: false
+  2024-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: DC CCSP court supervision age extension
+  reference:
+    - title: 45 CFR 98.20(a)(1)(ii)
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-C/section-98.20#p-98.20(a)(1)(ii)
+    - title: DC CCDF Plan FFY 2019-2021, Section 3.1.1(c)
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20CCDF%20State%20Plan%20for%20the%20District%20of%20Columbia%20FFY%202019-2021.pdf#page=76
+    - title: DC CCDF Plan FFY 2022-2024, Section 3.1.1(c)
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20CCDF%20Plan%20for%20FY22-24.pdf#page=63
+    - title: DC CCDF Plan FFY 2025-2027, Section 2.2.1(c), upper age 18
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/CCDF%20FFY%202025-2027%20For%20District%20of%20Columbia.pdf#page=18

@@ -1,9 +1,13 @@
-description: Colorado limits its Child Care Assistance Program to disabled children below this age.
+description: Colorado limits its Child Care Assistance Program to children below this age who are disabled or under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 metadata:
   reference:
     - title: Colorado Child Care Assistance Program Rules and Regulations - 3.103
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=6
-  label: Colorado Child Care Assistance Program disabled child age limit
+    - title: Colorado CCDF Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18.00
+      href: https://spl.cde.state.co.us/artemis/huserials/hu62510internet/hu62510202527internet.pdf#page=23
+  label: Colorado Child Care Assistance Program special needs or court supervision child age limit
   unit: year
+  period: year
 values:
   2022-10-01: 19

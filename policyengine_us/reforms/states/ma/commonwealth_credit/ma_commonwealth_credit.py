@@ -11,10 +11,10 @@ def create_ma_commonwealth_credit() -> Reform:
     - Pays a maximum amount by number of qualifying children, plus an
       additional amount per child beyond the base child limit
     - Has no phase-in: the full credit is available at zero income
-    - Phases out at a flat rate of the greater of earned income and AGI
-      above a filing-status threshold
-    - Excludes married-filing-separately filers unless
-      separate_filer_eligible is true
+    - Phases out at a flat rate of adjusted gross income above a
+      filing-status threshold (joint filers use a higher threshold;
+      all other statuses, including married filing separately, share
+      the lower threshold)
 
     Tax units without qualifying children keep the existing EITC match.
     """
@@ -41,23 +41,14 @@ def create_ma_commonwealth_credit() -> Reform:
                 children - p.base_child_limit, 0
             )
             max_credit = base + additional
-            # The phase-out applies to the greater of earned income and
-            # AGI, following the federal EITC (IRC Section 32(a)(2)(B)).
-            earnings = tax_unit("eitc_earned_income", period)
+            # The phase-out applies to federal adjusted gross income alone,
+            # decoupling the credit from the federal EITC's greater-of-
+            # earnings-and-AGI income measure.
             agi = tax_unit("adjusted_gross_income", period)
-            income = max_(earnings, agi)
             filing_status = tax_unit("ma_filing_status", period)
             threshold = p.phase_out.threshold[filing_status]
-            reduction = p.phase_out.rate * max_(income - threshold, 0)
-            separate = filing_status == filing_status.possible_values.SEPARATE
-            # Married-filing-separately filers are eligible when the federal
-            # EITC allows separate filers (true since ARPA for 2021+) or when
-            # the reform's separate_filer_eligible override is set.
-            federal_separate_eligible = parameters(
-                period
-            ).gov.irs.credits.eitc.eligibility.separate_filer
-            separate_eligible = p.separate_filer_eligible | federal_separate_eligible
-            eligible = (children > 0) & (separate_eligible | ~separate)
+            reduction = p.phase_out.rate * max_(agi - threshold, 0)
+            eligible = children > 0
             return eligible * max_(max_credit - reduction, 0)
 
     class ma_eitc(Variable):

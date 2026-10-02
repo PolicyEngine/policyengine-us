@@ -1,0 +1,334 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, MO court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [MO, MO, MO, MO, MO, MO, MO, MO]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+    is_tax_unit_dependent: [true, true, true, true, true, true, true, false]
+  output:
+    mo_ccs_eligible_child: [true, false, true, true, false, false, false, false]
+    # Court supervision does not place anyone in the protective-services
+    # category of 5 CSR 25-200.060(7)(A).
+    mo_ccs_protective_services: [false, false, false, false, false, false, false, false]
+    # is_disabled would meet the need-for-care test as the incapacitated-parent
+    # proxy for the adult units (ages 18, 19, 18, and 40). None reports work,
+    # study, or disability, so every unit fails it, including the
+    # court-supervised adults.
+    mo_ccs_activity_eligible: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, MO court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: MO
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+    is_tax_unit_dependent: true
+  output:
+    mo_ccs_eligible_child: false
+
+- name: Case 3, MO court supervision receives special-needs reimbursement and sliding-fee treatment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_maximum_daily_benefit:
+    - 0
+    - 89.4625
+    mo_ccs_copay: 0
+    mo_ccs: 1_789.25
+    mo_ccs_special_needs:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+
+- name: Case 4, MO court supervision does not waive the activity test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+    mo_ccs_eligible: false
+    mo_ccs: 0
+
+- name: Case 5, MO court supervision does not waive the income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible_child:
+    - false
+    - true
+    mo_ccs_protective_services:
+    - false
+    - false
+    mo_ccs_eligible: false
+    mo_ccs: 0
+
+- name: Case 6, MO age-18 court-supervised child must still attend school.
+  period: 2025-01
+  input:
+    state_code:
+    - MO
+    - MO
+    - MO
+    age:
+    - 18
+    - 18
+    - 19
+    is_under_court_supervision:
+    - true
+    - true
+    - true
+    is_tax_unit_dependent:
+    - true
+    - true
+    - true
+    is_in_secondary_school:
+    - true
+    - false
+    - true
+  output:
+    mo_ccs_eligible_child:
+    - true
+    - false
+    - false
+
+# 5 CSR 25-200.050(11)(D) and (F) both make a child a child with special
+# needs; Manual sec. 4.5(4) lets a protective-services child reach the
+# under-19 ceiling without the school condition.
+- name: Case 7, MO court-supervised 18-year-old receiving protective services stays eligible out of school.
+  period: 2025-01
+  input:
+    state_code: [MO, MO]
+    age: [18, 18]
+    is_under_court_supervision: [true, true]
+    receives_or_needs_protective_services: [true, false]
+    is_tax_unit_dependent: [true, true]
+    is_in_secondary_school: [false, false]
+  output:
+    mo_ccs_protective_services: [true, false]
+    mo_ccs_special_needs: [true, true]
+    # Person 1: protective services -> under-19 ceiling, 18 < 19 -> eligible.
+    # Person 2: court supervision only and not in school -> under-18
+    # ceiling, 18 is not under 18 -> not eligible.
+    mo_ccs_eligible_child: [true, false]
+
+# Cases 8 and 9: a parent working 35 hours a week in Jackson County (Dense
+# Urban region), with children in full-time (8 hours a day) licensed-center
+# care for 20 days a month. FFY 2025 guidelines give a monthly FPG of
+# 21_150 / 12 = 1_762.50 for two people and 26_650 / 12 = 2_220.83 for three.
+- name: Case 8, MO court-supervised 15-year-old gets the special-needs rate with no sliding fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Court supervision -> special needs -> age 15 < 18 ceiling.
+    mo_ccs_special_needs: [false, true]
+    mo_ccs_eligible_child: [false, true]
+    # 24_000 / 12 = 2_000 <= 1.5 x 1_762.50 = 2_643.75.
+    mo_ccs_income_eligible: true
+    mo_ccs_eligible: true
+    mo_ccs_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    # Licensed center, Dense Urban, School Age, Full Time special-needs
+    # column = 68.75 (the base column would pay 36).
+    mo_ccs_maximum_daily_benefit: [0, 68.75]
+    # The only child in care has special needs, so no sliding fee is charged;
+    # 2_000 is above the 25% SMI floor (105_825 x 0.68 / 12 x 0.25 = 1_499.19),
+    # so the minimum annual fee does not apply either.
+    mo_ccs_copay: 0
+    # min(68.75 x 20 = 1_375, 30_000 / 12 = 2_500) = 1_375.
+    # 2_000 / 1_762.50 = 1.13 FPG -> full funding rate 1.
+    mo_ccs: 1_375
+
+- name: Case 9, MO sibling of a court-supervised child still pays the sliding fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+        is_under_court_supervision: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_special_needs: [false, true, false]
+    mo_ccs_eligible_child: [false, true, true]
+    # 30_000 / 12 = 2_500 <= 1.5 x 2_220.83 = 3_331.25.
+    mo_ccs_income_eligible: true
+    mo_ccs_eligible: true
+    mo_ccs_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL]
+    # Court-supervised child: special-needs School Age, Full Time = 68.75.
+    # Sibling: base Preschool, Full Time = 50.
+    mo_ccs_maximum_daily_benefit: [0, 68.75, 50]
+    # Size-3 ladder: 2_500 falls in the [1_482.0001, 3_331.0001) band -> tier 7
+    # -> $5 per full unit. Only the sibling is charged: 5 x 20 = 100. 2_500
+    # is above the 25% SMI floor (105_825 x 0.84 / 12 x 0.25 = 1_851.94).
+    mo_ccs_copay: 100
+    # Each child's share of expenses is 36_000 / 2 / 12 = 1_500 per month.
+    # Court-supervised child: min(68.75 x 20 = 1_375, 1_500) = 1_375.
+    # Sibling: min(50 x 20 = 1_000, 1_500) = 1_000.
+    # 2_500 / 2_220.83 = 1.13 FPG -> full funding rate 1.
+    # 1 x max(1_375 + 1_000 - 100, 0) = 2_275.
+    mo_ccs: 2_275
