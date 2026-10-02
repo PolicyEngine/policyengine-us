@@ -178,7 +178,9 @@
   output:
     is_chip_immigration_status_eligible: [false, false, false]
 
-- name: Case 9, Kentucky CHIP pregnancy election applies from 2023 and Rhode Island's from 2024.
+# Rhode Island's Medicaid and CHIP pregnancy elections took effect on October 1,
+# 2022 (SPAs RI-22-0024 and RI-22-0025), so they first apply in 2023.
+- name: Case 9, Kentucky and Rhode Island CHIP pregnancy elections apply in 2023.
   period: 2023
   input:
     people:
@@ -190,6 +192,11 @@
         age: 30
         is_pregnant: true
         immigration_status: TPS
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
     households:
       household1:
         members: [person1]
@@ -197,8 +204,11 @@
       household2:
         members: [person2]
         state_code: RI
+      household3:
+        members: [person3]
+        state_code: RI
   output:
-    is_chip_immigration_status_eligible: [true, false]
+    is_chip_immigration_status_eligible: [true, true, true]
 
 - name: Case 10, Georgia children and Rhode Island pregnancy CHIP elections apply in 2024.
   period: 2024

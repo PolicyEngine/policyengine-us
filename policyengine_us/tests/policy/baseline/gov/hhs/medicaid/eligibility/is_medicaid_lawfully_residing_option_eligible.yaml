@@ -447,7 +447,7 @@
   output:
     is_medicaid_lawfully_residing_option_eligible: [false, false]
 
-- name: Case 20, Rhode Island pregnancy election applies from 2024.
+- name: Case 20, Rhode Island pregnancy election still applies in 2024.
   period: 2024
   input:
     state_code: RI
@@ -457,8 +457,37 @@
   output:
     is_medicaid_lawfully_residing_option_eligible: true
 
-- name: Case 21, Rhode Island pregnancy election does not apply in 2023.
+# Rhode Island's pregnancy election took effect on October 1, 2022 (SPA
+# RI-22-0024). Income of 150% FPL is below its Medicaid pregnancy limit (195%).
+- name: Case 21, Rhode Island pregnancy election covers a TPS holder and a recent permanent resident in 2023.
   period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+        medicaid_income_level: 1.5
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 1.5
+    households:
+      household1:
+        members: [person1]
+        state_code: RI
+      household2:
+        members: [person2]
+        state_code: RI
+  output:
+    is_medicaid_lawfully_residing_option_eligible: [true, true]
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_medicaid_eligible: [true, true]
+
+- name: Case 22, Rhode Island pregnancy election does not apply in 2022 annual simulations.
+  period: 2022
   input:
     state_code: RI
     immigration_status: TPS
