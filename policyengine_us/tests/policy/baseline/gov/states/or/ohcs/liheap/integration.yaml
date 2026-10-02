@@ -22,7 +22,7 @@
         - child
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 120
-        or_tanf: 0
+        tanf: 0
     households:
       home:
         members:
@@ -49,7 +49,7 @@
     is_in_secondary_school: true
     employment_income: 100000
     ssi: 0
-    or_tanf: 0
+    tanf: 0
     general_assistance: 0
     heat_expense_included_in_rent: true
     heating_type: ELECTRICITY
@@ -67,7 +67,7 @@
     age: 40
     pension_income: 12000
     ssi: 0
-    or_tanf: 0
+    tanf: 0
     general_assistance: 0
     is_in_public_housing: true
     heating_type: NATURAL_GAS

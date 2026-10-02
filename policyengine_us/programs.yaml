@@ -811,7 +811,7 @@ programs:
         variable: or_liheap
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2026"
-        notes: Regular heating only; annual income, 60% SMI limit, county matrices, housing and roomer payments. Unknown fuels and counties, sizes above 12, identity exclusions, special income details, discretionary fuel payments and local supplements remain unsupported. Earlier years are unverified backfilled estimates.
+        notes: Regular heating income, county/fuel schedules and housing treatment. Some income, residence and discretionary-payment rules remain partial; earlier years are unverified estimates.
       - state: DC
         status: complete
         name: DC LIHEAP

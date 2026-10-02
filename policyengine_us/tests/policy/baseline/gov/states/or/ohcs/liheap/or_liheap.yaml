@@ -160,6 +160,7 @@
     has_heating_expense: [true, true]
     or_liheap_countable_income: [0, 0]
   output:
+    or_liheap_eligible: [true, true]
     or_liheap: [0, 0]
 - name: No expense cap applies to a standard payment
   period: 2026

@@ -15,5 +15,6 @@ class or_liheap_dwelling_type(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "Oregon LIHEAP dwelling arrangement"
-    reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=30,61,62"
+    # PDF pages 30, 61, 62.
+    reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=30"
     documentation = "The half-payment arrangement applies when a roomer, boarder or owner applies as a separate economic household and the other residents do not apply together. It is not a reduction for all renters."
