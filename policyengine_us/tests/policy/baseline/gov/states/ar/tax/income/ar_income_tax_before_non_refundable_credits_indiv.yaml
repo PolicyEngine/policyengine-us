@@ -628,7 +628,7 @@
 # row at its midpoint and rounds to whole dollars: "If you use a formula to
 # calculate Arkansas income tax, the results must match the table exactly. The
 # calculations in the table are made at the midpoint of each income level."
-# (2024 Indexed Tax Brackets, https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1).
+# (2024 Indexed Tax Brackets, https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=2).
 # Pages below are file pages of that year's AR1000F/AR1000NR instructions.
 - name: AR regular tax table 2024 - income inside the $35,100-$35,200 row
   period: 2024
@@ -715,7 +715,9 @@
     state_code: AR
   output:
     # "For $100,001 and over" (p.34) the model keeps the bracket formula at the
-    # exact income: 100,001 x 3.9% - 87.40 = 3,812.64
+    # exact income: 100,001 x 3.9% - 87.40 = 3,812.64. The table's note,
+    # "$3,811 + 3.9% of the excess over $100,000", would give $1.60 less
+    # (threshold.yaml documents the choice).
     ar_income_tax_before_non_refundable_credits_indiv: 3_812.64
 
 - name: AR regular tax table 2025 - income inside the $35,100-$35,200 row

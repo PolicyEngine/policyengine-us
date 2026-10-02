@@ -2,7 +2,8 @@ description: Arkansas sets the start of each regular income tax table income ban
 # From $75,000 the table's rows run "As Much As $75,001 But Less Than $75,101",
 # so each band starts $1 above a multiple of $100. The row below them spans
 # $74,900 to $75,001, so the $1 offset starts at $75,000. The 2014 and 2015
-# tables end at $50,000, below this row.
+# tables end at $50,000, below this row. Negative net taxable income takes the
+# zero offset; the callers floor the resulting tax at zero.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -32,7 +33,7 @@ metadata:
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=33
 brackets:
   - threshold:
-      2014-01-01: 0
+      2014-01-01: -.inf
     amount:
       2014-01-01: 0
   - threshold:

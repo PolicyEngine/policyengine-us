@@ -249,7 +249,9 @@ def test_ar_published_reduction_applies_through_2025_only():
 @pytest.mark.parametrize("year", [2000, 2013])
 def test_ar_schedule_before_modeled_years_still_computes(year):
     # rate.yaml starts in 2014; earlier years must not hit the statutory path,
-    # whose parameters start in 2026.
+    # whose parameters start in 2026. This covers ar_main_income_tax only:
+    # ar_regular_income_tax reads the tax_table parameters, which start with
+    # the 2014 table, so it raises for earlier years (see its docstring).
     assert bool(P.use_published_reduction(f"{year}-01-01"))
     assert (model_tax(year, TAXABLE_INCOME) == 0).all()
 

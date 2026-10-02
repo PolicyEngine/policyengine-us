@@ -10,6 +10,8 @@ description: Arkansas uses the midpoint of the whole-dollar incomes in each regu
 values:
   2014-01-01: false
   2022-01-01: true
+  # No Regular Income Tax Table has been published for 2026 or later, so the
+  # model carries this value forward.
 metadata:
   unit: bool
   period: year
@@ -22,4 +24,4 @@ metadata:
   - title: 2022 AR1000F and AR1000NR Instructions, 2022 Regular Income Tax Table
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=32
   - title: 2024 Indexed Tax Brackets (the calculations in the table are made at the midpoint of each income level)
-    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=2

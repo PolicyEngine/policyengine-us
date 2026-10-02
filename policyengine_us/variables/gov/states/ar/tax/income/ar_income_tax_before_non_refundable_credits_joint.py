@@ -17,7 +17,8 @@ class ar_income_tax_before_non_refundable_credits_joint(Variable):
         "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
         # Regular Income Tax Table.
         "https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=30",
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1",
+        # Indexed Tax Brackets: the table is computed at each row's midpoint.
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=2",
     )
     defined_for = StateCode.AR
 

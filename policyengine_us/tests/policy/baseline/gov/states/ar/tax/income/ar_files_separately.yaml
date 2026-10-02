@@ -380,7 +380,10 @@
     # 2,110 - 58 = 2,052
     ar_income_tax: 2_052
 
-- name: Spouse partnership loss of $300 files jointly (issue 9680)
+- name: Spouse partnership loss of $300 files jointly, where the joint and separate paths tie (issue 9680)
+  # The tie already keeps this couple on the joint path (strict <), so this case
+  # passes without the negative-income rule. The $10 loss cases above isolate
+  # the rule.
   period: 2024
   input:
     people:
@@ -402,14 +405,17 @@
     # Joint AGI 28,450 - 300 = 28,150, joint low income table row
     # $28,101-$28,200: $501 (p.29). Separately, person1's 26,040 falls in the
     # regular row $26,000-$26,100: $606 (p.31), less 45 + 60 of additional
-    # credits = 501, a tie; the negative total income requires the joint return.
+    # credits = 501, a tie, which keeps the joint return; the negative total
+    # income also requires it.
     ar_low_income_tax_joint: [501, 0]
     ar_income_tax_before_non_refundable_credits_indiv: [606, 0]
     ar_files_separately: false
     # 501 - 58 = 443
     ar_income_tax: 443
 
-- name: Spouse capital loss makes total income negative, files jointly
+- name: Spouse capital loss of $500 files jointly, where the joint path is already cheaper
+  # The joint path costs less even without the negative-income rule, so this
+  # case does not isolate the rule. The $10 loss cases above do.
   period: 2024
   input:
     people:
@@ -430,8 +436,14 @@
   output:
     # person2's total income is the -500 capital loss.
     ar_gross_income_indiv: [27_850, -500]
-    ar_files_separately: false
-    # Joint AGI 27,850 - 500 = 27,350, joint low income table row
-    # $27,301-$27,400: $418 (p.29); 418 - 58 = 360.
+    # Separate path: person1 27,850 - 2,410 = 25,440, row $25,400-$25,500:
+    # $584 (p.31), less 60 + 60 of additional credits = 464.
+    ar_income_tax_before_non_refundable_credits_indiv: [584, 0]
+    # Joint path: AGI 27,850 - 500 = 27,350, joint low income table row
+    # $27,301-$27,400: $418 (p.29); the joint additional credit
+    # 120 - ceil((27,350 - 25,800) / 100) x 10 phases out to 0, so it nets 418.
     ar_low_income_tax_joint: [418, 0]
+    # Joint (418) < separate (464), so the couple files jointly either way.
+    ar_files_separately: false
+    # 418 - 58 = 360
     ar_income_tax: 360

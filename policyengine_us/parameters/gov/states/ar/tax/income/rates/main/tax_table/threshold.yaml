@@ -1,7 +1,21 @@
 description: Arkansas uses the regular income tax table for net taxable income below this amount.
 # Each value is the "But Less Than" bound of the table's last row, where the
-# table's note starts ("For $100,001 and over, your tax is ..."). At and above
-# it, the model applies the bracket formula to the exact income.
+# table's note starts ("For $100,001 and over, your tax is ...").
+# At and above it, two DFA instructions conflict, and the model follows the
+# first:
+# - The Indexed Tax Brackets card gives the bracket formula (rate x income
+#   minus the adjustment) and says a formula "must match the table exactly"
+#   (2021 card, file p.1; 2024 card, file p.2). The model applies this
+#   formula to the exact income.
+# - The note under each table's last row adds the top rate to the last row's
+#   tax: "For $100,001 and over, your tax is $3,811 + 3.9% of the excess over
+#   $100,000" (2024 table, file p.34); "$3,809 + 3.9%" (2025 table, file p.34).
+# The note gives less tax than the formula, by the same amount for every
+# income at or above the threshold: $3.19 (2014), $3.69 (2015), $3.36 (2016),
+# $3.46 (2017), $3.26 (2018), $3.36 (2019), $3.30 (2020), $2.50 (2021),
+# $2.80 (2022), $2.30 (2023), $1.60 (2024) and $1.70 (2025). Neither source
+# settles which applies above the table, where there are no rows for the
+# card's formula to match, so keep the formula unless a DFA source does.
 values:
   2014-01-01: 50_000
   2016-01-01: 86_001
@@ -10,6 +24,9 @@ values:
   2021-01-01: 91_001
   2022-01-01: 94_001
   2023-01-01: 100_001
+  # No Regular Income Tax Table has been published for 2026 or later, so the
+  # model carries this value forward and applies the table method to the
+  # 2026+ statutory schedules below it.
 metadata:
   unit: currency-USD
   period: year
@@ -39,3 +56,7 @@ metadata:
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=34
   - title: 2025 AR1000F and AR1000NR Instructions, 2025 Regular Income Tax Table
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=34
+  - title: 2021 Indexed Tax Brackets (a formula must match the table exactly)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2021.pdf#page=1
+  - title: 2024 Indexed Tax Brackets (a formula must match the table exactly)
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=2
