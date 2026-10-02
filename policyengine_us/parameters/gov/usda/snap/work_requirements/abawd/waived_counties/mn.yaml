@@ -36,14 +36,38 @@ values:
     - PINE_COUNTY_MN # FIPS 27115
     - TODD_COUNTY_MN # FIPS 27153
     - WADENA_COUNTY_MN # FIPS 27159
-  2026-07-01: []
+  # FY2026 waiver (unemployment over 10 percent): Clearwater County plus
+  # four reservation areas (sub-county, not modeled), 2025-12-01 through
+  # 2026-11-30 (FNS response, November 20, 2025). It took effect while the
+  # 2025-07-01 list (which already includes Clearwater, reinstated through
+  # 2026-06-30) was in effect.
+  2026-07-01:
+    - CLEARWATER_COUNTY_MN # FIPS 27029
+  2026-12-01: []
 
 metadata:
   unit: list
   period: month
   label: SNAP ABAWD waived counties in Minnesota
   reference:
-    - title: USDA FNS Minnesota FY 2024 ABAWD Waiver Response
-      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/mn-abawd-response-fy2024.pdf
-    - title: USDA FNS Minnesota FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2025.pdf
+    - title: USDA FNS Minnesota ABAWD Waiver Response, May 31, 2024 - requested area (15 counties and 10 reservation areas)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Minnesota ABAWD Waiver Response, May 31, 2024 - Tables 1 and 2 county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Minnesota ABAWD Waiver Response, May 31, 2024 - implementation date (2024-07-01) and expiration date (2025-06-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Minnesota ABAWD Waiver Response, June 3, 2025 - requested area (17 counties and nine reservation areas) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Minnesota ABAWD Waiver Response, June 3, 2025 - county list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Minnesota ABAWD Waiver Response, June 3, 2025 - implementation date (2025-07-01) and expiration date (2026-06-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2025.pdf#page=4
+    # Appendix A is file page 2 of the 2-page Google Drive copy of this
+    # memo, but that page's page label reads "Page 3 of 3", so the canonical
+    # usda.gov PDF (which returns 403) may place it on #page=3.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, Minnesota through 2026-06-30)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS Minnesota ABAWD Waiver Response, November 20, 2025 - requested area and Table 1 (Clearwater County)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Minnesota ABAWD Waiver Response, November 20, 2025 - reservation areas, implementation date (2025-12-01), and expiration date (2026-11-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2026.pdf#page=3
