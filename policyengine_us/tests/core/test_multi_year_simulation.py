@@ -6,7 +6,7 @@ later year depend on the years calculated before it.
 
 - ``monthly_age`` reads ``age`` one month at a time, and core caches each of
   those month values as a twelfth of the year's age. policyengine-core 3.24.0
-  through 3.32.11 carried the latest-starting cached period of any unit into a
+  through 3.32.12 carried the latest-starting cached period of any unit into a
   later year, so once a month of 2024 after January had been calculated,
   every person's 2025 age was a twelfth of their 2024 age. Fixed in
   policyengine-core.
@@ -140,10 +140,11 @@ def _assert_same(result, fresh, year):
 
 
 @pytest.fixture(scope="module")
-def core_carries_age_over():
+def requires_core_carry_over_fix():
     """Skip the age cases on a policyengine-core that still carries a month's
-    twelfth into a later year (3.24.0 through 3.32.x). Remove this guard once
-    the core minimum includes the fix."""
+    twelfth into a later year (3.24.0 through 3.32.12). Remove this guard once
+    the core minimum includes the fix: until then a core that brought the bug
+    back would show here as skips, not failures."""
     simulation = Simulation(situation=_situation())
     simulation.calculate("monthly_age", f"{BASE_YEAR}-12")
     if not np.array_equal(simulation.calculate("age", BASE_YEAR + 1), _input_ages()):
@@ -171,7 +172,7 @@ def test_formula_branches_are_created_again_for_a_later_year(year):
         assert simulation.branches[name].branch_period == period(year)
 
 
-@pytest.mark.usefixtures("core_carries_age_over")
+@pytest.mark.usefixtures("requires_core_carry_over_fix")
 @pytest.mark.parametrize("month", ["2024-01", "2024-06", "2024-12"])
 def test_monthly_age_does_not_change_later_age(month):
     simulation = Simulation(situation=_situation())
@@ -182,7 +183,7 @@ def test_monthly_age_does_not_change_later_age(month):
         np.testing.assert_array_equal(simulation.calculate("age", year), _input_ages())
 
 
-@pytest.mark.usefixtures("core_carries_age_over")
+@pytest.mark.usefixtures("requires_core_carry_over_fix")
 @pytest.mark.parametrize("year", LATER_YEARS)
 def test_later_year_matches_single_year_simulation(year):
     fresh = _later_year_values(Simulation(situation=_situation()), year)
