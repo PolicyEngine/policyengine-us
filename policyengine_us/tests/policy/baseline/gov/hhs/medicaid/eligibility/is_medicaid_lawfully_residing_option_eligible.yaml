@@ -159,7 +159,11 @@
   output:
     is_medicaid_lawfully_residing_option_eligible: false
 
-- name: Case 9, New Jersey postpartum coverage holds at 364 days and ends at 365.
+# This pins the model's postpartum day limit (count_days_postpartum <
+# postpartum_coverage). 42 USC 1396a(e)(16)(A) runs coverage through the last
+# day of the month in which the 12-month period ends, so day 365 is usually
+# still covered in law.
+- name: Case 9, New Jersey postpartum coverage holds at 364 days and stops at the model's 365-day postpartum limit.
   period: 2025
   input:
     people:
