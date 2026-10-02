@@ -17,7 +17,9 @@ later year depend on the years calculated before it.
   ``get_branch_for_period`` creates them again for each period.
 
 Each test compares a simulation that calculates the base year first with a
-fresh simulation that calculates only the later year.
+fresh simulation that calculates only the later year. The branch test gives
+ages for every year so it runs on any core; the age tests skip until the
+installed policyengine-core has the carry-over fix.
 """
 
 import numpy as np
@@ -86,11 +88,11 @@ VARIABLES = [
 ]
 
 
-def _situation():
+def _situation(age_every_year=False):
     # Geography has formulas (state_code from state_fips), so it is not
     # carried forward: set it for every year calculated.
     years = (BASE_YEAR, *LATER_YEARS)
-    return {
+    situation = {
         "people": {
             name: {variable: {BASE_YEAR: value} for variable, value in inputs.items()}
             for name, inputs in PEOPLE.items()
@@ -110,6 +112,11 @@ def _situation():
             for key, members in UNITS.items()
         },
     }
+    if age_every_year:
+        # Give age for every year, so no later year carries age over.
+        for name, person in situation["people"].items():
+            person["age"] = {year: PEOPLE[name]["age"] for year in years}
+    return situation
 
 
 def _input_ages():
@@ -132,6 +139,39 @@ def _assert_same(result, fresh, year):
         )
 
 
+@pytest.fixture(scope="module")
+def core_carries_age_over():
+    """Skip the age cases on a policyengine-core that still carries a month's
+    twelfth into a later year (3.24.0 through 3.32.x). Remove this guard once
+    the core minimum includes the fix."""
+    simulation = Simulation(situation=_situation())
+    simulation.calculate("monthly_age", f"{BASE_YEAR}-12")
+    if not np.array_equal(simulation.calculate("age", BASE_YEAR + 1), _input_ages()):
+        pytest.skip(
+            "needs a policyengine-core release with the auto-carry-over fix "
+            "(PolicyEngine/policyengine-core#557 or #562)"
+        )
+
+
+@pytest.mark.parametrize("year", LATER_YEARS)
+def test_formula_branches_are_created_again_for_a_later_year(year):
+    """The branch defect alone, on any core: ages are given for every year."""
+    fresh = _later_year_values(
+        Simulation(situation=_situation(age_every_year=True)), year
+    )
+
+    simulation = Simulation(situation=_situation(age_every_year=True))
+    _later_year_values(simulation, BASE_YEAR)
+    branches = ("itemizing", "not_itemizing", "no_salt")
+    base_year_branches = {name: simulation.branches[name] for name in branches}
+
+    _assert_same(_later_year_values(simulation, year), fresh, year)
+    for name in branches:
+        assert simulation.branches[name] is not base_year_branches[name]
+        assert simulation.branches[name].branch_period == period(year)
+
+
+@pytest.mark.usefixtures("core_carries_age_over")
 @pytest.mark.parametrize("month", ["2024-01", "2024-06", "2024-12"])
 def test_monthly_age_does_not_change_later_age(month):
     simulation = Simulation(situation=_situation())
@@ -142,6 +182,7 @@ def test_monthly_age_does_not_change_later_age(month):
         np.testing.assert_array_equal(simulation.calculate("age", year), _input_ages())
 
 
+@pytest.mark.usefixtures("core_carries_age_over")
 @pytest.mark.parametrize("year", LATER_YEARS)
 def test_later_year_matches_single_year_simulation(year):
     fresh = _later_year_values(Simulation(situation=_situation()), year)
