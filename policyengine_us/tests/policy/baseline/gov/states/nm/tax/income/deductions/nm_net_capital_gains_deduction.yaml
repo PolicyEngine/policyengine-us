@@ -2,7 +2,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    capital_gains: 0
+    long_term_capital_gains: 0
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 0
@@ -11,7 +11,7 @@
   period: 2021
   input:
     filing_status: SEPARATE
-    capital_gains: 10_000
+    long_term_capital_gains: 10_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 2_000
@@ -20,7 +20,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    capital_gains: 2_000
+    long_term_capital_gains: 2_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 1_000
@@ -29,7 +29,7 @@
   period: 2021
   input:
     filing_status: SEPARATE
-    capital_gains: 1_000
+    long_term_capital_gains: 1_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 500
@@ -42,7 +42,7 @@
   period: 2025
   input:
     filing_status: SINGLE
-    capital_gains: 500_000
+    long_term_capital_gains: 500_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 2_500
@@ -51,7 +51,7 @@
   period: 2025
   input:
     filing_status: SINGLE
-    capital_gains: 3_000_000
+    long_term_capital_gains: 3_000_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 2_500
@@ -60,7 +60,7 @@
   period: 2025
   input:
     filing_status: SEPARATE
-    capital_gains: 2_000_000
+    long_term_capital_gains: 2_000_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 1_250
@@ -69,7 +69,462 @@
   period: 2024
   input:
     filing_status: SINGLE
-    capital_gains: 3_000_000
+    long_term_capital_gains: 3_000_000
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 1_200_000
+
+# "Net capital gains" follow IRC Section 1222(11): net long-term capital gain
+# less any net short-term capital loss. NMSA 7-2-34 has adopted that
+# definition since tax year 2019 (2019 HB6, section 14; applicability in
+# section 59(A), p.105): in subsection (D) for 2019 through 2024 and in
+# subsection (C) from 2025 (2024 HB252, section 8, p.30; section 42(B),
+# p.147). PIT-1 line 15 instructions (2023 PIT instruction book, p.32): "that
+# section defines 'net capital gains' as only net long-term capital gains
+# less any net short-term capital losses."
+
+- name: Short-term gains are excluded from net capital gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # max(40% x 10,000, min(10,000, 1,000)) = 4,000; the 5,000 short-term gain
+    # is not part of net capital gains.
+    nm_net_capital_gains_deduction: 4_000
+
+- name: A net short-term loss reduces the long-term gain
+  period: 2024
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: -4_000
+    state_code: NM
+  output:
+    # Net capital gains = 10,000 - 4,000 = 6,000; 40% = 2,400.
+    nm_net_capital_gains_deduction: 2_400
+
+- name: Only short-term gains means no net capital gains
+  period: 2023
+  input:
+    filing_status: JOINT
+    long_term_capital_gains: 0
+    short_term_capital_gains: 10_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 0
+
+- name: A net long-term loss means no net capital gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: -2_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 0
+
+- name: Short-term gains are also excluded before 2023
+  period: 2022
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # NMSA 7-2-34(D) (2019 HB6, sections 14 and 59(A)) already used IRC
+    # 1222(11) in 2022.
+    # Net capital gains = 10,000 - max(0, -5,000) = 10,000 (the 5,000
+    # short-term gain is excluded).
+    # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000.
+    nm_net_capital_gains_deduction: 4_000
+
+# Cross-spouse netting on a joint return: net capital gain is computed on the
+# couple's combined long-term and short-term amounts, so one spouse's net
+# short-term loss reduces the other spouse's long-term gain.
+
+- name: Joint couple, one spouse's short-term loss partially offsets the other's long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 20_000
+      person2:
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Net capital gains = 20,000 - 5,000 = 15,000.
+    # max(40% x 15,000, min(15,000, 1,000)) = max(6,000, 1,000) = 6,000.
+    nm_net_capital_gains_deduction: 6_000
+
+- name: Joint couple, one spouse's short-term loss exactly cancels the other's long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 8_000
+      person2:
+        short_term_capital_gains: -8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Net capital gains = max(0, 8,000 - 8,000) = 0.
+    # max(40% x 0, min(0, 1,000)) = 0; the $1,000 element is limited to the
+    # net capital gain.
+    nm_net_capital_gains_deduction: 0
+
+- name: Joint couple, one spouse's short-term loss exceeds the other's long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 5_000
+      person2:
+        short_term_capital_gains: -12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Net capital gains = max(0, 5,000 - 12,000) = 0, so no deduction.
+    nm_net_capital_gains_deduction: 0
+
+- name: Joint couple, short-term gain and loss net across spouses before offsetting the long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: 3_000
+      person2:
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Net short-term = 3,000 - 5,000 = -2,000, a net short-term loss of 2,000.
+    # Net capital gains = 10,000 - 2,000 = 8,000; 40% x 8,000 = 3,200.
+    nm_net_capital_gains_deduction: 3_200
+
+- name: Short-term gains are also excluded in 2021
+  period: 2021
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # 2019 HB6, section 59(A), p.105: the IRC 1222(11) definition applies
+    # from 2019. Net capital gains = 10,000 - max(0, -5,000) = 10,000.
+    # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000
+    # (counting the short-term gain would give 40% x 15,000 = 6,000).
+    nm_net_capital_gains_deduction: 4_000
+
+- name: Only short-term gains in 2021 means no net capital gains
+  period: 2021
+  input:
+    filing_status: SINGLE
+    short_term_capital_gains: 10_000
+    state_code: NM
+  output:
+    # Net capital gains = max(0, 0 - max(0, -10,000)) = 0, so no deduction
+    # (counting the short-term gain would give 40% x 10,000 = 4,000).
+    nm_net_capital_gains_deduction: 0
+
+- name: Short-term gains are excluded in 2024
+  period: 2024
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: 5_000
+    state_code: NM
+  output:
+    # Net capital gains = 10,000 - max(0, -5,000) = 10,000.
+    # max(40% x 10,000, min(10,000, 1,000)) = max(4,000, 1,000) = 4,000.
+    nm_net_capital_gains_deduction: 4_000
+
+- name: Capital gain distributions are long-term capital gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    non_sch_d_capital_gains: 5_000
+    state_code: NM
+  output:
+    # Capital gain distributions are long-term capital gains under IRC
+    # 852(b)(3)(B), so net capital gains = 5,000.
+    # max(40% x 5,000, min(5,000, 1,000)) = max(2,000, 1,000) = 2,000.
+    nm_net_capital_gains_deduction: 2_000
+
+# Married filing separately: NMSA 7-2-34(B) (2019 HB6, section 14(B), p.41;
+# 2024 HB252, section 8(B), p.30) lets each spouse claim one-half of the
+# deduction that would have been allowed on the joint return. The PIT-ADJ line
+# 16 instructions (2023 PIT instruction book, p.53) say the same. Each spouse
+# heads a separate tax unit, so the deduction is computed on the couple's
+# combined gains and losses (reached through the marital unit) and halved.
+
+- name: Separate couple, gains only on one spouse, each spouse gets half of the joint deduction
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+      person2:
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net capital gains = 10,000 + 0 = 10,000.
+    # Joint deduction = max(40% x 10,000, min(10,000, 1,000)) = 4,000.
+    # Each spouse: 0.5 x 4,000 = 2,000 (before: 2,000 and 0).
+    nm_net_capital_gains_deduction: [2_000, 2_000]
+
+- name: Separate couple, gains split between spouses
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 2_000
+      person2:
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net capital gains = 2,000 + 2,000 = 4,000.
+    # Joint deduction = max(40% x 4,000, min(4,000, 1,000))
+    # = max(1,600, 1,000) = 1,600.
+    # Each spouse: 0.5 x 1,600 = 800 (before: max(800, 1,000) / 2 = 500 each).
+    nm_net_capital_gains_deduction: [800, 800]
+
+- name: Separate couple, one spouse's long-term loss offsets the other's long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 20_000
+      person2:
+        long_term_capital_gains: -15_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net long-term gain = 20,000 - 15,000 = 5,000.
+    # Joint deduction = max(40% x 5,000, min(5,000, 1,000))
+    # = max(2,000, 1,000) = 2,000.
+    # Each spouse: 0.5 x 2,000 = 1,000 (before: 8,000 / 2 = 4,000 and 0).
+    nm_net_capital_gains_deduction: [1_000, 1_000]
+
+- name: Separate couple, one spouse's short-term loss offsets the other's long-term gain
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 20_000
+      person2:
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net short-term loss = 5,000.
+    # Combined net capital gains = 20,000 - 5,000 = 15,000.
+    # Joint deduction = max(40% x 15,000, min(15,000, 1,000)) = 6,000.
+    # Each spouse: 0.5 x 6,000 = 3,000.
+    nm_net_capital_gains_deduction: [3_000, 3_000]
+
+- name: Separate couple, combined gains at the joint $1,000 cap in 2023
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_200
+      person2:
+        long_term_capital_gains: 800
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net capital gains = 1,200 + 800 = 2,000.
+    # Joint deduction = max(40% x 2,000, min(2,000, 1,000))
+    # = max(800, 1,000) = 1,000.
+    # Each spouse: 0.5 x 1,000 = 500 (before: max(480, 1,000) / 2 = 500 and
+    # max(320, 800) / 2 = 400).
+    nm_net_capital_gains_deduction: [500, 500]
+
+- name: Separate couple, combined gains above the joint $2,500 cap in 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 3_000
+      person2:
+        long_term_capital_gains: 1_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Combined net capital gains = 3,000 + 1,000 = 4,000.
+    # Joint deduction = min(4,000, 2,500) = 2,500 (the 40% element is zero).
+    # Each spouse: 0.5 x 2,500 = 1,250 (before: min(3,000, 2,500) / 2 = 1,250
+    # and min(1,000, 2,500) / 2 = 500).
+    nm_net_capital_gains_deduction: [1_250, 1_250]
+
+- name: Separate couple with a dependent in one spouse's unit, explicit marital units
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        long_term_capital_gains: 2_000
+      person2:
+        age: 40
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, child]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [child]
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: NM
+  output:
+    # Combined net capital gains = 2,000 + 2,000 = 4,000.
+    # Joint deduction = max(40% x 4,000, min(4,000, 1,000)) = 1,600.
+    # Each spouse: 0.5 x 1,600 = 800.
+    nm_net_capital_gains_deduction: [800, 800]
+
+- name: Joint couple regression, full deduction on combined gains
+  period: 2023
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 2_000
+      person2:
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Net capital gains = 2,000 + 2,000 = 4,000.
+    # max(40% x 4,000, min(4,000, 1,000)) = 1,600, not halved.
+    nm_net_capital_gains_deduction: 1_600
+
+- name: Single filer regression, full deduction on own gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 2_000
+    state_code: NM
+  output:
+    # max(40% x 2,000, min(2,000, 1,000)) = max(800, 1,000) = 1,000.
+    nm_net_capital_gains_deduction: 1_000

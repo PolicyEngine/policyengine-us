@@ -15,6 +15,7 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - farm_rent_income # Line 20
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
@@ -33,6 +34,7 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - farm_rent_income # Line 20
     - unemployment_compensation # Line 21
   2020-01-01:
@@ -49,6 +51,7 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - farm_rent_income # Line 20
   2022-01-01:
     - irs_employment_income # Line 8
@@ -68,6 +71,7 @@ values:
     - keogh_distributions # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - farm_rent_income # Line 20
     - unemployment_compensation # Line 21
 
