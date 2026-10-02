@@ -1,6 +1,7 @@
-# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
-- name: Regular subsidy can exceed the bill and applies to heat included in rent
-  period: 2_026
+# Sources: Kentucky FY2025 and FY2026 state plans, regular heating benefit
+# workbooks, and the FY2025-2026 fact sheet.
+- name: Case 1, the regular subsidy can exceed the bill and applies to heat included in rent.
+  period: 2026
   input:
     state_code: [KY, KY, KY, KY, KY, IN]
     age: [35, 35, 35, 35, 35, 35]
@@ -12,12 +13,14 @@
     gas_expense: [10, 0, 0, 1_000, 1_000, 1_000]
     heat_expense_included_in_rent: [false, true, false, false, false, false]
     is_citizen_or_legal_immigrant: [true, true, true, true, false, true]
-    hud_utility_allowance: [0, 0, 0, 0, 0, 0]
   output:
+    # Household 3 pays no heating cost, household 4 is over the one-person
+    # limit, household 5 has no citizen or qualified member, and household 6
+    # lives in Indiana.
     ky_liheap_eligible: [true, true, false, false, false, false]
     ky_liheap: [134, 134, 0, 0, 0, 0]
-- name: Public housing and housing assistance select the reduced schedule; a utility allowance schedule amount alone does not
-  period: 2_026
+- name: Case 2, public housing and housing assistance select the reduced schedule; a utility allowance schedule amount alone does not.
+  period: 2026
   input:
     state_code: [KY, KY, KY]
     ky_liheap_income: [0, 0, 0]
@@ -35,8 +38,8 @@
     # 1 + 4 + 3 = 8 points; ceil(8 * 16.66 = 133.28) = 134.
     ky_liheap: [26, 26, 134]
 # Backfilling checks the model convention, not verified historical Kentucky policy.
-- name: Parameter backfill uses the 2021 guideline for a 2022 estimate
-  period: 2_022
+- name: Case 3, parameter backfill uses the 2021 guideline for a 2022 estimate.
+  period: 2022
   input:
     state_code: KY
     age: 40
@@ -45,10 +48,9 @@
     social_security: 0
     tanf: 0
     heating_type: ELECTRICITY
-    heating_expense: 1_000
+    pre_subsidy_electricity_expense: 1_000
     receives_housing_assistance: false
     is_in_public_housing: false
-    hud_utility_allowance: 0
   output:
     ky_liheap: 184
     ky_liheap_fpg: 12_880
@@ -203,3 +205,43 @@
     # ceil(11 * 16.66 = 183.26) = 184, the workbook cell for five or more
     # people, 126.01-150%, propane.
     ky_liheap: 184
+- name: Case 7, FY2025 retiree with Social Security heats with natural gas.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        # $1_000 a month in Social Security retirement benefits.
+        social_security_retirement: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        receives_housing_assistance: false
+        # The household does not receive K-TAP.
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    # 2024 guideline (one-year lag) for one person.
+    ky_liheap_fpg: 15_060
+    # The FY2025 plan counts Social Security including the Medicare
+    # deduction, so the full 12_000 (1_000 a month) is counted.
+    ky_liheap_income: 12_000
+    # FY2025 one-person limit: ceil(15_060 * 1.5 / 12 = 1_882.5) = 1_883, the
+    # FY2025 workbook's upper bound for the 126-150% band.
+    ky_liheap_income_eligible: true
+    heating_expense: 900
+    ky_liheap_eligible: true
+    # 1_000 a month is above ceil(15_060 * 0.75 / 12 = 941.25) = 942 and not
+    # above ceil(15_060 / 12 = 1_255) = 1_255, so the 76-100% band gives 3
+    # income points.
+    # 1 (size) + 3 (income) + 3 (natural gas) = 7 points;
+    # ceil(7 * 16.66 = 116.62) = 117, the FY2025 workbook cell for one
+    # person, 76-100%, natural gas.
+    ky_liheap: 117

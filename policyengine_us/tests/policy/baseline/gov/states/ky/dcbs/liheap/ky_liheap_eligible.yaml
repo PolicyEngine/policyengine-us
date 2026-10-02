@@ -1,16 +1,19 @@
-# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
-- name: Case 1, mixed-status household with citizen children counts every member.
+# Sources: 921 KAR 4:116 Sections 2, 3 and 8; Kentucky FY2026 state plan,
+# regular heating benefit workbook, and fact sheet.
+- name: Case 1, undocumented parents without a Social Security number make the household ineligible.
   period: 2026
   input:
     people:
       person1:
         age: 38
         immigration_status: UNDOCUMENTED
+        ssn_card_type: NONE
         # $12.50 an hour, 40 hours a week: 12.5 * 2_080 = 26_000.
         employment_income: 26_000
       person2:
         age: 36
         immigration_status: UNDOCUMENTED
+        ssn_card_type: NONE
       person3:
         age: 10
         immigration_status: CITIZEN
@@ -32,20 +35,155 @@
         is_in_public_housing: false
   output:
     is_citizen_or_legal_immigrant: [false, false, true, true]
-    # Modeling assumption: one citizen or qualified member is enough, and all
-    # four members count for household size and income.
+    # Every member counts for household size and income.
     spm_unit_size: 4
-    # The undocumented parent's wages are counted.
     ky_liheap_income: 26_000
     # Fact sheet limit for four: ceil(32_150 * 1.5 / 12 = 4_018.75) = 4_019;
     # income is 2_166.67 a month.
     ky_liheap_income_eligible: true
     heating_expense: 1_560
+    # 921 KAR 4:116 Section 2(1)(d) requires a Social Security number or a
+    # permanent residency card for each household member. The parents have
+    # neither, so the application is incomplete (Section 2(2)) and is denied
+    # (Section 8(3)).
+    ky_liheap_eligible: false
+    ky_liheap: 0
+- name: Case 2, a parent with a work-authorized Social Security number and a citizen child qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: DACA
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        # $14.00 an hour, 40 hours a week: 14 * 2_080 = 29_120.
+        employment_income: 29_120
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_440
+        receives_housing_assistance: false
+        # The household does not receive K-TAP.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    # The citizen child is the qualified member, and both members hold a
+    # Social Security number.
+    is_citizen_or_legal_immigrant: [false, true]
+    ky_liheap_income: 29_120
+    # Fact sheet limit for two: ceil(21_150 * 1.5 / 12 = 2_643.75) = 2_644;
+    # income is 2_426.67 a month.
+    ky_liheap_income_eligible: true
     ky_liheap_eligible: true
-    # 2_166.67 a month is above ceil(32_150 * 0.75 / 12 = 2_009.375) = 2_010
-    # and not above ceil(32_150 / 12 = 2_679.17) = 2_680, so the 75.01-100%
-    # band gives 3 income points.
-    # 4 (size) + 3 (income) + 6 (electricity) = 13 points;
-    # ceil(13 * 16.66 = 216.58) = 217, the workbook cell for four people,
-    # 75.01-100%, electricity.
-    ky_liheap: 217
+    # 2_426.67 a month is above ceil(21_150 * 1.25 / 12 = 2_203.13) = 2_204,
+    # so the 126.01-150% band gives 1 income point.
+    # 2 (size) + 1 (income) + 6 (electricity) = 9 points;
+    # ceil(9 * 16.66 = 149.94) = 150, the workbook cell for two people,
+    # 126.01-150%, electricity.
+    ky_liheap: 150
+- name: Case 3, Social Security numbers alone do not qualify a household with no citizen or qualified noncitizen.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: DACA
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        # $11.00 an hour, 40 hours a week: 11 * 2_080 = 22_880.
+        employment_income: 22_880
+      person2:
+        age: 27
+        immigration_status: TPS
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+        receives_housing_assistance: false
+        # The household does not receive K-TAP.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    is_citizen_or_legal_immigrant: [false, false]
+    # 22_880 a year is 1_906.67 a month, within the two-person limit of 2_644.
+    ky_liheap_income_eligible: true
+    # Section 2(1)(d) is met, but LIHEAP is a federal public benefit and needs
+    # at least one citizen or qualified noncitizen member.
+    ky_liheap_eligible: false
+    ky_liheap: 0
+- name: Case 4, lawful permanent residents without a Social Security card qualify through the residency card.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssn_card_type: NONE
+        # An $800 a month pension.
+        taxable_private_pension_income: 9_600
+      person2:
+        age: 62
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssn_card_type: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        receives_housing_assistance: false
+        # The household does not receive K-TAP.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    is_citizen_or_legal_immigrant: [true, true]
+    ky_liheap_income: 9_600
+    ky_liheap_income_eligible: true
+    # Section 2(1)(d) accepts a permanent residency card in place of a Social
+    # Security number.
+    ky_liheap_eligible: true
+    # 800 a month is not above ceil(21_150 * 0.75 / 12 = 1_321.875) = 1_322,
+    # so the 0-75% band gives 4 income points.
+    # 2 (size) + 4 (income) + 5 (propane) = 11 points;
+    # ceil(11 * 16.66 = 183.26) = 184, the workbook cell for two people,
+    # 0-75%, propane.
+    ky_liheap: 184
+- name: Case 5, heat included in rent with an unspecified fuel is eligible but has no payment schedule.
+  period: 2026
+  input:
+    state_code: KY
+    age: 30
+    # $12.00 an hour, 20 hours a week: 12 * 1_040 = 12_480.
+    employment_income: 12_480
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    heating_type: UNSPECIFIED
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: false
+    is_in_public_housing: false
+  output:
+    heating_expense: 0
+    # 1_040 a month is within the one-person limit of 1_957.
+    ky_liheap_income_eligible: true
+    # 921 KAR 4:116 Section 3(2)(c): heating paid as an undesignated portion
+    # of the rent.
+    ky_liheap_eligible: true
+    # The workbook publishes no column for an unspecified fuel.
+    ky_liheap: 0

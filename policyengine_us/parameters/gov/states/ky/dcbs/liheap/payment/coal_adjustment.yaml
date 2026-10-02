@@ -1,17 +1,17 @@
-description: Kentucky adjusts coal heating-payment points by household size to reproduce its published Low Income Home Energy Assistance Program matrix.
+description: Kentucky sets this coal heating point adjustment by household size under the Low Income Home Energy Assistance Program.
 brackets:
   - threshold:
-      2025-10-01: 0
+      2024-10-01: 0
     amount:
-      2025-10-01: 0
+      2024-10-01: 0
   - threshold:
-      2025-10-01: 2
+      2024-10-01: 2
     amount:
-      2025-10-01: -1
+      2024-10-01: -1
   - threshold:
-      2025-10-01: 3
+      2024-10-01: 3
     amount:
-      2025-10-01: 0
+      2024-10-01: 0
 metadata:
   type: single_amount
   threshold_unit: person
@@ -19,5 +19,7 @@ metadata:
   period: year
   label: Kentucky LIHEAP coal household-size adjustment
   reference:
-    - title: Kentucky FY2026 benefit matrix, rev benefit income range worksheet, coal column
+    - title: Kentucky FY2026 benefit workbook, Subsidy points worksheet, cells H8-H11 (two-person coal rows)
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
+    - title: Kentucky FY2025 benefit workbook, Subsidy points worksheet, cells H8-H11
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KY_BenefitMatrix_2025.xlsx

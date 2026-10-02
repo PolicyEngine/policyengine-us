@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX, KY
+    coverage: OR, DC, Riverside County, MA, IL, KY, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -829,8 +829,8 @@ programs:
         full_name: Kentucky Low Income Home Energy Assistance Program
         variable: ky_liheap
         parameter_prefix: gov.states.ky.dcbs.liheap
-        verified_years: "2026"
-        notes: FY2026 regular heating only, from the published benefit worksheet. Crisis and cooling assistance are out of scope.
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

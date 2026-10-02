@@ -8,7 +8,13 @@ class ky_liheap_income_eligible(Variable):
     definition_period = YEAR
     label = "Kentucky LIHEAP income eligibility"
     defined_for = StateCode.KY
-    reference = "https://www.capky.org/wp-content/uploads/2026/01/2025-2026-LIHEAP-Fact-Sheet-V2.pdf"
+    reference = (
+        "https://www.capky.org/wp-content/uploads/2026/01/2025-2026-LIHEAP-Fact-Sheet-V2.pdf",
+        # Section 2.1 (page 8).
+        "https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=8",
+        # Section 3(1).
+        "https://apps.legislature.ky.gov/law/kar/titles/921/004/116/",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.dcbs.liheap

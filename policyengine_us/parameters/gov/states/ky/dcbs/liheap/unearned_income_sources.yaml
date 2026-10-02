@@ -1,13 +1,22 @@
-description: Kentucky counts these available person-level unearned income sources under the Low Income Home Energy Assistance Program.
+description: Kentucky counts these unearned income sources under the Low Income Home Energy Assistance Program.
 values:
-  2025-10-01:
+  2024-10-01:
     - unemployment_compensation
     - strike_benefits
+    # The FY2026 plan counts Social Security excluding the Medicare deduction
+    # (the FY2025 plan counted it including the deduction). The premium is not
+    # deducted yet: neither medicare_part_b_premium nor
+    # medicare_part_b_premiums_reported is wired in.
+    - social_security
     - ssi
     # Plan Section 17.4 lists the DCBS State Supplementation award letter as
     # income documentation.
     - ky_ssp
+    # Military retirement pay is taxable pension income, so pension_income
+    # already covers it.
     - pension_income
+    # Plan Section 17.4 lists Railroad Retirement records.
+    - railroad_benefits
     - retirement_distributions
     - financial_assistance
     - gambling_winnings
@@ -29,7 +38,9 @@ metadata:
   period: year
   label: Kentucky LIHEAP unearned income sources
   reference:
-    - title: Kentucky FY2026 state plan, Sections 1.9 and 17.4
-      href: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=5,6,7,34
+    - title: Kentucky FY2026 state plan, Section 1.9, page 6, and Section 17.4, page 34
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=6
+    - title: Kentucky FY2025 state plan, Section 1.9, page 6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KY_Plan_2025.pdf#page=6
     - title: 921 KAR 4:116 Section 1(8)
       href: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
