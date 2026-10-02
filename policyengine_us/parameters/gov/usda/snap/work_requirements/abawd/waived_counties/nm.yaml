@@ -1,0 +1,64 @@
+description: Counties in New Mexico with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  # FY2025 waiver: 29 counties plus reservation areas (sub-county, not
+  # modeled), 2025-01-01 through 2025-12-31. The FY2024 statewide waiver it
+  # replaced (through 2024-12-31) is carried by waived_states. The letter
+  # prints "Dona Ana County"; the County enum member is DOÑA_ANA_COUNTY_NM
+  # (precomposed U+00D1), and this file must keep that exact UTF-8 literal.
+  2025-01-01:
+    - CATRON_COUNTY_NM # FIPS 35003
+    - CHAVES_COUNTY_NM # FIPS 35005
+    - CIBOLA_COUNTY_NM # FIPS 35006
+    - COLFAX_COUNTY_NM # FIPS 35007
+    - CURRY_COUNTY_NM # FIPS 35009
+    - DE_BACA_COUNTY_NM # FIPS 35011
+    - DOÑA_ANA_COUNTY_NM # FIPS 35013
+    - GRANT_COUNTY_NM # FIPS 35017
+    - GUADALUPE_COUNTY_NM # FIPS 35019
+    - HARDING_COUNTY_NM # FIPS 35021
+    - HIDALGO_COUNTY_NM # FIPS 35023
+    - LEA_COUNTY_NM # FIPS 35025
+    - LINCOLN_COUNTY_NM # FIPS 35027
+    - LUNA_COUNTY_NM # FIPS 35029
+    - MCKINLEY_COUNTY_NM # FIPS 35031
+    - MORA_COUNTY_NM # FIPS 35033
+    - OTERO_COUNTY_NM # FIPS 35035
+    - QUAY_COUNTY_NM # FIPS 35037
+    - RIO_ARRIBA_COUNTY_NM # FIPS 35039
+    - ROOSEVELT_COUNTY_NM # FIPS 35041
+    - SANDOVAL_COUNTY_NM # FIPS 35043
+    - SAN_JUAN_COUNTY_NM # FIPS 35045
+    - SAN_MIGUEL_COUNTY_NM # FIPS 35047
+    - SIERRA_COUNTY_NM # FIPS 35051
+    - SOCORRO_COUNTY_NM # FIPS 35053
+    - TAOS_COUNTY_NM # FIPS 35055
+    - TORRANCE_COUNTY_NM # FIPS 35057
+    - UNION_COUNTY_NM # FIPS 35059
+    - VALENCIA_COUNTY_NM # FIPS 35061
+  # The FY2025 waiver expired 2025-12-31 (USDA February 26, 2026
+  # memorandum, Appendix A). FY2026 waiver (unemployment over 10 percent):
+  # Luna County plus four reservation areas (sub-county, not modeled),
+  # 2026-01-01 through 2026-12-31 (FNS response, October 23, 2025).
+  2026-01-01:
+    - LUNA_COUNTY_NM # FIPS 35029
+  2027-01-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in New Mexico
+  reference:
+    - title: USDA FNS New Mexico ABAWD Waiver Response, September 18, 2024 - requested area (29 counties and reservations)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS New Mexico ABAWD Waiver Response, September 18, 2024 - Table 1 county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS New Mexico ABAWD Waiver Response, September 18, 2024 - implementation date (2025-01-01) and expiration date (2025-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2025.pdf#page=4
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, New Mexico through 2025-12-31)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS New Mexico ABAWD Waiver Response, October 23, 2025 - requested area and Luna County (12.5 percent)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2026.pdf#page=3
+    - title: USDA FNS New Mexico ABAWD Waiver Response, October 23, 2025 - reservation areas, implementation date (2026-01-01), and expiration date (2026-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2026.pdf#page=4

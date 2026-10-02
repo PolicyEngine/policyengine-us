@@ -124,7 +124,7 @@ LEGACY_UMBRELLA_CASES = [
     ),
     (
         "taxsim_state_eitc",
-        ["mn_wfc"],
+        ["mn_child_and_working_families_credits"],
         make_tax_unit_situation(
             year=2023,
             state="MN",
@@ -147,9 +147,10 @@ def test_legacy_state_umbrellas_match_state_specific_components(
 
 
 def test_state_ctc_matches_configured_component_sum():
+    # NY is in the 2023 state_ctcs block; MN is not (see the next test).
     situation = make_tax_unit_situation(
         year=2023,
-        state="MN",
+        state="NY",
         wages=20_050.0,
         dependent_ages=(9, 7),
     )
@@ -157,7 +158,27 @@ def test_state_ctc_matches_configured_component_sum():
         situation, 2023, configured_component_vars("state_ctcs", 2023)
     )
     actual = calculate_sum(situation, 2023, ["taxsim_state_ctc"])
+    assert expected > 0
     assert actual == pytest.approx(expected, abs=0.01)
+
+
+@pytest.mark.parametrize("year", [2023, 2024, 2025, 2026, 2027])
+def test_mn_combined_credit_is_state_eitc_not_state_ctc(year):
+    # From 2023 Minnesota's child tax credit and working family credit are
+    # phased down jointly (Minn. Stat. 290.0661, subd. 4) and claimed on one
+    # Schedule M1REF line, so the whole credit is reported as the state EITC.
+    situation = make_tax_unit_situation(
+        year=year,
+        state="MN",
+        wages=20_050.0,
+        dependent_ages=(9, 7),
+    )
+    combined = calculate_sum(situation, year, ["mn_child_and_working_families_credits"])
+    assert combined > 0
+    assert calculate_sum(situation, year, ["taxsim_state_eitc"]) == pytest.approx(
+        combined, abs=0.01
+    )
+    assert calculate_sum(situation, year, ["taxsim_state_ctc"]) == 0
 
 
 def test_state_property_tax_credit_matches_configured_component_sum():
@@ -192,16 +213,6 @@ def test_state_property_tax_credit_matches_configured_component_sum():
                 wages=40_000.0,
                 childcare=2_000.0,
                 dependent_ages=(5,),
-            ),
-        ),
-        (
-            ["mn_wfc", "taxsim_mn_child_tax_credit_component"],
-            "mn_child_and_working_families_credits",
-            make_tax_unit_situation(
-                year=2023,
-                state="MN",
-                wages=20_050.0,
-                dependent_ages=(9, 7),
             ),
         ),
     ],
