@@ -1,5 +1,5 @@
-- name: Existing net business income remains an approximation without a new business deduction
-  period: 2_026
+- name: Case 1, existing net business income remains an approximation without a new business deduction.
+  period: 2026
   input:
     state_code: IN
     age: 40
@@ -14,8 +14,8 @@
   output:
     # 12,000 wages + 6,000 ordinary business + 3,000 specified service business.
     in_eap_income: 21_000
-- name: Adult dependent secondary and college student exemptions do not extend past age twenty-three for college
-  period: 2_026
+- name: Case 2, adult dependent secondary and college student exemptions do not extend past age 23 for college.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN]
     age: [18, 23, 24, 23]
@@ -32,9 +32,8 @@
     interest_income: [1_000, 1_000, 1_000, 1_000]
   output:
     in_eap_income: [0, 0, 16_000, 16_000]
-- name: Reported Medicare premium and support paid reduce income, while TANF, support received and capital gains
-    are excluded
-  period: 2_026
+- name: Case 3, support paid reduces income while TANF, support received and capital gains are excluded.
+  period: 2026
   input:
     state_code: IN
     age: 40
@@ -44,48 +43,49 @@
     receives_medicaid: false
     rent: 0
     employment_income: 12_000
-    medicare_part_b_premiums_reported: 2_400
     child_support_expense: 2_400
     child_support_received: 4_000
     tanf: 4_000
     long_term_capital_gains: 4_000
   output:
-    in_eap_income: 20_400
-- name: Immigration excludes an adult from size but counts earnings, and child SSA counts despite excluded child
-    wages
-  period: 2_026
+    # 12_000 wages + 12_000 Social Security (gross; the Medicare premium is not
+    # deducted yet) + 1_200 SSI - 2_400 support paid = 22_800.
+    in_eap_income: 22_800
+- name: Case 4, immigration excludes an adult from size but counts earnings and child Social Security counts despite excluded child wages.
+  period: 2026
   input:
     people:
-      adult:
+      person1:
         age: 35
         immigration_status: UNDOCUMENTED
         employment_income: 12_000
         ssi: 0
         social_security: 0
-      child:
+      person2:
         age: 10
         employment_income: 6_000
         social_security: 2_400
         ssi: 1_200
     spm_units:
-      unit:
-        members: [adult, child]
+      spm_unit:
+        members: [person1, person2]
         heating_type: UNSPECIFIED
     households:
-      home:
-        members: [adult, child]
+      household:
+        members: [person1, person2]
         state_code: IN
   output:
     in_eap_household_size: 1
     in_eap_income: 15_600
     in_eap_eligible: true
 
-- name: Farm, partnership and S corporation, estate, farm rental, strike and military retirement income count
+- name: Case 5, farm, partnership and S corporation, estate, farm rental, strike and pension income count.
   # Section 6.1 (pages 51-52, 54, 56): Schedule F farm income, Schedule E partnership
   # and S corporation, estate and trust, and farm rental lines, strike benefits and
   # pensions count. One counted adult per household, one source each:
   # farm operations $21,000; partnership $9,000 + S corporation $6,000 = $15,000;
-  # estate $4,800; farm rent $7,200; strike benefits $2,400; military retirement $18,000.
+  # estate $4,800; farm rent $7,200; strike benefits $2,400; a military pension of
+  # $18,000, reported as a taxable public pension.
   period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN]
@@ -96,11 +96,11 @@
     estate_income: [0, 0, 4_800, 0, 0, 0]
     farm_rent_income: [0, 0, 0, 7_200, 0, 0]
     strike_benefits: [0, 0, 0, 0, 2_400, 0]
-    military_retirement_pay: [0, 0, 0, 0, 0, 18_000]
+    taxable_public_pension_income: [0, 0, 0, 0, 0, 18_000]
   output:
     in_eap_income: [21_000, 15_000, 4_800, 7_200, 2_400, 18_000]
 
-- name: Each income source is floored at zero, so a business, rental or farm loss does not offset wages
+- name: Case 6, each income source is floored at zero so a business, rental or farm loss does not offset wages.
   # Section 6.1 (pages 51-52) counts gross business income before expenses, so a net
   # loss in one source cannot reduce other income. Wages: $14.00 x 2,080 hours = $29,120.
   # Household 1: max($29,120, 0) + max(-$15,000 self-employment, 0) = $29,120.
@@ -127,7 +127,7 @@
     in_eap_eligible: [true, true, true]
     in_eap: [200, 200, 200]
 
-- name: Service business profits above the income limit prevent a heating award
+- name: Case 7, service business profits above the income limit prevent a heating award.
   # Section 6.1 counts business income; a specified service business is not
   # exempt. Existing net profits remain the documented gross-income approximation.
   period: 2026
@@ -147,3 +147,19 @@
     # Above the published one-person annual limit of 33,556.
     in_eap_eligible: false
     in_eap: 0
+
+- name: Case 8, survivor benefits other than Social Security count as income.
+  # Section 6.1 (page 54) counts life insurance payments issued on a regular basis to
+  # a surviving household member and retirement funds paid to a surviving spouse, and
+  # page 53 counts Black Lung benefits awarded to a survivor.
+  # A widow receives a $900 monthly survivor annuity from her late husband's pension
+  # ($900 x 12 = $10,800) and earns $12.00 x 780 hours = $9,360.
+  # Income: $10,800 + $9,360 = $20,160.
+  period: 2026
+  input:
+    state_code: IN
+    age: 58
+    survivor_benefits: 10_800
+    employment_income: 9_360
+  output:
+    in_eap_income: 20_160

@@ -7,7 +7,11 @@ class in_eap_eligible(Variable):
     definition_period = YEAR
     label = "Indiana EAP household eligibility"
     defined_for = StateCode.IN
-    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=23,29,69,70,73,74,75"
+    reference = (
+        # Section 3.1 (page 23), Section 4.4 (page 29), Section 8.3 (pages 69-70) and
+        # Section 8.8 (pages 73-75).
+        "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=23",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
@@ -18,7 +22,7 @@ class in_eap_eligible(Variable):
         # cannot be determined here. Section 8.8 separates household eligibility from
         # whether each utility can receive a benefit; burden is checked in in_eap.
         return (
-            spm_unit.any(spm_unit.members("is_citizen_or_legal_immigrant", period))
+            (add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0)
             & spm_unit.any(spm_unit.members("age", period) >= p.eligibility.adult_age)
             & (income <= limit)
         )

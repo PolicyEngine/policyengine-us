@@ -9,7 +9,10 @@ class in_eap_smi(Variable):
     unit = USD
     label = "Indiana EAP household-adjusted state median income"
     defined_for = StateCode.IN
-    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=69,70,72,73"
+    reference = (
+        # Section 8.3 (pages 69-70) and Section 8.7 (pages 72-73).
+        "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=69",
+    )
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("in_eap_household_size", period)
@@ -17,6 +20,4 @@ class in_eap_smi(Variable):
         # Truncate household-adjusted 100% SMI before applying each income-band rate.
         # This numerical pattern reproduces all 90 published monthly, quarterly and
         # annual table values; the manual does not state an explicit rounding rule.
-        # Mississippi's base-first truncation would raise the FY2026 60% limits
-        # for sizes 1 and 5 by $1. Keep this ordering in state code.
         return where(size > 0, np.floor(smi(size, state, period, parameters)), 0)

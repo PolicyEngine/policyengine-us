@@ -1,5 +1,5 @@
-- name: Published annual sixty percent SMI limits, at the boundary
-  period: 2_026
+- name: Case 1, published annual 60% of state median income limits at the boundary.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -14,8 +14,8 @@
       UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
   output:
     in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
-- name: Published annual sixty percent SMI limits, one dollar above
-  period: 2_026
+- name: Case 2, published annual 60% of state median income limits one dollar above.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -30,8 +30,8 @@
       UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
   output:
     in_eap_eligible: [false, false, false, false, false, false, false, false, false, false]
-- name: Federal household adjustment extends to households larger than the printed chart
-  period: 2_026
+- name: Case 3, federal household adjustment extends to households larger than the printed chart.
+  period: 2026
   input:
     state_code: [IN, IN]
     age: [40, 40]
@@ -45,8 +45,8 @@
     heating_type: [UNSPECIFIED, UNSPECIFIED]
   output:
     in_eap_eligible: [true, false]
-- name: Household eligibility requires an adult and an eligible member, independently of a utility bill
-  period: 2_026
+- name: Case 4, household eligibility requires an adult and an eligible member independently of a utility bill.
+  period: 2026
   input:
     state_code: [IN, IN, IN]
     age: [17, 18, 18]
@@ -61,7 +61,7 @@
   output:
     in_eap_eligible: [false, true, false]
 
-- name: Farm operations income puts a farm couple over the income limit
+- name: Case 5, farm operations income puts a farm couple over the income limit.
   # Section 6.1 (pages 51-52) defines self-employment to include farming (Schedule F).
   # Income: $58,000 farm operations + $16,640 wages ($16.00 x 1,040 hours) = $74,640.
   # Size 2 SMI: floor($107,555 x 0.68) = $73,137; 60% limit floor($43,882.20) = $43,882.

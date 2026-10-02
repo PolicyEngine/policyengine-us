@@ -1,1 +1,1 @@
-Added partial Indiana EAP regular heating assistance with state-specific dwelling types for single-family homes, mobile homes, and multi-unit dwellings, with remaining income and administrative gaps documented.
+Add Indiana Energy Assistance Program (EAP) regular heating assistance and the winter electric allowance.

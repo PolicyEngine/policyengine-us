@@ -1,10 +1,16 @@
-description: Indiana pays this regular electric supplement in the middle income band under the Energy Assistance Program.
+description: Indiana provides this regular electric supplement in the middle income band under the Energy Assistance Program.
 values:
+  2024-10-01: 75
   2025-10-01: 100
 metadata:
   unit: currency-USD
   period: year
   label: Indiana EAP middle income electric payment
   reference:
-    - title: Indiana PY2026 EAP Intake and Operations Manual
-      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=72,73
+    # Page 72 holds the payment amount and page 73 the 30% to 45% chart.
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Section 8.7, pages 72-73
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=72
+    - title: Indiana PY2025-26 EAP Benefit Matrix, page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IN_BenefitMatrix_Heat-Crisis_2026.pdf#page=1
+    - title: Indiana PY2024-25 EAP Benefit Matrix, page 1
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/IN_BenefitMatrix_2025.pdf#page=1

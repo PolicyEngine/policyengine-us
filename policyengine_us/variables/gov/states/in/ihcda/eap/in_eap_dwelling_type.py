@@ -20,4 +20,7 @@ class in_eap_dwelling_type(Variable):
         "the model assumes single-family; report the type to apply the correct "
         "dwelling points. Heat included in rent is reported separately."
     )
-    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=70,71"
+    reference = (
+        # Section 8.4 (pages 70-71).
+        "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=70",
+    )

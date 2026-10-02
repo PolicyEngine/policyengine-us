@@ -8,11 +8,19 @@ class in_eap(Variable):
     unit = USD
     label = "Indiana EAP regular heating assistance"
     documentation = (
-        "Verified for FY2026. Earlier years use model parameter backfilling "
-        "and are unverified historical estimates."
+        "Verified for FY2026. FY2025 uses the PY2024-25 benefit matrix for the "
+        "income points, electric payments and fuel points that differ from "
+        "FY2026. Its other values, and all earlier years, use model parameter "
+        "backfilling and are unverified historical estimates."
     )
     defined_for = "in_eap_eligible"
-    reference = "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=10,26,27,32,33,47,69,70,71,72,73,74,75,77,78"
+    reference = (
+        # Section 8.11 (page 77) benefit formula, Sections 8.3-8.7 (pages 69-73) points
+        # and electric payment, Section 8.8 (pages 73-75), Sections 8.12-8.13 (pages
+        # 77-78), Section 1.1 (page 10), Section 3.4 (pages 26-27), Section 4.7 (pages
+        # 32-33) and Section 6 (page 47).
+        "https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=77",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].ihcda.eap
@@ -44,9 +52,11 @@ class in_eap(Variable):
         fuel = spm_unit("heating_type", period)
         fuel_points = p.benefit.fuel_points[fuel]
         heating_bill = spm_unit("heating_expense", period) > 0
-        heating_burden = where(
-            heat_in_rent, rent_paid, heating_bill & (fuel_points > 0)
-        )
+        # The fuels that receive the heating award are listed separately from the
+        # fuel points: the PY2024-25 matrix gave natural gas and electric heat zero
+        # fuel points but still paid the award on the income and dwelling points.
+        award_fuel = np.isin(fuel.decode_to_str(), p.benefit.heating_award_fuels)
+        heating_burden = where(heat_in_rent, rent_paid, heating_bill & award_fuel)
         income_points = select(
             [heat_in_rent, low, middle],
             [
@@ -66,7 +76,7 @@ class in_eap(Variable):
         # Disability with Medicaid receipt approximates the specified Medicaid pathways.
         disability = (
             (person("ssi", period) > 0)
-            | person("receives_ssi", period)
+            | (add(person, period, ["receives_ssi"]) > 0)
             | (person("social_security_disability", period) > 0)
             | (person("is_disabled", period) & person("receives_medicaid", period))
         )

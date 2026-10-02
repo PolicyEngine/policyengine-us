@@ -1,7 +1,12 @@
-description: Indiana counts these available income sources for adults who are not exempt students under the Energy Assistance Program; Social Security and SSI are handled separately because benefits paid for children also count.
+description: Indiana uses these income sources to compute countable income for adult members who are not exempt students under the Energy Assistance Program.
+# Social Security and SSI are not listed here. The income variable adds them
+# separately because benefits paid for children also count.
 values:
   2025-10-01:
     - employment_income
+    # Section 6.1 (pages 51-52) asks for gross business, farm and rental income before
+    # expenses. The business, farm and rental inputs below are net amounts, so
+    # countable income is understated for those households.
     - self_employment_income
     - sstb_self_employment_income
     # Section 6.1 defines self-employment to include farming (Schedule F) and lists
@@ -14,9 +19,16 @@ values:
     - unemployment_compensation
     - strike_benefits
     - pension_income
-    # Military retirement pay is a separate input from pension_income.
-    - military_retirement_pay
+    # Section 6.1 (pages 54-55) and Section 6.2 (page 59) exclude lump-sum retirement
+    # payments of the employee's contributions and interest, and withdrawals of
+    # principal. This input cannot separate them from recurring payments, so every
+    # distribution counts and income is overstated for those households.
     - retirement_distributions
+    # Section 6.1 (pages 53-54) counts regular life insurance payments to a survivor,
+    # Black Lung benefits awarded to a survivor, and retirement funds paid to a
+    # surviving spouse or child. Social Security survivor benefits are added with
+    # Social Security, not here.
+    - survivor_benefits
     - railroad_benefits
     - alimony_income
     - veterans_benefits
@@ -32,5 +44,5 @@ metadata:
   period: year
   label: Indiana EAP adult income sources
   reference:
-    - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 6.1 and 6.2
-      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=47,48,49,50,51,52,53,54,55,56,57,58,59,60,61
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 6.1 (pages 47-57) and 6.2 (pages 57-61)
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=47

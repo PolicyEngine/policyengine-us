@@ -1,5 +1,5 @@
-- name: Published quarterly band 1 ceilings, at the boundary
-  period: 2_026
+- name: Case 1, published three-month band 1 ceilings at the boundary.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -17,8 +17,8 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [450, 450, 450, 450, 450, 450, 450, 450, 450, 450]
-- name: Published quarterly band 1 ceilings, one dollar above
-  period: 2_026
+- name: Case 2, published three-month band 1 ceilings one dollar above.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -36,8 +36,8 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [325, 325, 325, 325, 325, 325, 325, 325, 325, 325]
-- name: Published quarterly band 2 ceilings, at the boundary
-  period: 2_026
+- name: Case 3, published three-month band 2 ceilings at the boundary.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -55,8 +55,8 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [325, 325, 325, 325, 325, 325, 325, 325, 325, 325]
-- name: Published quarterly band 2 ceilings, one dollar above
-  period: 2_026
+- name: Case 4, published three-month band 2 ceilings one dollar above.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -74,14 +74,14 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
-- name: Regular heating fuel points, with kerosene, solar, unspecified and no heating limited to the electric allowance
+- name: Case 5, fuel points by heating type with kerosene, solar, unspecified and no heating limited to the electric allowance.
   # One person, $0 income: band 1 (9 income points, $125 electric); single-family: 3 points.
   # Section 8.5 (page 71): natural gas and electricity 1 point, bulk fuels 6 points.
   # Electricity, natural gas: (9 + 3 + 1) x $25 + $125 = $450.
   # Propane, fuel oil, coal, wood and other (pellets, corn, biofuels): (9 + 3 + 6) x $25 + $125 = $575.
   # Kerosene (Section 1.1, page 10, bars EAP funds for it), solar, unspecified and no
   # heating earn zero fuel points and no heating award: the $125 electric payment only.
-  period: 2_026
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
     age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
@@ -98,8 +98,8 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
   output:
     in_eap: [450, 450, 575, 575, 125, 575, 575, 575, 125, 125, 125]
-- name: Vulnerability points are awarded once across age, disability, military and pregnancy categories
-  period: 2_026
+- name: Case 6, vulnerability points are awarded once across age, disability, military and pregnancy categories.
+  period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN, IN, IN]
     age: [59, 60, 40, 40, 40, 40, 40, 60]
@@ -119,8 +119,8 @@
     is_disabled: [false, false, false, false, false, false, true, true]
   output:
     in_eap: [575, 625, 625, 625, 625, 625, 625, 625]
-- name: Utilities included in rent require one dollar monthly out-of-pocket rent
-  period: 2_026
+- name: Case 7, utilities included in rent require one dollar of monthly out-of-pocket rent.
+  period: 2026
   input:
     state_code: [IN, IN, IN]
     age: [40, 40, 40]
@@ -136,8 +136,8 @@
     tenant_pays_utilities: [false, false, false]
   output:
     in_eap: [0, 0, 100]
-- name: Heat in rent with separately billed electricity preserves the income-based electric supplement
-  period: 2_026
+- name: Case 8, heat in rent with separately billed electricity keeps the income-based electric payment.
+  period: 2026
   input:
     state_code: [IN, IN, IN]
     age: [40, 40, 40]
@@ -153,8 +153,8 @@
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
   output:
     in_eap: [175, 150, 100]
-- name: Regular benefits are not capped at current bills, and absent electric service receives no supplement
-  period: 2_026
+- name: Case 9, regular benefits are not capped at current bills and no electric service means no electric payment.
+  period: 2026
   input:
     state_code: [IN, IN]
     age: [40, 40]
@@ -171,7 +171,7 @@
   output:
     in_eap: [325, 450]
 
-- name: Dwelling type applies the published three, two, and one point awards
+- name: Case 10, dwelling type applies the published three, two and one point awards.
   # Section 8.4: single-family 3, mobile home 2, multi-unit 1; $25 per point.
   # Low band: (9 + dwelling + 1 gas) * $25 + $125 electricity.
   # High band: (2 + dwelling + 1 gas) * $25 + $50 electricity.
@@ -195,7 +195,7 @@
   output:
     in_eap: [450, 425, 400, 200, 175, 150]
 
-- name: Dwelling type does not change zero dwelling points when heat is in rent
+- name: Case 11, dwelling type does not change zero dwelling points when heat is in rent.
   # Section 8.4: zero dwelling points for every type when heat is in rent.
   # Two income points * $25 plus the $50 electricity-in-rent allowance.
   period: 2026
@@ -216,7 +216,7 @@
   output:
     in_eap: [100, 100, 100]
 
-- name: Other fuel reads the other heating fuel bill for bulk-fuel points, and kerosene earns no heating award
+- name: Case 12, other fuel reads the other heating fuel bill for bulk-fuel points and kerosene earns no heating award.
   # Wages: $7.25 x 2,080 hours = $15,080. Three-month income $15,080 x 3 / 12 = $3,770
   # is within the size 1 band 1 ceiling floor($55,928 x 0.30 x 3 / 12) = $4,194:
   # 9 income points and the $125 electric payment. Single-family dwelling: 3 points.
@@ -241,7 +241,7 @@
     in_eap_income: [15_080, 15_080, 15_080]
     in_eap: [575, 125, 125]
 
-- name: All utilities in rent through the tenant flag alone pays both benefits
+- name: Case 13, all utilities in rent through the tenant flag alone pays both benefits.
   # Section 4.7 (page 33): a tenant who pays all utilities in rent receives both
   # benefits. tenant_pays_utilities: false, with the heat flag omitted, places heat
   # and electricity in rent: 2 income points regardless of income (here $12,000, a
@@ -264,3 +264,80 @@
     pre_subsidy_electricity_expense: [0, 0, 0, 1_000]
   output:
     in_eap: [100, 150, 0, 100]
+
+- name: Case 14, size 11 income bands follow the federal adjustment beyond the printed chart.
+  # Section 8.3 (page 69) prints the charts through size 10 and refers larger
+  # households to the calculation methodology. 45 CFR 96.85 adds 3% of the four-person
+  # state median income for each member beyond six, so size 11 uses 52% + 5 x 16% +
+  # 5 x 3% = 147%: floor($107,555 x 1.47) = $158,105. The same method at 144% gives
+  # the printed size 10 three-month ceilings of $11,615 and $17,423 (page 70).
+  # Band 1 three-month ceiling: floor($158,105 x 0.30 x 3 / 12) = $11,857, so annual
+  # income of $47,428 ($11,857 x 4) is in band 1 and $47,432 ($11,858 x 4) in band 2.
+  # Band 2 three-month ceiling: floor($158,105 x 0.45 x 3 / 12) = $17,786, so annual
+  # income of $71,144 ($17,786 x 4) is in band 2 and $71,148 ($17,787 x 4) in band 3.
+  # Natural gas, single-family (pages 69-72): band 1 (9 + 3 + 1) x $25 + $125 = $450;
+  # band 2 (5 + 3 + 1) x $25 + $100 = $325; band 3 (2 + 3 + 1) x $25 + $50 = $200.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN]
+    age: [40, 40, 40, 40]
+    in_eap_eligible: [true, true, true, true]
+    in_eap_household_size: [11, 11, 11, 11]
+    in_eap_income: [47_428, 47_432, 71_144, 71_148]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000]
+  output:
+    in_eap_smi: [158_105, 158_105, 158_105, 158_105]
+    in_eap: [450, 325, 325, 200]
+
+- name: Case 15, SSDI or reported SSI receipt alone makes a household vulnerable and a disability flag alone does not.
+  # Section 3.4 (page 26) treats a member as a person with a disability when they
+  # receive SSI, SSDI or another listed benefit. A disability reported without one of
+  # those benefits needs a doctor's statement and a pending SSA claim, which the model
+  # cannot identify. Section 8.6 (page 72) awards 2 points for a vulnerable member.
+  # No household receives an SSI payment in the model or Medicaid.
+  # Household 1, SSDI of $1,200 x 12 = $14,400: three-month income $3,600 is within the
+  # size 1 band 1 ceiling of $4,194 (page 69): (9 + 3 + 6 + 2) x $25 + $125 = $625.
+  # Household 2, reports SSI receipt, wages $12.00 x 780 hours = $9,360 (three-month
+  # income $2,340, band 1): (9 + 3 + 6 + 2) x $25 + $125 = $625.
+  # Household 3, disabled with no SSI, SSDI or Medicaid, wages $7.25 x 2,080 hours =
+  # $15,080 (three-month income $3,770, band 1): (9 + 3 + 6) x $25 + $125 = $575.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    social_security_disability: [14_400, 0, 0]
+    receives_ssi: [false, true, false]
+    is_disabled: [false, false, true]
+    receives_medicaid: [false, false, false]
+    employment_income: [0, 9_360, 15_080]
+    heating_type: [PROPANE, PROPANE, PROPANE]
+    bottled_gas_expense: [1_800, 1_800, 1_800]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    in_eap_income: [14_400, 9_360, 15_080]
+    in_eap: [625, 625, 575]
+
+- name: Case 16, heat in rent with separately billed electricity and rent under one dollar a month pays only the electric benefit.
+  # Section 4.7 (page 32): a client with utilities included in rent must pay at least
+  # $1 a month in rent to receive that benefit. Page 33: when heat is in rent and the
+  # tenant pays the electric bill directly, the electric benefit goes to the vendor.
+  # Wages: $7.25 x 2,080 hours = $15,080. Three-month income $3,770 is within the size 1
+  # band 1 ceiling of $4,194 (page 69), so the electric payment is $125 (page 72).
+  # Households 1 and 2, rent of $0 and $11 a year, below $12: no heating award, $125.
+  # Household 3, rent of $12 a year: heat in rent earns 2 income points (page 69) and
+  # no dwelling or fuel points: 2 x $25 + $125 = $175.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [40, 40, 40]
+    employment_income: [15_080, 15_080, 15_080]
+    rent: [0, 11, 12]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    in_eap_income: [15_080, 15_080, 15_080]
+    in_eap: [125, 125, 175]
