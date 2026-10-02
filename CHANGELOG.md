@@ -1,3 +1,10 @@
+## [2.21.2] - 2026-10-02
+
+### Fixed
+
+- Count only IRC 86 taxable Social Security and gross capital gains, without netting losses, in the qualifying relative gross income test. Taxable benefits use the dependent's own IRC 86(b)(2) modified AGI, and zero base amounts apply to a dependent who lives with their spouse.
+
+
 ## [2.21.1] - 2026-10-02
 
 ### Fixed
