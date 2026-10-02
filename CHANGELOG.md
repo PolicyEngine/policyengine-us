@@ -1,3 +1,45 @@
+## [2.15.2] - 2026-09-26
+
+### Changed
+
+- Cite the Hawaii, Maryland, Pennsylvania, Vermont and Arkansas rules that deduct child support paid in SNAP from 2010 to 2017, although some USDA State Options Report editions list these states as excluding it (no parameter values change). Add tests for the pre-2015 child support values and for the invariant that each state either excludes child support paid from SNAP gross income or deducts it from net income, never both and never neither.
+
+
+## [2.15.1] - 2026-09-25
+
+### Fixed
+
+- Correct the 2022 single 37% bracket threshold from $539,000 to $539,900.
+
+
+## [2.15.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision child-care age eligibility in Georgia, Idaho, Indiana, Michigan, North Dakota, South Dakota, and Wyoming, including the Michigan and South Dakota age-18 student extensions, and verify that Nebraska does not elect the extension.
+
+
+## [2.14.1] - 2026-09-25
+
+### Fixed
+
+- Repoint Arkansas DFA references from the dead images/uploads/incomeTaxOffice path to wp-content/uploads, and replace the removed 2014 tax bracket sheet with the 2014 instruction booklet.
+
+
+## [2.14.0] - 2026-09-25
+
+### Added
+
+- Add court-supervision age eligibility to child-care assistance in Maine, North Carolina, Virginia, Vermont, and Washington.
+
+
+## [2.13.0] - 2026-09-25
+
+### Added
+
+- Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021, following Maryland's CCDF plan elections, using the new `is_under_court_supervision` input (COMAR itself does not provide the route).
+
+
 ## [2.12.0] - 2026-09-25
 
 ### Added

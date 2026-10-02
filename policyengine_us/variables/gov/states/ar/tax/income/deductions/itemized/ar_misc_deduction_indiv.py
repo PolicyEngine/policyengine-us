@@ -7,7 +7,7 @@ class ar_misc_deduction_indiv(Variable):
     label = "Arkansas miscellaneous deduction when married filing separately"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/AR1075_2022.pdf#page=1"
+    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/AR1075_2022.pdf#page=1"
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):

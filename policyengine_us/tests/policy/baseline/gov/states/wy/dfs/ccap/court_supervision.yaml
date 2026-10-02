@@ -1,0 +1,206 @@
+# Court-supervision route for wy_ccap_eligible_child (Rules Ch. 1 8(e)(i)(A);
+# Manual 601.B.1; CCDF Plan 2.2.1.c): a child under court supervision is
+# eligible under the elected ceiling of 18. Court status does not waive income,
+# activity, immigration, or copayment rules.
+- name: Case 1, court supervision extends the age limit to under 18.
+  period: 2026-01
+  input:
+    state_code: [WY, WY, WY, WY, WY, WY]
+    age: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision: [true, true, true, true, true, true]
+  output:
+    wy_ccap_eligible_child: [true, true, true, false, false, false]
+
+- name: Case 2, court supervision does not bypass the immigration requirement.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    wy_ccap_eligible_child: false
+
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge.
+- name: Case 3, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+        county_str: LARAMIE_COUNTY_WY
+  output:
+    wy_ccap_eligible_child: [false, true]
+    wy_ccap_eligible: true
+    wy_ccap: 100
+
+- name: Case 4, court supervision does not waive the income requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 500_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+        county_str: LARAMIE_COUNTY_WY
+  output:
+    wy_ccap_income_eligible: false
+    wy_ccap: 0
+
+- name: Case 5, court supervision does not waive the parent activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+        county_str: LARAMIE_COUNTY_WY
+  output:
+    wy_ccap_activity_eligible: false
+    wy_ccap: 0
+
+- name: Case 6, eligible supervised child without care receives zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+        county_str: LARAMIE_COUNTY_WY
+  output:
+    wy_ccap_eligible: true
+    wy_ccap: 0
+
+- name: Case 7, court supervision is specific to the child in a mixed household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_under_court_supervision: true
+      person2:
+        age: 17
+        is_under_court_supervision: true
+      person3:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_eligible_child: [false, true, false]
+
+# 175% FPG is Step 4: $6.40/full day * 20 days = $128, below the 7% cap.
+# Annual countable income of 3,500 x 12 = 42,000 sits exactly on the 175% FPG
+# entry limit (24,000 x 1.75) and at the top of copay Step 4, which the
+# inclusive limit and step ceiling both admit.
+- name: Case 8, court supervision leaves the ordinary per-child copay in force.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 17
+    is_under_court_supervision: true
+    wy_ccap_activity_eligible: true
+    wy_ccap_countable_income: 3_500
+    wy_ccap_gross_income: 3_500
+    spm_unit_fpg: 24_000
+    wy_ccap_day_length: FULL_DAY
+    childcare_attending_days_per_month: 20
+  output:
+    wy_ccap_income_eligible: true
+    wy_ccap_eligible: true
+    wy_ccap_copay: 128

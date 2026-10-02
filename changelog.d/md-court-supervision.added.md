@@ -1,1 +1,0 @@
-Maryland CCS now extends eligibility to court-supervised children through age 18 from October 1, 2021, following Maryland's CCDF plan elections, using the new `is_under_court_supervision` input (COMAR itself does not provide the route).
