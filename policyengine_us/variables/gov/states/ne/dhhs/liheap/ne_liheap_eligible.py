@@ -10,8 +10,10 @@ class ne_liheap_eligible(Variable):
     reference = (
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=1",
-        "https://www.law.cornell.edu/regulations/nebraska/476-Neb-Admin-Code-ch-3-SS-002",
-        "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=5,9,25",
+        # 476 NAC 3-002.02.
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1",
+        # Sections 1.1 (page 5), 2.3 (page 9) and 9.1 (page 25).
+        "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9",
     )
 
     def formula(spm_unit, period, parameters):

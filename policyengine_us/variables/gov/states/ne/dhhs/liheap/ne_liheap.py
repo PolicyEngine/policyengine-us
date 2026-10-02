@@ -10,7 +10,8 @@ class ne_liheap(Variable):
     label = "Nebraska LIHEAP regular heating assistance"
     documentation = (
         "Verified for FY2026. Earlier years use model parameter backfilling "
-        "and are unverified historical estimates."
+        "and are unverified historical estimates. Later years carry the "
+        "FY2026 amounts forward until a new schedule is added."
     )
     defined_for = "ne_liheap_eligible"
     reference = "https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=2"

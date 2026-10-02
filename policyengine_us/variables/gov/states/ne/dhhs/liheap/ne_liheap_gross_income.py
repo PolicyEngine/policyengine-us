@@ -10,6 +10,7 @@ class ne_liheap_gross_income(Variable):
     defined_for = StateCode.NE
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
+        # 475 NAC 3-002.06 (pages 47-48).
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=47",
     )
 

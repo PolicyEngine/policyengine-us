@@ -1,5 +1,5 @@
-# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table.
-# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1,2
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table (pages 1-2).
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1
 
 - name: Case 1, wages receive the earned disregard only after gross eligibility.
   period: 2026
@@ -13,14 +13,13 @@
         employment_income: 18_000
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id001
+        members: [person1]
         state_code: NE
   output:
     ne_liheap_household_size: 1
@@ -42,14 +41,13 @@
         social_security_retirement: 18_000
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id002
+        members: [person1]
         state_code: NE
   output:
     ne_liheap_earned_income: 0
@@ -69,14 +67,13 @@
         self_employment_income: -5_000
     spm_units:
       spm_unit:
-        members: &id003
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id003
+        members: [person1]
         state_code: NE
   output:
     ne_liheap_earned_income: 10_000
@@ -94,14 +91,13 @@
         self_employment_income: 18_000
     spm_units:
       spm_unit:
-        members: &id004
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id004
+        members: [person1]
         state_code: NE
   output:
     ne_liheap_earned_income: 18_000
@@ -127,15 +123,13 @@
         employment_income: 10_000
     spm_units:
       spm_unit:
-        members: &id005
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id005
+        members: [person1, person2]
         state_code: NE
   output:
     ne_liheap_household_size: 2
@@ -163,15 +157,13 @@
         interest_income: 1_000
     spm_units:
       spm_unit:
-        members: &id006
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         tanf: 0
     households:
       household:
-        members: *id006
+        members: [person1, person2]
         state_code: NE
   output:
     ne_liheap_household_size: 1
@@ -334,8 +326,8 @@
   # market-rate heat-in-rent renters as responsible. 476 NAC 3-002.02 lets
   # the Department pay such a household directly, and plan sections 1.1
   # (page 5) and 9.1 (page 25) list them among households paid directly.
-  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=5,9,25
-  # https://www.law.cornell.edu/regulations/nebraska/476-Neb-Admin-Code-ch-3-SS-002
+  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
+  # https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1
   period: 2026
   input:
     people:

@@ -10,7 +10,8 @@ class ne_liheap_earned_income(Variable):
     defined_for = StateCode.NE
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=7",
-        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44,47",
+        # 475 NAC 3-002.04(B)(i) (page 44) and 3-002.06 (pages 47-48).
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44",
     )
 
     def formula(spm_unit, period, parameters):
@@ -31,10 +32,8 @@ class ne_liheap_earned_income(Variable):
         # income, which existing inputs cannot establish. That offset, Nebraska's
         # tax-return/49%-ledger distinction, and capital gains from business
         # assets are not modeled here.
-        earned = (
-            max_(person("employment_income", period), 0)
-            + max_(person("self_employment_income", period), 0)
-            + max_(person("sstb_self_employment_income", period), 0)
-            + max_(person("farm_operations_income", period), 0)
-        )
+        p = parameters(period).gov.states.ne.dhhs.liheap
+        earned = 0
+        for source in p.earned_income_sources:
+            earned = earned + max_(person(source, period), 0)
         return spm_unit.sum(earned * countable * share)
