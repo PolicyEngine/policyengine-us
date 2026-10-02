@@ -8,7 +8,15 @@ class refundable_ctc(Variable):
     unit = USD
     documentation = "The portion of the Child Tax Credit that is refundable."
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/24#d",
+        # No refundable CTC for filers electing a section 911 exclusion.
+        "https://www.law.cornell.edu/uscode/text/26/24#d_3",
+        # 2025 Instructions for Schedule 8812, Part II-A.
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=3",
+        # 2021 Schedule 8812: Part I-B has no Form 2555 condition.
+        "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1",
+    )
 
     def formula(tax_unit, period, parameters):
         # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
@@ -24,6 +32,11 @@ class refundable_ctc(Variable):
         total_ctc = tax_unit("ctc", period)
 
         if ctc.refundable.fully_refundable:
+            # Section 24(i)(1)(A) (2021) switched off all of subsection (d),
+            # including the section 911 exclusion bar, for filers whose
+            # principal place of abode was in the United States for more than
+            # half the year (Schedule 8812 Part I-B). The model assumes every
+            # filer meets that test.
             reduction = tax_unit("ctc_phase_out", period)
             reduced_max_amount = max_(0, maximum_amount - reduction)
             return min_(reduced_max_amount, total_ctc)
@@ -35,4 +48,14 @@ class refundable_ctc(Variable):
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
         ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
         amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-        return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+        refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+        # Section 24(d)(3): the CTC is not refundable for a filer who elects to
+        # exclude any amount from gross income under section 911 (Form 2555).
+        elects_section_911_exclusion = (
+            tax_unit("foreign_earned_income_exclusion", period) > 0
+        )
+        barred = (
+            elects_section_911_exclusion
+            & ctc.refundable.foreign_earned_income_exclusion_bar_applies
+        )
+        return where(barred, 0, refundable_amount)

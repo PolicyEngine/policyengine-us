@@ -86,8 +86,19 @@ def create_ctc_expansion() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + tax_increase)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            # The bill's CTC changes amend section 24(h) and leave section
+            # 24(d)(3) in place: no refundable CTC for filers electing a
+            # section 911 exclusion.
+            elects_section_911_exclusion = (
+                tax_unit("foreign_earned_income_exclusion", period) > 0
+            )
+            barred = (
+                elects_section_911_exclusion
+                & p_ctc.refundable.foreign_earned_income_exclusion_bar_applies
+            )
+            return where(barred, 0, refundable_amount)
 
     class reform(Reform):
         def apply(self):

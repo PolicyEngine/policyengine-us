@@ -486,3 +486,76 @@
   output:
     ctc: 3_500  # 3000 for 10-year-old + 500 for 18-year-old (ODC)
     ctc_adult_individual_maximum: [0, 0, 500]  # ODC for 18-year-old under ARPA
+
+- name: Head of household with two children and a section 911 exclusion gets no additional child tax credit in 2025.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        # Wages included in gross income; the excluded foreign wages are
+        # reported separately below.
+        employment_income: 60_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        # Form 2555 exclusion.
+        foreign_earned_income_exclusion: 40_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 60_000
+    # $60,000 less the $23,625 head of household standard deduction.
+    taxable_income: 36_375
+    # 10% of $17,000 plus 12% of the $19,375 above it.
+    income_tax_before_credits: 4_025
+    # Schedule 8812 line 12: 2 x $2,200.
+    ctc: 4_400
+    # Line 13 (Credit Limit Worksheet A): $4,025 of tax, no other credits.
+    ctc_limiting_tax_liability: 4_025
+    # Part II-A: "If you file Form 2555, you cannot claim the additional
+    # child tax credit." Without Form 2555, line 27 would be $375.
+    refundable_ctc: 0
+    # Line 14 allows $4,025 of the $4,400 against tax.
+    non_refundable_ctc: 4_400
+    income_tax_before_refundable_credits: 0
+    income_tax: 0
+
+- name: The same household without a section 911 exclusion gets a $375 additional child tax credit in 2025.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        foreign_earned_income_exclusion: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    income_tax_before_credits: 4_025
+    ctc: 4_400
+    # Part II-A: line 16a = $4,400 - $4,025 = $375; line 16b = 2 x $1,700
+    # = $3,400; line 17 = $375; line 20 = 15% x ($60,000 - $2,500) = $8,625;
+    # line 27 = smaller of lines 17 and 20 = $375.
+    refundable_ctc: 375
+    non_refundable_ctc: 4_025
+    income_tax_before_refundable_credits: 0
+    income_tax: -375
