@@ -15,11 +15,14 @@ tax-liability limit equals the tax actually owed.
 from functools import cache
 
 import numpy as np
-from hypothesis import HealthCheck, given, settings
-from hypothesis import strategies as st
+import pytest
 from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+
+# Hypothesis is a dev extra; skip rather than fail collection without it.
+hypothesis = pytest.importorskip("hypothesis")
+st = pytest.importorskip("hypothesis.strategies")
 
 BAR = "gov.irs.credits.ctc.refundable.foreign_earned_income_exclusion_bar_applies"
 
@@ -169,12 +172,15 @@ household_strategy = st.fixed_dictionaries(
 )
 
 
-@settings(
+@hypothesis.settings(
     max_examples=10,
     deadline=None,
-    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+    suppress_health_check=[
+        hypothesis.HealthCheck.too_slow,
+        hypothesis.HealthCheck.data_too_large,
+    ],
 )
-@given(
+@hypothesis.given(
     st.lists(household_strategy, min_size=1, max_size=25),
     st.sampled_from([2018, 2022, 2025, 2026]),
 )
