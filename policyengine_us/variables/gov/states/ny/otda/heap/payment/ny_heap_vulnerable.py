@@ -8,17 +8,13 @@ class ny_heap_vulnerable(Variable):
     label = "New York HEAP qualified vulnerable member"
     defined_for = StateCode.NY
     reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=44,45,49",)
-    documentation = "Permanent-disability input and SSI/SSDI receipt approximate HEAP disability certification. Detailed VA, railroad, FECA and disability-based Medicaid certification pathways are not separately identified."
+    documentation = "The manual adopts the SNAP benefit-receipt disability criteria. Reuses the existing USDA calculation, including its qualifying veteran and survivor flags. A disability flag alone does not establish receipt or certification. The existing USDA flags approximate detailed VA certification; railroad, FECA and disability-based Medicaid pathways remain incomplete."
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.payment
         person = spm_unit.members
         age = person("age", period)
-        disabled = (
-            person("is_permanently_and_totally_disabled", period)
-            | (person("ssi", period) > 0)
-            | (person("social_security_disability", period) > 0)
-        )
+        disabled = person("is_usda_disabled", period)
         vulnerable = (age < p.young_child_age) | (age >= p.elderly_age) | disabled
         return spm_unit.any(
             vulnerable & person("is_citizen_or_legal_immigrant", period)

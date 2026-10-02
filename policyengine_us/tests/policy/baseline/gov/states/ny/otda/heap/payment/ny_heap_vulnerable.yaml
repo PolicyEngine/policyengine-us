@@ -1,0 +1,25 @@
+- name: Existing qualifying benefit pathways establish HEAP disability
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40, 40, 40, 40, 40, 40]
+    receives_ssi: [true, false, false, false, false, false, false]
+    ssi: [0, 1200, 0, 0, 0, 0, 0]
+    social_security_disability: [0, 0, 1200, 0, 0, 0, 0]
+    is_permanently_disabled_veteran: [false, false, false, true, false, false, false]
+    is_surviving_spouse_of_disabled_veteran: [false, false, false, false, true, false, false]
+    is_surviving_child_of_disabled_veteran: [false, false, false, false, false, true, false]
+    is_permanently_and_totally_disabled: [false, false, false, false, false, false, true]
+  output:
+    ny_heap_vulnerable: [true, true, true, true, true, true, false]
+- name: A nonqualified disabled member does not establish vulnerability
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    age: 40
+    is_citizen_or_legal_immigrant: false
+    ssi: 1200
+  output:
+    ny_heap_vulnerable: false

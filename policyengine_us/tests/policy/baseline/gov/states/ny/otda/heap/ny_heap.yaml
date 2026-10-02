@@ -18,7 +18,7 @@
     has_heating_expense: [true, true, true, true, true, true]
     age: [5, 6, 59, 60, 40, 40]
     heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
-    is_permanently_and_totally_disabled: [false, false, false, false, false, true]
+    social_security_disability: [0, 0, 0, 0, 0, 1200]
   output:
     ny_heap: [996, 961, 961, 996, 900, 935]
 - name: Heat included in rent by tier and housing assistance
