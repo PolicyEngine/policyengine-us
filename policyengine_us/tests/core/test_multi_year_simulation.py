@@ -204,3 +204,96 @@ def test_later_year_matches_single_year_simulation(year):
     for name in BRANCHES:
         assert simulation.branches[name] is not base_year_branches[name]
         assert simulation.branches[name].branch_period == period(year)
+
+
+# State comparison branches: one household per state, with ages given for
+# every year so the cases run on any core.
+
+STATE_BRANCH_CASES = [
+    (
+        "DE",
+        ("de_refundable_eitc", "de_non_refundable_eitc"),
+        (2024, 2025),
+        "de_income_tax",
+    ),
+    (
+        "VA",
+        ("va_refundable_eitc", "va_non_refundable_eitc"),
+        (2024, 2025),
+        "va_income_tax",
+    ),
+    (
+        "ID",
+        (
+            "id_receives_aged_or_disabled_credit_branch",
+            "id_receives_aged_or_disabled_deduction_branch",
+        ),
+        (2024, 2025),
+        "id_income_tax",
+    ),
+    ("NY", ("pre_tcja_ctc",), (2023, 2024), "ny_income_tax"),
+]
+
+
+def _state_situation(state, years):
+    """A low-earning parent aged 67 with one child: EITC-eligible, aged for
+    Idaho's credit, and with a child for New York's CTC."""
+    members = ["parent", "child"]
+    return {
+        "people": {
+            "parent": {
+                "age": {year: 67 for year in years},
+                "employment_income": {years[0]: 25_000},
+            },
+            "child": {"age": {year: 5 for year in years}},
+        },
+        "tax_units": {"tax_unit": {"members": members}},
+        "spm_units": {"spm_unit": {"members": members}},
+        "families": {"family": {"members": members}},
+        "marital_units": {
+            "parent_unit": {"members": ["parent"]},
+            "child_unit": {"members": ["child"]},
+        },
+        "households": {
+            "household": {
+                "members": members,
+                "state_code": {year: state for year in years},
+            }
+        },
+    }
+
+
+@pytest.mark.parametrize(
+    "state,branches,years,variable",
+    STATE_BRANCH_CASES,
+    ids=[case[0] for case in STATE_BRANCH_CASES],
+)
+def test_state_comparison_branches_are_created_again_for_a_later_year(
+    state, branches, years, variable
+):
+    first_year, later_year = years
+    fresh = Simulation(situation=_state_situation(state, years)).calculate(
+        variable, later_year
+    )
+
+    simulation = Simulation(situation=_state_situation(state, years))
+    simulation.calculate(variable, first_year)
+    first_year_branches = {name: simulation.branches[name] for name in branches}
+
+    np.testing.assert_array_equal(simulation.calculate(variable, later_year), fresh)
+    for name in branches:
+        assert simulation.branches[name] is not first_year_branches[name]
+        assert simulation.branches[name].branch_period == period(later_year)
+
+
+@pytest.mark.parametrize(
+    "state,branch,variable",
+    [("AL", "al_2020_irc", "al_income_tax"), ("NY", "ny_pre_arpa_eitc", "ny_eitc")],
+    ids=["AL", "NY"],
+)
+def test_2021_only_branches_take_their_period(state, branch, variable):
+    """Alabama's 2020-IRC and New York's pre-ARPA EITC branches apply in 2021
+    only, so a later year never reuses them; they still record their period."""
+    simulation = Simulation(situation=_state_situation(state, (2021,)))
+    simulation.calculate(variable, 2021)
+    assert simulation.branches[branch].branch_period == period(2021)
