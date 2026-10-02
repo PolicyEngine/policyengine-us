@@ -1,9 +1,12 @@
 description: Maryland counts these available unearned income sources under the Maryland Energy Assistance Program.
 values:
   '2025-07-01':
+  # Medicare deductions from Social Security and railroad benefits are deferred.
+  - social_security
+  - railroad_benefits
   - ssi
-  - md_tca
-  - dividend_income
+  - tanf
+  - ordinary_dividend_income
   - interest_income
   - estate_income
   - pension_income

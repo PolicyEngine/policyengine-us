@@ -10,7 +10,8 @@ class md_meap_eligible(Variable):
     reference = (
         "https://regs.maryland.gov/us/md/exec/comar/07.03.21.03",
         "https://regs.maryland.gov/us/md/exec/comar/07.03.21.06",
-        "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=11,12,16,39",
+        # PDF pages 11, 12, 16, 39.
+        "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=11",
     )
     documentation = "Regular heating has no resource test. Application documentation, emancipation and program-year duplicate awards are not modeled. The regulation permits an annually announced medical-expense waiver, but no such regular-heating waiver was found in the FY2026 plan. At least one qualified member is required."
 

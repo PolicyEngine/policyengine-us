@@ -9,7 +9,8 @@ class md_meap_level(Variable):
     defined_for = StateCode.MD
     reference = (
         "https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf",
-        "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=62,63",
+        # PDF pages 62, 63.
+        "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=62",
     )
     documentation = "Submetered and subsidized homes use Level 6. The over-200% categorical nominal level takes precedence over these housing categories; this precedence follows the manual's nominal-payment instruction. Existing assistance inputs approximate the regulation's narrower subsidy definition."
 

@@ -10,7 +10,8 @@ class md_meap(Variable):
     defined_for = "md_meap_eligible"
     reference = (
         "https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf",
-        "https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9,10,11",
+        # PDF pages 9, 10, 11.
+        "https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9",
         "https://regs.maryland.gov/us/md/exec/comar/07.03.21.07",
         "https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1",
     )
