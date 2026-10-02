@@ -1,0 +1,154 @@
+description: Whether a state provides breakfast and lunch at no cost to students who qualify for reduced-price meals under the National School Lunch Program and School Breakfast Program.
+metadata:
+  propagate_metadata_to_children: true
+  label: State covers reduced-price school meal copays
+  period: year
+  unit: bool
+  breakdown:
+    - state_code
+  reference:
+    - title: 7 CFR 245.2 - Definitions (reduced price meal)
+      href: https://www.law.cornell.edu/cfr/text/7/245.2
+AA:
+  0000-01-01: false
+AE:
+  0000-01-01: false
+AK:
+  0000-01-01: false
+AL:
+  0000-01-01: false
+AP:
+  0000-01-01: false
+AR:
+  0000-01-01: false
+AZ:
+  0000-01-01: false
+CA:
+  0000-01-01: false
+CO:
+  0000-01-01: false
+CT:
+  0000-01-01: false
+DC:
+  0000-01-01: false
+DE:
+  0000-01-01: false
+FL:
+  0000-01-01: false
+GA:
+  0000-01-01: false
+GU:
+  0000-01-01: false
+HI:
+  0000-01-01: false
+IA:
+  0000-01-01: false
+ID:
+  0000-01-01: false
+IL:
+  0000-01-01: false
+IN:
+  0000-01-01: false
+KS:
+  0000-01-01: false
+KY:
+  0000-01-01: false
+LA:
+  0000-01-01: false
+MA:
+  0000-01-01: false
+MD:
+  0000-01-01: false
+ME:
+  0000-01-01: false
+MI:
+  0000-01-01: false
+MN:
+  0000-01-01: false
+MO:
+  0000-01-01: false
+MP:
+  0000-01-01: false
+MS:
+  0000-01-01: false
+MT:
+  0000-01-01: false
+NC:
+  0000-01-01: false
+  # North Carolina has covered the reduced-price breakfast copay since
+  # July 1, 2011 (S.L. 2011-342 § 1). This parameter is true only while the
+  # state also covers the reduced-price lunch copay.
+  2020-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2020-80 § 2.3.(b), page 14 (lunch, 2020-2021 school year)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2019-2020/SL2020-80.pdf#page=14
+        - title: North Carolina S.L. 2011-342 § 1 (breakfast)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
+  # No state law covered the lunch copay for the 2021-2022 school year.
+  2021-07-01: false
+  2022-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2022-74 § 7.3, page 28 (lunch, 2022-2023 school year)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2021-2022/SL2022-74.pdf#page=28
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2023-134 § 7.58, page 119 (breakfast and lunch)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2023-2024/SL2023-134.pdf#page=119
+ND:
+  0000-01-01: false
+NE:
+  0000-01-01: false
+NH:
+  0000-01-01: false
+NJ:
+  0000-01-01: false
+NM:
+  0000-01-01: false
+NV:
+  0000-01-01: false
+NY:
+  0000-01-01: false
+OH:
+  0000-01-01: false
+OK:
+  0000-01-01: false
+OR:
+  0000-01-01: false
+PA:
+  0000-01-01: false
+PR:
+  0000-01-01: false
+PW:
+  0000-01-01: false
+RI:
+  0000-01-01: false
+SC:
+  0000-01-01: false
+SD:
+  0000-01-01: false
+TN:
+  0000-01-01: false
+TX:
+  0000-01-01: false
+UT:
+  0000-01-01: false
+VA:
+  0000-01-01: false
+VI:
+  0000-01-01: false
+VT:
+  0000-01-01: false
+WA:
+  0000-01-01: false
+WI:
+  0000-01-01: false
+WV:
+  0000-01-01: false
+WY:
+  0000-01-01: false
