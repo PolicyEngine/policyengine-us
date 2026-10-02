@@ -1,3 +1,45 @@
+## [2.21.0] - 2026-10-01
+
+### Fixed
+
+- Average SNAP work-requirement hours over weeks worked, test the ABAWD requirement as 80 hours a month, add the 30-hour work registration exemption's earnings equivalent (federal minimum wage times 30 hours a week), limit the unemployment compensation exemption to months of receipt, make weeks_worked a pure input, and correct the July 2007 federal minimum wage to $5.85. Archived datasets that stored hours already annualized by weeks worked (policyengine-us-data before March 2026) would be deflated twice.
+
+### Removed
+
+- Remove gov.usda.snap.work_requirements.abawd.weekly_hours_threshold and replace it with gov.usda.snap.work_requirements.abawd.monthly_hours_threshold (80 hours a month, 7 CFR 273.24(a)(1)(i)); reforms that set the old parameter must switch to the new one.
+
+
+## [2.20.1] - 2026-10-01
+
+### Fixed
+
+- Fixed the Maryland childless EITC to keep the federal maximum age (under 65) while disregarding only the federal minimum age, per Md. Code Tax-Gen. § 10-704(c)(3)(i).
+
+
+## [2.20.0] - 2026-10-01
+
+### Fixed
+
+- Report Minnesota's Child and Working Family Credits as the state EITC (taxsim_state_eitc) from 2023 instead of the pre-2023 working family credit formula. Minnesota's child tax credit (§290.0661) and working family credit (§290.0671) are phased down jointly and claimed on one Schedule M1REF line, so no separate Minnesota state CTC is reported.
+
+### Removed
+
+- Remove taxsim_mn_child_tax_credit_component, which split Minnesota's combined credit using the pre-2023 working family credit formula.
+
+
+## [2.19.0] - 2026-10-01
+
+### Added
+
+- Add a switch to evaluate SNAP ABAWD time-limit waivers under the pre-P.L. 119-21 waiver geography.
+
+### Fixed
+
+- Apply the SNAP qualified-alien five-year waiting period and its exceptions (8 U.S.C. 1612(a)(2); 7 CFR 273.4(a)(6)) to lawful permanent residents, parolees and conditional entrants.
+- Encode the FY2025 SNAP ABAWD county waivers for New York, New Mexico, and Delaware, New Mexico's FY2026 Luna County waiver, and the District of Columbia's November 2024 districtwide waiver.
+- Stop the one-time 2021 South Carolina rebate, Maine relief rebate and Rhode Island child tax rebate amounts from backdating into 2015-2020 state income tax or carrying into 2022 and later.
+
+
 ## [2.18.4] - 2026-10-01
 
 ### Changed
