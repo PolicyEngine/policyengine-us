@@ -1,0 +1,88 @@
+- name: 2017, $100 exclusion and 10% floor on Arkansas AGI
+  # 20,000 - 100 - 10% * 50,000 = 14,900
+  period: 2017
+  input:
+    casualty_loss: 20_000
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 14_900
+
+- name: 2018, Arkansas did not limit the deduction to federal disasters
+  period: 2018
+  input:
+    casualty_loss: 20_000
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 14_900
+
+- name: 2022, Arkansas did not limit the deduction to federal disasters
+  period: 2022
+  input:
+    casualty_loss: 20_000
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 14_900
+
+- name: 2025, loss after the exclusion does not exceed 10% of AGI
+  # 5,100 - 100 = 5,000, which does not exceed 10% * 50,000
+  period: 2025
+  input:
+    casualty_loss: 5_100
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 0
+
+- name: 2025, loss just above the floor
+  # 5,150 - 100 - 5,000 = 50
+  period: 2025
+  input:
+    casualty_loss: 5_150
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 50
+
+- name: 2025, loss below the $100 exclusion with no AGI
+  period: 2025
+  input:
+    casualty_loss: 80
+    ar_agi_joint: 0
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 0
+
+- name: 2025, losses of both spouses are treated as one casualty
+  # 12,000 + 8,000 - 100 - 10% * (30,000 + 20,000) = 14,900
+  period: 2025
+  input:
+    people:
+      person1:
+        casualty_loss: 12_000
+        ar_agi_joint: 30_000
+      person2:
+        casualty_loss: 8_000
+        ar_agi_joint: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 14_900
+
+- name: 2009, the adopted federal text sets a $500 exclusion
+  # 26 U.S.C. § 165(h)(1) as in effect on January 1, 2009:
+  # 20,000 - 500 - 10% * 50,000 = 14,500
+  period: 2009
+  input:
+    casualty_loss: 20_000
+    ar_agi_joint: 50_000
+    state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 14_500

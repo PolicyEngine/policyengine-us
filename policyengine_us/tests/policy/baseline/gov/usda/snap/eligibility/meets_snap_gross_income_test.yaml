@@ -91,3 +91,134 @@
         state_code: MO
   output:
     meets_snap_gross_income_test: false
+
+- name: Ten-person Kansas household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # 7 CFR 273.9(a)(3)(i) adds a separately rounded-up increment to
+        # the eight-person standard: 130% x $54,150 / 12 = $5,866.25,
+        # rounded up to $5,867, plus 2 x (130% x $5,500 / 12 = $595.83,
+        # rounded up to $596) gives $7,059, matching the USDA FY 2026 table.
+        # Rounding up the whole ten-person amount ($7,057.92) gives $7,058.
+        snap_gross_test_income: 7_059
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Ten-person Washington household just above the published FY 2026 gross limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        snap_gross_test_income: 7_060
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Twelve-person North Carolina household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $5,867 + 4 x $596 = $8,251 under 7 CFR 273.9(a)(3)(i); rounding
+        # up the whole twelve-person amount (130% x $76,150 / 12 =
+        # $8,249.58) would give $8,250.
+        snap_gross_test_income: 8_251
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Nine-person Alaska household at the FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2026 uses the 2025 Alaska guidelines ($19,550 first person,
+        # $6,880 each additional). The eight-person guideline is $19,550 +
+        # 7 x $6,880 = $67,710; 130% x $67,710 / 12 = $7,335.25, rounded up
+        # to $7,336, plus 130% x $6,880 / 12 = $745.33, rounded up to $746,
+        # gives $8,082 under 7 CFR 273.9(a)(3)(i). Rounding up the whole
+        # nine-person amount (130% x $74,590 / 12 = $8,080.58) gives only
+        # $8,081.
+        snap_gross_test_income: 8_082
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Nine-person Hawaii household at the FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2026 uses the 2025 Hawaii guidelines ($17,990 first person,
+        # $6,330 each additional). The eight-person guideline is $17,990 +
+        # 7 x $6,330 = $62,300; 130% x $62,300 / 12 = $6,749.17, rounded up
+        # to $6,750, plus 130% x $6,330 / 12 = $685.75, rounded up to $686,
+        # gives $7,436 under 7 CFR 273.9(a)(3)(i). Rounding up the whole
+        # nine-person amount (130% x $68,630 / 12 = $7,434.92) gives only
+        # $7,435.
+        snap_gross_test_income: 7_436
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Ten-person Pennsylvania household at the FY 2027 gross limit passes
+  period: 2027-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # FY 2027 uses the 2026 contiguous-state guidelines ($15,960 first
+        # person, $5,680 each additional). The eight-person guideline is
+        # $15,960 + 7 x $5,680 = $55,720; 130% x $55,720 / 12 = $6,036.33,
+        # rounded up to $6,037, plus 2 x (130% x $5,680 / 12 = $615.33,
+        # rounded up to $616) gives $7,269 under 7 CFR 273.9(a)(3)(i).
+        # Rounding up the whole ten-person amount (130% x $67,080 / 12 =
+        # $7,267.00) gives only $7,267.
+        snap_gross_test_income: 7_269
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    meets_snap_gross_income_test: true
