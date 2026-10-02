@@ -1,0 +1,97 @@
+description: Counties in New York with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  # FY2025 waiver: 61 of 62 counties (all but Saratoga County), 2025-03-01
+  # through 2026-02-28. The FY2024 statewide waiver it replaced (through
+  # 2025-02-28) is carried by waived_states. The letter's county list prints
+  # "Cattaraugus, County, NY" and "Delaware Count, NY"; both map
+  # unambiguously to the enum names below.
+  2025-03-01:
+    - ALBANY_COUNTY_NY # FIPS 36001
+    - ALLEGANY_COUNTY_NY # FIPS 36003
+    - BRONX_COUNTY_NY # FIPS 36005
+    - BROOME_COUNTY_NY # FIPS 36007
+    - CATTARAUGUS_COUNTY_NY # FIPS 36009
+    - CAYUGA_COUNTY_NY # FIPS 36011
+    - CHAUTAUQUA_COUNTY_NY # FIPS 36013
+    - CHEMUNG_COUNTY_NY # FIPS 36015
+    - CHENANGO_COUNTY_NY # FIPS 36017
+    - CLINTON_COUNTY_NY # FIPS 36019
+    - COLUMBIA_COUNTY_NY # FIPS 36021
+    - CORTLAND_COUNTY_NY # FIPS 36023
+    - DELAWARE_COUNTY_NY # FIPS 36025
+    - DUTCHESS_COUNTY_NY # FIPS 36027
+    - ERIE_COUNTY_NY # FIPS 36029
+    - ESSEX_COUNTY_NY # FIPS 36031
+    - FRANKLIN_COUNTY_NY # FIPS 36033
+    - FULTON_COUNTY_NY # FIPS 36035
+    - GENESEE_COUNTY_NY # FIPS 36037
+    - GREENE_COUNTY_NY # FIPS 36039
+    - HAMILTON_COUNTY_NY # FIPS 36041
+    - HERKIMER_COUNTY_NY # FIPS 36043
+    - JEFFERSON_COUNTY_NY # FIPS 36045
+    - KINGS_COUNTY_NY # FIPS 36047
+    - LEWIS_COUNTY_NY # FIPS 36049
+    - LIVINGSTON_COUNTY_NY # FIPS 36051
+    - MADISON_COUNTY_NY # FIPS 36053
+    - MONROE_COUNTY_NY # FIPS 36055
+    - MONTGOMERY_COUNTY_NY # FIPS 36057
+    - NASSAU_COUNTY_NY # FIPS 36059
+    - NEW_YORK_COUNTY_NY # FIPS 36061
+    - NIAGARA_COUNTY_NY # FIPS 36063
+    - ONEIDA_COUNTY_NY # FIPS 36065
+    - ONONDAGA_COUNTY_NY # FIPS 36067
+    - ONTARIO_COUNTY_NY # FIPS 36069
+    - ORANGE_COUNTY_NY # FIPS 36071
+    - ORLEANS_COUNTY_NY # FIPS 36073
+    - OSWEGO_COUNTY_NY # FIPS 36075
+    - OTSEGO_COUNTY_NY # FIPS 36077
+    - PUTNAM_COUNTY_NY # FIPS 36079
+    - QUEENS_COUNTY_NY # FIPS 36081
+    - RENSSELAER_COUNTY_NY # FIPS 36083
+    - RICHMOND_COUNTY_NY # FIPS 36085
+    - ROCKLAND_COUNTY_NY # FIPS 36087
+    - ST_LAWRENCE_COUNTY_NY # FIPS 36089
+    - SCHENECTADY_COUNTY_NY # FIPS 36093
+    - SCHOHARIE_COUNTY_NY # FIPS 36095
+    - SCHUYLER_COUNTY_NY # FIPS 36097
+    - SENECA_COUNTY_NY # FIPS 36099
+    - STEUBEN_COUNTY_NY # FIPS 36101
+    - SUFFOLK_COUNTY_NY # FIPS 36103
+    - SULLIVAN_COUNTY_NY # FIPS 36105
+    - TIOGA_COUNTY_NY # FIPS 36107
+    - TOMPKINS_COUNTY_NY # FIPS 36109
+    - ULSTER_COUNTY_NY # FIPS 36111
+    - WARREN_COUNTY_NY # FIPS 36113
+    - WASHINGTON_COUNTY_NY # FIPS 36115
+    - WAYNE_COUNTY_NY # FIPS 36117
+    - WESTCHESTER_COUNTY_NY # FIPS 36119
+    - WYOMING_COUNTY_NY # FIPS 36121
+    - YATES_COUNTY_NY # FIPS 36123
+  # Expired 2026-02-28. USDA terminated lack-of-sufficient-jobs waivers
+  # effective 2025-11-02, and its February 26, 2026 memorandum (Appendix A)
+  # kept this waiver in effect through that original expiration date. The
+  # FY2026 approval (FNS response, February 9, 2026) covers only the
+  # Tuscarora Nation and Poospatuck reservations, 2026-03-01 through
+  # 2027-02-28 (sub-county, not modeled); six NYC community districts were
+  # denied.
+  2026-03-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in New York
+  reference:
+    - title: USDA FNS New York ABAWD Waiver Response, October 2, 2024 - requested area (61 counties) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS New York ABAWD Waiver Response, October 2, 2024 - county list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS New York ABAWD Waiver Response, October 2, 2024 - county list (Schenectady through Yates), approval, implementation date (2025-03-01), and expiration date (2026-02-28)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2025.pdf#page=4
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, New York through 2026-02-28)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS New York ABAWD Waiver Response, February 9, 2026 - partial approval (two reservation areas) and denial of six community districts
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2026.pdf#page=1
+    - title: USDA FNS New York ABAWD Waiver Response, February 9, 2026 - Table 2 reservation areas, implementation date (2026-03-01), and expiration date (2027-02-28)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2026.pdf#page=4
