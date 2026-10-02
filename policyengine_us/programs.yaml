@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX, MS
+    coverage: OR, DC, Riverside County, MA, IL, MS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -830,7 +830,7 @@ programs:
         variable: ms_liheap
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating only, using the published income bands as printed. Crisis and cooling assistance are out of scope.
+        notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

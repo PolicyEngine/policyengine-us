@@ -15,6 +15,8 @@ WOOD:
   2025-10-01: 400
 COAL:
   2025-10-01: 400
+# The matrix has no column for solar or no heating. These homes receive the
+# Electric column only.
 SOLAR:
   2025-10-01: 0
 OTHER:
@@ -24,9 +26,9 @@ NONE:
 metadata:
   unit: currency-USD
   period: year
-  label: Mississippi LIHEAP maximum payment
+  label: Mississippi LIHEAP first income band heating cap
   breakdown:
     - heating_type
   reference:
-    - title: Mississippi FY2026 benefit matrix, heating caps by fuel and income band
-      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MS_BenefitMatrix_Heat-Cool_2026.pdf#page=1,2,3,4,5,6
+    - title: Mississippi FY2026 benefit matrix, Propane, Natural Gas, Wood/Other Fuel and Total Electric columns, pages 1-6
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MS_BenefitMatrix_Heat-Cool_2026.pdf#page=1

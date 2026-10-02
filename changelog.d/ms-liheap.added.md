@@ -1,1 +1,1 @@
-Add partial FY2026 Mississippi LIHEAP regular heating assistance using existing inputs.
+Add Mississippi LIHEAP regular assistance for heating fuel and electric bills (FY2026).

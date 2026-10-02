@@ -1,5 +1,5 @@
-- name: Schedule C net profits and losses count without a second business deduction
-  period: 2_026
+- name: Case 1, Schedule C net profits and losses count without a second business deduction.
+  period: 2026
   input:
     state_code: [MS, MS, MS]
     age: [40, 40, 40]
@@ -9,9 +9,14 @@
     ssi: [0, 0, 0]
     social_security: [0, 0, 0]
   output:
+    # Rule 6.11 I(1) (manual PDF page 32) counts the Schedule C net profit or
+    # (loss) line.
+    # Household 1: 12,000 wages + 4,000 + 2,000 net profit = 18,000.
+    # Household 2: 12,000 wages - 4,000 - 2,000 net loss = 6,000.
+    # Household 3: 12,000 wages - 12,000 - 6,000 net loss = -6,000, counted as 0.
     ms_liheap_income: [18_000, 6_000, 0]
-- name: Child support, TANF, and tax refunds are excluded; recurring gifts and interest count
-  period: 2_026
+- name: Case 2, child support, TANF and tax refunds are excluded while gifts and interest count.
+  period: 2026
   input:
     state_code: MS
     age: 40
@@ -24,35 +29,46 @@
     ssi: 0
     social_security: 0
   output:
+    # Rule 6.11 D(7), D(8) and D(11) (manual PDF page 30) exempt TANF, child
+    # support and tax refunds. Rule 6.11 C(13) (page 29) counts money given to
+    # the household and Rule 6.11 F(7) (page 32) counts interest.
+    # 10,000 wages + 600 gifts + 400 interest = 11,000.
     ms_liheap_income: 11_000
-- name: Excluded adult income and child unearned income count, while child wages do not
-  period: 2_026
+- name: Case 3, an undocumented adult's wages and a child's unearned income count while the child's earnings do not.
+  period: 2026
   input:
     people:
-      adult:
+      person1:
         age: 35
         immigration_status: UNDOCUMENTED
         employment_income: 12_000
         ssi: 0
         social_security: 0
-      child:
+      person2:
         age: 15
         employment_income: 6_000
         sstb_self_employment_income: 2_000
         ssi: 2_400
         social_security: 1_200
     spm_units:
-      unit:
-        members: [adult, child]
+      spm_unit:
+        members: [person1, person2]
         heating_type: ELECTRICITY
         heating_expense: 1_000
     households:
-      home:
-        members: [adult, child]
+      household:
+        members: [person1, person2]
         state_code: MS
   output:
+    # Rule 6.3 B-C (manual PDF page 23): the undocumented adult is left out of
+    # household size, 2 - 1 = 1, and the adult's income still counts.
     ms_liheap_household_size: 1
+    # Rule 6.11 J(2) (page 33): the child's SSI and Social Security "must be
+    # included and is listed under the parent or legal guardian". Rule 6.11
+    # D(3) and J(1) exclude the child's 6,000 wages and 2,000 business income.
+    # 12,000 adult wages + 2,400 SSI + 1,200 Social Security = 15,600.
     ms_liheap_income: 15_600
+    # 15,600 is at or below the one-person limit of 26,740 (page 58).
     ms_liheap_eligible: true
 - name: Case 4, three-person household with farm income above the limit is ineligible.
   period: 2026
@@ -115,10 +131,7 @@
     # Size-3 band 4 is 19,989-26,650 (matrix page 1).
     # Propane cap: 800 - 50 * (4 - 1) = 650. Payment: min(650, 1,200) = 650.
     ms_liheap: 650
-
-- name: Service business profits above the income limit prevent a heating award
-  # Rule 6.11 C(2) and I(1): existing net business profits count regardless
-  # of whether the business is a specified service trade or business.
+- name: Case 6, service business profits above the income limit prevent a heating award.
   period: 2026
   input:
     state_code: MS
@@ -129,11 +142,13 @@
     heating_type: NATURAL_GAS
     gas_expense: 1_000
   output:
+    # Rule 6.11 C(2) and I(1): net business profits count regardless of whether
+    # the business is a specified service trade or business.
     ms_liheap_income: 60_000
     # floor(floor(85,708 * 0.6) * 0.52) = 26,740 < 60,000.
     ms_liheap_eligible: false
     ms_liheap: 0
-- name: Case 6, farm loss offsets a spouse's wages.
+- name: Case 7, farm loss offsets a spouse's wages.
   period: 2026
   input:
     people:
@@ -164,3 +179,31 @@
     # Size-3 band 4 is 19,989-26,650 (wages alone, 30,000, would be band 5).
     # Propane cap: 800 - 50 * (4 - 1) = 650. Payment: min(650, 1,200) = 650.
     ms_liheap: 650
+- name: Case 8, Railroad Retirement benefits count with Social Security.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        # 1,800 a month from a Railroad Retirement annuity.
+        railroad_benefits: 21_600
+        ssi: 0
+      person2:
+        age: 66
+        # 800 a month in Social Security retirement benefits.
+        social_security_retirement: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Both members are citizens and are counted.
+    ms_liheap_household_size: 2
+    # Rule 6.11 F(3) (manual PDF page 31) lists "Social Security benefits,
+    # Railroad Retirement benefits" as unearned income.
+    # 21,600 Railroad Retirement + 9,600 Social Security = 31,200.
+    ms_liheap_income: 31_200
