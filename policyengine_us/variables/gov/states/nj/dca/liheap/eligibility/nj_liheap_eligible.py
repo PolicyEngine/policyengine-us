@@ -8,7 +8,8 @@ class nj_liheap_eligible(Variable):
     label = "New Jersey LIHEAP regular heating eligibility"
     defined_for = StateCode.NJ
     reference = (
-        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5,6,7,11,12",
+        # PDF pages 5, 6, 7, 11, 12.
+        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5",
     )
     documentation = "Automatic enrollment does not waive the income test, and regular heating has no asset test. Striker and institutional-residence exclusions, full utility-allowance coverage and payments by people outside the household need inputs not available here. Unknown county is unsupported, not a legal denial."
 
@@ -27,7 +28,6 @@ class nj_liheap_eligible(Variable):
             & ~(heat_in_rent & subsidized)
             & ~dependent_students_only
             & (spm_unit("nj_liheap_household_size", period) > 0)
-            & (spm_unit("nj_liheap_region", period) > 0)
             & (
                 spm_unit("nj_liheap_countable_income", period)
                 <= spm_unit("nj_liheap_income_limit", period)

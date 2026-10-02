@@ -33,7 +33,7 @@
     is_tax_unit_dependent: true
   output:
     nj_liheap_eligible: false
-- name: Unknown county cannot select a benefit region
+- name: Unknown county leaves payment unsupported without denying legal eligibility
   period: 2026
   input:
     state_code: NJ
@@ -42,7 +42,8 @@
     has_heating_expense: true
     heating_type: NATURAL_GAS
   output:
-    nj_liheap_eligible: false
+    nj_liheap_eligible: true
+    nj_liheap: 0
 - name: No heat responsibility, no qualified members, and other states are excluded
   period: 2026
   input:

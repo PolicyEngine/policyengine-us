@@ -5,6 +5,18 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     state_code: [NJ, NJ]
     nj_liheap_countable_income_person: [10001, 10002]
-    nj_wfnj: [1200, 1200]
+    tanf: [1200, 1200]
   output:
     nj_liheap_countable_income: [11196, 11208]
+
+- name: State cash entitlement counts only when TANF is taken up
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    nj_wfnj: [1200, 1200]
+    takes_up_tanf_if_eligible: [false, true]
+    ssi: [0, 0]
+  output:
+    nj_liheap_countable_income: [0, 1200]

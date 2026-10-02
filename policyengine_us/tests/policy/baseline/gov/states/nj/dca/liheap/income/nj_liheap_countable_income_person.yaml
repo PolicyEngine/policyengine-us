@@ -13,7 +13,7 @@
     ssi: [0, 0, 0, 0]
   output:
     nj_liheap_countable_income_person: [0, 0, 14800, 13800]
-- name: Children social security is excluded and adults deduct paid Part B premiums
+- name: Child Social Security is excluded and adult Medicare deductions remain deferred
   period: 2026
   input:
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -24,7 +24,7 @@
     ssi: [600, 600, 600]
     veterans_benefits: [5000, 5000, 5000]
   output:
-    nj_liheap_countable_income_person: [600, 11400, 12600]
+    nj_liheap_countable_income_person: [600, 12600, 12600]
 - name: Each excluded member has the handbook monthly disregard
   period: 2026
   input:

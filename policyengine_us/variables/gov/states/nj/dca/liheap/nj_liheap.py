@@ -10,8 +10,10 @@ class nj_liheap(Variable):
     defined_for = "nj_liheap_eligible"
     reference = (
         "https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf",
-        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7,12,17,18",
-        "https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=9,10",
+        # PDF pages 7, 12, 17, 18.
+        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7",
+        # PDF pages 9, 10.
+        "https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=9",
     )
     documentation = "Annual regular heating payment, verified for FY2026. Earlier years use backfilled parameters and are unverified historical estimates. Amounts preserve all published grid anomalies; no expense cap applies. Unknown/unsupported direct fuels return zero. Separate fuel charges paid to landlords cannot be distinguished from vendor bills without a direct benefit override. Crisis, cooling, furnace and utility-program benefits are excluded."
 
@@ -34,7 +36,7 @@ class nj_liheap(Variable):
         # FY2026 handbook 3.2.F assigns direct payers by their heating fuel.
         # The codified renter-level rule for subsidized direct payers differs.
         # Chapter 5:49 was readopted in 2025; the conflict remains unresolved.
-        return select(
+        amount = select(
             [
                 spm_unit("heat_expense_included_in_rent", period),
                 fuel == types.ELECTRICITY,
@@ -49,3 +51,5 @@ class nj_liheap(Variable):
             ],
             default=0,
         )
+        # Unknown county is a payment-table coverage gap, not a legal denial.
+        return where(spm_unit("nj_liheap_region", period) > 0, amount, 0)

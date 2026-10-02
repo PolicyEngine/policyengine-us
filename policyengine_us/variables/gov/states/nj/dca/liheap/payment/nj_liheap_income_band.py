@@ -9,7 +9,8 @@ class nj_liheap_income_band(Variable):
     defined_for = StateCode.NJ
     reference = (
         "https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf",
-        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7,9,12",
+        # PDF pages 7, 9, 12.
+        "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7",
     )
     documentation = "The grid does not label the income period; monthly follows the handbook income test and the historical monthly thresholds used in the grid. Three identical initial rows are combined."
 
