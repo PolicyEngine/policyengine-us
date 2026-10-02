@@ -49,10 +49,11 @@ IN:
   2022-01-01: false
 KS:
   2022-01-01: false
-# Kentucky elected the option in its separate CHIP until that program
-# ended for children (gov.hhs.chip.child.income_limit); CMS now lists its
-# option children under Medicaid-expansion CHIP, which this model treats
-# as Medicaid.
+# Kentucky elected the option in its separate CHIP. The July 1, 2022 end date
+# comes only from the end of its separate CHIP for children in
+# gov.hhs.chip.child.income_limit; KFF's January 2023 Table 3 still marks
+# Kentucky's CHIP children as covered. CMS now lists its option children under
+# Medicaid-expansion CHIP, which this model treats as Medicaid.
 KY:
   2022-01-01: true
   2022-07-01: false
@@ -155,7 +156,7 @@ metadata:
       href: https://www.medicaid.gov/medicaid-spa/2023-11-22/156086
     - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022, Table 3
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=1
-    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as of January 2023, Table 3 and footnote 7
-      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf#page=2
+    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as of January 2023, Table 3
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf#page=1
     - title: KFF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as States Prepare for Major Medicaid Policy Changes (January 2026)
       href: https://www.kff.org/medicaid/medicaid-and-chip-eligibility-enrollment-and-renewal-policies-as-states-prepare-for-major-medicaid-policy-changes/

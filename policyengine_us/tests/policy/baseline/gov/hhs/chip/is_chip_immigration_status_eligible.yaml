@@ -252,3 +252,40 @@
     age: 10
   output:
     is_chip_immigration_status_eligible: false
+
+# From October 1, 2026, 42 USC 1397gg(e)(1)(R) applies the 1396b(v)(5) limit to
+# CHIP, which ends federal CHIP funding for asylees, people granted withholding
+# of deportation, parolees and conditional entrants outside the option (SHO
+# #26-001 Appendix A). Arizona elected neither option, and the default five years
+# since entry clears the bar, so only the status limit applies.
+- name: Case 14, after section 71109 asylees, withheld deportations, parolees and conditional entrants lose CHIP in Arizona.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: ASYLEE
+      person2:
+        age: 10
+        immigration_status: DEPORTATION_WITHHELD
+      person3:
+        age: 10
+        immigration_status: PAROLED_ONE_YEAR
+      person4:
+        age: 10
+        immigration_status: CONDITIONAL_ENTRANT
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+      household3:
+        members: [person3]
+        state_code: AZ
+      household4:
+        members: [person4]
+        state_code: AZ
+  output:
+    is_chip_immigration_status_eligible: [false, false, false, false]
