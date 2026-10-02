@@ -41,3 +41,33 @@
     state_code: MO
   output:
     mo_business_income_deduction: 2_000
+
+- name: Signed qualified business losses cannot create a negative Missouri deduction
+  period: 2023
+  input:
+    qualified_business_income: -10_000
+    state_code: MO
+  output:
+    mo_business_income_deduction: 0
+
+- name: Missouri floors each spouse business income before summing
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: 100_000
+      spouse:
+        age: 45
+        self_employment_income: -20_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MO
+  output:
+    mo_business_income_deduction: 18_587.04

@@ -9,6 +9,7 @@ class mo_tanf_is_assistance_unit_member(Variable):
     reference = (
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-05/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-35/",
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-300",
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
     )
@@ -54,4 +55,13 @@ class mo_tanf_is_assistance_unit_member(Variable):
             & ~is_ssi_recipient
             & person.tax_unit.any(dependent_child)
         )
-        return eligible_child | caretaker
+        # A parent is a mandatory member (DSS Manual 0210.005.05). A
+        # non-parent caretaker relative or legal guardian is an optional
+        # member: excluded when a parent is in the home or when not needy,
+        # and otherwise included per mo_tanf_non_parent_caretaker_included
+        # (13 CSR 40-2.300(5)(D); DSS Manual 0210.005.15 and 0210.005.35).
+        non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
+        parent_caretaker = caretaker & ~non_parent
+        npcr = person("mo_tanf_non_parent_caretaker", period)
+        npcr_included = person.spm_unit("mo_tanf_non_parent_caretaker_included", period)
+        return eligible_child | parent_caretaker | (npcr & npcr_included)

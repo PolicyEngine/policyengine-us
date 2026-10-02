@@ -68,9 +68,10 @@
         # selects the $546 IL SUA. Jan-Sep: pre-shelter net = 20,000/12 x 0.8
         # - 209 = 1,124.33; shelter expense = 600 housing + 546 = 1,146 -
         # 562.17 = 583.83 (below the 744 cap, so the IL SUA value is fully
-        # visible) -> net = 540.50 (540.4998 unrounded, so it rounds to 540) ->
-        # EC = 540 x 0.3 = 162 exactly -> 785 - 162 = 623.00/month;
-        # Oct-Dec (FY2027): net 528 -> EC ceil(158.40) = 159 -> 808 - 159 =
-        # 649.00. Annual = 9 x 623.00 + 3 x 649.00 = 7,554.00.
-        snap: 7554.0
+        # visible) -> net = 540.50 exactly, which rounds half-up to 541 ->
+        # EC = ceil(541 x 0.3 = 162.30) = 163 -> 785 - 163 = 622.00/month;
+        # Oct-Dec (FY2027): net 528.50 rounds half-up to 529 -> EC
+        # ceil(158.70) = 159 -> 808 - 159 = 649.00.
+        # Annual = 9 x 622.00 + 3 x 649.00 = 7,545.00.
+        snap: 7545.0
         is_snap_eligible: true
