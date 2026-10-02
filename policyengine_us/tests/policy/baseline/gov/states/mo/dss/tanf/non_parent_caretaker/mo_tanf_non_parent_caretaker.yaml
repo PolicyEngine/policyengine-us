@@ -1,0 +1,232 @@
+- name: A married grandparent couple supplies one caretaker relative, the head
+  period: 2026-01
+  input:
+    people:
+      grandfather:
+        age: 62
+        mo_tanf_is_non_parent_caretaker: true
+      grandmother:
+        age: 60
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandfather, grandmother, grandchild]
+    households:
+      household:
+        members: [grandfather, grandmother, grandchild]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [true, false, false]
+    mo_tanf_non_parent_caretaker_budget_member: [true, true, false]
+
+- name: A non-parent caretaker with no dependent child in the tax unit is not a caretaker
+  period: 2026-01
+  input:
+    people:
+      aunt:
+        age: 40
+        mo_tanf_is_non_parent_caretaker: true
+      nephew:
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [aunt]
+      tax_unit_2:
+        members: [nephew]
+    spm_units:
+      spm_unit:
+        members: [aunt, nephew]
+    households:
+      household:
+        members: [aunt, nephew]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [false, false]
+
+- name: An aunt caring for her nephew is the caretaker relative
+  period: 2026-01
+  input:
+    people:
+      aunt:
+        age: 40
+        mo_tanf_is_non_parent_caretaker: true
+      nephew:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [aunt, nephew]
+    spm_units:
+      spm_unit:
+        members: [aunt, nephew]
+    households:
+      household:
+        members: [aunt, nephew]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [true, false]
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: A non-parent caretaker who receives SSI is never the caretaker relative
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 70
+        receives_ssi: true
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [false, false]
+    mo_tanf_non_parent_caretaker_needy: false
+    mo_tanf_is_assistance_unit_member: [false, true]
+    mo_tanf: 135.687
+
+- name: A parent on SSI in the home still excludes a non-parent caretaker
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 58
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 30
+        is_tax_unit_dependent: true
+        receives_ssi: true
+        own_children_in_household: 1
+      grandchild:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, grandchild]
+    households:
+      household:
+        members: [grandparent, mother, grandchild]
+        state_code: MO
+  output:
+    # The mother on SSI is excluded from the unit but is still in the home
+    # (DSS Manual 0210.005.10).
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, false, true]
+    mo_tanf_assistance_unit_size: 1
+
+- name: A minor mother on SSI is not a cash-eligible child, so she excludes the non-parent caretaker
+  period: 2026-01
+  input:
+    people:
+      aunt:
+        age: 40
+        mo_tanf_is_non_parent_caretaker: true
+      niece:
+        age: 16
+        is_tax_unit_dependent: true
+        receives_ssi: true
+        own_children_in_household: 1
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [aunt, niece, baby]
+    spm_units:
+      spm_unit:
+        members: [aunt, niece, baby]
+    households:
+      household:
+        members: [aunt, niece, baby]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05's exception covers a parent who "is also a cash
+    # eligible child"; an SSI recipient is not (0210.005.10).
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [false, false, true]
+
+- name: The parent input overrides a count of own children who are not the dependent children
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      great_grandparent:
+        age: 80
+        is_tax_unit_dependent: true
+        # Her own child in the household is the grandparent, an adult.
+        own_children_in_household: 1
+        mo_tanf_is_parent_of_dependent_child: false
+      grandchild:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, great_grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, great_grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, great_grandparent, grandchild]
+        state_code: MO
+  output:
+    # No parent of the grandchild is in the home, so the grandparent is the
+    # caretaker relative, needy with no spouse, and included (size 2).
+    mo_tanf_non_parent_caretaker: [true, false, false]
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: Without the override the same count of own children excludes the grandparent
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      great_grandparent:
+        age: 80
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      grandchild:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, great_grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, great_grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, great_grandparent, grandchild]
+        state_code: MO
+  output:
+    # mo_tanf_is_parent_of_dependent_child defaults to is_parent, which
+    # cannot tell whose parent she is.
+    mo_tanf_is_parent_of_dependent_child: [false, true, false]
+    mo_tanf_non_parent_caretaker: [false, false, false]
+
