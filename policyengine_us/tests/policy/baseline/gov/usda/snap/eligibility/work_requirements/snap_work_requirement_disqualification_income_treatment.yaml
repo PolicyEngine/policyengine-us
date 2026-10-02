@@ -12,6 +12,14 @@
 #
 # Case 1 pins the loss direction for a zero-income time-limit-ineligible
 # member, where proration has no income to offset the smaller unit.
+#
+# In Cases 2-4 the disqualified member's income is unearned (alimony). Under
+# 7 U.S.C. 2015(d)(2)(E) and 7 CFR 273.7(b)(1)(vii), weekly earnings of at
+# least the federal minimum wage times 30 hours ($11,310 a year) exempt a
+# person from work registration and the time limit, so a member with $30,000
+# of wages could be neither time-limit ineligible nor sanctioned. Wages low
+# enough to leave the member subject cannot move this household across the
+# limits, so unearned income keeps each case's scenario.
 
 - name: Case 1, non-working zero-income ABAWD shrinks the unit and lowers the benefit.
   period: 2026
@@ -44,7 +52,7 @@
     # Annual benefit: 9 * $120 + 3 * $131 = $1,473.
     snap: 1_473
 
-- name: Case 2, over-income household newly qualifies when the earner fails the time limit and income is prorated.
+- name: Case 2, over-income household newly qualifies when a member fails the time limit and income is prorated.
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -54,7 +62,7 @@
         social_security_retirement: 9_600
       abawd:
         age: 30
-        employment_income: 30_000
+        alimony_income: 30_000
         weekly_hours_worked_before_lsr: 0
     spm_units:
       unit:
@@ -64,8 +72,8 @@
         members: [elder, abawd]
         state_code: TX
   output:
-    # With both members counted, $30,000 wages + $9,600 Social Security
-    # exceed the 2-person limits. When the earner fails the ABAWD time
+    # With both members counted, $30,000 alimony + $9,600 Social Security
+    # exceed the 2-person limits. When the member fails the ABAWD time
     # limit, 273.11(c)(2) counts half his income toward the remaining
     # 1-person unit, which qualifies: proration can create eligibility.
     # The unit receives the minimum allotment: $24 for the nine
@@ -73,7 +81,7 @@
     is_snap_eligible: true
     snap: 291
 
-- name: Case 3, over-income household stays ineligible when the earner is sanctioned under the general work requirements.
+- name: Case 3, over-income household stays ineligible when the member is sanctioned under the general work requirements.
   period: 2026
   absolute_error_margin: 0
   input:
@@ -83,7 +91,7 @@
         social_security_retirement: 9_600
       abawd:
         age: 30
-        employment_income: 30_000
+        alimony_income: 30_000
         weekly_hours_worked_before_lsr: 0
         is_snap_work_registration_noncompliant: true
     spm_units:
@@ -101,7 +109,7 @@
     is_snap_eligible: false
     snap: 0
 
-- name: Case 4, benefit with a sanctioned earning member never exceeds the compliant counterfactual.
+- name: Case 4, benefit with a sanctioned member never exceeds the compliant counterfactual.
   period: 2026
   absolute_error_margin: 0
   input:
@@ -111,7 +119,7 @@
         social_security_retirement: 9_600
       abawd:
         age: 30
-        employment_income: 30_000
+        alimony_income: 30_000
         weekly_hours_worked_before_lsr: 25
     spm_units:
       unit:
@@ -121,7 +129,8 @@
         members: [elder, abawd]
         state_code: TX
   output:
-    # Compliant counterfactual for Case 3: same unit, earner works 25h/week.
+    # Compliant counterfactual for Case 3: same unit and income, and the
+    # member works 25h/week (25 * 52 / 12 = 108 >= 80 hours a month).
     # Pinned so Cases 3 and 4 together assert the no-gain invariant
     # (snap[sanctioned] <= snap[compliant]).
     is_snap_eligible: false

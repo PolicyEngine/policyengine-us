@@ -33,3 +33,147 @@
         state_code: NY
   output:
     taxsim_state_eitc: 300
+
+# The next two cases inject arbitrary values to check which Minnesota variable
+# each year's list routes to the state EITC.
+- name: MN combined Child and Working Family Credit is the state EITC from 2023
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        mn_child_and_working_families_credits: 2_118.8
+        mn_wfc: 1_182.78
+    households:
+      household:
+        members: [parent]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 2_118.8
+
+- name: MN working family credit is the state EITC before 2023
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        mn_child_and_working_families_credits: 2_100
+        mn_wfc: 1_182.78
+    households:
+      household:
+        members: [parent]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 1_182.78
+
+- name: MN childless couple 2024 reports the whole combined credit as the state EITC
+  # 2024 Schedule M1CWFC: 4% (line 4) of earned income up to $9,220 (line 3),
+  # below the $36,880 joint phase-out start (line 11): 0.04 * 9,220 = 368.80.
+  # The form rounds to whole dollars ($369); PolicyEngine does not round.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 9_220
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 368.8
+    taxsim_state_ctc: 0
+
+- name: MN single parent of two 2024 reports the child tax credit within the state EITC
+  # 2024 Schedule M1CWFC: 0.04 * min(20,000, 9,220) (lines 3-4) + 2 * $1,750
+  # (line 8) = 3,868.80, below the $31,090 non-joint phase-out start (line 11).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 20_000
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 3_868.8
+    taxsim_state_ctc: 0
+
+- name: MN parent of two with no earnings 2024 reports the child tax credit as the state EITC
+  # 2024 Schedule M1CWFC page 3: the child tax credit may be claimed "even if
+  # you have no earned income"; 2 * $1,750 (line 8) = 3,500.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child1:
+        age: 9
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 3_500
+    taxsim_state_ctc: 0
+
+- name: MN single parent 2025 in the phase-out range reports the combined credit as the state EITC
+  # 2025 Schedule M1CWFC: 0.04 * 9,480 (lines 3-4) + $1,750 (line 8) = 2,129.20,
+  # less 12% (line 13) of 40,000 - 31,950 (line 11) = 966 -> 1,163.20.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    taxsim_state_eitc: 1_163.2
+    taxsim_state_ctc: 0
