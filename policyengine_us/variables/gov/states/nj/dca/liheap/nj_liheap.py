@@ -32,8 +32,8 @@ class nj_liheap(Variable):
             | (fuel == types.COAL)
         )
         # FY2026 handbook 3.2.F assigns direct payers by their heating fuel.
-        # The older codified renter-level rule for subsidized direct payers
-        # differs; this draft follows the current operating handbook.
+        # The codified renter-level rule for subsidized direct payers differs.
+        # Chapter 5:49 was readopted in 2025; the conflict remains unresolved.
         return select(
             [
                 spm_unit("heat_expense_included_in_rent", period),
