@@ -20,7 +20,10 @@ Security under § 86, which is correct and outside what is drawn here.
 4. A dependent's estate income and adjustment, of either sign, leave the
    filer's net investment income unchanged. When the dependent's estate income
    is nonnegative and the section 461(l) loss cap does not bind, they also
-   leave the filer's AGI and NIIT unchanged.
+   leave the filer's AGI and NIIT unchanged. A dependent's estate loss, and a
+   dependent's estate income when the cap binds, leave the filer's AGI
+   unchanged too: loss_ald leaves dependents out of both the losses and the
+   section 461(l) income.
 5. The NIIT is nonnegative and never exceeds the rate times either net
    investment income or MAGI in excess of the filing-status threshold
    (§ 1411(a)(1)), where MAGI is AGI plus the non-dependents' estate and
@@ -33,13 +36,6 @@ Security under § 86, which is correct and outside what is drawn here.
    income of every member, dependents included: market income is a household
    resource concept, not a tax one, so a household never looks poorer because
    estate income is taxed.
-
-Two cases fall outside property 4 because loss_ald pools every tax unit
-member's business income and losses into one section 461(l) computation, a
-treatment that predates this change: a dependent's estate loss lowers the
-filer's AGI, and a dependent's estate income raises the filer's loss cap when
-it binds. Both are recorded as strict expected failures, so they surface when
-loss_ald stops pooling dependents.
 """
 
 import numpy as np
@@ -340,15 +336,6 @@ def test_nonnegative_dependent_estate_income_stays_off_filer_return(runs, units)
         )
 
 
-LOSS_ALD_POOLING = (
-    "Pre-existing: loss_ald pools every tax unit member's business income and "
-    "losses into one section 461(l) computation, dependents included. Tracked "
-    "as a separate follow-up; this test flips to passing when loss_ald "
-    "excludes dependents."
-)
-
-
-@pytest.mark.xfail(strict=True, reason=LOSS_ALD_POOLING)
 def test_dependent_estate_loss_stays_off_filer_agi(runs, units):
     domain = _dependent_estate_by_unit(units) < 0
     np.testing.assert_allclose(
@@ -358,7 +345,6 @@ def test_dependent_estate_loss_stays_off_filer_agi(runs, units):
     )
 
 
-@pytest.mark.xfail(strict=True, reason=LOSS_ALD_POOLING)
 def test_dependent_estate_income_leaves_binding_loss_cap_alone(runs, units):
     domain = _has_dependent(units) & _cap_binds(units)
     np.testing.assert_allclose(
