@@ -67,3 +67,17 @@
     md_meap_level: [1, 1, 1, 1, 1, 1]
   output:
     md_meap: [1100, 550, 0, 0, 0, 0]
+- name: Submetered dwelling payment and assisted-living exclusion
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD]
+    county_str: [MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    has_heating_expense: [true, true, true, true]
+    md_meap_countable_income: [0, 0, 0, 40000]
+    md_meap_categorically_eligible: [false, false, false, true]
+    md_meap_dwelling_type: [STANDARD, SUB_METERED, ASSISTED_LIVING, SUB_METERED]
+  output:
+    md_meap_eligible: [true, true, false, true]
+    md_meap_level: [1, 6, 1, 7]
+    md_meap: [550, 225, 0, 25]
