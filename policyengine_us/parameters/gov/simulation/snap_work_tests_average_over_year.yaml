@@ -1,0 +1,15 @@
+description: PolicyEngine averages weekly hours and earnings over all weeks of the year, rather than over weeks worked, in the Supplemental Nutrition Assistance Program work tests if this is true.
+# true: hours are usual hours x weeks worked / 52 and earnings are annual
+# earnings / 52; false: hours are usual hours and earnings are annual earnings
+# per week worked.
+values:
+  0000-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Average SNAP work-test hours and earnings over the full year
+  reference:
+    - title: 7 CFR 273.24(a)(1)(i)
+      href: https://www.ecfr.gov/current/title-7/section-273.24#p-273.24(a)(1)(i)
+    - title: 7 CFR 273.7(b)(1)(vii)
+      href: https://www.ecfr.gov/current/title-7/section-273.7#p-273.7(b)(1)(vii)
