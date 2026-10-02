@@ -23,3 +23,17 @@
     estate_income: [0, 0]
   output:
     or_liheap_countable_income: [2880, 3081]
+- name: Manual disability insurance examples count the insurer payment plus Social Security once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OR, OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    or_liheap_countable_earned_income: [0, 0]
+    # Manual pages 55-56: annualize the insurer's payment after its SSA offset.
+    disability_benefits: [3832.68, 8511.96]
+    social_security: [10164, 14868]
+    ssi: [0, 0]
+    or_tanf: [0, 0]
+  output:
+    or_liheap_countable_income: [13996.68, 23379.96]
