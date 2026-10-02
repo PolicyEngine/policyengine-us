@@ -91,13 +91,7 @@ def create_ctc_expansion() -> Reform:
             # The bill's CTC changes amend section 24(h) and leave section
             # 24(d)(3) in place: no refundable CTC for filers electing a
             # section 911 exclusion.
-            elects_section_911_exclusion = (
-                tax_unit("foreign_earned_income_exclusion", period) > 0
-            )
-            barred = (
-                elects_section_911_exclusion
-                & p_ctc.refundable.foreign_earned_income_exclusion_bar_applies
-            )
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
             return where(barred, 0, refundable_amount)
 
     class reform(Reform):

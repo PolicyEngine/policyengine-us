@@ -1,1 +1,1 @@
-Deny the refundable Child Tax Credit to filers who elect to exclude foreign earned income or housing amounts under section 911 (26 U.S.C. 24(d)(3)), for tax years from 2015, including under the Wyden-Smith CTC expansion reform.
+Deny the refundable Child Tax Credit to filers who elect to exclude foreign earned income or housing amounts under section 911 (26 U.S.C. 24(d)(3)), for tax years from 2015, including the Puerto Rico refundable Child Tax Credit and the Wyden-Smith CTC expansion reform.

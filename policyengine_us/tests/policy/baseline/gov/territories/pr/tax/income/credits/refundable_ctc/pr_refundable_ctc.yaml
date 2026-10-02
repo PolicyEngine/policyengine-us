@@ -19,3 +19,44 @@
     ctc: 1_000
   output:
     pr_refundable_ctc: 1_000
+
+# Section 24(k)(2)(B) drops only the three-children condition for residents
+# of Puerto Rico; section 24(d)(3) still denies the refundable credit to a
+# filer electing a section 911 exclusion.
+- name: Section 911 exclusion denies the credit despite social security taxes
+  period: 2024
+  input:
+    eitc: 0
+    uncapped_ssi: 0
+    pr_refundable_ctc_social_security_tax: 1_530
+    refundable_ctc: 0
+    ctc: 2_000
+    foreign_earned_income_exclusion: 1
+  output:
+    pr_refundable_ctc: 0
+
+- name: The same filer without a section 911 exclusion gets the social security tax amount
+  period: 2024
+  input:
+    eitc: 0
+    uncapped_ssi: 0
+    pr_refundable_ctc_social_security_tax: 1_530
+    refundable_ctc: 0
+    ctc: 2_000
+    foreign_earned_income_exclusion: 0
+  output:
+    pr_refundable_ctc: 1_530
+
+- name: In 2021, a section 911 exclusion does not deny the credit
+  period: 2021
+  input:
+    # Section 24(i)(1) switched off subsection (d) for bona fide residents
+    # of Puerto Rico.
+    eitc: 0
+    uncapped_ssi: 0
+    pr_refundable_ctc_social_security_tax: 1_530
+    refundable_ctc: 0
+    ctc: 2_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    pr_refundable_ctc: 1_530

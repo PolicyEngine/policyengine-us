@@ -9,7 +9,12 @@ the additional child tax credit."
 Each batch of households is computed twice: under current law and under a
 reform that switches the bar off, which reproduces the formula without it.
 Households live in Texas and take the standard deduction, so the CTC's
-tax-liability limit equals the tax actually owed.
+tax-liability limit equals the tax the model computes.
+
+The model does not apply the section 911(f) rule that taxes included income
+at the rates it would face if the excluded amount were added back (the Foreign
+Earned Income Tax Worksheet). The tax identity below is a property of the
+model's liability, not a worksheet result.
 """
 
 from functools import cache
@@ -40,8 +45,10 @@ OUTPUTS = [
     "income_tax_before_credits",
     "ctc",
     "ctc_refundable_maximum",
+    "refundable_ctc_barred_by_section_911_exclusion",
     "refundable_ctc",
     "non_refundable_ctc",
+    "income_tax_capped_non_refundable_credits",
     "income_tax",
 ]
 
@@ -92,18 +99,28 @@ def assert_invariants(law, no_bar):
     tol = 0.01
     assert not law["tax_unit_itemizes"].any()
     excludes = law["foreign_earned_income_exclusion"] > 0
-    # Section 24(d)(3): no refundable CTC for a section 911 filer.
+    barred = "refundable_ctc_barred_by_section_911_exclusion"
+    # Section 24(d)(3): the bar is exactly the filers with an exclusion, and
+    # none of them has a refundable CTC.
+    assert np.array_equal(law[barred], excludes)
+    assert not no_bar[barred].any()
     assert (law["refundable_ctc"][excludes] == 0).all()
     # Filers without the exclusion are untouched, bit for bit.
     for v in ["refundable_ctc", "non_refundable_ctc", "income_tax"]:
         assert np.array_equal(law[v][~excludes], no_bar[v][~excludes]), v
     # The bar only ever removes refundable credit.
     assert (law["refundable_ctc"] <= no_bar["refundable_ctc"]).all()
-    # Every dollar of CTC is either refundable or non-refundable.
     for r in [law, no_bar]:
+        # True by the definition of non_refundable_ctc; kept as a guard on it.
         np.testing.assert_allclose(
             r["refundable_ctc"] + r["non_refundable_ctc"], r["ctc"], atol=tol
         )
+        # Section 26(a): the non-refundable credits allowed never exceed tax,
+        # even though a barred filer's non-refundable CTC is the whole credit.
+        assert (
+            r["income_tax_capped_non_refundable_credits"]
+            <= np.maximum(r["income_tax_before_credits"], 0) + tol
+        ).all()
         assert (r["refundable_ctc"] >= 0).all()
         assert (
             r["refundable_ctc"]
@@ -154,6 +171,7 @@ def test_bar_applies_from_2015_but_not_in_2021():
     no_bar = calculate(GRID, 2021, bar=False)
     for v in ["refundable_ctc", "income_tax"]:
         assert np.array_equal(law[v], no_bar[v]), v
+    assert not law["refundable_ctc_barred_by_section_911_exclusion"].any()
     # Public Law 114-27, section 807, applies to taxable years beginning
     # after 2014 (refundable_ctc.yaml covers 2014: household simulations
     # need parameters that start later).
