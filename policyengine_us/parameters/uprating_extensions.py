@@ -63,6 +63,10 @@ def get_average_for_12_months_ending_august(cpi: Parameter, year: int) -> float:
     ]
     observed = [month for month in window_months if month <= last_observation]
     if not observed:
+        # Since #7394 the projection points cite CBO's calendar-year
+        # averages, which run about 0.7% above the 12-months-ending-August
+        # averages this window stands for, so projected windows read slightly
+        # high until that series is fixed (#9608).
         return cpi(f"{year}-02-01")
     unobserved_tail = MONTHS_IN_YEAR - len(observed)
     return (

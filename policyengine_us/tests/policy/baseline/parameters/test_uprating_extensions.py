@@ -1,16 +1,19 @@
 """Test unified uprating extensions through 2100."""
 
 import math
+from pathlib import Path
 from types import SimpleNamespace
 import pytest
+import yaml
 
-from policyengine_core.parameters import Parameter
+from policyengine_core.parameters import Parameter, ParameterNode
 
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
     DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
+    extend_dependent_standard_deduction_parameters,
     get_irs_cola,
     get_irs_cola_denominator,
     round_social_security_amount,
@@ -544,23 +547,123 @@ def test_irs_cola_reproduces_published_dependent_standard_deduction_amounts():
         assert computed == amounts, year
 
 
+def encoded_dependent_standard_deduction_values(name):
+    """The year: value pairs written in a dependent standard deduction YAML."""
+    path = (
+        Path(__file__).parents[4]
+        / "parameters/gov/irs/deductions/standard/dependent"
+        / f"{name}.yaml"
+    )
+    values = yaml.safe_load(path.read_text())["values"]
+    return {int(str(date)[:4]): value for date, value in values.items()}
+
+
+def test_dependent_standard_deduction_encoded_values_take_precedence():
+    """IRS and CBO values in the YAML survive the statutory extension."""
+    dependent = PARAMETERS.gov.irs.deductions.standard.dependent
+    statute_differs = []
+    for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
+        parameter = getattr(dependent, name)
+        # The 0001 placeholder in additional_earned_income.yaml is not a year.
+        encoded = {
+            year: value
+            for year, value in encoded_dependent_standard_deduction_values(name).items()
+            if year >= 2018
+        }
+        for year, value in encoded.items():
+            assert parameter(f"{year}-01-01") == value, (name, year)
+            if value != statutory_dependent_standard_deduction_amount(
+                base, base_year, year
+            ):
+                statute_differs.append((name, year))
+    # The check only bites where an encoded value differs from the statutory
+    # computation on the model's index: CBO's floor does in 2031 and 2034
+    # (#9608).
+    assert statute_differs
+
+
+def test_dependent_standard_deduction_extension_starts_after_last_encoded_year():
+    """A non-statutory last encoded value is kept; later years are computed."""
+
+    def months(start_year, level):
+        return {
+            **{f"{start_year}-{month:02d}-01": level for month in range(9, 13)},
+            **{f"{start_year + 1}-{month:02d}-01": level for month in range(1, 9)},
+        }
+
+    cpi = SimpleNamespace(
+        cpi_u=Parameter(
+            "cpi_u", data={**months(1986, 40), **months(1996, 100), **months(2015, 200)}
+        ),
+        # Monthly observations end in August 2030; 2032 holds a projection.
+        c_cpi_u=Parameter(
+            "c_cpi_u",
+            data={**months(2015, 150), **months(2029, 190), "2032-02-01": 205},
+        ),
+    )
+    # A node, so Parameter.update can reach a parent.
+    dependent = ParameterNode(
+        "dependent",
+        data={
+            "amount": {"values": {"2018-01-01": 1_050, "2030-01-01": 1_234}},
+            "additional_earned_income": {
+                "values": {"2018-01-01": 350, "2030-01-01": 999}
+            },
+        },
+    )
+    parameters = SimpleNamespace(
+        gov=SimpleNamespace(
+            bls=SimpleNamespace(cpi=cpi),
+            irs=SimpleNamespace(
+                deductions=SimpleNamespace(
+                    standard=SimpleNamespace(dependent=dependent)
+                )
+            ),
+        )
+    )
+    extend_dependent_standard_deduction_parameters(parameters, 2033)
+
+    # Encoded years keep their values, statutory or not.
+    assert dependent.amount("2029-01-01") == 1_050
+    assert dependent.amount("2030-01-01") == 1_234
+    assert dependent.additional_earned_income("2029-01-01") == 350
+    assert dependent.additional_earned_income("2030-01-01") == 999
+    # Denominators: 1987 base 40 x 150 / 200 = 30; 1997 base 100 x 150 / 200 = 75.
+    # 2031 reads the observed Sep 2029-Aug 2030 window (190); 2032 has no
+    # observed month and no projection point of its own, so it reads 190 too.
+    # Floor: $500 x (190 / 30 - 1) = $2,666.67, rounded down to $2,650.
+    # Addition: $250 x (190 / 75 - 1) = $383.33, rounded down to $350.
+    for year in (2031, 2032):
+        assert dependent.amount(f"{year}-01-01") == 3_150
+        assert dependent.additional_earned_income(f"{year}-01-01") == 600
+    # 2033 reads the 2032 projection point (205).
+    # Floor: $500 x (205 / 30 - 1) = $2,916.67, rounded down to $2,900.
+    # Addition: $250 x (205 / 75 - 1) = $433.33, rounded down to $400.
+    assert dependent.amount("2033-01-01") == 3_400
+    assert dependent.additional_earned_income("2033-01-01") == 650
+
+
 def test_dependent_standard_deduction_projections_follow_statute():
     """Projected years come from the statutory bases, not the rounded last value."""
     dependent = PARAMETERS.gov.irs.deductions.standard.dependent
-    last_explicit_years = {"amount": 2036, "additional_earned_income": 2026}
     for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
         parameter = getattr(dependent, name)
-        previous = parameter(f"{last_explicit_years[name]}-01-01")
-        for year in range(last_explicit_years[name] + 1, 2101):
+        last_explicit_year = max(encoded_dependent_standard_deduction_values(name))
+        previous = parameter(f"{last_explicit_year}-01-01")
+        for year in range(last_explicit_year + 1, 2101):
             value = parameter(f"{year}-01-01")
             assert value == statutory_dependent_standard_deduction_amount(
                 base, base_year, year
             ), (name, year)
             assert value % 50 == 0, (name, year)
+            # A tripwire at the seam between the last encoded value and the
+            # statutory projection, as well as within the projection.
             assert value >= previous, (name, year)
             previous = value
 
     # Hand-derived anchors (derivations in basic_standard_deduction.yaml).
+    # They rest on the model's CPI projection, so a CBO refresh can move the
+    # 2032 and 2042 values.
     # Chaining from the rounded 2026 $450 ($450 x 1.03 = $463) would keep
     # 2027 at $450; the $250 base gives $500.
     assert dependent.additional_earned_income("2027-01-01") == 500

@@ -82,6 +82,28 @@
   output:
     basic_standard_deduction: 3_450
 
+- name: 2026 dependent filer with $3,000 of wages still gets $450 plus earned income
+  # Rev. Proc. 2025-32 sec. 4.14(2): greater of $1,350 or $450 plus earned
+  # income; max($1,350, $450 + $3,000) = $3,450, below the $16,100 basic
+  # standard deduction in sec. 4.14(1). Pins the last published year before
+  # the 2027 step to $500.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    basic_standard_deduction: 3_450
+
 - name: 2027 dependent filer with $3,000 of wages gets $500 plus earned income
   # 26 U.S.C. 63(c)(4)(B)(ii) increases the 63(c)(5)(B) $250 by the 1(f)(3)
   # cost-of-living adjustment with calendar year 1997 as the base year, and
@@ -115,9 +137,12 @@
 - name: 2032 dependent filer with $3,000 of wages gets $550 plus earned income
   # Same 63(c)(4)(B)(ii) adjustment. The 12 months ending August 2031 have
   # no observed month, so the window reads the c_cpi_u.yaml projection point
-  # at 2031-02-01: 202.7.
+  # at 2031-02-01: 202.7. That point is CBO's calendar-year 2031 average, not
+  # a September-August average (#9608).
   # Increase = $250 x (202.7 / 90.886 - 1) = $307.57, rounded down to $300,
-  # so $550. Floor: CBO's $1,550.
+  # so $550. CBO's tax-year index for 2032 (Feb 2026 Tax Parameters, row
+  # 153: 201.335) gives the same step: $250 x (201.335 / 90.886 - 1) =
+  # $303.81, rounded down to $300. Floor: CBO's $1,550.
   # max($1,550, $550 + $3,000) = $3,550, below the $18,250 cap.
   period: 2032
   input:
