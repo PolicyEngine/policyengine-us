@@ -1,0 +1,1 @@
+Stop a tax unit dependent's losses from reducing the filer's AGI and from raising the filer's excess business loss limit: `loss_ald` and `limited_capital_loss` now sum only non-dependent members, matching `irs_gross_income`.
