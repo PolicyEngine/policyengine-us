@@ -10,8 +10,10 @@ class ny_heap(Variable):
     defined_for = "ny_heap_eligible"
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
-        "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=5,9,10",
-        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45,46,47,48,49,84,87,88",
+        # PDF pages 5, 9, 10.
+        "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=5",
+        # PDF pages 45, 46, 47, 48, 49, 84, 87, 88.
+        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45",
     )
     documentation = "Annual regular heating benefit and ordinary Tier I/vulnerability supplements, verified for FY2026. Earlier years are unverified backfilled estimates. Housing assistance approximates subsidized rent (market-rent voucher exceptions are unsupported). Unknown direct-heating fuel returns zero; solar falls within other fuels. No bill cap. Crisis, cooling and equipment components are excluded. Mid-year moves and previously advanced nominal payments are not separately tracked."
 

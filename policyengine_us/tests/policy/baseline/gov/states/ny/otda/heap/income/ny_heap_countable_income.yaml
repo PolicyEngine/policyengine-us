@@ -1,6 +1,6 @@
-# 12,001 earnings + 11,400 net SSA/railroad + 4,440 other income = 27,841.
-# floor(27,841 / 12) * 12 = 27,840.
-- name: Deduct paid Medicare Part B premiums and round monthly household income down
+# 12,001 earnings + 12,600 SSA/railroad + 4,440 other income = 29,041.
+# floor(29,041 / 12) * 12 = 29,040.
+- name: Medicare deductions remain deferred and monthly household income rounds down
   period: 2026
   input:
     heating_type: NATURAL_GAS
@@ -12,7 +12,7 @@
     pension_income: 240
     retirement_distributions: 360
     interest_income: 120
-    dividend_income: 240
+    ordinary_dividend_income: 240
     rental_income: 360
     alimony_income: 480
     child_support_received: 600
@@ -23,5 +23,18 @@
     veterans_benefits: 480
     estate_income: 120
     ssi: 0
+    tanf: 0
   output:
-    ny_heap_countable_income: 27840
+    ny_heap_countable_income: 29040
+
+- name: State cash entitlement counts only when TANF is taken up
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    ny_tanf: [1200, 1200]
+    takes_up_tanf_if_eligible: [false, true]
+    ssi: [0, 0]
+  output:
+    ny_heap_countable_income: [0, 1200]

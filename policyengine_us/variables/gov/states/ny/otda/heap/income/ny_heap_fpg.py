@@ -10,7 +10,8 @@ class ny_heap_fpg(Variable):
     unit = USD
     defined_for = StateCode.NY
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9,10",
+        # PDF pages 9, 10.
+        "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
     )
 

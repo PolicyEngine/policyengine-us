@@ -9,20 +9,27 @@ class ny_heap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.NY
     reference = (
-        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37,38,39,40,41,42,43,44",
+        # PDF pages 36, 37, 38, 39, 40, 41, 42, 43, 44.
+        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37",
     )
-    documentation = "Annual inputs approximate application-month income; final monthly income is rounded down and annualized. Income of nonqualified members counts in full. Medicare Part D premiums, royalties, regular gifts, aid-and-attendance exclusions and irregular-income exclusions have no dedicated inputs. Rental income is assumed nonnegative. No new self-employment or work-expense deduction is applied."
+    documentation = "Annual inputs approximate application-month income; final monthly income is rounded down and annualized. Income of nonqualified members counts in full. Medicare-premium deductions remain deferred. Royalties, regular gifts, aid-and-attendance exclusions and irregular-income exclusions cannot be isolated reliably. Rental income is assumed nonnegative. No new self-employment or work-expense deduction is applied."
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.income
         person = spm_unit.members
-        retirement = add(person, period, ["social_security", "railroad_benefits"])
-        net_retirement = spm_unit.sum(
-            max_(retirement - person("medicare_part_b_premium", period), 0)
+        # Chapter 8 D.4 excludes foster members and federal Code C SSI
+        # recipients. Nonqualified members are excluded only from household
+        # size; their income still counts in full under D.4(a)(7).
+        included = ~person("ny_heap_is_excluded_person", period)
+        income = spm_unit.sum(
+            (
+                person("ny_heap_countable_earned_income", period)
+                + add(person, period, p.sources.unearned)
+            )
+            * included
         )
-        income = (
-            add(spm_unit, period, ["ny_heap_countable_earned_income"])
-            + add(spm_unit, period, p.sources.unearned)
-            + net_retirement
-        )
+        # The annual TANF aggregate applies take-up; ny_tanf alone is entitlement.
+        income = income + spm_unit("tanf", period)
+        # D.12 and D.13 permit actual Medicare B/D deductions. They remain
+        # deferred: neither modeled nor reported premiums are deducted here.
         return np.floor(max_(income, 0) / MONTHS_IN_YEAR) * MONTHS_IN_YEAR

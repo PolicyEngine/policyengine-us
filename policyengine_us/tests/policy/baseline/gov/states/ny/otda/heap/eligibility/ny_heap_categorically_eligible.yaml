@@ -4,7 +4,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY]
     snap: [1, 0, 0]
-    ny_tanf: [0, 1, 0]
+    tanf: [0, 1, 0]
     ssi: [0, 0, 0]
   output:
     ny_heap_categorically_eligible: [true, true, false]
@@ -14,9 +14,39 @@
     heating_type: NATURAL_GAS
     state_code: NY
     snap: 0
-    ny_tanf: 0
+    tanf: 0
     ssi: 1200
     ssi_federal_living_arrangement:
       2026-01: OWN_HOUSEHOLD
   output:
     ny_heap_categorically_eligible: true
+
+- name: Unclaimed state cash entitlement does not confer categorical eligibility
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    ny_tanf: [1200, 1200]
+    takes_up_tanf_if_eligible: [false, true]
+    snap: [0, 0]
+    ssi: [0, 0]
+  output:
+    ny_heap_categorically_eligible: [false, true]
+
+- name: An excluded foster member or nonqualified SSI recipient does not confer categorical eligibility
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    ssi: [1200, 1200]
+    snap: [0, 0]
+    tanf: [0, 0]
+    is_citizen_or_legal_immigrant: [true, false]
+    is_in_foster_care:
+      2026-01: [true, false]
+    ssi_federal_living_arrangement:
+      2026-01: [OWN_HOUSEHOLD, OWN_HOUSEHOLD]
+  output:
+    ny_heap_categorically_eligible: [false, false]

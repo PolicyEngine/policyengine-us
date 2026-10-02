@@ -8,7 +8,8 @@ class ny_heap_eligible(Variable):
     label = "New York HEAP regular heating eligibility"
     defined_for = StateCode.NY
     reference = (
-        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34,37,44,45,46,47,48",
+        # PDF pages 34, 37, 44, 45, 46, 47, 48.
+        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34",
     )
     documentation = "Regular heating has no resource test. SPM units approximate energy-sharing households. Application timing, SSN documentation, duplicate payments and the full set of excluded member categories are not modeled."
 
