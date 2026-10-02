@@ -17,6 +17,9 @@ class ne_agi_subtractions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.agi.subtractions
-        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Nebraska subtracts these amounts only to the extent they are included
+        # in federal AGI. Dependents' income is not in the filer's federal AGI;
+        # they report it on their own return.
+        total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

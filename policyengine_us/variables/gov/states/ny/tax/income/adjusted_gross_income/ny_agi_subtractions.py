@@ -8,14 +8,21 @@ class ny_agi_subtractions(Variable):
     unit = USD
     documentation = "Subtractions from NY AGI over federal AGI."
     definition_period = YEAR
-    dict(
-        title="N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3",
-        href="https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income",
+    reference = (
+        # N.Y. Tax Law § 612(a), (c)(3), (c)(3-a), (c)(3-c), (c)(7)
+        "https://newyork.public.law/laws/n.y._tax_law_section_612",
+        # 2025 Form IT-201-I, who must file (dependents)
+        "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=3",
+        # 2025 Form IT-201-I, lines 26 and 29
+        "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=9",
     )
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ny.tax.income.agi.subtractions
-        total_subtractions = add(tax_unit, period, p.sources)
+        # Each subtraction applies only to amounts included in federal AGI.
+        # Dependents' income is not in the filer's federal AGI; they report
+        # it on their own return, so only the head's and spouse's count.
+        total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.sources)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

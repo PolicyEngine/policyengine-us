@@ -48,7 +48,12 @@ class hi_modified_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.HI
-    reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
+    reference = (
+        "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35",
+        # Line 13 pension subtraction covers distributions included in the
+        # filer's federal AGI.
+        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=13",
+    )
 
     def formula(tax_unit, period, parameters):
         # Federal AGI plus Hawaii additions minus subtractions, excluding the
@@ -68,8 +73,12 @@ class hi_modified_agi(Variable):
         other_additions_amount = (
             add(tax_unit, period, other_additions) if other_additions else 0
         )
+        # Match hi_subtractions: a dependent's income (e.g. a pension) is not
+        # in federal AGI, so it is not subtracted here either.
         other_subtractions_amount = (
-            add(tax_unit, period, other_subtractions) if other_subtractions else 0
+            tax_unit_non_dep_add(tax_unit, period, other_subtractions)
+            if other_subtractions
+            else 0
         )
         federal_student_loan_interest_deduction = add(
             tax_unit, period, ["student_loan_interest_ald"]
