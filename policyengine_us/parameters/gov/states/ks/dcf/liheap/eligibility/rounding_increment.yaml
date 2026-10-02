@@ -4,9 +4,9 @@ description: Kansas sets monthly income limits in increments of this amount unde
 # FY2026 matches nearest-dollar rounding of 150% of the 2025 guidelines,
 # including a separately rounded $688 increment for each person beyond eight.
 # The July 2025 KEESM edition is the first to carry the FY2026 limits; the
-# 2025-10-01 date matches the federal program year and the FY2026 matrix. All
-# Kansas LIEAP variables are annual, so any date in the 2025 season gives the
-# same result.
+# 2025-10-01 date matches the federal program year and the FY2026 matrix.
+# Kansas LIEAP variables are annual and read the value in force on January 1,
+# so any date from 2025-01-02 through 2026-01-01 gives the same result.
 values:
   2024-10-01: 0.01
   2025-10-01: 1

@@ -10,6 +10,9 @@ values:
     - general_assistance
     - ks_tanf
     - rental_income
+    # KEESM 6313: income from rental property is unearned unless a household
+    # member actively manages it at least 20 hours a week.
+    - farm_rent_income
     - alimony_income
     - child_support_received
     # Plan counts "insurance payments made directly to the insured".
@@ -33,7 +36,7 @@ metadata:
     - title: Kansas LIHEAP FY2026 State Plan, Section 1.9 (countable income sources)
       href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=6
     - title: Kansas LIHEAP FY2025 State Plan, Section 1.9, pages 5-6 (countable income sources)
-      href: https://liheapch.acf.gov/docs/2025/state-plans/KS_Plan_2025.pdf#page=5,6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KS_Plan_2025.pdf#page=5
     - title: KEESM 13360-13361, October 2024 edition (countable income and specific exemptions)
       href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
     - title: KEESM 13360-13361, January 2026 edition (countable income and specific exemptions)
@@ -42,3 +45,7 @@ metadata:
       href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13300.htm
     - title: KEESM 13320 Household Definition, January 2026 edition (income of all household members living together is used)
       href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13300.htm
+    - title: KEESM 6313 Self-Employment, October 2024 edition (rental property income is unearned unless actively managed 20 hours a week)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm6313.htm
+    - title: KEESM 6313 Self-Employment, January 2026 edition (rental property income is unearned unless actively managed 20 hours a week)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm6313.htm

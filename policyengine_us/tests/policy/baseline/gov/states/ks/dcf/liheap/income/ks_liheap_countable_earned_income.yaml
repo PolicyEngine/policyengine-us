@@ -1,5 +1,5 @@
 # Kansas LIEAP countable earned income per person (KS LIHEAP State Plan FY2026
-# 1.8-1.9, #page=6,7): gross wages and self-employment income are counted,
+# 1.8-1.9, pages 5-7): gross wages and self-employment income are counted,
 # except the earned income of a child under 18. KEESM 13320: a member who is
 # or turns 18 in the application month has countable income.
 # Modeling simplification: use existing net business income directly, without
@@ -146,3 +146,32 @@
   output:
     ks_liheap_countable_earned_income: [12_000, 0, 6_000]
     ks_liheap_countable_income: 18_000
+
+- name: Case 9, partnership and S corporation profit is counted and a loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # 10 an hour, 40 hours a week: 10 * 2,080 = 20,800.
+        employment_income: 20_800
+        partnership_s_corp_income: 9_000
+      person2:
+        age: 43
+        employment_income: 20_800
+        partnership_s_corp_income: -4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # KEESM 6313: a loss cannot be deducted from other income, so each source
+    # is floored at zero before the sources are added.
+    # person1: 20,800 + 9,000 = 29,800. person2: 20,800 + max(-4,000, 0) = 20,800.
+    ks_liheap_countable_earned_income: [29_800, 20_800]
+    ks_liheap_countable_income: 50_600
