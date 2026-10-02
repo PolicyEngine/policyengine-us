@@ -1,3 +1,10 @@
+## [2.21.3] - 2026-10-02
+
+### Fixed
+
+- Stop five formulas from writing into arrays they read from other variables, which changed those variables' cached values: adjusted gross income under the CRFB surtax with the increased base, federal itemized deductions in Georgia, Utah total dependents (baseline and the dependent exemption reform), and earned income under the basic income phase-in with Social Security counted as earnings. Add a code-health test that fails on new in-place writes.
+
+
 ## [2.21.2] - 2026-10-02
 
 ### Fixed
