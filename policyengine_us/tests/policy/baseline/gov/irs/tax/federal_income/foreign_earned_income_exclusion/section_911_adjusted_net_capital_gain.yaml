@@ -1,0 +1,40 @@
+# 26 U.S.C. 911(f)(2)(A)(iii) with 1(h)(3): adjusted net capital gain is net
+# capital gain other than qualified dividends, reduced (not below zero) by
+# unrecaptured section 1250 gain and 28-percent rate gain, plus qualified
+# dividends, each after the capital gain excess.
+- name: The excess comes off the 28-percent and 1250 gains first
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 100_000 # 90,000 of gain plus the dividends
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 15_000
+  output:
+    section_911_net_capital_gain: 85_000
+    section_911_qualified_dividend_income: 10_000
+    section_911_28_percent_rate_gain: 0
+    section_911_unrecaptured_section_1250_gain: 15_000
+    # (85,000 - 10,000) - (15,000 + 0) + 10,000. Schedule D Tax Worksheet:
+    # line 9 = 75,000, line 10 = 85,000, line 11 = 15,000, line 13 = 70,000.
+    section_911_adjusted_net_capital_gain: 70_000
+
+- name: Without 25 or 28 percent gains the excess comes off the adjusted gain
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 40_000
+    section_911_capital_gain_excess: 35_000
+  output:
+    section_911_net_capital_gain: 5_000
+    section_911_qualified_dividend_income: 5_000
+    section_911_adjusted_net_capital_gain: 5_000
+
+- name: No excess leaves adjusted net capital gain unchanged
+  period: 2025
+  input:
+    adjusted_net_capital_gain: 70_000
+    net_capital_gain: 100_000
+    section_911_capital_gain_excess: 0
+  output:
+    section_911_adjusted_net_capital_gain: 70_000

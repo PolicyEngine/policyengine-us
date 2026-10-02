@@ -1,4 +1,10 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.before_credits.tax_at_main_rates import (
+    tax_at_main_rates,
+)
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
+    schedule_d_tax_worksheet_after_capital_gain_excess,
+)
 
 
 class regular_tax_before_credits(Variable):
@@ -12,14 +18,20 @@ class regular_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
-        dwks1 = tax_unit("taxable_income", period)
+        # A Form 2555 filer enters line 3 of the Foreign Earned Income Tax
+        # Worksheet on line 1 and refigures the capital gain lines for any
+        # capital gain excess (26 U.S.C. 911(f)).
+        dwks1 = tax_unit("taxable_income_plus_section_911_exclusion", period)
+        worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
+            tax_unit, period, tax_unit("section_911_capital_gain_excess", period)
+        )
 
         dwks16 = min_(p.capital_gains.thresholds["1"][filing_status], dwks1)
         dwks17 = min_(tax_unit("dwks14", period), dwks16)
         dwks20 = dwks16 - dwks17
         lowest_rate_tax = p.capital_gains.rates["1"] * dwks20
         # Break in worksheet lines
-        dwks13 = tax_unit("dwks13", period)
+        dwks13 = worksheet.line_13
         dwks21 = min_(dwks1, dwks13)
         dwks22 = dwks20
         dwks23 = max_(0, dwks21 - dwks22)
@@ -33,11 +45,8 @@ class regular_tax_before_credits(Variable):
         dwks31 = dwks21 - dwks30
         dwks32 = p.capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
-        dwks33 = min_(
-            tax_unit("dwks09", period),
-            add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
-        )
-        dwks10 = tax_unit("dwks10", period)
+        dwks33 = min_(worksheet.line_9, worksheet.unrecaptured_section_1250_gain)
+        dwks10 = worksheet.line_10
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
@@ -49,26 +58,22 @@ class regular_tax_before_credits(Variable):
         dwks41 = p.income.amt.brackets.rates[-1] * dwks40
 
         # Compute regular tax using bracket rates and thresholds
+        # The shared schedule clamps inverted brackets as in
+        # income_tax_main_rates (#9084), or the AMT comparator diverges from
+        # the main-rates tax and manufactures phantom AMT for qdiv/LTCG
+        # filers.
         reg_taxinc = max_(0, dwks19)
-        bracket_tops = p.income.bracket.thresholds
-        bracket_rates = p.income.bracket.rates
-        reg_tax = 0
-        bracket_bottom = 0
-        for i in range(1, len(list(bracket_rates.__iter__())) + 1):
-            b = str(i)
-            # Clamp as in income_tax_main_rates (#9084): an inverted
-            # bracket must contribute zero width here too, or the AMT
-            # comparator diverges from the corrected main-rates tax and
-            # manufactures phantom AMT for qdiv/LTCG filers.
-            bracket_top = max_(bracket_bottom, bracket_tops[b][filing_status])
-            reg_tax += bracket_rates[b] * amount_between(
-                reg_taxinc, bracket_bottom, bracket_top
-            )
-            bracket_bottom = bracket_top
+        reg_tax = tax_at_main_rates(reg_taxinc, filing_status, p.income.bracket)
 
         # Return to worksheet lines
         dwks42 = reg_tax
         dwks43 = dwks29 + dwks32 + dwks38 + dwks41 + dwks42 + lowest_rate_tax
+        # Foreign Earned Income Tax Worksheet, lines 4 to 6: the worksheet
+        # tax on line 3 less the tax on the excluded amount alone.
+        # income_tax_main_rates is already net of it.
+        excluded = max_(0, tax_unit("foreign_earned_income_exclusion", period))
+        tax_on_excluded = tax_at_main_rates(excluded, filing_status, p.income.bracket)
+        dwks43 = where(excluded > 0, max_(0, dwks43 - tax_on_excluded), dwks43)
         dwks44 = tax_unit("income_tax_main_rates", period)
         dwks45 = min_(dwks43, dwks44)
         return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)

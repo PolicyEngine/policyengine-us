@@ -1,0 +1,39 @@
+# 26 U.S.C. 1(h)(1)(A), applied for a taxpayer excluding foreign earned income
+# to taxable income plus the excluded amount, with the gains reduced by any
+# capital gain excess (26 U.S.C. 911(f)).
+- name: Gains within taxable income are excluded in full
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 40_000
+    net_capital_gain: 30_000
+    adjusted_net_capital_gain: 30_000
+    foreign_earned_income_exclusion: 0
+  output:
+    capital_gains_excluded_from_taxable_income: 30_000
+
+- name: An exclusion leaves gains within taxable income excluded in full
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 40_000
+    net_capital_gain: 30_000
+    adjusted_net_capital_gain: 30_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    # Qualified Dividends and Capital Gain Tax Worksheet: line 1 = 70,000,
+    # line 4 = 30,000, line 5 = 40,000.
+    capital_gains_excluded_from_taxable_income: 30_000
+
+- name: A capital gain excess caps the excluded gains at taxable income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    net_capital_gain: 50_000
+    adjusted_net_capital_gain: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Excess 15,750. Worksheet: line 1 = 134,250, line 3 = 34,250, line 5 =
+    # 100,000, so the whole excluded amount stays in the main-rates base.
+    capital_gains_excluded_from_taxable_income: 34_250

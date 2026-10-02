@@ -1,0 +1,44 @@
+# Schedule D Tax Worksheet line 14 (Qualified Dividends and Capital Gain Tax
+# Worksheet line 5): line 1 less line 13. A Form 2555 filer enters line 3 of
+# the Foreign Earned Income Tax Worksheet on line 1 and refigures line 13 for
+# any capital gain excess.
+- name: Line 1 less line 13 without an exclusion
+  period: 2025
+  input:
+    taxable_income: 40_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 0
+  output:
+    dwks14: 10_000
+
+- name: An exclusion raises line 1
+  period: 2025
+  input:
+    taxable_income: 40_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    dwks14: 40_000
+
+- name: A capital gain excess leaves the excluded amount on line 14
+  period: 2025
+  input:
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Excess 15,750: line 13 = 34,250 and line 1 = 134,250.
+    section_911_capital_gain_excess: 15_750
+    dwks14: 100_000
+
+- name: With no taxable income line 14 is the excluded amount
+  period: 2025
+  input:
+    taxable_income: 0
+    qualified_dividend_income: 3_000
+    foreign_earned_income_exclusion: 130_000
+  output:
+    # 2025 Form 6251 instructions, line 20: a Form 2555 filer who completed
+    # neither capital gains worksheet enters line 3 of the Foreign Earned
+    # Income Tax Worksheet.
+    dwks14: 130_000
