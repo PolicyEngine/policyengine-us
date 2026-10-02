@@ -1,12 +1,22 @@
-description: The Riverside Department of Community Action Partnership provides these trash payment amount to applicants who qualify for the Sharing Households Assist Riverside's Energy program.
+description: The City of Riverside provides up to this monthly credit on trash bills under the Sharing Households Assist Riverside's Energy program.
 
 values:
-  2024-07-01: 4.46
+  # The trash credit began on November 1, 2023.
+  2000-01-01: 0
+  2023-11-01: 1.94
+  2024-07-01: 3.24
+  2025-07-01: 4.46
+  2026-07-01: 5.75
+  2027-07-01: 7.12
 
 metadata:
   unit: currency-USD
   period: month
-  label: Riverside County SHARE trash payment amount
+  label: Riverside SHARE trash payment amount
   reference:
-    - title: SHARE Program Guidelines
-      href: https://riversideca.gov/utilities/residents/assistance-programs/share-english
+    - title: Riverside City Council Staff Report, December 19, 2023, SHARE solid waste credit, Table 1
+      href: https://riversideca.legistar1.com/riversideca/attachments/97b4b324-e4f0-4c84-8452-856eb39fb404.pdf#page=3
+    - title: Riverside City Council Minutes, December 19, 2023, SHARE solid waste credit approval
+      href: https://riversideca.legistar.com/View.ashx?M=M&ID=1144035&GUID=416C87EB-4FA7-4040-ADA1-E4EDAEF770B1#page=2
+    - title: Riverside Public Utilities SHARE Program Application (REV 7/2026), SHARE Program Guidelines
+      href: https://riversideca.gov/utilities/sites/riversideca.gov.utilities/files/images/RPU%20SHARE%20Program%20Applications_ENG_7-26_Fillable.pdf#page=2

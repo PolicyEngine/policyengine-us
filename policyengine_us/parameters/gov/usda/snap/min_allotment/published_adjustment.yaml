@@ -1,0 +1,36 @@
+description: The USDA adds this amount to the minimum allotment rate times the rounded-down one-person maximum SNAP allotment to reach its published minimum allotment, by SNAP region.
+# USDA computes the minimum from the unrounded one-person thrifty food plan
+# cost. For FY2027 that rounds to $25 in the 48 States and D.C., while 8% of
+# the published $306 one-person maximum rounds to $24. The adjustment returns
+# to zero from FY2028, so projections use the statutory formula until the next
+# COLA memo is encoded.
+CONTIGUOUS_US:
+  2015-10-01: 0
+  2026-10-01: 1
+  2027-10-01: 0
+AK_URBAN:
+  2015-10-01: 0
+AK_RURAL_1:
+  2015-10-01: 0
+AK_RURAL_2:
+  2015-10-01: 0
+GU:
+  2015-10-01: 0
+HI:
+  2015-10-01: 0
+VI:
+  2015-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: SNAP minimum allotment published adjustment
+  breakdown:
+    - snap_region
+  reference:
+    - title: 7 U.S. Code § 2017(a)
+      href: https://www.law.cornell.edu/uscode/text/7/2017#a
+    - title: SNAP FY2027 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/cola/fy27
+    - title: SNAP FY2027 Cost-of-Living Adjustments memo
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.snap-cola2027.pdf#page=5
