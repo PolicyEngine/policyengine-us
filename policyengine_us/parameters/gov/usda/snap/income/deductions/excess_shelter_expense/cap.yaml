@@ -18,6 +18,7 @@ CONTIGUOUS_US:
   2023-10-01: 672
   2024-10-01: 712
   2025-10-01: 744
+  2026-10-01: 769
 AK_URBAN:
   1996-08-22: 429
   1997-01-01: 434
@@ -36,6 +37,7 @@ AK_URBAN:
   2023-10-01: 1_073
   2024-10-01: 1_137
   2025-10-01: 1_189
+  2026-10-01: 1_229
 AK_RURAL_1:
   1996-08-22: 429
   1997-01-01: 434
@@ -54,6 +56,7 @@ AK_RURAL_1:
   2023-10-01: 1_073
   2024-10-01: 1_137
   2025-10-01: 1_189
+  2026-10-01: 1_229
 AK_RURAL_2:
   1996-08-22: 429
   1997-01-01: 434
@@ -72,6 +75,7 @@ AK_RURAL_2:
   2023-10-01: 1_073
   2024-10-01: 1_137
   2025-10-01: 1_189
+  2026-10-01: 1_229
 GU:
   1996-08-22: 300
   1997-01-01: 304
@@ -90,6 +94,7 @@ GU:
   2023-10-01: 789
   2024-10-01: 835
   2025-10-01: 873
+  2026-10-01: 903
 HI:
   1996-08-22: 353
   1997-01-01: 357
@@ -108,6 +113,7 @@ HI:
   2023-10-01: 905
   2024-10-01: 959
   2025-10-01: 1_003
+  2026-10-01: 1_036
 VI:
   1996-08-22: 182
   1997-01-01: 184
@@ -126,6 +132,7 @@ VI:
   2023-10-01: 529
   2024-10-01: 561
   2025-10-01: 586
+  2026-10-01: 606
 
 metadata:
   unit: currency-USD
@@ -147,6 +154,10 @@ metadata:
       href: https://www.fns.usda.gov/snap/fy-2025-cola
     - title: SNAP FY2026 Cost-of-Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/cola/fy26
+    - title: SNAP FY2027 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/cola/fy27
+    - title: SNAP FY2027 Cost-of-Living Adjustments memo
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.snap-cola2027.pdf#page=6
   breakdown:
     - snap_region
   uprating: gov.usda.snap.uprating

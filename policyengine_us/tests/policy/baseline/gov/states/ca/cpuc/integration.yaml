@@ -8,10 +8,8 @@
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: false
-    ca_care_amount_if_eligible: 32.5
     ca_care: 0
     ca_fera_eligible: true
-    ca_fera_amount_if_eligible: 18
     ca_fera: 18
 
 # Failed integration test above shows that even when a person is not income eligible for CARE, a discount is still being awarded.
@@ -25,10 +23,9 @@
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: true
-    ca_care_amount_if_eligible: 32.5
+    ca_care_electricity_discount: 32.5
     ca_care: 32.5
     ca_fera_eligible: false
-    ca_fera_amount_if_eligible: 18
     ca_fera: 0
 
 - name: A three-person household with an income between 200% and 250% of the poverty line is ineligible for CARE and eligible for FERA.
@@ -151,6 +148,7 @@
         spm_unit_tenure_type: RENTER
         receives_housing_assistance: true
         pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
     households:
       household:
         members: [person1, person2, person3]
@@ -169,3 +167,237 @@
     ca_fera_eligible: true
     # FERA discount = 18% of $1,200.
     ca_fera: 216
+    # FERA has no gas discount, and the household is not CARE-eligible.
+    ca_care_gas_discount: 0
+
+- name: Case 8, income-eligible renter with utilities included in rent gets no CARE discount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 30_000
+    ca_care_income_eligible: true
+    # The model's CARE gate treats a household with utilities included in
+    # rent as ineligible, so neither the electricity nor the gas discount is
+    # applied.
+    ca_care_eligible: false
+    ca_care_electricity_discount: 0
+    ca_care_gas_discount: 0
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera: 0
+    # Electricity expense stays at the full $1,200 with no subsidy.
+    electricity_expense: 1_200
+
+- name: Case 9, three-person household below the CARE income limit with utilities included in rent gets neither CARE nor FERA.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+      person2:
+        age: 40
+        employment_income: 15_000
+      person3:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 45_000
+    ca_care_income_eligible: true
+    ca_care_eligible: false
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 10, three-person household in the FERA income range with utilities included in rent gets no FERA discount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 40
+        employment_income: 20_000
+      person3:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        spm_unit_tenure_type: RENTER
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        ca_care_categorically_eligible: false
+        tenant_pays_utilities: false
+  output:
+    ca_cpuc_countable_income: 60_000
+    ca_care_income_eligible: false
+    ca_care_eligible: false
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 11, income-eligible household gets both the CARE electricity and gas discounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # $30,000 is below the 2024 one-person CARE limit of $40,880, which uses
+    # the two-person poverty line.
+    ca_care_income_eligible: true
+    ca_care_eligible: true
+    # Electricity discount = 32.5% of $1,200.
+    ca_care_electricity_discount: 390
+    # Gas discount = 20% of $600.
+    ca_care_gas_discount: 120
+    # CARE total = $390 + $120.
+    ca_care: 510
+    # CARE is the only state benefit this household receives.
+    household_state_benefits: 510
+    # Only the electricity discount reduces the electricity expense.
+    electricity_expense: 810
+    ca_fera_eligible: false
+
+- name: Case 12, one-person household at the CARE income limit gets CARE, not FERA.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 43_280
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # The 2026 CARE limit for one person uses the two-person poverty line: 2 x 21,640 = 43,280; the FERA limit is 2.5 x 21,640 = 54,100. CARE = 32.5% of $1,200.
+    ca_cpuc_countable_income: 43_280
+    ca_care_income_eligible: true
+    ca_care: 390
+    ca_fera_eligible: false
+    ca_fera: 0
+
+- name: Case 13, one-person household just above the CARE limit gets FERA.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 43_281
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # Above 43,280 and at most 54,100. FERA = 18% of $1,200.
+    ca_cpuc_countable_income: 43_281
+    ca_care_income_eligible: false
+    ca_care: 0
+    ca_fera_eligible: true
+    ca_fera: 216
+
+- name: Case 14, one-person household at the FERA income limit gets FERA.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 54_100
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # At the 54,100 FERA limit. FERA = 18% of $1,200.
+    ca_cpuc_countable_income: 54_100
+    ca_care_income_eligible: false
+    ca_care: 0
+    ca_fera_eligible: true
+    ca_fera: 216
+
+- name: Case 15, one-person household above the FERA income limit gets neither.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 54_101
+    spm_units:
+      unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        ca_care_categorically_eligible: false
+  output:
+    # Above the 54,100 FERA limit.
+    ca_cpuc_countable_income: 54_101
+    ca_care_income_eligible: false
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera: 0

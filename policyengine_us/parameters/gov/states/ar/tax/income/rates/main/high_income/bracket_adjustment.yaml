@@ -1,0 +1,349 @@
+description: Arkansas subtracts this bracket adjustment amount from the high-income tax table result, based on net taxable income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Arkansas high-income bracket adjustment
+  reference:
+  - title: A.C.A. § 26-51-201(a)(4)(C), as amended by Act 1 of 2026 (1st Extraordinary Session), § 1
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=2
+  - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+# Each threshold is the "Less Than or Equal To" bound of the row before, and
+# the amount applies to net income ABOVE it (the formula calls calc with
+# right=True): the statute's first row, $94,701-$94,800, is threshold 94,700.
+# Keying rows on these round bounds lets each one be indexed and rounded to the
+# nearest $100 like the high-income threshold, which the first row shares.
+# The dollar amounts are not indexed: 26-51-201(d)(1) indexes only bracket
+# bounds, and DFA's 2022-2025 cards kept each Act's $10 steps.
+brackets:
+  - threshold:
+      values:
+        2026-01-01: 94_700
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 290
+  - threshold:
+      values:
+        2026-01-01: 94_800
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 280
+  - threshold:
+      values:
+        2026-01-01: 94_900
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 270
+  - threshold:
+      values:
+        2026-01-01: 95_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 260
+  - threshold:
+      values:
+        2026-01-01: 95_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 250
+  - threshold:
+      values:
+        2026-01-01: 95_200
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 240
+  - threshold:
+      values:
+        2026-01-01: 95_300
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 230
+  - threshold:
+      values:
+        2026-01-01: 95_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 220
+  - threshold:
+      values:
+        2026-01-01: 95_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 210
+  - threshold:
+      values:
+        2026-01-01: 95_600
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 200
+  - threshold:
+      values:
+        2026-01-01: 95_700
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 190
+  - threshold:
+      values:
+        2026-01-01: 95_800
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 180
+  - threshold:
+      values:
+        2026-01-01: 95_900
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 170
+  - threshold:
+      values:
+        2026-01-01: 96_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 160
+  - threshold:
+      values:
+        2026-01-01: 96_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 150
+  - threshold:
+      values:
+        2026-01-01: 96_200
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 140
+  - threshold:
+      values:
+        2026-01-01: 96_300
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 130
+  - threshold:
+      values:
+        2026-01-01: 96_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 120
+  - threshold:
+      values:
+        2026-01-01: 96_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 110
+  - threshold:
+      values:
+        2026-01-01: 96_600
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 100
+  - threshold:
+      values:
+        2026-01-01: 96_700
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 90
+  - threshold:
+      values:
+        2026-01-01: 96_800
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 80
+  - threshold:
+      values:
+        2026-01-01: 96_900
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 70
+  - threshold:
+      values:
+        2026-01-01: 97_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 60
+  - threshold:
+      values:
+        2026-01-01: 97_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 50
+  - threshold:
+      values:
+        2026-01-01: 97_200
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 40
+  - threshold:
+      values:
+        2026-01-01: 97_300
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 30
+  - threshold:
+      values:
+        2026-01-01: 97_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 20
+  - threshold:
+      values:
+        2026-01-01: 97_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 10
+  - threshold:
+      values:
+        2026-01-01: 97_600
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    amount:
+      2026-01-01: 0

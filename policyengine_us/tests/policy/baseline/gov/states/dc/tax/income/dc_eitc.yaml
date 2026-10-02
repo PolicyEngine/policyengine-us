@@ -38,3 +38,59 @@
         state_code: DC
   output:
     dc_eitc: 1
+
+- name: DC EITC takes the with-child branch for a disabled adult dependent
+  period: 2023
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      disabled_adult:
+        age: 30
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, disabled_adult]
+        dc_eitc_with_qualifying_child: 1
+        dc_eitc_without_qualifying_child: 2
+    households:
+      household:
+        members: [head, disabled_adult]
+        state_code: DC
+  output:
+    # IRC 152(c)(3)(B) waives the age test, so the unit has a qualifying child.
+    dc_eitc: 1
+
+- name: DC EITC pays a filer whose only qualifying child is a disabled adult with an ITIN
+  period: 2023
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+      disabled_adult:
+        age: 30
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, disabled_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, disabled_adult]
+        state_code: DC
+  output:
+    # The federal credit needs a Social Security number, D.C. Law 23-149
+    # does not. The childless branch also counts this dependent as a child,
+    # so before the router matched it the unit got neither credit.
+    eitc_child_count: 0
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc_with_qualifying_child: 2_796.5
+    dc_eitc: 2_796.5
+
