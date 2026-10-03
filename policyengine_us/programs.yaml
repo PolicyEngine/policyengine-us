@@ -1784,7 +1784,7 @@ programs:
     variable: nyc_income_tax
     parameter_prefix: gov.local.ny.nyc.tax.income
     verified_start_year: 2022
-    notes: Local income tax for NYC residents
+    notes: Local income tax for NYC residents, including the household credit, NYC earned income credit, NYC child and dependent care credit, school tax credit, and, from 2025, the income tax elimination credit (Tax Law § 1310(h)); the unincorporated business tax credit is an input
 
   - id: philadelphia_wage_tax
     name: Philadelphia wage tax
