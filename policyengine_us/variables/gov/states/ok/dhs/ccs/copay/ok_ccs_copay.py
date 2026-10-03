@@ -10,7 +10,7 @@ class ok_ccs_copay(Variable):
     defined_for = StateCode.OK
     reference = (
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4.pdf#page=2",
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-5-1",
+        "https://okrules.elaws.us/oac/340:40-5-1",
     )
 
     def formula(spm_unit, period, parameters):
