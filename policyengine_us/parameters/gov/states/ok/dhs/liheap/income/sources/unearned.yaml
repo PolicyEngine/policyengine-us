@@ -1,0 +1,42 @@
+description: Oklahoma counts these unearned income sources for fully qualified households under the Low Income Home Energy Assistance Program.
+# OAC 340:20-1-11(a) counts earned and unearned income unless excluded.
+# Income sources represent regular receipts, not excluded asset principal,
+# loans, nonrecurring lump sums or restricted trust distributions. The
+# September 2025 rule replaces the old 38-item list with program-specific
+# exclusions, defaulting to Oklahoma SNAP exclusions. Aggregate inputs cannot
+# distinguish every exclusion, including irregular small gifts, qualified
+# educational/VA aid, restricted tribal trust receipts, redirected support
+# and third-party payments. Those detailed pathways remain unverified.
+# Pension income includes military pensions. military_retirement_pay is a
+# tax classification and is not independently added. State SSP receipts are
+# not modeled; SSI is federal, and OK TANF is added once at SPMUnit level.
+values:
+  2025-09-15:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - railroad_benefits
+    - workers_compensation
+    - disability_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - veterans_benefits
+    - financial_assistance
+    - estate_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma LIHEAP unearned income sources
+  reference:
+    - title: OAC 340:20-1-11(a)-(b), September 2025 permanent adoption
+      href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
+    - title: OAC 340:50-7-22, Incorporated SNAP income exclusions
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22

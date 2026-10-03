@@ -1,0 +1,266 @@
+# Oklahoma independent fully qualified household components; no final eligibility or award is asserted.
+
+# Register pp576-578 and approved existing-net-input convention:12000+2400+600+0+1200=16200. No second legal50% business deduction is applied.
+- name: Case 1, adult positive sources count without another business deduction and losses are zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_400
+        sstb_self_employment_income: 600
+        farm_operations_income: -1_200
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: 16_200
+
+# Incorporated SNAP340:50-7-22(9) exempts elementary or high-school students17andunder underadultcontrol. K12 explicitlytrue and taxdependency approximate attendance/control.
+- name: Case 2, dependent elementary school earnings are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 0]
+
+# SNAP340:50-7-22(9), incorporated by current Registerp578, requires ageunder18, K12 attendance and adultcontrol. Young person wages6000+existingbusiness1200 are7200 unless all three hold; adultcollege is not K12.
+- name: Case 3, dependent high school student follows all three student exclusion conditions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 0]
+
+# SNAP340:50-7-22(9), incorporated by current Registerp578, requires ageunder18, K12 attendance and adultcontrol. Young person wages6000+existingbusiness1200 are7200 unless all three hold; adultcollege is not K12.
+- name: Case 4, dependent nonstudent follows all three student exclusion conditions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        is_full_time_student: false
+        employment_income: 6_000
+        self_employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 7_200]
+
+# SNAP340:50-7-22(9), incorporated by current Registerp578, requires ageunder18, K12 attendance and adultcontrol. Young person wages6000+existingbusiness1200 are7200 unless all three hold; adultcollege is not K12.
+- name: Case 5, nondependent high school student follows all three student exclusion conditions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 7_200]
+
+# SNAP340:50-7-22(9), incorporated by current Registerp578, requires ageunder18, K12 attendance and adultcontrol. Young person wages6000+existingbusiness1200 are7200 unless all three hold; adultcollege is not K12.
+- name: Case 6, eighteen year old high school student follows all three student exclusion conditions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 7_200]
+
+# SNAP340:50-7-22(9), incorporated by current Registerp578, requires ageunder18, K12 attendance and adultcontrol. Young person wages6000+existingbusiness1200 are7200 unless all three hold; adultcollege is not K12.
+- name: Case 7, adult college student follows all three student exclusion conditions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 20
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_earned_income: [12_000, 7_200]

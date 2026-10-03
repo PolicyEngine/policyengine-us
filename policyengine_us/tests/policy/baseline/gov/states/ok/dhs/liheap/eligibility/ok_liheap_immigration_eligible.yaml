@@ -1,0 +1,77 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# Current OAC340:20-1-10(d) incorporates340:50-5-67 and7CFR273.4(a)(6). All represented qualified categories at5years qualify; DACA/TPS/undocumented do not independently satisfy it. Missing enum categories remain outside this test.
+- name: Case 1, represented statuses follow the incorporated qualified alien categories.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK, OK, OK, OK]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, ASYLEE, DEPORTATION_WITHHELD, CUBAN_HAITIAN_ENTRANT,
+      PAROLED_ONE_YEAR, CONDITIONAL_ENTRANT, DACA, TPS, UNDOCUMENTED]
+    years_since_us_entry: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+    snap_alien_qualifying_quarters: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false, false, false, false,
+      false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [true, true, true, true, true, true, true, true, false, false, false]
+
+# 7CFR273.4(a)(6)(iii)(A),(B),(D): five qualified years; years_since_us_entry is the existing qualified-status-clock approximation.
+- name: Case 2, five years satisfies the waiting period for each subject status.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK]
+    age: [40, 40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR, PAROLED_ONE_YEAR, CONDITIONAL_ENTRANT,
+      CONDITIONAL_ENTRANT]
+    years_since_us_entry: [4, 5, 4, 5, 4, 5]
+    snap_alien_qualifying_quarters: [0, 0, 0, 0, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [false, true, false, true, false, true]
+
+# 7CFR273.4(a)(6)(ii)(A),(H),(J): under18 exemption, LPR40quarters exception (not parolee40), and benefit-based disability exemption. Age18 with39quarters and0qualifiedyears fails.
+- name: Case 3, child quarters and benefit based disability exceptions retain their distinct conditions.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK]
+    age: [17, 18, 18, 18, 17, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR,
+      CONDITIONAL_ENTRANT, LEGAL_PERMANENT_RESIDENT]
+    years_since_us_entry: [0, 0, 0, 0, 0, 0]
+    snap_alien_qualifying_quarters: [0, 39, 40, 40, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, true]
+    ssi: [0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [true, false, true, false, true, true]
+
+# Current OAC incorporation and7CFR273.4(a)(6)(ii)(B) allow refugee status without waiting. P.L.119-21sec10108 separately narrows7USC2015(f) SNAP. Expected LIHEAPtrue derives from incorporated text, not the SNAP result.
+- name: Case 4, a refugee remains eligible under the incorporated rule despite the separate SNAP statutory restriction.
+  period: 2027
+  input:
+    state_code: [OK]
+    age: [40]
+    heating_type: [NATURAL_GAS]
+    immigration_status: [REFUGEE]
+    years_since_us_entry: [0]
+    snap_alien_qualifying_quarters: [0]
+    is_usda_disabled: [false]
+    is_snap_alien_military_connected: [false]
+    is_snap_lpr_in_waiting_period_exempt_category: [false]
+    ssi: [0]
+  output:
+    ok_liheap_immigration_eligible: true
+    is_snap_immigration_status_eligible:
+      2027-01: false

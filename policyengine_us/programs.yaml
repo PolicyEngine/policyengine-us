@@ -802,8 +802,15 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OK, OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        notes: Regular winter assistance using the published FY2026 matrix and current income rules. The $240 earned allowance is directly supported for FY2027; earlier backfill and payment carry-forward are unverified. Mixed-status deeming uses documented tax-unit grouping and incorporated-CFR immigration rules. Missing case facts and deduction attribution remain input limitations; no complete-year verification is claimed. Crisis, cooling, weatherization and equipment assistance are excluded.
       - state: OR
         status: in_progress
         name: LIHEAP

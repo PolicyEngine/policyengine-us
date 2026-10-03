@@ -1,0 +1,51 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# Current340:20-1-11(a)(2)-(4):12000wages+600rent+1200farmrent+1200annualSSI=15000;2400pension stays with its recipient before deeming. SSI is monthly but the supplied annual receipt is counted once.
+- name: Case 1, person income preserves separate annual receipts before immigration deeming.
+  period: 2027
+  input:
+    people:
+      eligible:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 1200
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+        rental_income: 600
+        farm_rent_income: 1200
+      ineligible:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        pension_income: 2400
+    tax_units:
+      tax_unit:
+        members: [eligible, ineligible]
+    spm_units:
+      spm_unit:
+        members: [eligible, ineligible]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [eligible, ineligible]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: [15000, 2400]

@@ -1,0 +1,17 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# Current340:20-1-11(c), C7p1: earned allowance=min(earnings,2880). First1200+300=1500 (age40nondisabledmedical excluded); second2880+600+400=3880; third2880+700+500=4080. Household floor is applied later, so person deductions may exceed income.
+- name: Case 1, person deductions retain the earned cap and medical attribution before grouping.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 60, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ok_liheap_countable_earned_income: [1200, 12000, 12000]
+    is_disabled: [false, false, true]
+    other_medical_expenses: [500, 600, 700]
+    child_support_expense: [300, 400, 500]
+  output:
+    ok_liheap_income_deductions: [1500, 3880, 4080]

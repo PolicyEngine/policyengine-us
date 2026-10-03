@@ -1,0 +1,248 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# Current340:20-1-11(a)(4), C1p4/C7p1:13200-2880-4776=5544=462monthly. C7Ap1 ordinaryfuel,size1-3,401-700=>265 despite10annual bill. Regular heating schedule has no actual-expense cap.
+- name: Case 1, the ordinary mixed status heating award uses deemed net income without a bill cap.
+  period: 2027
+  input:
+    people:
+      adult:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 13200
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 10
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_liheap_household_size: 1
+    ok_liheap_gross_income: 5544
+    ok_liheap_net_income: 5544
+    ok_liheap_eligible: true
+    ok_liheap: 265
+
+# C7p1 allowance12000-2880=9120=760monthly; C7Ap1 deliveredfuel,size1-3,701orhigher pays280. The10primary bill does not cap the ordinary scheduled award.
+- name: Case 2, a delivered fuel household receives the published award after its earned allowance.
+  period: 2027
+  input:
+    people:
+      adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+        heating_type: PROPANE
+        gas_expense: 0
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+        bottled_gas_expense: 10
+    households:
+      household:
+        members: [adult]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 12000
+    ok_liheap_net_income: 9120
+    ok_liheap_eligible: true
+    ok_liheap: 280
+
+# Current340:20-1-10(f)-(g) plus C7Ap1:0net,size1 renter150,roomer70; subsidizedpositive surcharge retains150, zero surcharge ineligible. Roomer written-agreement fact is assumed under documented input limitation.
+- name: Case 3, renter roomer and subsidized surcharge routes link eligibility to their heating schedules.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK]
+    age: [40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0, 0]
+    ok_tanf: [0, 0, 0, 0]
+    ok_child_care_subsidies: [0, 0, 0, 0]
+    ok_ccs_copay: [0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true]
+    receives_housing_assistance: [false, false, true, true]
+    ok_liheap_dwelling_type: [STANDARD, ROOMER, STANDARD, STANDARD]
+    gas_expense: [0, 0, 10, 0]
+    has_heating_expense: [false, false, false, false]
+  output:
+    ok_liheap_eligible: [true, true, true, false]
+    ok_liheap: [150, 70, 150, 0]
+
+# Current340:20-1-11(a)(4),(c), C1p4/C7p1: ineligible12000-2880-600medical-1200support-4776need=2544. Gross2544+6000eligible+1200annualTANF=9744. Net9744-2880eligibleallowance-600eligiblesupport-600annualCCScopay=5664=472monthly; C7Ap1 ordinary,size2=>265. No duplicate ineligible deductions or SPM transfers.
+- name: Case 4, ineligible person deductions TANF and the household copay are each applied once.
+  period: 2027
+  input:
+    people:
+      ineligible:
+        age: 60
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+        other_medical_expenses: 600
+        child_support_expense: 1200
+      eligible:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 6000
+        child_support_expense: 600
+      child:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      tax_unit:
+        members: [ineligible, eligible, child]
+    spm_units:
+      spm_unit:
+        members: [ineligible, eligible, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 1200
+        ok_child_care_subsidies: 2400
+        ok_ccs_copay: 600
+    households:
+      household:
+        members: [ineligible, eligible, child]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: 2544
+    ok_liheap_household_size: 2
+    ok_liheap_gross_income: 9744
+    ok_liheap_net_income: 5664
+    ok_liheap_eligible: true
+    ok_liheap: 265
+
+# Current340:20-1-11(a)(1),(4),(c):18000+4344deemed=22344gross exceeds20748size1limit. Net22344-2880=19464 does not restore eligibility.
+- name: Case 5, deemed income enters the gross gate before the eligible worker deduction.
+  period: 2027
+  input:
+    people:
+      eligible:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 18000
+      ineligible:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+    tax_units:
+      tax_unit:
+        members: [eligible, ineligible]
+    spm_units:
+      spm_unit:
+        members: [eligible, ineligible]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [eligible, ineligible]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: 4344
+    ok_liheap_household_size: 1
+    ok_liheap_gross_income: 22344
+    ok_liheap_income_limit: 20748
+    ok_liheap_net_income: 19464
+    ok_liheap_eligible: false
+    ok_liheap: 0
+
+# Current340:20-1-10 and C7Ap1 ordinaryfuel,size1,0net=>365. OutsideOK or explicitNONE gives0; no cooling/crisis award substituted.
+- name: Case 6, the final award applies state and no heating gates.
+  period: 2027
+  input:
+    state_code: [OK, TX, OK]
+    age: [40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NONE]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    has_heating_expense: [true, true, true]
+    gas_expense: [1, 1, 1]
+    ssi: [0, 0, 0]
+    ok_tanf: [0, 0, 0]
+    ok_child_care_subsidies: [0, 0, 0]
+    ok_ccs_copay: [0, 0, 0]
+  output:
+    ok_liheap: [365, 0, 0]

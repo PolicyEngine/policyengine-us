@@ -1,0 +1,17 @@
+description: Oklahoma uses the federal poverty guideline from this many years before the heating benefit year under the Low Income Home Energy Assistance Program.
+# The FY2026/FY2027 published charts reconcile to 2025/2026 guidelines.
+# Earlier years use the requested guideline year, but are unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Oklahoma LIHEAP federal poverty guideline year lag
+  reference:
+    - title: Oklahoma FY2026 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=9
+    - title: Oklahoma FY2026 Winter Heating application announcement
+      href: https://oklahoma.gov/okdhs/newsroom/2026/january/comm01062026.html
+    - title: OKDHS Appendix C-7, effective October 1, 2026
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
