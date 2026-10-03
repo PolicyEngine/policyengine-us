@@ -1,0 +1,1 @@
+Limit the DC EITC ITIN extension to tax years from 2023 (D.C. Code 47-1806.04(f)(1)(D), added by D.C. Law 24-167 section 7012, not D.C. Law 23-149), and stop counting a disabled parent or grandparent dependent as an EITC qualifying child under IRC 152(c)(2) in the federal, CA, CO, DC, IL, MN and WA credits.

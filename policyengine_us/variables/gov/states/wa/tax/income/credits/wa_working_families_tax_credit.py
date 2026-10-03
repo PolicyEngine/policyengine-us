@@ -51,16 +51,11 @@ class wa_working_families_tax_credit(Variable):
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # IRC 152(c)(3)(B) (part of the frozen 2022-06-09 federal EITC rules)
-        # waives the age test for a permanently and totally disabled
-        # dependent, matching the federal eitc_child_count.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
-        child_count = tax_unit.sum(
-            (person("is_qualifying_child_dependent", period) | is_disabled_dependent)
-            & has_tin
-        )
+        # The IRC 152(c) qualifying-child definition, including the
+        # 152(c)(3)(B) disabled age waiver and the 152(c)(2) relationship test
+        # (both part of the frozen 2022-06-09 federal EITC rules), matching
+        # the federal eitc_child_count.
+        child_count = tax_unit.sum(person("is_eitc_qualifying_child", period) & has_tin)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
         federal_identification_eligible = tax_unit(
             "filer_meets_eitc_identification_requirements", period
