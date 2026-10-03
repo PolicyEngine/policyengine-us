@@ -1,0 +1,26 @@
+description: Idaho counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - unemployment_compensation
+    - strike_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    - estate_income
+    - disability_benefits
+    - workers_compensation
+    - id_tafi
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho LIHEAP countable unearned income sources
+  reference:
+    - title: Idaho FY2026 LIHEAP State Plan
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7

@@ -1,0 +1,150 @@
+# Idaho FY2026 LIHEAP plan, gross income checkboxes and other-income text (pages5-7).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7
+# IDAPA16.03.08 section202 includes income of nonqualified household members (page6).
+# https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+
+- name: Case 1, minor earnings are excluded but child SSI is included.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ003-004: adult12000 + childSSI(100/month*12)=13200; child wages, support, VA and GA excluded.
+  # SSI input1200 is the annual amount for a MONTH variable in a YEAR test.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 17, is_citizen_or_legal_immigrant: true, employment_income: 6_000, ssi: 1_200, child_support_received: 6_000, veterans_benefits: 3_000, general_assistance: 900}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 13_200
+
+- name: Case 2, earnings count at the eighteenth birthday.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ003: child is now18, so both12000 adult wages and6000 earnings count.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 18, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 6_000}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 18_000
+
+- name: Case 3, nonqualified parent income still counts for citizen child.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ002-004: parent is excluded from eligible size but their20000 wages remain countable.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: false, employment_income: 20_000, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 20_000
+
+- name: Case 4, all represented unearned sources count without pension double counting.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ004: SSA12000 + SSI1200 + pension(1000+2000+300+400)=3700 + survivor500
+  # + unemployment2400 + strike300 + rent600 + farmrent700 + alimony400
+  # + interest200 + dividends250 + estate800 + disability900 + workerscomp1000 =24950.
+  # Pension and SSA subcomponents each enter their aggregates exactly once.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, social_security_disability: 12_000, taxable_public_pension_income: 1_000, taxable_private_pension_income: 2_000, tax_exempt_public_pension_income: 300, tax_exempt_private_pension_income: 400, survivor_benefits: 500, unemployment_compensation: 2_400, strike_benefits: 300, rental_income: 600, farm_rent_income: 700, alimony_income: 400, interest_income: 200, ordinary_dividend_income: 250, estate_income: 800, disability_benefits: 900, workers_compensation: 1_000}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 1_200}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 24_950
+
+- name: Case 5, all supported earned business streams count.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ003: gross wages10000 + net business streams2000+3000+4000+5000=24000.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, self_employment_income: 2_000, sstb_self_employment_income: 3_000, farm_operations_income: 4_000, partnership_s_corp_income: 5_000}
+    spm_units:
+      spm_unit: {members: [person1], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1], state_code: ID}
+  output:
+    id_liheap_countable_income: 24_000
+
+- name: Case 6, negative business sources do not offset positive earnings.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ003 documented net-business approximation:10000 +max(-9000,0)+2000+max(-7000,0)+3000=15000.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, self_employment_income: -9_000, sstb_self_employment_income: 2_000, farm_operations_income: -7_000, partnership_s_corp_income: 3_000}
+    spm_units:
+      spm_unit: {members: [person1], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1], state_code: ID}
+  output:
+    id_liheap_countable_income: 15_000
+
+- name: Case 7, monthly SSI and TAFI aggregate once over the year.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ004 period coverage: childSSI100+200=300; SPM TAFI300+200+100=600; total900.
+  # All other months are explicitly0, and TAFI must not be multiplied by household size.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: {2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: {2026-01: 100, 2026-02: 200, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: {2026-01: 300, 2026-02: 200, 2026-03: 100, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 900
+
+- name: Case 8, child support veterans benefits and general assistance are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ004 unchecked source boxes: childsupport9000, VA5000 and GA2000 do not count.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, child_support_received: 9_000, veterans_benefits: 5_000, general_assistance: 2_000}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 0
+
+- name: Case 9, mixed states and unequal memberships retain separate income totals.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ002-004/state scope: first Idaho unit6000+6000=12000, Colorado0,
+  # second Idaho unit adult1800+childSSI1800=3600; minor wages10000 excluded.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 6_000}
+      person2: {age: 34, is_citizen_or_legal_immigrant: false, employment_income: 6_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 1_800}
+      person5: {age: 12, is_citizen_or_legal_immigrant: true, employment_income: 10_000, ssi: 1_800}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+      spm_unit2: {members: [person3], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+      spm_unit3: {members: [person4, person5], heating_type: NATURAL_GAS, gas_expense: 1_000, id_tafi: 0}
+    households:
+      household1: {members: [person1, person2], state_code: ID}
+      household2: {members: [person3], state_code: CO}
+      household3: {members: [person4, person5], state_code: ID}
+  output:
+    id_liheap_countable_income: [12_000, 0, 3_600]

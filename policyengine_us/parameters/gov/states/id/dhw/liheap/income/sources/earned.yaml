@@ -1,0 +1,16 @@
+description: Idaho counts these earned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho LIHEAP countable earned income sources
+  reference:
+    - title: Idaho FY2026 LIHEAP State Plan
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7

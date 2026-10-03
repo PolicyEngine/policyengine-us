@@ -1,0 +1,154 @@
+# Idaho FY2026 LIHEAP plan, 60%SMI for sizes1-7 and150%FPG for8+ (page8).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
+# DHW published monthly limits effective2025-10-01; retrieved2026-10-03.
+# https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+
+- name: Case 1, all published monthly limits and additional person amounts annualize exactly.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ005: sizes1-10 use published monthly [2736.25,3578.17,4420.08,5262.08,
+  # 6104,6945.92,7103.75,6768.75,7456.25,8143.75] times12.
+  # Size11 = (8143.75 +687.50)*12 =105975; size15 = (8143.75 +5*687.50)*12 =138975.
+  # Size7 annual85245 exceeds size8 annual81225: the explicit SMI-to-FPG switch is not max().
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 38, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true}
+      person5: {age: 38, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true}
+      person8: {age: 38, is_citizen_or_legal_immigrant: true}
+      person9: {age: 17, is_citizen_or_legal_immigrant: true}
+      person10: {age: 16, is_citizen_or_legal_immigrant: true}
+      person11: {age: 40, is_citizen_or_legal_immigrant: true}
+      person12: {age: 38, is_citizen_or_legal_immigrant: true}
+      person13: {age: 17, is_citizen_or_legal_immigrant: true}
+      person14: {age: 16, is_citizen_or_legal_immigrant: true}
+      person15: {age: 15, is_citizen_or_legal_immigrant: true}
+      person16: {age: 40, is_citizen_or_legal_immigrant: true}
+      person17: {age: 38, is_citizen_or_legal_immigrant: true}
+      person18: {age: 17, is_citizen_or_legal_immigrant: true}
+      person19: {age: 16, is_citizen_or_legal_immigrant: true}
+      person20: {age: 15, is_citizen_or_legal_immigrant: true}
+      person21: {age: 14, is_citizen_or_legal_immigrant: true}
+      person22: {age: 40, is_citizen_or_legal_immigrant: true}
+      person23: {age: 38, is_citizen_or_legal_immigrant: true}
+      person24: {age: 17, is_citizen_or_legal_immigrant: true}
+      person25: {age: 16, is_citizen_or_legal_immigrant: true}
+      person26: {age: 15, is_citizen_or_legal_immigrant: true}
+      person27: {age: 14, is_citizen_or_legal_immigrant: true}
+      person28: {age: 13, is_citizen_or_legal_immigrant: true}
+      person29: {age: 40, is_citizen_or_legal_immigrant: true}
+      person30: {age: 38, is_citizen_or_legal_immigrant: true}
+      person31: {age: 17, is_citizen_or_legal_immigrant: true}
+      person32: {age: 16, is_citizen_or_legal_immigrant: true}
+      person33: {age: 15, is_citizen_or_legal_immigrant: true}
+      person34: {age: 14, is_citizen_or_legal_immigrant: true}
+      person35: {age: 13, is_citizen_or_legal_immigrant: true}
+      person36: {age: 12, is_citizen_or_legal_immigrant: true}
+      person37: {age: 40, is_citizen_or_legal_immigrant: true}
+      person38: {age: 38, is_citizen_or_legal_immigrant: true}
+      person39: {age: 17, is_citizen_or_legal_immigrant: true}
+      person40: {age: 16, is_citizen_or_legal_immigrant: true}
+      person41: {age: 15, is_citizen_or_legal_immigrant: true}
+      person42: {age: 14, is_citizen_or_legal_immigrant: true}
+      person43: {age: 13, is_citizen_or_legal_immigrant: true}
+      person44: {age: 12, is_citizen_or_legal_immigrant: true}
+      person45: {age: 11, is_citizen_or_legal_immigrant: true}
+      person46: {age: 40, is_citizen_or_legal_immigrant: true}
+      person47: {age: 38, is_citizen_or_legal_immigrant: true}
+      person48: {age: 17, is_citizen_or_legal_immigrant: true}
+      person49: {age: 16, is_citizen_or_legal_immigrant: true}
+      person50: {age: 15, is_citizen_or_legal_immigrant: true}
+      person51: {age: 14, is_citizen_or_legal_immigrant: true}
+      person52: {age: 13, is_citizen_or_legal_immigrant: true}
+      person53: {age: 12, is_citizen_or_legal_immigrant: true}
+      person54: {age: 11, is_citizen_or_legal_immigrant: true}
+      person55: {age: 10, is_citizen_or_legal_immigrant: true}
+      person56: {age: 40, is_citizen_or_legal_immigrant: true}
+      person57: {age: 38, is_citizen_or_legal_immigrant: true}
+      person58: {age: 17, is_citizen_or_legal_immigrant: true}
+      person59: {age: 16, is_citizen_or_legal_immigrant: true}
+      person60: {age: 15, is_citizen_or_legal_immigrant: true}
+      person61: {age: 14, is_citizen_or_legal_immigrant: true}
+      person62: {age: 13, is_citizen_or_legal_immigrant: true}
+      person63: {age: 12, is_citizen_or_legal_immigrant: true}
+      person64: {age: 11, is_citizen_or_legal_immigrant: true}
+      person65: {age: 10, is_citizen_or_legal_immigrant: true}
+      person66: {age: 9, is_citizen_or_legal_immigrant: true}
+      person67: {age: 40, is_citizen_or_legal_immigrant: true}
+      person68: {age: 38, is_citizen_or_legal_immigrant: true}
+      person69: {age: 17, is_citizen_or_legal_immigrant: true}
+      person70: {age: 16, is_citizen_or_legal_immigrant: true}
+      person71: {age: 15, is_citizen_or_legal_immigrant: true}
+      person72: {age: 14, is_citizen_or_legal_immigrant: true}
+      person73: {age: 13, is_citizen_or_legal_immigrant: true}
+      person74: {age: 12, is_citizen_or_legal_immigrant: true}
+      person75: {age: 11, is_citizen_or_legal_immigrant: true}
+      person76: {age: 10, is_citizen_or_legal_immigrant: true}
+      person77: {age: 9, is_citizen_or_legal_immigrant: true}
+      person78: {age: 8, is_citizen_or_legal_immigrant: true}
+      person79: {age: 7, is_citizen_or_legal_immigrant: true}
+      person80: {age: 6, is_citizen_or_legal_immigrant: true}
+      person81: {age: 5, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1: {members: [person1], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit2: {members: [person2, person3], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit3: {members: [person4, person5, person6], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit4: {members: [person7, person8, person9, person10], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit5: {members: [person11, person12, person13, person14, person15], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit6: {members: [person16, person17, person18, person19, person20, person21], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit7: {members: [person22, person23, person24, person25, person26, person27, person28], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit8: {members: [person29, person30, person31, person32, person33, person34, person35, person36], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit12: {members: [person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81], heating_type: NATURAL_GAS, gas_expense: 1_000}
+    households:
+      household1: {members: [person1], state_code: ID}
+      household2: {members: [person2, person3], state_code: ID}
+      household3: {members: [person4, person5, person6], state_code: ID}
+      household4: {members: [person7, person8, person9, person10], state_code: ID}
+      household5: {members: [person11, person12, person13, person14, person15], state_code: ID}
+      household6: {members: [person16, person17, person18, person19, person20, person21], state_code: ID}
+      household7: {members: [person22, person23, person24, person25, person26, person27, person28], state_code: ID}
+      household8: {members: [person29, person30, person31, person32, person33, person34, person35, person36], state_code: ID}
+      household9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45], state_code: ID}
+      household10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55], state_code: ID}
+      household11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66], state_code: ID}
+      household12: {members: [person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81], state_code: ID}
+  output:
+    id_liheap_income_limit: [32_835.0, 42_938.04, 53_040.96, 63_144.96, 73_248.0, 83_351.04, 85_245.0, 81_225.0, 89_475.0, 97_725.0, 105_975.0, 138_975.0]
+
+- name: Case 2, no qualified member has zero income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ002/005: no eligible household member means no applicable income ceiling.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit: {members: [person1], heating_type: NATURAL_GAS, gas_expense: 1_000}
+    households:
+      household: {members: [person1], state_code: ID}
+  output:
+    id_liheap_income_limit: 0
+
+- name: Case 3, mixed state vector preserves the Idaho limit and masks another state.
+  period: 2026
+  absolute_error_margin: 0.01
+  # REQ005/state scope: Idaho one-person monthly2736.25*12=32835; California0.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1: {members: [person1], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit2: {members: [person2], heating_type: NATURAL_GAS, gas_expense: 1_000}
+    households:
+      household1: {members: [person1], state_code: ID}
+      household2: {members: [person2], state_code: CA}
+  output:
+    id_liheap_income_limit: [32_835, 0]
