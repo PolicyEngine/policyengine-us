@@ -1,3 +1,19 @@
+## [2.23.2] - 2026-10-03
+
+### Fixed
+
+- Include estate and trust income (Schedule E Part III) in federal gross income under § 61(a)(14), in the net investment income tax base, and in household, SPM and person market income (person market income also feeds Missouri SNC, North Dakota Renter's Refund and Washington ECEAP income). The NIIT follows Form 8960: all estate and trust income counts by default, new inputs carry the fiduciary's Schedule K-1 (Form 1041) box 14 code H adjustment and its MAGI change (the new niit_magi variable, also used by the Biden FY2025 NIIT reform), and a dependent's estate income stays out of the filer's gross income and net investment income.
+- Corrected the 2024 Arkansas low-income tax table for head of household and surviving spouse filers with two or more dependents, whose $92 row shared the $24,200 threshold of the $104 row and was summed into a $196 row; removed a duplicated top bracket from the IRS SOI AGI-by-size calibration scale; and added tests that fail when any parameter scale repeats a threshold (other than +inf) or an Arkansas low-income table stops rising with AGI.
+- Stop a tax unit dependent's losses from reducing the filer's AGI and from raising the filer's excess business loss limit: `loss_ald` and `limited_capital_loss` now sum only non-dependent members, matching `irs_gross_income`.
+- Compute the federal estate tax unified credit as the tentative tax on the applicable exclusion amount under 26 U.S.C. 2010(c), rather than the exclusion amount itself; add a deceased spousal unused exclusion amount input; extend the 26 U.S.C. 2001(c) rate schedule back to 2011; and limit estate tax to decedents.
+- Replace the documentation's TAXSIM validation page, which showed an ImportError, with the current results published by the policyengine-taxsim dashboard, render the book's stored Plotly charts, and build and deploy the documentation from CI again.
+- Stop Maryland's State and local poverty level credits from going negative, which raised tax, when self-employment losses exceed wages. The credits and their eligibility test now use section 32(c)(2) earned income (eitc_earned_income): wages plus self-employment, farm and partnership earnings, net of losses and the section 164(f) deduction, floored at zero. This also lowers the credit for self-employment profits by the section 164(f) deduction, nets farm and partnership losses against wages, and can newly qualify some self-employed filers.
+- Replace dead casetext.com legal references with live official (or Justia/LII) sources for the same sections, and fix titles and subsection pins that misidentified them.
+- Count farm rental income (IRS Form 4835) as SNAP unearned income.
+- Correct the 2024 additional earned income amount in the standard deduction for filers claimed as dependents to $450 under Rev. Proc. 2023-34, so a 2024 dependent filer with $3,000 of wages gets a $3,450 basic standard deduction instead of $3,400; the Medicaid dependent filing-requirement test uses the same amount. Also fix the Rev. Proc. 2023-34 page anchor in the dependent standard deduction floor parameter.
+- Added the IRS Optional State Sales Tax Tables for 2018 through 2021, which had used the 2022 table. 2015 through 2017, which take the earliest table, now use the 2018 table.
+
+
 ## [2.23.1] - 2026-10-03
 
 ### Changed
