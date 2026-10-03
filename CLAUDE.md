@@ -28,7 +28,9 @@ pip install -e .[dev]
 # Format code
 make format  # Runs ruff format
 
-# Run all tests
+# Run all tests: CI's suites, one bounded subprocess at a time. Never point
+# one `policyengine-core test` process at a whole directory tree or hundreds
+# of files (see CONTRIBUTING.md, "Memory: running suites locally").
 make test
 
 # Run specific test file or directory
@@ -37,8 +39,9 @@ pytest policyengine_us/tests/path/to/test_file.py
 # Run specific test function
 pytest policyengine_us/tests/path/to/test_file.py::test_function_name
 
-# Run specific YAML tests
-policyengine-core test path/to/tests -c policyengine_us [-v]
+# Run specific YAML tests (a few files; for a folder use test_batched.py)
+policyengine-core test path/to/test.yaml -c policyengine_us [-v]
+uv run python policyengine_us/tests/test_batched.py path/to/folder --mode per-subdir --workers 1
 
 # Run microsimulation test
 pytest policyengine_us/tests/microsimulation/test_microsim.py
