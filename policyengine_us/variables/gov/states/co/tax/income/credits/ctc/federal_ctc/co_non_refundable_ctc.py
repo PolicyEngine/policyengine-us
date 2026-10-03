@@ -12,7 +12,7 @@ class co_non_refundable_ctc(Variable):
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-129-child-tax-credit-legislative-declaration-definitions-repeal",
+        "https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-129/",
         # 2022 Colorado Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2022.pdf#page=1",
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit

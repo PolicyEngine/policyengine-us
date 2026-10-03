@@ -55,7 +55,7 @@ class al_federal_income_tax_deduction(Variable):
         actual_non_refundable_cdcc = tax_unit("cdcc", period) * (not cdcc_is_refundable)
 
         simulation = tax_unit.simulation
-        branch = simulation.get_branch("al_2020_irc")
+        branch = get_branch_for_period(simulation, "al_2020_irc", period)
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
         for variable in branch.tax_benefit_system.variables:
             if any(
