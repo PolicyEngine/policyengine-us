@@ -74,6 +74,9 @@
     # single standard deduction.
     tax_unit_is_required_to_file: true
     tax_unit_is_filer: true
+    # Filing does not make a section 911 claimant eligible for the EITC
+    # (section 32(c)(1)(C)).
+    eitc: 0
 
 - name: The same filer without excluded foreign earnings is under the threshold
   period: 2025

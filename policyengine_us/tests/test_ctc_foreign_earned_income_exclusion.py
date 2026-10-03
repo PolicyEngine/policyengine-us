@@ -1,4 +1,4 @@
-"""Property tests for the section 911 bar on the refundable Child Tax Credit.
+"""Invariants for the section 911 bar on the refundable Child Tax Credit.
 
 26 U.S.C. 24(d)(3): "Paragraph (1) shall not apply to any taxpayer for any
 taxable year if such taxpayer elects to exclude any amount from gross income
@@ -15,19 +15,21 @@ The model does not apply the section 911(f) rule that taxes included income
 at the rates it would face if the excluded amount were added back (the Foreign
 Earned Income Tax Worksheet). The tax identity below is a property of the
 model's liability, not a worksheet result.
+
+Section 32(c)(1)(C) also denies the EITC to a section 911 claimant, in every
+year, so the EITC of a filer with an exclusion is zero under both runs.
+
+The Hypothesis version of these checks is in
+test_ctc_foreign_earned_income_exclusion_property.py, which skips without
+the dev extra; the grid tests here always run.
 """
 
 from functools import cache
 
 import numpy as np
-import pytest
 from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
-
-# Hypothesis is a dev extra; skip rather than fail collection without it.
-hypothesis = pytest.importorskip("hypothesis")
-st = pytest.importorskip("hypothesis.strategies")
 
 BAR = "gov.irs.credits.ctc.refundable.foreign_earned_income_exclusion_bar_applies"
 
@@ -51,6 +53,7 @@ OUTPUTS = [
     "income_tax_capped_non_refundable_credits",
     # No residence test in the formula, so it is computed for every household.
     "pr_refundable_ctc",
+    "eitc",
     "income_tax",
 ]
 
@@ -109,6 +112,9 @@ def assert_invariants(law, no_bar):
     assert (law["refundable_ctc"][excludes] == 0).all()
     # The Puerto Rico credit's social security route is barred as well.
     assert (law["pr_refundable_ctc"][excludes] == 0).all()
+    # Section 32(c)(1)(C): no EITC for a section 911 claimant, bar or not.
+    assert (law["eitc"][excludes] == 0).all()
+    assert (no_bar["eitc"][excludes] == 0).all()
     # Filers without the exclusion are untouched, bit for bit.
     for v in [
         "refundable_ctc",
@@ -187,31 +193,3 @@ def test_bar_applies_from_2015_but_not_in_2021():
     law, no_bar = check(GRID, 2015)
     excludes = law["foreign_earned_income_exclusion"] > 0
     assert (excludes & (no_bar["refundable_ctc"] > 0)).any()
-
-
-household_strategy = st.fixed_dictionaries(
-    {
-        "married": st.booleans(),
-        # Age 17 at most: the model treats an unmarried filer's 18-year-old
-        # as a spouse.
-        "dependent_ages": st.lists(st.integers(0, 17), max_size=4),
-        "wages": st.integers(0, 500_000),
-        "exclusion": st.one_of(st.just(0), st.integers(1, 130_000)),
-    }
-)
-
-
-@hypothesis.settings(
-    max_examples=10,
-    deadline=None,
-    suppress_health_check=[
-        hypothesis.HealthCheck.too_slow,
-        hypothesis.HealthCheck.data_too_large,
-    ],
-)
-@hypothesis.given(
-    st.lists(household_strategy, min_size=1, max_size=25),
-    st.sampled_from([2018, 2022, 2025, 2026]),
-)
-def test_random_households(households, year):
-    check(households, year)
