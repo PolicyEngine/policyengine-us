@@ -1,0 +1,575 @@
+# Missouri TANF non-parent caretaker relative (NPCR) rules: 13 CSR 40-2.300(5)(D),
+# 13 CSR 40-2.310(3) and (8)(B)1.C, and DSS Manual 0210.005.05, 0210.005.10,
+# 0210.005.15, 0210.005.35, 0210.005.40 and 0210.010.10.
+# Standard of need: size 1 $393, size 2 $678, size 3 $846. Payment is 34.526%
+# of the standard: size 1 $135.687, size 2 $234.086, size 3 $292.090.
+
+- name: Grandparent with no spouse and $100 unemployment is left out because inclusion lowers the grant
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 1_200  # $100/month
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # No spouse in the home, so the NPCR is needy without a budget
+    # (DSS Manual 0210.005.35). Included: 292.090 - 100 = 192.090.
+    # Excluded: the two children alone get 234.086. DSS Manual 0210.005.15
+    # forbids an optional inclusion that reduces the grant.
+    mo_tanf_non_parent_caretaker: [true, false, false]
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_if_non_parent_caretaker_included: 192.090
+    mo_tanf_if_non_parent_caretaker_excluded: 234.086
+    mo_tanf_non_parent_caretaker_included: false
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf: 234.086
+
+- name: The same household without the non-parent input keeps the grandparent as a caretaker
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 1_200
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_non_parent_caretaker_needy: false
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 192.090
+
+- name: Grandparent with $700 unemployment and a $0 spouse is not needy and is excluded
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 8_400  # $700/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # Neediness budget for the NPCR and spouse: $700 against the size-2
+    # standard of $678 shows no need, so the NPCR is excluded (needs and
+    # income) with no election (DSS Manual 0210.005.35). The spouse is not
+    # a unit member either.
+    mo_tanf_non_parent_caretaker: [true, false, false, false]
+    mo_tanf_non_parent_caretaker_budget_member: [true, true, false, false]
+    mo_tanf_non_parent_caretaker_countable_income: 700
+    mo_tanf_non_parent_caretaker_needy: false
+    mo_tanf_non_parent_caretaker_included: false
+    mo_tanf_is_assistance_unit_member: [false, false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 234.086
+
+- name: The same household without the non-parent input stays ineligible at size four
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 8_400
+      spouse:
+        age: 54
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 4
+    mo_tanf_eligible: false
+    mo_tanf: 0
+
+- name: A needy grandparent with no income and no spouse is included because inclusion raises the grant
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_if_non_parent_caretaker_included: 292.090
+    mo_tanf_if_non_parent_caretaker_excluded: 234.086
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: A needy grandparent who opts out is excluded even though inclusion would raise the grant
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+        mo_tanf_non_parent_caretaker_opts_out: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.300(5)(D): a caretaker found eligible for inclusion "may
+    # exclude themselves from the assistance group".
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: false
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: Grandparent with a $0 spouse is needy through the budget and is included
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # $0 against the size-2 standard of $678 shows need. The NPCR joins the
+    # children; the spouse enters only the neediness budget.
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_is_assistance_unit_member: [true, false, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: A spouse with $700 of income makes the grandparent not needy
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        unemployment_compensation: 8_400  # $700/month
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker_countable_income: 700
+    mo_tanf_non_parent_caretaker_needy: false
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: The same spouse on SSI makes the grandparent needy without a budget
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        unemployment_compensation: 8_400
+        receives_ssi: true
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.35: when "the NPCR's spouse is an SSI or SSI-SP
+    # recipient, consider the NPCR needy without completing the budget".
+    # The SSI spouse's needs and income stay out of the unit.
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_is_assistance_unit_member: [true, false, true, true]
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: When the head receives SSI the spouse is the caretaker relative and is needy
+  period: 2026-01
+  input:
+    people:
+      grandfather:
+        age: 67
+        receives_ssi: true
+        mo_tanf_is_non_parent_caretaker: true
+      grandmother:
+        age: 60
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandfather, grandmother, grandchild]
+    households:
+      household:
+        members: [grandfather, grandmother, grandchild]
+        state_code: MO
+  output:
+    # An NPCR on SSI cannot be included (DSS Manual 0210.005.35), so the
+    # grandmother is the caretaker relative, and her spouse's SSI makes
+    # her needy. Included: size 2, 234.086; excluded: size 1, 135.687.
+    mo_tanf_non_parent_caretaker: [false, true, false]
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: A grandparent with $800 and no spouse is needy but excluded because inclusion makes the unit ineligible
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 9_600  # $800/month
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # Needy with no spouse in the home, whatever the income. Including $800
+    # exceeds the size-3 payment of 292.090, so DSS Manual 0210.005.15
+    # keeps the caretaker out.
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_if_non_parent_caretaker_included: 0
+    mo_tanf_non_parent_caretaker_included: false
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
+
+- name: A needy grandparent whose only grandchild receives SSI receives a caretaker-only grant
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 7
+        is_tax_unit_dependent: true
+        receives_ssi: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.55, example 3: a needy NPCR with an SSI child
+    # forms the cash group alone. Excluding the NPCR leaves nobody to pay.
+    mo_tanf_if_non_parent_caretaker_excluded: 0
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_is_assistance_unit_member: [true, false]
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf: 135.687
+
+- name: A grandparent is not a non-parent caretaker when the grandchild's adult mother lives in the home
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      mother:
+        age: 20
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      grandchild:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, mother, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, grandchild]
+    households:
+      household:
+        members: [grandparent, mother, grandchild]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10 excludes "A legal guardian or NPCR if a
+    # biological or adoptive parent is in the home." The mother is an adult,
+    # not a cash-eligible child, so the grandparent cannot be included.
+    # Known underpayment, not changed here: under 0210.005.05 the mother is
+    # the caretaker payee and belongs in the unit, but the existing rule
+    # leaves out adults claimed as tax dependents, so the unit is the child
+    # alone.
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_non_parent_caretaker_needy: false
+    mo_tanf_is_assistance_unit_member: [false, false, true]
+
+- name: A mother who is herself a dependent child does not block her aunt as caretaker relative
+  period: 2026-01
+  input:
+    people:
+      aunt:
+        age: 40
+        mo_tanf_is_non_parent_caretaker: true
+      niece:
+        age: 16
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [aunt, niece, baby]
+    spm_units:
+      spm_unit:
+        members: [aunt, niece, baby]
+    households:
+      household:
+        members: [aunt, niece, baby]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05: the parent is the caretaker payee "unless that
+    # parent is also a cash eligible child". The aunt is the caretaker
+    # relative; including her raises the grant from size 2 to size 3.
+    mo_tanf_non_parent_caretaker: [true, false, false]
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf: 292.090
+
+- name: A stepparent marked by mistake as a non-parent is still excluded when the parent is in the home
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 30
+      stepfather:
+        age: 32
+        mo_tanf_is_non_parent_caretaker: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [mother, stepfather, child]
+    spm_units:
+      spm_unit:
+        members: [mother, stepfather, child]
+    households:
+      household:
+        members: [mother, stepfather, child]
+        state_code: MO
+  output:
+    # The input's documentation says not to mark a stepparent. If one is
+    # marked anyway, the unmarked mother is a parent in the home, so the
+    # marked spouse cannot be a caretaker relative.
+    mo_tanf_non_parent_caretaker: [false, false, false]
+    mo_tanf_is_assistance_unit_member: [true, false, true]
+
+- name: Annual Missouri TANF sums the monthly caretaker decisions
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 1_200
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # 12 months of the children-only grant: 12 x 234.086.
+    mo_tanf: 2_809.04
+
+- name: An excluded caretaker's resources do not count
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        bank_account_assets: 5_000
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild1:
+        age: 6
+        is_tax_unit_dependent: true
+      grandchild2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+    households:
+      household:
+        members: [grandparent, grandchild1, grandchild2]
+        state_code: MO
+  output:
+    # Included, the $5,000 would count and fail the $1,000 limit (13 CSR
+    # 40-2.310(3)), so inclusion causes ineligibility. Excluded, the
+    # caretaker's resources are not counted.
+    mo_tanf_if_non_parent_caretaker_included: 0
+    mo_tanf_non_parent_caretaker_included: false
+    mo_tanf_countable_resources: 0
+    mo_tanf_resources_eligible: true
+    mo_tanf: 234.086
