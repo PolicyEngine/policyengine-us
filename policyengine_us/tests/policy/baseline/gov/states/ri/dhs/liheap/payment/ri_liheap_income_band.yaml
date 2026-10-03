@@ -1,0 +1,51 @@
+# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
+
+# FY2026 matrix p1 size1 thresholds11738,15650,19563,23475. Inclusive boundaries and next-cent cases do not create gaps from the76/101/126/151% labels.
+- name: Case 1, one person poverty bands include the exact upper dollar and exclude the next cent.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ri_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ri_liheap_income: [0, 11_738, 11738.01, 15_650, 15650.01, 19_563, 19563.01, 23_475, 23475.01]
+  output:
+    ri_liheap_income_band: [1, 1, 2, 2, 3, 3, 4, 4, 5]
+
+# Matrix p1 size2 FPG21150*125%=26437.50 rounds26438 halfup. Printed31725 repeats150% and is a documented anomaly;26438.01 entersband4.
+- name: Case 2, two person one hundred twenty five percent band follows the rate rather than the anomalous
+    printed cell.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    ri_liheap_household_size: [2, 2, 2, 2, 2]
+    ri_liheap_income: [26437.5, 26_438, 26438.01, 31_725, 31725.01]
+  output:
+    ri_liheap_income_band: [3, 3, 4, 4, 5]
+
+# Unverified historical2025 estimate uses2024 FPG15060:75%=11295 and125%=18825. Does not freeze2025 FPG into earlier requested years.
+- name: Case 3, backfilled poverty bands use the requested year prior guideline.
+  period: 2025
+  input:
+    state_code: [RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200]
+    ri_liheap_household_size: [1, 1, 1, 1]
+    ri_liheap_income: [11_295, 11295.01, 18_825, 18825.01]
+  output:
+    ri_liheap_income_band: [1, 2, 3, 4]
+
+# No qualified member means band0, not the lowest positive payment band.
+- name: Case 4, zero qualified size has no payment band.
+  period: 2026
+  input:
+    state_code: [RI]
+    heating_type: [NATURAL_GAS]
+    gas_expense: [1_200]
+    ri_liheap_household_size: [0]
+    ri_liheap_income: [0]
+  output:
+    ri_liheap_income_band: [0]

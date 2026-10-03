@@ -1,0 +1,41 @@
+description: Rhode Island counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Interest and rental receipts have separate allowances; RI Works is added
+# once at its SPMUnit entity, so none of those sources is duplicated here.
+# pension_income includes public/military pensions; military_retirement_pay
+# is a tax-classification input and must not be added independently.
+# SSI is the federal benefit; a separate RI state supplement is not modeled.
+# disability_benefits approximates employment-related TDI/TCI receipts.
+# The manual expressly counts workers compensation in Section III.E.
+# VA education and Aid and Attendance exclusions cannot be separated from
+# the broad veterans input. Jury duty, royalties, foster receipts and legal
+# settlements also lack sufficiently specific existing inputs.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - railroad_benefits
+    - alimony_income
+    - child_support_received
+    - workers_compensation
+    - disability_benefits
+    - financial_assistance
+    - ordinary_dividend_income
+    - veterans_benefits
+    # Manual Section III.E, Estate or Trust Income, page 17.
+    - estate_income
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP unearned income sources
+  reference:
+    - title: Rhode Island LIHEAP Manual, Sections III.E-G Income Verification and Exclusions
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
+    - title: Rhode Island FY2026 State Plan, Sections 1.8 and 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
+    - title: Rhode Island FY2026 Application Instructions, Proof of Income
+      href: https://dhs.ri.gov/media/9671/download?language=en

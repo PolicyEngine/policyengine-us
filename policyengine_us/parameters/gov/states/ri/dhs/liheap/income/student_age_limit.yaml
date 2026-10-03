@@ -1,0 +1,16 @@
+description: Rhode Island excludes full-time student income below this age when the student is not the household head under the Low Income Home Energy Assistance Program.
+# Age 18 through 23 means below the twenty-fourth birthday.
+# The newer application omits the manual household-head exception without
+# expressly repealing it. Current student-head treatment remains unverified.
+values:
+  2025-10-01: 24
+
+metadata:
+  unit: year
+  period: year
+  label: Rhode Island LIHEAP student income exclusion age limit
+  reference:
+    - title: Rhode Island LIHEAP Manual, Section III.G Income Exclusions Allowed by DHS
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=20
+    - title: Rhode Island FY2026 Application Instructions, Full-time Students
+      href: https://dhs.ri.gov/media/9671/download?language=en

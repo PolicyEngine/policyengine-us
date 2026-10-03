@@ -1,0 +1,44 @@
+# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
+
+# FY2026 matrix p1 literal annual60%SMI column. Expected dollars are independent of the inferred nested-floor numerical pattern.
+- name: Case 1, all fourteen published annual SMI limits match exactly.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200]
+    ri_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    ri_liheap_income_limit: [42_252, 55_252, 68_253, 81_254, 94_254, 107_255, 109_692, 112_130, 114_568,
+      117_005, 119_443, 121_881, 124_318, 126_756]
+
+# A household with no qualified member receives no one-person income limit.
+- name: Case 2, no qualified household size has zero income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    heating_type: [NATURAL_GAS]
+    gas_expense: [1_200]
+    ri_liheap_household_size: [0]
+  output:
+    ri_liheap_income_limit: [0]
+
+# DHS FFY2027 income eligibility sheet p1, mandatory October 1, 2026.
+# These are all14 literal annual values, independently read from the DHS table.
+# This verifies FY2027 income limits only, not an unresearched FY2027 payment.
+- name: Case 3, all fourteen published FY2027 annual income limits match exactly.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    ri_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    ri_liheap_income_limit: [43_410, 56_767, 70_124, 83_481, 96_837, 110_194,
+      112_699, 115_203, 117_708, 120_212, 122_717, 125_221, 127_725, 130_230]

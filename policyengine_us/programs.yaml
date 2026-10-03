@@ -804,6 +804,12 @@ programs:
     status: partial
     coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: RI
+        status: in_progress
+        name: Rhode Island LIHEAP
+        full_name: Rhode Island Low Income Home Energy Assistance Program
+        parameter_prefix: gov.states.ri.dhs.liheap
+        notes: Income and ordinary primary-payment components are implemented, including the FY2026 enhancement for assumed qualifying gas/electric accounts. Heat-in-rent payment routing and the blank direct-electric cell remain unresolved; provider/account identity is an input limitation. Regular heating only; historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP

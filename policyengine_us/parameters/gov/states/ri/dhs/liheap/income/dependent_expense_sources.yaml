@@ -1,0 +1,15 @@
+description: Rhode Island deducts these reported dependent expenses from income under the Low Income Home Energy Assistance Program.
+# Amounts approximate verified court orders. Existing inputs cannot establish
+# the allowable court-ordered maximum or whether every payment was made.
+values:
+  2025-10-01:
+    - child_support_expense
+    - alimony_expense
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP dependent expense sources
+  reference:
+    - title: Rhode Island LIHEAP Manual, Section III.H Deductions from Income
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=21
