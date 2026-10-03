@@ -1,0 +1,28 @@
+description: The Congressional Budget Office projects this average of the Chained Consumer Price Index for All Urban Consumers over the 12 months ending the August before each tax year, the index that adjusts federal tax parameters for that year.
+values:
+  # Keyed by tax year: the 2028 value averages September 2026 through
+  # August 2027. Windows with BLS observations use c_cpi_u.yaml instead.
+  2027-01-01: 181.654
+  2028-01-01: 185.881
+  2029-01-01: 189.775
+  2030-01-01: 193.6
+  2031-01-01: 197.44
+  2032-01-01: 201.335
+  2033-01-01: 205.302
+  2034-01-01: 209.346
+  2035-01-01: 213.471
+  2036-01-01: 217.68
+  # Values for 2037-2100 are set programmatically in uprating_extensions.py.
+metadata:
+  unit: /1
+  period: year
+  label: CBO tax-year Chained CPI-U projection
+  economy: false
+  reference:
+    - title: 26 U.S. Code § 1(f)(6) - C-CPI-U
+      href: https://www.law.cornell.edu/uscode/text/26/1#f_6
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | February 2026
+      # Sheet 1. Tax Parameters, row 153: Chained consumer price index, all
+      # urban consumers (C-CPIU), under "Inflation indexes for tax year
+      # (average CPI over the 12 months ending the previous August)".
+      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx
