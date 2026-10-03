@@ -1,0 +1,13 @@
+description: New Hampshire uses federal poverty guidelines from this many years before the modeled heating season under the Fuel Assistance Program.
+# The annual model uses the PY2027 starting schedule with 2026 guidelines.
+# The manual's within-season February updates are not separately modeled.
+values:
+  2026-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: New Hampshire FAP federal poverty guideline year lag
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Income Guidelines and Federal Poverty Guideline Updates
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=10, 17, 74

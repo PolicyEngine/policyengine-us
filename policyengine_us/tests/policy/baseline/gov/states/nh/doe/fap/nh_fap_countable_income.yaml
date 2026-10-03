@@ -1,0 +1,780 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Physical PDF pages: 13, 14, 15, 16, 17, 23, 25, 26, 29, 34, 36.
+# Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
+# Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
+# Investment treatment follows the specific separate exclusions on pp15-16;
+# p17's combined wording remains an explicitly documented interpretation gap.
+
+# Manual p15 counts salaries and wages before deductions; p17 does not list a general earned-income disregard.
+- name: "Case 1, gross annual wages receive no general earnings disregard."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 12_000
+
+# Manual pp16 and23 specifically exclude regular child support.
+- name: "Case 2, regular child support received is excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 11_900
+        child_support_received: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 11_900
+
+# Manual pp17 and23 allow regular support paid during the income period.
+- name: "Case 3, documented child support paid is deducted."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 12_100
+        child_support_expense: 200
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 11_900
+
+# Contract household income floor; sourced support deduction exceeds otherwise countable receipts.
+- name: "Case 4, support expenses cannot produce negative household income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 100
+        child_support_expense: 200
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 0
+
+# Manual p16 excludes SSI for children under 18; annual SSI input represents total receipts.
+- name: "Case 5, SSI for a child just below age eighteen is excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 6_000
+        is_disabled: true
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+
+# Manual pp15-16 adult SSI is countable; exclusion ends at 18.
+- name: "Case 6, SSI at age eighteen is countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 18
+        immigration_status: "CITIZEN"
+        ssi: 6_000
+        is_disabled: true
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 16_000
+
+# Manual p16 excludes earned income from full-time high-school students, without a stated age 18 cutoff.
+- name: "Case 7, full-time high-school wages and net business income are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 18
+        immigration_status: "CITIZEN"
+        ssi: 0
+        is_full_time_student: true
+        is_in_secondary_school: true
+        employment_income: 3_000
+        self_employment_income: 2_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+
+# Manual p16 requires full-time high-school attendance for the earnings exclusion.
+- name: "Case 8, part-time high-school earnings remain countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 18
+        immigration_status: "CITIZEN"
+        ssi: 0
+        is_full_time_student: false
+        is_in_secondary_school: true
+        employment_income: 3_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 13_000
+
+# Manual pp16 and34 distinguish high-school earnings from a resident college student's countable income.
+- name: "Case 9, full-time college earnings remain countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 19
+        immigration_status: "CITIZEN"
+        ssi: 0
+        is_full_time_student: true
+        is_in_secondary_school: false
+        employment_income: 3_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 13_000
+
+# Manual p16 exempts specified full-time high-school earnings, not every minor's earnings.
+- name: "Case 10, a minor without reported high-school attendance has countable earnings."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 0
+        is_full_time_student: false
+        is_in_secondary_school: false
+        employment_income: 3_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 13_000
+
+# Manual p15 counts Social Security; p16 high-school exclusion is for earned income.
+- name: "Case 11, high-school exclusion does not exempt unearned Social Security."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 18
+        immigration_status: "CITIZEN"
+        ssi: 0
+        is_full_time_student: true
+        is_in_secondary_school: true
+        employment_income: 3_000
+        social_security: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 11_200
+
+# Manual p36 requires income of ineligible noncitizens in household income.
+- name: "Case 12, mixed status includes all income without proration."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_000
+      person2:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        employment_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 30_000
+
+# Manual p26 example counts profitable business 800 and loss business 0; reported net inputs used without reconstructing deductions.
+- name: "Case 13, each reported business source loss is floored separately."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+        self_employment_income: 800
+        sstb_self_employment_income: -600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_800
+
+# Manual p26 prohibits subtracting negative self-employment income from other household income.
+- name: "Case 14, one member's business loss does not offset another member's income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        self_employment_income: 800
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        self_employment_income: -600
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 800
+
+# Manual p15 net rent and pp25-29 business treatment, with user-directed nonnegative rental streams.
+- name: "Case 15, negative rental income does not offset a separate positive rental stream."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+        rental_income: -300
+        farm_rent_income: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_600
+
+# Manual p25 requires Schedule F farms and partnership/corporation returns; reported net sources are separate.
+- name: "Case 16, reported farm and partnership business profits count once."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        farm_operations_income: 800
+        partnership_income: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 1_400
+
+# Manual pp15-16 separate interest and dividend exclusions; p17 wording ambiguity is retained in source documentation.
+- name: "Case 17, the first fifty dollars of each investment source is excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 50
+        ordinary_dividend_income: 50
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 0
+
+# Manual pp15-16: (51-50)+(51-50)=2 under the documented separate-source interpretation.
+- name: "Case 18, one dollar above each investment disregard is countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 51
+        ordinary_dividend_income: 51
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 2
+
+# Contract interpretation of household income: (80-50)+(60-50)=40, not a separate 50 allowance per person.
+- name: "Case 19, investment disregards apply once per household source."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 40
+        ordinary_dividend_income: 20
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 40
+        ordinary_dividend_income: 40
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40
+
+# Manual pp15-16 counts dividends above 50; canonical ordinary_dividend_income includes both dividend components.
+- name: "Case 20, qualified and nonqualified dividends feed the canonical ordinary aggregate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        qualified_dividend_income: 100
+        non_qualified_dividend_income: 100
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 150
+
+# Manual p15; annual SSI receipts count once. Medicare reconstruction is expressly deferred.
+- name: "Case 21, gross Social Security and adult SSI are both countable."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 6_000
+        social_security: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+
+# Manual p15 lists pensions, retirement withdrawals, unemployment, workers compensation, alimony and regular estates/trust receipts.
+- name: "Case 22, retirement receipts and other regular listed cash income count."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        pension_income: 2_400
+        retirement_distributions: 1_200
+        unemployment_compensation: 1_200
+        workers_compensation: 600
+        alimony_income: 600
+        estate_income: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 6_600
+
+# Manual p15 counts welfare, regular outside support, nonexempt veterans benefits and strike pay; fixtures represent regular otherwise countable receipts.
+- name: "Case 23, reported regular public and private support income counts."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        general_assistance: 600
+        financial_assistance: 1_200
+        veterans_benefits: 1_200
+        strike_benefits: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 3_600
+
+# Manual p15 counts FANF, SSI and Social Security: 1000+2400+4800+3600; FANF is a household annual total.
+- name: "Case 24, state FANF receipts count once for the household."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 1_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 2_400
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 4_800
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3"]
+        nh_fanf: 3_600
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 11_800
+
+# Manual p16 excludes capital gains.
+- name: "Case 25, capital gains are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+        short_term_capital_gains: 4_000
+        long_term_capital_gains: 6_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+
+# Manual p17 does not allow generic medical or child-care expenses. Medicare-only reconstruction is deferred.
+- name: "Case 26, no automatic medical or child-care deduction is applied."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 12_000
+        other_medical_expenses: 1_200
+        health_insurance_premiums: 2_400
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+        childcare_expenses: 3_600
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 12_000

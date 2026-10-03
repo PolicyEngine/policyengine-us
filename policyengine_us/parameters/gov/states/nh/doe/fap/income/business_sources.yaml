@@ -1,0 +1,16 @@
+description: New Hampshire includes these reported business income sources under the Fuel Assistance Program, excluding each source's losses.
+values:
+  2026-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_income
+    - s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: New Hampshire FAP business income sources
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Self Employment
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=25, 26, 27, 28

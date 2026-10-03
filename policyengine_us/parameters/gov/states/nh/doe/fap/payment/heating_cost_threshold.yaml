@@ -1,0 +1,17 @@
+description: New Hampshire uses these inclusive lower annual heating cost thresholds for benefit bands above the lowest band under the Fuel Assistance Program.
+CC:
+  2026-10-01: 1_000
+BB:
+  2026-10-01: 1_750
+AA:
+  2026-10-01: 3_500
+
+# Page 78 utility labels overlap at the endpoints; the non-overlapping
+# delivered schedule and benefit-determination worksheet establish the tiers.
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Hampshire FAP heating cost band thresholds
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Benefit Determination and Benefits
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=76, 78

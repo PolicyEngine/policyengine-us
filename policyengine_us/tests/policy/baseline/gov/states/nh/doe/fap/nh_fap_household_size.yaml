@@ -1,0 +1,279 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Physical PDF pages: 12, 35, 36.
+# Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
+# Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 1, citizen is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 2, legal_permanent_resident is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "LEGAL_PERMANENT_RESIDENT"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 3, refugee is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "REFUGEE"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 4, asylee is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "ASYLEE"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 5, paroled_one_year is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "PAROLED_ONE_YEAR"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 6, deportation_withheld is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "DEPORTATION_WITHHELD"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 7, conditional_entrant is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CONDITIONAL_ENTRANT"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 includes the reported qualified status regardless of entry date.
+- name: "Case 8, cuban_haitian_entrant is a qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CUBAN_HAITIAN_ENTRANT"
+        ssi: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+
+# Manual pp35-36 and existing qualified-status mapping; income is tested separately.
+- name: "Case 9, mixed status excludes ineligible members only from household size."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "DACA"
+        ssi: 0
+      person4:
+        age: 40
+        immigration_status: "TPS"
+        ssi: 0
+      person5:
+        age: 40
+        immigration_status: "REFUGEE"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 2
+
+# Manual p36 does not count an ineligible noncitizen for eligibility size.
+- name: "Case 10, an entirely ineligible-status household has size zero."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 0
