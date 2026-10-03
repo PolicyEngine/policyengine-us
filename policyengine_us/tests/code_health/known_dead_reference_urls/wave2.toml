@@ -1,0 +1,14 @@
+# Dead reference URLs retired in the wave2 batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://doe.virginia.gov/home/showpublisheddocument/56270"
+verified = "2026-10-01"
+replacement = "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf"
+
+[[dead]]
+prefix = "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
+verified = "2026-10-01"
+replacement = "https://tax.illinois.gov/programs/eitc.html"
