@@ -1,0 +1,64 @@
+# Dead reference URLs retired in the west batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://legislature.idaho.gov/sessioninfo/2022spcl/legislation/H0001/"
+verified = "2026-10-01"
+replacement = "https://legislature.idaho.gov/sessioninfo/2022extra1/legislation/H0001/"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/montana-tax-simplification-resource-hub/"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/montana-tax-simplification-resource-hub"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/2441-M_2022.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Child-and-Dependent-Care-Expense-Deduction-Form-2441-M/2022_Child_and_Dependent_Care_Expense_Deduction_Form_2441-M.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20231130173751/https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2024/12/2024-Tax-Tables.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/taxes/tax-tables-and-deductions/2024"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021."
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf"
