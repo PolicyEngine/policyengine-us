@@ -1201,3 +1201,138 @@
     ut_heat_household_size: [1, 1, 1, 1]
     ut_heat_countable_income: [15_960, 0, 15_960, 0]
     ut_heat_eligible: [true, true, true, false]
+
+# Reported premium repair contract v2: supplied positive aggregate takes precedence.
+# Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
+# Source: Utah HEAT section 407, effective March 1 through September 30, 2026.
+# Award arithmetic uses sections 602-604 and the March 2026 gas-house standard of 211.
+
+# 18,360 - 2,400 = 15,960; I=1,330, P=1,330, income points=150, burden=160, age credit=150; award=460.
+- name: "Case 40, reported paid Part B premiums affect the regular heating award."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 18_360
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 0
+        medicare_part_b_premiums_reported: 2_400
+        msp_part_b_premium_coverage: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        ut_fep: 0
+        ut_heat_dwelling_type: "HOUSE"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "UT"
+  output:
+    ut_heat_countable_income: 15_960
+    ut_heat: 460
+
+# 18,360 - 1,200 - 2,400 - 600 = 14,160; I=1,180, ceil(100*I/1,330)=89; 161+180+150=491.
+- name: "Case 41, both premium components and other paid medical expenses count."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 18_360
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        medicare_part_b_premiums_reported: 2_400
+        other_medical_expenses: 600
+        msp_part_b_premium_coverage: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        ut_fep: 0
+        ut_heat_dwelling_type: "HOUSE"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "UT"
+  output:
+    ut_heat_countable_income: 14_160
+    ut_heat: 491
+
+# 18,360 - 1,200 aggregate - 600 other medical = 16,560; I=1,380; 146+150+150=446.
+- name: "Case 42, a positive premium aggregate prevents component double counting."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 18_360
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        medicare_part_b_premiums_reported: 2_400
+        other_medical_expenses: 600
+        msp_part_b_premium_coverage: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        ut_fep: 0
+        ut_heat_dwelling_type: "HOUSE"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "UT"
+  output:
+    ut_heat_countable_income: 16_560
+    ut_heat: 446
+
+# Income remains 18,360; I=1,530, ceil(100*I/1,330)=116; 134+140+150=424.
+- name: "Case 43, Medicare enrollment without reported premiums gives no deduction."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 18_360
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 0
+        medicare_part_b_premiums_reported: 0
+        msp_part_b_premium_coverage: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        ut_fep: 0
+        ut_heat_dwelling_type: "HOUSE"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "UT"
+  output:
+    ut_heat_countable_income: 18_360
+    ut_heat: 424

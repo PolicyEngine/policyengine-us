@@ -49,10 +49,16 @@ class ut_heat_countable_income(Variable):
         # excluded. Broad inputs cannot isolate all exempt gifts, settlements,
         # combat pay, third-party payments, or cash withdrawals from trusts.
         premiums = person("health_insurance_premiums", period)
+        # A positive aggregate premium already includes reported components.
+        # Otherwise use both reported components without deriving Medicare.
         reported_premiums = where(
             premiums > 0,
             premiums,
-            person("health_insurance_premiums_without_medicare_part_b", period),
+            max_(
+                person("health_insurance_premiums_without_medicare_part_b", period),
+                0,
+            )
+            + max_(person("medicare_part_b_premiums_reported", period), 0),
         )
         medical = spm_unit.sum(
             max_(reported_premiums, 0)
