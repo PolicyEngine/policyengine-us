@@ -13,9 +13,10 @@ A seeded sample of households shares one simulation and is checked against
 those rules, restated here independently of the variable formulas:
 
 1. With no one marked as a non-parent caretaker, unit membership, countable
-   resources and the teen-parent earnings exemption equal the pre-NPCR rule.
-   No other existing Missouri TANF formula reads the new variables, so every
-   existing household is unchanged.
+   resources and the teen-parent earnings exemption equal the pre-NPCR rule,
+   plus the dependent adult parent, who is a member as a parent of the
+   children (DSS Manual 0210.005.05; see
+   test_mo_tanf_dependent_parent_properties.py).
 2. Identification and neediness equal the restated rules: no NPCR when a
    parent is in the home (an unmarked caretaker, or a dependent adult with
    their own children in the household); otherwise the NPCR is needy when
@@ -195,8 +196,9 @@ def test_unflagged_households_follow_the_pre_npcr_rule(unflagged_sim):
         elif role == "spouse":
             expected.append(not h["spouse_ssi"])
         elif role == "adult_parent":
-            # A dependent aged 22 is neither a caretaker nor a child.
-            expected.append(False)
+            # A dependent aged 22 with a child of her own in the home is a
+            # parent of the children, so she is a member (0210.005.05).
+            expected.append(True)
         else:
             expected.append(not (h["child_ssi"] and c == 0))
     assert member.tolist() == expected

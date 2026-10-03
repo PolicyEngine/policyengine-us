@@ -7,22 +7,46 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
     label = "Missouri TANF parent of a dependent child in the tax unit"
     documentation = (
         "Whether this person is the biological or adoptive parent of one of "
-        "the tax unit's dependent children. It matters only when someone in "
-        "the tax unit is marked as a non-parent caretaker: a parent in the "
-        "home, other than a cash-eligible child, excludes that caretaker. "
-        "Defaults to having one's own children in the household "
-        "(own_children_in_household), which also counts adult children and "
-        "children outside the tax unit; set this input directly when that "
-        "count does not match. Heads and spouses not marked as non-parent "
-        "caretakers are always treated as parents; this input applies to "
-        "other tax-unit members."
+        "the tax unit's dependent children. Such a parent is a member of the "
+        "assistance unit even when someone else claims them as a tax "
+        "dependent, unless they receive SSI or are a dependent child "
+        "themselves (then they are a member as a child). A parent in the "
+        "home, other than a cash-eligible child, also excludes a non-parent "
+        "caretaker. Defaults to having one's own children in the household "
+        "(own_children_in_household) and being 12 to 50 years older than one "
+        "of the tax unit's dependent children. The count also includes adult "
+        "children and children outside the tax unit, so set this input "
+        "directly when it does not match: false, for example, for a "
+        "dependent whose own child in the home is an adult. Setting it for "
+        "one person sets it to false for everyone else not given a value, so "
+        "set it for every parent it applies to. Heads and spouses not marked "
+        "as non-parent caretakers are always treated as parents; this input "
+        "applies to other tax-unit members."
     )
     definition_period = YEAR
     reference = (
+        "https://my.mo.gov/cms_fsd?id=kb_article_view&sys_kb_id=98e1ef0c1b543650ba12657ae54bcbd1",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-05/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
     )
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        return person("is_parent", period)
+        # own_children_in_household counts own children of any age, so on
+        # its own it also marks, for example, the head's elderly mother,
+        # whose own child in the home is the head. Also require the person
+        # to be 12 to 50 years older than at least one of the tax unit's
+        # dependent children: a parent is at least 12 at a child's birth,
+        # and births after 50 are rare. Dependent children are all under 19,
+        # so their ages span less than the 38-year window, and "some child
+        # is 12 to 50 years younger" reduces to the youngest being at least
+        # 12 years younger and the oldest at most 50. In the CPS-based
+        # default dataset this keeps every weighted parent of a dependent
+        # child in the unit and drops the weighted non-parents the count
+        # alone marks.
+        has_own_children = person("is_parent", period)
+        age = person("age", period)
+        dependent_child = person("mo_tanf_dependent_child", period.first_month)
+        youngest = person.tax_unit.min(where(dependent_child, age, np.inf))
+        oldest = person.tax_unit.max(where(dependent_child, age, -np.inf))
+        return has_own_children & (age - youngest >= 12) & (age - oldest <= 50)

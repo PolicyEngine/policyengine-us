@@ -7,6 +7,7 @@ class mo_tanf_is_assistance_unit_member(Variable):
     label = "Missouri TANF assistance unit member"
     definition_period = MONTH
     reference = (
+        "https://my.mo.gov/cms_fsd?id=kb_article_view&sys_kb_id=98e1ef0c1b543650ba12657ae54bcbd1",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-05/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-35/",
@@ -49,11 +50,9 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # eligibility for the payee and/or second parent" — the SSI child
         # is excluded from the unit's needs but still establishes the case
         # for the caretaker.
+        has_dependent_child = person.tax_unit.any(dependent_child)
         caretaker = (
-            head_or_spouse
-            & ~is_dependent
-            & ~is_ssi_recipient
-            & person.tax_unit.any(dependent_child)
+            head_or_spouse & ~is_dependent & ~is_ssi_recipient & has_dependent_child
         )
         # A parent is a mandatory member (DSS Manual 0210.005.05). A
         # non-parent caretaker relative or legal guardian is an optional
@@ -62,6 +61,25 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # (13 CSR 40-2.300(5)(D); DSS Manual 0210.005.15 and 0210.005.35).
         non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
         parent_caretaker = caretaker & ~non_parent
+        # Membership as a parent does not depend on who claims whom for
+        # taxes. 13 CSR 40-2.300(5)(C) and the Combined IM Policy Manual
+        # 4.2.2 (formerly DSS Manual 0210.005.05) make the "Biological or
+        # adoptive parents of one or more of the eligible children"
+        # mandatory members, so a parent claimed as someone else's tax
+        # dependent, such as a 20-year-old mother claimed by her own mother,
+        # is a member too. These are the same people
+        # mo_tanf_non_parent_caretaker treats as a parent in the home, less
+        # those on SSI. A parent who is a dependent child is a member as an
+        # eligible child instead, with their own parent as the caretaker:
+        # the manual's minor parent provision (4.2.4; formerly 0210.005.30)
+        # lets that three-generation family file as one assistance group.
+        other_parent = (
+            person("mo_tanf_is_parent_of_dependent_child", period.this_year)
+            & ~non_parent
+            & ~dependent_child
+            & ~is_ssi_recipient
+            & has_dependent_child
+        )
         npcr = person("mo_tanf_non_parent_caretaker", period)
         npcr_included = person.spm_unit("mo_tanf_non_parent_caretaker_included", period)
-        return eligible_child | parent_caretaker | (npcr & npcr_included)
+        return eligible_child | parent_caretaker | other_parent | (npcr & npcr_included)
