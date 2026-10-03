@@ -1,3 +1,64 @@
+## [2.23.1] - 2026-10-03
+
+### Changed
+
+- Standardize local income tax aggregation across states: extract NYC and Maryland county taxes from state income tax aggregates into local income tax aggregates, wire Indiana and Multnomah County local income taxes into local aggregates, and add `spm_unit_local_tax` to `spm_unit_taxes` to preserve SPM resources and poverty outputs across all local tax jurisdictions.
+  Preserve state and local refundable credits when abolishing federal income tax.
+
+
+## [2.23.0] - 2026-10-03
+
+### Added
+
+- Add Mississippi LIHEAP regular assistance for heating fuel and electric bills (FY2026).
+
+
+## [2.22.0] - 2026-10-03
+
+### Added
+
+- Kansas LIEAP (Low Income Energy Assistance Program) heating benefit: eligibility, countable income, and the FY2025-FY2026 benefit matrices. Self-employment income is approximated using existing net-income inputs without an additional expense deduction.
+
+
+## [2.21.4] - 2026-10-03
+
+### Fixed
+
+- Reduce USDA and baseline state CI memory pressure by running smaller sequential subprocess batches on the existing runners.
+
+
+## [2.21.3] - 2026-10-02
+
+### Fixed
+
+- Stop five formulas from writing into arrays they read from other variables, which changed those variables' cached values: adjusted gross income under the CRFB surtax with the increased base, federal itemized deductions in Georgia, Utah total dependents (baseline and the dependent exemption reform), and earned income under the basic income phase-in with Social Security counted as earnings. Add a code-health test that fails on new in-place writes.
+
+
+## [2.21.2] - 2026-10-02
+
+### Fixed
+
+- Count only IRC 86 taxable Social Security and gross capital gains, without netting losses, in the qualifying relative gross income test. Taxable benefits use the dependent's own IRC 86(b)(2) modified AGI, and zero base amounts apply to a dependent who lives with their spouse.
+
+
+## [2.21.1] - 2026-10-02
+
+### Fixed
+
+- Encode the missing SNAP ABAWD county waivers (FY2024 lists for Kentucky, Michigan, New Jersey, Oregon, and Washington from November 2024; FY2026 lists for Arizona, Kentucky, Michigan, Minnesota, New Jersey, and Nevada) and document the sources for Alaska's good-faith exemption geography.
+
+
+## [2.21.0] - 2026-10-01
+
+### Fixed
+
+- Average SNAP work-requirement hours over weeks worked, test the ABAWD requirement as 80 hours a month, add the 30-hour work registration exemption's earnings equivalent (federal minimum wage times 30 hours a week), limit the unemployment compensation exemption to months of receipt, make weeks_worked a pure input, and correct the July 2007 federal minimum wage to $5.85. Archived datasets that stored hours already annualized by weeks worked (policyengine-us-data before March 2026) would be deflated twice.
+
+### Removed
+
+- Remove gov.usda.snap.work_requirements.abawd.weekly_hours_threshold and replace it with gov.usda.snap.work_requirements.abawd.monthly_hours_threshold (80 hours a month, 7 CFR 273.24(a)(1)(i)); reforms that set the old parameter must switch to the new one.
+
+
 ## [2.20.1] - 2026-10-01
 
 ### Fixed
