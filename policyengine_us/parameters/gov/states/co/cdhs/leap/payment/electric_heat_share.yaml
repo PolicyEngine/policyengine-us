@@ -1,0 +1,29 @@
+description: Colorado treats this share of direct electricity costs as heating by dwelling type under the Low-income Energy Assistance Program.
+HOUSE_MODULAR:
+  2025-11-01: 0.62
+MOBILE_HOME:
+  2025-11-01: 0.62
+DUPLEX_TRIPLEX_FOURPLEX:
+  2025-11-01: 0.48
+TOWNHOUSE:
+  2025-11-01: 0.48
+APARTMENT_CONDO:
+  2025-11-01: 0.43
+HOTEL_MOTEL:
+  2025-11-01: 0.43
+CABIN:
+  2025-11-01: 0.43
+TINY_HOME:
+  2025-11-01: 0.43
+CAMPER_RV:
+  2025-11-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Colorado LEAP electric heating share
+  breakdown:
+    - co_leap_dwelling_type
+  reference:
+    - title: Colorado FY2026 LEAP benefit methodology and annual rates
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=6

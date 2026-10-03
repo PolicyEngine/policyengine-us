@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, CO
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: CO
+        status: partial
+        name: Colorado LEAP
+        full_name: Colorado Low-income Energy Assistance Program
+        variable: co_leap
+        parameter_prefix: gov.states.co.cdhs.leap
+        verified_years: "2026"
+        notes: Regular heating with reported annual primary-fuel costs used as a prior-heating-season proxy and the published heat-in-rent schedule. Includes income contribution, electric heating shares, household sharing and subsidized-housing adjustment. Missing-history/vendor fallback, actual meter sharing, rent surcharges and bottle/gathered-fuel distinctions are not fully represented. Earlier backfills and FY2027 benefits remain unverified.
 
   # --- SSA programs ---
   - id: ssi

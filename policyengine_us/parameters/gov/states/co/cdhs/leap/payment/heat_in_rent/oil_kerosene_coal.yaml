@@ -1,0 +1,29 @@
+description: Colorado estimates these oil kerosene coal heating costs when included in rent under the Low-income Energy Assistance Program.
+HOUSE_MODULAR:
+  2025-11-01: 378
+MOBILE_HOME:
+  2025-11-01: 202
+DUPLEX_TRIPLEX_FOURPLEX:
+  2025-11-01: 169
+TOWNHOUSE:
+  2025-11-01: 444
+APARTMENT_CONDO:
+  2025-11-01: 169
+HOTEL_MOTEL:
+  2025-11-01: 169
+CABIN:
+  2025-11-01: 169
+TINY_HOME:
+  2025-11-01: 169
+CAMPER_RV:
+  2025-11-01: 151
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado LEAP oil kerosene coal heating included in rent
+  breakdown:
+    - co_leap_dwelling_type
+  reference:
+    - title: Colorado FY2026 LEAP benefit methodology and annual rates
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=6

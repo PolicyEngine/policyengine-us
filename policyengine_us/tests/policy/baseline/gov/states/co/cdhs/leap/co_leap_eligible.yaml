@@ -1,0 +1,43 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Eligibility and categorical rules, PDF pages5,8: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5,8
+# Income table, PDF page5: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=5
+
+# For each size 1-15 compare annualized monthly income at the table limit and $0.01/month above. All other eligibility facts are held supported; no categorical bypass.
+- name: "Case 1, all source SMI boundaries are inclusive with the next cent excluded."
+  period: 2026
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15]
+    co_leap_countable_income: [43_284, 43284.12, 56_604, 56604.12, 69_924, 69924.12, 83_256, 83256.12, 96_576, 96576.12, 109_896, 109896.12, 112_392, 112392.12, 114_888, 114888.12, 117_384, 117384.12, 119_880, 119880.12, 122_376, 122376.12, 124_872, 124872.12, 127_368, 127368.12, 129_864, 129864.12, 132_360, 132360.12]
+    gas_expense: [600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600, 600]
+  output:
+    co_leap_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# No heat, unknown separate fuel and zero bills are unsupported. Positive gas and unsubsidized heat-in-rent qualify. Subsidized bundled heat and no qualified member fail. Electric heat-in-rent needs no separate bill.
+- name: "Case 2, heating responsibility housing support and qualified membership gate eligibility."
+  period: 2026
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NONE", "UNSPECIFIED", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "ELECTRICITY"]
+    co_leap_household_size: [1, 1, 1, 1, 1, 1, 0, 1]
+    co_leap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [600, 600, 0, 600, 0, 0, 600, 0]
+    heat_expense_included_in_rent: [false, false, false, false, true, true, false, true]
+    receives_housing_assistance: [false, false, false, false, false, true, false, false]
+  output:
+    co_leap_eligible: [false, false, false, true, true, false, false, true]
+
+# Both rows exceed the 43,284 annual size 1 ceiling despite categorical-program receipt.
+- name: "Case 3, SNAP and SSI do not bypass the income ceiling."
+  period: 2026
+  input:
+    state_code: ["CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1]
+    co_leap_countable_income: [50_000, 50_000]
+    gas_expense: [600, 600]
+    snap: [6_000, 0]
+    ssi: [0, 12_000]
+  output:
+    co_leap_eligible: [false, false]

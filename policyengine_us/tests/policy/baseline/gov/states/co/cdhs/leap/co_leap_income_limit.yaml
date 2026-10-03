@@ -1,0 +1,26 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Income table, PDF page5: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=5
+# Qualified household, PDF pages29,55: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=29,55
+
+# Sizes 1-8 use the published monthly table. Sizes 9-15 add $208 per person to $9,574.
+# Expected annual limits are each authoritative monthly dollar amount multiplied by 12.
+- name: "Case 1, all printed monthly SMI limits and additional-person amounts annualize exactly."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  output:
+    co_leap_income_limit: [43_284, 56_604, 69_924, 83_256, 96_576, 109_896, 112_392, 114_888, 117_384, 119_880, 122_376, 124_872, 127_368, 129_864, 132_360]
+
+# No qualified member provides no supported household income allowance.
+- name: "Case 2, zero qualified household size has no income allowance."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO"]
+    heating_type: ["NATURAL_GAS"]
+    co_leap_household_size: [0]
+  output:
+    co_leap_income_limit: [0]

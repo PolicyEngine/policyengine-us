@@ -1,0 +1,53 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# FPG table and contribution schedule, PDF pages5-6: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=5,6
+
+# Each size 1-15 appears twice: at the published monthly upper bound, then $0.01/month above it.
+# Sizes 1-8 use the printed table; later sizes add the printed per-person increments. Annual input = monthly boundary*12, then +$0.12.
+- name: "Case 1, every 75 percent FPG boundary retains the lower contribution through the exact cent edge."
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15]
+    co_leap_countable_income: [11_736, 11736.12, 15_864, 15864.12, 19_992, 19992.12, 24_108, 24108.12, 28_248, 28248.12, 32_364, 32364.12, 36_492, 36492.12, 40_620, 40620.12, 44_748, 44748.12, 48_876, 48876.12, 53_004, 53004.12, 57_132, 57132.12, 61_260, 61260.12, 65_388, 65388.12, 69_516, 69516.12]
+  output:
+    co_leap_income_contribution_rate: [0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1]
+
+# Each size 1-15 appears twice: at the published monthly upper bound, then $0.01/month above it.
+# Sizes 1-8 use the printed table; later sizes add the printed per-person increments. Annual input = monthly boundary*12, then +$0.12.
+- name: "Case 2, every 125 percent FPG boundary retains the lower contribution through the exact cent edge."
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15]
+    co_leap_countable_income: [19_560, 19560.12, 26_448, 26448.12, 33_312, 33312.12, 40_188, 40188.12, 47_076, 47076.12, 53_940, 53940.12, 60_816, 60816.12, 67_692, 67692.12, 74_568, 74568.12, 81_444, 81444.12, 88_320, 88320.12, 95_196, 95196.12, 102_072, 102072.12, 108_948, 108948.12, 115_824, 115824.12]
+  output:
+    co_leap_income_contribution_rate: [0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2, 0.1, 0.2]
+
+# Each size 1-15 appears twice: at the published monthly upper bound, then $0.01/month above it.
+# Sizes 1-8 use the printed table; later sizes add the printed per-person increments. Annual input = monthly boundary*12, then +$0.12.
+- name: "Case 3, every 175 percent FPG boundary retains the lower contribution through the exact cent edge."
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15]
+    co_leap_countable_income: [27_384, 27384.12, 37_020, 37020.12, 46_644, 46644.12, 56_256, 56256.12, 65_904, 65904.12, 75_516, 75516.12, 85_140, 85140.12, 94_776, 94776.12, 104_400, 104400.12, 114_024, 114024.12, 123_648, 123648.12, 133_272, 133272.12, 142_896, 142896.12, 152_520, 152520.12, 162_144, 162144.12]
+  output:
+    co_leap_income_contribution_rate: [0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2, 0.3]
+
+# Zero, negative and $100/month income remain in the 0% contribution band.
+- name: "Case 4, zero and negative income cannot create a negative contribution."
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: ["CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 1]
+    co_leap_countable_income: [0, -1_200, 1_200]
+  output:
+    co_leap_income_contribution_rate: [0, 0, 0]

@@ -1,0 +1,320 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Benefit methodology and rates, PDF pages1-2,5-6: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1,2,5,6
+# Current statewide reduction and calculation order, PDF pages92-95: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=92,93,94,95
+# Eligibility, PDF pages5,8: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5,8
+
+# Zero bill is ineligible. For positive costs clip(cost,200,1000): 1 and 199.99 receive 200;600 receives 600;1,000.01 and 5,000 receive 1,000. No expense cap removes the minimum.
+- name: "Case 1, positive direct heating awards retain the minimum maximum and actual cost proxy."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    age: [35, 35, 35, 35, 35, 35, 35, 35]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0, 0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 1, 199.99, 200, 600, 1_000, 1000.01, 5_000]
+  output:
+    co_leap_household_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    co_leap_countable_income_person: [0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
+    co_leap_income_contribution_rate: [0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_heating_cost: [0, 1, 199.99, 200, 600, 1_000, 1000.01, 5_000]
+    co_leap_eligible: [false, true, true, true, true, true, true, true]
+    co_leap: [0, 200, 200, 200, 600, 1_000, 1_000, 1_000]
+
+# Monthly wages at 978,1,630 and 2,282 retain the lower rate; +0.01/month moves up. Award=1,000*(1-contribution), with FY 2026 statewide adjustment 0%.
+- name: "Case 2, all contribution boundary steps flow through the final award."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    age: [35, 35, 35, 35, 35, 35]
+    ssi: [0, 0, 0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0, 0, 0]
+    employment_income: [11_736, 11736.12, 19_560, 19560.12, 27_384, 27384.12]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    co_leap_household_size: [1, 1, 1, 1, 1, 1]
+    co_leap_countable_income_person: [11_736, 11736.12, 19_560, 19560.12, 27_384, 27384.12]
+    co_leap_countable_income: [11_736, 11736.12, 19_560, 19560.12, 27_384, 27384.12]
+    co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
+    co_leap_income_contribution_rate: [0, 0.1, 0.1, 0.2, 0.2, 0.3]
+    co_leap_heating_cost: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    co_leap_eligible: [true, true, true, true, true, true]
+    co_leap: [1_000, 900, 900, 800, 800, 700]
+
+# Apply source electric shares exactly once to 1,000; all adjusted amounts lie within 200..1,000.
+- name: "Case 3, electric heating costs receive one dwelling adjustment before the award."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY"]
+    age: [35, 35, 35, 35, 35, 35, 35, 35, 35]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    co_leap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
+    co_leap_income_contribution_rate: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_heating_cost: [620, 620, 480, 480, 430, 430, 430, 430, 500]
+    co_leap_eligible: [true, true, true, true, true, true, true, true, true]
+    co_leap: [620, 620, 480, 480, 430, 430, 430, 430, 500]
+
+# Independent electric heat-in-rent table amounts 472..393 already represent heating. All exceed minimum; no second electric adjustment or half-year division.
+- name: "Case 4, electric heat in unsubsidized rent uses each table value without another heat share."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY"]
+    age: [35, 35, 35, 35, 35, 35, 35, 35, 35]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    co_leap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
+    co_leap_income_contribution_rate: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    co_leap_heating_cost: [472, 440, 343, 350, 227, 239, 380, 357, 393]
+    co_leap_eligible: [true, true, true, true, true, true, true, true, true]
+    co_leap: [472, 440, 343, 350, 227, 239, 380, 357, 393]
+
+# Separate heating: clip(cost-180,200,1000) gives 200,420,820. Subsidized bundled heat without represented surcharge is ineligible despite a rent-table cost.
+- name: "Case 5, subsidized housing deduction retains the minimum for low costs."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    age: [35, 35, 35, 35]
+    ssi: [0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0]
+    gas_expense: [100, 600, 1_000, 600]
+    receives_housing_assistance: [true, true, true, true]
+    heat_expense_included_in_rent: [false, false, false, true]
+  output:
+    co_leap_household_size: [1, 1, 1, 1]
+    co_leap_countable_income: [0, 0, 0, 0]
+    co_leap_income_limit: [43_284, 43_284, 43_284, 43_284]
+    co_leap_income_contribution_rate: [0, 0, 0, 0]
+    co_leap_heating_cost: [100, 600, 1_000, 200]
+    co_leap_eligible: [true, true, true, false]
+    co_leap: [200, 420, 820, 0]
+
+# Two separate units of 1 and 3 members report the same 734 shared-meter seasonal bill. Rates 20% and 10% yield 734*0.8/2=293.60 and 734*0.9/2=330.30; do not divide by 4 people.
+- name: "Case 6, unequal-size economic units share costs by units rather than people."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        ssi: 0
+        co_oap: 0
+      person2:
+        age: 40
+        employment_income: 24_000
+        ssi: 0
+        co_oap: 0
+      person3:
+        age: 8
+        ssi: 0
+        co_oap: 0
+      person4:
+        age: 5
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 734
+        co_tanf: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2", "person3", "person4"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 734
+        co_tanf: 0
+    tax_units:
+      tax_unit1:
+        members: ["person1"]
+      tax_unit2:
+        members: ["person2", "person3", "person4"]
+    households:
+      household:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: [1, 3]
+    co_leap_countable_income_person: [24_000, 24_000, 0, 0]
+    co_leap_countable_income: [24_000, 24_000]
+    co_leap_income_limit: [43_284, 69_924]
+    co_leap_income_contribution_rate: [0.2, 0.1]
+    co_leap_heating_cost: [734, 734]
+    co_leap_eligible: [true, true]
+    co_leap: [293.6, 330.3]
+
+# First unit income 1,000/month has 10% contribution. Divide by both units even though second fails income:1,000*0.9/2 -180 =270. Dividing after subsidy or counting only eligible units gives the wrong amount.
+- name: "Case 7, an ineligible sharing unit still counts and housing deduction follows division."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        ssi: 0
+        co_oap: 0
+      person2:
+        age: 40
+        employment_income: 100_000
+        ssi: 0
+        co_oap: 0
+      person3:
+        age: 8
+        ssi: 0
+        co_oap: 0
+      person4:
+        age: 5
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        co_tanf: 0
+        receives_housing_assistance: true
+      spm_unit2:
+        members: ["person2", "person3", "person4"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        co_tanf: 0
+    tax_units:
+      tax_unit1:
+        members: ["person1"]
+      tax_unit2:
+        members: ["person2", "person3", "person4"]
+    households:
+      household:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: [1, 3]
+    co_leap_countable_income_person: [12_000, 100_000, 0, 0]
+    co_leap_countable_income: [12_000, 100_000]
+    co_leap_income_limit: [43_284, 69_924]
+    co_leap_income_contribution_rate: [0.1, 0.3]
+    co_leap_heating_cost: [1_000, 1_000]
+    co_leap_eligible: [true, false]
+    co_leap: [270, 0]
+
+# Qualified size 1 with parent income 1,000/month: rate 10%, award 1,000*0.9=900. Counting both people in size would wrongly produce the 0% rate.
+- name: "Case 8, citizen child qualifies while nonqualified parent income remains included."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        immigration_status: "UNDOCUMENTED"
+        employment_income: 12_000
+      person2:
+        age: 8
+        ssi: 0
+        co_oap: 0
+        immigration_status: "CITIZEN"
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: 1
+    co_leap_countable_income_person: [12_000, 0]
+    co_leap_countable_income: 12_000
+    co_leap_income_limit: 43_284
+    co_leap_income_contribution_rate: 0.1
+    co_leap_heating_cost: 1_000
+    co_leap_eligible: true
+    co_leap: 900
+
+# The first CO household gets 600; other states remain outside CO scope, and the second CO row has no positive bill. Every flat input has four entries.
+- name: "Case 9, mixed-state rows retain Colorado awards only in Colorado."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CA", "CO", "WV"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    age: [35, 35, 35, 35]
+    ssi: [0, 0, 0, 0]
+    co_oap: [0, 0, 0, 0]
+    co_tanf: [0, 0, 0, 0]
+    gas_expense: [600, 600, 0, 1_200]
+  output:
+    co_leap_household_size: [1, 0, 1, 0]
+    co_leap_countable_income: [0, 0, 0, 0]
+    co_leap_income_limit: [43_284, 0, 43_284, 0]
+    co_leap_heating_cost: [600, 0, 0, 0]
+    co_leap_eligible: [true, false, false, false]
+    co_leap: [600, 0, 0, 0]
+
+# A loss produces zero counted earnings under the scoped convention, not a negative contribution. The 5,000 bill still receives at most 1,000.
+- name: "Case 10, a business loss cannot inflate the regular benefit above its cap."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        self_employment_income: -1_000_000
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 5_000
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: 1
+    co_leap_countable_income_person: 0
+    co_leap_countable_income: 0
+    co_leap_income_limit: 43_284
+    co_leap_income_contribution_rate: 0
+    co_leap_heating_cost: 5_000
+    co_leap_eligible: true
+    co_leap: 1_000

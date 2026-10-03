@@ -1,0 +1,144 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Heating-cost methodology and annual dwelling tables, PDF pages1,5-6: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1,5,6
+# Actual electricity instruction, PDF page94: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=94
+
+# A 1,000 direct electric bill uses shares 62%,62%,48%,48%,43%,43%,43%,43%,50%; no extra half-year division.
+- name: "Case 1, actual electric bills receive all nine dwelling-specific heating shares."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY"]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [620, 620, 480, 480, 430, 430, 430, 430, 500]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 2, all nine natural gas heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [200, 177, 156, 146, 110, 116, 186, 271, 151]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 3, all nine propane heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [405, 378, 339, 240, 286, 301, 375, 337, 314]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 4, all nine electricity heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [472, 440, 343, 350, 227, 239, 380, 357, 393]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 5, all nine wood heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD", "WOOD", "WOOD", "WOOD", "WOOD"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [480, 310, 215, 215, 208, 208, 208, 208, 196]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 6, all nine fuel oil heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [378, 202, 169, 444, 169, 169, 169, 169, 151]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 7, all nine kerosene heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE", "KEROSENE"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [378, 202, 169, 444, 169, 169, 169, 169, 151]
+
+# Read the independent heat-in-rent table in dwelling order house, mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV.
+# These are already heating amounts, so electric entries are not multiplied by dwelling electric shares a second time.
+- name: "Case 8, all nine coal heat-in-rent rates match the annual handout."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["COAL", "COAL", "COAL", "COAL", "COAL", "COAL", "COAL", "COAL", "COAL"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [378, 202, 169, 444, 169, 169, 169, 169, 151]
+
+# Each household reports 600 for its matching primary fuel; seasonal-cost proxy=600 directly, not annual 600/2. OTHER has an actual-bill route without an invented rent table.
+- name: "Case 9, positive actual costs use each primary non-electric fuel bill."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "PROPANE", "FUEL_OIL", "KEROSENE", "WOOD", "COAL", "OTHER"]
+    gas_expense: [600, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 600]
+    wood_expense: [0, 0, 0, 0, 600, 0, 0]
+    fuel_oil_expense: [0, 0, 600, 600, 0, 0, 0]
+    bottled_gas_expense: [0, 600, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 600, 0]
+  output:
+    co_leap_heating_cost: [600, 600, 600, 600, 600, 600, 600]
+
+# Ordinary zero defaults cannot distinguish missing records from no expense. Explicit zero has no inferred flat-rate award; negative bills are bounded at zero.
+- name: "Case 10, zero and negative direct bills never trigger missing-history flat rates."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "UNSPECIFIED"]
+    gas_expense: [0, -100, 0]
+  output:
+    co_leap_heating_cost: [0, 0, 0]
+
+# The published rent table has no NONE, unspecified, solar or other-fuel column; these zeros describe unsupported input classifications, not sourced legal exclusions.
+- name: "Case 11, unsupported heat-in-rent fuel classifications do not borrow a table."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO"]
+    heating_type: ["NONE", "UNSPECIFIED", "SOLAR", "OTHER"]
+    heat_expense_included_in_rent: [true, true, true, true]
+  output:
+    co_leap_heating_cost: [0, 0, 0, 0]

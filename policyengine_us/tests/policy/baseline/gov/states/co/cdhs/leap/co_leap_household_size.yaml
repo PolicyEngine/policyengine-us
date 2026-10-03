@@ -1,0 +1,171 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Household and immigration rules, PDF pages29,51,55-57,90: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=29,51,55,56,57,90
+
+# Six residents: citizen child + permanent resident + refugee =3; undocumented, DACA and known foster member excluded.
+- name: "Case 1, citizen child and qualified adults count while nonqualified adults and foster child do not."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 36
+        ssi: 0
+        co_oap: 0
+        immigration_status: "UNDOCUMENTED"
+      person2:
+        age: 34
+        ssi: 0
+        co_oap: 0
+        immigration_status: "DACA"
+      person3:
+        age: 8
+        ssi: 0
+        co_oap: 0
+        immigration_status: "CITIZEN"
+      person4:
+        age: 31
+        ssi: 0
+        co_oap: 0
+        immigration_status: "LEGAL_PERMANENT_RESIDENT"
+      person5:
+        age: 30
+        ssi: 0
+        co_oap: 0
+        immigration_status: "REFUGEE"
+      person6:
+        age: 15
+        ssi: 0
+        co_oap: 0
+        immigration_status: "CITIZEN"
+        is_in_foster_care:
+          2026-01: true
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+    households:
+      household:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: 3
+
+# The manual caps the counted unit at 15 despite 16 actual qualified members.
+- name: "Case 2, sixteen actual qualified members are capped at fifteen."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+      person2:
+        age: 39
+        ssi: 0
+        co_oap: 0
+      person3:
+        age: 17
+        ssi: 0
+        co_oap: 0
+      person4:
+        age: 16
+        ssi: 0
+        co_oap: 0
+      person5:
+        age: 15
+        ssi: 0
+        co_oap: 0
+      person6:
+        age: 14
+        ssi: 0
+        co_oap: 0
+      person7:
+        age: 13
+        ssi: 0
+        co_oap: 0
+      person8:
+        age: 12
+        ssi: 0
+        co_oap: 0
+      person9:
+        age: 11
+        ssi: 0
+        co_oap: 0
+      person10:
+        age: 10
+        ssi: 0
+        co_oap: 0
+      person11:
+        age: 9
+        ssi: 0
+        co_oap: 0
+      person12:
+        age: 8
+        ssi: 0
+        co_oap: 0
+      person13:
+        age: 7
+        ssi: 0
+        co_oap: 0
+      person14:
+        age: 6
+        ssi: 0
+        co_oap: 0
+      person15:
+        age: 5
+        ssi: 0
+        co_oap: 0
+      person16:
+        age: 4
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8", "person9", "person10", "person11", "person12", "person13", "person14", "person15", "person16"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8", "person9", "person10", "person11", "person12", "person13", "person14", "person15", "person16"]
+    households:
+      household:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8", "person9", "person10", "person11", "person12", "person13", "person14", "person15", "person16"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: 15
+
+# Neither nonqualified adult contributes a qualifying member.
+- name: "Case 3, no qualified household member gives a zero counted size."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        immigration_status: "UNDOCUMENTED"
+      person2:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        immigration_status: "DACA"
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_household_size: 0
