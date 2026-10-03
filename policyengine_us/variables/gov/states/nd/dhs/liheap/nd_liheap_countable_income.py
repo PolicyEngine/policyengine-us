@@ -29,12 +29,17 @@ class nd_liheap_countable_income(Variable):
         )
         person = spm_unit.members
         premiums = person("health_insurance_premiums", period)
-        # Zero means no positive supplied premium: use the alternate reported
-        # input. Do not add both inputs or automatically derive Medicare costs.
+        # A positive reported aggregate takes precedence over its components.
+        # Otherwise use both nonnegative reported components; do not impute
+        # Medicare premiums from the calculated premium variable.
         reported_premiums = where(
             premiums > 0,
             premiums,
-            person("health_insurance_premiums_without_medicare_part_b", period),
+            max_(
+                person("health_insurance_premiums_without_medicare_part_b", period),
+                0,
+            )
+            + max_(person("medicare_part_b_premiums_reported", period), 0),
         )
         deductions = spm_unit.sum(max_(reported_premiums, 0)) + add(
             spm_unit,
