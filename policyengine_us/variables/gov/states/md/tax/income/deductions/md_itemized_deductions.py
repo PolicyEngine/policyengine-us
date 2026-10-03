@@ -8,7 +8,7 @@ class md_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://govt.westlaw.com/mdc/Document/N05479690A64A11DBB5DDAC3692B918BC?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)",
+        "https://mgaleg.maryland.gov/2022RS/Statute_Web/gtg/10-218.pdf#page=1",
         "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=5",
         "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=5",
         "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=167",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025

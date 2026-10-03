@@ -7,7 +7,7 @@ class ok_ccs_predetermined_eligible(Variable):
     label = "Oklahoma Child Care Subsidy predetermined eligible"
     definition_period = MONTH
     defined_for = StateCode.OK
-    reference = "https://okrules.elaws.us/oac/340:40-7-1"
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-1"
 
     def formula(spm_unit, period, parameters):
         # Households receiving public assistance (TANF, including Supported

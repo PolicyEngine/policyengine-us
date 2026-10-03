@@ -8,7 +8,7 @@ class ca_tanf_countable_income_recipient(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
-    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-111_23_Earned_Income_Disregards%2F44-111_23_Earned_Income_Disregards.htm%23Policybc-2&rhtocid=_3_1_6_2_1"
+    reference = "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/calworks/income/earned-income-disregards.html"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.cash.income.disregards.recipient

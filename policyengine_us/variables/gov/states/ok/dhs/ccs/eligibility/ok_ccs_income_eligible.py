@@ -8,7 +8,7 @@ class ok_ccs_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.OK
     reference = (
-        "https://okrules.elaws.us/oac/340:40-7-13",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-13",
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4.pdf#page=2",
     )
 
