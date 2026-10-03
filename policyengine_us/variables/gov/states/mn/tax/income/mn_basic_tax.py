@@ -8,7 +8,7 @@ class mn_basic_tax(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf"
         "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf"
     )
     defined_for = StateCode.MN

@@ -4,6 +4,51 @@
 # See test_known_dead_reference_urls.py for the format.
 
 [[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2020-12/Inflation%20Adjustments%20TY%202021.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2023-12/Inflation%20Adjustments%20TY%202021.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2021-12/Inflation_Adjustments_TY_2022.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2023-12/Inflation_Adjustments_TY_2022.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_21_0.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_22.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1c_21.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1c_21.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_21.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1ref_21_0.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_22.pdf"
+verified = "2026-10-01"
+replacement = "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1ref_22.pdf"
+
+[[dead]]
 prefix = "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
 verified = "2026-10-01"
 replacement = "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf"
