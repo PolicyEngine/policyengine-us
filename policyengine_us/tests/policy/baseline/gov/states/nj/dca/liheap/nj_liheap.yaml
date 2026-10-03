@@ -229,3 +229,27 @@
   output:
     nj_liheap_eligible: [true, false]
     nj_liheap: [334, 0]
+
+- name: Case 12, farm rental income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: NJ
+    county: SUSSEX_COUNTY_NJ
+    age: 45
+    immigration_status: CITIZEN
+    employment_income: 36_000
+    farm_rent_income: 24_000
+    rental_income: 0
+    ssi: 0
+    tanf: 0
+    snap: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # Handbook section 2.3.D (page 8) counts rental-property receipts. With no
+    # rental expenses, $36,000 wages + $24,000 farm rents = $60,000 annually.
+    nj_liheap_countable_income: 60_000
+    # Fact sheet, page 2: $4,167 monthly for one person x 12 = $50,004.
+    nj_liheap_income_limit: 50_004
+    nj_liheap_eligible: false
+    nj_liheap: 0
