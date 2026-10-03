@@ -48,7 +48,12 @@ def create_capital_gains_tax_increase() -> Reform:
 
             p_reform = parameters(period).gov.contrib.biden.budget_2025.capital_gains
             income_threshold = p_reform.income_threshold[filing_status]
-            excess_income = max_(0, taxable_income - income_threshold)
+            # The threshold tests the filer's own income, which leaves out an
+            # amount excluded under section 911, so it uses taxable income
+            # before the excluded amount is added back; the rates still stack.
+            excess_income = max_(
+                0, tax_unit("taxable_income", period) - income_threshold
+            )
 
             cg_in_top_bracket = min_(adjusted_net_cg, excess_income)
 
@@ -99,14 +104,11 @@ def create_capital_gains_tax_increase() -> Reform:
                 "section_911_unrecaptured_section_1250_gain", period
             )
 
-            qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
-            # Net capital gain determined without regard to section
-            # 1(h)(11), which a capital gain excess reduces first
-            # (26 U.S.C. 911(f)(2)(A)(i)).
-            net_cg_other_than_dividends = max_(
-                0,
-                max_(0, tax_unit("net_capital_gain", period) - qualified_dividends)
-                - tax_unit("section_911_capital_gain_excess", period),
+            # Net capital gain determined without regard to section 1(h)(11),
+            # reduced first by any capital gain excess (26 U.S.C.
+            # 911(f)(2)(A)(i)).
+            net_cg_other_than_dividends = tax_unit(
+                "section_911_net_capital_gain_other_than_qualified_dividends", period
             )
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,

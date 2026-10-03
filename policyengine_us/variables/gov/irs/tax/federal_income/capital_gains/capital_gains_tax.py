@@ -71,14 +71,11 @@ class capital_gains_tax(Variable):
         unrecaptured_s_1250_gain = tax_unit(
             "section_911_unrecaptured_section_1250_gain", period
         )
-        qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
         # Net capital gain determined without regard to section 1(h)(11),
-        # which a capital gain excess reduces first (26 U.S.C.
+        # reduced first by any capital gain excess (26 U.S.C.
         # 911(f)(2)(A)(i)).
-        net_cg_other_than_dividends = max_(
-            0,
-            max_(0, tax_unit("net_capital_gain", period) - qualified_dividends)
-            - tax_unit("section_911_capital_gain_excess", period),
+        net_cg_other_than_dividends = tax_unit(
+            "section_911_net_capital_gain_other_than_qualified_dividends", period
         )
         max_taxable_unrecaptured_gain = min_(
             unrecaptured_s_1250_gain,

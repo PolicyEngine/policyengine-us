@@ -23,6 +23,33 @@
     # Last 100,000 taxed at 37%
     capital_gains_tax: 57_000 # 15,000 + 37,000
 
+- name: A section 911 exclusion stacks the rates but not the $1 million test
+  period: 2024
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 1_100_000
+        filing_status: JOINT
+        foreign_earned_income_exclusion: 300_000
+  output:
+    # The threshold is tested on taxable income without the excluded amount,
+    # so as in the first case 100,000 of the gains is over it: 100,000 at
+    # 20% and 100,000 at 37%. Testing it on taxable income plus the excluded
+    # amount would put all 200,000 at 37%.
+    capital_gains_tax: 57_000 # 20,000 + 37,000
+
 - name: Reform not applied
   period: 2024
   input:

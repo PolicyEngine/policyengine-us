@@ -26,7 +26,9 @@ class section_911_adjusted_net_capital_gain(Variable):
 
     def formula(tax_unit, period, parameters):
         excess = tax_unit("section_911_capital_gain_excess", period)
-        net_capital_gain = tax_unit("section_911_net_capital_gain", period)
+        gain_other_than_dividends = tax_unit(
+            "section_911_net_capital_gain_other_than_qualified_dividends", period
+        )
         qualified_dividends = tax_unit("section_911_qualified_dividend_income", period)
         unrecaptured_gain = tax_unit(
             "section_911_unrecaptured_section_1250_gain", period
@@ -35,7 +37,8 @@ class section_911_adjusted_net_capital_gain(Variable):
         # As in adjusted_net_capital_gain: net capital gain determined without
         # regard to section 1(h)(11), reduced (not below zero) by unrecaptured
         # section 1250 gain and 28-percent rate gain, plus qualified dividends.
-        gain_other_than_dividends = max_(0, net_capital_gain - qualified_dividends)
+        # With an excess it is figured from these parts, so an
+        # adjusted_net_capital_gain input is not used.
         reduced_gain = max_(
             gain_other_than_dividends - (unrecaptured_gain + rate_gain), 0
         )

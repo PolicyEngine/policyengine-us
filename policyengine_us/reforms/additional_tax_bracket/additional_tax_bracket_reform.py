@@ -85,7 +85,10 @@ def create_additional_tax_bracket() -> Reform:
         entity = TaxUnit
         definition_period = YEAR
         label = "Income tax main rates"
-        reference = "https://www.law.cornell.edu/uscode/text/26/1"
+        reference = [
+            "https://www.law.cornell.edu/uscode/text/26/1",
+            "https://www.law.cornell.edu/uscode/text/26/911#f_1_A",
+        ]
         unit = USD
 
         def formula(tax_unit, period, parameters):

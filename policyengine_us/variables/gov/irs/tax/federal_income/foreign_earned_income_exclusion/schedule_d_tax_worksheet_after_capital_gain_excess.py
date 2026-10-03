@@ -42,7 +42,9 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(
     line_6 = tax_unit("dividend_income_reduced_by_investment_income", period)
     reduced_line_6 = max_(0, line_6 - excess_after_line_9)
     reduced_line_10 = reduced_line_6 + reduced_line_9
-    # Modifications 3 and 4.
+    # Modifications 3 and 4. section_911_28_percent_rate_gain and
+    # section_911_unrecaptured_section_1250_gain apply the regular tax excess;
+    # this helper also runs with the AMT excess, so it applies them itself.
     reduced_rate_gain = max_(0, rate_gain - capital_gain_excess)
     reduced_unrecaptured_gain = max_(
         0, unrecaptured_gain - max_(0, capital_gain_excess - rate_gain)

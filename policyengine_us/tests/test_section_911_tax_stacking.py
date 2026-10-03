@@ -20,12 +20,12 @@ Two kinds of test:
   household. The model reaches the same tax by a different route: the
   section 1(h) formulas in `capital_gains_excluded_from_taxable_income`,
   `income_tax_main_rates` and `capital_gains_tax`.
-- Properties that hold for every household: an exclusion of zero changes
-  nothing, the stacked tax is never below the unstacked tax, zero taxable
-  income gives zero regular tax, and the tax never falls as the excluded
-  amount rises.
+- Properties that hold for every household: with nothing excluded, every
+  amount that section 911(f) replaces is unchanged, bit for bit; the stacked
+  tax is never below the unstacked tax; zero taxable income gives zero
+  regular tax; and the tax never falls as the excluded amount rises.
 
-Households live in Texas and take the standard deduction.
+Households live in Texas; some itemize.
 
 Three limits of the model set the scope of these tests, and none comes
 from section 911:
@@ -299,6 +299,12 @@ def build_situation(households, year):
             "qualified_dividend_income": {year: h["qualified_dividends"]},
             "long_term_capital_gains": {year: h["long_term_gains"]},
             "short_term_capital_gains": {year: h["short_term_gains"]},
+            "long_term_capital_gains_on_collectibles": {
+                year: h.get("collectibles_gains", 0)
+            },
+            "real_estate_taxes": {year: h.get("real_estate_taxes", 0)},
+            "deductible_mortgage_interest": {year: h.get("mortgage_interest", 0)},
+            "charitable_cash_donations": {year: h.get("charitable_gifts", 0)},
         }
         members = [head]
         marital_units[f"marital_unit_{i}"] = {"members": [head]}
@@ -320,6 +326,9 @@ def build_situation(households, year):
             # the model would compute.
             "filing_status": {year: h["status"]},
             "foreign_earned_income_exclusion": {year: h["exclusion"]},
+            "unrecaptured_section_1250_gain": {
+                year: h.get("unrecaptured_section_1250_gain", 0)
+            },
         }
         groups["households"][f"household_{i}"] = {
             "members": members,
@@ -376,7 +385,6 @@ def tolerance(*amounts):
 
 def assert_matches_worksheets(households, law):
     """The 2025 model against the transcribed 2025 worksheets."""
-    assert not law["tax_unit_itemizes"].any()
     cap_gaps = []
     for i, h in enumerate(households):
         status = law["filing_status"][i]
@@ -430,7 +438,9 @@ def assert_invariants(households, year):
     for other in [unstacked, more_excluded]:
         assert np.array_equal(other["taxable_income"], taxable_income)
 
-    # 1. An exclusion of zero changes nothing, bit for bit.
+    # 1. A household without an exclusion gets the same results whatever the
+    # other households in the batch exclude. (test_nothing_excluded_changes_
+    # nothing checks the amounts section 911(f) replaces.)
     for v in OUTPUTS[1:]:
         assert np.array_equal(law[v][~excludes], unstacked[v][~excludes]), v
     assert np.array_equal(
@@ -551,6 +561,154 @@ def test_review_example_from_the_tax_table():
     assert unstacked["regular_tax"][0] == pytest.approx(4_025, abs=0.01)
 
 
+# The Tax Table's column order.
+STATUSES_TABLE_ORDER = ["SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD"]
+
+# Rows of the 2025 Tax Table (2025 Instructions for Form 1040): at least,
+# but less than, then the tax for single, married filing jointly, married
+# filing separately and head of household filers. The table taxes the middle
+# of each row and rounds to the dollar.
+TAX_TABLE_2025_ROWS = [
+    (11_900, 11_950, 1_193, 1_193, 1_193, 1_193),
+    (17_000, 17_050, 1_805, 1_703, 1_805, 1_703),
+    (23_850, 23_900, 2_627, 2_388, 2_627, 2_525),
+    (30_000, 30_050, 3_365, 3_126, 3_365, 3_263),
+    (36_350, 36_400, 4_127, 3_888, 4_127, 4_025),
+    (40_000, 40_050, 4_565, 4_326, 4_565, 4_463),
+    (48_450, 48_500, 5_579, 5_340, 5_579, 5_477),
+    (60_050, 60_100, 8_131, 6_732, 8_131, 6_869),
+    (64_800, 64_850, 9_176, 7_302, 9_176, 7_439),
+    (76_350, 76_400, 11_717, 8_688, 11_717, 9_978),
+    (96_900, 96_950, 16_238, 11_154, 16_238, 14_499),
+    (99_950, 100_000, 16_909, 11_823, 16_909, 15_170),
+]
+# 2025 Tax Computation Worksheet: taxable income, multiplication amount and
+# subtraction amount, one row from each section.
+TAX_COMPUTATION_WORKSHEET_2025_ROWS = {
+    "SINGLE": [(150_000, 0.24, 7_153), (700_000, 0.37, 42_979.75)],
+    "JOINT": [(300_000, 0.24, 14_306), (800_000, 0.37, 75_937.50)],
+    "SEPARATE": [(220_000, 0.32, 22_937), (400_000, 0.37, 37_968.75)],
+    "HEAD_OF_HOUSEHOLD": [(120_000, 0.24, 8_892), (300_000, 0.35, 32_191)],
+}
+
+
+def test_transcribed_schedule_matches_the_2025_tax_table():
+    for low, high, *taxes in TAX_TABLE_2025_ROWS:
+        for status, tax in zip(STATUSES_TABLE_ORDER, taxes):
+            # Round half up to the dollar, as the table does.
+            assert int(tax_rate_schedule((low + high) / 2, status) + 0.5) == tax, (
+                low,
+                status,
+            )
+    for status, rows in TAX_COMPUTATION_WORKSHEET_2025_ROWS.items():
+        for amount, rate, subtraction in rows:
+            assert tax_rate_schedule(amount, status) == pytest.approx(
+                amount * rate - subtraction, abs=1e-6
+            ), (amount, status)
+
+
+# Households with every kind of gain the computation touches, itemizers
+# among them.
+REPLACED_AMOUNTS_GRID = [
+    {
+        "status": status,
+        "wages": wages,
+        "qualified_dividends": dividends,
+        "long_term_gains": long_term,
+        "short_term_gains": short_term,
+        "collectibles_gains": collectibles,
+        "unrecaptured_section_1250_gain": section_1250,
+        "real_estate_taxes": real_estate_taxes,
+        "mortgage_interest": 0,
+        "charitable_gifts": charitable_gifts,
+        "exclusion": exclusion,
+    }
+    for status in STATUSES
+    for wages in (0, 60_000, 400_000)
+    for dividends, long_term, short_term, collectibles, section_1250 in (
+        (0, 0, 0, 0, 0),
+        (5_000, 80_000, -10_000, 20_000, 15_000),
+        (0, 30_000, 0, 30_000, 0),
+        (20_000, 600_000, 40_000, 0, 100_000),
+    )
+    for real_estate_taxes, charitable_gifts in ((0, 0), (12_000, 40_000))
+    for exclusion in (0, 50_000)
+]
+
+
+def test_nothing_excluded_changes_nothing():
+    """With no capital gain excess, each amount that section 911(f) replaces
+    equals the amount it replaces, bit for bit, and with nothing excluded so
+    do the stacked bases."""
+    from policyengine_core.periods import period as make_period
+
+    from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
+        schedule_d_tax_worksheet_after_capital_gain_excess,
+    )
+
+    for year in [2018, 2025, 2026]:
+        simulation = Simulation(situation=build_situation(REPLACED_AMOUNTS_GRID, year))
+
+        def get(variable):
+            return np.asarray(simulation.calculate(variable, year))
+
+        excluded = get("foreign_earned_income_exclusion")
+        nothing_excluded = excluded == 0
+        no_excess = get("section_911_capital_gain_excess") == 0
+        assert not get("section_911_capital_gain_excess")[nothing_excluded].any()
+        assert not get("amt_section_911_capital_gain_excess")[nothing_excluded].any()
+        # The grid has filers with an excess and filers without.
+        assert (~no_excess).any() and (no_excess & ~nothing_excluded).any()
+        assert get("tax_unit_itemizes").any() and not get("tax_unit_itemizes").all()
+
+        dividends = np.asarray(
+            simulation.calculate("qualified_dividend_income", year, map_to="tax_unit")
+        )
+        pairs = {
+            "section_911_net_capital_gain": get("net_capital_gain"),
+            "section_911_qualified_dividend_income": dividends,
+            "section_911_net_capital_gain_other_than_qualified_dividends": np.maximum(
+                0, get("net_capital_gain") - dividends
+            ),
+            "section_911_28_percent_rate_gain": get(
+                "capital_gains_28_percent_rate_gain"
+            ),
+            "section_911_unrecaptured_section_1250_gain": get(
+                "unrecaptured_section_1250_gain"
+            ),
+            "section_911_adjusted_net_capital_gain": get("adjusted_net_capital_gain"),
+        }
+        for variable, original in pairs.items():
+            assert np.array_equal(get(variable)[no_excess], original[no_excess]), (
+                variable,
+                year,
+            )
+        tax_unit = simulation.populations["tax_unit"]
+        worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
+            tax_unit, make_period(year), get("section_911_capital_gain_excess")
+        )
+        for line, original in [
+            ("line_9", "dwks09"),
+            ("line_10", "dwks10"),
+            ("line_13", "dwks13"),
+            ("unrecaptured_section_1250_gain", "unrecaptured_section_1250_gain"),
+        ]:
+            assert np.array_equal(
+                np.asarray(getattr(worksheet, line))[no_excess],
+                get(original)[no_excess],
+            ), (line, year)
+        for stacked, original in [
+            ("taxable_income_plus_section_911_exclusion", "taxable_income"),
+            (
+                "amt_income_less_exemptions_plus_section_911_exclusion",
+                "amt_income_less_exemptions",
+            ),
+        ]:
+            assert np.array_equal(
+                get(stacked)[nothing_excluded], get(original)[nothing_excluded]
+            ), (stacked, year)
+
+
 household_strategy = st.fixed_dictionaries(
     {
         "status": st.sampled_from(STATUSES),
@@ -559,6 +717,9 @@ household_strategy = st.fixed_dictionaries(
         "long_term_gains": st.one_of(st.just(0), st.integers(-50_000, 1_500_000)),
         "short_term_gains": st.one_of(st.just(0), st.integers(-100_000, 100_000)),
         "exclusion": st.one_of(st.just(0), st.integers(1, 300_000)),
+        "real_estate_taxes": st.one_of(st.just(0), st.integers(1, 60_000)),
+        "mortgage_interest": st.one_of(st.just(0), st.integers(1, 80_000)),
+        "charitable_gifts": st.one_of(st.just(0), st.integers(1, 150_000)),
     }
 )
 
