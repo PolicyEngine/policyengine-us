@@ -19,7 +19,13 @@ class tax_unit_is_filer(Variable):
     construction.
     """
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/6012"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/6012",
+        # A section 911 election is filed with the return.
+        "https://www.law.cornell.edu/cfr/text/26/1.911-7",
+        # "Attach Form 2555 to Form 1040 or 1040-SR when filed."
+        "https://www.irs.gov/pub/irs-pdf/i2555.pdf#page=2",
+    )
 
     def formula(tax_unit, period, parameters):
         # Required to file based on income thresholds
@@ -35,4 +41,9 @@ class tax_unit_is_filer(Variable):
         # Would file voluntarily for other reasons
         files_voluntarily = tax_unit("would_file_taxes_voluntarily", period)
 
-        return required | files_for_credits | files_voluntarily
+        # A section 911 exclusion is claimed on Form 2555 attached to the
+        # return (Treas. Reg. 1.911-7(a)(1); Form 2555 instructions), so a
+        # tax unit with an exclusion files whatever its other reasons.
+        claims_section_911 = tax_unit("foreign_earned_income_exclusion", period) > 0
+
+        return required | files_for_credits | files_voluntarily | claims_section_911

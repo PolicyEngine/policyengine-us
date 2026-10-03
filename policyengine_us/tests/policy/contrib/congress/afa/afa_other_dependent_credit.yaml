@@ -289,3 +289,34 @@
     ctc_lower_phase_out: 0
     ctc_refundable_maximum: 9_960
     ctc: 9_960
+
+# Before the bill's fully refundable credit starts (2025), current law applies,
+# including the section 24(d)(3) bar on section 911 filers. Without the bar, the
+# zero EITC of a section 911 claimant (26 U.S.C. 32(c)(1)(C)) would leave $76.50
+# of social security taxes to refund.
+- name: Section 911 filer gets no refundable CTC in 2024 with the reform active
+  period: 2024
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+      child1:
+        age: 6
+      child2:
+        age: 7
+      child3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: TX
+  output:
+    eitc: 0
+    refundable_ctc: 0

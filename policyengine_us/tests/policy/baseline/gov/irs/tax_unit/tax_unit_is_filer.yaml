@@ -102,3 +102,20 @@
   output:
     # $10,000 is under the $15,750 threshold, and none of it is unearned.
     tax_unit_is_required_to_file: false
+
+# Treas. Reg. 1.911-7(a)(1): the section 911 election is filed with the return,
+# and Form 2555 is attached to Form 1040 when filed, so a tax unit with an
+# exclusion files even below the filing threshold and with no credit to claim.
+- name: Section 911 claimant below the filing threshold still files
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 5_000
+    foreign_earned_income_exclusion: 1_000
+    would_file_if_eligible_for_refundable_credit: false
+    would_file_taxes_voluntarily: false
+  output:
+    # $6,000 of gross income under section 6012(c), under $15,750.
+    tax_unit_is_required_to_file: false
+    tax_unit_is_filer: true

@@ -152,7 +152,11 @@ def create_afa_other_dependent_credit() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            # Before the credit is fully refundable (years the reform does not
+            # yet cover), current law applies, including section 24(d)(3).
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+            return where(barred, 0, refundable_amount)
 
     class ctc(Variable):
         value_type = float
