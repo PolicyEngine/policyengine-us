@@ -1,6 +1,6 @@
 from numpy import clip
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.net_capital_gain_other_than_dividends import (
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.section_911_net_capital_gain_other_than_dividends import (
     section_911_net_capital_gain_other_than_dividends,
 )
 

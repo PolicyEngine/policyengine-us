@@ -633,6 +633,24 @@ REPLACED_AMOUNTS_GRID = [
     )
     for real_estate_taxes, charitable_gifts in ((0, 0), (12_000, 40_000))
     for exclusion in (0, 50_000)
+] + [
+    # Amounts with cents, which single precision cannot store exactly, so a
+    # rounding step that whole-dollar amounts would hide shows up here.
+    {
+        "status": status,
+        "wages": 61_234.56,
+        "qualified_dividends": 12_345.67,
+        "long_term_gains": 100_000.01,
+        "short_term_gains": -1_234.89,
+        "collectibles_gains": 0,
+        "unrecaptured_section_1250_gain": 15_000.37,
+        "real_estate_taxes": 0,
+        "mortgage_interest": 0,
+        "charitable_gifts": 0,
+        "exclusion": exclusion,
+    }
+    for status in STATUSES
+    for exclusion in (0, 50_000.25)
 ]
 
 
@@ -642,8 +660,12 @@ def test_nothing_excluded_changes_nothing():
     do the stacked bases."""
     from policyengine_core.periods import period as make_period
 
+    from policyengine_us.model_api import add, max_
     from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
         schedule_d_tax_worksheet_after_capital_gain_excess,
+    )
+    from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.section_911_net_capital_gain_other_than_dividends import (
+        section_911_net_capital_gain_other_than_dividends,
     )
 
     for year in [2018, 2025, 2026]:
@@ -681,8 +703,22 @@ def test_nothing_excluded_changes_nothing():
                 year,
             )
         tax_unit = simulation.populations["tax_unit"]
+        period = make_period(year)
+        # The reduced non-dividend gain against the expression main used in
+        # capital_gains_tax, computed the same way (not stored in between).
+        main_gain = max_(
+            0,
+            tax_unit("net_capital_gain", period)
+            - add(tax_unit, period, ["qualified_dividend_income"]),
+        )
+        assert np.array_equal(
+            np.asarray(
+                section_911_net_capital_gain_other_than_dividends(tax_unit, period)
+            )[no_excess],
+            np.asarray(main_gain)[no_excess],
+        ), year
         worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
-            tax_unit, make_period(year), get("taxable_income")
+            tax_unit, period, get("taxable_income")
         )
         no_excess = no_excess & (np.asarray(worksheet.capital_gain_excess) == 0)
         for line, original in [

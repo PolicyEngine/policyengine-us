@@ -11,9 +11,11 @@ class amt_section_911_capital_gain_excess(Variable):
     unit = USD
     documentation = (
         "For a taxpayer excluding foreign earned income under 26 U.S.C. "
-        "911(a), the excess of net capital gain (line 10 of the Schedule D Tax "
-        "Worksheet) over the AMT taxable excess (Form 6251 line 6). The "
-        "capital gains used in Form 6251 Part III are reduced by this excess."
+        "911(a), the excess of line 10 of the Schedule D Tax Worksheet over "
+        "the AMT taxable excess (Form 6251 line 6). The capital gains used in "
+        "Form 6251 Part III are reduced by this excess. Reported for "
+        "reference: amt_tax_including_cg figures it itself, so an input here "
+        "does not change the AMT."
     )
     definition_period = YEAR
     reference = [

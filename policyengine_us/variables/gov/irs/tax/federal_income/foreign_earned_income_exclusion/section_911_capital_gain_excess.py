@@ -12,7 +12,11 @@ class section_911_capital_gain_excess(Variable):
         "determined without regard to section 911(f). In figuring the tax on "
         "taxable income plus the excluded amount, the capital gains are "
         "reduced by this excess, so that the excluded amount is never taxed "
-        "at the capital gains rates."
+        "at the capital gains rates. The section 1(h) formulas use this "
+        "amount; the Schedule D Tax Worksheet lines (dwks14, dwks19, "
+        "regular_tax_before_credits) measure the excess from worksheet line "
+        "10, as the worksheet does, which can differ when an investment "
+        "income election or capital gain distributions are entered."
     )
     definition_period = YEAR
     reference = [
