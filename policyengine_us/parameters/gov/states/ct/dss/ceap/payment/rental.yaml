@@ -1,0 +1,25 @@
+description: Connecticut provides this rental heating benefit by income level under the Connecticut Energy Assistance Program.
+1:
+  2025-10-01: 125
+  2026-10-01: 140
+2:
+  2025-10-01: 100
+  2026-10-01: 115
+3:
+  2025-10-01: 75
+  2026-10-01: 90
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Connecticut CEAP rental heating benefit
+  propagate_metadata_to_children: true
+  breakdown:
+    - range(1, 4)
+  breakdown_labels:
+    - Benefit income level
+  reference:
+    - title: Connecticut FY2026 LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+    - title: Connecticut approved FY2027 LIHEAP Allocation Plan, Sections VIII-IX
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=10,11

@@ -1,0 +1,25 @@
+description: Connecticut provides this basic heating benefit by income level under the Connecticut Energy Assistance Program.
+1:
+  2025-10-01: 595
+  2026-10-01: 655
+2:
+  2025-10-01: 445
+  2026-10-01: 505
+3:
+  2025-10-01: 295
+  2026-10-01: 355
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Connecticut CEAP basic heating benefit
+  propagate_metadata_to_children: true
+  breakdown:
+    - range(1, 4)
+  breakdown_labels:
+    - Benefit income level
+  reference:
+    - title: Connecticut FY2026 LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+    - title: Connecticut approved FY2027 LIHEAP Allocation Plan, Sections VIII-IX
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=10,11

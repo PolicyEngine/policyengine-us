@@ -1,0 +1,27 @@
+description: Connecticut assigns this benefit level by the ratio of countable income to federal poverty guidelines under the Connecticut Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: -.inf
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 1.25
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 3
+
+metadata:
+  unit: /1
+  period: year
+  label: Connecticut CEAP benefit income level
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  reference:
+    - title: Connecticut FY2026 LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+    - title: Connecticut approved FY2027 LIHEAP Allocation Plan, Sections VIII-IX
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=10,11

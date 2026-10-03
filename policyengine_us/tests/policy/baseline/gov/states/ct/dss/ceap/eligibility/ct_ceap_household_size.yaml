@@ -1,0 +1,276 @@
+# REQ-001. A26/A27 III and V.J-K; qualified membership and represented foster exclusion.
+# Sources:
+# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5,9
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# REQ-001: count qualified members, excluding represented foster members.
+- name: Case 1, citizen and qualified noncitizens count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 38
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person3:
+        age: 17
+        immigration_status: REFUGEE
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 3
+
+# REQ-001: count qualified members, excluding represented foster members.
+- name: Case 2, undocumented parent does not count but citizen child does.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 1
+
+# REQ-001: count qualified members, excluding represented foster members.
+- name: Case 3, all nonqualified members yield zero size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 38
+        immigration_status: DACA
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 0
+
+# REQ-001: count qualified members, excluding represented foster members.
+- name: Case 4, represented foster child is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: true
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 1
+
+# REQ-001: count qualified members, excluding represented foster members.
+- name: Case 5, eight qualified household members count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person4:
+        age: 15
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person5:
+        age: 12
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person6:
+        age: 10
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person7:
+        age: 8
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person8:
+        age: 6
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: CT
+  output:
+    ct_ceap_household_size: 8

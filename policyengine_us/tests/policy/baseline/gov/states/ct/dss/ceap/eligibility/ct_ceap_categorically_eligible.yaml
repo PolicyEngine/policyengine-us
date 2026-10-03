@@ -1,0 +1,352 @@
+# REQ-006. P26 physical p5; A26/A27 IV and IX direct-vendor exception.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5,6,7
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 1, snap receipt with direct heating.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 120
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: true
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 2, snap receipt with heat included in rent.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 120
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 3, ct_tfa receipt with direct heating.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 120
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: true
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 4, ct_tfa receipt with heat included in rent.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 120
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 5, ssi receipt with direct heating.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: true
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 120
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: true
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 6, ssi receipt with heat included in rent.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: true
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 120
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 7, ct_ssp receipt with direct heating.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 120
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: true
+
+# REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
+- name: Case 8, ct_ssp receipt with heat included in rent.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 120
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false
+
+# REQ-006.
+- name: Case 9, no qualifying receipt has no categorical exception.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false
+
+# REQ-004/006: generic VA does not identify the required means-tested program.
+- name: Case 10, generic veterans benefits do not establish categorical receipt.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+        veterans_benefits: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_categorically_eligible: false

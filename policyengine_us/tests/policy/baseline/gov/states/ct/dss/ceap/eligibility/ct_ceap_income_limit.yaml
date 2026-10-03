@@ -1,0 +1,41 @@
+# REQ-005. M26 and A27 physical p7 published annual income ceilings.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# REQ-005: source table amounts, not values evaluated from the model formula.
+- name: Case 1, all eight published FY2026 household income limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [CT, CT, CT, CT, CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [1, 2, 3, 4, 5, 6, 7, 8]
+  output:
+    ct_ceap_income_limit: [47_764, 62_460, 77_157, 91_854, 106_550, 121_247, 124_002, 126_758]
+
+# REQ-005: source table amounts, not values evaluated from the model formula.
+- name: Case 2, all eight published FY2027 household income limits.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [CT, CT, CT, CT, CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [1, 2, 3, 4, 5, 6, 7, 8]
+  output:
+    ct_ceap_income_limit: [48_714, 63_703, 78_692, 93_681, 108_669, 123_658, 126_469, 129_279]
+
+# REQ-001/005: eligibility requires a positive qualified household size.
+- name: Case 3, no qualified members have no income allowance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    ct_ceap_household_size: 0
+  output:
+    ct_ceap_income_limit: 0

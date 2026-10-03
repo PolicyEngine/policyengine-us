@@ -1,0 +1,436 @@
+# REQ-001/005/006/008/009. State, membership, income and heating responsibility.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# REQ-005: published one-person SMI ceiling is inclusive.
+- name: Case 1, FY2026 income at ceiling eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+        employment_income: 47_764
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: true
+
+# REQ-005: published one-person SMI ceiling is inclusive.
+- name: Case 2, FY2026 income one cent over ceiling ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+        employment_income: 47_764.01
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-005: published one-person SMI ceiling is inclusive.
+- name: Case 3, FY2027 income at ceiling eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2027-01: false
+        ssi:
+          '2027': 0
+        social_security: 0
+        employment_income: 48_714
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2027': 0
+        ct_tfa:
+          '2027': 0
+        ct_ssp:
+          '2027': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: true
+
+# REQ-005: published one-person SMI ceiling is inclusive.
+- name: Case 4, FY2027 income one cent over ceiling ineligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2027-01: false
+        ssi:
+          '2027': 0
+        social_security: 0
+        employment_income: 48_714.01
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2027': 0
+        ct_tfa:
+          '2027': 0
+        ct_ssp:
+          '2027': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 5, known direct fuel with positive matching cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: true
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 6, direct fuel with zero matching cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 7, direct fuel with negative matching cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: -100
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 8, affirmative no heating despite reported bills.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 9, unknown direct fuel does not establish a heating bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 10, rental with unknown fuel and no separate cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: true
+
+# REQ-008/009: heating responsibility gate, with heat-in-rent exception to direct expense evidence.
+- name: Case 11, rental with affirmative no heat.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        snap:
+          '2026': 0
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-001/006: categorical receipt does not waive qualified membership.
+- name: Case 12, no qualified members ineligible despite SNAP receipt.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 120
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false
+
+# REQ-006/009.
+- name: Case 13, categorical receipt does not waive heating responsibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_in_foster_care:
+          2026-01: false
+        ssi:
+          '2026': 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+        snap:
+          '2026': 120
+        ct_tfa:
+          '2026': 0
+        ct_ssp:
+          '2026': 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ceap_eligible: false

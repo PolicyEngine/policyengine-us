@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, CT
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: CT
+        status: partial
+        name: Connecticut CEAP
+        full_name: Connecticut Energy Assistance Program
+        variable: ct_ceap
+        parameter_prefix: gov.states.ct.dss.ceap
+        verified_years: "2026-2027"
+        notes: Regular basic and rental heating assistance. Annual income and primary-fuel expenses approximate application income and covered-season costs. Detailed household exclusions, VA pension subtypes, Medicare deductions and prior awards are not fully represented. The separate nominal SNAP grant, crisis assistance and equipment are outside this implementation.
 
   # --- SSA programs ---
   - id: ssi

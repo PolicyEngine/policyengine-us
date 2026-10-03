@@ -1,0 +1,41 @@
+# REQ-007/011. M26 and A27 pp7,10-11; prior-year FPG thresholds.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# REQ-007/011: prior-year FPG; 125% boundary 19,562.50, 200% boundary 31,300.00.
+- name: Case 1, FY2026 inclusive poverty boundaries and no gaps.
+  period: 2026
+  input:
+    state_code: [CT, CT, CT, CT, CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    ct_ceap_countable_income: [0, 19562.49, 19562.5, 19562.51, 31299.99, 31_300, 31300.01, 100_000]
+  output:
+    ct_ceap_benefit_level: [1, 1, 1, 2, 2, 2, 3, 3]
+
+# REQ-007/011: prior-year FPG; 125% boundary 19,950.00, 200% boundary 31,920.00.
+- name: Case 2, FY2027 inclusive poverty boundaries and no gaps.
+  period: 2027
+  input:
+    state_code: [CT, CT, CT, CT, CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    ct_ceap_countable_income: [0, 19949.99, 19_950, 19950.01, 31919.99, 31_920, 31920.01, 100_000]
+  output:
+    ct_ceap_benefit_level: [1, 1, 1, 2, 2, 2, 3, 3]
+
+# REQ-007: 2025 two-person FPG is 15,650 + 5,500 = 21,150; multiply by 1.25 and 2.
+- name: Case 3, two person family uses additional person FPG.
+  period: 2026
+  input:
+    state_code: [CT, CT, CT, CT]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000]
+    ct_ceap_household_size: [2, 2, 2, 2]
+    ct_ceap_countable_income: [26437.5, 26437.51, 42_300, 42300.01]
+  output:
+    ct_ceap_benefit_level: [1, 2, 2, 3]
