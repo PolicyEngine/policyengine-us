@@ -151,3 +151,29 @@
     # Virginia: MEAP requires that the household resides in Maryland
     # (COMAR 07.03.21.03A(1)), so the same household pays $0 there.
     md_meap: [360, 0]
+
+# COMAR 07.03.21.04D(2) counts rental-property income after operating expenses:
+# https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
+- name: Case 10, farm rental income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: MD
+    county: BALTIMORE_COUNTY_MD
+    age: 45
+    immigration_status: CITIZEN
+    employment_income: 24_000
+    farm_rent_income: 12_000
+    rental_income: 0
+    ssi: 0
+    tanf: 0
+    snap: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # No rental expenses: $24,000 wages + $12,000 farm rents = $36,000.
+    md_meap_countable_income: 36_000
+    # Income Guidelines: the one-person annual limit is $31,300.
+    md_meap_income_limit: 31_300
+    md_meap_categorically_eligible: false
+    md_meap_eligible: false
+    md_meap: 0
