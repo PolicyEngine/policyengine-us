@@ -1,16 +1,33 @@
-- name: All published size one through thirteen income limits
+# 2025-2026 HEAP Monthly Income Eligibility Guidelines (Clearinghouse benefit
+# matrix), Tier II maximum column, annualized (x 12). FY2026 State Plan section
+# 2.1 (page 9) sets 60% of state median income for sizes 1 to 13 and 150% of
+# the HHS poverty guideline for size 14; HEAP Manual Chapter 8 D.9(c) (page
+# 37) uses the higher of the two.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9
+# https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+
+- name: Case 1, all published size one through thirteen income limits.
   period: 2026
   input:
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
     ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
   output:
-    ny_heap_income_limit: [41676, 54504, 67332, 80160, 92988, 105816, 108216, 110616, 113028, 115428, 117840, 120240, 122652]
-- name: Size fourteen follows the plan poverty rate rather than the inconsistent incremental row
+    # Published monthly Tier II maximums 3,473; 4,542; 5,611; 6,680; 7,749;
+    # 8,818; 9,018; 9,218; 9,419; 9,619; 9,820; 10,020; 10,221, each x 12.
+    ny_heap_income_limit: [41_676, 54_504, 67_332, 80_160, 92_988, 105_816, 108_216, 110_616, 113_028, 115_428, 117_840, 120_240, 122_652]
+
+- name: Case 2, size fourteen follows the plan poverty rate rather than the matrix increment.
   period: 2026
   input:
     heating_type: NATURAL_GAS
     state_code: NY
     ny_heap_household_size: 14
   output:
-    ny_heap_income_limit: 130716
+    # State Plan 2.1 row 14 (page 9): 150% of the HHS poverty guideline. The
+    # 2025 guideline for 14 is 15,650 + 13 x 5,500 = 87,150;
+    # floor(1.5 x 87,150 / 12) = 10,893 a month, 130,716 a year. The matrix's
+    # 14+ row adds 687 to the size-13 maximum instead (10,908); the plan rule is
+    # encoded.
+    ny_heap_income_limit: 130_716

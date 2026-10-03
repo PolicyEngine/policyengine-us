@@ -1,78 +1,323 @@
-- name: Excluded adult income counts in full while the citizen child determines size and vulnerability
+# 2025-2026 HEAP benefit levels and monthly income guidelines (Clearinghouse
+# benefit matrix): Utility $400; Oil, Kerosene, and Propane $900; Wood,
+# Pellets, Coal, other fuels $635; +$35 vulnerable member; +$61 Tier I; heat
+# included $50 (Tier I), $45 (Tier II), $21 (Heat and Eat). Monthly Tier I
+# maximums 1,695 / 2,291 / 2,887 and Tier II maximums 3,473 / 4,542 / 5,611
+# for one to three people.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+# FY2026 State Plan: categorical eligibility (1.4a, page 5), income limits
+# (2.1, page 9), add-ons and the 130% Tier I line (pages 9 to 10).
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=5
+# HEAP Manual, Chapter 8 (PDF pages 34 to 47) and Chapter 9 B.3 (page 49).
+# https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34
+# The 2025 poverty guideline (15,650 + 5,500 per additional person) drives the
+# Tier I line; snap, tanf and ssi are reported receipts so that each case rests
+# on the HEAP rules alone.
+
+- name: Case 1, a nonqualified adult's income counts in full while the citizen child determines size and vulnerability.
   period: 2026
   input:
     people:
-      parent:
+      person1:
         age: 40
-        employment_income: 24000
+        # Full-time wages of $2,000 a month.
+        employment_income: 24_000
         immigration_status: UNDOCUMENTED
-      child:
+      person2:
         age: 5
         immigration_status: CITIZEN
     spm_units:
-      unit:
-        members:
-        - parent
-        - child
+      spm_unit:
+        members: [person1, person2]
         heating_type: NATURAL_GAS
-        gas_expense: 100
+        gas_expense: 1_500
         tanf: 0
         snap: 0
     households:
-      home:
-        members:
-        - parent
-        - child
+      household:
+        members: [person1, person2]
         state_code: NY
   output:
+    # Chapter 8 E.9(b) (page 45): size counts citizens and qualified
+    # noncitizens only.
     ny_heap_household_size: 1
-    ny_heap_countable_income: 24000
-    ny_heap_income_limit: 41676
+    # D.4(a)(7) (page 36) and E.4 (page 44): the nonqualified member's income
+    # is counted: 24,000.
+    ny_heap_countable_income: 24_000
+    # One-person Tier II maximum 3,473 x 12.
+    ny_heap_income_limit: 41_676
+    # 2,000 a month exceeds the one-person Tier I maximum of 1,695.
     ny_heap_tier_one: false
+    # Chapter 9 B.3(b)(1) (page 49): the citizen child is under six.
     ny_heap_vulnerable: true
     ny_heap_eligible: true
+    # Utility 400 + 35 = 435.
     ny_heap: 435
-- name: No qualified household members means no benefit
+
+- name: Case 2, no qualified household member means no benefit.
   period: 2026
   input:
     state_code: NY
     immigration_status: UNDOCUMENTED
     age: 40
-    employment_income: 0
+    # Wages of $2,500 a month, within the one-person limit, so only the member
+    # rule denies the benefit.
+    employment_income: 30_000
     ssi: 0
     snap: 0
     tanf: 0
-    has_heating_expense: true
     heating_type: NATURAL_GAS
+    gas_expense: 1_500
   output:
     ny_heap_household_size: 0
+    # Chapter 8 E.8(a) (page 45): no benefit is issued when all household
+    # members are nonqualified.
     ny_heap_eligible: false
     ny_heap: 0
-- name: Only a nonqualified elderly member does not confer the vulnerable supplement
+
+- name: Case 3, only a nonqualified elderly member does not confer the vulnerable supplement.
   period: 2026
   input:
     people:
-      adult:
+      person1:
         age: 40
-      elder:
+        # Full-time wages of $2,000 a month.
+        employment_income: 24_000
+        ssi: 0
+      person2:
         age: 70
         immigration_status: UNDOCUMENTED
+        ssi: 0
     spm_units:
-      unit:
-        members:
-        - adult
-        - elder
+      spm_unit:
+        members: [person1, person2]
         heating_type: NATURAL_GAS
-        has_heating_expense: true
-        ny_heap_countable_income: 24000
-        ny_heap_categorically_eligible: false
+        gas_expense: 1_500
+        snap: 0
+        tanf: 0
     households:
-      home:
-        members:
-        - adult
-        - elder
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # E.9(b) (page 45): only the citizen counts.
+    ny_heap_household_size: 1
+    ny_heap_countable_income: 24_000
+    ny_heap_categorically_eligible: false
+    # 2,000 a month exceeds the one-person Tier I maximum of 1,695.
+    ny_heap_tier_one: false
+    # E.9(c) (page 45): "If the only vulnerable individual is a non-qualified
+    # alien, the add-on for vulnerability is not included".
+    ny_heap_vulnerable: false
+    ny_heap_eligible: true
+    # Utility base $400.
+    ny_heap: 400
+
+- name: Case 4, a SNAP recipient's household above the income limit is categorically eligible and paid the Tier I supplement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        # Full-time wages of $4,800 a month.
+        employment_income: 57_600
+        ssi: 0
+      person2:
+        age: 39
+        # Part-time wages of $1,200 a month.
+        employment_income: 14_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_600
+        # The brothers buy and prepare food separately; the second receives
+        # about $75 a month of SNAP on his own case (reported receipt).
+        snap: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_heap_household_size: 2
+    ny_heap_countable_earned_income: [57_600, 14_400]
+    # 57,600 + 14,400 = 72,000, which is 6,000 a month.
+    ny_heap_countable_income: 72_000
+    # 2025 guideline for two: 15,650 + 5,500.
+    ny_heap_fpg: 21_150
+    # Two-person Tier II maximum 4,542 x 12; 6,000 a month exceeds it.
+    ny_heap_income_limit: 54_504
+    # Chapter 8 D.10(c) (page 37) and State Plan 1.4a (page 5): one member's
+    # SNAP receipt qualifies the household.
+    ny_heap_categorically_eligible: true
+    # State Plan page 10: the $61 add-on also applies to CE households.
+    ny_heap_tier_one: true
+    # Aged 44 and 39, with no child or qualifying disability.
+    ny_heap_vulnerable: false
+    ny_heap_eligible: true
+    # Utility 400 + 61 = 461.
+    ny_heap: 461
+
+- name: Case 5, a household above the income limit without categorical eligibility is denied.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        # Full-time wages of $4,000 a month.
+        employment_income: 48_000
+        ssi: 0
+      person2:
+        age: 36
+        # Full-time wages of $2,500 a month.
+        employment_income: 30_000
+        ssi: 0
+      person3:
+        age: 7
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_600
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_heap_household_size: 3
+    # 48,000 + 30,000 = 78,000, which is 6,500 a month.
+    ny_heap_countable_income: 78_000
+    # 2025 guideline for three: 15,650 + 2 x 5,500.
+    ny_heap_fpg: 26_650
+    # Three-person Tier II maximum 5,611 x 12.
+    ny_heap_income_limit: 67_332
+    ny_heap_categorically_eligible: false
+    # 6,500 a month exceeds the three-person Tier I maximum of 2,887.
+    ny_heap_tier_one: false
+    ny_heap_eligible: false
+    # Chapter 8 D.9(d) (page 37): denied for excess income.
+    ny_heap: 0
+
+- name: Case 6, an older oil heater in Tier I receives both supplements.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 63
+        # Early Social Security retirement of $1,400 a month.
+        social_security_retirement: 16_800
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        # About 750 gallons of heating oil at $4.00 a gallon.
+        fuel_oil_expense: 3_000
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
         state_code: NY
   output:
     ny_heap_household_size: 1
+    # Chapter 8 D.12(a)(6) (page 38): Social Security, 16,800 (1,400 a month;
+    # no Medicare premium before age 65).
+    ny_heap_countable_income: 16_800
+    # 2025 guideline for one.
+    ny_heap_fpg: 15_650
+    # One-person Tier II maximum 3,473 x 12.
+    ny_heap_income_limit: 41_676
+    ny_heap_categorically_eligible: false
+    # 1,400 a month is within the one-person Tier I maximum of 1,695
+    # (floor(1.3 x 15,650 / 12)).
+    ny_heap_tier_one: true
+    # Chapter 9 B.3(b)(2) (page 49): aged 60 or older.
+    ny_heap_vulnerable: true
+    ny_heap_eligible: true
+    # Oil, Kerosene, and Propane with both add-ons: 900 + 61 + 35 = 996, the
+    # plan's maximum benefit (page 10).
+    ny_heap: 996
+
+- name: Case 7, a renter with heat included in rent receives the Tier I heat-included amount.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        # $17.00 an hour (the 2026 New York City minimum wage) for 30 hours a
+        # week: 2,210 a month.
+        employment_income: 26_520
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # The building's boiler burns natural gas and the landlord pays for it.
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_heap_household_size: 2
+    ny_heap_countable_income: 26_520
+    # Two-person Tier II maximum 4,542 x 12.
+    ny_heap_income_limit: 54_504
+    ny_heap_categorically_eligible: false
+    # 2,210 a month is within the two-person Tier I maximum of 2,291.
+    ny_heap_tier_one: true
+    # No bill of its own: heat is paid indirectly through rent.
+    has_heating_expense: false
+    # Chapter 8 F.1 (page 45): undesignated payments for heat in rent are an
+    # eligible living arrangement.
+    ny_heap_eligible: true
+    # Heat Included Regular Benefit Levels, Tier I: $50.
+    ny_heap: 50
+
+- name: Case 8, a public housing tenant with heat included receives the nominal payment.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        # Wages of $1,800 a month.
+        employment_income: 21_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # The tenant does not know the building's fuel; heat is in the rent.
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        is_in_public_housing: true
+  output:
+    ny_heap_household_size: 1
+    ny_heap_countable_income: 21_600
+    ny_heap_categorically_eligible: false
+    # 1,800 a month exceeds the one-person Tier I maximum of 1,695 and is
+    # within the 3,473 limit.
+    ny_heap_tier_one: false
+    # Aged 58, so not yet 60 (Chapter 9 B.3(b)(2), page 49).
     ny_heap_vulnerable: false
-    ny_heap: 400
+    ny_heap_eligible: true
+    # Government subsidized housing with heat included in the rent: $21
+    # (Chapter 8 F.2(c) and F.3(a), pages 45 to 46; Heat and Eat Benefit in the
+    # matrix) instead of the Tier II heat-included $45.
+    ny_heap: 21

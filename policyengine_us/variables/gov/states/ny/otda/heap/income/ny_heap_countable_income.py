@@ -28,8 +28,11 @@ class ny_heap_countable_income(Variable):
             )
             * included
         )
-        # The annual TANF aggregate applies take-up; ny_tanf alone is entitlement.
-        income = income + spm_unit("tanf", period)
-        # D.12 and D.13 permit actual Medicare B/D deductions. They remain
-        # deferred: neither modeled nor reported premiums are deducted here.
+        # TANF is not counted: FY2026 State Plan item 1.9 (page 6) leaves the
+        # TANF box unchecked, and Chapter 8 D.11(c)(1) (page 37) counts a TA
+        # grant only for a minor child budgeted as a roomer, which has no input.
+        # D.12(a)(6) (page 38) counts Social Security after Medicare Part B and
+        # D premiums. medicare_part_b_premium and
+        # medicare_part_b_premiums_reported are not wired in yet, so Social
+        # Security counts gross.
         return np.floor(max_(income, 0) / MONTHS_IN_YEAR) * MONTHS_IN_YEAR

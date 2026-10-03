@@ -1,15 +1,61 @@
-- name: Dependent children and full-time dependent students have exempt earnings
+# HEAP Manual, Chapter 8 D.12(a)(1) and (5) (PDF page 37) count gross wages
+# and net profit from self-employment; D.13(a)(4) and (5) (page 39) exclude
+# the earned income of full-time dependent students aged 18 and older and of
+# dependent minors under 18.
+# https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+
+- name: Case 1, dependent minors and full-time dependent students have exempt earnings.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    state_code: [NY, NY, NY, NY]
-    age: [17, 18, 30, 30]
-    is_tax_unit_dependent: [true, true, false, false]
-    is_full_time_student: [false, true, true, false]
-    employment_income: [12000, 12000, 12000, 12000]
-    self_employment_income: [1000, 1000, 1000, -1000]
-    sstb_self_employment_income: [500, 500, 500, 500]
-    farm_operations_income: [600, 600, 600, 600]
-    partnership_s_corp_income: [700, 700, 700, 700]
+    people:
+      person1:
+        age: 17
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 500
+        farm_operations_income: 600
+        partnership_s_corp_income: 700
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 500
+        farm_operations_income: 600
+        partnership_s_corp_income: 700
+      person3:
+        age: 45
+        is_tax_unit_dependent: false
+        is_full_time_student: true
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 500
+        farm_operations_income: 600
+        partnership_s_corp_income: 700
+      person4:
+        age: 47
+        is_tax_unit_dependent: false
+        is_full_time_student: false
+        employment_income: 12_000
+        self_employment_income: -1_000
+        sstb_self_employment_income: 500
+        farm_operations_income: 600
+        partnership_s_corp_income: 700
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
   output:
-    ny_heap_countable_earned_income: [0, 0, 14800, 13800]
+    # D.13(a)(5): the 17-year-old dependent's earnings are excluded; D.13(a)(4):
+    # so are the 18-year-old full-time dependent student's. The adult student
+    # is not a dependent, so 12,000 + 1,000 + 500 + 600 + 700 = 14,800 counts.
+    # A self-employment loss is not net profit under D.12(a)(5), so the last
+    # adult counts 12,000 + 500 + 600 + 700 = 13,800.
+    ny_heap_countable_earned_income: [0, 0, 14_800, 13_800]
