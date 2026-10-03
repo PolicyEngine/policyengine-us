@@ -231,3 +231,50 @@
     # Unit 1: Region 1 (Multnomah, page 78), size 1, "$28,790 $38,385",
     # Natural Gas $310 (page 78). Unit 2: no Oregon benefit.
     or_liheap: [310, 0]
+
+# PY2026 manual, page 44: rental-property income and pensions paid to surviving
+# dependents count separately from wages. Page 77 gives the $38,385 size-one limit.
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=44
+- name: Case 19, farm rental income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 45
+    immigration_status: CITIZEN
+    employment_income: 30_000
+    farm_rent_income: 10_000
+    rental_income: 0
+    ssi: 0
+    tanf: 0
+    snap: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # $30,000 wages + $10,000 farm rents exceeds $38,385.
+    or_liheap_countable_income: 40_000
+    or_liheap_income_limit: 38_385
+    or_liheap_eligible: false
+    or_liheap: 0
+
+- name: Case 20, survivor pension income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 45
+    immigration_status: CITIZEN
+    employment_income: 30_000
+    survivor_benefits: 10_000
+    pension_income: 0
+    ssi: 0
+    tanf: 0
+    snap: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # $30,000 wages + $10,000 survivor pension exceeds $38,385.
+    or_liheap_countable_income: 40_000
+    or_liheap_income_limit: 38_385
+    or_liheap_eligible: false
+    or_liheap: 0
