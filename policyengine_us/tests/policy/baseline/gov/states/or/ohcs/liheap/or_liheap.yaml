@@ -182,3 +182,52 @@
     or_liheap_countable_income: 0
   output:
     or_liheap: 0
+- name: One simulation with an Oregon household and a Washington household pays only the Oregon household
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        # Full-time work near the Portland-metro minimum wage ($16.80 an hour from July 2026).
+        employment_income: 34_500
+        ssi: 0
+      person2:
+        age: 45
+        employment_income: 30_000
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # About $80 a month for gas heat.
+        gas_expense: 960
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        # About $125 a month for electric heat.
+        pre_subsidy_electricity_expense: 1_500
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: OR
+        county: MULTNOMAH_COUNTY_OR
+      household2:
+        members: [person2]
+        state_code: WA
+  output:
+    # Page numbers are those of the PY2026 Energy Assistance Intake, Operations
+    # and Policy Manual.
+    # Unit 1: wages are the only income and earned income is counted (page 39).
+    # Unit 2 is outside Oregon, so every Oregon variable keeps its default.
+    or_liheap_countable_income: [34_500, 0]
+    # Unit 1: size 1, fourth row "$28,790 $38,385" (page 78).
+    # Unit 2: default 0, which the payment lookup must tolerate.
+    or_liheap_income_band: [4, 0]
+    # Unit 1: pays a gas bill and 34,500 is within the size 1 limit of
+    # $38,385 (page 77). Unit 2: not an Oregon household.
+    or_liheap_eligible: [true, false]
+    # Unit 1: Region 1 (Multnomah, page 78), size 1, "$28,790 $38,385",
+    # Natural Gas $310 (page 78). Unit 2: no Oregon benefit.
+    or_liheap: [310, 0]

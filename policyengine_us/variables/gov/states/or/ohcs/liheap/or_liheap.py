@@ -16,7 +16,8 @@ class or_liheap(Variable):
         p = parameters(period).gov.states["or"].ohcs.liheap.payment
         region = max_(spm_unit("or_liheap_region", period), 1)
         size = clip(spm_unit("spm_unit_size", period), 1, p.max_payment_size)
-        band = spm_unit("or_liheap_income_band", period)
+        # Out-of-state units carry band 0; the floor keeps them on a valid key.
+        band = max_(spm_unit("or_liheap_income_band", period), 1)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         amount = select(
