@@ -23,7 +23,7 @@
 # The worksheet enters -0- on line 6 for residents of these ten states, whose
 # table entries carry footnote 4: "This state does not have a local general
 # sales tax, so the amount in the state table is the only amount to be
-# deducted." (Instructions for Schedule A (Form 1040), 2022-2025.)
+# deducted." (Instructions for Schedule A (Form 1040), 2018-2025.)
 
 - name: No local sales tax in CT, 2022
   period: 2022
@@ -104,3 +104,43 @@
     state_sales_tax: 1_000
   output:
     local_sales_tax: 0
+
+- name: No local sales tax in NJ, 2018
+  period: 2018
+  input:
+    state_code: NJ
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in ME, 2019
+  period: 2019
+  input:
+    state_code: ME
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in RI, 2020
+  period: 2020
+  input:
+    state_code: RI
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: No local sales tax in DC, 2021
+  period: 2021
+  input:
+    state_code: DC
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: Texas has local sales taxes, so the 20% estimate applies, 2019
+  period: 2019
+  input:
+    state_code: TX
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 200

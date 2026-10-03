@@ -1,0 +1,211 @@
+# Kansas LIEAP one-month income band (KS_BenefitMatrix_2026.pdf rows;
+# KEESM 13230 uses income of the application month). Monthly income =
+# annual countable income / 12. Bands: 1 = 0-899, 2 = 900-1,199,
+# 3 = 1,200-1,699, 4 = 1,700 and over.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, zero income is in the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 0 / 12 = 0 -> "0 - 899"
+    ks_liheap_income_band: 1
+
+- name: Case 2, 899 per month is the top of band 1.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_788
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 10,788 / 12 = 899 -> "0 - 899"
+    ks_liheap_income_band: 1
+
+- name: Case 3, 900 per month is the bottom of band 2.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 10,800 / 12 = 900 -> "900 - 1,199"
+    ks_liheap_income_band: 2
+
+- name: Case 4, 1,199 per month is the top of band 2.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 14_388
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 14,388 / 12 = 1,199 -> "900 - 1,199"
+    ks_liheap_income_band: 2
+
+- name: Case 5, 1,200 per month is the bottom of band 3.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 14,400 / 12 = 1,200 -> "1,200 - 1,699"
+    ks_liheap_income_band: 3
+
+- name: Case 6, 1,699 per month is the top of band 3.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_388
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 20,388 / 12 = 1,699 -> "1,200 - 1,699"
+    ks_liheap_income_band: 3
+
+- name: Case 7, 1,700 per month is the bottom of band 4.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 20,400 / 12 = 1,700 -> "1,700 & over"
+    ks_liheap_income_band: 4
+
+- name: Case 8, high income is in band 4.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 60,000 / 12 = 5,000 -> "1,700 & over"
+    ks_liheap_income_band: 4
+
+- name: Case 9, band uses countable income so counted adult interest can move it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_800
+        interest_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Countable (10,800 + 6,000) / 12 = 1,400 -> band 3 (KEESM 13360).
+    ks_liheap_income_band: 3
+
+- name: Case 10, FY2025 season uses the same band thresholds.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 14,400 / 12 = 1,200 -> "1,200 - 1,699" (KS_BenefitMatrix_2025.pdf rows)
+    ks_liheap_income_band: 3
+
+- name: Case 11, negative countable income is floored to the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    ks_liheap_countable_income: -5_000
+  output:
+    # max(-5,000, 0) / 12 = 0 -> band 1 (0-899).
+    ks_liheap_income_band: 1

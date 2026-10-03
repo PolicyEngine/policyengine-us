@@ -1,6 +1,7 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
+from policyengine_us.tools.period_branch import get_branch_for_period
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
