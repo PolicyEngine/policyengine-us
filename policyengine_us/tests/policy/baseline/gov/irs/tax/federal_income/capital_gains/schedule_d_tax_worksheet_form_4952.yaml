@@ -1,0 +1,293 @@
+# 2025 Schedule D Tax Worksheet lines 2-10 (Instructions for Schedule D, page
+# 15) with a Form 4952 line 4g election:
+#   2. qualified dividends
+#   3. Form 4952 line 4g (the amount elected to include in investment income)
+#   4. Form 4952 line 4e (the smaller of line 4d, the net gain from investment
+#      property, or the net capital gain from investment property)
+#   5. line 3 - line 4, not below zero
+#   6. line 2 - line 5, not below zero
+#   7. the smaller of Schedule D line 15 or line 16
+#   8. the smaller of line 3 or line 4
+#   9. line 7 - line 8, not below zero
+#  10. line 6 + line 9
+# Line 6 is dividend_income_reduced_by_investment_income, line 9 dwks09 and
+# line 10 dwks10. Line 10 equals net_capital_gain, which applies 26 U.S.C.
+# 1(h)(2) and 1(h)(11)(D)(i) to the same inputs.
+
+- name: An election within the gain comes off the gain
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 300_000
+        investment_income_elected_form_4952: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Line 2 = 0; line 3 = 50,000; line 4 = min(300,000, 300,000) = 300,000;
+    # line 5 = 0; line 6 = 0.
+    dividend_income_reduced_by_investment_income: 0
+    # Line 7 = 300,000; line 8 = min(50,000, 300,000) = 50,000;
+    # line 9 = 300,000 - 50,000.
+    dwks09: 250_000
+    # Line 10 = 0 + 250,000.
+    dwks10: 250_000
+    net_capital_gain: 250_000
+
+- name: An election above the gain comes off the qualified dividends
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 20_000
+        qualified_dividend_income: 30_000
+        investment_income_elected_form_4952: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Line 4 = 20,000; line 5 = 35,000 - 20,000 = 15,000;
+    # line 6 = 30,000 - 15,000.
+    dividend_income_reduced_by_investment_income: 15_000
+    # Line 7 = 20,000; line 8 = min(35,000, 20,000) = 20,000; line 9 = 0.
+    dwks09: 0
+    # Line 10 = 15,000 + 0.
+    dwks10: 15_000
+    net_capital_gain: 15_000
+
+- name: An election above the gain and the dividends leaves nothing
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 5_000
+        investment_income_elected_form_4952: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Line 5 = 20,000 - 10,000 = 10,000; line 6 = 5,000 - 10,000, so zero.
+    dividend_income_reduced_by_investment_income: 0
+    # Line 8 = 10,000; line 9 = 10,000 - 10,000 = 0.
+    dwks09: 0
+    dwks10: 0
+    net_capital_gain: 0
+
+- name: A short-term loss lowers lines 4 and 7
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 40_000
+        short_term_capital_gains: -10_000
+        qualified_dividend_income: 5_000
+        investment_income_elected_form_4952: 32_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Form 4952 line 4d = 40,000 - 10,000 = 30,000; net capital gain from
+    # investment property = 40,000 - 10,000 = 30,000; line 4 = 30,000.
+    # Line 5 = 32,000 - 30,000 = 2,000; line 6 = 5,000 - 2,000.
+    dividend_income_reduced_by_investment_income: 3_000
+    # Schedule D line 15 = 40,000, line 16 = 30,000; line 7 = 30,000;
+    # line 8 = min(32,000, 30,000) = 30,000; line 9 = 0.
+    dwks09: 0
+    dwks10: 3_000
+    net_capital_gain: 3_000
+
+- name: A short-term gain leaves line 4 at the net capital gain
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 40_000
+        short_term_capital_gains: 15_000
+        investment_income_elected_form_4952: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Form 4952 line 4d = 55,000; net capital gain from investment property
+    # = 40,000 (no short-term loss); line 4 = 40,000. Line 5 = 0.
+    dividend_income_reduced_by_investment_income: 0
+    # Schedule D line 15 = 40,000, line 16 = 55,000; line 7 = 40,000;
+    # line 8 = 10,000; line 9 = 30,000.
+    dwks09: 30_000
+    dwks10: 30_000
+    net_capital_gain: 30_000
+
+- name: Capital gain distributions without Schedule D can be elected
+  period: 2025
+  input:
+    people:
+      person1:
+        non_sch_d_capital_gains: 8_000
+        qualified_dividend_income: 2_000
+        investment_income_elected_form_4952: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Distributions belong on Schedule D line 13 and are long-term gains for
+    # Form 4952, so lines 4, 15 and 16 are 8,000. Line 5 = 0; line 6 = 2,000.
+    dividend_income_reduced_by_investment_income: 2_000
+    # Line 7 = 8,000; line 8 = 3,000; line 9 = 5,000.
+    dwks09: 5_000
+    dwks10: 7_000
+    net_capital_gain: 7_000
+
+- name: Capital gain distributions net against a long-term loss
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Schedule D line 15 = -5,000 + 3,000 = -2,000 = line 16; line 7 =
+    # -2,000; line 9 = 0. No net capital gain under 26 U.S.C. 1222(11).
+    dwks09: 0
+    dwks10: 0
+    net_capital_gain: 0
+
+- name: Distributions and Schedule D gains both count
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 12_000
+        non_sch_d_capital_gains: 3_000
+        qualified_dividend_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Schedule D line 15 = 12,000 + 3,000 = 15,000 = line 16; line 9 =
+    # 15,000; line 10 = 1,000 + 15,000.
+    dwks09: 15_000
+    dwks10: 16_000
+    net_capital_gain: 16_000
+
+- name: Without an election line 10 is the gain plus the dividends
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -1_000
+        qualified_dividend_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    dividend_income_reduced_by_investment_income: 2_000
+    # Line 7 = min(10,000, 9,000) = 9,000; line 8 = 0.
+    dwks09: 9_000
+    dwks10: 11_000
+    net_capital_gain: 11_000
+
+- name: The election is summed across the tax unit
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 60_000
+        investment_income_elected_form_4952: 10_000
+      person2:
+        qualified_dividend_income: 8_000
+        investment_income_elected_form_4952: 55_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Line 3 = 65,000; line 4 = 60,000; line 5 = 5,000; line 6 = 3,000.
+    dividend_income_reduced_by_investment_income: 3_000
+    # Line 7 = 60,000; line 8 = 60,000; line 9 = 0.
+    dwks09: 0
+    dwks10: 3_000
+    net_capital_gain: 3_000
+
+- name: Adjusted net capital gain and worksheet line 13 with an election
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+        qualified_dividend_income: 10_000
+        investment_income_elected_form_4952: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        unrecaptured_section_1250_gain: 20_000
+  output:
+    # Line 9 = 100,000 - 30,000 = 70,000; line 10 = 80,000; line 11 =
+    # 20,000; line 12 = min(70,000, 20,000); line 13 = 80,000 - 20,000.
+    dwks13: 60_000
+    # 26 U.S.C. 1(h)(3): (70,000 - 20,000) + 10,000.
+    adjusted_net_capital_gain: 60_000
+
+- name: Elected dividends are not added back to adjusted net capital gain
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 20_000
+        qualified_dividend_income: 30_000
+        investment_income_elected_form_4952: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        unrecaptured_section_1250_gain: 5_000
+  output:
+    # Line 9 = 0; line 10 = 15,000; line 11 = 5,000; line 12 = 0;
+    # line 13 = 15,000.
+    dwks13: 15_000
+    # 26 U.S.C. 1(h)(3) and (11)(D)(i): no gain left, plus the 15,000 of
+    # qualified dividends not elected.
+    adjusted_net_capital_gain: 15_000
+
+- name: The elected gain is taxed at ordinary rates, also in Form 6251 Part III
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        long_term_capital_gains: 300_000
+        investment_income_elected_form_4952: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Single, 2025. Schedule D Tax Worksheet: line 1 = 300,000 - 15,750 =
+    # 284,250; line 10 = 250,000; line 13 = 250,000; line 14 = 34,250.
+    # Lines 15-22: 48,350 - 34,250 = 14,100 at 0%. Lines 23-31: line 25 =
+    # 250,000 - 14,100 = 235,900, line 29 = 284,250 - 48,350 = 235,900, and
+    # 15% of 235,900 = 35,385. Line 44: tax on line 21 (34,250) = 1,192.50 +
+    # 2,679 = 3,871.50. Line 45 = 39,256.50, less than line 46 (69,034.75).
+    # Before the fix line 10 was 300,000 and line 14 zero.
+    taxable_income: 284_250
+    dwks13: 250_000
+    dwks14: 34_250
+    # The model splits line 45 into the tax at the main rates and the
+    # section 1(h) capital gains tax.
+    income_tax_main_rates: 3_871.50
+    capital_gains_tax: 35_385
+    # Form 6251 Part III: line 12 = 300,000 - 88,100 = 211,900; line 13 =
+    # 250,000; line 15 = min(250,000 + 0, line 10 = 250,000); line 16 =
+    # 211,900; line 17 = 0. Line 20 = worksheet line 14 = 34,250; line 21 =
+    # 48,350 - 34,250 = 14,100; line 22 = 211,900; line 23 = 14,100 at 0%;
+    # line 24 = 197,800. Line 28 = 14,100 + worksheet line 21 (34,250) =
+    # 48,350; line 29 = 533,400 - 48,350 = 485,050; line 30 = 197,800; line
+    # 31 = 29,670; line 38 = 29,670. Before the fix: 24,532.50.
+    amt_tax_including_cg: 29_670
