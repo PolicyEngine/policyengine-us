@@ -33,10 +33,22 @@ class ky_liheap_income(Variable):
         unearned = 0
         for source in p.unearned_income_sources:
             unearned = unearned + max_(person(source, period), 0)
+        # Plan Section 1.9 counts Social Security "Including MediCare deduction"
+        # for FY2025 and "Excluding MediCare deduction" from FY2026, so from
+        # FY2026 the benefit is counted net of the Part B premium the person
+        # pays. medicare_part_b_premium is zero for a person who is not
+        # enrolled and excludes the share a Medicare Savings Program pays,
+        # which is not withheld from the check.
+        social_security = max_(person("social_security", period), 0)
+        if p.social_security_medicare_premium_deduction:
+            premium = person("medicare_part_b_premium", period)
+            social_security = max_(social_security - premium, 0)
         # Excluded WIA and work-study earnings, jury duty, settlements, other
         # insurance payments, royalties, deposits and non-taxable refunds cannot
         # be isolated with existing inputs.
         # The annual tanf aggregate includes ky_ktap and applies take-up; ky_ktap
         # alone represents monthly entitlement and would count benefits a
         # nonrecipient could get.
-        return spm_unit.sum(earned + unearned) + spm_unit("tanf", period)
+        return spm_unit.sum(earned + unearned + social_security) + spm_unit(
+            "tanf", period
+        )

@@ -45,18 +45,29 @@
   output:
     # 12,000 wages + 6,000 ordinary business + 3,000 specified service business.
     ky_liheap_income: 21_000
-- name: Case 3, Social Security is counted before the Medicare premium is withheld.
+- name: Case 3, Social Security is counted net of the Medicare Part B premium the person pays from FY2026.
+  # FY2026 plan Section 1.9 (page 6) checks "Excluding MediCare deduction".
+  # The 2026 standard Part B premium is 202.90 a month (2_434.80 a year).
+  # Household 1: 1_000 a month of Social Security. A Medicare Savings Program
+  # covers the premium (1_000 - 20 of countable income is under 135% of the
+  # poverty guideline), so nothing is withheld and 12_000 is counted.
+  # Household 2: 23_600 a year (1_966.67 a month) is above the Medicare
+  # Savings Program limit, so the premium is paid:
+  # 23_600 - 2_434.80 = 21_165.20.
+  # Household 3: 2_000 of Social Security and a 24_000 private pension. The
+  # premium exceeds the benefit, which is floored at zero: 0 + 24_000.
   period: 2026
+  absolute_error_margin: 0.01
   input:
-    state_code: [KY, KY]
-    age: [70, 70]
-    social_security: [12_000, 1_000]
-    ssi: [0, 0]
-    tanf: [0, 0]
+    state_code: [KY, KY, KY]
+    age: [70, 70, 70]
+    social_security_retirement: [12_000, 23_600, 2_000]
+    taxable_private_pension_income: [0, 0, 24_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
   output:
-    # The FY2026 plan checks "Excluding MediCare deduction"; the premium
-    # deduction is not modeled yet, so the gross benefit is counted.
-    ky_liheap_income: [12_000, 1_000]
+    medicare_part_b_premium: [0, 2_434.8, 2_434.8]
+    ky_liheap_income: [12_000, 21_165.2, 24_000]
 - name: Case 4, a rental loss or a farm loss does not offset other income.
   period: 2026
   input:
@@ -160,10 +171,10 @@
   input:
     state_code: [KY, KY, KY]
     age: [62, 45, 45]
-    # Household 1: $1_500 a month in military retirement pay, reported as a
-    # taxable public pension, and $500 a month in railroad retirement
+    # Household 1: $1_500 a month in military retirement pay, reported in
+    # military_retirement_pay, and $500 a month in railroad retirement
     # benefits.
-    taxable_public_pension_income: [18_000, 0, 0]
+    military_retirement_pay: [18_000, 0, 0]
     railroad_benefits: [6_000, 0, 0]
     # Households 2-3: $10.00 an hour, 40 hours a week (10 * 2_080 = 20_800)
     # and a partnership share, a profit for one and a loss for the other.
@@ -177,3 +188,19 @@
     # Household 2: 20_800 + 15_000 = 35_800.
     # Household 3: 20_800 + max(-4_000, 0) = 20_800.
     ky_liheap_income: [24_000, 35_800, 20_800]
+
+- name: Case 9, FY2025 counts Social Security before the Medicare premium is withheld.
+  # FY2025 plan Section 1.9 (page 6) checks "Including MediCare deduction".
+  # 22_700 a year (1_891.67 a month) is above the Medicare Savings Program
+  # limit, so the 2025 premium of 185 a month (2_220 a year) is paid, but
+  # FY2025 does not deduct it.
+  period: 2025
+  input:
+    state_code: KY
+    age: 70
+    social_security_retirement: 22_700
+    ssi: 0
+    tanf: 0
+  output:
+    medicare_part_b_premium: 2_220
+    ky_liheap_income: 22_700

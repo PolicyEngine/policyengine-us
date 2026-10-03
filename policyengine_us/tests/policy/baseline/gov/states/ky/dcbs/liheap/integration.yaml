@@ -245,3 +245,80 @@
     # ceil(7 * 16.66 = 116.62) = 117, the FY2025 workbook cell for one
     # person, 76-100%, natural gas.
     ky_liheap: 117
+
+- name: Case 8, FY2026 retiree qualifies once the Medicare Part B premium is deducted.
+  # FY2026 plan Section 1.9 (page 6) checks "Excluding MediCare deduction".
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # $1_966.67 a month in Social Security retirement benefits.
+        social_security_retirement: 23_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        receives_housing_assistance: false
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    # 2025 guideline (one-year lag) for one person.
+    ky_liheap_fpg: 15_650
+    # Countable income of 1_966.67 - 20 a month is above 135% of the poverty
+    # guideline, so no Medicare Savings Program pays the 2026 premium of
+    # 202.90 a month (2_434.80 a year).
+    medicare_part_b_premium: 2_434.8
+    # 23_600 - 2_434.80 = 21_165.20, or 1_763.77 a month.
+    ky_liheap_income: 21_165.2
+    # FY2026 one-person limit: ceil(15_650 * 1.5 / 12 = 1_956.25) = 1_957.
+    # The gross 1_966.67 would exceed it; the net 1_763.77 does not.
+    ky_liheap_income_eligible: true
+    heating_expense: 900
+    ky_liheap_eligible: true
+    # 1_763.77 is above ceil(15_650 * 1.25 / 12 = 1_630.21) = 1_631, so the
+    # 126-150% band gives 1 income point.
+    # 1 (size) + 1 (income) + 3 (natural gas) = 5 points;
+    # ceil(5 * 16.66 = 83.3) = 84, the FY2026 workbook cell for one person,
+    # 126.01-150%, natural gas.
+    ky_liheap: 84
+
+- name: Case 9, FY2025 retiree with the same premium is over the limit because FY2025 counts Social Security gross.
+  # FY2025 plan Section 1.9 (page 6) checks "Including MediCare deduction".
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        # $1_891.67 a month in Social Security retirement benefits.
+        social_security_retirement: 22_700
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        receives_housing_assistance: false
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        is_in_public_housing: false
+  output:
+    ky_liheap_fpg: 15_060
+    # The 2025 premium of 185 a month (2_220 a year) is paid but not deducted.
+    medicare_part_b_premium: 2_220
+    ky_liheap_income: 22_700
+    # FY2025 one-person limit: ceil(15_060 * 1.5 / 12 = 1_882.5) = 1_883;
+    # 1_891.67 exceeds it.
+    ky_liheap_income_eligible: false
+    ky_liheap_eligible: false
+    ky_liheap: 0

@@ -3,18 +3,18 @@ values:
   2024-10-01:
     - unemployment_compensation
     - strike_benefits
-    # The FY2026 plan counts Social Security excluding the Medicare deduction
-    # (the FY2025 plan counted it including the deduction). The premium is not
-    # deducted yet: neither medicare_part_b_premium nor
-    # medicare_part_b_premiums_reported is wired in.
-    - social_security
+    # Social Security is counted in the formula, gross for FY2025 and net of
+    # the Medicare Part B premium from FY2026
+    # (social_security_medicare_premium_deduction).
     - ssi
     # Plan Section 17.4 lists the DCBS State Supplementation award letter as
     # income documentation.
     - ky_ssp
-    # Military retirement pay is taxable pension income, so pension_income
-    # already covers it.
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
     - pension_income
+    - military_retirement_pay
     # Plan Section 17.4 lists Railroad Retirement records.
     - railroad_benefits
     - retirement_distributions
