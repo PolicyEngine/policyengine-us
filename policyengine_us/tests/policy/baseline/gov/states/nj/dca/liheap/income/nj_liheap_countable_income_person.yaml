@@ -1,38 +1,117 @@
-- name: Child and student earnings are excluded while adult earnings and net business income count
+# Sources for the expected values in this file:
+# - FY2026 LIHEAP Handbook, sections 2.2.5 (page 6), 2.3.C (page 7), 2.3.E.3
+#   (page 8), 2.3.E.9 and 2.3.E.10 (page 9) and 2.3.F.7 (page 10):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=6
+# - FY2026 LIHEAP State Plan, section 1.9 (pages 6 and 7; the child earnings
+#   box is on page 7):
+#   https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=7
+
+# Household 1 is a parent (person4) living with a 17-year-old (person1) and a
+# 20-year-old full-time student (person2). Household 2 is a 20-year-old
+# full-time student living alone (person3). Each person has 12_000 in wages,
+# 600 of specified-service business income and 1_200 of farm income; the first
+# three also have 1_000 of other self-employment income and the parent has a
+# 1_000 self-employment loss.
+# - person1: "Earned income of a child under the age of 18" is not a countable
+#   form of income (State Plan section 1.9, page 7): 0.
+# - person2: "Earned income of a student who is a member of a larger household,
+#   enrolled in any school or training program full-time" is excluded (handbook
+#   section 2.3.E.3, page 8): 0.
+# - person3: a student living alone is not a member of a larger household, so
+#   wages and self-employment income count (section 2.3.C, page 7):
+#   12_000 + 1_000 + 600 + 1_200 = 14_800.
+# - person4: 12_000 + 0 + 600 + 1_200 = 13_800. The 1_000 loss is floored at
+#   zero for that source, a modeling convention.
+- name: Case 1, child and student earnings are excluded while adult wages and business income count.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    state_code: [NJ, NJ, NJ, NJ]
-    age: [17, 20, 20, 40]
-    spm_unit_size: [1, 2, 1, 1]
-    is_full_time_student: [false, true, true, false]
-    employment_income: [12000, 12000, 12000, 12000]
-    self_employment_income: [1000, 1000, 1000, -1000]
-    sstb_self_employment_income: [600, 600, 600, 600]
-    farm_operations_income: [1200, 1200, 1200, 1200]
-    ssi: [0, 0, 0, 0]
+    people:
+      person1:
+        age: 17
+        is_full_time_student: false
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        ssi: 0
+      person2:
+        age: 20
+        is_full_time_student: true
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        ssi: 0
+      person3:
+        age: 20
+        is_full_time_student: true
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        ssi: 0
+      person4:
+        age: 40
+        is_full_time_student: false
+        employment_income: 12_000
+        self_employment_income: -1_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person4]
+        heating_type: NATURAL_GAS
+      spm_unit2:
+        members: [person3]
+        heating_type: NATURAL_GAS
+    households:
+      household1:
+        members: [person1, person2, person4]
+        state_code: NJ
+      household2:
+        members: [person3]
+        state_code: NJ
   output:
-    nj_liheap_countable_income_person: [0, 0, 14800, 13800]
-- name: Child Social Security is excluded and adult Medicare deductions remain deferred
+    nj_liheap_countable_income_person: [0, 0, 14_800, 13_800]
+
+# Three one-person households, each with 12_000 of Social Security, 600 of SSI
+# and 5_000 of veterans benefits.
+# - Age 17: "Social Security benefits for children under 18 years old shall be
+#   excluded" (handbook section 2.3.E.9, page 9), leaving the SSI: 600.
+# - Age 40 paying a 1_200 Medicare Part B premium: 12_000 + 600 = 12_600.
+#   Section 2.3.F.7(a) (page 10) deducts the premium from gross Social Security;
+#   the model counts Social Security gross and does not read the premium yet.
+# - Age 40 with no premium: 12_000 + 600 = 12_600.
+# Veterans benefits are excluded for all three (section 2.3.E.10, page 9).
+- name: Case 2, child Social Security is excluded and adult Social Security counts gross.
   period: 2026
   input:
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NJ, NJ, NJ]
     age: [17, 40, 40]
-    social_security: [12000, 12000, 12000]
-    medicare_part_b_premium: [0, 1200, 0]
+    social_security: [12_000, 12_000, 12_000]
+    medicare_part_b_premium: [0, 1_200, 0]
     ssi: [600, 600, 600]
-    veterans_benefits: [5000, 5000, 5000]
+    veterans_benefits: [5_000, 5_000, 5_000]
   output:
-    nj_liheap_countable_income_person: [600, 12600, 12600]
-- name: Each excluded member has the handbook monthly disregard
+    nj_liheap_countable_income_person: [600, 12_600, 12_600]
+
+# Three undocumented adults with wages only. Handbook section 2.2.5 (page 6):
+# "If the non-qualified citizens have a monthly income of more than $500.00,
+# the amount in excess of $500.00 shall be counted as income to the household."
+# The annual disregard is 500 * 12 = 6_000 for each such member.
+# - 5_000 - 6_000 is below zero: 0.
+# - 6_000 - 6_000 = 0.
+# - 7_200 - 6_000 = 1_200.
+- name: Case 3, each nonqualified member has the monthly disregard.
   period: 2026
   input:
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NJ, NJ, NJ]
     age: [40, 40, 40]
     immigration_status: [UNDOCUMENTED, UNDOCUMENTED, UNDOCUMENTED]
-    employment_income: [5000, 6000, 7200]
+    employment_income: [5_000, 6_000, 7_200]
     ssi: [0, 0, 0]
   output:
-    nj_liheap_countable_income_person: [0, 0, 1200]
+    nj_liheap_countable_income_person: [0, 0, 1_200]

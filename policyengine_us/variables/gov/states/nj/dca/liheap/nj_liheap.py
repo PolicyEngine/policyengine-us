@@ -23,7 +23,8 @@ class nj_liheap(Variable):
         size = p.household_size_group.calc(
             max_(spm_unit("nj_liheap_household_size", period), 1)
         )
-        band = spm_unit("nj_liheap_income_band", period)
+        # The floor keeps units outside New Jersey (band 0) on a valid grid key.
+        band = max_(spm_unit("nj_liheap_income_band", period), 1)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         deliverable = (

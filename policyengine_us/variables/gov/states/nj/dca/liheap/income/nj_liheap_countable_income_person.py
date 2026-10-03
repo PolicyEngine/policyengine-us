@@ -24,9 +24,9 @@ class nj_liheap_countable_income_person(Variable):
             person.spm_unit("spm_unit_size", period) > 1
         )
         earned = where(adult & ~student_in_larger_household, earned, 0)
-        # Section 2.3.F.7(a) deducts actual Part B premiums from gross SSA.
-        # Premium handling remains deferred; modeled and reported premiums
-        # are not deducted here.
+        # Handbook section 2.3.F.7(a) (page 10) deducts the Medicare Part B premium
+        # from gross Social Security. The premium is not deducted yet: neither
+        # medicare_part_b_premium nor medicare_part_b_premiums_reported is wired in.
         social_security = where(adult, person("social_security", period), 0)
         income = earned + social_security + add(person, period, p.sources.unearned)
         qualified = person("is_citizen_or_legal_immigrant", period)

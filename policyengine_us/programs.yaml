@@ -802,16 +802,8 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX, NJ
+    coverage: OR, DC, Riverside County, MA, IL, NJ, TX
     state_implementations:
-      - state: NJ
-        status: partial
-        name: New Jersey LIHEAP
-        full_name: New Jersey Low Income Home Energy Assistance Program
-        variable: nj_liheap
-        parameter_prefix: gov.states.nj.dca.liheap
-        verified_years: "2026"
-        notes: Regular heating under the FY2026 operating handbook and payment matrix. Conflicts with the readopted regulation and some income/housing rules remain unresolved; earlier years are unverified estimates.
       - state: OR
         status: in_progress
         name: LIHEAP
@@ -831,6 +823,14 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating only, covering eligibility, countable income and the benefit grid. Crisis, cooling and equipment assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
