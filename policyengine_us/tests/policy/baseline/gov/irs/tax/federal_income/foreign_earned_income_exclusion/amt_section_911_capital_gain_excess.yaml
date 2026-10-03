@@ -28,15 +28,15 @@
   output:
     amt_section_911_capital_gain_excess: 0
 
-- name: The AMT excess is measured from worksheet line 10, not net capital gain
+# Synthetic inputs: on a real return worksheet line 10 and net capital gain
+# are the same amount. They are set apart here only to show which one the
+# AMT excess reads.
+- name: The AMT excess reads worksheet line 10, not net_capital_gain
   period: 2025
   input:
     foreign_earned_income_exclusion: 100_000
-    long_term_capital_gains: 300_000
-    investment_income_elected_form_4952: 50_000
+    dwks10: 300_000
+    net_capital_gain: 250_000
     amt_income_less_exemptions: 211_900
   output:
-    # Net capital gain is 250,000 after the election; worksheet line 10 is
-    # 300,000, and the Form 6251 instructions measure the excess from it.
-    net_capital_gain: 250_000
-    amt_section_911_capital_gain_excess: 88_100
+    amt_section_911_capital_gain_excess: 88_100 # 300,000 - 211,900

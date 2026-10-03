@@ -15,8 +15,9 @@ class section_911_capital_gain_excess(Variable):
         "at the capital gains rates. The section 1(h) formulas use this "
         "amount; the Schedule D Tax Worksheet lines (dwks14, dwks19, "
         "regular_tax_before_credits) measure the excess from worksheet line "
-        "10, as the worksheet does, which can differ when an investment "
-        "income election or capital gain distributions are entered."
+        "10, as the worksheet does. On a return the two are the same amount; "
+        "in the model dwks10 and net_capital_gain are separate formulas that "
+        "can disagree."
     )
     definition_period = YEAR
     reference = [

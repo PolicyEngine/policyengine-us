@@ -46,17 +46,19 @@
     # when neither capital gains worksheet was completed.
     dwks14: 130_000
 
-- name: The worksheet measures the excess from line 10
+# Synthetic inputs: on a real return worksheet line 10 and net capital gain
+# are the same amount. They are set apart here only to show which one each
+# excess reads.
+- name: The worksheet lines read the excess from line 10, not net_capital_gain
   period: 2025
   input:
     taxable_income: 34_250
-    long_term_capital_gains: 50_000
-    investment_income_elected_form_4952: 5_000
+    long_term_capital_gains: 50_000 # worksheet lines 9, 10 and 13
+    net_capital_gain: 45_000
     foreign_earned_income_exclusion: 100_000
   output:
-    # Net capital gain (the statute's measure) is 45,000, so the section
-    # 1(h) excess is 10,750. The worksheet footnote measures it from line 10
-    # (50,000 here): 15,750, which brings line 13 to 34,250 and leaves the
-    # 100,000 excluded on line 14, as in the section 1(h) formulas.
+    # The section 1(h) excess: 45,000 - 34,250.
     section_911_capital_gain_excess: 10_750
+    # The worksheet excess: 50,000 - 34,250 = 15,750, which brings line 13
+    # to 34,250 and leaves the 100,000 excluded on line 14.
     dwks14: 100_000

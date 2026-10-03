@@ -33,10 +33,11 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
     Worksheet—Line 16, footnote; 2025 Form 6251 instructions, Part III,
     "Form 2555".
 
-    The excess is measured as the worksheets measure it, from line 10 (the
-    statute's net capital gain, which section_911_capital_gain_excess uses for
-    the section 1(h) formulas, can differ from line 10 when investment income
-    elections or capital gain distributions are entered).
+    The excess is measured as the worksheets measure it, from line 10. The
+    section 1(h) formulas use section_911_capital_gain_excess, measured from
+    net_capital_gain. On a return the two are the same amount; in the model
+    dwks10 and net_capital_gain are separate formulas that can disagree (they
+    read different Form 4952 inputs).
 
     Returns the excess, worksheet lines 9, 10 and 13 and Schedule D line 19.
     Without an excess these are the first worksheet's amounts, unchanged.
