@@ -1,0 +1,28 @@
+description: Oregon counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  '2025-10-09':
+  - rental_income
+  - farm_rent_income
+  - social_security
+  - railroad_benefits
+  - ssi
+  - tanf
+  - unemployment_compensation
+  - workers_compensation
+  - veterans_benefits
+  - pension_income
+  - survivor_benefits
+  - disability_benefits
+  - alimony_income
+  - child_support_received
+  - ordinary_dividend_income
+  - strike_benefits
+  - general_assistance
+  - estate_income
+metadata:
+  unit: list
+  period: year
+  label: Oregon LIHEAP unearned income sources
+  reference:
+  - title: PY2026 Energy Assistance Intake Operations and Policy Manual, PDF pages 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=37

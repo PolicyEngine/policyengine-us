@@ -1,0 +1,8 @@
+- name: All twelve published FY2026 annual income limits
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    or_liheap_income_limit: [38385, 50196, 62006, 73817, 85627, 97438, 99652, 101867, 104081, 106296, 108510, 110725]

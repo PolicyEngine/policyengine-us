@@ -802,12 +802,8 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: DC, Riverside County, MA, IL, KS, MS, OR, TX
     state_implementations:
-      - state: OR
-        status: in_progress
-        name: LIHEAP
-        full_name: Low Income Home Energy Assistance Program (Oregon)
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -839,6 +835,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: OR
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2026"
+        notes: Regular heating income, county/fuel schedules and housing treatment. Some income, residence and discretionary-payment rules remain partial; earlier years are unverified estimates.
       - state: TX
         status: partial
         name: Texas CEAP

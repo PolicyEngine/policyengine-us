@@ -1,0 +1,51 @@
+- name: Interest threshold and counted benefits, including child support and Oregon TANF
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [OR, OR]
+    or_liheap_countable_earned_income: [0, 0]
+    interest_income: [200, 201]
+    ordinary_dividend_income: [100, 100]
+    rental_income: [300, 300]
+    social_security: [1000, 1000]
+    railroad_benefits: [120, 120]
+    ssi: [0, 0]
+    tanf: [500, 500]
+    pension_income: [200, 200]
+    unemployment_compensation: [150, 150]
+    child_support_received: [250, 250]
+    workers_compensation: [100, 100]
+    disability_benefits: [75, 75]
+    veterans_benefits: [50, 50]
+    alimony_income: [25, 25]
+    strike_benefits: [10, 10]
+    general_assistance: [0, 0]
+    estate_income: [0, 0]
+  output:
+    or_liheap_countable_income: [2880, 3081]
+- name: Manual disability insurance examples count the insurer payment plus Social Security once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OR, OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    or_liheap_countable_earned_income: [0, 0]
+    # Manual pages 55-56: annualize the insurer's payment after its SSA offset.
+    disability_benefits: [3832.68, 8511.96]
+    social_security: [10164, 14868]
+    ssi: [0, 0]
+    tanf: [0, 0]
+  output:
+    or_liheap_countable_income: [13996.68, 23379.96]
+
+- name: State cash entitlement counts only when TANF is taken up
+  period: 2026
+  input:
+    state_code: [OR, OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    or_tanf: [1200, 1200]
+    takes_up_tanf_if_eligible: [false, true]
+    ssi: [0, 0]
+  output:
+    or_liheap_countable_income: [0, 1200]

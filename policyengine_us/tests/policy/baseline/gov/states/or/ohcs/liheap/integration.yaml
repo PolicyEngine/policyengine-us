@@ -1,0 +1,119 @@
+# Page numbers in the comments are those of the PY2026 Energy Assistance Intake,
+# Operations and Policy Manual (income limits on page 77, Region 1 matrix on
+# pages 78-79, Region 2 matrix on pages 80-81):
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
+- name: Adult net earnings and child interest count but child wages do not
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 12_000
+        self_employment_income: 2_400
+        pension_income: 600
+        ssi: 0
+        general_assistance: 0
+      child:
+        age: 17
+        # About 15 hours a week near the standard minimum wage that applies in
+        # Deschutes County ($15.55 an hour from July 2026).
+        employment_income: 12_100
+        interest_income: 201
+        ssi: 0
+        general_assistance: 0
+    spm_units:
+      unit:
+        members:
+        - adult
+        - child
+        heating_type: ELECTRICITY
+        # About $150 a month for an electrically heated home.
+        pre_subsidy_electricity_expense: 1_800
+        tanf: 0
+    households:
+      home:
+        members:
+        - adult
+        - child
+        state_code: OR
+        county: DESCHUTES_COUNTY_OR
+  output:
+    # Adult: wages 12,000 (page 39) + net self-employment 2,400 (pages 35
+    # and 45) = 14,400.
+    # Child: income earned by members under 18 is not counted (pages 41
+    # and 53), so the 12,100 of wages counts as 0.
+    or_liheap_countable_earned_income:
+    - 14_400
+    - 0
+    # 14,400 + pension 600 (page 44) + interest 201, counted because it is
+    # over $200 a year (pages 43 and 50) = 15,201.
+    or_liheap_countable_income: 15_201
+    # 60% of state median income, size 2: $50,196 (page 77).
+    or_liheap_income_limit: 50_196
+    # Deschutes County is in the Region 2 list (page 80).
+    or_liheap_region: 2
+    # Size 2, second row "$12,550 $25,098" (page 80). Counting the child's
+    # wages would give 27,301 and the third row instead.
+    or_liheap_income_band: 2
+    # Pays its own electric heating bill and 15,201 is within $50,196.
+    or_liheap_eligible: true
+    # Region 2, size 2, "$12,550 $25,098", Electricity $505 (page 80).
+    or_liheap: 505
+- name: Adult secondary-school earnings are excluded for a nonsubsidized heat-in-rent household
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 18
+    is_in_secondary_school: true
+    # About 15 hours a week near the Portland-metro minimum wage ($16.80 an
+    # hour from July 2026).
+    employment_income: 13_100
+    ssi: 0
+    tanf: 0
+    general_assistance: 0
+    heat_expense_included_in_rent: true
+    heating_type: ELECTRICITY
+  output:
+    # Income earned by a member aged 18 or over who is enrolled in high
+    # school is not counted (pages 41 and 53); there is no other income.
+    or_liheap_countable_income: 0
+    # 60% of state median income, size 1: $38,385 (page 77).
+    or_liheap_income_limit: 38_385
+    # Size 1, first row "$0 $9,597" (page 78). Counting the 13,100 of wages
+    # would give the second row instead.
+    or_liheap_income_band: 1
+    # Energy costs included in rent in non-subsidized housing are eligible
+    # (page 93) and 0 is within $38,385.
+    or_liheap_eligible: true
+    # Region 1 (Multnomah, page 78), size 1, "$0 $9,597", Electricity $465
+    # (page 78).
+    or_liheap: 465
+- name: Public-housing household paying its own heat can receive a standard grant
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 40
+    pension_income: 12_000
+    ssi: 0
+    tanf: 0
+    general_assistance: 0
+    is_in_public_housing: true
+    heating_type: NATURAL_GAS
+    # About $80 a month for gas heat.
+    gas_expense: 960
+  output:
+    # Pension 12,000 is counted (page 44); there is no other income.
+    or_liheap_countable_income: 12_000
+    # Multnomah County is in the Region 1 list (page 78).
+    or_liheap_region: 1
+    # Size 1, second row "$9,598 $19,193" (page 78).
+    or_liheap_income_band: 2
+    # A subsidized-housing resident who pays a vendor directly for utilities
+    # is eligible (page 93); only subsidized housing with heat included in
+    # rent is excluded (page 61). 12,000 is within the size 1 limit of
+    # $38,385 (page 77).
+    or_liheap_eligible: true
+    # Region 1, size 1, "$9,598 $19,193", Natural Gas $520 (page 78).
+    or_liheap: 520
