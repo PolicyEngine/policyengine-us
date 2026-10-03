@@ -252,20 +252,37 @@ def _recording_pytest(commands):
     return run
 
 
-BROAD_CHANGE = {
-    "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml",
-    "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py",
-    "policyengine_us/variables/gov/states/ca/tax/payroll/unemployment/ca_employer_state_unemployment_tax.py",
-    "policyengine_us/variables/gov/states/tx/tax/payroll/unemployment/tx_employer_state_unemployment_tax.py",
-}
+def _coverage_includes(commands):
+    """The --include list of each coverage command, or None without coverage."""
+    return [
+        cmd[cmd.index("--include") + 1].split(",") if "coverage" in cmd else None
+        for cmd in commands
+    ]
 
 
-def test_narrowed_scope_runs_without_coverage(monkeypatch):
-    """A narrowed run must not upload a partial report on the changed sources.
+PAYROLL_TEST = (
+    "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml"
+)
+PAYROLL_SOURCE = "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py"
+SSA_SOURCE = "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py"
+UNMAPPED_SOURCE = (
+    "policyengine_us/tools/geography/download_50_state_census_block_data.py"
+)
 
-    Regression for PRs #9764 and #9766: a broad reference-only change ran
-    only its directly changed tests, yet coverage still measured every
-    changed variable file, so codecov/project fell to 54% and 69%.
+
+def _unbounded_runner():
+    runner = SelectiveTestRunner()
+    runner.max_test_targets = 10**6
+    runner.max_test_files = 10**6
+    return runner
+
+
+def test_narrowed_scope_leaves_untested_sources_out_of_coverage(monkeypatch):
+    """A narrowed run must not report the changed sources as uncovered.
+
+    Regression for PRs #9764 and #9766: broad reference-only changes ran
+    only their directly changed tests, yet coverage measured every changed
+    variable file, so codecov/project fell to 54% and 69%.
     """
     runner = SelectiveTestRunner()
     runner.max_test_targets = 1
@@ -274,55 +291,69 @@ def test_narrowed_scope_runs_without_coverage(monkeypatch):
     monkeypatch.setattr(
         run_selective_tests.subprocess, "run", _recording_pytest(commands)
     )
-
-    limited_paths = runner.limit_test_paths(
-        runner.map_files_to_tests(BROAD_CHANGE), BROAD_CHANGE
-    )
-
-    assert runner.scope_narrowed
-    assert (
-        runner.run_tests(limited_paths, with_coverage=True, changed_files=BROAD_CHANGE)
-        == 0
-    )
-    assert commands
-    assert all("coverage" not in cmd for cmd in commands)
-
-
-def test_unnarrowed_scope_keeps_coverage_of_changed_sources(monkeypatch):
-    runner = SelectiveTestRunner()
-    commands = []
-    monkeypatch.setattr(
-        run_selective_tests.subprocess, "run", _recording_pytest(commands)
-    )
     changed_files = {
-        "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml",
-        "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py",
+        PAYROLL_TEST,
+        PAYROLL_SOURCE,
+        "policyengine_us/variables/gov/states/ca/tax/payroll/unemployment/ca_employer_state_unemployment_tax.py",
+        "policyengine_us/variables/gov/states/tx/tax/payroll/unemployment/tx_employer_state_unemployment_tax.py",
     }
 
     limited_paths = runner.limit_test_paths(
         runner.map_files_to_tests(changed_files), changed_files
     )
 
-    assert not runner.scope_narrowed
+    assert limited_paths == {PAYROLL_TEST}
+    assert (
+        runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+        == 0
+    )
+    assert _coverage_includes(commands) == [None]
+
+
+def test_deferred_directory_sources_are_left_out_of_coverage(monkeypatch):
+    runner = _unbounded_runner()
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {PAYROLL_TEST, PAYROLL_SOURCE, SSA_SOURCE}
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
     runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+
+    assert "policyengine_us/tests/policy/baseline/gov/ssa" not in limited_paths
     assert commands
-    for cmd in commands:
-        assert cmd[1:4] == ["-m", "coverage", "run"]
-        include = cmd[cmd.index("--include") + 1]
-        assert include == (
-            "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py"
-        )
+    assert all(include == [PAYROLL_SOURCE] for include in _coverage_includes(commands))
 
 
-def test_scope_narrowed_resets_on_each_limit_call():
+def test_sources_with_running_or_no_mapped_tests_keep_coverage(monkeypatch):
+    runner = _unbounded_runner()
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {PAYROLL_TEST, PAYROLL_SOURCE, UNMAPPED_SOURCE}
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+    runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+
+    assert commands
+    for include in _coverage_includes(commands):
+        assert sorted(include) == sorted([PAYROLL_SOURCE, UNMAPPED_SOURCE])
+
+
+def test_get_untested_sources_requires_some_mapped_test_to_run():
     runner = SelectiveTestRunner()
-    runner.max_test_targets = 1
-    runner.max_test_files = 1
-    runner.limit_test_paths(runner.map_files_to_tests(BROAD_CHANGE), BROAD_CHANGE)
-    assert runner.scope_narrowed
+    sources = [PAYROLL_SOURCE, SSA_SOURCE, UNMAPPED_SOURCE]
 
-    runner.max_test_targets = 25
-    runner.max_test_files = 100
-    test_file = "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml"
-    runner.limit_test_paths({test_file}, {test_file})
-    assert not runner.scope_narrowed
+    assert runner.get_untested_sources(sources, set()) == [
+        PAYROLL_SOURCE,
+        SSA_SOURCE,
+    ]
+    assert runner.get_untested_sources(
+        sources, {"policyengine_us/tests/policy/baseline/gov/irs"}
+    ) == [SSA_SOURCE]
