@@ -1,0 +1,722 @@
+# ND regular heating only. No intermediate eligibility overrides.
+# https://www.nd.gov/dhs/policymanuals/415/415_20_05_05.htm
+# https://www.nd.gov/dhs/policymanuals/415/415_30_30.htm
+- name: Case 1, a worker receives 95 percent of a direct gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id001
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id001
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 14600
+    nd_liheap_share: 0.95
+    nd_liheap_eligible: true
+    nd_liheap: 950
+- name: Case 2, pension 33786 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 33786
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id002
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id002
+        state_code: ND
+  output:
+    nd_liheap: 650
+- name: Case 3, pension 33787 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 33787
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id003
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id003
+        state_code: ND
+  output:
+    nd_liheap: 450
+- name: Case 4, pension 40530 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 40530
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id004
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id004
+        state_code: ND
+  output:
+    nd_liheap: 450
+- name: Case 5, pension 40531 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 40531
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id005
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id005
+        state_code: ND
+  output:
+    nd_liheap: 0
+- name: Case 6, no actual heating expense gives no direct grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id006
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+    households:
+      household:
+        members: *id006
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 7, NONE fuel gives no grant despite another positive bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id007
+        - person1
+        heating_type: NONE
+        gas_expense: 1000
+        nd_tanf: 0
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household:
+        members: *id007
+        state_code: ND
+  output:
+    nd_liheap: 0
+- name: Case 8, electric heat uses the same share without the repealed reduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id008
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household:
+        members: *id008
+        state_code: ND
+  output:
+    nd_liheap: 950
+- name: Case 9, a subsidized direct gas household keeps the full share.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id009
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+        receives_housing_assistance: true
+    households:
+      household:
+        members: *id009
+        state_code: ND
+  output:
+    nd_liheap: 850
+- name: Case 10, subsidized heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id010
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: *id010
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 11, the program is restricted to North Dakota.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id011
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: *id011
+        state_code: SD
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 12, unsubsidized heat in rent fuel_oil at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id012
+        - person1
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id012
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 2196
+- name: Case 13, unsubsidized heat in rent fuel_oil at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id013
+        - person1
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id013
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 2088
+- name: Case 14, unsubsidized heat in rent fuel_oil at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id014
+        - person1
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id014
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1872
+- name: Case 15, unsubsidized heat in rent fuel_oil at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id015
+        - person1
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id015
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1428
+- name: Case 16, unsubsidized heat in rent fuel_oil at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id016
+        - person1
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id016
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 996
+- name: Case 17, unsubsidized heat in rent propane at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id017
+        - person1
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id017
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1750
+- name: Case 18, unsubsidized heat in rent propane at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id018
+        - person1
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id018
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1668
+- name: Case 19, unsubsidized heat in rent propane at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id019
+        - person1
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id019
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1488
+- name: Case 20, unsubsidized heat in rent propane at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id020
+        - person1
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id020
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1140
+- name: Case 21, unsubsidized heat in rent propane at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id021
+        - person1
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id021
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 792
+- name: Case 22, unsubsidized heat in rent electricity at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id022
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id022
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1500
+- name: Case 23, unsubsidized heat in rent electricity at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id023
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id023
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1428
+- name: Case 24, unsubsidized heat in rent electricity at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id024
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id024
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1272
+- name: Case 25, unsubsidized heat in rent electricity at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id025
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id025
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 972
+- name: Case 26, unsubsidized heat in rent electricity at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id026
+        - person1
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id026
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 672
+- name: Case 27, unsubsidized heat in rent natural_gas at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id027
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id027
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 696
+- name: Case 28, unsubsidized heat in rent natural_gas at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id028
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id028
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 660
+- name: Case 29, unsubsidized heat in rent natural_gas at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id029
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id029
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 600
+- name: Case 30, unsubsidized heat in rent natural_gas at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id030
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id030
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 456
+- name: Case 31, unsubsidized heat in rent natural_gas at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: &id031
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: *id031
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 312

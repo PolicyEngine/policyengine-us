@@ -1,0 +1,36 @@
+description: North Dakota counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-06-01:
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - workers_compensation
+    - pension_income
+    - retirement_distributions
+    - general_assistance
+    - railroad_benefits
+    - veterans_benefits
+    - disability_benefits
+    - survivor_benefits
+    - strike_benefits
+    - child_support_received
+    - alimony_income
+    - rental_income
+    - farm_rent_income
+    - s_corp_income
+    - estate_income
+# Retirement/estate receipts are treated as recurring; nonrecurring, education
+# and other exempt subtypes lack input distinctions. Disability payer is not
+# observed, so the broad disability input is treated as unearned. Rental inputs
+# lack active-business status and are treated as unearned. Ordinary investment
+# interest/dividends are excluded. Royalties, tribal exemptions, recoupments and
+# military allotments lack separately usable inputs. TANF is added once per unit.
+metadata:
+  unit: list
+  period: year
+  label: North Dakota LIHEAP unearned income sources
+  reference:
+    - title: Energy Assistance Policy Manual 415-25-05-20-20, Unearned Income
+      href: https://www.nd.gov/dhs/policymanuals/415/415_25_05_20_20.htm
+    - title: Energy Assistance Policy Manual 415-25-05-27-15, Treatment of Self-Employment Income
+      href: https://www.nd.gov/dhs/policymanuals/415/415_25_05_27_15.htm
