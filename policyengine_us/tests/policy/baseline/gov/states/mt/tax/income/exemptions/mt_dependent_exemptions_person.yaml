@@ -6,6 +6,11 @@
         is_qualifying_child_dependent: false
         is_disabled: false
       person3:
+        # Not a qualifying child, and gross income of $3,000 (wages) is above
+        # the $2,580 exemption amount, so not a Montana dependent.
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 3_000
         is_qualifying_child_dependent: false
         is_disabled: false
       person4:
@@ -71,9 +76,18 @@
       person1:
         is_tax_unit_head: true
       person3:
+        # Not qualifying children, and gross income (wages of $5,000 and
+        # $2,711) above the $2,710 exemption amount, so neither is a Montana
+        # dependent.
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 5_000
         is_qualifying_child_dependent: false
         is_disabled: false
       person4:
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_711
         is_qualifying_child_dependent: false
         is_disabled: true
     tax_units:
@@ -108,3 +122,595 @@
         state_code: MT
   output:
     mt_dependent_exemptions_person: [0, 0, 0]
+
+- name: Adult dependent with no gross income is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        # e.g. a parent who is not a qualifying child. Form 2 instructions: a
+        # dependent is an individual "who does not have gross income of more
+        # than $2,710, unless the dependent is a 'qualifying child'".
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 0
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with gross income exactly at the exemption amount is eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_960
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # "not ... more than" the $2,960 exemption amount
+    mt_dependent_exemptions_person: [0, 2_960]
+
+- name: Disabled adult dependent who is not the taxpayer's child (for example, a parent) gets one exemption, not two
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        # The additional exemption is "for a child who is disabled". This
+        # dependent is not the taxpayer's child (for example, a parent), so
+        # is_qualifying_child_dependent is false.
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 1_000
+        is_qualifying_child_dependent: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with wages just below the 2022 exemption amount is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_709
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,709 of wages <= 2,710 exemption amount, so one
+    # exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with wages exactly at the 2022 exemption amount is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_710
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,710 of wages, which is not "more than" the 2,710
+    # exemption amount, so one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with wages above the 2022 exemption amount is not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 3_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 3,000 of wages > 2,710 exemption amount, so not a
+    # Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Adult dependent whose wages and interest together exceed the 2022 exemption amount is not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_000
+        taxable_interest_income: 1_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,000 wages + 1,000 interest = 3,000 > 2,710, so not a
+    # Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Qualifying child with wages above the 2022 exemption amount is still eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 5_000
+        is_qualifying_child_dependent: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The gross income test does not apply to a qualifying child, so 5,000 of
+    # wages above the 2,710 exemption amount still gives one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+# The income test uses Montana gross income (MCA 15-30-2101(10), see
+# mt_dependent_gross_income): federal gross income excluding unemployment
+# compensation, only taxable Social Security, and gains but not losses. In
+# these 2022 cases the taxpayer has 50,000 of wages, so one 2,710 exemption
+# changes mt_income_tax by 2,710 x 6.75% = 182.925 (182.92 or 182.93 after
+# rounding).
+
+- name: Adult dependent with only unemployment compensation is eligible because Montana excludes it
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        unemployment_compensation: 3_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Montana gross income = 3,000 - 3,000 unemployment compensation = 0
+    # <= 2,710, so one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+    # Without the exemption the tax is 1,712.07; 1,712.07 - 182.92 = 1,529.15.
+    mt_income_tax: 1_529.15
+
+- name: Adult dependent with unemployment compensation and wages exactly at the 2022 exemption amount is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        unemployment_compensation: 3_000
+        employment_income: 2_710
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Montana gross income = 2,710 wages (the 3,000 of unemployment
+    # compensation is excluded) <= 2,710, so one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Adult dependent with unemployment compensation and wages one dollar above the 2022 exemption amount is not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        unemployment_compensation: 3_000
+        employment_income: 2_711
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Montana gross income = 2,711 wages > 2,710, so not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Dependent parent with Social Security below the taxable threshold is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        social_security_retirement: 12_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0.5 x 12,000 = 6,000 < 25,000, so no Social
+    # Security is taxable; Montana gross income = 0 <= 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+    # mt_income_tax is not asserted: federal dependent_gross_income counts
+    # all 12,000 of Social Security, so the head files single rather than
+    # head of household. With that status the tax falls from 2,246.00 to
+    # 2,063.07 (-182.93).
+
+- name: Dependent parent with taxable Social Security exactly at the 2022 exemption amount is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        social_security_retirement: 60_840
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0.5 x 60,840 = 30,420; taxable Social Security =
+    # min(30,420, 0.5 x (30,420 - 25,000)) = 2,710 <= 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Dependent parent with taxable Social Security one dollar above the 2022 exemption amount is not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        social_security_retirement: 60_844
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Provisional income = 0.5 x 60,844 = 30,422; taxable Social Security =
+    # min(30,422, 0.5 x (30,422 - 25,000)) = 2,711 > 2,710.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Adult dependent whose long-term gain exceeds the exemption amount is not eligible despite a short-term loss
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        long_term_capital_gains: 3_000
+        short_term_capital_gains: -2_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income counts gains but not losses: 3,000 + 0 = 3,000 > 2,710
+    # (the net gain is only 1,000), so not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+    # With the exemption on the net 1,000 the tax was 1,711.65;
+    # 1,711.65 + 182.92 = 1,894.57.
+    mt_income_tax: 1_894.57
+
+- name: Adult dependent whose short-term gain exceeds the exemption amount is not eligible despite a long-term loss
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        short_term_capital_gains: 2_711
+        long_term_capital_gains: -3_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,711 + 0 = 2,711 > 2,710 (the net is a 289 loss), so
+    # not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Adult dependent with wages exactly at the 2021 exemption amount is eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_580
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,580 <= 2,580 exemption amount (2021 Form 2
+    # instructions, p.13), so one exemption of 2,580.
+    mt_dependent_exemptions_person: [0, 2_580]
+
+- name: Adult dependent with wages one dollar above the 2021 exemption amount is not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_581
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,581 > 2,580, so not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Adult dependent with wages one dollar above the 2023 exemption amount is not eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        employment_income: 2_961
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Gross income = 2,961 > 2,960 exemption amount (2023 Form 2
+    # instructions, p.16), so not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Full-time student aged 22 is a qualifying child with no gross income test
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        # is_qualifying_child_dependent is derived from age and student status.
+        age: 22
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        is_full_time_student: true
+        employment_income: 5_000
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Age 22 < 24 student age limit, so a qualifying child; the 5,000 of wages
+    # is not tested, so one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
+
+- name: Non-student aged 22 is not a qualifying child and fails the gross income test
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        # is_qualifying_child_dependent is derived from age and student status.
+        age: 22
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        is_full_time_student: false
+        employment_income: 5_000
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Age 22 >= 19 non-student age limit, so not a qualifying child; gross
+    # income = 5,000 > 2,710, so not a Montana dependent.
+    mt_dependent_exemptions_person: [0, 0]
+
+- name: Permanently and totally disabled adult child is a qualifying child and gets two exemptions
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        # IRC 152(c)(3)(B): the age test does not apply to a child who is
+        # permanently and totally disabled.
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        is_permanently_and_totally_disabled: true
+        is_disabled: true
+        employment_income: 5_000
+        is_qualifying_child_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # A qualifying child skips the gross income test, and a disabled child
+    # gets an additional exemption: 2 x 2,710 = 5,420.
+    mt_dependent_exemptions_person: [0, 5_420]
+    # Without the exemptions the tax is 1,914.57; 1,914.57 - 2 x 182.925
+    # = 1,548.72.
+    mt_income_tax: 1_548.72

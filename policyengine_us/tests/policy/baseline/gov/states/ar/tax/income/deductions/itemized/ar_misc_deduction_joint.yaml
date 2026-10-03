@@ -63,3 +63,24 @@
         state_code: AR
   output:
     ar_misc_deduction_joint: 5_500
+
+- name: A spouse's loss that makes the joint AGI negative does not raise the miscellaneous deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_agi_joint: 5_000
+      person2:
+        ar_agi_joint: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        total_misc_deductions: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint AGI 5,000 - 10,000 = -5,000, floored at 0:
+    # 1,000 - 2% * 0 = 1,000 (an unfloored AGI would give 1,000 + 100).
+    ar_misc_deduction_joint: 1_000
