@@ -1,0 +1,236 @@
+# Source-derived Georgia independent components; no final eligibility or total award asserted.
+
+# Manual pp65–68: wages and business17400 + ordinary/farmrent2400 + survivors600 + pension1200 + SSA2400 + SSI1200 + gains600 =25800; no duplicated component aggregates.
+- name: Case 1, supported independent adult income sources are counted once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 1_200
+        employment_income: 12_000
+        self_employment_income: 3_000
+        farm_operations_income: 1_200
+        sstb_self_employment_income: 600
+        partnership_s_corp_income: 600
+        rental_income: 1_200
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+        pension_income: 1_200
+        social_security: 2_400
+        capital_gains: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 25_800
+
+# Manual p62 excludes ALL under18 income. At18,6000wages+2400SSI+1200SSA+600dividends+300netinterest adds10500 to parent12000.
+- name: Case 2, all age 17 income follows the under eighteen exclusion boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        social_security: 1_200
+        ordinary_dividend_income: 600
+        interest_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 12_000
+
+# Manual p62 excludes ALL under18 income. At18,6000wages+2400SSI+1200SSA+600dividends+300netinterest adds10500 to parent12000.
+- name: Case 3, all age 18 income follows the under eighteen exclusion boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        social_security: 1_200
+        ordinary_dividend_income: 600
+        interest_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 22_500
+
+# Manual pp66,69 and contractv1 household interpretation: combined adultinterest400 minus annual300, plus600dividends =700; no per-person multiplication.
+- name: Case 4, interest disregard is shared once across adults while dividends fully count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        interest_income: 200
+        ordinary_dividend_income: 600
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        interest_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 700
+
+# Monthly25 allowance annualizes to300; exact threshold is excluded and first dollar above it counts.
+- name: Case 5, annual household interest allowance has an exact three hundred dollar boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+    age: [40, 40, 40]
+    ssi: [0, 0, 0]
+    ga_tanf: [0, 0, 0]
+    interest_income: [299, 300, 301]
+  output:
+    ga_liheap_income: [0, 0, 1]
+
+# Manual p67 TANF grant counts once at SPM level: caregiver wages1200 + annual ga_tanf3600 =4800; minorSSI2400 excluded.
+- name: Case 6, caregiver TANF cash counts once despite excluding a minor SSI payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 4_800
+
+# Contractv1 preserves signed existing net-business inputs and floors the combined household income0; no additional business-expense treatment.
+- name: Case 7, existing signed net losses cannot make the household total negative.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: -18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_income: 0
+
+# Manual pp51–52,62: parent income counts in full, citizen child counts in size but all child income is excluded. Matrix1person electric LevelI=500; final eligibility is not asserted.
+- name: Case 8, nonqualified adult income counts while the citizen child determines size.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 2_400
+        social_security: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    ga_liheap_matrix_amount: 500

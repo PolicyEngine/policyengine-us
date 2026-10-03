@@ -1,0 +1,280 @@
+# Georgia ordinary heating route only. Categorical recipient facts, utility credits,
+# unpriced fuels and size-above-16 coverage remain documented limitations.
+
+# FY2026 matrix p1: size1 income12000 is LevelI and electric pays500. Manual pp4,50 establishes heating burden, not an expense cap; the25 bill must not reduce the scheduled award.
+- name: Case 1, a small positive primary bill receives the full fixed heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 25
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    heating_expense: 25
+    ga_liheap_matrix_amount: 500
+    ga_liheap_eligible: true
+    ga_liheap: 500
+
+# Manual pp51-52,62: parent income counts fully, parent is excluded from size, and all under18 income is excluded. FY2026 matrix p1 gives the size1 LevelI gas award660.
+- name: Case 2, a citizen child qualifies while the nonqualified parent income counts fully.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        employment_income: 6_000
+        survivor_benefits: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    ga_liheap_matrix_amount: 660
+    ga_liheap_eligible: true
+    ga_liheap: 660
+
+# Manual pp51-52,62,67 counts the full30000 wages plus5000 farm-property rent against qualified size1.35000 exceeds the FY2026 matrix ceiling34549, so ordinary eligibility gates the final grant to zero.
+- name: Case 3, full nonqualified adult wages and farm rent can exceed the qualified child ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 30_000
+        farm_rent_income: 5_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 35_000
+    ga_liheap_income_limit: 34_549
+    ga_liheap_eligible: false
+    ga_liheap: 0
+
+# FY2026 matrix p1 explicitly gives size4 LevelI ceiling25469, despite its unusual pattern. Two actual four-person families with wages25469 and25469.01 remain below66441 but receive gas660 and560 respectively.
+- name: Case 4, real four person families use the printed lower band boundary before the award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 25_469
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 25469.01
+      person6:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3, person4]
+      tax_unit2:
+        members: [person5, person6, person7, person8]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ga_tanf: 0
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ga_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: GA
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: GA
+  output:
+    ga_liheap_household_size: [4, 4]
+    ga_liheap_income_limit: [66_441, 66_441]
+    ga_liheap_eligible: [true, true]
+    ga_liheap_matrix_amount: [660, 560]
+    ga_liheap: [660, 560]
+
+# FY2026 matrix p1: real single-adult wages20000 are above13589 and below34549. LevelII oil710, propane580 and wood400 pass through ordinary eligibility; the Alabama household receives no Georgia award. Existing unit cases already cover the full ten-cell matrix.
+- name: Case 5, ordinary upper band awards use the primary fuel and exclude another state.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, AL]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [20_000, 20_000, 20_000, 20_000]
+    ssi: [0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0]
+    heating_type: [FUEL_OIL, PROPANE, WOOD, FUEL_OIL]
+    fuel_oil_expense: [1_200, 0, 0, 1_200]
+    bottled_gas_expense: [0, 1_200, 0, 0]
+    wood_expense: [0, 0, 1_200, 0]
+  output:
+    ga_liheap_eligible: [true, true, true, false]
+    ga_liheap: [710, 580, 400, 0]
+
+# Manual pp4,57 permits verified energy burden in subsidized heat-in-rent housing. The shared Boolean defaults false for heat in rent, but the reported primary bill100 supplies burden; FY2026 LevelI propane pays680 uncapped.
+- name: Case 6, a subsidized renter with verified primary expense can receive the ordinary grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 100
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        is_in_public_housing: true
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    heating_expense: 100
+    has_heating_expense: false
+    ga_liheap_matrix_amount: 680
+    ga_liheap_eligible: true
+    ga_liheap: 680
+
+# Contract retains existing signed net-business inputs and floors combined household income0; no additional business-expense policy is introduced. FY2026 matrix p1 fixes LevelI wood at500, so a negative pre-floor total cannot increase the grant.
+- name: Case 7, existing net business losses do not inflate the fixed heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 6_000
+        self_employment_income: -18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: WOOD
+        wood_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_income: 0
+    ga_liheap_household_size: 1
+    ga_liheap_matrix_amount: 500
+    ga_liheap_eligible: true
+    ga_liheap: 500
+
+# Manual p3 requires responsibility for energy costs or verified burden; v1.2 honors the existing explicit has_heating_expense fact even when no paid bill amount is reported. FY2026 matrix p1 gives LevelI oil810 with no spending cap.
+- name: Case 8, an explicit heating obligation with a zero reported bill receives the scheduled award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 0
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    heating_expense: 0
+    has_heating_expense: true
+    ga_liheap_matrix_amount: 810
+    ga_liheap_eligible: true
+    ga_liheap: 810

@@ -1,0 +1,35 @@
+description: Georgia counts these income sources of adult household members under the Low Income Home Energy Assistance Program.
+# Interest is calculated separately after its disregard. State TANF is counted
+# once at SPM-unit level. Signed net business inputs have no extra deduction.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - unemployment_compensation
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - strike_benefits
+    - general_assistance
+    - rental_income
+    - farm_rent_income
+    - ordinary_dividend_income
+    - capital_gains
+    - alimony_income
+    - child_support_received
+metadata:
+  unit: list
+  period: year
+  label: Georgia LIHEAP adult person income sources
+  reference:
+    - title: Georgia LIHEAP Policy Manual, January 2022, sections 1200.2-1200.4, pages 62-69
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62
+    - title: Georgia FY2026 LIHEAP State Plan, section 1.9, pages 5-6 (current included and excluded sources)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5

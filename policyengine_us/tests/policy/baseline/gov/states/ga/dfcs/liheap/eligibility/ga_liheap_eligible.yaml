@@ -1,0 +1,105 @@
+# Georgia ordinary heating route only. Categorical recipient facts, utility credits,
+# unpriced fuels and size-above-16 coverage remain documented limitations.
+
+# FY2026 matrix p1 sets the size1 ordinary ceiling at34549; manual p50 requires income at or below the limit. Real adult wages are aggregated, not overridden countable income.
+- name: Case 1, the ordinary one person income ceiling is inclusive.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [34_549, 34549.01]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_eligible: [true, false]
+
+# Manual pp51-52 excludes undocumented members from size; without a qualified adult or child there is no eligible member, even with a positive bill.
+- name: Case 2, a household with no qualified member fails ordinary eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_eligible: false
+
+# Manual pp4,57 permits a verified energy burden in subsidized and other rental housing. Positive primary bills establish burden; rent inclusion alone and no explicit obligation do not.
+- name: Case 3, heat in rent needs a verified burden with or without housing subsidy.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 0, 1_200, 0]
+    heat_expense_included_in_rent: [true, true, true, true]
+    receives_housing_assistance: [false, false, true, true]
+    is_in_public_housing: [false, false, true, true]
+  output:
+    ga_liheap_eligible: [true, false, true, false]
+
+# Manual p3 requires responsibility for home heating costs; v1.2 reuses an explicit existing obligation flag. NONE still means no heating; a gas household with an explicit obligation can qualify with no reported bill amount.
+- name: Case 4, explicit no heating fails even when an obligation flag is supplied.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [NONE, NATURAL_GAS]
+    gas_expense: [1_200, 0]
+    has_heating_expense: [true, true]
+  output:
+    ga_liheap_eligible: [false, true]
+
+# Manual pp3,50 requires heating responsibility or verified burden. With no explicit obligation, gas-primary households use their gas bill: an electric bill alone does not identify gas heating expense.
+- name: Case 5, an unrelated utility bill does not establish the selected primary fuel burden.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 1]
+    pre_subsidy_electricity_expense: [1_200, 0]
+  output:
+    ga_liheap_eligible: [false, true]
+
+# Manual pp3,50 addresses Georgia resident households; the same real wage and positive primary bill in Alabama must not receive Georgia eligibility.
+- name: Case 6, ordinary eligibility is limited to Georgia in mixed state arrays.
+  period: 2026
+  input:
+    state_code: [GA, AL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_eligible: [true, false]

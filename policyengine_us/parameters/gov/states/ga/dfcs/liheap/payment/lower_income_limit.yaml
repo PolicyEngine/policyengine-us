@@ -1,0 +1,45 @@
+description: Georgia limits annual income to this amount by household size for Level I heating payments under the Low Income Home Energy Assistance Program.
+# Preserve the published size-four amount. The source does not define these
+# cutoffs as a fixed percentage of current federal poverty or median income.
+1:
+  2025-10-01: 13_589
+2:
+  2025-10-01: 17_770
+3:
+  2025-10-01: 21_952
+4:
+  2025-10-01: 25_469
+5:
+  2025-10-01: 30_315
+6:
+  2025-10-01: 34_496
+7:
+  2025-10-01: 35_280
+8:
+  2025-10-01: 36_064
+9:
+  2025-10-01: 36_848
+10:
+  2025-10-01: 37_632
+11:
+  2025-10-01: 38_416
+12:
+  2025-10-01: 39_200
+13:
+  2025-10-01: 39_984
+14:
+  2025-10-01: 40_768
+15:
+  2025-10-01: 41_552
+16:
+  2025-10-01: 42_336
+metadata:
+  unit: currency-USD
+  period: year
+  label: Georgia LIHEAP Level I annual income limit by household size
+  breakdown:
+    - range(1, 17)
+  propagate_metadata_to_children: true
+  reference:
+    - title: Georgia Benefit Matrix, FY2026 income guidelines, step 1 (inclusive Level I upper limits)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf

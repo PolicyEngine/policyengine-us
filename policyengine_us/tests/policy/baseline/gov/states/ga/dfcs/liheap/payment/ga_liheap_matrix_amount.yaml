@@ -1,0 +1,75 @@
+# Source-derived Georgia independent components; no final eligibility or total award asserted.
+
+# Original matrix lower-income cutoff and first cent above for each size1–16; preserve anomalous size4=25469 exactly.
+- name: Case 1, all sixteen published lower level upper bounds remain inclusive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA,
+      GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+      12, 12, 13, 13, 14, 14, 15, 15, 16, 16]
+    ga_liheap_income: [13_589, 13589.01, 17_770, 17770.01, 21_952, 21952.01, 25_469, 25469.01, 30_315,
+      30315.01, 34_496, 34496.01, 35_280, 35280.01, 36_064, 36064.01, 36_848, 36848.01, 37_632, 37632.01,
+      38_416, 38416.01, 39_200, 39200.01, 39_984, 39984.01, 40_768, 40768.01, 41_552, 41552.01, 42_336,
+      42336.01]
+  output:
+    ga_liheap_matrix_amount: [660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560,
+      660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560]
+
+# Original matrix heating column only: LevelI500/660/810/680/500; LevelII400/560/710/580/400. Cooling column is not an oracle.
+- name: Case 2, all five priced fuels match both heating benefit levels including zero income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD, ELECTRICITY, NATURAL_GAS, FUEL_OIL,
+      PROPANE, WOOD]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    fuel_oil_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    wood_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ga_liheap_income: [0, 0, 0, 0, 0, 13589.01, 13589.01, 13589.01, 13589.01, 13589.01]
+  output:
+    ga_liheap_matrix_amount: [500, 660, 810, 680, 500, 400, 560, 710, 580, 400]
+
+# Ungated regular heating matrix gives660 for natural gas; no actual-expense cap is stated.
+- name: Case 3, a small heating bill does not cap the fixed matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    heating_type: NATURAL_GAS
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 50
+    ga_liheap_household_size: 1
+    ga_liheap_income: 0
+  output:
+    ga_liheap_matrix_amount: 660
+
+# NONE affirmatively means no heating. No assertions here establish legal ineligibility for unpriced fuel or out-of-table size.
+- name: Case 4, explicit no heating has no supported matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    heating_type: NONE
+    pre_subsidy_electricity_expense: 1_200
+    ga_liheap_household_size: 1
+    ga_liheap_income: 0
+  output:
+    ga_liheap_matrix_amount: 0

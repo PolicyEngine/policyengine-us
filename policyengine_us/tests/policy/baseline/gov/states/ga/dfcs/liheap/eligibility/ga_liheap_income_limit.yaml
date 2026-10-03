@@ -1,0 +1,29 @@
+# Source-derived Georgia independent components; no final eligibility or total award asserted.
+
+# FY2026 original matrix literal annual limits; all16 are checked independently of the model formula or parameters.
+- name: Case 1, all sixteen published annual SMI limits match the reconciled flooring order.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+  output:
+    ga_liheap_income_limit: [34_549, 45_179, 55_810, 66_441, 77_071, 87_702, 89_695, 91_688, 93_681,
+      95_675, 97_668, 99_661, 101_654, 103_647, 105_641, 107_634]
+
+# Independent state-defined calculation returns the GA one-person limit only for Georgia; safe batch behavior.
+- name: Case 2, mixed state calculation masks the Georgia income limit outside Georgia.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, AL]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+    ga_liheap_household_size: [1, 1]
+  output:
+    ga_liheap_income_limit: [34_549, 0]
