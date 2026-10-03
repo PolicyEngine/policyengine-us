@@ -106,7 +106,21 @@
 # Treas. Reg. 1.911-7(a)(1): the section 911 election is filed with the return,
 # and Form 2555 is attached to Form 1040 when filed, so a tax unit with an
 # exclusion files even below the filing threshold and with no credit to claim.
-- name: Section 911 claimant below the filing threshold still files
+- name: Section 911 claimant below the filing threshold files to claim the exclusion
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 5_000
+    foreign_earned_income_exclusion: 1_000
+  output:
+    # $6,000 of gross income under section 6012(c), under $15,750. Section
+    # 32(c)(1)(C) denies the EITC, so the exclusion is the reason to file.
+    tax_unit_is_required_to_file: false
+    eitc: 0
+    tax_unit_is_filer: true
+
+- name: Section 911 claimant below the filing threshold who would not file does not
   period: 2025
   input:
     filing_status: SINGLE
@@ -116,6 +130,58 @@
     would_file_if_eligible_for_refundable_credit: false
     would_file_taxes_voluntarily: false
   output:
-    # $6,000 of gross income under section 6012(c), under $15,750.
+    # A continuing election needs no return below the filing threshold
+    # (Treas. Reg. 1.911-7(a)(1)).
     tax_unit_is_required_to_file: false
+    tax_unit_is_filer: false
+
+- name: Section 911 parents under the threshold keep filing without the refundable credits
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 28_000
+      spouse:
+        age: 40
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        foreign_earned_income_exclusion: 1_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # $29,000 of gross income under section 6012(c), under $31,500.
+    tax_unit_is_required_to_file: false
+    refundable_ctc: 0
+    eitc: 0
     tax_unit_is_filer: true
+
+- name: Section 911 parents under the threshold who would not file do not
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 28_000
+      spouse:
+        age: 40
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        foreign_earned_income_exclusion: 1_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: false
+    tax_unit_is_filer: false
