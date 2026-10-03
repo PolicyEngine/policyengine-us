@@ -17,15 +17,23 @@ class co_non_refundable_ctc(Variable):
         "https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2022.pdf#page=1",
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
+        # 2023 Colorado Child Tax Credit, line 4 instructions
+        "https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2023.pdf#page=2",
     )
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         maximum = tax_unit("co_federal_ctc_maximum", period)  # Line 3
-        # Lines 4 - 6 follow Schedule 8812 Credit Limit Worksheet A, lines 1 - 3,
-        # without Worksheet B: the form subtracts no residential energy credit.
-        limiting_tax_liability = tax_unit(
-            "ctc_tax_liability_after_preceding_credits", period
-        )  # Line 4 - 6
-        return min_(maximum, limiting_tax_liability)  # Line 7
+        p = parameters(period).gov.states.co.tax.income.credits.ctc
+        if p.federal_credit_limitation_after_worksheet_b:
+            # 2023 line 4: Schedule 8812 line 13 (Credit Limit Worksheet A,
+            # line 5), after Credit Limit Worksheet B.
+            limiting_tax_liability = tax_unit("ctc_limiting_tax_liability", period)
+        else:
+            # 2022 lines 4 - 6: Form 1040 line 18 less listed credits, as on
+            # Credit Limit Worksheet A lines 1 - 3, with no Worksheet B.
+            limiting_tax_liability = tax_unit(
+                "ctc_tax_liability_after_preceding_credits", period
+            )
+        return min_(maximum, limiting_tax_liability)  # Line 7 (2022), line 5 (2023)

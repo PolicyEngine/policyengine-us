@@ -17,6 +17,11 @@ values:
     - energy_efficient_home_improvement_credit
     - elderly_disabled_credit
     - new_clean_vehicle_credit
+  # Line numbers are those of the 2023-2025 Schedule 3. In 2022 the energy
+  # efficient home improvement credit came from Form 5695, line 30, and the
+  # used clean vehicle credit did not yet exist (it is zero before 2023).
+  # Not modeled: Schedule 3, line 6l (Form 8978) in every year, and the
+  # alternative motor vehicle credit (Form 8910) through 2022.
   2022-01-01:
     - foreign_tax_credit # Schedule 3, line 1
     - cdcc # Schedule 3, line 2

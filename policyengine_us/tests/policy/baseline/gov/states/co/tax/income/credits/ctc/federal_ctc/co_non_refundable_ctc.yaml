@@ -29,3 +29,17 @@
   output:
     ctc_limiting_tax_liability: 500
     co_non_refundable_ctc: 1_500
+
+- name: From 2023 the Colorado limit is Schedule 8812 line 13, after Credit Limit Worksheet B.
+  # 2023 DR 0104CN line 4: "If you completed Federal Schedule 8812, enter the
+  # amount from line 13 of that form."
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_ctc_maximum: 2_000
+    ctc_tax_liability_after_preceding_credits: 1_500
+    ctc_credit_limit_worksheet_b_applies: true
+    residential_clean_energy_credit: 1_000
+  output:
+    ctc_limiting_tax_liability: 500
+    co_non_refundable_ctc: 500

@@ -5,10 +5,11 @@ Form 5695 Residential Clean Energy Credit Limit Worksheet. These tests check
 it against the statute applied directly, which never mentions the worksheets:
 
 - 26 U.S.C. 26(a) limits the aggregate of the subpart A credits to the tax.
-- 26 U.S.C. 24(d)(1) refunds the lesser of the CTC (capped at $1,700 per
-  qualifying child by 24(h)(5)) and the amount by which the aggregate subpart
-  A credits would increase if the 26(a) limit rose by the earned income
-  phase-in amount; the refunded amount reduces the non-refundable CTC.
+- 26 U.S.C. 24(d)(1) refunds the lesser of the CTC (capped per qualifying
+  child by 24(h)(5): $1,400, indexed for inflation, or $1,700 for 2025) and
+  the amount by which the aggregate subpart A credits would increase if the
+  26(a) limit rose by the earned income phase-in amount; the refunded amount
+  reduces the non-refundable CTC.
 - 26 U.S.C. 25D(c) orders the residential clean energy credit after every
   other subpart A credit.
 

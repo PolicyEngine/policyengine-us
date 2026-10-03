@@ -13,8 +13,10 @@ class ctc_non_refundable_minimum(Variable):
     )
     definition_period = YEAR
     reference = (
-        # 2025 Instructions for Schedule 8812, Credit Limit Worksheet B.
+        # 2025 Instructions for Schedule 8812, Credit Limit Worksheet B (lines
+        # 1-9 on page 5, lines 10-15 on page 6).
         "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=5",
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=6",
         "https://www.law.cornell.edu/uscode/text/26/24#d_1",
     )
 

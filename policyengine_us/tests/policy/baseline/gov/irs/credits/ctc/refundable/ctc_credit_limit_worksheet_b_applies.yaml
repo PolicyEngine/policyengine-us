@@ -33,3 +33,11 @@
     ctc_qualifying_children: 1
   output:
     ctc_credit_limit_worksheet_b_applies: true
+
+- name: Before 2015 Worksheet B still applies to Form 2555 filers (the section 911 bar starts in 2015).
+  period: 2014
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 10_000
+  output:
+    ctc_credit_limit_worksheet_b_applies: true

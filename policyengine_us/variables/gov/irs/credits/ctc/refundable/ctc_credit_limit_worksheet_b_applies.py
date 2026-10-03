@@ -31,5 +31,10 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
             # whose CTC was not fully refundable.
             return np.zeros(tax_unit.count, dtype=bool)
         has_qualifying_child = tax_unit("ctc_qualifying_children", period) > 0
+        # Form 2555 filers skip Worksheet B from 2015, when the refundable CTC
+        # was first denied to them.
         files_form_2555 = tax_unit("foreign_earned_income_exclusion", period) > 0
-        return has_qualifying_child & ~files_form_2555
+        excluded = (
+            files_form_2555 & p.refundable.foreign_earned_income_exclusion_bar_applies
+        )
+        return has_qualifying_child & ~excluded
