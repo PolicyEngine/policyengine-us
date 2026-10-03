@@ -1,53 +1,117 @@
-- name: Annual income limit is inclusive
+# Sources for the expected values in this file:
+# - FY2026 OHEP Income Guidelines (one page):
+#   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+# - OHEP Operations Manual (May 2025), pages 16 (general eligibility), 39 (automatic
+#   denials), 62-63 (categorical eligibility) and 108 (ineligible members):
+#   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=16
+# - FY2026 LIHEAP State Plan, page 9 (renters in subsidized housing):
+#   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9
+# - COMAR 07.03.21.03 (residence), .04C (nonqualified members) and .06D(3) (denials):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.06
+
+- name: Case 1, one-person household at and one dollar above the annual income limit.
   period: 2026
   input:
     state_code: [MD, MD]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
-    has_heating_expense: [true, true]
-    md_meap_countable_income: [31300, 31301]
+    gas_expense: [1_150, 1_150]
+    md_meap_countable_income: [31_300, 31_301]
     md_meap_categorically_eligible: [false, false]
   output:
+    # Income Guidelines, annual 200% FPG table, size 1: $31,300. Manual page 16:
+    # income "equal to or less than the established income guidelines" is eligible.
     md_meap_eligible: [true, false]
-- name: Categorical receipt waives only the income test
+
+- name: Case 2, categorical eligibility waives the income test but not the heating cost.
   period: 2026
   input:
     state_code: [MD, MD]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
-    has_heating_expense: [true, false]
-    md_meap_countable_income: [100000, 100000]
+    gas_expense: [1_150, 0]
+    md_meap_countable_income: [40_000, 40_000]
     md_meap_categorically_eligible: [true, true]
   output:
+    # Manual page 62: a categorically eligible household stays eligible above 200%
+    # FPL; page 63: other eligibility rules are unchanged, and page 16 requires, for
+    # MEAP, that responsibility for heating costs is established. The second
+    # household heats with gas but has no gas bill.
     md_meap_eligible: [true, false]
-- name: Subsidized heat included in rent is ineligible even with a reported bill
+
+- name: Case 3, heat included in rent is denied only in subsidized housing.
   period: 2026
   input:
     state_code: [MD, MD]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
+    # Set directly to show that the subsidized heat-in-rent denial does not depend on
+    # a reported heating cost.
     has_heating_expense: [true, true]
     md_meap_countable_income: [0, 0]
     md_meap_categorically_eligible: [false, false]
     heat_expense_included_in_rent: [true, true]
     receives_housing_assistance: [false, true]
   output:
+    # Manual page 16: heating costs may be paid as an undesignated component of rent.
+    # COMAR 07.03.21.06D(3)(i) and manual page 39 deny an applicant in public or
+    # subsidized housing where heat is included in the rent.
     md_meap_eligible: [true, false]
-- name: Qualified member is still required with categorical income eligibility
+
+- name: Case 4, a qualified member is required even with categorical eligibility.
   period: 2026
   input:
     state_code: MD
     heating_type: NATURAL_GAS
-    has_heating_expense: true
+    gas_expense: 1_150
     md_meap_countable_income: 0
     md_meap_categorically_eligible: true
     immigration_status: UNDOCUMENTED
   output:
+    # COMAR 07.03.21.04C(1) and manual page 108: a member who is not a citizen or
+    # qualified alien is not counted, and the household must have at least one
+    # eligible member.
     md_meap_eligible: false
-- name: Other states receive no Maryland benefit
+
+- name: Case 5, other states receive no Maryland benefit.
   period: 2026
   input:
     state_code: VA
     heating_type: NATURAL_GAS
-    has_heating_expense: true
+    gas_expense: 1_150
     md_meap_countable_income: 0
     md_meap_categorically_eligible: false
   output:
+    # COMAR 07.03.21.03A(1): the household must reside in Maryland.
     md_meap_eligible: false
+
+- name: Case 6, public housing tenant who pays the heating bill is eligible, heat in rent is not.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [950, 0]
+    heat_expense_included_in_rent: [false, true]
+    is_in_public_housing: [true, true]
+    md_meap_countable_income: [19_500, 19_500]
+    md_meap_categorically_eligible: [false, false]
+  output:
+    # State Plan page 9: applicants in subsidized housing must show that they pay
+    # their own heating costs. COMAR 07.03.21.06D(3)(i) and manual page 39 deny an
+    # applicant in public housing where heat is included in the rent.
+    md_meap_eligible: [true, false]
+
+- name: Case 7, eleven-member household at and one dollar above the 60 percent SMI limit.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [2_100, 2_100]
+    md_meap_household_size: [11, 11]
+    md_meap_countable_income: [135_930, 135_931]
+    md_meap_categorically_eligible: [false, false]
+  output:
+    # Income Guidelines footnote: "Households of 11+ must be based on 60% of the State
+    # Median Income." No dollar row is printed; the limit is 60% of the FFY2026
+    # Maryland four-person median income, floor(0.6 x $154,117) = $92,470, times the
+    # 45 CFR 96.85(b) size factor for eleven, 1.47 (52% + 5 x 16% + 5 x 3%):
+    # floor($135,930.90) = $135,930. $135,931 is over the limit although it is below
+    # 200% of the eleven-person guideline ($141,300).
+    md_meap_eligible: [true, false]

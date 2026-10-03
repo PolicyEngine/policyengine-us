@@ -19,7 +19,8 @@ class md_meap(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.dhs.meap.payment
-        level = spm_unit("md_meap_level", period)
+        # The floor keeps units outside Maryland (level 0) on a valid amount key.
+        level = max_(spm_unit("md_meap_level", period), 1)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         amount = select(

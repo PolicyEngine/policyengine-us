@@ -13,9 +13,10 @@ class md_meap_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.dhs.meap.income
-        # COMAR .04D(26) and E(20) allow Medicare deductions from the
-        # relevant benefits. Actual-premium handling remains deferred; neither
-        # modeled nor reported Medicare premiums are deducted here.
+        # COMAR 07.03.21.04D(3), D(26) and E(20) count Social Security and
+        # railroad retirement benefits less the Medicare payment deduction.
+        # medicare_part_b_premium and medicare_part_b_premiums_reported are not
+        # wired in yet, so both benefits count gross.
         # The TANF source applies take-up to Maryland TCA entitlement.
         income = add(spm_unit, period, ["md_meap_countable_earned_income"]) + add(
             spm_unit, period, p.sources.unearned
