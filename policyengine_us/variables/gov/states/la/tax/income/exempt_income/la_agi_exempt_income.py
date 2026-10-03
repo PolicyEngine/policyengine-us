@@ -8,8 +8,8 @@ class la_agi_exempt_income(Variable):
     defined_for = StateCode.LA
     unit = USD
     reference = (
-        "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=9",
-        "https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf",
+        "https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=9",
+        "https://web.archive.org/web/20220815090255/https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf",
     )
     definition_period = YEAR
 
