@@ -27,3 +27,69 @@
         members: [head]
   output:
     filing_status: SINGLE
+
+- name: Remove head of household filing status for a supplied head of household status
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head:
+        age: 40
+        tax_unit_role_input: HEAD
+      child:
+        age: 10
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status_input: HEAD_OF_HOUSEHOLD
+  output:
+    filing_status: SINGLE
+
+- name: Removing head of household status leaves a supplied single status alone
+  # The rules would make this widowed parent of an unrelated 10-year-old a
+  # surviving spouse; the repeal must not re-derive a status it does not remove.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head:
+        age: 66
+        is_surviving_spouse: true
+        tax_unit_role_input: HEAD
+      child:
+        age: 10
+        is_related_to_head_or_spouse: false
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status_input: SINGLE
+  output:
+    filing_status: SINGLE
+
+- name: Removing head of household status leaves a supplied surviving spouse status alone
+  # The rules would make this unit single: the 30-year-old dependent is neither
+  # a qualifying child nor, with $20,000 of income, a qualifying relative.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head:
+        age: 60
+        is_surviving_spouse: true
+        employment_income: 60_000
+        tax_unit_role_input: HEAD
+      dependent:
+        age: 30
+        employment_income: 20_000
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status_input: SURVIVING_SPOUSE
+  output:
+    filing_status: SURVIVING_SPOUSE

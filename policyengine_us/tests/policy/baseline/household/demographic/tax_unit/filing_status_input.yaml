@@ -1,0 +1,125 @@
+- name: A supplied status is used even where the rules would give another.
+  # The rules give a parent of a 10-year-old head of household status.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        tax_unit_role_input: HEAD
+      child:
+        age: 10
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status_input: SINGLE
+    households:
+      household:
+        members: [parent, child]
+  output:
+    filing_status: SINGLE
+    head_of_household_eligible: true
+
+- name: A supplied surviving spouse status is used.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 66
+        tax_unit_role_input: HEAD
+      child:
+        age: 10
+        tax_unit_role_input: DEPENDENT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status_input: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+  output:
+    filing_status: SURVIVING_SPOUSE
+
+- name: A supplied separate status is used.
+  period: 2024
+  input:
+    people:
+      taxpayer:
+        age: 40
+        tax_unit_role_input: HEAD
+    tax_units:
+      tax_unit:
+        members: [taxpayer]
+        filing_status_input: SEPARATE
+    households:
+      household:
+        members: [taxpayer]
+  output:
+    filing_status: SEPARATE
+
+- name: A supplied joint status is accepted for a supplied couple.
+  # The rules also give JOINT here; this checks the status is accepted, not
+  # that it overrides the rules, which cannot differ for a couple.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        tax_unit_role_input: HEAD
+      spouse:
+        age: 60
+        tax_unit_role_input: SPOUSE
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status_input: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    filing_status: JOINT
+
+- name: Without a supplied status the rules decide.
+  # A parent of a 10-year-old qualifying child files as head of household
+  # (26 USC 2(b)(1)(A)(i), 152(c)(3)(A)(i)).
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Each tax unit uses its own supplied status, or the rules without one.
+  period: 2024
+  input:
+    people:
+      supplied_parent:
+        age: 50
+        tax_unit_role_input: HEAD
+      supplied_child:
+        age: 10
+        tax_unit_role_input: DEPENDENT
+      unsupplied_parent:
+        age: 50
+      unsupplied_child:
+        age: 10
+    tax_units:
+      supplied_unit:
+        members: [supplied_parent, supplied_child]
+        filing_status_input: SINGLE
+      unsupplied_unit:
+        members: [unsupplied_parent, unsupplied_child]
+    households:
+      household:
+        members: [supplied_parent, supplied_child, unsupplied_parent, unsupplied_child]
+  output:
+    filing_status: [SINGLE, HEAD_OF_HOUSEHOLD]
