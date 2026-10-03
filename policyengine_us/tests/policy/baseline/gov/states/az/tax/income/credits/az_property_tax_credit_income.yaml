@@ -286,8 +286,8 @@
 # Line D loss limit. A.A.C. R15-2C-502(C)(3), ITR 12-1 item (7) and the line D
 # instructions limit each member's net loss to (1,500). Federal AGI instead
 # limits a return's net loss to (3,000), so household income replaces it. A
-# negative line J is entered as is and treated as zero for Schedules 1 and 2
-# (2021-2025 instructions, page 4, line J note).
+# negative line J is entered as is and considered zero for Schedules 1 and 2
+# (2023-2025 instructions, page 5, line J note).
 - name: Single filer's net loss counts only up to the 1,500 limit
   period: 2025
   input:

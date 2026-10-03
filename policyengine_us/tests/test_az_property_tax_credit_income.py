@@ -12,7 +12,8 @@ counted twice. Federal AGI leaves out dependents' income, which Arizona counts
 for every household member whether or not a dependent. Federal AGI also limits
 a net capital loss to $3,000 per return rather than $1,500 per member, so line D
 replaces its capital gains and losses. Household income (line J) can be
-negative; the instructions then use zero for the Schedule 1 and 2 amounts.
+negative; the 2023-2025 instructions (page 5) then consider it zero for the
+Schedule 1 and 2 amounts.
 
 Invariants, checked on a seeded sample of Arizona tax units (some with a child
 dependent who has income) whose members' net capital gains run from well below
@@ -127,8 +128,8 @@ def _sample_units(rng: np.random.Generator) -> list:
             )
         if rng.random() < 0.15:
             # Little income besides a capital loss and a small tax-exempt
-            # pension, so line J can be negative (2021-2025 instructions,
-            # page 4, line J note).
+            # pension, so line J can be negative (2023-2025 instructions,
+            # page 5, line J note).
             for member in members:
                 for key in [
                     "employment_income",
