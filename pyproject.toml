@@ -19,7 +19,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Information Analysis",
 ]
 dependencies = [
-    "microdf-python>=1.0.0",
+    "microdf-python>=1.3.0",
     # pandas 3 copy-on-write enables the shallow-copy fast path in dataset
     # extension and is available on every supported Python version.
     "pandas>=3.0",

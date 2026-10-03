@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+from policyengine_us.spm import spm_universe_mask
+from spm_calculator.errors import SPMInputError
 
 
 class spm_unit_oecd_equiv_net_income(Variable):
@@ -11,6 +13,12 @@ class spm_unit_oecd_equiv_net_income(Variable):
     reference = "https://www.oecd.org/economy/growth/OECD-Note-EquivalenceScales.pdf"
 
     def formula(spm_unit, period, parameters):
+        included = spm_universe_mask(spm_unit, period)
         number_of_people = spm_unit.nb_persons()
         net_income = spm_unit("spm_unit_net_income", period)
-        return net_income / (number_of_people**0.5)
+        if not np.isfinite(net_income[included]).all():
+            raise SPMInputError(
+                "SPM_MEASUREMENT_INVALID",
+                "Included units require finite SPM resources for equivalised income.",
+            )
+        return where(included, net_income / (number_of_people**0.5), np.nan)

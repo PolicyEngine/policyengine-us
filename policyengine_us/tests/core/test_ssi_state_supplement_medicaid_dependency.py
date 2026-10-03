@@ -112,6 +112,11 @@ def test_future_poverty_in_all_states(year):
         },
     )
     poor = simulation.calculate("spm_unit_is_in_spm_poverty", year)
-    assert poor.dtype == np.dtype(bool)
+    # The canonical indicator is a nullable float now that SPM measurement scope
+    # is an explicit source decision: NaN marks a record outside the declared
+    # universe. A household situation is wholly in-universe, so every unit here
+    # is observed, and none of these states may go missing.
+    assert np.issubdtype(poor.dtype, np.floating)
+    assert np.isin(poor, [0.0, 1.0]).all()
     assert poor.size == len(groups)
     assert np.isfinite(simulation.calculate("spm_unit_benefits", year)).all()

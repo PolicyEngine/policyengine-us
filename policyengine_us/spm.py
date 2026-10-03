@@ -12,6 +12,8 @@ from copy import copy, deepcopy
 from functools import lru_cache
 from inspect import ismethod, signature
 
+import numpy as np
+
 from policyengine_core import periods as periods_
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
@@ -19,6 +21,7 @@ from spm_calculator.errors import SPMInputError
 from spm_calculator.policyengine_adapter import (
     FORMULA_OWNED_INPUTS,
     PolicyEngineSPMProvider,
+    build_policyengine_variables,
 )
 from spm_calculator.rolling_forecast import load_forecast
 
@@ -40,10 +43,11 @@ CONFIG_FIELDS = frozenset(
 # SPM resource total, and the canonical indicators ``poverty_line``,
 # ``poverty_gap``, ``spm_unit_is_in_spm_poverty`` and
 # ``spm_unit_is_in_deep_spm_poverty``. These names are country-side functions
-# of those same values - ``in_poverty`` of ``poverty_gap``,
+# of those same values - ``in_poverty`` of the canonical poverty indicator,
 # ``deep_poverty_line`` of ``poverty_line``, ``deep_poverty_gap`` of
 # ``deep_poverty_line`` and ``spm_unit_net_income``, ``in_deep_poverty`` of
-# ``deep_poverty_gap``, and ``person_in_poverty`` of ``in_poverty`` - so a
+# the canonical deep-poverty indicator, and ``person_in_poverty`` of
+# ``in_poverty`` - so a
 # dataset column for any of them is an alias for a formula-owned output under a
 # name the calculator does not police. Accepting one lets the poverty
 # calculation documented in ``docs/usage/microsimulation.md`` and the canonical
@@ -70,16 +74,27 @@ SPM_ALLOCATION_OUTPUTS = frozenset(
     }
 )
 
+# Distribution outputs inherit the same source universe as SPM resources.
+SPM_DISTRIBUTION_OUTPUTS = frozenset(
+    {"spm_unit_oecd_equiv_net_income", "spm_unit_income_decile"}
+)
+
 # Every name a dataset must not store, from either side of the boundary.
 REJECTED_DATASET_INPUTS = (
-    frozenset(FORMULA_OWNED_INPUTS) | DERIVED_POVERTY_OUTPUTS | SPM_ALLOCATION_OUTPUTS
+    frozenset(FORMULA_OWNED_INPUTS)
+    | DERIVED_POVERTY_OUTPUTS
+    | SPM_ALLOCATION_OUTPUTS
+    | SPM_DISTRIBUTION_OUTPUTS
 )
 
 # This source role has a head/spouse fallback for household situations. A
 # population producer must retain its observed boolean instead of treating the
 # fallback formula as ownership of the input. This declaration permits source
 # delivery; it does not permit synthesizing a default value when data are absent.
-DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
+# Annual measurement scope is also source-owned despite its household fallback.
+DATASET_SOURCE_INPUTS = frozenset(
+    {"is_spm_independent_minor_role", "spm_unit_spm_universe_status"}
+)
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
@@ -87,6 +102,87 @@ COUNTY_INPUT_FIX = (
     'send county_fips as a five-digit string (for example "06037"), or select '
     'geography_kind="national" in the spm configuration'
 )
+
+
+def default_spm_universe_status(unit):
+    """Household requests describe included units; datasets must declare scope.
+
+    Data origin is a scalar construction contract, not a demographic inference.
+    In particular, missing age or tenure never makes a unit outside the universe.
+    """
+    values = unit.simulation.tax_benefit_system.variables[
+        "spm_unit_spm_universe_status"
+    ].possible_values
+    status = values.UNRESOLVED if unit.simulation.is_over_dataset else values.INCLUDED
+    return unit.filled_array(status.index)
+
+
+def spm_universe_mask(unit, period):
+    """Require a resolved source decision and return included unit positions."""
+    status = unit("spm_unit_spm_universe_status", period).decode_to_str()
+    included = status == "INCLUDED"
+    # A dataset may store this enum as member indices, and core decodes an index
+    # outside the enum to "unknown" rather than rejecting it. Reading anything
+    # but a declaration as exclusion would silently drop a mis-encoded unit from
+    # the measurement, which is the inference from missing data this declaration
+    # exists to prevent, so only the two declared decisions resolve scope.
+    if not np.all(included | (status == "OUTSIDE")):
+        raise SPMInputError(
+            "SPM_UNIVERSE_REQUIRED",
+            "Declare INCLUDED or OUTSIDE for every SPM unit from the source "
+            "measurement universe; an unresolved or unreadable declaration "
+            "cannot be measured.",
+        )
+    return included
+
+
+def scoped_spm_amount(unit, period, field):
+    """Keep outside amounts missing and never pass those units to the provider."""
+    included = spm_universe_mask(unit, period)
+    amounts = masked_policyengine_amount(unit, period, field, included)
+    return np.where(included, amounts, np.nan)
+
+
+def country_spm_variables():
+    """Apply country-owned scope to the calculator's registered amount fields."""
+    fields = {
+        "spm_unit_reference_spm_threshold": "reference_threshold",
+        "spm_unit_unadjusted_spm_threshold": "unadjusted_threshold",
+        "spm_unit_geographic_adjustment": "geographic_factor",
+        "spm_unit_spm_threshold": "threshold",
+        "spm_unit_spm_threshold_housing_portion": "housing_portion",
+    }
+
+    def formula_for(field):
+        def formula(unit, period, parameters):
+            return scoped_spm_amount(unit, period, field)
+
+        return formula
+
+    variables = build_policyengine_variables()
+    for variable in variables:
+        if variable.__name__ in fields:
+            # The calculator creates fresh classes for each system. Only the
+            # selection changes; its provider still owns every final amount.
+            variable.formula = formula_for(fields[variable.__name__])
+    return variables
+
+
+def nullable_spm_indicator(unit, period, income, threshold):
+    """Return 0/1 for measured units, NaN outside, and reject invalid inputs."""
+    included = spm_universe_mask(unit, period)
+    if (
+        not np.isfinite(income[included]).all()
+        or not np.isfinite(threshold[included]).all()
+        or np.any(threshold[included] <= 0)
+    ):
+        raise SPMInputError(
+            "SPM_MEASUREMENT_INVALID",
+            "Included units require finite resources and positive finite thresholds.",
+        )
+    result = np.full(included.shape, np.nan)
+    result[included] = income[included] < threshold[included]
+    return result
 
 
 def is_county_fips(value):
@@ -171,6 +267,19 @@ class CountyRequiringSPMProvider(PolicyEngineSPMProvider):
             if not isinstance(value, (str, bytes)):
                 untyped[(year, str(value))] = repr(value)
 
+    def with_county_input_types(self, year, values):
+        """Validate selected inputs without replacing simulation-wide receipts.
+
+        An excluded numeric county can spell the same FIPS as an included text
+        county. Only the selected raw inputs constrain this measurement. Share
+        the canonical amount cache and provenance with the simulation, while
+        keeping this view's typing receipt private.
+        """
+        selected = copy(self)
+        object.__setattr__(selected, "_untyped_counties", self._untyped_counties.copy())
+        selected.record_county_input_types(year, values)
+        return selected
+
     def require_county_input(self, year, county_fips):
         """Reject a county this provider cannot honour as a five-digit string."""
         if self.geography_kind != "county":
@@ -250,6 +359,7 @@ def masked_policyengine_amount(unit, period, field, mask):
     tenures = np.asarray(unit("spm_unit_tenure_type", period).decode_to_str())[mask]
     if bound.geography_kind == "county":
         counties = np.asarray(unit.household("county_fips", period))[mask]
+        bound = bound.with_county_input_types(int(period.start.year), counties)
     else:
         counties = [None] * len(adults)
     rows = [
@@ -939,6 +1049,10 @@ class SPMSimulationMixin:
                 "Use primitive inputs and retain observed outputs under report-only names."
             )
         result = super().set_input(variable_name, period, value)
+        if variable_name in DATASET_SOURCE_INPUTS:
+            # Scope and observed roles govern cached measurements and summaries.
+            # Core preserves explicit inputs while clearing dependent results.
+            self._invalidate_all_caches()
         if variable_name == "county_fips":
             self._record_county_input_types(period)
         return result
