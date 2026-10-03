@@ -1,0 +1,14 @@
+description: Arkansas publishes monthly income limits in increments of this amount under the Low Income Home Energy Assistance Program.
+# Half-up rounding of the base and additional-person amount separately
+# reproduces every FY2026 row and the published $688 increment above size 20.
+# This is a reconciled numerical pattern, not an express rounding instruction.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Arkansas LIHEAP monthly income limit rounding increment
+  reference:
+    - title: Arkansas FY2026 Income Eligibility Chart
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf

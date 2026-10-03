@@ -1,0 +1,74 @@
+# Draft FY2025 manual physical pp36-37, corroborated by designated CSCDC operator rights item9. Draft status is disclosed in the research report.
+
+- name: Case 1, qualified citizens permanent residents and asylees count in the household.
+  period: 2026
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      adult2:
+        age: 39
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+        is_full_time_student: false
+      adult3:
+        age: 19
+        immigration_status: ASYLEE
+        ssi: 0
+        is_full_time_student: false
+      child1:
+        age: 17
+        immigration_status: DACA
+        ssi: 0
+        is_full_time_student: false
+      child2:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        is_full_time_student: false
+    spm_units:
+      family:
+        members: &id001
+        - adult1
+        - adult2
+        - adult3
+        - child1
+        - child2
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+    households:
+      home:
+        members: *id001
+        state_code: AR
+  output:
+    ar_liheap_household_size: 3
+- name: Case 2, a household with no qualified member has zero eligible household size.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        is_full_time_student: false
+      child:
+        age: 8
+        immigration_status: DACA
+        ssi: 0
+        is_full_time_student: false
+    spm_units:
+      family:
+        members: &id002
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+    households:
+      home:
+        members: *id002
+        state_code: AR
+  output:
+    ar_liheap_household_size: 0

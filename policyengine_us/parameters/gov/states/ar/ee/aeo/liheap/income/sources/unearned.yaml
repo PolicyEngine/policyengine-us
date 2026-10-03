@@ -1,0 +1,42 @@
+description: Arkansas counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Ordinary and farm rental receipts are independent, nonnegative inputs.
+# The plan leaves TANF and general assistance unchecked; disclosure of TEA
+# on the application does not establish countability. The plan also leaves
+# insurance payments unchecked, so workers compensation/private disability
+# are not inferred countable solely from the application disclosure list.
+# Medicare adjustments are deferred; use the existing Social Security amount.
+# Counted loans, lottery winnings, jury duty, royalties and foster care
+# receipts lack sufficiently specific inputs and are not represented here.
+# Gambling winnings cannot isolate lotteries, the only counted lump sum.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    # Pension income includes government pensions, including military pensions.
+    # military_retirement_pay classifies that income for tax exclusions; adding
+    # it separately would count the same pension twice when both are supplied.
+    - pension_income
+    # Non-Social-Security survivor and railroad receipts.
+    - survivor_benefits
+    - railroad_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - veterans_benefits
+    # Cash gifts from friends and relatives outside the household.
+    - financial_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas LIHEAP unearned income sources
+  reference:
+    - title: Arkansas FY2026 State Plan, Sections 1.8 and 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5
+    - title: Arkansas LIHEAP Application, Section III Household Income
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2

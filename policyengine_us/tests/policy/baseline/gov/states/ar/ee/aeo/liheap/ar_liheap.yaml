@@ -1,0 +1,199 @@
+# Official FY2026 gas matrix: monthly370-429 gives227 for size1-2; monthly2130-2347 gives68; zero income gives308. Oil zero-income size5+ gives570. The 20 percent earned disregard applies before these lookups.
+
+- name: Case 1, a nonqualified parents full counted income uses two qualified children for the grant.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        is_full_time_student: false
+        employment_income: 6000
+      child1:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      child2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+    spm_units:
+      family:
+        members: &id001
+        - parent
+        - child1
+        - child2
+        heating_type: NATURAL_GAS
+        heating_expense: 50
+    households:
+      home:
+        members: *id001
+        state_code: AR
+  output:
+    ar_liheap_household_size: 2
+    ar_liheap_countable_income: 4800
+    ar_liheap_income_limit: 36840
+    ar_liheap_matrix_amount: 227
+    ar_liheap: 227
+- name: Case 2, a one cent monthly excess denies the final grant at the one person boundary.
+  period: 2026
+  input:
+    state_code:
+    - AR
+    - AR
+    age:
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    ssi:
+    - 0
+    - 0
+    is_full_time_student:
+    - false
+    - false
+    employment_income:
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    rental_income:
+    - 28164
+    - 28164.12
+  output:
+    ar_liheap:
+    - 68
+    - 0
+- name: Case 3, five qualified household members receive the large household oil grant.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      parent2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      child1:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      child2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      child3:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+    spm_units:
+      family:
+        members: &id002
+        - parent1
+        - parent2
+        - child1
+        - child2
+        - child3
+        heating_type: FUEL_OIL
+        heating_expense: 100
+    households:
+      home:
+        members: *id002
+        state_code: AR
+  output:
+    ar_liheap_household_size: 5
+    ar_liheap: 570
+- name: Case 4, the final grant follows heat in rent eligibility without an expense cap.
+  period: 2026
+  input:
+    state_code:
+    - AR
+    - AR
+    - AR
+    age:
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    ssi:
+    - 0
+    - 0
+    - 0
+    is_full_time_student:
+    - false
+    - false
+    - false
+    employment_income:
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 0
+    - 0
+    - 10
+    heat_expense_included_in_rent:
+    - true
+    - true
+    - true
+    receives_housing_assistance:
+    - false
+    - true
+    - true
+  output:
+    ar_liheap:
+    - 308
+    - 0
+    - 308
+- name: Case 5, a mixed state population pays only Arkansas households.
+  period: 2026
+  input:
+    state_code:
+    - AR
+    - GA
+    age:
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    ssi:
+    - 0
+    - 0
+    is_full_time_student:
+    - false
+    - false
+    employment_income:
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 10
+    - 10
+  output:
+    ar_liheap:
+    - 308
+    - 0

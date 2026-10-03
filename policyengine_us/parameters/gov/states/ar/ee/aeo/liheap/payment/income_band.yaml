@@ -1,0 +1,170 @@
+description: Arkansas assigns this payment band by monthly countable income under the Low Income Home Energy Assistance Program.
+# Published lower bounds are inclusive; cents do not trigger the next band
+# until its printed lower bound is reached.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 70
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 130
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 190
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 250
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 310
+    amount:
+      2025-10-01: 6
+  - threshold:
+      2025-10-01: 370
+    amount:
+      2025-10-01: 7
+  - threshold:
+      2025-10-01: 430
+    amount:
+      2025-10-01: 8
+  - threshold:
+      2025-10-01: 490
+    amount:
+      2025-10-01: 9
+  - threshold:
+      2025-10-01: 550
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 610
+    amount:
+      2025-10-01: 11
+  - threshold:
+      2025-10-01: 670
+    amount:
+      2025-10-01: 12
+  - threshold:
+      2025-10-01: 730
+    amount:
+      2025-10-01: 13
+  - threshold:
+      2025-10-01: 790
+    amount:
+      2025-10-01: 14
+  - threshold:
+      2025-10-01: 850
+    amount:
+      2025-10-01: 15
+  - threshold:
+      2025-10-01: 910
+    amount:
+      2025-10-01: 16
+  - threshold:
+      2025-10-01: 970
+    amount:
+      2025-10-01: 17
+  - threshold:
+      2025-10-01: 1_030
+    amount:
+      2025-10-01: 18
+  - threshold:
+      2025-10-01: 1_090
+    amount:
+      2025-10-01: 19
+  - threshold:
+      2025-10-01: 1_150
+    amount:
+      2025-10-01: 20
+  - threshold:
+      2025-10-01: 1_210
+    amount:
+      2025-10-01: 21
+  - threshold:
+      2025-10-01: 1_270
+    amount:
+      2025-10-01: 22
+  - threshold:
+      2025-10-01: 1_330
+    amount:
+      2025-10-01: 23
+  - threshold:
+      2025-10-01: 1_390
+    amount:
+      2025-10-01: 24
+  - threshold:
+      2025-10-01: 1_450
+    amount:
+      2025-10-01: 25
+  - threshold:
+      2025-10-01: 1_510
+    amount:
+      2025-10-01: 26
+  - threshold:
+      2025-10-01: 1_570
+    amount:
+      2025-10-01: 27
+  - threshold:
+      2025-10-01: 1_630
+    amount:
+      2025-10-01: 28
+  - threshold:
+      2025-10-01: 1_690
+    amount:
+      2025-10-01: 29
+  - threshold:
+      2025-10-01: 1_750
+    amount:
+      2025-10-01: 30
+  - threshold:
+      2025-10-01: 1_870
+    amount:
+      2025-10-01: 31
+  - threshold:
+      2025-10-01: 1_990
+    amount:
+      2025-10-01: 32
+  - threshold:
+      2025-10-01: 2_010
+    amount:
+      2025-10-01: 33
+  - threshold:
+      2025-10-01: 2_130
+    amount:
+      2025-10-01: 34
+  - threshold:
+      2025-10-01: 2_348
+    amount:
+      2025-10-01: 35
+  - threshold:
+      2025-10-01: 3_071
+    amount:
+      2025-10-01: 36
+  - threshold:
+      2025-10-01: 3_793
+    amount:
+      2025-10-01: 37
+  - threshold:
+      2025-10-01: 4_515
+    amount:
+      2025-10-01: 38
+  - threshold:
+      2025-10-01: 5_237
+    amount:
+      2025-10-01: 39
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: month
+  label: Arkansas LIHEAP monthly income band
+  reference:
+    - title: Arkansas FY2026 Winter Benefits Matrix, income bands common to all fuel schedules
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf#page=1

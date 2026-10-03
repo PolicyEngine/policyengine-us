@@ -1,0 +1,374 @@
+# Independent AR component tests; no final household eligibility or total benefit is asserted.
+
+# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+- name: Case 1, every published electric row and household column matches at its lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5,
+      1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3,
+      5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1,
+      3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [0, 0, 0, 840, 840, 840, 1_560, 1_560, 1_560, 2_280, 2_280, 2_280, 3_000,
+      3_000, 3_000, 3_720, 3_720, 3_720, 4_440, 4_440, 4_440, 5_160, 5_160, 5_160, 5_880, 5_880, 5_880,
+      6_600, 6_600, 6_600, 7_320, 7_320, 7_320, 8_040, 8_040, 8_040, 8_760, 8_760, 8_760, 9_480, 9_480,
+      9_480, 10_200, 10_200, 10_200, 10_920, 10_920, 10_920, 11_640, 11_640, 11_640, 12_360, 12_360,
+      12_360, 13_080, 13_080, 13_080, 13_800, 13_800, 13_800, 14_520, 14_520, 14_520, 15_240, 15_240,
+      15_240, 15_960, 15_960, 15_960, 16_680, 16_680, 16_680, 17_400, 17_400, 17_400, 18_120, 18_120,
+      18_120, 18_840, 18_840, 18_840, 19_560, 19_560, 19_560, 20_280, 20_280, 20_280, 21_000, 21_000,
+      21_000, 22_440, 22_440, 22_440, 23_880, 23_880, 23_880, 24_120, 24_120, 24_120, 25_560, 25_560,
+      25_560, 28_176, 28_176, 28_176, 36_852, 36_852, 36_852, 45_516, 45_516, 45_516, 54_180, 54_180,
+      54_180, 62_844, 62_844, 62_844]
+  output:
+    ar_liheap_matrix_amount: [242, 288, 344, 233, 276, 334, 221, 266, 322, 209, 254, 310, 199, 242,
+      300, 187, 233, 288, 179, 223, 276, 174, 215, 266, 170, 209, 254, 166, 204, 242, 160, 197, 233,
+      155, 192, 221, 149, 187, 209, 143, 181, 199, 138, 175, 190, 132, 170, 182, 127, 164, 176, 121,
+      158, 170, 115, 154, 164, 110, 148, 158, 104, 143, 152, 100, 137, 145, 94, 131, 140, 88, 126, 134,
+      83, 120, 128, 77, 114, 124, 72, 109, 118, 66, 103, 112, 60, 97, 107, 60, 92, 101, 60, 86, 95,
+      60, 80, 90, 60, 76, 84, 60, 70, 79, 60, 64, 73, 0, 60, 67, 0, 60, 61, 0, 0, 60, 0, 0, 60]
+
+
+# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+- name: Case 2, every published natgas row and household column matches at its lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5,
+      1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3,
+      5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1,
+      3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [0, 0, 0, 840, 840, 840, 1_560, 1_560, 1_560, 2_280, 2_280, 2_280, 3_000,
+      3_000, 3_000, 3_720, 3_720, 3_720, 4_440, 4_440, 4_440, 5_160, 5_160, 5_160, 5_880, 5_880, 5_880,
+      6_600, 6_600, 6_600, 7_320, 7_320, 7_320, 8_040, 8_040, 8_040, 8_760, 8_760, 8_760, 9_480, 9_480,
+      9_480, 10_200, 10_200, 10_200, 10_920, 10_920, 10_920, 11_640, 11_640, 11_640, 12_360, 12_360,
+      12_360, 13_080, 13_080, 13_080, 13_800, 13_800, 13_800, 14_520, 14_520, 14_520, 15_240, 15_240,
+      15_240, 15_960, 15_960, 15_960, 16_680, 16_680, 16_680, 17_400, 17_400, 17_400, 18_120, 18_120,
+      18_120, 18_840, 18_840, 18_840, 19_560, 19_560, 19_560, 20_280, 20_280, 20_280, 21_000, 21_000,
+      21_000, 22_440, 22_440, 22_440, 23_880, 23_880, 23_880, 24_120, 24_120, 24_120, 25_560, 25_560,
+      25_560, 28_176, 28_176, 28_176, 36_852, 36_852, 36_852, 45_516, 45_516, 45_516, 54_180, 54_180,
+      54_180, 62_844, 62_844, 62_844]
+  output:
+    ar_liheap_matrix_amount: [308, 366, 437, 295, 350, 422, 280, 338, 409, 265, 324, 394, 253, 308,
+      380, 238, 295, 366, 227, 283, 350, 221, 272, 338, 216, 265, 324, 210, 258, 308, 203, 250, 295,
+      197, 245, 280, 190, 238, 265, 182, 230, 253, 175, 223, 240, 168, 216, 232, 161, 209, 224, 154,
+      202, 216, 146, 194, 209, 139, 187, 200, 132, 181, 193, 127, 174, 185, 121, 167, 178, 115, 160,
+      169, 112, 152, 162, 107, 145, 154, 103, 138, 146, 98, 131, 138, 95, 124, 131, 90, 116, 122, 84,
+      109, 115, 79, 102, 107, 73, 95, 100, 68, 88, 91, 62, 80, 84, 0, 73, 76, 0, 66, 68, 0, 0, 60, 0,
+      0, 60]
+
+
+# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+- name: Case 3, every published propane row and household column matches at its lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5,
+      1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3,
+      5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1,
+      3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [0, 0, 0, 840, 840, 840, 1_560, 1_560, 1_560, 2_280, 2_280, 2_280, 3_000,
+      3_000, 3_000, 3_720, 3_720, 3_720, 4_440, 4_440, 4_440, 5_160, 5_160, 5_160, 5_880, 5_880, 5_880,
+      6_600, 6_600, 6_600, 7_320, 7_320, 7_320, 8_040, 8_040, 8_040, 8_760, 8_760, 8_760, 9_480, 9_480,
+      9_480, 10_200, 10_200, 10_200, 10_920, 10_920, 10_920, 11_640, 11_640, 11_640, 12_360, 12_360,
+      12_360, 13_080, 13_080, 13_080, 13_800, 13_800, 13_800, 14_520, 14_520, 14_520, 15_240, 15_240,
+      15_240, 15_960, 15_960, 15_960, 16_680, 16_680, 16_680, 17_400, 17_400, 17_400, 18_120, 18_120,
+      18_120, 18_840, 18_840, 18_840, 19_560, 19_560, 19_560, 20_280, 20_280, 20_280, 21_000, 21_000,
+      21_000, 22_440, 22_440, 22_440, 23_880, 23_880, 23_880, 24_120, 24_120, 24_120, 25_560, 25_560,
+      25_560, 28_176, 28_176, 28_176, 36_852, 36_852, 36_852, 45_516, 45_516, 45_516, 54_180, 54_180,
+      54_180, 62_844, 62_844, 62_844]
+  output:
+    ar_liheap_matrix_amount: [397, 472, 563, 380, 451, 545, 360, 436, 527, 342, 418, 506, 326, 397,
+      490, 306, 380, 472, 293, 365, 451, 284, 352, 436, 278, 342, 418, 271, 334, 397, 262, 323, 380,
+      253, 314, 360, 244, 306, 342, 235, 296, 326, 226, 288, 310, 216, 278, 299, 208, 269, 289, 198,
+      260, 278, 190, 251, 269, 180, 242, 258, 170, 233, 250, 163, 223, 239, 156, 215, 229, 149, 205,
+      220, 144, 197, 211, 138, 187, 202, 132, 178, 193, 127, 169, 184, 121, 160, 174, 116, 151, 166,
+      110, 142, 156, 106, 132, 148, 100, 124, 138, 95, 114, 128, 89, 106, 120, 0, 96, 110, 0, 86, 102,
+      0, 0, 92, 0, 0, 83]
+
+
+# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+- name: Case 4, every published fueloil row and household column matches at its lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    fuel_oil_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5,
+      1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3,
+      5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1,
+      3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [0, 0, 0, 840, 840, 840, 1_560, 1_560, 1_560, 2_280, 2_280, 2_280, 3_000,
+      3_000, 3_000, 3_720, 3_720, 3_720, 4_440, 4_440, 4_440, 5_160, 5_160, 5_160, 5_880, 5_880, 5_880,
+      6_600, 6_600, 6_600, 7_320, 7_320, 7_320, 8_040, 8_040, 8_040, 8_760, 8_760, 8_760, 9_480, 9_480,
+      9_480, 10_200, 10_200, 10_200, 10_920, 10_920, 10_920, 11_640, 11_640, 11_640, 12_360, 12_360,
+      12_360, 13_080, 13_080, 13_080, 13_800, 13_800, 13_800, 14_520, 14_520, 14_520, 15_240, 15_240,
+      15_240, 15_960, 15_960, 15_960, 16_680, 16_680, 16_680, 17_400, 17_400, 17_400, 18_120, 18_120,
+      18_120, 18_840, 18_840, 18_840, 19_560, 19_560, 19_560, 20_280, 20_280, 20_280, 21_000, 21_000,
+      21_000, 22_440, 22_440, 22_440, 23_880, 23_880, 23_880, 24_120, 24_120, 24_120, 25_560, 25_560,
+      25_560, 28_176, 28_176, 28_176, 36_852, 36_852, 36_852, 45_516, 45_516, 45_516, 54_180, 54_180,
+      54_180, 62_844, 62_844, 62_844]
+  output:
+    ar_liheap_matrix_amount: [402, 478, 570, 385, 457, 552, 365, 442, 534, 347, 422, 514, 330, 402,
+      497, 310, 385, 478, 296, 370, 457, 288, 356, 442, 282, 347, 422, 275, 337, 402, 265, 326, 385,
+      257, 319, 365, 247, 310, 347, 238, 301, 330, 228, 292, 313, 220, 282, 302, 210, 272, 293, 200,
+      264, 282, 192, 254, 272, 182, 245, 262, 173, 236, 252, 166, 227, 241, 158, 217, 233, 151, 209,
+      223, 145, 199, 214, 140, 190, 204, 134, 180, 196, 128, 172, 186, 124, 162, 176, 118, 152, 168,
+      110, 144, 158, 103, 134, 149, 96, 125, 140, 89, 116, 131, 82, 108, 122, 0, 98, 113, 0, 90, 104,
+      0, 0, 95, 0, 0, 86]
+
+
+# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+- name: Case 5, every published other row and household column matches at its lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR,
+      AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    other_heating_fuel_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5,
+      1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3,
+      5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1,
+      3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [0, 0, 0, 840, 840, 840, 1_560, 1_560, 1_560, 2_280, 2_280, 2_280, 3_000,
+      3_000, 3_000, 3_720, 3_720, 3_720, 4_440, 4_440, 4_440, 5_160, 5_160, 5_160, 5_880, 5_880, 5_880,
+      6_600, 6_600, 6_600, 7_320, 7_320, 7_320, 8_040, 8_040, 8_040, 8_760, 8_760, 8_760, 9_480, 9_480,
+      9_480, 10_200, 10_200, 10_200, 10_920, 10_920, 10_920, 11_640, 11_640, 11_640, 12_360, 12_360,
+      12_360, 13_080, 13_080, 13_080, 13_800, 13_800, 13_800, 14_520, 14_520, 14_520, 15_240, 15_240,
+      15_240, 15_960, 15_960, 15_960, 16_680, 16_680, 16_680, 17_400, 17_400, 17_400, 18_120, 18_120,
+      18_120, 18_840, 18_840, 18_840, 19_560, 19_560, 19_560, 20_280, 20_280, 20_280, 21_000, 21_000,
+      21_000, 22_440, 22_440, 22_440, 23_880, 23_880, 23_880, 24_120, 24_120, 24_120, 25_560, 25_560,
+      25_560, 28_176, 28_176, 28_176, 36_852, 36_852, 36_852, 45_516, 45_516, 45_516, 54_180, 54_180,
+      54_180, 62_844, 62_844, 62_844]
+  output:
+    ar_liheap_matrix_amount: [289, 344, 410, 277, 330, 397, 263, 318, 384, 250, 305, 370, 238, 289,
+      358, 223, 277, 344, 214, 266, 330, 208, 257, 318, 203, 250, 305, 198, 244, 289, 191, 235, 277,
+      185, 230, 263, 178, 223, 250, 172, 216, 238, 164, 210, 226, 158, 203, 218, 151, 197, 211, 144,
+      190, 203, 138, 184, 197, 131, 176, 188, 125, 170, 182, 119, 163, 174, 114, 156, 167, 109, 150,
+      161, 104, 143, 154, 101, 137, 148, 97, 130, 140, 92, 124, 134, 89, 116, 127, 85, 110, 121, 79,
+      103, 114, 74, 97, 107, 68, 90, 101, 64, 83, 94, 60, 77, 88, 0, 70, 80, 0, 64, 74, 0, 0, 67, 0,
+      0, 61]
+
+
+# Electric3–4column:69.99→288;70→276;1989.99→86;1990→80;2009.99→80;2010→76. Irregular20dollar band is preserved.
+- name: Case 6, fractional income stays below the next published lower bound.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [3, 3, 3, 3, 3, 3]
+    ar_liheap_countable_income: [839.88, 840, 23879.88, 23_880, 24119.88, 24_120]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ar_liheap_matrix_amount: [288, 276, 86, 80, 80, 76]
+
+
+# Propane0–69row groups1–2,3–4,5+; no fixed-matrix expense cap from a50annual bill.
+- name: Case 7, within group sizes and large households share published payment columns.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 2, 3, 4, 5, 8, 21]
+    ar_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [50, 50, 50, 50, 50, 50, 50]
+  output:
+    ar_liheap_matrix_amount: [397, 397, 472, 472, 563, 563, 563]
+
+
+# Application fuel grouping maps kerosene to fuel oil; wood/coal/other use the other-fuel table.
+- name: Case 8, kerosene wood and coal use their source supported fuel groups.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR]
+    heating_type: [KEROSENE, WOOD, COAL, OTHER]
+    gas_expense: [1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [5, 5, 5, 5]
+    ar_liheap_countable_income: [0, 0, 0, 0]
+    fuel_oil_expense: [1_200, 1_200, 1_200, 1_200]
+    wood_expense: [1_200, 1_200, 1_200, 1_200]
+    coal_expense: [1_200, 1_200, 1_200, 1_200]
+    other_heating_fuel_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    ar_liheap_matrix_amount: [570, 410, 410, 410]
+
+
+# NONE affirmatively means no heating; no invented fuel fallback.
+- name: Case 9, explicit no heating has no matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AR
+    heating_type: NONE
+    gas_expense: 1_200
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 0
+  output:
+    ar_liheap_matrix_amount: 0

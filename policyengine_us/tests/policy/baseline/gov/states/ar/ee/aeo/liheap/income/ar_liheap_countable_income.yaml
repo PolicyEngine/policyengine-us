@@ -1,0 +1,205 @@
+# Independent AR component tests; no final household eligibility or total benefit is asserted.
+
+# Plan p5:15000×0.8=12000 countable work income.
+- name: Case 1, adult gross wages receive the twenty percent disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 12_000
+
+# Application p2 excludes full-time students from work-income reporting; unearned1200 remains fully countable.
+- name: Case 2, full time adult student work is excluded but Social Security remains.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 15_000
+        self_employment_income: 3_000
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 1_200
+
+# Application p2 work-income age18 boundary; SSI2400+support3600=6000 remain countable.
+- name: Case 3, minor work is excluded but SSI and child support remain.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 2_400
+        employment_income: 15_000
+        self_employment_income: 3_000
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 6_000
+
+# Exactly18 and not a full-time student makes wages countable, after20%disregard.
+- name: Case 4, age eighteen nonstudent earnings are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 12_000
+
+# Countable adult existing earned inputs total20000; standard20%disregard gives16000, without a new business-expense calculation.
+- name: Case 5, existing business sources receive the standard earned disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 10_000
+        self_employment_income: 5_000
+        farm_operations_income: 2_500
+        sstb_self_employment_income: 1_250
+        partnership_s_corp_income: 1_250
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 16_000
+
+# Contract specifies nonnegative earned sources: wages12000×0.8+pension1200=10800.
+- name: Case 6, source losses do not offset wages or unearned receipts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        farm_operations_income: -2_400
+        pension_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 10_800
+
+# 9600 counted wages+2400rent+1200farmrent+600survivor+2400SSI=16200. Plan pp6–7 excludes TANF although application requests disclosure.
+- name: Case 7, farm rent survivors and child SSI count while TANF is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 2_400
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 16_200

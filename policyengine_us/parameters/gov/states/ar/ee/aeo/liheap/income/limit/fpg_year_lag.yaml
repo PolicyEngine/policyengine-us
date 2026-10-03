@@ -1,0 +1,13 @@
+description: Arkansas uses the federal poverty guideline from this many years before the benefit year under the Low Income Home Energy Assistance Program.
+# The FY2026 published thresholds match the 2025 federal poverty guidelines.
+# Earlier years use their corresponding guideline year but are unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP federal poverty guideline year lag
+  reference:
+    - title: Arkansas FY2026 Income Eligibility Chart using the 2025 federal poverty guidelines
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
