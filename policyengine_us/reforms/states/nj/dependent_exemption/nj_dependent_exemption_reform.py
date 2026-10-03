@@ -7,7 +7,7 @@ def create_nj_dependent_exemption() -> Reform:
         value_type = float
         entity = TaxUnit
         label = "New Jersey qualified and other dependent children exemption"
-        reference = "https://casetext.com/statute/new-jersey-statutes/title-54a-new-jersey-gross-income-tax-act/chapter-54a3-personal-exemptions-and-deductions/section-54a3-1-personal-exemptions-and-deductions"
+        reference = "https://law.justia.com/codes/new-jersey/title-54a/section-54a-3-1/"
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.NJ

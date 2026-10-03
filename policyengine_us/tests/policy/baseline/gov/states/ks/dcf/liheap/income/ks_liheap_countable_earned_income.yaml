@@ -1,0 +1,177 @@
+# Kansas LIEAP countable earned income per person (KS LIHEAP State Plan FY2026
+# 1.8-1.9, pages 5-7): gross wages and self-employment income are counted,
+# except the earned income of a child under 18. KEESM 13320: a member who is
+# or turns 18 in the application month has countable income.
+# Modeling simplification: use existing net business income directly, without
+# applying KEESM 13360's gross-receipts expense deduction a second time.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, adult wages are counted in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: 24_000
+
+- name: Case 2, an 18-year-old's wages are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 18_000
+      person2:
+        age: 18
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: [18_000, 5_000]
+    ks_liheap_countable_income: 23_000
+
+- name: Case 3, unearned income is not part of earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        pension_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: 0
+
+- name: Case 4, FY2025 reported net business income receives no additional deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: 24_000
+  output:
+    ks_liheap_countable_earned_income: 24_000
+
+- name: Case 5, FY2026 includes regular, SSTB, and farm net income alongside wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    age: 40
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
+    farm_operations_income: 5_000
+    ks_tanf: 0
+  output:
+    ks_liheap_countable_earned_income: 26_000
+    ks_liheap_countable_income: 26_000
+
+- name: Case 6, a farm loss does not offset wages or other positive business income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    age: 40
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: 4_000
+    farm_operations_income: -15_000
+  output:
+    ks_liheap_countable_earned_income: 22_000
+
+- name: Case 7, an adult with only business losses has no countable earnings.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    age: 40
+    self_employment_income: -3_000
+    sstb_self_employment_income: -2_000
+    farm_operations_income: -1_000
+  output:
+    ks_liheap_countable_earned_income: 0
+
+- name: Case 8, child business income is excluded and adult losses do not affect other people.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        self_employment_income: -4_000
+      person2:
+        age: 17
+        employment_income: 5_000
+        self_employment_income: 4_000
+        sstb_self_employment_income: 3_000
+        farm_operations_income: 2_000
+      person3:
+        age: 18
+        self_employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    ks_liheap_countable_earned_income: [12_000, 0, 6_000]
+    ks_liheap_countable_income: 18_000
+
+- name: Case 9, partnership and S corporation profit is counted and a loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # 10 an hour, 40 hours a week: 10 * 2,080 = 20,800.
+        employment_income: 20_800
+        partnership_s_corp_income: 9_000
+      person2:
+        age: 43
+        employment_income: 20_800
+        partnership_s_corp_income: -4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # KEESM 6313: a loss cannot be deducted from other income, so each source
+    # is floored at zero before the sources are added.
+    # person1: 20,800 + 9,000 = 29,800. person2: 20,800 + max(-4,000, 0) = 20,800.
+    ks_liheap_countable_earned_income: [29_800, 20_800]
+    ks_liheap_countable_income: 50_600

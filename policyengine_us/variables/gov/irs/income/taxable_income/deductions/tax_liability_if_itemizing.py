@@ -10,7 +10,7 @@ class tax_liability_if_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        itemized_branch = simulation.get_branch("itemizing")
+        itemized_branch = get_branch_for_period(simulation, "itemizing", period)
         itemized_branch.set_input(
             "tax_unit_itemizes", period, np.ones((tax_unit.count,), dtype=bool)
         )

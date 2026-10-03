@@ -21,7 +21,7 @@ class ma_ccfa_countable_income_person(Variable):
         earned = add(person, period, p.sources.earned)
         if p.exclusions.minor_earnings_in_effect:
             minor = person("is_child", period.this_year)
-            gross -= where(minor, earned, 0)
+            gross = gross - where(minor, earned, 0)
 
         if p.only_parent_income_in_effect:
             return where(is_parent, gross, 0)

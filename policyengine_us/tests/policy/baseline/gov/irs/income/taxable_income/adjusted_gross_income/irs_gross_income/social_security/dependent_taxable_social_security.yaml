@@ -1,0 +1,131 @@
+- name: Provisional income equal to the base amount leaves a dependent's benefits nontaxable.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_pension_income: 16_000
+        short_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 16,000 - 1,000 = 15,000.
+    # Provisional income = 15,000 + 0.5 * 20,000 = 25,000, which does not
+    # exceed the 25,000 base amount (IRC 86(b)(1)).
+    dependent_taxable_ss_magi: [0, 15_000]
+    dependent_taxable_social_security: [0, 0]
+    dependent_gross_income: [0, 16_000]
+
+- name: Provisional income just above the base amount makes a dependent's benefits partly taxable.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_pension_income: 16_000
+        short_term_capital_gains: -998
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 16,000 - 998 = 15,002.
+    # Provisional income = 15,002 + 10,000 = 25,002.
+    # Taxable = min(0.5 * 20,000, 0.5 * (25,002 - 25,000)) = 1.
+    dependent_taxable_ss_magi: [0, 15_002]
+    dependent_taxable_social_security: [0, 1]
+    dependent_gross_income: [0, 16_001]
+
+- name: Zero base amounts and the separate-return capital loss limit for a dependent living with their spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 30_000
+        taxable_pension_income: 14_000
+        short_term_capital_gains: -5_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # Mother: modified AGI = 14,000 - 1,500 = 12,500.
+    # Provisional income = 12,500 + 0.5 * 30,000 = 27,500.
+    # Bracket amount = min(min(15,000, 13,750), 0.5 * (0 - 0)) = 0.
+    # Taxable = min(0.85 * 27,500 + 0, 0.85 * 30,000)
+    # = min(23,375, 25,500) = 23,375.
+    dependent_taxable_social_security: [0, 23_375, 0]
+    dependent_gross_income: [0, 37_375, 0]
+
+- name: Eighty-five percent of benefits caps the taxable amount for a dependent living with their spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 12_000
+        taxable_pension_income: 20_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # Provisional income = 20,000 + 0.5 * 12,000 = 26,000.
+    # Taxable = min(0.85 * 26,000, 0.85 * 12,000) = min(22,100, 10,200)
+    # = 10,200.
+    dependent_taxable_social_security: [0, 10_200, 0]
