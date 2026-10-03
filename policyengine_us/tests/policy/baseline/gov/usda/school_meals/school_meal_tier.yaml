@@ -114,7 +114,7 @@
   period: 2026
   input:
     people:
-      person1: {age: 35, employment_income: 40_034}
+      person1: {age: 35, employment_income_before_lsr: 40_034}
       person2: {age: 10}
     spm_units:
       spm_unit:
@@ -131,7 +131,7 @@
   period: 2026
   input:
     people:
-      person1: {age: 35, employment_income: 40_035}
+      person1: {age: 35, employment_income_before_lsr: 40_035}
       person2: {age: 10}
     spm_units:
       spm_unit:

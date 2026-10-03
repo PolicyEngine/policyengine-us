@@ -1,1 +1,1 @@
-North Carolina students who qualify for reduced-price school meals now get the free tier, because the state pays the reduced-price copay.
+North Carolina students who qualify for reduced-price school meals now get the free tier, because the state pays the reduced-price copay. Correct the 2025 contiguous-US paid lunch reimbursement rate to use the same under-60% category as the free and reduced-price rates. Date the school year 2025-2026 reimbursement rates to July 1, 2025.
