@@ -1,0 +1,1 @@
+Replace dead Massachusetts reference URLs (Form 1 instructions and schedules, Department of Revenue pages, child care and LIHEAP documents) with live successors or pinned Wayback captures, and guard against their return.

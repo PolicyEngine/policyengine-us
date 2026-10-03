@@ -48,6 +48,14 @@ See [CLAUDE.md](./CLAUDE.md) for variable/parameter/period/testing patterns in d
 
 `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata and drives the `/us/metadata` API. When adding a new program, add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`. When extending year coverage, bump the entry's year field — most entries use `verified_start_year`; a few use a `verified_years` range (e.g. `"2022-2026"`) — after verifying parameters and tests cover the new year. When adding a state implementation of a federal program, add it to `state_implementations` under the parent federal entry.
 
+## Axiom parity
+
+Every policy change here must also be correct in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). That covers a new program, a parameter or threshold update, an eligibility rule and a bug fix. The shared guide, [Mirror policy changes in Axiom](https://github.com/PolicyEngine/.github/blob/main/CONTRIBUTING.md#mirror-policy-changes-in-axiom), defines the `axiom:` line your PR description needs and what a `queued` issue must contain. US specifics:
+
+- Federal modules live under `us/` (for example `us/statutes/26/32.yaml` for the EITC and `us/policies/irs/rev-proc-2025-32/` for annual IRS amounts). State modules live under `us-<state>/` (for example `us-nj/statutes/54a:4-7.yaml`). Search `main` there before opening a new issue.
+- An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
+- Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
+
 ## Repo-specific anti-patterns
 
 - Branching on upstream (`git push upstream <branch>`) is preferred when you have write access, but fork PRs are fine here: PR CI needs no repository secrets (the only one, `CODECOV_TOKEN`, uploads with `fail_ci_if_error: false`, and codecov passes tokenless) and downloads no gated data, so fork PRs run the full suite green.

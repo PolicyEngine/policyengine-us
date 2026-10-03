@@ -130,6 +130,11 @@ changelog.d/medicaid-ce-exclusions.md
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators
 
+## Axiom Parity (required for policy changes)
+- Any PR that adds, updates or fixes policy must also leave the same provision correct in rulespec-us. Put one line in the PR body: `axiom: <legal id> encoded-correct | <rulespec PR> encoded | <rulespec issue> queued | n/a: <reason>`.
+- A `queued` rulespec-us issue must be dispatch-ready and labelled `pe-parity`. It needs the module path and corpus citation, the verbatim law, the required outputs, and companion tests from the same external source as your YAML tests. See `CONTRIBUTING.md#axiom-parity`.
+- Never hand-write RuleSpec. Modules come from the signed encoder.
+
 ## Code Integrity
 - **BEFORE DELETING ANY CODE, VERIFY IT IS ACTUALLY UNUSED**
   - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`

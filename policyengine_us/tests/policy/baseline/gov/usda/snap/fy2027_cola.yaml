@@ -1,0 +1,248 @@
+# USDA FY2027 COLA memo, August 21, 2026, pages 4-7.
+# https://www.fns.usda.gov/snap/allotment/cola/fy27
+# Values verified directly against the published tables.
+
+- name: FY2027 CONTIGUOUS_US maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [306, 562, 808, 1023, 1217, 1463, 1616, 1841, 2066, 3866, 3887, 3887]
+
+- name: FY2027 AK_URBAN maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN, AK_URBAN]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [392, 718, 1032, 1306, 1555, 1868, 2064, 2352, 2639, 4935, 4965, 4965]
+
+- name: FY2027 AK_RURAL_1 maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1, AK_RURAL_1]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [499, 916, 1316, 1666, 1982, 2382, 2632, 2999, 3365, 6293, 6331, 6331]
+
+- name: FY2027 AK_RURAL_2 maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2, AK_RURAL_2]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [608, 1115, 1602, 2027, 2413, 2900, 3204, 3650, 4096, 7664, 7705, 7705]
+
+- name: FY2027 GU maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [GU, GU, GU, GU, GU, GU, GU, GU, GU, GU, GU, GU]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [452, 829, 1191, 1507, 1794, 2156, 2382, 2714, 3045, 5693, 5729, 5729]
+
+- name: FY2027 HI maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [496, 910, 1307, 1655, 1969, 2367, 2615, 2979, 3343, 6255, 6289, 6289]
+
+- name: FY2027 VI maximum allotments, additional members, and 18-person cap
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [VI, VI, VI, VI, VI, VI, VI, VI, VI, VI, VI, VI]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 30]
+  output:
+    snap_max_allotment: [394, 723, 1039, 1315, 1565, 1880, 2078, 2367, 2656, 4968, 4997, 4997]
+
+- name: FY2026 large-household allotment follows USDA's published table, which set no 18+ cap
+  period: 2026-09
+  input:
+    snap_region_str:
+      2026: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US]
+    snap_unit_size: [17, 18, 30]
+  output:
+    # USDA's FY2026 table listed the $1,789 eight-person maximum plus $218 per
+    # additional person, with no 18+ row; the cap first appears in FY2027.
+    snap_max_allotment: [3751, 3969, 6585]
+
+- name: FY2027 published minimum allotments in every region
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [CONTIGUOUS_US, AK_URBAN, AK_RURAL_1, AK_RURAL_2, GU, HI, VI]
+    state_code:
+      2026: [CA, AK, AK, AK, GU, HI, VI]
+    snap_unit_size: [1, 1, 1, 1, 1, 1, 1]
+  output:
+    # Page 5. Rounding 8% of the published $306 one-person maximum gives
+    # $24; min_allotment.published_adjustment supplies the published $25.
+    snap_min_allotment: [25, 31, 40, 49, 36, 40, 32]
+
+- name: FY2027 federal minimum applies only to one-person and two-person SNAP units
+  period: 2026-10
+  input:
+    state_code:
+      2026: [CA, CA, CA]
+    snap_unit_size: [1, 2, 3]
+  output:
+    snap_min_allotment: [25, 25, 0]
+
+- name: FY2027 minimum allotment preserves state supplements
+  period: 2026-10
+  input:
+    state_code:
+      2026: [DC, NJ, MD, MD]
+    md_snap_elderly_present:
+      2026: [false, false, true, false]
+    snap_unit_size: [1, 1, 1, 1]
+  output:
+    snap_min_allotment: [30, 95, 40, 25]
+
+- name: FY2027 CONTIGUOUS_US standard deductions by household size
+  period: 2026-10
+  input:
+    state_group:
+      2026: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 9]
+  output:
+    snap_standard_deduction: [217, 217, 217, 229, 268, 308, 308]
+
+- name: FY2027 AK standard deductions by household size
+  period: 2026-10
+  input:
+    state_group:
+      2026: [AK, AK, AK, AK, AK, AK, AK]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 9]
+  output:
+    snap_standard_deduction: [371, 371, 371, 371, 371, 385, 385]
+
+- name: FY2027 HI standard deductions by household size
+  period: 2026-10
+  input:
+    state_group:
+      2026: [HI, HI, HI, HI, HI, HI, HI]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 9]
+  output:
+    snap_standard_deduction: [306, 306, 306, 306, 309, 354, 354]
+
+- name: FY2027 GU standard deductions by household size
+  period: 2026-10
+  input:
+    state_group:
+      2026: [GU, GU, GU, GU, GU, GU, GU]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 9]
+  output:
+    snap_standard_deduction: [435, 435, 435, 457, 536, 614, 614]
+
+- name: FY2027 VI standard deductions by household size
+  period: 2026-10
+  input:
+    state_group:
+      2026: [VI, VI, VI, VI, VI, VI, VI]
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 9]
+  output:
+    snap_standard_deduction: [191, 191, 191, 229, 268, 308, 308]
+
+- name: FY2027 shelter caps across all SNAP regions
+  period: 2026-10
+  input:
+    snap_region_str:
+      2026: [CONTIGUOUS_US, AK_URBAN, AK_RURAL_1, AK_RURAL_2, GU, HI, VI]
+    housing_cost:
+      2026: [24_000, 24_000, 24_000, 24_000, 24_000, 24_000, 24_000]
+    snap_net_income_pre_shelter: [0, 0, 0, 0, 0, 0, 0]
+    snap_utility_allowance: [0, 0, 0, 0, 0, 0, 0]
+    has_snap_elderly_disabled_member: [false, false, false, false, false, false, false]
+    snap_expense_counted_share: [1, 1, 1, 1, 1, 1, 1]
+  output:
+    snap_excess_shelter_expense_deduction: [769, 1229, 1229, 1229, 903, 1036, 606]
+
+- name: FY2027 homeless shelter deduction across all jurisdictions
+  period: 2026-10
+  absolute_error_margin: 0.001
+  input:
+    state_code:
+      2026: [CA, AK, GU, HI, VI]
+    is_homeless:
+      2026: [true, true, true, true, true]
+    housing_cost:
+      2026: [12, 12, 12, 12, 12]
+    snap_net_income_pre_shelter: [0, 0, 0, 0, 0]
+    snap_utility_allowance: [0, 0, 0, 0, 0]
+    snap_expense_counted_share: [1, 1, 1, 1, 1]
+  output:
+    snap_excess_shelter_expense_deduction: [205.66, 205.66, 205.66, 205.66, 205.66]
+
+- name: FY2026 resource limits apply through September 2026
+  period: 2026-09
+  input:
+    has_snap_elderly_disabled_member: [true, true, true, true, false, false]
+    snap_assets:
+      2026: [4500, 4501, 4750, 4751, 3000, 3001]
+  output:
+    meets_snap_asset_test: [true, false, false, false, true, false]
+
+- name: FY2027 resource limit increases only for elderly or disabled households in October 2026
+  period: 2026-10
+  input:
+    has_snap_elderly_disabled_member: [true, true, true, true, false, false]
+    snap_assets:
+      2026: [4500, 4501, 4750, 4751, 3000, 3001]
+  output:
+    meets_snap_asset_test: [true, true, true, false, true, false]
+
+- name: Published FY2027 minimum determines California SNAP benefits from October through December
+  period: 2026
+  input:
+    age: 65
+    state_code: CA
+    social_security_retirement: 14_000
+    takes_up_snap_if_eligible: true
+  output:
+    snap_max_allotment:
+      2026-09: 298
+      2026-10: 306
+    snap_standard_deduction:
+      2026-09: 209
+      2026-10: 217
+    is_snap_eligible:
+      2026-10: true
+      2026-11: true
+      2026-12: true
+    snap:
+      2026-09: 24
+      2026-10: 25
+      2026-11: 25
+      2026-12: 25
+
+- name: Published FY2027 Hawaii allotment decreases from October through December
+  period: 2026
+  input:
+    age: 65
+    state_code: HI
+    # Keep this a zero-income SNAP household by declining SSI.
+    takes_up_ssi_if_eligible: false
+    takes_up_snap_if_eligible: true
+  output:
+    snap_standard_deduction:
+      2026-10: 306
+    is_snap_eligible:
+      2026-10: true
+      2026-11: true
+      2026-12: true
+    snap:
+      2026-09: 506
+      2026-10: 496
+      2026-11: 496
+      2026-12: 496
