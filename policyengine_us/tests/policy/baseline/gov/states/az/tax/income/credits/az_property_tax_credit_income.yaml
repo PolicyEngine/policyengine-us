@@ -204,3 +204,81 @@
     # Line 11a: 2021 Schedule 1, 1,951 - 2,050 -> 435.
     # Line 13: 0.15 x 3,000 = 450. Line 15: smaller of 435 and 450.
     az_property_tax_credit: 435
+
+# A.A.C. R15-2C-502(A)(2) and (B): household income combines every member's
+# income, whether or not the member is a dependent. Federal AGI leaves out a
+# dependent's income, so it is added separately.
+- name: A dependent's long-term gains count once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 5_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line D: column 3 (other persons) gain 3,000. Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    # Line 11b: Schedule 2, 2,951 - 3,100 -> 412.
+    # Line 13: 0.15 x 5,000 = 750. Line 15: smaller of 412 and 750.
+    az_property_tax_credit: 412
+
+- name: A dependent's qualified dividends count once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 5_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line B: column 3 dividends 3,000. Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    # Line 11b: Schedule 2, 2,951 - 3,100 -> 412. Line 13: 750.
+    az_property_tax_credit: 412
+
+- name: A dependent's wages count with the claimant's pension
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 1_000
+        rent: 5_000
+      grandchild:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: AZ
+  output:
+    # Line A: column 3 wages 2,000. Line E: column 1 pension 1,000.
+    # Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    # Line 11b: Schedule 2, 2,951 - 3,100 -> 412. Line 13: 750.
+    az_property_tax_credit: 412

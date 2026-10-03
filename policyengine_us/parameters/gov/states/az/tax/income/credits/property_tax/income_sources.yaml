@@ -15,12 +15,16 @@ values:
     # excluded from federal AGI (such as a section 121 home sale or section 1202
     # small business stock exclusion), so nothing is added for it. Do not add
     # capital_gains_excluded_from_taxable_income: it is the part of federal
-    # taxable income taxed at the capital gains rates (the whole net capital
-    # gain when taxable income is zero), which federal AGI already holds.
+    # taxable income taxed at the capital gains rates (at zero taxable income,
+    # the adjusted net capital gain), which federal AGI already holds.
     # Federal AGI limits a net capital loss to $3,000 per return ($1,500 if
     # married filing separately); A.A.C. R15-2C-502(C)(3) limits it to $1,500
     # for each household member.
     - az_property_tax_credit_agi
+    # Federal AGI leaves out dependents' income; Arizona counts every household
+    # member's income whether or not the member is a dependent
+    # (A.A.C. R15-2C-502(A)(2), (B)).
+    - az_property_tax_credit_dependent_income
 metadata:
   unit: list
   period: year

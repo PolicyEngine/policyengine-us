@@ -1,1 +1,1 @@
-Arizona property tax credit household income counts capital gains and qualified dividends once, through federal AGI, instead of adding the federal preferential-rate amount again.
+Arizona property tax credit household income counts capital gains and qualified dividends once, through federal AGI, instead of adding the federal preferential-rate amount again, and counts dependents' income, which federal AGI leaves out.

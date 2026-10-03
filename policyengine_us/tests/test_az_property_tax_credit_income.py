@@ -6,16 +6,18 @@ each member's gains and losses from the sale or exchange of property, combined,
 with a net loss limited to $1,500. Federal AGI already holds those gains, so
 az_property_tax_credit_income must count each dollar of gain once. It used to
 add capital_gains_excluded_from_taxable_income as well, which is the part of
-federal taxable income taxed at the capital gains rates (the whole net capital
-gain plus qualified dividends when taxable income is zero), so gains and
-qualified dividends counted twice.
+federal taxable income taxed at the capital gains rates (at zero taxable
+income, the adjusted net capital gain), so gains and qualified dividends
+counted twice. Federal AGI leaves out dependents' income, which Arizona counts
+for every household member whether or not a dependent.
 
-Invariants, checked on a seeded sample of Arizona tax units whose per-member
-net capital gain is at least -$1,500 (where the federal and Arizona loss rules
-agree) and whose income other than Social Security is not negative:
+Invariants, checked on a seeded sample of Arizona tax units (some with a child
+dependent who has income) whose per-member net capital gain is at least -$1,500
+(where the federal and Arizona loss rules agree), whose dependents have no net
+capital loss, and whose income other than Social Security is not negative:
 
-1. Differential: the model equals an independent line A + B + D + E sum from
-   Form 140PTC Part 1, with Social Security excluded.
+1. Differential: the model equals an independent line A + B + D + E sum over
+   every member from Form 140PTC Part 1, with Social Security excluded.
 2. Counted once: adding d to a member's long-term gains raises household
    income by exactly d.
 3. The income does not depend on capital_gains_excluded_from_taxable_income.
@@ -68,6 +70,29 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "tax_exempt_public_pension_income": round(rng.uniform(0, 1_000), 2),
                     "social_security_retirement": float(
                         rng.choice([0, round(rng.uniform(0, 30_000), 2)])
+                    ),
+                }
+            )
+        if rng.random() < 0.35:
+            # A child dependent with income of their own. Dependents' net
+            # capital losses are not modeled, so their gains stay at or above 0.
+            members.append(
+                {
+                    "role": "dependent",
+                    "age": int(rng.integers(5, 18)),
+                    "is_tax_unit_dependent": True,
+                    "employment_income": float(
+                        rng.choice([0, round(rng.uniform(0, 4_000), 2)])
+                    ),
+                    "taxable_interest_income": round(rng.uniform(0, 300), 2),
+                    "tax_exempt_interest_income": round(rng.uniform(0, 200), 2),
+                    "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
+                    "long_term_capital_gains": round(rng.uniform(0, 4_000), 2),
+                    "short_term_capital_gains": round(rng.uniform(0, 1_000), 2),
+                    "taxable_private_pension_income": 0.0,
+                    "tax_exempt_public_pension_income": 0.0,
+                    "social_security_survivors": float(
+                        rng.choice([0, round(rng.uniform(0, 8_000), 2)])
                     ),
                 }
             )
@@ -132,7 +157,8 @@ def _form_140ptc_line_j(units: list) -> np.ndarray:
                 m["taxable_private_pension_income"]
                 + m["tax_exempt_public_pension_income"]
             )
-            # Social Security benefits are not income for the credit.
+            # Social Security benefits are not income for the credit. Every
+            # member counts, dependent or not (A.A.C. R15-2C-502(A)(2), (B)).
             total += line_a + line_b + line_d + line_e
         totals.append(total)
     return np.array(totals)
