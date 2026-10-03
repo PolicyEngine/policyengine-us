@@ -1,16 +1,31 @@
 description: Arizona accounts for the following income sources when computing household income for the property tax credit.
 values:
   2021-01-01:
-    # Item (7): Capital gains - excluded gains not in Federal AGI
-    - capital_gains_excluded_from_taxable_income
     # Item (2): All interest income including tax-exempt
     - tax_exempt_interest_income
     # Item (9): Pension income - tax-exempt portions not in Federal AGI
     # (taxable pension is already in Federal AGI via az_property_tax_credit_agi)
     - tax_exempt_public_pension_income
     - tax_exempt_private_pension_income
-    # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion)
+    # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion).
+    # Item (7) capital gains and losses (Form 140PTC Part 1 line D) are counted
+    # here, once: federal AGI holds the year's net gain from the sale or
+    # exchange of property. ARS 43-1072(H)(6)(b) also adds "the amount of
+    # capital gains excluded from adjusted gross income"; the model has no gain
+    # excluded from federal AGI (such as a section 121 home sale or section 1202
+    # small business stock exclusion), so nothing is added for it. Do not add
+    # capital_gains_excluded_from_taxable_income: it is the part of federal
+    # taxable income taxed at the capital gains rates (at zero taxable income,
+    # the adjusted net capital gain), which federal AGI already holds.
+    # Federal AGI limits a net capital loss to $3,000 per return ($1,500 if
+    # married filing separately); A.A.C. R15-2C-502(C)(3) limits it to $1,500
+    # for each household member. The total can be negative;
+    # az_property_tax_credit uses zero for the schedules.
     - az_property_tax_credit_agi
+    # Federal AGI leaves out dependents' income; Arizona counts every household
+    # member's income whether or not the member is a dependent
+    # (A.A.C. R15-2C-502(A)(2), (B)).
+    - az_property_tax_credit_dependent_income
 metadata:
   unit: list
   period: year
@@ -18,13 +33,27 @@ metadata:
   reference:
     - title: ARS 43-1072. Property tax credit - Income definition
       href: https://www.azleg.gov/ars/43/01072.htm
+    - title: A.A.C. R15-2C-502. Property Tax Credit
+      href: https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R15-2C-502
     - title: ITR 12-1. Income Tax Ruling - Property Tax Credit Household Income
-      href: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2012_itr12-1.pdf
+      href: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2012_itr12-1.pdf#page=2
+    - title: 2025 Form 140PTC Instructions, Part 1 lines A to I
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTCi.pdf#page=4
+    - title: 2025 Property Tax Refund (Credit) Claim Form 140PTC, Part 1
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTC_f.pdf#page=2
+    - title: 2024 Form 140PTC Instructions, Part 1 lines A to I
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140PTCi.pdf#page=4
     - title: 2024 Property Tax Refund (Credit) Claim Form 140PTC
       href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable
+    - title: 2023 Form 140PTC Instructions, Part 1 lines A to I
+      href: https://azdor.gov/sites/default/files/2023-12/FORMS_INDIVIDUAL_2023_140PTCi.pdf#page=4
     - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC
       href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable
+    - title: 2022 Form 140PTC Instructions, Part 1 lines A to I
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTCi-2D.pdf#page=4
     - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTC.pdf
+    - title: 2021 Form 140PTC Instructions, Part 1 lines A to I
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTCi-2D.pdf#page=4
     - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf

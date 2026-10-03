@@ -38,14 +38,16 @@
   output:
     az_property_tax_credit_agi: 25_000
 
-- name: Capped at zero when Social Security exceeds other income
+- name: Negative when losses leave other income below taxable Social Security
   period: 2024
   input:
     state_code: AZ
     adjusted_gross_income: 5_000
     tax_unit_taxable_social_security: 6_000
   output:
-    az_property_tax_credit_agi: 0
+    # $5,000 - $6,000 = -$1,000. Not floored: Form 140PTC line J can be
+    # negative, and az_property_tax_credit uses zero only for the schedules.
+    az_property_tax_credit_agi: -1_000
 
 - name: Combined income types with Social Security exclusion
   period: 2024

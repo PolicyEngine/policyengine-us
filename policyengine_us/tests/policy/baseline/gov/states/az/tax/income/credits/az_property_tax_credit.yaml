@@ -144,3 +144,20 @@
     households: {household: {members: [head], state_code: AZ}}
   output:
     az_property_tax_credit: 78
+
+# Form 140PTC line J note (2023-2025 instructions, page 5): a negative household
+# income is entered as is, and household income is considered zero for the
+# Schedule 1 and 2 amounts.
+- name: negative household income uses the zero-income schedule amount
+  period: 2025
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_income: -1_000
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 0
+    rent: 4_000
+  output:
+    # Line 11a: Schedule 1, 0 - 1,750 -> 502.
+    # Line 13: 0.15 x 4,000 = 600. Line 15: smaller of 502 and 600.
+    az_property_tax_credit: 502

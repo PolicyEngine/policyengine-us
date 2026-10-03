@@ -13,7 +13,9 @@ class az_property_tax_credit_agi(Variable):
         "excludes items specifically listed in ARS 43-1072(I): Social Security, "
         "railroad retirement, workers compensation, Arizona unemployment, veterans "
         "disability pensions, welfare, and gifts. Unlike regular Arizona income tax, "
-        "this does NOT exclude pension income, capital gains, or Arizona exemptions."
+        "this does NOT exclude pension income, capital gains, or Arizona exemptions. "
+        "Covers members who are not dependents, as federal AGI does, and can be "
+        "negative."
     )
     reference = [
         "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072
@@ -48,4 +50,9 @@ class az_property_tax_credit_agi(Variable):
         # - US Government interest should be INCLUDED per ITR 12-1 item (2)
         # - Arizona exemptions (aged, blind) should NOT be subtracted
 
-        return max_(0, federal_agi - taxable_social_security)
+        # Not floored at zero: household income (Form 140PTC line J) can be
+        # negative, and az_property_tax_credit treats it as zero only for the
+        # Schedule 1 and 2 lookup. Federal AGI deducts every member's losses,
+        # dependents' included, so a floor here would drop losses that
+        # az_property_tax_credit_dependent_income's positive amounts offset.
+        return federal_agi - taxable_social_security
