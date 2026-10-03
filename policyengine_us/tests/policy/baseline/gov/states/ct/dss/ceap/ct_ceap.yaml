@@ -1601,3 +1601,568 @@
     ct_ceap_categorically_eligible: false
     ct_ceap_eligible: false
     ct_ceap: 0
+
+# Independent review C1/C3 examples: FY2026 matrix categorical footnote and
+# allocation plan household exclusion, physical pages 5-7. All receipts computed.
+# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5,6,7
+# C1: 10 * 13,600 = 136,000 > floor(91,854 * 1.47) = 135,025;
+# categorical level 3 basic 295 + vulnerable 50 = 345 (not FPG level 2).
+# C3: foster SSI/SSP excluded; remaining member income 100,000 > 47,764.
+- name: Above-SMI categorical large household receives level 3
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person2:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person3:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person4:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person5:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person6:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person7:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person8:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person9:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person10:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 13600
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        meets_ssi_disability_criteria:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+      person11:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 0
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': true
+        meets_ssi_disability_criteria:
+          '2026': true
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        - person7
+        - person8
+        - person9
+        - person10
+        - person11
+        heating_type:
+          '2026': NATURAL_GAS
+        gas_expense:
+          '2026': 1000
+        heat_expense_included_in_rent:
+          '2026': false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        - person7
+        - person8
+        - person9
+        - person10
+        - person11
+        state_code:
+          '2026': CT
+    tax_units:
+      person1:
+        members:
+        - person1
+      person2:
+        members:
+        - person2
+      person3:
+        members:
+        - person3
+      person4:
+        members:
+        - person4
+      person5:
+        members:
+        - person5
+      person6:
+        members:
+        - person6
+      person7:
+        members:
+        - person7
+      person8:
+        members:
+        - person8
+      person9:
+        members:
+        - person9
+      person10:
+        members:
+        - person10
+      person11:
+        members:
+        - person11
+    marital_units:
+      person1:
+        members:
+        - person1
+      person2:
+        members:
+        - person2
+      person3:
+        members:
+        - person3
+      person4:
+        members:
+        - person4
+      person5:
+        members:
+        - person5
+      person6:
+        members:
+        - person6
+      person7:
+        members:
+        - person7
+      person8:
+        members:
+        - person8
+      person9:
+        members:
+        - person9
+      person10:
+        members:
+        - person10
+      person11:
+        members:
+        - person11
+    families:
+      person1:
+        members:
+        - person1
+      person2:
+        members:
+        - person2
+      person3:
+        members:
+        - person3
+      person4:
+        members:
+        - person4
+      person5:
+        members:
+        - person5
+      person6:
+        members:
+        - person6
+      person7:
+        members:
+        - person7
+      person8:
+        members:
+        - person8
+      person9:
+        members:
+        - person9
+      person10:
+        members:
+        - person10
+      person11:
+        members:
+        - person11
+  output:
+    ct_ceap_household_size: 11
+    ct_ceap_countable_income: 136000
+    ct_ceap_income_limit: 135025
+    ct_ceap_categorically_eligible: true
+    ct_ceap_benefit_level: 3
+    ct_ceap: 345
+
+- name: Excluded foster adult SSP cannot establish categorical eligibility
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 100000
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': false
+        is_blind:
+          '2026': false
+        is_in_foster_care:
+          2026-01: false
+          2026-02: false
+          2026-03: false
+          2026-04: false
+          2026-05: false
+          2026-06: false
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+        takes_up_ssi_if_eligible:
+          '2026': false
+      person2:
+        age:
+          '2026': 40
+        immigration_status:
+          '2026': CITIZEN
+        employment_income:
+          '2026': 0
+        social_security:
+          '2026': 0
+        is_disabled:
+          '2026': true
+        meets_ssi_disability_criteria:
+          '2026': true
+        is_in_foster_care:
+          2026-01: true
+          2026-02: true
+          2026-03: true
+          2026-04: true
+          2026-05: true
+          2026-06: true
+          2026-07: true
+          2026-08: true
+          2026-09: true
+          2026-10: true
+          2026-11: true
+          2026-12: true
+        takes_up_ssi_if_eligible:
+          '2026': true
+        pre_subsidy_rent:
+          '2026': 4800
+        ct_ssp_lives_with_others:
+          2026-01: true
+          2026-02: true
+          2026-03: true
+          2026-04: true
+          2026-05: true
+          2026-06: true
+          2026-07: true
+          2026-08: true
+          2026-09: true
+          2026-10: true
+          2026-11: true
+          2026-12: true
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        heating_type:
+          '2026': NATURAL_GAS
+        gas_expense:
+          '2026': 1000
+        heat_expense_included_in_rent:
+          '2026': false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          '2026': CT
+    tax_units:
+      tax1:
+        members:
+        - person1
+      tax2:
+        members:
+        - person2
+    marital_units:
+      marital1:
+        members:
+        - person1
+      marital2:
+        members:
+        - person2
+    families:
+      family1:
+        members:
+        - person1
+      family2:
+        members:
+        - person2
+  output:
+    ct_ceap_household_size: 1
+    ct_ceap_countable_income: 100000
+    ct_ceap_categorically_eligible: false
+    ct_ceap_eligible: false
+    ct_ceap: 0

@@ -16,6 +16,12 @@ class ct_ceap_categorically_eligible(Variable):
         person = spm_unit.members
         member = ~person("is_in_foster_care", period.first_month)
         ssi = spm_unit.sum(member * person("ssi", period, options=[ADD]))
-        receipt = add(spm_unit, period, ["snap", "ct_tfa", "ct_ssp"]) + ssi > 0
+        # Remove SSP attributable to excluded foster members from the
+        # household receipt, preserving a supplied household SSP total.
+        excluded_ssp = spm_unit.sum(
+            ~member * person("ct_ssp_person", period, options=[ADD])
+        )
+        ssp = max_(spm_unit("ct_ssp", period, options=[ADD]) - excluded_ssp, 0)
+        receipt = add(spm_unit, period, ["snap", "ct_tfa"]) + ssi + ssp > 0
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         return receipt & ~heat_in_rent

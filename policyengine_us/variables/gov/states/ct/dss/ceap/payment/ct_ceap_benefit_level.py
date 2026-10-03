@@ -18,4 +18,8 @@ class ct_ceap_benefit_level(Variable):
             max_(size, 1), group, period, parameters, year_lag=p.fpg_year_lag
         )
         income = spm_unit("ct_ceap_countable_income", period)
-        return p.income_level.calc(income / guideline, right=True)
+        level = p.income_level.calc(income / guideline, right=True)
+        # Categorical households above the SMI ceiling receive Level 3 even
+        # when large-family FPG thresholds would put them in a higher tier.
+        limit = spm_unit("ct_ceap_income_limit", period)
+        return where(income > limit, 3, level)
