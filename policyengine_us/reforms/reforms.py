@@ -143,6 +143,7 @@ from .crfb import (
     create_senior_deduction_extension_reform,
     create_agi_surtax_reform,
 )
+from .states.ca.prop3.ca_prop3_reform import create_ca_prop3_reform
 from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
@@ -491,6 +492,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
 
     ut_ctc = create_ut_ctc_reform(parameters, period)
+    ca_prop3 = create_ca_prop3_reform(parameters, period)
 
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
@@ -657,6 +659,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ut_hb210,
         ut_hb210_s2,
         ut_ctc,
+        ca_prop3,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,

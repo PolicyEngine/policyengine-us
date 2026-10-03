@@ -1,0 +1,1 @@
+Encode the expiry of California's 10.3%, 11.3% and 12.3% income tax rates after tax year 2030 (Cal. Const. art. XIII, § 36(f)(2)) and add Proposition 3 (2026) as a contributed reform that makes them permanent.

@@ -70,6 +70,7 @@ brackets:
         uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.103
+      2031-01-01: 0.093
   - threshold:
       values:
         2021-01-01: 750_442
@@ -81,6 +82,7 @@ brackets:
         uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.113
+      2031-01-01: 0.093
   - threshold:
       values:
         2021-01-01: 1_250_738
@@ -92,6 +94,7 @@ brackets:
         uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.123
+      2031-01-01: 0.093
 
 metadata:
   threshold_unit: currency_USD
@@ -110,6 +113,8 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2024/2024-540-tax-rate-schedules.pdf
     - title: California Income Tax Rate Schedules for 2025
       href: https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf
+    - title: Cal. Const. art. XIII, § 36(f)(2) (rates above 9.3% apply to taxable years before January 1, 2031)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&sectionNum=SEC.%2036.&article=XIII
     - title: Cal. Rev. & Tax. Code § 17041
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17041.&lawCode=RTC
       # Index according to federal tax parameter rules until we add California CPI trend.
