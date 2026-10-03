@@ -1,3 +1,10 @@
+## [2.22.0] - 2026-10-03
+
+### Added
+
+- Kansas LIEAP (Low Income Energy Assistance Program) heating benefit: eligibility, countable income, and the FY2025-FY2026 benefit matrices. Self-employment income is approximated using existing net-income inputs without an additional expense deduction.
+
+
 ## [2.21.4] - 2026-10-03
 
 ### Fixed
