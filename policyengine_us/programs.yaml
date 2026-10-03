@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -831,6 +831,14 @@ programs:
         parameter_prefix: gov.states.ks.dcf.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
+      - state: MS
+        status: partial
+        name: Mississippi LIHEAP
+        full_name: Mississippi Low Income Home Energy Assistance Program
+        variable: ms_liheap
+        parameter_prefix: gov.states.ms.mdhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
