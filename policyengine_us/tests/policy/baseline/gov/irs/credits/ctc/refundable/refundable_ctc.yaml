@@ -102,28 +102,36 @@
 - name: Section 911 exclusion denies the refundable credit from social security taxes
   period: 2025
   input:
-    # Three or more children: the phase-in amount reflects social security
-    # taxes less the EITC (section 24(d)(1)(B)(ii)), which section 24(d)(3)
-    # also switches off.
+    # Three children and no earnings over the threshold: the phase-in amount
+    # is social security taxes less the EITC (section 24(d)(1)(B)(ii)), which
+    # section 24(d)(3) also switches off.
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
     ctc_refundable_maximum: 5_100
     ctc: 6_600
     ctc_phase_out: 0
-    ctc_phase_in: 4_000
     ctc_limiting_tax_liability: 1_000
     foreign_earned_income_exclusion: 30_000
   output:
+    ctc_phase_in: 4_000
     refundable_ctc: 0
 
-- name: No section 911 exclusion keeps the refundable credit
+- name: No section 911 exclusion keeps the refundable credit from social security taxes
   period: 2025
   input:
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
     ctc_refundable_maximum: 5_100
     ctc: 6_600
     ctc_phase_out: 0
-    ctc_phase_in: 4_000
     ctc_limiting_tax_liability: 1_000
     foreign_earned_income_exclusion: 0
   output:
+    ctc_phase_in: 4_000
     # min(5,100, min(6,600, 1,000 + 4,000) - min(6,600, 1,000)) = 4,000.
     refundable_ctc: 4_000
 

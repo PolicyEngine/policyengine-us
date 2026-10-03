@@ -51,12 +51,12 @@
   period: 2021
   input:
     # Section 24(i)(1) switched off subsection (d) for bona fide residents
-    # of Puerto Rico.
+    # of Puerto Rico, so the whole credit was refundable.
     eitc: 0
     uncapped_ssi: 0
     pr_refundable_ctc_social_security_tax: 1_530
-    refundable_ctc: 0
+    refundable_ctc: 2_000
     ctc: 2_000
     foreign_earned_income_exclusion: 30_000
   output:
-    pr_refundable_ctc: 1_530
+    pr_refundable_ctc: 2_000

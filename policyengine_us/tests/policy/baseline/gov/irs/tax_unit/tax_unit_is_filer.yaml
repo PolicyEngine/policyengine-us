@@ -57,3 +57,45 @@
     employment_income: 0
   output:
     tax_unit_is_filer: false
+
+# 26 U.S.C. 6012(c): for the filing requirement, gross income is computed
+# without regard to the section 911 exclusion.
+- name: Excluded foreign earnings count toward the filing threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 5_000
+    foreign_earned_income_exclusion: 30_000
+    would_file_if_eligible_for_refundable_credit: false
+    would_file_taxes_voluntarily: false
+  output:
+    # $35,000 of gross income under section 6012(c), over the $15,750
+    # single standard deduction.
+    tax_unit_is_required_to_file: true
+    tax_unit_is_filer: true
+
+- name: The same filer without excluded foreign earnings is under the threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 5_000
+    foreign_earned_income_exclusion: 0
+    would_file_if_eligible_for_refundable_credit: false
+    would_file_taxes_voluntarily: false
+  output:
+    tax_unit_is_required_to_file: false
+    tax_unit_is_filer: false
+
+- name: Excluded foreign earnings do not count as unearned income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    foreign_earned_income_exclusion: 10_000
+    would_file_if_eligible_for_refundable_credit: false
+    would_file_taxes_voluntarily: false
+  output:
+    # $10,000 is under the $15,750 threshold, and none of it is unearned.
+    tax_unit_is_required_to_file: false

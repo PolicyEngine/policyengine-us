@@ -14,7 +14,7 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/24#d_3",
         # 2025 Instructions for Schedule 8812, Part II-A.
-        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=3",
+        "https://www.irs.gov/pub/irs-prior/i1040s8--2025.pdf#page=3",
         # 2021 Schedule 8812: Part I-B has no Form 2555 condition.
         "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1",
     )

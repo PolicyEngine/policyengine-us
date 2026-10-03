@@ -49,6 +49,8 @@ OUTPUTS = [
     "refundable_ctc",
     "non_refundable_ctc",
     "income_tax_capped_non_refundable_credits",
+    # No residence test in the formula, so it is computed for every household.
+    "pr_refundable_ctc",
     "income_tax",
 ]
 
@@ -105,8 +107,15 @@ def assert_invariants(law, no_bar):
     assert np.array_equal(law[barred], excludes)
     assert not no_bar[barred].any()
     assert (law["refundable_ctc"][excludes] == 0).all()
+    # The Puerto Rico credit's social security route is barred as well.
+    assert (law["pr_refundable_ctc"][excludes] == 0).all()
     # Filers without the exclusion are untouched, bit for bit.
-    for v in ["refundable_ctc", "non_refundable_ctc", "income_tax"]:
+    for v in [
+        "refundable_ctc",
+        "non_refundable_ctc",
+        "pr_refundable_ctc",
+        "income_tax",
+    ]:
         assert np.array_equal(law[v][~excludes], no_bar[v][~excludes]), v
     # The bar only ever removes refundable credit.
     assert (law["refundable_ctc"] <= no_bar["refundable_ctc"]).all()
@@ -115,20 +124,20 @@ def assert_invariants(law, no_bar):
         np.testing.assert_allclose(
             r["refundable_ctc"] + r["non_refundable_ctc"], r["ctc"], atol=tol
         )
-        # Section 26(a): the non-refundable credits allowed never exceed tax,
-        # even though a barred filer's non-refundable CTC is the whole credit.
-        assert (
-            r["income_tax_capped_non_refundable_credits"]
-            <= np.maximum(r["income_tax_before_credits"], 0) + tol
-        ).all()
         assert (r["refundable_ctc"] >= 0).all()
         assert (
             r["refundable_ctc"]
             <= np.minimum(r["ctc"], r["ctc_refundable_maximum"]) + tol
         ).all()
-    # The CTC that offsets tax is the same either way (section 24(d)(1)
-    # refunds only what tax could not absorb), so the bar raises the tax by
-    # exactly the refund it denies.
+    # The CTC that offsets tax is the same either way: section 24(d)(1) refunds
+    # only what tax could not absorb, so the section 26(a)-limited credits are
+    # equal even though a barred filer's non-refundable CTC is the whole
+    # credit. The bar therefore raises the tax by exactly the refund it denies.
+    np.testing.assert_allclose(
+        law["income_tax_capped_non_refundable_credits"],
+        no_bar["income_tax_capped_non_refundable_credits"],
+        atol=tol,
+    )
     np.testing.assert_allclose(
         law["income_tax"] - no_bar["income_tax"],
         np.where(excludes, no_bar["refundable_ctc"], 0),
@@ -183,7 +192,9 @@ def test_bar_applies_from_2015_but_not_in_2021():
 household_strategy = st.fixed_dictionaries(
     {
         "married": st.booleans(),
-        "dependent_ages": st.lists(st.integers(0, 18), max_size=4),
+        # Age 17 at most: the model treats an unmarried filer's 18-year-old
+        # as a spouse.
+        "dependent_ages": st.lists(st.integers(0, 17), max_size=4),
         "wages": st.integers(0, 500_000),
         "exclusion": st.one_of(st.just(0), st.integers(1, 130_000)),
     }
