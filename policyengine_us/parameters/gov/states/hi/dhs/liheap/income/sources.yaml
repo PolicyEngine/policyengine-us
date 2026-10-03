@@ -1,0 +1,41 @@
+description: Hawaii counts these represented income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - retirement_distributions
+    - survivor_benefits
+    - general_assistance
+    - hi_tanf
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - dividend_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - estate_income
+    - life_insurance_benefits
+    - financial_assistance
+    - gambling_winnings
+# Pension, Social Security and retirement-distribution components enter once.
+# State TANF is a household amount; SSI and TANF are aggregated from MONTH.
+# No minor-earnings exclusion applies. Missing receipt categories are documented
+# in the accompanying README and are not treated as policy exclusions.
+metadata:
+  unit: list
+  period: year
+  label: Hawaii LIHEAP countable income sources
+  reference:
+    - title: Hawaii FY2026 LIHEAP State Plan, countable income
+      href: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6,7

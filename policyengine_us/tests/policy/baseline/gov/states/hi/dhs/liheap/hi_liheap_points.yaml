@@ -1,0 +1,878 @@
+# Accepted FY2026 plan establishes the five categories and child age <=5.
+# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10
+# Matrix verifies point bands, size/island points and actual total income.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2,3
+# Historical manual section 2.10 specifies electric cost even for gas requests.
+# https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=8
+# These points are before eligibility; no final award or value per point is tested.
+
+- name: Case 1, income points include every whole-dollar band boundary.
+  period: 2026
+  # Matrix p3: one-person FPG = 17_990; income points = 3,3,2,2,1,1,0.
+  # Add one size point and one Oahu point; no vulnerability or electric burden.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_996
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 17_990
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 17_991
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 26_985
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 26_986
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household5:
+        members: [person5]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household6:
+        members: [person6]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household7:
+        members: [person7]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 5, 4, 4, 3, 3, 2]
+
+- name: Case 2, size points change at three and six members.
+  period: 2026
+  # Income 1_000 is below 50% FPG for all four sizes, giving three points.
+  # Size points 1,2,2,3 plus one Oahu point give 5,6,6,7.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person13:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person6, person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person11, person12, person13, person14, person15, person16]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person3, person4, person5]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person6, person7, person8, person9, person10]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person11, person12, person13, person14, person15, person16]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 6, 6, 7]
+
+- name: Case 3, all represented Hawaii counties get the island schedule.
+  period: 2026
+  # Income three + size one + region one for Oahu, or region two elsewhere.
+  # Maui county covers Maui and Lanai; Molokai spans Maui and Kalawao counties.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 8_995
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HAWAII_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: MAUI_COUNTY_HI
+      household4:
+        members: [person4]
+        state_code: HI
+        county: KAUAI_COUNTY_HI
+      household5:
+        members: [person5]
+        state_code: HI
+        county: KALAWAO_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 6, 6, 6, 6]
+
+- name: Case 4, child elderly and disabled-adult age boundaries.
+  period: 2026
+  # At two members and income 20_000, base = income two + size one + Oahu one.
+  # Accepted plan p10 gives one extra for age <=5, age >=60 or disabled adult.
+  # Age five follows the accepted plan despite the matrix under-five wording.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 59
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person8:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person10:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person12:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit5:
+        members: [person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit6:
+        members: [person11, person12]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person3, person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person5, person6]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person7, person8]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household5:
+        members: [person9, person10]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household6:
+        members: [person11, person12]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 4, 4, 5, 4, 5]
+
+- name: Case 5, multiple vulnerability conditions earn only one point.
+  period: 2026
+  # Income 20_000 / FPG 30_650 gives two; size three gives two; Oahu gives one.
+  # All three members are vulnerable but the category gives only one: 2+2+1+1=6.
+  input:
+    people:
+      person1:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: 6
+
+- name: Case 6, nonqualified vulnerable residents do not add vulnerability.
+  period: 2026
+  # First three units have one qualified nonvulnerable adult: income one + size
+  # one + Oahu one = three. The last has two qualified members and an elder:
+  # income two + size one + Oahu one + vulnerability one = five.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 60
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 5
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        is_disabled: true
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person8:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person3, person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person5, person6]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person7, person8]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: [1, 1, 1, 2]
+    hi_liheap_points: [3, 3, 3, 5]
+
+- name: Case 7, electric burden is inclusive at thirty percent even for gas aid.
+  period: 2026
+  # Electricity / income is 29.99%, 30%, 30.01% and 0%. Add burden 0,1,1,0
+  # to income two + size one + Oahu one. High gas bills do not earn this point.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 6_000
+        pre_subsidy_electricity_expense: 2_999
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 3_000
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 3_001
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 6_000
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [4, 5, 5, 4]
+
+- name: Case 8, zero income distinguishes positive electric expense from zero.
+  period: 2026
+  # Income zero gives three + size one + Oahu one. Modeling convention awards
+  # burden for positive electric cost with zero income, but not for zero/zero;
+  # the sources do not prescribe a zero/zero division.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 6]
+
+- name: Case 9, source examples combine island child and electric burden factors.
+  period: 2026
+  # Two adults on Oahu: 2+1+1=4; Hawaii island adds one region point.
+  # Adding a five-year-old gives 2 income + 2 size + 2 region + 1 vulnerability.
+  # Electricity 6_000 / 20_000 = 30%, adding the eighth point. No VPP is assumed.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person9:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit3:
+        members: [person5, person6, person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 5_999
+        hi_tanf: 0
+      spm_unit4:
+        members: [person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 6_000
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person3, person4]
+        state_code: HI
+        county: HAWAII_COUNTY_HI
+      household3:
+        members: [person5, person6, person7]
+        state_code: HI
+        county: HAWAII_COUNTY_HI
+      household4:
+        members: [person8, person9, person10]
+        state_code: HI
+        county: HAWAII_COUNTY_HI
+  output:
+    hi_liheap_points: [4, 5, 7, 8]
+
+- name: Case 10, points remain a schedule while zero size and other states stay zero.
+  period: 2026
+  # High income gives zero income points but still one size plus one Oahu point
+  # before eligibility. No qualified members or a non-Hawaii unit give zero.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+  output:
+    hi_liheap_points: [2, 0, 0]
+
+- name: Case 11, categorical receipt does not replace actual income for points.
+  period: 2026
+  # Matrix p3 uses actual total income: 6_000 wages + annual TANF 6_000 = 12_000,
+  # below half the two-person FPG (12_160). Thus 3+1+1=5 points.
+  # This follows the direct worksheet over conflicting notional-income text.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 6_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 12_000
+    hi_liheap_points: 5

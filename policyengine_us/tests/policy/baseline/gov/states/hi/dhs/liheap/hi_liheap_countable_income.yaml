@@ -1,0 +1,337 @@
+# Accepted FY2026 plan checks gross income, minor earnings, gifts and lump sums.
+# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6,7
+# Historical manual section 2.2 retains nonqualified members' income.
+# https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=6
+# Draft FY2026 detailed manual elaborates disability and noncash exclusions.
+# https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=66,67
+# Annual receipts approximate annualized prior-month income; SSI/TANF use months.
+
+- name: Case 1, nonqualified adults and minor earnings all count.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Gross income = 12_000 + 18_000 + 1_200 = 31_200.
+  # The minor is the sole qualified member; neither adult income is prorated.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 32
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 18_000
+      person3:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_200
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: 1
+    hi_liheap_countable_income: 31_200
+
+- name: Case 2, net business receipts and wages enter once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Wages plus separate net business receipts = 12_000 + 2_000 + 300
+  # + 700 + 1_000 = 16_000; no second business-expense deduction.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_000
+        sstb_self_employment_income: 300
+        farm_operations_income: 700
+        partnership_s_corp_income: 1_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 16_000
+
+- name: Case 3, pensions survivor benefits and rent remain disjoint.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Pension = 3_000; retirement withdrawals = 1_000; Social Security = 2_000.
+  # Other survivor benefits = 700; ordinary plus farm rent = 3_000.
+  # Total = 3_000 + 1_000 + 2_000 + 700 + 3_000 = 9_700.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        taxable_pension_income: 2_000
+        tax_exempt_pension_income: 1_000
+        taxable_retirement_distributions: 600
+        tax_exempt_retirement_distributions: 400
+        social_security_survivors: 1_000
+        social_security_dependents: 200
+        social_security_disability: 300
+        social_security_retirement: 500
+        survivor_benefits: 700
+        rental_income: 1_800
+        farm_rent_income: 1_200
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 9_700
+
+- name: Case 4, represented unearned receipts include direct insurance proceeds.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Count 1_000 + 200 + 300 + 400 + 500 + 600 + 700 + 800 + 900
+  # + 1_000 + 1_100 + 1_200 = 8_700; direct insurance proceeds are included.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        unemployment_compensation: 1_000
+        strike_benefits: 200
+        general_assistance: 300
+        alimony_income: 400
+        child_support_received: 500
+        interest_income: 600
+        ordinary_dividend_income: 700
+        veterans_benefits: 800
+        workers_compensation: 900
+        disability_benefits: 1_000
+        estate_income: 1_100
+        life_insurance_benefits: 1_200
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 8_700
+
+- name: Case 5, cash gifts and lottery receipts count as gross income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Plan p6 checks cash gifts and lottery lump sums: 600 + 1_400 = 2_000.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        financial_assistance: 600
+        gambling_winnings: 1_400
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 2_000
+
+- name: Case 6, nonuniform monthly SSI and household TANF annualize once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # SSI = 6 * 500 + 6 * 700 = 7_200. Household TANF = 3 * 200
+  # + 9 * 300 = 3_300, counted once despite two household members.
+  # Annual total = 7_200 + 3_300 = 10_500. All members use matching months.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 500
+          2026-02: 500
+          2026-03: 500
+          2026-04: 500
+          2026-05: 500
+          2026-06: 500
+          2026-07: 700
+          2026-08: 700
+          2026-09: 700
+          2026-10: 700
+          2026-11: 700
+          2026-12: 700
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf:
+          2026-01: 200
+          2026-02: 200
+          2026-03: 200
+          2026-04: 300
+          2026-05: 300
+          2026-06: 300
+          2026-07: 300
+          2026-08: 300
+          2026-09: 300
+          2026-10: 300
+          2026-11: 300
+          2026-12: 300
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 10_500
+
+- name: Case 7, assets SNAP and WIC do not become countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Only wages count: 1_200. Asset balances, SNAP and WIC are not cash income.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 4
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        wic: 600
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+        spm_unit_assets: 500_000
+        snap: 3_600
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 1_200
+
+- name: Case 8, negative net earnings are floored and other states stay zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Component convention floors negative annual resources at zero; the income
+  # point schedule starts at zero. The same positive income in California is zero
+  # in the Hawaii component.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: -2_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_500
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_500
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+  output:
+    hi_liheap_countable_income: [0, 1_500, 0]

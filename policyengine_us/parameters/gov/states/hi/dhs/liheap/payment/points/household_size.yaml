@@ -1,0 +1,27 @@
+description: Hawaii assigns these points by qualified household size under the Low Income Home Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 3
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Hawaii LIHEAP household size points
+  reference:
+    - title: Hawaii FY2026 LIHEAP benefit matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2,3

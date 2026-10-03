@@ -1,0 +1,443 @@
+# Accepted plan uses 60% SMI and 150% Hawaii FPG for the maximum threshold.
+# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9,50
+# FY2026 matrix verifies prior-year Hawaii FPG = 17_990 + 6_330 * (size - 1).
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
+# Federal-supported Clearinghouse verifies SMI size factors and +3% above six.
+# https://liheapch.acf.gov/profiles/povertytables/FY2026/hismi.htm
+# Raw four-person SMI of 134_428 is the shared-guideline contract value. Direct
+# federal raw-table retrieval failed; these SMI dollar checks do not independently
+# verify that shared base. They intentionally do not adopt projected rounded rows.
+
+- name: Case 1, percentage limits span federal size factors and the FPG crossover.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Contract SMI base 134_428 * 0.60 = 80_656.8; size multipliers are
+  # 0.52, 1, 1.32 and 1.44 for sizes 1, 4, 6 and 10.
+  # FPG overtakes SMI at size 11: (17_990 + 6_330 * 10) * 1.5 = 121_935.
+  # Size 20: (17_990 + 6_330 * 19) * 1.5 = 207_390.
+  # No eligibility comparator or rounding assertion is made.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 38
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 42
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 39
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person12:
+        age: 42
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person13:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 38
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 36
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person17:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person18:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person19:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person20:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person21:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person22:
+        age: 44
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person23:
+        age: 42
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person24:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person25:
+        age: 38
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person26:
+        age: 36
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person27:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person28:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person29:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person30:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person31:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person32:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person33:
+        age: 55
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person34:
+        age: 53
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person35:
+        age: 45
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person36:
+        age: 43
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person37:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person38:
+        age: 38
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person40:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person41:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person42:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person43:
+        age: 15
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person44:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person45:
+        age: 13
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person46:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person47:
+        age: 11
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person48:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person49:
+        age: 9
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person50:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person51:
+        age: 7
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person52:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members:
+          - person12
+          - person13
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit5:
+        members:
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit6:
+        members:
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2, person3, person4, person5]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person6, person7, person8, person9, person10, person11]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members:
+          - person12
+          - person13
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household5:
+        members:
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household6:
+        members:
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_income_limit: [41_941.536, 80_656.8, 106_466.976, 116_145.792, 121_935, 207_390]
+
+- name: Case 2, limits use qualified size and guard zero size and other states.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Two nonqualified residents do not enlarge the one-person limit.
+  # An all-nonqualified Hawaii unit and a California unit have zero HI limit.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person4]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person5]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+  output:
+    hi_liheap_household_size: [1, 0, 0]
+    hi_liheap_income_limit: [41_941.536, 0, 0]

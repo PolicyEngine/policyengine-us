@@ -1,0 +1,95 @@
+# Historical manual section 2.2 excludes nonqualified members from size only.
+# https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=6
+# These are component tests, not final eligibility determinations.
+
+- name: Case 1, qualified size uses actual members and isolates other states.
+  period: 2026
+  # Three residents with two nonqualified adults leave one qualified child.
+  # Two qualified residents count twice; no qualified members produce zero.
+  # The California household must not enter the Hawaii component.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person2:
+        age: 32
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person7:
+        age: 60
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members: [person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members: [person6, person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members: [person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person4, person5]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person6, person7]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person8, person9, person10]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+  output:
+    hi_liheap_household_size: [1, 2, 0, 0]
