@@ -203,3 +203,26 @@
   output:
     # 9_000 - 0.075 * 50_000; Form AR3 Line 3B: "if either you or your spouse were age 65 or over"
     ar_medical_expense_deduction_joint: [5_250, 0]
+
+- name: A spouse's loss that makes the joint AGI negative does not raise the medical expense deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        ar_agi_joint: 5_000
+      person2:
+        age: 40
+        ar_agi_joint: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint AGI 5,000 - 10,000 = -5,000, floored at 0, so the 10% floor is 0:
+    # 1,000 - 0.1 * 0 = 1,000 (an unfloored AGI would give 1,000 + 500).
+    ar_medical_expense_deduction_joint: 1_000

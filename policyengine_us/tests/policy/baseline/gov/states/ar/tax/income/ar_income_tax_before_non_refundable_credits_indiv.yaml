@@ -25,8 +25,9 @@
     ar_taxable_income_indiv: 11_000
     state_code: AR
   output:
-    # 104 + round((11_000 - 10_301)* 0.03)
-    ar_income_tax_before_non_refundable_credits_indiv: 125
+    # 2022 Regular Income Tax Table (p.31), row $11,000-$11,100: $127.
+    # Midpoint of $11,000-$11,099 = 11,049.50; 11,049.50 x 3% - 204.97 = 126.52 -> 127
+    ar_income_tax_before_non_refundable_credits_indiv: 127
 
 - name: AR income tax rates - taxable income from $14,701 to $24,300
   period: 2022
@@ -35,8 +36,9 @@
     ar_taxable_income_indiv: 20_000
     state_code: AR
   output:
-  # 236 + round((20_000 - 14_701)* 0.034)
-    ar_income_tax_before_non_refundable_credits_indiv: 416
+    # 2022 Regular Income Tax Table (p.32), row $20,000-$20,100: $418.
+    # Midpoint 20,049.50 x 3.4% - 263.77 = 417.91 -> 418
+    ar_income_tax_before_non_refundable_credits_indiv: 418
 
 - name: AR income tax rates - taxable income for income over $24,301
   period: 2022
@@ -45,8 +47,9 @@
     ar_taxable_income_indiv: 25_000
     state_code: AR
   output:
-    # 562.366 + round((25_000-24_301) * 0.049) = 596
-    ar_income_tax_before_non_refundable_credits_indiv: 596
+    # 2022 Regular Income Tax Table (p.32), row $25,000-$25,100: $599.
+    # Midpoint 25,049.50 x 4.9% - 628.25 = 599.18 -> 599
+    ar_income_tax_before_non_refundable_credits_indiv: 599
 
 - name: AR income tax rates - taxable income from $15,100 to $25,000
   period: 2023
@@ -55,8 +58,9 @@
     ar_taxable_income_indiv: 20_000
     state_code: AR
   output:
-    # 20_000 * 0.034 - 272.37 = 407.63
-    ar_income_tax_before_non_refundable_credits_indiv: 407.63
+    # 2023 Regular Income Tax Table (p.31), row $20,000-$20,100: $409.
+    # Midpoint 20,049.50 x 3.4% - 272.37 = 409.31 -> 409
+    ar_income_tax_before_non_refundable_credits_indiv: 409
 
 - name: AR income tax rates - taxable income from $25,000 to $89,600
   period: 2023
@@ -65,8 +69,9 @@
     ar_taxable_income_indiv: 30_000
     state_code: AR
   output:
-    # 30_000 * 0.047 - 597.35 = 812.65
-    ar_income_tax_before_non_refundable_credits_indiv: 812.65
+    # 2023 Regular Income Tax Table (p.32), row $30,000-$30,100: $815.
+    # Midpoint 30,049.50 x 4.7% - 597.35 = 814.98 -> 815
+    ar_income_tax_before_non_refundable_credits_indiv: 815
 
 - name: AR income tax rates - taxable income over $100,000
   period: 2023
@@ -75,8 +80,10 @@
     ar_taxable_income_indiv: 100_000
     state_code: AR
   output:
-    # 100_000 * 0.047 - 153.7 = 4546.3
-    ar_income_tax_before_non_refundable_credits_indiv: 4546.3
+    # $100,000 is in the 2023 table's last row, $99,901-$100,001: $4,544 (p.35).
+    # Midpoint of $99,901-$100,000 = 99,950.50; 99,950.50 x 4.7% - 153.70 = 4,543.97 -> 4,544
+    # (the formula at the exact income, 100,000 x 4.7% - 153.70 = 4,546.30, applies from $100,001)
+    ar_income_tax_before_non_refundable_credits_indiv: 4_544
 
 - name: Case 9, 2025 taxable income in 0% bracket.
   period: 2025
@@ -95,8 +102,9 @@
     ar_taxable_income_indiv: 10_000
     state_code: AR
   output:
-    # DFA 2025 bracket: 10_000 * 0.02 - 111.98 = 88.02
-    ar_income_tax_before_non_refundable_credits_indiv: 88.02
+    # 2025 Regular Income Tax Table (p.30), row $10,000-$10,100: $89.
+    # Midpoint 10,049.50 x 2% - 111.98 = 89.01 -> 89
+    ar_income_tax_before_non_refundable_credits_indiv: 89
 
 - name: Case 11, 2025 taxable income in 3.4% bracket.
   period: 2025
@@ -105,8 +113,9 @@
     ar_taxable_income_indiv: 20_000
     state_code: AR
   output:
-    # DFA 2025 bracket: 20_000 * 0.034 - 287.97 = 392.03
-    ar_income_tax_before_non_refundable_credits_indiv: 392.03
+    # 2025 Regular Income Tax Table (p.30), row $20,000-$20,100: $394.
+    # Midpoint 20,049.50 x 3.4% - 287.97 = 393.71 -> 394
+    ar_income_tax_before_non_refundable_credits_indiv: 394
 
 - name: Case 12, 2025 taxable income in 3.9% bracket.
   period: 2025
@@ -115,8 +124,9 @@
     ar_taxable_income_indiv: 50_000
     state_code: AR
   output:
-    # DFA 2025 bracket: 50_000 * 0.039 - 419.96 = 1_530.04
-    ar_income_tax_before_non_refundable_credits_indiv: 1_530.04
+    # 2025 Regular Income Tax Table (p.32), row $50,000-$50,100: $1,532.
+    # Midpoint 50,049.50 x 3.9% - 419.96 = 1,531.97 -> 1,532
+    ar_income_tax_before_non_refundable_credits_indiv: 1_532
 
 - name: Case 13, 2025 taxable income at $100,000.
   period: 2025
@@ -125,12 +135,16 @@
     ar_taxable_income_indiv: 100_000
     state_code: AR
   output:
-    # DFA 2025 bracket "$97,801 and over": 100_000 * 0.039 - 89.30 = 3_810.70
-    ar_income_tax_before_non_refundable_credits_indiv: 3_810.70
+    # $100,000 is in the 2025 table's last row, $99,901-$100,001: $3,809 (p.34).
+    # Midpoint 99,950.50 x 3.9% - 89.30 ("$97,801 and over" card row) = 3,808.77 -> 3,809
+    ar_income_tax_before_non_refundable_credits_indiv: 3_809
 
 # 2026 tests follow A.C.A. § 26-51-201(a)(4) as amended by HB1001 (2026 1st Extraordinary Session).
 # Bill schedules: (a)(4)(A) for net income <= $94,700, (a)(4)(B) for > $94,700, plus
 # the (a)(4)(C) bracket adjustment for $94,701 - $97,600.
+# No 2026 Regular Income Tax Table is published yet, so below $100,001 the
+# model applies DFA's table method: these schedules at the midpoint of the
+# income's $100 table row, rounded to whole dollars.
 - name: AR HB1001 2026 - 0% bracket, no tax
   period: 2026
   absolute_error_margin: 0.01
@@ -148,8 +162,8 @@
     ar_taxable_income_indiv: 10_000
     state_code: AR
   output:
-    # ($10,000 - $5,600) * 0.02 = $88
-    ar_income_tax_before_non_refundable_credits_indiv: 88
+    # Row $10,000-$10,099, midpoint 10,049.50: (10,049.50 - 5,600) x 2% = 88.99 -> 89
+    ar_income_tax_before_non_refundable_credits_indiv: 89
 
 - name: AR HB1001 2026 - 3% bracket
   period: 2026
@@ -158,8 +172,9 @@
     ar_taxable_income_indiv: 15_000
     state_code: AR
   output:
-    # $112 + ($15,000 - $11,200) * 0.03 = $112 + $114 = $226
-    ar_income_tax_before_non_refundable_credits_indiv: 226
+    # Row $15,000-$15,099, midpoint 15,049.50:
+    # 112 + (15,049.50 - 11,200) x 3% = 112 + 115.485 = 227.485 -> 227
+    ar_income_tax_before_non_refundable_credits_indiv: 227
 
 - name: AR HB1001 2026 - 3.4% bracket
   period: 2026
@@ -168,8 +183,9 @@
     ar_taxable_income_indiv: 20_000
     state_code: AR
   output:
-    # $112 + $144 + ($20,000 - $16,000) * 0.034 = $256 + $136 = $392
-    ar_income_tax_before_non_refundable_credits_indiv: 392
+    # Row $20,000-$20,099, midpoint 20,049.50:
+    # 112 + 144 + (20,049.50 - 16,000) x 3.4% = 256 + 137.683 = 393.683 -> 394
+    ar_income_tax_before_non_refundable_credits_indiv: 394
 
 - name: AR HB1001 2026 - top low-income bracket (3.7%)
   period: 2026
@@ -178,8 +194,9 @@
     ar_taxable_income_indiv: 50_000
     state_code: AR
   output:
-    # $609.60 + ($50,000 - $26,400) * 0.037 = $609.60 + $873.20 = $1,482.80
-    ar_income_tax_before_non_refundable_credits_indiv: 1_482.80
+    # Row $50,000-$50,099, midpoint 50,049.50:
+    # 609.60 + (50,049.50 - 26,400) x 3.7% = 609.60 + 875.03 = 1,484.63 -> 1,485
+    ar_income_tax_before_non_refundable_credits_indiv: 1_485
 
 - name: AR HB1001 2026 - boundary at $94,700 under (a)(4)(A)
   period: 2026
@@ -188,8 +205,9 @@
     ar_taxable_income_indiv: 94_700
     state_code: AR
   output:
-    # $609.60 + ($94,700 - $26,400) * 0.037 = $609.60 + $2,527.10 = $3,136.70
-    ar_income_tax_before_non_refundable_credits_indiv: 3_136.70
+    # Row $94,601-$94,700, midpoint 94,650.50 <= 94,700, so (a)(4)(A):
+    # 609.60 + (94,650.50 - 26,400) x 3.7% = 609.60 + 2,525.27 = 3,134.87 -> 3,135
+    ar_income_tax_before_non_refundable_credits_indiv: 3_135
 
 - name: AR HB1001 2026 - bracket adjustment top ($94,701, $290 adj)
   period: 2026
@@ -198,9 +216,10 @@
     ar_taxable_income_indiv: 94_701
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($94,701 - $4,700) * 0.037 = $3,424.04
-    # (a)(4)(C) adjustment: -$290 -> $3,134.04
-    ar_income_tax_before_non_refundable_credits_indiv: 3_134.04
+    # Row $94,701-$94,800, midpoint 94,750.50 > 94,700, so (a)(4)(B) less (C):
+    # 94 + (94,750.50 - 4,700) x 3.7% = 3,425.87; - 290 = 3,135.87 -> 3,136
+    # (the table removes the statute's $2.66 drop from $94,700 to $94,701)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_136
 
 - name: AR HB1001 2026 - bracket adjustment mid ($95,500, $220 adj)
   period: 2026
@@ -209,9 +228,9 @@
     ar_taxable_income_indiv: 95_500
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($95,500 - $4,700) * 0.037 = $3,453.60
-    # (a)(4)(C) row "$95,401-$95,500" adjustment: -$220 -> $3,233.60
-    ar_income_tax_before_non_refundable_credits_indiv: 3_233.60
+    # Row $95,401-$95,500, midpoint 95,450.50:
+    # 94 + (95,450.50 - 4,700) x 3.7% = 3,451.77; (C) row "$95,401-$95,500": - 220 = 3,231.77 -> 3,232
+    ar_income_tax_before_non_refundable_credits_indiv: 3_232
 
 - name: AR HB1001 2026 - bracket adjustment mid ($96,500, $120 adj)
   period: 2026
@@ -220,9 +239,9 @@
     ar_taxable_income_indiv: 96_500
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($96,500 - $4,700) * 0.037 = $3,490.60
-    # (a)(4)(C) row "$96,401-$96,500" adjustment: -$120 -> $3,370.60
-    ar_income_tax_before_non_refundable_credits_indiv: 3_370.60
+    # Row $96,401-$96,500, midpoint 96,450.50:
+    # 94 + (96,450.50 - 4,700) x 3.7% = 3,488.77; (C) row "$96,401-$96,500": - 120 = 3,368.77 -> 3,369
+    ar_income_tax_before_non_refundable_credits_indiv: 3_369
 
 - name: AR HB1001 2026 - bracket adjustment mid ($97,000, $70 adj)
   period: 2026
@@ -231,9 +250,9 @@
     ar_taxable_income_indiv: 97_000
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($97,000 - $4,700) * 0.037 = $3,509.10
-    # (a)(4)(C) row "$96,901-$97,000" adjustment: -$70 -> $3,439.10
-    ar_income_tax_before_non_refundable_credits_indiv: 3_439.10
+    # Row $96,901-$97,000, midpoint 96,950.50:
+    # 94 + (96,950.50 - 4,700) x 3.7% = 3,507.27; (C) row "$96,901-$97,000": - 70 = 3,437.27 -> 3,437
+    ar_income_tax_before_non_refundable_credits_indiv: 3_437
 
 - name: AR HB1001 2026 - bracket adjustment bottom ($97,600, $10 adj)
   period: 2026
@@ -242,9 +261,9 @@
     ar_taxable_income_indiv: 97_600
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($97,600 - $4,700) * 0.037 = $3,531.30
-    # (a)(4)(C) adjustment: -$10 -> $3,521.30
-    ar_income_tax_before_non_refundable_credits_indiv: 3_521.30
+    # Row $97,501-$97,600, midpoint 97,550.50:
+    # 94 + (97,550.50 - 4,700) x 3.7% = 3,529.47; (C) adjustment - 10 = 3,519.47 -> 3,519
+    ar_income_tax_before_non_refundable_credits_indiv: 3_519
 
 - name: AR HB1001 2026 - just past adjustment ($97,601, $0 adj)
   period: 2026
@@ -253,8 +272,9 @@
     ar_taxable_income_indiv: 97_601
     state_code: AR
   output:
-    # (a)(4)(B): $94 + ($97,601 - $4,700) * 0.037 = $3,531.34
-    ar_income_tax_before_non_refundable_credits_indiv: 3_531.34
+    # Row $97,601-$97,700, midpoint 97,650.50:
+    # 94 + (97,650.50 - 4,700) x 3.7% = 3,533.17 -> 3,533
+    ar_income_tax_before_non_refundable_credits_indiv: 3_533
 
 - name: AR HB1001 2026 - high income (a)(4)(B)
   period: 2026
@@ -285,8 +305,10 @@
     state_code: AR
   output:
     # card row "*$90,001 *$90,200 4.70% $543.70" (ranges with * extend an
-    # extra $100 intentionally): 0.047 x 90,100 - 543.70 = 3,691.00
-    ar_income_tax_before_non_refundable_credits_indiv: 3_691
+    # extra $100 intentionally). 2023 Regular Income Tax Table (p.35), row
+    # $90,001-$90,101: $3,689. Midpoint of $90,001-$90,100 = 90,050.50;
+    # 0.047 x 90,050.50 - 543.70 = 3,688.67 -> 3,689
+    ar_income_tax_before_non_refundable_credits_indiv: 3_689
 
 - name: AR 2023 bracket adjustment - formerly duplicated 91,701/91,801 thresholds (pe-us 9026)
   period: 2023
@@ -301,8 +323,9 @@
     ar_income_tax_before_non_refundable_credits_indiv: 3_918.55
 
 # 2025 and 2024 bracket adjustments, keyed to the DFA Indexed Tax Brackets cards
-# (2025_TaxBrackets.pdf and 2024_TaxBrackets.pdf, p1-2). Tax = 3.9% x net taxable
-# income - the row's minus adjustment.
+# (2025_TaxBrackets.pdf and 2024_TaxBrackets.pdf, p1-2). Below $100,001 the tax is
+# the Regular Income Tax Table row: 3.9% x the row's midpoint - the minus
+# adjustment, rounded to whole dollars.
 - name: AR 2025 bracket adjustment - top of the $26,400-$94,700 row
   period: 2025
   absolute_error_margin: 0.01
@@ -310,9 +333,10 @@
     ar_taxable_income_indiv: 94_700
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$26,400 $94,700 3.90% $419.96":
-    # 0.039 x 94,700 - 419.96 = 3,273.34
-    ar_income_tax_before_non_refundable_credits_indiv: 3_273.34
+    # DFA 2025 Indexed Tax Brackets row "$26,400 $94,700 3.90% $419.96".
+    # 2025 Regular Income Tax Table (p.34), row $94,601-$94,701: $3,271.
+    # Midpoint 94,650.50 x 3.9% - 419.96 = 3,271.41 -> 3,271
+    ar_income_tax_before_non_refundable_credits_indiv: 3_271
 
 - name: AR 2025 bracket adjustment - first $94,701-$94,800 row PE previously skipped
   period: 2025
@@ -321,10 +345,11 @@
     ar_taxable_income_indiv: 94_701
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
-    # 0.039 x 94,701 - 399.30 = 3,294.04
-    # (PE previously applied the $419.96-row amount, 420, here -> 3,273.34)
-    ar_income_tax_before_non_refundable_credits_indiv: 3_294.04
+    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30".
+    # 2025 Regular Income Tax Table (p.34), row $94,701-$94,801: $3,296.
+    # Midpoint 94,750.50 x 3.9% - 399.30 = 3,295.97 -> 3,296
+    # (PE previously applied the $419.96-row amount here)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_296
 
 - name: AR 2025 bracket adjustment - midpoint of the $94,701-$94,800 row
   period: 2025
@@ -333,10 +358,8 @@
     ar_taxable_income_indiv: 94_751
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
-    # 0.039 x 94,751 - 399.30 = 3,295.99
-    # (2025 Regular Income Tax Table, $94,701-$94,801: $3,296)
-    ar_income_tax_before_non_refundable_credits_indiv: 3_295.99
+    # Same table row as $94,701: $94,701-$94,801, $3,296 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_296
 
 - name: AR 2025 bracket adjustment - top of the $94,701-$94,800 row
   period: 2025
@@ -345,9 +368,8 @@
     ar_taxable_income_indiv: 94_800
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,701 $94,800 3.90% $399.30":
-    # 0.039 x 94,800 - 399.30 = 3,297.90
-    ar_income_tax_before_non_refundable_credits_indiv: 3_297.90
+    # $94,800 is still in the table row $94,701-$94,801: $3,296 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_296
 
 - name: AR 2025 bracket adjustment - first income in the $94,801-$94,900 row
   period: 2025
@@ -356,9 +378,10 @@
     ar_taxable_income_indiv: 94_801
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,801 $94,900 3.90% $389.30":
-    # 0.039 x 94,801 - 389.30 = 3,307.94
-    ar_income_tax_before_non_refundable_credits_indiv: 3_307.94
+    # DFA 2025 Indexed Tax Brackets row "$94,801 $94,900 3.90% $389.30".
+    # 2025 Regular Income Tax Table (p.34), row $94,801-$94,901: $3,310.
+    # Midpoint 94,850.50 x 3.9% - 389.30 = 3,309.87 -> 3,310
+    ar_income_tax_before_non_refundable_credits_indiv: 3_310
 
 - name: AR 2025 bracket adjustment - midpoint of the $94,801-$94,900 row
   period: 2025
@@ -367,10 +390,8 @@
     ar_taxable_income_indiv: 94_851
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,801 $94,900 3.90% $389.30":
-    # 0.039 x 94,851 - 389.30 = 3,309.89
-    # (2025 Regular Income Tax Table, $94,801-$94,901: $3,310)
-    ar_income_tax_before_non_refundable_credits_indiv: 3_309.89
+    # Same table row: $94,801-$94,901, $3,310 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_310
 
 - name: AR 2025 bracket adjustment - first income in the $94,901-$95,000 row
   period: 2025
@@ -379,9 +400,10 @@
     ar_taxable_income_indiv: 94_901
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
-    # 0.039 x 94,901 - 379.30 = 3,321.84
-    ar_income_tax_before_non_refundable_credits_indiv: 3_321.84
+    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30".
+    # 2025 Regular Income Tax Table (p.34), row $94,901-$95,001: $3,324.
+    # Midpoint 94,950.50 x 3.9% - 379.30 = 3,323.77 -> 3,324
+    ar_income_tax_before_non_refundable_credits_indiv: 3_324
 
 - name: AR 2025 bracket adjustment - midpoint of the $94,901-$95,000 row
   period: 2025
@@ -390,10 +412,8 @@
     ar_taxable_income_indiv: 94_951
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
-    # 0.039 x 94,951 - 379.30 = 3,323.79
-    # (2025 Regular Income Tax Table, $94,901-$95,001: $3,324)
-    ar_income_tax_before_non_refundable_credits_indiv: 3_323.79
+    # Same table row: $94,901-$95,001, $3,324 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_324
 
 - name: AR 2025 bracket adjustment - top of the $94,901-$95,000 row
   period: 2025
@@ -402,9 +422,8 @@
     ar_taxable_income_indiv: 95_000
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$94,901 $95,000 3.90% $379.30":
-    # 0.039 x 95,000 - 379.30 = 3,325.70
-    ar_income_tax_before_non_refundable_credits_indiv: 3_325.70
+    # $95,000 is still in the table row $94,901-$95,001: $3,324 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_324
 
 - name: AR 2025 bracket adjustment - first income in the $95,001-$95,100 row
   period: 2025
@@ -413,9 +432,10 @@
     ar_taxable_income_indiv: 95_001
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$95,001 $95,100 3.90% $369.30":
-    # 0.039 x 95,001 - 369.30 = 3,335.74
-    ar_income_tax_before_non_refundable_credits_indiv: 3_335.74
+    # DFA 2025 Indexed Tax Brackets row "$95,001 $95,100 3.90% $369.30".
+    # 2025 Regular Income Tax Table (p.34), row $95,001-$95,101: $3,338.
+    # Midpoint 95,050.50 x 3.9% - 369.30 = 3,337.67 -> 3,338
+    ar_income_tax_before_non_refundable_credits_indiv: 3_338
 
 - name: AR 2025 bracket adjustment - top of the last $10-step row
   period: 2025
@@ -424,9 +444,10 @@
     ar_taxable_income_indiv: 97_800
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$97,701 $97,800 3.90% $99.30":
-    # 0.039 x 97,800 - 99.30 = 3,714.90
-    ar_income_tax_before_non_refundable_credits_indiv: 3_714.90
+    # DFA 2025 Indexed Tax Brackets row "$97,701 $97,800 3.90% $99.30".
+    # 2025 Regular Income Tax Table (p.34), row $97,701-$97,801: $3,713.
+    # Midpoint 97,750.50 x 3.9% - 99.30 = 3,712.97 -> 3,713
+    ar_income_tax_before_non_refundable_credits_indiv: 3_713
 
 - name: AR 2025 bracket adjustment - first income in the and-over row
   period: 2025
@@ -435,9 +456,10 @@
     ar_taxable_income_indiv: 97_801
     state_code: AR
   output:
-    # DFA 2025 Indexed Tax Brackets row "$97,801 and over 3.90% $89.30":
-    # 0.039 x 97,801 - 89.30 = 3,724.94
-    ar_income_tax_before_non_refundable_credits_indiv: 3_724.94
+    # DFA 2025 Indexed Tax Brackets row "$97,801 and over 3.90% $89.30".
+    # 2025 Regular Income Tax Table (p.34), row $97,801-$97,901: $3,727.
+    # Midpoint 97,850.50 x 3.9% - 89.30 = 3,726.87 -> 3,727
+    ar_income_tax_before_non_refundable_credits_indiv: 3_727
 
 - name: AR 2024 bracket adjustment - inside the asterisked $94,301-$94,500 row
   period: 2024
@@ -446,10 +468,11 @@
     ar_taxable_income_indiv: 94_450
     state_code: AR
   output:
-    # DFA 2024 Indexed Tax Brackets row "*$94,301 *$94,500 3.90% $197.40" (asterisked, $200 wide):
-    # 0.039 x 94,450 - 197.40 = 3,486.15
-    # (2024 Regular Income Tax Table, $94,401-$94,501: $3,486; PE previously applied $187.40 here -> 3,496.15)
-    ar_income_tax_before_non_refundable_credits_indiv: 3_486.15
+    # DFA 2024 Indexed Tax Brackets row "*$94,301 *$94,500 3.90% $197.40" (asterisked, $200 wide).
+    # 2024 Regular Income Tax Table (p.34), row $94,401-$94,501: $3,486.
+    # Midpoint 94,450.50 x 3.9% - 197.40 = 3,486.17 -> 3,486
+    # (PE previously applied $187.40 here -> 3,496.15)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_486
 
 - name: AR 2024 bracket adjustment - top of the asterisked $94,301-$94,500 row
   period: 2024
@@ -458,9 +481,8 @@
     ar_taxable_income_indiv: 94_500
     state_code: AR
   output:
-    # DFA 2024 Indexed Tax Brackets row "*$94,301 *$94,500 3.90% $197.40":
-    # 0.039 x 94,500 - 197.40 = 3,488.10
-    ar_income_tax_before_non_refundable_credits_indiv: 3_488.10
+    # $94,500 is still in the table row $94,401-$94,501: $3,486 (p.34).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_486
 
 - name: AR 2024 bracket adjustment - first income after the asterisked row
   period: 2024
@@ -469,9 +491,10 @@
     ar_taxable_income_indiv: 94_501
     state_code: AR
   output:
-    # DFA 2024 Indexed Tax Brackets row "$94,501 $94,600 3.90% $187.40":
-    # 0.039 x 94,501 - 187.40 = 3,498.14
-    ar_income_tax_before_non_refundable_credits_indiv: 3_498.14
+    # DFA 2024 Indexed Tax Brackets row "$94,501 $94,600 3.90% $187.40".
+    # 2024 Regular Income Tax Table (p.34), row $94,501-$94,601: $3,500.
+    # Midpoint 94,550.50 x 3.9% - 187.40 = 3,500.07 -> 3,500
+    ar_income_tax_before_non_refundable_credits_indiv: 3_500
 
 - name: AR 2024 bracket adjustment - top of the last $10-step row
   period: 2024
@@ -480,9 +503,10 @@
     ar_taxable_income_indiv: 95_500
     state_code: AR
   output:
-    # DFA 2024 Indexed Tax Brackets row "$95,401 $95,500 3.90% $97.40":
-    # 0.039 x 95,500 - 97.40 = 3,627.10
-    ar_income_tax_before_non_refundable_credits_indiv: 3_627.10
+    # DFA 2024 Indexed Tax Brackets row "$95,401 $95,500 3.90% $97.40".
+    # 2024 Regular Income Tax Table (p.34), row $95,401-$95,501: $3,625.
+    # Midpoint 95,450.50 x 3.9% - 97.40 = 3,625.17 -> 3,625
+    ar_income_tax_before_non_refundable_credits_indiv: 3_625
 
 - name: AR 2024 bracket adjustment - first income in the and-over row
   period: 2024
@@ -491,9 +515,10 @@
     ar_taxable_income_indiv: 95_501
     state_code: AR
   output:
-    # DFA 2024 Indexed Tax Brackets row "$95,501 and over 3.90% $87.40":
-    # 0.039 x 95,501 - 87.40 = 3,637.14
-    ar_income_tax_before_non_refundable_credits_indiv: 3_637.14
+    # DFA 2024 Indexed Tax Brackets row "$95,501 and over 3.90% $87.40".
+    # 2024 Regular Income Tax Table (p.34), row $95,501-$95,601: $3,639.
+    # Midpoint 95,550.50 x 3.9% - 87.40 = 3,639.07 -> 3,639
+    ar_income_tax_before_non_refundable_credits_indiv: 3_639
 
 # 2027 cases use incomes whose tax survives a one-step change in the projected
 # uprating factor. The (B)-(C) rows near the indexed threshold (about $97,500)
@@ -516,8 +541,8 @@
     ar_taxable_income_indiv: 5_900
     state_code: AR
   output:
-    # (5,900 - 5,800) x 2% = 2.00
-    ar_income_tax_before_non_refundable_credits_indiv: 2
+    # Row $5,900-$5,999, midpoint 5,949.50: (5,949.50 - 5,800) x 2% = 2.99 -> 3
+    ar_income_tax_before_non_refundable_credits_indiv: 3
 
 - name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $108
   period: 2027
@@ -526,8 +551,10 @@
     ar_taxable_income_indiv: 11_300
     state_code: AR
   output:
-    # (11,300 - 5,800) x 2% = 110.00; the frozen 2026 reduction schedule gave 2% x 11,300 - 224 = 2.00
-    ar_income_tax_before_non_refundable_credits_indiv: 110
+    # Row $11,300-$11,399, midpoint 11,349.50: (11,349.50 - 5,800) x 2% = 110.99 -> 111;
+    # at the exact income, (11,300 - 5,800) x 2% = 110.00, and the frozen 2026
+    # reduction schedule gave 2% x 11,300 - 224 = 2.00
+    ar_income_tax_before_non_refundable_credits_indiv: 111
 
 - name: AR 2027 indexed Act 1 of 2026 tables - start of the 3% row
   period: 2027
@@ -536,8 +563,9 @@
     ar_taxable_income_indiv: 11_500
     state_code: AR
   output:
-    # (11,500 - 5,800) x 2% = 114.00
-    ar_income_tax_before_non_refundable_credits_indiv: 114
+    # Row $11,500-$11,599, midpoint 11,549.50:
+    # (11,500 - 5,800) x 2% + (11,549.50 - 11,500) x 3% = 114 + 1.485 = 115.485 -> 115
+    ar_income_tax_before_non_refundable_credits_indiv: 115
 
 - name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.4% row
   period: 2027
@@ -546,8 +574,9 @@
     ar_taxable_income_indiv: 16_500
     state_code: AR
   output:
-    # 114 + (16,500 - 11,500) x 3% = 264.00
-    ar_income_tax_before_non_refundable_credits_indiv: 264
+    # Row $16,500-$16,599, midpoint 16,549.50:
+    # 114 + (16,500 - 11,500) x 3% + (16,549.50 - 16,500) x 3.4% = 264 + 1.683 = 265.683 -> 266
+    ar_income_tax_before_non_refundable_credits_indiv: 266
 
 - name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $70.20
   period: 2027
@@ -556,8 +585,10 @@
     ar_taxable_income_indiv: 26_500
     state_code: AR
   output:
-    # 264 + (26,500 - 16,500) x 3.4% = 604.00; the frozen 2026 reduction schedule gave 3.4% x 26,500 - 367.20 = 533.80
-    ar_income_tax_before_non_refundable_credits_indiv: 604
+    # Row $26,500-$26,599, midpoint 26,549.50:
+    # 264 + (26,549.50 - 16,500) x 3.4% = 264 + 341.683 = 605.683 -> 606;
+    # the frozen 2026 reduction schedule gave 3.4% x 26,500 - 367.20 = 533.80
+    ar_income_tax_before_non_refundable_credits_indiv: 606
 
 - name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.7% row
   period: 2027
@@ -566,8 +597,9 @@
     ar_taxable_income_indiv: 27_200
     state_code: AR
   output:
-    # 264 + (27,200 - 16,500) x 3.4% = 627.80
-    ar_income_tax_before_non_refundable_credits_indiv: 627.80
+    # Row $27,200-$27,299, midpoint 27,249.50:
+    # 264 + (27,200 - 16,500) x 3.4% + (27,249.50 - 27,200) x 3.7% = 627.80 + 1.8315 = 629.63 -> 630
+    ar_income_tax_before_non_refundable_credits_indiv: 630
 
 - name: AR 2027 indexed Act 1 of 2026 tables - top of table (A) at the indexed high-income threshold
   period: 2027
@@ -576,8 +608,10 @@
     ar_taxable_income_indiv: 97_500
     state_code: AR
   output:
-    # 627.80 + (97,500 - 27,200) x 3.7% = 3,228.90; the threshold is 94,700 x 1.0298 = 97,522, nearest $100
-    ar_income_tax_before_non_refundable_credits_indiv: 3_228.90
+    # The threshold is 94,700 x 1.0298 = 97,522, nearest $100 = 97,500. Row
+    # $97,401-$97,500, midpoint 97,450.50 <= 97,500, so table (A):
+    # 627.80 + (97,450.50 - 27,200) x 3.7% = 627.80 + 2,599.27 = 3,227.07 -> 3,227
+    ar_income_tax_before_non_refundable_credits_indiv: 3_227
 
 - name: AR 2027 indexed Act 1 of 2026 tables - high income
   period: 2027
@@ -588,3 +622,157 @@
   output:
     # 96 + (150,000 - 4,800) x 3.7% = 5,468.40
     ar_income_tax_before_non_refundable_credits_indiv: 5_468.40
+
+# Regular Income Tax Table (issue 9681). Below the table threshold ($100,001
+# from 2023), filers look up net taxable income in $100 rows. DFA computes each
+# row at its midpoint and rounds to whole dollars: "If you use a formula to
+# calculate Arkansas income tax, the results must match the table exactly. The
+# calculations in the table are made at the midpoint of each income level."
+# (2024 Indexed Tax Brackets, https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=2).
+# Pages below are file pages of that year's AR1000F/AR1000NR instructions.
+- name: AR regular tax table 2024 - income inside the $35,100-$35,200 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 35_180
+    state_code: AR
+  output:
+    # 2024 Regular Income Tax Table (p.31), row $35,100-$35,200: $961.
+    # Midpoint of $35,100-$35,199 = 35,149.50; 35,149.50 x 3.9% - 409.86 = 960.97 -> 961
+    # (the bracket formula at the exact income gives 35,180 x 3.9% - 409.86 = 962.16)
+    ar_income_tax_before_non_refundable_credits_indiv: 961
+
+- name: AR regular tax table 2024 - first income of the $35,100-$35,200 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 35_100
+    state_code: AR
+  output:
+    # "As Much As" $35,100: same row, $961 (p.31).
+    ar_income_tax_before_non_refundable_credits_indiv: 961
+
+- name: AR regular tax table 2024 - just below the $35,100-$35,200 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 35_099.99
+    state_code: AR
+  output:
+    # "But Less Than" $35,100: row $35,000-$35,100, $957 (p.31).
+    # Midpoint 35,049.50 x 3.9% - 409.86 = 957.07 -> 957
+    ar_income_tax_before_non_refundable_credits_indiv: 957
+
+- name: AR regular tax table 2024 - round $80,000 falls in the $79,901-$80,001 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 80_000
+    state_code: AR
+  output:
+    # From $75,000 rows start $1 above the hundred. Row $79,901-$80,001: $2,708 (p.33).
+    # Midpoint of $79,901-$80,000 = 79,950.50; 79,950.50 x 3.9% - 409.86 = 2,708.21 -> 2,708
+    ar_income_tax_before_non_refundable_credits_indiv: 2_708
+
+- name: AR regular tax table 2024 - $80,001 starts the next row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 80_001
+    state_code: AR
+  output:
+    # Row $80,001-$80,101: $2,712 (p.33).
+    # Midpoint 80,050.50 x 3.9% - 409.86 = 2,712.11 -> 2,712
+    ar_income_tax_before_non_refundable_credits_indiv: 2_712
+
+- name: AR regular tax table 2024 - $75,000 is in the $101-wide $74,900-$75,001 row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 75_000
+    state_code: AR
+  output:
+    # Row $74,900-$75,001: $2,513 (p.33).
+    # Midpoint of $74,901-$75,000 = 74,950.50; 74,950.50 x 3.9% - 409.86 = 2,513.21 -> 2,513
+    ar_income_tax_before_non_refundable_credits_indiv: 2_513
+
+- name: AR regular tax table 2024 - $100,000 is in the last table row
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 100_000
+    state_code: AR
+  output:
+    # Row $99,901-$100,001: $3,811 (p.34).
+    # Midpoint 99,950.50 x 3.9% - 87.40 = 3,810.67 -> 3,811
+    ar_income_tax_before_non_refundable_credits_indiv: 3_811
+
+- name: AR regular tax table 2024 - the formula applies from $100,001
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 100_001
+    state_code: AR
+  output:
+    # "For $100,001 and over" (p.34) the model keeps the bracket formula at the
+    # exact income: 100,001 x 3.9% - 87.40 = 3,812.64. The table's note,
+    # "$3,811 + 3.9% of the excess over $100,000", would give $1.60 less
+    # (threshold.yaml documents the choice).
+    ar_income_tax_before_non_refundable_credits_indiv: 3_812.64
+
+- name: AR regular tax table 2025 - income inside the $35,100-$35,200 row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 35_180
+    state_code: AR
+  output:
+    # 2025 Regular Income Tax Table (p.31), row $35,100-$35,200: $951.
+    # Midpoint 35,149.50 x 3.9% - 419.96 = 950.87 -> 951
+    ar_income_tax_before_non_refundable_credits_indiv: 951
+
+- name: AR regular tax table 2021 - a 50-cent midpoint rounds up
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 40_250
+    state_code: AR
+  output:
+    # 2021 Regular Income Tax Table (p.30), row $40,200-$40,300: $1,578.
+    # Through 2021 the midpoint is that of the row's bounds:
+    # (40,200 + 40,300) / 2 = 40,250; 40,250 x 5.9% - 797.25 = 1,577.50 -> 1,578
+    ar_income_tax_before_non_refundable_credits_indiv: 1_578
+
+- name: AR regular tax table 2022 - the matching 50-cent row rounds down
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 24_750
+    state_code: AR
+  output:
+    # 2022 Regular Income Tax Table (p.32), row $24,700-$24,800: $584.
+    # From 2022 the midpoint is that of the whole-dollar incomes in the row:
+    # (24,700 + 24,799) / 2 = 24,749.50; 24,749.50 x 4.9% - 628.25 = 584.48 -> 584
+    # (the bounds' midpoint would give 24,750 x 4.9% - 628.25 = 584.50)
+    ar_income_tax_before_non_refundable_credits_indiv: 584
+
+- name: AR regular tax table 2015 - last row below the $50,000 threshold
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 49_999
+    state_code: AR
+  output:
+    # 2015 Tax Tables (TaxTables_2015.pdf p.6), row $49,900-$50,000: $2,547.
+    # Midpoint 49,950 x 7% - 949.24 = 2,547.26 -> 2,547
+    ar_income_tax_before_non_refundable_credits_indiv: 2_547
+
+- name: AR regular tax table 2015 - the formula applies from $50,000
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 50_000
+    state_code: AR
+  output:
+    # "For $50,000 and over" (p.6): 50,000 x 7% - 949.24 = 2,550.76
+    ar_income_tax_before_non_refundable_credits_indiv: 2_550.76
