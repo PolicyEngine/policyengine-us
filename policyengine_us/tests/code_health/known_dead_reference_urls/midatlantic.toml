@@ -1,0 +1,199 @@
+# Dead reference URLs retired in the midatlantic batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://bfa.wv.gov/media/2766/download?inline"
+verified = "2026-10-01"
+replacement = "https://bfa.wv.gov/media/40005/download?inline"
+
+[[dead]]
+prefix = "https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20251223225619/https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates"
+
+[[dead]]
+prefix = "https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/726/726%20ch11_1.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20161226193813/https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/726/726%20ch11_1.pdf"
+
+[[dead]]
+prefix = "https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/744/ch10_apa.pdf"
+verified = "2026-10-01"
+replacement = "https://bfa.wv.gov/media/40005/download?inline"
+
+[[dead]]
+prefix = "https://dhhr.wv.gov/bcf/Services/familyassistance/PolicyManual/Documents/Chapter%2011/ch11_3.pdf"
+verified = "2026-10-01"
+replacement = "https://bfa.wv.gov/media/40005/download?inline"
+
+[[dead]]
+prefix = "https://dhss.delaware.gov/dss/childcr/"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20260614012446/https://dhss.delaware.gov/dss/childcr/"
+
+[[dead]]
+prefix = "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/OCT2022COLA.pdf"
+verified = "2026-10-01"
+replacement = "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/OCT2022COLA.pdf"
+
+[[dead]]
+prefix = "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/PurchaseofCareProviderHandbook_FINAL1_25_2023.pdf"
+
+[[dead]]
+prefix = "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/detanfstateplan2017.pdf"
+verified = "2026-10-01"
+replacement = "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/detanfstateplan2017.pdf"
+
+[[dead]]
+prefix = "https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/tanf_ffy2012_stateplan.pdf"
+verified = "2026-10-01"
+replacement = "https://dhss.delaware.gov/wp-content/uploads/sites/2/dss/pdf/tanf_ffy2012_stateplan.pdf"
+
+[[dead]]
+prefix = "https://marylandtaxes.gov/forms/22_forms/502CR.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250228155322/https://marylandtaxes.gov/forms/22_forms/502CR.pdf"
+
+[[dead]]
+prefix = "https://marylandtaxes.gov/forms/24-forms/502CR.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2024/502CR.pdf"
+
+[[dead]]
+prefix = "https://otr.cfo.dc.gov/page/individual-income-tax-special-circumstances-faqs"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20220726171620/https://otr.cfo.dc.gov/page/individual-income-tax-special-circumstances-faqs"
+
+[[dead]]
+prefix = "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_Final_wLinks_021226_v1.0.pdf"
+verified = "2026-10-01"
+replacement = "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf"
+
+[[dead]]
+prefix = "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_Final_wLinks_030526_v1.0.pdf"
+verified = "2026-10-01"
+replacement = "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf"
+
+[[dead]]
+prefix = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/200_7-20.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-200---Categorical-Eligibility-Requirements.pdf"
+
+[[dead]]
+prefix = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf"
+verified = "2026-10-01"
+replacement = "One of: https://web.archive.org/web/20210719231146/https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf; https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf"
+
+[[dead]]
+prefix = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/700_07-20.pdf"
+verified = "2026-10-01"
+replacement = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-700---TANF-UP-Unemployed-Parent-Program.pdf"
+
+[[dead]]
+prefix = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2022/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2022.pdf"
+
+[[dead]]
+prefix = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2023/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2023/Resident-Booklet.pdf"
+
+[[dead]]
+prefix = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident-Booklet.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/20_forms/502CR.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20210421021929/https://www.marylandtaxes.gov/forms/20_forms/502CR.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/20_forms/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2020.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/21_forms/502CR.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20220511190607/https://www.marylandtaxes.gov/forms/21_forms/502CR.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2022.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/24-forms/Nonresident-Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Nonresident-Booklet.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident-Booklet.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/current_forms/Md_Tax_Computation.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20200929021131/https://www.marylandtaxes.gov/forms/current_forms/Md_Tax_Computation.pdf"
+
+[[dead]]
+prefix = "https://www.marylandtaxes.gov/forms/current_forms/Resident-Booklet.pdf"
+verified = "2026-10-01"
+replacement = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2023/Resident-Booklet.pdf"
+
+[[dead]]
+prefix = "https://www.montgomerycountymd.gov/OLO/Resources/Files/eis/2021/EIS-EBill14-21.pdf"
+verified = "2026-10-01"
+replacement = "https://assets.montgomerycountymd.gov/files/EIS-EBill14-21.pdf"
+
+[[dead]]
+prefix = "https://www.nj.gov/humanservices/providers/grants/public/publicnoticefiles/Draft%20New%20Jersey%20State%20Plan%20for%20Temporary%20Assistance%20for%20Needy%20Families%20(TANF)%20FFY%202024%20-%20FFY%202026.pdf"
+verified = "2026-10-01"
+replacement = "https://www.nj.gov/humanservices/notices/documents/public-notices/Draft%20New%20Jersey%20State%20Plan%20for%20Temporary%20Assistance%20for%20Needy%20Families%20(TANF)%20FFY%202024%20-%20FFY%202026.pdf"
+
+[[dead]]
+prefix = "https://www.nj.gov/treasury/taxation/proptaxdeduc_credit.shtml"
+verified = "2026-10-01"
+replacement = "https://www.nj.gov/treasury/taxation/njit35.shtml"
+
+[[dead]]
+prefix = "https://www.nj.gov/treasury/taxation/staynj/calculation.shtml"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20260710135754/https://www.nj.gov/treasury/taxation/staynj/calculation.shtml"
+
+[[dead]]
+prefix = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40sp.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2022/2022_pa-40dc.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40dc.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2023/2023_pa-40dc.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40dc.pdf"
+
+[[dead]]
+prefix = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2023/2023_pa-40in.pdf"
+verified = "2026-10-01"
+replacement = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40in.pdf"

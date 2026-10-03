@@ -21,7 +21,7 @@ class va_ccsp_ready_region(Variable):
     definition_period = YEAR
     label = "Virginia CCSP Ready Region"
     defined_for = StateCode.VA
-    reference = "https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates"
+    reference = "https://web.archive.org/web/20251223225619/https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
