@@ -1,0 +1,302 @@
+# Current agency table publishes all eight annual income ceilings below.
+# https://oeo.sc.gov/managedsites/prd/oeo/liheap.html
+# Annual figures govern; the inconsistent one-person monthly figure is not used.
+# Tests verify the published values without treating inferred rounding as law.
+
+- name: Case 1, all eight agency annual ceilings use actual qualified household sizes.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Agency annual rows for sizes one through eight are transcribed independently.
+  # The seventh and eighth rows distinguish the published schedule from rounding
+  # the unrounded federal SMI threshold only at the final step.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person12:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person13:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person17:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person18:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person19:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person20:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person21:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person23:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person24:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person25:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person26:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person27:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person28:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person30:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person31:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person32:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person33:
+        age: 14
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person34:
+        age: 16
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person35:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person36:
+        age: 20
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit3:
+        members: [person4, person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit4:
+        members: [person7, person8, person9, person10]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit5:
+        members: [person11, person12, person13, person14, person15]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit6:
+        members: [person16, person17, person18, person19, person20, person21]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit7:
+        members: [person22, person23, person24, person25, person26, person27, person28]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit8:
+        members:
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2, person3]
+        state_code: SC
+      household3:
+        members: [person4, person5, person6]
+        state_code: SC
+      household4:
+        members: [person7, person8, person9, person10]
+        state_code: SC
+      household5:
+        members: [person11, person12, person13, person14, person15]
+        state_code: SC
+      household6:
+        members: [person16, person17, person18, person19, person20, person21]
+        state_code: SC
+      household7:
+        members: [person22, person23, person24, person25, person26, person27, person28]
+        state_code: SC
+      household8:
+        members:
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+        state_code: SC
+  output:
+    sc_liheap_income_limit: [31_993, 41_837, 51_681, 61_525, 71_369, 81_213, 83_058, 84_904]
+
+- name: Case 2, mixed status reduces the threshold and zero qualified size is guarded.
+  period: 2026
+  absolute_error_margin: 0.01
+  # One qualified child uses the one-person annual ceiling, without counting
+  # the nonqualified parent in size. No qualified residents gives zero.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit2:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit3:
+        members: [person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3]
+        state_code: SC
+      household3:
+        members: [person4]
+        state_code: NC
+  output:
+    sc_liheap_household_size: [1, 0, 0]
+    sc_liheap_income_limit: [31_993, 0, 0]

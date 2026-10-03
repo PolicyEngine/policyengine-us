@@ -1,0 +1,15 @@
+description: South Carolina counts these earned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: South Carolina LIHEAP earned income sources
+  reference:
+    - title: South Carolina FY2026 LIHEAP policy
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5,6

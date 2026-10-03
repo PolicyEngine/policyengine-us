@@ -1,0 +1,263 @@
+# Accepted FY 2026 plan checks selected income streams and excludes minor earnings.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=5,6
+# Unearned income of minors counts: only their earned income is expressly excluded.
+# Annual flows approximate application-month income; monthly SSI is summed once.
+
+- name: Case 1, earnings count at eighteen while minor unearned income still counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Age 17 wages 12_000 are excluded but survivor Social Security 1_000 counts.
+  # At 18 the same wages count: 10_000+1_000=11_000 versus 23_000.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        social_security_survivors: 1_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person4:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        social_security_survivors: 1_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: [11_000, 23_000]
+
+- name: Case 2, adult net business receipts and wages remain disjoint.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 12_000 wages +2_000 net business +300 SSTB +700 farm +1_000 partnership
+  # =16_000. Existing business receipts are already net of expenses.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_000
+        sstb_self_employment_income: 300
+        farm_operations_income: 700
+        partnership_s_corp_income: 1_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 16_000
+
+- name: Case 3, pension Social Security survivor rental and gift receipts enter once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Pension 3_000 + Social Security 2_000 + other survivor 700 + rent 3_000
+  # + unemployment 1_000 + alimony 400 + support 500 + VA 800 + gifts 600 =12_000.
+  # Neither pension nor Social Security subcomponents are counted twice.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        taxable_pension_income: 2_000
+        tax_exempt_pension_income: 1_000
+        social_security_retirement: 500
+        social_security_disability: 300
+        social_security_survivors: 1_000
+        social_security_dependents: 200
+        survivor_benefits: 700
+        rental_income: 1_800
+        farm_rent_income: 1_200
+        unemployment_compensation: 1_000
+        alimony_income: 400
+        child_support_received: 500
+        veterans_benefits: 800
+        financial_assistance: 600
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 12_000
+
+- name: Case 4, unchecked income types and assets do not inflate countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Only the 1_000 wages count. Planp 6 leaves interest/dividends, GA, TANF,
+  # strike pay, lottery lump sums, direct insurance and asset balances unchecked.
+  # SNAP is not cash income.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+        interest_income: 5_000
+        ordinary_dividend_income: 5_000
+        general_assistance: 500
+        strike_benefits: 600
+        gambling_winnings: 700
+        life_insurance_benefits: 800
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 3_600
+        snap: 3_600
+        spm_unit_assets: 500_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 1_000
+
+- name: Case 5, nonuniform SSI for an adult and child is annualized once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Adult SSI=6*100+6*200=1_800; child SSI=6*50+6*100=900.
+  # Annual countable income=2_700, with matching explicit monthly keys.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 100
+          2026-05: 100
+          2026-06: 100
+          2026-07: 200
+          2026-08: 200
+          2026-09: 200
+          2026-10: 200
+          2026-11: 200
+          2026-12: 200
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 50
+          2026-02: 50
+          2026-03: 50
+          2026-04: 50
+          2026-05: 50
+          2026-06: 50
+          2026-07: 100
+          2026-08: 100
+          2026-09: 100
+          2026-10: 100
+          2026-11: 100
+          2026-12: 100
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 2_700
+
+- name: Case 6, nonqualified adult income counts and other state components remain zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Nonqualified adult earnings 20_000 remain in household income. Negative net
+  # resources alone do not produce negative countable income. NC has no SC amount.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: -2_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit2:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+      spm_unit3:
+        members: [person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3]
+        state_code: SC
+      household3:
+        members: [person4]
+        state_code: NC
+  output:
+    sc_liheap_countable_income: [20_000, 0, 0]

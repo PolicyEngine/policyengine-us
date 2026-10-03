@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, SC
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP
+        full_name: South Carolina Low Income Home Energy Assistance Program
+        variable: sc_liheap
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating statewide schedule, qualified household size and countable income. Annual inputs approximate application-month income and energy burden; SPM units approximate energy households. Local agency funding and priority decisions and detailed income-source exclusions are not represented. Earlier backfills are unverified historical estimates; crisis, cooling, weatherization and equipment are outside scope.
 
   # --- SSA programs ---
   - id: ssi

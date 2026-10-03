@@ -1,0 +1,21 @@
+description: South Carolina counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - veterans_benefits
+    - financial_assistance
+metadata:
+  unit: list
+  period: year
+  label: South Carolina LIHEAP unearned income sources
+  reference:
+    - title: South Carolina FY2026 LIHEAP policy
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=6

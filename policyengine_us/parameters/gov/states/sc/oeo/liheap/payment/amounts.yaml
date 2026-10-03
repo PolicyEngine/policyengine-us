@@ -1,0 +1,26 @@
+description: South Carolina provides these base and supplemental regular heating amounts under the Low Income Home Energy Assistance Program.
+base:
+  2025-10-01: 200
+elderly:
+  2025-10-01: 75
+child:
+  2025-10-01: 50
+disabled:
+  2025-10-01: 50
+veteran:
+  2025-10-01: 50
+low_income:
+  2025-10-01: 175
+high_burden:
+  2025-10-01: 175
+fuel:
+  2025-10-01: 75
+maximum:
+  2025-10-01: 850
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Carolina LIHEAP regular heating amounts
+  reference:
+    - title: South Carolina FY2026 LIHEAP policy
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8,9

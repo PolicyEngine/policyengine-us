@@ -1,0 +1,18 @@
+description: South Carolina uses these represented home-energy bills for the energy-burden calculation under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    - bottled_gas_expense
+    - fuel_oil_expense
+    - wood_expense
+    - coal_expense
+    - other_heating_fuel_expense
+    - cooking_fuel_expense
+metadata:
+  unit: list
+  period: year
+  label: South Carolina LIHEAP home energy cost sources
+  reference:
+    - title: South Carolina FY2026 LIHEAP policy
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=9
