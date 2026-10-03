@@ -31,7 +31,9 @@ class school_meal_tier(Variable):
         # to students who qualify for reduced-price meals.
         reduced_income_eligible = fpg_ratio <= p_income_limit.REDUCED
         state = spm_unit.household("state_code_str", period)
-        state_covers_reduced_copay = p.state_covers_reduced_price_copay[state]
+        state_covers_reduced_copay = p.state_covers_reduced_price_copay[state].astype(
+            bool
+        )
         return select(
             [
                 (fpg_ratio <= p_income_limit.FREE)
