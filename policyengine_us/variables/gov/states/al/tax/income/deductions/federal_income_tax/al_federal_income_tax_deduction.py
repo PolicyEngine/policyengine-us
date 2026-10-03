@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.pinned_tbs import get_2020_irc_tbs
+from policyengine_us.tools.pinned_tbs import (
+    CREDIT_DEPENDENT_VARIABLES,
+    get_2020_irc_tbs,
+)
 
 
 class al_federal_income_tax_deduction(Variable):
@@ -55,7 +58,10 @@ class al_federal_income_tax_deduction(Variable):
         branch = simulation.get_branch("al_2020_irc")
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
         for variable in branch.tax_benefit_system.variables:
-            if any(key in variable for key in ("ctc", "cdcc", "eitc")):
+            if any(
+                key in variable
+                for key in ("ctc", "cdcc", "eitc", *CREDIT_DEPENDENT_VARIABLES)
+            ):
                 branch.delete_arrays(variable)
         recomputed_ctc = branch.tax_unit("ctc", period)
         recomputed_refundable_ctc = branch.tax_unit("refundable_ctc", period)

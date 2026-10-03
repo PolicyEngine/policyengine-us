@@ -27,6 +27,12 @@ from policyengine_core.periods import instant
 # built before that reform would otherwise be reused after it.
 _PINNED_TBS_CACHE = {}
 
+# Variables without "ctc", "cdcc" or "eitc" in their names that read those
+# credits, so a branch that recomputes them under pinned rules must drop these
+# too. The residential clean energy credit's limit subtracts the
+# non-refundable CTC (26 U.S.C. 25D(c); Form 5695, line 14 worksheet).
+CREDIT_DEPENDENT_VARIABLES = ("residential_clean_energy_credit",)
+
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     entry = _PINNED_TBS_CACHE.get(pin_name)
