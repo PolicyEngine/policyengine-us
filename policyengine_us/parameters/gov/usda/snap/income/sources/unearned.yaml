@@ -67,7 +67,9 @@ values:
     # "gross income minus the cost of doing business derived from rental
     #  property in which a household member is not actively engaged in the
     #  management of the property at least 20 hours a week."
-    - rental_income
+    # snap_rental_income floors rental_income at zero because a rental loss
+    # does not offset other income.
+    - snap_rental_income
     # Farm rent (Form 4835 crop or livestock share rent of a landowner who
     # does not materially participate) is income from rental property too,
     # under the same assumption; flat cash farm rent is in rental_income.
