@@ -19,7 +19,8 @@ values:
     # the adjusted net capital gain), which federal AGI already holds.
     # Federal AGI limits a net capital loss to $3,000 per return ($1,500 if
     # married filing separately); A.A.C. R15-2C-502(C)(3) limits it to $1,500
-    # for each household member.
+    # for each household member. The total can be negative;
+    # az_property_tax_credit uses zero for the schedules.
     - az_property_tax_credit_agi
     # Federal AGI leaves out dependents' income; Arizona counts every household
     # member's income whether or not the member is a dependent

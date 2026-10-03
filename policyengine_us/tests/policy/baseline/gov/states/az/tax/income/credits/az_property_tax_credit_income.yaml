@@ -282,3 +282,133 @@
     az_property_tax_credit_income: 3_000
     # Line 11b: Schedule 2, 2,951 - 3,100 -> 412. Line 13: 750.
     az_property_tax_credit: 412
+
+# Losses offset other members' income. Federal AGI deducts every member's
+# losses, and it is not floored at zero before dependents' income is added
+# (Form 140PTC line J can be negative; A.A.C. R15-2C-502(B), (C)).
+- name: A dependent's capital loss offsets the dependent's wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+        long_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line A: column 3 wages 3,000. Line D: column 3 net loss (1,000).
+    # Line J: 2,000.
+    az_property_tax_credit_income: 2_000
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+- name: A dependent's capital loss with a claimant's pension
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 400
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+        long_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line A: 3,000. Line D: (1,000). Line E: column 1 pension 400.
+    # Line J: 2,400.
+    az_property_tax_credit_income: 2_400
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+- name: A claimant's capital loss offsets a dependent's wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: -1_000
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 3_400
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line A: column 3 wages 3,400. Line D: column 1 net loss (1,000).
+    # Line J: 2,400.
+    az_property_tax_credit_income: 2_400
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+- name: A dependent's rental loss offsets the dependent's wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+        rental_income: -1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line A: column 3 wages 3,000. Line F: column 3 rent loss (1,000).
+    # Line J: 2,000.
+    az_property_tax_credit_income: 2_000
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+- name: A net loss alone leaves household income negative
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: -1_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line D: net loss (1,000). Line J: (1,000), considered zero for the
+    # schedules.
+    az_property_tax_credit_income: -1_000
+    # Line 11a: Schedule 1, 0 - 1,750 -> 502. Line 13: 750.
+    az_property_tax_credit: 502

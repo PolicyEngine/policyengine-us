@@ -9,17 +9,18 @@ add capital_gains_excluded_from_taxable_income as well, which is the part of
 federal taxable income taxed at the capital gains rates (at zero taxable
 income, the adjusted net capital gain), so gains and qualified dividends
 counted twice. Federal AGI leaves out dependents' income, which Arizona counts
-for every household member whether or not a dependent.
+for every household member whether or not a dependent. Federal AGI deducts
+every member's losses, so it is not floored before dependents' income is added.
 
 Invariants, checked on a seeded sample of Arizona tax units (some with a child
-dependent who has income) whose per-member net capital gain is at least -$1,500
-(where the federal and Arizona loss rules agree), whose dependents have no net
-capital loss, and whose income other than Social Security is not negative:
+dependent who has income). The sample stays where the federal and Arizona
+capital loss rules agree: each member's net capital gain is at least -$1,500
+and a tax unit's net losses total at most $3,000, the federal limit per return.
 
 1. Differential: the model equals an independent line A + B + D + E sum over
    every member from Form 140PTC Part 1, with Social Security excluded.
-2. Counted once: adding d to a member's long-term gains raises household
-   income by exactly d.
+2. Counted once: adding d to one member's long-term gains (the dependent's
+   where there is one, else the head's) raises household income by exactly d.
 3. The income does not depend on capital_gains_excluded_from_taxable_income.
 4. The credit never rises when gains rise.
 """
@@ -32,9 +33,11 @@ YEAR = 2025
 N = 60
 SEED = 43_1072
 # A.A.C. R15-2C-502(C)(3): net capital losses are limited to $1,500 for each
-# household member. The sample stays at or above it, where federal AGI's
-# $3,000-per-return limit gives the same answer.
+# household member. The sample stays at or above it, and keeps each tax unit's
+# net losses within federal AGI's $3,000-per-return limit, so both rules give
+# the same answer.
 MEMBER_LOSS_LIMIT = 1_500
+RETURN_LOSS_LIMIT = 3_000
 
 
 def _sample_units(rng: np.random.Generator) -> list:
@@ -74,8 +77,9 @@ def _sample_units(rng: np.random.Generator) -> list:
                 }
             )
         if rng.random() < 0.35:
-            # A child dependent with income of their own. Dependents' net
-            # capital losses are not modeled, so their gains stay at or above 0.
+            # A child dependent with income of their own, sometimes with a net
+            # capital loss. A couple can already reach the federal limit, so
+            # only a single head's dependent gets a loss.
             members.append(
                 {
                     "role": "dependent",
@@ -87,7 +91,9 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "taxable_interest_income": round(rng.uniform(0, 300), 2),
                     "tax_exempt_interest_income": round(rng.uniform(0, 200), 2),
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
-                    "long_term_capital_gains": round(rng.uniform(0, 4_000), 2),
+                    "long_term_capital_gains": round(
+                        rng.uniform(0 if married else -1_500, 4_000), 2
+                    ),
                     "short_term_capital_gains": round(rng.uniform(0, 1_000), 2),
                     "taxable_private_pension_income": 0.0,
                     "tax_exempt_public_pension_income": 0.0,
@@ -101,6 +107,11 @@ def _sample_units(rng: np.random.Generator) -> list:
                 member["long_term_capital_gains"] + member["short_term_capital_gains"]
             )
             assert net_gain >= -MEMBER_LOSS_LIMIT
+        net_losses = sum(
+            max(0, -(m["long_term_capital_gains"] + m["short_term_capital_gains"]))
+            for m in members
+        )
+        assert net_losses <= RETURN_LOSS_LIMIT
         units.append(
             {
                 "members": members,
@@ -109,6 +120,11 @@ def _sample_units(rng: np.random.Generator) -> list:
             }
         )
     return units
+
+
+def _raised_role(unit: dict) -> str:
+    roles = [member["role"] for member in unit["members"]]
+    return "dependent" if "dependent" in roles else "head"
 
 
 def _situation(units: list, raise_gains: bool) -> dict:
@@ -122,7 +138,7 @@ def _situation(units: list, raise_gains: bool) -> dict:
             person = {
                 key: {year: value} for key, value in member.items() if key != "role"
             }
-            if raise_gains and member["role"] == "head":
+            if raise_gains and member["role"] == _raised_role(unit):
                 person["long_term_capital_gains"] = {
                     year: member["long_term_capital_gains"] + unit["gain_increase"]
                 }
@@ -164,24 +180,7 @@ def _form_140ptc_line_j(units: list) -> np.ndarray:
     return np.array(totals)
 
 
-def _units_with_nonnegative_income() -> list:
-    rng = np.random.default_rng(SEED)
-    units = _sample_units(rng)
-    # Keep each unit's income other than Social Security at or above zero, so
-    # the reference sum is not clipped (az_property_tax_credit_agi floors
-    # federal AGI less taxable Social Security at zero).
-    for unit, line_j in zip(units, _form_140ptc_line_j(units)):
-        exempt = sum(
-            m["tax_exempt_interest_income"] + m["tax_exempt_public_pension_income"]
-            for m in unit["members"]
-        )
-        shortfall = exempt - line_j
-        if shortfall > 0:
-            unit["members"][0]["employment_income"] += round(shortfall, 2) + 1
-    return units
-
-
-UNITS = _units_with_nonnegative_income()
+UNITS = _sample_units(np.random.default_rng(SEED))
 
 
 def test_household_income_matches_form_140ptc_lines():

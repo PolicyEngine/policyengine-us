@@ -26,6 +26,12 @@ class az_property_tax_credit_dependent_income(Variable):
         # separately determined income of each member, "whether or not the
         # person is related to, or a dependent of, the claimant". irs_gross_income
         # counts the same federal sources for members who are not dependents.
+        # Only positive amounts are added: federal AGI (loss_ald) already
+        # deducts every member's losses, dependents' included. The federal
+        # list is not Arizona's: like federal AGI for the other members, it
+        # counts unemployment whichever state paid it (ARS 43-1072(I) excludes
+        # Arizona's) and leaves out estate income, strike benefits and
+        # alimony that is not federally taxable.
         sources = parameters(period).gov.irs.gross_income.sources
         income = 0
         for source in sources:
