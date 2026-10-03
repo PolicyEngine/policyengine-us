@@ -1,0 +1,1 @@
+Apply the married-filing-separately 28% breakpoint (26 U.S.C. 55(b)(1)(C)) on Form 6251 Part III line 18, so separate filers with qualified dividends or capital gains no longer get the full breakpoint in the capital gains computation of the alternative minimum tax.
