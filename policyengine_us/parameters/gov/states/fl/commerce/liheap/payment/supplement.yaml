@@ -1,0 +1,15 @@
+description: Florida adds this amount once for each applicable vulnerable household category to the regular heating payment under the Low Income Home Energy Assistance Program.
+elderly:
+  2025-10-01: 100
+disabled:
+  2025-10-01: 100
+child:
+  2025-10-01: 150
+metadata:
+  unit: currency-USD
+  period: year
+  label: Florida LIHEAP vulnerable household heating supplements
+  propagate_metadata_to_children: true
+  reference:
+    - title: Florida FY2026 LIHEAP Payment Matrix, additional assistance
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf

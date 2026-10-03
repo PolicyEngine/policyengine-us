@@ -1,0 +1,484 @@
+# FY2026 matrix p1 and accepted plan p9: base350/300/250/200; elderly100, disability100, child<=5 adds150, once per category. Manualp23 bases payment on the matrix, not actual bill. Categorical income above table uses a documented200-base estimate, not an express source instruction.
+
+- name: Case 1, published income band tops include exact amounts and the next cent starts the next band.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 16078
+    - 16078.01
+    - 22509
+    - 22509.01
+    - 27332
+    - 27332.01
+    - 32155
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+  output:
+    fl_liheap:
+    - 350
+    - 350
+    - 300
+    - 300
+    - 250
+    - 250
+    - 200
+    - 200
+- name: Case 2, age sixty and disability each add one hundred and both categories can stack.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 59
+    - 60
+    - 59
+    - 60
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    is_disabled:
+    - false
+    - false
+    - true
+    - true
+  output:
+    fl_liheap:
+    - 350
+    - 450
+    - 450
+    - 550
+- name: Case 3, a child age five qualifies for the young child addition.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      child:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      family:
+        members: &id001
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+        fl_tca: 0
+        snap: 0
+    households:
+      home:
+        members: *id001
+        state_code: FL
+  output:
+    fl_liheap: 500
+- name: Case 4, a child age six no longer qualifies for the young child addition.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      child:
+        age: 6
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      family:
+        members: &id002
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+        fl_tca: 0
+        snap: 0
+    households:
+      home:
+        members: *id002
+        state_code: FL
+  output:
+    fl_liheap: 350
+- name: Case 5, multiple elderly disabled and young members add each category only once.
+  period: 2026
+  input:
+    people:
+      elder1:
+        age: 65
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        is_disabled: true
+      elder2:
+        age: 64
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        is_disabled: true
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      child1:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      child2:
+        age: 3
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      family:
+        members: &id003
+        - elder1
+        - elder2
+        - parent
+        - child1
+        - child2
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+        fl_tca: 0
+        snap: 0
+    households:
+      home:
+        members: *id003
+        state_code: FL
+  output:
+    fl_liheap: 700
+- name: Case 6, a nonqualified parents full income determines the band for the qualified child.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 30000
+      child:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      family:
+        members: &id004
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        heating_expense: 1200
+        fl_tca: 0
+        snap: 0
+    households:
+      home:
+        members: *id004
+        state_code: FL
+  output:
+    fl_liheap_household_size: 1
+    fl_liheap_countable_income: 30000
+    fl_liheap: 350
+- name: Case 7, categorical income above the table uses the documented minimum base estimate.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    age:
+    - 40
+    immigration_status:
+    - CITIZEN
+    is_full_time_student:
+    - false
+    ssi:
+    - 0
+    fl_tca:
+    - 0
+    snap:
+    - 1200
+    employment_income:
+    - 100000
+    heating_type:
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+  output:
+    fl_liheap_eligible:
+    - true
+    fl_liheap:
+    - 200
+- name: Case 8, a subsidized household receives the full regular award without a HUD deduction or bill
+    cap.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    age:
+    - 40
+    immigration_status:
+    - CITIZEN
+    is_full_time_student:
+    - false
+    ssi:
+    - 0
+    fl_tca:
+    - 0
+    snap:
+    - 0
+    employment_income:
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    heating_expense:
+    - 10
+    hud_utility_allowance:
+    - 2400
+    is_in_public_housing:
+    - true
+    receives_housing_assistance:
+    - true
+  output:
+    fl_liheap:
+    - 350
+- name: Case 9, the final award follows the heat in rent and subsidized residual cost routes.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 0
+    - 0
+    - 10
+    heat_expense_included_in_rent:
+    - true
+    - true
+    - true
+    receives_housing_assistance:
+    - false
+    - true
+    - true
+  output:
+    fl_liheap:
+    - 350
+    - 0
+    - 350
+- name: Case 10, the regular matrix is fuel neutral and applies only within Florida.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - GA
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - ELECTRICITY
+    - NATURAL_GAS
+    - WOOD
+    - NATURAL_GAS
+    heating_expense:
+    - 10
+    - 10
+    - 10
+    - 10
+  output:
+    fl_liheap:
+    - 350
+    - 350
+    - 350
+    - 0

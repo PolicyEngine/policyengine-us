@@ -1,0 +1,31 @@
+description: Florida counts these person-level unearned income sources subject to its age and student-status rule under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - strike_benefits
+    - general_assistance
+    - rental_income
+    - farm_rent_income
+    - interest_income
+    - ordinary_dividend_income
+    - child_support_received
+    - alimony_income
+    # Current plan's counted lump-sum line explicitly includes lottery winnings.
+    - gambling_winnings
+# Current plan expressly excludes unemployment compensation and cash gifts.
+# Pension/SSA subcomponents are not counted twice; state TCA is separate below.
+metadata:
+  unit: list
+  period: year
+  label: Florida LIHEAP person unearned income sources
+  reference:
+    - title: Florida FY2026 LIHEAP State Plan, section 1.9, pages 5-6 (included and excluded income sources)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5
+    - title: Florida LIHEAP Policies and Procedures Manual, May 27 2022, part 1200, pages 49-51
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49

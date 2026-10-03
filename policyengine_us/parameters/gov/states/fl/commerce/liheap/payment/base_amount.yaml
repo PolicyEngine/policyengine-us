@@ -1,0 +1,19 @@
+description: Florida provides this base regular heating payment by income band under the Low Income Home Energy Assistance Program.
+1:
+  2025-10-01: 350
+2:
+  2025-10-01: 300
+3:
+  2025-10-01: 250
+4:
+  2025-10-01: 200
+metadata:
+  unit: currency-USD
+  period: year
+  label: Florida LIHEAP base heating payment
+  breakdown:
+    - range(1, 5)
+  propagate_metadata_to_children: true
+  reference:
+    - title: Florida FY2026 LIHEAP Payment Matrix, home energy benefit
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf

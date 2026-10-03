@@ -1,0 +1,504 @@
+# Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
+
+# Manual pp49-50/current planpp5-6:12000+2400+600+1200+1200=17400 under existing net-business input approximation.
+- name: Case 1, adult wages and existing net business income count without a second expense deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_400
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 17_400
+
+# Contract current-input approximation preserves signed netbusiness:12000-6000+600=6600. Source lacks an express individual loss floor; this is not a new business deduction.
+- name: Case 2, existing signed business inputs offset other income before the household floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 6_600
+
+# Approved household floor: max(1200-6000,0)=0; no negative countable income.
+- name: Case 3, negative combined income is floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 1_200
+        self_employment_income: -6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 0
+
+# Current FY2026 plan p6 leaves UI/cash gifts unselected.30000 wages remain30000; UI6000, gifts2400 and SNAP6000 do not count.
+- name: Case 4, current plan excludes unemployment and cash gifts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 30_000
+        unemployment_compensation: 6_000
+        financial_assistance: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 30_000
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 5, age 15 nonstudent follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 12_000
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 6, age 16 nonstudent follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 16
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 13_200
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 7, age 16 full time student follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 16
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 12_000
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 8, age 17 nonstudent follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 13_200
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 9, age 17 full time student follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 12_000
+
+# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+- name: Case 10, age 18 full time student follows separate earned and unearned age rules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 20_400
+
+# Current planp6 rent and retirement categories:30000+1200ordinaryrent+5000farmrent+1200survivor=37400; no assumed rental loss or extra allowance.
+- name: Case 11, rental and survivor inputs count independently in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 30_000
+        rental_income: 1_200
+        farm_rent_income: 5_000
+        survivor_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 37_400
+
+# Current planp6 listed receipts:18000+1200+2400+1200+600+600+600+300+300+1200+600+120+240=27360. AnnualSSI counted once; no pension/SSA subcomponent duplication.
+- name: Case 12, disjoint covered unearned receipts and canonical dividends count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 1_200
+        social_security: 18_000
+        pension_income: 2_400
+        survivor_benefits: 1_200
+        workers_compensation: 600
+        disability_benefits: 600
+        veterans_benefits: 600
+        general_assistance: 300
+        strike_benefits: 300
+        child_support_received: 1_200
+        alimony_income: 600
+        interest_income: 120
+        ordinary_dividend_income: 240
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 27_360
+
+# Current planp6 expressly marks SSA including Medicare deduction; manualp50 adds premiums back to net checks. Gross24000 remains24000, not21600.
+- name: Case 13, gross Social Security remains counted before Medicare premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premium: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 24_000
+
+# Current planp6 counts TANF:6000 adult wages+3600 annual Florida TCA=9600. Child SSA1200 excluded by the older detailed age rule; monthly state grant is added once perfamily.
+- name: Case 14, state cash assistance is annualized once for the family.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 6_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 3_600
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 9_600
+
+# Manualp42 retains all nonqualified adult income despite size1; minor SSA excluded under manualp49 age detail. No proration.
+- name: Case 15, nonqualified adult income is retained in full for a qualified child household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_household_size: 1
+    fl_liheap_countable_income: 20_000
+
+# Current planp6 explicitly counts lottery winnings in the lump-sum row. Here gambling_winnings represents6000 lottery receipts;12000+6000=18000. Casino-versus-lottery classification is not separately represented, and no5000 loss deduction is sourced.
+- name: Case 16, reported lottery winnings count without an invented gambling loss deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        gambling_winnings: 6_000
+        gambling_losses: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 18_000

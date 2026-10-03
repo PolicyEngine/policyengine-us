@@ -1,0 +1,191 @@
+# Current FY2026 matrix p1 literal sizes1-12. Its stated60%SMI rule gives94610 at size13; printed157686 is documented as an anomaly, not a legal100%SMI category.
+
+- name: Case 1, all twelve consistent published heating limits match the current matrix.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    fl_liheap_household_size:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+  output:
+    fl_liheap_income_limit:
+    - 32155
+    - 42049
+    - 51943
+    - 61837
+    - 71730
+    - 81624
+    - 83479
+    - 85335
+    - 87190
+    - 89045
+    - 90900
+    - 92755
+- name: Case 2, size thirteen follows the stated sixty percent SMI rule despite the anomalous printed
+    row.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    age:
+    - 40
+    immigration_status:
+    - CITIZEN
+    is_full_time_student:
+    - false
+    ssi:
+    - 0
+    fl_tca:
+    - 0
+    snap:
+    - 0
+    employment_income:
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    fl_liheap_household_size:
+    - 13
+  output:
+    fl_liheap_income_limit:
+    - 94610

@@ -1,0 +1,136 @@
+# Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
+
+# Current planp5/manualp50 any positive SNAP receipt waives income eligibility. High reported wages do not negate this component; no final award or band is asserted.
+- name: Case 1, positive SNAP receipt establishes only the categorical income exemption.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 100_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_categorically_eligible: true
+
+# Current planp5/manualp50 TANF receipt qualifies; use family Florida TCA annual3600, not a national TANF aggregate.
+- name: Case 2, positive Florida cash assistance establishes the categorical income exemption.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 3_600
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_categorically_eligible: true
+
+# Current planp5 any household member SSI receipt qualifies. ChildSSI1200 is excluded from income by manualp49 age detail; adult wages12000 count.
+- name: Case 3, a child SSI receipt qualifies categorically even when excluded from income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 12_000
+    fl_liheap_categorically_eligible: true
+
+# Current planp5 requires receipt, not the is_ssi_eligible demographic/resource flag; SSI,SNAP,TCA are explicitly0.
+- name: Case 4, SSI demographic eligibility without any qualifying receipt does not establish categorical
+    status.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        is_ssi_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_categorically_eligible: false
+
+# State-defined Florida categorical component returnsfalse outside Florida; no final heating award is evaluated.
+- name: Case 5, out of state categorical receipts do not establish Florida status.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    fl_liheap_categorically_eligible: false

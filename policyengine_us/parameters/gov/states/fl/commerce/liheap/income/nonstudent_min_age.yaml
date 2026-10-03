@@ -1,0 +1,12 @@
+description: Florida counts unearned income of household members who are not full-time students starting at this age under the Low Income Home Energy Assistance Program.
+# The current plan excludes under-18 earnings but does not state the unearned
+# age rule. This retains the older manual's specific rule for unearned income.
+values:
+  2025-10-01: 16
+metadata:
+  unit: year
+  period: year
+  label: Florida LIHEAP nonstudent unearned income minimum age
+  reference:
+    - title: Florida LIHEAP Policies and Procedures Manual, May 27 2022, part 1200.01D, page 49
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49

@@ -802,8 +802,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: FL, OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: FL
+        status: partial
+        name: Florida LIHEAP
+        full_name: Florida Low Income Home Energy Assistance Program
+        variable: fl_liheap
+        parameter_prefix: gov.states.fl.commerce.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating eligibility and operational payment matrix. Follows the explicit heating SMI rule; published table anomalies and categorical above-range treatment are documented. Administrative receipt and housing facts use existing-input approximations; historical backfills are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
       - state: OR
         status: in_progress
         name: LIHEAP

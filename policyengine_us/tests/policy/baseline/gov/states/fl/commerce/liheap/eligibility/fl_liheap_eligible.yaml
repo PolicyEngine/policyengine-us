@@ -1,0 +1,303 @@
+# Accepted plan pp5,8 and manual pp23,41-43: ordinary/categorical income conditions, qualified household, heating responsibility. Housing verification uses the documented existing-input approximation.
+
+- name: Case 1, the ordinary income ceiling is inclusive without an asset test.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    employment_income:
+    - 32155
+    - 32155.01
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    spm_unit_assets:
+    - 1000000
+    - 1000000
+  output:
+    fl_liheap_eligible:
+    - true
+    - false
+- name: Case 2, each reported receipt route waives the ordinary income ceiling.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 1200
+    - 0
+    fl_tca:
+    - 0
+    - 1200
+    - 0
+    - 0
+    snap:
+    - 1200
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 100000
+    - 100000
+    - 100000
+    - 100000
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+  output:
+    fl_liheap_eligible:
+    - true
+    - true
+    - true
+    - false
+- name: Case 3, categorical receipts do not waive heating qualified membership or Florida residence.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - GA
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - UNDOCUMENTED
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 1200
+    - 1200
+    - 1200
+    - 1200
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NONE
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 100
+    - 100
+    - 0
+    - 100
+    has_heating_expense:
+    - true
+    - true
+    - false
+    - true
+  output:
+    fl_liheap_eligible:
+    - false
+    - false
+    - false
+    - false
+- name: Case 4, subsidized heat in rent needs a positive residual bill even with a general obligation
+    flag.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 0
+    - 0
+    - 120
+    - 0
+    - 120
+    has_heating_expense:
+    - false
+    - true
+    - true
+    - true
+    - true
+    heat_expense_included_in_rent:
+    - true
+    - true
+    - true
+    - true
+    - true
+    receives_housing_assistance:
+    - false
+    - true
+    - true
+    - false
+    - false
+    is_in_public_housing:
+    - false
+    - false
+    - false
+    - true
+    - true
+  output:
+    fl_liheap_eligible:
+    - true
+    - false
+    - true
+    - false
+    - true
+- name: Case 5, a directly reported heating obligation qualifies without a current positive bill.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 0
+    - 0
+    has_heating_expense:
+    - true
+    - false
+    heat_expense_included_in_rent:
+    - false
+    - false
+  output:
+    fl_liheap_eligible:
+    - true
+    - false
