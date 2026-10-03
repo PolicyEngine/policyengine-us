@@ -1,2 +1,0 @@
-Standardize local income tax aggregation across states: extract NYC and Maryland county taxes from state income tax aggregates into local income tax aggregates, wire Indiana and Multnomah County local income taxes into local aggregates, and add `spm_unit_local_tax` to `spm_unit_taxes` to preserve SPM resources and poverty outputs across all local tax jurisdictions.
-Preserve state and local refundable credits when abolishing federal income tax.
