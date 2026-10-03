@@ -27,7 +27,7 @@ def create_ut_dependent_exemption_reform() -> Reform:
             if not pc.in_effect:
                 total_dependents = tax_unit("ut_total_dependents", period)
                 if p.in_effect:
-                    total_dependents += tax_unit(
+                    total_dependents = total_dependents + tax_unit(
                         "ut_personal_exemption_additional_dependents", period
                     )
                 return p.personal_exemption * total_dependents

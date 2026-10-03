@@ -7,7 +7,7 @@ class vt_ctc(Variable):
     label = "Vermont child tax credit"
     definition_period = YEAR
     unit = USD
-    reference = "https://casetext.com/statute/vermont-statutes/title-32-taxation-and-finance/chapter-151-income-taxes/subchapter-002-taxation-of-individuals-trusts-and-estates/section-5830f-see-note-vermont-child-tax-credit/1"
+    reference = "https://legislature.vermont.gov/statutes/section/32/151/05830f"
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
