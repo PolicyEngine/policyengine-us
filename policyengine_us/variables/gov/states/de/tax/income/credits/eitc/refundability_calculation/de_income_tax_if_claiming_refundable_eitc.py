@@ -11,7 +11,9 @@ class de_income_tax_if_claiming_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        refundable_branch = simulation.get_branch("de_refundable_eitc")
+        refundable_branch = get_branch_for_period(
+            simulation, "de_refundable_eitc", period
+        )
         refundable_branch.set_input(
             "de_claims_refundable_eitc",
             period,
