@@ -1,0 +1,357 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# Manual pp17–18: 12000 + 6000 + 600 + 2400 + 1800 = 22800; no additional business deduction.
+- name: Case 1, adult wages and existing net business sources are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 2_400
+        partnership_s_corp_income: 1_800
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 22_800
+
+# Manual pp17–19: under18 earned income excluded, but annual SSI2400 and survivor1200 remain countable.
+- name: Case 2, age 17 earned income follows the under eighteen boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 2_400
+        survivor_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 15_600
+
+# Manual pp17–19: under18 earned income excluded, but annual SSI2400 and survivor1200 remain countable.
+- name: Case 3, age 18 earned income follows the under eighteen boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 2_400
+        survivor_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 24_000
+
+# Manual p18: all six distinct sources count; farm_rent_income and survivor_benefits are independent inputs.
+- name: Case 4, independent farm rent and survivor receipts are included.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 2_400
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+        pension_income: 4_800
+        disability_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 22_200
+
+# Manual p18: annual wages1200 plus annual TANF3600 =4800. YEAR test supplies annual amount to MONTH-defined al_tanf.
+- name: Case 5, Alabama TANF receipts are counted once and annualized once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 3_600
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 4_800
+
+# Manual pp18–19 excludes SNAP, capital gains and utility allowances; allowance deduction is a benefit rule.
+- name: Case 6, capital gains SNAP and HUD allowances do not become income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        capital_gains: 30_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+        snap: 6_000
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 1_200
+  output:
+    al_liheap_countable_income: 12_000
+
+# Contract v1.1 preserves existing signed net inputs, then floors the household total; the source does not expressly settle loss offsets.
+- name: Case 7, negative combined existing income is floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: -18_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 0
+
+# Manual p18 counts net gambling winnings; gambling losses cannot create negative gambling income.
+- name: Case 8, gambling receipts are net of losses without a negative gambling offset.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        gambling_winnings: 5_000
+        gambling_losses: 2_000
+        ssi: 0
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        gambling_winnings: 1_000
+        gambling_losses: 3_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+  output:
+    al_liheap_countable_income: 15_000
+
+
+
+# Manual p22 mixed-status example: the nonqualified parent's $500 monthly income counts in full,
+# but only the two citizen children determine size. The current propane matrix gives $510.
+- name: Case 9, nonqualified parent income counts in full for two qualified children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        self_employment_income: 6_000
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    al_liheap_household_size: 2
+    al_liheap_countable_income: 6_000
+    al_liheap_income_limit: 31_728
+    al_liheap_income_band: 1
+    al_liheap_base_payment: 510
+
+# Manual p18 counts periodic estate or trust receipts. Existing estate_income is disjoint
+# from separately reported interest, dividends and capital gains; this is not a lump inheritance.
+# Wages23_400 + periodic estate1_200 =24_600 exceeds the annualized23_472 income ceiling.
+- name: Case 10, periodic estate income raises income above the eligibility limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 23_400
+        estate_income: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_liheap_countable_income: 24_600
+    al_liheap_eligible: false
+
+# Manual physical p18 counts railroad retirement, financial support from family or friends,
+# and dividends. 21,000 + 1,200 + 1,200 + 600 = 24,000 exceeds the 23,472 annual ceiling.
+- name: Case 11, railroad benefits regular family support and dividends raise income above the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        employment_income: 21_000
+        railroad_benefits: 1_200
+        financial_assistance: 1_200
+        ordinary_dividend_income: 600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_liheap_countable_income: 24_000
+    al_liheap_income_limit: 23_472
+    al_liheap_eligible: false

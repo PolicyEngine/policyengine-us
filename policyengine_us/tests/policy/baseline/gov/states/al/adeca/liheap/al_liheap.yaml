@@ -1,0 +1,123 @@
+# FY2026 plan p10: funded IIJA supplement is $100 for each regular heating award.
+# Manual pp22,57: subtract one monthly HUD allowance from the current award.
+# The discretionary high-need award requires an unobserved agency determination.
+
+- name: Case 1, the funded supplement is added without capping the award at a small bill.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 6_000
+    ssi: 0
+    al_tanf: 0
+    heating_type: PROPANE
+    heating_expense: 50
+    hud_utility_allowance: 0
+  output:
+    al_liheap_base_payment: 500
+    al_liheap: 600
+
+# Four-person electricity, $1,000 monthly income: Appendix D gives $470.
+# The funded $100 is per household; age/disability do not award an automatic $50.
+- name: Case 2, a family with several vulnerable members receives one funded supplement.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        age: 65
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 0
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+      child1:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+      child2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      family:
+        members: [grandparent, parent, child1, child2]
+        al_tanf: 0
+        heating_type: ELECTRICITY
+        heating_expense: 1_200
+    households:
+      household:
+        members: [grandparent, parent, child1, child2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_base_payment: 470
+    al_liheap: 570
+
+# Annual HUD allowances below represent $0/$100/$450/$500/$540/$600 per month.
+# One-person band-one electricity is $440; the funded regular total is $540.
+- name: Case 3, monthly HUD allowances reduce the combined award and never make it negative.
+  period: 2026
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [6_000, 6_000, 6_000, 6_000, 6_000, 6_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    al_tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 1_200, 5_400, 6_000, 6_480, 7_200]
+  output:
+    al_liheap: [540, 440, 90, 40, 0, 0]
+
+- name: Case 4, the funded supplement cannot pay an income or heating or immigration ineligible household.
+  period: 2026
+  input:
+    state_code: [AL, AL, AL]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED]
+    employment_income: [23472.12, 6_000, 6_000]
+    ssi: [0, 0, 0]
+    al_tanf: [0, 0, 0]
+    heating_type: [PROPANE, NONE, PROPANE]
+    heating_expense: [1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 0, 0]
+  output:
+    al_liheap: [0, 0, 0]
+
+# Size one, $1,000 monthly income gives the $450 gas base in Appendix D.
+- name: Case 5, nonsubsidized heat in rent receives the funded award without a separate bill.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    al_tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [0, 0]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, true]
+    hud_utility_allowance: [0, 0]
+  output:
+    al_liheap: [550, 0]
+
+- name: Case 6, the regular Alabama award remains restricted to Alabama in a mixed state population.
+  period: 2026
+  input:
+    state_code: [AL, GA, FL]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [6_000, 6_000, 6_000]
+    ssi: [0, 0, 0]
+    al_tanf: [0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE]
+    heating_expense: [1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 0, 0]
+  output:
+    al_liheap: [600, 0, 0]

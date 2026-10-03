@@ -1,0 +1,32 @@
+description: Alabama counts these unearned income sources for household members of all ages under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - al_tanf
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    - rental_income
+    - farm_rent_income
+    - estate_income
+    - railroad_benefits
+    - financial_assistance
+# Net gambling winnings are calculated separately using existing winnings and
+# losses inputs. Do not also include the gross winnings here. SSA is gross;
+# the input does not deduct Medicare premiums. No other TANF aggregate is added.
+metadata:
+  unit: list
+  period: year
+  label: Alabama LIHEAP unearned income sources
+  reference:
+    - title: Alabama FY2026 LIHEAP Policy and Procedures Manual, Income, pages 17-19
+      href: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=17

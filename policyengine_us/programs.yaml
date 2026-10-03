@@ -802,8 +802,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: AL, OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP
+        full_name: Alabama Low Income Home Energy Assistance Program
+        variable: al_liheap
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating grant and funded $100 IIJA supplement, with HUD allowance reduction. The discretionary $50 agency award and unavailable household facts are documented limitations. Historical backfills are unverified; FY2027 draft policy is not adopted. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
       - state: OR
         status: in_progress
         name: LIHEAP

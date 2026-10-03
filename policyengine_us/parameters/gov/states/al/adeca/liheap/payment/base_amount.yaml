@@ -1,0 +1,17 @@
+description: Alabama provides this base payment for a one-person household in the lowest income band, by heating fuel, under the Low Income Home Energy Assistance Program.
+propane:
+  2025-10-01: 500
+natural_gas:
+  2025-10-01: 480
+electricity:
+  2025-10-01: 440
+wood_coal_kerosene:
+  2025-10-01: 400
+metadata:
+  unit: currency-USD
+  period: year
+  label: Alabama LIHEAP base heating payment by fuel
+  propagate_metadata_to_children: true
+  reference:
+    - title: Alabama FY2026 LIHEAP Policy and Procedures Manual, Appendix D, page 57 (current benefit chart)
+      href: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57

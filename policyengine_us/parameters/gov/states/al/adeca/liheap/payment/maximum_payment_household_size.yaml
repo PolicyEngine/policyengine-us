@@ -1,0 +1,10 @@
+description: Alabama uses no more than this many household members to determine the regular heating payment under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01: 4
+metadata:
+  unit: person
+  period: year
+  label: Alabama LIHEAP maximum payment household size
+  reference:
+    - title: Alabama FY2026 LIHEAP State Plan, section 2.5, page 9 (households over four receive the four-person payment)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=9

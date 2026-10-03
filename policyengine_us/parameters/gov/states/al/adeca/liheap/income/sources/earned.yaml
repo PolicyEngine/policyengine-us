@@ -1,0 +1,17 @@
+description: Alabama counts these earned income sources for adult household members under the Low Income Home Energy Assistance Program.
+# Existing net business inputs approximate net farm and nonfarm income without
+# a separate LIHEAP expense deduction. No loss-offset rule is inferred.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Alabama LIHEAP earned income sources
+  reference:
+    - title: Alabama FY2026 LIHEAP Policy and Procedures Manual, Income, pages 17-19
+      href: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=17
