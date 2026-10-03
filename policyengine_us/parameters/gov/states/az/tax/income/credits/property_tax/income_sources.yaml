@@ -9,21 +9,23 @@ values:
     - tax_exempt_private_pension_income
     # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion).
     # Item (7) capital gains and losses (Form 140PTC Part 1 line D) are counted
-    # here, once: federal AGI holds the year's net gain from the sale or
-    # exchange of property. ARS 43-1072(H)(6)(b) also adds "the amount of
-    # capital gains excluded from adjusted gross income"; the model has no gain
-    # excluded from federal AGI (such as a section 121 home sale or section 1202
-    # small business stock exclusion), so nothing is added for it. Do not add
+    # here, once, for members who are not dependents: federal AGI's net capital
+    # gain and capital loss deduction (limited to $3,000 per return) are
+    # replaced by each member's combined gains and losses, with a net loss
+    # limited to $1,500 for each member (A.A.C. R15-2C-502(C)(3)). The total can
+    # be negative; az_property_tax_credit uses zero for the schedules.
+    # ARS 43-1072(H)(6)(b) also adds "the amount of capital gains excluded from
+    # adjusted gross income"; the model has no gain excluded from federal AGI
+    # (such as a section 121 home sale or section 1202 small business stock
+    # exclusion), so nothing is added for it. Do not add
     # capital_gains_excluded_from_taxable_income: it is the part of federal
     # taxable income taxed at the capital gains rates (at zero taxable income,
     # the adjusted net capital gain), which federal AGI already holds.
-    # Federal AGI limits a net capital loss to $3,000 per return ($1,500 if
-    # married filing separately); A.A.C. R15-2C-502(C)(3) limits it to $1,500
-    # for each household member.
     - az_property_tax_credit_agi
     # Federal AGI leaves out dependents' income; Arizona counts every household
     # member's income whether or not the member is a dependent
-    # (A.A.C. R15-2C-502(A)(2), (B)).
+    # (A.A.C. R15-2C-502(A)(2), (B)). This includes each dependent's line D
+    # amount, with the same $1,500 loss limit.
     - az_property_tax_credit_dependent_income
 metadata:
   unit: list

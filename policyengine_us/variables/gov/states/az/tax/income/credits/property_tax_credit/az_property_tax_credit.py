@@ -27,10 +27,17 @@ class az_property_tax_credit(Variable):
             | (household_size > 1)
         )
 
+        # Household income (Form 140PTC line J) can be negative, for example
+        # after a line D capital loss. The 2021-2025 instructions (page 4, line
+        # J note) then treat household income as zero for the Schedule 1 and 2
+        # lookup. The schedules start at 0, and a single-amount scale returns
+        # 0 below its first threshold, so a negative income must be floored
+        # here rather than passed to calc.
+        schedule_income = max_(income, 0)
         cap = where(
             lives_with_others,
-            p.amount.cohabitating.calc(income),
-            p.amount.living_alone.calc(income),
+            p.amount.cohabitating.calc(schedule_income),
+            p.amount.living_alone.calc(schedule_income),
         )
 
         # ARS 43-1072(B): the credit is the lesser of the table amount and
