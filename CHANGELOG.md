@@ -1,3 +1,10 @@
+## [2.23.0] - 2026-10-03
+
+### Added
+
+- Add Mississippi LIHEAP regular assistance for heating fuel and electric bills (FY2026).
+
+
 ## [2.22.0] - 2026-10-03
 
 ### Added
