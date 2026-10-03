@@ -1,0 +1,545 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
+        <title>Supplemental Poverty Measure - PolicyEngine US documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PolicyEngine US documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">PolicyEngine US documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Government programs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/fcc/index.html">FCC</a><input aria-label="Toggle navigation of FCC" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/fcc/lifeline.html">Lifeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/fcc/acp.html">Affordable Connectivity Program</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/hhs/index.html">HHS</a><input aria-label="Toggle navigation of HHS" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/hhs/tanf.html">Temporary Assistance for Needy Families (TANF)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/hud/index.html">HUD</a><input aria-label="Toggle navigation of HUD" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/hud/housing-assistance.html">Housing assistance</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/irs/tax.html">IRS</a><input aria-label="Toggle navigation of IRS" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/irs/credits/eitc.html">Earned Income Tax Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/irs/credits/cdcc.html">Child and Dependent Care Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/irs/credits/clean-vehicle.html">Clean vehicle credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/irs/capital-gains.html">Capital Gains Tax</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/ssa/index.html">SSA</a><input aria-label="Toggle navigation of SSA" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/ssa/ssi.html">SSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/states/index.html">States</a><input aria-label="Toggle navigation of States" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gov/states/ca/index.html">California</a><input aria-label="Toggle navigation of California" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ca/calepa/carb/cvrp.html">California Clean Vehicle Rebate Project (CVRP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gov/states/ma/index.html">Massachusetts</a><input aria-label="Toggle navigation of Massachusetts" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ma/tax-benefit.html">Massachusetts tax and benefit system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ma/tax/income/index.html">Massachusetts income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ma/tax/income/credits/senior-circuit-breaker.html">Massachusetts Senior Circuit Breaker Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gov/states/md/index.html">Maryland</a><input aria-label="Toggle navigation of Maryland" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/index.html">Maryland state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/credits/cdcc.html">Maryland Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/credits/ctc.html">Maryland Child Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/credits/eitc.html">Maryland Earned Income Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/credits/poverty-line-credit.html">Maryland Poverty Line Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/md/tax/income/deductions/standard-deduction.html">Maryland Standard Deduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gov/states/ny/index.html">New York</a><input aria-label="Toggle navigation of New York" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ny/cdcc.html">NY Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ny/ctc.html">Empire State Child Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ny/eitc.html">New York EITC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ny/tax.html">New York state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/ny/tax-benefit.html">New York State income tax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gov/states/pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/states/ut/ut_income_tax.html">Utah State income tax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gov/states/wa/index.html">Washington</a><input aria-label="Toggle navigation of Washington" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gov/states/wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gov/usda/index.html">USDA</a><input aria-label="Toggle navigation of USDA" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="gov/usda/snap.html">SNAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/usda/school-meals.html">School meals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gov/usda/wic.html">WIC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="validation/taxsim.html">Validation against TAXSIM</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/microsimulation.html">Microsimulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/parameter-discovery.html">Finding parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/speed.html">Speed</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/income-sources.html">Income sources</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/spm.md" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="supplemental-poverty-measure">
+<h1>Supplemental Poverty Measure<a class="headerlink" href="#supplemental-poverty-measure" title="Link to this heading">¶</a></h1>
+<p>The country model uses the installed <code class="docutils literal notranslate"><span class="pre">spm-calculator</span></code> artifact for all five SPM
+measurement amounts. It does not extrapolate thresholds with country CPI or income
+parameters. Each supported year and scenario comes from the verified artifact.
+The installed 1.0.0 artifact covers 2022 through 2035; unavailable years fail.
+Taxes, benefits, resources and the housing-assistance cap
+remain country-model formulas. General household benefits and CBO transfer
+aggregates count actual <code class="docutils literal notranslate"><span class="pre">housing_assistance</span></code>; only SPM resources count
+<code class="docutils literal notranslate"><span class="pre">spm_unit_capped_housing_subsidy</span></code>. The cap uses the canonical housing amount before
+the final model storage conversion.</p>
+<section id="housing-allocation-and-its-assumptions">
+<h2>Housing allocation and its assumptions<a class="headerlink" href="#housing-allocation-and-its-assumptions" title="Link to this heading">¶</a></h2>
+<p>The country sums modeled <code class="docutils literal notranslate"><span class="pre">housing_assistance</span></code> within each household, then
+allocates the total to SPM units in proportion to their member counts. Each
+unit’s cap applies after this allocation. This follows the subsidy proration in
+<a class="reference external" href="https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=14">Census’s technical documentation, page 14</a>.
+The allocated amount is an SPM resource valuation; general benefits still count
+the original program awards. Multiple actual awards supplied in a household
+are summed, not discarded.</p>
+<p>The associated Microcosm producer uses independently reported household
+public-housing or reduced-rent status, with these declared assumptions:</p>
+<ul class="simple">
+<li><p><strong>A1, assisted family:</strong> the householder’s SPM unit represents the assisted
+program family when the survey cannot identify its membership. This does not
+imply that housing law permits only one assisted family per household.</p></li>
+<li><p><strong>A2, timing:</strong> interview-time housing receipt represents full-year receipt
+for the income year; it is not an observed twelve-month payment history.</p></li>
+<li><p><strong>A3, program coverage:</strong> public housing and reported reduced rent are modeled
+through the existing HUD-family calculation, although reduced rent may include
+programs outside HUD.</p></li>
+<li><p><strong>A4, tenant contribution:</strong> for SPM valuation, sum <code class="docutils literal notranslate"><span class="pre">hud_ttp</span></code> only for units
+with positive modeled housing assistance, then allocate that sum using the
+same member shares. This preserves the contribution associated with actual
+awards and excludes nonrecipients’ hypothetical tenant payments. Census
+describes a household contribution but does not specify this multi-unit
+allocation; A4 is a consistency assumption, not verified Census parity.</p></li>
+</ul>
+<p>The model retains its existing HUD program-family approximation, including
+family income and utility treatment. These allocation variables do not alter
+HUD eligibility, payments or utility allowances. Zero-award households need no
+SPM geography for their zero housing resource. In assisted households, every
+SPM unit receiving an allocated share needs a valid county and adult composition.</p>
+</section>
+<section id="measurement-configuration">
+<h2>Measurement configuration<a class="headerlink" href="#measurement-configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code>, <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> and <code class="docutils literal notranslate"><span class="pre">CountryTaxBenefitSystem</span></code> accept a serializable
+<code class="docutils literal notranslate"><span class="pre">spm</span></code> mapping. Its fields are <code class="docutils literal notranslate"><span class="pre">forecast_content_sha256</span></code>, <code class="docutils literal notranslate"><span class="pre">scenario</span></code>,
+<code class="docutils literal notranslate"><span class="pre">geography_kind</span></code>, <code class="docutils literal notranslate"><span class="pre">geography_id</span></code>, <code class="docutils literal notranslate"><span class="pre">county_vintage</span></code> and <code class="docutils literal notranslate"><span class="pre">as_of</span></code>. The hash, when given,
+must match the installed artifact. The default scenario is the artifact’s declared
+default; the default county vintage is <code class="docutils literal notranslate"><span class="pre">&quot;2020&quot;</span></code>.</p>
+<p>County geography is the default for both household and population calculations.
+A local household must supply a valid <code class="docutils literal notranslate"><span class="pre">county_fips</span></code>. State alone does not identify
+an SPM area. Missing counties raise <code class="docutils literal notranslate"><span class="pre">SPM_GEOGRAPHY_REQUIRED</span></code>; invalid or unavailable
+counties raise <code class="docutils literal notranslate"><span class="pre">SPM_GEOGRAPHY_UNAVAILABLE</span></code>. There is no first-county, congressional
+district or national fallback in SPM measurement.</p>
+<p>These geography errors occur only when calculating an SPM measurement or a
+dependent SPM resource, such as the housing-assistance cap for units allocated
+housing assistance; units with no allocation are capped at zero without consulting the
+measurement. A state-only tax request can still run. SPM reads the input-only <code class="docutils literal notranslate"><span class="pre">county_fips</span></code> variable and ignores any
+county inferred or cached by other tax or benefit formulas. Geography and
+composition errors are <code class="docutils literal notranslate"><span class="pre">SPMInputError</span></code> instances with <code class="docutils literal notranslate"><span class="pre">code</span></code> and <code class="docutils literal notranslate"><span class="pre">to_dict()</span></code>.</p>
+<p>California CARE income excludes housing subsidies under
+<a class="reference external" href="https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=75">CPUC Decision 14-08-030, Section 6.2</a>
+and <a class="reference external" href="https://liob.cpuc.ca.gov/wp-content/uploads/sites/14/2020/12/ACF22B3.pdf#page=124">Ordering Paragraph 40(3)</a>.
+<a class="reference external" href="https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M608/K305/608305628.PDF#page=10">PG&amp;E’s June 2026 reply brief</a>
+confirms that its CARE/FERA income determination excludes housing subsidies,
+despite contrary wording in its application. The shared CARE/FERA parameter
+records the decision’s effective date, August 14, 2014. Annual calculations
+select the list at January 1, so calendar 2014 retains the earlier modeled
+inclusion and calendar 2015 first applies the exclusion. Before that transition,
+the model retains housing-subsidy inclusion using actual assistance; this update
+does not validate the earlier income rule’s historical policy basis. CARE/FERA
+income never consults the SPM housing cap. The SPM resource calculation retains
+its housing cap.</p>
+<p>A caller can consciously select national measurement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">situation</span><span class="o">=</span><span class="n">household</span><span class="p">,</span> <span class="n">spm</span><span class="o">=</span><span class="p">{</span><span class="s2">"geography_kind"</span><span class="p">:</span> <span class="s2">"national"</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Or select one artifact area with <code class="docutils literal notranslate"><span class="pre">{&quot;geography_kind&quot;:</span> <span class="pre">&quot;metro&quot;,</span> <span class="pre">&quot;geography_id&quot;:</span> <span class="pre">&quot;&lt;area-id&gt;&quot;}</span></code>. A public application should display the national/local choice and
+pass it explicitly; it should return structured validation errors when requested
+local inputs are missing. This selection affects SPM measurement, not the
+geography inputs used by other benefit programs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">geography_id</span></code> applies only to a fixed metro selection; county mode uses each
+household’s observed <code class="docutils literal notranslate"><span class="pre">county_fips</span></code>. <code class="docutils literal notranslate"><span class="pre">as_of</span></code> is an ISO calendar date constraining
+the artifact’s information date. Configuration accepts no external forecast path
+or consumer-side extrapolation policy.</p>
+<p><code class="docutils literal notranslate"><span class="pre">simulation.spm_config</span></code> returns fully resolved JSON-compatible settings, including
+the artifact content hash. <code class="docutils literal notranslate"><span class="pre">simulation.spm_provenance()</span></code> returns detached runtime,
+year, scenario and geography receipts. Each simulation has private receipt state;
+policy-reform baselines retain the same measurement selection. Starting a new
+simulation from a supplied system preserves its reform variables and starts fresh
+receipts. Cloning a calculated simulation retains receipts for cached values and
+detaches future receipts. Branches sharing policy parameters also have separate
+SPM receipt state.</p>
+<p>SPM adult counts use supplied age and a source-backed independence role. Explicit
+household head/spouse primitives support household scenarios; the model never
+guesses those roles from age ordering. A person counts as an SPM adult at age 18,
+or at age 15 or above with <code class="docutils literal notranslate"><span class="pre">is_spm_independent_minor_role</span></code>. That role defaults to
+the input-only <code class="docutils literal notranslate"><span class="pre">is_household_head</span> <span class="pre">|</span> <span class="pre">is_household_spouse</span></code> and can be supplied from
+source data. <code class="docutils literal notranslate"><span class="pre">policyengine_us.spm.DATASET_SOURCE_INPUTS</span></code> explicitly declares
+this role as source-owned despite its household fallback formula. Population
+producers must supply the observed boolean; the declaration does not authorize
+filling missing source roles with the model’s default value.
+A unit with no classified adult raises
+<code class="docutils literal notranslate"><span class="pre">SPM_COMPOSITION_REQUIRED</span></code>. Generic age-based adult/child counts and benefit
+eligibility are unchanged. The dataset loader rejects stored formula-owned SPM
+outputs; observed source results should use report-only column names. It does not
+delete or silently recalculate over supplied derived inputs.</p>
+</section>
+<section id="default-population-build">
+<h2>Default population build<a class="headerlink" href="#default-population-build" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Microsimulation()</span></code> defaults to the immutable dataset URI
+<code class="docutils literal notranslate"><span class="pre">hf://datasets/policyengine/populace-us/populace_us_2024.h5&#64;populace-us-2024-spm-20260909</span></code>.
+This dataset supplies observed county inputs and source-backed independence roles.
+The canonical country release must wait until that exact tag and its certified
+bytes exist and pass independent readback. The unpublished candidate embeds the
+same URI; local candidate checks do not establish production default availability.</p>
+<p>A Hugging Face tag is a mutable pointer, so the model pins the build’s content as
+well as its name. The certified <code class="docutils literal notranslate"><span class="pre">populace_us_2024.h5</span></code> has content hash
+<code class="docutils literal notranslate"><span class="pre">sha256:6496cc4393d4d3c6574f76eca231de5898c803b9067645591fd5c4d3e65aee84</span></code>, read
+on 2026-09-09 from the producer’s build of that file. <code class="docutils literal notranslate"><span class="pre">Microsimulation()</span></code>
+digests whatever the default URI resolves to and refuses to construct unless it
+matches <code class="docutils literal notranslate"><span class="pre">policyengine_us.system.DEFAULT_DATASET_SHA256</span></code>, so the microsimulation
+CI job - which downloads the tag and constructs the default - is where the
+documented hash is checked against the bytes the tag actually serves. The
+constants are held to this paragraph by
+<code class="docutils literal notranslate"><span class="pre">test_documented_default_build_matches_the_shipped_constants</span></code>, which reads the
+URI and the hash from here: editing either constant alone fails that test.</p>
+<p>The published country wheel requires <code class="docutils literal notranslate"><span class="pre">spm-calculator&gt;=1.0.0,&lt;=1.0.0.post1</span></code>, a
+registry requirement with no Git or local-path dependency. The range admits the
+post-release so that a development consumer pinned to either version resolves;
+<code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> pins 1.0.0, published to PyPI on 2026-09-11, with its sdist and wheel
+hashes. Development against an unpublished calculator installs that wheel into
+an isolated environment and runs tests with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">--no-sync</span></code>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Supplemental Poverty Measure</a><ul>
+<li><a class="reference internal" href="#housing-allocation-and-its-assumptions">Housing allocation and its assumptions</a></li>
+<li><a class="reference internal" href="#measurement-configuration">Measurement configuration</a></li>
+<li><a class="reference internal" href="#default-population-build">Default population build</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    </body>
+</html>

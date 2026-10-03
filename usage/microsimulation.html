@@ -1,0 +1,746 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Finding parameters" href="parameter-discovery.html"><link rel="prev" title="Validation against TAXSIM" href="../validation/taxsim.html">
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
+        <title>Microsimulation - PolicyEngine US documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PolicyEngine US documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">PolicyEngine US documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Government programs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/fcc/index.html">FCC</a><input aria-label="Toggle navigation of FCC" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/lifeline.html">Lifeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/acp.html">Affordable Connectivity Program</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hhs/index.html">HHS</a><input aria-label="Toggle navigation of HHS" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hhs/tanf.html">Temporary Assistance for Needy Families (TANF)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hud/index.html">HUD</a><input aria-label="Toggle navigation of HUD" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hud/housing-assistance.html">Housing assistance</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/irs/tax.html">IRS</a><input aria-label="Toggle navigation of IRS" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/eitc.html">Earned Income Tax Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/cdcc.html">Child and Dependent Care Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/clean-vehicle.html">Clean vehicle credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/capital-gains.html">Capital Gains Tax</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/ssa/index.html">SSA</a><input aria-label="Toggle navigation of SSA" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/ssa/ssi.html">SSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/states/index.html">States</a><input aria-label="Toggle navigation of States" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ca/index.html">California</a><input aria-label="Toggle navigation of California" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ca/calepa/carb/cvrp.html">California Clean Vehicle Rebate Project (CVRP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ma/index.html">Massachusetts</a><input aria-label="Toggle navigation of Massachusetts" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax-benefit.html">Massachusetts tax and benefit system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/index.html">Massachusetts income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/credits/senior-circuit-breaker.html">Massachusetts Senior Circuit Breaker Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/md/index.html">Maryland</a><input aria-label="Toggle navigation of Maryland" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/index.html">Maryland state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/cdcc.html">Maryland Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/ctc.html">Maryland Child Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/eitc.html">Maryland Earned Income Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/poverty-line-credit.html">Maryland Poverty Line Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/deductions/standard-deduction.html">Maryland Standard Deduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ny/index.html">New York</a><input aria-label="Toggle navigation of New York" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/cdcc.html">NY Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/ctc.html">Empire State Child Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/eitc.html">New York EITC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax.html">New York state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax-benefit.html">New York State income tax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/ut/ut_income_tax.html">Utah State income tax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/wa/index.html">Washington</a><input aria-label="Toggle navigation of Washington" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/usda/index.html">USDA</a><input aria-label="Toggle navigation of USDA" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/snap.html">SNAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/school-meals.html">School meals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/wic.html">WIC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../validation/taxsim.html">Validation against TAXSIM</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Microsimulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameter-discovery.html">Finding parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed.html">Speed</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/income-sources.html">Income sources</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/usage/microsimulation.md" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="microsimulation">
+<h1>Microsimulation<a class="headerlink" href="#microsimulation" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> class is the primary tool for population-level policy analysis in PolicyEngine US. It combines representative survey microdata with PolicyEngine’s tax-benefit model to estimate how policies affect the entire US population.</p>
+<section id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_us</span><span class="w"> </span><span class="kn">import</span> <span class="n">Microsimulation</span>
+
+<span class="c1"># Create a microsimulation with the default dataset</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+
+<span class="c1"># Calculate a variable for the default year (2024)</span>
+<span class="n">household_net_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">)</span>
+
+<span class="c1"># The result is a weighted MicroSeries</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total household net income: $</span><span class="si">{</span><span class="n">household_net_income</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean household net income: $</span><span class="si">{</span><span class="n">household_net_income</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="methods-calc-vs-calculate">
+<h2>Methods: <code class="docutils literal notranslate"><span class="pre">calc()</span></code> vs <code class="docutils literal notranslate"><span class="pre">calculate()</span></code><a class="headerlink" href="#methods-calc-vs-calculate" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> class provides two methods for computing variables:</p>
+<section id="calc-calculate">
+<h3><code class="docutils literal notranslate"><span class="pre">calc()</span></code> / <code class="docutils literal notranslate"><span class="pre">calculate()</span></code><a class="headerlink" href="#calc-calculate" title="Link to this heading">¶</a></h3>
+<p>These methods are aliases - <code class="docutils literal notranslate"><span class="pre">calc</span></code> is shorthand for <code class="docutils literal notranslate"><span class="pre">calculate</span></code>. Both return a <code class="docutils literal notranslate"><span class="pre">MicroSeries</span></code> object that includes survey weights, enabling proper population-level statistics.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># These are equivalent</span>
+<span class="n">income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">)</span>
+<span class="n">income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">)</span>
+
+<span class="c1"># MicroSeries supports weighted aggregations</span>
+<span class="n">income</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># Total across population (using weights)</span>
+<span class="n">income</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># Weighted mean</span>
+<span class="n">income</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>  <span class="c1"># Weighted median</span>
+<span class="n">income</span><span class="o">.</span><span class="n">gini</span><span class="p">()</span>  <span class="c1"># Gini coefficient</span>
+</pre></div>
+</div>
+</section>
+<section id="key-parameters">
+<h3>Key parameters<a class="headerlink" href="#key-parameters" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">variable_name</span></code> (str): The variable to calculate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code> (int or str): The time period (e.g., <code class="docutils literal notranslate"><span class="pre">2024</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;2024&quot;</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_to</span></code> (str): Entity to map results to (see below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_weights</span></code> (bool): If <code class="docutils literal notranslate"><span class="pre">False</span></code>, returns raw unweighted array</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate SNAP benefits for 2024</span>
+<span class="n">snap</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"snap"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2024</span><span class="p">)</span>
+
+<span class="c1"># Get unweighted array</span>
+<span class="n">snap_raw</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"snap"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2024</span><span class="p">,</span> <span class="n">use_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="entity-mapping-with-map-to">
+<h2>Entity mapping with <code class="docutils literal notranslate"><span class="pre">map_to</span></code><a class="headerlink" href="#entity-mapping-with-map-to" title="Link to this heading">¶</a></h2>
+<p>PolicyEngine US models multiple entity levels: <code class="docutils literal notranslate"><span class="pre">person</span></code>, <code class="docutils literal notranslate"><span class="pre">tax_unit</span></code>, <code class="docutils literal notranslate"><span class="pre">spm_unit</span></code>, <code class="docutils literal notranslate"><span class="pre">family</span></code>, and <code class="docutils literal notranslate"><span class="pre">household</span></code>. The <code class="docutils literal notranslate"><span class="pre">map_to</span></code> parameter transforms results between these levels.</p>
+<section id="mapping-from-groups-to-persons">
+<h3>Mapping from groups to persons<a class="headerlink" href="#mapping-from-groups-to-persons" title="Link to this heading">¶</a></h3>
+<p>When mapping a group-level variable (like <code class="docutils literal notranslate"><span class="pre">household_net_income</span></code>) to persons, each person receives their group’s value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get household income at person level (each person gets their household's value)</span>
+<span class="n">person_hh_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+
+<span class="c1"># Useful for person-weighted analysis</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average income per person: $</span><span class="si">{</span><span class="n">person_hh_income</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="mapping-from-persons-to-groups">
+<h3>Mapping from persons to groups<a class="headerlink" href="#mapping-from-persons-to-groups" title="Link to this heading">¶</a></h3>
+<p>When mapping a person-level variable to groups, values are summed by default:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum employment income to household level</span>
+<span class="n">hh_earnings</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"employment_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"household"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="common-use-cases">
+<h3>Common use cases<a class="headerlink" href="#common-use-cases" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate poverty at person level for person-weighted statistics</span>
+<span class="n">person_poverty</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"in_poverty"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+<span class="n">poverty_rate</span> <span class="o">=</span> <span class="n">person_poverty</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Map tax credits to see household-level impact</span>
+<span class="n">hh_eitc</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"eitc"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"household"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="available-datasets">
+<h2>Available datasets<a class="headerlink" href="#available-datasets" title="Link to this heading">¶</a></h2>
+<section id="the-default-build">
+<h3>The default build<a class="headerlink" href="#the-default-build" title="Link to this heading">¶</a></h3>
+<p>The default is the certified Populace build, pinned by build id and hosted as a
+HuggingFace <em>dataset</em> repository:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default: the certified Populace build named in DEFAULT_DATASET.</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="supplying-another-population">
+<h3>Supplying another population<a class="headerlink" href="#supplying-another-population" title="Link to this heading">¶</a></h3>
+<p>A population file has to satisfy the SPM input contract: it supplies primitive
+inputs, including observed <code class="docutils literal notranslate"><span class="pre">county_fips</span></code> codes as five-digit strings and
+source-backed <code class="docutils literal notranslate"><span class="pre">is_spm_independent_minor_role</span></code> values, and it must not store
+formula-owned SPM outputs such as <code class="docutils literal notranslate"><span class="pre">spm_unit_spm_threshold</span></code>. Any observed Census
+measurement is retained under a separate report-only name.</p>
+<p>The legacy files under <code class="docutils literal notranslate"><span class="pre">hf://policyengine/policyengine-us-data/</span></code> predate that
+contract, so SPM measurements are not available over them:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cps_2023.h5</span></code> stores <code class="docutils literal notranslate"><span class="pre">spm_unit_spm_threshold</span></code>, so the loader rejects it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enhanced_cps_2024.h5</span></code> loads and computes tax variables, but carries no SPM
+independence roles, so 18 of its SPM units - each a lone 15-to-17-year-old -
+classify no measurement adult, and <code class="docutils literal notranslate"><span class="pre">spm_unit_spm_threshold</span></code> raises
+<code class="docutils literal notranslate"><span class="pre">SPM_COMPOSITION_REQUIRED</span></code> over the file. That is what
+<code class="docutils literal notranslate"><span class="pre">test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles</span></code>
+checks. Outputs that no longer reach the threshold, household net income
+and benefits among them, do compute over the file.</p></li>
+</ul>
+<p>A household simulation that has no county input can select an SPM area
+explicitly instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">dataset</span><span class="o">=...</span><span class="p">,</span> <span class="n">spm</span><span class="o">=</span><span class="p">{</span><span class="s2">"geography_kind"</span><span class="p">:</span> <span class="s2">"national"</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Entity-level single-year datasets are extended through the latest available
+economic-assumption year by default. If a calculation needs only an earlier
+range, set <code class="docutils literal notranslate"><span class="pre">dataset_end_year</span></code> to its final year. Setting it to the dataset’s own
+year loads only that year:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">single_year_dataset</span><span class="p">,</span> <span class="n">dataset_end_year</span><span class="o">=</span><span class="mi">2024</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">dataset_end_year</span></code> also works with the default dataset and entity-level HDFStore
+paths. It does not apply to an existing <code class="docutils literal notranslate"><span class="pre">USMultiYearDataset</span></code> or to the legacy
+variable-centric HDF5 format.</p>
+</section>
+<section id="filtering-by-geography">
+<h3>Filtering by geography<a class="headerlink" href="#filtering-by-geography" title="Link to this heading">¶</a></h3>
+<p>The microdata includes geographic identifiers that can be used for state-level analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate for all households, then filter to a specific state</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+<span class="n">in_california</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"CA"</span><span class="p">)</span>  <span class="c1"># Boolean for California residents</span>
+<span class="n">ca_benefits</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_benefits"</span><span class="p">)[</span><span class="n">in_california</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"California total benefits: $</span><span class="si">{</span><span class="n">ca_benefits</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each state has a corresponding boolean variable using its two-letter abbreviation (e.g., <code class="docutils literal notranslate"><span class="pre">CA</span></code>, <code class="docutils literal notranslate"><span class="pre">NY</span></code>, <code class="docutils literal notranslate"><span class="pre">TX</span></code>).</p>
+</section>
+</section>
+<section id="subsampling-for-faster-development">
+<h2>Subsampling for faster development<a class="headerlink" href="#subsampling-for-faster-development" title="Link to this heading">¶</a></h2>
+<p>For development and testing, use <code class="docutils literal notranslate"><span class="pre">subsample()</span></code> to work with a smaller representative sample:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">subsample</span><span class="p">(</span><span class="mi">1_000</span><span class="p">)</span>  <span class="c1"># Sample 1,000 households</span>
+
+<span class="c1"># Or use a fraction</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">subsample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># 10% of households</span>
+
+<span class="c1"># Results are still weighted to represent the full population</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">subsample()</span></code> method:</p>
+<ul class="simple">
+<li><p>Samples households (keeping all people within sampled households)</p></li>
+<li><p>Adjusts weights to maintain population totals</p></li>
+<li><p>Accepts a <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter for reproducibility</p></li>
+</ul>
+</section>
+<section id="winners-and-losers-analysis">
+<h2>Winners and losers analysis<a class="headerlink" href="#winners-and-losers-analysis" title="Link to this heading">¶</a></h2>
+<p>A common use case is comparing baseline policy to a reform:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_us</span><span class="w"> </span><span class="kn">import</span> <span class="n">Microsimulation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_core.reforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Reform</span>
+
+<span class="c1"># Define a reform (example: double the EITC)</span>
+<span class="n">reform</span> <span class="o">=</span> <span class="n">Reform</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">"gov.irs.credits.eitc.max[0].amount"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2024-01-01.2100-12-31"</span><span class="p">:</span> <span class="mi">1246</span><span class="p">}},</span>
+    <span class="n">country_id</span><span class="o">=</span><span class="s2">"us"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create baseline and reformed simulations</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+<span class="n">reformed</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">reform</span><span class="o">=</span><span class="n">reform</span><span class="p">)</span>
+
+<span class="c1"># Calculate net income change at person level for proper population weighting</span>
+<span class="n">baseline_income</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+<span class="n">reformed_income</span> <span class="o">=</span> <span class="n">reformed</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+
+<span class="n">gain</span> <span class="o">=</span> <span class="n">reformed_income</span> <span class="o">-</span> <span class="n">baseline_income</span>
+
+<span class="c1"># Analyze winners and losers</span>
+<span class="n">winners</span> <span class="o">=</span> <span class="n">gain</span> <span class="o">&gt;</span> <span class="mi">1</span>  <span class="c1"># Gained more than $1</span>
+<span class="n">losers</span> <span class="o">=</span> <span class="n">gain</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Lost more than $1</span>
+<span class="n">no_change</span> <span class="o">=</span> <span class="o">~</span><span class="n">winners</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">losers</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Winners: </span><span class="si">{</span><span class="n">winners</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Losers: </span><span class="si">{</span><span class="n">losers</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No change: </span><span class="si">{</span><span class="n">no_change</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Total cost/benefit</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Net cost: $</span><span class="si">{</span><span class="n">gain</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Average gain among winners</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average gain for winners: $</span><span class="si">{</span><span class="n">gain</span><span class="p">[</span><span class="n">winners</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="weight-sanity-checks">
+<h2>Weight sanity checks<a class="headerlink" href="#weight-sanity-checks" title="Link to this heading">¶</a></h2>
+<p>When running microsimulations, verify that weights produce sensible population totals:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+
+<span class="c1"># Check population. The weights are the values here, so read them</span>
+<span class="c1"># unweighted: a weighted sum would square them.</span>
+<span class="n">person_weight</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"person_weight"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">,</span> <span class="n">use_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total population: </span><span class="si">{</span><span class="n">person_weight</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Check household count</span>
+<span class="n">household_weight</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_weight"</span><span class="p">,</span> <span class="n">use_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total households: </span><span class="si">{</span><span class="n">household_weight</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Verify key aggregates against published statistics</span>
+<span class="n">total_earnings</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"employment_income"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total employment income: $</span><span class="si">{</span><span class="n">total_earnings</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e12</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">T"</span><span class="p">)</span>
+
+<span class="n">total_snap</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"snap"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total SNAP benefits: $</span><span class="si">{</span><span class="n">total_snap</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">B"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">calc</span></code> returns a weighted series whose <code class="docutils literal notranslate"><span class="pre">sum()</span></code> multiplies each value by its
+weight, which is what makes the aggregates above population totals. Summing a
+weight variable that way squares the weights: with household weights of 2 and
+3, <code class="docutils literal notranslate"><span class="pre">sim.calc(&quot;household_weight&quot;).sum()</span></code> is 13 rather than 5. Either opt out
+with <code class="docutils literal notranslate"><span class="pre">use_weights=False</span></code>, as above, or use <code class="docutils literal notranslate"><span class="pre">count()</span></code>, which sums the weights
+themselves - <code class="docutils literal notranslate"><span class="pre">sim.calc(&quot;age&quot;,</span> <span class="pre">map_to=&quot;person&quot;).count()</span></code> is the same population
+total.</p>
+<p>Compare these totals against official statistics to validate your analysis:</p>
+<ul class="simple">
+<li><p>US population: ~330 million</p></li>
+<li><p>US households: ~130 million</p></li>
+<li><p>SNAP expenditure: ~$110 billion annually</p></li>
+</ul>
+</section>
+<section id="performance-tips">
+<h2>Performance tips<a class="headerlink" href="#performance-tips" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Subsample during development</strong>: Use <code class="docutils literal notranslate"><span class="pre">sim.subsample(1_000)</span></code> while iterating</p></li>
+<li><p><strong>Avoid redundant calculations</strong>: Store results in variables rather than recalculating</p></li>
+<li><p><strong>Use appropriate entities</strong>: Calculate at the natural entity level when possible</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Good: Calculate at natural entity level, then map if needed</span>
+<span class="n">snap</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"snap"</span><span class="p">)</span>  <span class="c1"># spm_unit level</span>
+<span class="n">snap_per_person</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"snap"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+
+<span class="c1"># Slower: Unnecessarily mapping multiple times</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-example">
+<h2>Complete example<a class="headerlink" href="#complete-example" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_us</span><span class="w"> </span><span class="kn">import</span> <span class="n">Microsimulation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_core.reforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Reform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create simulations</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">subsample</span><span class="p">(</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>  <span class="c1"># For faster iteration</span>
+
+<span class="c1"># Define a reform</span>
+<span class="n">reform</span> <span class="o">=</span> <span class="n">Reform</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"gov.contrib.ubi_center.basic_income.amount"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"2024-01-01.2100-12-31"</span><span class="p">:</span> <span class="mi">1000</span><span class="p">},</span>
+        <span class="s2">"gov.contrib.ubi_center.basic_income.phase_out.rate"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"2024-01-01.2100-12-31"</span><span class="p">:</span> <span class="mf">0.1</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="n">country_id</span><span class="o">=</span><span class="s2">"us"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">reformed</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">reform</span><span class="o">=</span><span class="n">reform</span><span class="p">)</span>
+<span class="n">reformed</span><span class="o">.</span><span class="n">subsample</span><span class="p">(</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="c1"># Calculate impacts</span>
+<span class="n">baseline_income</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+<span class="n">reformed_income</span> <span class="o">=</span> <span class="n">reformed</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_net_income"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+<span class="n">change</span> <span class="o">=</span> <span class="n">reformed_income</span> <span class="o">-</span> <span class="n">baseline_income</span>
+
+<span class="c1"># Distributional analysis by income decile</span>
+<span class="n">decile</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">"household_income_decile"</span><span class="p">,</span> <span class="n">map_to</span><span class="o">=</span><span class="s2">"person"</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">in_decile</span> <span class="o">=</span> <span class="n">decile</span> <span class="o">==</span> <span class="n">d</span>
+    <span class="n">avg_change</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="n">in_decile</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"Decile"</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span> <span class="s2">"Average change"</span><span class="p">:</span> <span class="n">avg_change</span><span class="p">})</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./usage"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="parameter-discovery.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Finding parameters</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../validation/taxsim.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Validation against TAXSIM</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Microsimulation</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li><a class="reference internal" href="#methods-calc-vs-calculate">Methods: <code class="docutils literal notranslate"><span class="pre">calc()</span></code> vs <code class="docutils literal notranslate"><span class="pre">calculate()</span></code></a><ul>
+<li><a class="reference internal" href="#calc-calculate"><code class="docutils literal notranslate"><span class="pre">calc()</span></code> / <code class="docutils literal notranslate"><span class="pre">calculate()</span></code></a></li>
+<li><a class="reference internal" href="#key-parameters">Key parameters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#entity-mapping-with-map-to">Entity mapping with <code class="docutils literal notranslate"><span class="pre">map_to</span></code></a><ul>
+<li><a class="reference internal" href="#mapping-from-groups-to-persons">Mapping from groups to persons</a></li>
+<li><a class="reference internal" href="#mapping-from-persons-to-groups">Mapping from persons to groups</a></li>
+<li><a class="reference internal" href="#common-use-cases">Common use cases</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#available-datasets">Available datasets</a><ul>
+<li><a class="reference internal" href="#the-default-build">The default build</a></li>
+<li><a class="reference internal" href="#supplying-another-population">Supplying another population</a></li>
+<li><a class="reference internal" href="#filtering-by-geography">Filtering by geography</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#subsampling-for-faster-development">Subsampling for faster development</a></li>
+<li><a class="reference internal" href="#winners-and-losers-analysis">Winners and losers analysis</a></li>
+<li><a class="reference internal" href="#weight-sanity-checks">Weight sanity checks</a></li>
+<li><a class="reference internal" href="#performance-tips">Performance tips</a></li>
+<li><a class="reference internal" href="#complete-example">Complete example</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    </body>
+</html>
