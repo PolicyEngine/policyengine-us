@@ -1,0 +1,21 @@
+description: Delaware counts these earned income sources for adults under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    # Historical manual section 418 treats property rental as earned income.
+    # Existing net business income is used without another expense deduction.
+    - rental_income
+    - farm_rent_income
+metadata:
+  unit: list
+  period: year
+  label: Delaware LIHEAP earned income sources
+  reference:
+    - title: Delaware FY2026 LIHEAP State Plan, sections 1.8-1.9, pages 5-7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
+    - title: Historical Delaware Energy Assistance Program Manual, section 418, pages 35-36
+      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35

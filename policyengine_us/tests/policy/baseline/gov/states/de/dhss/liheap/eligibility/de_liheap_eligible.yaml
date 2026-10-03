@@ -1,0 +1,151 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5,6,7,9,10
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35,36,40,41,42
+
+# REQ-004: first12 rows at published60% SMI ceiling; next12 one dollar above. No categorical income bypass.
+- name: Case 1, all twelve published limits are inclusive and next dollar is ineligible.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+      12]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+    de_liheap_countable_income: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_343, 51_449, 63_554, 75_660, 87_765, 99_870, 102_140, 104_410, 106_680,
+      108_949, 111_219, 113_489]
+  output:
+    de_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, false,
+      false, false, false, false, false, false, false, false, false, false, false]
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 2, direct gas with positive matching bill.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+  output:
+    de_liheap_eligible: true
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 3, known direct fuel with no bill.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    gas_expense: 0
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 4, no heating despite reported fuel bills.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NONE
+    gas_expense: 1_000
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 5, unspecified direct fuel has no supported matrix column.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: UNSPECIFIED
+    gas_expense: 1_000
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 6, solar direct fuel has no sourced matrix column.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: SOLAR
+    gas_expense: 1_000
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 7, ordinary heat in rent with unknown building fuel.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: UNSPECIFIED
+    gas_expense: 0
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+    heat_expense_included_in_rent: true
+  output:
+    de_liheap_eligible: true
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 8, subsidized heat in rent is excluded.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: UNSPECIFIED
+    gas_expense: 0
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 9, no qualified household member.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    de_liheap_household_size: 0
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+  output:
+    de_liheap_eligible: false
+
+# REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
+- name: Case 10, assets do not create an eligibility test.
+  period: 2026
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 0
+    de_liheap_income_limit: 39_342
+    spm_unit_assets: 1_000_000
+  output:
+    de_liheap_eligible: true

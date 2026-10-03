@@ -1,0 +1,28 @@
+description: Delaware provides these regular heating benefits for oil under the Low Income Home Energy Assistance Program.
+
+1:
+  2025-10-01: 2016
+2:
+  2025-10-01: 1724
+3:
+  2025-10-01: 1432
+4:
+  2025-10-01: 853
+5:
+  2025-10-01: 570
+6:
+  2025-10-01: 411
+7:
+  2025-10-01: 311
+8:
+  2025-10-01: 278
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Delaware LIHEAP oil benefit amounts
+  breakdown:
+    - range(1, 9)
+  reference:
+    - title: Delaware FY2026 Energy Assistance Program Benefit Matrix, page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1

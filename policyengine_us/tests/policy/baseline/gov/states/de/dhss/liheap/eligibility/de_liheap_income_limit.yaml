@@ -1,0 +1,29 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1
+
+# REQ-004: literal FY2026 matrix 60% SMI limits, independent of inferred rounding convention.
+- name: Case 1, all twelve published household income limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+
+# REQ-003/004: positive qualified size is required.
+- name: Case 2, no qualified members have no income allowance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: DE
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    de_liheap_household_size: 0
+  output:
+    de_liheap_income_limit: 0

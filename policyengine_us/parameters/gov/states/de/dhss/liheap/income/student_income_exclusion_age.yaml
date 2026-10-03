@@ -1,0 +1,12 @@
+description: Delaware excludes income of dependent full-time college students younger than this age under the Low Income Home Energy Assistance Program.
+# Historical rule retained because the FY2026 plan supplies no replacement.
+# The parameter date identifies researched coverage, not adoption of the rule.
+values:
+  2025-10-01: 22
+metadata:
+  unit: year
+  period: year
+  label: Delaware LIHEAP dependent college student income exclusion age
+  reference:
+    - title: Historical Delaware Energy Assistance Program Manual, section 429.2, pages 41-42
+      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=41

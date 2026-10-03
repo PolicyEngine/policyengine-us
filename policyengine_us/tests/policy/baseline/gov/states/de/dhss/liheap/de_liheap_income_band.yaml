@@ -1,0 +1,177 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 1, published band 1 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [5_016, 6_559, 8_102, 9_646, 11_189, 12_733, 13_022, 13_312, 13_601, 13_890,
+      14_180, 14_469, 5_017, 6_560, 8_103, 9_647, 11_190, 12_734, 13_023, 13_313, 13_602, 13_891, 14_181,
+      14_470]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 2, published band 2 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [9_933, 12_990, 16_047, 19_103, 22_160, 25_216, 25_790, 26_363, 26_936,
+      27_509, 28_082, 28_655, 9_934, 12_991, 16_048, 19_104, 22_161, 25_217, 25_791, 26_364, 26_937, 27_510,
+      28_083, 28_656]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 3, published band 3 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [14_851, 19_421, 23_991, 28_561, 33_130, 37_700, 38_557, 39_414, 40_271,
+      41_127, 41_984, 42_841, 14_852, 19_422, 23_992, 28_562, 33_131, 37_701, 38_558, 39_415, 40_272,
+      41_128, 41_985, 42_842]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 4, published band 4 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [19_769, 25_852, 31_935, 38_018, 44_101, 50_184, 51_324, 52_465, 53_606,
+      54_746, 55_886, 57_027, 19_770, 25_853, 31_936, 38_019, 44_102, 50_185, 51_325, 52_466, 53_607,
+      54_747, 55_887, 57_028]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 5, published band 5 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [24_687, 32_283, 39_879, 47_475, 55_071, 62_667, 64_092, 65_516, 66_941,
+      68_364, 69_789, 71_213, 24_688, 32_284, 39_880, 47_476, 55_072, 62_668, 64_093, 65_517, 66_942,
+      68_365, 69_790, 71_214]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 6, published band 6 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [29_604, 38_714, 47_823, 56_933, 66_042, 75_151, 76_859, 78_567, 80_275,
+      81_983, 83_691, 85_399, 29_605, 38_715, 47_824, 56_934, 66_043, 75_152, 76_860, 78_568, 80_276,
+      81_984, 83_692, 85_400]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 7, published band 7 maxima for all twelve sizes and next dollar.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE,
+      DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000,
+      1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [34_522, 45_145, 55_767, 66_390, 77_012, 87_634, 89_626, 91_618, 93_610,
+      95_601, 97_593, 99_585, 34_523, 45_146, 55_768, 66_391, 77_013, 87_635, 89_627, 91_619, 93_611,
+      95_602, 97_594, 99_586]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488, 39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+
+# REQ-012: first 12 rows are sizes 1-12 at the published maxima; next 12 are one dollar above where another band exists.
+- name: Case 8, published band 8 maxima for all twelve sizes.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    de_liheap_countable_income: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+    de_liheap_income_limit: [39_342, 51_448, 63_553, 75_659, 87_764, 99_869, 102_139, 104_409, 106_679,
+      108_948, 111_218, 113_488]
+  output:
+    de_liheap_income_band: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+
+# REQ-012: three-person printed example assigns 31,936 to band 5. Cent case follows the approved whole-dollar maximum convention; source income rounding is unspecified.
+- name: Case 9, printed example crosses whole dollar boundary.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+    de_liheap_countable_income: [31_935, 31_935.01, 31_936]
+    de_liheap_income_limit: [63_553, 63_553, 63_553]
+  output:
+    de_liheap_income_band: [4, 5, 5]

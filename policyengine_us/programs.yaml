@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, DE
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP
+        full_name: Delaware Low Income Home Energy Assistance Program
+        variable: de_liheap
+        parameter_prefix: gov.states.de.dhss.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating matrix, income and housing rules. Annual income and estimated payroll taxes approximate application-period income and withholding; Medicare and pension health deductions are deferred. Historical manual supplies qualified-member and student rules. Solar fuel classification and unobserved administrative facts remain unmodeled. Earlier backfilled results are unverified historical estimates.
       - state: TX
         status: partial
         name: Texas CEAP

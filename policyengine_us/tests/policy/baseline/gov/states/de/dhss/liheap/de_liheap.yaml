@@ -1,0 +1,1068 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5,6,7,9,10
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35,36,40,41,42
+
+# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+- name: Case 1, complete published propane schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    bottled_gas_expense: [100, 100, 100, 100, 100, 100, 100, 100]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    de_liheap_eligible: [true, true, true, true, true, true, true, true]
+    de_liheap_income_band: [1, 2, 3, 4, 5, 6, 7, 8]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false]
+  output:
+    de_liheap: [2_464, 2_108, 1_751, 1_043, 697, 502, 380, 339]
+
+# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+- name: Case 2, complete published fuel_oil schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    fuel_oil_expense: [100, 100, 100, 100, 100, 100, 100, 100]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    de_liheap_eligible: [true, true, true, true, true, true, true, true]
+    de_liheap_income_band: [1, 2, 3, 4, 5, 6, 7, 8]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false]
+  output:
+    de_liheap: [2_016, 1_724, 1_432, 853, 570, 411, 311, 278]
+
+# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+- name: Case 3, complete published electricity schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    pre_subsidy_electricity_expense: [100, 100, 100, 100, 100, 100, 100, 100]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    de_liheap_eligible: [true, true, true, true, true, true, true, true]
+    de_liheap_income_band: [1, 2, 3, 4, 5, 6, 7, 8]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false]
+  output:
+    de_liheap: [1_391, 1_190, 988, 588, 394, 283, 215, 192]
+
+# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+- name: Case 4, complete published natural_gas schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [100, 100, 100, 100, 100, 100, 100, 100]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    de_liheap_eligible: [true, true, true, true, true, true, true, true]
+    de_liheap_income_band: [1, 2, 3, 4, 5, 6, 7, 8]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false]
+  output:
+    de_liheap: [1_126, 963, 800, 476, 318, 229, 174, 155]
+
+# REQ-011/012: all eight literal source amounts; matching bill100 does not cap the regular matrix award. Eligibility and band supplied only in this final-variable unit test.
+- name: Case 5, complete published other schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE, DE, DE, DE, DE, DE]
+    heating_type: [OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER]
+    gas_expense: [1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000, 1_000]
+    other_heating_fuel_expense: [100, 100, 100, 100, 100, 100, 100, 100]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0]
+    de_liheap_eligible: [true, true, true, true, true, true, true, true]
+    de_liheap_income_band: [1, 2, 3, 4, 5, 6, 7, 8]
+    receives_housing_assistance: [false, false, false, false, false, false, false, false]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false]
+  output:
+    de_liheap: [726, 621, 516, 307, 205, 148, 112, 100]
+
+# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+- name: Case 6, kerosene fuel uses its published shared schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        fuel_oil_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 0
+    de_liheap_income_band: 1
+    de_liheap: 2_016
+
+# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+- name: Case 7, wood fuel uses its published shared schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        wood_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 0
+    de_liheap_income_band: 1
+    de_liheap: 726
+
+# REQ-011/012: oil/kerosene share a column; wood and coal use OTHER. Bill100 establishes responsibility without capping payment.
+- name: Case 8, coal fuel uses its published shared schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: COAL
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        coal_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 0
+    de_liheap_income_band: 1
+    de_liheap: 726
+
+# REQ-012: tax-free annual child support supplies adjusted source example income; published whole-dollar boundary31,935/31,936 separates588/394 electric benefits.
+- name: Case 9, three person source example at income 31935.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        child_support_received: 31_935
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_household_size: 3
+    de_liheap_countable_income: 31_935
+    de_liheap_income_limit: 63_553
+    de_liheap_income_band: 4
+    de_liheap: 588
+
+# REQ-012: tax-free annual child support supplies adjusted source example income; published whole-dollar boundary31,935/31,936 separates588/394 electric benefits.
+- name: Case 10, three person source example at income 31936.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        child_support_received: 31_936
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_household_size: 3
+    de_liheap_countable_income: 31_936
+    de_liheap_income_limit: 63_553
+    de_liheap_income_band: 5
+    de_liheap: 394
+
+# REQ-009/011: full-rent household with bundled heat uses ELECTRIC band5 independent of building fuel.
+- name: Case 11, ordinary heat in rent selects electricity even with natural_gas fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 12_000
+        child_support_received: 31_936
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_income_band: 5
+    de_liheap: 394
+
+# REQ-009/011: full-rent household with bundled heat uses ELECTRIC band5 independent of building fuel.
+- name: Case 12, ordinary heat in rent selects electricity even with unspecified fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 12_000
+        child_support_received: 31_936
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: UNSPECIFIED
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_income_band: 5
+    de_liheap: 394
+
+# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+- name: Case 13, subsidized separate heat with annual tenant rent 8148.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 8_148
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap: 236
+
+# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+- name: Case 14, subsidized separate heat with annual tenant rent 8148.12.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 8_148.12
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap: 1_126
+
+# REQ-010: monthly rent679 exactly is flat236; above679 goes to ordinary gas band1 amount1,126. Annual rent is tenant share.
+- name: Case 15, subsidized separate heat with annual tenant rent 8160.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 8_160
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap: 1_126
+
+# REQ-010: pre-subsidy12,000 minus housing assistance3,852=tenant rent8,148=679/month; apply flat236.
+- name: Case 16, rent ceiling uses tenant share after housing assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        pre_subsidy_rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        housing_assistance: 3_852
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    rent: 8_148
+    de_liheap: 236
+
+# REQ-004/009: subsidized heat-in-rent excluded; current plan has no nominal SNAP payment.
+- name: Case 17, subsidized bundled heat has no regular or nominal SNAP award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        snap:
+          '2026': 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_eligible: false
+    de_liheap: 0
+
+# REQ-004/012: tax-free VA represents countable income; inclusive size1 ceiling39,342 pays OTHER band8 amount100. SNAP never bypasses income ceiling.
+- name: Case 18, other fuel at annual adjusted income 39342.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        veterans_benefits: 39_342
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: OTHER
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        other_heating_fuel_expense: 1_000
+        snap:
+          '2026': 120
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 39_342
+    de_liheap: 100
+
+# REQ-004/012: tax-free VA represents countable income; inclusive size1 ceiling39,342 pays OTHER band8 amount100. SNAP never bypasses income ceiling.
+- name: Case 19, other fuel at annual adjusted income 39343.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        veterans_benefits: 39_343
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: OTHER
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+        other_heating_fuel_expense: 1_000
+        snap:
+          '2026': 120
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 39_343
+    de_liheap: 0
+
+# REQ-003/014: gross21,000 minus supplied payroll1,000=20,000. Use qualified size1 and full ELECTRIC band5 amount394; no additional one-third reduction.
+- name: Case 20, two nonqualified parents and citizen child retain all income without share reduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 21_000
+      person2:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 1_000
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 20_000
+    de_liheap_income_band: 5
+    de_liheap: 394
+
+# REQ-007: student25,000 excluded; size2 income16,000 exceeds band2 maximum12,990 but is within band3 maximum19,421; gas800.
+- name: Case 21, dependent student exclusion affects income but not benefit household size.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        child_support_received: 16_000
+      person2:
+        age: 21
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: true
+        rent: 0
+        is_tax_unit_dependent: true
+        employment_income: 20_000
+        social_security_survivors: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [16_000, 0]
+    de_liheap_countable_income: 16_000
+    de_liheap_household_size: 2
+    de_liheap_income_band: 3
+    de_liheap: 800
+
+# REQ-006/012: gross10,000 minus existing withholding helper1,000=9,000; size1 band2 gas963. Helper is estimated withholding, not observed payroll data.
+- name: Case 22, given payroll deductions change income interval.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 9_000
+    de_liheap_income_band: 2
+    de_liheap: 963
+
+# REQ-013: both households have zero income and gas heat; elder/disability/young-child priority creates no payment supplement.
+- name: Case 23, priority household characteristics do not add benefit dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 60
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        is_disabled: true
+      person4:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+      tax_unit2:
+        members: [person3, person4]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: DE
+      household2:
+        members: [person3, person4]
+        state_code: DE
+  output:
+    de_liheap_household_size: [2, 2]
+    de_liheap_income_band: [1, 1]
+    de_liheap: [1_126, 1_126]
+
+# REQ-001: separate household/SPM/tax entities for DE/CT/MD; CT and MD rows have no Delaware award or unguarded matrix lookup.
+- name: Case 24, mixed state batch isolates Delaware variables.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+      tax_unit2:
+        members: [person2]
+        de_wilmington_earned_income_tax: 0
+      tax_unit3:
+        members: [person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: DE
+      household2:
+        members: [person2]
+        state_code: CT
+      household3:
+        members: [person3]
+        state_code: MD
+  output:
+    de_liheap_countable_income_person: [0, 0, 0]
+    de_liheap_countable_income: [0, 0, 0]
+    de_liheap_household_size: [1, 0, 0]
+    de_liheap_income_limit: [39_342, 0, 0]
+    de_liheap_income_band: [1, 0, 0]
+    de_liheap_eligible: [true, false, false]
+    de_liheap: [1_126, 0, 0]
+
+# REQ-012: the published size-six band-seven maximum is $87,634.
+# A post-2018 alimony recipient with no employment has no payroll withholding.
+# At the boundary natural gas pays $174; the next dollar moves to $155.
+- name: Case 25, size six natural gas payment at adjusted income 87,634.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        alimony_income: 87_634
+        ssi: {2026: 0}
+        is_full_time_college_student: false
+      person2: {age: 15, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person3: {age: 12, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person4: {age: 10, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person5: {age: 8, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person6: {age: 6, immigration_status: CITIZEN, ssi: {2026: 0}}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        de_tanf: {2026: 0}
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DE
+  output:
+    de_liheap_household_size: 6
+    de_liheap_countable_income: 87_634
+    de_liheap_income_limit: 99_869
+    de_liheap_income_band: 7
+    de_liheap_eligible: true
+    de_liheap: 174
+
+# REQ-012: the published size-six band-seven maximum is $87,634.
+# A post-2018 alimony recipient with no employment has no payroll withholding.
+# At the boundary natural gas pays $174; the next dollar moves to $155.
+- name: Case 26, size six natural gas payment at adjusted income 87,635.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        alimony_income: 87_635
+        ssi: {2026: 0}
+        is_full_time_college_student: false
+      person2: {age: 15, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person3: {age: 12, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person4: {age: 10, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person5: {age: 8, immigration_status: CITIZEN, ssi: {2026: 0}}
+      person6: {age: 6, immigration_status: CITIZEN, ssi: {2026: 0}}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        de_tanf: {2026: 0}
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DE
+  output:
+    de_liheap_household_size: 6
+    de_liheap_countable_income: 87_635
+    de_liheap_income_limit: 99_869
+    de_liheap_income_band: 8
+    de_liheap_eligible: true
+    de_liheap: 155

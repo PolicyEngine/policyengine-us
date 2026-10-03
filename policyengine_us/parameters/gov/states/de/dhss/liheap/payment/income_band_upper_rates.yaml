@@ -1,0 +1,21 @@
+description: Delaware sets these income-band upper bounds as shares of the income limit under the Low Income Home Energy Assistance Program.
+# The matrix IPI upper bounds (25.4999 through 200 percent) are divided by
+# 200: IPI is household income divided by half the 60% SMI income limit.
+# Floor the product of these rates and the whole-dollar income limit.
+values:
+  2025-10-01:
+    - 0.1274995
+    - 0.2524995
+    - 0.3774995
+    - 0.5024995
+    - 0.6274995
+    - 0.7524995
+    - 0.8774995
+    - 1
+metadata:
+  unit: list
+  period: year
+  label: Delaware LIHEAP income band upper rates
+  reference:
+    - title: Delaware FY2026 Energy Assistance Program Benefit Matrix, income intervals and footnotes 2-5, page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1

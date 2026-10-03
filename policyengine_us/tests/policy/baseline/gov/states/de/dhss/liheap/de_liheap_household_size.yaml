@@ -1,0 +1,183 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5,6,7,9,10
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35,36,40,41,42
+
+# REQ-002/003: historical manual section 426 includes all members income but only qualified members in benefit size.
+- name: Case 1, citizens and qualified noncitizens count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 38
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: REFUGEE
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_household_size: 3
+
+# REQ-002/003: historical manual section 426 includes all members income but only qualified members in benefit size.
+- name: Case 2, two nonqualified parents and citizen child count as one.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_liheap_household_size: 1
+
+# REQ-002/003: historical manual section 426 includes all members income but only qualified members in benefit size.
+- name: Case 3, no qualified members yield zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 38
+        immigration_status: DACA
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_household_size: 0
+
+# REQ-002/007: section 429.2 excludes qualifying student income, not household membership.
+- name: Case 4, dependent college student remains a household member.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 21
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: true
+        rent: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_household_size: 2
