@@ -1,0 +1,26 @@
+description: Kansas provides at least this annual benefit to eligible households under the Low Income Energy Assistance Program.
+# Plan Section 2.6 reports a minimum and maximum benefit of $100 and $2,232
+# for FY2025 and $130 and $4,301 for FY2026. The FY2025 figures equal the
+# FY2025 matrix minimum and maximum. The FY2026 matrix's adjusted 80% column
+# ("Benefit Adjustment @ 80%") ranges from $75 to $1,682. Applying the plan's
+# $130 floor yields $130 to $1,682. Cells below a separately applied minimum
+# do not by themselves establish a schedule error. The plan's estimated
+# $4,301 maximum remains unexplained by either the adjusted matrix or its
+# $2,102 unadjusted maximum. No adjustment is inferred from that difference.
+# Each plan's maximum exceeds or equals every selected matrix cell, so a cap
+# at that amount cannot bind.
+values:
+  2024-10-01: 100
+  2025-10-01: 130
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Kansas LIEAP minimum benefit
+  reference:
+    - title: Kansas LIHEAP FY2026 State Plan, Section 2.6 (minimum benefit $130, maximum benefit $4,301)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=9
+    - title: Kansas LIHEAP FY2025 State Plan, Section 2.6 (minimum benefit $100, maximum benefit $2,232)
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KS_Plan_2025.pdf#page=9
+    - title: LIHEAP Clearinghouse Kansas state profile (heating $130 minimum, $4,301 maximum)
+      href: https://liheapch.acf.gov/profiles/Kansas.htm
