@@ -122,17 +122,19 @@ def test_rent_and_farm_rent_are_interchangeable(grid_results):
 
 
 def test_rental_losses_do_not_change_snap(grid_results):
+    # Each loss is inert whatever the sign of the other: a household equals
+    # the same household with every loss replaced by zero.
     for (rent, farm_rent, wages, assistance), result in grid_results.items():
-        if rent > 0 or farm_rent > 0:
-            continue
-        no_rent = grid_results[(0, 0, wages, assistance)]
+        losses_zeroed = grid_results[
+            (max(rent, 0), max(farm_rent, 0), wages, assistance)
+        ]
         for variable in (
             "snap_unearned_income",
             "snap_gross_income",
             "snap_net_income",
             "snap",
         ):
-            assert result[variable] == pytest.approx(no_rent[variable], abs=0.01)
+            assert result[variable] == pytest.approx(losses_zeroed[variable], abs=0.01)
 
 
 def test_counted_rent_reaches_gross_income_once(grid_results):
