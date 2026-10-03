@@ -3,6 +3,10 @@ from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 import numpy as np
 
+# American Family Act of 2025, section 2(f)(1): the amendments apply to
+# taxable years beginning after December 31, 2024.
+AFA_FIRST_TAXABLE_YEAR = 2025
+
 
 def create_afa_other_dependent_credit() -> Reform:
     class other_dependent_credit(Variable):
@@ -152,7 +156,14 @@ def create_afa_other_dependent_credit() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            # The bill replaces section 24 for taxable years beginning after
+            # 2024 and has no section 911 bar. Earlier years keep current law,
+            # including section 24(d)(3).
+            if period.start.year >= AFA_FIRST_TAXABLE_YEAR:
+                return refundable_amount
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+            return where(barred, 0, refundable_amount)
 
     class ctc(Variable):
         value_type = float

@@ -3,6 +3,7 @@ from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_demographic_eligibility,
     eitc_filing_requirement_met,
     eitc_filing_status_eligible,
+    eitc_section_911_eligible,
 )
 
 
@@ -131,7 +132,9 @@ class wa_working_families_tax_credit(Variable):
             "wa_working_families_tax_credit_age_expansion_eligible", period
         )
 
-        eligible = eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
+        eligible = (
+            eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
+        ) & eitc_section_911_eligible(tax_unit, period)
 
         # Parameters are based on EITC-eligible children.
         # WFTC child count is the larger of the federally-counted children
