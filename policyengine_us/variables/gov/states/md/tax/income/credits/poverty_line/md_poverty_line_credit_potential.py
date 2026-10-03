@@ -7,7 +7,13 @@ class md_poverty_line_credit_potential(Variable):
     label = "MD Poverty Line Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
+    reference = (
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-709&enactments=false",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_2",
+        "https://www.law.cornell.edu/cfr/text/26/1.32-2",
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-107&enactments=false",
+        "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident-Booklet.pdf#page=22",
+    )
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
@@ -28,8 +34,16 @@ class md_poverty_line_credit_potential(Variable):
         # (2)    an amount equal to 5% of the eligible low income taxpayer’s
         # earned income, as defined under § 32(c)(2) of the Internal Revenue
         # Code.
+        # § 32(c)(2) earned income "is reduced by any net loss in earnings
+        # from self-employment" (26 CFR 1.32-2(c)(2)), so it can be zero or
+        # less. eitc_earned_income floors it at zero: a credit the taxpayer
+        # "may claim" under § 10-709(b) cannot go negative and raise tax.
+        # Form 502 Worksheet 18B line 2 instead leaves losses out ("Do not
+        # include a farm or business loss."); this follows the statute's
+        # § 32(c)(2) reference, which § 10-107 reads with federal
+        # interpretations.
         p = parameters(period).gov.states.md.tax.income.credits.poverty_line
-        earnings = tax_unit("tax_unit_earned_income", period)
+        earnings = tax_unit("eitc_earned_income", period)
         earnings_portion = earnings * p.earned_income_share
         amount_if_eligible = min_(tax_after_non_refundable_eitc, earnings_portion)
         return amount_if_eligible * eligible

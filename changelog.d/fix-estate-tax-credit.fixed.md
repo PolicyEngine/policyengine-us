@@ -1,0 +1,1 @@
+Compute the federal estate tax unified credit as the tentative tax on the applicable exclusion amount under 26 U.S.C. 2010(c), rather than the exclusion amount itself; add a deceased spousal unused exclusion amount input; extend the 26 U.S.C. 2001(c) rate schedule back to 2011; and limit estate tax to decedents.
