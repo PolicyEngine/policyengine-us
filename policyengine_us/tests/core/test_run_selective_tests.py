@@ -242,3 +242,87 @@ def test_real_failures_still_fail_beside_an_empty_path(monkeypatch):
         _fake_pytest({"tests/a_test.py": 1, "tests/populace_fixture.py": 5}),
     )
     assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 1
+
+
+def _recording_pytest(commands):
+    def run(cmd, *args, **kwargs):
+        commands.append(cmd)
+        return SimpleNamespace(returncode=0)
+
+    return run
+
+
+BROAD_CHANGE = {
+    "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml",
+    "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py",
+    "policyengine_us/variables/gov/states/ca/tax/payroll/unemployment/ca_employer_state_unemployment_tax.py",
+    "policyengine_us/variables/gov/states/tx/tax/payroll/unemployment/tx_employer_state_unemployment_tax.py",
+}
+
+
+def test_narrowed_scope_runs_without_coverage(monkeypatch):
+    """A narrowed run must not upload a partial report on the changed sources.
+
+    Regression for PRs #9764 and #9766: a broad reference-only change ran
+    only its directly changed tests, yet coverage still measured every
+    changed variable file, so codecov/project fell to 54% and 69%.
+    """
+    runner = SelectiveTestRunner()
+    runner.max_test_targets = 1
+    runner.max_test_files = 1
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(BROAD_CHANGE), BROAD_CHANGE
+    )
+
+    assert runner.scope_narrowed
+    assert (
+        runner.run_tests(limited_paths, with_coverage=True, changed_files=BROAD_CHANGE)
+        == 0
+    )
+    assert commands
+    assert all("coverage" not in cmd for cmd in commands)
+
+
+def test_unnarrowed_scope_keeps_coverage_of_changed_sources(monkeypatch):
+    runner = SelectiveTestRunner()
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {
+        "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml",
+        "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert not runner.scope_narrowed
+    runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+    assert commands
+    for cmd in commands:
+        assert cmd[1:4] == ["-m", "coverage", "run"]
+        include = cmd[cmd.index("--include") + 1]
+        assert include == (
+            "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py"
+        )
+
+
+def test_scope_narrowed_resets_on_each_limit_call():
+    runner = SelectiveTestRunner()
+    runner.max_test_targets = 1
+    runner.max_test_files = 1
+    runner.limit_test_paths(runner.map_files_to_tests(BROAD_CHANGE), BROAD_CHANGE)
+    assert runner.scope_narrowed
+
+    runner.max_test_targets = 25
+    runner.max_test_files = 100
+    test_file = "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml"
+    runner.limit_test_paths({test_file}, {test_file})
+    assert not runner.scope_narrowed

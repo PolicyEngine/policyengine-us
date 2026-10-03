@@ -71,6 +71,10 @@ class SelectiveTestRunner:
         self.max_direct_test_files = int(
             os.environ.get("SELECTIVE_TEST_MAX_DIRECT_FILES", "8")
         )
+        # Set by limit_test_paths when a broad change is narrowed to the
+        # directly changed tests. Those tests need not exercise the changed
+        # source files, so run_tests then skips coverage.
+        self.scope_narrowed = False
 
         # Define regex patterns for matching files to tests
         # Paths that contain only aggregation lists and should not
@@ -383,6 +387,7 @@ class SelectiveTestRunner:
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
+        self.scope_narrowed = False
         deferred_paths = {
             path for path in test_paths if is_quick_feedback_deferred(path)
         }
@@ -423,6 +428,7 @@ class SelectiveTestRunner:
                 "Running only directly changed tests and explicit file targets; "
                 "the full suite jobs provide exhaustive coverage."
             )
+            self.scope_narrowed = True
             return bounded_test_paths
 
         print(
@@ -448,6 +454,16 @@ class SelectiveTestRunner:
             print(f"  - {path}")
 
         # Construct pytest command
+        if with_coverage and self.scope_narrowed:
+            # The narrowed run measures the changed source files only through
+            # whichever tests happened to change, so its report would show
+            # their untouched lines as uncovered and fail codecov/project.
+            print(
+                "Selective scope was narrowed to directly changed tests; running "
+                "tests without coverage."
+            )
+            with_coverage = False
+
         if with_coverage:
             # Only track coverage for the specific files that changed in the PR
             include_patterns = []
