@@ -64,7 +64,9 @@ def parse_entries(name: str, text: str) -> list[tuple[str, str, str]]:
         prefix, verified, replacement = (
             entry[key] for key in ("prefix", "verified", "replacement")
         )
-        head = isinstance(prefix, str) and re.match(r"(https?://[^/\s]+)/\S*$", prefix)
+        head = isinstance(prefix, str) and re.fullmatch(
+            r"(https?://[^/\s]+)/\S*", prefix
+        )
         if not head:
             raise ValueError(f"{name}: not an http(s) URL with a path: {prefix!r}")
         if not head.group(1).isascii() or head.group(1) != head.group(1).lower():
@@ -294,6 +296,9 @@ GOOD_ENTRY = (
         GOOD_ENTRY + 'notes = "x"\n',
         GOOD_ENTRY.replace('"https://www.example.gov/a.pdf"', "5"),
         GOOD_ENTRY.replace("https://www.example.gov/a.pdf", "https://www.example.gov"),
+        GOOD_ENTRY.replace(
+            '"https://www.example.gov/a.pdf"', '"https://www.example.gov/a.pdf\\n"'
+        ),
         GOOD_ENTRY.replace("https://www.example.gov", "https://WWW.Example.gov"),
         GOOD_ENTRY.replace("2026-09-30", "2026-13-45"),
         GOOD_ENTRY.replace('"https://example.org/"', '" "'),
