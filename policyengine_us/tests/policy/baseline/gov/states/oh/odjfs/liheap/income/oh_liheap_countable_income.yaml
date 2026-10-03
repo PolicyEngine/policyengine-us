@@ -1,0 +1,326 @@
+# Ohio income and eligibility components only; no payment schedule or final award is asserted.
+
+# Manual p8:12000+6000+600+1200+1200=21000; existing net-business inputs need no added work-expense calculation.
+- name: Case 1, adult wages and existing net business sources count without another deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 21_000
+
+# Current plan p6 and manual pp73–74:2400rent+1200farmrent+600survivor+1200pension+2400SSA+1200SSI=9000.
+- name: Case 2, independent rental retirement survivor and SSI receipts all count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 1_200
+        rental_income: 2_400
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+        pension_income: 1_200
+        social_security: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 9_000
+
+# Manual p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; current plan includes lump sums. Existing source inputs are disjoint.
+- name: Case 3, withdrawals estate receipts lottery winnings gains interest and dividends count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        retirement_distributions: 3_600
+        estate_income: 1_200
+        gambling_winnings: 600
+        capital_gains: 600
+        interest_income: 120
+        ordinary_dividend_income: 240
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 6_360
+
+# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
+- name: Case 4, age 17 dependent income follows the earned exemption boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 15_600
+
+# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
+- name: Case 5, age 17 nondependent income follows the earned exemption boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 22_800
+
+# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
+- name: Case 6, age 18 dependent income follows the earned exemption boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 22_800
+
+# Manual p8 directs reported business losses to0:12000wages+600positive business+1200SSI=13800; losses do not offset other sources.
+- name: Case 7, each business loss is floored before wages and positive income are added.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 1_200
+        employment_income: 12_000
+        self_employment_income: -6_000
+        farm_operations_income: -2_400
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 13_800
+
+# Current plan p6 checkbox selections: TANF/general assistance/child support excluded, alimony included. SNAP is noncash excluded income.
+- name: Case 8, TANF general assistance and child support are excluded while alimony counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 6_000
+        alimony_income: 1_200
+        general_assistance: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 3_600
+        snap: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 13_200
+
+# Current FY2026 application physical p7 and manual physical p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
+- name: Case 9, child support paid changes an otherwise over limit household to eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 26_400
+    oh_liheap_income_limit: 27_387
+    oh_liheap_eligible: true
+
+# The same deduction cannot produce negative countable income: max(1,200 - 2,400, 0) = 0.
+- name: Case 10, child support paid above income floors countable income at zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 0
+    oh_liheap_eligible: true
+
+# Application physical p7 excludes support received while deducting support paid. A parent receives support for the resident child and pays for another child: 12,000 + 600 dividends - 1,200 = 11,400.
+- name: Case 11, support received stays excluded when the household also pays child support.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        ordinary_dividend_income: 600
+        child_support_received: 6_000
+        child_support_expense: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 11_400

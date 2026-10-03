@@ -1,0 +1,39 @@
+description: Ohio counts these unearned income sources for household members of all ages under the Home Energy Assistance Program.
+values:
+  2025-07-01:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    # The current application excludes VA disabilities, but this aggregate
+    # cannot separate them from other VA receipts. Its inclusion is provisional
+    # and does not accurately apply the documented VA subtype distinction.
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - alimony_income
+    - rental_income
+    - farm_rent_income
+    - interest_income
+    - ordinary_dividend_income
+    - retirement_distributions
+    - estate_income
+    - capital_gains
+    - gambling_winnings
+# Retirement account withdrawals are distinct from pension income in the model.
+# The manual explicitly counts capital gains and estate/trust settlements, not
+# merely asset sale proceeds. Those inputs do not capture every principal payout.
+# Current plan excludes TANF, general assistance, child support, and cash gifts.
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP unearned income sources
+  reference:
+    - title: Ohio 2022-2023 Energy Assistance Programs Guidelines, sections E-2.2-2.3 and Appendix XXIII, pages 7-8 and 73-74
+      href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
+    - title: Ohio FY2026 LIHEAP State Plan, revision 2, section 1.9, pages 5-6 (current income inclusions and exclusions)
+      href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5
+    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026, physical page 7 (VA disabilities excluded)
+      href: https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=7

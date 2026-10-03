@@ -1,0 +1,64 @@
+# Ohio income and eligibility components only; no payment schedule or final award is asserted.
+
+# 2025–2026 application p1 literal HEAP limits; whole-dollar175%of2025FPG, not the adjacent200%HWAP column.
+- name: Case 1, all eight current published annual FPG limits match exactly.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    oh_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8]
+  output:
+    oh_liheap_income_limit: [27_387, 37_012, 46_637, 56_262, 65_887, 75_512, 85_137, 94_762]
+
+# Unverified2025 estimate uses2024FPG15060 and52720, multiplied by1.75; no frozen2025guideline.
+- name: Case 2, historical backfill uses its requested year federal guideline.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    oh_liheap_household_size: [1, 8]
+  output:
+    oh_liheap_income_limit: [26_355, 92_260]
+
+# Safe intermediate behavior for a household with no qualified members.
+- name: Case 3, zero qualified size has zero income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    oh_liheap_household_size: 0
+  output:
+    oh_liheap_income_limit: 0
+
+# JFS00330 (07/2026), physical p1: seven literal annual HEAP limits for July2026-May2027.
+- name: Case 4, all seven published 2027 FPG household limits match the operative application.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    oh_liheap_household_size: [1, 2, 3, 4, 5, 6, 7]
+  output:
+    oh_liheap_income_limit: [27_930, 37_870, 47_810, 57_750, 67_690, 77_630, 87_570]
+
+# The form expressly switches to 60% SMI above seven people but prints no SMI dollar table.
+# Federal FY2027 four-person SMI117810 with factors1.38 and1.41 gives97546.68/99667.26.
+# Whole-dollar annual limits are the documented model approximation, not printed state amounts.
+- name: Case 5, the 2027 eighth household member switches to the explicit SMI rule.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    oh_liheap_household_size: [8, 9]
+  output:
+    oh_liheap_income_limit: [97_546, 99_667]

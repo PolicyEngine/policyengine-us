@@ -804,6 +804,12 @@ programs:
     status: partial
     coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: OH
+        status: in_progress
+        name: Ohio LIHEAP
+        full_name: Ohio Low Income Home Energy Assistance Program
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Income and ordinary eligibility components are implemented. The operative FY2026/FY2027 final payment matrix is still unavailable; historical final workbooks and provisional current ranges do not establish current awards. Regular heating only; historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP

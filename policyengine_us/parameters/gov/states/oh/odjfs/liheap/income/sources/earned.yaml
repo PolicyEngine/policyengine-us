@@ -1,0 +1,18 @@
+description: Ohio counts these earned income sources, except for dependent minors, under the Home Energy Assistance Program.
+# Existing net business inputs are used without another expense deduction.
+values:
+  2025-07-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP earned income sources
+  reference:
+    - title: Ohio 2022-2023 Energy Assistance Programs Guidelines, sections E-2.2-2.3 and Appendix XXIII, pages 7-8 and 73
+      href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
+    - title: Ohio FY2026 LIHEAP State Plan, revision 2, section 1.9, pages 5-6
+      href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5
