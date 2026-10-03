@@ -1,0 +1,641 @@
+# Sources: FY2026 agency table gives sizes1–10; earlier IMM gives size11.
+# https://bfa.wv.gov/utility-assistancelieap
+# https://bfa.wv.gov/media/39948/download?inline=#page=1772,1773
+# FY2027 adopted operational IMM gives separately verified sizes1–11.
+# https://bfa.wv.gov/media/40005/download?inline=#page=1775,1776
+# The60%SMI-through7 /150%FPG-from8 split is explicit in the accepted FY2026 plan.
+# https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=11
+# Expected limits are published monthly amounts multiplied by12, independently
+# checked with Decimal arithmetic; no model formula was used to generate them.
+# FY2026 size11 is8831/month, not the agency shorthand8144+688=8832.
+# Payment-grid overlaps and larger-family defects are outside this component.
+
+- name: Case 1, FY2026 published limit for 1 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $2,454/month x12 =$29,448/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 29_448
+
+- name: Case 2, FY2026 published limit for 2 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $3,209/month x12 =$38,508/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 38_508
+
+- name: Case 3, FY2026 published limit for 3 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $3,965/month x12 =$47,580/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 47_580
+
+- name: Case 4, FY2026 published limit for 4 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $4,720/month x12 =$56,640/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 56_640
+
+- name: Case 5, FY2026 published limit for 5 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $5,475/month x12 =$65,700/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 65_700
+
+- name: Case 6, FY2026 published limit for 6 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $6,230/month x12 =$74,760/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 74_760
+
+- name: Case 7, FY2026 published limit for 7 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $6,372/month x12 =$76,464/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 76_464
+
+- name: Case 8, FY2026 published limit for 8 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $6,769/month x12 =$81,228/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 81_228
+
+- name: Case 9, FY2026 published limit for 9 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $7,456/month x12 =$89,472/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 89_472
+
+- name: Case 10, FY2026 published limit for 10 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $8,144/month x12 =$97,728/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+      person10: {age: 7, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 97_728
+
+- name: Case 11, FY2026 published limit for 11 qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $8,831/month x12 =$105,972/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+      person10: {age: 7, is_citizen_or_legal_immigrant: true}
+      person11: {age: 3, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 105_972
+
+- name: Case 12, FY2027 published limit for 1 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $2,550/month x12 =$30,600/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 30_600
+
+- name: Case 13, FY2027 published limit for 2 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $3,335/month x12 =$40,020/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 40_020
+
+- name: Case 14, FY2027 published limit for 3 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $4,120/month x12 =$49,440/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 49_440
+
+- name: Case 15, FY2027 published limit for 4 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $4,904/month x12 =$58,848/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 58_848
+
+- name: Case 16, FY2027 published limit for 5 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $5,689/month x12 =$68,268/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 68_268
+
+- name: Case 17, FY2027 published limit for 6 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $6,474/month x12 =$77,688/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 77_688
+
+- name: Case 18, FY2027 published limit for 7 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 60% requested-year SMI; published $6,621/month x12 =$79,452/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 79_452
+
+- name: Case 19, FY2027 published limit for 8 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $6,965/month x12 =$83,580/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 83_580
+
+- name: Case 20, FY2027 published limit for 9 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $7,675/month x12 =$92,100/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 92_100
+
+- name: Case 21, FY2027 published limit for 10 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $8,385/month x12 =$100,620/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+      person10: {age: 7, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 100_620
+
+- name: Case 22, FY2027 published limit for 11 qualified members.
+  period: 2027
+  absolute_error_margin: 0.01
+  # 150% prior-year FPG; published $9,095/month x12 =$109,140/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: true}
+      person10: {age: 7, is_citizen_or_legal_immigrant: true}
+      person11: {age: 3, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 109_140
+
+- name: Case 23, eight residents with seven qualified members stay on the SMI branch.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Qualified size7: FY2026 monthly6372 x12 =76464.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 76_464
+
+- name: Case 24, nine residents with eight qualified members use the FPG branch.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Qualified size8: FY2026 monthly6769 x12 =81228.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 81_228
+
+- name: Case 25, mixed WV and neighboring-state households retain independent limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  # WV sizes1/8 use2454/6769 monthly; WV variable is zero in Ohio.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 70, is_citizen_or_legal_immigrant: true}
+      person3: {age: 68, is_citizen_or_legal_immigrant: true}
+      person4: {age: 45, is_citizen_or_legal_immigrant: true}
+      person5: {age: 44, is_citizen_or_legal_immigrant: true}
+      person6: {age: 22, is_citizen_or_legal_immigrant: true}
+      person7: {age: 17, is_citizen_or_legal_immigrant: true}
+      person8: {age: 15, is_citizen_or_legal_immigrant: true}
+      person9: {age: 12, is_citizen_or_legal_immigrant: true}
+      person10: {age: 70, is_citizen_or_legal_immigrant: true}
+      person11: {age: 68, is_citizen_or_legal_immigrant: true}
+      person12: {age: 45, is_citizen_or_legal_immigrant: true}
+      person13: {age: 44, is_citizen_or_legal_immigrant: true}
+      person14: {age: 22, is_citizen_or_legal_immigrant: true}
+      person15: {age: 17, is_citizen_or_legal_immigrant: true}
+      person16: {age: 15, is_citizen_or_legal_immigrant: true}
+      person17: {age: 12, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit2:
+        members: [person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit3:
+        members: [person10, person11, person12, person13, person14, person15, person16, person17]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+      household2:
+        members: [person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: OH
+      household3:
+        members: [person10, person11, person12, person13, person14, person15, person16, person17]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: [29448, 0, 81228]

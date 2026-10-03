@@ -1,0 +1,127 @@
+# Household composition: earlier official IMM21.3.1.B, physical1728;
+# current IMM21.3.1.B and citizenship, physical1729,1734.
+# https://bfa.wv.gov/media/39948/download?inline=#page=1728
+# https://bfa.wv.gov/media/40005/download?inline=#page=1729,1734
+# The SPM unit approximates the assistance group sharing heat costs.
+# These component tests make no claim about income or final benefit eligibility.
+
+- name: Case 1, one qualified adult is counted.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_lieap_household_size: 1
+
+- name: Case 2, qualified adults and children count while nonqualified members do not.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 38, is_citizen_or_legal_immigrant: false}
+      person3: {age: 15, is_citizen_or_legal_immigrant: true}
+      person4: {age: 8, is_citizen_or_legal_immigrant: true}
+      person5: {age: 65, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WV
+  output:
+    wv_lieap_household_size: 3
+
+- name: Case 3, an entirely nonqualified household has no qualified members.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: false}
+      person2: {age: 38, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_lieap_household_size: 0
+
+- name: Case 4, qualified children count even when the adults are nonqualified.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: false}
+      person2: {age: 38, is_citizen_or_legal_immigrant: false}
+      person3: {age: 15, is_citizen_or_legal_immigrant: true}
+      person4: {age: 8, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: WV
+  output:
+    wv_lieap_household_size: 2
+
+- name: Case 5, mixed states and qualification counts remain independent.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 38, is_citizen_or_legal_immigrant: false}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 38, is_citizen_or_legal_immigrant: true}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 38, is_citizen_or_legal_immigrant: true}
+      person7: {age: 8, is_citizen_or_legal_immigrant: true}
+      person8: {age: 50, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit3:
+        members: [person5, person6, person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit4:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WV
+      household2:
+        members: [person3, person4]
+        state_code: OH
+      household3:
+        members: [person5, person6, person7]
+        state_code: WV
+      household4:
+        members: [person8]
+        state_code: WV
+  output:
+    wv_lieap_household_size: [1, 0, 3, 0]
