@@ -186,25 +186,28 @@
     in_eap: 200
 
 - name: Case 7, elderly widow with Social Security retirement and a pension.
-  # Section 6.1 (page 55) counts the Social Security check net of Medicare Part B.
-  # The premium is not deducted in the model yet, so the gross benefit is counted.
-  # Social Security: $1,300 x 12 = $15,600 retirement. Pension: $500 x 12 = $6,000.
-  # Income: $21,600.
-  # Computed SSI: countable ($15,600 + $6,000) / 12 - $20 = $1,780 a month exceeds the
-  # $994 federal benefit rate, so SSI is $0.
+  # Section 6.1 (page 55) counts the Social Security check net of the Medicare
+  # Part B premium. Social Security: $1,800 x 12 = $21,600 retirement. Pension:
+  # $5,000. The 2026 standard Part B premium is $202.90 x 12 = $2,434.80; her
+  # countable income ($26,600 / 12 - $20 = $2,196.67 a month) is above the
+  # Medicare Savings Program limit, so she pays it.
+  # Income: ($21,600 - $2,434.80) + $5,000 = $24,165.20.
+  # Computed SSI: $2,196.67 a month exceeds the $994 federal benefit rate, so SSI is $0.
   # Size 1 SMI: floor($107,555 x 0.52) = $55,928; 60% limit floor($33,556.80) = $33,556.
-  # Three-month income: $21,600 x 3 / 12 = $5,400, above the band 1 ceiling
+  # Three-month income: $24,165.20 x 3 / 12 = $6,041.30, above the band 1 ceiling
   # floor($55,928 x 0.30 x 3 / 12) = $4,194 and within the band 2 ceiling
   # floor($55,928 x 0.45 x 3 / 12) = $6,291, so band 2 (5 points, $100 electric).
+  # Counted gross, $26,600 x 3 / 12 = $6,650 would be band 3 (2 points, $50).
   # Points: 5 income + 3 single-family + 6 wood + 2 vulnerable (age 60 or older) = 16.
   # Heating 16 x $25 = $400; electric $100; total $500.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 72
-        social_security_retirement: 15_600
-        taxable_private_pension_income: 6_000
+        social_security_retirement: 21_600
+        taxable_private_pension_income: 5_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -216,12 +219,13 @@
         members: [person1]
         state_code: IN
   output:
-    social_security: 15_600
+    social_security: 21_600
+    medicare_part_b_premium: 2_434.8
     ssi: 0
     heating_expense: 900
     in_eap_household_size: 1
     in_eap_smi: 55_928
-    in_eap_income: 21_600
+    in_eap_income: 24_165.2
     in_eap_eligible: true
     in_eap: 500
 

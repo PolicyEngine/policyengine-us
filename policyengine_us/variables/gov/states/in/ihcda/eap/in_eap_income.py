@@ -37,11 +37,15 @@ class in_eap_income(Variable):
             other = other + max_(person(source, period), 0)
         other = other * counted
         # Child SSA benefits count despite the general under-18 exclusion. Section 6.1
-        # counts the Social Security payment net of Medicare Part B and Part D
-        # premiums. The premium is not deducted yet: neither medicare_part_b_premium
-        # nor medicare_part_b_premiums_reported is wired in. Withholding, overpayment
-        # recovery, and exact garnishment are also unavailable.
-        ssa = person("social_security", period) + person("ssi", period)
+        # (page 55) counts the Social Security check net of the Medicare Part B and
+        # Part D premiums. medicare_part_b_premium is the Part B premium the person
+        # pays: zero when not enrolled, and excluding the share a Medicare Savings
+        # Program pays, which is not withheld from the check. The model has no Part D
+        # premium variable, so that deduction, tax withholding, overpayment recovery
+        # and garnishment are not modeled.
+        premium = person("medicare_part_b_premium", period)
+        social_security = max_(person("social_security", period) - premium, 0)
+        ssa = social_security + person("ssi", period)
         # Actual support paid is deductible. Child support received, TANF, capital gains,
         # tax refunds, and educational assistance are excluded. Recurring versus lump-sum
         # receipts, royalties, protected employment, and specific VA/insurance exclusions

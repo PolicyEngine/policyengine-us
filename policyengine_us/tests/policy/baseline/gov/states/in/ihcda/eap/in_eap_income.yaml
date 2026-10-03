@@ -48,8 +48,9 @@
     tanf: 4_000
     long_term_capital_gains: 4_000
   output:
-    # 12_000 wages + 12_000 Social Security (gross; the Medicare premium is not
-    # deducted yet) + 1_200 SSI - 2_400 support paid = 22_800.
+    # 12_000 wages + 12_000 Social Security (a 40-year-old is not enrolled in
+    # Medicare, so no premium is deducted) + 1_200 SSI - 2_400 support paid =
+    # 22_800.
     in_eap_income: 22_800
 - name: Case 4, immigration excludes an adult from size but counts earnings and child Social Security counts despite excluded child wages.
   period: 2026
@@ -85,7 +86,7 @@
   # pensions count. One counted adult per household, one source each:
   # farm operations $21,000; partnership $9,000 + S corporation $6,000 = $15,000;
   # estate $4,800; farm rent $7,200; strike benefits $2,400; a military pension of
-  # $18,000, reported as a taxable public pension.
+  # $18,000, reported in military_retirement_pay.
   period: 2026
   input:
     state_code: [IN, IN, IN, IN, IN, IN]
@@ -96,7 +97,7 @@
     estate_income: [0, 0, 4_800, 0, 0, 0]
     farm_rent_income: [0, 0, 0, 7_200, 0, 0]
     strike_benefits: [0, 0, 0, 0, 2_400, 0]
-    taxable_public_pension_income: [0, 0, 0, 0, 0, 18_000]
+    military_retirement_pay: [0, 0, 0, 0, 0, 18_000]
   output:
     in_eap_income: [21_000, 15_000, 4_800, 7_200, 2_400, 18_000]
 
@@ -163,3 +164,27 @@
     employment_income: 9_360
   output:
     in_eap_income: 20_160
+
+- name: Case 9, the Medicare Part B premium is deducted from Social Security only when the person pays it.
+  # Section 6.1 (page 55) counts the net Social Security check after the Part B
+  # deduction. The 2026 standard premium is $202.90 x 12 = $2,434.80.
+  # Household 1: age 70, $12,000 of Social Security; countable income of
+  # $1,000 - $20 a month is under 135% of the poverty guideline, so a Medicare
+  # Savings Program covers the premium and the full $12,000 is counted.
+  # Household 2: age 70, $2,000 of Social Security and a $24,000 private pension;
+  # the premium is paid and exceeds the benefit, which is floored at zero:
+  # $0 + $24,000.
+  # Household 3: age 40 with $12,000 of Social Security disability and no
+  # Medicare enrollment: no premium, $12,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [IN, IN, IN]
+    age: [70, 70, 40]
+    social_security_retirement: [12_000, 2_000, 0]
+    social_security_disability: [0, 0, 12_000]
+    taxable_private_pension_income: [0, 24_000, 0]
+    ssi: [0, 0, 0]
+  output:
+    medicare_part_b_premium: [0, 2_434.8, 0]
+    in_eap_income: [12_000, 24_000, 12_000]
