@@ -7,7 +7,7 @@ class md_qualifies_for_unmarried_childless_eitc(Variable):
     label = "Qualifies for the MD unmarried childless EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
+    reference = "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-704&enactments=false"  # (c)(3)
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
