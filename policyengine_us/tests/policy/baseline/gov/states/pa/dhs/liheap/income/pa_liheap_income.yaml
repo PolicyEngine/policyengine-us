@@ -1,0 +1,405 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan pp49-50: 12000 wages +2400+1200+600+1200 existing net profits =17400. No second business expense adjustment.
+- name: Case 1, adult wages and existing positive business sources count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_400
+        sstb_self_employment_income: 1_200
+        farm_operations_income: 600
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 17_400
+
+# FY2026 final plan p50 prohibits offsetting another source: 12000+0+600+0+1200=13800.
+- name: Case 2, one business source loss cannot offset another source or wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: -2_400
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pp50-51: 1200 rent+2400 farm rent+600 survivor+1200 pension+3600 SSA+2400 annual SSI=11400. SSI is annualized once.
+- name: Case 3, rental survivor pension Social Security and SSI receipts remain distinct.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        rental_income: 1_200
+        farm_rent_income: 2_400
+        survivor_benefits: 600
+        pension_income: 1_200
+        social_security: 3_600
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 11_400
+
+# FY2026 final plan pp50-51 and federal plan p6: 120+240+3600+600+600+1200+1200+1200+1200=9960. IRA withdrawals and general assistance/strike pay count.
+- name: Case 4, other disjoint unearned sources count with canonical dividends.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        interest_income: 120
+        ordinary_dividend_income: 240
+        retirement_distributions: 3_600
+        general_assistance: 600
+        strike_benefits: 600
+        unemployment_compensation: 1_200
+        workers_compensation: 1_200
+        disability_benefits: 1_200
+        veterans_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 9_960
+
+# FY2026 final plan p50 counts public assistance. Annual inputs:6000 wages+600 general assistance+1200 child SSA+3600 PA TANF=11400; monthly TANF is counted once for the SPM unit.
+- name: Case 5, Pennsylvania TANF is annualized once for the family.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 6_000
+        general_assistance: 600
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 11_400
+
+# FY2026 final plan p53 exempts dependent wages only:12000 parent wages+1200 child business+600 child SSA=13800.
+- name: Case 6, dependent child wages are excluded but child business and unearned income count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pp42,49: size1 citizen child; full18000 parent wages+600 SSA=18600, below23475. No income proration.
+- name: Case 7, nonqualified parent income counts fully for a citizen child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 1
+    pa_liheap_income: 18_600
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: true
+
+# FY2026 final plan pp52-53: with zero children under18, only min(1200 alimony,600) is excluded.12000+1200+1200-600=13800.
+- name: Case 8, no child under eighteen means no child support exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 1_200
+        alimony_income: 1_200
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pp52-53:12000+3600+1200-max(1200 child cap,600 spouse cap)=15600; do not add both exclusions.
+- name: Case 9, one child support and spousal support use the larger capped exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 3_600
+        alimony_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 15_600
+
+# FY2026 final plan pp52-53 cap counts under18 children in the household:12000+3600+1200-max(2400,600)=14400. Nonqualified child affects the cap, not grant size.
+- name: Case 10, two children allow the larger child support cap including a nonqualified child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 3_600
+        alimony_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 2
+    pa_liheap_income: 14_400
+
+# FY2026 final plan pp52-53:12000+240+480-max(min(240,1200),min(480,600))=12240.
+- name: Case 11, support exclusions cannot exceed receipts and still use only the larger one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 240
+        alimony_income: 480
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 12_240
+
+# FY2026 final plan p52 excludes SNAP.12000 wages remain12000 despite6000 SNAP; no unsupported refund input is invented.
+- name: Case 12, excluded SNAP receipts do not enter countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 12_000
+
+# FY2026 final plan p51 counts cash gifts and contributions; federal plan p6 also marks gifts included.
+# 23,400 wages + 1,200 regular cash help = 24,600, above the one-person opening limit of 23,475.
+- name: Case 13, cash help from relatives raises otherwise eligible income above the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 23_400
+        financial_assistance: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 24_600
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: false

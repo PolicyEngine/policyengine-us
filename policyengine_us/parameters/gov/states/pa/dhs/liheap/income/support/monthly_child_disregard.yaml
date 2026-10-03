@@ -1,0 +1,25 @@
+description: Pennsylvania excludes up to this amount of monthly child support by number of children under the Low Income Home Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-11-03: 0
+    amount:
+      2025-11-03: 0
+  - threshold:
+      2025-11-03: 1
+    amount:
+      2025-11-03: 100
+  - threshold:
+      2025-11-03: 2
+    amount:
+      2025-11-03: 200
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  label: Pennsylvania LIHEAP monthly child support disregard
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP State Plan, section 601.84(15), pages 52-53 (larger of child or spousal support exclusions)
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=52
+    - title: Pennsylvania FY2027 LIHEAP State Plan, section 601.84(15), page 50
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=50

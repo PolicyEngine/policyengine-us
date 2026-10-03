@@ -1,0 +1,273 @@
+# Independent FY2026 and current FY2027 table-component checks; no final award is asserted.
+# Unsupported inputs below are documented component placeholders, not legal denials.
+
+# FY2026 final plan p42: 6250 wages minus 20% gives 5000 table income. Dated FY2026 matrix p2, Adams electric, size1, pays552; this is the table component, not a final award or expense cap.
+- name: Case 1, Adams electricity uses wages after the benefit income disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 6_250
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 120
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ADAMS_COUNTY_PA
+  output:
+    pa_liheap_matrix_amount: 552
+
+# FY2026 final plan p31 maps these counties to regions1-5. Dated matrix pp51,44,16,2,100 respectively: size1 income5000. Propane equals electric; OTHER uses the printed Wood/Other row.
+- name: Case 2, all five heating regions preserve their regional fuel schedules.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA,
+      PA]
+    county: [BRADFORD_COUNTY_PA, BRADFORD_COUNTY_PA, BRADFORD_COUNTY_PA, BRADFORD_COUNTY_PA, BRADFORD_COUNTY_PA,
+      BLAIR_COUNTY_PA, BLAIR_COUNTY_PA, BLAIR_COUNTY_PA, BLAIR_COUNTY_PA, BLAIR_COUNTY_PA, ARMSTRONG_COUNTY_PA,
+      ARMSTRONG_COUNTY_PA, ARMSTRONG_COUNTY_PA, ARMSTRONG_COUNTY_PA, ARMSTRONG_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, CHESTER_COUNTY_PA, CHESTER_COUNTY_PA, CHESTER_COUNTY_PA,
+      CHESTER_COUNTY_PA, CHESTER_COUNTY_PA]
+    heating_type: [ELECTRICITY, PROPANE, NATURAL_GAS, WOOD, OTHER, ELECTRICITY, PROPANE, NATURAL_GAS, WOOD, OTHER,
+      ELECTRICITY, PROPANE, NATURAL_GAS, WOOD, OTHER, ELECTRICITY, PROPANE, NATURAL_GAS, WOOD, OTHER, ELECTRICITY,
+      PROPANE, NATURAL_GAS, WOOD, OTHER]
+    pre_subsidy_electricity_expense: [1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0,
+      1_200, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200,
+      0, 0, 0]
+    gas_expense: [0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0]
+    wood_expense: [0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0,
+      0, 0, 0, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000,
+      5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [642, 642, 641, 697, 697, 612, 612, 611, 667, 667, 582, 582, 581, 637, 637, 552, 552,
+      551, 607, 607, 522, 522, 521, 577, 577]
+
+# Dated FY2026 matrix pp2,9: Adams and Allegheny are both region4. At size1 income5000 they have identical electric, gas and wood amounts but different oil, coal and kerosene amounts.
+- name: Case 3, counties in one region share regional amounts but retain delivered fuel differences.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA, ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA, ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA,
+      ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA, ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA, ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, WOOD, WOOD, FUEL_OIL, FUEL_OIL, COAL, COAL,
+      KEROSENE, KEROSENE]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 1_200, 1_200, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 1_200, 1_200, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 1_200, 1_200, 0, 0, 1_200, 1_200]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 1_200, 1_200, 0, 0]
+    pa_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [552, 552, 551, 551, 607, 607, 761, 686, 454, 339, 745, 660]
+
+# Dated FY2026 matrix p2, Adams electric income5000: all eleven literal size columns. Size10 pays597 and size11 pays602, so the last published column is not a plateau.
+- name: Case 4, all eleven Adams electricity size columns retain the published increases.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [552, 557, 562, 567, 572, 577, 582, 587, 592, 597, 602]
+
+# Dated FY2026 matrix p2, Adams income5000, size11. Eight existing enum values map to seven printed fuel rows; Blended Fuel has no existing enum and is not represented.
+- name: Case 5, each priced fuel mapping uses the last published household size.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, FUEL_OIL, COAL, NATURAL_GAS, KEROSENE, PROPANE, WOOD, OTHER]
+    pre_subsidy_electricity_expense: [1_200, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 1_200, 0, 0, 1_200, 0, 0, 0]
+    coal_expense: [0, 0, 1_200, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 1_200, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 1_200, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 1_200, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 1_200]
+    pa_liheap_household_size: [11, 11, 11, 11, 11, 11, 11, 11]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [602, 811, 504, 601, 795, 602, 657, 657]
+
+# Dated FY2026 matrix p99, Chester electric size1: income0-999 pays1000 and income1000-1999 pays992. Cents below the boundary do not round up.
+- name: Case 6, cents below one thousand remain in the first income band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA]
+    county: [CHESTER_COUNTY_PA, CHESTER_COUNTY_PA, CHESTER_COUNTY_PA, CHESTER_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1]
+    pa_liheap_benefit_income: [0, 999.99, 1_000, 1000.01]
+  output:
+    pa_liheap_matrix_amount: [1_000, 1_000, 992, 992]
+
+# Dated FY2026 matrix p2, Adams electric size1: income4000-4999 pays690, 5000-5999 pays552, and6000-6999 pays482.
+- name: Case 7, cents below five thousand and six thousand stay in their printed bands.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1, 1]
+    pa_liheap_benefit_income: [4999.99, 5_000, 5000.01, 5999.99, 6_000]
+  output:
+    pa_liheap_matrix_amount: [690, 552, 552, 552, 482]
+
+# Dated FY2026 matrix p7: every priced fuel row at income22000-22999 pays200 for sizes1 and11. Higher-income treatment is separately deduced from handbook638.3 and the published minimum.
+- name: Case 8, the final published income band pays two hundred at both size endpoints.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, FUEL_OIL, COAL, NATURAL_GAS, KEROSENE, PROPANE, WOOD, OTHER, ELECTRICITY, FUEL_OIL,
+      COAL, NATURAL_GAS, KEROSENE, PROPANE, WOOD, OTHER]
+    pre_subsidy_electricity_expense: [1_200, 0, 0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 1_200, 0, 0, 1_200, 0, 0, 0, 0, 1_200, 0, 0, 1_200, 0, 0, 0]
+    coal_expense: [0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0, 1_200, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0, 1_200, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0, 0, 0, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 11, 11, 11, 11, 11, 11]
+    pa_liheap_benefit_income: [22_000, 22_000, 22_000, 22_000, 22_000, 22_000, 22_000, 22_000, 22999.99, 22999.99,
+      22999.99, 22999.99, 22999.99, 22999.99, 22999.99, 22999.99]
+  output:
+    pa_liheap_matrix_amount: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
+
+# Dated FY2026 matrix pp2,9 gives the two supported PA cells. Non-PA is outside this state component. Explicit UNKNOWN returns an unverified component placeholder, not a legal finding of ineligibility; no missing-county fallback is claimed verified.
+- name: Case 9, mixed state and county inputs keep supported rows and guard unknown geography.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, OH, PA, PA]
+    county: [ADAMS_COUNTY_PA, FRANKLIN_COUNTY_OH, UNKNOWN, ALLEGHENY_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS, KEROSENE]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 0, 0]
+    gas_expense: [0, 0, 1_200, 0]
+    fuel_oil_expense: [0, 0, 0, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [552, 0, 0, 660]
+
+# Dated FY2026 matrix pp2,7 supports size11 at5000=602 and size1 at22999.99=200. Handbook638.3 lower-income multipliers and the200 minimum imply200 at higher income for covered sizes. Size0 has no qualified member; size12 remains an unverified component placeholder. This ungated lookup does not assert legal income eligibility.
+- name: Case 10, unsupported sizes remain placeholders while higher income retains the minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [0, 11, 12, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 22999.99, 23_000, 100_000]
+  output:
+    pa_liheap_matrix_amount: [0, 602, 0, 200, 200, 200]
+
+# Dated FY2026 matrix p2 prices electricity at552. UNSPECIFIED and SOLAR lack a supported table mapping and return unverified component placeholders; NONE has no heating. No final award or legal eligibility conclusion is asserted.
+- name: Case 11, unsupported fuel types use component placeholders without inventing a price.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [UNSPECIFIED, SOLAR, NONE, ELECTRICITY]
+    pre_subsidy_electricity_expense: [0, 1_200, 0, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [0, 0, 0, 552]
+
+# Handbook638.3 assigns higher multipliers to lower income brackets. All5896 terminal FY2026 county/fuel/size cells equal the200 minimum (matrix p7 for Adams). Monotonicity plus this floor implies200 above23000 for supported sizes; this is a source deduction, not a printed extrapolation instruction or an income-eligibility assertion.
+- name: Case 12, the published minimum continues across the upper printed income boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 1, 1, 11, 11, 11]
+    pa_liheap_benefit_income: [22999.99, 23_000, 30_000, 22999.99, 23_000, 80_000]
+  output:
+    pa_liheap_matrix_amount: [200, 200, 200, 200, 200, 200]
+
+# Official lookup captured October3 2026, linked by the adopted FY2027 plan
+# and August2026 operations guidance. The UI is undated; this is contextual
+# FY2027 dating. Raw county/fuel responses cover all five official regions.
+# At5000/size1: Bradford electric670, Blair wood676, Armstrong coal385,
+# Adams electric580, Chester propane550. At15000/size11: Adams oil273,
+# Chester kerosene280. OTHER shares the printed Wood/Other row.
+- name: Case 13, the current season preserves fuel prices across all five heating regions.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA]
+    county: [BRADFORD_COUNTY_PA, BLAIR_COUNTY_PA, ARMSTRONG_COUNTY_PA, ADAMS_COUNTY_PA, CHESTER_COUNTY_PA, ADAMS_COUNTY_PA, CHESTER_COUNTY_PA, BLAIR_COUNTY_PA]
+    heating_type: [ELECTRICITY, WOOD, COAL, ELECTRICITY, PROPANE, FUEL_OIL, KEROSENE, OTHER]
+    pa_liheap_household_size: [1, 1, 1, 1, 1, 11, 11, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 15_000, 15_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [670, 676, 385, 580, 550, 273, 280, 676]
+
+# Current raw responses county01/fuel4 and county02/fuel4,5000-5999:
+# Adams gas659/709 forsize1/11; Allegheny573/623. Both counties are region4,
+# so the current table cannot apply one region-wide natural gas amount.
+- name: Case 14, current natural gas prices differ between counties in the same heating region.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA, ADAMS_COUNTY_PA, ALLEGHENY_COUNTY_PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    pa_liheap_household_size: [1, 1, 11, 11]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000]
+  output:
+    pa_liheap_matrix_amount: [659, 573, 709, 623]
+
+# Current raw Adams electric, Adams gas and Chester kerosene terminal
+#22000-22999 rows each pay200. The same handbook monotonicity/minimum
+# deduction applies above23000. No income-eligibility conclusion is asserted.
+- name: Case 15, the current season retains the minimum above the final printed income band.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, CHESTER_COUNTY_PA, CHESTER_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, KEROSENE, KEROSENE]
+    pa_liheap_household_size: [1, 1, 1, 11, 11, 11]
+    pa_liheap_benefit_income: [22999.99, 23_000, 30_000, 23_000, 22999.99, 80_000]
+  output:
+    pa_liheap_matrix_amount: [200, 200, 200, 200, 200, 200]

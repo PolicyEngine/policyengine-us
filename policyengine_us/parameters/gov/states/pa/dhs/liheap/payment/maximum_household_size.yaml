@@ -1,0 +1,11 @@
+description: Pennsylvania publishes regular heating payments through this household size under the Low Income Home Energy Assistance Program.
+# This is the source table's coverage, not an eligibility restriction.
+values:
+  2025-11-03: 11
+metadata:
+  unit: person
+  period: year
+  label: Pennsylvania LIHEAP maximum published payment-table household size
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP benefit matrix, household-size columns 1-11
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf

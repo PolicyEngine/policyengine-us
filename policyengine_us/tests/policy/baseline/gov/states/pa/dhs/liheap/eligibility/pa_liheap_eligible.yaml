@@ -1,0 +1,257 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan pp10,51 inclusive23475 ceiling; federal plan p8 has no resource test. Asset balances are not income.
+- name: Case 1, exact opening income ceiling qualifies without an asset test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 23_475
+        bank_account_assets: 1_000_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 23_475
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: true
+
+# FY2026 final plan pp42,51:23476 exceeds23475 even though20% wage disregard would lower benefit income. SNAP does not confer categorical eligibility.
+- name: Case 2, gross income above the limit fails despite the benefit wage disregard and SNAP.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 23_476
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 23_476
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: false
+
+# FY2026 final plan pp38-39 permits indirect primary heating responsibility in unsubsidized rent.
+- name: Case 3, unsubsidized heat in rent qualifies with no separate fuel bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pa_tanf: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: true
+
+# FY2026 final plan pp38-39 excludes income-based rent that includes heat unless a primary-fuel obligation is established.
+- name: Case 4, subsidized heat in rent without a separate primary obligation fails.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pa_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: false
+
+# FY2026 final plan pp38-39: the public housing flag independently approximates income-based rent including heat.
+- name: Case 5, public housing also applies the heat in rent restriction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pa_tanf: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        is_in_public_housing: true
+  output:
+    pa_liheap_eligible: false
+
+# FY2026 final plan p39 expressly admits a subsidized household newly responsible for part of its primary heating cost. Explicit fact represents verified primary responsibility.
+- name: Case 6, a verified separate primary obligation restores subsidized renter eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 120
+        pa_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: true
+
+# FY2026 final plan p38 requires primary heating responsibility for Cash assistance; a secondary fuel bill alone does not suffice.
+- name: Case 7, a secondary electricity bill cannot establish natural gas heating responsibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pa_tanf: 0
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: false
+
+# Heating-only scope and explicit NONE mean no heating program eligibility.
+- name: Case 8, explicit no heating fails even if heating responsibility is overridden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        gas_expense: 1_200
+        pa_tanf: 0
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: false
+
+# FY2026 final plan pp40-42 requires a qualified member; ordinary income and a fuel bill are insufficient.
+- name: Case 9, no qualified member fails even with a heating bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 0
+    pa_liheap_eligible: false
+
+# FY2026 final plan p40 requires Pennsylvania residence.
+- name: Case 10, an out of state resident does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    pa_liheap_eligible: false

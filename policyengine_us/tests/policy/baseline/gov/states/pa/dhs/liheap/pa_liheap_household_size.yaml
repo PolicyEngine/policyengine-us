@@ -1,0 +1,61 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan pp40-42 counts qualified noncitizens without a five-year bar; excludes nonqualified members from size.
+- name: Case 1, citizens and qualified immigrants count but nonqualified members do not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 39
+        immigration_status: ASYLEE
+        ssi: 0
+      person4:
+        age: 22
+        immigration_status: DACA
+        ssi: 0
+      person5:
+        age: 41
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 3
+
+# FY2026 final plan p42 excludes nonqualified members from the grant household size.
+- name: Case 2, no qualified member produces a zero household size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 0

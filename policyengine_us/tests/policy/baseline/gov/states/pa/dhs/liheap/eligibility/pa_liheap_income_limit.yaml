@@ -1,0 +1,53 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan p10 literal limits for sizes1-10; size11=97725+8250. Annual opening-season snapshot, not application-month precision.
+- name: Case 1, all ten FY2026 opening season limits and the next person match the published table.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  output:
+    pa_liheap_income_limit: [23_475, 31_725, 39_975, 48_225, 56_475, 64_725, 72_975, 81_225, 89_475, 97_725,
+      105_975]
+
+# FY2027 final plan p9 literal limits for sizes1-10; size11=100620+8520. This verifies income limits only, not FY2027 benefit amounts.
+- name: Case 2, all ten FY2027 opening season limits and the next person use new guidelines.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA, PA, PA, PA, PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  output:
+    pa_liheap_income_limit: [23_940, 32_460, 40_980, 49_500, 58_020, 66_540, 75_060, 83_580, 92_100, 100_620,
+      109_140]
+
+# FY2026 final plan p10 also prints FY2025 size1=22590,size8=79080,size10=95220,+8070 atsize11. This narrow historical threshold check does not verify the historical program.
+- name: Case 3, earlier year backfill uses its own prior year guideline.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    pa_liheap_household_size: [1, 8, 11]
+  output:
+    pa_liheap_income_limit: [22_590, 79_080, 103_290]
+
+# An empty qualified household cannot use the one-person guideline.
+- name: Case 4, no qualified member has no income ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA]
+    heating_type: [NATURAL_GAS]
+    gas_expense: [1_200]
+    pa_liheap_household_size: [0]
+  output:
+    pa_liheap_income_limit: [0]

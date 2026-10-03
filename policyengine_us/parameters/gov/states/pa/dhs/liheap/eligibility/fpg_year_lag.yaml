@@ -1,0 +1,13 @@
+description: Pennsylvania's modeled opening-season income limit uses federal poverty guidelines from this many years before the benefit year under the Low Income Home Energy Assistance Program.
+# This annual snapshot does not reproduce the state's midseason FPG update.
+values:
+  2025-11-03: 1
+metadata:
+  unit: year
+  period: year
+  label: Pennsylvania LIHEAP opening-season poverty guideline year lag
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP State Plan, page 10 (2025 guidelines at opening)
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=10
+    - title: Pennsylvania FY2027 LIHEAP State Plan, page 9 (2026 guidelines at opening; February update)
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=9

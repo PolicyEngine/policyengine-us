@@ -804,6 +804,12 @@ programs:
     status: partial
     coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: PA
+        status: in_progress
+        name: Pennsylvania LIHEAP
+        full_name: Pennsylvania Low Income Home Energy Assistance Program
+        parameter_prefix: gov.states.pa.dhs.liheap
+        notes: Income, eligibility, dated FY2026 payments, the current FY2027-linked lookup and actual FY2026 supplement are implemented as components. Household sizes above eleven remain outside public payment tables; blended fuel and administrative receipt facts have documented input limits. No complete final award is exposed. Regular heating only; historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP

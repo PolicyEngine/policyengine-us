@@ -1,0 +1,15 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan p53 excludes wages of dependent children under18; p50 prohibits loss offsets. Five independent one-person units test the age and dependency boundaries.
+- name: Case 1, dependent child wage exemption ends at age eighteen and needs dependency.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    age: [17, 17, 18, 40, 40]
+    is_tax_unit_dependent: [true, false, true, false, false]
+    employment_income: [6_000, 6_000, 6_000, -1_000, 0]
+  output:
+    pa_liheap_countable_employment_income: [0, 6_000, 6_000, 0, 0]

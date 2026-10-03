@@ -1,0 +1,91 @@
+description: Pennsylvania assigns these counties to each official heating region under the Low Income Home Energy Assistance Program.
+region_1:
+  values:
+    2025-11-03:
+      - BRADFORD_COUNTY_PA
+      - CAMERON_COUNTY_PA
+      - CLEARFIELD_COUNTY_PA
+      - ELK_COUNTY_PA
+      - FOREST_COUNTY_PA
+      - LACKAWANNA_COUNTY_PA
+      - LUZERNE_COUNTY_PA
+      - MCKEAN_COUNTY_PA
+      - POTTER_COUNTY_PA
+      - SULLIVAN_COUNTY_PA
+      - SUSQUEHANNA_COUNTY_PA
+      - TIOGA_COUNTY_PA
+      - WAYNE_COUNTY_PA
+      - WYOMING_COUNTY_PA
+region_2:
+  values:
+    2025-11-03:
+      - BLAIR_COUNTY_PA
+      - CAMBRIA_COUNTY_PA
+      - CARBON_COUNTY_PA
+      - CENTRE_COUNTY_PA
+      - CLARION_COUNTY_PA
+      - CLINTON_COUNTY_PA
+      - COLUMBIA_COUNTY_PA
+      - CRAWFORD_COUNTY_PA
+      - ERIE_COUNTY_PA
+      - JEFFERSON_COUNTY_PA
+      - LYCOMING_COUNTY_PA
+      - MONROE_COUNTY_PA
+      - PIKE_COUNTY_PA
+      - SCHUYLKILL_COUNTY_PA
+      - SOMERSET_COUNTY_PA
+      - VENANGO_COUNTY_PA
+      - WARREN_COUNTY_PA
+region_3:
+  values:
+    2025-11-03:
+      - ARMSTRONG_COUNTY_PA
+      - BEAVER_COUNTY_PA
+      - BEDFORD_COUNTY_PA
+      - BUTLER_COUNTY_PA
+      - HUNTINGDON_COUNTY_PA
+      - INDIANA_COUNTY_PA
+      - LAWRENCE_COUNTY_PA
+      - MERCER_COUNTY_PA
+      - MONTOUR_COUNTY_PA
+      - NORTHUMBERLAND_COUNTY_PA
+      - WESTMORELAND_COUNTY_PA
+region_4:
+  values:
+    2025-11-03:
+      - ADAMS_COUNTY_PA
+      - ALLEGHENY_COUNTY_PA
+      - BERKS_COUNTY_PA
+      - BUCKS_COUNTY_PA
+      - DAUPHIN_COUNTY_PA
+      - FAYETTE_COUNTY_PA
+      - FRANKLIN_COUNTY_PA
+      - FULTON_COUNTY_PA
+      - GREENE_COUNTY_PA
+      - JUNIATA_COUNTY_PA
+      - LEBANON_COUNTY_PA
+      - LEHIGH_COUNTY_PA
+      - MIFFLIN_COUNTY_PA
+      - NORTHAMPTON_COUNTY_PA
+      - PERRY_COUNTY_PA
+      - SNYDER_COUNTY_PA
+      - UNION_COUNTY_PA
+      - WASHINGTON_COUNTY_PA
+region_5:
+  values:
+    2025-11-03:
+      - CHESTER_COUNTY_PA
+      - CUMBERLAND_COUNTY_PA
+      - DELAWARE_COUNTY_PA
+      - LANCASTER_COUNTY_PA
+      - MONTGOMERY_COUNTY_PA
+      - PHILADELPHIA_COUNTY_PA
+      - YORK_COUNTY_PA
+metadata:
+  unit: list
+  period: year
+  label: Pennsylvania LIHEAP heating region counties
+  propagate_metadata_to_children: true
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP State Plan, Appendix A, physical page 31
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=31
