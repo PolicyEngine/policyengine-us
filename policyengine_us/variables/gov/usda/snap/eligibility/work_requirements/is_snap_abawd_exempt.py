@@ -46,7 +46,7 @@ class is_snap_abawd_exempt(Variable):
         )
         # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D),
         # including the 7 CFR 273.7(b)(1)(vii) exemption for people working
-        # 30 or more hours weekly.
+        # 30 or more hours weekly or earning the minimum-wage equivalent.
         work_reg_exempt = person("is_snap_work_registration_exempt_non_age", period)
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
         is_pregnant = person("is_pregnant", period)
