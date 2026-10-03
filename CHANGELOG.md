@@ -1,3 +1,10 @@
+## [2.23.5] - 2026-10-03
+
+### Fixed
+
+- Replace dead Massachusetts reference URLs (Form 1 instructions and schedules, Department of Revenue pages, child care and LIHEAP documents) with live successors or pinned Wayback captures, and guard against their return.
+
+
 ## [2.23.4] - 2026-10-03
 
 ### Fixed
