@@ -9,7 +9,7 @@ class mi_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",
         "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
     )
 
