@@ -6,3 +6,40 @@
     non_refundable_ctc: 10
   output:
     ctc_limiting_tax_liability: 80
+
+- name: SALT itemizer, the CTC is limited by actual tax liability after the SALT deduction.
+  # Married couple in New York, one earner with $50,000 of wages, two
+  # children, $40,000 of property tax. SALT is capped at $40,400, so taxable
+  # income is $9,600 and tax before credits is $960 (26 USC 26(a)). The
+  # refundable CTC is min($4,400 - $960, 2 x $1,700, 15% x ($50,000 -
+  # $2,500)) = $3,400 (26 USC 24(d)(1)). ctc_limiting_tax_liability is listed
+  # first: it used to be computed on a no_salt branch that returned $5,504
+  # when nothing SALT-dependent had been cached yet.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 40_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: NY
+  output:
+    ctc_limiting_tax_liability: 960
+    refundable_ctc: 3_400
+    ctc_value: 4_360
+    tax_unit_itemizes: true
+    salt_deduction: 40_400
+    income_tax_before_credits: 960

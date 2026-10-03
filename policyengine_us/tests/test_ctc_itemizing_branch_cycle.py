@@ -15,9 +15,13 @@ which bottomed out as a RecursionError. Surfaced by downstream
 consumers (e.g. policyengine.py's household-impact integration tests)
 on `policyengine-core >= 3.24`.
 
-The fix in `ctc_limiting_tax_liability.py` propagates the parent's
-`tax_unit_itemizes` value to the no_salt child branch so the
-`tax_unit_itemizes` formula is never re-entered there.
+The original fix propagated the parent's `tax_unit_itemizes` value to
+the no_salt child branch so the `tax_unit_itemizes` formula was never
+re-entered there. `ctc_limiting_tax_liability` no longer uses a branch
+(see test_ctc_limiting_tax_liability_order.py); it reads
+`income_tax_before_credits` on the simulation it runs in, where
+`tax_unit_itemizes` is already an input on the itemizing / not_itemizing
+branches. These tests keep guarding against the cycle.
 """
 
 import numpy as np
