@@ -5,15 +5,23 @@ class years_since_us_entry(Variable):
     value_type = float
     entity = Person
     label = "Years since US entry or qualified immigration status grant"
+    documentation = (
+        "Years since the person entered the United States or was granted the "
+        "qualifying immigration status, measured as each program starts its "
+        "clock. The federal five-year bar under 8 USC 1613(a) runs from entry "
+        "with qualified-alien status; the refugee cash assistance window runs "
+        "from entry for refugees and from the status grant for some other "
+        "statuses, such as asylees. SNAP (7 CFR 273.4(a)(6)(iii)) reads it as "
+        "cumulative years in qualified alien status since the person first "
+        "obtained it. When not supplied this defaults to 0, so a "
+        "noncitizen in a status subject to the five-year bar is treated as "
+        "inside the bar, and a refugee as inside the refugee cash assistance "
+        "window."
+    )
     unit = "year"
     definition_period = YEAR
-    default_value = 5
-    # 8 USC 1613(a) defines the federal five-year limited eligibility
-    # period. The default of 5 here is a PolicyEngine modeling decision —
-    # not a statutory value — chosen to treat unspecified-entry persons as
-    # past the five-year bar, preserving pre-5-year-bar behavior for
-    # households that do not supply this input. Refugee-like or bar-exempt
-    # statuses are handled via separate parameter lists rather than this
-    # clock. SNAP (7 CFR 273.4(a)(6)(iii)) reads this as cumulative years in
-    # qualified alien status since the person first obtained it.
+    # No explicit default_value: the float default of 0 applies. Supply this
+    # input to model a person past the five-year bar or outside the refugee
+    # cash assistance window. Statuses exempt from the bar are handled through
+    # separate parameter lists rather than this clock.
     reference = "https://www.law.cornell.edu/uscode/text/8/1613"
