@@ -411,6 +411,8 @@ def assert_matches_worksheets(households, law):
             ordinary_income,
             status,
         )
+        assert -tolerance(stacked_income) <= cap_gaps[-1], (i, h)
+        assert cap_gaps[-1] <= 7.5 + tolerance(stacked_income), (i, h)
         if status == "SEPARATE" and dividends + gain > 0:
             # Form 6251 line 18 (see the module docstring).
             continue
@@ -422,8 +424,6 @@ def assert_matches_worksheets(households, law):
         assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
             amt, abs=tolerance(stacked_income, taxable_excess)
         ), (i, h)
-        assert -tolerance(stacked_income) <= cap_gaps[-1], (i, h)
-        assert cap_gaps[-1] <= 7.5 + tolerance(stacked_income), (i, h)
 
 
 def assert_invariants(households, year):
@@ -667,9 +667,6 @@ def test_nothing_excluded_changes_nothing():
         pairs = {
             "section_911_net_capital_gain": get("net_capital_gain"),
             "section_911_qualified_dividend_income": dividends,
-            "section_911_net_capital_gain_other_than_qualified_dividends": np.maximum(
-                0, get("net_capital_gain") - dividends
-            ),
             "section_911_28_percent_rate_gain": get(
                 "capital_gains_28_percent_rate_gain"
             ),
@@ -685,8 +682,9 @@ def test_nothing_excluded_changes_nothing():
             )
         tax_unit = simulation.populations["tax_unit"]
         worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
-            tax_unit, make_period(year), get("section_911_capital_gain_excess")
+            tax_unit, make_period(year), get("taxable_income")
         )
+        no_excess = no_excess & (np.asarray(worksheet.capital_gain_excess) == 0)
         for line, original in [
             ("line_9", "dwks09"),
             ("line_10", "dwks10"),

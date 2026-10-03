@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.net_capital_gain_other_than_dividends import (
+    section_911_net_capital_gain_other_than_dividends,
+)
 
 
 def create_harris_capital_gains() -> Reform:
@@ -96,8 +99,8 @@ def create_harris_capital_gains() -> Reform:
             # Net capital gain determined without regard to section 1(h)(11),
             # reduced first by any capital gain excess (26 U.S.C.
             # 911(f)(2)(A)(i)).
-            net_cg_other_than_dividends = tax_unit(
-                "section_911_net_capital_gain_other_than_qualified_dividends", period
+            net_cg_other_than_dividends = (
+                section_911_net_capital_gain_other_than_dividends(tax_unit, period)
             )
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,

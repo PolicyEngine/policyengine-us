@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.net_capital_gain_other_than_dividends import (
+    section_911_net_capital_gain_other_than_dividends,
+)
 
 
 class section_911_adjusted_net_capital_gain(Variable):
@@ -26,8 +29,8 @@ class section_911_adjusted_net_capital_gain(Variable):
 
     def formula(tax_unit, period, parameters):
         excess = tax_unit("section_911_capital_gain_excess", period)
-        gain_other_than_dividends = tax_unit(
-            "section_911_net_capital_gain_other_than_qualified_dividends", period
+        gain_other_than_dividends = section_911_net_capital_gain_other_than_dividends(
+            tax_unit, period
         )
         qualified_dividends = tax_unit("section_911_qualified_dividend_income", period)
         unrecaptured_gain = tax_unit(

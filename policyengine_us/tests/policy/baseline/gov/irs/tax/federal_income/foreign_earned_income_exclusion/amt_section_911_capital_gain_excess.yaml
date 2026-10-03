@@ -5,7 +5,7 @@
   period: 2025
   input:
     foreign_earned_income_exclusion: 100_000
-    net_capital_gain: 300_000
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
     amt_income_less_exemptions: 211_900
   output:
     amt_section_911_capital_gain_excess: 88_100
@@ -14,7 +14,7 @@
   period: 2025
   input:
     foreign_earned_income_exclusion: 100_000
-    net_capital_gain: 300_000
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
     amt_income_less_exemptions: 400_000
   output:
     amt_section_911_capital_gain_excess: 0
@@ -23,7 +23,7 @@
   period: 2025
   input:
     foreign_earned_income_exclusion: 0
-    net_capital_gain: 300_000
+    long_term_capital_gains: 300_000 # Schedule D Tax Worksheet line 10
     amt_income_less_exemptions: 211_900
   output:
     amt_section_911_capital_gain_excess: 0

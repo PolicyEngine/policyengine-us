@@ -21,9 +21,8 @@ class dwks19(Variable):
         dwks01 = tax_unit("taxable_income_plus_section_911_exclusion", period)
         dwks16 = min_(p.thresholds["1"][filing_status], dwks01)
         dwks17 = min_(dwks14, dwks16)
-        excess = tax_unit("section_911_capital_gain_excess", period)
         dwks10 = schedule_d_tax_worksheet_after_capital_gain_excess(
-            tax_unit, period, excess
+            tax_unit, period, tax_unit("taxable_income", period)
         ).line_10
         dwks18 = max_(0, dwks01 - dwks10)
         return max_(dwks17, dwks18) * tax_unit("has_qdiv_or_ltcg", period)

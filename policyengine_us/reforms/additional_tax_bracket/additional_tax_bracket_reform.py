@@ -25,9 +25,7 @@ def create_additional_tax_bracket() -> Reform:
             # income on the excluded amount (26 U.S.C. 911(f)).
             dwks1 = tax_unit("taxable_income_plus_section_911_exclusion", period)
             worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
-                tax_unit,
-                period,
-                tax_unit("section_911_capital_gain_excess", period),
+                tax_unit, period, tax_unit("taxable_income", period)
             )
 
             dwks16 = min_(p.capital_gains.thresholds["1"][filing_status], dwks1)

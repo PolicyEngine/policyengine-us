@@ -21,7 +21,7 @@
   output:
     # First 100,000 taxed at 20%
     # Last 100,000 taxed at 37%
-    capital_gains_tax: 57_000 # 15,000 + 37,000
+    capital_gains_tax: 57_000 # 20,000 + 37,000
 
 - name: A section 911 exclusion stacks the rates but not the $1 million test
   period: 2024

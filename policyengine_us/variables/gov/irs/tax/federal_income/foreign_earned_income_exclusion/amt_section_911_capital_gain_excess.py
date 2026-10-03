@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
+    schedule_d_tax_worksheet_after_capital_gain_excess,
+)
 
 
 class amt_section_911_capital_gain_excess(Variable):
@@ -8,9 +11,9 @@ class amt_section_911_capital_gain_excess(Variable):
     unit = USD
     documentation = (
         "For a taxpayer excluding foreign earned income under 26 U.S.C. "
-        "911(a), the excess of net capital gain over the AMT taxable excess "
-        "(Form 6251 line 6). The capital gains used in Form 6251 Part III are "
-        "reduced by this excess."
+        "911(a), the excess of net capital gain (line 10 of the Schedule D Tax "
+        "Worksheet) over the AMT taxable excess (Form 6251 line 6). The "
+        "capital gains used in Form 6251 Part III are reduced by this excess."
     )
     definition_period = YEAR
     reference = [
@@ -25,7 +28,10 @@ class amt_section_911_capital_gain_excess(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
-        excludes_income = tax_unit("foreign_earned_income_exclusion", period) > 0
-        net_capital_gain = tax_unit("net_capital_gain", period)
-        taxable_excess = tax_unit("amt_income_less_exemptions", period)
-        return where(excludes_income, max_(0, net_capital_gain - taxable_excess), 0)
+        # Form 6251 instructions: "subtract Form 6251, line 6, from line 4 of
+        # your AMT Qualified Dividends and Capital Gain Tax Worksheet or line
+        # 10 of your AMT Schedule D Tax Worksheet". amt_tax_including_cg
+        # applies it through schedule_d_tax_worksheet_after_capital_gain_excess.
+        return schedule_d_tax_worksheet_after_capital_gain_excess(
+            tax_unit, period, tax_unit("amt_income_less_exemptions", period)
+        ).capital_gain_excess

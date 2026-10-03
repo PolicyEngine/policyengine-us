@@ -23,7 +23,7 @@ class amt_tax_including_cg(Variable):
         # A Form 2555 filer figures lines 13 to 15 after reducing the gains
         # by the AMT capital gain excess (26 U.S.C. 911(f)(2)(B)(i)).
         worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
-            tax_unit, period, tax_unit("amt_section_911_capital_gain_excess", period)
+            tax_unit, period, tax_unit("amt_income_less_exemptions", period)
         )
         # Line 13: amount from QDCG Worksheet line 4 or Schedule D Tax
         # Worksheet line 13 (qualified dividends + LTCG net of unrecaptured
