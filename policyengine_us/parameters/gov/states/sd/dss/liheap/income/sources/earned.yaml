@@ -1,0 +1,19 @@
+description: South Dakota counts these earned income sources subject to its age and school exclusions under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+# Use existing net business inputs and floor source losses without an additional
+# business-expense deduction or reconstructing gross receipts.
+metadata:
+  unit: list
+  period: year
+  label: South Dakota LIEAP earned income sources
+  reference:
+    - title: South Dakota Administrative Rule 67:15:01:18.01, Self-employed households
+      href: https://sdlegislature.gov/Rules/Administrative/67:15:01:18.01
+    - title: South Dakota FY2026 LIHEAP State Plan, section 1.9, pages 6-7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=6

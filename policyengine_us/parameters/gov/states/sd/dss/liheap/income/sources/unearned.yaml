@@ -1,0 +1,27 @@
+description: South Dakota counts these unearned income sources for members of all ages under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    - pension_income
+    - survivor_benefits
+    - unemployment_compensation
+    - veterans_benefits
+    - child_support_received
+    - alimony_income
+    - rental_income
+    - farm_rent_income
+    - strike_benefits
+    - general_assistance
+    - sd_tanf
+# State TANF is counted once at SPM level. Pension/SSA subcomponents are not
+# added again. Interest, dividends, capital gains, and cash gifts are excluded.
+metadata:
+  unit: list
+  period: year
+  label: South Dakota LIEAP unearned income sources
+  reference:
+    - title: South Dakota FY2026 LIHEAP State Plan, section 1.9, pages 6-7 (counted sources)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=6
+    - title: South Dakota Administrative Rule 67:15:01:18, Income exclusions
+      href: https://sdlegislature.gov/Rules/Administrative/67:15:01:18

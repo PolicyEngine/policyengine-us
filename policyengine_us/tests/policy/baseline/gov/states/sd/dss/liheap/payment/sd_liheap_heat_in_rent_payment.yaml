@@ -1,0 +1,211 @@
+# South Dakota supported income region and heat-in-rent components only; no final award is asserted.
+
+# FY2026 matrix HIR cells800/800/850/850; annualrent6000 gives500monthly*30%*7=1050, so regionalmax binds. No separate heating bill required.
+- name: Case 1, all four regions use their source heat in rent maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 0, 0, 0]
+    county: [CUSTER_COUNTY_SD, AURORA_COUNTY_SD, ZIEBACH_COUNTY_SD, HARDING_COUNTY_SD]
+    heat_expense_included_in_rent: [true, true, true, true]
+    rent: [6_000, 6_000, 6_000, 6_000]
+  output:
+    sd_liheap_region: [1, 2, 3, 4]
+    sd_liheap_heat_in_rent_payment: [800, 800, 850, 850]
+
+# Rule67:15:01:41.02 andmanual31-32:1200annual/12*30%*7=210, belowregion2 maximum800.
+- name: Case 2, one hundred dollars monthly tenant rent caps seven month assistance at two hundred ten.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rent: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        sd_tanf: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_heat_in_rent_payment: 210
+
+# Two adults each pay600annual rent; child0. Household1200/12*30%*7=210, not a separate regional benefit perperson.
+- name: Case 3, person rent shares are summed once for the household cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rent: 600
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rent: 600
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rent: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        sd_tanf: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_heat_in_rent_payment: 210
+
+# Manualp32 allows positive subsidizedtenantshare.12000grossannualrent-9600reportedhousingassistance=2400tenantannualrent; equaladultshares1200each.2400/12*30%*7=420 belowregion3 maximum850.
+- name: Case 4, subsidized rent uses the actual positive tenant share across multiple people.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        pre_subsidy_rent: 6_000
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        pre_subsidy_rent: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        sd_tanf: 0
+        heat_expense_included_in_rent: true
+        housing_assistance: 9_600
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county: ZIEBACH_COUNTY_SD
+        is_in_public_housing: true
+  output:
+    rent: [1_200, 1_200, 0]
+    sd_liheap_heat_in_rent_payment: 420
+
+# Manualp32 zeroTenantPayment has no heat cost.12000grossrent-12000reportedassistance=0netrent, so cap0.
+- name: Case 5, zero tenant share after housing assistance produces zero component.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        pre_subsidy_rent: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        sd_tanf: 0
+        heat_expense_included_in_rent: true
+        housing_assistance: 12_000
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    rent: 0
+    sd_liheap_heat_in_rent_payment: 0
+
+# This component is limited to heat included in rent. A directbill belongs to the unresolved separate directvendor award path.
+- name: Case 6, a direct heating bill without heat in rent does not receive this component.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_heat_in_rent_payment: 0
+
+# Current matrixHIR isfuel-neutral; withverifiedHIR, unknownfuel uses1200/12*.3*7=210. ExplicitNONE means noheat and gives0.
+- name: Case 7, fuel neutral heat in rent permits unknown fuel but rejects explicit no heating.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD]
+    heating_type: [UNSPECIFIED, NONE]
+    gas_expense: [0, 0]
+    county: [AURORA_COUNTY_SD, AURORA_COUNTY_SD]
+    heat_expense_included_in_rent: [true, true]
+    rent: [1_200, 1_200]
+  output:
+    sd_liheap_heat_in_rent_payment: [210, 0]
+
+# Explicitunknowngeography cannot choose a verifiedregionalamount; region0 is safely handled. OutsideSD component also0; neither is a final legal eligibility adjudication.
+- name: Case 8, unknown region returns a safe unsupported estimate without inventing a county.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, CA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 0]
+    county: [UNKNOWN, LOS_ANGELES_COUNTY_CA]
+    heat_expense_included_in_rent: [true, true]
+    rent: [6_000, 6_000]
+  output:
+    sd_liheap_region: [0, 0]
+    sd_liheap_heat_in_rent_payment: [0, 0]

@@ -1,0 +1,117 @@
+# South Dakota independent ordinary-household components; no final award is asserted.
+
+# FY2026matrix physicalp1:5fuelgroups x2income tiers x4regions=40literalcells. Size1 Mid19564annual;0is tier1 and20000is tier2 below current31300max. Lower payments are literal, not uniformly90percent. This is a table component; unpaid-balance and date-of-charge eligibility are not established.
+- name: Case 1, all forty published direct heating cells retain their literal amounts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD,
+      SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    sd_liheap_region: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3,
+      4, 1, 2, 3, 4, 1, 2, 3, 4]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000, 20000, 0,
+      0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000,
+      20000]
+  output:
+    sd_liheap_base_payment: [742, 770, 812, 854, 668, 694, 730, 768, 1331, 1410, 1516, 1626, 1198, 1270, 1369, 1461,
+      2858, 3018, 3236, 3437, 2573, 2715, 2910, 3093, 880, 938, 1007, 1058, 792, 844, 907, 953, 2499, 2658, 2834,
+      3066, 2249, 2394, 2552, 2762]
+
+# FY2026matrixp1 expressly groupsCoal&Wood. Currentapplication EA297 physicalp4 lists one FuelOil/Kerosene category; use the oil schedule for both. This maps price only, not older kerosene payment timing.
+- name: Case 2, wood coal and the application oil kerosene category use matching source rows.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [WOOD, COAL, FUEL_OIL, KEROSENE, WOOD, COAL, FUEL_OIL, KEROSENE]
+    sd_liheap_region: [1, 1, 2, 2, 3, 3, 4, 4]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20000, 20000, 20000, 20000]
+  output:
+    sd_liheap_base_payment: [742, 742, 3018, 3018, 730, 730, 3093, 3093]
+
+# FY2024matrixp1: size1Midquarter4556=>18224annual (not18225); size2quarter6163=>24652 (not24650). Firsttier includes exactquarter threshold, centsabove move to secondtier. Region1naturalgas880/792.
+- name: Case 3, the rounded quarterly threshold controls exact and cent boundaries rather than the annual column.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_region: [1, 1, 1, 1, 1]
+    spm_unit_size: [1, 1, 2, 2, 2]
+    sd_liheap_countable_income: [18224, 18224.01, 24650, 24652, 24652.01]
+  output:
+    sd_liheap_income_threshold: [18224, 18224, 24652, 24652, 24652]
+    sd_liheap_base_payment: [880, 792, 880, 880, 792]
+
+# FY2026reconciled Midquarter4891=>19564annual. Region3electricity tier1=1516 andtier2=1369; exactthreshold remains firsttier. No normal90percent replacement.
+- name: Case 4, the current threshold includes its exact boundary and switches one cent above.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    sd_liheap_region: [3, 3, 3]
+    spm_unit_size: [1, 1, 1]
+    sd_liheap_countable_income: [19563.99, 19564, 19564.01]
+  output:
+    sd_liheap_base_payment: [1516, 1516, 1369]
+
+# No supported directprice forunknownregion orSolar/Other/Unspecified. These zeros are component placeholders, not legal denials. NONE,stateandzero-size guards also return0.
+- name: Case 5, unknown region unpriced fuels zero size and other states return component placeholders.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, ND]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NONE, SOLAR, OTHER, UNSPECIFIED, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_region: [0, 5, 1, 1, 1, 1, 1, 1]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 0, 1]
+    sd_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    sd_liheap_base_payment: [0, 0, 0, 0, 0, 0, 0, 0]
+
+# Wholly qualified households: size1Mid19564 puts20000in tier2; size2Mid26436 puts identicalincome in tier1. Region1gas retains792/880; size does not independently multiply the payment.
+- name: Case 6, actual household membership changes the tier while leaving the regional fuel schedule shared.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      adult2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      unit1:
+        members: [adult1]
+        heating_type: NATURAL_GAS
+        sd_liheap_region: 1
+        sd_liheap_countable_income: 20000
+      unit2:
+        members: [adult2, child]
+        heating_type: NATURAL_GAS
+        sd_liheap_region: 1
+        sd_liheap_countable_income: 20000
+    households:
+      household1:
+        members: [adult1]
+        state_code: SD
+      household2:
+        members: [adult2, child]
+        state_code: SD
+  output:
+    sd_liheap_income_threshold: [19564, 26436]
+    sd_liheap_base_payment: [792, 880]

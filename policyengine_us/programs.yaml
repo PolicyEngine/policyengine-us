@@ -804,6 +804,12 @@ programs:
     status: partial
     coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
+      - state: SD
+        status: in_progress
+        name: South Dakota LIHEAP
+        full_name: South Dakota Low Income Home Energy Assistance Program
+        parameter_prefix: gov.states.sd.dss.liheap
+        notes: Income, county, heat-in-rent and direct-payment components use the latest supported threshold rules and FY2026 matrix. Mixed-status income arithmetic remains unresolved; existing expense inputs do not identify unpaid balances or eligible billing dates. Regular heating only; historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP

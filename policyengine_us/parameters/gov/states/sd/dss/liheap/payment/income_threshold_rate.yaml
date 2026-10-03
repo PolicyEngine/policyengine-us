@@ -1,0 +1,12 @@
+description: South Dakota uses this federal poverty guideline rate for the first income tier under the Low Income Energy Assistance Program. Rounding its three-month equivalent half up reproduces all published FY2022 and FY2024 first-tier thresholds; this inferred rule carries forward to the FY2026 Mid tier. The date is the latest explicit FY2024 annual-model observation, not policy commencement.
+values:
+  2024-01-01: 1.25
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota LIEAP first-tier poverty rate
+  reference:
+    - title: South Dakota FY2024 LIHEAP Benefit Matrix, pages 1-5, first-tier maximum income
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1
+    - title: South Dakota FY2026 LIHEAP Benefit Matrix, Income Tier 1, 0-Mid
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf#page=1

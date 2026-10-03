@@ -1,0 +1,352 @@
+# South Dakota supported income region and heat-in-rent components only; no final award is asserted.
+
+# Rule67:15:01:18.01 and approved net-input approximation:12000+600+600+1200+600=15000; no extra business expense deduction.
+- name: Case 1, adult wages and existing net business sources count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 600
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 15_000
+
+# Rule67:15:01:18.01 explicitly treats self-employment loss aszero:12000 wages+600 positivebusiness=12600.
+- name: Case 2, business losses are zero before adding other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        farm_operations_income: -1_200
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 12_600
+
+# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+- name: Case 3, age 17 nonstudent follows the precise earned income exception.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        is_full_time_student: false
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 13_200
+
+# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+- name: Case 4, age 18 secondary student follows the precise earned income exception.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 13_200
+
+# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+- name: Case 5, age 18 college student follows the precise earned income exception.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 20_400
+
+# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+- name: Case 6, age 19 secondary student follows the precise earned income exception.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+        ssi: 0
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 20_400
+
+# Current planpp6-7 income categories:1200+2400+600+3600+1200+1200+600+1200+600+300+300=13200. Independent farm rent/survivor inputs are included.
+- name: Case 7, disjoint rental survivor and ordinary unearned sources count at every age.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        rental_income: 1_200
+        farm_rent_income: 2_400
+        survivor_benefits: 600
+        social_security: 3_600
+        pension_income: 1_200
+        unemployment_compensation: 1_200
+        veterans_benefits: 600
+        child_support_received: 1_200
+        alimony_income: 600
+        strike_benefits: 300
+        general_assistance: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 13_200
+
+# Current planpp6-7 excludes investmentinterest/dividends, gifts andcapital gains; rule67:15:01:18(14) confirms gains.12000 wages remain12000;SNAP also excluded.
+- name: Case 8, interest dividends capital gains and gifts do not enter income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 12_000
+        interest_income: 600
+        ordinary_dividend_income: 1_200
+        capital_gains: 6_000
+        financial_assistance: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 12_000
+
+# Current plan countsSSI/TANF for allages:6000 adultwages+1200 adultSSI+2400 childSSI+3600 familyTANF=13200. Monthly inputs supplied asannual totals are aggregated once.
+- name: Case 9, adult and child SSI and the state TANF grant are annualized once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 1_200
+        employment_income: 6_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 13_200
+
+# Rule67:15:01:18(20):24000-3600 childsupportpaid=20400.
+- name: Case 10, income used for legally mandated child support is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 24_000
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 20_400
+
+# Rule67:15:01:18(20) exclusion with householdfloor:max(1200-2400,0)=0.
+- name: Case 11, child support deductions cannot produce negative countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: AURORA_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 0

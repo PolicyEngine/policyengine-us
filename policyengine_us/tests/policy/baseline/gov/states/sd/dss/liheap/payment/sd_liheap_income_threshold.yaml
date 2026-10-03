@@ -1,0 +1,36 @@
+# South Dakota independent ordinary-household components; no final award is asserted.
+
+# FY2024matrix pp1-5 Midquarter values4556,6163,7769,9375,10981,12588,14194,15800,17406,19013,20619,22225,23831,25438,27044. Return4times these, not the sometimes-different printedannual column. E.g. size2quarter6163 means24652 rather than24650.
+- name: Case 1, all fifteen FY2024 tier thresholds use the printed three month amounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  output:
+    sd_liheap_income_threshold: [18224, 24652, 31076, 37500, 43924, 50352, 56776, 63200, 69624, 76052, 82476, 88900,
+      95324, 101752, 108176]
+
+# FY2024reconciled125percent lag1FPG rule carried forward: FY2025FPG15650,21150,59650,65150,92650. Quarter raw4890.625,6609.375,18640.625,20359.375,28953.125 rounds halfup then times4. These are formula-derived FY2026tier thresholds, not printed current numericalMidcells.
+- name: Case 2, FY2026 threshold carry forward preserves half up quarter rounding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    spm_unit_size: [1, 2, 9, 10, 15]
+  output:
+    sd_liheap_income_threshold: [19564, 26436, 74564, 81436, 115812]
+
+# Fully qualified ordinary-household scope and state/size guards; size1 annualizedMid4891*4=19564.
+- name: Case 3, zero size and another state do not receive a South Dakota tier threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, ND, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    spm_unit_size: [0, 1, 1]
+  output:
+    sd_liheap_income_threshold: [0, 0, 19564]
