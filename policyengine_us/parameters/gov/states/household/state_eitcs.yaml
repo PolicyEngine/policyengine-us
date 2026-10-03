@@ -224,7 +224,9 @@ values:
     - md_refundable_eitc
     - me_eitc
     - mi_eitc
-    - mn_wfc
+    # From 2023 Minnesota's WFC and CTC share one phase-down (Minn. Stat.
+    # 290.0661, subd. 4) and one M1REF line; the combined credit is reported here.
+    - mn_child_and_working_families_credits
     - mo_wftc
     - mt_eitc
     - ne_eitc
@@ -260,7 +262,7 @@ values:
     - md_refundable_eitc
     - me_eitc
     - mi_eitc
-    - mn_wfc
+    - mn_child_and_working_families_credits
     - mo_wftc
     - mt_eitc
     - ne_eitc

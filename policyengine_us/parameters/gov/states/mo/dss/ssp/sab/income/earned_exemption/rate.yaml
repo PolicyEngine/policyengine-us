@@ -1,0 +1,16 @@
+description: Missouri excludes this share of monthly earned income above the flat exemption under the Supplemental Aid to the Blind program.
+values:
+  # SAB began on January 1, 1974 (SSA, State Assistance Programs for SSI
+  # Recipients, January 2011); the manual section is undated.
+  1974-01-01: 0.5
+metadata:
+  unit: /1
+  period: year
+  label: Missouri SAB earned income remainder exemption rate
+  reference:
+    - title: RSMo § 209.240.1 — Amount of pension, need, how determined
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=209.240
+    - title: 13 CSR 40-2.050(1) — Definition of Earned Income
+      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-050
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.05.20 — Standard Earned Income Exemption Table
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/0410-015-05-20/

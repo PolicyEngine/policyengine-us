@@ -3,17 +3,42 @@ metadata:
   period: year
   unit: list
   label: State sales tax table income sources
+  # "Your 2025 income is the amount shown on your Form 1040 or 1040-SR, line
+  # 11b, plus any nontaxable items, such as the following." The 2020-2024
+  # instructions cite line 11, the 2019 instructions line 8b, and the 2018
+  # instructions Form 1040, line 7; each is the adjusted gross income line of
+  # that year's form, and every year lists the same items.
   reference:
-    - title: Instructions for Schedule A (2024)
-      href: https://www.irs.gov/instructions/i1040sca#en_US_2024_publink1000131499
+    - title: 2018 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=4
+    - title: 2018 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income (list continued)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=5
+    - title: 2019 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=4
+    - title: 2019 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income (list continued)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=6
+    - title: 2020 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=4
+    - title: 2021 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=4
+    - title: 2022 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=4
+    - title: 2023 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=4
+    - title: 2024 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=5
+    - title: 2025 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5
 
 values:
-  2023-01-01:
+  2018-01-01:
     - adjusted_gross_income
     - tax_exempt_interest_income
     - veterans_benefits
     # Nontaxable combat pay - not available.
     - workers_compensation
+    # Nontaxable part of social security and railroad retirement benefits;
+    # railroad retirement benefits are not included.
     - tax_exempt_social_security
     # Nontaxable IRA, pension, or annuity distributions (excluding rollovers).
     - tax_exempt_pension_income
