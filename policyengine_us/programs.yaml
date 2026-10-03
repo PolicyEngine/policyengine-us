@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, UT
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: UT
+        status: partial
+        name: Utah HEAT
+        full_name: Utah Home Energy Assistance Target Program
+        variable: ut_heat
+        parameter_prefix: gov.states.ut.dwf.heat
+        verified_years: "2026"
+        notes: Regular heating assistance using the March 2026 policy snapshot and current-year federal poverty guidelines. Existing annual inputs approximate application-month income, medical/support eligibility and household membership; solar/unknown fuel, finer immigration categories and administrative conditions remain unsupported. Earlier-year backfills are unverified historical estimates; crisis, cooling, weatherization and equipment aid are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

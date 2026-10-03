@@ -1,0 +1,61 @@
+# Source: Utah HEAT section 204; exclude ineligible persons from household size.
+
+# UT-05: only the eligible child and refugee count.
+- name: "Case 1, only qualified members enter size."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: TPS
+        ssi: 0
+      person4:
+        age: 40
+        immigration_status: REFUGEE
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_heat_household_size: 2
+
+# UT-05: no eligible member.
+- name: "Case 2, no eligible members gives zero size."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: DACA
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_heat_household_size: 0

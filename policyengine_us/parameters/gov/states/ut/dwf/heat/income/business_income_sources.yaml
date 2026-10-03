@@ -1,0 +1,14 @@
+description: Utah counts these reported business income sources under the Home Energy Assistance Target program.
+values:
+  2024-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Utah HEAT business income sources
+  reference:
+    - title: Utah HEAT Manual, Section 404 Self-Employment
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/404_Self-Employment/404_Self-Employment.htm
