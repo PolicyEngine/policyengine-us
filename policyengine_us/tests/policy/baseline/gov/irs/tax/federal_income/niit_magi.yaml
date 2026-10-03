@@ -1,0 +1,72 @@
+- name: MAGI equals AGI without estate and trust MAGI adjustments
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 150_000
+    niit_magi: 150_000
+
+- name: Positive code H raises MAGI by the same amount; a dependent's does not
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 150_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 4_000
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+        estate_income: 2_000
+        estate_income_net_investment_income_adjustment: 1_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income: 3_000
+        estate_income_net_investment_income_adjustment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # AGI 150,000 + 10,000 + 2,000; the child's estate income is on the
+    # child's own return. MAGI adds the non-dependents' positive code H.
+    adjusted_gross_income: 162_000
+    niit_magi: 162_000 + 4_000 + 1_000
+
+- name: Negative code H leaves MAGI alone unless the trust indicates a MAGI adjustment
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 150_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: -6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 160_000
+    niit_magi: 160_000
