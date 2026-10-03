@@ -85,11 +85,10 @@ test-yaml-structural-congress:
 test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
-	# 16 batches (was 8) ~= ~3 states per batch. Both 8-batch state shard
-	# jobs OOM'd two-wide on CI run 28698452678 (each ~6-state batch peaks
-	# ~8+ GB); halving the batch size at --workers 1 keeps each subprocess
-	# <= ~6 GB with >= ~10 GB free for future state growth.
-	$(BATCH) $(TESTS)/policy/baseline/gov/states --batches 16 --workers 1
+	# Release model/parameter caches between states. The former NY/OH/OK
+	# group peaked at 15.1 GB; keep one subprocess at a time on each of
+	# the existing four CI runners. Root-level state tests remain included.
+	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 1
@@ -138,8 +137,11 @@ test-yaml-no-structural-other-ssa:
 	$(BATCH) $(TESTS)/policy/baseline/gov/ssa/revenue --batches 2 --workers 1
 	$(BATCH) $(TESTS)/policy/baseline/gov/ssa --exclude revenue --mode per-subdir --workers 1
 test-yaml-no-structural-other-usda:
-	# usda (~3 GB peak, ~7 min) rides along with ssa, rebalancing runners.
-	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 1
+	# The single USDA process peaked at 14.9 GB in CI before a later run
+	# shut down in WIC. Release accumulated model and parameter caches
+	# between eight sequential YAML batches on the same runner. USDA Python
+	# tests remain covered by test-other-python-rest in the Rest job.
+	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 8 --workers 1
 test-yaml-no-structural-other-ssa-usda: test-yaml-no-structural-other-ssa test-yaml-no-structural-other-usda
 test-yaml-no-structural-other-rest-a:
 	# First half of the old "rest" job: four independent folders, one
