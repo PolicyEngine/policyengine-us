@@ -1,9 +1,11 @@
 """Structural checks on the IRS Optional State Sales Tax Table (#9595).
 
 The IRS prints the table in blocks of three states, six family-size columns
-each. A three-column shift within those blocks once left 30 jurisdictions
-with another state's values in some or all family-size columns. Two checks
-catch that kind of transcription error:
+each. (Through 2017 the columns count the exemptions claimed on Form 1040,
+line 6d; PolicyEngine counts both as tax_unit_size.) A three-column shift
+within those blocks once left 30 jurisdictions with another state's values in
+some or all family-size columns. Two checks catch that kind of transcription
+error:
 
 - The IRS amounts never fall as family size or income rises. The shift put
   some family-size-6 amounts below family-size-1 amounts.
@@ -15,7 +17,8 @@ A third check keeps each year's table its own: no jurisdiction's table is the
 same in two IRS table years. A year missing from the file silently takes a
 neighboring year's table. PolicyEngine-US extends each parameter's earliest
 value back to 2015 (`backdate_parameters` in policyengine_us/system.py), so
-2018-2021 used the 2022 table until their own tables were added.
+2015-2021 used the 2022 table, and then 2015-2017 the 2018 table, until their
+own tables were added.
 
 The variable-level tests run grids of single-person households through the
 formulas that read the table:
@@ -49,7 +52,7 @@ from policyengine_us.system import system
 
 TABLE_PATH = "gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table"
 TABLE_DIR = REPO.joinpath("parameters", *TABLE_PATH.split("."))
-IRS_TABLE_YEARS = (2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
+IRS_TABLE_YEARS = tuple(range(2015, 2026))
 # Later years are uprated from the last IRS table.
 CHECKED_YEARS = IRS_TABLE_YEARS + (2026, 2030)
 FAMILY_SIZES = range(1, 7)
@@ -65,7 +68,7 @@ IRS_JURISDICTIONS = {
 # Worksheet, instruction after line 1: "If, for all of 2023, you lived only in
 # Connecticut, the District of Columbia, Indiana, Kentucky, Maine, Maryland,
 # Massachusetts, Michigan, New Jersey, or Rhode Island, skip lines 2 through 5,
-# enter -0- on line 6" (same list in 2018 through 2025).
+# enter -0- on line 6" (same list in 2015 through 2025).
 NO_LOCAL_SALES_TAX = ["CT", "DC", "IN", "KY", "MA", "MD", "ME", "MI", "NJ", "RI"]
 # Lower bound of each IRS income row after the first ("At least").
 IRS_ROW_FLOORS = [
@@ -77,11 +80,12 @@ IRS_ROW_FLOORS = [
 SIMULATED_FAMILY_SIZES = range(1, 9)
 # The IRS counts income as "the amount shown on your Form 1040 or 1040-SR,
 # line 11, plus any nontaxable items, such as the following" (2020-2024; the
-# 2018 instructions cite Form 1040, line 7, 2019 line 8b, and 2025 line 11b).
-# The list is the same from 2018 to 2025: tax-exempt interest; veterans'
-# benefits; nontaxable combat pay; workers' compensation; the nontaxable part
-# of social security and railroad retirement benefits; the nontaxable part of
-# IRA, pension, or annuity distributions; and public assistance payments.
+# 2015-2017 instructions cite Form 1040, line 38, 2018 line 7, 2019 line 8b,
+# and 2025 line 11b). The list is the same from 2015 to 2025: tax-exempt
+# interest; veterans' benefits; nontaxable combat pay; workers' compensation;
+# the nontaxable part of social security and railroad retirement benefits; the
+# nontaxable part of IRA, pension, or annuity distributions; and public
+# assistance payments.
 # These are the PolicyEngine variables for those items. Combat pay and
 # railroad retirement benefits are not included.
 TABLE_INCOME_SOURCES = [
