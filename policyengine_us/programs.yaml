@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, NY, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2026"
+        notes: Regular heating eligibility, income, household exclusions and fuel/housing supplements. SSI state codes and some receipt, residence and certification rules remain partial; earlier years are unverified estimates.
       - state: TX
         status: partial
         name: Texas CEAP

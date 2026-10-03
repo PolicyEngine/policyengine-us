@@ -1,0 +1,37 @@
+description: New York counts these available unearned income sources under the Home Energy Assistance Program.
+values:
+  '2025-10-01':
+  # D.12(a)(6) and (8) count Social Security and railroad benefits after
+  # Medicare Part B and D premiums. medicare_part_b_premium and
+  # medicare_part_b_premiums_reported are not wired in yet, so both count gross.
+  - social_security
+  - railroad_benefits
+  - ssi
+  - unemployment_compensation
+  - strike_benefits
+  - workers_compensation
+  - disability_benefits
+  - veterans_benefits
+  # Survivor benefits other than Social Security survivor benefits: employer
+  # pension survivor annuities under D.12(a)(13) pensions and (14) payments from
+  # insurance and annuities; veterans' survivor benefits under D.12(a)(12).
+  - survivor_benefits
+  - pension_income
+  - retirement_distributions
+  - alimony_income
+  - child_support_received
+  - ordinary_dividend_income
+  - interest_income
+  - rental_income
+  # D.12(a)(27): income from rents.
+  - farm_rent_income
+  - estate_income
+  # D.12(a)(38): all other income not specifically excluded under D.13.
+  - miscellaneous_income
+metadata:
+  unit: list
+  period: year
+  label: New York HEAP unearned sources
+  reference:
+  - title: HEAP Manual, Chapter 8 D.12-D.14, PDF pages 37, 38, 39, 40, 41, 42, 43
+    href: https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37

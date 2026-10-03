@@ -1,0 +1,35 @@
+# 2025-2026 HEAP Monthly Income Eligibility Guidelines (Clearinghouse benefit
+# matrix), Tier I column: 0 to the listed maximum, which is 130% of the 2025
+# poverty guideline rounded down to the month (FY2026 State Plan, page 10:
+# "at or below 130% of the Federal Poverty Level").
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=10
+
+- name: Case 1, all published Tier I maximums are inclusive.
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    # Published monthly Tier I maximums 1,695; 2,291; 2,887; 3,482; 4,078;
+    # 4,674; 5,270; 5,866; 6,462; 7,057; 7,653; 8,249; 8,845 (x 12), then one
+    # more monthly dollar for each size (x 12).
+    ny_heap_countable_income: [20_340, 27_492, 34_644, 41_784, 48_936, 56_088, 63_240, 70_392, 77_544, 84_684, 91_836, 98_988, 106_140, 20_352, 27_504, 34_656, 41_796, 48_948, 56_100, 63_252, 70_404, 77_556, 84_696, 91_848, 99_000, 106_152]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    # The matrix's Tier I column ends at the maximum, so the maximum itself is
+    # Tier I and one more dollar a month is Tier II.
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false]
+
+- name: Case 2, categorical eligibility confers Tier I above the Tier I maximum.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    # $2,500 a month, above the one-person Tier I maximum of 1,695.
+    ny_heap_countable_income: 30_000
+    ny_heap_categorically_eligible: true
+  output:
+    # State Plan page 10: the Tier I add-on "is also applied to Regular heater
+    # benefits received by CE households".
+    ny_heap_tier_one: true
