@@ -1,3 +1,10 @@
+## [2.21.4] - 2026-10-03
+
+### Fixed
+
+- Reduce USDA and baseline state CI memory pressure by running smaller sequential subprocess batches on the existing runners.
+
+
 ## [2.21.3] - 2026-10-02
 
 ### Fixed
