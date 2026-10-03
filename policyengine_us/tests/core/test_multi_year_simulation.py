@@ -236,8 +236,10 @@ STATE_BRANCH_CASES = [
 
 
 def _state_situation(state, years):
-    """A low-earning parent aged 67 with one child: EITC-eligible, aged for
-    Idaho's credit, and with a child for New York's CTC."""
+    """A low-earning parent aged 67 with one child. Each state's income tax
+    reaches its comparison branches for this household, which the tests check
+    by asserting the branches exist; eligibility for the credits they compare
+    does not matter for that."""
     members = ["parent", "child"]
     return {
         "people": {
@@ -297,3 +299,31 @@ def test_2021_only_branches_take_their_period(state, branch, variable):
     simulation = Simulation(situation=_state_situation(state, (2021,)))
     simulation.calculate(variable, 2021)
     assert simulation.branches[branch].branch_period == period(2021)
+
+
+def test_state_branches_are_not_created_where_their_rules_do_not_apply():
+    """Each state branch is created only in years its rule applies: Alabama's
+    2020-IRC recompute only for 2021, New York's pre-TCJA CTC branch only for
+    the pre-2024 credit under pre-TCJA rules."""
+    alabama = Simulation(situation=_state_situation("AL", (2022,)))
+    alabama.calculate("al_income_tax", 2022)
+    assert "al_2020_irc" not in alabama.branches
+
+    # The post-2024 New York credit applies from 2025, so the pre-2024
+    # credit, and its branch, are not used.
+    new_york = Simulation(situation=_state_situation("NY", (2025,)))
+    assert not new_york.calculate("ny_ctc_pre_2024_eligible", 2025).any()
+    assert "pre_tcja_ctc" not in new_york.branches
+
+    # Without pre-TCJA rules the pre-2024 credit reads the federal CTC itself.
+    without_pre_tcja = Simulation(
+        situation=_state_situation("NY", (2024,)),
+        reform={
+            "gov.states.ny.tax.income.credits.ctc.pre_tcja": {
+                "2024-01-01.2100-12-31": False
+            }
+        },
+    )
+    without_pre_tcja.calculate("ny_ctc_pre_2024_eligible", 2024)
+    without_pre_tcja.calculate("ny_ctc_pre_2024", 2024)
+    assert "pre_tcja_ctc" not in without_pre_tcja.branches
