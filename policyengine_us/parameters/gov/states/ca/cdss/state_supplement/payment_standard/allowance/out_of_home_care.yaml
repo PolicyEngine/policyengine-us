@@ -8,6 +8,15 @@ metadata:
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
     - title: Supplemental Security Income (SSI) in California
       href: https://www.ssa.gov/pubs/EN-05-11125.pdf#page=2
+    - title: California Department of Social Services, SSI Total Monthly Payment Amounts 2026
+      href: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf#page=1
+    - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
+    - title: California Department of Social Services, Local Assistance Estimates, 2026 May Revision reference documents, SSI/SSP Payment Standards
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
 values:
   1991-01-01: 709
   2025-01-01: 1_140.31 # $3,198.14 - $2,057.83
+  # SSA POMS and the CDSS 2026 May Revision list $3,252.14 for couples; the May Revision
+  # doubles the individual rate (2 x $1,626.07). The CDSS monthly payment table lists $3,239.14.
+  2026-01-01: 1_153.31 # $3,252.14 - $2,098.83
