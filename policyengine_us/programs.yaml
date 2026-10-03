@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, IN, TX
+    coverage: OR, DC, Riverside County, MA, IL, IN, KS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -831,6 +831,14 @@ programs:
         parameter_prefix: gov.states.in.ihcda.eap
         verified_years: "2026"
         notes: PY2026 regular heating and the winter electric allowance only. Crisis, cooling and weatherization assistance are out of scope.
+      - state: KS
+        status: partial
+        name: Kansas LIEAP
+        full_name: Kansas Low Income Energy Assistance Program
+        variable: ks_liheap
+        parameter_prefix: gov.states.ks.dcf.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
