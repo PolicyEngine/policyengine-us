@@ -1,3 +1,31 @@
+## [2.22.0] - 2026-10-03
+
+### Added
+
+- Kansas LIEAP (Low Income Energy Assistance Program) heating benefit: eligibility, countable income, and the FY2025-FY2026 benefit matrices. Self-employment income is approximated using existing net-income inputs without an additional expense deduction.
+
+
+## [2.21.4] - 2026-10-03
+
+### Fixed
+
+- Reduce USDA and baseline state CI memory pressure by running smaller sequential subprocess batches on the existing runners.
+
+
+## [2.21.3] - 2026-10-02
+
+### Fixed
+
+- Stop five formulas from writing into arrays they read from other variables, which changed those variables' cached values: adjusted gross income under the CRFB surtax with the increased base, federal itemized deductions in Georgia, Utah total dependents (baseline and the dependent exemption reform), and earned income under the basic income phase-in with Social Security counted as earnings. Add a code-health test that fails on new in-place writes.
+
+
+## [2.21.2] - 2026-10-02
+
+### Fixed
+
+- Count only IRC 86 taxable Social Security and gross capital gains, without netting losses, in the qualifying relative gross income test. Taxable benefits use the dependent's own IRC 86(b)(2) modified AGI, and zero base amounts apply to a dependent who lives with their spouse.
+
+
 ## [2.21.1] - 2026-10-02
 
 ### Fixed
