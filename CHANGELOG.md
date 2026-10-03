@@ -1,3 +1,10 @@
+## [2.23.3] - 2026-10-03
+
+### Fixed
+
+- Create formula branches (itemizing, not itemizing, no SALT, and the Delaware, Virginia, Idaho, Alabama and New York comparison branches) again for each period, so a later year calculated in the same simulation matches a simulation that calculates only that year.
+
+
 ## [2.23.2] - 2026-10-03
 
 ### Fixed
