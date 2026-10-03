@@ -1,0 +1,59 @@
+# Dead reference URLs retired in the southeast batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://codes.ohio.gov/assets/laws/revised-code/authenticated/4141/4141.01/3-31-2024/4141.01%203-31-2024.pdf"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.01/10-3-2023/4141.01-10-3-2023.pdf"
+
+[[dead]]
+prefix = "https://codes.ohio.gov/assets/laws/revised-code/authenticated/4141/4141.25/3-31-2024/4141.25%203-31-2024.pdf"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/revised-code/authenticated/41/4141/4141.25/3-28-2017/4141.25-3-28-2017.pdf"
+
+[[dead]]
+prefix = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-01"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-01_20221211.pdf"
+
+[[dead]]
+prefix = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf"
+
+[[dead]]
+prefix = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-05"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-05_20221211.pdf"
+
+[[dead]]
+prefix = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-09"
+verified = "2026-10-01"
+replacement = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-09_20231007.pdf"
+
+[[dead]]
+prefix = "https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+verified = "2026-10-01"
+replacement = "https://dese.mo.gov/sites/g/files/zuston521/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+
+[[dead]]
+prefix = "https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf"
+verified = "2026-10-01"
+replacement = "https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf"
+
+[[dead]]
+prefix = "https://dese.mo.gov/sites/dese/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf"
+verified = "2026-10-01"
+replacement = "https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf"
+
+[[dead]]
+prefix = "https://dor.sc.gov/forms-site/Forms/SC1040ES_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240309102037/https://dor.sc.gov/forms-site/Forms/SC1040ES_2023.pdf"
+
+[[dead]]
+prefix = "https://dor.sc.gov/forms-site/Forms/TC60_2021.pdf"
+verified = "2026-10-01"
+replacement = "https://dor.sc.gov/sites/dor/files/forms/TC60_2021.pdf"
