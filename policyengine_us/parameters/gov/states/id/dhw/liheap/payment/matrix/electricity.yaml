@@ -1,0 +1,44 @@
+description: Idaho provides this base electric-heating benefit by heating area and energy-burden group under the Low Income Home Energy Assistance Program.
+
+# Electric utility-provider groups are not distinguished in the model for now.
+# Use only the Idaho Power & Southern Utilities column; omit the Avista &
+# Northern Utilities and Rocky Mountain Power columns.
+# Heating areas 1-3 correspond to Areas I-III in the published chart.
+# Energy-burden groups: 1 = low, 2 = medium, 3 = high.
+# Amounts exclude the separate vulnerable-household supplement.
+1:
+  1:
+    2025-10-01: 328
+  2:
+    2025-10-01: 342
+  3:
+    2025-10-01: 355
+2:
+  1:
+    2025-10-01: 378
+  2:
+    2025-10-01: 394
+  3:
+    2025-10-01: 410
+3:
+  1:
+    2025-10-01: 429
+  2:
+    2025-10-01: 447
+  3:
+    2025-10-01: 464
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Idaho LIHEAP base electric-heating benefit
+  breakdown:
+    - range(1, 4)
+    - range(1, 4)
+  breakdown_labels:
+    - Heating area
+    - Energy-burden group
+  reference:
+    - title: Idaho PY26 LIHEAP Benefit Determination Chart
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1

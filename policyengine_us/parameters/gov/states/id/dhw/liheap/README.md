@@ -24,9 +24,19 @@ administrative requirements are separate from this financial component.
 The predecessor rule's discretionary catastrophic-illness exception also needs
 an administrative determination that existing inputs cannot establish.
 
+The electric-benefit parameter table uses the Idaho Power & Southern Utilities
+column for all three heating areas. Electric utility-provider groups are not
+distinguished for now; the Avista & Northern Utilities and Rocky Mountain Power
+columns are omitted. This is an explicit modeling simplification, not a claim
+that providers pay identical benefits. No utility-provider input is added.
+The table contains the base amounts before the vulnerable-household supplement.
+It is not yet connected to a household award because the area and burden
+calculations remain unresolved. Natural-gas provider selection is a separate
+unresolved issue; this electric-column choice does not resolve it.
+
 Final eligibility and awards remain incomplete. The current estimated annual
-heating-cost chart and current provider/region mapping
-have not been established. The recovered historical county map and 2007 heating
+heating-cost chart and current heating-area mapping have not been established.
+The recovered historical county map and 2007 heating
 costs are not promoted to FY2026 policy, and actual household bills do not replace
 the state's estimated costs. The current methodology's exactly-11-percent burden
 boundary is also unresolved; a superseded rule does not settle it.
