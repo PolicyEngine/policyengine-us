@@ -1,3 +1,10 @@
+## [2.23.6] - 2026-10-04
+
+### Fixed
+
+- Replace dead Illinois, Indiana, Iowa, Wisconsin and Kansas reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
 ## [2.23.5] - 2026-10-03
 
 ### Fixed
