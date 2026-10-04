@@ -20,11 +20,12 @@ class de_liheap_countable_income(Variable):
         person = spm_unit.members
         p = parameters(period).gov.states.de.dhss.liheap.income
         age = person("age", period)
-        excluded_earner = (age < p.earned_income_min_age) | (
+        student_exempt = (
             person("is_full_time_college_student", period)
             & person("is_tax_unit_dependent", period)
             & (age < p.student_income_exclusion_age)
         )
+        excluded_earner = (age < p.earned_income_min_age) | student_exempt
         payroll_tax = add(
             person,
             period,
@@ -34,11 +35,54 @@ class de_liheap_countable_income(Variable):
                 "de_employee_state_payroll_tax",
             ],
         )
+        # DE withholding is a Person estimate. Remove the excluded earnings'
+        # contribution to its AGI base, preserving tax on counted unearned
+        # income. IRS wages already exclude pre-tax payroll contributions.
+        taxable_earned = sum(
+            max_(
+                person(
+                    "irs_employment_income"
+                    if source == "employment_income"
+                    else source,
+                    period,
+                ),
+                0,
+            )
+            for source in p.sources.earned
+        )
+        business_adjustments = add(
+            person,
+            period,
+            [
+                "self_employment_tax_ald_person",
+                "self_employed_health_insurance_ald_person",
+                "self_employed_pension_contribution_ald_person",
+            ],
+        )
+        earned_agi = where(
+            person("is_tax_unit_dependent", period),
+            0,
+            max_(taxable_earned - business_adjustments, 0),
+        )
+        remaining_agi = where(
+            student_exempt,
+            0,
+            person("adjusted_gross_income_person", period) - earned_agi,
+        )
+        state_tax = parameters(period).gov.states.de.tax.income
+        remaining_state_tax = state_tax.rate.calc(
+            max_(remaining_agi - state_tax.deductions.standard.amount["SINGLE"], 0)
+        )
+        excluded_state_tax = where(
+            excluded_earner,
+            max_(person("de_withheld_income_tax", period) - remaining_state_tax, 0),
+            0,
+        )
         # Remove identifiable taxes on excluded earnings from the supplied
         # aggregate; keep any remaining deduction and never create a refund.
         withholding = max_(
             spm_unit("spm_unit_paycheck_withholdings", period)
-            - spm_unit.sum(where(excluded_earner, payroll_tax, 0)),
+            - spm_unit.sum(where(excluded_earner, payroll_tax, 0) + excluded_state_tax),
             0,
         )
         city_earnings = where(

@@ -41,9 +41,12 @@ to annual amounts; TANF is counted once for the household.
 federal, state and city payroll withholding. This estimates annual taxes, rather
 than observing actual withholding. The shared helper already includes Delaware
 employee paid-leave contributions. Identifiable Social Security, Medicare,
-Delaware paid-leave and Wilmington taxes on excluded child or student earnings
+Delaware paid-leave, Delaware income and Wilmington taxes on excluded earnings
 are removed from the aggregate deductions, each bounded below by zero. Remaining
-supplied deductions are preserved. Federal income tax and additional Medicare
+supplied deductions are preserved. The person-level Delaware income-tax estimate
+retains tax on a minor's counted unearned income; excluded earnings use IRS wages
+after pre-tax contributions and existing person business adjustments. Federal
+income tax, additional Medicare and other shared tax-unit adjustments
 are tax-unit aggregates without person allocations; their attribution remains
 an annual-estimate limitation. Adjusted income is bounded below by zero.
 The household TANF amount does not identify a student's share. Medicare and

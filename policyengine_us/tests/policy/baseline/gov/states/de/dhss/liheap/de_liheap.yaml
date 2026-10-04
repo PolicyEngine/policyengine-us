@@ -1248,3 +1248,53 @@
         state_code: DE
   output:
     de_liheap: 0
+
+# Separate-filer minor wages are excluded by the plan, regardless of dependency.
+# The published two-person band5 starts above25,852 and pays natural gas318.
+# No tax, receipt or LIHEAP intermediate overrides are supplied.
+- name: Excluded wages of a minor filing separately do not reduce countable support.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 25900
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 10000
+    tax_units:
+      parent_tax:
+        members:
+        - parent
+      child_tax:
+        members:
+        - child
+    marital_units:
+      parent_marital:
+        members:
+        - parent
+      child_marital:
+        members:
+        - child
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+    households:
+      household:
+        members:
+        - parent
+        - child
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_liheap_countable_income: 25900
+    de_liheap_income_band: 5
+    de_liheap: 318

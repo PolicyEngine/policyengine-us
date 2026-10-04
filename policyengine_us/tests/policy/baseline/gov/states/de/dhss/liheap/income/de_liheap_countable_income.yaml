@@ -278,3 +278,181 @@
         state_code: DE
   output:
     de_liheap_countable_income: 16_000
+
+# Counted income is15,900 support+10,000 interest in all four households.
+# Shared DE withholding contract: (10,000-3,250 standard deduction) yields134.25.
+# Excluded wages/business income and their payroll/AGI adjustments cannot reduce
+# the25,765.75 remaining countable income. Federal tax is explicitly zero here
+# to isolate the person-level state-tax deduction, not allocate federal liability.
+- name: Excluded minor earnings preserve state tax on counted interest, including
+    pre-tax wages and business adjustments.
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent_interest_only:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_interest_only:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+      parent_wages:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_wages:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        employment_income: 10000
+      parent_pretax_wages:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_pretax_wages:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        employment_income: 10000
+        traditional_401k_contributions: 2000
+      parent_business:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_business:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        self_employment_income: 10000
+    tax_units:
+      tax_parent_interest_only:
+        members:
+        - parent_interest_only
+        income_tax_before_credits: 0
+      tax_child_interest_only:
+        members:
+        - child_interest_only
+        income_tax_before_credits: 0
+      tax_parent_wages:
+        members:
+        - parent_wages
+        income_tax_before_credits: 0
+      tax_child_wages:
+        members:
+        - child_wages
+        income_tax_before_credits: 0
+      tax_parent_pretax_wages:
+        members:
+        - parent_pretax_wages
+        income_tax_before_credits: 0
+      tax_child_pretax_wages:
+        members:
+        - child_pretax_wages
+        income_tax_before_credits: 0
+      tax_parent_business:
+        members:
+        - parent_business
+        income_tax_before_credits: 0
+      tax_child_business:
+        members:
+        - child_business
+        income_tax_before_credits: 0
+    marital_units:
+      marital_parent_interest_only:
+        members:
+        - parent_interest_only
+      marital_child_interest_only:
+        members:
+        - child_interest_only
+      marital_parent_wages:
+        members:
+        - parent_wages
+      marital_child_wages:
+        members:
+        - child_wages
+      marital_parent_pretax_wages:
+        members:
+        - parent_pretax_wages
+      marital_child_pretax_wages:
+        members:
+        - child_pretax_wages
+      marital_parent_business:
+        members:
+        - parent_business
+      marital_child_business:
+        members:
+        - child_business
+    spm_units:
+      interest_only:
+        members:
+        - parent_interest_only
+        - child_interest_only
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      wages:
+        members:
+        - parent_wages
+        - child_wages
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      pretax_wages:
+        members:
+        - parent_pretax_wages
+        - child_pretax_wages
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      business:
+        members:
+        - parent_business
+        - child_business
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+    households:
+      interest_only:
+        members:
+        - parent_interest_only
+        - child_interest_only
+        state_code: DE
+        in_wilmington: false
+      wages:
+        members:
+        - parent_wages
+        - child_wages
+        state_code: DE
+        in_wilmington: false
+      pretax_wages:
+        members:
+        - parent_pretax_wages
+        - child_pretax_wages
+        state_code: DE
+        in_wilmington: false
+      business:
+        members:
+        - parent_business
+        - child_business
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_liheap_countable_income:
+    - 25765.75
+    - 25765.75
+    - 25765.75
+    - 25765.75
