@@ -82,10 +82,25 @@ def class_attribute_strings(tree: ast.AST):
                             yield target.id, child
 
 
+def is_wrapped_url(text: str, start: int) -> bool:
+    """True if the URL scheme at `start` sits inside another URL: as a query
+    value (`...?docName=https://...`) or after an archive.org wrapper."""
+    before = text[start - 1]
+    return before == "=" or (
+        before == "/" and bool(ARCHIVE_WRAPPER.search(text, 0, start))
+    )
+
+
 def is_bare_url_or_has_none(text: str) -> bool:
     """True if `text` contains no URL, or is exactly one URL with nothing
-    before or after it."""
-    return not SCHEME.search(text) or bool(BARE_URL.fullmatch(text))
+    before or after it. A second scheme is allowed only inside the first URL,
+    as a query value or after an archive.org wrapper."""
+    starts = [match.start() for match in SCHEME.finditer(text)]
+    if not starts:
+        return True
+    return bool(BARE_URL.fullmatch(text)) and all(
+        is_wrapped_url(text, start) for start in starts[1:]
+    )
 
 
 def find_glued_urls(source: str, filename: str = "<string>") -> list[str]:
@@ -94,10 +109,15 @@ def find_glued_urls(source: str, filename: str = "<string>") -> list[str]:
         ast.parse(source, filename=filename)
     ):
         location = f"{filename}:{constant.lineno} {attribute}:"
-        for offset in glued_url_offsets(constant.value):
+        glued = glued_url_offsets(constant.value)
+        for offset in glued:
             context = constant.value[max(offset - 40, 0) : offset + 40]
             violations.append(f"{location} glued URLs ...{context}...")
-        if attribute == "reference" and not is_bare_url_or_has_none(constant.value):
+        if (
+            attribute == "reference"
+            and not glued
+            and not is_bare_url_or_has_none(constant.value)
+        ):
             violations.append(f"{location} not one bare URL {constant.value!r}")
     return violations
 
@@ -152,6 +172,10 @@ def test_separated_and_wrapped_urls_are_not_flagged(text):
         "https://example.gov/a.pdf (Line 3)",
         "https://example.gov/a.pdf#page=1, 2",
         "See https://example.gov/a.pdf",
+        'https://example.gov/a.pdf"https://example.gov/b.pdf"',
+        "https://example.gov/a.pdf(https://example.gov/b.pdf)",
+        "https://example.gov/a.pdf[https://example.gov/b.pdf]",
+        "https://example.gov/web/2024/https://example.gov/b",
     ],
 )
 def test_reference_entries_that_are_not_one_bare_url_are_flagged(text):
@@ -164,6 +188,7 @@ def test_reference_entries_that_are_not_one_bare_url_are_flagged(text):
         "https://example.gov/a.pdf#page=3",
         "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01001.htm",
         "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/heap",
+        "https://web.archive.org/web/2021id_/https://example.gov/a?url=https://b.gov",
         "26 U.S.C. 32(b)",
         "IRS Publication 596, page 3",
         "",
@@ -213,13 +238,31 @@ def test_separated_class_attribute_urls_pass():
     assert find_glued_urls(source) == []
 
 
-def test_package_reference_urls_are_not_concatenated():
+def find_package_violations(root: Path) -> list[str]:
     violations = []
-    for path in sorted(PACKAGE.rglob("*.py")):
+    for path in sorted(root.rglob("*.py")):
         source = path.read_text(encoding="utf-8")
-        if "http" not in source:
+        if "http" not in source.lower():
             continue
-        violations.extend(find_glued_urls(source, str(path.relative_to(PACKAGE))))
+        violations.extend(find_glued_urls(source, str(path.relative_to(root))))
+    return violations
+
+
+def test_package_scan_reads_upper_case_urls(tmp_path):
+    (tmp_path / "v.py").write_text(
+        "class v:\n"
+        "    reference = (\n"
+        '        "HTTPS://EXAMPLE.GOV/A.PDF"\n'
+        '        "HTTPS://EXAMPLE.GOV/B.PDF"\n'
+        "    )\n"
+    )
+    assert [v.split(" ")[:3] for v in find_package_violations(tmp_path)] == [
+        ["v.py:3", "reference:", "glued"],
+    ]
+
+
+def test_package_reference_urls_are_not_concatenated():
+    violations = find_package_violations(PACKAGE)
     assert not violations, (
         "Malformed reference or documentation URLs. Put each reference URL "
         "in its own tuple element (with a comma after it), move notes into a "
