@@ -9,10 +9,10 @@ class filer_loss_limited_net_capital_gains(Variable):
     unit = USD
     documentation = (
         "Schedule D net capital gain or loss of the head and spouse, with a "
-        "net loss limited under 26 USC 1211(b): the Form 1040 line 7 amount "
-        "that Form 8960 line 5a starts from. A tax unit dependent's gains and "
-        "losses are on the dependent's own return. Unlike "
-        "loss_limited_net_capital_gains, this leaves dependents out."
+        "net loss limited under 26 USC 1211(b): the Schedule D part of Form "
+        "8960 line 5a. A tax unit dependent's gains and losses are on the "
+        "dependent's own return. Unlike loss_limited_net_capital_gains, this "
+        "leaves dependents out."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/1211#b",

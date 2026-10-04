@@ -27,7 +27,10 @@ def tax_unit_non_dep_add(tax_unit, period, variables):
     """
     total = 0
     for variable in variables:
-        if tax_unit.entity.get_variable(variable).entity.is_person:
+        variable_entity = tax_unit.entity.get_variable(
+            variable, check_existence=True
+        ).entity
+        if variable_entity.is_person:
             total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
         else:
             total = total + tax_unit(variable, period)
