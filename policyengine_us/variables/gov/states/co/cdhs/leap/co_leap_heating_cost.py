@@ -43,8 +43,9 @@ class co_leap_heating_cost(Variable):
             ],
             default=0,
         )
-        # The actual-electric-cost instruction governs the direct bill only;
-        # rent-included amounts already represent heat. Propane uses bulk rates
-        # and wood purchased rates; bottle/gathered distinctions lack inputs.
+        # Step G applies the relevant adjustments to every Step A cost basis,
+        # including rent standards. Apply the electric share exactly once.
+        # Propane uses bulk rates and wood purchased rates; bottle/gathered
+        # distinctions lack inputs.
         # Unknown rent-included fuels have no supported rate and remain a gap.
-        return where(included, included_cost, expense * electric_share)
+        return where(included, included_cost, expense) * electric_share

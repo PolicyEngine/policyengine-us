@@ -21,8 +21,12 @@ class co_leap_eligible(Variable):
         subsidized = spm_unit("receives_housing_assistance", period)
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
+        dwelling = spm_unit("co_leap_dwelling_type", period)
+        hotel = dwelling == dwelling.possible_values.HOTEL_MOTEL
         # Subsidized rent-included heat can qualify with a separate surcharge;
         # that fact is unavailable, so this exception is not represented.
+        # Hotels require heat included in rent. Their additional continuous
+        # 30-day residence requirement cannot be identified by existing inputs.
         # Application timing, vendor approval and prior receipt are not modeled.
         return (
             (size > 0)
@@ -31,4 +35,5 @@ class co_leap_eligible(Variable):
             & (fuel != fuels.NONE)
             & (fuel != fuels.UNSPECIFIED)
             & ~(included & subsidized)
+            & (~hotel | included)
         )

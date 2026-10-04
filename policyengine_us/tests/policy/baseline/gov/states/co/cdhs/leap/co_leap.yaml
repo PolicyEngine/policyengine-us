@@ -48,7 +48,7 @@
     co_leap_eligible: [true, true, true, true, true, true]
     co_leap: [1_000, 900, 900, 800, 800, 700]
 
-# Apply source electric shares exactly once to 1,000; all adjusted amounts lie within 200..1,000.
+# Apply electric shares once to 1,000. Direct-billed hotels are ineligible under section 3.752.25(B)(8).
 - name: "Case 3, electric heating costs receive one dwelling adjustment before the award."
   period: 2026
   absolute_error_margin: 0.01
@@ -67,11 +67,11 @@
     co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
     co_leap_income_contribution_rate: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     co_leap_heating_cost: [620, 620, 480, 480, 430, 430, 430, 430, 500]
-    co_leap_eligible: [true, true, true, true, true, true, true, true, true]
-    co_leap: [620, 620, 480, 480, 430, 430, 430, 430, 500]
+    co_leap_eligible: [true, true, true, true, true, false, true, true, true]
+    co_leap: [620, 620, 480, 480, 430, 0, 430, 430, 500]
 
-# Independent electric heat-in-rent table amounts 472..393 already represent heating. All exceed minimum; no second electric adjustment or half-year division.
-- name: "Case 4, electric heat in unsubsidized rent uses each table value without another heat share."
+# Published rent standards 472..393 receive the Step C share under Step G. Then apply the 200 minimum; no half-year division.
+- name: "Case 4, electric heat in unsubsidized rent receives the share and minimum."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -88,9 +88,9 @@
     co_leap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     co_leap_income_limit: [43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284, 43_284]
     co_leap_income_contribution_rate: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    co_leap_heating_cost: [472, 440, 343, 350, 227, 239, 380, 357, 393]
+    co_leap_heating_cost: [292.64, 272.8, 164.64, 168, 97.61, 102.77, 163.4, 153.51, 196.5]
     co_leap_eligible: [true, true, true, true, true, true, true, true, true]
-    co_leap: [472, 440, 343, 350, 227, 239, 380, 357, 393]
+    co_leap: [292.64, 272.8, 200, 200, 200, 200, 200, 200, 200]
 
 # Separate heating: clip(cost-180,200,1000) gives 200,420,820. Subsidized bundled heat without represented surcharge is ineligible despite a rent-table cost.
 - name: "Case 5, subsidized housing deduction retains the minimum for low costs."
@@ -318,3 +318,24 @@
     co_leap_heating_cost: 5_000
     co_leap_eligible: true
     co_leap: 1_000
+
+# Review C3: monthly wages 3,500 plus a 200 lottery annuity produce
+# annual countable income 44,400, above the published 43,284 one-person limit.
+# Accepted plan page6 includes lottery winnings; manual page46 counts prizes.
+- name: Case 11, regular lottery receipts count toward the income eligibility limit.
+  period: 2026
+  input:
+    state_code: CO
+    age: 35
+    employment_income: 42_000
+    gambling_winnings: 2_400
+    ssi: 0
+    co_oap: 0
+    co_tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    co_leap_countable_income: 44_400
+    co_leap_income_limit: 43_284
+    co_leap_eligible: false
+    co_leap: 0

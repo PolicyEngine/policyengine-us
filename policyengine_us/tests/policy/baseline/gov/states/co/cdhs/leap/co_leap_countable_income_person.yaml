@@ -314,3 +314,39 @@
     co_leap_countable_income_person: [12_000, 0]
     co_leap_countable_income: 12_000
     co_leap_household_size: 1
+
+# Review C3: the plan's lottery inclusion and manual prize category are
+# unearned income, including a child's receipts. Foster-member income remains
+# excluded by the separate household rule. No monthly-to-annual double count.
+- name: Lottery annuity receipts count for adults and children but not foster members.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 35
+        gambling_winnings: 2_400
+        ssi: 0
+        co_oap: 0
+      child:
+        age: 17
+        gambling_winnings: 1_200
+        ssi: 0
+        co_oap: 0
+      foster_child:
+        age: 16
+        gambling_winnings: 1_200
+        is_in_foster_care: true
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      family:
+        members: [adult, child, foster_child]
+        co_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [adult, child, foster_child]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: [2_400, 1_200, 0]

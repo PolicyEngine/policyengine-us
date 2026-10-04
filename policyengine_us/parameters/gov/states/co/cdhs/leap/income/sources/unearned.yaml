@@ -6,7 +6,7 @@ description: Colorado counts these unearned income sources before separately rou
 # Generic gifts are limited to financial_assistance; irregular receipts,
 # GI educational benefits and source-specific exclusions lack exact inputs.
 values:
-  2025-11-01: ["rental_income", "farm_rent_income", "interest_income", "dividend_income", "unemployment_compensation", "strike_benefits", "pension_income", "retirement_distributions", "survivor_benefits", "disability_benefits", "workers_compensation", "veterans_benefits", "general_assistance", "co_oap", "alimony_income", "child_support_received", "financial_assistance"]
+  2025-11-01: ["rental_income", "farm_rent_income", "interest_income", "dividend_income", "unemployment_compensation", "strike_benefits", "pension_income", "retirement_distributions", "survivor_benefits", "disability_benefits", "workers_compensation", "veterans_benefits", "general_assistance", "co_oap", "alimony_income", "child_support_received", "financial_assistance", "gambling_winnings"]
 
 metadata:
   unit: list
@@ -14,4 +14,4 @@ metadata:
   label: Colorado LEAP unearned income sources
   reference:
     - title: Colorado 2025–26 LEAP Training Operations Manual
-      href: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=47
+      href: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=46,47
