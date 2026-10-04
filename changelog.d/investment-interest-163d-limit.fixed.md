@@ -1,0 +1,1 @@
+Limit the itemized investment interest deduction to net investment income under 26 U.S.C. 163(d)(1) via Form 4952 and update California, New York, Virginia, and Montana to use the limited federal deduction.

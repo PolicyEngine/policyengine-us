@@ -1,0 +1,311 @@
+# Sources: 26 U.S.C. 163(d)(1)-(4), https://www.law.cornell.edu/uscode/text/26/163#d
+# 2025 Form 4952: "Enter the smaller of line 3 or line 6" (line 8).
+# https://www.irs.gov/pub/irs-pdf/f4952.pdf
+# 2017 Form 4952 line 5: "Include on line 5 the smaller of" investment
+# expenses on Schedule A line 23 and the total on Schedule A line 27.
+# https://www.irs.gov/pub/irs-prior/f4952--2017.pdf
+
+- name: Interest income above interest paid allows the full deduction
+  period: 2025
+  input:
+    taxable_interest_income: 10_000
+    investment_interest_expense: 6_000
+  output:
+    form_4952_total_investment_interest_expense: 6_000 # line 3 = line 1 6,000 + unmodeled line 2 0
+    form_4952_gross_investment_income: 10_000 # line 4a = taxable interest 10,000 + dividends 0
+    form_4952_qualified_dividends: 0 # line 4b = qualified dividends 0
+    form_4952_net_investment_gain: 0 # line 4d = max(0, gains 0)
+    form_4952_net_capital_gain: 0 # line 4e = min(4d 0, net long-term gain 0)
+    form_4952_elected_investment_income: 0 # line 4g = min(election 0, 4b 0 + 4e 0)
+    form_4952_investment_income: 10_000 # line 4h = (10,000 - 0) + (0 - 0) + 0
+    form_4952_investment_expenses: 0 # line 5 = 0 because miscellaneous deductions do not apply
+    form_4952_net_investment_income: 10_000 # line 6 = max(0, 4h 10,000 - line 5 0)
+    form_4952_investment_interest_carryforward: 0 # line 7 = max(0, 3 6,000 - 6 10,000)
+    investment_interest_expense_deduction: 6_000 # line 8 = min(3 6,000, 6 10,000)
+
+- name: No investment income disallows all investment interest
+  period: 2025
+  input:
+    investment_interest_expense: 6_000
+    taxable_interest_income: 0
+  output:
+    form_4952_net_investment_income: 0 # line 6 = max(0, 4h 0 - 5 0)
+    form_4952_investment_interest_carryforward: 6_000 # line 7 = max(0, 3 6,000 - 6 0)
+    investment_interest_expense_deduction: 0 # line 8 = min(3 6,000, 6 0)
+
+- name: Qualified dividends are excluded without an election
+  period: 2025
+  input:
+    qualified_dividend_income: 5_000
+    investment_interest_expense: 4_000
+  output:
+    form_4952_gross_investment_income: 5_000 # line 4a = ordinary dividends 5,000
+    form_4952_qualified_dividends: 5_000 # line 4b = qualified dividends 5,000
+    form_4952_investment_income: 0 # line 4c = 4a 5,000 - 4b 5,000; 4f = 4g = 0
+    investment_interest_expense_deduction: 0 # line 8 = min(3 4,000, 6 0)
+    form_4952_investment_interest_carryforward: 4_000 # line 7 = max(0, 3 4,000 - 6 0)
+
+- name: Qualified dividend election raises the limit one for one
+  period: 2025
+  input:
+    qualified_dividend_income: 5_000
+    investment_income_elected_form_4952: 2_000
+    investment_interest_expense: 4_000
+  output:
+    form_4952_elected_investment_income: 2_000 # line 4g = min(2,000, 4b 5,000 + 4e 0)
+    form_4952_investment_income: 2_000 # line 4h = 4c 0 + 4f 0 + 4g 2,000
+    investment_interest_expense_deduction: 2_000 # line 8 = min(3 4,000, 6 2,000)
+    form_4952_investment_interest_carryforward: 2_000 # line 7 = max(0, 3 4,000 - 6 2,000)
+
+- name: Election is capped at qualified dividends plus net capital gain
+  period: 2025
+  input:
+    qualified_dividend_income: 5_000
+    long_term_capital_gains: 3_000
+    investment_income_elected_form_4952: 20_000
+    investment_interest_expense: 15_000
+  output:
+    form_4952_net_investment_gain: 3_000 # line 4d = max(0, long-term 3,000 + short-term 0)
+    form_4952_net_capital_gain: 3_000 # line 4e = min(4d 3,000, long-term 3,000)
+    form_4952_elected_investment_income: 8_000 # line 4g = min(20,000, 4b 5,000 + 4e 3,000)
+    form_4952_net_investment_income: 8_000 # line 6 = 4c 0 + 4f 0 + 4g 8,000 - 5 0
+    investment_interest_expense_deduction: 8_000 # line 8 = min(3 15,000, 6 8,000)
+    form_4952_investment_interest_carryforward: 7_000 # line 7 = 3 15,000 - 6 8,000
+
+- name: Negative election is floored at zero
+  period: 2025
+  input:
+    qualified_dividend_income: 5_000
+    investment_income_elected_form_4952: -1_000
+    investment_interest_expense: 4_000
+  output:
+    form_4952_elected_investment_income: 0 # line 4g = min(max(0, -1,000), 4b 5,000 + 4e 0)
+    investment_interest_expense_deduction: 0 # line 8 = min(3 4,000, 6 0)
+
+- name: Short-term gain counts automatically and long-term gain requires election
+  period: 2025
+  input:
+    short_term_capital_gains: 3_000
+    long_term_capital_gains: 7_000
+    investment_interest_expense: 12_000
+  output:
+    form_4952_net_investment_gain: 10_000 # line 4d = max(0, 3,000 + 7,000)
+    form_4952_net_capital_gain: 7_000 # line 4e = min(10,000, 7,000 - 0)
+    form_4952_investment_income: 3_000 # line 4h = 4c 0 + (4d 10,000 - 4e 7,000) + 4g 0
+    investment_interest_expense_deduction: 3_000 # line 8 = min(3 12,000, 6 3,000)
+    form_4952_investment_interest_carryforward: 9_000 # line 7 = 3 12,000 - 6 3,000
+
+- name: Electing long-term gain adds it to automatic short-term gain
+  period: 2025
+  input:
+    short_term_capital_gains: 3_000
+    long_term_capital_gains: 7_000
+    investment_income_elected_form_4952: 5_000
+    investment_interest_expense: 12_000
+  output:
+    form_4952_investment_income: 8_000 # line 4h = 4c 0 + (10,000 - 7,000) + 4g 5,000
+    investment_interest_expense_deduction: 8_000 # line 8 = min(3 12,000, 6 8,000)
+    form_4952_investment_interest_carryforward: 4_000 # line 7 = 3 12,000 - 6 8,000
+
+- name: Short-term loss reduces the long-term gain available for election
+  period: 2025
+  input:
+    short_term_capital_gains: -3_000
+    long_term_capital_gains: 8_000
+    investment_income_elected_form_4952: 4_000
+    investment_interest_expense: 6_000
+  output:
+    form_4952_net_investment_gain: 5_000 # line 4d = max(0, 8,000 - 3,000)
+    form_4952_net_capital_gain: 5_000 # line 4e = min(5,000, max(0, 8,000 - 3,000))
+    form_4952_investment_income: 4_000 # line 4h = 4c 0 + (5,000 - 5,000) + 4g 4,000
+    investment_interest_expense_deduction: 4_000 # line 8 = min(3 6,000, 6 4,000)
+    form_4952_investment_interest_carryforward: 2_000 # line 7 = 3 6,000 - 6 4,000
+
+- name: Long-term loss offsets short-term gain
+  period: 2025
+  input:
+    short_term_capital_gains: 10_000
+    long_term_capital_gains: -8_000
+    investment_interest_expense: 6_000
+  output:
+    form_4952_net_investment_gain: 2_000 # line 4d = max(0, 10,000 - 8,000)
+    form_4952_net_capital_gain: 0 # line 4e = min(2,000, max(0, -8,000))
+    investment_interest_expense_deduction: 2_000 # line 8 = min(3 6,000, 6 2,000)
+    form_4952_investment_interest_carryforward: 4_000 # line 7 = 3 6,000 - 6 2,000
+
+- name: Distributions without Schedule D are long-term gain requiring election
+  period: 2025
+  input:
+    non_sch_d_capital_gains: 3_000
+    investment_interest_expense: 4_000
+  output:
+    form_4952_net_investment_gain: 3_000 # line 4d = max(0, net capital gains 0 + distributions 3,000)
+    form_4952_net_capital_gain: 3_000 # line 4e = min(3,000, long-term 0 + distributions 3,000)
+    investment_interest_expense_deduction: 0 # line 8 = min(3 4,000, 6 (4d 3,000 - 4e 3,000))
+
+- name: Schedule D distributions are already included in long-term gains
+  period: 2025
+  input:
+    long_term_capital_gains: 5_000
+    schedule_d_capital_gain_distributions: 2_000 # memo component of the 5,000 above
+    non_sch_d_capital_gains: 3_000
+    investment_income_elected_form_4952: 10_000
+    investment_interest_expense: 12_000
+  output:
+    form_4952_net_investment_gain: 8_000 # line 4d = max(0, gains 5,000 + non-Schedule-D distributions 3,000)
+    form_4952_net_capital_gain: 8_000 # line 4e = min(8,000, long-term 5,000 + distributions 3,000)
+    form_4952_elected_investment_income: 8_000 # line 4g = min(10,000, 4b 0 + 4e 8,000)
+    investment_interest_expense_deduction: 8_000 # line 8 = min(3 12,000, 6 8,000)
+
+- name: Joint income excludes dependent interest and dividends while expenses preserve existing membership
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        taxable_interest_income: 4_000
+        qualified_dividend_income: 1_000
+        investment_interest_expense: 6_000
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_interest_income: 3_000
+        non_qualified_dividend_income: 2_000
+        qualified_dividend_income: 2_000
+        investment_interest_expense: 4_000
+      child:
+        is_tax_unit_dependent: true
+        taxable_interest_income: 50_000
+        qualified_dividend_income: 10_000
+        non_qualified_dividend_income: 10_000
+        investment_interest_expense: 500
+    tax_units:
+      unit:
+        members: [head, spouse, child]
+  output:
+    form_4952_total_investment_interest_expense: 10_500 # line 3 = 6,000 + 4,000 + 500 (all members)
+    form_4952_gross_investment_income: 12_000 # line 4a = filers' interest 7,000 + ordinary dividends 5,000
+    form_4952_qualified_dividends: 3_000 # line 4b = filers' qualified dividends 1,000 + 2,000
+    form_4952_investment_income: 9_000 # line 4c = 4a 12,000 - 4b 3,000; 4f = 4g = 0
+    investment_interest_expense_deduction: 9_000 # line 8 = min(3 10,500, 6 9,000)
+    form_4952_investment_interest_carryforward: 1_500 # line 7 = 3 10,500 - 6 9,000
+
+- name: Alaska Permanent Fund dividends and business property gains stay out of line 4a and 4d
+  period: 2025
+  input:
+    ak_permanent_fund_dividend: 2_000
+    other_net_gain: 5_000 # Form 4797 business property gain
+    tax_exempt_interest_income: 3_000
+    investment_interest_expense: 4_000
+  output:
+    form_4952_gross_investment_income: 0 # line 4a = taxable interest 0 + ordinary dividends 0
+    form_4952_net_investment_gain: 0 # line 4d = net capital gains 0 + non-Schedule-D distributions 0
+    investment_interest_expense_deduction: 0 # line 8 = min(3 4,000, 6 0)
+
+- name: 2017 line 5 uses miscellaneous deduction after the 2 percent floor
+  period: 2017
+  input:
+    adjusted_gross_income: 100_000
+    taxable_interest_income: 12_000
+    investment_interest_expense: 20_000
+    investment_expenses: 3_000
+    tax_preparation_fees: 500
+    unreimbursed_business_employee_expenses: 500
+  output:
+    total_misc_deductions: 4_000 # Schedule A line 24 = investment expenses 3,000 + other expenses 1,000
+    misc_deduction: 2_000 # Schedule A line 27 = max(0, 4,000 - 2% * 100,000)
+    form_4952_investment_expenses: 2_000 # line 5 = min(Schedule A line 23 3,000, line 27 2,000)
+    form_4952_net_investment_income: 10_000 # line 6 = max(0, 4h 12,000 - 5 2,000)
+    investment_interest_expense_deduction: 10_000 # line 8 = min(3 20,000, 6 10,000)
+    form_4952_investment_interest_carryforward: 10_000 # line 7 = 3 20,000 - 6 10,000
+
+- name: 2017 line 5 cannot exceed investment expenses even with other miscellaneous deductions
+  period: 2017
+  input:
+    adjusted_gross_income: 100_000
+    taxable_interest_income: 12_000
+    investment_interest_expense: 20_000
+    investment_expenses: 3_000
+    tax_preparation_fees: 3_000
+  output:
+    misc_deduction: 4_000 # Schedule A line 27 = 3,000 + 3,000 - 2% * 100,000
+    form_4952_investment_expenses: 3_000 # line 5 = min(investment expenses 3,000, misc deduction 4,000)
+    investment_interest_expense_deduction: 9_000 # line 8 = min(3 20,000, 6 (12,000 - 3,000))
+
+- name: 2017 investment expenses below the floor do not reduce investment income
+  period: 2017
+  input:
+    adjusted_gross_income: 100_000
+    taxable_interest_income: 12_000
+    investment_interest_expense: 20_000
+    investment_expenses: 500
+  output:
+    form_4952_investment_expenses: 0 # line 5 = min(500, max(0, 500 - 2% * 100,000))
+    investment_interest_expense_deduction: 12_000 # line 8 = min(3 20,000, 6 (12,000 - 0))
+
+- name: 2026 line 5 remains zero under permanent section 67 h disallowance
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    taxable_interest_income: 12_000
+    investment_interest_expense: 20_000
+    investment_expenses: 3_000
+    tax_preparation_fees: 3_000
+  output:
+    total_misc_deductions: 6_000 # shared Schedule A expense total = investment 3,000 + tax preparation 3,000
+    misc_deduction: 0 # section 67(h) disallows miscellaneous itemized deductions after 2017
+    form_4952_investment_expenses: 0 # line 5 = 0 because misc.applies is false
+    investment_interest_expense_deduction: 12_000 # line 8 = min(3 20,000, 6 (12,000 - 0))
+    form_4952_investment_interest_carryforward: 8_000 # line 7 = 3 20,000 - 6 12,000
+
+- name: Schedule A line 10 adds mortgage interest and Form 4952 line 8
+  period: 2025
+  input:
+    deductible_mortgage_interest: 10_000
+    investment_interest_expense: 8_000
+    taxable_interest_income: 3_000
+  output:
+    deductible_interest_expense: 18_000 # amount paid = mortgage 10,000 + investment 8,000 before line 8 limit
+    investment_interest_expense_deduction: 3_000 # line 8 = min(3 8,000, 6 3,000)
+    interest_deduction: 13_000 # Schedule A line 10 = mortgage line 8e 10,000 + investment line 9 3,000
+
+- name: A direct deductible interest expense input retains its full deduction
+  period: 2025
+  input:
+    deductible_interest_expense: 25_000
+    investment_interest_expense: 0
+    taxable_interest_income: 0
+  output:
+    interest_deduction: 25_000 # Schedule A line 10 = paid override 25,000 - line 3 0 + line 8 0
+
+- name: 2025 investment interest limit flows through itemized deductions to federal income tax
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 140_000
+        taxable_interest_income: 10_000
+        deductible_mortgage_interest: 20_000
+        investment_interest_expense: 15_000
+    tax_units:
+      unit:
+        members: [head]
+        state_income_tax: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    investment_interest_expense_deduction: 10_000 # line 8 = min(3 15,000, 6 10,000)
+    interest_deduction: 30_000 # Schedule A line 10 = line 8e 20,000 + line 9 10,000
+    itemized_taxable_income_deductions: 30_000 # Schedule A line 17 = line 10 30,000 + other itemized deductions 0
+    adjusted_gross_income: 150_000 # Form 1040 AGI = wages 140,000 + taxable interest 10,000
+    taxable_income: 120_000 # Form 1040 taxable income = AGI 150,000 - itemized deductions 30,000
+    # 2025 single rate schedule (taxable income >= 100,000; Tax Table not applicable):
+    # 11,925 * 10% + (48,475 - 11,925) * 12% + (103,350 - 48,475) * 22%
+    # + (120,000 - 103,350) * 24% = 1,192.50 + 4,386 + 12,072.50 + 3,996 = 21,647.
+    # Source: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=6
+    income_tax: 21_647 # federal tax after credits = regular tax 21,647 + AMT/NIIT 0 - credits 0
