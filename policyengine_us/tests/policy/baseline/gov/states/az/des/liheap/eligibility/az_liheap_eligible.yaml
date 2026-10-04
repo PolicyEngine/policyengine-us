@@ -1,0 +1,245 @@
+# Arizona LIHEAP eligibility: an Arizona household with at least one eligible
+# member that meets categorical or income eligibility and needs help with an
+# energy bill (DES LIHEAP Policy rev. 13 eff. 2025-08-25, pp. 6-8 VI.A,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=6).
+# The Standard benefit covers every home energy bill (electricity, gas and
+# portable fuel, p. 4 "Energy Utility"), so a home with no heating system but
+# an electricity bill qualifies, and renters with energy in rent are eligible
+# (p. 32 VII.B.3.a.ii.B). An unspecified heating type pays nothing (project
+# rule). Size-1 annual limit 2,807 x 12 = 33,684.
+
+- name: Case 1, single minimum-wage earner with an electricity bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 30,576 <= 33,684; energy cost 1,800 > 0.
+    az_liheap_eligible: true
+
+- name: Case 2, an unspecified heating type is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_eligible: false
+
+- name: Case 3, a home without heating but with an electricity bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # The Standard benefit is for any Energy Utility bill, not heating alone.
+    az_liheap_eligible: true
+
+- name: Case 4, energy included in rent with no separate bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 0
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 4: undesignated energy payments in rent form a household;
+    # p. 32: payment goes to the applicant when utilities are in rent.
+    az_liheap_energy_cost: 0
+    az_liheap_eligible: true
+
+- name: Case 5, no energy bill and no energy in rent is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: false
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 0
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 6 VI.A.1: the applicant must require energy assistance.
+    az_liheap_eligible: false
+
+- name: Case 6, income over the limit without categorical eligibility is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 40,000 > 33,684.
+    az_liheap_income_eligible: false
+    az_liheap_categorically_eligible: false
+    az_liheap_eligible: false
+
+- name: Case 7, income over the limit with SNAP receipt is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 2_400
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 7 VI.A.6.a: categorical or income eligibility.
+    az_liheap_income_eligible: false
+    az_liheap_categorically_eligible: true
+    az_liheap_eligible: true
+
+- name: Case 8, a household with no eligible member is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Policy pp. 6-7 VI.A.3: at least one member must be a citizen or
+    # qualified noncitizen.
+    az_liheap_household_size: 0
+    az_liheap_eligible: false
+
+- name: Case 9, the same household in New Mexico is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    az_liheap_eligible: false
+
+- name: Case 10, a propane bill alone satisfies the energy-expense requirement.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        pre_subsidy_electricity_expense: 0
+        bottled_gas_expense: 1_500
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 5: portable fuel (propane) is an Energy Utility.
+    az_liheap_energy_cost: 1_500
+    az_liheap_eligible: true

@@ -1,0 +1,381 @@
+# Arizona LIHEAP income eligibility: when categorical eligibility does not
+# apply, gross income must be "at or below" the Appendix A limit for the
+# eligible household size (DES LIHEAP Policy rev. 13 eff. 2025-08-25, p. 8
+# VI.A.6.c.i and p. 37 Appendix A,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37).
+# Annual limits are twelve times the monthly limits: size 1 2,807 x 12 =
+# 33,684; size 2 3,671 x 12 = 44,052; size 5 6,262 x 12 = 75,144; size 6
+# 7,126 x 12 = 85,512; size 10 8,143 x 12 = 97,716; size 13 (9,518 + 687) x
+# 12 = 122,460. The 30-day income snapshot is annualized by the policy's own
+# arithmetic (p. 14 VII.A.1.c.v), so annual income compares with 12 x the
+# monthly limit.
+
+- name: Case 1, single adult earning exactly the size-1 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 33_684
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_income: 33_684
+    az_liheap_income_limit: 33_684
+    # 33,684 <= 33,684.
+    az_liheap_income_eligible: true
+
+- name: Case 2, single adult one dollar over the size-1 limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 33_685
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 33,685 > 33,684.
+    az_liheap_income_eligible: false
+
+- name: Case 3, five-person family at exactly the size-5 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 44_000
+      person2:
+        age: 36
+        employment_income: 31_144
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_400
+        gas_expense: 700
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    # 44,000 + 31,144 = 75,144 <= 6,262 x 12 = 75,144.
+    az_liheap_countable_income: 75_144
+    az_liheap_income_eligible: true
+
+- name: Case 4, five-person family one dollar over the size-5 limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 44_000
+      person2:
+        age: 36
+        employment_income: 31_145
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_400
+        gas_expense: 700
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    # 44,000 + 31,145 = 75,145 > 75,144.
+    az_liheap_income_eligible: false
+
+- name: Case 5, six-person family at exactly the size-6 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 50_000
+      person2:
+        age: 39
+        employment_income: 35_512
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 9
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AZ
+  output:
+    # 50,000 + 35,512 = 85,512 <= 7,126 x 12 = 85,512.
+    az_liheap_countable_income: 85_512
+    az_liheap_income_limit: 85_512
+    az_liheap_income_eligible: true
+
+- name: Case 6, ten-person household at exactly the size-10 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 55_000
+      person2:
+        age: 40
+        employment_income: 42_716
+      person3:
+        age: 66
+        ssi: 0
+      person4:
+        age: 17
+      person5:
+        age: 15
+      person6:
+        age: 13
+      person7:
+        age: 11
+      person8:
+        age: 9
+      person9:
+        age: 7
+      person10:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 3_600
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 10
+    # 55,000 + 42,716 = 97,716 <= 8,143 x 12 = 97,716 (the 150% FPG arm).
+    az_liheap_countable_income: 97_716
+    az_liheap_income_limit: 97_716
+    az_liheap_income_eligible: true
+
+- name: Case 7, ten-person household one dollar over the size-10 limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 55_000
+      person2:
+        age: 40
+        employment_income: 42_717
+      person3:
+        age: 66
+        ssi: 0
+      person4:
+        age: 17
+      person5:
+        age: 15
+      person6:
+        age: 13
+      person7:
+        age: 11
+      person8:
+        age: 9
+      person9:
+        age: 7
+      person10:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 3_600
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: AZ
+  output:
+    # 55,000 + 42,717 = 97,717 > 97,716.
+    az_liheap_income_eligible: false
+
+- name: Case 8, thirteen-person household at exactly the size-13 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 70_000
+      person2:
+        age: 43
+        employment_income: 52_460
+      person3:
+        age: 70
+        ssi: 0
+      person4:
+        age: 68
+        ssi: 0
+      person5:
+        age: 17
+      person6:
+        age: 16
+      person7:
+        age: 14
+      person8:
+        age: 12
+      person9:
+        age: 10
+      person10:
+        age: 8
+      person11:
+        age: 6
+      person12:
+        age: 4
+      person13:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 4_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 13
+    # 70,000 + 52,460 = 122,460 <= (9,518 + 687) x 12 = 122,460.
+    az_liheap_countable_income: 122_460
+    az_liheap_income_limit: 122_460
+    az_liheap_income_eligible: true
+
+- name: Case 9, thirteen-person household one dollar over the size-13 limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 70_000
+      person2:
+        age: 43
+        employment_income: 52_461
+      person3:
+        age: 70
+        ssi: 0
+      person4:
+        age: 68
+        ssi: 0
+      person5:
+        age: 17
+      person6:
+        age: 16
+      person7:
+        age: 14
+      person8:
+        age: 12
+      person9:
+        age: 10
+      person10:
+        age: 8
+      person11:
+        age: 6
+      person12:
+        age: 4
+      person13:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 4_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: AZ
+  output:
+    # 70,000 + 52,461 = 122,461 > 122,460.
+    az_liheap_income_eligible: false
+
+- name: Case 10, a household with no income is income eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 0 <= 33,684.
+    az_liheap_income_eligible: true
+
+- name: Case 11, mixed-status household is measured against the eligible-member size with all adult income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 24_000
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_000
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.d: size 2 (citizen parent and child), limit
+    # 3,671 x 12 = 44,052; income 24,000 + 24,000 = 48,000 from both adults.
+    az_liheap_household_size: 2
+    az_liheap_countable_income: 48_000
+    az_liheap_income_limit: 44_052
+    # 48,000 > 44,052 (it would pass the size-3 limit of 54,420).
+    az_liheap_income_eligible: false

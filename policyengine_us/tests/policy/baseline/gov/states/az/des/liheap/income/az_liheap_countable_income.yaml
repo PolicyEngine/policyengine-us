@@ -1,0 +1,66 @@
+# Arizona LIHEAP countable income of the household: countable earned plus
+# unearned income of every member, plus the unit's DES Cash Assistance (TANF)
+# benefit (DES LIHEAP Policy rev. 13 eff. 2025-08-25, p. 8 VI.A.6.e.ii.B
+# "Unearned income, including SSA and TANF benefits",
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# FY2026 plan 1.9 TANF checked,
+# https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6).
+# az_tanf is a monthly variable; in a yearly test its input is the annual
+# total. Arizona's 2026 payment standard for a parent and one child is 347 a
+# month: 347 x 12 = 4,164.
+
+- name: Case 1, TANF received by the unit is added to the parent's wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 9_000
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+        az_tanf: 4_164
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 9,000 wages + 4,164 Cash Assistance = 13,164.
+    az_liheap_countable_income: 13_164
+
+- name: Case 2, earned and unearned income of two adults are summed and a child's income is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 26_000
+        unemployment_compensation: 2_400
+      person2:
+        age: 67
+        social_security: 18_000
+        ssi: 0
+      person3:
+        age: 15
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_000
+        gas_expense: 700
+        az_tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 26,000 + 2,400 + 18,000 = 46,400; the 15-year-old's 3,000 is excluded
+    # (rev. 13 p. 9 E).
+    az_liheap_countable_income: 46_400

@@ -1,0 +1,150 @@
+# Arizona LIHEAP countable earned income per person. Gross wages and
+# self-employment income of every member aged 18 or older count (DES LIHEAP
+# Policy rev. 13 eff. 2025-08-25, p. 8 VI.A.6.d.ii and p. 13 VII.A.1.c.ii,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8).
+# Earned income of members under 18 never counts: rev. 13 p. 9 E excludes all
+# under-18 income and rev. 15 (eff. 2026-03-23) p. 9 E excludes their earned
+# income. The FY2026 plan leaves "earned income of a child under 18" unchecked
+# (https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=7).
+# Self-employment is verified as "profit or loss" (policy p. 13); the model
+# floors each net source at zero (project convention).
+# Arizona's 2025 minimum wage is $14.70 an hour: 14.70 x 2,080 = 30,576.
+
+- name: Case 1, full-time minimum-wage earnings are counted in full.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_earned_income: 30_576
+
+- name: Case 2, a 17-year-old's wages are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 30_576
+      person2:
+        age: 17
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Policy p. 9 E: the 17-year-old's 6,000 is not countable income.
+    az_liheap_countable_earned_income: [30_576, 0]
+    az_liheap_countable_income: 30_576
+
+- name: Case 3, an 18-year-old's wages are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 30_576
+      person2:
+        age: 18
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.d.ii: members aged 18 and older; 30,576 + 12,000.
+    az_liheap_countable_earned_income: [30_576, 12_000]
+    az_liheap_countable_income: 42_576
+
+- name: Case 4, a self-employment loss is floored at zero and does not offset wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+        self_employment_income: -4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_400
+        gas_expense: 500
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # max(20,000, 0) + max(-4,000, 0) = 20,000.
+    az_liheap_countable_earned_income: 20_000
+
+- name: Case 5, every earned source is summed for an adult.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 51
+        employment_income: 18_000
+        self_employment_income: 6_000
+        farm_operations_income: 2_000
+        partnership_s_corp_income: 3_000
+        sstb_self_employment_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        pre_subsidy_electricity_expense: 1_300
+        bottled_gas_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 18,000 + 6,000 + 2,000 + 3,000 + 1,000 = 30,000 (plan 1.9: wages and
+    # self-employment income checked).
+    az_liheap_countable_earned_income: 30_000
+
+- name: Case 6, a 16-year-old's wages stay excluded under revision 15 in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 39
+        employment_income: 28_000
+      person2:
+        age: 16
+        employment_income: 4_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Rev. 15 p. 9 E: "Earned income from Household members under the age of
+    # 18 is not considered Countable Income."
+    az_liheap_countable_earned_income: [28_000, 0]

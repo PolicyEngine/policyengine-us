@@ -1,0 +1,45 @@
+description: Arizona awards these benefit matrix points by the ratio of gross income to the income limit for the household size under the Low Income Home Energy Assistance Program.
+# Worksheet rows "0% - 20% 5 points, 21% - 40% 4 points, 41% - 60% 3 points,
+# 61% - 80% 2 points, 81% - 100% 1 point". The DES page computes the ratio as
+# "Total Monthly Gross Income Divided by the Monthly Gross Income Limit" and
+# places its 44% example in the 41% to 60% band, so the thresholds are the
+# band tops and callers use calc(ratio, right=True). The -inf first threshold
+# keeps a zero ratio in the first band. No row is printed above 100%: only a
+# categorically eligible household can reach it, and it scores 0 points.
+brackets:
+  - threshold:
+      2024-10-12: -.inf
+    amount:
+      2024-10-12: 5
+  - threshold:
+      2024-10-12: 0.2
+    amount:
+      2024-10-12: 4
+  - threshold:
+      2024-10-12: 0.4
+    amount:
+      2024-10-12: 3
+  - threshold:
+      2024-10-12: 0.6
+    amount:
+      2024-10-12: 2
+  - threshold:
+      2024-10-12: 0.8
+    amount:
+      2024-10-12: 1
+  - threshold:
+      2024-10-12: 1
+    amount:
+      2024-10-12: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Arizona LIHEAP income points
+  reference:
+    - title: Arizona LIHEAP Eligibility Worksheet, $640 Limit (effective October 12, 2024), Section 1 Income Eligibility
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1
+    - title: Arizona DES, Low Income Home Energy Assistance Program page (income points formula and the 2,000 / 4,535 = 44% example)
+      href: https://des.az.gov/liheap

@@ -1,0 +1,1 @@
+Add Arizona LIHEAP Standard benefit (az_liheap): FY2026 regular benefit from the points worksheet with the greater of 60% state median income or 150% federal poverty guideline income test and TANF or SNAP categorical eligibility.

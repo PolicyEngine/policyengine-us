@@ -1,0 +1,28 @@
+from policyengine_us.model_api import *
+
+
+class az_liheap_categorically_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Arizona LIHEAP categorically eligible"
+    documentation = "A household member receives DES Cash Assistance (TANF) or Nutrition Assistance (SNAP), which satisfies the income requirement; all other eligibility criteria still apply."
+    reference = (
+        # Categorical Eligibility definition (pages 3-4) and Section VI.A.6.a-b
+        # (page 7).
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=7",
+        # Sections 1.4 and 1.4a (page 5).
+        "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5",
+    )
+    defined_for = StateCode.AZ
+
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.az.des.liheap.eligibility
+        # Section VI.A.6.b.i: "If one (1) Household member's current enrollment
+        # in Cash Assistance or Nutrition Assistance is verified, the Household
+        # will be considered categorically eligible." A positive modeled
+        # benefit in the year stands for current enrollment; the MONTH-defined
+        # snap and az_tanf are summed over the year by add(). SSI and
+        # veterans programs do not confer categorical eligibility (plan
+        # Section 1.4).
+        return add(spm_unit, period, p.categorical_programs) > 0

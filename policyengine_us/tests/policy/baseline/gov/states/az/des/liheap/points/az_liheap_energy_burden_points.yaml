@@ -1,0 +1,405 @@
+# Arizona LIHEAP energy burden points: total monthly energy cost (electric,
+# gas and portable fuel) divided by monthly gross income; 5% or less 0 points,
+# 6%-10% 1, 11%-15% 2, 16%-20% 3, 21%-25% 4, 26%-30% 5, 31% or over 6, plus 2
+# points for portable fuels (LIHEAP Eligibility Worksheet, $640 Limit, eff.
+# 2024-10-12, section 2,
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
+# DES program page example "350 / 2,000 = 17.5%, three points",
+# https://des.az.gov/liheap). Portable Fuel is propane, wood, coal, generator
+# fuel and pellets (DES LIHEAP Policy rev. 13, p. 5,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=5),
+# modeled as heating_type PROPANE, WOOD or COAL. Annual bills over annual
+# income give the same ratio as the monthly figures; a band top belongs to its
+# band (exactly 5% is 0 points). Zero income with a bill is the top band; no
+# bill is 0 points. Single adult earning 24,000 (2,000 a month) throughout.
+
+- name: Case 1, the program-page example of a 350 bill on 2,000 income gives 3 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 4_200
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 4,200 / 24,000 = 0.175 (350 / 2,000 = 17.5%): 16%-20% band.
+    az_liheap_energy_burden_points: 3
+
+- name: Case 2, a bill at exactly 5 percent of income scores 0 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1,200 / 24,000 = 0.05 exactly: "5% or less".
+    az_liheap_energy_burden_points: 0
+
+- name: Case 3, one dollar above 5 percent of income scores 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_201
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1,201 / 24,000 = 0.05004 > 0.05: 6%-10% band.
+    az_liheap_energy_burden_points: 1
+
+- name: Case 4, a bill at exactly 10 percent of income keeps 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 2,400 / 24,000 = 0.10 exactly: top of the 6%-10% band.
+    az_liheap_energy_burden_points: 1
+
+- name: Case 5, a bill at exactly 15 percent of income keeps 2 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 3_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 3,600 / 24,000 = 0.15 exactly: top of the 11%-15% band.
+    az_liheap_energy_burden_points: 2
+
+- name: Case 6, a bill at exactly 20 percent of income keeps 3 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 4_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 4,800 / 24,000 = 0.20 exactly: top of the 16%-20% band.
+    az_liheap_energy_burden_points: 3
+
+- name: Case 7, a bill at exactly 25 percent of income keeps 4 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 6_000
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 6,000 / 24,000 = 0.25 exactly: top of the 21%-25% band.
+    az_liheap_energy_burden_points: 4
+
+- name: Case 8, a bill at exactly 30 percent of income keeps 5 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 7_200
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 7,200 / 24,000 = 0.30 exactly: top of the 26%-30% band.
+    az_liheap_energy_burden_points: 5
+
+- name: Case 9, a bill at 31 percent of income scores 6 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 7_440
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 7,440 / 24,000 = 0.31: "31% or over".
+    az_liheap_energy_burden_points: 6
+
+- name: Case 10, a household with no income and a bill scores the top band.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1,800 against zero income: the burden is unbounded, 31% or over.
+    az_liheap_energy_burden_points: 6
+
+- name: Case 11, no energy bill scores 0 points even with low income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 0
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 0 / 12,000 = 0: "5% or less".
+    az_liheap_energy_burden_points: 0
+
+- name: Case 12, propane heat adds 2 portable-fuel points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        pre_subsidy_electricity_expense: 1_200
+        bottled_gas_expense: 1_500
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # (1,200 + 1,500) / 24,000 = 0.1125: 11%-15% band 2 points + 2 portable.
+    az_liheap_energy_cost: 2_700
+    az_liheap_energy_burden_points: 4
+
+- name: Case 13, wood heat adds 2 portable-fuel points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        pre_subsidy_electricity_expense: 1_200
+        wood_expense: 900
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # (1,200 + 900) / 24,000 = 0.0875: 6%-10% band 1 point + 2 portable.
+    az_liheap_energy_burden_points: 3
+
+- name: Case 14, coal heat adds 2 portable-fuel points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: COAL
+        pre_subsidy_electricity_expense: 1_200
+        coal_expense: 800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # (1,200 + 800) / 24,000 = 0.0833: 6%-10% band 1 point + 2 portable.
+    az_liheap_energy_burden_points: 3
+
+- name: Case 15, natural gas heat earns no portable-fuel points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # (1,200 + 600) / 24,000 = 0.075: 6%-10% band, 1 point, no bonus.
+    az_liheap_energy_burden_points: 1
+
+- name: Case 16, fuel oil is not an Arizona portable fuel and earns no bonus.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        pre_subsidy_electricity_expense: 1_200
+        fuel_oil_expense: 1_500
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # (1,200 + 1,500) / 24,000 = 0.1125: 2 points; policy p. 5 lists propane,
+    # wood, coal, generator fuel and pellets only.
+    az_liheap_energy_burden_points: 2
+
+- name: Case 17, all seven energy bills are summed into the burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        gas_expense: 600
+        bottled_gas_expense: 300
+        wood_expense: 200
+        coal_expense: 100
+        fuel_oil_expense: 150
+        other_heating_fuel_expense: 450
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1,200 + 600 + 300 + 200 + 100 + 150 + 450 = 3,000.
+    az_liheap_energy_cost: 3_000
+    # 3,000 / 24,000 = 0.125: 11%-15% band; electric heat, no bonus.
+    az_liheap_energy_burden_points: 2

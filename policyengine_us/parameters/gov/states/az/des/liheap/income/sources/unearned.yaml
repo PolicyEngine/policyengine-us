@@ -1,0 +1,39 @@
+description: Arizona uses these person-level unearned income sources to determine gross household income under the Low Income Home Energy Assistance Program.
+# Section VI.A.6.e.ii.B-D counts "Unearned income, including SSA and TANF
+# benefits, alimony, child support, gambling profits, and retirement income",
+# "Income from Unemployment Insurance" and "Consistent income received from
+# other sources"; the plan's Section 1.9 checks the full list. Cash Assistance
+# (az_tanf) is a household benefit and is added in az_liheap_countable_income.
+values:
+  2025-08-25:
+    - unemployment_compensation
+    - strike_benefits
+    # Section VII.A.1.c.ii.D note: Medicare premiums "should be subtracted when
+    # determining gross income". Social Security is counted gross here; the
+    # premium netting is deferred, as in the other state LIHEAP implementations.
+    - social_security
+    - ssi
+    - pension_income
+    # retirement_distributions already sums taxable and tax-exempt IRA, 401(k),
+    # SEP, 403(b) and Keogh distributions.
+    - retirement_distributions
+    - veterans_benefits
+    - alimony_income
+    - child_support_received
+    - rental_income
+    - interest_income
+    - ordinary_dividend_income
+    - general_assistance
+    # Cash gifts over $50, jury duty, legal settlements, insurance payments to
+    # the insured, mortgage or sales-contract payments, royalties and foster or
+    # adoption care payments have no model input.
+
+metadata:
+  unit: list
+  period: year
+  label: Arizona LIHEAP countable unearned income sources
+  reference:
+    - title: Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025), Section VI.A.6.e.ii.B-D (page 8) and Section VII.A.1.c.ii.C-F (pages 13-14)
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8
+    - title: Arizona LIHEAP FY2026 State Plan, Section 1.9 (unemployment insurance, strike pay, SSA benefits, SSI, retirement and pension, general assistance, TANF, rental income, alimony, child support, interest, dividends or royalties and VA benefits counted), pages 6-7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6
