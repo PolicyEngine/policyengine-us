@@ -778,3 +778,165 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 12_000
+
+# Manual pp14-17 allows reported Medicare deductions, separately from support paid.
+- name: "Case 27, reported Part B reduces Social Security income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premiums_reported: 2_400
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 21_600
+
+# Manual pp14-17 allows reported Medicare deductions, separately from support paid.
+- name: "Case 28, reported Part B reduces Railroad Retirement income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        railroad_benefits: 18_000
+        medicare_part_b_premiums_reported: 2_400
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 15_600
+
+# Manual pp14-17 allows reported Medicare deductions, separately from support paid.
+- name: "Case 29, reported support and Part B deductions both apply."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premiums_reported: 2_400
+        child_support_expense: 2_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 19_600
+
+# Manual pp14-17 allows reported Medicare deductions, separately from support paid.
+- name: "Case 30, combined allowed deductions cannot produce negative income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premiums_reported: 2_400
+        child_support_expense: 23_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 0
+
+# Manual pp14-17 allows reported Medicare deductions, separately from support paid.
+- name: "Case 31, Medicare age does not create an unreported premium deduction."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premiums_reported: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 24_000
+
+# Manual pp14-17 deducts each reported allowable premium within its own household.
+- name: "Case 32, reported premiums aggregate within each SPM unit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 24_000
+        medicare_part_b_premiums_reported: 2_400
+      person2:
+        age: 68
+        immigration_status: "CITIZEN"
+        ssi: 0
+        railroad_benefits: 18_000
+        medicare_part_b_premiums_reported: 1_200
+      person3:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 12_000
+        medicare_part_b_premiums_reported: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+      spm_unit2:
+        members: ["person3"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: [38_400, 12_000]

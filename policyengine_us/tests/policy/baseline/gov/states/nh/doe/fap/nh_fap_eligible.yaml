@@ -910,3 +910,47 @@
         state_code: "NH"
   output:
     nh_fap_eligible: true
+
+# Manual pp17,74: 50,000 - 2,000 = 48,000 is below the 48,713 ceiling;
+# the identical gross amount without a reported premium remains above it.
+- name: "Case 26, reported Medicare deductions affect income eligibility."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 50_000
+        medicare_part_b_premiums_reported: 2_000
+      person2:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        social_security: 50_000
+        medicare_part_b_premiums_reported: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 4_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 4_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: [48_000, 50_000]
+    nh_fap_eligible: [true, false]

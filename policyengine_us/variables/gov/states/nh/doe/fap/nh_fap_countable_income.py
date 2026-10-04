@@ -45,10 +45,7 @@ class nh_fap_countable_income(Variable):
         investment_income = max_(interest - p.investment_disregard, 0) + max_(
             dividends - p.investment_disregard, 0
         )
-        # FANF is an SPM-unit benefit and is counted once. Gross Social Security
-        # and Railroad Retirement remain counted: Medicare B/D reconstruction
-        # is deferred. Support-paid regularity and mileage reimbursements are
-        # not separately observed; only reported support is deducted.
+        # FANF is an SPM-unit benefit and is counted once.
         income = (
             countable_earnings
             + unearned_income
@@ -56,5 +53,12 @@ class nh_fap_countable_income(Variable):
             + investment_income
             + spm_unit("nh_fanf", period)
         )
+        # Support-paid regularity and mileage reimbursements are not observed.
         support_paid = add(spm_unit, period, ["child_support_expense"])
-        return max_(income - support_paid, 0)
+        # Reported Part B represents the allowable benefit-withheld deduction;
+        # withholding is not separately observed. Part D and automatic premium
+        # reconstruction remain unmodeled.
+        reported_part_b = spm_unit.sum(
+            max_(person("medicare_part_b_premiums_reported", period), 0)
+        )
+        return max_(income - support_paid - reported_part_b, 0)
