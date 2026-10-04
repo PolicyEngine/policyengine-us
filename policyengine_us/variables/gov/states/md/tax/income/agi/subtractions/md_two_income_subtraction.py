@@ -8,8 +8,8 @@ class md_two_income_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=16"
-        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-207&enactments=false"
+        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=16",
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-207&enactments=false",
     )
     defined_for = StateCode.MD
 

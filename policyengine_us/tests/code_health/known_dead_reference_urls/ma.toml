@@ -1,0 +1,119 @@
+# Dead reference URLs retired in the ma batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2011-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250330145430/https://www.mass.gov/doc/2011-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2012-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250421031433/https://www.mass.gov/doc/2012-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2013-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250712232750/https://www.mass.gov/doc/2013-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2014-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250330190731/https://www.mass.gov/doc/2014-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2015-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250421070754/https://www.mass.gov/doc/2015-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2016-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250405233223/https://www.mass.gov/doc/2016-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2017-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250419195851/https://www.mass.gov/doc/2017-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2018-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250901024119/https://www.mass.gov/doc/2018-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2019-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250901192209/https://www.mass.gov/doc/2019-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2020-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250901231525/https://www.mass.gov/doc/2020-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2021-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250901051420/https://www.mass.gov/doc/2021-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20230513222941/https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2021-schedule-b-interest-dividends-and-certain-capital-gains-and-losses/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240317005446/https://www.mass.gov/doc/2021-schedule-b-interest-dividends-and-certain-capital-gains-and-losses/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240317005519/https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/2022-form-1-instructions/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20230616200742/https://www.mass.gov/doc/2022-form-1-instructions/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20221024195401/https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/fy2025-heap-state-plan-draft/download"
+verified = "2026-10-01"
+replacement = "https://liheapch.acf.gov/docs/2025/state-plans/MA_Plan_2025.pdf"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20231018152139/https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250902041737/https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
+
+[[dead]]
+prefix = "https://www.mass.gov/info-details/529-plan-deduction"
+verified = "2026-10-01"
+replacement = "https://www.mass.gov/technical-information-release/tir-22-5-tax-provisions-in-recent-massachusetts-legislation"
+
+[[dead]]
+prefix = "https://www.mass.gov/info-details/chapter-62f-taxpayer-refunds"
+verified = "2026-10-01"
+replacement = "https://www.mass.gov/audit/audit-of-the-determination-of-whether-net-state-tax-revenues-exceeded-allowable-state-tax-revenues-0"
+
+[[dead]]
+prefix = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption"
+verified = "2026-10-01"
+replacement = "https://www.mass.gov/info-details/personal-income-tax-exemptions"
