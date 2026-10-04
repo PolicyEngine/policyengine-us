@@ -9,8 +9,8 @@ class mi_home_heating_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://web.archive.org/web/20230926141111/https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance"
-        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-527a"
+        "https://web.archive.org/web/20230926141111/https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-527a",
     )
 
     def formula(tax_unit, period, parameters):
