@@ -482,3 +482,57 @@
     - 350
     - 350
     - 0
+
+# Accepted plan section 1.9 p7 and FY2026 matrix p1, confirmed review C1/C2:
+# 40_000 - 30_000 = 10_000 net gambling is in the 350 band; 40_000 periodic
+# estate receipts exceed the ordinary 32_155 limit. No categorical receipts.
+- name: Case 11, net gambling and periodic estate income determine ordinary awards.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    gambling_winnings: [40_000, 0]
+    gambling_losses: [30_000, 0]
+    estate_income: [0, 40_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [10_000, 40_000]
+    fl_liheap: [350, 0]
+
+# FY2026 matrix p1: five completed years includes age 5.5, before the sixth
+# birthday. Zero income gives the 350 base plus the 150 child supplement.
+- name: Case 12, a child between the fifth and sixth birthdays retains the addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 5.5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap: 500

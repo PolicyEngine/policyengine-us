@@ -8,6 +8,7 @@ class fl_liheap_countable_income(Variable):
     unit = USD
     label = "Florida LIHEAP annual countable household income"
     defined_for = StateCode.FL
+    # Plan section 1.9, pages 5-7; manual pages 49-51.
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5",
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49",
@@ -29,6 +30,8 @@ class fl_liheap_countable_income(Variable):
         # floor the combined household total. Rental income is nonnegative.
         earned = add(person, period, p.sources.earned)
         unearned = add(person, period, p.sources.unearned, options=[ADD])
+        # The plan counts net gambling or lottery winnings.
+        unearned = unearned - person("gambling_losses", period)
         # Count the state cash grant once at SPM level as a caregiver grant.
         # Its calculated default is a receipt proxy; observed amounts can be
         # supplied through the existing variable. No national TANF aggregate.

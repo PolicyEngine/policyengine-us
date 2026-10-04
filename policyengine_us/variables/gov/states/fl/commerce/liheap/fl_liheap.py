@@ -36,7 +36,7 @@ class fl_liheap(Variable):
         age = spm_unit.members("age", period)
         elderly = spm_unit.any(age >= p.elderly_min_age)
         disabled = spm_unit.any(spm_unit.members("is_disabled", period))
-        child = spm_unit.any(age <= p.child_max_age)
+        child = spm_unit.any(age < p.child_max_age + 1)
         supplements = (
             elderly * p.supplement.elderly
             + disabled * p.supplement.disabled

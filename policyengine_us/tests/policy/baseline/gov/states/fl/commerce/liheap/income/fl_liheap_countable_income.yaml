@@ -113,7 +113,7 @@
   output:
     fl_liheap_countable_income: 30_000
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 5, age 15 nonstudent follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -133,6 +133,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -147,7 +150,7 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 6, age 16 nonstudent follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -167,6 +170,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -179,9 +185,9 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 13_200
+    fl_liheap_countable_income: 14_600
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 7, age 16 full time student follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -201,6 +207,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -215,7 +224,7 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 8, age 17 nonstudent follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -235,6 +244,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -247,9 +259,9 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 13_200
+    fl_liheap_countable_income: 14_600
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 9, age 17 full time student follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -269,6 +281,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -283,7 +298,7 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes all earnings under18. Older detailed manualp49 supplies unearned18+ or16/17nonstudent rule. Parent12000; young adult6000 wages+1200 business+1200 SSA when all included. This reconciles authorities rather than claiming the plan states the unearned age rule.
+# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
 - name: Case 10, age 18 full time student follows separate earned and unearned age rules.
   period: 2026
   absolute_error_margin: 0.01
@@ -303,6 +318,9 @@
         employment_income: 6_000
         self_employment_income: 1_200
         social_security: 1_200
+        estate_income: 900
+        gambling_winnings: 600
+        gambling_losses: 100
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -315,7 +333,7 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 20_400
+    fl_liheap_countable_income: 21_800
 
 # Current planp6 rent and retirement categories:30000+1200ordinaryrent+5000farmrent+1200survivor=37400; no assumed rental loss or extra allowance.
 - name: Case 11, rental and survivor inputs count independently in full.
@@ -346,7 +364,7 @@
   output:
     fl_liheap_countable_income: 37_400
 
-# Current planp6 listed receipts:18000+1200+2400+1200+600+600+600+300+300+1200+600+120+240=27360. AnnualSSI counted once; no pension/SSA subcomponent duplication.
+# Current plan pp6-7: prior disjoint receipts 27_360 + 2_400 periodic estate income = 29_760. Estate receipts exclude inherited principal and separately reported interest/dividends; annual SSI, pension and SSA count once.
 - name: Case 12, disjoint covered unearned receipts and canonical dividends count once.
   period: 2026
   absolute_error_margin: 0.01
@@ -369,6 +387,7 @@
         alimony_income: 600
         interest_income: 120
         ordinary_dividend_income: 240
+        estate_income: 2_400
     spm_units:
       spm_unit:
         members: [person1]
@@ -381,7 +400,7 @@
         members: [person1]
         state_code: FL
   output:
-    fl_liheap_countable_income: 27_360
+    fl_liheap_countable_income: 29_760
 
 # Current planp6 expressly marks SSA including Medicare deduction; manualp50 adds premiums back to net checks. Gross24000 remains24000, not21600.
 - name: Case 13, gross Social Security remains counted before Medicare premiums.
@@ -475,8 +494,8 @@
     fl_liheap_household_size: 1
     fl_liheap_countable_income: 20_000
 
-# Current planp6 explicitly counts lottery winnings in the lump-sum row. Here gambling_winnings represents6000 lottery receipts;12000+6000=18000. Casino-versus-lottery classification is not separately represented, and no5000 loss deduction is sourced.
-- name: Case 16, reported lottery winnings count without an invented gambling loss deduction.
+# Accepted FY2026 plan section 1.9, physical p7: net gambling or lottery winnings. Confirmed review C1: 40_000 winnings - 30_000 associated losses = 10_000.
+- name: Case 16, gambling winnings count net of associated losses.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -486,9 +505,8 @@
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        employment_income: 12_000
-        gambling_winnings: 6_000
-        gambling_losses: 5_000
+        gambling_winnings: 40_000
+        gambling_losses: 30_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -501,4 +519,25 @@
         members: [person1]
         state_code: FL
   output:
-    fl_liheap_countable_income: 18_000
+    fl_liheap_countable_income: 10_000
+
+# Plan p7 requires net gambling; contract v1.2 preserves only the household floor.
+# max(1_200 + 4_000 - losses, 0) = 1_200, 200, 0; no per-source loss floor.
+- name: Case 17, net gambling losses offset income before the household floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL, FL]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false]
+    ssi: [0, 0, 0]
+    fl_tca: [0, 0, 0]
+    snap: [0, 0, 0]
+    employment_income: [1_200, 1_200, 1_200]
+    gambling_winnings: [4_000, 4_000, 4_000]
+    gambling_losses: [4_000, 5_000, 10_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [1_200, 200, 0]
