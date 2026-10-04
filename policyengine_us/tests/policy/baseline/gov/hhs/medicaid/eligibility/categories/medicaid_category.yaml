@@ -101,3 +101,63 @@
     is_optional_senior_or_disabled_for_medicaid: false
     medicaid_category: NONE
     is_medicaid_eligible: false
+
+# Oregon, 2026: the standard is also the SSI rate, $1,491 a month ($17,892 a
+# year) for a couple, but income must be "below the standard" (OAR
+# 461-155-0250(3)). Countable income is the couple's Social Security less
+# one $20 a month general exclusion ($240 a year).
+- name: Case 11, aged Oregon couple exactly at the SSI couple rate gets neither SSI nor the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 9_066
+      person2:
+        age: 70
+        social_security_retirement: 9_066
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Countable income 18,132 - 240 = 17,892, equal to the standard.
+    ssi: [0, 0]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+
+- name: Case 12, aged Oregon couple who do not take up SSI, one dollar under the couple rate, are covered by the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 9_066
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        social_security_retirement: 9_065
+        takes_up_ssi_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Countable income 18,131 - 240 = 17,891, under the standard.
+    ssi: [0, 0]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+    is_medicaid_eligible: [true, true]
