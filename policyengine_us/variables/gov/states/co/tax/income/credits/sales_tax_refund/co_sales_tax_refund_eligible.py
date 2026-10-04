@@ -6,7 +6,7 @@ class co_sales_tax_refund_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the Colorado sales tax refund"
     definition_period = YEAR
-    reference = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23"
+    reference = "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=23"
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):

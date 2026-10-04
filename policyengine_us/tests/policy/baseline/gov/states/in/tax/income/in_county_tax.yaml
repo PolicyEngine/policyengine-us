@@ -24,3 +24,30 @@
     state_code_str: MD
   output: 
     in_county_tax: 0
+
+- name: Negative Indiana AGI results in zero county tax (Schedule CT-40 floor)
+  period: 2021
+  input:
+    in_agi: -10_000
+    county_str: BOONE_COUNTY_IN
+    state_code_str: IN
+  output:
+    in_county_tax: 0
+
+- name: UNKNOWN county in Indiana produces zero tax without raising ParameterNotFoundError
+  period: 2024
+  input:
+    in_agi: 10_000
+    county_str: UNKNOWN
+    state_code_str: IN
+  output:
+    in_county_tax: 0
+
+- name: Unsupplied county defaults to Adams County
+  period: 2024
+  input:
+    state_code_str: IN
+    in_agi: 10_000
+  output:
+    in_county_tax: 160  # 10,000 * 1.6% (Adams County 2024 rate)
+
