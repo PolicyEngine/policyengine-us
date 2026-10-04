@@ -1,0 +1,14 @@
+# Dead casetext.com reference URLs.
+# casetext.com shut down: every statute, regulation and case page returns
+# HTTP 410 Gone to a GET request, and the home page redirects to a Thomson
+# Reuters product page with no legal text. #9627 replaced all 199 references.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://casetext.com/"
+verified = "2026-10-03"
+replacement = """\
+the same section on the official legislature or code site, or \
+law.justia.com where the state has no free official per-section code; \
+Cornell LII (law.cornell.edu/regulations/<state>/...) for state \
+regulations without a usable official deep link."""
