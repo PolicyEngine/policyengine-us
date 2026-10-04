@@ -1,3 +1,16 @@
+## [2.24.0] - 2026-10-04
+
+### Added
+
+- Add `marginal_tax_rate_computed`, which flags the people whose marginal tax rates are simulated (the top `simulation.marginal_tax_rate_adults` earners among each household's adults); the marginal tax rate variables are a placeholder zero for everyone else.
+
+### Fixed
+
+- Replace dead Maryland, DC, Delaware, Pennsylvania, Virginia, West Virginia and New Jersey reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Vermont, Connecticut, New York Labor, Maine, Hawaii and California county reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Fix `cliff_evaluated` to rank adults by market income, as the marginal tax rate loop does, instead of by age.
+
+
 ## [2.23.10] - 2026-10-04
 
 ### Changed

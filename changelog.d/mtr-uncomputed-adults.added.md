@@ -1,1 +1,0 @@
-Add `marginal_tax_rate_computed`, which flags the people whose marginal tax rates are simulated (the top `simulation.marginal_tax_rate_adults` earners among each household's adults); the marginal tax rate variables are a placeholder zero for everyone else.
