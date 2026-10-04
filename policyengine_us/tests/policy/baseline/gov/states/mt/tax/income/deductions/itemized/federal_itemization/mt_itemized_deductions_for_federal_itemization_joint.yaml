@@ -1,3 +1,6 @@
+# 26 U.S.C. 163(d)(1): investment interest "shall not exceed the net investment
+# income"; Form 4952 line 8 is the smaller of line 3 or line 6.
+# The 2023 MT Form 2 instructions, line 10, use the federal Form 4952 computation.
 - name: Test case 1 # filing separate
   period: 2021
   input:
@@ -11,7 +14,10 @@
      mt_federal_income_tax_deduction_for_federal_itemization: 2_000
      state_code: MT
   output:
-    mt_itemized_deductions_for_federal_itemization_joint: 9_588 
+    # Form 4952 lines 3/6/8 = 265/0/0, so investment interest contributes zero.
+    # 800 charity + (400 + 123) misc + 1,000 medical + 5,000 SALT
+    # + 2,000 federal tax = 9,323; the former 265 interest deduction is disallowed.
+    mt_itemized_deductions_for_federal_itemization_joint: 9_323
 
 - name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
   period: 2022
@@ -73,4 +79,7 @@
         members: [person1, person2, person3]
         mt_federal_income_tax_deduction_for_federal_itemization: 600
   output:
-    mt_itemized_deductions_for_federal_itemization_joint: [2_212, 0, 0]
+    # Form 4952 lines 3/6/8 = 100/0/0; investment interest contributes zero.
+    # Head: (100 + 100 + 100) misc + (200 + 200 + 12) medical
+    # + (300 + 300 + 200) SALT + 600 federal tax = 2,112; others receive zero.
+    mt_itemized_deductions_for_federal_itemization_joint: [2_112, 0, 0]

@@ -2,7 +2,8 @@ description: Virginia reduced the applicable itemized deductions by the followin
 values:
   2013-01-01:
     - medical_expense_deduction
-    - investment_interest_expense
+    # Virginia Schedule A line 9 is the investment interest deduction.
+    - investment_interest_expense_deduction
     - gambling_losses
     - casualty_loss_deduction
 metadata:

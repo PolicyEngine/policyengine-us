@@ -3,7 +3,8 @@ values:
   2021-01-01:
     - medical_expense_deduction
     - casualty_loss_deduction
-    - non_mortgage_interest
+    # Schedule CA limitation worksheet line 2 uses federal Schedule A line 9.
+    - investment_interest_expense_deduction
 
 metadata:
   unit: list

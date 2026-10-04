@@ -18,4 +18,5 @@ class ca_itemized_deductions_pre_limitation(Variable):
         "ca_investment_interest_expense_deduction",
         "real_estate_taxes",
     ]
-    subtracts = ["investment_interest_expense"]
+    # Replace federal Schedule A line 9 with the California FTB 3526 deduction.
+    subtracts = ["investment_interest_expense_deduction"]
