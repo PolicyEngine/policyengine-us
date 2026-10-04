@@ -1,4 +1,10 @@
 description: Income sources counted as net investment income.
+# net_investment_income sums person-level sources over the head and spouse
+# only. Section 1411(a)(1) taxes each individual's own net investment income,
+# so a tax unit dependent's amounts go on the dependent's own Form 8960. A
+# parent's Form 8960 includes a child's interest, dividends and capital gain
+# distributions only under a Form 8814 election (Form 8960 line 7), which is
+# not modeled. A tax-unit-level source must already leave dependents out.
 values:
   2013-01-01:
     - taxable_interest_income
@@ -14,9 +20,11 @@ values:
     # code H input says otherwise, and a dependent's amounts stay out of the
     # filer's net investment income.
     - estate_net_investment_income
-    # Form 8960 line 5a: the Form 1040 line 7 capital gain or loss, which
-    # includes capital gain distributions whether or not Schedule D is filed.
-    - loss_limited_net_capital_gains
+    # Form 8960 line 5a: the head and spouse's Form 1040 line 7a capital gain
+    # or loss, Schedule D gains and losses with capital gain distributions
+    # (line 13), limited under § 1211(b). Distributions reported without
+    # Schedule D are the same amount.
+    - filer_loss_limited_net_capital_gains
 metadata:
   unit: currency-USD
   label: net investment income sources
@@ -35,3 +43,9 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=7
     - title: 2024 Instructions for Form 8960, line 7 (distributions from estates and trusts)
       href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11
+    - title: 26 U.S. Code § 1411(a)(1) - Imposition of tax on individuals
+      href: https://www.law.cornell.edu/uscode/text/26/1411#a_1
+    - title: 2024 Instructions for Form 8960, line 7 (Form 8814 election)
+      href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11
+    - title: 2025 Instructions for Form 8814, Net Investment Income Tax (NIIT)
+      href: https://www.irs.gov/pub/irs-pdf/i8814.pdf#page=2
