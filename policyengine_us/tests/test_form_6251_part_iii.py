@@ -268,7 +268,8 @@ FILING_STATUS = SYSTEM.variables["filing_status"].possible_values
     st.integers(2013, 2035),
 )
 def test_line_18_schedule(amounts, year):
-    p = SYSTEM.parameters(f"{year}-01-01").gov.irs.income.amt
+    # The AMT subtree only: the whole tree at an instant is slow to build.
+    p = SYSTEM.parameters.gov.irs.income.amt(f"{year}-01-01")
     line_17 = np.repeat(np.array(amounts, dtype=float), len(STATUSES))
     statuses = np.tile(np.array(STATUSES), len(amounts))
     filing_status = FILING_STATUS.encode(statuses)
