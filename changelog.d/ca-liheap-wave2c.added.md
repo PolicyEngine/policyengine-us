@@ -1,1 +1,1 @@
-Add California FY2026 regular gas and electric utility HEAP, including county schedules and shared income and household calculations; wood, propane and oil assistance remains incomplete.
+Add California FY2026 regular gas and electric utility HEAP and the ordinary Madera propane/fuel-oil component, reusing household and income calculations with explicit model coverage; wood and other liquid-fuel areas remain incomplete.

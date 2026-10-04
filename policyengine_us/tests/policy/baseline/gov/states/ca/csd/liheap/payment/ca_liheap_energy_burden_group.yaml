@@ -1,0 +1,183 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,257,279,282,283
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# FY2026 ordinary liquid component; no discretionary vendor supplement.
+# Annual recurring income/costs represent the same application month.
+
+
+# Annual income12000 means monthly1000. Costs/120 give percent burdens
+# 0,10.929,10.930,13.469,13.470,16.009,16.010,100,100.001.
+# Truncate after two percent decimals. Raw burden above100 is unsupported,
+# not a legal denial. Annual1311.60 specifically guards float32 boundary storage.
+- name: "Case 1, Madera truncation boundaries and the closed one hundred percent endpoint."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 0
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1311.48
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1311.6
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1616.28
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1616.4
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1921.08
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1921.2
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12000
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12000.12
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_energy_burden_group: [1, 1, 2, 2, 3, 3, 4, 4, 0]
+
+# 120+240+360+480+720=1920;1920/12000=16.00 percent, group3.
+# The deprecated metered gas value duplicates gas and is excluded. Water/sewer
+# are not one of the five energy categories on state-plan p257.
+- name: "Case 2, all five energy costs enter once and unrelated expenses do not."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 480
+        pre_subsidy_electricity_expense: 120
+        gas_expense: 240
+        wood_expense: 360
+        fuel_oil_expense: 720
+        metered_gas_expense: 9000
+        water_expense: 9000
+        sewage_expense: 9000
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_energy_burden_group: [3]
+
+# State-plan pp282–283:45.12+56.36=101.48 monthly, not printed101.51.
+# Income1100+250=1350 monthly;101.48/1350=7.517037... percent,
+# truncated7.51 in group1. All source monthly amounts are annualized once.
+- name: "Case 3, published component bills use the correct sum before truncation."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "social_security": 13200, "pension_income": 3000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "NATURAL_GAS"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        gas_expense: 676.32
+        pre_subsidy_electricity_expense: 541.44
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_countable_income: [16200]
+    ca_liheap_energy_burden_group: [1]

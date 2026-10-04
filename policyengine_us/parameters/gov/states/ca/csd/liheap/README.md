@@ -6,13 +6,61 @@ FY2026 is the researched season. Undated formulas and parameter backfilling
 produce unverified historical estimates for earlier years; they do not extend
 verified coverage. FY2027 evidence acquired during research was a draft.
 
-Regular wood/propane/oil assistance remains within the requested program scope,
-but is not yet calculated. Local energy-burden group thresholds are unresolved;
-wood valuation also requires local cord prices and heating-degree-day treatment.
-The utility output is not a total California LIHEAP award. A zero utility
-component for WPO or other unsupported fuels does not establish ineligibility
-for regular assistance. No generic `ca_liheap` final award is provided. Solar,
-coal, OTHER and UNSPECIFIED fuels have no supported utility-table crosswalk.
+`ca_liheap_covered_liquid_heating` also estimates the ordinary propane/fuel-oil
+component where local burden and priority rules have been verified: currently
+Madera County. The statewide liquid base table is encoded, but that alone does
+not establish coverage in other counties. Wood remains unimplemented pending
+approved local quantity prices and county heating-degree-day classification.
+Neither output is a total California LIHEAP award; no generic `ca_liheap` final
+award is provided. Solar, coal, OTHER and UNSPECIFIED fuels have no supported
+utility-table crosswalk, and kerosene is not assigned a statewide liquid rule.
+
+## Liquid component coverage and interpretation
+
+Always read `ca_liheap_liquid_heating_covered` alongside
+`ca_liheap_covered_liquid_heating`:
+
+- Coverage true: the ordinary liquid calculation is supported. A zero component
+  then reflects a modeled basic-eligibility or local-priority failure.
+- Coverage false: this component does not supply an award determination. Its
+  numeric zero is the framework's out-of-coverage default, not a denial or a
+  finding that the household has no regular heating entitlement.
+
+Coverage requires propane or fuel-oil heating in Madera, positive countable
+income, and an energy-cost/income ratio from zero through 100%. Zero-income and
+above-100% burden assignments remain unresolved in the acquired local plan and
+are expressly outside calculation coverage. Other counties and wood are also
+outside this component's coverage. The component is not added to household
+benefit aggregates or substituted for the existing utility registry output.
+
+The liquid schedule uses county/income-group base amounts, the shared $19
+household increment through six members, burden additions of $0/$35/$70/$105,
+and one $105 addition for a household containing a vulnerable member, capped
+at $1,000. It represents the ordinary schedule without the conditional vendor
+service supplement of up to $500; that supplement is not automatic and remains
+unmodeled. There is no unsupported cap at annual or monthly fuel spending.
+
+Madera's burden intervals are 0–10.92%, 10.93–13.46%, 13.47–16.00%, and
+16.01–100%. Percentages are truncated to two decimal places, as required by the
+state guide. The calculation restores monetary cents before classification to
+avoid binary float storage moving exact boundaries. Existing annual electricity,
+natural-gas, wood, propane and fuel-oil costs divided by annual countable income
+approximate the current-month ratio; they cannot isolate arrears, climate
+credits or the duration of a seasonal delivery receipt. Only the canonical
+`gas_expense` is counted, never both it and the deprecated gas input.
+
+Madera assigns income-group points of 10/8/6/4, burden-group points of 4/6/8/10,
+and household demographic points: 10 for a child under six, an additional five
+for a child under three, 10 for someone age 60+, an additional five for someone
+age 70+, and 10 for disability. Each category counts once. The minimum is
+20 points. These local thresholds are not extrapolated to other service areas.
+The local plan has board-adoption evidence; a separate state approval letter
+was not recovered.
+
+`ca_liheap_basic_eligible` shares the existing qualified-adult, income and
+energy-responsibility checks between utility and liquid calculations. It does
+not itself determine local priority or fuel eligibility. The existing utility
+schedule and its documented limitations are preserved.
 
 ## Supported calculations
 
@@ -94,6 +142,9 @@ gains and in-kind assistance are omitted under the source exclusions.
 
 ## References
 
-- [CSD final FY2026 LIHEAP State Plan](https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6,7,9,182,183,184,185,186,187,188,193,196,202,203,205,217,218,219,229,230,231,232,233,234,235,236,237,238,239,240,243,244,245,246,247,248,249,250,257,279,363,364): utility matrix, eligibility guide and unresolved regular WPO rules.
+- [CSD final FY2026 LIHEAP State Plan](https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6,7,9,182,183,184,185,186,187,188,193,196,202,203,205,217,218,219,229,230,231,232,233,234,235,236,237,238,239,240,243,244,245,246,247,248,249,250,257,279,282,283,363,364): utility/liquid matrices, energy-burden precision, eligibility guide and remaining wood rules.
 - [CSD FY2026 income eligibility webpage](https://www.csd.ca.gov/Pages/LIHEAP-Income-Eligibility.aspx): larger-household rounding conflict.
 - [CSD publication index](https://www.csd.ca.gov/Pages/LIHEAPProgram.aspx): final FY2026 and draft FY2027 status, checked October 3, 2026.
+
+- [Madera FY2026 local plan, October 9, 2025 board packet](https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234): local burden bands, priority points and minimum.
+- [Madera November 13, 2025 board packet](https://maderacap.org/wp-content/uploads/2025/11/Agenda-and-Board-Packet-November-13-2025.pdf#page=4,6): October 9 minutes, consent-calendar approval including item D17.

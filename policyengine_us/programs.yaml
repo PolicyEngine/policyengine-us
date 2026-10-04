@@ -853,7 +853,7 @@ programs:
         variable: ca_liheap_utility_heating
         parameter_prefix: gov.states.ca.csd.liheap
         verified_years: "2026"
-        notes: FY2026 regular gas and electric utility heating only. Wood, propane and oil regular assistance is still incomplete. Annual inputs approximate application-month circumstances and SPM units approximate energy households; local priorities, detailed income exclusions and allowable medical-premium composition are not fully represented. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment are outside scope.
+        notes: FY2026 regular gas and electric utility heating, plus a separate ordinary propane/fuel-oil component for Madera using verified local burden and priority rules. Read ca_liheap_liquid_heating_covered with ca_liheap_covered_liquid_heating; an uncovered component zero is not a denial. Wood, other liquid-fuel service areas, zero-income or above-100% burden assignments and conditional vendor-service supplements remain incomplete. Annual inputs approximate application-month circumstances and SPM units approximate energy households; local priorities, detailed income exclusions and allowable medical-premium composition are not fully represented. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment are outside scope.
 
   # --- SSA programs ---
   - id: ssi

@@ -1,0 +1,170 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,257,279,282,283
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# FY2026 ordinary liquid component; no discretionary vendor supplement.
+# Annual recurring income/costs represent the same application month.
+
+
+# State-plan pp193/205/279: qualified adult, countable-income limit and
+# energy responsibility. Heat-in-rent without a separately supplied bill
+# retains the existing unsubsidized-housing proxy; subsidized housing needs
+# a positive reported charge. The17-year-old is assumed not emancipated.
+# No fixture supplies a calculated CA LIHEAP intermediate.
+- name: "Case 1, shared income adult and energy responsibility requirements preserve utility behavior."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p8_1: {"age": 17, "is_citizen_or_legal_immigrant": true, "ssi": 0, "pension_income": 12000}
+      p9_1: {"age": 18, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": false, "ssi": 0, "employment_income": 12000}
+      p10_2: {"age": 5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 60000}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s2:
+        members: ["p2_1"]
+        heating_type: "FUEL_OIL"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        fuel_oil_expense: 2040
+      s3:
+        members: ["p3_1"]
+        heating_type: "NATURAL_GAS"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        gas_expense: 2040
+      s4:
+        members: ["p4_1"]
+        heating_type: "ELECTRICITY"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        pre_subsidy_electricity_expense: 2040
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 0
+        heat_expense_included_in_rent: true
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 120
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s10:
+        members: ["p10_1", "p10_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s11:
+        members: ["p11_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h10:
+        members: ["p10_1", "p10_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "OR"
+        county: "MULTNOMAH_COUNTY_OR"
+  output:
+    ca_liheap_basic_eligible: [true, true, true, true, true, false, true, false, true, false, false, false]
+    ca_liheap_utility_eligible: [false, false, true, true, false, false, false, false, false, false, false, false]

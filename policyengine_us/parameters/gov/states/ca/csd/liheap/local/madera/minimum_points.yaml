@@ -1,0 +1,13 @@
+description: California requires at least this many Madera priority points for regular heating assistance under the Low Income Home Energy Assistance Program.
+# The minimum-energy-burden answer repeats 20 points; it does not state a 20%
+# burden floor. With overlapping age categories, demographics total at most 40.
+values:
+  2025-10-01: 20
+
+metadata:
+  unit: /1
+  period: year
+  label: California LIHEAP Madera minimum priority points
+  reference:
+    - title: CAP Madera FY2026 LIHEAP Local Plan
+      href: https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=189,191,233,234

@@ -1,0 +1,18 @@
+description: California adds these amounts by energy burden group to the ordinary liquid heating schedule under the Low Income Home Energy Assistance Program.
+1:
+  2025-10-01: 0
+2:
+  2025-10-01: 35
+3:
+  2025-10-01: 70
+4:
+  2025-10-01: 105
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: California LIHEAP liquid energy burden addition
+  breakdown: range(1, 5)
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=187,188

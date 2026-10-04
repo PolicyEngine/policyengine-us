@@ -1,0 +1,244 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,257,279,282,283
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# FY2026 ordinary liquid component; no discretionary vendor supplement.
+# Annual recurring income/costs represent the same application month.
+
+
+# One-person monthly incomes1000/1500/1800/2500 fall in original p184
+# groups1/2/3/4. Burden12 percent contributes6; income adds10/8/6/4.
+- name: "Case 1, all income groups contribute their own priority points."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1440.0
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2160.0
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2592.0
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 3600.0
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_income_group: [1, 2, 3, 4]
+    ca_liheap_energy_burden_group: [2, 2, 2, 2]
+    ca_liheap_liquid_priority_points: [16, 14, 12, 10]
+
+# All rows income group1 and burden group1 give14 base points. Under3
+# gets10+5, ages3 through under6 get10, age6 gets0. Age60 adds10,
+# age70 adds10+5; fractional ages5.5 and2.5 remain in their child bands.
+- name: "Case 2, child and older adult fractional ages preserve completed-year bands."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p1_2: {"age": 2.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_2: {"age": 3, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_2: {"age": 5.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p4_2: {"age": 6, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p5_1: {"age": 59.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p6_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p7_1: {"age": 69.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p8_1: {"age": 70, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s2:
+        members: ["p2_1", "p2_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s3:
+        members: ["p3_1", "p3_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s4:
+        members: ["p4_1", "p4_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+    households:
+      h1:
+        members: ["p1_1", "p1_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1", "p2_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1", "p3_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1", "p4_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_priority_points: [29, 24, 24, 14, 14, 24, 24, 29]
+
+# Income10+burden4+young-child10+under3child5+elderly10+age70plus5
+# +disability10=54. Two elders, two young children and two disabled people
+# do not duplicate category points; demographic addition is the maximum40.
+- name: "Case 3, overlapping vulnerability categories count once each."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 70, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000, "is_disabled": true}
+      p1_2: {"age": 75, "is_citizen_or_legal_immigrant": true, "ssi": 0, "is_disabled": true}
+      p1_3: {"age": 2.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_4: {"age": 1, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+    households:
+      h1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_priority_points: [54]
+
+# Madera p191 awards disability points for a household member without an
+# adult or citizenship restriction; the size rule separately excludes the
+# nonqualified member. Income10+burden4+disability10=24 in each household.
+- name: "Case 4, child and nonqualified household disability still identify vulnerability."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p1_2: {"age": 10, "is_citizen_or_legal_immigrant": true, "ssi": 0, "is_disabled": true}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_2: {"age": 40, "is_citizen_or_legal_immigrant": false, "ssi": 0, "is_disabled": true}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+      s2:
+        members: ["p2_1", "p2_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+    households:
+      h1:
+        members: ["p1_1", "p1_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1", "p2_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_household_size: [2, 1]
+    ca_liheap_liquid_priority_points: [24, 24]

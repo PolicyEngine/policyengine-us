@@ -1,0 +1,4052 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,229,234,257,279,282,283
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# FY2026 ordinary liquid component; no discretionary vendor supplement.
+# Annual recurring income/costs represent the same application month.
+# Conditional statewide schedule cases explicitly force only coverage, burden
+# and priority; all other cases derive CA LIHEAP intermediates from raw facts.
+
+
+# Madera BBA411/374/336/284. Row1:411+105=516 at exactly20points.
+# Row2:411+70=481 scheduled but18points<20 gives no approval.
+# Row3:284+70+105=459; row4:284+19+35+105=443. These are ordinary
+# no-supplement awards; income and expenses are annualized raw facts.
+- name: "Case 1, Madera published rules yield the four independently calculated outcomes."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p4_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 36000}
+      p4_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1800
+      s3:
+        members: ["p3_1"]
+        heating_type: "FUEL_OIL"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        fuel_oil_expense: 4200
+      s4:
+        members: ["p4_1", "p4_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 3960
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1", "p4_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_heating_covered: [true, true, true, true]
+    ca_liheap_countable_income: [12000, 12000, 30000, 36000]
+    ca_liheap_income_group: [1, 1, 4, 4]
+    ca_liheap_energy_burden_group: [4, 3, 3, 2]
+    ca_liheap_liquid_priority_points: [20, 18, 22, 20]
+    ca_liheap_covered_liquid_heating: [516, 0, 459, 443]
+
+# Income group1, burden group4 and noVP:411+105+19*(4,5,5).
+# Seven real members are supplied in the last household; no size override.
+- name: "Case 2, family increment stops at six qualified members."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p1_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_6: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_6: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_7: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s2:
+        members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s3:
+        members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+    households:
+      h1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_household_size: [5, 6, 7]
+    ca_liheap_liquid_heating_covered: [true, true, true]
+    ca_liheap_covered_liquid_heating: [592, 611, 611]
+
+# Row1 counts both adults income but only one in size; elderly household
+# member still triggers once-onlyVP:411+105+105=621. Row2 excludes age17
+# earnings but counts pension:411+19+105=535. Remaining rows lack a
+# qualified adult applicant, despite having covered burden/fuel facts.
+- name: "Case 3, nonqualified income minor unearned income and all-member vulnerability interact."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 6000}
+      p1_2: {"age": 70, "is_citizen_or_legal_immigrant": false, "ssi": 0, "employment_income": 6000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 6000}
+      p2_2: {"age": 17, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 10000, "pension_income": 6000}
+      p3_1: {"age": 17, "is_citizen_or_legal_immigrant": true, "ssi": 0, "pension_income": 12000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": false, "ssi": 0, "employment_income": 12000}
+      p4_2: {"age": 5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s2:
+        members: ["p2_1", "p2_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s4:
+        members: ["p4_1", "p4_2"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+    households:
+      h1:
+        members: ["p1_1", "p1_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1", "p2_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1", "p4_2"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_household_size: [1, 2, 1, 1]
+    ca_liheap_countable_income: [12000, 12000, 12000, 12000]
+    ca_liheap_liquid_heating_covered: [true, true, true, true]
+    ca_liheap_basic_eligible: [true, true, false, false]
+    ca_liheap_covered_liquid_heating: [621, 535, 0, 0]
+
+# Every zero here is an uncovered component output, not a legal denial:
+# Fresno local bands, zero-income handling, above100 percent handling, wood
+# prices and Oregon lie outside this staged component. Coverage must always
+# be read with the monetary result.
+- name: "Case 4, unsupported rows expose their coverage flag beside component zero."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 0}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12000.12
+      s4:
+        members: ["p4_1"]
+        heating_type: "WOOD"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        wood_expense: 2040
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "OR"
+        county: "MULTNOMAH_COUNTY_OR"
+  output:
+    ca_liheap_liquid_heating_covered: [false, false, false, false, false]
+    ca_liheap_covered_liquid_heating: [0, 0, 0, 0, 0]
+
+# All energy costs12+2028=2040 establish17 percent burden. The source
+# liquid schedule411+105=516 is not capped at the12 propane expenditure.
+- name: "Case 5, a low primary-fuel bill does not cap the ordinary scheduled payment."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12
+        pre_subsidy_electricity_expense: 2028
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_heating_covered: [true]
+    ca_liheap_energy_burden_group: [4]
+    ca_liheap_covered_liquid_heating: [516]
+
+# Four qualified members give411+3*19=468; group1 burden adds0;
+# anyVP adds105 exactly once, yielding573 despite five priority categories.
+- name: "Case 6, every vulnerable category adds the dollar supplement only once."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 70, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000, "is_disabled": true}
+      p1_2: {"age": 75, "is_citizen_or_legal_immigrant": true, "ssi": 0, "is_disabled": true}
+      p1_3: {"age": 2.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_4: {"age": 1, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+    households:
+      h1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_priority_points: [54]
+    ca_liheap_covered_liquid_heating: [573]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY, not a determination of local approval.
+# All58 county rows were read from original state-plan pp185–186 and checked
+# against the research CSV. Coverage/group1/priority20 are supplied ONLY in
+# this isolated table check; one raw qualified adult and source income band
+# remain real. Group1 burden adds0 and noVP is present, so the schedule
+# equals the published county BBA. Unrecovered local rules are not inferred.
+- name: "Case 7, conditional statewide schedule reproduces every county base in income group 1."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p13_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p14_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p15_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p16_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p17_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p18_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p19_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p20_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p21_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p22_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p23_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p24_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p25_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p26_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p27_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p28_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p29_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p30_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p31_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p32_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p33_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p34_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p35_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p36_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p37_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p38_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p39_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p40_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p41_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p42_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p43_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p44_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p45_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p46_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p47_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p48_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p49_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p50_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p51_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p52_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p53_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p54_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p55_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p56_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p57_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p58_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s10:
+        members: ["p10_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s11:
+        members: ["p11_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s13:
+        members: ["p13_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s14:
+        members: ["p14_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s15:
+        members: ["p15_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s16:
+        members: ["p16_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s17:
+        members: ["p17_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s18:
+        members: ["p18_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s19:
+        members: ["p19_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s20:
+        members: ["p20_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s21:
+        members: ["p21_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s22:
+        members: ["p22_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s23:
+        members: ["p23_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s24:
+        members: ["p24_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s25:
+        members: ["p25_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s26:
+        members: ["p26_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s27:
+        members: ["p27_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s28:
+        members: ["p28_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s29:
+        members: ["p29_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s30:
+        members: ["p30_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s31:
+        members: ["p31_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s32:
+        members: ["p32_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s33:
+        members: ["p33_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s34:
+        members: ["p34_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s35:
+        members: ["p35_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s36:
+        members: ["p36_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s37:
+        members: ["p37_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s38:
+        members: ["p38_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s39:
+        members: ["p39_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s40:
+        members: ["p40_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s41:
+        members: ["p41_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s42:
+        members: ["p42_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s43:
+        members: ["p43_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s44:
+        members: ["p44_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s45:
+        members: ["p45_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s46:
+        members: ["p46_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s47:
+        members: ["p47_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s48:
+        members: ["p48_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s49:
+        members: ["p49_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s50:
+        members: ["p50_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s51:
+        members: ["p51_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s52:
+        members: ["p52_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s53:
+        members: ["p53_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s54:
+        members: ["p54_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s55:
+        members: ["p55_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s56:
+        members: ["p56_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s57:
+        members: ["p57_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s58:
+        members: ["p58_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "ALAMEDA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "ALPINE_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "EL_DORADO_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "AMADOR_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "CALAVERAS_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "TUOLUMNE_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "BUTTE_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "COLUSA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "GLENN_COUNTY_CA"
+      h10:
+        members: ["p10_1"]
+        state_code: "CA"
+        county: "TRINITY_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "CONTRA_COSTA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "CA"
+        county: "DEL_NORTE_COUNTY_CA"
+      h13:
+        members: ["p13_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h14:
+        members: ["p14_1"]
+        state_code: "CA"
+        county: "HUMBOLDT_COUNTY_CA"
+      h15:
+        members: ["p15_1"]
+        state_code: "CA"
+        county: "IMPERIAL_COUNTY_CA"
+      h16:
+        members: ["p16_1"]
+        state_code: "CA"
+        county: "SAN_DIEGO_COUNTY_CA"
+      h17:
+        members: ["p17_1"]
+        state_code: "CA"
+        county: "INYO_COUNTY_CA"
+      h18:
+        members: ["p18_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h19:
+        members: ["p19_1"]
+        state_code: "CA"
+        county: "KERN_COUNTY_CA"
+      h20:
+        members: ["p20_1"]
+        state_code: "CA"
+        county: "KINGS_COUNTY_CA"
+      h21:
+        members: ["p21_1"]
+        state_code: "CA"
+        county: "LAKE_COUNTY_CA"
+      h22:
+        members: ["p22_1"]
+        state_code: "CA"
+        county: "MENDOCINO_COUNTY_CA"
+      h23:
+        members: ["p23_1"]
+        state_code: "CA"
+        county: "NAPA_COUNTY_CA"
+      h24:
+        members: ["p24_1"]
+        state_code: "CA"
+        county: "SOLANO_COUNTY_CA"
+      h25:
+        members: ["p25_1"]
+        state_code: "CA"
+        county: "SONOMA_COUNTY_CA"
+      h26:
+        members: ["p26_1"]
+        state_code: "CA"
+        county: "YOLO_COUNTY_CA"
+      h27:
+        members: ["p27_1"]
+        state_code: "CA"
+        county: "LASSEN_COUNTY_CA"
+      h28:
+        members: ["p28_1"]
+        state_code: "CA"
+        county: "LOS_ANGELES_COUNTY_CA"
+      h29:
+        members: ["p29_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h30:
+        members: ["p30_1"]
+        state_code: "CA"
+        county: "MARIN_COUNTY_CA"
+      h31:
+        members: ["p31_1"]
+        state_code: "CA"
+        county: "MARIPOSA_COUNTY_CA"
+      h32:
+        members: ["p32_1"]
+        state_code: "CA"
+        county: "MERCED_COUNTY_CA"
+      h33:
+        members: ["p33_1"]
+        state_code: "CA"
+        county: "MODOC_COUNTY_CA"
+      h34:
+        members: ["p34_1"]
+        state_code: "CA"
+        county: "MONTEREY_COUNTY_CA"
+      h35:
+        members: ["p35_1"]
+        state_code: "CA"
+        county: "SAN_FRANCISCO_COUNTY_CA"
+      h36:
+        members: ["p36_1"]
+        state_code: "CA"
+        county: "SAN_MATEO_COUNTY_CA"
+      h37:
+        members: ["p37_1"]
+        state_code: "CA"
+        county: "SANTA_CRUZ_COUNTY_CA"
+      h38:
+        members: ["p38_1"]
+        state_code: "CA"
+        county: "NEVADA_COUNTY_CA"
+      h39:
+        members: ["p39_1"]
+        state_code: "CA"
+        county: "PLACER_COUNTY_CA"
+      h40:
+        members: ["p40_1"]
+        state_code: "CA"
+        county: "ORANGE_COUNTY_CA"
+      h41:
+        members: ["p41_1"]
+        state_code: "CA"
+        county: "PLUMAS_COUNTY_CA"
+      h42:
+        members: ["p42_1"]
+        state_code: "CA"
+        county: "SIERRA_COUNTY_CA"
+      h43:
+        members: ["p43_1"]
+        state_code: "CA"
+        county: "RIVERSIDE_COUNTY_CA"
+      h44:
+        members: ["p44_1"]
+        state_code: "CA"
+        county: "SACRAMENTO_COUNTY_CA"
+      h45:
+        members: ["p45_1"]
+        state_code: "CA"
+        county: "SUTTER_COUNTY_CA"
+      h46:
+        members: ["p46_1"]
+        state_code: "CA"
+        county: "YUBA_COUNTY_CA"
+      h47:
+        members: ["p47_1"]
+        state_code: "CA"
+        county: "SAN_BENITO_COUNTY_CA"
+      h48:
+        members: ["p48_1"]
+        state_code: "CA"
+        county: "SAN_BERNARDINO_COUNTY_CA"
+      h49:
+        members: ["p49_1"]
+        state_code: "CA"
+        county: "SAN_JOAQUIN_COUNTY_CA"
+      h50:
+        members: ["p50_1"]
+        state_code: "CA"
+        county: "SAN_LUIS_OBISPO_COUNTY_CA"
+      h51:
+        members: ["p51_1"]
+        state_code: "CA"
+        county: "SANTA_BARBARA_COUNTY_CA"
+      h52:
+        members: ["p52_1"]
+        state_code: "CA"
+        county: "SANTA_CLARA_COUNTY_CA"
+      h53:
+        members: ["p53_1"]
+        state_code: "CA"
+        county: "SHASTA_COUNTY_CA"
+      h54:
+        members: ["p54_1"]
+        state_code: "CA"
+        county: "TEHAMA_COUNTY_CA"
+      h55:
+        members: ["p55_1"]
+        state_code: "CA"
+        county: "SISKIYOU_COUNTY_CA"
+      h56:
+        members: ["p56_1"]
+        state_code: "CA"
+        county: "STANISLAUS_COUNTY_CA"
+      h57:
+        members: ["p57_1"]
+        state_code: "CA"
+        county: "TULARE_COUNTY_CA"
+      h58:
+        members: ["p58_1"]
+        state_code: "CA"
+        county: "VENTURA_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [381, 875, 819, 517, 548, 595, 492, 427, 406, 615, 396, 691, 384, 561, 136, 234, 587, 1000, 385, 391, 511, 566, 384, 385, 427, 383, 915, 211, 411, 418, 769, 388, 996, 451, 422, 397, 406, 753, 481, 182, 935, 927, 225, 384, 370, 448, 465, 249, 379, 409, 365, 356, 496, 519, 805, 351, 389, 285]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY, not a determination of local approval.
+# All58 county rows were read from original state-plan pp185–186 and checked
+# against the research CSV. Coverage/group1/priority20 are supplied ONLY in
+# this isolated table check; one raw qualified adult and source income band
+# remain real. Group1 burden adds0 and noVP is present, so the schedule
+# equals the published county BBA. Unrecovered local rules are not inferred.
+- name: "Case 8, conditional statewide schedule reproduces every county base in income group 2."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p13_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p14_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p15_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p16_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p17_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p18_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p19_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p20_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p21_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p22_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p23_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p24_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p25_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p26_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p27_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p28_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p29_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p30_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p31_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p32_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p33_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p34_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p35_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p36_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p37_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p38_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p39_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p40_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p41_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p42_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p43_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p44_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p45_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p46_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p47_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p48_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p49_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p50_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p51_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p52_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p53_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p54_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p55_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p56_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p57_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+      p58_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 18000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s10:
+        members: ["p10_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s11:
+        members: ["p11_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s13:
+        members: ["p13_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s14:
+        members: ["p14_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s15:
+        members: ["p15_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s16:
+        members: ["p16_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s17:
+        members: ["p17_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s18:
+        members: ["p18_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s19:
+        members: ["p19_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s20:
+        members: ["p20_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s21:
+        members: ["p21_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s22:
+        members: ["p22_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s23:
+        members: ["p23_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s24:
+        members: ["p24_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s25:
+        members: ["p25_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s26:
+        members: ["p26_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s27:
+        members: ["p27_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s28:
+        members: ["p28_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s29:
+        members: ["p29_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s30:
+        members: ["p30_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s31:
+        members: ["p31_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s32:
+        members: ["p32_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s33:
+        members: ["p33_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s34:
+        members: ["p34_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s35:
+        members: ["p35_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s36:
+        members: ["p36_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s37:
+        members: ["p37_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s38:
+        members: ["p38_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s39:
+        members: ["p39_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s40:
+        members: ["p40_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s41:
+        members: ["p41_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s42:
+        members: ["p42_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s43:
+        members: ["p43_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s44:
+        members: ["p44_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s45:
+        members: ["p45_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s46:
+        members: ["p46_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s47:
+        members: ["p47_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s48:
+        members: ["p48_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s49:
+        members: ["p49_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s50:
+        members: ["p50_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s51:
+        members: ["p51_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s52:
+        members: ["p52_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s53:
+        members: ["p53_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s54:
+        members: ["p54_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s55:
+        members: ["p55_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s56:
+        members: ["p56_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s57:
+        members: ["p57_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s58:
+        members: ["p58_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "ALAMEDA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "ALPINE_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "EL_DORADO_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "AMADOR_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "CALAVERAS_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "TUOLUMNE_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "BUTTE_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "COLUSA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "GLENN_COUNTY_CA"
+      h10:
+        members: ["p10_1"]
+        state_code: "CA"
+        county: "TRINITY_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "CONTRA_COSTA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "CA"
+        county: "DEL_NORTE_COUNTY_CA"
+      h13:
+        members: ["p13_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h14:
+        members: ["p14_1"]
+        state_code: "CA"
+        county: "HUMBOLDT_COUNTY_CA"
+      h15:
+        members: ["p15_1"]
+        state_code: "CA"
+        county: "IMPERIAL_COUNTY_CA"
+      h16:
+        members: ["p16_1"]
+        state_code: "CA"
+        county: "SAN_DIEGO_COUNTY_CA"
+      h17:
+        members: ["p17_1"]
+        state_code: "CA"
+        county: "INYO_COUNTY_CA"
+      h18:
+        members: ["p18_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h19:
+        members: ["p19_1"]
+        state_code: "CA"
+        county: "KERN_COUNTY_CA"
+      h20:
+        members: ["p20_1"]
+        state_code: "CA"
+        county: "KINGS_COUNTY_CA"
+      h21:
+        members: ["p21_1"]
+        state_code: "CA"
+        county: "LAKE_COUNTY_CA"
+      h22:
+        members: ["p22_1"]
+        state_code: "CA"
+        county: "MENDOCINO_COUNTY_CA"
+      h23:
+        members: ["p23_1"]
+        state_code: "CA"
+        county: "NAPA_COUNTY_CA"
+      h24:
+        members: ["p24_1"]
+        state_code: "CA"
+        county: "SOLANO_COUNTY_CA"
+      h25:
+        members: ["p25_1"]
+        state_code: "CA"
+        county: "SONOMA_COUNTY_CA"
+      h26:
+        members: ["p26_1"]
+        state_code: "CA"
+        county: "YOLO_COUNTY_CA"
+      h27:
+        members: ["p27_1"]
+        state_code: "CA"
+        county: "LASSEN_COUNTY_CA"
+      h28:
+        members: ["p28_1"]
+        state_code: "CA"
+        county: "LOS_ANGELES_COUNTY_CA"
+      h29:
+        members: ["p29_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h30:
+        members: ["p30_1"]
+        state_code: "CA"
+        county: "MARIN_COUNTY_CA"
+      h31:
+        members: ["p31_1"]
+        state_code: "CA"
+        county: "MARIPOSA_COUNTY_CA"
+      h32:
+        members: ["p32_1"]
+        state_code: "CA"
+        county: "MERCED_COUNTY_CA"
+      h33:
+        members: ["p33_1"]
+        state_code: "CA"
+        county: "MODOC_COUNTY_CA"
+      h34:
+        members: ["p34_1"]
+        state_code: "CA"
+        county: "MONTEREY_COUNTY_CA"
+      h35:
+        members: ["p35_1"]
+        state_code: "CA"
+        county: "SAN_FRANCISCO_COUNTY_CA"
+      h36:
+        members: ["p36_1"]
+        state_code: "CA"
+        county: "SAN_MATEO_COUNTY_CA"
+      h37:
+        members: ["p37_1"]
+        state_code: "CA"
+        county: "SANTA_CRUZ_COUNTY_CA"
+      h38:
+        members: ["p38_1"]
+        state_code: "CA"
+        county: "NEVADA_COUNTY_CA"
+      h39:
+        members: ["p39_1"]
+        state_code: "CA"
+        county: "PLACER_COUNTY_CA"
+      h40:
+        members: ["p40_1"]
+        state_code: "CA"
+        county: "ORANGE_COUNTY_CA"
+      h41:
+        members: ["p41_1"]
+        state_code: "CA"
+        county: "PLUMAS_COUNTY_CA"
+      h42:
+        members: ["p42_1"]
+        state_code: "CA"
+        county: "SIERRA_COUNTY_CA"
+      h43:
+        members: ["p43_1"]
+        state_code: "CA"
+        county: "RIVERSIDE_COUNTY_CA"
+      h44:
+        members: ["p44_1"]
+        state_code: "CA"
+        county: "SACRAMENTO_COUNTY_CA"
+      h45:
+        members: ["p45_1"]
+        state_code: "CA"
+        county: "SUTTER_COUNTY_CA"
+      h46:
+        members: ["p46_1"]
+        state_code: "CA"
+        county: "YUBA_COUNTY_CA"
+      h47:
+        members: ["p47_1"]
+        state_code: "CA"
+        county: "SAN_BENITO_COUNTY_CA"
+      h48:
+        members: ["p48_1"]
+        state_code: "CA"
+        county: "SAN_BERNARDINO_COUNTY_CA"
+      h49:
+        members: ["p49_1"]
+        state_code: "CA"
+        county: "SAN_JOAQUIN_COUNTY_CA"
+      h50:
+        members: ["p50_1"]
+        state_code: "CA"
+        county: "SAN_LUIS_OBISPO_COUNTY_CA"
+      h51:
+        members: ["p51_1"]
+        state_code: "CA"
+        county: "SANTA_BARBARA_COUNTY_CA"
+      h52:
+        members: ["p52_1"]
+        state_code: "CA"
+        county: "SANTA_CLARA_COUNTY_CA"
+      h53:
+        members: ["p53_1"]
+        state_code: "CA"
+        county: "SHASTA_COUNTY_CA"
+      h54:
+        members: ["p54_1"]
+        state_code: "CA"
+        county: "TEHAMA_COUNTY_CA"
+      h55:
+        members: ["p55_1"]
+        state_code: "CA"
+        county: "SISKIYOU_COUNTY_CA"
+      h56:
+        members: ["p56_1"]
+        state_code: "CA"
+        county: "STANISLAUS_COUNTY_CA"
+      h57:
+        members: ["p57_1"]
+        state_code: "CA"
+        county: "TULARE_COUNTY_CA"
+      h58:
+        members: ["p58_1"]
+        state_code: "CA"
+        county: "VENTURA_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [346, 796, 745, 470, 498, 541, 447, 388, 369, 559, 360, 628, 349, 510, 124, 213, 534, 1000, 350, 355, 465, 515, 349, 350, 388, 348, 832, 192, 374, 380, 699, 353, 905, 410, 383, 360, 369, 685, 437, 166, 850, 842, 204, 349, 337, 407, 423, 227, 345, 372, 332, 323, 451, 472, 732, 319, 353, 259]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY, not a determination of local approval.
+# All58 county rows were read from original state-plan pp185–186 and checked
+# against the research CSV. Coverage/group1/priority20 are supplied ONLY in
+# this isolated table check; one raw qualified adult and source income band
+# remain real. Group1 burden adds0 and noVP is present, so the schedule
+# equals the published county BBA. Unrecovered local rules are not inferred.
+- name: "Case 9, conditional statewide schedule reproduces every county base in income group 3."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p13_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p14_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p15_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p16_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p17_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p18_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p19_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p20_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p21_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p22_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p23_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p24_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p25_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p26_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p27_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p28_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p29_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p30_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p31_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p32_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p33_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p34_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p35_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p36_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p37_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p38_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p39_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p40_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p41_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p42_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p43_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p44_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p45_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p46_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p47_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p48_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p49_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p50_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p51_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p52_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p53_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p54_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p55_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p56_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p57_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p58_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s10:
+        members: ["p10_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s11:
+        members: ["p11_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s13:
+        members: ["p13_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s14:
+        members: ["p14_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s15:
+        members: ["p15_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s16:
+        members: ["p16_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s17:
+        members: ["p17_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s18:
+        members: ["p18_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s19:
+        members: ["p19_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s20:
+        members: ["p20_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s21:
+        members: ["p21_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s22:
+        members: ["p22_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s23:
+        members: ["p23_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s24:
+        members: ["p24_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s25:
+        members: ["p25_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s26:
+        members: ["p26_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s27:
+        members: ["p27_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s28:
+        members: ["p28_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s29:
+        members: ["p29_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s30:
+        members: ["p30_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s31:
+        members: ["p31_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s32:
+        members: ["p32_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s33:
+        members: ["p33_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s34:
+        members: ["p34_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s35:
+        members: ["p35_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s36:
+        members: ["p36_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s37:
+        members: ["p37_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s38:
+        members: ["p38_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s39:
+        members: ["p39_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s40:
+        members: ["p40_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s41:
+        members: ["p41_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s42:
+        members: ["p42_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s43:
+        members: ["p43_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s44:
+        members: ["p44_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s45:
+        members: ["p45_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s46:
+        members: ["p46_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s47:
+        members: ["p47_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s48:
+        members: ["p48_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s49:
+        members: ["p49_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s50:
+        members: ["p50_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s51:
+        members: ["p51_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s52:
+        members: ["p52_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s53:
+        members: ["p53_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s54:
+        members: ["p54_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s55:
+        members: ["p55_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s56:
+        members: ["p56_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s57:
+        members: ["p57_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s58:
+        members: ["p58_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "ALAMEDA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "ALPINE_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "EL_DORADO_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "AMADOR_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "CALAVERAS_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "TUOLUMNE_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "BUTTE_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "COLUSA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "GLENN_COUNTY_CA"
+      h10:
+        members: ["p10_1"]
+        state_code: "CA"
+        county: "TRINITY_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "CONTRA_COSTA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "CA"
+        county: "DEL_NORTE_COUNTY_CA"
+      h13:
+        members: ["p13_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h14:
+        members: ["p14_1"]
+        state_code: "CA"
+        county: "HUMBOLDT_COUNTY_CA"
+      h15:
+        members: ["p15_1"]
+        state_code: "CA"
+        county: "IMPERIAL_COUNTY_CA"
+      h16:
+        members: ["p16_1"]
+        state_code: "CA"
+        county: "SAN_DIEGO_COUNTY_CA"
+      h17:
+        members: ["p17_1"]
+        state_code: "CA"
+        county: "INYO_COUNTY_CA"
+      h18:
+        members: ["p18_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h19:
+        members: ["p19_1"]
+        state_code: "CA"
+        county: "KERN_COUNTY_CA"
+      h20:
+        members: ["p20_1"]
+        state_code: "CA"
+        county: "KINGS_COUNTY_CA"
+      h21:
+        members: ["p21_1"]
+        state_code: "CA"
+        county: "LAKE_COUNTY_CA"
+      h22:
+        members: ["p22_1"]
+        state_code: "CA"
+        county: "MENDOCINO_COUNTY_CA"
+      h23:
+        members: ["p23_1"]
+        state_code: "CA"
+        county: "NAPA_COUNTY_CA"
+      h24:
+        members: ["p24_1"]
+        state_code: "CA"
+        county: "SOLANO_COUNTY_CA"
+      h25:
+        members: ["p25_1"]
+        state_code: "CA"
+        county: "SONOMA_COUNTY_CA"
+      h26:
+        members: ["p26_1"]
+        state_code: "CA"
+        county: "YOLO_COUNTY_CA"
+      h27:
+        members: ["p27_1"]
+        state_code: "CA"
+        county: "LASSEN_COUNTY_CA"
+      h28:
+        members: ["p28_1"]
+        state_code: "CA"
+        county: "LOS_ANGELES_COUNTY_CA"
+      h29:
+        members: ["p29_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h30:
+        members: ["p30_1"]
+        state_code: "CA"
+        county: "MARIN_COUNTY_CA"
+      h31:
+        members: ["p31_1"]
+        state_code: "CA"
+        county: "MARIPOSA_COUNTY_CA"
+      h32:
+        members: ["p32_1"]
+        state_code: "CA"
+        county: "MERCED_COUNTY_CA"
+      h33:
+        members: ["p33_1"]
+        state_code: "CA"
+        county: "MODOC_COUNTY_CA"
+      h34:
+        members: ["p34_1"]
+        state_code: "CA"
+        county: "MONTEREY_COUNTY_CA"
+      h35:
+        members: ["p35_1"]
+        state_code: "CA"
+        county: "SAN_FRANCISCO_COUNTY_CA"
+      h36:
+        members: ["p36_1"]
+        state_code: "CA"
+        county: "SAN_MATEO_COUNTY_CA"
+      h37:
+        members: ["p37_1"]
+        state_code: "CA"
+        county: "SANTA_CRUZ_COUNTY_CA"
+      h38:
+        members: ["p38_1"]
+        state_code: "CA"
+        county: "NEVADA_COUNTY_CA"
+      h39:
+        members: ["p39_1"]
+        state_code: "CA"
+        county: "PLACER_COUNTY_CA"
+      h40:
+        members: ["p40_1"]
+        state_code: "CA"
+        county: "ORANGE_COUNTY_CA"
+      h41:
+        members: ["p41_1"]
+        state_code: "CA"
+        county: "PLUMAS_COUNTY_CA"
+      h42:
+        members: ["p42_1"]
+        state_code: "CA"
+        county: "SIERRA_COUNTY_CA"
+      h43:
+        members: ["p43_1"]
+        state_code: "CA"
+        county: "RIVERSIDE_COUNTY_CA"
+      h44:
+        members: ["p44_1"]
+        state_code: "CA"
+        county: "SACRAMENTO_COUNTY_CA"
+      h45:
+        members: ["p45_1"]
+        state_code: "CA"
+        county: "SUTTER_COUNTY_CA"
+      h46:
+        members: ["p46_1"]
+        state_code: "CA"
+        county: "YUBA_COUNTY_CA"
+      h47:
+        members: ["p47_1"]
+        state_code: "CA"
+        county: "SAN_BENITO_COUNTY_CA"
+      h48:
+        members: ["p48_1"]
+        state_code: "CA"
+        county: "SAN_BERNARDINO_COUNTY_CA"
+      h49:
+        members: ["p49_1"]
+        state_code: "CA"
+        county: "SAN_JOAQUIN_COUNTY_CA"
+      h50:
+        members: ["p50_1"]
+        state_code: "CA"
+        county: "SAN_LUIS_OBISPO_COUNTY_CA"
+      h51:
+        members: ["p51_1"]
+        state_code: "CA"
+        county: "SANTA_BARBARA_COUNTY_CA"
+      h52:
+        members: ["p52_1"]
+        state_code: "CA"
+        county: "SANTA_CLARA_COUNTY_CA"
+      h53:
+        members: ["p53_1"]
+        state_code: "CA"
+        county: "SHASTA_COUNTY_CA"
+      h54:
+        members: ["p54_1"]
+        state_code: "CA"
+        county: "TEHAMA_COUNTY_CA"
+      h55:
+        members: ["p55_1"]
+        state_code: "CA"
+        county: "SISKIYOU_COUNTY_CA"
+      h56:
+        members: ["p56_1"]
+        state_code: "CA"
+        county: "STANISLAUS_COUNTY_CA"
+      h57:
+        members: ["p57_1"]
+        state_code: "CA"
+        county: "TULARE_COUNTY_CA"
+      h58:
+        members: ["p58_1"]
+        state_code: "CA"
+        county: "VENTURA_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [311, 716, 670, 423, 448, 487, 402, 349, 332, 503, 324, 566, 314, 459, 111, 191, 481, 928, 315, 320, 418, 463, 314, 315, 349, 313, 749, 172, 336, 342, 629, 318, 815, 369, 345, 324, 332, 616, 394, 149, 765, 758, 184, 314, 303, 366, 380, 204, 310, 335, 299, 291, 406, 424, 658, 287, 318, 233]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY, not a determination of local approval.
+# All58 county rows were read from original state-plan pp185–186 and checked
+# against the research CSV. Coverage/group1/priority20 are supplied ONLY in
+# this isolated table check; one raw qualified adult and source income band
+# remain real. Group1 burden adds0 and noVP is present, so the schedule
+# equals the published county BBA. Unrecovered local rules are not inferred.
+- name: "Case 10, conditional statewide schedule reproduces every county base in income group 4."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p13_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p14_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p15_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p16_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p17_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p18_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p19_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p20_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p21_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p22_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p23_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p24_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p25_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p26_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p27_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p28_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p29_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p30_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p31_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p32_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p33_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p34_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p35_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p36_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p37_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p38_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p39_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p40_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p41_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p42_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p43_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p44_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p45_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p46_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p47_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p48_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p49_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p50_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p51_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p52_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p53_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p54_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p55_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p56_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p57_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+      p58_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 30000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s6:
+        members: ["p6_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s7:
+        members: ["p7_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s8:
+        members: ["p8_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s10:
+        members: ["p10_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s11:
+        members: ["p11_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s13:
+        members: ["p13_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s14:
+        members: ["p14_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s15:
+        members: ["p15_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s16:
+        members: ["p16_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s17:
+        members: ["p17_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s18:
+        members: ["p18_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s19:
+        members: ["p19_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s20:
+        members: ["p20_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s21:
+        members: ["p21_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s22:
+        members: ["p22_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s23:
+        members: ["p23_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s24:
+        members: ["p24_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s25:
+        members: ["p25_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s26:
+        members: ["p26_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s27:
+        members: ["p27_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s28:
+        members: ["p28_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s29:
+        members: ["p29_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s30:
+        members: ["p30_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s31:
+        members: ["p31_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s32:
+        members: ["p32_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s33:
+        members: ["p33_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s34:
+        members: ["p34_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s35:
+        members: ["p35_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s36:
+        members: ["p36_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s37:
+        members: ["p37_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s38:
+        members: ["p38_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s39:
+        members: ["p39_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s40:
+        members: ["p40_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s41:
+        members: ["p41_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s42:
+        members: ["p42_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s43:
+        members: ["p43_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s44:
+        members: ["p44_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s45:
+        members: ["p45_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s46:
+        members: ["p46_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s47:
+        members: ["p47_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s48:
+        members: ["p48_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s49:
+        members: ["p49_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s50:
+        members: ["p50_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s51:
+        members: ["p51_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s52:
+        members: ["p52_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s53:
+        members: ["p53_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s54:
+        members: ["p54_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s55:
+        members: ["p55_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s56:
+        members: ["p56_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s57:
+        members: ["p57_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s58:
+        members: ["p58_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "ALAMEDA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "ALPINE_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "EL_DORADO_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "AMADOR_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "CALAVERAS_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "TUOLUMNE_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "BUTTE_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "COLUSA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "CA"
+        county: "GLENN_COUNTY_CA"
+      h10:
+        members: ["p10_1"]
+        state_code: "CA"
+        county: "TRINITY_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "CONTRA_COSTA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "CA"
+        county: "DEL_NORTE_COUNTY_CA"
+      h13:
+        members: ["p13_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h14:
+        members: ["p14_1"]
+        state_code: "CA"
+        county: "HUMBOLDT_COUNTY_CA"
+      h15:
+        members: ["p15_1"]
+        state_code: "CA"
+        county: "IMPERIAL_COUNTY_CA"
+      h16:
+        members: ["p16_1"]
+        state_code: "CA"
+        county: "SAN_DIEGO_COUNTY_CA"
+      h17:
+        members: ["p17_1"]
+        state_code: "CA"
+        county: "INYO_COUNTY_CA"
+      h18:
+        members: ["p18_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h19:
+        members: ["p19_1"]
+        state_code: "CA"
+        county: "KERN_COUNTY_CA"
+      h20:
+        members: ["p20_1"]
+        state_code: "CA"
+        county: "KINGS_COUNTY_CA"
+      h21:
+        members: ["p21_1"]
+        state_code: "CA"
+        county: "LAKE_COUNTY_CA"
+      h22:
+        members: ["p22_1"]
+        state_code: "CA"
+        county: "MENDOCINO_COUNTY_CA"
+      h23:
+        members: ["p23_1"]
+        state_code: "CA"
+        county: "NAPA_COUNTY_CA"
+      h24:
+        members: ["p24_1"]
+        state_code: "CA"
+        county: "SOLANO_COUNTY_CA"
+      h25:
+        members: ["p25_1"]
+        state_code: "CA"
+        county: "SONOMA_COUNTY_CA"
+      h26:
+        members: ["p26_1"]
+        state_code: "CA"
+        county: "YOLO_COUNTY_CA"
+      h27:
+        members: ["p27_1"]
+        state_code: "CA"
+        county: "LASSEN_COUNTY_CA"
+      h28:
+        members: ["p28_1"]
+        state_code: "CA"
+        county: "LOS_ANGELES_COUNTY_CA"
+      h29:
+        members: ["p29_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h30:
+        members: ["p30_1"]
+        state_code: "CA"
+        county: "MARIN_COUNTY_CA"
+      h31:
+        members: ["p31_1"]
+        state_code: "CA"
+        county: "MARIPOSA_COUNTY_CA"
+      h32:
+        members: ["p32_1"]
+        state_code: "CA"
+        county: "MERCED_COUNTY_CA"
+      h33:
+        members: ["p33_1"]
+        state_code: "CA"
+        county: "MODOC_COUNTY_CA"
+      h34:
+        members: ["p34_1"]
+        state_code: "CA"
+        county: "MONTEREY_COUNTY_CA"
+      h35:
+        members: ["p35_1"]
+        state_code: "CA"
+        county: "SAN_FRANCISCO_COUNTY_CA"
+      h36:
+        members: ["p36_1"]
+        state_code: "CA"
+        county: "SAN_MATEO_COUNTY_CA"
+      h37:
+        members: ["p37_1"]
+        state_code: "CA"
+        county: "SANTA_CRUZ_COUNTY_CA"
+      h38:
+        members: ["p38_1"]
+        state_code: "CA"
+        county: "NEVADA_COUNTY_CA"
+      h39:
+        members: ["p39_1"]
+        state_code: "CA"
+        county: "PLACER_COUNTY_CA"
+      h40:
+        members: ["p40_1"]
+        state_code: "CA"
+        county: "ORANGE_COUNTY_CA"
+      h41:
+        members: ["p41_1"]
+        state_code: "CA"
+        county: "PLUMAS_COUNTY_CA"
+      h42:
+        members: ["p42_1"]
+        state_code: "CA"
+        county: "SIERRA_COUNTY_CA"
+      h43:
+        members: ["p43_1"]
+        state_code: "CA"
+        county: "RIVERSIDE_COUNTY_CA"
+      h44:
+        members: ["p44_1"]
+        state_code: "CA"
+        county: "SACRAMENTO_COUNTY_CA"
+      h45:
+        members: ["p45_1"]
+        state_code: "CA"
+        county: "SUTTER_COUNTY_CA"
+      h46:
+        members: ["p46_1"]
+        state_code: "CA"
+        county: "YUBA_COUNTY_CA"
+      h47:
+        members: ["p47_1"]
+        state_code: "CA"
+        county: "SAN_BENITO_COUNTY_CA"
+      h48:
+        members: ["p48_1"]
+        state_code: "CA"
+        county: "SAN_BERNARDINO_COUNTY_CA"
+      h49:
+        members: ["p49_1"]
+        state_code: "CA"
+        county: "SAN_JOAQUIN_COUNTY_CA"
+      h50:
+        members: ["p50_1"]
+        state_code: "CA"
+        county: "SAN_LUIS_OBISPO_COUNTY_CA"
+      h51:
+        members: ["p51_1"]
+        state_code: "CA"
+        county: "SANTA_BARBARA_COUNTY_CA"
+      h52:
+        members: ["p52_1"]
+        state_code: "CA"
+        county: "SANTA_CLARA_COUNTY_CA"
+      h53:
+        members: ["p53_1"]
+        state_code: "CA"
+        county: "SHASTA_COUNTY_CA"
+      h54:
+        members: ["p54_1"]
+        state_code: "CA"
+        county: "TEHAMA_COUNTY_CA"
+      h55:
+        members: ["p55_1"]
+        state_code: "CA"
+        county: "SISKIYOU_COUNTY_CA"
+      h56:
+        members: ["p56_1"]
+        state_code: "CA"
+        county: "STANISLAUS_COUNTY_CA"
+      h57:
+        members: ["p57_1"]
+        state_code: "CA"
+        county: "TULARE_COUNTY_CA"
+      h58:
+        members: ["p58_1"]
+        state_code: "CA"
+        county: "VENTURA_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [263, 605, 566, 357, 379, 411, 340, 295, 280, 425, 273, 478, 265, 387, 94, 162, 406, 783, 266, 270, 353, 391, 266, 266, 295, 264, 633, 146, 284, 289, 531, 268, 688, 312, 291, 274, 281, 520, 332, 126, 646, 640, 155, 265, 256, 309, 321, 172, 262, 283, 252, 246, 342, 358, 556, 242, 269, 197]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY. Original p187 directly prints
+# Mono groupIII size1 noVP:928/963/998/1000. The final uncapped amount
+# 928+105=1033 is limited to1000. Local Mono approval is not represented.
+- name: "Case 11, conditional printed Mono examples verify burden additions and the cap."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 21600}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 1
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 2
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 3
+        ca_liheap_liquid_priority_points: 20
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 1200
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 4
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [928, 963, 998, 1000]
+
+# ISOLATED CONDITIONAL SCHEDULE ONLY. Source p184 puts80000 annual
+# in groupIV for each real size5/6/7 and below each SMI limit. P187 prints
+# size5 VP group2:783+76+35+105=999; size6 caps783+95+35+105=1018
+# at1000, and size7 retains the size6 increment. Mono approval is not inferred.
+- name: "Case 12, conditional printed Mono group four distinguishes 999 from the cap."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 80000}
+      p1_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p1_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 80000}
+      p2_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p2_6: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 80000}
+      p3_2: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_3: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_4: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_5: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_6: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+      p3_7: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0}
+    spm_units:
+      s1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 8000
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 2
+        ca_liheap_liquid_priority_points: 20
+      s2:
+        members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 8000
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 2
+        ca_liheap_liquid_priority_points: 20
+      s3:
+        members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 8000
+        ca_liheap_liquid_heating_covered: true
+        ca_liheap_energy_burden_group: 2
+        ca_liheap_liquid_priority_points: 20
+    households:
+      h1:
+        members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h2:
+        members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+      h3:
+        members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
+        state_code: "CA"
+        county: "MONO_COUNTY_CA"
+  output:
+    ca_liheap_covered_liquid_heating: [999, 1000, 1000]
+
+- name: "Case 13, monthly SSI and SSP and annual CalWORKs count once in the burden denominator."
+  period: 2026
+  # State-plan pp229/234 count CalWORKs and SSI/SSP. All benefit months
+  # are explicit for every member and SPM unit, avoiding annual-zero conflicts.
+  # Row1:500*12+100*12+4800=12000. Row2:500*12+6000=12000.
+  # Row3:6000 annual CalWORKs+6000 wages=12000. Row4:minor SSI
+  # 500*12+6000 parent wages=12000. Energy2040 gives17 percent in all.
+  # Elder rows:411+105+105=621; family row:411+19+105=535;
+  # disabled child row adds the one VP supplement to give640.
+  input:
+    people:
+      elder1: {"age": 65, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 500, "2026-02": 500, "2026-03": 500, "2026-04": 500, "2026-05": 500, "2026-06": 500, "2026-07": 500, "2026-08": 500, "2026-09": 500, "2026-10": 500, "2026-11": 500, "2026-12": 500}, "pension_income": 4800}
+      elder2: {"age": 65, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 500, "2026-02": 500, "2026-03": 500, "2026-04": 500, "2026-05": 500, "2026-06": 500, "2026-07": 500, "2026-08": 500, "2026-09": 500, "2026-10": 500, "2026-11": 500, "2026-12": 500}, "pension_income": 6000}
+      parent: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}, "employment_income": 6000}
+      child: {"age": 6, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      worker: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}, "employment_income": 6000}
+      disabled_child: {"age": 7, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 500, "2026-02": 500, "2026-03": 500, "2026-04": 500, "2026-05": 500, "2026-06": 500, "2026-07": 500, "2026-08": 500, "2026-09": 500, "2026-10": 500, "2026-11": 500, "2026-12": 500}, "is_disabled": true}
+    spm_units:
+      s1: {"members": ["elder1"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 100, "2026-02": 100, "2026-03": 100, "2026-04": 100, "2026-05": 100, "2026-06": 100, "2026-07": 100, "2026-08": 100, "2026-09": 100, "2026-10": 100, "2026-11": 100, "2026-12": 100}}
+      s2: {"members": ["elder2"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      s3: {"members": ["parent", "child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 6000, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      s4: {"members": ["worker", "disabled_child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+    households:
+      h1: {"members": ["elder1"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}
+      h2: {"members": ["elder2"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}
+      h3: {"members": ["parent", "child"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}
+      h4: {"members": ["worker", "disabled_child"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}
+  output:
+    ca_liheap_countable_income: [12000, 12000, 12000, 12000]
+    ca_liheap_household_size: [1, 1, 2, 2]
+    ca_liheap_energy_burden_group: [4, 4, 4, 4]
+    ca_liheap_liquid_priority_points: [30, 30, 20, 30]
+    ca_liheap_covered_liquid_heating: [621, 621, 535, 640]

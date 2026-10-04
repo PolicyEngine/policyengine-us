@@ -1,0 +1,14 @@
+description: California has verified the following county coverage for the Madera local priority plan under the Low Income Home Energy Assistance Program.
+# This records researched model coverage, not a statewide eligibility restriction.
+# FY2026 is verified; earlier parameter backfills are unverified historical estimates.
+values:
+  2025-10-01:
+    - MADERA_COUNTY_CA
+
+metadata:
+  unit: list
+  period: year
+  label: California LIHEAP Madera researched county coverage
+  reference:
+    - title: CAP Madera FY2026 LIHEAP Local Plan
+      href: https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,194

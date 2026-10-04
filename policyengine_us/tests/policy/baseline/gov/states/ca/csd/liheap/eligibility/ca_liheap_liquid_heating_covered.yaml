@@ -1,0 +1,187 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,257,279,282,283
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# FY2026 ordinary liquid component; no discretionary vendor supplement.
+# Annual recurring income/costs represent the same application month.
+
+
+# Coverage includes Madera propane/oil at zero through100 percent burden.
+# Zero income, raw burden above100, negative energy total, other counties,
+# other states and other fuels are not supported by this liquid component.
+# High income, applicant age17 and zero qualified size can still be covered
+# scenarios; later eligibility determines their result. No unsupported row
+# is asserted to be legally ineligible.
+- name: "Case 1, coverage distinguishes policy gaps from income applicant and priority denials."
+  period: 2026
+  input:
+    people:
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 0}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p5_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p6_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p7_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p8_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p9_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p10_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p11_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p12_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 60000}
+      p13_1: {"age": 17, "is_citizen_or_legal_immigrant": true, "ssi": 0, "pension_income": 12000}
+      p14_1: {"age": 40, "is_citizen_or_legal_immigrant": false, "ssi": 0, "employment_income": 12000}
+    spm_units:
+      s1:
+        members: ["p1_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 0
+      s2:
+        members: ["p2_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12000
+      s3:
+        members: ["p3_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s4:
+        members: ["p4_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12000.12
+      s5:
+        members: ["p5_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s6:
+        members: ["p6_1"]
+        heating_type: "WOOD"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        wood_expense: 2040
+      s7:
+        members: ["p7_1"]
+        heating_type: "NATURAL_GAS"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        gas_expense: 2040
+      s8:
+        members: ["p8_1"]
+        heating_type: "NONE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      s9:
+        members: ["p9_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s10:
+        members: ["p10_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: -12
+      s11:
+        members: ["p11_1"]
+        heating_type: "FUEL_OIL"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        fuel_oil_expense: 2040
+      s12:
+        members: ["p12_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 10200
+      s13:
+        members: ["p13_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+      s14:
+        members: ["p14_1"]
+        heating_type: "PROPANE"
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 2040
+    households:
+      h1:
+        members: ["p1_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h2:
+        members: ["p2_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h3:
+        members: ["p3_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h4:
+        members: ["p4_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h5:
+        members: ["p5_1"]
+        state_code: "CA"
+        county: "FRESNO_COUNTY_CA"
+      h6:
+        members: ["p6_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h7:
+        members: ["p7_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h8:
+        members: ["p8_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h9:
+        members: ["p9_1"]
+        state_code: "OR"
+        county: "MULTNOMAH_COUNTY_OR"
+      h10:
+        members: ["p10_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h11:
+        members: ["p11_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h12:
+        members: ["p12_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h13:
+        members: ["p13_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+      h14:
+        members: ["p14_1"]
+        state_code: "CA"
+        county: "MADERA_COUNTY_CA"
+  output:
+    ca_liheap_liquid_heating_covered: [true, true, false, false, false, false, false, false, false, false, true, true, true, true]

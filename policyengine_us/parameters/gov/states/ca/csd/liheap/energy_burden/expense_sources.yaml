@@ -1,0 +1,18 @@
+description: California includes these canonical energy costs in the energy burden numerator under the Low Income Home Energy Assistance Program.
+# Annual flows approximate current monthly costs. Excludes the deprecated gas
+# duplicate and non-energy bills; climate credits and seasonal timing are unobserved.
+values:
+  2025-10-01:
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    - wood_expense
+    - bottled_gas_expense
+    - fuel_oil_expense
+
+metadata:
+  unit: list
+  period: year
+  label: California LIHEAP energy burden expense sources
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=257,282
