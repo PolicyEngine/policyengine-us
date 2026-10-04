@@ -7,11 +7,19 @@ class loss_limited_net_capital_gains_person(Variable):
     label = "Loss-limited capital gains (person)"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf"
+    documentation = (
+        "Each person's share of loss_limited_net_capital_gains: the person's "
+        "capital gains and losses plus capital gain distributions, with a "
+        "tax-unit net loss limited and allocated in proportion."
+    )
+    reference = "https://www.irs.gov/pub/irs-prior/f1040sd--2025.pdf#page=2"
 
     def formula(person, period, parameters):
-        # Get person's raw capital gains
-        person_capital_gains = person("capital_gains", period)
+        # The person's capital gains and losses, plus capital gain
+        # distributions, which go on Schedule D line 13 with them.
+        person_capital_gains = add(
+            person, period, ["capital_gains", "non_sch_d_capital_gains"]
+        )
 
         # Get tax unit totals
         tax_unit = person.tax_unit

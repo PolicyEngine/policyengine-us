@@ -10,7 +10,9 @@ values:
     - other_net_gain_gross_income
     - capital_gains
     - non_sch_d_capital_gains
-    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
+    # Capital gain distributions reported on Form 1040 line 7a. With capital
+    # losses they go on Schedule D line 13; loss_ald nets the losses against
+    # them (capital_losses_allowed_against_gains).
     - taxable_interest_income
     - rental_income
     # Royalties included in rental income

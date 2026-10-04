@@ -14,9 +14,9 @@ values:
     # code H input says otherwise, and a dependent's amounts stay out of the
     # filer's net investment income.
     - estate_net_investment_income
+    # Form 8960 line 5a: the Form 1040 line 7 capital gain or loss, which
+    # includes capital gain distributions whether or not Schedule D is filed.
     - loss_limited_net_capital_gains
-    - non_sch_d_capital_gains
-    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
 metadata:
   unit: currency-USD
   label: net investment income sources

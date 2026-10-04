@@ -1,0 +1,335 @@
+# Capital gain distributions with Schedule D gains and losses (2025).
+#
+# Instructions for Schedule D, "Capital Gain Distributions": "Enter on
+# Schedule D, line 13, the total capital gain distributions paid to you during
+# the year". Form 1040 instructions, line 7a, Exception 1: a filer skips
+# Schedule D only if "You have no capital losses, and your only capital gains
+# are capital gain distributions". 26 U.S.C. 1211(b) allows capital losses
+# "only to the extent of the gains from such sales or exchanges, plus (if such
+# losses exceed such gains) the lower of" $3,000 ($1,500 married filing
+# separately) or the excess.
+#
+# Schedule D: line 7 is the net short-term gain or loss, line 15 the net
+# long-term gain or loss including line 13, line 16 = lines 7 + 15, and line 21
+# is the smaller loss of line 16 or ($3,000). Form 1040 line 7a is line 16, or
+# line 21 if line 16 is a loss.
+
+- name: Distributions net against a long-term loss before the loss limit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 13 = 3,000; line 15 = -5,000 + 3,000 = -2,000; line 7 = 0;
+    # line 16 = -2,000; line 21 = -2,000 (smaller loss than -3,000).
+    loss_limited_net_capital_gains: -2_000
+    # 1211(b): 3,000 of the loss offsets the distributions, and the 2,000
+    # excess is below the 3,000 limit.
+    capital_losses_allowed_against_gains: 3_000
+    limited_capital_loss: 2_000
+    # Gross income 3,000 (the distributions) less 5,000 of allowed losses.
+    adjusted_gross_income: -2_000
+    # Form 8960 line 5a is Form 1040 line 7a.
+    net_investment_income: -2_000
+    # Lines 15 and 16 are losses and there are no qualified dividends.
+    has_qdiv_or_ltcg: false
+
+- name: Distributions above the loss leave a net gain
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 15 = -5,000 + 6,000 = 1,000 = line 16, a gain on Form 1040 line 7a.
+    loss_limited_net_capital_gains: 1_000
+    capital_losses_allowed_against_gains: 5_000
+    limited_capital_loss: 0
+    adjusted_gross_income: 1_000
+    net_investment_income: 1_000
+    # Lines 15 and 16 are both gains.
+    has_qdiv_or_ltcg: true
+
+- name: A loss beyond the distributions is limited to 3,000
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: -10_000
+        non_sch_d_capital_gains: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 16 = -10,000 + 4,000 = -6,000; line 21 = -3,000.
+    loss_limited_net_capital_gains: -3_000
+    capital_losses_allowed_against_gains: 4_000
+    limited_capital_loss: 3_000
+    adjusted_gross_income: -3_000
+
+- name: Distributions net against a short-term loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        short_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 7 = -5,000; line 15 = 3,000; line 16 = -2,000; line 21 = -2,000.
+    loss_limited_net_capital_gains: -2_000
+    adjusted_gross_income: -2_000
+    # Line 15 is a gain but line 16 is a loss, so neither tax worksheet
+    # applies (Form 1040 instructions, line 16).
+    has_qdiv_or_ltcg: false
+
+- name: Married filing separately, the limit is 1,500
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 16 = -4,000; line 21 = -1,500.
+    loss_limited_net_capital_gains: -1_500
+    capital_losses_allowed_against_gains: 1_000
+    limited_capital_loss: 1_500
+    adjusted_gross_income: -1_500
+
+- name: Distributions without Schedule D are unchanged
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Exception 1: no capital losses and only capital gain distributions, so
+    # the 3,000 goes directly on Form 1040 line 7a.
+    loss_limited_net_capital_gains: 3_000
+    capital_losses_allowed_against_gains: 0
+    limited_capital_loss: 0
+    adjusted_gross_income: 3_000
+    net_investment_income: 3_000
+    # Form 1040 instructions, line 16: no Schedule D and distributions on
+    # line 7a.
+    has_qdiv_or_ltcg: true
+
+- name: A short-term gain alone does not use a capital gain tax worksheet
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        short_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 15 = 0, so lines 15 and 16 are not both more than zero.
+    has_qdiv_or_ltcg: false
+    adjusted_gross_income: 5_000
+
+- name: Spouses' gains and losses net on one joint Schedule D
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: 10_000
+      person2:
+        age: 45
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # Line 15 = 10,000 - 5,000 = 5,000 = line 16. Before, gross income took
+    # person1's 10,000 and only 3,000 of person2's loss was deducted (7,000).
+    loss_limited_net_capital_gains: 5_000
+    capital_losses_allowed_against_gains: 5_000
+    limited_capital_loss: 0
+    adjusted_gross_income: 5_000
+
+- name: One spouse's distributions net against the other's short-term loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        non_sch_d_capital_gains: 2_000
+      person2:
+        age: 45
+        short_term_capital_gains: -6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Line 7 = -6,000; line 15 = 2,000; line 16 = -4,000; line 21 = -3,000.
+    loss_limited_net_capital_gains: -3_000
+    capital_losses_allowed_against_gains: 2_000
+    limited_capital_loss: 3_000
+    adjusted_gross_income: -3_000
+
+- name: Wages with distributions and a long-term loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Form 1040 line 9 = 50,000 + (-2,000) = 48,000 = line 11.
+    adjusted_gross_income: 48_000
+    # Line 15 = 48,000 - 15,750 standard deduction.
+    taxable_income: 32_250
+
+- name: A dependent's distributions net against their capital loss on their own return
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_interest_income: 18_000
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # The dependent's own Schedule D: line 16 = -5,000 + 3,000 = -2,000, so
+    # modified AGI (IRC 86(b)(2)) = 18,000 - 2,000 = 16,000. Before, the
+    # distributions were added on top of a 3,000 loss (18,000).
+    dependent_taxable_ss_magi: [0, 16_000]
+    # The head's return has none of the dependent's capital gains or losses.
+    capital_losses_allowed_against_gains: 0
+    limited_capital_loss: 0
+    adjusted_gross_income: 50_000
+
+- name: Each person's share includes the distributions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    loss_limited_net_capital_gains_person: -2_000
+
+- name: DC still isolates the self-employment loss when capital losses offset gains
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: -50_000
+        long_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # loss_ald = 50,000 self-employment + 3,000 capital loss against the
+    # distributions + 2,000 net capital loss.
+    loss_ald: 55_000
+    # Only the self-employment loss counts: max(0, 50,000 - 12,000).
+    dc_self_employment_loss_addition: 38_000

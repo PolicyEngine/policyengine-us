@@ -19,8 +19,12 @@ class dc_self_employment_loss_addition(Variable):
         # Cap at SE loss actually deducted in federal AGI via loss_ald.
         # loss_ald includes both SE and capital losses; isolate SE portion.
         loss_ald = person.tax_unit("loss_ald", period)
-        limited_capital_loss = person.tax_unit("limited_capital_loss", period)
-        se_loss_in_ald = max_(0, loss_ald - limited_capital_loss)
+        capital_loss_in_ald = add(
+            person.tax_unit,
+            period,
+            ["capital_losses_allowed_against_gains", "limited_capital_loss"],
+        )
+        se_loss_in_ald = max_(0, loss_ald - capital_loss_in_ald)
         effective_loss = min_(loss_taxunit, se_loss_in_ald)
         p = parameters(period).gov.states.dc.tax.income.additions
         addition_taxunit = max_(0, effective_loss - p.self_employment_loss.threshold)
