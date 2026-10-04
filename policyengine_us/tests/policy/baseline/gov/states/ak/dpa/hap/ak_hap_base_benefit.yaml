@@ -1,0 +1,2412 @@
+# Independently derived from the adopted FY2027 source package and controlling contract.
+# Base component precedes disputed sharing and utility-allowance adjustments.
+# Sources (each URL listed once):
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+# https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+# Geographic/name and nearest-gas approximations are documented in the research manifest.
+# 415 replaces the stale published one-person 25% cell407 under the approved reconciliation.
+# Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
+
+# GRANT: 10 oil points * 1.4; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 1, Fairbanks dwelling large_mobile_home_or_boat uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: LARGE_MOBILE_HOME_OR_BOAT
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 2_450
+
+# GRANT: 10 oil points * 0.4; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 2, Fairbanks dwelling rv_tent_or_camper uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: RV_TENT_OR_CAMPER
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 700
+
+# GRANT: 10 oil points * 0.15; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 3, Fairbanks dwelling studio_hotel_or_boarding_room uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# GRANT: 10 oil points * 0.35; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 4, Fairbanks dwelling small_boat uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: SMALL_BOAT
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 700
+
+# GRANT: 10 oil points * 0.55; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 5, Fairbanks dwelling one_bedroom_or_one_room_house uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: ONE_BEDROOM_OR_ONE_ROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_050
+
+# GRANT: 10 oil points * 1.3; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 6, Fairbanks dwelling three_plus_bedroom_house uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: THREE_PLUS_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 2_275
+
+# GRANT: 10 oil points * 0.7; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 7, Fairbanks dwelling two_bedroom_large_apartment_or_small_mobile uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_LARGE_APARTMENT_OR_SMALL_MOBILE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_225
+
+# GRANT: 10 oil points * 1; minimum 2 before half-up whole-point rounding, then $175/point.
+- name: Case 8, Fairbanks dwelling two_bedroom_house uses its published factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# REG 44.080(f), GRANT Step 1 and primary kerosene classification: Fairbanks 10 oil points * $175.
+- name: Case 9, propane uses oil points and its matching bill.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: PROPANE
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        bottled_gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# REG 44.080(f), GRANT Step 1 and primary kerosene classification: Fairbanks 10 oil points * $175.
+- name: Case 10, kerosene uses oil points and its matching bill.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: KEROSENE
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# REG 44.080(f), GRANT Step 1 and primary kerosene classification: Fairbanks 10 oil points * $175.
+- name: Case 11, electricity uses oil points and its matching bill.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: ELECTRICITY
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# Current COMMUNITY table / adopted source crosswalk: 8 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 12, Fairbanks gas follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_400
+
+# Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 13, Anchorage gas follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '03000'
+  output:
+    ak_hap_base_benefit: 875
+
+# Current COMMUNITY table / adopted source crosswalk: 6 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 14, Utqiagvik renamed from Barrow gas follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '81920'
+  output:
+    ak_hap_base_benefit: 1_050
+
+# Current COMMUNITY table / adopted source crosswalk: 21 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 15, Utqiagvik renamed from Barrow oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '81920'
+  output:
+    ak_hap_base_benefit: 3_675
+
+# Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 16, Knik Fairview gas follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '40645'
+  output:
+    ak_hap_base_benefit: 875
+
+# Current COMMUNITY table / adopted source crosswalk: 7 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 17, Knik Fairview oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '40645'
+  output:
+    ak_hap_base_benefit: 1_225
+
+# Current COMMUNITY table / adopted source crosswalk: 8 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 18, North Pole current gas follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '55910'
+  output:
+    ak_hap_base_benefit: 1_400
+
+# Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 19, Juneau uniform consolidated oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '36400'
+  output:
+    ak_hap_base_benefit: 875
+
+# Current COMMUNITY table / adopted source crosswalk: 6 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 20, Sitka uniform consolidated oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '70540'
+  output:
+    ak_hap_base_benefit: 1_050
+
+# Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 21, Wrangell uniform consolidated oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '86380'
+  output:
+    ak_hap_base_benefit: 875
+
+# Current COMMUNITY table / adopted source crosswalk: 4 points * $175; Loring uses current 4 rather than legacy 5.
+- name: Case 22, Loring current manual oil follows the adopted mapping.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '45020'
+  output:
+    ak_hap_base_benefit: 700
+
+# Research crosswalk: Ester -> Fairbanks, 8 gas points * $175; not a direct published Ester gas entry.
+- name: Case 23, Ester gas uses the adopted nearest-community approximation.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '23460'
+  output:
+    ak_hap_base_benefit: 1_400
+
+# Research edge-sensitive row: nearest Barrow gas 6 points * $175; 25 km diagnostic is not an eligibility rule.
+- name: Case 24, Anaktuvuk Pass gas retains the documented spatial approximation.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 02080
+  output:
+    ak_hap_base_benefit: 1_050
+
+# Anchorage 5 gas * .4 dwelling = 2; 2 * $175 = $350.
+- name: Case 25, gas RV at exactly two unrounded points is payable.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: RV_TENT_OR_CAMPER
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '03000'
+  output:
+    ak_hap_base_benefit: 350
+
+# Anchorage 5 gas * .15 + 1 vulnerability = 1.75 < 2, even though whole-point rounding would produce 2.
+- name: Case 26, points below two are denied before upward rounding.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '03000'
+  output:
+    ak_hap_base_benefit: 0
+
+# Fairbanks 10 * .15 + 1 = 2.5 -> 3 points * $175.
+- name: Case 27, age sixty adds one point before half-up rounding.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 525
+
+# Fairbanks studio remains 1.5 points at age 59.99, below the unrounded minimum.
+- name: Case 28, age below sixty does not create vulnerability.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 59.99
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# 10 * .15 + 1 = 2.5 -> 3; age 5.99 is under six.
+- name: Case 29, under six adds one vulnerability point.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 5.99
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 525
+
+# 10 * .15 = 1.5 < 2; exact age six is not under six.
+- name: Case 30, exact age six does not add vulnerability.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Approved disability approximation, GRANT Step 4: 1.5 + 1 = 2.5 -> 3.
+- name: Case 31, disabled qualified adult adds the vulnerability point.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_disabled: true
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 525
+
+# Elderly, disabled and child indicators overlap; add 1 once, not per member or condition.
+- name: Case 32, multiple vulnerable qualified members add only one point.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_disabled: true
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 525
+
+# All 24000 income counts; qualified size 1 -> monthly 2000, factor .6; 10 * .6 = 6 points.
+- name: Case 33, nonqualified elderly member cannot create vulnerability.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+      person2:
+        age: 65
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_050
+    ak_hap_household_size: 1
+    ak_hap_countable_income: 24_000
+    ak_hap_income_factor: 0.6
+
+# Income 24000, qualified size 1, factor .6; 10 * .6 + 1 = 7 points.
+- name: Case 34, qualified elderly member in the same mixed-status household adds one point.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+      person2:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_225
+    ak_hap_household_size: 1
+    ak_hap_countable_income: 24_000
+    ak_hap_income_factor: 0.6
+
+# Qualified size 2, annual36000/month3000 -> factor .5; 10 * .7 * .5 + 1 = 4.5 -> 5.
+- name: Case 35, mixed earnings and vulnerability round four and a half points upward.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 18_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_LARGE_APARTMENT_OR_SMALL_MOBILE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 875
+    ak_hap_household_size: 2
+    ak_hap_countable_income: 36_000
+    ak_hap_income_factor: 0.5
+
+# 10 * .7 * .5 = 3.5 -> 4 points * $175.
+- name: Case 36, same income without vulnerability rounds three and a half upward.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 18_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_LARGE_APARTMENT_OR_SMALL_MOBILE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 700
+
+# Ambler35 oil * 1 * 1 = 35 points; $6125.
+- name: Case 37, Ambler exactly thirty-five points reaches cap.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 01970
+  output:
+    ak_hap_base_benefit: 6_125
+
+# Ambler35 * 1.4 + 1 = 50 points, capped35 * $175.
+- name: Case 38, points above thirty-five are capped after vulnerability.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: LARGE_MOBILE_HOME_OR_BOAT
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 01970
+  output:
+    ak_hap_base_benefit: 6_125
+
+# HH annual heating cost must exceed $200, not equal it.
+- name: Case 39, annual heating expense exactly two hundred fails.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 200
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 01970
+  output:
+    ak_hap_base_benefit: 0
+
+# HH expense200.01 passes; Ambler35 * $175 = 6125 with no actual-expense cap.
+- name: Case 40, expense just above two hundred is not an award cap.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 200.01
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 01970
+  output:
+    ak_hap_base_benefit: 6_125
+
+# Primary NATURAL_GAS bill0; secondary oil10000 cannot satisfy the primary-heating expense gate.
+- name: Case 41, zero primary expense fails despite other fuel bills.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 0
+        fuel_oil_expense: 10_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# One qualified adult; annual payroll 24924, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 42, integrated wages at exact125percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_924
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_050
+
+# One qualified adult; annual payroll 24924.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 43, integrated wages at above125percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24924.12
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 875
+
+# One qualified adult; annual payroll 29916, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 44, integrated wages at exact150percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 29_916
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 875
+
+# One qualified adult; annual payroll 29916.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 45, integrated wages at above150percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 29916.12
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# One qualified adult; annual payroll 4980, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 46, integrated wages at reconciled25percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 4_980
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# One qualified adult; annual payroll 4980.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
+- name: Case 47, integrated wages at above25percent use the inclusive income boundary.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 4980.12
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_575
+
+# Unchanged income component floors total net receipts at0; income factor1 and Fairbanks10points.
+- name: Case 48, negative current net business income does not inflate benefit.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        self_employment_income: -12_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+    ak_hap_countable_income: 0
+    ak_hap_income_factor: 1
+
+# Five qualified members, monthly2900 <=75% ceiling3021; 27 * .8 + 1 = 22.6 -> 23 * $175.
+- name: Case 49, Savoonga updated five-person band supersedes stale worked label.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 34_800
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person4:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person5:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        state_code: AK
+        place_fips: '67460'
+  output:
+    ak_hap_base_benefit: 4_025
+    ak_hap_countable_income: 34_800
+    ak_hap_household_size: 5
+    ak_hap_income_factor: 0.8
+
+# HH/VER: annual rent12000 counts for expense gate despite direct fuel bill0.
+- name: Case 50, rent included heat uses full annual rent for expense gate.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# Full annual rent200 does not exceed200.
+- name: Case 51, rent included heat at exact expense threshold fails.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 200
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Annual rent200.01 passes gate; Fairbanks points amount remains1750.
+- name: Case 52, rent included heat above expense threshold is not capped by rent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 200.01
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 1_750
+
+# HH excludes subsidized rental housing with no direct heating cost.
+- name: Case 53, subsidized rent included heat receives zero under housing exclusion.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: true
+        fuel_oil_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Juneau5 * .55 * .7 + 1 = 2.925 -> 3 *175; positive allowance affects a later unresolved final adjustment only.
+- name: Case 54, base amount does not apply disputed utility allowance reduction.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 15_552
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: ONE_BEDROOM_OR_ONE_ROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: true
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '36400'
+        hud_utility_allowance: 1_200
+  output:
+    ak_hap_base_benefit: 525
+
+# Current COMMUNITY 0/AVCP means all residents are routed; no race-based inference.
+- name: Case 55, all-resident tribal routing excludes Akiachak state component.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '00760'
+  output:
+    ak_hap_base_benefit: 0
+
+# Akiachak has a nearest-gas approximation but 0/AVCP still routes all residents.
+- name: Case 56, all-resident routing remains separate from gas approximation.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '00760'
+  output:
+    ak_hap_base_benefit: 0
+
+# Akutan */APIA is Native-only; absent enrollment facts do not exclude. Oil11 *175.
+- name: Case 57, Native-only routing does not infer tribal eligibility.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: 01090
+  output:
+    ak_hap_base_benefit: 1_925
+
+# Fort Greely0/USA is explicitly excluded from tribal list; on-base residence is unobserved. Oil11 *175 under the ordinary location approximation.
+- name: Case 58, USA marker is not an all-resident tribal provider.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '26100'
+  output:
+    ak_hap_base_benefit: 1_925
+
+# Tetlin current12oil differs from legacy16, but 0/TCC routing controls this state component.
+- name: Case 59, Tetlin is routed to all-resident tribal program.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '76590'
+  output:
+    ak_hap_base_benefit: 0
+
+# HH requires at least one citizen or qualified noncitizen.
+- name: Case 60, household with no qualified members is ineligible.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+    ak_hap_household_size: 0
+
+# Five-digit place identifiers are only meaningful under Alaska state mask.
+- name: Case 61, non Alaska state mask prevents same-place-code award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WA
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+- name: Case 62, missing place yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: ''
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+- name: Case 63, unmatched place yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '99999'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+- name: Case 64, seven-digit GEOID supplied instead of place yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '0224230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+- name: Case 65, ambiguous Anchorage oil place yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '03000'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+- name: Case 66, wood without a supported subtype yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: WOOD
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+- name: Case 67, coal without a supported subtype yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: COAL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        coal_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+- name: Case 68, other without a supported subtype yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: OTHER
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        other_heating_fuel_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+- name: Case 69, solar without a supported subtype yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: SOLAR
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+- name: Case 70, unspecified without a supported subtype yields an unavailable modeled amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: UNSPECIFIED
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# NONE affirmatively indicates no residential heating, unlike missing fuel coverage.
+- name: Case 71, known no heating has no payable heating component.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NONE
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_base_benefit: 0
+
+# Independent SPM calculations before sharing: 10+1=11 ->1925; 10*.6=6 ->1050. Do not divide points or grants by two.
+- name: Case 72, two SPM units retain their own unshared base amounts.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members:
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 700
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_household_size:
+    - 1
+    - 1
+    ak_hap_countable_income:
+    - 0
+    - 24_000
+    ak_hap_income_factor:
+    - 1
+    - 0.6
+    ak_hap_base_benefit:
+    - 1_925
+    - 1_050
+
+# Mixed vector: Anchorage gas5*.4=2 ->350; Ambler35*1.4=49 capped35 ->6125; no qualified member ->0.
+- name: Case 73, distinct SPM units preserve geography fuel and composition gates.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: RV_TENT_OR_CAMPER
+        gas_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members:
+        - person2
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: LARGE_MOBILE_HOME_OR_BOAT
+        fuel_oil_expense: 200.01
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit3:
+        members:
+        - person3
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '03000'
+      household2:
+        members:
+        - person2
+        state_code: AK
+        place_fips: 01970
+      household3:
+        members:
+        - person3
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_household_size:
+    - 1
+    - 1
+    - 0
+    ak_hap_countable_income:
+    - 0
+    - 0
+    - 0
+    ak_hap_income_factor:
+    - 1
+    - 1
+    - 0
+    ak_hap_base_benefit:
+    - 350
+    - 6_125
+    - 0
+
