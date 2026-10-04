@@ -1,0 +1,5102 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182,183,184,202,203,217,218,219,246,247,279
+# Utility component only; unresolved regular WPO awards are not tested or denied.
+# Every integrated award is calculated from raw facts, with no forced intermediates.
+
+- name: Case 1, every county utility table amount in poverty group 1.
+  period: 2026
+  # All 58 county rows are independently parsed from original plan pages 182–183.
+  # County names are alphabetic. One qualified adult and monthly income 1000
+  # place every row in group 1. Actual gas bill 100 is not a benefit cap.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person51:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person52:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person53:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person54:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person55:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person56:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person57:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+      person58:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit10:
+        members: [person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit11:
+        members: [person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit12:
+        members: [person12]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit13:
+        members: [person13]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit14:
+        members: [person14]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit15:
+        members: [person15]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit16:
+        members: [person16]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit17:
+        members: [person17]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit18:
+        members: [person18]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit19:
+        members: [person19]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit20:
+        members: [person20]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit21:
+        members: [person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit22:
+        members: [person22]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit23:
+        members: [person23]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit24:
+        members: [person24]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit25:
+        members: [person25]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit26:
+        members: [person26]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit27:
+        members: [person27]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit28:
+        members: [person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit29:
+        members: [person29]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit30:
+        members: [person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit31:
+        members: [person31]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit32:
+        members: [person32]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit33:
+        members: [person33]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit34:
+        members: [person34]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit35:
+        members: [person35]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit36:
+        members: [person36]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit37:
+        members: [person37]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit38:
+        members: [person38]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit39:
+        members: [person39]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit40:
+        members: [person40]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit41:
+        members: [person41]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit42:
+        members: [person42]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit43:
+        members: [person43]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit44:
+        members: [person44]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit45:
+        members: [person45]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit46:
+        members: [person46]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit47:
+        members: [person47]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit48:
+        members: [person48]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit49:
+        members: [person49]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit50:
+        members: [person50]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit51:
+        members: [person51]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit52:
+        members: [person52]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit53:
+        members: [person53]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit54:
+        members: [person54]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit55:
+        members: [person55]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit56:
+        members: [person56]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit57:
+        members: [person57]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit58:
+        members: [person58]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALPINE_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: AMADOR_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: BUTTE_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: CALAVERAS_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: COLUSA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: DEL_NORTE_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: EL_DORADO_COUNTY_CA
+      household10:
+        members: [person10]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household11:
+        members: [person11]
+        state_code: CA
+        county: GLENN_COUNTY_CA
+      household12:
+        members: [person12]
+        state_code: CA
+        county: HUMBOLDT_COUNTY_CA
+      household13:
+        members: [person13]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household14:
+        members: [person14]
+        state_code: CA
+        county: INYO_COUNTY_CA
+      household15:
+        members: [person15]
+        state_code: CA
+        county: KERN_COUNTY_CA
+      household16:
+        members: [person16]
+        state_code: CA
+        county: KINGS_COUNTY_CA
+      household17:
+        members: [person17]
+        state_code: CA
+        county: LAKE_COUNTY_CA
+      household18:
+        members: [person18]
+        state_code: CA
+        county: LASSEN_COUNTY_CA
+      household19:
+        members: [person19]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+      household20:
+        members: [person20]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household21:
+        members: [person21]
+        state_code: CA
+        county: MARIN_COUNTY_CA
+      household22:
+        members: [person22]
+        state_code: CA
+        county: MARIPOSA_COUNTY_CA
+      household23:
+        members: [person23]
+        state_code: CA
+        county: MENDOCINO_COUNTY_CA
+      household24:
+        members: [person24]
+        state_code: CA
+        county: MERCED_COUNTY_CA
+      household25:
+        members: [person25]
+        state_code: CA
+        county: MODOC_COUNTY_CA
+      household26:
+        members: [person26]
+        state_code: CA
+        county: MONO_COUNTY_CA
+      household27:
+        members: [person27]
+        state_code: CA
+        county: MONTEREY_COUNTY_CA
+      household28:
+        members: [person28]
+        state_code: CA
+        county: NAPA_COUNTY_CA
+      household29:
+        members: [person29]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household30:
+        members: [person30]
+        state_code: CA
+        county: ORANGE_COUNTY_CA
+      household31:
+        members: [person31]
+        state_code: CA
+        county: PLACER_COUNTY_CA
+      household32:
+        members: [person32]
+        state_code: CA
+        county: PLUMAS_COUNTY_CA
+      household33:
+        members: [person33]
+        state_code: CA
+        county: RIVERSIDE_COUNTY_CA
+      household34:
+        members: [person34]
+        state_code: CA
+        county: SACRAMENTO_COUNTY_CA
+      household35:
+        members: [person35]
+        state_code: CA
+        county: SAN_BENITO_COUNTY_CA
+      household36:
+        members: [person36]
+        state_code: CA
+        county: SAN_BERNARDINO_COUNTY_CA
+      household37:
+        members: [person37]
+        state_code: CA
+        county: SAN_DIEGO_COUNTY_CA
+      household38:
+        members: [person38]
+        state_code: CA
+        county: SAN_FRANCISCO_COUNTY_CA
+      household39:
+        members: [person39]
+        state_code: CA
+        county: SAN_JOAQUIN_COUNTY_CA
+      household40:
+        members: [person40]
+        state_code: CA
+        county: SAN_LUIS_OBISPO_COUNTY_CA
+      household41:
+        members: [person41]
+        state_code: CA
+        county: SAN_MATEO_COUNTY_CA
+      household42:
+        members: [person42]
+        state_code: CA
+        county: SANTA_BARBARA_COUNTY_CA
+      household43:
+        members: [person43]
+        state_code: CA
+        county: SANTA_CLARA_COUNTY_CA
+      household44:
+        members: [person44]
+        state_code: CA
+        county: SANTA_CRUZ_COUNTY_CA
+      household45:
+        members: [person45]
+        state_code: CA
+        county: SHASTA_COUNTY_CA
+      household46:
+        members: [person46]
+        state_code: CA
+        county: SIERRA_COUNTY_CA
+      household47:
+        members: [person47]
+        state_code: CA
+        county: SISKIYOU_COUNTY_CA
+      household48:
+        members: [person48]
+        state_code: CA
+        county: SOLANO_COUNTY_CA
+      household49:
+        members: [person49]
+        state_code: CA
+        county: SONOMA_COUNTY_CA
+      household50:
+        members: [person50]
+        state_code: CA
+        county: STANISLAUS_COUNTY_CA
+      household51:
+        members: [person51]
+        state_code: CA
+        county: SUTTER_COUNTY_CA
+      household52:
+        members: [person52]
+        state_code: CA
+        county: TEHAMA_COUNTY_CA
+      household53:
+        members: [person53]
+        state_code: CA
+        county: TRINITY_COUNTY_CA
+      household54:
+        members: [person54]
+        state_code: CA
+        county: TULARE_COUNTY_CA
+      household55:
+        members: [person55]
+        state_code: CA
+        county: TUOLUMNE_COUNTY_CA
+      household56:
+        members: [person56]
+        state_code: CA
+        county: VENTURA_COUNTY_CA
+      household57:
+        members: [person57]
+        state_code: CA
+        county: YOLO_COUNTY_CA
+      household58:
+        members: [person58]
+        state_code: CA
+        county: YUBA_COUNTY_CA
+  output:
+    ca_liheap_income_group:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+    ca_liheap_utility_heating:
+      - 484
+      - 688
+      - 738
+      - 692
+      - 715
+      - 718
+      - 618
+      - 674
+      - 714
+      - 716
+      - 698
+      - 525
+      - 621
+      - 530
+      - 648
+      - 635
+      - 802
+      - 660
+      - 487
+      - 702
+      - 652
+      - 719
+      - 610
+      - 674
+      - 614
+      - 622
+      - 502
+      - 628
+      - 837
+      - 542
+      - 663
+      - 620
+      - 633
+      - 580
+      - 544
+      - 590
+      - 492
+      - 469
+      - 697
+      - 522
+      - 576
+      - 437
+      - 546
+      - 541
+      - 758
+      - 648
+      - 673
+      - 579
+      - 563
+      - 659
+      - 721
+      - 753
+      - 503
+      - 618
+      - 723
+      - 459
+      - 565
+      - 713
+
+- name: Case 2, every county utility table amount in poverty group 2.
+  period: 2026
+  # All 58 county rows are independently parsed from original plan pages 182–183.
+  # County names are alphabetic. One qualified adult and monthly income 1500
+  # place every row in group 2. Actual gas bill 100 is not a benefit cap.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person51:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person52:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person53:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person54:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person55:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person56:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person57:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person58:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit10:
+        members: [person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit11:
+        members: [person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit12:
+        members: [person12]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit13:
+        members: [person13]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit14:
+        members: [person14]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit15:
+        members: [person15]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit16:
+        members: [person16]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit17:
+        members: [person17]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit18:
+        members: [person18]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit19:
+        members: [person19]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit20:
+        members: [person20]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit21:
+        members: [person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit22:
+        members: [person22]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit23:
+        members: [person23]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit24:
+        members: [person24]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit25:
+        members: [person25]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit26:
+        members: [person26]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit27:
+        members: [person27]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit28:
+        members: [person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit29:
+        members: [person29]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit30:
+        members: [person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit31:
+        members: [person31]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit32:
+        members: [person32]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit33:
+        members: [person33]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit34:
+        members: [person34]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit35:
+        members: [person35]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit36:
+        members: [person36]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit37:
+        members: [person37]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit38:
+        members: [person38]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit39:
+        members: [person39]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit40:
+        members: [person40]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit41:
+        members: [person41]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit42:
+        members: [person42]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit43:
+        members: [person43]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit44:
+        members: [person44]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit45:
+        members: [person45]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit46:
+        members: [person46]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit47:
+        members: [person47]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit48:
+        members: [person48]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit49:
+        members: [person49]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit50:
+        members: [person50]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit51:
+        members: [person51]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit52:
+        members: [person52]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit53:
+        members: [person53]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit54:
+        members: [person54]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit55:
+        members: [person55]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit56:
+        members: [person56]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit57:
+        members: [person57]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit58:
+        members: [person58]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALPINE_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: AMADOR_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: BUTTE_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: CALAVERAS_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: COLUSA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: DEL_NORTE_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: EL_DORADO_COUNTY_CA
+      household10:
+        members: [person10]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household11:
+        members: [person11]
+        state_code: CA
+        county: GLENN_COUNTY_CA
+      household12:
+        members: [person12]
+        state_code: CA
+        county: HUMBOLDT_COUNTY_CA
+      household13:
+        members: [person13]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household14:
+        members: [person14]
+        state_code: CA
+        county: INYO_COUNTY_CA
+      household15:
+        members: [person15]
+        state_code: CA
+        county: KERN_COUNTY_CA
+      household16:
+        members: [person16]
+        state_code: CA
+        county: KINGS_COUNTY_CA
+      household17:
+        members: [person17]
+        state_code: CA
+        county: LAKE_COUNTY_CA
+      household18:
+        members: [person18]
+        state_code: CA
+        county: LASSEN_COUNTY_CA
+      household19:
+        members: [person19]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+      household20:
+        members: [person20]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household21:
+        members: [person21]
+        state_code: CA
+        county: MARIN_COUNTY_CA
+      household22:
+        members: [person22]
+        state_code: CA
+        county: MARIPOSA_COUNTY_CA
+      household23:
+        members: [person23]
+        state_code: CA
+        county: MENDOCINO_COUNTY_CA
+      household24:
+        members: [person24]
+        state_code: CA
+        county: MERCED_COUNTY_CA
+      household25:
+        members: [person25]
+        state_code: CA
+        county: MODOC_COUNTY_CA
+      household26:
+        members: [person26]
+        state_code: CA
+        county: MONO_COUNTY_CA
+      household27:
+        members: [person27]
+        state_code: CA
+        county: MONTEREY_COUNTY_CA
+      household28:
+        members: [person28]
+        state_code: CA
+        county: NAPA_COUNTY_CA
+      household29:
+        members: [person29]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household30:
+        members: [person30]
+        state_code: CA
+        county: ORANGE_COUNTY_CA
+      household31:
+        members: [person31]
+        state_code: CA
+        county: PLACER_COUNTY_CA
+      household32:
+        members: [person32]
+        state_code: CA
+        county: PLUMAS_COUNTY_CA
+      household33:
+        members: [person33]
+        state_code: CA
+        county: RIVERSIDE_COUNTY_CA
+      household34:
+        members: [person34]
+        state_code: CA
+        county: SACRAMENTO_COUNTY_CA
+      household35:
+        members: [person35]
+        state_code: CA
+        county: SAN_BENITO_COUNTY_CA
+      household36:
+        members: [person36]
+        state_code: CA
+        county: SAN_BERNARDINO_COUNTY_CA
+      household37:
+        members: [person37]
+        state_code: CA
+        county: SAN_DIEGO_COUNTY_CA
+      household38:
+        members: [person38]
+        state_code: CA
+        county: SAN_FRANCISCO_COUNTY_CA
+      household39:
+        members: [person39]
+        state_code: CA
+        county: SAN_JOAQUIN_COUNTY_CA
+      household40:
+        members: [person40]
+        state_code: CA
+        county: SAN_LUIS_OBISPO_COUNTY_CA
+      household41:
+        members: [person41]
+        state_code: CA
+        county: SAN_MATEO_COUNTY_CA
+      household42:
+        members: [person42]
+        state_code: CA
+        county: SANTA_BARBARA_COUNTY_CA
+      household43:
+        members: [person43]
+        state_code: CA
+        county: SANTA_CLARA_COUNTY_CA
+      household44:
+        members: [person44]
+        state_code: CA
+        county: SANTA_CRUZ_COUNTY_CA
+      household45:
+        members: [person45]
+        state_code: CA
+        county: SHASTA_COUNTY_CA
+      household46:
+        members: [person46]
+        state_code: CA
+        county: SIERRA_COUNTY_CA
+      household47:
+        members: [person47]
+        state_code: CA
+        county: SISKIYOU_COUNTY_CA
+      household48:
+        members: [person48]
+        state_code: CA
+        county: SOLANO_COUNTY_CA
+      household49:
+        members: [person49]
+        state_code: CA
+        county: SONOMA_COUNTY_CA
+      household50:
+        members: [person50]
+        state_code: CA
+        county: STANISLAUS_COUNTY_CA
+      household51:
+        members: [person51]
+        state_code: CA
+        county: SUTTER_COUNTY_CA
+      household52:
+        members: [person52]
+        state_code: CA
+        county: TEHAMA_COUNTY_CA
+      household53:
+        members: [person53]
+        state_code: CA
+        county: TRINITY_COUNTY_CA
+      household54:
+        members: [person54]
+        state_code: CA
+        county: TULARE_COUNTY_CA
+      household55:
+        members: [person55]
+        state_code: CA
+        county: TUOLUMNE_COUNTY_CA
+      household56:
+        members: [person56]
+        state_code: CA
+        county: VENTURA_COUNTY_CA
+      household57:
+        members: [person57]
+        state_code: CA
+        county: YOLO_COUNTY_CA
+      household58:
+        members: [person58]
+        state_code: CA
+        county: YUBA_COUNTY_CA
+  output:
+    ca_liheap_income_group:
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+    ca_liheap_utility_heating:
+      - 404
+      - 566
+      - 605
+      - 569
+      - 587
+      - 589
+      - 510
+      - 554
+      - 586
+      - 588
+      - 574
+      - 436
+      - 512
+      - 440
+      - 534
+      - 523
+      - 656
+      - 543
+      - 407
+      - 576
+      - 537
+      - 590
+      - 504
+      - 554
+      - 507
+      - 514
+      - 418
+      - 518
+      - 684
+      - 450
+      - 546
+      - 512
+      - 522
+      - 480
+      - 451
+      - 488
+      - 411
+      - 392
+      - 572
+      - 434
+      - 477
+      - 367
+      - 453
+      - 449
+      - 621
+      - 534
+      - 553
+      - 479
+      - 467
+      - 542
+      - 592
+      - 617
+      - 419
+      - 510
+      - 593
+      - 384
+      - 468
+      - 585
+
+- name: Case 3, every county utility table amount in poverty group 3.
+  period: 2026
+  # All 58 county rows are independently parsed from original plan pages 182–183.
+  # County names are alphabetic. One qualified adult and monthly income 1800
+  # place every row in group 3. Actual gas bill 100 is not a benefit cap.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person51:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person52:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person53:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person54:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person55:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person56:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person57:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+      person58:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 21_600
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit10:
+        members: [person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit11:
+        members: [person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit12:
+        members: [person12]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit13:
+        members: [person13]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit14:
+        members: [person14]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit15:
+        members: [person15]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit16:
+        members: [person16]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit17:
+        members: [person17]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit18:
+        members: [person18]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit19:
+        members: [person19]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit20:
+        members: [person20]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit21:
+        members: [person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit22:
+        members: [person22]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit23:
+        members: [person23]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit24:
+        members: [person24]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit25:
+        members: [person25]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit26:
+        members: [person26]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit27:
+        members: [person27]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit28:
+        members: [person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit29:
+        members: [person29]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit30:
+        members: [person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit31:
+        members: [person31]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit32:
+        members: [person32]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit33:
+        members: [person33]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit34:
+        members: [person34]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit35:
+        members: [person35]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit36:
+        members: [person36]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit37:
+        members: [person37]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit38:
+        members: [person38]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit39:
+        members: [person39]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit40:
+        members: [person40]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit41:
+        members: [person41]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit42:
+        members: [person42]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit43:
+        members: [person43]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit44:
+        members: [person44]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit45:
+        members: [person45]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit46:
+        members: [person46]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit47:
+        members: [person47]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit48:
+        members: [person48]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit49:
+        members: [person49]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit50:
+        members: [person50]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit51:
+        members: [person51]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit52:
+        members: [person52]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit53:
+        members: [person53]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit54:
+        members: [person54]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit55:
+        members: [person55]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit56:
+        members: [person56]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit57:
+        members: [person57]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit58:
+        members: [person58]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALPINE_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: AMADOR_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: BUTTE_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: CALAVERAS_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: COLUSA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: DEL_NORTE_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: EL_DORADO_COUNTY_CA
+      household10:
+        members: [person10]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household11:
+        members: [person11]
+        state_code: CA
+        county: GLENN_COUNTY_CA
+      household12:
+        members: [person12]
+        state_code: CA
+        county: HUMBOLDT_COUNTY_CA
+      household13:
+        members: [person13]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household14:
+        members: [person14]
+        state_code: CA
+        county: INYO_COUNTY_CA
+      household15:
+        members: [person15]
+        state_code: CA
+        county: KERN_COUNTY_CA
+      household16:
+        members: [person16]
+        state_code: CA
+        county: KINGS_COUNTY_CA
+      household17:
+        members: [person17]
+        state_code: CA
+        county: LAKE_COUNTY_CA
+      household18:
+        members: [person18]
+        state_code: CA
+        county: LASSEN_COUNTY_CA
+      household19:
+        members: [person19]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+      household20:
+        members: [person20]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household21:
+        members: [person21]
+        state_code: CA
+        county: MARIN_COUNTY_CA
+      household22:
+        members: [person22]
+        state_code: CA
+        county: MARIPOSA_COUNTY_CA
+      household23:
+        members: [person23]
+        state_code: CA
+        county: MENDOCINO_COUNTY_CA
+      household24:
+        members: [person24]
+        state_code: CA
+        county: MERCED_COUNTY_CA
+      household25:
+        members: [person25]
+        state_code: CA
+        county: MODOC_COUNTY_CA
+      household26:
+        members: [person26]
+        state_code: CA
+        county: MONO_COUNTY_CA
+      household27:
+        members: [person27]
+        state_code: CA
+        county: MONTEREY_COUNTY_CA
+      household28:
+        members: [person28]
+        state_code: CA
+        county: NAPA_COUNTY_CA
+      household29:
+        members: [person29]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household30:
+        members: [person30]
+        state_code: CA
+        county: ORANGE_COUNTY_CA
+      household31:
+        members: [person31]
+        state_code: CA
+        county: PLACER_COUNTY_CA
+      household32:
+        members: [person32]
+        state_code: CA
+        county: PLUMAS_COUNTY_CA
+      household33:
+        members: [person33]
+        state_code: CA
+        county: RIVERSIDE_COUNTY_CA
+      household34:
+        members: [person34]
+        state_code: CA
+        county: SACRAMENTO_COUNTY_CA
+      household35:
+        members: [person35]
+        state_code: CA
+        county: SAN_BENITO_COUNTY_CA
+      household36:
+        members: [person36]
+        state_code: CA
+        county: SAN_BERNARDINO_COUNTY_CA
+      household37:
+        members: [person37]
+        state_code: CA
+        county: SAN_DIEGO_COUNTY_CA
+      household38:
+        members: [person38]
+        state_code: CA
+        county: SAN_FRANCISCO_COUNTY_CA
+      household39:
+        members: [person39]
+        state_code: CA
+        county: SAN_JOAQUIN_COUNTY_CA
+      household40:
+        members: [person40]
+        state_code: CA
+        county: SAN_LUIS_OBISPO_COUNTY_CA
+      household41:
+        members: [person41]
+        state_code: CA
+        county: SAN_MATEO_COUNTY_CA
+      household42:
+        members: [person42]
+        state_code: CA
+        county: SANTA_BARBARA_COUNTY_CA
+      household43:
+        members: [person43]
+        state_code: CA
+        county: SANTA_CLARA_COUNTY_CA
+      household44:
+        members: [person44]
+        state_code: CA
+        county: SANTA_CRUZ_COUNTY_CA
+      household45:
+        members: [person45]
+        state_code: CA
+        county: SHASTA_COUNTY_CA
+      household46:
+        members: [person46]
+        state_code: CA
+        county: SIERRA_COUNTY_CA
+      household47:
+        members: [person47]
+        state_code: CA
+        county: SISKIYOU_COUNTY_CA
+      household48:
+        members: [person48]
+        state_code: CA
+        county: SOLANO_COUNTY_CA
+      household49:
+        members: [person49]
+        state_code: CA
+        county: SONOMA_COUNTY_CA
+      household50:
+        members: [person50]
+        state_code: CA
+        county: STANISLAUS_COUNTY_CA
+      household51:
+        members: [person51]
+        state_code: CA
+        county: SUTTER_COUNTY_CA
+      household52:
+        members: [person52]
+        state_code: CA
+        county: TEHAMA_COUNTY_CA
+      household53:
+        members: [person53]
+        state_code: CA
+        county: TRINITY_COUNTY_CA
+      household54:
+        members: [person54]
+        state_code: CA
+        county: TULARE_COUNTY_CA
+      household55:
+        members: [person55]
+        state_code: CA
+        county: TUOLUMNE_COUNTY_CA
+      household56:
+        members: [person56]
+        state_code: CA
+        county: VENTURA_COUNTY_CA
+      household57:
+        members: [person57]
+        state_code: CA
+        county: YOLO_COUNTY_CA
+      household58:
+        members: [person58]
+        state_code: CA
+        county: YUBA_COUNTY_CA
+  output:
+    ca_liheap_income_group:
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+      - 3
+    ca_liheap_utility_heating:
+      - 356
+      - 492
+      - 526
+      - 495
+      - 510
+      - 512
+      - 445
+      - 482
+      - 509
+      - 511
+      - 499
+      - 383
+      - 447
+      - 386
+      - 466
+      - 457
+      - 568
+      - 473
+      - 358
+      - 501
+      - 468
+      - 513
+      - 440
+      - 482
+      - 442
+      - 448
+      - 368
+      - 452
+      - 591
+      - 394
+      - 476
+      - 447
+      - 456
+      - 420
+      - 396
+      - 426
+      - 362
+      - 346
+      - 498
+      - 381
+      - 417
+      - 325
+      - 397
+      - 394
+      - 538
+      - 465
+      - 482
+      - 419
+      - 409
+      - 472
+      - 514
+      - 535
+      - 368
+      - 445
+      - 515
+      - 340
+      - 410
+      - 508
+
+- name: Case 4, every county utility table amount in poverty group 4.
+  period: 2026
+  # All 58 county rows are independently parsed from original plan pages 182–183.
+  # County names are alphabetic. One qualified adult and monthly income 2500
+  # place every row in group 4. Actual gas bill 100 is not a benefit cap.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person51:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person52:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person53:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person54:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person55:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person56:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person57:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person58:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit10:
+        members: [person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit11:
+        members: [person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit12:
+        members: [person12]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit13:
+        members: [person13]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit14:
+        members: [person14]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit15:
+        members: [person15]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit16:
+        members: [person16]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit17:
+        members: [person17]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit18:
+        members: [person18]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit19:
+        members: [person19]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit20:
+        members: [person20]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit21:
+        members: [person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit22:
+        members: [person22]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit23:
+        members: [person23]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit24:
+        members: [person24]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit25:
+        members: [person25]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit26:
+        members: [person26]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit27:
+        members: [person27]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit28:
+        members: [person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit29:
+        members: [person29]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit30:
+        members: [person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit31:
+        members: [person31]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit32:
+        members: [person32]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit33:
+        members: [person33]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit34:
+        members: [person34]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit35:
+        members: [person35]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit36:
+        members: [person36]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit37:
+        members: [person37]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit38:
+        members: [person38]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit39:
+        members: [person39]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit40:
+        members: [person40]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit41:
+        members: [person41]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit42:
+        members: [person42]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit43:
+        members: [person43]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit44:
+        members: [person44]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit45:
+        members: [person45]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit46:
+        members: [person46]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit47:
+        members: [person47]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit48:
+        members: [person48]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit49:
+        members: [person49]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit50:
+        members: [person50]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit51:
+        members: [person51]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit52:
+        members: [person52]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit53:
+        members: [person53]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit54:
+        members: [person54]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit55:
+        members: [person55]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit56:
+        members: [person56]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit57:
+        members: [person57]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit58:
+        members: [person58]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALPINE_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: AMADOR_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: BUTTE_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: CALAVERAS_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: COLUSA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: DEL_NORTE_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: EL_DORADO_COUNTY_CA
+      household10:
+        members: [person10]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household11:
+        members: [person11]
+        state_code: CA
+        county: GLENN_COUNTY_CA
+      household12:
+        members: [person12]
+        state_code: CA
+        county: HUMBOLDT_COUNTY_CA
+      household13:
+        members: [person13]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household14:
+        members: [person14]
+        state_code: CA
+        county: INYO_COUNTY_CA
+      household15:
+        members: [person15]
+        state_code: CA
+        county: KERN_COUNTY_CA
+      household16:
+        members: [person16]
+        state_code: CA
+        county: KINGS_COUNTY_CA
+      household17:
+        members: [person17]
+        state_code: CA
+        county: LAKE_COUNTY_CA
+      household18:
+        members: [person18]
+        state_code: CA
+        county: LASSEN_COUNTY_CA
+      household19:
+        members: [person19]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+      household20:
+        members: [person20]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+      household21:
+        members: [person21]
+        state_code: CA
+        county: MARIN_COUNTY_CA
+      household22:
+        members: [person22]
+        state_code: CA
+        county: MARIPOSA_COUNTY_CA
+      household23:
+        members: [person23]
+        state_code: CA
+        county: MENDOCINO_COUNTY_CA
+      household24:
+        members: [person24]
+        state_code: CA
+        county: MERCED_COUNTY_CA
+      household25:
+        members: [person25]
+        state_code: CA
+        county: MODOC_COUNTY_CA
+      household26:
+        members: [person26]
+        state_code: CA
+        county: MONO_COUNTY_CA
+      household27:
+        members: [person27]
+        state_code: CA
+        county: MONTEREY_COUNTY_CA
+      household28:
+        members: [person28]
+        state_code: CA
+        county: NAPA_COUNTY_CA
+      household29:
+        members: [person29]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household30:
+        members: [person30]
+        state_code: CA
+        county: ORANGE_COUNTY_CA
+      household31:
+        members: [person31]
+        state_code: CA
+        county: PLACER_COUNTY_CA
+      household32:
+        members: [person32]
+        state_code: CA
+        county: PLUMAS_COUNTY_CA
+      household33:
+        members: [person33]
+        state_code: CA
+        county: RIVERSIDE_COUNTY_CA
+      household34:
+        members: [person34]
+        state_code: CA
+        county: SACRAMENTO_COUNTY_CA
+      household35:
+        members: [person35]
+        state_code: CA
+        county: SAN_BENITO_COUNTY_CA
+      household36:
+        members: [person36]
+        state_code: CA
+        county: SAN_BERNARDINO_COUNTY_CA
+      household37:
+        members: [person37]
+        state_code: CA
+        county: SAN_DIEGO_COUNTY_CA
+      household38:
+        members: [person38]
+        state_code: CA
+        county: SAN_FRANCISCO_COUNTY_CA
+      household39:
+        members: [person39]
+        state_code: CA
+        county: SAN_JOAQUIN_COUNTY_CA
+      household40:
+        members: [person40]
+        state_code: CA
+        county: SAN_LUIS_OBISPO_COUNTY_CA
+      household41:
+        members: [person41]
+        state_code: CA
+        county: SAN_MATEO_COUNTY_CA
+      household42:
+        members: [person42]
+        state_code: CA
+        county: SANTA_BARBARA_COUNTY_CA
+      household43:
+        members: [person43]
+        state_code: CA
+        county: SANTA_CLARA_COUNTY_CA
+      household44:
+        members: [person44]
+        state_code: CA
+        county: SANTA_CRUZ_COUNTY_CA
+      household45:
+        members: [person45]
+        state_code: CA
+        county: SHASTA_COUNTY_CA
+      household46:
+        members: [person46]
+        state_code: CA
+        county: SIERRA_COUNTY_CA
+      household47:
+        members: [person47]
+        state_code: CA
+        county: SISKIYOU_COUNTY_CA
+      household48:
+        members: [person48]
+        state_code: CA
+        county: SOLANO_COUNTY_CA
+      household49:
+        members: [person49]
+        state_code: CA
+        county: SONOMA_COUNTY_CA
+      household50:
+        members: [person50]
+        state_code: CA
+        county: STANISLAUS_COUNTY_CA
+      household51:
+        members: [person51]
+        state_code: CA
+        county: SUTTER_COUNTY_CA
+      household52:
+        members: [person52]
+        state_code: CA
+        county: TEHAMA_COUNTY_CA
+      household53:
+        members: [person53]
+        state_code: CA
+        county: TRINITY_COUNTY_CA
+      household54:
+        members: [person54]
+        state_code: CA
+        county: TULARE_COUNTY_CA
+      household55:
+        members: [person55]
+        state_code: CA
+        county: TUOLUMNE_COUNTY_CA
+      household56:
+        members: [person56]
+        state_code: CA
+        county: VENTURA_COUNTY_CA
+      household57:
+        members: [person57]
+        state_code: CA
+        county: YOLO_COUNTY_CA
+      household58:
+        members: [person58]
+        state_code: CA
+        county: YUBA_COUNTY_CA
+  output:
+    ca_liheap_income_group:
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+    ca_liheap_utility_heating:
+      - 308
+      - 419
+      - 446
+      - 421
+      - 433
+      - 435
+      - 381
+      - 411
+      - 433
+      - 434
+      - 424
+      - 330
+      - 382
+      - 333
+      - 397
+      - 390
+      - 480
+      - 403
+      - 310
+      - 426
+      - 399
+      - 435
+      - 376
+      - 411
+      - 378
+      - 383
+      - 318
+      - 386
+      - 499
+      - 339
+      - 405
+      - 382
+      - 389
+      - 360
+      - 340
+      - 365
+      - 313
+      - 300
+      - 423
+      - 328
+      - 358
+      - 283
+      - 341
+      - 339
+      - 456
+      - 397
+      - 410
+      - 359
+      - 351
+      - 403
+      - 437
+      - 454
+      - 318
+      - 381
+      - 437
+      - 295
+      - 352
+      - 432
+
+- name: Case 5, Alameda exact monthly boundaries determine final utility awards.
+  period: 2026
+  # Apply Alameda groups 484/404/356/308 to the source monthly cent bands.
+  # Noncategorical 3331.67 exceeds SMI and receives zero utility benefit.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 15_650.04
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 15_650.16
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 19_562.52
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 19_562.64
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 23_475
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 23_475.12
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 39_979.92
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 39_980.04
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [484, 484, 404, 404, 356, 356, 308, 308, 0]
+
+- name: Case 6, qualified member increments stop at six.
+  period: 2026
+  # Nevada group 1 base 837 plus 19 for each additional qualified person through
+  # six:837,856,913,932,932. No extra payment for the seventh member.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person3: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person5: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 14, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person10: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person11: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person12: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person13: {age: 14, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person14: {age: 16, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person16: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person17: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person18: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person19: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person20: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person21: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person9, person10, person11, person12, person13, person14]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person15, person16, person17, person18, person19, person20, person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household2:
+        members: [person2, person3]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household3:
+        members: [person4, person5, person6, person7, person8]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household4:
+        members: [person9, person10, person11, person12, person13, person14]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household5:
+        members: [person15, person16, person17, person18, person19, person20, person21]
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [837, 856, 913, 932, 932]
+
+- name: Case 7, categorical large households receive the source group-four award.
+  period: 2026
+  # Categorical above-SMI awards use Nevada group 4 base 499+5*19=594.
+  # The same income without categorical receipt fails the income ceiling.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 117_635.64
+      person2: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person10: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person11: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person12: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 145_314.6
+      person15: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person16: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person17: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person19: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person20: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person21: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person22: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person23: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person24: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person25: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person26: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person27: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person28: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person29: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person30: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person31: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person32: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person33: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person34: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person35: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person36: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person37: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person38: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 117_635.64
+      person40: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person41: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person42: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person43: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person44: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person45: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person46: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person47: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person48: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person49: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person50: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person51: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person52:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 145_314.6
+      person53: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person54: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person55: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person56: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person57: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person58: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person59: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person60: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person61: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person62: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person63: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person64: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person65: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person66: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person67: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person68: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person69: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person70: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person71: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person72: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person73: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person74: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person75: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person76: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+          - person12
+          - person13
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 1_200
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members:
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 1_200
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members:
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+          - person12
+          - person13
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household2:
+        members:
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household3:
+        members:
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+      household4:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+        state_code: CA
+        county: NEVADA_COUNTY_CA
+  output:
+    ca_liheap_categorically_eligible: [true, true, false, false]
+    ca_liheap_income_eligible: [true, true, false, false]
+    ca_liheap_utility_heating: [594, 594, 0, 0]
+
+- name: Case 8, mixed immigration and child income affect the final amount.
+  period: 2026
+  # Nonqualified wages 24_000 remain countable with size 1: group 4 gives 308.
+  # Minor earnings are excluded: size 2 group 1 gives 484+19=503. Age 18 wages
+  # and minor unearned income 36_000 each yield size 2 group 4:308+19=327.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 24_000
+      person3: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 36_000
+      person5: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 36_000
+      person7: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security_survivors: 36_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person5, person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person7, person8]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_household_size: [1, 2, 2, 2]
+    ca_liheap_countable_income: [24_000, 0, 36_000, 36_000]
+    ca_liheap_utility_heating: [308, 503, 327, 327]
+
+- name: Case 9, support deductions alter the amount without double counting.
+  period: 2026
+  # Legally mandated support 100 monthly reduces 2000 to 1900: Alameda group 3
+  # gives 356. Without that deduction group 4 gives 308. Counts are annualized.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        child_support_expense: 1_200
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: [22_800, 24_000]
+    ca_liheap_income_group: [3, 4]
+    ca_liheap_utility_heating: [356, 308]
+
+- name: Case 10, county amount is isolated across states and invalid applicants.
+  period: 2026
+  # Los Angeles size 2=487+19=506; Alameda=484+19=503. Oregon county
+  # lookup must not fail or leak a CA award. All-nonqualified and minor-only
+  # qualified applicants receive zero under the represented applicant rule.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person4: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person6: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person7: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person8: {age: 17, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person5]
+        state_code: OR
+        county: MULTNOMAH_COUNTY_OR
+      household4:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person7, person8]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [506, 503, 0, 0, 0]
+
+- name: Case 11, housing small bills and vulnerability do not add unsupported limits.
+  period: 2026
+  # Alameda base 484 can exceed a 100 bill. Utility matrix has no separate
+  # vulnerability addition. Unsubsidized heat-in-rent is supported by proxy;
+  # subsidized rent needs a reported positive energy charge. NONE has no heat.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+      person3: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit6:
+        members: [person6]
+        heating_type: NONE
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_heating: [484, 484, 484, 0, 484, 0]

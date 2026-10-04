@@ -1,0 +1,12 @@
+description: California uses federal poverty guidelines from this many years before the modeled heating season to assign poverty groups under the Low Income Home Energy Assistance Program.
+# FY2026 matrix uses 2025 guidelines. Other years are unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: California LIHEAP federal poverty guideline year lag
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

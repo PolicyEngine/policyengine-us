@@ -1,0 +1,65 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=196,202,203
+# Nonqualified residents remain income sources but are excluded from size.
+
+- name: Case 1, actual qualified household members determine size.
+  period: 2026
+  # Qualified size is one in each mixed-status household, zero when all members
+  # are nonqualified, and zero for the Oregon component. No size inputs forced.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 30, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person3: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person4: {age: 30, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person5: {age: 5, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person7: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person3, person4, person5]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person7, person8]
+        state_code: OR
+        county: MULTNOMAH_COUNTY_OR
+  output:
+    ca_liheap_household_size: [1, 1, 0, 0]

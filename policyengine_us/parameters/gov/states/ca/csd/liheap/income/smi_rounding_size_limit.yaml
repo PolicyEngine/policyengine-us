@@ -1,0 +1,12 @@
+description: California publishes state median income limits reproduced by changing the rounding method above this household size under the Low Income Home Energy Assistance Program.
+# Inferred numerical method, not an express rule: above size12, add the shared federal additional-person factor times the truncated annual four-person base before monthly-cent truncation. Sizes above25 and other years are unverified.
+values:
+  2025-10-01: 12
+
+metadata:
+  unit: person
+  period: year
+  label: California LIHEAP SMI rounding household size limit
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

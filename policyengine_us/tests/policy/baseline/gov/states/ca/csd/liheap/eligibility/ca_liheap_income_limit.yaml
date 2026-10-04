@@ -1,0 +1,1335 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184
+# All 25 published monthly ceilings were read directly from the final table.
+# Expected annual amounts are exactly 12 times those monthly table entries.
+
+- name: Case 1, all twenty-five published income limits are reproduced.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Household sizes 1 through 25 follow table order. Annualize each published
+  # monthly ceiling by 12; do not replace large-household rows with the conflicting
+  # webpage 192.21 increment or assume the inferred rounding sequence is law.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person3: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person5: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person8: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person10: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person12: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person13: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person14: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person15: {age: 14, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person17: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person18: {age: 10, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person19: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person20: {age: 14, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person21: {age: 16, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person23: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person24: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person25: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person26: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person27: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person28: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person30: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person31: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person32: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person33: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person34: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person35: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person36: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person38: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person39: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person40: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person41: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person42: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person43: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person44: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person45: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person47: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person48: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person49: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person50: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person51: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person52: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person53: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person54: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person55: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person56:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person57: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person58: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person59: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person60: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person61: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person62: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person63: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person64: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person65: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person66: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person67:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person68: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person69: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person70: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person71: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person72: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person73: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person74: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person75: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person76: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person77: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person78: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person79:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person80: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person81: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person82: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person83: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person84: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person85: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person86: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person87: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person88: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person89: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person90: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person91: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person92:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person93: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person94: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person95: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person96: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person97: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person98: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person99: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person100: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person101: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person102: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person103: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person104: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person105: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person106:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person107: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person108: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person109: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person110: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person111: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person112: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person113: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person114: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person115: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person116: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person117: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person118: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person119: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person120: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person121:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person122: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person123: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person124: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person125: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person126: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person127: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person128: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person129: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person130: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person131: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person132: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person133: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person134: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person135: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person136: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person137:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person138: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person139: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person140: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person141: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person142: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person143: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person144: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person145: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person146: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person147: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person148: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person149: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person150: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person151: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person152: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person153: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person154:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person155: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person156: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person157: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person158: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person159: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person160: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person161: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person162: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person163: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person164: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person165: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person166: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person167: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person168: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person169: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person170: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person171: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person172:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person173: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person174: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person175: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person176: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person177: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person178: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person179: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person180: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person181: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person182: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person183: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person184: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person185: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person186: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person187: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person188: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person189: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person190: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person191:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person192: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person193: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person194: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person195: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person196: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person197: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person198: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person199: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person200: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person201: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person202: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person203: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person204: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person205: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person206: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person207: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person208: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person209: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person210: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person211:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person212: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person213: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person214: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person215: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person216: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person217: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person218: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person219: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person220: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person221: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person222: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person223: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person224: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person225: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person226: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person227: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person228: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person229: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person230: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person231: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person232:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person233: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person234: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person235: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person236: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person237: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person238: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person239: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person240: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person241: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person242: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person243: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person244: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person245: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person246: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person247: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person248: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person249: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person250: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person251: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person252: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person253: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person254:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person255: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person256: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person257: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person258: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person259: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person260: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person261: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person262: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person263: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person264: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person265: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person266: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person267: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person268: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person269: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person270: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person271: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person272: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person273: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person274: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person275: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person276: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person277:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person278: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person279: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person280: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person281: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person282: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person283: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person284: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person285: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person286: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person287: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person288: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person289: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person290: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person291: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person292: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person293: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person294: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person295: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person296: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person297: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person298: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person299: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person300: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person301:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person302: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person303: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person304: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person305: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person306: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person307: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person308: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person309: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person310: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person311: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person312: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person313: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person314: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person315: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person316: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person317: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person318: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person319: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person320: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person321: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person322: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person323: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person324: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person325: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person7, person8, person9, person10]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person11, person12, person13, person14, person15]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person16, person17, person18, person19, person20, person21]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person22, person23, person24, person25, person26, person27, person28]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members:
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members:
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit10:
+        members:
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+          - person53
+          - person54
+          - person55
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit11:
+        members:
+          - person56
+          - person57
+          - person58
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit12:
+        members:
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit13:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit14:
+        members:
+          - person92
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+          - person102
+          - person103
+          - person104
+          - person105
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit15:
+        members:
+          - person106
+          - person107
+          - person108
+          - person109
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+          - person118
+          - person119
+          - person120
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit16:
+        members:
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit17:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit18:
+        members:
+          - person154
+          - person155
+          - person156
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit19:
+        members:
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+          - person189
+          - person190
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit20:
+        members:
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit21:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit22:
+        members:
+          - person232
+          - person233
+          - person234
+          - person235
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit23:
+        members:
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+          - person275
+          - person276
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit24:
+        members:
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit25:
+        members:
+          - person301
+          - person302
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2, person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person4, person5, person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person7, person8, person9, person10]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person11, person12, person13, person14, person15]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household6:
+        members: [person16, person17, person18, person19, person20, person21]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household7:
+        members: [person22, person23, person24, person25, person26, person27, person28]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household8:
+        members:
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household9:
+        members:
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household10:
+        members:
+          - person46
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+          - person53
+          - person54
+          - person55
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household11:
+        members:
+          - person56
+          - person57
+          - person58
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household12:
+        members:
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household13:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household14:
+        members:
+          - person92
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+          - person102
+          - person103
+          - person104
+          - person105
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household15:
+        members:
+          - person106
+          - person107
+          - person108
+          - person109
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+          - person118
+          - person119
+          - person120
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household16:
+        members:
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household17:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household18:
+        members:
+          - person154
+          - person155
+          - person156
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household19:
+        members:
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+          - person189
+          - person190
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household20:
+        members:
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household21:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household22:
+        members:
+          - person232
+          - person233
+          - person234
+          - person235
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household23:
+        members:
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+          - person275
+          - person276
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household24:
+        members:
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household25:
+        members:
+          - person301
+          - person302
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_income_limit:
+      - 39_979.92
+      - 52_281.96
+      - 64_584
+      - 76_885.92
+      - 89_187
+      - 101_488.92
+      - 103_795.92
+      - 106_101.96
+      - 108_408.96
+      - 110_715
+      - 113_022
+      - 115_329
+      - 117_635.52
+      - 119_942.16
+      - 122_248.68
+      - 124_555.32
+      - 126_861.84
+      - 129_168.48
+      - 131_475
+      - 133_781.64
+      - 136_088.16
+      - 138_394.8
+      - 140_701.32
+      - 143_007.96
+      - 145_314.48

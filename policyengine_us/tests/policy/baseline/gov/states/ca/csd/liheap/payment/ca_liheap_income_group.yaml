@@ -1,0 +1,341 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,217,218
+# Monthly table cent boundaries, prior-year FPG and categorical group 4 control.
+
+- name: Case 1, one-person poverty groups include every published cent boundary.
+  period: 2026
+  # One-person source upper bounds are 1304.17,1630.21 and 1956.25 per month;
+  # the lower band includes equality and the next starts one cent later.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 15_650.04
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 15_650.16
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 19_562.52
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 19_562.64
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 23_475
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 23_475.12
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 39_979.92
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_income_group: [1, 1, 2, 2, 3, 3, 4, 4]
+
+- name: Case 2, two-person half-cent rounding follows the printed upper bound.
+  period: 2026
+  # 125% of two-person FPG 21_150 /12=2203.125; the table rounds to 2203.13.
+  # That printed value is group 2;2203.14 is group 3.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 26_437.56
+      person2: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 26_437.68
+      person4: {age: 33, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_income_group: [2, 3]
+
+- name: Case 3, categorical over-SMI large households use group four.
+  period: 2026
+  # At size 13 the ordinary group 4 interval disappears; at 25 only group 1 remains.
+  # The source still explicitly requires group 4 for categorical income above SMI.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 117_635.64
+      person2: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person10: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person11: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person12: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 145_314.6
+      person15: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person16: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person17: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person19: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person20: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person21: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person22: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person23: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person24: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person25: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person26: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person27: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person28: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person29: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person30: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person31: {age: 25, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person32: {age: 30, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person33: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person34: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person35: {age: 45, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person36: {age: 50, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person37: {age: 55, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person38: {age: 20, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+          - person12
+          - person13
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 1_200
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members:
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 1_200
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+          - person12
+          - person13
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members:
+          - person14
+          - person15
+          - person16
+          - person17
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+          - person35
+          - person36
+          - person37
+          - person38
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_income_group: [4, 4]

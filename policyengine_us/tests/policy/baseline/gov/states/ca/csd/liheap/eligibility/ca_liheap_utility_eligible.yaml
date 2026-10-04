@@ -1,0 +1,211 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9,193,202,203,205,219,279
+# This gate covers gas/electric utility heating, not unresolved regular WPO.
+
+- name: Case 1, a qualified adult applicant is required by the represented inputs.
+  period: 2026
+  # Applicant age 18 qualifies; age 17 does not absent an emancipation input.
+  # A qualified adult in the unit may apply despite another nonqualified adult.
+  input:
+    people:
+      person1: {age: 17, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 18, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person4: {age: 17, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+      person6: {age: 18, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 35, is_citizen_or_legal_immigrant: false, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person7]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3, person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person5, person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person7]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_eligible: [false, true, false, true, false]
+
+- name: Case 2, utility fuel housing and actual matching energy charges determine coverage.
+  period: 2026
+  # Gas/electric utility heat needs its matching charge, or the supported
+  # unsubsidized rent-inclusive proxy. Subsidized housing with a positive
+  # reported charge qualifies. Propane belongs to unresolved WPO; its false
+  # utility gate is not an assertion of no regular WPO entitlement. Unspecified
+  # fuel has no established utility crosswalk.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+      spm_unit5:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit6:
+        members: [person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 100
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit7:
+        members: [person7]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit8:
+        members: [person8]
+        heating_type: NONE
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit9:
+        members: [person9]
+        heating_type: UNSPECIFIED
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person5]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household6:
+        members: [person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household7:
+        members: [person7]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household8:
+        members: [person8]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household9:
+        members: [person9]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_utility_eligible:
+      - true
+      - true
+      - false
+      - true
+      - false
+      - true
+      - false
+      - false
+      - false

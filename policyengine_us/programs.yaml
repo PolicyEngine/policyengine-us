@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, CA utility heating, MA, IL, KS, MS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: CA
+        status: partial
+        name: California utility HEAP
+        full_name: California Home Energy Assistance Program utility heating component
+        variable: ca_liheap_utility_heating
+        parameter_prefix: gov.states.ca.csd.liheap
+        verified_years: "2026"
+        notes: FY2026 regular gas and electric utility heating only. Wood, propane and oil regular assistance is still incomplete. Annual inputs approximate application-month circumstances and SPM units approximate energy households; local priorities, detailed income exclusions and allowable medical-premium composition are not fully represented. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment are outside scope.
 
   # --- SSA programs ---
   - id: ssi

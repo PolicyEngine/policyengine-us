@@ -1,0 +1,12 @@
+description: California publishes state median income limits reproduced by truncating annual amounts to this increment under the Low Income Home Energy Assistance Program.
+# Inferred: truncate the four-person 60% SMI base, then the size-adjusted annual amount through size12 before truncating monthly cents. Validated for all25 published FY2026 rows.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: California LIHEAP SMI annual rounding increment
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

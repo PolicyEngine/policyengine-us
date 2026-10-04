@@ -1,0 +1,474 @@
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=229,230,231,234,235,240,243,244,245,246,247,248,249,250
+# Annual inputs approximate current-month receipts; SSI and SSP are monthly.
+# Raw premium inputs below are assumed to contain allowable medical premiums.
+
+- name: Case 1, nonqualified wages and minor unearned income remain countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Nonqualified wages 24_000 count despite size exclusion. The minor wage 12_000
+  # is excluded, while minor survivor Social Security 2_400 still counts.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 24_000
+      person3: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        social_security_survivors: 2_400
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_household_size: [1, 2]
+    ca_liheap_countable_income: [24_000, 2_400]
+
+- name: Case 2, pension retirement Social Security survivor and rental aggregates enter once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Pension 3_000 + retirement withdrawals 1_000 + Social Security 2_000
+  # + separate survivor 700 + ordinary/farm rent 3_000 =9_700. Each aggregate
+  # contains its own subcomponents, so none are counted a second time.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        taxable_pension_income: 2_000
+        tax_exempt_pension_income: 1_000
+        taxable_retirement_distributions: 600
+        tax_exempt_retirement_distributions: 400
+        social_security_survivors: 1_000
+        social_security_dependents: 200
+        social_security_disability: 300
+        social_security_retirement: 500
+        survivor_benefits: 700
+        rental_income: 1_800
+        farm_rent_income: 1_200
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: 9_700
+
+- name: Case 3, represented unearned receipts and annual CalWORKs enter once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Person receipts total 6_400; annual household CalWORKs 2_400 counts once
+  # despite two members, giving 8_800. Interest is assumed used for support.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        unemployment_compensation: 1_000
+        strike_benefits: 200
+        general_assistance: 300
+        alimony_income: 400
+        child_support_received: 500
+        interest_income: 600
+        ordinary_dividend_income: 700
+        workers_compensation: 800
+        disability_benefits: 900
+        veterans_benefits: 1_000
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 2_400
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: 8_800
+
+- name: Case 4, monthly federal SSI alone is annualized once with zero state supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Federal SSI 1_000 each month gives 12_000 annually. SSP is explicitly zero;
+  # all members use matching monthly SSI keys. Neither divide nor multiply twice.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 1_000
+          2026-02: 1_000
+          2026-03: 1_000
+          2026-04: 1_000
+          2026-05: 1_000
+          2026-06: 1_000
+          2026-07: 1_000
+          2026-08: 1_000
+          2026-09: 1_000
+          2026-10: 1_000
+          2026-11: 1_000
+          2026-12: 1_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: 12_000
+
+- name: Case 5, nonuniform monthly SSI and SSP add to annual CalWORKs without duplication.
+  period: 2026
+  absolute_error_margin: 0.01
+  # SSI=6*500+6*700=7_200. SSP=3*100+9*200=2_100. Annual CalWORKs
+  # adds 2_400 once: total 11_700. SSP is a household amount, not per person.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 500
+          2026-02: 500
+          2026-03: 500
+          2026-04: 500
+          2026-05: 500
+          2026-06: 500
+          2026-07: 700
+          2026-08: 700
+          2026-09: 700
+          2026-10: 700
+          2026-11: 700
+          2026-12: 700
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 2_400
+        ca_state_supplement:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 200
+          2026-05: 200
+          2026-06: 200
+          2026-07: 200
+          2026-08: 200
+          2026-09: 200
+          2026-10: 200
+          2026-11: 200
+          2026-12: 200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: 11_700
+
+- name: Case 6, direct premiums take precedence with fallback and no Medicare duplication.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Positive direct premium 1_200 wins over fallback 2_400; otherwise fallback
+  # applies. Raw fields are alternative representations, never added together.
+  # Medicare deductions are deferred; LTC is excluded. Two members deduct
+  # 1_200+600 from 36_000, giving 34_200.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 2_400
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 2_400
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 2_400
+        medicare_part_b_premiums_reported: 600
+        long_term_health_insurance_premiums: 3_000
+      person4:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        medicare_part_b_premiums_reported: 600
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        health_insurance_premiums: 1_200
+      person6:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        pension_income: 12_000
+        health_insurance_premiums_without_medicare_part_b: 600
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household5:
+        members: [person5, person6]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: [22_800, 21_600, 22_800, 24_000, 34_200]
+
+- name: Case 7, legally mandated support and allowable premiums are deducted once.
+  period: 2026
+  absolute_error_margin: 0.01
+  # 24_000-1_200 child support-600 spousal support-1_200 premiums=21_000.
+  # Deductions or net business losses cannot make household income negative.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 24_000
+        child_support_expense: 1_200
+        alimony_expense: 600
+        health_insurance_premiums: 1_200
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 1_000
+        child_support_expense: 2_000
+        health_insurance_premiums: 1_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: -2_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+  output:
+    ca_liheap_countable_income: [21_000, 0, 0]
+
+- name: Case 8, cash gifts capital gains prizes SNAP and assets are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Only wages 2_000 count; gifts, gains, lottery winnings, one-time insurance,
+  # SNAP and asset balances are excluded. The Oregon CA component is zero.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 2_000
+        financial_assistance: 5_000
+        capital_gains: 10_000
+        gambling_winnings: 2_000
+        life_insurance_benefits: 2_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 2_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 1_200
+        ca_tanf: 0
+        ca_state_supplement: 0
+        spm_unit_assets: 500_000
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: ALAMEDA_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: OR
+        county: MULTNOMAH_COUNTY_OR
+  output:
+    ca_liheap_countable_income: [2_000, 0]

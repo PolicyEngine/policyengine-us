@@ -1,0 +1,12 @@
+description: California requires applicants to be at least this age, unless emancipated under the Low Income Home Energy Assistance Program.
+# Emancipation cannot be identified from existing inputs.
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: California LIHEAP minimum applicant age
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=219
