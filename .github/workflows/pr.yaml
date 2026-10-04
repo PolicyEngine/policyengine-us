@@ -460,7 +460,10 @@ jobs:
     needs: ReleaseLock
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Passing runs on 2026-10-04 took 42-55 minutes (#9653, #9766, #9769,
+    # #9777, #9784), so a 60-minute limit cancels PRs that add a few
+    # minutes of tests (#9695 was cancelled at 60 minutes twice).
+    timeout-minutes: 90
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
