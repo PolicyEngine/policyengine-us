@@ -12,7 +12,7 @@ class hi_liheap_income_limit(Variable):
     defined_for = StateCode.HI
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=8,9",
-        "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1",
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):
