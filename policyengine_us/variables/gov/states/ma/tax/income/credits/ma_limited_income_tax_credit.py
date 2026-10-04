@@ -10,7 +10,7 @@ class ma_limited_income_tax_credit(Variable):
     label = "MA Limited Income Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
+    reference = "https://web.archive.org/web/20240317005519/https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
