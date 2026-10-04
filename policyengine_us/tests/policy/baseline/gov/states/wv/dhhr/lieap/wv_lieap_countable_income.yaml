@@ -1,0 +1,586 @@
+# Independent source-derived tests for annualized countable income only.
+# Earlier operative IMM, section 21.3.1.A.1-4/B/D (physical pages 1725-1728, 1732).
+# https://bfa.wv.gov/media/39948/download?inline=#page=1725,1726,1727,1728,1732
+# Current October 1, 2026 IMM, section 21.3.1.A.1-3/A.5/B (physical pages 1726-1729, 1734).
+# https://bfa.wv.gov/media/40005/download?inline=#page=1726,1727,1728,1729,1734
+# Annual flow inputs approximate steady application-month receipt; they do not
+# reconstruct application dates, pay-frequency conversions or partial months.
+# The detailed manual governs over unchecked summary-plan income categories.
+# Capital/death/prize facts in Case 7 are explicitly nonrecurring.
+
+- name: Case 1, minors and nonqualified members retain their recurring earnings.
+  # The operative manual has no blanket minor-earnings exclusion.
+  # Every unit counts 12_000 + 6_000, including nonqualified parent earnings.
+  # The seventeenth/eighteenth birthday does not change this income rule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12000
+      person2:
+        age: 17
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12000
+      person4:
+        age: 18
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6000
+      person5:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 12000
+      person6:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6000
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit2:
+        members:
+          - person3
+          - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit3:
+        members:
+          - person5
+          - person6
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code: WV
+      household2:
+        members:
+          - person3
+          - person4
+        state_code: WV
+      household3:
+        members:
+          - person5
+          - person6
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 18000
+      - 18000
+      - 18000
+
+- name: Case 2, recurring represented income sources include assistance and ordinary VA.
+  # 2_400 + 300 + 600 + 700 + 400 + 900 + (200 + 100)
+  # + (250 + 50) + 800 + 1_000 + 900 + 1_100 + 1_200 + 1_300 = 12_200.
+  # VA here is ordinary recurring benefits, not excluded Aid and Attendance.
+  # Estate income and child support here are recurring, not inheritance or arrears.
+  # Outside-household cash assistance and GA count under the all-source rule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        unemployment_compensation: 2400
+        strike_benefits: 300
+        rental_income: 600
+        farm_rent_income: 700
+        alimony_income: 400
+        child_support_received: 900
+        taxable_interest_income: 200
+        tax_exempt_interest_income: 100
+        qualified_dividend_income: 250
+        non_qualified_dividend_income: 50
+        veterans_benefits: 800
+        workers_compensation: 1000
+        disability_benefits: 900
+        estate_income: 1100
+        financial_assistance: 1200
+        general_assistance: 1300
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 12200
+
+- name: Case 3, pensions account distributions and non-SSA survivor benefits count once.
+  # Recurring pensions: 1_000 + 2_000 + 300 + 400 = 3_700.
+  # Recurring account withdrawals: 5_000 + 600 + 700 + 80 + 90 + 10 + 110 + 20 + 30 = 6_640.
+  # Non-SSA survivors 500 gives 3_700 + 6_640 + 500 = 10_840.
+  # All three RSDI categories are excluded; no narrower pension classifications
+  # are supplied alongside their potentially overlapping pension aggregates.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        taxable_public_pension_income: 1000
+        taxable_private_pension_income: 2000
+        tax_exempt_public_pension_income: 300
+        tax_exempt_private_pension_income: 400
+        taxable_ira_distributions: 5000
+        tax_exempt_ira_distributions: 600
+        taxable_401k_distributions: 700
+        tax_exempt_401k_distributions: 80
+        taxable_sep_distributions: 90
+        tax_exempt_sep_distributions: 10
+        taxable_403b_distributions: 110
+        tax_exempt_403b_distributions: 20
+        keogh_distributions: 30
+        survivor_benefits: 500
+        social_security_retirement: 18000
+        social_security_disability: 12000
+        social_security_survivors: 3600
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 10840
+
+- name: Case 4, monthly WV WORKS aggregates once and general assistance remains countable.
+  # First unit: GA 600 + 900 plus WV WORKS 100 + 200 = 1_800.
+  # Second unit: GA 50 plus WV WORKS 25 * 12 = 350.
+  # WV WORKS is an SPMUnit monthly benefit, not a per-person or annual-times-12 amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        general_assistance: 600
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        general_assistance: 900
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        general_assistance: 50
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works:
+          2026-01: 100
+          2026-02: 200
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap: 0
+      spm_unit2:
+        members:
+          - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works:
+          2026-01: 25
+          2026-02: 25
+          2026-03: 25
+          2026-04: 25
+          2026-05: 25
+          2026-06: 25
+          2026-07: 25
+          2026-08: 25
+          2026-09: 25
+          2026-10: 25
+          2026-11: 25
+          2026-12: 25
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code: WV
+      household2:
+        members:
+          - person3
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 1800
+      - 350
+
+- name: Case 5, existing net businesses are not discounted again and losses do not offset earnings.
+  # Authorized net-business approximation: do not apply the manual gross-receipts 20% deduction twice.
+  # First unit sums 1_000 + 2_000 + 3_000 + 4_000 = 10_000.
+  # Second counts wages 10_000 + positive business 2_000 + 3_000 = 15_000.
+  # Negative business streams contribute zero; the all-loss unit has zero income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: 1000
+        sstb_self_employment_income: 2000
+        farm_operations_income: 3000
+        partnership_s_corp_income: 4000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10000
+        self_employment_income: -9000
+        sstb_self_employment_income: 2000
+        farm_operations_income: -7000
+        partnership_s_corp_income: 3000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: -1000
+        sstb_self_employment_income: -2000
+        farm_operations_income: -3000
+        partnership_s_corp_income: -4000
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit2:
+        members:
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit3:
+        members:
+          - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+        state_code: WV
+      household2:
+        members:
+          - person2
+        state_code: WV
+      household3:
+        members:
+          - person3
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 10000
+      - 15000
+      - 0
+
+- name: Case 6, student funding RSDI SSI and SNAP do not enlarge recurring wages.
+  # Only the 10_000 ordinary wages count; these are not work-study wages.
+  # Scholarships/grants 5_000, Pell 3_000, SSDI 2_400, annual SSI 1_200 and SNAP 6_000 are excluded.
+  # No separate work-study dollar input exists; this does not assert exclusion of mixed-job wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        is_citizen_or_legal_immigrant: true
+        ssi: 1200
+        employment_income: 10000
+        educational_assistance: 5000
+        pell_grant: 3000
+        social_security_disability: 2400
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 6000
+    households:
+      household1:
+        members:
+          - person1
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 10000
+
+- name: Case 7, specifically nonrecurring proceeds are excluded under the documented input convention.
+  # Fixture facts: one asset sale, one gambling prize and one life-insurance death payment.
+  # The manual excludes nonrecurring lump sums, not all possible recurring installments.
+  # Existing annual fields cannot distinguish those installments; this scenario
+  # does not claim a legal blanket exclusion or test unobserved recurrence.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        long_term_capital_gains: 10000
+        gambling_winnings: 2000
+        life_insurance_benefits: 50000
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 0
+
+- name: Case 8, income remains unprorated in mixed states and all-nonqualified households.
+  # WV counts both 6_000 incomes and separately the all-nonqualified unit 15_000.
+  # Income is not conditioned on qualified household size; this is not eligibility.
+  # The Virginia unit has zero under the WV-only public variable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6000
+      person2:
+        age: 12
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 6000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 25000
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 15000
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit2:
+        members:
+          - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+      spm_unit3:
+        members:
+          - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code: WV
+      household2:
+        members:
+          - person3
+        state_code: VA
+      household3:
+        members:
+          - person4
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 12000
+      - 0
+      - 15000
+
+- name: Case 9, the current FY2027 manual preserves recurring and excluded income treatment.
+  # Current manual A.1-3 retain the income rules; exclusions are now A.5.
+  # 2_000 + 1_000 + 300 + 400 + 500 + ordinary VA 600 + WV WORKS 1_200 = 6_000.
+  # RSDI 18_000, SSI 1_200 and educational assistance 800 remain excluded.
+  # The new Zero Income A.4 is about responsibility and adds no income to this fixture.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 2000
+        general_assistance: 300
+        taxable_private_pension_income: 400
+        taxable_ira_distributions: 500
+        veterans_benefits: 600
+        social_security_retirement: 18000
+      person2:
+        age: 17
+        is_citizen_or_legal_immigrant: false
+        ssi: 1200
+        employment_income: 1000
+        educational_assistance: 800
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        wv_works:
+          2027-01: 100
+          2027-02: 100
+          2027-03: 100
+          2027-04: 100
+          2027-05: 100
+          2027-06: 100
+          2027-07: 100
+          2027-08: 100
+          2027-09: 100
+          2027-10: 100
+          2027-11: 100
+          2027-12: 100
+        snap: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+      - 6000
+
+- name: Case 10, estate losses do not offset wages or another member estate income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # No-deduction rule applied to an input explicitly defined as net income or loss.
+  # Person 1 wages 12_000 plus zero from their -10_000 estate loss,
+  # plus Person 2 recurring estate income 1_000 = 13_000.
+  # Flooring after summing member estates would wrongly erase the positive 1_000.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 12_000
+        estate_income: -10_000
+        ssi: 0
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        estate_income: 1_000
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        wv_works: 0
+        snap: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_lieap_countable_income: 13_000

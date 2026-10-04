@@ -852,7 +852,7 @@ programs:
         full_name: West Virginia Low Income Energy Assistance Program components
         parameter_prefix: gov.states.wv.dhhr.lieap
         verified_years: "2026-2027"
-        notes: "Household-size and income-limit components only. No final countable income, eligibility or regular benefit: published payment intervals overlap and income-category guidance conflicts. Annual inputs and SPM units approximate application circumstances. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment remain outside scope."
+        notes: "Household-size, countable-income and income-limit components. Countable income follows the detailed operational manual over unchecked plan categories, including minor earnings, TANF and general assistance while excluding RSDI and SSI. Annual flows approximate recurring application-month income; aggregate inputs cannot separate all excluded receipts. No final eligibility or regular benefit: payment intervals overlap and categorical semantics remain unresolved. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment remain outside scope."
 
   # --- SSA programs ---
   - id: ssi

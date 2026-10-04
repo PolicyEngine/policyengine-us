@@ -1,1 +1,1 @@
-Add West Virginia LIEAP qualified household-size and income-limit components; countable income and final heating awards remain incomplete pending source conflicts.
+Add West Virginia LIEAP qualified household size, income limits and countable income based on the operational manual; final eligibility and heating awards remain incomplete pending source conflicts.

@@ -1,0 +1,20 @@
+description: West Virginia counts positive amounts of these represented net income sources under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - estate_income
+# The source deducts 20% from gross receipts. Existing inputs are already net;
+# using them without another deduction is an explicit modeling approximation.
+# Estate and business losses do not offset other income.
+metadata:
+  unit: list
+  period: year
+  label: West Virginia LIEAP net income sources without loss offsets
+  reference:
+    - title: West Virginia Income Maintenance Manual, Chapter 21.3.1.A
+      href: https://bfa.wv.gov/media/39948/download?inline=#page=1725,1726
+    - title: West Virginia Income Maintenance Manual, October 2026 edition, Chapter 21.3.1.A
+      href: https://bfa.wv.gov/media/40005/download?inline=#page=1726,1727
