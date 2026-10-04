@@ -1,3 +1,28 @@
+## [2.23.9] - 2026-10-04
+
+### Changed
+
+- Report Codecov's project coverage as informational, since pull requests upload coverage from selected tests only; the patch check stays the coverage gate.
+
+### Fixed
+
+- Replace dead Montana, Idaho, Utah, Colorado, New Mexico, Washington and Arizona reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.23.8] - 2026-10-04
+
+### Fixed
+
+- Fix read-only cache tests to forward storage metadata introduced in PolicyEngine Core 3.32.16.
+
+
+## [2.23.7] - 2026-10-04
+
+### Fixed
+
+- Extend New York City resident income tax rates and the 14% additional tax through tax year 2029 under Chapter 127 of 2026 (A.11561, Part D), and drop the additional tax from the base rates that apply from 2030.
+
+
 ## [2.23.6] - 2026-10-04
 
 ### Fixed
