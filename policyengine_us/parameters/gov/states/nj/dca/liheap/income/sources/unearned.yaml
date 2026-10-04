@@ -5,6 +5,9 @@ values:
   - strike_benefits
   - ssi
   - pension_income
+  # Handbook 2.3.D counts pensions and annuities; 2.3.E.10 excludes veterans'
+  # benefits, but VA survivor payments cannot be separated and count here.
+  - survivor_benefits
   - general_assistance
   - rental_income
   - farm_rent_income
