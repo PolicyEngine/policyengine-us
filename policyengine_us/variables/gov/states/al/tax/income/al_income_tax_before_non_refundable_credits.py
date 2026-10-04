@@ -9,7 +9,7 @@ class al_income_tax_before_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     # The Code of Alabama 1975 Section 40-18-5
-    reference = " https://alison.legislature.state.al.us/code-of-alabama"
+    reference = "https://alison.legislature.state.al.us/code-of-alabama"
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
