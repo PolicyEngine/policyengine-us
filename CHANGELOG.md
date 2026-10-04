@@ -1,3 +1,14 @@
+## [2.23.9] - 2026-10-04
+
+### Changed
+
+- Report Codecov's project coverage as informational, since pull requests upload coverage from selected tests only; the patch check stays the coverage gate.
+
+### Fixed
+
+- Replace dead Montana, Idaho, Utah, Colorado, New Mexico, Washington and Arizona reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
 ## [2.23.8] - 2026-10-04
 
 ### Fixed
