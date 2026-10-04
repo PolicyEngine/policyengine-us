@@ -1,3 +1,10 @@
+## [2.23.8] - 2026-10-04
+
+### Fixed
+
+- Fix read-only cache tests to forward storage metadata introduced in PolicyEngine Core 3.32.16.
+
+
 ## [2.23.7] - 2026-10-04
 
 ### Fixed
