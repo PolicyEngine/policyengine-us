@@ -1,3 +1,31 @@
+## [2.23.8] - 2026-10-04
+
+### Fixed
+
+- Fix read-only cache tests to forward storage metadata introduced in PolicyEngine Core 3.32.16.
+
+
+## [2.23.7] - 2026-10-04
+
+### Fixed
+
+- Extend New York City resident income tax rates and the 14% additional tax through tax year 2029 under Chapter 127 of 2026 (A.11561, Part D), and drop the additional tax from the base rates that apply from 2030.
+
+
+## [2.23.6] - 2026-10-04
+
+### Fixed
+
+- Replace dead Illinois, Indiana, Iowa, Wisconsin and Kansas reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.23.5] - 2026-10-03
+
+### Fixed
+
+- Replace dead Massachusetts reference URLs (Form 1 instructions and schedules, Department of Revenue pages, child care and LIHEAP documents) with live successors or pinned Wayback captures, and guard against their return.
+
+
 ## [2.23.4] - 2026-10-03
 
 ### Fixed
