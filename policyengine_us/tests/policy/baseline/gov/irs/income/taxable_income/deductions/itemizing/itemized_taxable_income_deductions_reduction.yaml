@@ -26,3 +26,141 @@
     total_itemized_taxable_income_deductions: 1_000
   output: 
     itemized_taxable_income_deductions_reduction: 54
+
+# 26 U.S.C. 68(c) before P.L. 119-21: medical expenses, investment interest,
+# and casualty, theft and wagering losses are not "itemized deductions" for
+# the 80 percent ceiling. Expected values follow the Itemized Deductions
+# Worksheet—Line 29 in the Instructions for Schedule A (Form 1040): line 2 is
+# "the amount from Schedule A, lines 4, 14, and 20" (medical, investment
+# interest, casualty or theft), and line 4 is 80% of line 1 minus line 2.
+- name: 2016 single filer with medical expenses - the 80 percent ceiling binds
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: SINGLE
+    medical_expense_deduction: 60_000
+    charitable_deduction: 5_000
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2016 worksheet:
+    # Line 1: 60_000 + 5_000 = 65_000
+    # Line 2: 60_000 (Schedule A line 4, medical)
+    # Line 3: 65_000 - 60_000 = 5_000
+    # Line 4: 5_000 * 80% = 4_000
+    # Line 7: 400_000 - 259_400 = 140_600
+    # Line 8: 140_600 * 3% = 4_218
+    # Line 9: smaller of 4_000 or 4_218 = 4_000
+    # Line 10: 65_000 - 4_000 = 61_000
+    itemized_taxable_income_deductions_reduction: 4_000
+    itemized_taxable_income_deductions: 61_000
+
+- name: 2017 joint filers with investment interest and a casualty loss - the 80 percent ceiling binds
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        investment_interest_expense: 30_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 600_000
+        filing_status: JOINT
+        casualty_loss_deduction: 20_000
+        charitable_deduction: 10_000
+        medical_expense_deduction: 0
+        salt_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # 2017 worksheet:
+    # Line 1: 30_000 + 20_000 + 10_000 = 60_000
+    # Line 2: 30_000 (line 14, investment interest) + 20_000 (line 20) = 50_000
+    # Line 3: 60_000 - 50_000 = 10_000
+    # Line 4: 10_000 * 80% = 8_000
+    # Line 7: 600_000 - 313_800 = 286_200
+    # Line 8: 286_200 * 3% = 8_586
+    # Line 9: smaller of 8_000 or 8_586 = 8_000
+    # Line 10: 60_000 - 8_000 = 52_000
+    interest_deduction: 30_000
+    total_itemized_taxable_income_deductions: 60_000
+    itemized_taxable_income_deductions_reduction: 8_000
+    itemized_taxable_income_deductions: 52_000
+
+- name: 2015 head of household with only medical expenses - deduction not limited
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    medical_expense_deduction: 40_000
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2015 worksheet:
+    # Line 1: 40_000
+    # Line 2: 40_000 (Schedule A line 4, medical)
+    # Line 3: line 2 is not less than line 1, so "Your deduction isn't
+    # limited" and line 29 is line 1.
+    itemized_taxable_income_deductions_reduction: 0
+    itemized_taxable_income_deductions: 40_000
+
+- name: 2016 separate filer - the 3 percent amount binds despite medical expenses
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: SEPARATE
+    medical_expense_deduction: 10_000
+    salt_deduction: 40_000
+    charitable_deduction: 0
+    interest_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2016 worksheet:
+    # Line 1: 10_000 + 40_000 = 50_000
+    # Line 2: 10_000
+    # Line 3: 40_000
+    # Line 4: 40_000 * 80% = 32_000
+    # Line 7: 200_000 - 155_650 = 44_350
+    # Line 8: 44_350 * 3% = 1_330.50
+    # Line 9: smaller of 32_000 or 1_330.50 = 1_330.50
+    # Line 10: 50_000 - 1_330.50 = 48_669.50
+    itemized_taxable_income_deductions_reduction: 1_330.50
+    itemized_taxable_income_deductions: 48_669.50
+
+# P.L. 119-21, sec. 70111(a), rewrote section 68 for taxable years beginning
+# after December 31, 2025, without the former subsection (c). Medical
+# expenses therefore count toward "such amount of itemized deductions".
+# The 37 percent bracket for single filers begins at $640,600 in 2026
+# (Rev. Proc. 2025-32, sec. 4.01, Table 3).
+- name: 2026 single filer with medical expenses - no section 68(c) exclusion
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    medical_expense_deduction: 150_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Itemized deductions: 150_000 + 50_000 = 200_000
+    # Excess over the 37 percent bracket: 900_000 - 640_600 = 259_400
+    # Lesser: 200_000; reduction: 200_000 * 2 / 37 = 10_810.81
+    itemized_taxable_income_deductions_reduction: 10_810.81
