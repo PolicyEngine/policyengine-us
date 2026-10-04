@@ -270,3 +270,58 @@
         state_code: WV
   output:
     oh_liheap_eligible: false
+
+# Final FY2026 plan Section 2.3, physical p8 permits subsidized heat-in-rent
+# tenants who pay all or part of a separate electric bill; liability is verified.
+- name: Case 12, housing assistance with heat in rent and a separate electric bill qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        electricity_expense: 1_200
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: true
+
+- name: Case 13, public housing with heat in rent and a separate electric bill qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        electricity_expense: 1_200
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        is_in_public_housing: true
+  output:
+    oh_liheap_eligible: true

@@ -20,11 +20,12 @@ class oh_liheap_eligible(Variable):
         subsidized = spm_unit("receives_housing_assistance", period) | (
             spm_unit.household("is_in_public_housing", period)
         )
-        # A primary heating bill approximates the verified household liability,
-        # including the household's own portion in subsidized housing. For
-        # nonsubsidized heat in rent, the flag represents the verified arrangement.
+        # Reported bills and rental terms approximate verified liability. The
+        # heating plan also permits subsidized heat-in-rent tenants who pay all
+        # or part of a separate electric bill (Section 2.3).
+        pays_electricity = spm_unit("electricity_expense", period) > 0
         responsible = (spm_unit("heating_expense", period) > 0) | (
-            heat_in_rent & ~subsidized
+            heat_in_rent & (~subsidized | pays_electricity)
         )
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values
