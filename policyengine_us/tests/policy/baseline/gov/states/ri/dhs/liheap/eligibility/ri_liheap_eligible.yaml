@@ -1,0 +1,41 @@
+# DHS manual physical pages 5-6 and 12 allows heat included in rent and excludes
+# subsidized renters without any utility burden. These are eligibility checks;
+# they do not choose among the separate direct and secondary-electric awards.
+- name: Case 1, heating and rental arrangements establish the required energy burden.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    ri_works: [0, 0, 0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 0, 0, 0, 0, 1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 120, 0, 0, 120, 0]
+    heat_expense_included_in_rent: [false, false, true, true, true, false, true, true]
+    receives_housing_assistance: [false, false, false, true, true, true, false, false]
+    is_in_public_housing: [false, false, false, false, false, false, true, true]
+  output:
+    ri_liheap_eligible: [true, false, true, true, false, true, true, false]
+
+# FY2026 matrix's size-1 annual ceiling is 42,252, inclusive. The ordinary
+# income/member requirements still apply when a positive heating bill exists;
+# explicit NONE and a household outside Rhode Island cannot qualify.
+- name: Case 2, income and qualified membership remain necessary for heating assistance.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, MA]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED, CITIZEN, CITIZEN]
+    employment_income: [42_252, 42252.01, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0]
+    ri_works: [0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ri_liheap_eligible: [true, false, false, false, false]
