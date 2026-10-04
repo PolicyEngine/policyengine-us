@@ -1,0 +1,65 @@
+# Source for the expected values in this file: COMAR 07.03.21.04D (countable income
+# sources), E(13) and F (court-ordered child support paid is deducted):
+# https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
+
+- name: Case 1, every modeled unearned source counts and court-ordered support is deducted.
+  period: 2026
+  input:
+    state_code: MD
+    heating_type: NATURAL_GAS
+    md_meap_countable_earned_income: 10_000
+    social_security: 12_000
+    railroad_benefits: 600
+    pension_income: 1_200
+    retirement_distributions: 2_400
+    interest_income: 120
+    ordinary_dividend_income: 240
+    estate_income: 360
+    rental_income: 1_200
+    child_support_received: 600
+    alimony_income: 480
+    workers_compensation: 720
+    unemployment_compensation: 840
+    veterans_benefits: 960
+    strike_benefits: 120
+    ssi: 0
+    tanf: 0
+    child_support_expense: 2_400
+  output:
+    # COMAR 07.03.21.04D: $10,000 earnings + $12,000 Social Security (D(3), counted
+    # gross: the Medicare premium deduction is not wired in) + $600 railroad
+    # retirement (D(26)) + $1,200 pensions (D(12)) + $2,400 retirement account
+    # disbursements (D(13)) + $120 interest (D(6)) + $240 dividends (D(5)) + $360
+    # estate income (D(8)) + $1,200 rental income (D(2)) + $600 child support (D(14))
+    # + $480 alimony (D(15)) + $720 workers' compensation (D(16)) + $840 unemployment
+    # (D(17)) + $960 veterans benefits (D(18)) + $120 strike funds (D(24)) = $31,840;
+    # less $2,400 court-ordered child support paid (E(13), F) = $29,440.
+    md_meap_countable_income: 29_440
+
+- name: Case 2, the support deduction cannot make countable income negative.
+  period: 2026
+  input:
+    state_code: MD
+    heating_type: NATURAL_GAS
+    md_meap_countable_earned_income: 0
+    ssi: 0
+    tanf: 0
+    child_support_expense: 10_000
+  output:
+    # COMAR 07.03.21.04F deducts verified support from gross income; with no income
+    # the result is floored at $0.
+    md_meap_countable_income: 0
+
+- name: Case 3, TCA counts only when it is taken up.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    md_tca: [1_200, 1_200]
+    takes_up_tanf_if_eligible: [false, true]
+    ssi: [0, 0]
+  output:
+    # COMAR 07.03.21.04D(10): temporary cash assistance is countable. The first
+    # household is entitled to $1,200 of TCA but does not receive it, $0; the second
+    # receives it, $1,200.
+    md_meap_countable_income: [0, 1_200]

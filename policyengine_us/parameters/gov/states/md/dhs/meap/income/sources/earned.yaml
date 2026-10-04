@@ -1,0 +1,14 @@
+description: Maryland uses these existing earnings sources without an additional business expense deduction under the Maryland Energy Assistance Program.
+values:
+  '2025-07-01':
+  - employment_income
+  - self_employment_income
+  - sstb_self_employment_income
+  - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Maryland MEAP earned sources
+  reference:
+  - title: COMAR 07.03.21.04, countable income and exclusions
+    href: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04

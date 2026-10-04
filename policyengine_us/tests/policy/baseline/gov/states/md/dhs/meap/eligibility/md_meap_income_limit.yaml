@@ -1,0 +1,34 @@
+# Source for the expected values in this file: FY2026 OHEP Income Guidelines (one
+# page), annual 200% FPG table and the 60% SMI footnote for households of 11 or more:
+# https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+
+- name: Case 1, published annual limits for sizes one to eight and the rate for nine and ten.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  output:
+    # Income Guidelines, annual table, sizes 1 to 8: $31,300, $42,300, $53,300,
+    # $64,300, $75,300, $86,300, $97,300, $108,300, each 200% of the 2025 HHS poverty
+    # guideline ($15,650 plus $5,500 per additional person). Sizes 9 and 10 are not
+    # printed as rows; 200% of the guideline gives $119,300 and $130,300. The page's
+    # "for each additional HH member add $11,004" line would instead give $119,304
+    # and $130,308; the model follows the 200% rate (noted in the variable
+    # documentation).
+    md_meap_income_limit: [31_300, 42_300, 53_300, 64_300, 75_300, 86_300, 97_300, 108_300, 119_300, 130_300]
+
+- name: Case 2, sizes eleven and twelve use 60 percent of state median income.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    md_meap_household_size: [11, 12]
+  output:
+    # Income Guidelines footnote: "Households of 11+ must be based on 60% of the State
+    # Median Income." No FY26 dollar rows are printed. 60% of the FFY2026 Maryland
+    # four-person median income, floor(0.6 x $154,117) = $92,470, times the
+    # 45 CFR 96.85(b) size factors (52% + 5 x 16% + 3% per member above six):
+    #   size 11: 1.47 x $92,470 = $135,930.90, floored to $135,930;
+    #   size 12: 1.50 x $92,470 = $138,705.
+    md_meap_income_limit: [135_930, 138_705]

@@ -1,0 +1,24 @@
+description: Maryland provides this annual propane heating payment by benefit level under the Maryland Energy Assistance Program.
+'1':
+  '2025-07-01': 1000
+'2':
+  '2025-07-01': 930
+'3':
+  '2025-07-01': 830
+'4':
+  '2025-07-01': 725
+'5':
+  '2025-07-01': 600
+'6':
+  '2025-07-01': 225
+'7':
+  '2025-07-01': 25
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maryland MEAP propane heating payments
+  breakdown:
+  - range(1, 8)
+  reference:
+  - title: FY26 MEAP Benefit Matrix
+    href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf

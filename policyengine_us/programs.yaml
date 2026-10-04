@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MD, MS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -831,6 +831,14 @@ programs:
         parameter_prefix: gov.states.ks.dcf.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2026"
+        notes: FY2026 regular heating only, with eligibility, countable income, the benefit matrix and the Garrett County supplement. EUSP, crisis, cooling and equipment assistance are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP

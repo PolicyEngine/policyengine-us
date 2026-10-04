@@ -1,0 +1,32 @@
+description: Maryland counts these available unearned income sources under the Maryland Energy Assistance Program.
+values:
+  '2025-07-01':
+  # COMAR 07.03.21.04D(3), D(26) and E(20) count Social Security and railroad
+  # retirement benefits less the Medicare payment deduction.
+  # medicare_part_b_premium and medicare_part_b_premiums_reported are not wired
+  # in yet, so both count gross.
+  - social_security
+  - railroad_benefits
+  - ssi
+  - tanf
+  - ordinary_dividend_income
+  - interest_income
+  - estate_income
+  - pension_income
+  - survivor_benefits
+  - retirement_distributions
+  - child_support_received
+  - alimony_income
+  - workers_compensation
+  - unemployment_compensation
+  - veterans_benefits
+  - strike_benefits
+  - rental_income
+  - farm_rent_income
+metadata:
+  unit: list
+  period: year
+  label: Maryland MEAP unearned sources
+  reference:
+  - title: COMAR 07.03.21.04, countable income and exclusions
+    href: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04

@@ -1,0 +1,442 @@
+# Sources for the expected values in this file:
+# - FY26 MEAP Benefit Matrix (one page), "the matrix" below:
+#   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+# - FY2026 OHEP Income Guidelines (one page), "the Income Guidelines" below; the annual
+#   200% FPG limits are twice the 2025 HHS poverty guideline ($15,650 plus $5,500 per
+#   additional person), which is the guideline the levels are measured against:
+#   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+# - FY2026 LIHEAP State Plan, pages 5 (categorical eligibility), 9 (renters in
+#   subsidized housing) and 11 (item 2.5, Garrett County multiplier):
+#   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=11
+# - OHEP Operations Manual (May 2025), pages 16 (general eligibility), 39 (automatic
+#   denials), 62-63 (categorical eligibility and the nominal benefit) and 108
+#   (ineligible members):
+#   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=62
+# - FY27 MEAP Benefit Matrices, page 1 (Garrett County table used to infer rounding):
+#   https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1
+# - COMAR 07.03.21.04 (household members and countable income) and .06D(3) (denials):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
+# Every case states that the household does not receive SNAP, TCA or SSI unless the
+# case is about that receipt.
+
+- name: Case 1, mixed-status family follows the regulation household count and counts the excluded member's income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+        child_support_received: 1_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_150
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: BALTIMORE_COUNTY_MD
+  output:
+    # COMAR 07.03.21.04C(1): a member who is not a citizen or qualified alien is not
+    # counted, but the member's income is included. (Manual page 108 would count a
+    # child under 18 regardless of status; that conflict awaits the owner's call.)
+    md_meap_household_size: 1
+    # $20,000 wages (D(1)) + $1,000 child support received by the child (D(14), C(1)).
+    md_meap_countable_income: 21_000
+    # Income Guidelines, annual table, size 1: $31,300.
+    md_meap_income_limit: 31_300
+    # $31,300 / 2, the 2025 one-person guideline.
+    md_meap_fpg: 15_650
+    # $21,000 / $15,650 = 134%: matrix Level 4 (101-150% FPL).
+    md_meap_level: 4
+    # $21,000 is under the $31,300 limit; the parent is a counted member; the gas
+    # bill establishes a heating cost (manual page 16).
+    md_meap_eligible: true
+    # Matrix, Gas row, Level 4: $360.
+    md_meap: 360
+
+- name: Case 2, SSI recipient living with a working adult above 200 percent in subsidized Garrett County housing gets the nominal grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 36_000
+        ssi: 0
+      person2:
+        age: 23
+        # SSI at the 2026 federal rate of $994 a month.
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_900
+        receives_housing_assistance: true
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: GARRETT_COUNTY_MD
+  output:
+    md_meap_household_size: 2
+    # State Plan page 5 and manual page 62: a member receiving SSI makes the household
+    # categorically eligible.
+    md_meap_categorically_eligible: true
+    # $36,000 wages (COMAR 07.03.21.04D(1)) + $11,928 SSI (D(4)).
+    md_meap_countable_income: 47_928
+    # Income Guidelines, annual table, size 2: $42,300; the guideline is half of it.
+    md_meap_income_limit: 42_300
+    md_meap_fpg: 21_150
+    # $47,928 / $21,150 = 227%: matrix Level 7 (Over 200% FPL). Manual page 63 pays
+    # categorically eligible households above 200% FPL the nominal benefit, which
+    # takes precedence over the Level 6 subsidized column.
+    md_meap_level: 7
+    # Manual page 62: the household stays eligible above 200% FPL; it pays its own
+    # propane bill, so the subsidized heat-in-rent denial does not apply.
+    md_meap_eligible: true
+    # Matrix, Propane row, Level 7: $25. The Garrett County multiplier (State Plan
+    # item 2.5, page 11) leaves the nominal grant flat, as every Level 7 cell of the
+    # FY27 Garrett County table (page 1) is $25.
+    md_meap: 25
+
+- name: Case 3, unsubsidized heat in rent with a known fuel uses the fuel row at the income level.
+  period: 2026
+  input:
+    state_code: MD
+    age: 40
+    employment_income: 10_000
+    snap: 0
+    tanf: 0
+    ssi: 0
+    heat_expense_included_in_rent: true
+    heating_type: FUEL_OIL
+  output:
+    # $10,000 wages (COMAR 07.03.21.04D(1)).
+    md_meap_countable_income: 10_000
+    # $10,000 / $15,650 = 64%: matrix Level 3 (51-100% FPL).
+    md_meap_level: 3
+    # Manual page 16: heating costs paid as an undesignated component of rent qualify;
+    # the household is not in subsidized housing, so COMAR 07.03.21.06D(3)(i) does
+    # not apply.
+    md_meap_eligible: true
+    # Matrix, Oil row, Level 3: $880. Paying a landlord-billed home from the ordinary
+    # income level and fuel row is an inference; no published source states the level
+    # for heat included in rent outside subsidized housing (unverified).
+    md_meap: 880
+
+- name: Case 4, couple with two children at Level 5.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 38_000
+        ssi: 0
+      person2:
+        age: 36
+        employment_income: 14_000
+        ssi: 0
+      person3:
+        age: 9
+        ssi: 0
+      person4:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_300
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+        county: ANNE_ARUNDEL_COUNTY_MD
+  output:
+    # Four citizens (COMAR 07.03.21.04C).
+    md_meap_household_size: 4
+    # $38,000 + $14,000 wages (D(1)).
+    md_meap_countable_income: 52_000
+    # Income Guidelines, annual table, size 4: $64,300; the guideline is half of it.
+    md_meap_income_limit: 64_300
+    md_meap_fpg: 32_150
+    md_meap_categorically_eligible: false
+    # $52,000 / $32,150 = 162%: matrix Level 5 (151-200% FPL).
+    md_meap_level: 5
+    # $52,000 is under the $64,300 limit and the gas bill establishes a heating cost.
+    md_meap_eligible: true
+    # Matrix, Gas row, Level 5: $300.
+    md_meap: 300
+
+- name: Case 5, retired couple in Garrett County with propane heat receives the multiplied Level 4 grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 16_800
+        ssi: 0
+      person2:
+        age: 66
+        social_security_retirement: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_300
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: GARRETT_COUNTY_MD
+  output:
+    md_meap_household_size: 2
+    # $16,800 + $9,600 Social Security (COMAR 07.03.21.04D(3)), counted gross: the
+    # Medicare premium deduction is not wired in.
+    md_meap_countable_income: 26_400
+    # Income Guidelines, annual table, size 2: $42,300; the guideline is half of it.
+    md_meap_income_limit: 42_300
+    md_meap_fpg: 21_150
+    # $26,400 / $21,150 = 125%: matrix Level 4 (101-150% FPL).
+    md_meap_level: 4
+    md_meap_eligible: true
+    # Matrix, Propane row, Level 4: $725, times the 1.1 Garrett County multiplier
+    # (State Plan item 2.5, page 11) = $797.50, rounded half up to $798 (rounding
+    # inferred from the FY27 Garrett County table, page 1).
+    md_meap: 798
+
+- name: Case 6, family over the income limit without categorical eligibility receives nothing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 46_000
+        ssi: 0
+      person2:
+        age: 39
+        employment_income: 24_000
+        ssi: 0
+      person3:
+        age: 7
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+        county: FREDERICK_COUNTY_MD
+  output:
+    md_meap_household_size: 3
+    # $46,000 + $24,000 wages (COMAR 07.03.21.04D(1)).
+    md_meap_countable_income: 70_000
+    # Income Guidelines, annual table, size 3: $53,300.
+    md_meap_income_limit: 53_300
+    md_meap_categorically_eligible: false
+    # $70,000 is over the $53,300 limit; manual page 39: over-income applications
+    # without categorical eligibility are denied.
+    md_meap_eligible: false
+    md_meap: 0
+
+- name: Case 7, public housing tenant who pays the gas bill receives the Level 6 grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 19_500
+        ssi: 0
+      person2:
+        age: 6
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 950
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: BALTIMORE_CITY_MD
+        is_in_public_housing: true
+  output:
+    md_meap_household_size: 2
+    # $19,500 wages (COMAR 07.03.21.04D(1)).
+    md_meap_countable_income: 19_500
+    # Income Guidelines, annual table, size 2: $42,300; the guideline is half of it.
+    md_meap_income_limit: 42_300
+    md_meap_fpg: 21_150
+    # $19,500 / $21,150 = 92% would be Level 3, but State Plan page 9 gives renters in
+    # subsidized housing a lower benefit level because a utility allowance is in
+    # their subsidy: matrix Level 6 (Subsidized/Sub metered).
+    md_meap_level: 6
+    # State Plan page 9: the tenant pays the heating bill directly, so the public
+    # housing heat-in-rent denial (COMAR 07.03.21.06D(3)(i)) does not apply.
+    md_meap_eligible: true
+    # Matrix, Gas row, Level 6: $225.
+    md_meap: 225
+
+- name: Case 8, eleven-member household above the 60 percent SMI limit but below 200 percent of the guideline is over income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 58_000
+        ssi: 0
+      person2:
+        age: 44
+        employment_income: 41_000
+        ssi: 0
+      person3:
+        age: 22
+        employment_income: 27_300
+        ssi: 0
+      person4:
+        age: 71
+        social_security_retirement: 11_700
+        ssi: 0
+      person5: {age: 17, ssi: 0}
+      person6: {age: 15, ssi: 0}
+      person7: {age: 13, ssi: 0}
+      person8: {age: 11, ssi: 0}
+      person9: {age: 9, ssi: 0}
+      person10: {age: 6, ssi: 0}
+      person11: {age: 3, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 2_100
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: MD
+        county: PRINCE_GEORGE_S_COUNTY_MD
+  output:
+    md_meap_household_size: 11
+    # $58,000 + $41,000 + $27,300 wages (COMAR 07.03.21.04D(1)) + $11,700 Social
+    # Security (D(3)) = $138,000.
+    md_meap_countable_income: 138_000
+    # 2025 HHS poverty guideline for eleven: $15,650 + 10 x $5,500 = $70,650.
+    md_meap_fpg: 70_650
+    # Income Guidelines footnote: "Households of 11+ must be based on 60% of the State
+    # Median Income": floor(0.6 x $154,117) = $92,470 (FFY2026 Maryland four-person
+    # median income), times the 45 CFR 96.85(b) size factor 1.47 = $135,930.
+    md_meap_income_limit: 135_930
+    md_meap_categorically_eligible: false
+    # $138,000 is over the $135,930 limit although it is below 200% of the guideline
+    # ($141,300); manual page 39: over-income applications without categorical
+    # eligibility are denied.
+    md_meap_eligible: false
+    md_meap: 0
+
+- name: Case 9, heat included in rent with an unknown fuel is eligible but unpaid.
+  period: 2026
+  input:
+    state_code: MD
+    county: BALTIMORE_CITY_MD
+    age: 29
+    employment_income: 24_000
+    snap: 0
+    tanf: 0
+    ssi: 0
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    # $24,000 wages (COMAR 07.03.21.04D(1)).
+    md_meap_countable_income: 24_000
+    # Income Guidelines, annual table, size 1: $31,300.
+    md_meap_income_limit: 31_300
+    # Manual page 16: heating costs paid as an undesignated component of rent qualify;
+    # the household is not in subsidized housing.
+    md_meap_eligible: true
+    # Every matrix row is a fuel, so no amount can be read for an unknown fuel:
+    # heating_type is a required input and an unspecified fuel pays $0.
+    md_meap: 0
+
+- name: Case 10, categorically eligible eleven-member household above the 60 percent SMI limit but below 200 percent is paid at Level 5.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 58_000
+        ssi: 0
+      person2:
+        age: 44
+        employment_income: 41_000
+        ssi: 0
+      person3:
+        age: 22
+        employment_income: 27_300
+        ssi: 0
+      person4:
+        age: 71
+        # SSI at the 2026 federal rate of $994 a month.
+        ssi: 11_928
+      person5: {age: 17, ssi: 0}
+      person6: {age: 15, ssi: 0}
+      person7: {age: 13, ssi: 0}
+      person8: {age: 11, ssi: 0}
+      person9: {age: 9, ssi: 0}
+      person10: {age: 6, ssi: 0}
+      person11: {age: 3, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: NATURAL_GAS
+        gas_expense: 2_100
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: MD
+        county: PRINCE_GEORGE_S_COUNTY_MD
+  output:
+    md_meap_household_size: 11
+    # State Plan page 5 and manual page 62: the grandparent's SSI makes the household
+    # categorically eligible.
+    md_meap_categorically_eligible: true
+    # $58,000 + $41,000 + $27,300 wages (COMAR 07.03.21.04D(1)) + $11,928 SSI (D(4))
+    # = $138,228.
+    md_meap_countable_income: 138_228
+    # As in Case 8: $70,650 guideline and $135,930 limit.
+    md_meap_fpg: 70_650
+    md_meap_income_limit: 135_930
+    # $138,228 / $70,650 = 196%: matrix Level 5 (151-200% FPL). The nominal Level 7
+    # applies only above 200% FPL (manual page 63), not above the SMI limit.
+    md_meap_level: 5
+    # Manual page 62: the household remains eligible above the income limit when a
+    # member receives a qualifying benefit.
+    md_meap_eligible: true
+    # Matrix, Gas row, Level 5: $300.
+    md_meap: 300
