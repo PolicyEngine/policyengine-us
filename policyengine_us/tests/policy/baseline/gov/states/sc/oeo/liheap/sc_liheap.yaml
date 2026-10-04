@@ -936,3 +936,57 @@
         state_code: SC
   output:
     sc_liheap: [275, 0, 0, 0]
+
+# Recurring payments are countable; this does not represent a one-time withdrawal.
+# At40,000 income exceeds31,993. At12,000:200base+75elderly+175low-income=450;
+# the1,000 annual bill is below20percent, so no burden supplement applies.
+- name: Recurring IRA payments above the income ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        # Isolate recurring retirement receipts; no SSI is received.
+        ssi: 0
+        taxable_ira_distributions: 40000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 40000
+    sc_liheap: 0
+
+# Recurring payments are countable; this does not represent a one-time withdrawal.
+# At40,000 income exceeds31,993. At12,000:200base+75elderly+175low-income=450;
+# the1,000 annual bill is below20percent, so no burden supplement applies.
+- name: Recurring IRA payments without high energy burden.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        # Isolate recurring retirement receipts; no SSI is received.
+        ssi: 0
+        taxable_ira_distributions: 12000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 12000
+    sc_liheap: 450

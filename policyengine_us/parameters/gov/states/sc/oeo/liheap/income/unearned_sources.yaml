@@ -5,6 +5,9 @@ values:
     - social_security
     - ssi
     - pension_income
+    # Ongoing IRA/401k receipts are separate from pension_income.
+    # Annual inputs cannot identify excluded one-time retirement lump sums.
+    - retirement_distributions
     - survivor_benefits
     - rental_income
     - farm_rent_income

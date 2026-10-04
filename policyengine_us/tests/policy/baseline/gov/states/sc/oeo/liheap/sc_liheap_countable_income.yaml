@@ -261,3 +261,30 @@
         state_code: NC
   output:
     sc_liheap_countable_income: [20_000, 0, 0]
+
+# Pension1,000 + taxable recurring IRA12,000 + exempt recurring IRA3,000 =16,000.
+# These disjoint aggregates enter once; no one-time lump sum is supplied.
+- name: Recurring retirement account subtypes count beside pension income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        pension_income: 1_000
+        taxable_ira_distributions: 12_000
+        tax_exempt_ira_distributions: 3_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        sc_tanf: 0
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 16_000

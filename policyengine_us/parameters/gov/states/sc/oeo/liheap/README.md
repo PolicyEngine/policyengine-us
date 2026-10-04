@@ -22,7 +22,9 @@ categorical income bypass or asset test in the adopted LIHEAP plan.
 Income uses the accepted plan's checked categories. Minor earnings are excluded;
 minor unearned income is counted because adult verification requirements are
 not an express income exclusion. Monthly SSI aggregates once over the year.
-Pension and Social Security aggregates include their components; private
+Pension and Social Security aggregates include their components; recurring
+IRA/401k receipts enter through the separate retirement_distributions aggregate.
+Annual inputs cannot distinguish excluded one-time retirement lump sums. Private
 survivor receipts and farm rent are separate. Net business inputs receive no
 second deduction. Cash from friends/relatives uses financial_assistance. Legal
 settlements lack an exact input. TANF, general assistance, interest/dividends,
