@@ -6,7 +6,7 @@ class wv_works_resources_eligible(Variable):
     entity = SPMUnit
     label = "West Virginia WV Works resources eligible"
     definition_period = MONTH
-    reference = "https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/726/726%20ch11_1.pdf"
+    reference = "https://web.archive.org/web/20161226193813/https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/726/726%20ch11_1.pdf"
     defined_for = StateCode.WV
 
     def formula(spm_unit, period, parameters):

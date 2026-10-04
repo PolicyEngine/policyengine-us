@@ -8,8 +8,8 @@ class mn_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1ref_21_0.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1ref_22.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1ref_21_0.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1ref_22.pdf",
     )
     defined_for = StateCode.MN
     adds = "gov.states.mn.tax.income.credits.refundable"
