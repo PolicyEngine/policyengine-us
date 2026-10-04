@@ -5,9 +5,9 @@ Seven states set that standard at the SSI federal benefit rate, a monthly
 dollar amount for an individual or a couple, not a share of the poverty
 guideline. They are flagged in the parameter
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.uses_ssi_federal_benefit_rate`.
-Six of them cover these people through the group of 42 CFR 435.210 and have
-not elected the poverty-level group of 42 U.S.C. 1396a(m); Louisiana has
-elected that group and pegs its level to the same rate. Montana's manual
+Six of them have not elected the poverty-level group of 42 U.S.C. 1396a(m)
+(Montana's state plan marks the group of 42 CFR 435.210 instead); Louisiana
+has elected that group and pegs its level to the same rate. Montana's manual
 (ABD 008) is the model case: its standards "are the benefit amounts paid by
 the Social Security Administration to Supplemental Security Income (SSI)
 cash recipients", applicants "with monthly countable income equal to or
