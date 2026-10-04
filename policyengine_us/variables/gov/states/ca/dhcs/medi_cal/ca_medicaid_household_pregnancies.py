@@ -3,6 +3,12 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
+from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_non_filer_member_sum,
+)
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    household_has_parent_ids,
+)
 
 
 class ca_medicaid_household_pregnancies(Variable):
@@ -84,6 +90,14 @@ class ca_medicaid_household_pregnancies(Variable):
         spouse_in_branch = where(child, spouse_child | spouse_parent, spouse_child)
         non_filer_pregnancies = (
             branch_pregnancies + spouse_pregnancies * ~spouse_in_branch
+        )
+        # With parent links in the household, sum over the same members that
+        # medicaid_household_size counts, so an excluded relative's pregnancy
+        # never enters the applicant's household.
+        non_filer_pregnancies = where(
+            household_has_parent_ids(person, period),
+            medicaid_non_filer_member_sum(person, period, pregnancies),
+            non_filer_pregnancies,
         )
 
         # Include a separately filing spouse for every member of this tax
