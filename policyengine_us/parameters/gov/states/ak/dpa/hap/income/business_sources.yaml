@@ -1,0 +1,18 @@
+description: Alaska includes these supplied net business income sources under the Heating Assistance Program.
+values:
+  2026-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+# Existing signed net sources stand in for gross less allowable current costs.
+# No second 50% standard expense deduction is applied. Partnership/S-corporation
+# aggregate includes its components, which must not also be added separately.
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP supplied net business income sources
+  reference:
+    - title: Alaska HAP Manual 3003-4 A-D, Income From Self-Employment
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-4_income_from_self-employment.htm
