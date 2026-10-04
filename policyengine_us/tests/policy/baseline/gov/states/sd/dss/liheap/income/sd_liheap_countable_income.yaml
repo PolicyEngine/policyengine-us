@@ -199,7 +199,7 @@
   output:
     sd_liheap_countable_income: 20_400
 
-# Current planpp6-7 income categories:1200+2400+600+3600+1200+1200+600+1200+600+300+300=13200. Independent farm rent/survivor inputs are included.
+# Current plan pp5-7,10:1200+2400+600+3600+1200+600+1200+600+1200+600+300+300=13800. Railroad, farm rent and survivor inputs are disjoint.
 - name: Case 7, disjoint rental survivor and ordinary unearned sources count at every age.
   period: 2026
   absolute_error_margin: 0.01
@@ -215,6 +215,7 @@
         survivor_benefits: 600
         social_security: 3_600
         pension_income: 1_200
+        railroad_benefits: 600
         unemployment_compensation: 1_200
         veterans_benefits: 600
         child_support_received: 1_200
@@ -233,7 +234,7 @@
         state_code: SD
         county: AURORA_COUNTY_SD
   output:
-    sd_liheap_countable_income: 13_200
+    sd_liheap_countable_income: 13_800
 
 # Current planpp6-7 excludes investmentinterest/dividends, gifts andcapital gains; rule67:15:01:18(14) confirms gains.12000 wages remain12000;SNAP also excluded.
 - name: Case 8, interest dividends capital gains and gifts do not enter income.
@@ -350,3 +351,33 @@
         county: AURORA_COUNTY_SD
   output:
     sd_liheap_countable_income: 0
+
+# FY2026 plan pp5,10 counts railroad retirement. DSS publishes a one-person
+# three-month maximum of $7,825, annualized to $31,300; no final award is asserted.
+- name: Case 12, railroad retirement counts without pension or Social Security receipts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        railroad_benefits: 40_000
+        pension_income: 0
+        social_security: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        sd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: CUSTER_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 40_000
+    sd_liheap_income_limit: 31_300
