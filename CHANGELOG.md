@@ -1,3 +1,10 @@
+## [2.24.3] - 2026-10-04
+
+### Changed
+
+- Raise the Full Suite - Rest job's timeout from 60 to 90 minutes; passing runs already take 42-55 minutes.
+
+
 ## [2.24.2] - 2026-10-04
 
 ### Changed
