@@ -1,0 +1,58 @@
+# FY2026 plan sections 601.31 and 601.41-42: eligible heat-in-rent tenants
+# receive the full grant. Adams electricity, size 1, wages 6,250 less the
+# 20% benefit-only disregard gives table income 5,000 and a 552 grant
+# (FY2026 matrix physical page 2), even with a smaller separate bill.
+# OPS 26-07-01 adds 100 once for the age-60 household. The subsidized renter
+# needs a separate primary obligation; excess gross income and NONE fail.
+- name: Case 1, regular grants and the supplement retain housing and income eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    age: [40, 60, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [6_250, 6_250, 6_250, 6_250, 6_250, 23475.01, 6_250]
+    is_tax_unit_dependent: [false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0]
+    pa_tanf: [0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NONE]
+    pre_subsidy_electricity_expense: [1, 1, 0, 0, 1, 1, 0]
+    has_heating_expense: [true, true, false, false, true, true, false]
+    heat_expense_included_in_rent: [false, false, true, true, true, false, false]
+    receives_housing_assistance: [false, false, false, true, true, false, false]
+    is_in_public_housing: [false, false, false, false, false, false, false]
+  output:
+    pa_liheap: [552, 652, 552, 0, 552, 0, 0]
+
+# The current FY2027-linked official lookup gives Adams electricity 580
+# at size 1 and table income 5,000. The July 2026 supplement is one-time;
+# no later issuance has been established, so the age-60 award remains 580.
+- name: Case 2, the current schedule does not repeat the one-time supplement.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 6_250
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ADAMS_COUNTY_PA
+  output:
+    pa_liheap_income: 6_250
+    pa_liheap_benefit_income: 5_000
+    pa_liheap_matrix_amount: 580
+    pa_liheap_supplement: 0
+    pa_liheap: 580

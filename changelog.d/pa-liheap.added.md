@@ -1,1 +1,1 @@
-Add Pennsylvania LIHEAP income, household, and heating eligibility components.
+Add Pennsylvania LIHEAP regular heating eligibility, county and fuel payment schedules, and the FY2026 supplement.
