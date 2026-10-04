@@ -1,0 +1,1 @@
+Limit each Arizona household member's net capital loss to $1,500 in property tax credit household income (Form 140PTC line D), and let household income go negative, using zero only for the credit schedules (line J).
