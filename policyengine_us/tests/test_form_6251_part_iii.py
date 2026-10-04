@@ -39,7 +39,8 @@ checked only against the properties. YAML unit tests cover those lines.
 import numpy as np
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 
 # Hypothesis is a dev extra; skip rather than fail collection without it.
 hypothesis = pytest.importorskip("hypothesis")
@@ -251,11 +252,10 @@ def assert_properties(households, law):
 # Line 18 as a schedule.
 # ---------------------------------------------------------------------------
 
-SYSTEM = CountryTaxBenefitSystem()
 FILING_STATUS = SYSTEM.variables["filing_status"].possible_values
 
 
-@hypothesis.settings(max_examples=200, deadline=None)
+@hypothesis.settings(max_examples=200, deadline=None, derandomize=True)
 @hypothesis.given(
     st.lists(
         st.one_of(
@@ -275,8 +275,9 @@ def test_line_18_schedule(amounts, year):
     filing_status = FILING_STATUS.encode(statuses)
     line_18 = p.brackets.calc(line_17, factor=p.multiplier[filing_status])
     separate = statuses == "SEPARATE"
-    # Everyone else: bit for bit the scale with no factor.
-    assert np.array_equal(line_18[~separate], p.brackets.calc(line_17[~separate]))
+    # Everyone else: bit for bit the scale with no factor, on the same array.
+    full = p.brackets.calc(line_17)
+    assert np.array_equal(line_18[~separate], full[~separate])
     # Married filing separately: the breakpoint is halved (55(b)(1)(C)).
     breakpoint = p.brackets.thresholds[-1] / 2
     low, high = p.brackets.rates
@@ -288,8 +289,7 @@ def test_line_18_schedule(amounts, year):
     assert line_18[separate] == pytest.approx(expected[separate], rel=1e-12, abs=1e-6)
     # Halving the breakpoint never lowers the tax, and raises it by the
     # rate difference on the part of line 17 between the two breakpoints.
-    full = p.brackets.calc(line_17[separate])
-    assert line_18[separate] - full == pytest.approx(
+    assert line_18[separate] - full[separate] == pytest.approx(
         (high - low) * np.clip(line_17[separate] - breakpoint, 0, breakpoint),
         rel=1e-9,
         abs=1e-6,
@@ -394,9 +394,11 @@ household_with_schedule_d_strategy = st.builds(
     st.one_of(st.just(0), st.integers(1, 100)),
 )
 
+# Fixed examples, so CI on an unrelated pull request draws the same households.
 SETTINGS = dict(
     max_examples=10,
     deadline=None,
+    derandomize=True,
     suppress_health_check=[
         hypothesis.HealthCheck.too_slow,
         hypothesis.HealthCheck.data_too_large,
