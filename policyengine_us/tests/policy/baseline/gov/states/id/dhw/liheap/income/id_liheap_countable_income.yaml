@@ -148,3 +148,30 @@
       household3: {members: [person4, person5], state_code: ID}
   output:
     id_liheap_countable_income: [12_000, 0, 3_600]
+
+# Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
+# Count the two aggregates once; one-time lump sums are not represented here.
+- name: Recurring taxable and exempt retirement distributions count beside pensions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        pension_income: 1_000
+        taxable_ira_distributions: 12_000
+        tax_exempt_ira_distributions: 3_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        id_tafi: 0
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    id_liheap_countable_income: 16_000
