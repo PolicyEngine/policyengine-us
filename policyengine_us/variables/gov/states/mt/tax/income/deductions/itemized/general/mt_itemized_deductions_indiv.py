@@ -23,9 +23,10 @@ class mt_itemized_deductions_indiv(Variable):
     Form 1040, line 12."
 
     Investment interest uses federal Form 4952 line 8. Before 2024 this is an
-    approximation because Montana investment-income adjustments are not
-    separately modeled. The tax-unit deduction is allocated by each person's
-    share of investment interest paid for separate filing on the same return.
+    approximation: the 2023 instructions call for federal Form 4952
+    "separately", and Montana investment-income adjustments are not modeled.
+    The model allocates the tax-unit deduction by each person's share of
+    investment interest paid for separate filing on the same return.
     """
 
     def formula(person, period, parameters):

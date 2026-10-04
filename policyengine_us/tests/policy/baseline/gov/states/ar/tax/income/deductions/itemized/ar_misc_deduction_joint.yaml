@@ -63,3 +63,18 @@
         state_code: AR
   output:
     ar_misc_deduction_joint: 5_500
+
+- name: 2025 Arkansas miscellaneous pool includes investment expenses
+  # AR3 instructions line 21: "Brokerage fees (Investment fees) & expenses".
+  # https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=21
+  period: 2025
+  input:
+    state_code: AR
+    ar_agi_joint: 100_000
+    investment_expenses: 3_000
+    tax_preparation_fees: 500
+  output:
+    total_misc_deductions: 3_500 # AR3 lines 21-22 = investment expenses 3,000 + tax preparation 500
+    ar_misc_deduction_joint: 1_500 # AR3 line 25 = 3,500 - 2% * 100,000
+    misc_deduction: 0 # Federal section 67(h) disallows miscellaneous deductions after 2017
+    form_4952_investment_expenses: 0 # Form 4952 line 5 = 0 when federal misc.applies is false
