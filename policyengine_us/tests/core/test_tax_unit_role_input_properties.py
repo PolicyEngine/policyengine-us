@@ -45,7 +45,8 @@ SETTINGS = dict(
 
 
 @st.composite
-def tax_units(draw, supplied=None, every_status=False):
+def tax_units(draw, supplied=None, every_status=False, status=None):
+    """One tax unit; ``status`` forces a supplied unit with that non-joint status."""
     size = draw(st.integers(1, 4))
     ages = draw(st.lists(st.integers(0, 90), min_size=size, max_size=size))
     separated = draw(
@@ -58,18 +59,25 @@ def tax_units(draw, supplied=None, every_status=False):
     earnings = draw(
         st.lists(st.sampled_from([0, 15_000, 60_000]), min_size=size, max_size=size)
     )
-    with_roles = draw(st.booleans()) if supplied is None else supplied
+    forced = status
+    with_roles = forced is not None or (
+        draw(st.booleans()) if supplied is None else supplied
+    )
     roles = None
     status = None
     if with_roles:
         head = draw(st.integers(0, size - 1))
         others = [i for i in range(size) if i != head]
-        spouse = draw(st.one_of(st.none(), st.sampled_from(others))) if others else None
+        spouse = None
+        if others and forced is None:
+            spouse = draw(st.one_of(st.none(), st.sampled_from(others)))
         roles = ["DEPENDENT"] * size
         roles[head] = "HEAD"
         if spouse is not None:
             roles[spouse] = "SPOUSE"
-        if every_status or draw(st.booleans()):
+        if forced is not None:
+            status = forced
+        elif every_status or draw(st.booleans()):
             status = "JOINT" if spouse is not None else draw(st.sampled_from(STATUSES))
     return dict(
         ages=ages,
@@ -198,10 +206,20 @@ def test_supplied_inputs_match_the_explicit_pin(units):
     ],
 )
 @settings(max_examples=15, **SETTINGS)
-@given(units=st.lists(tax_units(supplied=True), min_size=1, max_size=3))
+@given(data=st.data())
 def test_abolishing_a_rule_moves_only_units_supplied_with_its_status(
-    rule, status, units
+    rule, status, data
 ):
+    # Every example holds at least one unit supplied with the target status,
+    # beside other supplied units.
+    target = data.draw(tax_units(status=status), label="target")
+    others = data.draw(
+        st.lists(tax_units(supplied=True, every_status=True), max_size=2),
+        label="others",
+    )
+    position = data.draw(st.integers(0, len(others)), label="position")
+    units = others[:position] + [target] + others[position:]
+    assert sum(unit["status"] == status for unit in units) >= 1
     simulation = Simulation(
         situation=_situation(units), tax_benefit_system=_abolished(rule)
     )

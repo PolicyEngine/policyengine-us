@@ -178,12 +178,15 @@ not re-derive it. A reform that switches off one of those rules, by neutralizing
 re-derives the units supplied with that status and leaves every other supplied
 status in place.
 
-Two consequences follow from honoring supplied roles. A dependent's own income
-counts toward no return, because `irs_gross_income` excludes tax-unit dependents
-and the model computes no separate return for them, so an adult dependent's
-earnings leave the income tax base. And a minor can head a return, which
-programs that identify minor parents as a tax-unit head or spouse under 18 will
-treat as a minor parent.
+Two consequences follow from honoring supplied roles. First, a dependent's
+income is left out of the return they are claimed on, because
+`irs_gross_income` excludes tax-unit dependents, and the model computes no
+separate return for them, so an adult dependent's earnings leave the income tax
+base. The exception is self-employment: the deductible share of a dependent's
+self-employment tax still lowers the filer's adjusted gross income through
+`self_employment_tax_ald`. Second, a minor can head a return, which programs
+that identify minor parents as a tax-unit head or spouse under 18 will treat as
+a minor parent.
 
 ### Filtering by geography
 
