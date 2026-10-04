@@ -1,3 +1,10 @@
+## [2.24.2] - 2026-10-04
+
+### Changed
+
+- Run the Full Suite - Rest job's remaining Python tests as six sequential pytest processes instead of one, each with its own JUnit and memory report, to keep each process well below the 16 GB runner's memory; a code-health test checks that the groups run every test file of the old process exactly once.
+
+
 ## [2.24.1] - 2026-10-04
 
 ### Fixed
