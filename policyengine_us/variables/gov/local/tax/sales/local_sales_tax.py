@@ -8,6 +8,9 @@ class local_sales_tax(Variable):
     label = "Local sales tax"
     unit = USD
     reference = (
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=5",

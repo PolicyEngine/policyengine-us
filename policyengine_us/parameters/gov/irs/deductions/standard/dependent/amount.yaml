@@ -1,4 +1,4 @@
-description: Maximum standard deduction for dependents
+description: The basic standard deduction of a filer who can be claimed as a dependent is limited to the greater of this amount or earned income plus the earned income addition.
 values:
   2018-01-01: 1_050
   2019-01-01: 1_100
@@ -9,17 +9,35 @@ values:
   2026-01-01: 1_350
   # CBO forecast.
   2027-01-01: 1_400
-  2028-01-01: 1_400
+  2028-01-01: 1_450
   2029-01-01: 1_450
   2030-01-01: 1_500
   2031-01-01: 1_500
   2032-01-01: 1_550
-  2033-01-01: 1_550
+  2033-01-01: 1_600
   2034-01-01: 1_600
   2035-01-01: 1_650
+  2036-01-01: 1_700
 metadata:
   unit: currency-USD
+  period: year
+  label: Dependent standard deduction floor
+  # Values after the CBO horizon are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 63(c)(4)(B)(i): the
+  # statutory $500 increased by the 1(f)(3) cost-of-living adjustment with
+  # calendar year 1987 as the base year, each increase rounded down to the
+  # next lowest multiple of $50 under 1(f)(7)(A). Those values supersede
+  # this uprating rule, which describes the index and rounding.
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
+    - title: 26 U.S. Code § 63(c)(4)-(5)
+      href: https://www.law.cornell.edu/uscode/text/26/63#c_4
+    - title: 26 U.S. Code § 1(f)(3)-(7)
+      href: https://www.law.cornell.edu/uscode/text/26/1#f_3
     - title: Rev. Proc. 2025-32, sec. 4.14(2) (tax year 2026)
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: Rev. Proc. 2024-40, sec. 2.15(2) (tax year 2025)
@@ -36,10 +54,5 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=13
     - title: Rev. Proc. 2018-57, sec. 3.16(2) (tax year 2019)
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=16
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
-      # 1. Tax Parameters.
-      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
-      # 1. Tax Parameters.
-      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
-  uprating: gov.irs.uprating
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates, Feb 2026, sheet 1, row 68 (dependent filers, unearned), tax years 2027-2036
+      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx
