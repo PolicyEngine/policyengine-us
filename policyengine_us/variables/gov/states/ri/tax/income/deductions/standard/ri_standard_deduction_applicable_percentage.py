@@ -8,8 +8,8 @@ class ri_standard_deduction_applicable_percentage(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf"
-        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf"
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf",
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf",
     )
     defined_for = StateCode.RI
 
