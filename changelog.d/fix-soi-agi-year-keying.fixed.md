@@ -1,0 +1,1 @@
+Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
