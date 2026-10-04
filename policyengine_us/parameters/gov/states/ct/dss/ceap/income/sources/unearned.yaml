@@ -5,6 +5,9 @@ values:
     - unemployment_compensation
     - strike_benefits
     - pension_income
+    # Ongoing IRA/401k distributions are separate from pension_income.
+    # Existing annual inputs do not identify an excluded one-time lump sum.
+    - retirement_distributions
     - survivor_benefits
     - workers_compensation
     - disability_benefits

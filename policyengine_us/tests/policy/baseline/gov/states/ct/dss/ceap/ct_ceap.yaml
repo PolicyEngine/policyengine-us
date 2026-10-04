@@ -2166,3 +2166,25 @@
     ct_ceap_categorically_eligible: false
     ct_ceap_eligible: false
     ct_ceap: 0
+
+# Recurring IRA receipts exceed the published one-person income ceiling.
+- name: Recurring IRA income above the limit prevents regular heating assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        taxable_ira_distributions: 100_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    ct_ceap: 0
