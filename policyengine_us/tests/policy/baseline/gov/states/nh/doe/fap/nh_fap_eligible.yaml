@@ -1,6 +1,6 @@
 # Source: PY27 NH Fuel Assistance Program Procedures Manual.
 # https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
-# Physical PDF pages: 12, 17, 21, 35, 36, 74.
+# Physical PDF pages: 12, 17, 18, 21, 35, 36, 74.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
 # Heat-in-rent cases assert eligibility only, not an unresolved final award.
@@ -760,7 +760,7 @@
   output:
     nh_fap_eligible: false
 
-# Manual p12 requires responsibility for energy costs; proxy room inputs are unavailable.
+# Manual p12 requires responsibility for energy costs; absent bedrooms leave no proxy estimate.
 - name: "Case 20, zero direct cost without heat in rent is ineligible."
   period: 2027
   input:
@@ -954,3 +954,157 @@
   output:
     nh_fap_countable_income: [48_000, 50_000]
     nh_fap_eligible: [true, false]
+
+# Manual pp12,18,21,35: estimate may replace an absent actual bill; retain income, qualified-member, subsidized heat-in-rent, fuel and state requirements.
+- name: "Case 27, a room proxy establishes heating costs while other gates remain."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 60_000
+      person4:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        employment_income: 10_000
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person9:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit5:
+        members: ["person5"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit6:
+        members: ["person6"]
+        heating_type: "NONE"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit7:
+        members: ["person7"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit8:
+        members: ["person8"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit9:
+        members: ["person9"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 0
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household4:
+        members: ["person4"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household5:
+        members: ["person5"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household6:
+        members: ["person6"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household7:
+        members: ["person7"]
+        state_code: "NH"
+        county_str: "UNKNOWN"
+        bedrooms: 4
+      household8:
+        members: ["person8"]
+        state_code: "MA"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household9:
+        members: ["person9"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_eligible: [true, false, false, false, false, false, false, false, true]

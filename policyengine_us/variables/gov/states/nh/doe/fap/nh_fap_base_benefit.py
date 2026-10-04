@@ -7,8 +7,8 @@ class nh_fap_base_benefit(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "New Hampshire FAP actual-cost scheduled benefit"
-    documentation = "Actual-cost scheduled intermediate before any heat-in-rent adjustment, not the final FAP award. Verified against the PY2027 schedule; earlier results are unverified historical estimates. Zero can mean that actual cost or fuel classification is unsupported, rather than legal ineligibility."
+    label = "New Hampshire FAP scheduled benefit before heat-in-rent adjustments"
+    documentation = "Scheduled intermediate using actual or bedroom-proxy heating cost before any heat-in-rent adjustment, not the final FAP award. The room proxy is a modeling approximation. Verified against the PY2027 schedule; earlier results are unverified historical estimates. Zero can mean that heating cost or fuel classification is unsupported, rather than legal ineligibility."
     reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=10, 17, 74, 76, 77, 78"
     defined_for = "nh_fap_eligible"
 
@@ -34,7 +34,7 @@ class nh_fap_base_benefit(Variable):
             ["A", "B", "C", "D", "E"],
             default="F",
         )
-        expense = spm_unit("heating_expense", period)
+        expense = spm_unit("nh_fap_heating_cost", period)
         thresholds = p.payment.heating_cost_threshold
         cost_band = select(
             [expense < thresholds.CC, expense < thresholds.BB, expense < thresholds.AA],
@@ -57,8 +57,8 @@ class nh_fap_base_benefit(Variable):
         multiplier = where(utility, p.payment.utility_multiplier, 1)
         # Half-up whole dollars reproduce every utility matrix cell.
         benefit = np.floor(delivered_benefit * multiplier + 0.5)
-        # No heat-in-rent adjustment is inferred. Missing heated-room data
-        # prevents the proxy route. Unknown, solar and other fuels have no
-        # supported payment classification; zero marks an unsupported amount.
+        # No heat-in-rent adjustment is inferred. Unknown, solar and other
+        # fuels have no supported payment classification; zero marks an
+        # unsupported amount.
         # The schedule is not capped at the household's actual heating cost.
         return where((expense > 0) & (utility | delivered), benefit, 0)

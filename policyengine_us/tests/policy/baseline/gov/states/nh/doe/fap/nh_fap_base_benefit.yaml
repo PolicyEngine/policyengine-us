@@ -3,8 +3,8 @@
 # Physical PDF pages: 10, 17, 18, 35, 36, 74, 76, 77, 78.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
-# This is the actual-cost base schedule, before unresolved heat-in-rent adjustment.
-# No final nh_fap award, room-based proxy, or unsupported fuel amount is asserted.
+# This is the base schedule using actual or estimated costs, before unresolved heat-in-rent adjustment.
+# No final nh_fap award or unsupported fuel amount is asserted.
 
 # Manual p78, delivered DD/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 1, delivered matrix cost tier DD and income band A."
@@ -2174,3 +2174,134 @@
         state_code: "NH"
   output:
     nh_fap_base_benefit: 0
+
+# Manual p76: assume four bedrooms + three rooms = seven; cost 3976.988 selects AA, income 45120 selects F, yielding 825 before any heat-in-rent adjustment.
+- name: "Case 82, the published two-person oil example is reachable through bedrooms."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 45_120
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 0
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 3_976.987754
+    nh_fap_countable_income: 45_120
+    nh_fap_base_benefit: 825
+
+# Manual pp18,77-78: two bedrooms imply five rooms, estimated cost 2840.706 selects BB/A 2350; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
+- name: "Case 83, the larger cost basis determines the delivered benefit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [2_840.705538, 4_000]
+    nh_fap_base_benefit: [2_350, 2_500]
+
+# Manual pp77-78: five-room Coos gas cost 1403.415 selects CC/A 1460 * .75 =1095; actual 4000 selects AA/A 2500 * .75 =1875.
+- name: "Case 84, utility reduction follows the selected proxy or actual cost band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 0
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "NATURAL_GAS"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 4_000
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [1_403.414634, 4_000]
+    nh_fap_base_benefit: [1_095, 1_875]

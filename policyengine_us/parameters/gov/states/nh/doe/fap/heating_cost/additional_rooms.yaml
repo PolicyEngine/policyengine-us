@@ -1,0 +1,13 @@
+description: PolicyEngine approximates the heated room count under the New Hampshire Fuel Assistance Program by adding this number to a positive reported bedroom count.
+# Modeling assumption: one kitchen, living room and bathroom. The manual
+# requires actual program rooms and does not prescribe this approximation.
+values:
+  2026-10-01: 3
+
+metadata:
+  unit: /1
+  period: year
+  label: New Hampshire FAP additional rooms modeling assumption
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Calculating the Number of Rooms and Application
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17, 18, 71

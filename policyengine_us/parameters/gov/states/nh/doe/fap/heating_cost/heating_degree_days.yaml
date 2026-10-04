@@ -1,0 +1,34 @@
+description: New Hampshire uses these agency heating degree days by county to estimate heating cost under the Fuel Assistance Program.
+BELKNAP_COUNTY_NH:
+  2026-10-01: 6_610
+MERRIMACK_COUNTY_NH:
+  2026-10-01: 6_610
+HILLSBOROUGH_COUNTY_NH:
+  2026-10-01: 5_993
+ROCKINGHAM_COUNTY_NH:
+  2026-10-01: 5_993
+STRAFFORD_COUNTY_NH:
+  2026-10-01: 6_061
+CHESHIRE_COUNTY_NH:
+  2026-10-01: 6_588
+SULLIVAN_COUNTY_NH:
+  2026-10-01: 6_588
+CARROLL_COUNTY_NH:
+  2026-10-01: 7_672
+COOS_COUNTY_NH:
+  2026-10-01: 7_672
+GRAFTON_COUNTY_NH:
+  2026-10-01: 7_672
+# Unsupported geography contributes no estimate, not a legal zero cost.
+UNAVAILABLE:
+  2026-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: New Hampshire FAP agency heating degree days by county
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Benefit Determination
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=77
+    - title: Community Action Partnership of New Hampshire, Agency County Service Areas
+      href: https://www.capnh.org/home-old
