@@ -1,0 +1,39 @@
+# Source for the expected values in this file: FY2026 LIHEAP Handbook, sections
+# 2.2 (page 6) and 2.3.F (page 9):
+# https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=6
+
+# Handbook section 2.3.F (page 9): earned and unearned income "shall be added
+# to determine the household's total gross monthly income. Cents shall be
+# rounded to the nearest dollar." TANF is part of total income (section 2.2,
+# page 6, ineligible households item 4) and is added once for the household.
+# The result is the rounded monthly amount times 12:
+# - 10_001 + 1_200 = 11_201; 11_201 / 12 = 933.42 -> 933; 933 * 12 = 11_196.
+# - 10_002 + 1_200 = 11_202; 11_202 / 12 = 933.50 -> 934; 934 * 12 = 11_208.
+#   Rounding an exact half dollar up is a modeling convention.
+- name: Case 1, monthly household income rounds to the nearest dollar after TANF is added once.
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ]
+    nj_liheap_countable_income_person: [10_001, 10_002]
+    tanf: [1_200, 1_200]
+  output:
+    nj_liheap_countable_income: [11_196, 11_208]
+
+# Total income includes "any TANF, GA or SSI grants" (handbook section 2.2,
+# page 6, ineligible households item 4), meaning grants the household receives.
+# Both households are entitled to 1_200 a year of WFNJ (100 a month) and have
+# no other income.
+# - Does not take up WFNJ: nothing is received, so 0.
+# - Takes up WFNJ: 1_200 / 12 = 100 a month; 100 * 12 = 1_200.
+- name: Case 2, WFNJ entitlement counts only when it is taken up.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    nj_wfnj: [1_200, 1_200]
+    takes_up_tanf_if_eligible: [false, true]
+    ssi: [0, 0]
+  output:
+    nj_liheap_countable_income: [0, 1_200]

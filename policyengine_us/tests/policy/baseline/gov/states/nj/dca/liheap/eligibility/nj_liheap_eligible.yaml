@@ -1,0 +1,99 @@
+# Sources for the expected values in this file:
+# - FFY 2026 fact sheet, monthly income limits on page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# - FY2026 LIHEAP Handbook, sections 2.2 (pages 5 and 6), 2.3.B (page 7) and
+#   3.1.a.2 (page 11):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5
+# - FY2026 Benefit Matrix (one page):
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+
+# Two one-person households receiving SNAP. Handbook section 3.1.a.2 (page 11)
+# keeps the income standard for automatic SNAP payments: "The household must
+# have a current monthly income that is less than or equal to the program's
+# standards." The one-person limit is $4,167 a month (fact sheet, page 2).
+# - 50_004 / 12 = 4,167 does not exceed 4,167: eligible.
+# - 50_016 / 12 = 4,168 exceeds 4,167: not eligible.
+- name: Case 1, income limit still applies to households receiving SNAP.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [50_004, 50_016]
+    has_heating_expense: [true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    snap: [100, 100]
+  output:
+    nj_liheap_eligible: [true, false]
+
+# Two renters with heat included in rent and no income. Handbook section 2.2
+# (page 6) makes a renter whose heating costs are included in rent eligible,
+# and lists as not eligible households "receiving a rent subsidy which includes
+# all heating costs".
+# - No rent subsidy: eligible.
+# - Rent subsidy: not eligible, even with a heating bill reported.
+- name: Case 2, heat included in subsidized rent is ineligible.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0]
+    has_heating_expense: [true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, true]
+  output:
+    nj_liheap_eligible: [true, false]
+
+# Handbook section 2.2 (page 6), ineligible households item 3, and section
+# 2.3.B.5 (page 7): "Households consisting entirely of students who are tax
+# dependents of another household" are not eligible.
+- name: Case 3, household made up only of tax-dependent students is ineligible.
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    nj_liheap_countable_income: 0
+    has_heating_expense: true
+    heating_type: NATURAL_GAS
+    is_full_time_student: true
+    is_tax_unit_dependent: true
+  output:
+    nj_liheap_eligible: false
+
+# The eligibility rules in handbook section 2.2 (pages 5 and 6) do not depend
+# on the county, so a New Jersey household with a heating bill and no income is
+# eligible. The Benefit Matrix prints amounts only under "All Other (19)
+# counties" and "Warren & Sussex Counties"; with the county unknown no column
+# can be read, so the payment is 0. That is missing information, not a
+# published denial.
+- name: Case 4, unknown county keeps eligibility but has no payment column.
+  period: 2026
+  input:
+    state_code: NJ
+    county: UNKNOWN
+    nj_liheap_countable_income: 0
+    has_heating_expense: true
+    heating_type: NATURAL_GAS
+  output:
+    nj_liheap_eligible: true
+    nj_liheap: 0
+
+# Three one-person households with no income:
+# - No heating cost of its own and no heat in rent: "The household must pay for
+#   its own heating/cooling costs" or have them included in rent (handbook
+#   section 2.2, page 6). Not eligible.
+# - Undocumented member: a non-qualified member is excluded from the household
+#   size (section 2.2.5, page 6), which leaves no eligible member. Not eligible.
+# - New York household: "The household members shall be residents of New
+#   Jersey" (section 2.2, page 5). Not eligible.
+- name: Case 5, no heating cost, no qualified member and another state are each ineligible.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NY]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0, 0]
+    has_heating_expense: [false, true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, UNDOCUMENTED, CITIZEN]
+  output:
+    nj_liheap_eligible: [false, false, false]
