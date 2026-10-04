@@ -1,7 +1,7 @@
 # Hawaii regular heating components
 
 These FY2026 components implement qualified household size, annualized countable
-income, the percentage-based income ceiling, private-dwelling points and the
+income, the operational income ceiling, private-dwelling points and the
 published subsidized-dwelling amount schedule. They do not determine final
 eligibility or a dollar award. The statewide value per point is not published in
 the acquired sources: $140 is explicitly an example. No hypothetical value is
@@ -26,12 +26,24 @@ VA education payments and earmarked insurance reimbursements cannot be reliably
 separated. Those are missing facts, not policy exclusions; life insurance
 receipts are included as represented lump-sum insurance proceeds.
 
-The adopted percentage income limits use requested-year SMI and prior-calendar-
-year Hawaii FPG. The matrix labels its income dollar table as projected and has
-an inconsistent six-person cell. The model does not copy that error or assert
-that all projected dollar cells follow a uniform rounding rule. Final threshold
-inclusivity and the categorical mandatory-member case condition still need
-resolution before an eligibility award is introduced.
+The April 2026 HCAP operational intake chart and MEO provider schedule corroborate
+the published annual income limits, including the six-person amount of $106,454.
+The first ten amounts cannot all be reproduced by a consistent SMI rounding rule,
+so the model preserves those dollars. It does not replace the six-person cell
+with an inferred correction. Sizes 11-20 exactly reproduce 150% of the requested
+year's prior-calendar-year Hawaii FPG and use that shared calculation. Continuing
+the FPG rule above size 20 is an inference, not a separately verified table row.
+No monthly cent-rounding rule is inferred from these annual amounts. Earlier
+years backfill the published first-ten schedule and remain unverified estimates.
+
+The accepted plan and current application support at least one categorical
+recipient, rather than every mandatory household member receiving assistance.
+The specific calculation instruction supports an inclusive income comparison.
+Final eligibility still requires resolving the SSI independent-living
+certification: the existing federal and Hawaii living-arrangement inputs do not
+identify every qualifying exception. The statewide private-award value per point
+also remains unavailable; a federal allocation or average award cannot replace
+the final EC funds remaining after flat awards divided by private-household points.
 
 Private dwelling points follow the adopted plan's age-five-inclusive language.
 Disability counts for adults. Burden uses electric expenses even for gas aid,

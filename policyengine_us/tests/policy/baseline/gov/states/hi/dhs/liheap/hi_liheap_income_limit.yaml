@@ -1,21 +1,20 @@
-# Accepted plan uses 60% SMI and 150% Hawaii FPG for the maximum threshold.
-# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9,50
-# FY2026 matrix verifies prior-year Hawaii FPG = 17_990 + 6_330 * (size - 1).
-# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
-# Federal-supported Clearinghouse verifies SMI size factors and +3% above six.
-# https://liheapch.acf.gov/profiles/povertytables/FY2026/hismi.htm
-# Raw four-person SMI of 134_428 is the shared-guideline contract value. Direct
-# federal raw-table retrieval failed; these SMI dollar checks do not independently
-# verify that shared base. They intentionally do not adopt projected rounded rows.
+# HCAP operational FY2026 income chart, physical page 1, annual dollar limits.
+# https://www.hcapweb.org/wp-content/uploads/2026/04/H-HEAP-2026-Income-Eligibility.pdf
+# All 20 published cells were independently transcribed from the original render.
+# Sizes 1-10 use the printed values, including 106_454 at size 6.
+# Sizes 11-20 equal 150% of the prior-year Hawaii FPG:
+# (17_990 + 6_330 * (size - 1)) * 1.5.
+# The earlier-year case is an unverified historical estimate, not FY2025 validation.
+# IRS 2025 Form 8962 instructions, Table 1-3, independently reproduce 2024 HI FPG.
+# https://www.irs.gov/instructions/i8962
 
-- name: Case 1, percentage limits span federal size factors and the FPG crossover.
+- name: Case 1, published annual limits include the irregular six-person cell and FPG transition.
   period: 2026
   absolute_error_margin: 0.01
-  # Contract SMI base 134_428 * 0.60 = 80_656.8; size multipliers are
-  # 0.52, 1, 1.32 and 1.44 for sizes 1, 4, 6 and 10.
-  # FPG overtakes SMI at size 11: (17_990 + 6_330 * 10) * 1.5 = 121_935.
+  # Qualified sizes 1, 4, 6, 10, 11 and 20.
+  # The published size-6 value is 106_454; do not repair it using a raw SMI formula.
+  # Size 11: (17_990 + 6_330 * 10) * 1.5 = 121_935.
   # Size 20: (17_990 + 6_330 * 19) * 1.5 = 207_390.
-  # No eligibility comparator or rounding assertion is made.
   input:
     people:
       person1:
@@ -377,7 +376,7 @@
         state_code: HI
         county: HONOLULU_COUNTY_HI
   output:
-    hi_liheap_income_limit: [41_941.536, 80_656.8, 106_466.976, 116_145.792, 121_935, 207_390]
+    hi_liheap_income_limit: [41_941, 80_656, 106_454, 116_144, 121_935, 207_390]
 
 - name: Case 2, limits use qualified size and guard zero size and other states.
   period: 2026
@@ -440,4 +439,1196 @@
         county: LOS_ANGELES_COUNTY_CA
   output:
     hi_liheap_household_size: [1, 0, 0]
-    hi_liheap_income_limit: [41_941.536, 0, 0]
+    hi_liheap_income_limit: [41_941, 0, 0]
+
+- name: Case 3, remaining published annual cells cover every qualified size through twenty.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Together with Case 1, this checks all 20 published HCAP annual cells.
+  # Sizes 12-19 increase by 9_495 per person (6_330 * 1.5).
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person12:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person13:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person17:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person18:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person19:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person20:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person21:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person22:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person23:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person24:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person25:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person26:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person27:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person28:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person29:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person30:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person31:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person32:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person33:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person34:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person35:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person36:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person37:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person38:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person39:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person40:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person41:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person42:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person43:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person44:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person45:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person46:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person47:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person48:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person49:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person50:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person51:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person52:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person53:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person54:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person55:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person56:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person57:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person58:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person59:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person60:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person61:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person62:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person63:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person64:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person65:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person66:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person67:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person68:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person69:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person70:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person71:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person72:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person73:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person74:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person75:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person76:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person77:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person78:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person79:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person80:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person81:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person82:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person83:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person84:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person85:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person86:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person87:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person88:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person89:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person90:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person91:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person92:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person93:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person94:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person95:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person96:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person97:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person98:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person99:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person100:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person101:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person102:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person103:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person104:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person105:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person106:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person107:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person108:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person109:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person110:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person111:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person112:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person113:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person114:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person115:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person116:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person117:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person118:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person119:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person120:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person121:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person122:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person123:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person124:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person125:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person126:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person127:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person128:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person129:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person130:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person131:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person132:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person133:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person134:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person135:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person136:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person137:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person138:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person139:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person140:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person141:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person142:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person143:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person144:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person145:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person146:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person147:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person148:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person149:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person150:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person151:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person152:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person153:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person154:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person155:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person156:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person157:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person158:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit2:
+        members:
+          - person3
+          - person4
+          - person5
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit3:
+        members:
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit4:
+        members:
+          - person11
+          - person12
+          - person13
+          - person14
+          - person15
+          - person16
+          - person17
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit5:
+        members:
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit6:
+        members:
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit7:
+        members:
+          - person35
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit8:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+          - person59
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit9:
+        members:
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit10:
+        members:
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+          - person86
+          - person87
+          - person88
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit11:
+        members:
+          - person89
+          - person90
+          - person91
+          - person92
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+          - person102
+          - person103
+          - person104
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit12:
+        members:
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+          - person118
+          - person119
+          - person120
+          - person121
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit13:
+        members:
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+          - person137
+          - person138
+          - person139
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+      spm_unit14:
+        members:
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+          - person157
+          - person158
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members:
+          - person3
+          - person4
+          - person5
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members:
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members:
+          - person11
+          - person12
+          - person13
+          - person14
+          - person15
+          - person16
+          - person17
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household5:
+        members:
+          - person18
+          - person19
+          - person20
+          - person21
+          - person22
+          - person23
+          - person24
+          - person25
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household6:
+        members:
+          - person26
+          - person27
+          - person28
+          - person29
+          - person30
+          - person31
+          - person32
+          - person33
+          - person34
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household7:
+        members:
+          - person35
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household8:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+          - person59
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household9:
+        members:
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+          - person71
+          - person72
+          - person73
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household10:
+        members:
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+          - person86
+          - person87
+          - person88
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household11:
+        members:
+          - person89
+          - person90
+          - person91
+          - person92
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+          - person102
+          - person103
+          - person104
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household12:
+        members:
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+          - person118
+          - person119
+          - person120
+          - person121
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household13:
+        members:
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+          - person137
+          - person138
+          - person139
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household14:
+        members:
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+          - person157
+          - person158
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: [2, 3, 5, 7, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19]
+    hi_liheap_income_limit: [54_846, 67_751, 93_560, 108_885, 111_305, 113_724, 131_430, 140_925, 150_420, 159_915, 169_410, 178_905, 188_400, 197_895]
+
+- name: Case 4, unverified historical estimate uses the prior-year Hawaii FPG.
+  period: 2025
+  absolute_error_margin: 0.01
+  # This checks parameter backfilling and the guideline-year lag only.
+  # It does not establish verified FY2025 Hawaii LIHEAP policy.
+  # 2024 Hawaii FPG at size 11: 60_640 + 6_190 * 3 = 79_210.
+  # 79_210 * 1.5 = 118_815; using the 2025 guideline would give 121_935.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        hi_tanf: 0
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+          - person3
+          - person4
+          - person5
+          - person6
+          - person7
+          - person8
+          - person9
+          - person10
+          - person11
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_household_size: [11]
+    hi_liheap_income_limit: [118_815]

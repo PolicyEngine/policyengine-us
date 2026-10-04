@@ -852,7 +852,7 @@ programs:
         full_name: Hawaii Low Income Home Energy Assistance Program components
         parameter_prefix: gov.states.hi.dhs.liheap
         verified_years: "2026"
-        notes: "Five regular-heating components for household size, countable income, policy-percentage ceiling, points and subsidized schedule amounts. No final eligibility or private-dwelling award: FY2026 statewide value per point is unverified, and categorical-household and eligibility-comparison details remain unresolved. Annual inputs and SPM units approximate application circumstances. Earlier backfills are unverified historical estimates. Crisis, cooling, weatherization and equipment remain outside scope."
+        notes: "Five regular-heating components for household size, countable income, operational income ceiling, points and subsidized schedule amounts. Income limits preserve the published first-ten household amounts and use shared lagged FPG above ten, validated through size twenty. No final eligibility or private-dwelling award: FY2026 statewide value per point and exceptional SSI independent-living certification remain unresolved. Annual inputs and SPM units approximate application circumstances. Earlier backfills and the FPG extension above size twenty are unverified estimates. Crisis, cooling, weatherization and equipment remain outside scope."
 
   # --- SSA programs ---
   - id: ssi
