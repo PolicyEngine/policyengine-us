@@ -120,3 +120,26 @@
   output:
     # 0 <= 31,300.
     ia_liheap_income_eligible: true
+
+- name: Case 6, railroad retiree with 35,000 alone is over the one-person limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        railroad_benefits: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 110 counts railroad retirement: 35,000 > 2.0 x 15,650 =
+    # 31,300, so the household is not income eligible and receives nothing.
+    ia_liheap_countable_income: 35_000
+    ia_liheap_income_eligible: false
+    ia_liheap_eligible: false

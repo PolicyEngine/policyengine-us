@@ -9,12 +9,13 @@ class ia_liheap_countable_earned_income(Variable):
     label = "Iowa LIHEAP countable earned income"
     documentation = (
         "Gross earned income of household members aged 18 and over: wages, "
-        "military basic pay, self-employment and farm income. Appendix C counts "
-        "self-employment on gross receipts ('The LIHEAP program does NOT deduct "
-        "business expenses'); the model's net business and farm inputs are each "
-        "floored at zero so a loss does not offset other income, and they "
-        "understate Iowa's gross basis when expenses exist. All income of "
-        "members under 18 is excluded."
+        "military basic pay, self-employment and farm income. Appendix C "
+        "assesses self-employment on the federal return's net business income "
+        "for filers and on gross income for non-filers ('The LIHEAP program "
+        "does NOT deduct business expenses'); the model's net business and farm "
+        "inputs follow the filer route and are each floored at zero so a loss "
+        "does not offset other income. The non-filer gross route is not "
+        "represented. All income of members under 18 is excluded."
     )
     reference = (
         # Section 6.00 (page 24), Section 6.20 (page 26), Appendix C Employment
@@ -31,9 +32,10 @@ class ia_liheap_countable_earned_income(Variable):
         p = parameters(period).gov.states.ia.hhs.liheap.income
         earned = 0
         for source in p.sources.earned:
-            # Appendix C, Self-Employment Income: gross receipts are counted
-            # and business expenses are not deducted, so a reported loss
-            # cannot reduce other income.
+            # Appendix C, Self-Employment Income: filers are assessed on the
+            # return's net business income and "The LIHEAP program does NOT
+            # deduct business expenses" further, so a reported loss is floored
+            # per source and cannot reduce other income.
             earned = earned + max_(person(source, period), 0)
         age = person("age", period)
         # Section 6.20 counts "the gross income of all household members aged

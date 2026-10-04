@@ -2,11 +2,14 @@ description: Iowa counts these earned income sources toward gross household inco
 # Appendix C counts wages, salaries, tips, commissions, bonuses, severance, PTO
 # and per diem (Employment Income), military pay excluding the housing
 # allowance, self-employment and contract income, and farm income. Appendix C
-# Self-Employment Income: "The LIHEAP program does NOT deduct business
-# expenses", so Iowa counts gross receipts. The model's business inputs are
-# net amounts; each is floored at zero in the countable earned income formula
-# so that a loss does not offset other income. Using net income understates
-# Iowa's gross-receipts basis when expenses exist (documented limitation).
+# Self-Employment Income has two routes: "Income from a business, less
+# business expenses. Filed Federal tax return required if deducting business
+# expense, otherwise gross income is used. The LIHEAP program does NOT deduct
+# business expenses." Filers are assessed on the return's net business income
+# and non-filers on gross income. The model's net business inputs follow the
+# filer route; the approximations are the per-source zero floor applied in
+# the countable earned income formula (a loss does not offset other income)
+# and the absence of the non-filer gross route.
 values:
   2025-10-01:
     - employment_income

@@ -191,3 +191,24 @@
     # taxable_ira_distributions through taxable_retirement_distributions, so
     # reading both sources would count the 3,000 twice (22,000).
     ia_liheap_countable_unearned_income: 19_000
+
+- name: Case 9, railroad retirement is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        railroad_benefits: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 110, Railroad Retirement: RRB-1099 box 5 and RRB-1099-R
+    # box 7 are counted as income; 24,000.
+    ia_liheap_countable_unearned_income: 24_000

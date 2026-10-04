@@ -155,7 +155,7 @@
     # The test compares gross sources before the deduction: 18,000 = 18,000.
     ia_liheap_fixed_income_only: true
 
-- name: Case 8, a child's excluded wages do not break fixed income only.
+- name: Case 8, a child's wages are another source of income even though they are not countable.
   period: 2026
   input:
     people:
@@ -175,8 +175,12 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # The 16-year-old's wages are not countable, so gross 18,000 = fixed 18,000.
-    ia_liheap_fixed_income_only: true
+    # The source test reads every member's recorded sources regardless of age
+    # (Definitions p. 81, "no other sources of income"): fixed 18,000 but all
+    # sources 18,000 + 4,000 = 22,000. The 16-year-old's wages stay out of the
+    # countable amount (18,000).
+    ia_liheap_countable_income: 18_000
+    ia_liheap_fixed_income_only: false
 
 - name: Case 9, interest income is not fixed income.
   period: 2026
@@ -220,4 +224,31 @@
         state_code: IA
   output:
     # gross 18,000 + 9,000 = 27,000 = fixed 27,000.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 11, a child's Social Security survivor benefits as the only household source is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        social_security: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Appendix C p. 114 margin note: when the only source of household income
+    # is Social Security for members under 18, record the source for the fixed
+    # income criteria but the amount as 0.00 (also section 4.40(3)(a) p. 14).
+    # All-member fixed sources 9,000 = all-member sources 9,000 > 0 -> true;
+    # the countable amount excludes the child's 9,000 -> 0.
+    ia_liheap_countable_income: 0
     ia_liheap_fixed_income_only: true

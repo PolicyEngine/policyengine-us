@@ -228,7 +228,9 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # Guideline 0: the division is guarded and scores 0.
+    # Guideline 0: the formula returns 0 without a band lookup (a zero ratio
+    # would otherwise score 8, as in Case 1); the household is ineligible at
+    # size 0 in any event.
     ia_liheap_fpg: 0
     ia_liheap_poverty_points: 0
 
