@@ -486,7 +486,9 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       # Run sequentially on this runner; process exit releases the SPM heap
-      # before collecting the remaining Python files.
+      # before collecting the remaining Python files. Those run as one pytest
+      # process per group (REST_PYTHON_GROUPS in the Makefile), and each group
+      # writes rest-python-<group>.xml and rest-python-<group>-resources.txt.
       - name: Run SPM Python tests
         env:
           PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
@@ -494,8 +496,8 @@ jobs:
       - name: Run remaining Python tests
         if: always()
         env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-other.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-python-other-resources.txt uv run --no-sync make test-other-python-rest
+          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
+        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
       - name: Run tests/variables YAML tests
         if: always()
         env:
@@ -507,11 +509,9 @@ jobs:
         with:
           name: rest-test-timings
           path: |
-            rest-python-spm.xml
-            rest-python-other.xml
+            rest-python-*.xml
             rest-variables.xml
-            rest-python-spm-resources.txt
-            rest-python-other-resources.txt
+            rest-python-*-resources.txt
             rest-variables-resources.txt
   Microsimulation:
     needs: ReleaseLock
