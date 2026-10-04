@@ -11,7 +11,7 @@ class tax_liability_if_not_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        non_itemized_branch = simulation.get_branch("not_itemizing")
+        non_itemized_branch = get_branch_for_period(simulation, "not_itemizing", period)
         non_itemized_branch.set_input(
             "tax_unit_itemizes",
             period,
