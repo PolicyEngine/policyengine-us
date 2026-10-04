@@ -1,0 +1,1 @@
+Run the Full Suite - Rest job's remaining Python tests as six sequential pytest processes instead of one, each with its own JUnit and memory report, so no single process approaches the 16 GB runner limit; a code-health test checks that the groups run every test file of the old process exactly once.
