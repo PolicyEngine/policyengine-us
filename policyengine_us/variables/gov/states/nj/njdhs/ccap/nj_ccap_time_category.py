@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 
 
 class NJCCAPTimeCategory(Enum):
@@ -17,7 +18,7 @@ class nj_ccap_time_category(Variable):
     reference = "https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=1"
 
     def formula(person, period, parameters):
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = childcare_hours_for_weekly_schedule(person, period)
         p = parameters(period).gov.states.nj.njdhs.ccap.time_authorization
         # Unknown hours retain full-time pricing; supplied categories override.
         return where(hours == 0, NJCCAPTimeCategory.FULL_TIME, p.thresholds.calc(hours))
