@@ -1,3 +1,14 @@
+## [2.23.10] - 2026-10-04
+
+### Changed
+
+- Documented that `axiom: queued` is allowed only when the signed encoder is blocked, and that external contributors may write `axiom: needed`.
+
+### Fixed
+
+- Leave tax unit dependents' interest, dividends, rents, passive pass-through income and capital gains out of the filer's net investment income, as irs_gross_income already does for AGI; a dependent's investment income belongs on the dependent's own Form 8960 (26 USC 1411(a)(1)), and the Form 8814 election that would move a child's interest and dividends onto a parent's return is not modeled.
+
+
 ## [2.23.9] - 2026-10-04
 
 ### Changed
