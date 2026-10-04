@@ -11,7 +11,7 @@ class ctc_limiting_tax_liability(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        no_salt_branch = simulation.get_branch("no_salt")
+        no_salt_branch = get_branch_for_period(simulation, "no_salt", period)
         no_salt_branch.set_input("salt_deduction", period, np.zeros(tax_unit.count))
         # Propagate the parent's itemization determination so the
         # no_salt branch doesn't re-enter
