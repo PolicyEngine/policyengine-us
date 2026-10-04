@@ -221,15 +221,24 @@ def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     assert [argv[1:] for argv in plain] == [spec["args"] for spec in groups.values()]
 
 
-def test_test_file_names_stay_unique(reference):
-    """pytest imports a test file outside a package by its file name, so the
-    old single process failed on two such files with one name ("import file
-    mismatch"). Split across groups, both would pass; make test-other-python
-    would still fail."""
+def import_name(file):
+    """The module name pytest's default import mode gives a test file: its
+    dotted path within its outermost package, or its stem outside one."""
+    path = REPO / file
+    parts = [path.stem]
+    while (path.parent / "__init__.py").exists():
+        path = path.parent
+        parts.insert(0, path.name)
+    return ".".join(parts)
+
+
+def test_test_files_keep_distinct_import_names(reference):
+    """The old single process failed on two test files with one import name
+    ("import file mismatch"). Split across groups, both would pass; make
+    test-other-python would still fail."""
     by_name = defaultdict(list)
     for file in reference:
-        if not (REPO / file).parent.joinpath("__init__.py").exists():
-            by_name[Path(file).name].append(file)
+        by_name[import_name(file)].append(file)
     clashes = {name: files for name, files in by_name.items() if len(files) > 1}
     assert not clashes, clashes
 
@@ -248,8 +257,12 @@ exit "$outcome"
 
 @pytest.mark.parametrize(
     "outcomes",
-    [["0", "1", "0", "killed", "0", "0"], ["0"] * 6],
-    ids=["one-fails-one-killed", "all-pass"],
+    [
+        ["0", "1", "0", "killed", "0", "0"],
+        ["killed", "1", "1", "1", "1", "1"],
+        ["0"] * 6,
+    ],
+    ids=["one-fails-one-killed", "all-fail", "all-pass"],
 )
 def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, outcomes):
     assert len(groups) == len(outcomes), "give each group one outcome"

@@ -24,7 +24,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # another, so each exit releases its heap before the next group starts. As a
 # single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M
 # major page faults (CI run 37198184683). Four runs on 2026-10-04, such as
-# 37202679009, then lost the runner 1,530-1,560 tests in, inside
+# 37202679009, then lost the runner 1,424-1,454 tests into the step, inside
 # test_formulas_do_not_write_into_cached_arrays or at the start of
 # test_md_poverty_line_credit_invariants: "The runner has received a shutdown
 # signal", as test-yaml-reform records for a process past 16 GB.
