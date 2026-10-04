@@ -1066,3 +1066,185 @@
     de_liheap_income_band: 8
     de_liheap_eligible: true
     de_liheap: 155
+
+# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
+# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
+- name: Excluded minor payroll does not lower support income, Wilmington false.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_full_time_college_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_liheap_countable_income: 26_000
+    de_liheap_income_band: 5
+    de_liheap: 318
+
+# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
+# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
+- name: Excluded minor payroll does not lower support income, Wilmington true.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_full_time_college_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 26_000
+    de_liheap_income_band: 5
+    de_liheap: 318
+
+# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
+# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
+- name: Excluded dependent full-time college student payroll does not lower support income, Wilmington false.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+      child:
+        age: 21
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_liheap_countable_income: 26_000
+    de_liheap_income_band: 5
+    de_liheap: 318
+
+# Plan excludes the earner's income; source matrix size2 band5 pays gas318.
+# The parent's26,000 support stays countable despite taxes on20,000 excluded wages.
+- name: Excluded dependent full-time college student payroll does not lower support income, Wilmington true.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+      child:
+        age: 21
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 26_000
+    de_liheap_income_band: 5
+    de_liheap: 318
+
+# Recurring IRA receipts exceed the published one-person income ceiling.
+- name: Recurring IRA income above the limit prevents regular heating assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        taxable_ira_distributions: 100_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: DE
+  output:
+    de_liheap: 0

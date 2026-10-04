@@ -30,7 +30,9 @@ Annual income flows approximate the application assessment period. Existing net
 business income is used without a second expense deduction, and rental income
 is assumed nonnegative. The historical manual classifies rental income as
 earned. Social Security includes its survivor component; taxable and exempt
-pensions are included through `pension_income`. Pension and military survivor
+pensions are included through `pension_income`; ongoing IRA/401k receipts enter
+through the separate `retirement_distributions` aggregate. Annual inputs do not
+identify excluded one-time retirement lump sums. Pension and military survivor
 classifications are not added on top. The separate non-Social-Security
 `survivor_benefits` input is counted. Monthly SSI and Delaware TANF are aggregated
 to annual amounts; TANF is counted once for the household.
@@ -38,8 +40,12 @@ to annual amounts; TANF is counted once for the household.
 `spm_unit_paycheck_withholdings` plus Wilmington earned income tax approximates
 federal, state and city payroll withholding. This estimates annual taxes, rather
 than observing actual withholding. The shared helper already includes Delaware
-employee paid-leave contributions. It can also include tax attributable to
-excluded child or student income; adjusted income is bounded below by zero.
+employee paid-leave contributions. Identifiable Social Security, Medicare,
+Delaware paid-leave and Wilmington taxes on excluded child or student earnings
+are removed from the aggregate deductions, each bounded below by zero. Remaining
+supplied deductions are preserved. Federal income tax and additional Medicare
+are tax-unit aggregates without person allocations; their attribution remains
+an annual-estimate limitation. Adjusted income is bounded below by zero.
 The household TANF amount does not identify a student's share. Medicare and
 pension health deductions are deferred because actual withheld amounts are not
 represented.

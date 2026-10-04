@@ -176,3 +176,105 @@
   output:
     de_liheap_household_size: 1
     de_liheap_countable_income: 20_000
+
+- name: Excluded child taxes, zero supplied deductions stay zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+        ssi: {'2026': 0}
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_tax_unit_dependent: true
+        ssi: {'2026': 0}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: {'2026': 0}
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 26000
+
+- name: Excluded child taxes, remaining supplied deductions are retained.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+        ssi: {'2026': 0}
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_tax_unit_dependent: true
+        ssi: {'2026': 0}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        de_wilmington_earned_income_tax: 350
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: {'2026': 0}
+        spm_unit_paycheck_withholdings: 2110
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 25400
+
+# Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
+# Count the two aggregates once; one-time lump sums are not represented here.
+- name: Recurring taxable and exempt retirement distributions count beside pensions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        pension_income: 1_000
+        taxable_ira_distributions: 12_000
+        tax_exempt_ira_distributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 16_000

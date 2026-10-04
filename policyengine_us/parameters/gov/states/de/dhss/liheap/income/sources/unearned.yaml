@@ -8,6 +8,9 @@ values:
     # Taxable/exempt pension components are already in pension_income.
     # pension_survivors and military pensions are classifications, not additions.
     - pension_income
+    # Ongoing IRA/401k distributions are separate from pension_income.
+    # Existing annual inputs do not identify an excluded one-time lump sum.
+    - retirement_distributions
     - survivor_benefits
     - general_assistance
     - alimony_income
