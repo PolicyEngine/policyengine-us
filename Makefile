@@ -23,27 +23,34 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # The remaining Python tests run as one pytest process per group, one after
 # another, so each exit releases its heap before the next group starts. As a
 # single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M
-# major page faults (CI run 37198184683), and later runs were cancelled
-# mid-step with no log, as runners out of memory are (see test-yaml-reform).
+# major page faults (CI run 37198184683). Four runs on 2026-10-04, such as
+# 37202679009, then lost the runner 1,530-1,560 tests in, inside
+# test_formulas_do_not_write_into_cached_arrays or at the start of
+# test_md_poverty_line_credit_invariants: "The runner has received a shutdown
+# signal", as test-yaml-reform records for a process past 16 GB.
 # Each file runs in the first group whose paths hold it: the listed heavy
-# modules, then core/, then policy/, and remaining takes every other file,
-# including new ones. code_health/test_rest_python_groups.py checks that the
-# groups together collect each file of the old single process exactly once.
-# Test time per group in that run, 1,453 s in all:
+# modules, then core/, then policy/, and remaining takes every other file.
+# code_health/test_rest_python_groups.py checks that the groups together
+# collect each file of the old single process exactly once.
+# Test time per group, from run 37198184683 (1,453 s in all) plus the three
+# core modules added since, timed in runs 37171744596, 37196338557 and
+# 37198179476 and scaled to the speed of 37198184683:
 #   cached-arrays (403 s): test_formulas_do_not_write_into_cached_arrays.
-#   heavy-a (286 s): md_poverty_line_credit_invariants (134 s),
-#     ald_determinism (94 s), ssi_state_supplement_medicaid_dependency (59 s).
-#   heavy-b (221 s): multi_year_simulation (88 s),
-#     behavioral_response_measurements (84 s),
+#   heavy-a (350 s): md_poverty_line_credit_invariants (134 s),
+#     ald_determinism (94 s), dependent_net_investment_income_invariants
+#     (64 s), ssi_state_supplement_medicaid_dependency (59 s).
+#   heavy-b (345 s): marginal_tax_rate_coverage (124 s),
+#     multi_year_simulation (88 s), behavioral_response_measurements (84 s),
 #     dependent_losses_agi_invariants (49 s).
-#   core (120 s), policy (185 s), remaining (239 s). core has since gained
-#   three modules, which that run did not measure.
+#   core (142 s), policy (185 s), remaining (239 s).
 REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core policy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
+	$(TESTS)/core/test_dependent_net_investment_income_invariants.py \
 	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py
-REST_HEAVY_B_TESTS := $(TESTS)/core/test_multi_year_simulation.py \
+REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
+	$(TESTS)/core/test_multi_year_simulation.py \
 	$(TESTS)/core/test_behavioral_response_measurements.py \
 	$(TESTS)/core/test_dependent_losses_agi_invariants.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS)

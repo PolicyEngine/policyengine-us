@@ -9,9 +9,10 @@ pytest process per group in REST_PYTHON_GROUPS.
 Paths and --ignore flags can drop a file, or run it twice, while every test
 still passes. So this guard takes each command from `make -n`, asks pytest
 which files it collects, and checks that the groups together collect each file
-of the old single command exactly once. The remaining group takes every file
-no earlier group holds, so a new test file lands there; the check fails if a
-change to the groups leaves one out.
+of the old single command exactly once. A new test file lands in core or
+policy when it sits under those folders and in remaining otherwise; the check
+fails if a change to the groups leaves one out. Running the target with a stub
+pytest checks that every group runs and that any failure fails the target.
 
 pytest lists the files here through its own discovery (paths, --ignore,
 python_files), but nothing is imported: running this file as a script swaps
@@ -41,7 +42,8 @@ TESTS = REPO / "policyengine_us" / "tests"
 WORKFLOWS = [REPO / ".github" / "workflows" / name for name in ("pr.yaml", "push.yaml")]
 # CI runs this file under `make test-other-python-rest REST_REPORT_DIR=.`, and
 # that make exports these. Passed on, they would carry its flags and report
-# directory into the dry runs below.
+# directory into the make runs below, and the stub run would overwrite the
+# CI groups' GNU time reports.
 PARENT_MAKE_VARIABLES = ("MAKEFLAGS", "MFLAGS", "MAKELEVEL", "REST_REPORT_DIR")
 
 
@@ -186,8 +188,12 @@ def old_command():
     return other[1:] + [f"--ignore={file}" for file in spm_files]
 
 
-def test_groups_collect_each_file_of_the_old_single_process_once(groups, old_command):
-    reference = collected_files(old_command)
+@pytest.fixture(scope="module")
+def reference(old_command):
+    return collected_files(old_command)
+
+
+def test_groups_collect_each_file_of_the_old_single_process_once(groups, reference):
     # The reference is a real collection: it holds this file.
     assert Path(__file__).relative_to(REPO).as_posix() in reference
     collected = {group: collected_files(spec["args"]) for group, spec in groups.items()}
@@ -213,6 +219,63 @@ def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     plain = dry_run("test-other-python-rest")
     assert [argv[0] for argv in plain] == ["pytest"] * len(groups)
     assert [argv[1:] for argv in plain] == [spec["args"] for spec in groups.values()]
+
+
+def test_test_file_names_stay_unique(reference):
+    """pytest imports a test file outside a package by its file name, so the
+    old single process failed on two such files with one name ("import file
+    mismatch"). Split across groups, both would pass; make test-other-python
+    would still fail."""
+    by_name = defaultdict(list)
+    for file in reference:
+        if not (REPO / file).parent.joinpath("__init__.py").exists():
+            by_name[Path(file).name].append(file)
+    clashes = {name: files for name, files in by_name.items() if len(files) > 1}
+    assert not clashes, clashes
+
+
+# Stands in for pytest on PATH: records its arguments, then exits with the
+# next outcome in STUB_OUTCOMES, or kills itself with SIGKILL, as the kernel's
+# out-of-memory killer does, for "killed".
+STUB_PYTEST = """#!/bin/sh
+echo "$*" >> "$STUB_CALLS"
+n=$(wc -l < "$STUB_CALLS" | tr -d ' ')
+outcome=$(echo "$STUB_OUTCOMES" | cut -d ' ' -f "$n")
+if [ "$outcome" = killed ]; then kill -9 $$; fi
+exit "$outcome"
+"""
+
+
+@pytest.mark.parametrize(
+    "outcomes",
+    [["0", "1", "0", "killed", "0", "0"], ["0"] * 6],
+    ids=["one-fails-one-killed", "all-pass"],
+)
+def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, outcomes):
+    assert len(groups) == len(outcomes), "give each group one outcome"
+    stub = tmp_path / "bin" / "pytest"
+    stub.parent.mkdir()
+    stub.write_text(STUB_PYTEST)
+    stub.chmod(0o755)
+    calls = tmp_path / "calls.txt"
+    env = {k: v for k, v in os.environ.items() if k not in PARENT_MAKE_VARIABLES}
+    env["PATH"] = f"{stub.parent}{os.pathsep}{env['PATH']}"
+    env["STUB_CALLS"] = str(calls)
+    env["STUB_OUTCOMES"] = " ".join(outcomes)
+    result = subprocess.run(
+        ["make", "--no-print-directory", "test-other-python-rest"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    # Every group ran, with the arguments the dry runs above check.
+    ran = [" ".join(spec["args"]) for spec in groups.values()]
+    assert calls.read_text().splitlines() == ran
+    failed = [group for group, outcome in zip(groups, outcomes) if outcome != "0"]
+    assert (result.returncode != 0) == bool(failed), result.stdout + result.stderr
+    if failed:
+        assert f"Failed Rest Python groups: {' '.join(failed)}" in result.stdout
 
 
 def test_conftest_files_cannot_change_which_files_are_collected(old_command):
