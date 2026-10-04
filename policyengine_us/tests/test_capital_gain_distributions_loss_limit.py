@@ -39,6 +39,9 @@ import itertools
 import numpy as np
 import pytest
 
+from policyengine_core.periods import instant
+from policyengine_core.reforms import Reform
+
 from policyengine_us import Simulation
 
 YEAR = 2025
@@ -201,6 +204,83 @@ def test_example_from_the_schedule_d_instructions():
     model = calculate([h])
     assert model["adjusted_gross_income"][0] == -2_000
     assert model["limited_capital_loss"][0] == 2_000
+
+
+# ---------------------------------------------------------------------------
+# Reforms that drop a source from gross income.
+# ---------------------------------------------------------------------------
+
+
+def without_gross_income_source(name):
+    """A reform that removes one source from gov.irs.gross_income.sources."""
+
+    class reform(Reform):
+        def apply(self):
+            def modify(parameters):
+                sources = parameters.gov.irs.gross_income.sources
+                values = [s for s in sources(f"{YEAR}-01-01") if s != name]
+                sources.update(
+                    start=instant(f"{YEAR}-01-01"),
+                    stop=instant(f"{YEAR}-12-31"),
+                    value=values,
+                )
+                return parameters
+
+            self.modify_parameters(modify)
+
+    return reform
+
+
+@pytest.mark.parametrize(
+    "dropped, agi, allowed_against_gains, net_loss, dependent_magi",
+    [
+        # Baseline: Schedule D line 16 = -5,000 + 3,000 = -2,000.
+        (None, -2_000, 3_000, 2_000, -2_000),
+        # Distributions out of gross income: nothing to net the loss against,
+        # so the full 3,000 limit applies, on the dependent's return too.
+        ("non_sch_d_capital_gains", -3_000, 0, 3_000, -3_000),
+        # Capital gains out of gross income: the losses still net against the
+        # distributions on the head's return. The dependent's modified AGI
+        # then counts the distributions alone, as gross income does.
+        ("capital_gains", -2_000, 3_000, 2_000, 3_000),
+    ],
+)
+def test_netting_follows_the_gross_income_sources(
+    dropped, agi, allowed_against_gains, net_loss, dependent_magi
+):
+    people = {
+        "head": {
+            "age": {YEAR: 45},
+            "is_tax_unit_head": {YEAR: True},
+            "long_term_capital_gains": {YEAR: -5_000},
+            "non_sch_d_capital_gains": {YEAR: 3_000},
+        },
+        "dependent": {
+            "age": {YEAR: 70},
+            "is_tax_unit_dependent": {YEAR: True},
+            "is_tax_unit_spouse": {YEAR: False},
+            "long_term_capital_gains": {YEAR: -5_000},
+            "non_sch_d_capital_gains": {YEAR: 3_000},
+        },
+    }
+    members = list(people)
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "tax_units": {"tax_unit": {"members": members}},
+            "households": {
+                "household": {"members": members, "state_code": {YEAR: "TX"}}
+            },
+        },
+        reform=without_gross_income_source(dropped) if dropped else None,
+    )
+    assert simulation.calculate("adjusted_gross_income", YEAR)[0] == agi
+    assert (
+        simulation.calculate("capital_losses_allowed_against_gains", YEAR)[0]
+        == allowed_against_gains
+    )
+    assert simulation.calculate("limited_capital_loss", YEAR)[0] == net_loss
+    assert simulation.calculate("dependent_taxable_ss_magi", YEAR)[1] == dependent_magi
 
 
 # ---------------------------------------------------------------------------
