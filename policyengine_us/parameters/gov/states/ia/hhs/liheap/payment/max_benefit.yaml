@@ -1,0 +1,16 @@
+description: Iowa pays at most this Regular Assistance benefit under the Low Income Home Energy Assistance Program.
+# With FY26 values the matrix cannot reach this cap: the largest total is
+# 8 poverty + 5 targeting + 5 fuel = 18 points, or $720. The cap is kept as the
+# published rule; only the flat deliverable fuel amount equals it.
+values:
+  2025-10-01: 800
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Iowa LIHEAP maximum benefit
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix I Benefit Maximums, Award Calculation (maximum benefit $800), page 137
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=137
+    - title: Iowa LIHEAP FFY2026 Detailed Model Plan, Section 2.6 (maximum benefit $800), page 9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=9

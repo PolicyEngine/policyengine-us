@@ -1,0 +1,265 @@
+# Iowa LIHEAP Regular Assistance eligibility (REQ-002, REQ-004, REQ-006,
+# REQ-027, REQ-028): Iowa residence (FY26 LIHEAP Policy and Procedures Manual
+# section 5.30 p. 18), at least one counted member (section 7.30 p. 34), income
+# at or below 200 percent of the guideline (section 5.10 p. 18), an energy
+# burden (section 5.50 p. 22 and Appendix D pp. 122-123, where electricity from
+# solar cells, wind, a generator or an extension cord is not a burden), and a
+# heating fuel: https://hhs.iowa.gov/media/17262/download?inline#page=18
+# Modeling: heating_type UNSPECIFIED pays nothing under the all-state
+# convention (callers must send the fuel), NONE means the home has no heating,
+# SOLAR is ineligible under Appendix D p. 123.
+
+- name: Case 1, single renter paying a natural gas vendor is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 28,000 <= 31,300; pays vendor; natural gas.
+    ia_liheap_eligible: true
+
+- name: Case 2, unspecified heating type pays nothing even with a gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # heating_expense is zero for UNSPECIFIED, and the fuel gate excludes it.
+    ia_liheap_has_energy_burden: false
+    ia_liheap_eligible: false
+
+- name: Case 3, a home with no heating is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_eligible: false
+
+- name: Case 4, solar-heated home is not eligible despite an electric bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 123: electricity from solar cells has no energy burden.
+    # The bill-based burden flag is true; the fuel gate makes it ineligible.
+    ia_liheap_has_energy_burden: true
+    ia_liheap_eligible: false
+
+- name: Case 5, household of only undocumented members is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Section 7.30 p. 34: household size 0.
+    ia_liheap_eligible: false
+
+- name: Case 6, income over 200 percent of the guideline is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 35,000 > 31,300.
+    ia_liheap_eligible: false
+
+- name: Case 7, the same household in Nebraska is not eligible for the Iowa program.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ia_liheap_eligible: false
+
+- name: Case 8, unspecified fuel with unsubsidized heat in rent is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # The energy burden holds (Appendix D p. 122) but the fuel is required
+    # because the matrix needs the building's fuel points.
+    ia_liheap_has_energy_burden: true
+    ia_liheap_eligible: false
+
+- name: Case 9, Section 8 tenant with heat and electric in rent is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 123; section 5.41 p. 20.
+    ia_liheap_eligible: false
+
+- name: Case 10, an "other" heating fuel with a bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: OTHER
+        other_heating_fuel_expense: 700
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Vendors supply "other fuels" (sections 12.00-12.20 pp. 46-47); the
+    # household pays a vendor so it has a burden. Fuel points are zero.
+    ia_liheap_eligible: true
+
+- name: Case 11, kerosene heat paid to a vendor is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_600
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_eligible: true
+
+- name: Case 12, undocumented parent with a citizen child is eligible on the child's count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Section 7.30 p. 34: an ineligible adult may apply for eligible children;
+    # size 1, income 24,000 <= 31,300.
+    ia_liheap_household_size: 1
+    ia_liheap_eligible: true

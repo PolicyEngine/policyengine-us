@@ -1,0 +1,31 @@
+description: Iowa counts these earned income sources toward gross household income under the Low Income Home Energy Assistance Program.
+# Appendix C counts wages, salaries, tips, commissions, bonuses, severance, PTO
+# and per diem (Employment Income), military pay excluding the housing
+# allowance, self-employment and contract income, and farm income. Appendix C
+# Self-Employment Income: "The LIHEAP program does NOT deduct business
+# expenses", so Iowa counts gross receipts. The model's business inputs are
+# net amounts; each is floored at zero in the countable earned income formula
+# so that a loss does not offset other income. Using net income understates
+# Iowa's gross-receipts basis when expenses exist (documented limitation).
+values:
+  2025-10-01:
+    - employment_income
+    # Appendix C Military Pay: counted, "excluding housing allowance".
+    - military_basic_pay
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    # Appendix C Farm Income: sale of crops, livestock and land rental is
+    # counted (the X is in the Yes column although the code column reads NA).
+    - farm_operations_income
+    - farm_rent_income
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa LIHEAP countable earned income sources
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix C Income Guidelines, Employment Income, Farm Income, Military Pay and Self-Employment Income rows, pages 97, 98, 108 and 113
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=113
+    - title: Iowa LIHEAP FFY2026 Detailed Model Plan, Sections 1.8-1.9 (gross income; wages, self-employment income, contract income and commissions counted), pages 5-6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5

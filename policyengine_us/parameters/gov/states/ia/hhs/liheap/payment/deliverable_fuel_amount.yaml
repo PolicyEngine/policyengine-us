@@ -1,0 +1,22 @@
+description: Iowa pays this flat Regular Assistance benefit to households heating primarily with liquid propane or fuel oil under the Low Income Home Energy Assistance Program.
+# Appendix I: "The minimum Regular Assistance benefit for liquid propane and
+# fuel oil LIHEAP customers is $800". Section 11.00: if the matrix benefit "is
+# less than the annual state-set amount for deliverable benefits, the
+# deliverable fuel benefit will be raised to meet the state-set benefit
+# amount". The FY26 public comment draft plan describes it as "a flat amount
+# for deliverable fuel customers that serves as both a minimum and maximum
+# benefit for liquid propane and fuel oil LIHEAP customers. For FY26 that flat
+# amount is $800." The three statements agree numerically for FY26 because the
+# general maximum is also $800.
+values:
+  2025-10-01: 800
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Iowa LIHEAP deliverable fuel benefit
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix I Benefit Maximums (minimum benefit for liquid propane and fuel oil customers $800), page 137, and Section 11.00 Payments (deliverable fuel benefit raised to the state-set amount), page 42
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=137
+    - title: Iowa LIHEAP FFY2026 Public Comment Draft State Plan, Payment Matrix attachment (flat $800 for deliverable fuel customers), page 48
+      href: https://hhs.iowa.gov/media/16690/download?inline#page=48

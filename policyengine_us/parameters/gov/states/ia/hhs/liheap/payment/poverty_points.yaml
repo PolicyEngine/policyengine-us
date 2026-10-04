@@ -1,0 +1,42 @@
+description: Iowa awards these payment matrix points based on the ratio of annual countable household income to the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# Appendix I prints closed percent bands: 0-75% gives 8, 76-100% gives 6,
+# 101-125% gives 5, 126-200% gives 4, over 200% is ineligible, with the note
+# "Poverty levels of .01% are rounded up to the next percentage". A ratio of
+# exactly 0.75 is 75% (8 points) and 0.7501 rounds up to 76% (6 points), so
+# the bands are keyed at their tops and looked up with right=True; the first
+# threshold is -.inf so that zero income scores the first band. The zero
+# amount above 2.00 is unreachable for eligible households, which the income
+# test already limits to 200%.
+brackets:
+  - threshold:
+      2025-10-01: -.inf
+    amount:
+      2025-10-01: 8
+  - threshold:
+      2025-10-01: 0.75
+    amount:
+      2025-10-01: 6
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 1.25
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Iowa LIHEAP poverty level points
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix I Benefit Maximums, Regular Assistance Payment Matrix, item 1 Poverty Level, page 137
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=137
+    - title: Iowa FY2026 Benefit Matrix Heat-Crisis (LIHEAP Clearinghouse copy of Appendix I), page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1

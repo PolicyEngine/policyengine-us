@@ -1,0 +1,122 @@
+# Iowa LIHEAP income eligibility (REQ-002, REQ-003): countable income at or
+# below 200 percent of the 2025 poverty guideline. FY26 LIHEAP Policy and
+# Procedures Manual section 5.10 p. 18 ("200% or below"), Appendix B p. 89
+# (31,300 for one person plus 11,000 per additional person) and Appendix I
+# p. 137 ("Over 200%" ineligible; poverty levels of .01 percent are rounded up,
+# so exactly 200 percent is still eligible):
+# https://hhs.iowa.gov/media/17262/download?inline#page=18
+
+- name: Case 1, one person exactly at 31,300 is income eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 31,300 <= 2.0 x 15,650 = 31,300.
+    ia_liheap_countable_income: 31_300
+    ia_liheap_income_limit: 31_300
+    ia_liheap_income_eligible: true
+
+- name: Case 2, one person at 31,301 is one dollar over the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_301
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 31,301 > 31,300.
+    ia_liheap_income_eligible: false
+
+- name: Case 3, family of four exactly at 64,300 is income eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 44_300
+      person2:
+        age: 36
+        employment_income: 20_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 44,300 + 20,000 = 64,300 <= 2.0 x 32,150 = 64,300 (Appendix B, size 4).
+    ia_liheap_income_eligible: true
+
+- name: Case 4, family of four at 70,000 is over the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 48_000
+      person2:
+        age: 36
+        employment_income: 22_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 48,000 + 22,000 = 70,000 > 64,300.
+    ia_liheap_income_eligible: false
+
+- name: Case 5, a household with no countable income is income eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 29
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 0 <= 31,300.
+    ia_liheap_income_eligible: true

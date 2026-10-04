@@ -1,0 +1,146 @@
+# Iowa LIHEAP countable earned income per person (REQ-009 to REQ-011,
+# REQ-016). Gross income of members aged 18 and over is counted (FY26 LIHEAP
+# Policy and Procedures Manual section 6.20 p. 26); Appendix C counts wages,
+# tips, bonuses and severance (p. 97), farm income (p. 98), military pay
+# excluding the housing allowance (p. 108) and self-employment on gross
+# receipts with no business-expense deduction (p. 113), and records income of
+# members under 18 as not included (p. 102):
+# https://hhs.iowa.gov/media/17262/download?inline#page=26
+# FFY2026 plan section 1.9 pp. 5-6 leaves "earned income of a child under the
+# age of 18" unchecked:
+# https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5
+# Modeling: the model's net self-employment and farm inputs are floored at zero
+# per source so a loss cannot offset other income (Kansas pattern). All income
+# of members under 18 is excluded (user decision; section 6.00 p. 24 is in
+# conflict and is recorded on the variable).
+
+- name: Case 1, adult wages are counted in full.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_countable_earned_income: 36_000
+
+- name: Case 2, a 16-year-old's wages are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 38_000
+      person2:
+        age: 16
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Appendix C p. 102: income of members under 18 is not included.
+    ia_liheap_countable_earned_income: [38_000, 0]
+
+- name: Case 3, an 18-year-old's wages are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 30_000
+      person2:
+        age: 18
+        employment_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Section 6.20 p. 26: members aged 18 and over.
+    ia_liheap_countable_earned_income: [30_000, 8_000]
+
+- name: Case 4, self-employment and farm losses are floored at zero per source.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 20_000
+        self_employment_income: -5_000
+        farm_operations_income: -3_000
+        farm_rent_income: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 20,000 + max(-5,000, 0) + max(-3,000, 0) + 2,000 = 22,000
+    # (Appendix C p. 113: no business-expense deduction; p. 98 farm income).
+    ia_liheap_countable_earned_income: 22_000
+
+- name: Case 5, Social Security is not earned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_countable_earned_income: 0
+
+- name: Case 6, military basic pay, partnership and SSTB self-employment income are earned.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        military_basic_pay: 28_000
+        partnership_s_corp_income: 4_000
+        sstb_self_employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 28,000 + 4,000 + 3,000 = 35,000 (Appendix C p. 108 military pay
+    # excluding housing allowance; p. 113 self-employment and contract income).
+    ia_liheap_countable_earned_income: 35_000

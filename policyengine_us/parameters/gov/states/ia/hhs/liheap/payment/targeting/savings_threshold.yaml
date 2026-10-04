@@ -1,0 +1,19 @@
+description: Iowa applies the savings points adjustment to households whose savings exceed this amount under the Low Income Home Energy Assistance Program.
+# Section 4.40 item 4 describes the savings test as "Interest and dividend-
+# bearing accounts (this includes high-interest bank accounts, cash on hand,
+# CDs, and other investments that can be accessed without penalty to the
+# household)". Appendix C excludes IAble accounts, trusts and penalty-locked
+# retirement accounts from savings. The model maps savings to
+# spm_unit_cash_assets (bank, stock and bond assets).
+values:
+  2025-10-01: 50_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Iowa LIHEAP savings threshold
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix I Payment Matrix, Over $50,000 in Savings, page 137, Section 4.40 Automatically Eligible Households item 4, page 14, and Appendix C Savings Account and IAble Savings Plan rows, pages 112 and 102
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=137
+    - title: Iowa FY2026 Benefit Matrix Heat-Crisis (LIHEAP Clearinghouse copy of Appendix I), page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1

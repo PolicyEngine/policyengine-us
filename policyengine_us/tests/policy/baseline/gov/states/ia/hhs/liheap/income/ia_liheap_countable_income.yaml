@@ -1,0 +1,197 @@
+# Iowa LIHEAP countable income for the household (REQ-009, REQ-010, REQ-014,
+# REQ-004). Gross income of all members aged 18 and over is counted (FY26
+# LIHEAP Policy and Procedures Manual section 6.20 p. 26); child support paid
+# by a household member is deducted on proof of payment (Appendix C pp. 92-93);
+# an ineligible member is excluded from the household size but that member's
+# income is counted in full (section 7.30 p. 34):
+# https://hhs.iowa.gov/media/17262/download?inline#page=26
+# Modeling: max(earned + unearned - child support paid, 0); all income of
+# members under 18 is excluded (user decision; section 6.00 p. 24 is in
+# conflict and is recorded on the earned-income variable).
+
+- name: Case 1, two adults' wages are summed.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 32
+        employment_income: 14_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 20,000 + 14,000 = 34,000.
+    ia_liheap_countable_income: 34_000
+
+- name: Case 2, child support paid is deducted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 30_000
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 30,000 - 3,600 = 26,400 (Appendix C p. 92, child support notes column).
+    ia_liheap_countable_income: 26_400
+
+- name: Case 3, child support paid above income floors countable income at zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 2_400
+        child_support_expense: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # max(2,400 - 3,000, 0) = 0.
+    ia_liheap_countable_income: 0
+
+- name: Case 4, mixed-status household counts both incomes against the size-one limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_000
+      person2:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income: 14_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Section 7.30 p. 34: size 1 (the undocumented adult is not counted) but
+    # 24,000 + 14,000 = 38,000 is counted; 38,000 > 2.0 x 15,650 = 31,300.
+    ia_liheap_household_size: 1
+    ia_liheap_countable_income: 38_000
+    ia_liheap_income_limit: 31_300
+    ia_liheap_income_eligible: false
+
+- name: Case 5, wages and Social Security of children are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 28_000
+      person2:
+        age: 16
+        employment_income: 5_000
+      person3:
+        age: 10
+        social_security: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # 28,000 + 0 + 0 = 28,000 (section 6.20 p. 26; Appendix C pp. 102, 114).
+    ia_liheap_countable_income: 28_000
+
+- name: Case 6, a self-employment loss cannot offset Social Security.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        self_employment_income: -12_000
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # max(-12,000, 0) + 18,000 = 18,000 (Appendix C p. 113, gross receipts).
+    ia_liheap_countable_income: 18_000
+
+- name: Case 7, earned and unearned income are combined.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 47
+        employment_income: 24_000
+        unemployment_compensation: 5_000
+        alimony_income: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 24,000 + 5,000 + 3,600 = 32,600.
+    ia_liheap_countable_income: 32_600
+
+- name: Case 8, child support paid by a second adult is deducted from the household total.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 30_000
+      person2:
+        age: 39
+        employment_income: 12_000
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 30,000 + 12,000 - 2,400 = 39,600.
+    ia_liheap_countable_income: 39_600

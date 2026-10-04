@@ -1,0 +1,360 @@
+# Iowa LIHEAP Regular Assistance benefit (REQ-029 to REQ-031). Appendix I
+# p. 137 of the FY26 LIHEAP Policy and Procedures Manual: $40 per point of the
+# total matrix points (poverty points + targeting factors + fuel points), a
+# minimum of $80 and a maximum of $800 for an approved customer, and a minimum
+# of $800 for liquid propane and fuel oil customers; section 11.00 p. 42 raises
+# a deliverable-fuel matrix result to the state-set amount; the benefit does
+# not depend on the amount owed (section 5.41 p. 20):
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# FY26 plan hearing draft p. 48: the flat amount is both minimum and maximum
+# for liquid propane and fuel oil, $800 for FY26:
+# https://hhs.iowa.gov/media/16690/download?inline#page=48
+# FFY2026 plan section 2.6 p. 9 ($80 minimum, $800 maximum):
+# https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=9
+# Modeling: 800 for PROPANE and FUEL_OIL (not KEROSENE, which the flat rule
+# does not name); otherwise clip(40 x points, 80, 800). The largest total a
+# non-deliverable household can reach is 8 + 5 + 5 = 18 points (720), so the
+# 800 cap binds only through the flat amount.
+
+- name: Case 1, retiree on Social Security in a detached gas-heated house receives 480.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        spm_unit_cash_assets: 5_000
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 18,000 / 15,650 = 1.1502 -> 5 poverty points; fixed income +1, elderly +1,
+    # detached +1 = 3; natural gas 4; 12 points x 40 = 480.
+    ia_liheap: 480
+
+- name: Case 2, working couple with a toddler in a subsidized eight-unit building with heat in rent receives the 80 minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 32
+        employment_income: 14_000
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # 34,000 / 26,650 = 1.2758 -> 4; young child +1, five-plex -1,
+    # subsidized -2, heat in rent -4 = -6; natural gas 4; 2 points x 40 = 80,
+    # which equals the 80 minimum.
+    ia_liheap: 80
+
+- name: Case 3, negative total points pay the 80 minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+        spm_unit_cash_assets: 60_000
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 28,000 / 15,650 = 1.789 -> 4; five-plex -1, subsidized -2,
+    # heat in rent -4, savings -4 = -11; natural gas 4; total -3;
+    # 40 x -3 = -120 -> raised to the 80 minimum.
+    ia_liheap_points: -3
+    ia_liheap: 80
+
+- name: Case 4, propane household receives the flat 800 regardless of points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_200
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 28,000 / 15,650 = 1.789 -> 4; detached +1; propane 5; 10 points x 40 =
+    # 400, raised to the 800 liquid propane amount (Appendix I p. 137).
+    ia_liheap_points: 10
+    ia_liheap: 800
+
+- name: Case 5, the same household heating with kerosene receives the matrix 400.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_600
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Kerosene takes the fuel-oil 5 points but the flat 800 names only liquid
+    # propane and fuel oil: 4 + 1 + 5 = 10 points x 40 = 400.
+    ia_liheap_points: 10
+    ia_liheap: 400
+
+- name: Case 6, retiree heating with fuel oil receives the flat 800.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_100
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 20,000 / 15,650 = 1.278 -> 4; fixed income +1, elderly +1, detached +1 =
+    # 3; fuel oil 5; 12 points x 40 = 480, raised to 800.
+    ia_liheap: 800
+
+- name: Case 7, the maximum 18 matrix points pay 720, below the 800 cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        is_disabled: true
+        social_security: 15_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_600
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 15,000 / 21,150 = 0.7092 -> 8; fixed income +1, elderly +1, disabled +1,
+    # young child +1, detached +1 = 5; kerosene 5; 18 points x 40 = 720.
+    ia_liheap_points: 18
+    ia_liheap: 720
+
+- name: Case 8, income over 200 percent of poverty receives nothing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 35,000 > 31,300: not eligible.
+    ia_liheap: 0
+
+- name: Case 9, the benefit is not capped at a small heating bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 200
+        spm_unit_cash_assets: 5_000
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Same 12 points as Case 1 with a 200 bill: 480 (section 5.41 p. 20, the
+    # benefit does not depend on the amount owed).
+    ia_liheap: 480
+
+- name: Case 10, zero total points pay the 80 minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        spm_unit_cash_assets: 60_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 4 poverty points; heat in rent -4, savings -4 = -8; natural gas 4;
+    # total 0; 40 x 0 = 0 -> 80 minimum. Unsubsidized heat in rent is eligible.
+    ia_liheap_points: 0
+    ia_liheap: 80
+
+- name: Case 11, wood-heated detached house receives 280.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 700
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 30,000 / 15,650 = 1.917 -> 4; detached +1; solid fuel 2; 7 points x 40 =
+    # 280.
+    ia_liheap: 280
+
+- name: Case 12, unspecified heating type pays nothing even with heat in unsubsidized rent.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_eligible: false
+    ia_liheap: 0
+
+- name: Case 13, family of four in an all-electric detached house receives 400.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 42_000
+      person2:
+        age: 36
+        employment_income: 18_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 60,000 / 32,150 = 1.866 -> 4; young child +1, detached +1 = 2;
+    # electric 4; 10 points x 40 = 400.
+    ia_liheap: 400
+
+- name: Case 14, one total point pays the 80 minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 4; five-plex -1, subsidized -2, heat in rent -4 = -7; natural gas 4;
+    # 1 point x 40 = 40 -> 80 minimum.
+    ia_liheap_points: 1
+    ia_liheap: 80

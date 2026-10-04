@@ -1,0 +1,60 @@
+description: Iowa counts these unearned income sources toward gross household income under the Low Income Home Energy Assistance Program.
+# Not counted (Appendix C, not-counted column; plan Section 1.9 unchecked):
+# FIP (Iowa TANF), child support received, SNAP, WIC, Medicaid, housing
+# assistance and utility allowances, bank-account interest, capital gains,
+# cash gifts, loans, grants and scholarships, jury duty pay, foster care and
+# adoption assistance, inheritances and life insurance, AmeriCorps and VISTA,
+# reimbursements, rebates and tax refunds, in-kind income, short-term
+# disability, VA education and housing allowances, and savings balances.
+values:
+  2025-10-01:
+    # Appendix C Social Security Benefits (SSA, SSI, SSDI): "Count the net
+    # amount as income (gross minus benefits repaid to SSA)" and the amount
+    # "paid by check or direct deposit"; the plan checks "Excluding MediCare
+    # deduction". The model counts social_security gross because Medicare
+    # premiums and SSA repayments are not separable (documented limitation).
+    - social_security
+    # ssi is a monthly variable; add() sums the twelve months.
+    - ssi
+    - pension_income
+    # Appendix C IRA and Retirement rows: regular distributions count;
+    # irregular withdrawals are not separable from the model inputs.
+    # retirement_distributions already includes taxable_ira_distributions
+    # (through taxable_retirement_distributions), so IRA distributions are not
+    # listed separately; listing both would count them twice.
+    - retirement_distributions
+    # Appendix C Unemployment: counted; the limited-duration annualization
+    # rule of the Definitions (Annualized Income, page 79) is not modeled.
+    - unemployment_compensation
+    - workers_compensation
+    - strike_benefits
+    # Appendix C Disability Insurance: long-term private disability counts,
+    # short-term does not; the model input does not split them.
+    - disability_benefits
+    # Appendix C Veterans Benefits: compensation and pensions count; VA
+    # educational and housing allowances and non-recurring lump sums do not
+    # and are not separable from the model input.
+    - veterans_benefits
+    - alimony_income
+    - rental_income
+    # Appendix C Interest (Bonds, Investments) is counted while Interest
+    # Bearing Bank Accounts is not; the model input does not split them, so
+    # all interest is counted (documented approximation).
+    - interest_income
+    # Appendix C Dividends: counted; "if the annual combined total earned is
+    # less than $120, ignore the income". The $120 rule is not applied
+    # (documented approximation). ordinary_dividend_income is the canonical
+    # input; dividend_income is a deprecated alias.
+    - ordinary_dividend_income
+    # Appendix C Gambling: taxable gambling winnings count.
+    - gambling_winnings
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa LIHEAP countable unearned income sources
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix C Income Guidelines (Alimony, Annuities, Disability Insurance, Dividends, Gambling, Interest, IRA, Pensions, Rental Income, Retirement, Social Security Benefits, Strike Benefits, Unemployment, Veterans Benefits and Workers Compensation rows), pages 90-121, and Section 6.10, page 25
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=114
+    - title: Iowa LIHEAP FFY2026 Detailed Model Plan, Section 1.9 (countable income sources), page 6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=6

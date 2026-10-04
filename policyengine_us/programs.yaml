@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, IA, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: IA
+        status: partial
+        name: Iowa LIHEAP
+        full_name: Iowa Low Income Home Energy Assistance Program
+        variable: ia_liheap
+        parameter_prefix: gov.states.ia.hhs.liheap
+        verified_years: "2026"
+        notes: FY2026 Regular Assistance heating benefit from the points matrix, with a flat amount for propane and fuel oil. Crisis assistance, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

@@ -1,0 +1,223 @@
+# Iowa LIHEAP "Fixed Income Only (no other sources of income)" targeting flag
+# (REQ-018). Appendix I p. 137 of the FY26 LIHEAP Policy and Procedures Manual
+# awards +1 point; the Definitions (p. 81) limit fixed income to SSA benefits,
+# SSI, SSDI, Veterans' Assistance and pensions and say "Only mark 'fixed
+# income' when that is the ONLY source(s)"; Appendix C notes alimony (p. 90)
+# and earnings are not fixed income:
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# Modeling: true when the household's countable gross income (members aged 18
+# and over, before the child-support deduction) is positive and equals the sum
+# of social_security, ssi, veterans_benefits and pension_income.
+
+- name: Case 1, Social Security alone is fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 18,000 = fixed 18,000 > 0.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 2, Social Security plus part-time wages is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 21,000, fixed 18,000.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 3, Social Security, a pension and VA benefits together are fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 14_000
+        pension_income: 6_000
+        veterans_benefits: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 14,000 + 6,000 + 4,000 = 24,000 = fixed 24,000.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 4, SSI and Social Security together are fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 3_000
+        # 764 a month: 994 federal benefit rate - (250 - 20) countable.
+        ssi: 9_168
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 3,000 + 9,168 = 12,168 = fixed 12,168.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 5, alimony is not fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 18_000
+        alimony_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 90: alimony is not fixed income; gross 24,000, fixed 18,000.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 6, a household with no income is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 0 is not positive.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 7, child support paid does not change the fixed-income test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+        child_support_expense: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # The test compares gross sources before the deduction: 18,000 = 18,000.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 8, a child's excluded wages do not break fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+      person2:
+        age: 16
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # The 16-year-old's wages are not countable, so gross 18,000 = fixed 18,000.
+    ia_liheap_fixed_income_only: true
+
+- name: Case 9, interest income is not fixed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        interest_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # gross 18,200, fixed 18,000.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 10, a retired couple on Social Security and a pension is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+      person2:
+        age: 65
+        pension_income: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # gross 18,000 + 9,000 = 27,000 = fixed 27,000.
+    ia_liheap_fixed_income_only: true
