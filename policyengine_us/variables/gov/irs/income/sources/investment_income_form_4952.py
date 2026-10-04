@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class investment_income_form_4952(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Investment income from Form 4952"
+    label = "Federal Form 4952 line 8 amount for California FTB 3526"
     documentation = (
         "The federal Form 4952 amount that California form FTB 3526 line 9 "
         "asks for (federal Form 4952 line 8). The federal Schedule D Tax "

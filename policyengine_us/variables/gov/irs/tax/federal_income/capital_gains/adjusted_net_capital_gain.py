@@ -7,7 +7,9 @@ class adjusted_net_capital_gain(Variable):
     label = "Adjusted net capital gain"
     unit = USD
     documentation = (
-        "The excess of net long-term capital gain over net short-term capital loss."
+        "Net capital gain other than qualified dividends, reduced by "
+        "unrecaptured section 1250 gain and 28-percent rate gain, plus "
+        "qualified dividends not elected as investment income."
     )
     definition_period = YEAR
     reference = dict(

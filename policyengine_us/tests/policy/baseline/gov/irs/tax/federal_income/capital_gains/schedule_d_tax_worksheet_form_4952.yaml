@@ -274,7 +274,9 @@
     # Lines 15-22: 48,350 - 34,250 = 14,100 at 0%. Lines 23-31: line 25 =
     # 250,000 - 14,100 = 235,900, line 29 = 284,250 - 48,350 = 235,900, and
     # 15% of 235,900 = 35,385. Line 44: tax on line 21 (34,250) = 1,192.50 +
-    # 2,679 = 3,871.50. Line 45 = 39,256.50, less than line 46 (69,034.75).
+    # 2,679 = 3,871.50 at the Tax Computation Worksheet rates, which the
+    # model uses (the Tax Table gives 3,875). Line 45 = 39,256.50, less
+    # than line 46 (69,034.75).
     # Before the fix line 10 was 300,000 and line 14 zero.
     taxable_income: 284_250
     dwks13: 250_000
