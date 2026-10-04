@@ -17,8 +17,8 @@ class loss_limited_net_capital_gains_person(Variable):
     def formula(person, period, parameters):
         # The person's capital gains and losses, plus capital gain
         # distributions, which go on Schedule D line 13 with them.
-        person_capital_gains = add(
-            person, period, ["capital_gains", "non_sch_d_capital_gains"]
+        person_capital_gains = person("capital_gains", period) + max_(
+            0, person("non_sch_d_capital_gains", period)
         )
 
         # Get tax unit totals

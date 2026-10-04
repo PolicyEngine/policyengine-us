@@ -41,5 +41,9 @@ class loss_limited_net_capital_gains(Variable):
         # Capital gain distributions reported without Schedule D. A filer with
         # capital losses or other capital gains files Schedule D and enters
         # them on line 13, so they net against losses before the limit.
-        distributions = add(tax_unit, period, ["non_sch_d_capital_gains"])
+        # Form 1099-DIV box 2a amounts are not negative; floor each person's
+        # input at zero, as irs_gross_income does.
+        distributions = tax_unit.sum(
+            max_(0, tax_unit.members("non_sch_d_capital_gains", period))
+        )
         return max_(-loss_limit, net_capital_gains + distributions)

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class loss_ald(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Business loss ALD"
+    label = "Business and capital loss ALD"
     unit = USD
     documentation = (
         "Above-the-line deduction from gross income for business and capital losses."

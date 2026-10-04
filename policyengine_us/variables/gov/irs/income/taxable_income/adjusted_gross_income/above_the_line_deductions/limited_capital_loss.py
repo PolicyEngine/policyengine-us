@@ -29,6 +29,10 @@ class limited_capital_loss(Variable):
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         max_loss = p.ald.loss.capital.max[filing_status]
+        # As in capital_losses_allowed_against_gains: no capital loss
+        # deduction when a reform takes capital gains out of gross income.
+        if "capital_gains" not in p.gross_income.sources:
+            return 0 * max_loss
         # A tax-unit dependent's capital losses belong on the dependent's own
         # return, as in irs_gross_income.
         capital_losses = tax_unit_non_dep_sum("capital_losses", tax_unit, period)

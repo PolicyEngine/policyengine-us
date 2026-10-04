@@ -52,5 +52,9 @@ class capital_losses_allowed_against_gains(Variable):
             if source in sources:
                 gains += max_(0, person(source, period))
         gains_in_gross_income = tax_unit.sum(not_dependent * gains)
+        # Losses from sales and exchanges are deductible while their gains
+        # are in gross income (a reform can drop capital_gains from it).
+        if "capital_gains" not in sources:
+            return 0 * gains_in_gross_income
         capital_losses = tax_unit_non_dep_sum("capital_losses", tax_unit, period)
         return min_(capital_losses, gains_in_gross_income)

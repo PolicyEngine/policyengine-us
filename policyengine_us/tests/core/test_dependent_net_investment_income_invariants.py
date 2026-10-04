@@ -23,7 +23,9 @@ vectorized simulation:
 3. -loss limit <= `filer_loss_limited_net_capital_gains`, and it equals
    `loss_limited_net_capital_gains` when the unit has no dependents.
 4. For tax units without dependents, `net_investment_income` equals the
-   pre-change all-member formula, so filers without dependents see no change.
+   all-member formula (person-level sources plus
+   `loss_limited_net_capital_gains`), so leaving dependents out changes
+   nothing for filers without dependents.
 5. 0 <= NIIT = 3.8% x min(max(0, NII), max(0, MAGI - threshold)).
 """
 
@@ -303,8 +305,8 @@ def test_filer_capital_gains_within_loss_limit(runs, units):
     )
 
 
-def test_units_without_dependents_match_pre_change_formula(runs, units):
-    """Differential check against the all-member formula used before."""
+def test_units_without_dependents_match_all_member_formula(runs, units):
+    """Differential check against the all-member formula."""
     person_nii = sum(_by_person(units, name) for name in NII_PERSON_INPUTS)
     old = _unit_sum(runs, person_nii) + runs["with"]["loss_limited_net_capital_gains"]
     no_dependents = np.array([not u["dependents"] for u in units])

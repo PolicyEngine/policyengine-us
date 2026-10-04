@@ -239,10 +239,10 @@ def without_gross_income_source(name):
         # Distributions out of gross income: nothing to net the loss against,
         # so the full 3,000 limit applies, on the dependent's return too.
         ("non_sch_d_capital_gains", -3_000, 0, 3_000, -3_000),
-        # Capital gains out of gross income: the losses still net against the
-        # distributions on the head's return. The dependent's modified AGI
-        # then counts the distributions alone, as gross income does.
-        ("capital_gains", -2_000, 3_000, 2_000, 3_000),
+        # Capital gains out of gross income: capital losses from sales are
+        # not deductible either, on the head's return or the dependent's;
+        # the distributions stay in gross income.
+        ("capital_gains", 3_000, 0, 0, 3_000),
     ],
 )
 def test_netting_follows_the_gross_income_sources(
@@ -281,6 +281,28 @@ def test_netting_follows_the_gross_income_sources(
     )
     assert simulation.calculate("limited_capital_loss", YEAR)[0] == net_loss
     assert simulation.calculate("dependent_taxable_ss_magi", YEAR)[1] == dependent_magi
+
+
+def test_the_two_loss_limit_parameters_agree():
+    """limited_capital_loss and dependent_taxable_ss_magi read
+    gov.irs.ald.loss.capital.max; loss_limited_net_capital_gains and
+    filer_loss_limited_net_capital_gains read gov.irs.capital_gains.loss_limit.
+    AGI's capital amount equals Form 1040 line 7a only while they agree."""
+    from policyengine_us import CountryTaxBenefitSystem
+
+    parameters = CountryTaxBenefitSystem().parameters
+    for year in range(2013, 2036):
+        irs = parameters(f"{year}-01-01").gov.irs
+        for status in [
+            "SINGLE",
+            "JOINT",
+            "SEPARATE",
+            "HEAD_OF_HOUSEHOLD",
+            "SURVIVING_SPOUSE",
+        ]:
+            assert (
+                irs.ald.loss.capital.max[status] == irs.capital_gains.loss_limit[status]
+            ), (year, status)
 
 
 # ---------------------------------------------------------------------------
