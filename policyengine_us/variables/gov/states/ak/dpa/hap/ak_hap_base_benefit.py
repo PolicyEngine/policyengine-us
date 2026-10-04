@@ -35,15 +35,23 @@ class ak_hap_base_benefit(Variable):
             | (fuel == fuels.PROPANE)
             | (fuel == fuels.ELECTRICITY)
         )
+        wood_or_coal = (fuel == fuels.WOOD) | (fuel == fuels.COAL)
         # Propane uses oil points under 7 AAC 44.080(f). Kerosene is Grade 1
-        # heating oil in the AHFC-funded technical guide. Wood/coal subtypes,
-        # unclassified OTHER fuels and unmatched oil geography are unavailable
-        # modeled amounts (zero fallback), not statutory denials. Anchorage
+        # heating oil in the AHFC-funded technical guide. Unclassified OTHER
+        # fuels and unmatched oil geography yield unavailable modeled amounts
+        # (zero fallback), not statutory denials. Anchorage
         # oil is ambiguous. The gas table uses a documented nearest-community
         # approximation where a direct published place match is unavailable.
+        # Purchased wood/coal is the approved modeling default. Existing
+        # heating_type cannot identify self-harvest or pellets, whose factors
+        # differ; neither subtype is inferred from the reported expense.
         community_points = select(
-            [oil_fuel, fuel == fuels.NATURAL_GAS],
-            [oil_table[oil_place], gas_table[gas_place]],
+            [oil_fuel, fuel == fuels.NATURAL_GAS, wood_or_coal],
+            [
+                oil_table[oil_place],
+                gas_table[gas_place],
+                oil_table[oil_place] * p.purchased_wood_coal_multiplier,
+            ],
             default=0,
         )
         dwelling = spm_unit("ak_hap_dwelling_type", period)

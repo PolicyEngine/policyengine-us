@@ -2092,8 +2092,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
-- name: Case 66, wood without a supported subtype yields an unavailable modeled amount.
+# User-approved purchased-fuel default: Fairbanks oil 10 * .8 * $175 = $1400.
+- name: Case 66, wood uses the purchased-fuel approximation with existing heating type.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2120,10 +2120,10 @@
         state_code: AK
         place_fips: '24230'
   output:
-    ak_hap_base_benefit: 0
+    ak_hap_base_benefit: 1_400
 
-# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
-- name: Case 67, coal without a supported subtype yields an unavailable modeled amount.
+# User-approved purchased-fuel default: Fairbanks oil 10 * .8 * $175 = $1400.
+- name: Case 67, coal uses the purchased-fuel approximation with existing heating type.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2150,7 +2150,7 @@
         state_code: AK
         place_fips: '24230'
   output:
-    ak_hap_base_benefit: 0
+    ak_hap_base_benefit: 1_400
 
 # Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
 - name: Case 68, other without a supported subtype yields an unavailable modeled amount.
@@ -2409,3 +2409,434 @@
     - 350
     - 6_125
     - 0
+
+# Grant steps1-4: Fairbanks oil 10 * .8 + 1 elderly point =9; 9 *175 =1575. This assumes purchased wood, not pellets or self-harvest.
+- name: "Case 74, purchased wood receives the single vulnerable-household point."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: 1_575
+
+# Fairbanks 10 * .8 * .15 =1.2 fails the unrounded 2-point minimum; an elderly member adds 1 to reach2.2, rounded2 *175=350.
+- name: "Case 75, purchased fuel changes whether a studio meets minimum heating points."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 60
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "STUDIO_HOTEL_OR_BOARDING_ROOM"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "COAL"
+        ak_hap_dwelling_type: "STUDIO_HOTEL_OR_BOARDING_ROOM"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+        coal_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: [0, 350]
+
+# Annual income20000 lies in the 100-125% band, factor .6. Fairbanks10 * .8 * .4 * .6 =1.92 fails before rounding; adding the elderly point makes2.92 ->3 *175=525.
+- name: "Case 76, the purchased factor precedes income reduction and minimum points."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 20_000
+      person2:
+        age: 60
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "RV_TENT_OR_CAMPER"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "RV_TENT_OR_CAMPER"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: [0, 525]
+
+# Koyuk oil25 (Addendum A; Census place41940); income25000 gives .5. One-bedroom25 * .8 * .55 * .5=5.5 ->6; elderly studio25 * .8 * .15 * .5 +1=2.5 ->3.
+- name: "Case 77, purchased fuel preserves half-up rounding at exact half points."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 25_000
+      person2:
+        age: 60
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 25_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "COAL"
+        ak_hap_dwelling_type: "ONE_BEDROOM_OR_ONE_ROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+        coal_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "STUDIO_HOTEL_OR_BOARDING_ROOM"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "41940"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "41940"
+  output:
+    ak_hap_base_benefit: [1_050, 525]
+
+# Household expense requirement remains strictly above200. Unrelated oil expense cannot replace the wood bill; zero wood expense does not infer self-harvest.
+- name: "Case 78, purchased wood still requires annual primary heating expense above two hundred dollars."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 0
+        fuel_oil_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 200
+        fuel_oil_expense: 1_000
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 200.01
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "24230"
+      household3:
+        members: ["person3"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: [0, 0, 1_400]
+
+# Ambler oil35 * .8 * large dwelling1.4 =39.2 points; round39 then cap35 *175=6125.
+- name: "Case 79, purchased fuel remains subject to the final heating-point cap."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "LARGE_MOBILE_HOME_OR_BOAT"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "01970"
+  output:
+    ak_hap_base_benefit: 6_125
+
+# Anchorage oil mapping remains ambiguous and an unmatched place is unavailable; selecting wood or coal cannot use gas points instead.
+- name: "Case 80, purchased fuel cannot resolve unavailable oil community points."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "COAL"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+        coal_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "03000"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "99999"
+  output:
+    ak_hap_base_benefit: [0, 0]
+
+# Akiachak0/AVCP routes all residents; an unqualified household and a non-AK household receive no state base component.
+- name: "Case 81, purchased fuel preserves tribal routing qualified-person and state gates."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "00760"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+        place_fips: "24230"
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: [0, 0, 0]
+
+# An ordinary purchased-coal calculation would yield1400, but subsidized heat in rent is excluded before payment.
+- name: "Case 82, purchased coal retains the existing subsidized heat-in-rent exclusion."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "COAL"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: true
+        wood_expense: 1_000
+        coal_expense: 1_000
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: 0
+
+# Purchased approximation is fixed for WOOD, independent of reported bill: zero wood bill plus300 annual rent meets the existing heat-in-rent expense gate; base8 *175=1400.
+- name: "Case 83, unsubsidized heat in rent supplies the expense gate without inferring fuel procurement."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 300
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
+        ak_atap: 0
+        receives_housing_assistance: false
+        wood_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+        place_fips: "24230"
+  output:
+    ak_hap_base_benefit: 1_400
