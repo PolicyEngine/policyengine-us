@@ -1,1 +1,1 @@
-Add Idaho LIHEAP countable income, qualified household size and income-limit calculations; the heating benefit calculation remains incomplete.
+Add Idaho LIHEAP countable income, qualified household size, income limits and modeled financial eligibility, including SNAP and SSI categorical routes; the heating benefit calculation remains incomplete.

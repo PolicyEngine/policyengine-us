@@ -1,0 +1,1764 @@
+# Source-derived financial-component tests; no final eligibility or award claim.
+# Accepted FY2026 plan, categorical rules and income thresholds (pages 5, 8).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,8
+# Pre-consolidation IDAPA 16.04.14 section 151.01 (physical pages 4-5).
+# https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=4,5
+# DHW monthly limits effective October 1, 2025.
+# https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+# Means-tested VA and discretionary medical determinations are unobserved routes.
+# False means no modeled route is established, not exhaustive legal denial.
+
+- name: Case 1, ordinary income qualifies through the inclusive published ceiling.
+  # DHW one-person monthly limit 2_736.25 * 12 = 32_835.
+  # No SNAP or SSI; one cent below, exactly at, and one cent above.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 32834.99
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 32835
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 32835.01
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - true
+    - true
+    - false
+    id_liheap_household_size:
+    - 1
+    - 1
+    - 1
+    id_liheap_countable_income:
+    - 32834.99
+    - 32835
+    - 32835.01
+    id_liheap_income_limit:
+    - 32835
+    - 32835
+    - 32835
+
+- name: Case 2, SNAP receipt follows the October through September program year.
+  # Plan section 1.4a specifies October 1-September 30.
+  # First/last included months qualify; adjacent outside months do not.
+  # All other months September 2025-December 2026 are explicitly zero.
+  # SNAP establishes a route without erasing 40_000 of countable earnings.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 1
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 1
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 1
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit4:
+        members:
+        - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 1
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+      household4:
+        members:
+        - person4
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - true
+    - true
+    - false
+    - false
+    id_liheap_household_size:
+    - 1
+    - 1
+    - 1
+    - 1
+    id_liheap_countable_income:
+    - 40000
+    - 40000
+    - 40000
+    - 40000
+
+- name: Case 3, one member receiving SSI establishes the modeled categorical route.
+  # Positive requested-year SSI is the documented stable-receipt approximation.
+  # Income: 40_000 + 1 * 12; 60_000 + 100 * 12; 40_000 + 100 * 12.
+  # Child earnings are excluded; SSI is counted once.
+  # The third unit has a nonqualified SSI recipient and a qualified child.
+  # The parent income counts; SSI is not restricted to qualified members.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 1
+          2026-02: 1
+          2026-03: 1
+          2026-04: 1
+          2026-05: 1
+          2026-06: 1
+          2026-07: 1
+          2026-08: 1
+          2026-09: 1
+          2026-10: 1
+          2026-11: 1
+          2026-12: 1
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 60000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        employment_income: 6000
+        ssi:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 100
+          2026-05: 100
+          2026-06: 100
+          2026-07: 100
+          2026-08: 100
+          2026-09: 100
+          2026-10: 100
+          2026-11: 100
+          2026-12: 100
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 40000
+        ssi:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 100
+          2026-05: 100
+          2026-06: 100
+          2026-07: 100
+          2026-08: 100
+          2026-09: 100
+          2026-10: 100
+          2026-11: 100
+          2026-12: 100
+      person5:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit3:
+        members:
+        - person4
+        - person5
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        - person3
+        state_code: ID
+      household3:
+        members:
+        - person4
+        - person5
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    id_liheap_household_size:
+    - 1
+    - 2
+    - 1
+    id_liheap_countable_income:
+    - 40012
+    - 61200
+    - 41200
+    id_liheap_income_limit:
+    - 32835
+    - 42938.04
+    - 32835
+
+- name: Case 4, qualified size is required with zero income or categorical receipt.
+  # All-nonqualified units fail without benefits, with SNAP, and with SSI.
+  # Mixed status retains parent income one cent above the one-person ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 0
+        ssi:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 100
+          2026-05: 100
+          2026-06: 100
+          2026-07: 100
+          2026-08: 100
+          2026-09: 100
+          2026-10: 100
+          2026-11: 100
+          2026-12: 100
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 32835.01
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person5:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 1
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit4:
+        members:
+        - person4
+        - person5
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+      household4:
+        members:
+        - person4
+        - person5
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - false
+    - false
+    - false
+    - false
+    id_liheap_household_size:
+    - 0
+    - 0
+    - 0
+    - 1
+    id_liheap_countable_income:
+    - 0
+    - 0
+    - 1200
+    - 32835.01
+
+- name: Case 5, TANF alone is not categorical and SNAP retains actual income.
+  # Plan page 5 marks TANF no and SNAP yes for heating categorical eligibility.
+  # TAFI 100 monthly = 1_200 annual countable income, without a categorical route.
+  # SNAP opens the modeled route without imputing or erasing other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 100
+          2026-02: 100
+          2026-03: 100
+          2026-04: 100
+          2026-05: 100
+          2026-06: 100
+          2026-07: 100
+          2026-08: 100
+          2026-09: 100
+          2026-10: 100
+          2026-11: 100
+          2026-12: 100
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 1
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - false
+    - true
+    id_liheap_household_size:
+    - 1
+    - 1
+    id_liheap_countable_income:
+    - 41200
+    - 40000
+
+- name: Case 6, the seven to eight member switch affects ordinary eligibility.
+  # Published size-7 monthly 7_103.75 * 12 = 85_245.
+  # Published size-8 monthly 6_768.75 * 12 = 81_225.
+  # The explicit SMI/FPG switch does not take the larger guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 84000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person5:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person6:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person7:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person8:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 84000
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person9:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person10:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person11:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person12:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person13:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person14:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person15:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        - person7
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person8
+        - person9
+        - person10
+        - person11
+        - person12
+        - person13
+        - person14
+        - person15
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        - person7
+        state_code: ID
+      household2:
+        members:
+        - person8
+        - person9
+        - person10
+        - person11
+        - person12
+        - person13
+        - person14
+        - person15
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - true
+    - false
+    id_liheap_household_size:
+    - 7
+    - 8
+    id_liheap_countable_income:
+    - 84000
+    - 84000
+    id_liheap_income_limit:
+    - 85245
+    - 81225
+
+- name: Case 7, financial eligibility does not decide heating responsibility.
+  # Zero income meets this financial component despite no heat bill.
+  # This is not a finding of full program eligibility or a heating award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NONE
+        gas_expense: 0
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+  output:
+    id_liheap_income_eligible:
+    - true
+    id_liheap_household_size:
+    - 1
+    id_liheap_countable_income:
+    - 0
+
+- name: Case 8, mixed states isolate ordinary and categorical financial routes.
+  # Idaho meets ordinary income; Washington cannot use this state component.
+  # The last unit receives SSI, testing the state guard on that route.
+  # Existing Idaho size/income helpers are zero outside Idaho.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 0
+        ssi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40000
+        ssi:
+          2026-01: 1
+          2026-02: 1
+          2026-03: 1
+          2026-04: 1
+          2026-05: 1
+          2026-06: 1
+          2026-07: 1
+          2026-08: 1
+          2026-09: 1
+          2026-10: 1
+          2026-11: 1
+          2026-12: 1
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        pre_subsidy_electricity_expense: 0
+        id_tafi:
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+        snap:
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+          2026-01: 0
+          2026-02: 0
+          2026-03: 0
+          2026-04: 0
+          2026-05: 0
+          2026-06: 0
+          2026-07: 0
+          2026-08: 0
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: WA
+      household3:
+        members:
+        - person3
+        state_code: WA
+  output:
+    id_liheap_income_eligible:
+    - true
+    - false
+    - false
+    id_liheap_household_size:
+    - 1
+    - 0
+    - 0
+    id_liheap_countable_income:
+    - 0
+    - 0
+    - 0

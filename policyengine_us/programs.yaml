@@ -845,7 +845,7 @@ programs:
         full_name: Idaho Low Income Home Energy Assistance Program
         parameter_prefix: gov.states.id.dhw.liheap
         verified_years: "2026"
-        notes: FY2026 household size, countable income and income-limit components only. No final eligibility or benefit award; provider and area heating-cost mapping and categorical-income treatment remain unresolved. Annual flows approximate prior-month income. Earlier backfilled results are unverified historical estimates.
+        notes: FY2026 household size, countable income, income limits and modeled financial eligibility. SNAP during the October-September program year or current SSI receipt bypasses the ordinary income test; annual SSI assumes stable current receipt. Means-tested VA categorical status is unobserved by existing inputs. No final eligibility or benefit award; current estimated heating costs, provider/area mapping and an energy-burden boundary remain unresolved. Annual flows approximate prior-month income. Earlier backfilled results are unverified historical estimates.
       - state: TX
         status: partial
         name: Texas CEAP
