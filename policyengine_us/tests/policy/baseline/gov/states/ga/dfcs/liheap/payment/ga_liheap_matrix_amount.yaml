@@ -73,3 +73,22 @@
     ga_liheap_income: 0
   output:
     ga_liheap_matrix_amount: 0
+
+# FY2026 plan p30 assigns direct applicant payments the lowest award within the
+# income level. The matrix gives500 through13589 and400 above it for size1.
+# A separately paid utility retains the ordinary gas award660; NONE remains zero.
+- name: Case 5, direct rental payments use the income level minimum and preserve no heating.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
+    ga_liheap_household_size: [1, 1, 1, 1]
+    ga_liheap_income: [13_589, 13589.01, 12_000, 12_000]
+    rent: [12_000, 12_000, 12_000, 12_000]
+    heat_expense_included_in_rent: [true, true, true, true]
+    tenant_pays_utilities: [false, false, true, false]
+    receives_housing_assistance: [false, false, false, false]
+    is_in_public_housing: [false, false, false, false]
+  output:
+    ga_liheap_matrix_amount: [500, 400, 660, 0]
