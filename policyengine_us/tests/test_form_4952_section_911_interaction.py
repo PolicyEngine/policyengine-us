@@ -79,10 +79,11 @@ election leaves. The properties, for every generated household:
    tax and AMT match.
 
 Amounts are whole dollars below 2**24 except where a household is drawn with
-cents. For every whole-dollar household the gains and worksheet lines 6 to 10
-hold exactly; the section 911 amounts hold exactly when taxable income (or
-Form 6251 line 6) is whole dollars too, as it is without itemized deductions.
-The rest are checked within single-precision rounding.
+cents. For every whole-dollar household the gains and the model's worksheet
+lines 6 to 10 hold exactly; the section 911 amounts hold exactly when taxable
+income (or Form 6251 line 6) is whole dollars too, as taxable income is
+without itemized deductions. The rest are checked within single-precision
+rounding.
 
 The scope limits of test_section_911_tax_stacking.py apply to the tax
 comparisons (properties 4 and 6), which therefore use households without
