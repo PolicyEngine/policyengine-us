@@ -157,6 +157,8 @@ metadata:
   # Published rates remain fixed from July through June. After the last
   # published school year, retain CPI-U as a projection proxy for USDA's
   # Food Away From Home index, applying May-to-May changes only on July 1.
+  # Future CPI-U entries are annual forecast proxies, not observed May values.
+  # Projections compound rounded rates; USDA's unrounded bases are not modeled.
   uprating:
     parameter: gov.bls.cpi.cpi_u
     at_defined_interval:

@@ -15,7 +15,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income_before_lsr: 60_000
+        employment_income_before_lsr: 50_700
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -57,12 +57,12 @@
   output:
     spm_units:
       spm_unit:
-        # 60,000 / 27,320 = 219.6% FPG: above the federal reduced-price
+        # 50,700 / 27,320 = 185.6% FPG: above the federal reduced-price
         # threshold, with no categorical route. State coverage makes both
         # meals free at the child's participating public school.
         meets_school_meal_categorical_eligibility: false
         state_has_universal_free_school_meals: true
-        school_meal_countable_income: 60_000
+        school_meal_countable_income: 50_700
         school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
         # (Combined FREE - PAID) x one enrolled child x 180 modeled days.

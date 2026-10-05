@@ -15,11 +15,18 @@
 # https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
 # 2025 uses July 2024 base rates (page 4):
 # https://www.govinfo.gov/content/pkg/FR-2024-07-10/pdf/2024-15175.pdf
-# The MO boundary cases assume schools charging both reduced-price copays:
-# Rockwood (2026-27, Ellisville 63011) and Mount Vernon (2025-26, 65712).
-# Both publish $0.30 breakfast / $0.40 lunch, so a combined REDUCED tier fits.
-# https://www.rsdmo.org/departments/child-nutrition/meal-prices
-# https://ms.mtvernon.k12.mo.us/apps/pages/index.jsp?uREC_ID=3822817&type=d&pREC_ID=2470965
+# Use MO for federal reduced-price scenarios: TX covers breakfast copays and,
+# from September 2025, lunch copays. That TX coverage is not yet modeled.
+# https://squaremeals.org/Programs/School-Breakfast-Program/Reduced-Price-School-Meals-Now-Free
+# These MO fixtures assume a participating school without CEP or another
+# schoolwide subsidy. District sources match the January 1 school year:
+# Rockwood's SY 2025-26 free/reduced policy (Ellisville 63011, calendar 2026):
+# https://www.rsdmo.org/news/article/~board/rsd/post/free-and-reduced-meal-applications-available-for-2025-2026-school-year
+# Mount Vernon's SY 2024-25 meal program/prices (65712, calendar 2025):
+# https://www.mtvernon.k12.mo.us/apps/news/article/1943811
+# These dated sources establish the district/program context, not exact
+# historical reduced-price charges. Expected benefits use the federal
+# reimbursement differences above, not district menu prices or cash savings.
 - name: school_meals_free_tier_just_below_130pct (federal)
   period: 2026
   absolute_error_margin: 0.01
@@ -422,7 +429,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income_before_lsr: 50_500
+        employment_income_before_lsr: 60_000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -449,7 +456,8 @@
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
-        # Partner-supplied aggregate matches the household's gross wages.
+        # The partner-supplied aggregate must override income calculated from
+        # individual inputs: $60,000 of wages would otherwise yield PAID.
         school_meal_countable_income: 50_500
     tax_units:
       tax_unit:
@@ -468,8 +476,8 @@
       spm_unit:
         meets_school_meal_categorical_eligibility: false
         state_has_universal_free_school_meals: false
-        # 50,500 / 27,320 = 184.8% <= 185% -> REDUCED; the direct
-        # aggregate and individual income describe the same household.
+        # 50,500 / 27,320 = 184.8% <= 185% -> REDUCED because the
+        # reported aggregate overrides the $60,000 derived from wages.
         # REDUCED = (NSLP 4.20 + SBP 2.16) = 6.36.
         school_meal_daily_subsidy: 6.36
         school_meal_tier: 1  # REDUCED

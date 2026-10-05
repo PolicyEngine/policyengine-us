@@ -14,7 +14,15 @@ class school_meal_tier(Variable):
     default_value = SchoolMealTier.PAID
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SPM unit's school meal program tier"
+    documentation = (
+        "SPM unit's combined school meal tier. FREE includes state-paid copays "
+        "at a covered participating school and describes no family charge; "
+        "it does not change the student's federal reimbursement category."
+    )
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/245.2",
+        "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_115C/GS_115C-264.html",
+    )
 
     def formula(spm_unit, period, parameters):
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)

@@ -1,4 +1,7 @@
-description: Whether a state provides breakfast and lunch at no cost to students who qualify for reduced-price meals under the National School Lunch Program and School Breakfast Program.
+description: States provide breakfast and lunch at no cost to students eligible for reduced-price meals under the National School Lunch Program and School Breakfast Program if this is true.
+# Only North Carolina coverage is verified here. Other false entries preserve
+# existing model behavior; they do not establish that a state has no coverage.
+# Assume enrollment at a covered school participating in both meal programs.
 metadata:
   propagate_metadata_to_children: true
   label: State covers reduced-price school meal copays
@@ -76,13 +79,13 @@ MT:
 NC:
   0000-01-01: false
   # North Carolina has covered the reduced-price breakfast copay since
-  # July 1, 2011 (S.L. 2011-342 § 1). This parameter is true only while the
-  # state also covers the reduced-price lunch copay.
+  # July 1, 2011 (S.L. 2011-342 § 1), subject to sufficient appropriations.
+  # This parameter is true only while the state also covers the lunch copay.
   2020-07-01:
     value: true
     metadata:
       reference:
-        - title: North Carolina S.L. 2020-80 § 2.3.(b), page 14 (lunch, 2020-2021 school year)
+        - title: North Carolina S.L. 2020-80 § 2.3.(b) (lunch, 2020-2021 school year)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2019-2020/SL2020-80.pdf#page=14
         - title: North Carolina S.L. 2011-342 § 1 (breakfast)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
@@ -92,7 +95,7 @@ NC:
     value: true
     metadata:
       reference:
-        - title: North Carolina S.L. 2022-74 § 7.3, page 28 (lunch, 2022-2023 school year)
+        - title: North Carolina S.L. 2022-74 § 7.3 (lunch, 2022-2023 school year)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2021-2022/SL2022-74.pdf#page=28
         - title: North Carolina S.L. 2011-342 § 1 (breakfast)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
@@ -100,18 +103,21 @@ NC:
     value: true
     metadata:
       reference:
-        - title: North Carolina S.L. 2023-134 § 7.58, page 119 (breakfast and lunch, 2023-2025 biennium)
-          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2023-2024/SL2023-134.pdf#page=119
+        - title: North Carolina S.L. 2023-134 §§ 7.58 and 43.8 (breakfast and lunch, 2023-2025 biennium)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2023-2024/SL2023-134.pdf#page=119,625
   # S.L. 2025-89 § 2A.8, effective retroactively to July 1, 2025, repealed
   # S.L. 2023-134 § 7.58 and added the standing requirement to G.S. 115C-264(a1).
+  # The mandate binds local boards of education operating school nutrition
+  # programs. The model assumes a covered public school; it does not distinguish
+  # charter/nonpublic sponsors or school participation (follow-up issue #9789).
   2025-07-01:
     value: true
     metadata:
       reference:
         - title: N.C. Gen. Stat. § 115C-264(a1)
           href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_115C/GS_115C-264.html
-        - title: North Carolina S.L. 2025-89 § 2A.8, pages 5-6 (adds G.S. 115C-264(a1), repeals S.L. 2023-134 § 7.58)
-          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2025-2026/SL2025-89.pdf#page=5
+        - title: North Carolina S.L. 2025-89 §§ 2A.8 and 7.1 (adds G.S. 115C-264(a1), repeals S.L. 2023-134 § 7.58)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2025-2026/SL2025-89.pdf#page=5,6,32
 ND:
   0000-01-01: false
 NE:
