@@ -9,7 +9,8 @@ under section 911(d)(6) with respect to the amounts described in paragraph
 
 `niit_magi_section_911_addition` is that excess. It defaults to
 `foreign_earned_income_exclusion` and can be entered directly, for a filer
-whose exclusion includes housing amounts that section 1411(d) leaves out.
+with housing amounts (which section 1411(d) leaves out) or with itemized
+deductions netted out of the exclusion (which it does not subtract).
 
 Properties that hold for every household:
 
