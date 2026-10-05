@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 from policyengine_us.variables.gov.irs.tax.federal_income.before_credits.tax_at_main_rates import (
+    amount_taxed_below_rate,
     tax_at_main_rates,
 )
 from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
@@ -109,10 +110,33 @@ def create_additional_tax_bracket() -> Reform:
             tax_on_excluded = tax_at_main_rates(excluded, filing_status, bracket)
             return where(excluded > 0, max_(0, tax - tax_on_excluded), tax)
 
+    class taxable_income_taxed_below_25_percent(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Taxable income taxed at a rate below 25 percent"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/1#h_1_A_ii_I"
+
+        def formula(tax_unit, period, parameters):
+            # 26 U.S.C. 1(h)(1)(A)(ii)(I) on the reform's rate schedule, as
+            # in the baseline formula on the baseline schedule.
+            taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
+            filing_status = tax_unit("filing_status", period)
+            return amount_taxed_below_rate(
+                taxable_income,
+                filing_status,
+                parameters(period).gov.contrib.additional_tax_bracket.bracket,
+                parameters(period).gov.irs.capital_gains.regular_rate_limit,
+            )
+
     class reform(Reform):
         def apply(self):
             self.update_variable(income_tax_main_rates)
             self.update_variable(regular_tax_before_credits)
+            self.update_variable(taxable_income_taxed_below_25_percent)
 
     return reform
 
