@@ -1,0 +1,26 @@
+description: Ohio adds this amount to the tax computed from the marginal rates when taxable nonbusiness income is more than the threshold, so the tax equals the base amount set in statute.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 0
+      # ORC 5747.02(A)(3)(b) keeps the $2,394.32 base above $100,000 while the
+      # lower bracket starts from $342.00, so 342.00 + 2.75% x 73,950 = 2,375.625
+      # falls $18.695 short of the statutory base.
+      2025-01-01: 18.695
+      2026-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Ohio income tax base adjustment
+  reference:
+    - title: Ohio Revised Code 5747.02(A)(3)(b) - Tax rates for taxable years beginning in 2025
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.02
+    - title: 2025 Ohio IT 1040 Instructions, 2025 Ohio Income Tax Brackets (page 18)
+      href: https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=18
