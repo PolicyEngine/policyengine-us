@@ -26,7 +26,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -55,6 +54,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # 50,700 / 27,320 = 185.6% FPG: above the federal reduced-price

@@ -50,7 +50,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -79,6 +78,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # 35,500 / 27,320 = 129.9% <= 130% -> FREE on the income route
@@ -117,7 +119,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -146,6 +147,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -185,7 +189,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -214,6 +217,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -248,7 +254,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -277,6 +282,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: true
@@ -312,7 +320,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -341,6 +348,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -376,7 +386,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -405,6 +414,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -440,7 +452,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -472,6 +483,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -507,7 +521,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -537,6 +550,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: true
@@ -548,7 +564,7 @@
         school_meal_net_subsidy: 1119.60
         free_school_meals: 1119.60
         reduced_price_school_meals: 0.00
-- name: school_meals_negative_self_employment_income_free (federal)
+- name: school_meals_low_wages_with_business_loss_free (federal)
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -572,7 +588,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -601,6 +616,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # A family with $20,000 wages and a business loss qualifies for free
@@ -634,7 +652,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -663,6 +680,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -698,7 +718,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -727,6 +746,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         meets_school_meal_categorical_eligibility: false
@@ -761,7 +783,6 @@
         employment_income_before_lsr: 0
       child1:
         age: 8
-        is_in_k12_school: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
@@ -790,6 +811,9 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # AK uses its own FPG and reimbursement schedule: AK FPG(3) =
