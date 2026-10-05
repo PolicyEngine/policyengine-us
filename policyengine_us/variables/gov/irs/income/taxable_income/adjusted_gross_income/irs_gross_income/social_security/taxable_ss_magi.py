@@ -14,19 +14,17 @@ class taxable_ss_magi(Variable):
         irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         ss_magi = irs.social_security.taxability.income
+        # Total UI stands in for taxable UI. Reforms which drop the UI
+        # variable from gross income drop it from SS-related MAGI too.
         income_sources_without_ss = [
-            income_source
+            (
+                "total_unemployment_compensation"
+                if income_source == "taxable_unemployment_compensation"
+                else income_source
+            )
             for income_source in gross_income_sources
-            if income_source
-            not in [
-                "taxable_social_security",
-                "taxable_unemployment_compensation",
-            ]
+            if income_source != "taxable_social_security"
         ]
-        if "taxable_unemployment_compensation" in gross_income_sources:
-            # Reforms which drop the UI variable from gross income should
-            # trigger SS-related MAGI to drop it too.
-            income_sources_without_ss.append("unemployment_compensation")
         income_sources_without_ss.append("tax_exempt_interest_income")
         gross_income = 0
         person = tax_unit.members

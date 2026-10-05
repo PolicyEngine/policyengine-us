@@ -124,3 +124,39 @@
     ssi: 11_928
     ca_state_supplement: 4_101.72
     spm_unit_benefits: 16_029.72
+
+- name: Benefits include modeled state unemployment insurance net of the SNAP it reduces.
+  # Low-income Pennsylvania adult with no reported UC and no earnings. Modeled
+  # pa_uc = 10,218 feeds total_unemployment_compensation and SNAP unearned
+  # income (851.50 per month). 7 CFR 273.7(b)(1)(v) exempts only months of UC
+  # receipt: 26 weeks unemployed give ceil(26 * 12 / 52) = 6 months, starting
+  # in January for the household's first member. In January-June SNAP is 228
+  # per month (292 maximum - ceil(0.3 * 213 net income) = 292 - 64).
+  # From July the person no longer receives UC and, with no work hours and
+  # PA's fallback county not waived, is ineligible under the ABAWD time limit,
+  # so SNAP is 0. Annual snap = 228 * 6 = 1,368.
+  # spm_unit_benefits = 10,218 + 1,368 = 11,586.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_uc: 10_218
+    total_unemployment_compensation: 10_218
+    unemployment_compensation_months: 6
+    snap: 1_368
+    spm_unit_benefits: 11_586
