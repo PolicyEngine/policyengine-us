@@ -129,3 +129,38 @@
     # = 202,154.50 + 0.37 * 248,400 = 294,062.50.
     regular_tax_before_credits: 294_062.5
     income_tax_main_rates: 294_062.5
+
+# 26 U.S.C. 1(h)(1)(A)(ii)(I), "the amount of taxable income taxed at a rate
+# below 25 percent", follows the rate schedule in force. From 2026 the
+# reform's schedule is 10, 15, 25, 28, 33, 35 and 39.6 percent, so the
+# amount ends at the top of its 15 percent bracket ($49,300 single), not at
+# the top of the baseline 24 percent bracket ($201,775).
+- name: Additional tax bracket reform's own amount taxed below 25 percent
+  period: 2026
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    filing_status: SINGLE
+    taxable_income: 300_000
+    long_term_capital_gains: 200_000
+    unrecaptured_section_1250_gain: 100_000
+  output:
+    taxable_income_taxed_below_25_percent: 49_300
+    # Schedule D Tax Worksheet: line 13 100,000; line 14 200,000; line 18
+    # 100,000; line 19 49,300; line 20 49,300; line 21 100,000.
+    dwks19: 100_000
+    # Taxed at the regular rates: the greater of 100,000 or the lesser of
+    # 49,300 and 200,000.
+    capital_gains_excluded_from_taxable_income: 200_000
+
+- name: The same household without the reform
+  period: 2026
+  input:
+    filing_status: SINGLE
+    taxable_income: 300_000
+    long_term_capital_gains: 200_000
+    unrecaptured_section_1250_gain: 100_000
+  output:
+    taxable_income_taxed_below_25_percent: 201_775
+    dwks19: 200_000
+    capital_gains_excluded_from_taxable_income: 100_000

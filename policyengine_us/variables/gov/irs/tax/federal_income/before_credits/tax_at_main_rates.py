@@ -29,3 +29,21 @@ def tax_at_main_rates(taxable_amount, filing_status, bracket):
         tax += bracket.rates[b] * amount_in_bracket
         bracket_bottom = bracket_top
     return tax
+
+
+def amount_taxed_below_rate(taxable_amount, filing_status, bracket, rate):
+    """The part of an amount that the ordinary rate schedule taxes below a rate.
+
+    For example, 26 U.S.C. 1(h)(1)(A)(ii)(I) refers to "the amount of taxable
+    income taxed at a rate below 25 percent". Brackets are walked and clamped
+    as in tax_at_main_rates, so the amount is consistent with the tax.
+    """
+    amount = 0
+    bracket_bottom = 0
+    for i in range(1, len(list(bracket.rates.__iter__())) + 1):
+        b = str(i)
+        bracket_top = max_(bracket_bottom, bracket.thresholds[b][filing_status])
+        if bracket.rates[b] < rate:
+            amount += amount_between(taxable_amount, bracket_bottom, bracket_top)
+        bracket_bottom = bracket_top
+    return amount
