@@ -22,6 +22,7 @@ class niit_magi(Variable):
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=19",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=20",
+        "https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=23",
     )
 
     def formula(tax_unit, period, parameters):

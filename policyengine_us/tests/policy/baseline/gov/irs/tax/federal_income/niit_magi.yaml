@@ -161,3 +161,30 @@
   output:
     # Section 1411(d) adds "the excess (if any)", never a negative amount.
     niit_magi: 150_000
+
+- name: An entered worksheet amount restores itemized deductions netted out of the exclusion
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Foreign Earned Income Tax Worksheet line 2c: a 100,000 foreign
+        # earned income exclusion (Form 2555 lines 42 and 45, no housing)
+        # less 5,000 of itemized deductions disallowed because they relate
+        # to it (line 2b). Section 1411(d)(2) subtracts only deductions
+        # taken into account in computing AGI, so the addition is 100,000.
+        foreign_earned_income_exclusion: 95_000
+        niit_magi_section_911_addition: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 200_000
+    niit_magi: 300_000

@@ -24,8 +24,9 @@ Properties that hold for every household:
    addition is the exclusion, or the entered amount, floored at zero.
 3. MAGI and the tax never fall as the excluded amount rises.
 4. The tax is 3.8% of the lesser of net investment income and the excess of
-   MAGI over the threshold of section 1411(b) ($250,000 joint, $125,000
-   separate, $200,000 otherwise, not indexed), computed here independently.
+   MAGI over the threshold of section 1411(b) ($250,000 joint or surviving
+   spouse, $125,000 separate, $200,000 otherwise, not indexed), computed
+   here independently.
 
 Households live in Texas.
 """
@@ -47,6 +48,7 @@ THRESHOLD = {
     "HEAD_OF_HOUSEHOLD": 200_000,
     "JOINT": 250_000,
     "SEPARATE": 125_000,
+    "SURVIVING_SPOUSE": 250_000,
 }
 STATUSES = list(THRESHOLD)
 YEARS = [2018, 2022, 2025, 2026]
@@ -254,7 +256,7 @@ def assert_invariants(households, year):
     # 2. MAGI is AGI plus the positive code H change plus the addition.
     code_h = np.array([max(0, h["code_h"]) for h in households])
     magi = agi + code_h + addition
-    slack = tolerance(magi, more_excluded["niit_magi"])
+    slack = tolerance(magi, law["niit_magi"])
     assert (np.abs(law["niit_magi"] - magi) <= slack).all()
     assert (np.abs(law["niit_magi"] - before["niit_magi"] - addition) <= slack).all()
     entered = np.array([h["entered_addition"] is not None for h in households])

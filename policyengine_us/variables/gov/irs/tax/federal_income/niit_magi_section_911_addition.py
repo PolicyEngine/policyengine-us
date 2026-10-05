@@ -14,11 +14,16 @@ class niit_magi_section_911_addition(Variable):
         "line 42 less the Form 2555 line 44 deductions allocable to it. "
         "Section 1411(d) does not add back the housing exclusion of section "
         "911(a)(2) (Form 2555 line 36) or the housing deduction (line 50). "
-        "The default is foreign_earned_income_exclusion, which holds the "
-        "housing amounts as well (Form 2555 lines 45 and 50), so for a filer "
-        "with a housing exclusion or deduction the default overstates MAGI by "
-        "the net housing amount. For such a filer, enter the worksheet amount "
-        "directly."
+        "The default is foreign_earned_income_exclusion, line 2c of the Form "
+        "1040 Foreign Earned Income Tax Worksheet: Form 2555 lines 45 and 50, "
+        "less the itemized deductions and exclusions disallowed because they "
+        "relate to the excluded income (worksheet line 2b). The default "
+        "equals the section 1411(d) amount only for a filer with no housing "
+        "exclusion, no housing deduction and nothing on worksheet line 2b. "
+        "Housing amounts make it too high. Itemized deductions on line 2b "
+        "make it too low, since section 1411(d)(2) subtracts only deductions "
+        "taken into account in computing adjusted gross income. For any other "
+        "filer, enter the Form 8960 worksheet amount directly."
     )
     definition_period = YEAR
     reference = (
@@ -28,6 +33,7 @@ class niit_magi_section_911_addition(Variable):
         "https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=22",
         "https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=23",
         "https://www.irs.gov/pub/irs-prior/f2555--2025.pdf#page=3",
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=37",
     )
 
     def formula(tax_unit, period, parameters):
