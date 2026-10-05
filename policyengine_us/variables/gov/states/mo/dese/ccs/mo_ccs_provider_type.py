@@ -17,4 +17,4 @@ class mo_ccs_provider_type(Variable):
     definition_period = MONTH
     label = "Missouri Child Care Subsidy provider type"
     defined_for = StateCode.MO
-    reference = "https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+    reference = "https://dese.mo.gov/sites/g/files/zuston521/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"

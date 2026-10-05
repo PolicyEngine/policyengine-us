@@ -12,7 +12,7 @@ class medicare_cost(Variable):
     )
     unit = USD
     definition_period = YEAR
-    reference = "https://www.cms.gov/medicare"
+    reference = "https://www.cms.gov/about-cms/what-we-do/medicare"
     defined_for = "medicare_enrolled"
 
     def formula(person, period, parameters):
