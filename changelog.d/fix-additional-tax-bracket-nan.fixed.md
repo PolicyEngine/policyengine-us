@@ -1,0 +1,1 @@
+Give the additional_tax_bracket contrib reform a finite tax while its added bracket is unset. With the shipped infinite thresholds for brackets 7 and 8, income_tax_main_rates and regular_tax_before_credits were NaN for every household.
