@@ -24,3 +24,52 @@
     alternative_minimum_tax: 0
     # Expected income tax from TAXSIM35
     income_tax: 85_538
+
+# Married filing separately with qualified dividends and long-term gain, so
+# Form 6251 Part III applies and line 18 uses the separate breakpoint
+# ($119,550 for 2025; 26 U.S.C. 55(b)(1)(C)). Worked by hand from the 2025
+# Form 1040 instructions (Qualified Dividends and Capital Gain Tax Worksheet,
+# Tax Computation Worksheet) and the 2025 Form 6251.
+- name: Married filing separately with dividends and long-term gain, 2025
+  period: 2025
+  input:
+    people:
+      person:
+        age: 45
+        employment_income: 150_000
+        qualified_dividend_income: 25_000
+        long_term_capital_gains: 900_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Taxable income: $1,075,000 - $15,750 standard deduction = $1,059,250.
+    # Qualified Dividends and Capital Gain Tax Worksheet: line 4 $925,000;
+    # line 5 $134,250; line 18 15% * $165,750 = $24,862.50; line 21 20% *
+    # $759,250 = $151,850; line 22 tax on $134,250 = $25,067; line 25
+    # $201,779.50.
+    taxable_income: 1_059_250
+    regular_tax_before_credits: 25_067
+    capital_gains_tax: 176_712.5
+    # Form 6251: line 1 $1,059,250; line 2a $15,750; line 4 $1,075,000 plus
+    # 25% * ($1,075,000 - $900,350) = $43,662.50 for married filing
+    # separately (line 4 instructions) = $1,118,662.50. Line 5: $68,500 -
+    # 25% * ($1,118,662.50 - $626,350) < 0, so $0. Line 6: $1,118,662.50.
+    amt_income_less_exemptions: 1_118_662.5
+    # Part III: line 12 $1,118,662.50; lines 13, 15, 16 $925,000; line 17
+    # $193,662.50; line 18 28% * $193,662.50 - $2,391 = $51,834.50; line 20
+    # $134,250; line 21 $0; line 22 $925,000; line 29 $300,000 - $134,250 =
+    # $165,750; line 31 $24,862.50; line 33 $759,250; line 34 $151,850;
+    # line 38 $228,547. Line 39: 28% * $1,118,662.50 - $2,391 =
+    # $310,834.50. Line 40 and line 7: $228,547.
+    amt_tax_including_cg: 228_547
+    amt_base_tax: 310_834.5
+    # Line 9 $228,547 less line 10 $201,779.50 = $26,767.50 (26% on line 18
+    # would give $25,285.25).
+    alternative_minimum_tax: 26_767.5
+    income_tax_before_credits: 228_547

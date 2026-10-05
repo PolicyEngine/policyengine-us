@@ -42,11 +42,15 @@ class amt_tax_including_cg(Variable):
         capped_income = min_(capped_capital_gains, reduced_income)
         # Line 17: Line 12 minus Line 16 (ordinary AMTI).
         excess_income = max_(0, reduced_income - capped_income)
-        # Line 18: apply the 26%/28% AMT bracket to Line 17.
+        # Line 18: apply the 26%/28% AMT bracket to Line 17. The 28% rate
+        # starts at half the breakpoint for married filing separately
+        # (26 U.S.C. 55(b)(1)(C)), as on Line 39.
         p = parameters(period).gov.irs
-        income_taxes_at_amt_rates = p.income.amt.brackets.calc(excess_income)
-        # Line 19: 0% LTCG bracket threshold for the filing status.
         filing_status = tax_unit("filing_status", period)
+        income_taxes_at_amt_rates = p.income.amt.brackets.calc(
+            excess_income, factor=p.income.amt.multiplier[filing_status]
+        )
+        # Line 19: 0% LTCG bracket threshold for the filing status.
         cg_bracket = p.capital_gains.thresholds["1"][filing_status]
         # Line 20: amount from QDCG Worksheet line 5 or Schedule D Tax
         # Worksheet line 14 (as figured for the regular tax). This is the
