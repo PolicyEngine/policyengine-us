@@ -1,3 +1,10 @@
+## [2.28.1] - 2026-10-05
+
+### Changed
+
+- Test a Form 4952 line 4g election together with the section 911(f) stacked tax on generated households.
+
+
 ## [2.28.0] - 2026-10-05
 
 ### Added
