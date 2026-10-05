@@ -9,7 +9,7 @@ class ms_total_exemptions_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
     reference = (
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=6",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=6",
         "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-21/",  # MS Code 27-7-21
     )
 

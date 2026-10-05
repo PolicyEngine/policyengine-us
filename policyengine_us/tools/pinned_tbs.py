@@ -27,6 +27,12 @@ from policyengine_core.periods import instant
 # built before that reform would otherwise be reused after it.
 _PINNED_TBS_CACHE = {}
 
+# Variables without "ctc", "cdcc" or "eitc" in their names that read those
+# credits, so a branch that recomputes them under pinned rules must drop these
+# too. The residential clean energy credit's limit subtracts the
+# non-refundable CTC (26 U.S.C. 25D(c); Form 5695, line 14 worksheet).
+CREDIT_DEPENDENT_VARIABLES = ("residential_clean_energy_credit",)
+
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     entry = _PINNED_TBS_CACHE.get(pin_name)
@@ -99,17 +105,24 @@ def _pin_2020_irc(tbs):
         pass
     # The 2020 CTC & ODC Worksheet (Pub. 972, p.7) uses the CDCC before the CTC
     # when computing the CTC's tax-liability limit, so the recomputed CDCC must
-    # reduce that limit inside `ctc_limiting_tax_liability`, which reads the
-    # non-refundable-credits list. The 2021 list omits `cdcc` (it was refundable
-    # under ARPA). Add `cdcc` to the current 2021 membership rather than pinning
-    # the whole 2020 list, which would drop `new_clean_vehicle_credit` (2021+).
-    try:
-        non_refundable_2021 = list(credits.non_refundable(start))
-        if "cdcc" not in non_refundable_2021:
-            non_refundable_2021 = ["cdcc"] + non_refundable_2021
-        credits.non_refundable.update(start=start, stop=stop, value=non_refundable_2021)
-    except Exception:
-        pass
+    # reduce that limit (`ctc_tax_liability_after_preceding_credits`) and the
+    # residential clean energy credit's limit, and count among the
+    # non-refundable credits. The 2021 lists omit `cdcc` (it was refundable
+    # under ARPA). Add `cdcc` to each current 2021 membership rather than
+    # pinning the whole 2020 lists, which would drop `new_clean_vehicle_credit`
+    # (2021+).
+    for credit_list in (
+        credits.non_refundable,
+        credits.ctc_tax_liability_limit.preceding_credits,
+        credits.residential_clean_energy.preceding_credits,
+    ):
+        try:
+            members_2021 = list(credit_list(start))
+            if "cdcc" not in members_2021:
+                members_2021 = ["cdcc"] + members_2021
+            credit_list.update(start=start, stop=stop, value=members_2021)
+        except Exception:
+            pass
 
 
 def get_pre_arpa_eitc_tbs(base_tbs):
