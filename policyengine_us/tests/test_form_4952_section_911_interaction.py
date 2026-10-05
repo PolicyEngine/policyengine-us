@@ -382,9 +382,13 @@ def assert_gain_invariants(households, law):
         + np.abs(taxable_excess)
     )
     # Whole-dollar amounts below 2**24 are exact in single precision, and so
-    # is every sum and difference of them the model forms.
-    exact = ~cents & (taxable_income == np.round(taxable_income)) & (scale < 2**24)
-    exact_amt = exact & (taxable_excess == np.round(taxable_excess))
+    # is every sum and difference of them the model forms. The gains and
+    # worksheet lines 6 to 10 do not depend on taxable income; the section
+    # 911 amounts are exact only when taxable income (or Form 6251 line 6) is
+    # a whole-dollar amount too.
+    exact_gains = ~cents & (scale < 2**24)
+    exact = exact_gains & (taxable_income == np.round(taxable_income))
+    exact_amt = exact_gains & (taxable_excess == np.round(taxable_excess))
 
     def check(variable, expected, mask=exact):
         assert_close(law[variable], expected, mask, scale, variable)
@@ -396,16 +400,18 @@ def assert_gain_invariants(households, law):
 
     # 5. The worksheet transcription, and dwks10 against net capital gain.
     lines = np.array([schedule_d_tax_worksheet(h) for h in households], dtype=float)
-    assert_close(lines[:, 2], net_gain, ~cents, scale, "closed form")
-    check("dividend_income_reduced_by_investment_income", lines[:, 0])
-    check("dwks09", lines[:, 1])
-    check("dwks10", lines[:, 2])
-    assert_close(law["dwks10"], law["net_capital_gain"], exact, scale, "dwks10")
+    assert_close(lines[:, 2], net_gain, exact_gains, scale, "closed form")
+    check("dividend_income_reduced_by_investment_income", lines[:, 0], exact_gains)
+    check("dwks09", lines[:, 1], exact_gains)
+    check("dwks10", lines[:, 2], exact_gains)
+    assert_close(law["dwks10"], law["net_capital_gain"], exact_gains, scale, "dwks10")
 
     # 1. Closed forms.
-    check("net_capital_gain", net_gain)
+    check("net_capital_gain", net_gain, exact_gains)
     check(
-        "dividend_income_reduced_by_investment_income", np.minimum(dividends, net_gain)
+        "dividend_income_reduced_by_investment_income",
+        np.minimum(dividends, net_gain),
+        exact_gains,
     )
     floor_income = np.maximum(0, taxable_income)
     check(
@@ -494,19 +500,17 @@ def assert_gain_invariants(households, law):
         "modification 2",
     )
     assert_close(law["worksheet_line_9"], reduced[:, 1], exact, scale, "modification 1")
-    # The AMT excess is measured from Form 6251 line 6.
+    # The AMT excess is measured from Form 6251 line 6. It has one route
+    # (amt_section_911_capital_gain_excess is the worksheet helper's excess),
+    # so it is checked against its closed form.
     floor_excess = np.maximum(0, taxable_excess)
-    for variable in [
+    assert_close(
+        law["amt_section_911_capital_gain_excess"],
+        np.where(excludes, np.maximum(0, net_gain - floor_excess), 0),
+        exact_amt,
+        scale,
         "amt_section_911_capital_gain_excess",
-        "amt_worksheet_capital_gain_excess",
-    ]:
-        assert_close(
-            law[variable],
-            np.where(excludes, np.maximum(0, net_gain - floor_excess), 0),
-            exact_amt,
-            scale,
-            variable,
-        )
+    )
     assert_close(
         law["amt_worksheet_line_10"],
         np.where(excludes, np.minimum(net_gain, floor_excess), net_gain),
@@ -853,7 +857,7 @@ def test_grid():
     assert (both & (law["capital_gains_tax"] > 0)).any()
     assert (both & (law["taxable_income"] == 0)).any()
     assert (both & (law["amt_section_911_capital_gain_excess"] > 0)).any()
-    # Electing more lowers the tax of some households and stacking raises it.
+    # Electing more and stacking each raise the tax of some households.
     assert (groups["more_elected"]["regular_tax"] > law["regular_tax"] + 1).any()
     assert (law["regular_tax"] > groups["unstacked"]["regular_tax"] + 1).any()
 
@@ -862,10 +866,12 @@ def test_election_can_lower_the_tax_where_15_percent_exceeds_12():
     """An intended exception to "electing more never lowers the tax".
 
     2025, single, no other income than wages and a $10,000 long-term gain.
-    Without an exclusion, $54,100 of wages leave $58,350 of taxable income,
-    $48,350 of it ordinary: the gain starts at the 15% rate, inside the 12%
-    bracket, which ends at $48,475. With $40,000 of wages and $8,350 excluded,
-    worksheet line 3 is the same $58,350. Electing $125 taxes $125 more at 12%
+    Without an exclusion, $64,100 of wages and the gain, less the $15,750
+    standard deduction, leave $58,350 of taxable income, $48,350 of it
+    ordinary: the gain starts at the 15% rate, inside the 12% bracket, which
+    ends at $48,475. With $55,750 of wages, taxable income is $50,000, and
+    with $8,350 excluded worksheet line 3 is the same $58,350 (no capital gain
+    excess, since the gain is below taxable income). Electing $125 taxes $125 more at 12%
     ($15) and $125 less at 15% ($18.75): the tax falls by $3.75. The
     Schedule D Tax Worksheet with its line 47 cap falls by the same amount.
     """
@@ -1000,7 +1006,12 @@ def test_zero_election_or_exclusion_matches_the_situation_without_it(batch, year
     situation test_section_911_tax_stacking.py builds (no election input),
     and one that excludes nothing those of the situation
     test_form_4952_election_worksheet.py builds (no exclusion input), bit for
-    bit, whatever its neighbours in the batch elect or exclude."""
+    bit, whatever its neighbours in the batch elect or exclude.
+
+    Both amounts are inputs without formulas, so a zero input equals no
+    input by construction; what this checks is that no household's election
+    or exclusion reaches another household's results. Property 1 checks the
+    no-election and no-exclusion paths themselves."""
     both = calculate(batch, year)
     no_election = calculate(batch, year, with_election=False)
     no_exclusion = calculate(batch, year, with_exclusion=False)
