@@ -1,6 +1,7 @@
 """Unified script to extend all uprating factors through 2100."""
 
 import math
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Optional, Tuple
 
 from policyengine_us.model_api import *
@@ -195,6 +196,101 @@ def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
             increase = math.floor(base * cola / ROUNDING_INTERVAL) * ROUNDING_INTERVAL
             parameter.update(
                 period=f"year:{year}-01-01:1", value=float(base + increase)
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
+def get_la_cpi_u_percentage_increase(cpi: Parameter, year: int) -> float:
+    """The CPI-U percentage increase for calendar ``year``, as BLS reports it.
+
+    La. R.S. 47:294(B) and 47:44.1(A) multiply the prior year's amount by
+    "the percentage increase in the Consumer Price Index ... (CPI-U), as
+    reported by the United States Department of Labor, Bureau of Labor
+    Statistics ... for the previous calendar year". For tax year 2026, LDR
+    Revenue Information Bulletin 26-019 applied 2.7%. The bulletin names no
+    comparison months, but 2.7% is the December 2024 to December 2025 change
+    as BLS reported it (324.054 / 315.605, not seasonally adjusted: 2.677%).
+    The 2025 annual-average change (321.943 / 313.689) was 2.6%, and the
+    unrounded 2.677% would give $12,835 rather than the bulletin's $12,838.
+    So the percentage is the December-over-December change rounded to one
+    decimal place, as BLS reports it. A fall in the index is not an
+    increase, so the percentage is never negative.
+
+    The model's CPI-U series is seasonally adjusted from January 2024, and
+    after its last monthly observation it holds annual projection points at
+    February instants. The index is read at December 1 of each year: the
+    December observation once BLS publishes it, otherwise the latest
+    observation or projection point at or before that date.
+    """
+    change = cpi(f"{year}-12-01") / cpi(f"{year - 1}-12-01") - 1
+    return max(math.floor(1_000 * change + 0.5) / 10, 0)
+
+
+def adjust_la_amount_for_inflation(prior_amount: float, percentage: float) -> float:
+    """Apply a La. R.S. 47:294(B) / 47:44.1(A) adjustment to a prior amount.
+
+    RIB 26-019's amounts are the adjusted amounts rounded to the nearest
+    dollar, with half dollars rounding up: $12,500 x 1.027 = $12,837.50
+    became $12,838. The arithmetic is decimal because in binary floating
+    point 12,500 x 1.027 is just below 12,837.5 and would round down.
+    """
+    adjusted = Decimal(str(prior_amount)) * (100 + Decimal(str(percentage))) / 100
+    return float(adjusted.quantize(Decimal(1), rounding=ROUND_HALF_UP))
+
+
+def extend_la_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) -> None:
+    """Project Louisiana's CPI-U-indexed standard deduction and retirement cap.
+
+    Each year after the last LDR-published amount, the single and
+    married-separate standard deduction (R.S. 47:294(A)(1)) and the age-65
+    retirement income exemption (R.S. 47:44.1(A)) become the prior year's
+    amount adjusted by the prior calendar year's CPI-U percentage increase
+    (see ``get_la_cpi_u_percentage_increase``), rounded to the nearest
+    dollar. The joint, head of household and surviving spouse deduction is
+    200% of the single amount (R.S. 47:294(A)(2)), so it doubles the rounded
+    single amount rather than being adjusted on its own. Amounts encoded in
+    the YAML take precedence for their own years.
+    """
+    la = parameters.gov.states.la.tax.income
+    cpi = parameters.gov.bls.cpi.cpi_u
+    standard = la.deductions.standard.amount
+    retirement_cap = next(
+        bracket.amount
+        for bracket in la.exempt_income.retirement.cap.brackets
+        if bracket.threshold(f"{end_year}-01-01") == 65
+    )
+    for parameter in (standard.SINGLE, retirement_cap):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_la_amount_for_inflation(
+                    parameter(f"{year - 1}-01-01"),
+                    get_la_cpi_u_percentage_increase(cpi, year - 1),
+                ),
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+    for parameter, share_of_single in (
+        (standard.SEPARATE, 1),
+        (standard.JOINT, 2),
+        (standard.HEAD_OF_HOUSEHOLD, 2),
+        (standard.SURVIVING_SPOUSE, 2),
+    ):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=share_of_single * standard.SINGLE(f"{year}-01-01"),
             )
         parameter.update(
             start=instant(f"{end_year}-01-01"),
@@ -632,6 +728,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # from the statutory base amounts. Must run after the CPI-U extension
     # above so projected windows are available.
     extend_or_ctc_parameters(parameters, end_year=END_YEAR)
+
+    # Louisiana's standard deduction and age-65 retirement income exemption
+    # follow R.S. 47:294(B) and 47:44.1(A): the prior year's amount times the
+    # prior calendar year's CPI-U increase. Must run after the CPI-U extension
+    # above so projected Decembers are available.
+    extend_la_cpi_u_indexed_amounts(parameters, end_year=END_YEAR)
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
