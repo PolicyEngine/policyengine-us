@@ -291,11 +291,14 @@
     people:
       parent:
         age: 50
+        is_tax_unit_head: true
         employment_income: 60_000
         educator_expense: 100
       student:
         age: 22
         is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
         is_tax_unit_dependent: true
         employment_income: 3_000
         educator_expense: 400

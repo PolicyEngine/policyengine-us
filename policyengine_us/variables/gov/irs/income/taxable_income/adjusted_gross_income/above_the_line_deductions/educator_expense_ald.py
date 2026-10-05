@@ -11,7 +11,7 @@ class educator_expense_ald(Variable):
         "expenses (Schedule 1, line 11). Each eligible educator deducts up to "
         "the cap; on a joint return neither spouse can use the other's unused "
         "amount. A tax unit dependent deducts their own expenses on their own "
-        "return."
+        "return, as irs_gross_income leaves their income off this one."
     )
     definition_period = YEAR
     reference = (
@@ -22,7 +22,4 @@ class educator_expense_ald(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        deduction = person("educator_expense_ald_person", period)
-        return tax_unit.sum(head_or_spouse * deduction)
+        return tax_unit_non_dep_sum("educator_expense_ald_person", tax_unit, period)
