@@ -14,14 +14,11 @@ class nc_lieap_gross_income_person(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.usda.snap.income.sources
-        earned_sources = parameters(
-            period
-        ).gov.states.nc.ncdhhs.lieap.earned_income_sources
-        # Section 300.09 incorporates FNS income types, not its base periods or
-        # net-income deductions. A SNAP unearned source that LIEAP counts as
-        # earned income (rental income) is already in nc_lieap_earned_income.
-        sources = [source for source in p.unearned if source not in earned_sources]
-        return person("nc_lieap_earned_income", period) + max_(
-            add(person, period, sources), 0
-        )
+        p = parameters(period).gov.states.nc.ncdhhs.lieap
+        # Section 300.09 A takes the types of income to count from the FNS
+        # manual, not its base periods or net-income deductions. The unearned
+        # sources are listed for LIEAP itself, so a change to the federal SNAP
+        # list does not change LIEAP income. Rental income, which LIEAP counts
+        # as earned income, is in nc_lieap_earned_income only.
+        unearned = max_(add(person, period, p.unearned_income_sources), 0)
+        return person("nc_lieap_earned_income", period) + unearned

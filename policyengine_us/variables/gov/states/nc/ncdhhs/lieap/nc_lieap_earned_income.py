@@ -15,7 +15,8 @@ class nc_lieap_earned_income(Variable):
         # FNS 350.01 D, high school student earnings (page 2).
         "https://policies.ncdhhs.gov/wp-content/uploads/fns-350-whose-income-is-counted.pdf#page=2",
         # FNS 300.02 sources of income chart: college work study (page 5),
-        # student earned income (page 21), wages and work study (page 26).
+        # rental income (pages 17-18), student earned income (page 21), wages
+        # and work study (page 26).
         "https://policies.ncdhhs.gov/wp-content/uploads/fns-300-sources-of-income.pdf#page=5",
         # FNS 315.09, college work-study (page 8).
         "https://policies.ncdhhs.gov/wp-content/uploads/fns-315-special-budgeting-income.pdf#page=8",
@@ -25,7 +26,6 @@ class nc_lieap_earned_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.lieap
-        snap_unearned = parameters(period).gov.usda.snap.income.sources.unearned
         # Section 300.09 A takes countable income types from the FNS manual.
         # FNS 350.01 D.1 excludes earned income of K-12 students aged 17 or
         # younger who do not head the unit; FNS 300.02 and 315.09 exclude Title IV
@@ -36,14 +36,14 @@ class nc_lieap_earned_income(Variable):
         countable = person("snap_countable_earner", period.first_month)
         # Existing net business and farm income approximates receipts less allowed
         # costs. No second business-expense deduction or new input is introduced.
-        total = 0
+        work = 0
         for source in p.earned_income_sources:
-            amount = max_(person(source, period), 0)
-            # Section 300.09 B.3 includes rental income in the work deduction.
-            # It is on the SNAP unearned list, so the earner exclusions above
-            # do not apply to it and it is counted in full.
-            if source in snap_unearned:
-                total = total + amount
-            else:
-                total = total + amount * countable
-        return total
+            work = work + max_(person(source, period), 0)
+        # Section 300.09 B.3 includes rental income in the work deduction. The
+        # FNS 300.02 chart treats rent as unearned unless a member manages the
+        # property 20 hours or more a week, so the earner exclusions above do
+        # not apply to it and it is counted in full.
+        rental = 0
+        for source in p.rental_income_sources:
+            rental = rental + max_(person(source, period), 0)
+        return work * countable + rental

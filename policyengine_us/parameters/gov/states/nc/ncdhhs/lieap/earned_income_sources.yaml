@@ -1,12 +1,10 @@
-description: North Carolina counts these earned income sources under the Low Income Energy Assistance Program.
+description: North Carolina counts these wage, business and farm income sources as earned income under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
     - employment_income
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income
-    # Section 300.09 B.3 gives rental income the earned income deduction.
-    - rental_income
 metadata:
   unit: list
   period: year

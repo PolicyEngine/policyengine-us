@@ -42,8 +42,9 @@ class nc_lieap_income(Variable):
         support = max_(person("child_support_expense", period), 0) * share
         care = max_(person("care_expenses", period), 0) * share
         person_income = person("nc_lieap_gross_income_person", period) * share
-        unit_sources = parameters(period).gov.usda.snap.income.sources.unearned_spm_unit
-        unit_income = add(spm_unit, period, unit_sources)
+        # Work First Family Assistance is unearned income in the FNS 300.02 chart
+        # (page 26) and is checked in the plan's item 1.9 list.
+        tanf = spm_unit("tanf", period)
         # Childcare expenses already exclude modeled subsidies. The payer and
         # additional transport costs cannot be identified, so childcare paid by an
         # excluded member is not prorated. Adult care uses its reported person.
@@ -55,7 +56,7 @@ class nc_lieap_income(Variable):
         # exceptions and room/board transfers within the unit are not modeled.
         return max_(
             spm_unit.sum(person_income - work_deduction - medical - support - care)
-            + unit_income
+            + tanf
             - childcare,
             0,
         )

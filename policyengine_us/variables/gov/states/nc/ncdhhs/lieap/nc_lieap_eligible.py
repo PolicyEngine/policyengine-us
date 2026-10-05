@@ -24,8 +24,7 @@ class nc_lieap_eligible(Variable):
         # Non-qualified members' income must first pass an unprorated gross test
         # using eligible household size (300.10 A.2.b), before the net proration.
         nonqualified = spm_unit.any(~person("is_citizen_or_legal_immigrant", period))
-        sources = parameters(period).gov.usda.snap.income.sources.unearned_spm_unit
-        gross = add(spm_unit, period, ["nc_lieap_gross_income_person", *sources])
+        gross = add(spm_unit, period, ["nc_lieap_gross_income_person", "tanf"])
         gross_eligible = ~nonqualified | (gross / MONTHS_IN_YEAR <= limit)
         # EP-300.08 accepts the applicant's statement of vulnerability. Public
         # heat-in-rent housing requires excess heating charges paid within the

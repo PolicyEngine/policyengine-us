@@ -246,3 +246,80 @@
     nc_lieap_earned_income: [84, 120, 132]
     nc_lieap_gross_income_person: [14_484, 14_520, 14_532]
     nc_lieap_income: [13_380, 13_380, 13_392]
+
+- name: Case 10, farm rent is counted as rental income and gets the work deduction.
+  # EP-300.09 B.3 (page 12) gives the earned income deduction to "farm,
+  # self-employment, and rental income". Farm rent of $800 a month = 9_600 is
+  # over $400 a month, so 20% is deducted (page 13): 9_600 x 0.8 = 7_680.
+  period: 2026
+  input:
+    state_code: NC
+    age: 40
+    farm_rent_income: 9_600
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+  output:
+    nc_lieap_earned_income: 9_600
+    nc_lieap_gross_income_person: 9_600
+    nc_lieap_income: 7_680
+  absolute_error_margin: 0.01
+
+- name: Case 11, a K-12 student's rental income is counted in full while the student's wages are excluded.
+  # A 17-year-old K-12 student. Wages of 3_000 are excluded (FNS 350.01 D,
+  # page 2). Rental income of $200 a month = 2_400 is not subject to that
+  # exclusion; the $151-$200 band deducts $40 a month (EP-300.09 B.3,
+  # page 12): (200 - 40) x 12 = 1_920.
+  period: 2026
+  input:
+    state_code: NC
+    age: 17
+    is_in_k12_school: true
+    employment_income: 3_000
+    rental_income: 2_400
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+  output:
+    nc_lieap_earned_income: 2_400
+    nc_lieap_gross_income_person: 2_400
+    nc_lieap_income: 1_920
+  absolute_error_margin: 0.01
+
+- name: Case 12, each unearned source is counted once with no work deduction.
+  # Two one-person households under age 60, so no medical deduction applies.
+  # Household 1, age 45: unemployment 5_200 + child support 3_600 + alimony
+  #   2_400 + interest 60 + dividends 140 + cash gifts 1_200 + general
+  #   assistance 600 + other income 300 = 13_500.
+  # Household 2, age 55: pension 6_000 + IRA distributions 2_400 + survivor
+  #   benefits 1_800 + veterans' benefits 2_400 + workers' compensation 3_000
+  #   + disability payments 1_200 = 16_800.
+  period: 2026
+  input:
+    state_code: [NC, NC]
+    age: [45, 55]
+    unemployment_compensation: [5_200, 0]
+    child_support_received: [3_600, 0]
+    alimony_income: [2_400, 0]
+    taxable_interest_income: [60, 0]
+    qualified_dividend_income: [140, 0]
+    financial_assistance: [1_200, 0]
+    general_assistance: [600, 0]
+    miscellaneous_income: [300, 0]
+    taxable_private_pension_income: [0, 6_000]
+    taxable_ira_distributions: [0, 2_400]
+    survivor_benefits: [0, 1_800]
+    veterans_benefits: [0, 2_400]
+    workers_compensation: [0, 3_000]
+    disability_benefits: [0, 1_200]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+  output:
+    nc_lieap_earned_income: [0, 0]
+    nc_lieap_gross_income_person: [13_500, 16_800]
+    nc_lieap_income: [13_500, 16_800]
+  absolute_error_margin: 0.01
