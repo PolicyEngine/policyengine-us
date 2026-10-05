@@ -1,3 +1,10 @@
+## [2.26.0] - 2026-10-05
+
+### Added
+
+- Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with single-family and multifamily schedules and assumed economic vulnerability for separately billed or rent-included heating.
+
+
 ## [2.25.2] - 2026-10-05
 
 ### Fixed
