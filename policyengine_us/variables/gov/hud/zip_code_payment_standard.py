@@ -20,7 +20,7 @@ class zip_code_payment_standard(Variable):
     )
     definition_period = YEAR
     reference = [
-        "https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program",
+        "https://www.tdhca.texas.gov/programs/housing-choice-voucher-section8-housing",
         "https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/",
     ]
 
