@@ -95,8 +95,24 @@ class capital_gains_tax(Variable):
 
         unrecaptured_gain_tax = cg.unrecaptured_s_1250_rate * taxable_unrecaptured_gain
 
-        remaining_cg_tax = (
-            tax_unit("section_911_28_percent_rate_gain", period) * cg.other_cg_rate
+        # 26 U.S.C. 1(h)(1)(F): 28 percent of the taxable income in excess of
+        # the amounts taxed under subparagraphs (A) to (E) (Schedule D Tax
+        # Worksheet lines 41 to 43). That is the 28 percent rate gain less any
+        # of it that subparagraph (A) taxes at the regular rates, which
+        # happens when the gain falls in the brackets below 25 percent. The
+        # excess is never more than the 28 percent rate gain; taking the
+        # smaller keeps rounding from taxing a household without it.
+        taxed_under_a_to_e = (
+            non_cg_taxable_income
+            + cg_in_first_bracket
+            + cg_in_second_bracket
+            + cg_in_third_bracket
+            + taxable_unrecaptured_gain
         )
+        rate_gain_taxed_at_28_percent = min_(
+            tax_unit("section_911_28_percent_rate_gain", period),
+            max_(0, taxable_income - taxed_under_a_to_e),
+        )
+        remaining_cg_tax = cg.other_cg_rate * rate_gain_taxed_at_28_percent
 
         return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
