@@ -5,12 +5,16 @@ PERSON_LEVEL_MEDICAID_AGI_ALDS = [
     "self_employment_tax_ald_person",
     "self_employed_health_insurance_ald_person",
     "self_employed_pension_contribution_ald_person",
+    # Each educator's own capped expenses, a tax unit dependent's included,
+    # since the dependent deducts them on their own return.
+    "educator_expense_ald_person",
 ]
 
 TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS = (
     "self_employment_tax_ald",
     "self_employed_health_insurance_ald",
     "self_employed_pension_contribution_ald",
+    "educator_expense_ald",
 )
 
 

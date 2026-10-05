@@ -189,9 +189,7 @@ def _check(units, year):
     # 2. Differential against numpy.
     own = np.minimum(expense, cap)
     np.testing.assert_allclose(base["educator_expense_ald_person"], own, atol=TOLERANCE)
-    np.testing.assert_allclose(
-        deduction, _unit_sum(base, filer * own), atol=TOLERANCE
-    )
+    np.testing.assert_allclose(deduction, _unit_sum(base, filer * own), atol=TOLERANCE)
     np.testing.assert_allclose(
         base["above_the_line_deductions"], deduction, atol=TOLERANCE
     )
@@ -200,8 +198,7 @@ def _check(units, year):
     raised = _run(units, year, raise_filers=True, raise_dependents=True)
     assert (raised["educator_expense_ald"] >= deduction - TOLERANCE).all()
     assert (
-        raised["adjusted_gross_income"]
-        <= base["adjusted_gross_income"] + TOLERANCE
+        raised["adjusted_gross_income"] <= base["adjusted_gross_income"] + TOLERANCE
     ).all()
     dependents_only = _run(units, year, raise_dependents=True)
     for name in ["educator_expense_ald", "adjusted_gross_income"]:
