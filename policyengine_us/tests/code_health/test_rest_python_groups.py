@@ -212,6 +212,16 @@ def test_each_group_writes_reports_the_rest_job_uploads(groups, report_dir):
             if not any(fnmatch(os.path.normpath(report), p) for p in patterns)
         ]
         assert not missing, f"{workflow.name} does not upload {missing}"
+        steps = yaml.safe_load(workflow.read_text())["jobs"]["Rest"]["steps"]
+        for name in ("Run remaining Python tests", "Run tests/variables YAML tests"):
+            (step,) = [step for step in steps if step.get("name") == name]
+            assert step["if"] == "${{ !cancelled() }}"
+        (upload,) = [
+            step
+            for step in steps
+            if step.get("uses", "").startswith("actions/upload-artifact")
+        ]
+        assert upload["if"] == "always()"
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
@@ -243,7 +253,7 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
         selected.append(step)
     steps = jobs["Microsimulation"]["steps"]
     assert steps.index(selected[0]) < steps.index(selected[1])
-    assert selected[1]["if"] == "always()"
+    assert selected[1]["if"] == "${{ !cancelled() }}"
     assert len(set(reports)) == 4
     uploads = [
         step
