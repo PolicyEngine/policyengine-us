@@ -1,3 +1,10 @@
+## [2.24.7] - 2026-10-05
+
+### Fixed
+
+- Use the SSI federal benefit rate, not 75% of the poverty guideline, as the Medicaid income limit for aged, blind, and disabled people who do not receive SSI in Colorado, Iowa, Louisiana, Montana, Ohio, Oregon, and Washington.
+
+
 ## [2.24.6] - 2026-10-05
 
 ### Fixed
