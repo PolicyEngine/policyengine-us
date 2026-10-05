@@ -13,15 +13,19 @@ class mi_household_resources(Variable):
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508",
+        # MCL 206.510(1): "Income", including premiums paid for the family.
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510",
         "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
         # 2025 MI-1040 book: "Total Household Resources" (page 26) and
-        # MI-1040CR lines 16 and 17 (page 31), 19 and 30 (page 32).
+        # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=33",
     )
 
     def formula(tax_unit, period, parameters):
@@ -47,29 +51,51 @@ class mi_household_resources(Variable):
             "farm_rent_income",
         }
 
-        # MCL 206.508(3): "'Household' means a claimant and spouse." A
-        # dependent's business and rental items belong on the dependent's own
-        # return, so they neither add to nor net against lines 16 and 17, as
-        # loss_ald leaves them off this return.
-        person = tax_unit.members
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        variables = tax_unit.simulation.tax_benefit_system.variables
+        # MCL 206.508(3): "'Household' means a claimant and spouse", and
+        # (4) counts "all income received by all persons of a household".
+        # The MI-1040CR says "Include all taxable and nontaxable income you
+        # and your spouse received" (2025 MI-1040 book, page 31). A
+        # dependent's own income belongs on the dependent's return, so a
+        # source is summed over the head and spouse only, as in
+        # irs_gross_income. A tax-unit-level source (other_net_gain,
+        # filer_loss_limited_net_capital_gains) already describes the
+        # filer's return.
+        # The form counts amounts the claimant receives for others in the
+        # household on three lines (page 32), so these are summed over every
+        # member:
+        # Line 21: Social Security, SSI and railroad retirement benefits,
+        # including "amounts received for minor children or other dependent
+        # adults who live with you".
+        # Line 22: "child support and all payments received as a foster
+        # parent".
+        # Line 27: "the total payments made to your household by MDHHS and
+        # all other public assistance payments". A Family Independence
+        # Program grant covers the children in the case, and tanf, an SPM
+        # unit amount, reaches the tax unit in per-person shares.
+        received_for_household = {
+            "social_security",
+            "ssi",
+            "railroad_benefits",
+            "child_support_received",
+            "tanf",
+            "general_assistance",
+            "gi_cash_assistance",
+        }
 
         business_income = 0
         rental_income = 0
         other_income = 0
         for source in p.household_resources:
-            if source in business_sources | rental_sources:
-                if variables[source].entity.is_person:
-                    amount = tax_unit.sum(person(source, period) * not_dependent)
-                else:
-                    amount = tax_unit(source, period)
-                if source in business_sources:
-                    business_income += amount
-                else:
-                    rental_income += amount
+            if source in received_for_household:
+                amount = add(tax_unit, period, [source])
             else:
-                other_income += add(tax_unit, period, [source])
+                amount = tax_unit_non_dep_add(tax_unit, period, [source])
+            if source in business_sources:
+                business_income += amount
+            elif source in rental_sources:
+                rental_income += amount
+            else:
+                other_income += amount
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
         # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
@@ -77,15 +103,31 @@ class mi_household_resources(Variable):
         # Part I and Schedule D), not Part II adjustments. They are netted
         # and floored on lines 16, 17 and 19 above, so loss_ald, which holds
         # them, is left out.
-        adjustments = add(
+        # The Schedule 1 is the claimant's own: a dependent's adjustments,
+        # like the dependent's income, are on the dependent's return. The
+        # self-employment adjustments are computed per person, so their
+        # person-level amounts are summed over the head and spouse.
+        per_person_adjustments = {
+            "self_employment_tax_ald",
+            "self_employed_health_insurance_ald",
+            "self_employed_pension_contribution_ald",
+        }
+        adjustments = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
-                deduction
+                (
+                    f"{deduction}_person"
+                    if deduction in per_person_adjustments
+                    else deduction
+                )
                 for deduction in parameters(period).gov.irs.ald.deductions
                 if deduction != "loss_ald"
             ],
         )
-        # Line 31: health insurance premiums.
+        # Line 31: "insurance premiums you paid for yourself and your
+        # family". MCL 206.510(1) lets a person deduct "the amount that
+        # person paid in premiums ... for that insurance plan for the
+        # person's family", so every member's premiums count.
         health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
         return max_(0, total - adjustments - health_insurance_premiums)

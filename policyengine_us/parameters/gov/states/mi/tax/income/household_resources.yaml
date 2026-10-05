@@ -1,8 +1,13 @@
 description: Michigan accounts for the following income sources as the household resources.
 values:
   2021-01-01:
+    # Each source counts for the claimant and spouse only (MCL 206.508(3)),
+    # except the amounts received for the household on lines 21, 22 and 27;
+    # see mi_household_resources.
+    # MI-1040CR line 14, wages, including strike pay.
     - irs_employment_income
     - strike_benefits
+    # MI-1040CR line 15, interest and dividends.
     - dividend_income
     - interest_income
     # MI-1040CR line 16, net business income: U.S. Schedule C, Form 4797
@@ -18,21 +23,33 @@ values:
     # as a total.
     - rental_income
     - farm_rent_income
+    # MI-1040CR line 18, pensions and annuities.
     - pension_income
     - retirement_benefits_from_ss_exempt_employment
-    - loss_limited_net_capital_gains
+    # MI-1040CR line 19, net capital gains and losses from the filer's U.S.
+    # Schedule D, a loss limited to $3,000 ($1,500 married filing separately).
+    - filer_loss_limited_net_capital_gains
+    # MI-1040CR line 20, alimony and other taxable income.
     - alimony_income
     - gambling_winnings
+    # MI-1040CR line 21, Social Security, SSI and railroad retirement
+    # benefits, including amounts received for dependents.
     - social_security
-    - ssi 
+    - ssi
     - railroad_benefits
+    # MI-1040CR line 22, child support.
     - child_support_received
+    # MI-1040CR line 23, unemployment compensation.
     - unemployment_compensation
-    # Gifts received or expenses paid on your behalf
+    # MI-1040CR line 24, gifts received or expenses paid on your behalf.
     - miscellaneous_income
+    # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits
     - workers_compensation
+    # MI-1040CR line 14, long-term disability benefits.
     - disability_benefits
+    # MI-1040CR line 27, payments to the household by MDHHS and other public
+    # assistance.
     - gi_cash_assistance
     - tanf
     - general_assistance
