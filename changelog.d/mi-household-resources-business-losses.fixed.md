@@ -1,0 +1,1 @@
+Michigan household resources net business and rental income within MI-1040CR lines 16 and 17 before flooring each total at zero, count estate and trust income and Form 4797 ordinary gains on line 16, and no longer subtract business, rental or capital losses again as Schedule 1 adjustments on line 30.

@@ -5,9 +5,16 @@ values:
     - strike_benefits
     - dividend_income
     - interest_income
+    # MI-1040CR line 16, net business income: U.S. Schedule C, Form 4797
+    # Part II, Schedule E Parts II and III, and Schedule F, netted and
+    # floored at zero as a total.
     - farm_operations_income
     - total_self_employment_income
     - partnership_s_corp_income
+    - estate_income
+    - other_net_gain
+    # MI-1040CR line 17, net royalty or rent income: U.S. Schedule E Parts I
+    # and V, netted and floored at zero as a total.
     - rental_income
     - farm_rent_income
     - pension_income
@@ -45,5 +52,7 @@ metadata:
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=31
   - title: Michigan 2025 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=31
+  - title: Michigan 2025 Individual Income Tax Instructions, Total Household Resources
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=26
   - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
     href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/
