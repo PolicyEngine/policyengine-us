@@ -7,7 +7,8 @@ the thresholds of brackets 7 and 8 to infinity for every filing status and
 year, so the added bracket is unset until a user sets bracket 7's threshold.
 Bracket 8 then runs from infinity to infinity. Both functions took each
 bracket's amount as ``amount_between(x, bottom, top)``, which is
-``clip(x, bottom, top) - bottom``, and for that bracket
+``clip(x, bottom, top) - bottom`` (``amount_taxed_below_rate`` only for
+brackets taxed below its limit), and for that bracket
 clip(x, inf, inf) - inf = inf - inf = NaN. With its default parameters the
 reform therefore gave NaN for ``income_tax_main_rates`` and
 ``regular_tax_before_credits`` for every household, including one with no
@@ -307,6 +308,13 @@ def test_unset_added_bracket_adds_nothing(schedule, units):
     (np.array([0.0, 50_000.0, 2_000_000.0]), np.array(["SINGLE", "JOINT", "SEPARATE"])),
     0.25,
 )
+# A rate equal to the limit is not below it, as with the reform's 2026
+# bracket 3 rate of 25 percent.
+@hypothesis.example(
+    (UNSET_BRACKET_THRESHOLDS, [0.10, 0.15, 0.25, 0.28, 0.33, 0.35, 0.396, 0.396]),
+    (np.array([0.0, 50_000.0, 2_000_000.0]), np.array(["SINGLE", "JOINT", "SEPARATE"])),
+    0.25,
+)
 def test_amount_taxed_below_rate_is_finite_and_matches_indicator_rates(
     schedule, units, limit
 ):
@@ -323,7 +331,7 @@ def test_amount_taxed_below_rate_is_finite_and_matches_indicator_rates(
 
     assert np.all(np.isfinite(amount))
     assert np.all(amount >= 0)
-    # The brackets' pieces sum to at most the amount, up to rounding.
+    # The brackets' pieces sum to at most the taxable amount, up to rounding.
     assert np.all(amount <= incomes + 1e-6)
     # The amount is the tax at rates of 1 below the limit and 0 otherwise.
     indicators = [1.0 if rate < limit else 0.0 for rate in rates]
