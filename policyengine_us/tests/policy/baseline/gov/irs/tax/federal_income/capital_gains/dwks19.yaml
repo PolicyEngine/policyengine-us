@@ -1,0 +1,33 @@
+# The Schedule D Tax Worksheet amount taxed at ordinary rates (line 21 of the
+# 2025 worksheet). A Form 2555 filer enters line 3 of the Foreign Earned
+# Income Tax Worksheet on line 1 and refigures line 10 for any capital gain
+# excess.
+- name: Ordinary income without an exclusion
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 140_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 0
+  output:
+    dwks19: 110_000
+
+- name: An exclusion adds to the ordinary income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 140_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    dwks19: 210_000
+
+- name: A capital gain excess leaves the excluded amount as ordinary income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    dwks19: 100_000
