@@ -39,24 +39,37 @@ class mi_household_resources(Variable):
             "estate_income",
             "farm_operations_income",
         }
-        # Line 17: U.S. Schedule E Parts I and V (rents, royalties and farm
-        # rental income). "If the total is negative enter 0."
+        # Line 17: U.S. Schedule E Parts I, IV and V (rents, royalties, REMIC
+        # income, which has no input here, and farm rental income). "If the
+        # total is negative enter 0."
         rental_sources = {
             "rental_income",
             "farm_rent_income",
         }
 
+        # MCL 206.508(3): "'Household' means a claimant and spouse." A
+        # dependent's business and rental items belong on the dependent's own
+        # return, so they neither add to nor net against lines 16 and 17, as
+        # loss_ald leaves them off this return.
+        person = tax_unit.members
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        variables = tax_unit.simulation.tax_benefit_system.variables
+
         business_income = 0
         rental_income = 0
         other_income = 0
         for source in p.household_resources:
-            amount = add(tax_unit, period, [source])
-            if source in business_sources:
-                business_income += amount
-            elif source in rental_sources:
-                rental_income += amount
+            if source in business_sources | rental_sources:
+                if variables[source].entity.is_person:
+                    amount = tax_unit.sum(person(source, period) * not_dependent)
+                else:
+                    amount = tax_unit(source, period)
+                if source in business_sources:
+                    business_income += amount
+                else:
+                    rental_income += amount
             else:
-                other_income += amount
+                other_income += add(tax_unit, period, [source])
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
         # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".

@@ -13,8 +13,9 @@ values:
     - partnership_s_corp_income
     - estate_income
     - other_net_gain
-    # MI-1040CR line 17, net royalty or rent income: U.S. Schedule E Parts I
-    # and V, netted and floored at zero as a total.
+    # MI-1040CR line 17, net royalty or rent income: U.S. Schedule E Parts I,
+    # IV (REMIC income, which has no input) and V, netted and floored at zero
+    # as a total.
     - rental_income
     - farm_rent_income
     - pension_income

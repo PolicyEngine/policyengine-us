@@ -7,14 +7,16 @@ loss." The 2025 MI-1040 book (page 26) puts it as "AGI, excluding net business
 and farm losses, net rent and royalty losses". On the MI-1040CR:
 
 - line 16 nets U.S. Schedule C, Form 4797 Part II, Schedule E Parts II and III
-  and Schedule F, and line 17 nets Schedule E Parts I and V; "If the total is
-  negative enter 0";
+  and Schedule F, and line 17 nets Schedule E Parts I, IV (REMIC income, which
+  has no input) and V; "If the total is negative enter 0";
 - line 19 is net capital gains and losses from Schedule D, a loss limited to
   $3,000;
 - line 30 is "total adjustments from your U.S. Form 1040, Schedule 1"
   (Part II). Business, rental and capital losses are income items, not
   adjustments, so loss_ald does not enter it;
 - line 31 is health insurance premiums.
+
+The household is "a claimant and spouse" (MCL 206.508(3)).
 
 So for every combination of business, rental and capital gains and losses:
 
@@ -23,7 +25,8 @@ So for every combination of business, rental and capital gains and losses:
    adjustments - premiums), where the adjustments here are the deduction for
    self-employment tax and the early withdrawal penalty.
 2. It does not depend on loss_ald: a reform that takes loss_ald out of
-   gov.irs.ald.deductions changes AGI but not household resources.
+   gov.irs.ald.deductions changes AGI but not household resources (checked on
+   the grid, which builds the reform once).
 3. Losses stay in their own line. When every line 16 source is zero or
    negative, the result equals the result with them all set to zero; the
    same holds for line 17.
@@ -35,11 +38,16 @@ So for every combination of business, rental and capital gains and losses:
    out on purpose: when line 16 is floored at zero, more Schedule C income
    still raises the deduction for self-employment tax on line 30, so
    household resources fall. The form gives that result.
+6. A dependent's business and rental losses and S corporation, estate and
+   rental income leave household resources unchanged.
 
 Amounts are whole dollars of at most $500,000, and the self-employment tax
 deduction is read from the model. The model computes in single precision, so a
-comparison allows one cent or eight float32 spacings at the household's total
-absolute amount, whichever is larger (0.03125 at $500,000).
+comparison allows one cent or eight float32 spacings at the sum of the
+household's absolute amounts, whichever is larger: $0.25 for a household whose
+amounts add up to $500,000, and up to about $4 for the largest two-person
+households drawn. The early withdrawal penalty and premiums are drawn as zero
+or at least $100, so leaving either out would exceed the tolerance.
 """
 
 import itertools
@@ -83,24 +91,31 @@ def zero_person():
 
 
 def build_situation(households):
-    """One Michigan tax unit per household; each household has one person
-    (single) or two (joint), plus the tax unit's Form 4797 amount."""
+    """One Michigan tax unit per household: one adult (single) or two
+    (joint), any dependents (aged 15), and the tax unit's Form 4797 amount."""
     people, tax_units, marital_units, households_out = {}, {}, {}, {}
     for i, h in enumerate(households):
-        members = []
-        for j, p in enumerate(h["people"]):
+        adults, members = [], []
+        dependents = h.get("dependents", [])
+        for j, (p, age) in enumerate(
+            [(p, 45) for p in h["people"]] + [(p, 15) for p in dependents]
+        ):
             name = f"person_{i}_{j}"
-            people[name] = {"age": {YEAR: 45}}
+            people[name] = {"age": {YEAR: age}}
             for variable in PERSON_INPUTS:
                 people[name][variable] = {YEAR: p[variable]}
             members.append(name)
+            if age == 45:
+                adults.append(name)
+            else:
+                marital_units[f"marital_unit_{i}_{j}"] = {"members": [name]}
         # Set on every unit: a variable input for some units gives the
         # others its default value, not its formula.
         tax_units[f"tax_unit_{i}"] = {
             "members": members,
             "other_net_gain": {YEAR: h["other_net_gain"]},
         }
-        marital_units[f"marital_unit_{i}"] = {"members": members}
+        marital_units[f"marital_unit_{i}"] = {"members": adults}
         households_out[f"household_{i}"] = {
             "members": members,
             "state_code": {YEAR: "MI"},
@@ -136,8 +151,6 @@ def without_loss_ald():
 OUTPUTS = [
     "mi_household_resources",
     "self_employment_tax_ald",
-    "above_the_line_deductions",
-    "loss_ald",
     "adjusted_gross_income",
 ]
 
@@ -157,9 +170,10 @@ def calculate(households, reform=None):
 
 
 def tolerance(h):
-    """One cent, or eight float32 spacings at the household's total absolute
-    amount."""
-    scale = sum(abs(v) for p in h["people"] for v in p.values())
+    """One cent, or eight float32 spacings at the sum of the household's
+    absolute amounts."""
+    people = h["people"] + h.get("dependents", [])
+    scale = sum(abs(v) for p in people for v in p.values())
     scale += abs(h["other_net_gain"])
     return max(TOLERANCE, 8 * float(np.spacing(np.float32(scale))))
 
@@ -169,7 +183,8 @@ def total(h, names):
 
 
 def reference(h, self_employment_tax_ald):
-    """MI-1040CR line 33, total household resources, from the form."""
+    """MI-1040CR line 33, total household resources, from the form, for a
+    household without dependents."""
     line_14 = total(h, ["employment_income_before_lsr"])
     line_16 = max(0, total(h, PERSON_LINE_16) + h["other_net_gain"])
     line_17 = max(0, total(h, PERSON_LINE_17))
@@ -200,9 +215,26 @@ def with_sources_zeroed(h, person_sources, unit_sources):
     return out
 
 
-def assert_properties(households):
-    model = calculate(households)
-    no_loss_ald = calculate(households, reform=without_loss_ald())
+def only_losses(h, person_sources, unit_sources):
+    return all(p[name] <= 0 for p in h["people"] for name in person_sources) and all(
+        h[name] <= 0 for name in unit_sources
+    )
+
+
+def assert_properties(households, check_loss_ald_reform=False):
+    """Properties 1, 3 and 4 (and 2 when asked) for households without
+    dependents. The zeroed copies for property 3 go in the same simulation."""
+    zeroed, zeroed_of = [], []
+    for i, h in enumerate(households):
+        for person_sources, unit_sources in (
+            (PERSON_LINE_16, UNIT_LINE_16),
+            (PERSON_LINE_17, []),
+        ):
+            if only_losses(h, person_sources, unit_sources):
+                zeroed.append(with_sources_zeroed(h, person_sources, unit_sources))
+                zeroed_of.append(i)
+    model = calculate(households + zeroed)
+    n = len(households)
     for i, h in enumerate(households):
         result = model["mi_household_resources"][i]
         tol = tolerance(h)
@@ -218,40 +250,24 @@ def assert_properties(households):
         assert model["schedule_1_adjustments"][i] == pytest.approx(
             expected_adjustments, abs=tol
         ), h
-        # 2. Not loss_ald.
-        assert no_loss_ald["mi_household_resources"][i] == pytest.approx(
-            result, abs=tol
-        ), h
         # 4. Bounds.
         assert 0 <= result <= positive_income(h) + tol, h
-
     # 3. Losses stay in their own line.
-    for person_sources, unit_sources in (
-        (PERSON_LINE_16, UNIT_LINE_16),
-        (PERSON_LINE_17, []),
-    ):
-        only_losses = [
-            i
-            for i, h in enumerate(households)
-            if all(p[name] <= 0 for p in h["people"] for name in person_sources)
-            and all(h[name] <= 0 for name in unit_sources)
-        ]
-        if not only_losses:
-            continue
-        zeroed = calculate(
-            [
-                with_sources_zeroed(households[i], person_sources, unit_sources)
-                for i in only_losses
-            ]
-        )
-        for k, i in enumerate(only_losses):
-            assert model["mi_household_resources"][i] == pytest.approx(
-                zeroed["mi_household_resources"][k], abs=tolerance(households[i])
-            ), households[i]
+    for k, i in enumerate(zeroed_of):
+        assert model["mi_household_resources"][i] == pytest.approx(
+            model["mi_household_resources"][n + k], abs=tolerance(households[i])
+        ), households[i]
+    # 2. Not loss_ald.
+    if check_loss_ald_reform:
+        no_loss_ald = calculate(households, reform=without_loss_ald())
+        for i, h in enumerate(households):
+            assert no_loss_ald["mi_household_resources"][i] == pytest.approx(
+                model["mi_household_resources"][i], abs=tolerance(h)
+            ), h
 
 
 # ---------------------------------------------------------------------------
-# Deterministic grid: every sign combination of the line 16 and 17 sources.
+# Deterministic tests (no Hypothesis needed).
 # ---------------------------------------------------------------------------
 
 GRID_VALUES = [-30_000, 0, 20_000]
@@ -259,6 +275,7 @@ GRID_SOURCES = [*PERSON_LINE_16, *PERSON_LINE_17, "other_net_gain"]
 
 
 def grid_households():
+    """Every sign combination of the seven line 16 and 17 sources."""
     households = []
     for values in itertools.product(GRID_VALUES, repeat=len(GRID_SOURCES)):
         person = zero_person()
@@ -273,10 +290,10 @@ def grid_households():
 
 
 def test_grid():
-    assert_properties(grid_households())
+    assert_properties(grid_households(), check_loss_ald_reform=True)
 
 
-def test_example_from_the_instructions():
+def test_worked_example():
     """A Schedule C loss of 10,000 and S corporation income of 30,000 give
     line 16 = 20,000; a rental loss of 30,000 gives line 17 = 0; the business
     loss is not subtracted again on line 30."""
@@ -293,74 +310,128 @@ def test_example_from_the_instructions():
     assert model["adjusted_gross_income"][0] == 40_000
 
 
+DEPENDENT_VALUES = {
+    # Losses only for Schedule C and F: a dependent's self-employment tax
+    # deduction is a separate question (it is not on this return either).
+    "self_employment_income": [-20_000, 0],
+    "farm_operations_income": [-10_000, 0],
+    "s_corp_income": [-20_000, 0, 15_000],
+    "estate_income": [-5_000, 0, 5_000],
+    "rental_income": [-20_000, 0, 15_000],
+    "farm_rent_income": [-5_000, 0, 5_000],
+}
+
+
+def test_dependents_business_and_rental_items():
+    """6. Households whose claimant has business and rental income and
+    losses, with a dependent whose line 16 and 17 amounts take every
+    combination below, equal the same households without the dependent's
+    amounts."""
+    claimants = []
+    # Both lines positive, line 16 negative, line 17 negative.
+    for s_corp, rent in [(20_000, 15_000), (-30_000, 20_000), (20_000, -30_000)]:
+        claimant = zero_person()
+        claimant.update(
+            employment_income_before_lsr=50_000,
+            s_corp_income=s_corp,
+            rental_income=rent,
+        )
+        claimants.append(claimant)
+    with_dependent, without = [], []
+    names = list(DEPENDENT_VALUES)
+    for claimant in claimants:
+        for values in itertools.product(*DEPENDENT_VALUES.values()):
+            dependent = zero_person()
+            dependent.update(dict(zip(names, values)))
+            with_dependent.append(
+                {"people": [claimant], "dependents": [dependent], "other_net_gain": 0}
+            )
+            without.append(
+                {
+                    "people": [claimant],
+                    "dependents": [zero_person()],
+                    "other_net_gain": 0,
+                }
+            )
+    model = calculate(with_dependent + without)
+    n = len(with_dependent)
+    result = model["mi_household_resources"]
+    np.testing.assert_allclose(result[:n], result[n:], atol=TOLERANCE)
+    # The claimant's own lines still net and floor.
+    for i, h in enumerate(without):
+        assert result[n + i] == pytest.approx(
+            reference(h, model["self_employment_tax_ald"][n + i]), abs=TOLERANCE
+        ), h
+
+
 # ---------------------------------------------------------------------------
-# Hypothesis properties.
+# Hypothesis properties. Hypothesis is a dev extra: without it these two
+# tests are not collected and the deterministic tests above still run.
 # ---------------------------------------------------------------------------
 
-# Hypothesis is a dev extra; skip rather than fail collection without it.
-hypothesis = pytest.importorskip("hypothesis")
-st = pytest.importorskip("hypothesis.strategies")
+try:
+    import hypothesis
+    import hypothesis.strategies as st
+except ImportError:  # pragma: no cover
+    hypothesis = None
 
-AMOUNT = st.integers(min_value=-500_000, max_value=500_000)
-SMALL = st.integers(min_value=-20_000, max_value=20_000)
-NONNEGATIVE = st.integers(min_value=0, max_value=200_000)
-# Each example builds Simulations; on a loaded runner input generation can
-# trip the too_slow health check, which says nothing about the model.
-SLOW = [hypothesis.HealthCheck.too_slow]
+if hypothesis is not None:
+    AMOUNT = st.integers(min_value=-500_000, max_value=500_000)
+    SMALL = st.integers(min_value=-20_000, max_value=20_000)
+    NONNEGATIVE = st.integers(min_value=0, max_value=200_000)
+    # Each example builds Simulations; on a loaded runner input generation
+    # can trip the too_slow health check, which says nothing about the model.
+    SLOW = [hypothesis.HealthCheck.too_slow]
 
+    @st.composite
+    def person(draw):
+        amounts = draw(st.sampled_from([AMOUNT, SMALL]))
+        p = zero_person()
+        p["employment_income_before_lsr"] = draw(st.one_of(st.just(0), NONNEGATIVE))
+        for name in [*PERSON_LINE_16, *PERSON_LINE_17, "long_term_capital_gains"]:
+            p[name] = draw(st.one_of(st.just(0), amounts))
+        p["early_withdrawal_penalty"] = draw(
+            st.one_of(st.just(0), st.integers(min_value=100, max_value=5_000))
+        )
+        p["health_insurance_premiums"] = draw(
+            st.one_of(st.just(0), st.integers(min_value=100, max_value=10_000))
+        )
+        return p
 
-@st.composite
-def person(draw):
-    amounts = draw(st.sampled_from([AMOUNT, SMALL]))
-    p = zero_person()
-    p["employment_income_before_lsr"] = draw(st.one_of(st.just(0), NONNEGATIVE))
-    for name in [*PERSON_LINE_16, *PERSON_LINE_17, "long_term_capital_gains"]:
-        p[name] = draw(st.one_of(st.just(0), amounts))
-    p["early_withdrawal_penalty"] = draw(
-        st.one_of(st.just(0), st.integers(min_value=0, max_value=5_000))
+    @st.composite
+    def household(draw):
+        n = draw(st.sampled_from([1, 2]))
+        return {
+            "people": [draw(person()) for _ in range(n)],
+            "other_net_gain": draw(st.one_of(st.just(0), AMOUNT, SMALL)),
+        }
+
+    @hypothesis.settings(max_examples=25, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.given(st.lists(household(), min_size=1, max_size=20))
+    def test_properties(households):
+        assert_properties(households)
+
+    @hypothesis.settings(max_examples=25, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.given(
+        st.lists(household(), min_size=1, max_size=10),
+        st.sampled_from(NO_SE_TAX_SOURCES),
+        st.integers(min_value=1, max_value=100_000),
     )
-    p["health_insurance_premiums"] = draw(
-        st.one_of(st.just(0), st.integers(min_value=0, max_value=10_000))
-    )
-    return p
-
-
-@st.composite
-def household(draw):
-    n = draw(st.sampled_from([1, 2]))
-    return {
-        "people": [draw(person()) for _ in range(n)],
-        "other_net_gain": draw(st.one_of(st.just(0), AMOUNT, SMALL)),
-    }
-
-
-@hypothesis.settings(max_examples=40, deadline=None, suppress_health_check=SLOW)
-@hypothesis.given(st.lists(household(), min_size=1, max_size=12))
-def test_properties(households):
-    assert_properties(households)
-
-
-@hypothesis.settings(max_examples=30, deadline=None, suppress_health_check=SLOW)
-@hypothesis.given(
-    st.lists(household(), min_size=1, max_size=8),
-    st.sampled_from(NO_SE_TAX_SOURCES),
-    st.integers(min_value=1, max_value=100_000),
-)
-def test_more_income_without_self_employment_tax(households, source, extra):
-    """5. More S corporation, estate, Form 4797, rental or farm rental income
-    raises household resources by between 0 and the increase."""
-    raised = []
-    for h in households:
-        r = {"people": [dict(p) for p in h["people"]], "other_net_gain": 0}
-        r["other_net_gain"] = h["other_net_gain"]
-        if source == "other_net_gain":
-            r["other_net_gain"] += extra
-        else:
-            r["people"][0][source] += extra
-        raised.append(r)
-    before = calculate(households)["mi_household_resources"]
-    after = calculate(raised)["mi_household_resources"]
-    for i, h in enumerate(raised):
-        change = float(after[i]) - float(before[i])
-        tol = tolerance(h)
-        assert -tol <= change <= extra + tol, (households[i], source, extra)
+    def test_more_income_without_self_employment_tax(households, source, extra):
+        """5. More S corporation, estate, Form 4797, rental or farm rental
+        income raises household resources by between 0 and the increase."""
+        raised = []
+        for h in households:
+            r = {"people": [dict(p) for p in h["people"]]}
+            r["other_net_gain"] = h["other_net_gain"]
+            if source == "other_net_gain":
+                r["other_net_gain"] += extra
+            else:
+                r["people"][0][source] += extra
+            raised.append(r)
+        result = calculate(households + raised)["mi_household_resources"]
+        n = len(households)
+        for i, h in enumerate(raised):
+            change = float(result[n + i]) - float(result[i])
+            tol = tolerance(h)
+            assert -tol <= change <= extra + tol, (households[i], source, extra)

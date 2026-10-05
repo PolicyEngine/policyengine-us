@@ -4,9 +4,11 @@
 # royalty losses, and any carryover of a net operating loss, plus all income
 # exempt or excluded from AGI" (page 26), as in MCL 206.508(4).
 # Line 16 nets U.S. Schedule C, Form 4797 Part II, Schedule E Parts II and III
-# and Schedule F; line 17 nets Schedule E Parts I and V. "If the total is
-# negative enter 0." Line 30 is "total adjustments from your U.S. Form 1040,
-# Schedule 1", and line 31 is health insurance premiums.
+# and Schedule F; line 17 nets Schedule E Parts I, IV (REMICs, no input) and V.
+# "If the total is negative enter 0." Line 30 is "total adjustments from your
+# U.S. Form 1040, Schedule 1", and line 31 is health insurance premiums. The
+# household is "a claimant and spouse" (MCL 206.508(3)), so a dependent's
+# business and rental items stay off lines 16 and 17.
 
 - name: Cannot be negative
   period: 2024
@@ -392,3 +394,74 @@
     # Line 33: 60,000 + 6,000 - 923.89 = 65,076.11.
     mi_household_resources: 65_076.11
   absolute_error_margin: 0.01
+
+- name: A dependent's Schedule C loss does not net against the claimant's business income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        s_corp_income: 20_000
+      person2:
+        age: 15
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The household is the claimant (MCL 206.508(3)); the dependent's
+    # Schedule C belongs on the dependent's own return.
+    # Line 16: Schedule E Part II 20,000. Line 30: 0.
+    # Line 33: 50,000 + 20,000 = 70,000.
+    mi_household_resources: 70_000
+
+- name: A dependent's rental loss does not net against the claimant's farm rental income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        farm_rent_income: 10_000
+      person2:
+        age: 15
+        rental_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 17: the claimant's Schedule E Part V 10,000. Line 30: 0.
+    # Line 33: 50,000 + 10,000 = 60,000.
+    mi_household_resources: 60_000
+
+- name: A dependent's S corporation income is not household resources
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+      person2:
+        age: 15
+        s_corp_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The household is the claimant and spouse (MCL 206.508(3)); the
+    # dependent's Schedule E income is not on line 16. Line 30: 0.
+    # Line 33: 50,000.
+    mi_household_resources: 50_000
