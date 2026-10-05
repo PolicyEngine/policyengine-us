@@ -10,4 +10,5 @@ class household_refundable_tax_credits(Variable):
     adds = [
         "income_tax_refundable_credits",
         "household_refundable_state_tax_credits",
+        "household_refundable_local_tax_credits",
     ]

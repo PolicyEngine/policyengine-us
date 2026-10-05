@@ -1,0 +1,46 @@
+- name: Case 1, farm rent is divided evenly across months.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        farm_rent_income: 1_920
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # $1,920 a year is $160 a month.
+    snap_farm_rent_income: 160
+
+- name: Case 2, a farm rent loss is floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        farm_rent_income: -6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Only self-employed farmers' losses offset other income
+    # (7 U.S.C. 2014(d)(9), 7 CFR 273.11(a)(2)(ii)).
+    snap_farm_rent_income: 0
+
+- name: Case 3, no farm rent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_farm_rent_income: 0

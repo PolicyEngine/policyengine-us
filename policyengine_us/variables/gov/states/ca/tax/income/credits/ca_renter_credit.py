@@ -6,7 +6,7 @@ class ca_renter_credit(Variable):
     entity = TaxUnit
     label = "California Renter Tax Credit"
     unit = USD
-    documentation = "https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17053.5"
     definition_period = YEAR
     defined_for = StateCode.CA
 

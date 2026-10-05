@@ -6,9 +6,9 @@ class co_low_income_cdcc(Variable):
     entity = TaxUnit
     label = "Colorado Low-income Child Care Expenses Credit"
     unit = USD
-    documentation = (
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-1195-child-care-expenses-tax-credit-legislative-declaration-definitions"
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=46"
+    reference = (
+        "https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-119-5/",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=46",
     )
     definition_period = YEAR
     defined_for = "co_low_income_cdcc_eligible"

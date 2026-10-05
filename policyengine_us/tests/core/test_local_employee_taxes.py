@@ -234,10 +234,18 @@ def test_local_income_tax_before_refundable_credits_keeps_nyc_pre_credit_amount(
         reformed, "household_state_tax_before_refundable_credits"
     ) - calculate(
         baseline, "household_state_tax_before_refundable_credits"
+    ) == pytest.approx(0, abs=0.01)
+    assert calculate(
+        reformed, "local_income_tax_before_refundable_credits"
+    ) - calculate(
+        baseline, "local_income_tax_before_refundable_credits"
     ) == pytest.approx(500, abs=0.01)
     assert calculate(reformed, "household_tax_before_refundable_credits") - calculate(
         baseline, "household_tax_before_refundable_credits"
     ) == pytest.approx(500, abs=0.01)
+    assert calculate(reformed, "household_tax") - calculate(
+        baseline, "household_tax"
+    ) == pytest.approx(300, abs=0.01)
 
 
 def test_st_louis_credit_does_not_pool_across_people():
