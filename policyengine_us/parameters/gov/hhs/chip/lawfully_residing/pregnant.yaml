@@ -1,0 +1,135 @@
+description: States provide the lawfully residing pregnant individuals option under the Children's Health Insurance Program if this is true.
+# The option reaches separate CHIP only where the state also elected it in Medicaid
+# for the same group (42 U.S.C. 1397gg(e)(1)(Q)). States that cover their option
+# population through Medicaid-expansion CHIP are false, because this model treats
+# that coverage as Medicaid.
+# Values before 2022 extrapolate from the January 1, 2022 KFF and Georgetown CCF
+# 50-state survey, the earliest state-level source. Later changes come from state
+# plan amendments, bulletins and testimony, and current values match the CMS list
+# updated April 2, 2026.
+AK:
+  2022-01-01: false
+AL:
+  2022-01-01: false
+AR:
+  2022-01-01: false
+AZ:
+  2022-01-01: false
+CA:
+  2022-01-01: false
+CO:
+  2022-01-01: true
+CT:
+  2022-01-01: false
+DC:
+  2022-01-01: false
+DE:
+  2022-01-01: false
+FL:
+  2022-01-01: false
+GA:
+  2022-01-01: false
+HI:
+  2022-01-01: false
+IA:
+  2022-01-01: false
+ID:
+  2022-01-01: false
+IL:
+  2022-01-01: false
+IN:
+  2022-01-01: false
+KS:
+  2022-01-01: false
+# Same date as the Kentucky Medicaid election for pregnant individuals.
+KY:
+  2022-01-01: false
+  2023-01-01: true
+LA:
+  2022-01-01: false
+MA:
+  2022-01-01: false
+MD:
+  2022-01-01: false
+ME:
+  2022-01-01: false
+MI:
+  2022-01-01: false
+MN:
+  2022-01-01: false
+MO:
+  2022-01-01: false
+MS:
+  2022-01-01: false
+MT:
+  2022-01-01: false
+NC:
+  2022-01-01: false
+ND:
+  2022-01-01: false
+NE:
+  2022-01-01: false
+NH:
+  2022-01-01: false
+NJ:
+  2022-01-01: true
+NM:
+  2022-01-01: false
+NV:
+  2022-01-01: false
+NY:
+  2022-01-01: false
+OH:
+  2022-01-01: false
+OK:
+  2022-01-01: false
+OR:
+  2022-01-01: false
+PA:
+  2022-01-01: false
+# CHIP SPA RI-22-0025, effective October 1, 2022.
+RI:
+  2022-01-01: false
+  2022-10-01: true
+SC:
+  2022-01-01: false
+SD:
+  2022-01-01: false
+TN:
+  2022-01-01: false
+TX:
+  2022-01-01: false
+UT:
+  2022-01-01: false
+VA:
+  2022-01-01: true
+VT:
+  2022-01-01: false
+WA:
+  2022-01-01: false
+WI:
+  2022-01-01: false
+WV:
+  2022-01-01: true
+WY:
+  2022-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: CHIP lawfully residing pregnant individuals option election
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 U.S.C. 1397gg(e)(1)(Q)
+      href: https://www.law.cornell.edu/uscode/text/42/1397gg#e_1_Q
+    - title: "CMS SHO #10-006, Medicaid and CHIP Coverage of Lawfully Residing Children and Pregnant Women"
+      href: https://downloads.cms.gov/cmsgov/archived-downloads/smdl/downloads/sho10006.pdf#page=2
+    - title: CMS, Medicaid and CHIP Coverage of Lawfully Residing Children and Pregnant Individuals (updated April 2, 2026)
+      href: https://www.medicaid.gov/medicaid/enrollment-strategies/medicaid-and-chip-coverage-lawfully-residing-children-pregnant-individuals
+    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022, Table 3
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=1
+    - title: KFF and Georgetown CCF, Medicaid and CHIP Eligibility, Enrollment, and Renewal Policies as of January 2023, Table 3 and footnote 7
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf#page=2
+    - title: CMS, Rhode Island CHIP State Plan Amendment RI-22-0025, approval letter
+      href: https://www.medicaid.gov/sites/default/files/2023-04/RI-22-0025.pdf#page=2

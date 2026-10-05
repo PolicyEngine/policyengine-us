@@ -69,7 +69,7 @@ standards with a 2026 effective date.
 ## Source
 
 - TDHCA Section 8 Housing Choice Voucher program:
-  <https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program>
+  <https://www.tdhca.texas.gov/programs/housing-choice-voucher-section8-housing>
 - TDHCA Section 8 resources (payment-standard PDFs by year):
   <https://www.tdhca.texas.gov/section-8-resources>
 - "2025-Payment Standard-HCV" schedule (TDHCA, published 2025-01-24):

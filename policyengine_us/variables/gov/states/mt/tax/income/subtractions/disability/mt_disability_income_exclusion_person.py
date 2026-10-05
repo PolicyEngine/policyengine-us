@@ -8,7 +8,7 @@ class mt_disability_income_exclusion_person(Variable):
     defined_for = "mt_disability_income_exclusion_eligible_person"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=31"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=31"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.disability_income

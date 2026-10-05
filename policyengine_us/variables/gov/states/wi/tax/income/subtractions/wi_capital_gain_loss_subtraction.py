@@ -8,8 +8,8 @@ class wi_capital_gain_loss_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleWDf.pdf#page=2"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleWDf.pdf#page=2"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleWDf.pdf#page=2",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleWDf.pdf#page=2",
     )
     defined_for = StateCode.WI
 
