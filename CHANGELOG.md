@@ -1,3 +1,24 @@
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
+## [2.25.1] - 2026-10-05
+
+### Fixed
+
+- Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.25.0] - 2026-10-05
+
+### Added
+
+- Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.
+
+
 ## [2.24.7] - 2026-10-05
 
 ### Fixed

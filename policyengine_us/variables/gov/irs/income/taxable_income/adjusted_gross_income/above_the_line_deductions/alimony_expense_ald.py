@@ -16,4 +16,6 @@ class alimony_expense_ald(Variable):
         alimony_expense = person("alimony_expense", period)
         p = parameters(period).gov.irs.ald.alimony_expense
         eligible_person = p.divorce_year_threshold.calc(divorce_year)
-        return tax_unit.sum(alimony_expense * eligible_person)
+        # A tax unit dependent who pays alimony deducts it on their own return.
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        return tax_unit.sum(alimony_expense * eligible_person * not_dependent)

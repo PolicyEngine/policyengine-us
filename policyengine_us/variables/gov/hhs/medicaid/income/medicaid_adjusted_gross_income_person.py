@@ -31,7 +31,18 @@ class medicaid_adjusted_gross_income_person(Variable):
             for ald in all_alds
             if ald not in TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS
         ]
-        ald_sum_taxunit = add(person.tax_unit, period, other_alds)
+        # The head's and spouse's deductions are shared between them, as on
+        # their return. A tax unit dependent's own person-level deductions,
+        # such as their IRA deduction, reduce the dependent's own AGI, since
+        # the dependent's income is figured on the dependent's own return.
+        ald_sum_taxunit = tax_unit_non_dep_add(person.tax_unit, period, other_alds)
+        person_level_other_alds = [
+            ald
+            for ald in other_alds
+            if person.entity.get_variable(ald, check_existence=True).entity.is_person
+        ]
+        is_dependent = person("is_tax_unit_dependent", period)
+        dependent_own_ald = is_dependent * add(person, period, person_level_other_alds)
         filing_status = person.tax_unit("filing_status", period)
         frac = where(
             filing_status == filing_status.possible_values.JOINT,
@@ -40,7 +51,7 @@ class medicaid_adjusted_gross_income_person(Variable):
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         shared_ald = head_or_spouse * ald_sum_taxunit * frac
-        agi = gross_income - ald_sum_person - shared_ald
+        agi = gross_income - ald_sum_person - dependent_own_ald - shared_ald
 
         if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
             basic_income = person.tax_unit("basic_income", period)

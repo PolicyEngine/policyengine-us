@@ -35,9 +35,12 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
 
     The excess is measured as the worksheets measure it, from line 10. The
     section 1(h) formulas use section_911_capital_gain_excess, measured from
-    net_capital_gain. On a return the two are the same amount; in the model
-    dwks10 and net_capital_gain are separate formulas that can disagree (they
-    read different Form 4952 inputs).
+    net_capital_gain. On a return the two are the same amount, and in the
+    model dwks10 equals net_capital_gain for the same inputs: both apply the
+    Form 4952 line 4g election, first to the gain and then to qualified
+    dividends. With amounts in cents they can differ by single-precision
+    rounding, because worksheet lines 6 and 9 are stored before dwks10 adds
+    them.
 
     Returns the excess, worksheet lines 9, 10 and 13 and Schedule D line 19.
     Without an excess these are the first worksheet's amounts, unchanged.

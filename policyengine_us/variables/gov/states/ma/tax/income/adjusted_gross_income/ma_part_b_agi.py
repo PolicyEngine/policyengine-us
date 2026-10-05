@@ -20,7 +20,9 @@ class ma_part_b_agi(Variable):
             for deduction in federal_deductions
             if deduction not in disallowed_deductions
         ]
-        deduction_value = add(tax_unit, period, deductions)
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, so their deductions are left out too.
+        deduction_value = tax_unit_non_dep_add(tax_unit, period, deductions)
         # U.S. government bond interest is exempt from MA tax.
         us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
         return max_(

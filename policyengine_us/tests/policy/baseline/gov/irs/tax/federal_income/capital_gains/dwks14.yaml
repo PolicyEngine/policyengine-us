@@ -46,8 +46,8 @@
     # when neither capital gains worksheet was completed.
     dwks14: 130_000
 
-# Synthetic inputs: on a real return worksheet line 10 and net capital gain
-# are the same amount. They are set apart here only to show which one each
+# Synthetic inputs: on a real return, and in the model for the same inputs,
+# worksheet line 10 and net capital gain are the same amount. They are set apart here only to show which one each
 # excess reads.
 - name: The worksheet lines read the excess from line 10, not net_capital_gain
   period: 2025
