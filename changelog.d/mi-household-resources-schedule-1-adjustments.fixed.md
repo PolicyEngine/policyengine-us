@@ -1,0 +1,1 @@
+Michigan household resources (MI-1040CR line 30) subtract only the U.S. Schedule 1 adjustments to income, so income excluded under IRC 135, 137, 931 and 933 (savings bond interest for higher education, employer adoption benefits, possession and Puerto Rico income) stays in household resources.

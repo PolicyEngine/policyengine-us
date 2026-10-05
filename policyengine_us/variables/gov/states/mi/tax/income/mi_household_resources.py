@@ -72,18 +72,29 @@ class mi_household_resources(Variable):
                 other_income += add(tax_unit, period, [source])
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
-        # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
-        # Business, rental and capital losses are income items (Schedule 1
-        # Part I and Schedule D), not Part II adjustments. They are netted
-        # and floored on lines 16, 17 and 19 above, so loss_ald, which holds
-        # them, is left out.
+        # Line 30: "Enter total adjustments from your U.S. Form 1040,
+        # Schedule 1." These are the Schedule 1 Part II adjustments, counted
+        # while the federal above-the-line list deducts them, so a reform that
+        # drops one federally drops it here too. The rest of the federal list
+        # is not on line 30:
+        # - loss_ald holds business, rental and capital losses, which are
+        #   income items netted and floored on lines 16, 17 and 19 above;
+        # - us_bonds_for_higher_ed, qualified_adoption_assistance_expense,
+        #   specified_possession_income and puerto_rico_income are income
+        #   that IRC 135, 137, 931 and 933 exclude from gross income. Total
+        #   household resources include "all income exempt or excluded from
+        #   AGI" (book page 26). The federal list subtracts these amounts from
+        #   income sources that hold them, such as savings bond interest on
+        #   line 15 ("including nontaxable interest") and adoption benefits,
+        #   reported on Form W-2, on line 14, so they stay in those lines.
+        federal_deductions = parameters(period).gov.irs.ald.deductions
         adjustments = add(
             tax_unit,
             period,
             [
                 deduction
-                for deduction in parameters(period).gov.irs.ald.deductions
-                if deduction != "loss_ald"
+                for deduction in p.household_resources_adjustments
+                if deduction in federal_deductions
             ],
         )
         # Line 31: health insurance premiums.
