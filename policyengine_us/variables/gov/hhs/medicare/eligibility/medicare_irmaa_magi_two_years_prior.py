@@ -1,6 +1,18 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 
+# 42 U.S.C. 1395r(i)(4)(A): adjusted gross income (i) determined without
+# regard to sections 135, 911, 931 and 933 of the Internal Revenue Code and
+# (ii) increased by tax-exempt interest. Income inputs are net of the section
+# 911 exclusion; sections 135, 931 and 933 are above-the-line deductions in
+# this model. Adding each amount back undoes it.
+TAX_UNIT_ADDITIONS = [
+    "foreign_earned_income_exclusion",
+    "specified_possession_income",
+    "puerto_rico_income",
+]
+PERSON_ADDITIONS = ["tax_exempt_interest_income", "us_bonds_for_higher_ed"]
+
 
 class medicare_irmaa_magi_two_years_prior(Variable):
     value_type = float
@@ -8,12 +20,14 @@ class medicare_irmaa_magi_two_years_prior(Variable):
     label = "Medicare IRMAA MAGI from two years prior"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/42/1395r"
+    reference = "https://www.law.cornell.edu/uscode/text/42/1395r#i_4"
     documentation = (
         "Modified adjusted gross income used to determine Medicare IRMAA "
         "charges. Callers may provide this value directly for the current "
-        "benefit year. When it is not provided, PolicyEngine computes it as "
-        "adjusted gross income plus tax-exempt interest from two years prior. "
+        "benefit year. When it is not provided, PolicyEngine computes it from "
+        "two years prior as adjusted gross income plus tax-exempt interest "
+        "and the amounts excluded or deducted under IRC sections 135, 911, "
+        "931 and 933. "
         "Single-year datasets without lagged income inputs therefore default "
         "to the modeled prior-year values, which may be zero. When the year "
         "two years prior precedes the first year PolicyEngine models (2015), "
@@ -26,7 +40,7 @@ class medicare_irmaa_magi_two_years_prior(Variable):
             return add(
                 tax_unit,
                 prior_period,
-                ["adjusted_gross_income", "tax_exempt_interest_income"],
+                ["adjusted_gross_income", *TAX_UNIT_ADDITIONS, *PERSON_ADDITIONS],
             )
         # Benefit years 2015 and 2016 look back to 2013 and 2014, before the
         # parameters begin, so income for those years cannot be computed. Use
@@ -40,8 +54,9 @@ class medicare_irmaa_magi_two_years_prior(Variable):
             value = holder.get_array(prior_period, simulation.branch_name)
             return population.empty_array() if value is None else value
 
-        agi = provided("adjusted_gross_income", tax_unit)
-        tax_exempt_interest = tax_unit.sum(
-            provided("tax_exempt_interest_income", tax_unit.members)
-        )
-        return agi + tax_exempt_interest
+        magi = provided("adjusted_gross_income", tax_unit)
+        for variable in TAX_UNIT_ADDITIONS:
+            magi = magi + provided(variable, tax_unit)
+        for variable in PERSON_ADDITIONS:
+            magi = magi + tax_unit.sum(provided(variable, tax_unit.members))
+        return magi

@@ -1,0 +1,48 @@
+- name: Income excluded under section 911 is added back
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        irs_employment_income: 20_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        foreign_earned_income_exclusion: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 26 U.S.C. 86(b)(2)(A): 20,000 of wages plus 10,000 excluded under
+    # section 911. Combined income 30,000 + 10,000 = 40,000 is over the
+    # 34,000 adjusted base: 85% x 6,000 + min(7,500, 4,500) = 9,600.
+    taxable_ss_magi: 30_000
+    tax_unit_taxable_social_security: 9_600
+
+- name: Income excluded under sections 931 and 933 is added back
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        irs_employment_income: 30_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        specified_possession_income: 6_000
+        puerto_rico_income: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # The section 931 and 933 deductions are not taken: 30,000. Taxable
+    # benefits are 9,600 as above, so AGI is 30,000 + 9,600 - 10,000.
+    taxable_ss_magi: 30_000
+    tax_unit_taxable_social_security: 9_600
+    adjusted_gross_income: 29_600

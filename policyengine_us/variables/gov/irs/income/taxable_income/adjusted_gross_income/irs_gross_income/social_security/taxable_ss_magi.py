@@ -35,6 +35,9 @@ class taxable_ss_magi(Variable):
             # Add positive values only - losses are deducted later.
             gross_income += not_dependent * max_(0, add(person, period, [source]))
         gross_income = tax_unit.sum(gross_income)
+        # IRC 86(b)(2)(A): determined without regard to section 911. Income
+        # inputs are net of the foreign earned income exclusion; add it back.
+        gross_income += tax_unit("foreign_earned_income_exclusion", period)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions
         deductions = [

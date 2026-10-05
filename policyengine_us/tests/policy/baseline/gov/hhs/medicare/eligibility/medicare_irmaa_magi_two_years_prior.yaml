@@ -73,3 +73,39 @@
     medicare_enrolled: true
   output:
     income_adjusted_part_d_premium_surcharge: 0
+
+- name: Amounts excluded under IRC sections 135, 911, 931 and 933 are added back.
+  period: 2026
+  input:
+    age: 66
+    adjusted_gross_income:
+      2024: 100_000
+    tax_exempt_interest_income:
+      2024: 2_000
+    us_bonds_for_higher_ed:
+      2024: 1_000
+    foreign_earned_income_exclusion:
+      2024: 10_000
+    specified_possession_income:
+      2024: 3_000
+    puerto_rico_income:
+      2024: 4_000
+  output:
+    # 42 U.S.C. 1395r(i)(4)(A): 100,000 + 2,000 + 1,000 + 10,000 + 3,000 + 4,000.
+    medicare_irmaa_magi_two_years_prior: 120_000
+
+- name: Excluded amounts provided for an unmodeled lag year are added back too.
+  period: 2016
+  input:
+    age: 66
+    adjusted_gross_income:
+      2014: 100_000
+    us_bonds_for_higher_ed:
+      2014: 1_000
+      2016: 0
+    foreign_earned_income_exclusion:
+      2014: 10_000
+    puerto_rico_income:
+      2014: 4_000
+  output:
+    medicare_irmaa_magi_two_years_prior: 115_000
