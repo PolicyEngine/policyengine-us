@@ -1,0 +1,315 @@
+# Educator expense deduction, 26 USC 62(a)(2)(D) and (d): each eligible
+# educator deducts their qualified expenses up to the cap, $250 through 2021
+# and $300 for 2022 through 2025 (Rev. Procs. 2020-45 sec. 3.14, 2021-45
+# sec. 3.13). The Form 1040 instructions for Schedule 1, line 11 (2021, p. 88;
+# 2022, p. 87) give the joint return rule: "If you and your spouse are filing
+# jointly and both of you were eligible educators, the maximum deduction is
+# $600. However, neither spouse can deduct more than $300 of their qualified
+# expenses" ($500 and $250 for 2021).
+
+- name: 2021, expenses below the $250 cap are deducted in full
+  period: 2021
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 200
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 200
+    educator_expense_ald: 200
+    above_the_line_deductions: 200
+    adjusted_gross_income: 49_800
+
+- name: 2021, expenses at the $250 cap are deducted in full
+  period: 2021
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 250
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 250
+    educator_expense_ald: 250
+    above_the_line_deductions: 250
+    adjusted_gross_income: 49_750
+
+- name: 2021, expenses above the $250 cap are deducted up to the cap
+  period: 2021
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 400
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 250
+    educator_expense_ald: 250
+    above_the_line_deductions: 250
+    adjusted_gross_income: 49_750
+
+- name: 2022, expenses below the $300 cap are deducted in full
+  period: 2022
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 299
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 299
+    educator_expense_ald: 299
+    above_the_line_deductions: 299
+    adjusted_gross_income: 49_701
+
+- name: 2022, expenses at the $300 cap are deducted in full
+  period: 2022
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 300
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 49_700
+
+- name: 2022, expenses above the $300 cap are deducted up to the cap
+  period: 2022
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 1_000
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    educator_expense_ald_person: 300
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 49_700
+
+- name: 2025, expenses above the $300 cap are deducted up to the cap
+  period: 2025
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 301
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    # Rev. Proc. 2024-40 sec. 2.13: $300 for 2025.
+    educator_expense_ald_person: 300
+    educator_expense_ald: 300
+    adjusted_gross_income: 49_700
+
+- name: 2026, the cap rises to $350
+  period: 2026
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    # Rev. Proc. 2025-32 sec. 4.12: $350 for 2026.
+    educator_expense_ald_person: 350
+    educator_expense_ald: 350
+    adjusted_gross_income: 49_650
+
+- name: 2022, joint return with two eligible educators, each capped at $300
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 450
+      spouse:
+        age: 38
+        employment_income: 40_000
+        educator_expense: 250
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The head's $450 is capped at $300; the spouse's $250 is below the cap.
+    # The head's unused room does not carry to the spouse: 300 + 250 = 550.
+    educator_expense_ald_person: [300, 250]
+    educator_expense_ald: 550
+    above_the_line_deductions: 550
+    adjusted_gross_income: 89_450
+
+- name: 2022, joint return with two eligible educators both above the cap reaches the $600 maximum
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 800
+      spouse:
+        age: 38
+        employment_income: 40_000
+        educator_expense: 700
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    educator_expense_ald_person: [300, 300]
+    educator_expense_ald: 600
+    adjusted_gross_income: 89_400
+
+- name: 2022, joint return with one eligible educator is capped at $300, not $600
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 700
+      spouse:
+        age: 38
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    educator_expense_ald_person: [300, 0]
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 89_700
+
+- name: 2021, joint return with one eligible educator is capped at $250, not $500
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 38
+        employment_income: 40_000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    educator_expense_ald_person: [0, 250]
+    educator_expense_ald: 250
+    adjusted_gross_income: 89_750
+
+- name: 2022, a dependent's educator expenses stay off the filer's return
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 60_000
+        educator_expense: 100
+      student:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+        educator_expense: 400
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # The student's own amount is capped for their own return; only the
+    # head's $100 is on this one.
+    educator_expense_ald_person: [100, 300]
+    educator_expense_ald: 100
+    above_the_line_deductions: 100
+    adjusted_gross_income: 59_900
