@@ -68,3 +68,16 @@
     adjusted_gross_income: 150_000
   output:
     new_clean_vehicle_credit_eligible: false
+
+- name: Income excluded under section 911 counts toward the income limit.
+  period: 2024
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 50_000
+    adjusted_gross_income: 140_000
+    foreign_earned_income_exclusion: 20_000
+  output:
+    # 26 U.S.C. 30D(f)(10)(C): modified AGI 160,000 is over the 150,000 limit.
+    new_clean_vehicle_credit_eligible: false

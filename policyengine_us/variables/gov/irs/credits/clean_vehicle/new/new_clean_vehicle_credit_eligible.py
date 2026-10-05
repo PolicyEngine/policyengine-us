@@ -24,9 +24,11 @@ class new_clean_vehicle_credit_eligible(Variable):
         # Capacity limit applies with and without the Inflation Reduction Act.
         capacity = tax_unit("new_clean_vehicle_battery_capacity", period)
         meets_capacity_requirement = capacity >= p.min_kwh
-        agi = tax_unit("adjusted_gross_income", period)
+        # 26 U.S.C. 30D(f)(10)(C): modified adjusted gross income adds back
+        # income excluded under sections 911, 931 and 933.
+        magi = tax_unit("agi_plus_section_911_931_933_exclusions", period)
         filing_status = tax_unit("filing_status", period)
-        meets_income_limit = agi <= p.income_limit[filing_status]
+        meets_income_limit = magi <= p.income_limit[filing_status]
         msrp = tax_unit("new_clean_vehicle_msrp", period)
         classification = tax_unit("new_clean_vehicle_classification", period)
         meets_msrp_limit = msrp <= p.msrp_limit[classification]

@@ -63,3 +63,13 @@
     adjusted_gross_income: 75_000
   output:
     used_clean_vehicle_credit_eligible: false
+
+- name: Income excluded under section 933 counts toward the income limit.
+  period: 2024
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+    adjusted_gross_income: 70_000
+    puerto_rico_income: 10_000
+  output:
+    # 26 U.S.C. 25E(b)(3): modified AGI 80,000 is over the 75,000 limit.
+    used_clean_vehicle_credit_eligible: false

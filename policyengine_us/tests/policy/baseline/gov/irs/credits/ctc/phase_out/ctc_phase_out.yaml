@@ -13,3 +13,15 @@
     ctc_phase_out_threshold: 200_000 # HOH.
   output:
     ctc_phase_out: 10_000 # $200k * 5%. Gets capped at maximum.
+
+- name: Income excluded under sections 911, 931 and 933 counts toward the phase-out.
+  period: 2024
+  input:
+    adjusted_gross_income: 395_000
+    foreign_earned_income_exclusion: 6_000
+    specified_possession_income: 2_000
+    puerto_rico_income: 2_000
+    ctc_phase_out_threshold: 400_000 # Joint.
+  output:
+    # 26 U.S.C. 24(b)(1): modified AGI 405,000; 5 increments of $1,000 x $50.
+    ctc_phase_out: 250

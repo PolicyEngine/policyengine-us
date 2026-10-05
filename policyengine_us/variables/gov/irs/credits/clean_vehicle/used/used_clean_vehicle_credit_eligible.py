@@ -20,11 +20,13 @@ class used_clean_vehicle_credit_eligible(Variable):
         if not p.eligibility.in_effect:
             return False
         # Income eligibility based on lesser of MAGI in current and prior year.
-        # Assume AGI in current year for now.
-        agi = tax_unit("adjusted_gross_income", period)
+        # Assume current-year MAGI for now. 26 U.S.C. 25E(b)(3): modified
+        # adjusted gross income adds back income excluded under sections
+        # 911, 931 and 933.
+        magi = tax_unit("agi_plus_section_911_931_933_exclusions", period)
         filing_status = tax_unit("filing_status", period)
         income_limit = p.eligibility.income_limit[filing_status]
-        income_eligible = agi <= income_limit
+        income_eligible = magi <= income_limit
         # Purchase price limit.
         sale_price = tax_unit("used_clean_vehicle_sale_price", period)
         price_eligible = sale_price <= p.eligibility.sale_price_limit
