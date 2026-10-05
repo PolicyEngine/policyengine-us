@@ -1,0 +1,403 @@
+# A tax unit dependent's investment income belongs on the dependent's own
+# Form 8960, not the filer's. 26 USC 1411(a)(1) taxes each individual's own net
+# investment income. A parent's Form 8960 picks up a child's interest,
+# dividends and capital gain distributions only through a Form 8814 election
+# (Instructions for Form 8960, line 7; Instructions for Form 8814, "Net
+# Investment Income Tax"), which the model does not implement, and no election
+# moves a child's rents, passive income or capital gains from sales. So
+# net_investment_income counts the head and spouse only, consistent with
+# irs_gross_income, which already leaves every dependent's income out of AGI.
+#
+# Unless noted, the parent is a 45-year-old head of household in TX for 2024
+# with $300,000 of wages and $10,000 of their own taxable interest:
+#   AGI = MAGI = 300,000 + 10,000 = 310,000
+#   NIIT threshold (single or head of household) = 200,000; excess MAGI 110,000
+#   NIIT = 3.8% x min(NII, excess MAGI)
+# Each "before" figure is the pre-change formula, which summed every member.
+
+- name: A dependent's taxable interest stays off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 310_000
+    niit_magi: 310_000
+    # Before: 10,000 + 20,000 = 30,000 and NIIT 1,140.
+    net_investment_income: 10_000
+    # 3.8% x min(10,000, 110,000)
+    net_investment_income_tax: 380
+
+- name: A dependent's dividends stay off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        qualified_dividend_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    # Before: 10,000 + 15,000 = 25,000 and NIIT 950.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent's rental income stays off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        rental_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    # Before: 10,000 + 25,000 = 35,000 and NIIT 1,330.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent's passive partnership income stays off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        partnership_s_corp_income: 12_000
+        passive_partnership_s_corp_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    # Before: 10,000 + 12,000 = 22,000 and NIIT 836.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent's capital gain stays off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 40_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    filer_loss_limited_net_capital_gains: 0
+    # Before: 10,000 + 40,000 = 50,000 and NIIT 1,900.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent's capital gain distributions stay off the filer's Form 8960
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    # Before: 10,000 + 5,000 = 15,000 and NIIT 570.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent's capital loss does not reduce the filer's capital gain
+  # The parent also has a $10,000 long-term gain:
+  #   AGI = 300,000 + 10,000 + 10,000 = 320,000; excess MAGI 120,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        short_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 320_000
+    filer_loss_limited_net_capital_gains: 10_000
+    # Before: 10,000 + max(-3,000, 10,000 - 3,000) = 17,000 and NIIT 646.
+    net_investment_income: 20_000
+    # 3.8% x min(20,000, 120,000)
+    net_investment_income_tax: 760
+
+- name: A dependent's capital gain does not absorb the filer's capital loss
+  # The parent has a $10,000 net capital loss, limited to $3,000 (§ 1211(b)):
+  #   AGI = 300,000 + 10,000 - 3,000 = 307,000; excess MAGI 107,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+        long_term_capital_gains: -10_000
+      child:
+        age: 10
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 307_000
+    filer_loss_limited_net_capital_gains: -3_000
+    # Before: the child's gain netted the loss to zero, so NII 10,000 and
+    # NIIT 380.
+    net_investment_income: 7_000
+    # 3.8% x min(7,000, 107,000)
+    net_investment_income_tax: 266
+
+- name: A dependent's estate income stays off the filer's Form 8960 (unchanged)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        estate_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    # estate_net_investment_income already left dependents out.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A dependent with every investment income source
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        taxable_interest_income: 20_000
+        qualified_dividend_income: 15_000
+        rental_income: 25_000
+        partnership_s_corp_income: 12_000
+        passive_partnership_s_corp_income: 12_000
+        long_term_capital_gains: 40_000
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 310_000
+    niit_magi: 310_000
+    # Before: 10,000 + 117,000 = 127,000 and NIIT 3.8% x 110,000 = 4,180.
+    net_investment_income: 10_000
+    net_investment_income_tax: 380
+
+- name: A filer with no investment income owes no NIIT on a dependent's interest
+  #   AGI = MAGI = 300,000; excess MAGI 100,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 300_000
+      child:
+        age: 10
+        taxable_interest_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 300_000
+    # Before: NII 50,000 and NIIT 1,900.
+    net_investment_income: 0
+    net_investment_income_tax: 0
+
+- name: Joint filers with a dependent count both spouses' investment income
+  # Joint threshold 250,000. AGI = 300,000 + 5,000 = 305,000; excess 55,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 300_000
+      spouse:
+        age: 44
+        qualified_dividend_income: 5_000
+      child:
+        age: 10
+        taxable_interest_income: 30_000
+        long_term_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, false, true]
+    filing_status: JOINT
+    adjusted_gross_income: 305_000
+    # Before: 5,000 + 30,000 + 20,000 = 55,000 and NIIT 2,090.
+    net_investment_income: 5_000
+    # 3.8% x min(5,000, 55,000)
+    net_investment_income_tax: 190
+
+- name: Control - a spouse's interest still counts on a joint return
+  # AGI = 300,000 + 20,000 = 320,000; joint threshold 250,000; excess 70,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 300_000
+      spouse:
+        age: 44
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 320_000
+    net_investment_income: 20_000
+    # 3.8% x min(20,000, 70,000)
+    net_investment_income_tax: 760
+
+- name: Control - spouses' capital gains and losses net on one Schedule D
+  # Head long-term gain 10,000, spouse short-term loss 4,000: net gain 6,000
+  # (Treas. Reg. § 1.6013-4(b)). AGI is not asserted here: it still deducts
+  # the spouse's loss separately from the head's gain, a joint-return netting
+  # issue unrelated to dependents. Either way, MAGI exceeds the 250,000 joint
+  # threshold by more than NII.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 300_000
+        long_term_capital_gains: 10_000
+      spouse:
+        age: 44
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filer_loss_limited_net_capital_gains: 6_000
+    loss_limited_net_capital_gains: 6_000
+    net_investment_income: 6_000
+    # 3.8% x 6,000
+    net_investment_income_tax: 228

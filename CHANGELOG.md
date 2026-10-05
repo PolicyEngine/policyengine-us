@@ -1,3 +1,188 @@
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
+## [2.25.1] - 2026-10-05
+
+### Fixed
+
+- Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.25.0] - 2026-10-05
+
+### Added
+
+- Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.
+
+
+## [2.24.7] - 2026-10-05
+
+### Fixed
+
+- Use the SSI federal benefit rate, not 75% of the poverty guideline, as the Medicaid income limit for aged, blind, and disabled people who do not receive SSI in Colorado, Iowa, Louisiana, Montana, Ohio, Oregon, and Washington.
+
+
+## [2.24.6] - 2026-10-05
+
+### Fixed
+
+- Replace dead federal and miscellaneous reference URLs (IRS, SSA, CMS, USDA, CBO, Medicaid, KFF, Justia and others) with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Michigan Department of Treasury and Legislature reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Minnesota Department of Revenue reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Louisiana, Mississippi, Alabama, Texas and Georgia reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead South Carolina, Kentucky, Oklahoma, Florida, Ohio, Missouri, North Carolina and South Dakota reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Tax the income of filers who exclude foreign earned income at the rates it would face on top of the excluded amount, in the regular tax, the capital gains rates and the alternative minimum tax (26 U.S.C. 911(f), the Foreign Earned Income Tax Worksheet).
+
+
+## [2.24.5] - 2026-10-05
+
+### Fixed
+
+- Order the residential clean energy credit after the Child Tax Credit, as Schedule 8812 Credit Limit Worksheets A and B and Form 5695 do: the CTC's tax-liability limit subtracts that credit only when Credit Limit Worksheet B applies, the credit's own limit subtracts every other non-refundable credit (including the CTC that cannot be refunded), and it no longer precedes the energy efficient home improvement, elderly or disabled, and clean vehicle credits. Colorado's federal CTC replica uses Schedule 8812 line 13 from 2023, as the 2023 DR 0104CN does.
+
+
+## [2.24.4] - 2026-10-04
+
+### Fixed
+
+- Separated URLs that were joined in Variable reference and documentation strings, so each reference entry is one bare URL, and added a code-health test that keeps them separate.
+
+
+## [2.24.3] - 2026-10-04
+
+### Changed
+
+- Raise the Full Suite - Rest job's timeout from 60 to 90 minutes; passing runs already take 42-55 minutes.
+
+
+## [2.24.2] - 2026-10-04
+
+### Changed
+
+- Run the Full Suite - Rest job's remaining Python tests as six sequential pytest processes instead of one, each with its own JUnit and memory report, to keep each process well below the 16 GB runner's memory; a code-health test checks that the groups run every test file of the old process exactly once.
+
+
+## [2.24.1] - 2026-10-04
+
+### Fixed
+
+- Exclude medical expenses, investment interest, and casualty and theft losses from the itemized deductions that the pre-2026 section 68 80 percent ceiling applies to, per section 68(c) and the Schedule A Itemized Deductions Worksheet—Line 29.
+
+
+## [2.24.0] - 2026-10-04
+
+### Added
+
+- Add `marginal_tax_rate_computed`, which flags the people whose marginal tax rates are simulated (the top `simulation.marginal_tax_rate_adults` earners among each household's adults); the marginal tax rate variables are a placeholder zero for everyone else.
+
+### Fixed
+
+- Replace dead Maryland, DC, Delaware, Pennsylvania, Virginia, West Virginia and New Jersey reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Vermont, Connecticut, New York Labor, Maine, Hawaii and California county reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Fix `cliff_evaluated` to rank adults by market income, as the marginal tax rate loop does, instead of by age.
+
+
+## [2.23.10] - 2026-10-04
+
+### Changed
+
+- Documented that `axiom: queued` is allowed only when the signed encoder is blocked, and that external contributors may write `axiom: needed`.
+
+### Fixed
+
+- Leave tax unit dependents' interest, dividends, rents, passive pass-through income and capital gains out of the filer's net investment income, as irs_gross_income already does for AGI; a dependent's investment income belongs on the dependent's own Form 8960 (26 USC 1411(a)(1)), and the Form 8814 election that would move a child's interest and dividends onto a parent's return is not modeled.
+
+
+## [2.23.9] - 2026-10-04
+
+### Changed
+
+- Report Codecov's project coverage as informational, since pull requests upload coverage from selected tests only; the patch check stays the coverage gate.
+
+### Fixed
+
+- Replace dead Montana, Idaho, Utah, Colorado, New Mexico, Washington and Arizona reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.23.8] - 2026-10-04
+
+### Fixed
+
+- Fix read-only cache tests to forward storage metadata introduced in PolicyEngine Core 3.32.16.
+
+
+## [2.23.7] - 2026-10-04
+
+### Fixed
+
+- Extend New York City resident income tax rates and the 14% additional tax through tax year 2029 under Chapter 127 of 2026 (A.11561, Part D), and drop the additional tax from the base rates that apply from 2030.
+
+
+## [2.23.6] - 2026-10-04
+
+### Fixed
+
+- Replace dead Illinois, Indiana, Iowa, Wisconsin and Kansas reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.23.5] - 2026-10-03
+
+### Fixed
+
+- Replace dead Massachusetts reference URLs (Form 1 instructions and schedules, Department of Revenue pages, child care and LIHEAP documents) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.23.4] - 2026-10-03
+
+### Fixed
+
+- Index the earned income addition in the standard deduction for filers claimed as dependents (26 U.S.C. 63(c)(5)(B)) after 2026 instead of holding it at $450, raising it to $500 in 2027. Project both dependent limits from their statutory $250 (1997) and $500 (1987) bases under 63(c)(4), with each increase rounded down to a multiple of $50 per 1(f)(7)(A); this also rounds the floor after CBO's horizon, which had been uprated to non-multiples such as $1,682.41. Update the floor's CBO projections to the February 2026 vintage (2028 $1,450, 2033 $1,600, 2036 $1,700).
+- Stop rental losses from offsetting other household income in SNAP.
+- Added the IRS Optional State Sales Tax Tables for 2015 through 2017, which had used the 2018 table.
+
+
+## [2.23.3] - 2026-10-03
+
+### Fixed
+
+- Create formula branches (itemizing, not itemizing, no SALT, and the Delaware, Virginia, Idaho, Alabama and New York comparison branches) again for each period, so a later year calculated in the same simulation matches a simulation that calculates only that year.
+
+
+## [2.23.2] - 2026-10-03
+
+### Fixed
+
+- Include estate and trust income (Schedule E Part III) in federal gross income under § 61(a)(14), in the net investment income tax base, and in household, SPM and person market income (person market income also feeds Missouri SNC, North Dakota Renter's Refund and Washington ECEAP income). The NIIT follows Form 8960: all estate and trust income counts by default, new inputs carry the fiduciary's Schedule K-1 (Form 1041) box 14 code H adjustment and its MAGI change (the new niit_magi variable, also used by the Biden FY2025 NIIT reform), and a dependent's estate income stays out of the filer's gross income and net investment income.
+- Corrected the 2024 Arkansas low-income tax table for head of household and surviving spouse filers with two or more dependents, whose $92 row shared the $24,200 threshold of the $104 row and was summed into a $196 row; removed a duplicated top bracket from the IRS SOI AGI-by-size calibration scale; and added tests that fail when any parameter scale repeats a threshold (other than +inf) or an Arkansas low-income table stops rising with AGI.
+- Stop a tax unit dependent's losses from reducing the filer's AGI and from raising the filer's excess business loss limit: `loss_ald` and `limited_capital_loss` now sum only non-dependent members, matching `irs_gross_income`.
+- Compute the federal estate tax unified credit as the tentative tax on the applicable exclusion amount under 26 U.S.C. 2010(c), rather than the exclusion amount itself; add a deceased spousal unused exclusion amount input; extend the 26 U.S.C. 2001(c) rate schedule back to 2011; and limit estate tax to decedents.
+- Replace the documentation's TAXSIM validation page, which showed an ImportError, with the current results published by the policyengine-taxsim dashboard, render the book's stored Plotly charts, and build and deploy the documentation from CI again.
+- Stop Maryland's State and local poverty level credits from going negative, which raised tax, when self-employment losses exceed wages. The credits and their eligibility test now use section 32(c)(2) earned income (eitc_earned_income): wages plus self-employment, farm and partnership earnings, net of losses and the section 164(f) deduction, floored at zero. This also lowers the credit for self-employment profits by the section 164(f) deduction, nets farm and partnership losses against wages, and can newly qualify some self-employed filers.
+- Replace dead casetext.com legal references with live official (or Justia/LII) sources for the same sections, and fix titles and subsection pins that misidentified them.
+- Count farm rental income (IRS Form 4835) as SNAP unearned income.
+- Correct the 2024 additional earned income amount in the standard deduction for filers claimed as dependents to $450 under Rev. Proc. 2023-34, so a 2024 dependent filer with $3,000 of wages gets a $3,450 basic standard deduction instead of $3,400; the Medicaid dependent filing-requirement test uses the same amount. Also fix the Rev. Proc. 2023-34 page anchor in the dependent standard deduction floor parameter.
+- Added the IRS Optional State Sales Tax Tables for 2018 through 2021, which had used the 2022 table. 2015 through 2017, which take the earliest table, now use the 2018 table.
+
+
+## [2.23.1] - 2026-10-03
+
+### Changed
+
+- Standardize local income tax aggregation across states: extract NYC and Maryland county taxes from state income tax aggregates into local income tax aggregates, wire Indiana and Multnomah County local income taxes into local aggregates, and add `spm_unit_local_tax` to `spm_unit_taxes` to preserve SPM resources and poverty outputs across all local tax jurisdictions.
+  Preserve state and local refundable credits when abolishing federal income tax.
+
+
+## [2.23.0] - 2026-10-03
+
+### Added
+
+- Add Mississippi LIHEAP regular assistance for heating fuel and electric bills (FY2026).
+
+
 ## [2.22.0] - 2026-10-03
 
 ### Added

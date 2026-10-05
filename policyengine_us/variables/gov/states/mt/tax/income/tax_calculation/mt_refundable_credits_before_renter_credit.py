@@ -6,7 +6,7 @@ class mt_refundable_credits_before_renter_credit(Variable):
     entity = Person
     label = "Montana refundable credits before adding the elderly homeowner or renter credit"
     unit = USD
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=48"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48"
     definition_period = YEAR
     defined_for = StateCode.MT
     adds = "gov.states.mt.tax.income.credits.refundable"

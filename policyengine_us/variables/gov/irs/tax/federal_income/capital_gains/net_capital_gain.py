@@ -7,32 +7,58 @@ class net_capital_gain(Variable):
     label = "Net capital gain"
     unit = USD
     documentation = (
-        "The excess of net long-term capital gain over net short-term capital"
-        'loss, plus qualified dividends (the definition of "net capital gain"'
-        "which applies to 26 U.S.C. § 1(h) from § 1(h)(11))."
+        "The excess of net long-term capital gain over net short-term capital "
+        "loss, reduced by any part of it elected as investment income, plus "
+        "qualified dividends not elected as investment income (the "
+        'definition of "net capital gain" which applies to 26 U.S.C. § 1(h), '
+        "from § 1(h)(2) and § 1(h)(11))."
     )
     definition_period = YEAR
-    reference = dict(
-        title="26 U.S. Code § 1222(11)",
-        href="https://www.law.cornell.edu/uscode/text/26/1222#11",
-    )
+    reference = [
+        dict(
+            title="26 U.S. Code § 1222(11)",
+            href="https://www.law.cornell.edu/uscode/text/26/1222#11",
+        ),
+        dict(
+            title="26 U.S. Code § 1(h)(2)",
+            href="https://www.law.cornell.edu/uscode/text/26/1#h_2",
+        ),
+        dict(
+            title="26 U.S. Code § 1(h)(11)(A), (D)(i)",
+            href="https://www.law.cornell.edu/uscode/text/26/1#h_11",
+        ),
+        dict(
+            title="2025 Form 4952, line 4g instructions",
+            href="https://www.irs.gov/pub/irs-prior/f4952--2025.pdf#page=4",
+        ),
+    ]
 
     def formula(tax_unit, period, parameters):
-        lt_capital_gain = max_(0, add(tax_unit, period, ["long_term_capital_gains"]))
-        st_capital_loss = max_(0, -add(tax_unit, period, ["short_term_capital_gains"]))
-        investment_income_election = add(
+        # Capital gain distributions, including those reported without
+        # Schedule D (Form 1040 line 7 with the box checked), are long-term
+        # capital gains under IRC 852(b)(3)(B).
+        long_term_gain = add(
             tax_unit,
             period,
-            ["investment_income_elected_form_4952"],
+            ["long_term_capital_gains", "non_sch_d_capital_gains"],
         )
-        net_cap_gain = max_(
+        short_term_loss = max_(0, -add(tax_unit, period, ["short_term_capital_gains"]))
+        # 26 U.S.C. 1222(11), determined without regard to section 1(h)(11).
+        gain = max_(0, long_term_gain - short_term_loss)
+        # Form 4952 line 4g: the net capital gain and qualified dividends
+        # elected to be included in investment income (26 U.S.C. 163(d)(4)(B)).
+        # The amount "is generally treated as being attributable first to net
+        # capital gain ... and then to qualified dividends" (line 4g
+        # instructions). Section 1(h)(2) removes the gain part, the amount
+        # taken into account under 163(d)(4)(B)(iii); section 1(h)(11)(D)(i)
+        # removes the rest from qualified dividend income.
+        election = max_(
+            0, add(tax_unit, period, ["investment_income_elected_form_4952"])
+        )
+        gain_elected = min_(election, gain)
+        dividends_elected = election - gain_elected
+        qualified_dividends = max_(
             0,
-            lt_capital_gain - st_capital_loss - investment_income_election,
+            add(tax_unit, period, ["qualified_dividend_income"]) - dividends_elected,
         )
-        qual_div_income = add(tax_unit, period, ["qualified_dividend_income"])
-        # Capital gain distributions reported without Schedule D (Form 1040
-        # line 7 with the box checked) are long-term gains under IRC
-        # 852(b)(3)(B) and enter the preferential-rate base directly, with no
-        # Schedule D netting available on that filing path.
-        non_sch_d_capital_gains = add(tax_unit, period, ["non_sch_d_capital_gains"])
-        return net_cap_gain + qual_div_income + non_sch_d_capital_gains
+        return gain - gain_elected + qualified_dividends
