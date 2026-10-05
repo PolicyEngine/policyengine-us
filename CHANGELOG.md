@@ -1,3 +1,42 @@
+## [2.27.0] - 2026-10-05
+
+### Added
+
+- Add Kentucky LIHEAP regular heating assistance for FY2025 and FY2026.
+
+### Fixed
+
+- Order the federal non-refundable credits as their IRS credit limit worksheets do: the elderly or disabled credit is limited only by the foreign tax and child and dependent care credits (Schedule R) and precedes the education, retirement savings and energy efficient home improvement credits (Forms 8863, 8880 and 5695); the previously owned clean vehicle credit precedes the new clean vehicle credit (Form 8936) and is now limited by tax; the foreign tax credit applies against tax before 2022; the refundable 2021 child and dependent care credit no longer reduces other credits' limits; and Oklahoma's federal Child Tax Credit applies the credits that Schedule 8812 Credit Limit Worksheet A subtracts before the CTC, not those listed before it.
+
+
+## [2.26.0] - 2026-10-05
+
+### Added
+
+- Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with single-family and multifamily schedules and assumed economic vulnerability for separately billed or rent-included heating.
+
+
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
+## [2.25.1] - 2026-10-05
+
+### Fixed
+
+- Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.25.0] - 2026-10-05
+
+### Added
+
+- Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.
+
+
 ## [2.24.7] - 2026-10-05
 
 ### Fixed

@@ -9,7 +9,7 @@ class md_two_income_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=16",
-        "https://govt.westlaw.com/mdc/Document/NF93A7BD2E6C811ECA065A3F5EAA0E5C9?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)",
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-207&enactments=false",
     )
     defined_for = StateCode.MD
 

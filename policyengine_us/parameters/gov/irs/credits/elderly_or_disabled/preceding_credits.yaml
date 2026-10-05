@@ -1,22 +1,29 @@
 description: Non-refundable tax credits which precede the Elderly or Disabled Credit.
 values:
-  # Section 25D(c) orders the residential clean energy credit after these.
+  # Schedule R's Credit Limit Worksheet subtracts only Schedule 3 lines 1
+  # (foreign tax credit), 2 (child and dependent care credit) and 6l (Form
+  # 8978, not modeled). The education, retirement savings, energy and clean
+  # vehicle credits come after this credit.
   2013-01-01:
     - foreign_tax_credit
     - cdcc
-    - non_refundable_american_opportunity_credit
-    - lifetime_learning_credit
-    - savers_credit
-    - energy_efficient_home_improvement_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - foreign_tax_credit
+  2022-01-01:
+    - foreign_tax_credit
+    - cdcc
 
 metadata:
   unit: list
   period: year
   label: Non-refundable tax credits preceding the Elderly or Disabled Credit
   reference:
-    - title: IRS Schedule 3, Additional Credits and Payments
-      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
-    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
-      href: https://www.law.cornell.edu/uscode/text/26/25D#c
     - title: 2025 Instructions for Schedule R (Form 1040), Credit Limit Worksheet, line 2
       href: https://www.irs.gov/pub/irs-pdf/i1040sr.pdf#page=4
+    - title: 2021 Instructions for Schedule R (Form 1040), Credit Limit Worksheet—Line 21, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sr--2021.pdf#page=3
+    - title: 2013 Instructions for Schedule R (Form 1040A or 1040), Credit Limit Worksheet—Line 21, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sr--2013.pdf#page=3
+    - title: 26 U.S. Code § 21(g) - Special rules for 2021
+      href: https://www.law.cornell.edu/uscode/text/26/21#g
