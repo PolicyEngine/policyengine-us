@@ -96,8 +96,11 @@ def zero_person():
 def build_situation(households):
     """One Michigan tax unit per household: a head aged 45, an optional
     spouse aged 44, and dependents aged 10 or 16 (children) or 75 (a
-    dependent parent)."""
+    dependent parent). The SPM unit is the tax unit, and its Family
+    Independence Program grant (tanf) is an input, so the model does not
+    compute one from the household's income."""
     people, tax_units, marital_units, households_out = {}, {}, {}, {}
+    spm_units = {}
     for i, h in enumerate(households):
         members, couple = [], []
         roles = [("head", h["head"])]
@@ -123,6 +126,10 @@ def build_situation(households):
             else:
                 couple.append(name)
         tax_units[f"tax_unit_{i}"] = {"members": members}
+        spm_units[f"spm_unit_{i}"] = {
+            "members": members,
+            "tanf": {YEAR: h.get("tanf", 0)},
+        }
         marital_units[f"marital_unit_{i}"] = {"members": couple}
         households_out[f"household_{i}"] = {
             "members": members,
@@ -132,6 +139,7 @@ def build_situation(households):
         "people": people,
         "tax_units": tax_units,
         "marital_units": marital_units,
+        "spm_units": spm_units,
         "households": households_out,
     }
 
@@ -179,6 +187,8 @@ def reference(h, person_adjustments):
     line_19 = max(-CAPITAL_LOSS_LIMIT, amount(own, ["long_term_capital_gains"]))
     lines_20_to_26 = amount(own, by_line(CLAIMANT_LINES, 20, 23, 24, 26))
     received = amount(everyone(h), list(HOUSEHOLD_LINES))
+    # Line 27: the household's Family Independence Program grant, in full.
+    received += h.get("tanf", 0)
     # Line 30: the head and spouse come first in each household's slice.
     line_30 = float(sum(person_adjustments[: len(own)]))
     line_30 += amount(own, ["early_withdrawal_penalty"])
@@ -192,11 +202,12 @@ def tolerance(h):
     """One cent, or eight float32 spacings at the sum of the household's
     absolute amounts."""
     scale = sum(abs(v) for p in everyone(h) for v in p.values())
+    scale += abs(h.get("tanf", 0))
     return max(TOLERANCE, 8 * float(np.spacing(np.float32(scale))))
 
 
 def copy(h):
-    out = {"head": dict(h["head"])}
+    out = {"head": dict(h["head"]), "tanf": h.get("tanf", 0)}
     if h.get("spouse") is not None:
         out["spouse"] = dict(h["spouse"])
     out["dependents"] = [dict(d) for d in h.get("dependents", [])]
@@ -364,14 +375,15 @@ if hypothesis is not None:
             "head": draw(person()),
             "spouse": draw(st.one_of(st.none(), person())),
             "dependents": dependents,
+            "tanf": draw(st.one_of(st.just(0), AMOUNT)),
         }
 
-    @hypothesis.settings(max_examples=15, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(max_examples=50, deadline=None, suppress_health_check=SLOW)
     @hypothesis.given(st.lists(household(), min_size=1, max_size=15))
     def test_properties(households):
         assert_properties(households)
 
-    @hypothesis.settings(max_examples=10, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(max_examples=30, deadline=None, suppress_health_check=SLOW)
     @hypothesis.given(
         st.lists(household(), min_size=1, max_size=10),
         st.sampled_from(list(HOUSEHOLD_LINES)),
