@@ -67,7 +67,21 @@ values:
     # "gross income minus the cost of doing business derived from rental
     #  property in which a household member is not actively engaged in the
     #  management of the property at least 20 hours a week."
-    - rental_income
+    # snap_rental_income floors rental_income at zero because a rental loss
+    # does not offset other income.
+    - snap_rental_income
+    # Farm rent (Form 4835 crop or livestock share rent of a landowner who
+    # does not materially participate) is income from rental property too,
+    # under the same assumption; flat cash farm rent is in rental_income.
+    # A landowner who instead shares the farm's expenses and profit or loss
+    # can have earned self-employment income (e.g. Kansas EES memo
+    # 99-10-05); the inputs do not identify cost sharing, so all farm rent
+    # is treated as rent here (see issue #9673).
+    # Nothing in 7 U.S.C. 2014(d) or 273.9(c) excludes rent. The inputs are
+    # tax figures, which deduct depreciation (disallowed by
+    # 273.11(b)(2)(iii)) but not principal payments on income-producing
+    # real estate (allowed by 273.11(b)(1)).
+    - snap_farm_rent_income
     # (iii)
     - child_support_received
     - alimony_income

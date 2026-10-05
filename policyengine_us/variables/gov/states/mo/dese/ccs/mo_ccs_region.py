@@ -17,7 +17,7 @@ class mo_ccs_region(Variable):
     definition_period = YEAR
     label = "Missouri Child Care Subsidy geographic region"
     defined_for = StateCode.MO
-    reference = "https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+    reference = "https://dese.mo.gov/sites/g/files/zuston521/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
 
     def formula(household, period, parameters):
         county = household("county_str", period)

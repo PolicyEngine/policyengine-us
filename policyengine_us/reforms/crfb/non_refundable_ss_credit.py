@@ -38,8 +38,12 @@ def non_refundable_ss_credit_reform() -> Reform:
         unit = "/1"
 
         def formula(tax_unit, period, parameters):
-            # compute taxable income that is taxed at the main rates
-            full_taxable_income = tax_unit("taxable_income", period)
+            # compute taxable income that is taxed at the main rates; a
+            # taxpayer excluding foreign earned income adds the excluded
+            # amount back (26 U.S.C. 911(f)(1)(A))
+            full_taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
             cg_exclusion = tax_unit(
                 "capital_gains_excluded_from_taxable_income", period
             )
@@ -101,6 +105,28 @@ def non_refundable_ss_credit_reform() -> Reform:
                 "ss_credit",
             ],
         )
+        # The credit precedes the Child Tax Credit and, like every credit,
+        # the residential clean energy credit (26 U.S.C. 25D(c)).
+        credits = parameters.gov.irs.credits
+        for preceding_credits in (
+            credits.ctc_tax_liability_limit.preceding_credits,
+            credits.residential_clean_energy.preceding_credits,
+        ):
+            preceding_credits.update(
+                start=instant("2026-01-01"),
+                value=[
+                    "foreign_tax_credit",
+                    "cdcc",
+                    "non_refundable_american_opportunity_credit",
+                    "lifetime_learning_credit",
+                    "savers_credit",
+                    "energy_efficient_home_improvement_credit",
+                    "elderly_disabled_credit",
+                    "new_clean_vehicle_credit",
+                    "used_clean_vehicle_credit",
+                    "ss_credit",
+                ],
+            )
         return parameters
 
     class reform(Reform):

@@ -9,7 +9,7 @@ class amt_kiddie_tax_applies(Variable):
     documentation = "Whether the kiddie tax applies to the tax unit"
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/1#g_2_A",
-        "https://www.irs.gov/publications/p929",
+        "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",
     ]
 
     def formula(tax_unit, period, parameters):
