@@ -1,0 +1,93 @@
+# 26 U.S.C. 1(h)(1), applied for a taxpayer excluding foreign earned income to
+# taxable income plus the excluded amount, with the gains reduced by any
+# capital gain excess (26 U.S.C. 911(f)(2)(A)). Line references are to the
+# 2025 Qualified Dividends and Capital Gain Tax Worksheet and Schedule D Tax
+# Worksheet as a Form 2555 filer completes them.
+- name: Gains in the 0% bracket without an exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 40_000
+    net_capital_gain: 30_000
+    adjusted_net_capital_gain: 30_000
+    foreign_earned_income_exclusion: 0
+  output:
+    # Line 5 = 10,000, line 9 = min(40,000, 48,350) - 10,000 = 30,000 at 0%.
+    capital_gains_tax: 0
+
+- name: The excluded amount uses up the 0% bracket
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 40_000
+    net_capital_gain: 30_000
+    adjusted_net_capital_gain: 30_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    # Line 1 = 70,000, line 4 = 30,000, line 5 = 40,000, line 7 = 48,350,
+    # line 9 = 8,350 at 0%, line 17 = 21,650, line 18 = 3,247.50.
+    capital_gains_tax: 3_247.50
+
+- name: A capital gain excess taxes only the gains within taxable income
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    net_capital_gain: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Excess 15,750. Line 1 = 134,250, line 3 = 34,250, line 5 = 100,000,
+    # line 9 = 0, line 17 = 34,250, line 18 = 5,137.50.
+    capital_gains_tax: 5_137.50
+
+- name: A capital gain excess that reaches the qualified dividends
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 14_250
+    qualified_dividend_income: 20_000
+    net_capital_gain: 30_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Excess 15,750: line 3 falls from 10,000 to 0 and line 2 from 20,000 to
+    # 14,250. Line 1 = 114,250, line 5 = 100,000, line 17 = 14,250.
+    section_911_qualified_dividend_income: 14_250
+    capital_gains_tax: 2_137.50
+
+- name: A capital gain excess with 25 and 28 percent gains
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 85_000
+    qualified_dividend_income: 10_000
+    net_capital_gain: 100_000
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    foreign_earned_income_exclusion: 200_000
+  output:
+    # Excess 15,000. Schedule D Tax Worksheet: line 1 = 285,000, line 6 =
+    # 10,000, line 9 = 75,000, line 10 = 85,000, Schedule D line 18 = 0 and
+    # line 19 = 15,000, line 13 = 70,000, line 21 = 200,000, line 30 =
+    # 70,000, line 31 = 10,500, line 39 = 15,000, line 40 = 3,750, line 42 =
+    # 0. Line 44 (tax on 200,000) equals worksheet line 5 of the Foreign
+    # Earned Income Tax Worksheet, so line 6 is 14,250.
+    section_911_capital_gain_excess: 15_000
+    capital_gains_excluded_from_taxable_income: 85_000
+    income_tax_main_rates: 0
+    capital_gains_tax: 14_250
+
+- name: No taxable income, no capital gains tax
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 0
+    qualified_dividend_income: 3_000
+    net_capital_gain: 3_000
+    foreign_earned_income_exclusion: 130_000
+  output:
+    capital_gains_tax: 0

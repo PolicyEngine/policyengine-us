@@ -199,22 +199,35 @@ def create_afa_other_dependent_credit() -> Reform:
             return pre_baby_bonus_amount + baby_bonus_amount
 
     def modify_parameters(parameters):
-        parameters.gov.irs.credits.non_refundable.update(
+        credits = parameters.gov.irs.credits
+        credits_before_residential_clean_energy = [
+            "cdcc",
+            "elderly_disabled_credit",
+            "non_refundable_american_opportunity_credit",
+            "lifetime_learning_credit",
+            "savers_credit",
+            "energy_efficient_home_improvement_credit",
+            "new_clean_vehicle_credit",
+            "used_clean_vehicle_credit",
+            "other_dependent_credit",
+        ]
+        credits.non_refundable.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),
-            value=[
-                "cdcc",
-                "elderly_disabled_credit",
-                "non_refundable_american_opportunity_credit",
-                "lifetime_learning_credit",
-                "savers_credit",
-                "residential_clean_energy_credit",
-                "energy_efficient_home_improvement_credit",
-                "new_clean_vehicle_credit",
-                "used_clean_vehicle_credit",
-                "other_dependent_credit",
-            ],
+            value=credits_before_residential_clean_energy
+            + ["residential_clean_energy_credit"],
         )
+        # 26 U.S.C. 25D(c) orders the residential clean energy credit after
+        # every other credit, including the separate other dependent credit.
+        for preceding_credits in (
+            credits.ctc_tax_liability_limit.preceding_credits,
+            credits.residential_clean_energy.preceding_credits,
+        ):
+            preceding_credits.update(
+                start=instant("2025-01-01"),
+                stop=instant("2039-12-31"),
+                value=credits_before_residential_clean_energy,
+            )
         parameters.gov.irs.credits.ctc.refundable.fully_refundable.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),

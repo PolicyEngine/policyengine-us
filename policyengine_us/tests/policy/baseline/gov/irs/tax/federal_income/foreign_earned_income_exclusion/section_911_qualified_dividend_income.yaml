@@ -1,0 +1,40 @@
+# 26 U.S.C. 911(f)(2)(A)(ii): "the taxpayer's qualified dividend income shall
+# be reduced by so much of such capital gain excess as exceeds the taxpayer's
+# net capital gain (determined without regard to section 1(h)(11) and the
+# reduction under clause (i))". Worksheet footnote, modification 2.
+- name: An excess within the other gain leaves the dividends alone
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 40_000 # 30,000 of gain plus the dividends
+    section_911_capital_gain_excess: 20_000
+  output:
+    section_911_qualified_dividend_income: 10_000
+
+- name: An excess above the other gain reduces the dividends by the rest
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 40_000
+    section_911_capital_gain_excess: 35_000
+  output:
+    # 35,000 - 30,000 = 5,000 of the excess is left for the dividends.
+    section_911_qualified_dividend_income: 5_000
+
+- name: Dividends are not reduced below zero
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 40_000
+    section_911_capital_gain_excess: 45_000
+  output:
+    section_911_qualified_dividend_income: 0
+
+- name: No excess leaves the dividends unchanged
+  period: 2025
+  input:
+    qualified_dividend_income: 10_000
+    net_capital_gain: 40_000
+    section_911_capital_gain_excess: 0
+  output:
+    section_911_qualified_dividend_income: 10_000

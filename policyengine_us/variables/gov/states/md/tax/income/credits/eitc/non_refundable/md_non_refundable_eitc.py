@@ -11,7 +11,7 @@ class md_non_refundable_eitc(Variable):
     unit = USD
     documentation = "Non-refundable EITC credit reducing MD State income tax."
     definition_period = YEAR
-    reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
+    reference = "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-704&enactments=false"
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):

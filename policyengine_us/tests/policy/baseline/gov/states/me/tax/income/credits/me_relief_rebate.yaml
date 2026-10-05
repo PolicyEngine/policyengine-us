@@ -24,3 +24,61 @@
     state_code: ME
   output:
     me_relief_rebate: 850
+
+- name: No relief rebate before the one-time 2021 program
+  period: 2020
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: No relief rebate after the one-time 2021 program
+  period: 2022
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: Relief rebate does not reach Maine refundable credits or income tax in 2020
+  period: 2020
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 1
+    me_refundable_child_care_credit: 0
+    me_eitc: 0
+    me_sales_tax_fairness_credit: 0
+    me_property_tax_fairness_credit: 0
+    me_income_tax_before_refundable_credits: 1_000
+    state_code: ME
+  output:
+    # 1 head x 0 amount in 2020 = 0.
+    me_relief_rebate: 0
+    # Backdated 2021 list: 0 child care + 0 eitc + 0 sales tax fairness
+    # + 0 property tax fairness + 0 relief rebate = 0.
+    me_refundable_credits: 0
+    # 1,000 before refundable credits - 0 refundable credits = 1,000.
+    me_income_tax: 1_000
+
+- name: Relief rebate reaches Maine refundable credits and income tax in 2021
+  period: 2021
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 1
+    me_refundable_child_care_credit: 0
+    me_eitc: 0
+    me_sales_tax_fairness_credit: 0
+    me_property_tax_fairness_credit: 0
+    me_income_tax_before_refundable_credits: 1_000
+    state_code: ME
+  output:
+    # 1 head x 850 = 850.
+    me_relief_rebate: 850
+    # 0 child care + 0 eitc + 0 sales tax fairness + 0 property tax fairness
+    # + 850 relief rebate = 850.
+    me_refundable_credits: 850
+    # 1,000 before refundable credits - 850 refundable credits = 150.
+    me_income_tax: 150

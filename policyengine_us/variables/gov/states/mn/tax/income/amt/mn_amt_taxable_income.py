@@ -8,8 +8,8 @@ class mn_amt_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
     )
     defined_for = StateCode.MN
 

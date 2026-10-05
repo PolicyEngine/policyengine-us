@@ -1,0 +1,31 @@
+- name: Case 1, rent is divided evenly across months.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        rental_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_rental_income: 500
+
+- name: Case 2, a rental loss is floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        rental_income: -6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Only self-employed farmers' losses offset other income
+    # (7 U.S.C. 2014(d)(9), 7 CFR 273.11(a)(2)(ii)).
+    snap_rental_income: 0

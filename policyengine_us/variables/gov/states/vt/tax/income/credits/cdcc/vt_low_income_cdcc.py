@@ -8,8 +8,8 @@ class vt_low_income_cdcc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2"
-        "https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/"
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2",
+        "https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/",
     )
     defined_for = "vt_low_income_cdcc_eligible"
 
