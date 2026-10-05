@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, KY, MS, NE, TX
+    coverage: OR, DC, Riverside County, MA, IL, IN, KS, KY, MS, NE, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,14 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: IN
+        status: partial
+        name: Indiana EAP
+        full_name: Indiana Energy Assistance Program
+        variable: in_eap
+        parameter_prefix: gov.states.in.ihcda.eap
+        verified_years: "2026"
+        notes: PY2026 regular heating and the winter electric allowance only. Crisis, cooling and weatherization assistance are out of scope.
       - state: KS
         status: partial
         name: Kansas LIEAP
