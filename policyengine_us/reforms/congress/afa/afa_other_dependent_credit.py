@@ -200,15 +200,18 @@ def create_afa_other_dependent_credit() -> Reform:
 
     def modify_parameters(parameters):
         credits = parameters.gov.irs.credits
+        # The baseline order of gov.irs.credits.non_refundable, with the
+        # separate other dependent credit in the Child Tax Credit's place.
         credits_before_residential_clean_energy = [
+            "foreign_tax_credit",
             "cdcc",
             "elderly_disabled_credit",
             "non_refundable_american_opportunity_credit",
             "lifetime_learning_credit",
             "savers_credit",
             "energy_efficient_home_improvement_credit",
-            "new_clean_vehicle_credit",
             "used_clean_vehicle_credit",
+            "new_clean_vehicle_credit",
             "other_dependent_credit",
         ]
         credits.non_refundable.update(

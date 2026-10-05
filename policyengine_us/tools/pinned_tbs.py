@@ -103,23 +103,28 @@ def _pin_2020_irc(tbs):
         )
     except Exception:
         pass
-    # The 2020 CTC & ODC Worksheet (Pub. 972, p.7) uses the CDCC before the CTC
-    # when computing the CTC's tax-liability limit, so the recomputed CDCC must
-    # reduce that limit (`ctc_tax_liability_after_preceding_credits`) and the
-    # residential clean energy credit's limit, and count among the
-    # non-refundable credits. The 2021 lists omit `cdcc` (it was refundable
-    # under ARPA). Add `cdcc` to each current 2021 membership rather than
-    # pinning the whole 2020 lists, which would drop `new_clean_vehicle_credit`
-    # (2021+).
-    for credit_list in (
-        credits.non_refundable,
-        credits.ctc_tax_liability_limit.preceding_credits,
-        credits.residential_clean_energy.preceding_credits,
-    ):
+    # The 2020 credit limit worksheets (e.g. the CTC & ODC Worksheet, Pub. 972,
+    # p.7) subtract the CDCC from tax before every credit but the foreign tax
+    # credit, so the recomputed CDCC must reduce each later credit's limit and
+    # count among the non-refundable credits. The 2021 lists omit `cdcc` (it
+    # was refundable under ARPA). Add `cdcc` after the foreign tax credit in
+    # each current 2021 list whose 2020 version had it, rather than pinning
+    # the whole 2020 lists, which would drop `new_clean_vehicle_credit` (2021+).
+    credit_lists = [credits.non_refundable] + [
+        param
+        for param in credits.get_descendants()
+        if isinstance(param, Parameter) and param.name.endswith(".preceding_credits")
+    ]
+    for credit_list in credit_lists:
         try:
             members_2021 = list(credit_list(start))
-            if "cdcc" not in members_2021:
-                members_2021 = ["cdcc"] + members_2021
+            if "cdcc" in credit_list(pin_date) and "cdcc" not in members_2021:
+                position = (
+                    members_2021.index("foreign_tax_credit") + 1
+                    if "foreign_tax_credit" in members_2021
+                    else 0
+                )
+                members_2021.insert(position, "cdcc")
             credit_list.update(start=start, stop=stop, value=members_2021)
         except Exception:
             pass
