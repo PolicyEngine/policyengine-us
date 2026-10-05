@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, NE, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: NE
+        status: partial
+        name: Nebraska LIHEAP
+        full_name: Nebraska Low Income Home Energy Assistance Program
+        variable: ne_liheap
+        parameter_prefix: gov.states.ne.dhhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
