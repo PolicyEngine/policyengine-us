@@ -214,6 +214,51 @@ def test_each_group_writes_reports_the_rest_job_uploads(groups, report_dir):
         assert not missing, f"{workflow.name} does not upload {missing}"
 
 
+@pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
+def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow):
+    jobs = yaml.safe_load(workflow.read_text())["jobs"]
+    selected = []
+    reports = []
+    for target in ("test-other-python-spm", "test-microsimulation"):
+        calls = [
+            (job, step)
+            for job, config in jobs.items()
+            for step in config.get("steps", [])
+            if target in step.get("run", "")
+        ]
+        assert len(calls) == 1, (target, calls)
+        job, step = calls[0]
+        assert job == "Microsimulation", (target, job)
+        command = shlex.split(step["run"])
+        assert command[:3] == ["/usr/bin/time", "-v", "-o"]
+        assert command[4:] == ["uv", "run", "--no-sync", "make", target]
+        assert not step.get("continue-on-error", False)
+        junit = [
+            arg.removeprefix("--junitxml=")
+            for arg in shlex.split(step["env"]["PYTEST_ADDOPTS"])
+            if arg.startswith("--junitxml=")
+        ]
+        assert len(junit) == 1
+        reports.extend([command[3], *junit])
+        selected.append(step)
+    steps = jobs["Microsimulation"]["steps"]
+    assert steps.index(selected[0]) < steps.index(selected[1])
+    assert selected[1]["if"] == "always()"
+    assert len(set(reports)) == 4
+    uploads = [
+        step
+        for step in steps
+        if step.get("uses", "").startswith("actions/upload-artifact")
+    ]
+    assert len(uploads) == 1
+    assert uploads[0]["if"] == "always()"
+    patterns = uploads[0]["with"]["path"].split()
+    assert all(
+        any(fnmatch(report, pattern) for pattern in patterns) for report in reports
+    )
+    assert uploads[0]["with"]["name"] != "rest-test-timings"
+
+
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     """Locally the same groups run without GNU time, which macOS lacks."""
     plain = dry_run("test-other-python-rest")

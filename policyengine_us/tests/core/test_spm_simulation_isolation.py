@@ -90,11 +90,20 @@ def test_parameter_reform_leaves_every_other_simulation_unreformed():
     """
     fingerprint_before = parameter_fingerprint(system)
     reformed = Simulation(situation=earner_situation())
+    policy = reformed.tax_benefit_system
+    assert policy.parameters is system.parameters
+    assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
     unrelated = Simulation(situation=earner_situation())
     assert reformed.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     assert unrelated.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
 
     reformed.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+
+    assert policy.parameters is not system.parameters
+    assert policy._parameters_at_instant_cache is not (
+        system._parameters_at_instant_cache
+    )
+    assert not policy.shares_parameters
 
     assert reformed.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
     # An existing simulation, recomputed from its own inputs. Use the same
@@ -108,21 +117,6 @@ def test_parameter_reform_leaves_every_other_simulation_unreformed():
     assert later.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     # Nothing reached the shared instance itself.
     assert parameter_fingerprint(system) == fingerprint_before
-
-
-def test_parameter_reform_detaches_the_shared_tree_and_its_warm_caches():
-    simulation = Simulation(situation=earner_situation())
-    policy = simulation.tax_benefit_system
-    assert policy.parameters is system.parameters
-    assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
-
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
-
-    assert policy.parameters is not system.parameters
-    assert policy._parameters_at_instant_cache is not (
-        system._parameters_at_instant_cache
-    )
-    assert not policy.shares_parameters
 
 
 def test_variable_only_reform_keeps_sharing_the_parameter_tree():

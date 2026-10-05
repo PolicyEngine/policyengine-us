@@ -298,14 +298,8 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Run sequentially on this runner; process exit releases the SPM heap
-      # before collecting the remaining Python files. Those run as one pytest
-      # process per group (REST_PYTHON_GROUPS in the Makefile), and each group
-      # writes rest-python-<group>.xml and rest-python-<group>-resources.txt.
-      - name: Run SPM Python tests
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-python-spm-resources.txt uv run --no-sync make test-other-python-spm
+      # Each Rest group runs in a separate process to release its heap.
+      # SPM simulation/API contracts run in the Microsimulation job instead.
       - name: Run remaining Python tests
         if: always()
         env:
@@ -355,11 +349,26 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Split out of the Rest job: the combined single-process pytest run
-      # was OOM-killed at ~94% on run 28698452678 once microsimulation
-      # peaks stacked on the accumulated python-test RSS.
+      # Keep simulation/API and dataset compatibility on this existing runner.
+      # Use separate, sequential processes: combining these suites in one
+      # pytest process previously accumulated enough memory to kill the runner.
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
       - name: Run microsimulation tests
-        run: uv run --no-sync make test-microsimulation
+        if: always()
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
+      - name: Upload simulation timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-test-timings
+          path: |
+            simulation-*.xml
+            simulation-*-resources.txt
   Publish:
     runs-on: ubuntu-24.04
     if: |

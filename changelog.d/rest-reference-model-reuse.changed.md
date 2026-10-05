@@ -1,0 +1,1 @@
+Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, and reduce redundant reference-model construction and parameter-isolation setup without adding CI jobs or removing regression assertions.
