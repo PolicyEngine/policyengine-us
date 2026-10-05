@@ -156,3 +156,44 @@
     # 0%: $89,250 (joint); 15%: $310,750 * 15% = $46,612.50;
     # 20%: $0.
     amt_tax_including_cg: 46_612.50
+
+# 26 U.S.C. 911(f)(2)(B) and the 2025 Form 6251 instructions, Part III,
+# "Form 2555": lines 13 to 15 are figured after reducing the gains by the AMT
+# capital gain excess (the gains less Form 6251 line 6), while lines 20 and 27
+# keep the regular tax amounts.
+- name: A Form 2555 filer with an AMT capital gain excess
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 300_000
+    taxable_income: 284_250
+    amt_income_less_exemptions: 211_900 # Form 6251 line 6
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Regular tax capital gain excess: 300,000 - 284,250.
+    section_911_capital_gain_excess: 15_750
+    # AMT capital gain excess: 300,000 - 211,900.
+    amt_section_911_capital_gain_excess: 88_100
+    # Line 12 = 311,900 (worksheet line 3). Lines 13 and 15 = 211,900.
+    # Line 17 = 100,000, line 18 = 26,000. Line 20 = 100,000 (the regular
+    # tax worksheet's ordinary income: 384,250 - 284,250), so line 21 = 0.
+    # Line 22 = 211,900, line 23 = 0, line 29 = 533,400 - 100,000 = 433,400,
+    # line 30 = 211,900, line 31 = 31,785, line 33 = 0. Line 38 = 57,785.
+    dwks14: 100_000
+    amt_tax_including_cg: 57_785
+
+- name: The same gains without the exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    long_term_capital_gains: 300_000
+    taxable_income: 284_250
+    amt_income_less_exemptions: 211_900
+    foreign_earned_income_exclusion: 0
+  output:
+    # Line 12 = 211,900, line 13 = 300,000, line 16 = 211,900, line 17 = 0.
+    # Line 20 = 0, line 21 = 48,350, line 22 = 211,900, line 23 = 48,350,
+    # line 24 = 163,550, line 30 = 163,550, line 31 = 24,532.50.
+    amt_tax_including_cg: 24_532.50

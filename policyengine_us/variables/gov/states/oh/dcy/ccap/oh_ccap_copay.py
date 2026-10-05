@@ -9,7 +9,7 @@ class oh_ccap_copay(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-05",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-05_20221211.pdf",
         "https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/2/16/5180$2-16-05_PH_FF_A_APP5_20221201_0903.pdf",
     )
 

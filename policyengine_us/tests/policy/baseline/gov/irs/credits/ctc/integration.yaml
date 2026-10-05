@@ -1,3 +1,48 @@
+# Section 911 filer with positive taxable income: the CTC's tax limit sees the
+# tax figured on the Foreign Earned Income Tax Worksheet (26 U.S.C. 911(f)).
+- name: Head of household with two children, positive taxable income and a section 911 exclusion in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        # Wages included in gross income; $40,000 of foreign wages is
+        # excluded on Form 2555.
+        employment_income: 60_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        foreign_earned_income_exclusion: 40_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    # $60,000 less the $23,625 head of household standard deduction.
+    taxable_income: 36_375
+    # Foreign Earned Income Tax Worksheet (Form 1040 line 16): line 3 =
+    # $76,375, line 4 = $9,977.50 (Tax Table $9,978), line 5 = tax on
+    # $40,000 = $4,460 (Tax Table $4,463), line 6 = $5,517.50 (Tax Table
+    # $5,515). Taxed from the bottom bracket it would be $4,025.
+    income_tax_before_credits: 5_517.50
+    eitc: 0
+    # Schedule 8812 line 12: 2 x $2,200.
+    ctc: 4_400
+    # Credit Limit Worksheet A sees the stacked tax, which covers the whole
+    # credit, so nothing is left to refund (section 24(d)(3) would bar the
+    # refund in any case).
+    ctc_limiting_tax_liability: 5_517.50
+    refundable_ctc: 0
+    non_refundable_ctc: 4_400
+    income_tax_before_refundable_credits: 1_117.50
+    income_tax: 1_117.50
+
 - name: Single parent of 10 children aged 6 to 17, $200k income during ARP.
   period: 2021
   absolute_error_margin: 0

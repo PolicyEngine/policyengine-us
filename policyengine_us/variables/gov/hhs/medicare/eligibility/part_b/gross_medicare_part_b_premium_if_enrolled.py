@@ -8,7 +8,7 @@ class gross_medicare_part_b_premium_if_enrolled(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "medicare_enrolled"
-    reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
+    reference = "https://www.medicare.gov/basics/costs/medicare-costs#partB"
     documentation = (
         "Annual Medicare Part B premium for enrolled beneficiaries before "
         "Medicare Savings Program coverage, including any income-related "
