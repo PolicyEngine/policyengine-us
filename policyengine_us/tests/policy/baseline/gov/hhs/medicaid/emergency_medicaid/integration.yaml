@@ -666,3 +666,78 @@
     # However, disabled people may qualify under senior_or_disabled category
     # Need to check if disabled person qualifies for Emergency Medicaid
     is_emergency_medicaid_eligible: [true]
+
+# ============================================================
+# LAWFULLY RESIDING CHILDREN OPTION (42 USC 1396b(v)(4))
+# ============================================================
+
+- name: Case 21, recent permanent resident child in Texas gets regular Medicaid while the parent gets emergency Medicaid.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 3_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        has_emergency_medical_condition: true
+      person2:
+        age: 8
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Income of $3,000 is below Texas's 19% FPL parent limit and its 138% FPL
+    # older-child limit, so both people have a Medicaid category.
+    medicaid_category: [PARENT, OLDER_CHILD]
+    # Texas elected the option for children under 19, but not for adults, so
+    # only the child is immigration-eligible inside the five-year bar.
+    is_medicaid_lawfully_residing_option_eligible: [false, true]
+    is_medicaid_immigration_status_eligible: [false, true]
+    is_medicaid_eligible: [false, true]
+    # The parent meets every Medicaid rule except immigration status.
+    is_emergency_medicaid_eligible: [true, false]
+
+- name: Case 22, recent permanent resident child in Texas gets regular Medicaid while the parent has no Medicaid category.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        has_emergency_medical_condition: true
+      person2:
+        age: 8
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Income of $20,000 is above the 19% FPL parent limit, and Texas did not
+    # expand Medicaid to adults, but it is below the 138% FPL older-child limit.
+    medicaid_category: [NONE, OLDER_CHILD]
+    is_medicaid_immigration_status_eligible: [false, true]
+    is_medicaid_eligible: [false, true]
+    # Emergency Medicaid needs a Medicaid category, so the parent has none.
+    is_emergency_medicaid_eligible: [false, false]

@@ -1,0 +1,46 @@
+description: Kentucky counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2024-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    # Social Security is counted in the formula, gross for FY2025 and net of
+    # the Medicare Part B premium from FY2026
+    # (social_security_medicare_premium_deduction).
+    - ssi
+    # Plan Section 17.4 lists the DCBS State Supplementation award letter as
+    # income documentation.
+    - ky_ssp
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
+    - pension_income
+    - military_retirement_pay
+    # Plan Section 17.4 lists Railroad Retirement records.
+    - railroad_benefits
+    - retirement_distributions
+    - financial_assistance
+    - gambling_winnings
+    - rental_income
+    # Plan Section 17.4 lists records of farm or rental income.
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    # 921 KAR 4:116 Section 1(8) includes earned and unearned income; plan
+    # Section 1.9 counts insurance payments made directly to the insured.
+    - workers_compensation
+    - disability_benefits
+    - veterans_benefits
+    - salt_refund_income
+metadata:
+  unit: list
+  period: year
+  label: Kentucky LIHEAP unearned income sources
+  reference:
+    - title: Kentucky FY2026 state plan, Section 1.9, page 6, and Section 17.4, page 34
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=6
+    - title: Kentucky FY2025 state plan, Section 1.9, page 6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KY_Plan_2025.pdf#page=6
+    - title: 921 KAR 4:116 Section 1(8)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
