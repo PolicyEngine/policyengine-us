@@ -175,10 +175,11 @@
       tax_unit:
         members: [person1]
         # Foreign Earned Income Tax Worksheet line 2c: a 100,000 foreign
-        # earned income exclusion (Form 2555 lines 42 and 45, no housing)
-        # less 5,000 of itemized deductions disallowed because they relate
-        # to it (line 2b). Section 1411(d)(2) subtracts only deductions
-        # taken into account in computing AGI, so the addition is 100,000.
+        # earned income exclusion (Form 2555 lines 42 and 45; no housing
+        # amounts and nothing on line 44) less 5,000 of itemized deductions
+        # disallowed because they relate to it (line 2b). Section 1411(d)(2)
+        # subtracts only deductions taken into account in computing AGI, so
+        # the addition is 100,000.
         foreign_earned_income_exclusion: 95_000
         niit_magi_section_911_addition: 100_000
     households:
