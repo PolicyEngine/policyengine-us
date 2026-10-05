@@ -1,1 +1,0 @@
-Tax the income of filers who exclude foreign earned income at the rates it would face on top of the excluded amount, in the regular tax, the capital gains rates and the alternative minimum tax (26 U.S.C. 911(f), the Foreign Earned Income Tax Worksheet).

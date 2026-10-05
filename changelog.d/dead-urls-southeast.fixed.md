@@ -1,1 +1,0 @@
-Replace dead South Carolina, Kentucky, Oklahoma, Florida, Ohio, Missouri, North Carolina and South Dakota reference URLs with live successors or pinned Wayback captures, and guard against their return.

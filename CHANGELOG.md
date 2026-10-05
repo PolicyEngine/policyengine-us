@@ -1,3 +1,15 @@
+## [2.24.6] - 2026-10-05
+
+### Fixed
+
+- Replace dead federal and miscellaneous reference URLs (IRS, SSA, CMS, USDA, CBO, Medicaid, KFF, Justia and others) with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Michigan Department of Treasury and Legislature reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Minnesota Department of Revenue reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Louisiana, Mississippi, Alabama, Texas and Georgia reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead South Carolina, Kentucky, Oklahoma, Florida, Ohio, Missouri, North Carolina and South Dakota reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Tax the income of filers who exclude foreign earned income at the rates it would face on top of the excluded amount, in the regular tax, the capital gains rates and the alternative minimum tax (26 U.S.C. 911(f), the Foreign Earned Income Tax Worksheet).
+
+
 ## [2.24.5] - 2026-10-05
 
 ### Fixed
