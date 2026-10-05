@@ -19,3 +19,27 @@
     school_meal_tier: FREE
   output:
     school_meal_daily_subsidy: 6.80  # NSLP 4.43 + SBP 2.37 (SY 2024-25 rates)
+
+# Annual periods read the rates in force at their start, so calendar 2026 uses
+# SY 2025-26 and calendar 2027 uses SY 2026-27. Keep calendar-year test periods
+# for compatibility with the annual variable and the core cache.
+# NSLP under-60% rates plus SBP non-severe-need rates:
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
+# https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf
+- name: Published SY 2025-26 rates apply in calendar 2026 across regions and tiers.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.06, 6.36, 0.84, 11.40, 10.70, 1.33, 9.16, 8.46, 1.08]
+
+- name: Published SY 2026-27 rates stay fixed in calendar 2027.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.30, 6.60, 0.87, 11.81, 11.11, 1.38, 9.48, 8.78, 1.11]

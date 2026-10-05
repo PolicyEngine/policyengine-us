@@ -14,6 +14,7 @@ CONTIGUOUS_US:
     2023-07-01: 0.38
     2024-07-01: 0.39
     2025-07-01: 0.40
+    2026-07-01: 0.42
   REDUCED:
     2015-07-01: 1.36
     2016-07-01: 1.41
@@ -26,6 +27,7 @@ CONTIGUOUS_US:
     2023-07-01: 1.98
     2024-07-01: 2.07
     2025-07-01: 2.16
+    2026-07-01: 2.24
   FREE:
     2015-07-01: 1.66
     2016-07-01: 1.71
@@ -38,6 +40,7 @@ CONTIGUOUS_US:
     2023-07-01: 2.28
     2024-07-01: 2.37
     2025-07-01: 2.46
+    2026-07-01: 2.54
 AK:
   PAID:
     2015-07-01: 0.43
@@ -51,6 +54,7 @@ AK:
     2023-07-01: 0.58
     2024-07-01: 0.60
     2025-07-01: 0.62
+    2026-07-01: 0.64
   REDUCED:
     2015-07-01: 2.36
     2016-07-01: 2.43
@@ -63,6 +67,7 @@ AK:
     2023-07-01: 3.36
     2024-07-01: 3.50
     2025-07-01: 3.65
+    2026-07-01: 3.79
   FREE:
     2015-07-01: 2.66
     2016-07-01: 2.73
@@ -75,6 +80,7 @@ AK:
     2023-07-01: 3.66
     2024-07-01: 3.80
     2025-07-01: 3.95
+    2026-07-01: 4.09
 HI:
   PAID:
     2015-07-01: 0.33
@@ -88,6 +94,7 @@ HI:
     2023-07-01: 0.47
     2024-07-01: 0.49
     2025-07-01: 0.51
+    2026-07-01: 0.52
   REDUCED:
     2015-07-01: 1.64
     2016-07-01: 1.69
@@ -100,6 +107,7 @@ HI:
     2023-07-01: 2.65
     2024-07-01: 2.76
     2025-07-01: 2.88
+    2026-07-01: 2.99
   FREE:
     2015-07-01: 1.94
     2016-07-01: 1.99
@@ -112,6 +120,7 @@ HI:
     2023-07-01: 2.95
     2024-07-01: 3.06
     2025-07-01: 3.18
+    2026-07-01: 3.29
 
 metadata:
   unit: currency-USD
@@ -138,10 +147,23 @@ metadata:
       href: https://www.federalregister.gov/documents/2024/07/10/2024-15175/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2025
       href: https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf#page=4
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2026
+      href: https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf#page=3
   period: day
   label: School Breakfast Program value
   breakdown:
     - state_group
     - school_meal_tier
-  uprating: gov.bls.cpi.cpi_u
+  # Published rates remain fixed from July through June. After the last
+  # published school year, retain CPI-U as a projection proxy for USDA's
+  # Food Away From Home index, applying May-to-May changes only on July 1.
+  uprating:
+    parameter: gov.bls.cpi.cpi_u
+    at_defined_interval:
+      start: "0001-05-01"
+      end: "0002-05-01"
+      enactment: "0002-07-01"
+    rounding:
+      interval: 0.01
+      type: downwards
   propagate_metadata_to_children: true
