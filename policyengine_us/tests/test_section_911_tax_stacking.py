@@ -27,7 +27,7 @@ Two kinds of test:
 
 Households live in Texas; some itemize.
 
-Three limits of the model set the scope of these tests, and none comes
+Two limits of the model set the scope of these tests, and neither comes
 from section 911:
 
 - `capital_gains_tax` omits the section 1(h)(1) cap at the tax on all
@@ -40,9 +40,6 @@ from section 911:
   exceeds taxable income, so the households here have no 28-percent rate
   or unrecaptured section 1250 gain. YAML unit tests cover how the capital
   gain excess reduces those two amounts.
-- `amt_tax_including_cg` applies the 26%/28% breakpoint of other filers to
-  married-filing-separately filers on Form 6251 line 18, so the AMT of
-  separate filers with dividends or gains is not compared.
 """
 
 import numpy as np
@@ -413,9 +410,6 @@ def assert_matches_worksheets(households, law):
         )
         assert -tolerance(stacked_income) <= cap_gaps[-1], (i, h)
         assert cap_gaps[-1] <= 7.5 + tolerance(stacked_income), (i, h)
-        if status == "SEPARATE" and dividends + gain > 0:
-            # Form 6251 line 18 (see the module docstring).
-            continue
         # Form 6251 lines 9 to 11 with no foreign tax credit.
         amt = max(0, line_7 - line_6)
         taxable_excess = float(
