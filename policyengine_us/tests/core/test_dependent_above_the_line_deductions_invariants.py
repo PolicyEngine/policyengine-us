@@ -25,7 +25,8 @@ every tax unit:
    unit's AGI, and so do the head's and spouse's Medicaid AGIs.
 3. Differential: `above_the_line_deductions` and each aggregate equal an
    independent numpy sum over the head and spouse. For units without
-   dependents this is also the previous all-member sum, so they see no change.
+   dependents this is also the previous all-member sum, so they see no change;
+   for others it is between 0 and that sum.
 4. Each person's own deduction amounts are still computed for dependents
    (half of each person's self-employment tax, for example), so a
    dependent's own return can use them, and a dependent's Medicaid AGI is
@@ -338,7 +339,10 @@ def _check(units, year):
         run["above_the_line_deductions"], reference, atol=TOLERANCE
     )
     # Units without dependents: the previous all-member sum, unchanged.
+    # Units with dependents: never more than it, and never negative.
     all_members = run["loss_ald"] + _unit_sum(run, person_total + alimony)
+    assert (run["above_the_line_deductions"] >= -TOLERANCE).all()
+    assert (run["above_the_line_deductions"] <= all_members + TOLERANCE).all()
     np.testing.assert_allclose(
         run["above_the_line_deductions"][~has_dependent],
         all_members[~has_dependent],
