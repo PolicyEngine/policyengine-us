@@ -1,0 +1,25 @@
+- name: Each person subtracts their own capped educator expenses.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medicaid_irs_gross_income: 60_000
+        educator_expense: 500
+      person2:
+        is_tax_unit_spouse: true
+        medicaid_irs_gross_income: 40_000
+      person3:
+        is_tax_unit_dependent: true
+        medicaid_irs_gross_income: 5_000
+        educator_expense: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    # 26 USC 62(a)(2)(D): $300 per eligible educator for 2022 (Rev. Proc.
+    # 2021-45 sec. 3.13). The head deducts 300 of 500; the spouse has none
+    # to share; the dependent deducts 300 of 400 on their own return.
+    medicaid_adjusted_gross_income_person: [59_700, 40_000, 4_700]
+  absolute_error_margin: 0.01
