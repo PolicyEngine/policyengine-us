@@ -751,9 +751,11 @@ household_strategy = st.fixed_dictionaries(
     }
 )
 
+# Fixed examples, so CI on an unrelated pull request draws the same households.
 SETTINGS = dict(
     max_examples=10,
     deadline=None,
+    derandomize=True,
     suppress_health_check=[
         hypothesis.HealthCheck.too_slow,
         hypothesis.HealthCheck.data_too_large,
