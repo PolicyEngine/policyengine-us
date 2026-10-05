@@ -23,5 +23,7 @@
         members: [person1]
         state_code: WI
   output:
-    wi_income_tax: 6_631
-    state_income_tax: 6_631
+    # Both variables must agree (#7805). The amount rose from $6,631 when the
+    # 2025 4.4% bracket top moved to the Form 1 value ($50,480 single).
+    wi_income_tax: 6_636.85
+    state_income_tax: 6_636.85
