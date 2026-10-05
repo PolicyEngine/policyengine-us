@@ -38,8 +38,12 @@ def non_refundable_ss_credit_reform() -> Reform:
         unit = "/1"
 
         def formula(tax_unit, period, parameters):
-            # compute taxable income that is taxed at the main rates
-            full_taxable_income = tax_unit("taxable_income", period)
+            # compute taxable income that is taxed at the main rates; a
+            # taxpayer excluding foreign earned income adds the excluded
+            # amount back (26 U.S.C. 911(f)(1)(A))
+            full_taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
             cg_exclusion = tax_unit(
                 "capital_gains_excluded_from_taxable_income", period
             )
