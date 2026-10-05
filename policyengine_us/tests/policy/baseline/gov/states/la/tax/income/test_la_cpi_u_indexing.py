@@ -407,6 +407,11 @@ def test_projected_retirement_cap_follows_47_44_1():
         (10_250, 0.6, 10_312),
         # Both float forms give 20,725 here.
         (20_500, 1.1, 20_726),
+        # Each case above rounds up to an even dollar, which banker's
+        # rounding (half to even) would also give. 10,150.50 rounds up to
+        # 10,151, not to the even 10,150 (prior x (1 + p / 100) gives 10,150
+        # too).
+        (10_100, 0.5, 10_151),
         (12_000, 2.7, 12_324),
     ],
 )

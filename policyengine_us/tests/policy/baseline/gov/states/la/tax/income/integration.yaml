@@ -479,6 +479,8 @@
     la_retirement_exemption_person: [12_324, 5_000]
 
 # --- Retirement exemption end to end (Axiom: *_end_to_end_with_retirement_exemption*) ---
+# These set adjusted_gross_income directly, so they test the Louisiana
+# exemption and tax path, not that pensions flow into federal AGI.
 - name: 2026 aged single, federal AGI 50,000 with 20,000 private pension
   period: 2026
   input:
