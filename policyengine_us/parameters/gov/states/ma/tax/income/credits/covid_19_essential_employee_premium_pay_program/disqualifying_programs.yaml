@@ -1,11 +1,11 @@
 description: Disqualifying programs for Massachusetts COVID-19 Essential Employee Premium Pay Program.
 values:
   2020-01-01:
-  - unemployment_compensation
+  - total_unemployment_compensation
   # Not implemented:
   # "If you are an employee of the Commonwealth’s Executive Branch, received a one-time COVID-related payment from the Commonwealth as your employer."
   2021-01-01:
-  - unemployment_compensation
+  - total_unemployment_compensation
   - claimed_ma_covid_19_essential_employee_premium_pay_program_2020
 metadata:
   unit: list

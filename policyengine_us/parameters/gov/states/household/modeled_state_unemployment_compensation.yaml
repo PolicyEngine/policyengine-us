@@ -1,0 +1,26 @@
+description: Modeled state unemployment insurance programs summed into modeled unemployment compensation, which applies only when no unemployment compensation is reported.
+values:
+  # Each block sets a program's START year only (first verified_years year in
+  # programs.yaml). Lists carry forward, so no end year is enforced. Before its
+  # start year a program's variable still computes but does not feed
+  # total_unemployment_compensation. The empty base keeps earlier years from
+  # reaching state UI parameters that start later.
+  0000-01-01: []
+  2022-01-01:
+    - ok_ui
+  2024-01-01:
+    - al_ui
+    - nj_unemployment_insurance
+    - ok_ui
+    - ut_ui
+  2025-01-01:
+    - al_ui
+    - nj_unemployment_insurance
+    - ny_ui
+    - ok_ui
+    - pa_uc
+    - ut_ui
+metadata:
+  unit: list
+  period: year
+  label: Modeled state unemployment compensation programs

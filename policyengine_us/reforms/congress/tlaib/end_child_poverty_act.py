@@ -105,7 +105,7 @@ def create_end_child_poverty_act() -> Reform:
                 "tanf",
                 "high_efficiency_electric_home_rebate",
                 "residential_efficiency_electrification_rebate",
-                "unemployment_compensation",
+                "total_unemployment_compensation",
                 # Contributed.
                 "basic_income",
                 "trump_dividend",
@@ -154,7 +154,7 @@ def create_end_child_poverty_act() -> Reform:
                 "tanf",
                 "high_efficiency_electric_home_rebate",
                 "residential_efficiency_electrification_rebate",
-                "unemployment_compensation",
+                "total_unemployment_compensation",
                 # Contributed.
                 "basic_income",
                 "trump_dividend",
