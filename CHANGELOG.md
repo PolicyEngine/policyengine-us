@@ -1,3 +1,10 @@
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
 ## [2.25.1] - 2026-10-05
 
 ### Fixed
