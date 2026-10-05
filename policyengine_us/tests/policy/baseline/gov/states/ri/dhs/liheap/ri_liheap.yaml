@@ -1,0 +1,93 @@
+# FY2026 DHS matrix row A: gas 232, electricity 393, delivered fuel 861.
+# Qualifying primary gas/electric grants receive the separate 350 enhancement.
+# These raw-input cases assume a qualifying utility account and grant receipt.
+- name: Case 1, ordinary direct heating receives the published award and applicable enhancement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    ri_works: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, FUEL_OIL]
+    gas_expense: [1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 1_200, 1_200]
+    fuel_oil_expense: [0, 0, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_income: [10_000, 10_000, 10_000]
+    ri_liheap: [582, 743, 861]
+
+# FY2026 row F uses the lowest fuel payment when subsidized households pay
+# their own primary heating bill: gas 159 + 350, electric 268 + 350, oil 657.
+- name: Case 2, subsidized households with direct primary bills use the subsidized schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    ri_works: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, FUEL_OIL]
+    gas_expense: [1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 1_200, 0]
+    fuel_oil_expense: [0, 0, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [true, false, true]
+    is_in_public_housing: [false, true, false]
+  output:
+    ri_liheap: [509, 618, 657]
+
+# FY2026 size-1 income ceiling 42,252 is inclusive. The final award must
+# also enforce state, qualified membership and a heating obligation.
+- name: Case 3, final payment enforces income and other eligibility requirements.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, MA, RI, RI]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, UNDOCUMENTED, CITIZEN]
+    employment_income: [42_252, 42252.01, 10_000, 10_000, 10_000, 10_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    ri_works: [0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
+    gas_expense: [1_200, 1_200, 0, 1_200, 1_200, 1_200]
+    heat_expense_included_in_rent: [false, false, false, false, false, false]
+  output:
+    ri_liheap: [509, 0, 0, 0, 0, 0]
+
+# Accepted modeling limit: heat-in-rent payment selection is not implemented.
+# Zero here means no modeled direct-heating award, not legal ineligibility.
+# Existing eligibility remains true for the supported rental arrangements.
+- name: Case 4, eligible heat-in-rent households do not receive an invented direct-heating award.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    ri_works: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, ELECTRICITY]
+    gas_expense: [0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 120, 120]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, false]
+    is_in_public_housing: [false, false, true]
+  output:
+    ri_liheap_eligible: [true, true, true]
+    ri_liheap: [0, 0, 0]
