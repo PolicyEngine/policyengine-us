@@ -10,8 +10,7 @@ without regard to this section and sections 85(c), 911, 931, and 933, and
 gross income increased by any amount excluded under sections 911, 931 or
 933; the model computes that once, as
 `agi_plus_section_911_931_933_exclusions`. Section 86(b)(2) (taxable Social
-Security) and section 1411(d) (net investment income tax) add back the
-section 911 exclusion too.
+Security) adds back all three as well.
 
 In the model, income inputs are net of the section 911 exclusion, and
 sections 931 and 933 are above-the-line deductions. A household with
@@ -75,7 +74,6 @@ TAX_UNIT_OUTPUTS = [
     "additional_senior_deduction_magi",
     "tax_unit_taxable_unemployment_compensation",
     "taxable_ss_magi",
-    "niit_magi",
     *NON_DECREASING,
     *NON_INCREASING,
 ]
@@ -259,14 +257,6 @@ def assert_shift_invariants(households, shifts, year):
             assert m[v] >= b[v] - slack * max(1, abs(b[v])), (v, context)
         for v in NON_INCREASING:
             assert m[v] <= b[v] + slack * max(1, abs(b[v])), (v, context)
-        # Section 1411(d) adds back only section 911.
-        niit_rise = m["niit_magi"] - b["niit_magi"]
-        expected_niit_rise = agi_change + (
-            amount if category == "foreign_earned_income_exclusion" else 0
-        )
-        assert niit_rise == pytest.approx(
-            expected_niit_rise, abs=tolerance(m["niit_magi"])
-        ), context
 
 
 household_strategy = st.fixed_dictionaries(

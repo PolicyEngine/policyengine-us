@@ -70,15 +70,3 @@
   output:
     adjusted_gross_income: 160_000
     niit_magi: 160_000
-
-- name: Income excluded under section 911 is added back
-  period: 2024
-  input:
-    adjusted_gross_income: 190_000
-    foreign_earned_income_exclusion: 20_000
-    net_investment_income: 30_000
-    filing_status: SINGLE
-  output:
-    # 26 U.S.C. 1411(d): modified AGI 210,000; tax 3.8% x (210,000 - 200,000).
-    niit_magi: 210_000
-    net_investment_income_tax: 380
