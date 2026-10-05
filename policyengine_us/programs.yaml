@@ -811,7 +811,7 @@ programs:
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating eligibility and published award matrix. Uses qualified household size and full countable household income. Administrative household and billing facts use documented existing-input approximations; historical backfills and FY2027 draft changes are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
+        notes: FY2026 regular heating eligibility and published award matrix. Uses qualified household size and full countable household income. Solar-heating payment treatment is not verified; its modeled zero does not establish legal ineligibility. Administrative household and billing facts use documented existing-input approximations; historical backfills and FY2027 draft changes are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
       - state: OR
         status: in_progress
         name: LIHEAP
