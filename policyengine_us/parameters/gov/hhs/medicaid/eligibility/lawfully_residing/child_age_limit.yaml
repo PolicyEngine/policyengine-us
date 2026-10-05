@@ -1,0 +1,125 @@
+description: States limit the lawfully residing children option to individuals younger than this age under the Medicaid program.
+# The statute covers individuals under 21, and states may elect a lower age. The
+# CMS list marks the states that cover children up to age 19. States that have not
+# elected the option carry the statutory 21, which the election parameter keeps
+# from applying. No source shows a state changing its age limit.
+AK:
+  2022-01-01: 21
+AL:
+  2022-01-01: 21
+AR:
+  2022-01-01: 19
+AZ:
+  2022-01-01: 21
+CA:
+  2022-01-01: 21
+CO:
+  2022-01-01: 19
+CT:
+  2022-01-01: 21
+DC:
+  2022-01-01: 21
+DE:
+  2022-01-01: 21
+FL:
+  2022-01-01: 19
+GA:
+  2022-01-01: 19
+HI:
+  2022-01-01: 19
+IA:
+  2022-01-01: 21
+ID:
+  2022-01-01: 21
+IL:
+  2022-01-01: 19
+IN:
+  2022-01-01: 21
+KS:
+  2022-01-01: 21
+KY:
+  2022-01-01: 19
+LA:
+  2022-01-01: 19
+MA:
+  2022-01-01: 21
+MD:
+  2022-01-01: 21
+ME:
+  2022-01-01: 21
+MI:
+  2022-01-01: 21
+MN:
+  2022-01-01: 21
+MO:
+  2022-01-01: 21
+MS:
+  2022-01-01: 21
+MT:
+  2022-01-01: 19
+NC:
+  2022-01-01: 19
+ND:
+  2022-01-01: 21
+NE:
+  2022-01-01: 19
+NH:
+  2022-01-01: 19
+NJ:
+  2022-01-01: 21
+NM:
+  2022-01-01: 21
+NV:
+  2022-01-01: 19
+NY:
+  2022-01-01: 21
+OH:
+  2022-01-01: 21
+OK:
+  2022-01-01: 21
+OR:
+  2022-01-01: 19
+PA:
+  2022-01-01: 21
+RI:
+  2022-01-01: 19
+SC:
+  2022-01-01: 21
+SD:
+  2022-01-01: 21
+TN:
+  2022-01-01: 21
+TX:
+  2022-01-01: 19
+UT:
+  2022-01-01: 19
+VA:
+  2022-01-01: 19
+VT:
+  2022-01-01: 21
+WA:
+  2022-01-01: 21
+WI:
+  2022-01-01: 19
+WV:
+  2022-01-01: 19
+WY:
+  2022-01-01: 21
+
+metadata:
+  unit: year
+  period: year
+  label: Medicaid lawfully residing children option age limit
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 U.S.C. 1396b(v)(4)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/1396b#v_4_A
+    - title: CMS, Medicaid and CHIP Coverage of Lawfully Residing Children and Pregnant Individuals (updated April 2, 2026)
+      href: https://www.medicaid.gov/medicaid/enrollment-strategies/medicaid-and-chip-coverage-lawfully-residing-children-pregnant-individuals
+    - title: CMS, New Hampshire State Plan Amendment NH-24-0003, Citizenship and Non-Citizen Eligibility, section C.1
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-24-0003.pdf#page=9
+    - title: CMS, Georgia State Plan Amendment GA-23-0002
+      href: https://www.medicaid.gov/medicaid-spa/2023-11-22/156086
+    - title: Michigan Department of Health and Human Services Bulletin MMP 24-20
+      href: https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Assistance-Programs/Medicaid-BPHASA/2023-Bulletins/Final-Bulletin-MMP-24-20-Eligibility.pdf?rev=dbb27d49587c40f6bb87c2669287edf6&hash=8F47918C2161E23831CC56F0BF4A3AD0#page=1
