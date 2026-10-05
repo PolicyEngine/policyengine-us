@@ -87,7 +87,8 @@ class mi_household_resources(Variable):
         #   gross income, the excluded amount is entered in the income it
         #   comes from: savings bond interest in interest income (line 15,
         #   "including nontaxable interest"), adoption benefits, reported on
-        #   Form W-2, in wages (line 14). Line 30 leaves it there.
+        #   Form W-2, in wages (line 14), and possession or Puerto Rico income
+        #   in the source that earned it. Line 30 leaves it there.
         federal_deductions = parameters(period).gov.irs.ald.deductions
         adjustments = add(
             tax_unit,

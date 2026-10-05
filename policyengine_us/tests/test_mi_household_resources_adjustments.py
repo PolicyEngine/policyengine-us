@@ -196,12 +196,12 @@ def exclusions(h):
 
 
 def assert_properties(households):
-    """Invariants 2 and 3 on a list of households. Returns how many
-    households' exclusions changed the student loan interest deduction."""
+    """Invariants 2 and 3 on a list of households. Returns each household's
+    change in the student loan interest deduction from its exclusions."""
     twins = [without_exclusions(h) for h in households]
     model = calculate(households + twins)
     n = len(households)
-    changed = 0
+    changes = []
     for i, h in enumerate(households):
         tol = tolerance(h)
         line_30 = sum(float(values[i]) for values in model["adjustments"].values())
@@ -218,7 +218,7 @@ def assert_properties(households):
         assert model["adjusted_gross_income"][n + i] - model["adjusted_gross_income"][
             i
         ] == pytest.approx(exclusions(h) + change, abs=tol), h
-        changed += abs(change) > tol
+        changes.append(float(change))
         without = model["mi_household_resources"][n + i]
         # Resources without exclusions of 0 hide how far below zero they
         # were; a larger deduction (change >= 0) keeps them at 0.
@@ -226,7 +226,7 @@ def assert_properties(households):
             assert model["mi_household_resources"][i] == pytest.approx(
                 max(0, without - change), abs=tol
             ), h
-    return changed
+    return changes
 
 
 def household(**amounts):
@@ -248,6 +248,16 @@ EXCLUSION_PATTERNS = [
         "puerto_rico_income": 10_000,
         "specified_possession_income": 8_000,
     },
+]
+
+
+PATTERN_NAMES = [
+    "none",
+    "us_bonds_for_higher_ed",
+    "qualified_adoption_assistance_expense",
+    "puerto_rico_income",
+    "specified_possession_income",
+    "all",
 ]
 
 
@@ -335,9 +345,19 @@ def test_federal_deductions_are_classified():
 
 
 def test_grid():
-    """Invariants 2 and 3 on every grid household. The phase-out households
-    make invariant 3's student loan interest case non-vacuous."""
-    assert assert_properties(grid_households()) > 0
+    """Invariants 2 and 3 on every grid household. In the phase-out, savings
+    bond interest and adoption benefits lower the student loan interest
+    deduction's modified AGI, so they change that deduction; Puerto Rico
+    income is added back (IRC 221(b)(2)(C)), so it does not. Possession
+    income is not checked here: its effect depends on the federal modified
+    AGI's treatment of section 931, which is outside this test."""
+    changes = assert_properties(grid_households())
+    phase_out = dict(zip(PATTERN_NAMES, changes[-len(EXCLUSION_PATTERNS) :]))
+    assert phase_out["none"] == 0
+    assert phase_out["puerto_rico_income"] == pytest.approx(0, abs=TOLERANCE)
+    for name in ["us_bonds_for_higher_ed", "qualified_adoption_assistance_expense"]:
+        assert phase_out[name] > 1, name
+    assert phase_out["all"] > 1
 
 
 def test_line_30_follows_the_federal_list():
