@@ -1,47 +1,53 @@
-description: Non-refundable tax credits.
+description: Non-refundable tax credits, in the order the IRS credit limit worksheets apply them against income tax.
 values:
+  # Each credit's limit subtracts the credits listed before it (see each
+  # credit's preceding_credits.yaml). The order follows the credit limit
+  # worksheets, not the Schedule 3 line order: the elderly or disabled credit
+  # precedes the education credits, the previously owned clean vehicle credit
+  # precedes the new clean vehicle credit, and the residential clean energy
+  # credit comes last (26 U.S.C. 25D(c)).
   2013-01-01:
+    - foreign_tax_credit
     - cdcc
     - elderly_disabled_credit
     # Adoption expense credit
-    - non_refundable_ctc
-    # Home mortgage credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
-    - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
+    - non_refundable_ctc
+    # Home mortgage credit
+    - residential_clean_energy_credit
   # CDCC became refundable for 2021 only.
   # And we only define the EV credit for 2021 onward because the law changed
   # then.
   2021-01-01:
+    - foreign_tax_credit
     - elderly_disabled_credit
     # Adoption expense credit
-    - non_refundable_ctc
-    # Home mortgage credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
-    - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
     - new_clean_vehicle_credit
-  # CDCC became non-refundable again in 2022.
-  2022-01-01:
-    # Sequencing the credits based on Schedule 3 (Form 1040)
-    - foreign_tax_credit # 1
-    - cdcc # 2
-    - non_refundable_american_opportunity_credit # 3
-    - lifetime_learning_credit # 3
-    - savers_credit # 4
-    - residential_clean_energy_credit # 5a
-    - energy_efficient_home_improvement_credit # 5b
-    - elderly_disabled_credit # 6d
-    # Inflation Reduction Act introduces a used EV credit.
-    - new_clean_vehicle_credit # 6f
-    - used_clean_vehicle_credit # 6f
-    # Adoption expense credit
     - non_refundable_ctc
     # Home mortgage credit
+    - residential_clean_energy_credit
+  # CDCC became non-refundable again in 2022.
+  2022-01-01:
+    - foreign_tax_credit # Schedule 3, line 1
+    - cdcc # Schedule 3, line 2
+    - elderly_disabled_credit # Schedule 3, line 6d
+    - non_refundable_american_opportunity_credit # Schedule 3, line 3
+    - lifetime_learning_credit # Schedule 3, line 3
+    - savers_credit # Schedule 3, line 4
+    - energy_efficient_home_improvement_credit # Schedule 3, line 5b
+    # Inflation Reduction Act introduces a used EV credit.
+    - used_clean_vehicle_credit # Schedule 3, line 6m
+    - new_clean_vehicle_credit # Schedule 3, line 6f
+    - non_refundable_ctc # Form 1040, line 19
+    # Adoption expense credit, home mortgage credit
+    - residential_clean_energy_credit # Schedule 3, line 5a
 
 metadata:
   unit: list
@@ -51,5 +57,11 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/subtitle-A/chapter-1/subchapter-A/part-IV/subpart-A
     - title: 26 U.S. Code § 21 - Expenses for household and dependent care services necessary for gainful employment (g)(1)
       href: https://www.law.cornell.edu/uscode/text/26/21#g_1
+    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
+      href: https://www.law.cornell.edu/uscode/text/26/25D#c
     - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (c)(2)
       href: https://www.law.cornell.edu/uscode/text/26/30D#c_2
+    - title: 2025 Schedule 3 (Form 1040), Additional Credits and Payments
+      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 2020 Publication 972, Child Tax Credit and Credit for Other Dependents Worksheet, line 11
+      href: https://www.irs.gov/pub/irs-prior/p972--2020.pdf#page=7
