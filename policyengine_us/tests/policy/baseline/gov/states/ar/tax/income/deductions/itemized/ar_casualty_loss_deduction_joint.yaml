@@ -86,3 +86,24 @@
     state_code: AR
   output:
     ar_casualty_loss_deduction_joint: 14_500
+
+- name: A spouse's loss that makes the joint AGI negative does not raise the casualty loss deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        casualty_loss: 1_000
+        ar_agi_joint: 5_000
+      person2:
+        ar_agi_joint: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint AGI 5,000 - 10,000 = -5,000, floored at 0:
+    # 1,000 - 100 - 10% * 0 = 900 (an unfloored AGI would give 900 + 500).
+    ar_casualty_loss_deduction_joint: 900
