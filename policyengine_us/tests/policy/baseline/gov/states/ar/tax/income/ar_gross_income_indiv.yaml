@@ -160,3 +160,65 @@
   output:
     ar_gross_income_indiv: 33_000
     ar_gross_income_joint: 33_000
+
+- name: Arkansas gross income includes partnership and S corporation income (AR1000F line 19)
+  period: 2024
+  input:
+    irs_employment_income: 50_000
+    partnership_s_corp_income: 20_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 70_000
+    ar_gross_income_joint: 70_000
+
+- name: Arkansas gross income nets a partnership or S corporation loss as reported on Schedule E
+  period: 2024
+  input:
+    irs_employment_income: 50_000
+    partnership_s_corp_income: -10_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 40_000
+    ar_gross_income_joint: 40_000
+
+- name: Arkansas gross income includes estate and trust income (AR1000F line 19)
+  period: 2024
+  input:
+    irs_employment_income: 50_000
+    estate_income: 20_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 70_000
+    ar_gross_income_joint: 70_000
+
+- name: Arkansas gross income includes Schedule F farm income (AR1000F line 20)
+  period: 2024
+  input:
+    irs_employment_income: 50_000
+    farm_operations_income: 20_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 70_000
+    ar_gross_income_joint: 70_000
+
+- name: Arkansas tax on wages plus S corporation income matches TAXSIM
+  # TAXSIM (taxsimtest, October 2026 build) input: year 2024, state 4,
+  # single, age 40, pwages 50000, scorp 20000, opt1 30, opt1v 1.
+  # TAXSIM reports state AGI 70,000 and siitax 2,197.15.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        partnership_s_corp_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_income_tax: 2_197.15
