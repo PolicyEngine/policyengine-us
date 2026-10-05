@@ -2,8 +2,7 @@ description: Michigan accounts for the following income sources as the household
 values:
   2021-01-01:
     # Each source counts for the claimant and spouse only (MCL 206.508(3)),
-    # except the amounts received for the household on lines 21, 22 and 27;
-    # see mi_household_resources.
+    # except those in household_resources_all_members (lines 21, 22 and 27).
     # MI-1040CR line 14, wages, including strike pay.
     - irs_employment_income
     - strike_benefits
@@ -48,9 +47,10 @@ values:
     - workers_compensation
     # MI-1040CR line 14, long-term disability benefits.
     - disability_benefits
+    # Guaranteed income pilot payments, the recipient's own.
+    - gi_cash_assistance
     # MI-1040CR line 27, payments to the household by MDHHS and other public
     # assistance.
-    - gi_cash_assistance
     - tanf
     - general_assistance
 metadata:

@@ -717,6 +717,78 @@
         state_code: MI
   output:
     # Line 31: "insurance premiums you paid for yourself and your family",
-    # 2,400 + 1,200 = 3,600.
+    # 2,400 + 1,200 = 3,600, reading the child's premium as one the claimant
+    # paid for the child's coverage.
     # Line 33: 40,000 - 3,600 = 36,400.
     mi_household_resources: 36_400
+
+- name: A dependent's alimony payment is not on the claimant's line 30
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        alimony_expense: 2_000
+        divorce_year: 2015
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      dependent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 40,000. Line 30: the dependent's deductible alimony (a 2015
+    # divorce) is on the dependent's own Schedule 1, so 0.
+    # Line 33: 40,000.
+    mi_household_resources: 40_000
+
+- name: Guaranteed income pilot payments count only for the claimant and spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 40_000
+        gi_cash_assistance: 1_000
+      person2:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        gi_cash_assistance: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      dependent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 40,000. The claimant's own pilot payment, 1,000, counts. The
+    # dependent's 7,000 is the dependent's own income: nothing shows it is a
+    # public assistance payment to the claimant's household (line 27).
+    # Line 33: 41,000.
+    mi_household_resources: 41_000

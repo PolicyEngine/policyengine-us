@@ -60,33 +60,20 @@ class mi_household_resources(Variable):
         # irs_gross_income. A tax-unit-level source (other_net_gain,
         # filer_loss_limited_net_capital_gains) already describes the
         # filer's return.
-        # The form counts amounts the claimant receives for others in the
-        # household on three lines (page 32), so these are summed over every
-        # member:
-        # Line 21: Social Security, SSI and railroad retirement benefits,
-        # including "amounts received for minor children or other dependent
-        # adults who live with you".
-        # Line 22: "child support and all payments received as a foster
-        # parent".
-        # Line 27: "the total payments made to your household by MDHHS and
-        # all other public assistance payments". A Family Independence
-        # Program grant covers the children in the case, and tanf, an SPM
-        # unit amount, reaches the tax unit in per-person shares.
-        received_for_household = {
-            "social_security",
-            "ssi",
-            "railroad_benefits",
-            "child_support_received",
-            "tanf",
-            "general_assistance",
-            "gi_cash_assistance",
-        }
+        # The sources in household_resources_all_members are amounts the
+        # claimant receives for others in the household (lines 21, 22 and
+        # 27), so they are summed over every member. So is a source defined
+        # for a larger group than the tax unit, such as tanf for the SPM
+        # unit: add gives the tax unit its members' shares.
+        all_members = p.household_resources_all_members
 
         business_income = 0
         rental_income = 0
         other_income = 0
         for source in p.household_resources:
-            if source in received_for_household:
+            entity = tax_unit.entity.get_variable(source).entity
+            own_return = entity.is_person or entity.key == tax_unit.entity.key
+            if source in all_members or not own_return:
                 amount = add(tax_unit, period, [source])
             else:
                 amount = tax_unit_non_dep_add(tax_unit, period, [source])
@@ -104,23 +91,15 @@ class mi_household_resources(Variable):
         # and floored on lines 16, 17 and 19 above, so loss_ald, which holds
         # them, is left out.
         # The Schedule 1 is the claimant's own: a dependent's adjustments,
-        # like the dependent's income, are on the dependent's return. The
-        # self-employment adjustments are computed per person, so their
-        # person-level amounts are summed over the head and spouse.
-        per_person_adjustments = {
-            "self_employment_tax_ald",
-            "self_employed_health_insurance_ald",
-            "self_employed_pension_contribution_ald",
-        }
+        # like the dependent's income, are on the dependent's return.
+        # Person-level adjustments are summed over the head and spouse, and
+        # tax-unit-level ones are the filer's own: the self-employment and
+        # alimony deductions sum only the head and spouse.
         adjustments = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
-                (
-                    f"{deduction}_person"
-                    if deduction in per_person_adjustments
-                    else deduction
-                )
+                deduction
                 for deduction in parameters(period).gov.irs.ald.deductions
                 if deduction != "loss_ald"
             ],
@@ -128,6 +107,7 @@ class mi_household_resources(Variable):
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the
-        # person's family", so every member's premiums count.
+        # person's family". A premium on any member's record is read as one
+        # the claimant or spouse paid for the family's coverage.
         health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
         return max_(0, total - adjustments - health_insurance_premiums)
