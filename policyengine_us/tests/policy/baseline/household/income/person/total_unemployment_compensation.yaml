@@ -161,13 +161,24 @@
   output:
     # 6,000 / 12 = 500 and 10,218 / 12 = 851.50.
     snap_unearned_income_person: [500, 851.5]
-    snap_unearned_income: 1_351.5
-    # 1,351.50 - 204 = 1,147.50; shelter = 758 - 1,147.50 / 2 = 184.25;
-    # net = 1,147.50 - 184.25 = 963.25 -> 963.
-    snap_net_income: 963
-    # 536 maximum allotment - ceil(0.3 * 963 = 288.90) = 536 - 289 = 247.
-    # Before, only person1's 500 counted and SNAP paid the full 536.
-    snap: 247
+    # 7 CFR 273.7(b)(1)(v) exempts only months of UC receipt. person1 has
+    # reported UC and no weeks unemployed, so receives in all 12 months.
+    # person2's 26 weeks give ceil(26 * 12 / 52) = 6 months; as the
+    # household's second member the block starts in February (February to
+    # July), so person2 does not receive UC in January.
+    is_receiving_unemployment_compensation: [true, false]
+    # Without the exemption, person2 (age 38, no work hours, PA fallback
+    # county not waived) is ineligible under the ABAWD time limit, so
+    # 7 CFR 273.11(c)(2)(ii) counts the eligible share of person2's income:
+    # 1 SNAP unit member / 2 household members = 0.5.
+    snap_income_counted_share: [1, 0.5]
+    # 500 + 0.5 * 851.50 = 925.75.
+    snap_unearned_income: 925.75
+    # 925.75 - 204 = 721.75; shelter = 758 - 721.75 / 2 = 397.125;
+    # net = 721.75 - 397.125 = 324.625 -> 325.
+    snap_net_income: 325
+    # 1-person maximum allotment 292 - ceil(0.3 * 325 = 97.50) = 292 - 98 = 194.
+    snap: 194
 
 - name: Case 6, explicitly reported zero UC still falls back to modeled PA UC.
   period: 2025
