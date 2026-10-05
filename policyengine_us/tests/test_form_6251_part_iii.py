@@ -417,6 +417,24 @@ def test_random_households_match_form_6251_2025(households):
     st.lists(household_with_schedule_d_strategy, min_size=1, max_size=25),
     st.sampled_from([2018, 2022, 2025, 2026, 2030]),
 )
+# The case Hypothesis shrank to against the full-breakpoint line 18: a 2018
+# separate filer with no gains whose line 12 ($95,555) is $5 above the
+# separate breakpoint ($95,550), so line 18 fell $0.10 short of line 39.
+@hypothesis.example(
+    households=[
+        {
+            "status": "SEPARATE",
+            "wages": 150_255,
+            "qualified_dividends": 0,
+            "long_term_gains": 0,
+            "short_term_gains": 0,
+            "real_estate_taxes": 0,
+            "collectibles_share": 0,
+            "section_1250_share": 0,
+        }
+    ],
+    year=2018,
+)
 def test_random_households_keep_the_properties(households, year):
     # Each household with its dividends and gains removed as well, so that
     # line 17 is line 12 for some filers of every status.
