@@ -16,16 +16,18 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.periods import instant
 
 from policyengine_us.parameters.uprating_extensions import (
     adjust_la_amount_for_inflation,
     extend_la_cpi_u_indexed_amounts,
     get_la_cpi_u_percentage_increase,
+    get_projected_cpi_u_for_month,
 )
 from policyengine_us.system import system
 
 PARAMETERS = system.parameters
-CPI_U = PARAMETERS.gov.bls.cpi.cpi_u
+CPI = PARAMETERS.gov.bls.cpi
 LA = PARAMETERS.gov.states.la.tax.income
 STANDARD = LA.deductions.standard.amount
 LAST_PUBLISHED_YEAR = 2026
@@ -40,7 +42,7 @@ def retirement_cap(parameters, year):
 
 def test_reproduces_rib_26_019_from_2025_amounts():
     """The projection method recomputes every RIB 26-019 amount."""
-    percentage = get_la_cpi_u_percentage_increase(CPI_U, 2025)
+    percentage = get_la_cpi_u_percentage_increase(CPI, 2025)
     assert percentage == 2.7
     single = adjust_la_amount_for_inflation(12_500, percentage)
     assert single == 12_838
@@ -67,8 +69,47 @@ def test_other_readings_do_not_reproduce_rib_26_019():
     assert adjust_la_amount_for_inflation(25_000, 2.7) == 25_675
 
 
-def synthetic_cpi(values):
-    return Parameter("cpi_u", data=values)
+def test_percentages_match_bls_published_december_changes():
+    """The CPI-U 12-month changes BLS reported for each December."""
+    published = {
+        2013: 1.5,
+        2014: 0.8,
+        2015: 0.7,
+        2016: 2.1,
+        2017: 2.1,
+        2018: 1.9,
+        2019: 2.3,
+        2020: 1.4,
+        2021: 7.0,
+        2022: 6.5,
+        2023: 3.4,
+        2024: 2.9,
+        2025: 2.7,
+    }
+    for year, percentage in published.items():
+        assert get_la_cpi_u_percentage_increase(CPI, year) == percentage, year
+
+
+def synthetic_cpi(cpi_u, nsa_december=None):
+    """A gov.bls.cpi node; the 1900 placeholder December matches no test year."""
+    return SimpleNamespace(
+        cpi_u=Parameter("cpi_u", data=cpi_u),
+        cpi_u_nsa_december=Parameter(
+            "cpi_u_nsa_december", data=nsa_december or {"1900-12-01": 1}
+        ),
+    )
+
+
+def test_published_not_seasonally_adjusted_decembers_take_precedence():
+    cpi = synthetic_cpi(
+        cpi_u={"2029-12-01": 200, "2030-12-01": 205.2, "2031-12-01": 211},
+        nsa_december={"2029-12-01": 200, "2030-12-01": 205.4},
+    )
+    # Both Decembers published: 205.4 / 200 = 2.7%, not the model series' 2.6%.
+    assert get_la_cpi_u_percentage_increase(cpi, 2030) == 2.7
+    # December 2031 is unpublished, so both Decembers come from the model
+    # series rather than mixing the two: 211 / 205.2 = 2.83%.
+    assert get_la_cpi_u_percentage_increase(cpi, 2031) == 2.8
 
 
 def test_percentage_is_december_over_december_not_annual_average():
@@ -84,6 +125,7 @@ def test_percentage_is_december_over_december_not_annual_average():
     [
         (205.32, 2.7),  # 2.66% rounds up
         (205.28, 2.6),  # 2.64% rounds down
+        (205.3, 2.7),  # exactly 2.65% rounds half up
         (200, 0),
         (195, 0),  # a fall in the index is not an increase
     ],
@@ -91,24 +133,64 @@ def test_percentage_is_december_over_december_not_annual_average():
 def test_percentage_rounds_to_one_decimal_and_never_falls_below_zero(
     december, percentage
 ):
-    cpi = synthetic_cpi({"2029-12-01": 200, "2030-12-01": december})
+    cpi = synthetic_cpi(
+        cpi_u={"1900-01-01": 1},
+        nsa_december={"2029-12-01": 200, "2030-12-01": december},
+    )
     assert get_la_cpi_u_percentage_increase(cpi, 2030) == percentage
 
 
-def test_unobserved_december_reads_latest_observation_or_projection_point():
-    cpi = synthetic_cpi(
-        {
+def test_unobserved_decembers_interpolate_toward_calendar_year_projections():
+    cpi_u = Parameter(
+        "cpi_u",
+        data={
             "2030-12-01": 205,
             # Monthly observations end in June 2031.
             "2031-06-01": 210,
-            # Annual projection point for 2032.
+            # CBO calendar-year averages for 2032 and 2033.
             "2032-02-01": 220,
-        }
+            "2033-02-01": 231,
+        },
     )
-    # December 2031 reads the June 2031 observation: 210 / 205 = 2.44%.
-    assert get_la_cpi_u_percentage_increase(cpi, 2031) == 2.4
-    # December 2032 reads the 2032 projection point: 220 / 210 = 4.76%.
-    assert get_la_cpi_u_percentage_increase(cpi, 2032) == 4.8
+
+    def level(month):
+        return get_projected_cpi_u_for_month(cpi_u, instant(month))
+
+    # Observed months read the series.
+    assert level("2031-06-01") == 210
+    # December 2031 is 6 of the 12.5 months from June 2031 to the 2032
+    # average, placed between June and July 2032.
+    assert level("2031-12-01") == pytest.approx(210 * (220 / 210) ** (6 / 12.5))
+    # December 2032 is 5.5 of the 12 months between the 2032 and 2033
+    # averages.
+    assert level("2032-12-01") == pytest.approx(220 * (231 / 220) ** (5.5 / 12))
+    # Past the last projection point the index holds flat.
+    assert level("2033-12-01") == 231
+    assert level("2040-12-01") == 231
+
+    cpi = SimpleNamespace(
+        cpi_u=cpi_u,
+        cpi_u_nsa_december=Parameter("nsa", data={"1900-12-01": 1}),
+    )
+    # 2031: 214.742 / 205 = 4.75%. 2032: 224.975 / 214.742 = 4.77%.
+    # 2033: 231 / 224.975 = 2.68%. 2034: 231 / 231.
+    expected = {2031: 4.8, 2032: 4.8, 2033: 2.7, 2034: 0}
+    for year, percentage in expected.items():
+        assert get_la_cpi_u_percentage_increase(cpi, year) == percentage, year
+
+
+def test_first_projected_year_gets_a_full_year_of_projected_inflation():
+    """December 2026 is interpolated, not carried flat from June 2026."""
+    cpi_u = CPI.cpi_u
+    last_observation = max(
+        instant(value.instant_str)
+        for value in cpi_u.values_list
+        if not value.instant_str.endswith("-02-01")
+    )
+    if last_observation >= instant("2026-12-01"):
+        pytest.skip("December 2026 is observed")
+    december_2026 = get_projected_cpi_u_for_month(cpi_u, instant("2026-12-01"))
+    assert cpi_u(last_observation) < december_2026 < cpi_u("2027-02-01")
 
 
 def synthetic_parameters(single_values):
@@ -161,14 +243,14 @@ def synthetic_parameters(single_values):
         {
             "2025-12-01": 100,
             "2026-12-01": 102,
-            # Projection points; December 2027 and 2028 read them.
-            "2027-02-01": 105,
+            "2027-12-01": 105,
+            # Calendar-year 2028 projection; December 2028 is past it.
             "2028-02-01": 108,
         }
     )
     parameters = SimpleNamespace(
         gov=SimpleNamespace(
-            bls=SimpleNamespace(cpi=SimpleNamespace(cpi_u=cpi)),
+            bls=SimpleNamespace(cpi=cpi),
             states=SimpleNamespace(
                 la=SimpleNamespace(tax=SimpleNamespace(income=income))
             ),
@@ -192,7 +274,11 @@ def test_extension_chains_from_published_amounts_and_doubles_the_single_amount()
     # 12,570 x 1.029 = 12,934.53.
     # 2029: 108 / 105 = 2.86%, so 2.9%. 13,475 x 1.029 = 13,865.775;
     # 12,935 x 1.029 = 13,310.115.
-    expected = {2027: (13_095, 12_570), 2028: (13_475, 12_935), 2029: (13_866, 13_310)}
+    expected = {
+        2027: (13_095, 12_570),
+        2028: (13_475, 12_935),
+        2029: (13_866, 13_310),
+    }
     for year, (single, cap) in expected.items():
         assert standard.SINGLE(f"{year}-01-01") == single, year
         assert standard.SEPARATE(f"{year}-01-01") == single, year
@@ -232,7 +318,7 @@ def test_projected_standard_deduction_follows_47_294():
     for year in projected_years():
         single = STANDARD.SINGLE(f"{year}-01-01")
         assert single == adjust_la_amount_for_inflation(
-            previous, get_la_cpi_u_percentage_increase(CPI_U, year - 1)
+            previous, get_la_cpi_u_percentage_increase(CPI, year - 1)
         ), year
         assert single == int(single), year
         assert single >= previous, year
@@ -248,7 +334,7 @@ def test_projected_retirement_cap_follows_47_44_1():
     for year in projected_years():
         cap = retirement_cap(PARAMETERS, year)
         assert cap == adjust_la_amount_for_inflation(
-            previous, get_la_cpi_u_percentage_increase(CPI_U, year - 1)
+            previous, get_la_cpi_u_percentage_increase(CPI, year - 1)
         ), year
         assert cap == int(cap), year
         assert cap >= previous, year
@@ -256,6 +342,23 @@ def test_projected_retirement_cap_follows_47_44_1():
     # The under-65 bracket stays at zero.
     la = PARAMETERS(f"{END_YEAR}-01-01").gov.states.la.tax.income
     assert la.exempt_income.retirement.cap.calc(np.array([64]))[0] == 0
+
+
+@pytest.mark.parametrize(
+    "prior, percentage, adjusted",
+    [
+        # Half-dollar results that binary floating point misrounds:
+        # prior x (1 + p / 100) gives 12,837 here.
+        (12_500, 2.7, 12_838),
+        # prior x (100 + p) / 100 gives 10,311 here.
+        (10_250, 0.6, 10_312),
+        # Both float forms give 20,725 here.
+        (20_500, 1.1, 20_726),
+        (12_000, 2.7, 12_324),
+    ],
+)
+def test_adjustment_rounds_half_dollars_up_exactly(prior, percentage, adjusted):
+    assert adjust_la_amount_for_inflation(prior, percentage) == adjusted
 
 
 # One-decimal percentages, as BLS reports them.
@@ -288,14 +391,22 @@ def test_zero_percentage_keeps_the_amount(prior):
     assert adjust_la_amount_for_inflation(prior, 0) == prior
 
 
+def nsa_cpi(prior_december, december):
+    return synthetic_cpi(
+        cpi_u={"1900-01-01": 1},
+        nsa_december={"2029-12-01": prior_december, "2030-12-01": december},
+    )
+
+
 @given(
     st.floats(min_value=50, max_value=1_000),
     st.floats(min_value=0.8, max_value=1.3),
 )
 def test_percentage_is_the_rounded_nonnegative_change(prior_december, ratio):
     december = prior_december * ratio
-    cpi = synthetic_cpi({"2029-12-01": prior_december, "2030-12-01": december})
-    percentage = get_la_cpi_u_percentage_increase(cpi, 2030)
+    percentage = get_la_cpi_u_percentage_increase(
+        nsa_cpi(prior_december, december), 2030
+    )
     assert percentage >= 0
     assert round(percentage * 10) == pytest.approx(percentage * 10)
     change = 100 * (december / prior_december - 1)
@@ -311,9 +422,40 @@ def test_percentage_is_monotone_in_the_december_index(prior_december, first, sec
     low, high = sorted((first, second))
 
     def percentage(ratio):
-        cpi = synthetic_cpi(
-            {"2029-12-01": prior_december, "2030-12-01": prior_december * ratio}
+        return get_la_cpi_u_percentage_increase(
+            nsa_cpi(prior_december, prior_december * ratio), 2030
         )
-        return get_la_cpi_u_percentage_increase(cpi, 2030)
 
     assert percentage(low) <= percentage(high)
+
+
+@given(
+    st.floats(min_value=100, max_value=500),
+    st.floats(min_value=1.0, max_value=1.1),
+    st.floats(min_value=1.0, max_value=1.1),
+    # A February instant would read as a projection point.
+    st.integers(min_value=1, max_value=11).filter(lambda month: month != 2),
+)
+def test_interpolated_months_lie_between_their_anchors(
+    observed, first_growth, second_growth, last_month
+):
+    first_point = observed * first_growth
+    second_point = first_point * second_growth
+    cpi_u = Parameter(
+        "cpi_u",
+        data={
+            f"2030-{last_month:02d}-01": observed,
+            "2031-02-01": first_point,
+            "2032-02-01": second_point,
+        },
+    )
+    previous = observed
+    for year, month in [(2030, m) for m in range(last_month + 1, 13)] + [
+        (2031, m) for m in range(1, 13)
+    ]:
+        level = get_projected_cpi_u_for_month(cpi_u, instant(f"{year}-{month:02d}-01"))
+        assert observed <= level * (1 + 1e-12)
+        assert level <= second_point * (1 + 1e-12)
+        # Non-decreasing when the anchors are.
+        assert level >= previous * (1 - 1e-12)
+        previous = level

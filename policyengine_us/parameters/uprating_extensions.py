@@ -5,7 +5,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from typing import Optional, Tuple
 
 from policyengine_us.model_api import *
-from policyengine_core.periods import instant
+from policyengine_core.periods import Instant, instant
 
 
 LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
@@ -203,7 +203,45 @@ def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
         )
 
 
-def get_la_cpi_u_percentage_increase(cpi: Parameter, year: int) -> float:
+def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
+    """CPI-U for a month, interpolated toward CBO's projections if unobserved.
+
+    The model's CPI-U series holds BLS monthly observations, then CBO's
+    calendar-year averages as projection points at February instants (see
+    ``get_average_for_12_months_ending_august`` and #9608). A calendar-year
+    average sits halfway between June and July of its year. So an
+    unobserved month is interpolated geometrically, by month, between the
+    last observation and the next projection point placed there, or between
+    two such points; past the last point the index holds flat. As in
+    ``get_average_for_12_months_ending_august``, only non-February instants
+    identify the end of the observed series.
+    """
+    last_observation = max(
+        instant(value.instant_str)
+        for value in cpi.values_list
+        if not value.instant_str.endswith("-02-01")
+    )
+    if month <= last_observation:
+        return cpi(month)
+
+    def month_index(date: Instant) -> float:
+        return 12 * date.year + date.month - 1
+
+    anchors = [(month_index(last_observation), cpi(last_observation))] + sorted(
+        (12 * int(value.instant_str[:4]) + 5.5, value.value)
+        for value in cpi.values_list
+        if value.instant_str.endswith("-02-01")
+        and instant(value.instant_str) > last_observation
+    )
+    target = month_index(month)
+    for (start, start_level), (end, end_level) in zip(anchors, anchors[1:]):
+        if target <= end:
+            share = (target - start) / (end - start)
+            return start_level * (end_level / start_level) ** share
+    return anchors[-1][1]
+
+
+def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     """The CPI-U percentage increase for calendar ``year``, as BLS reports it.
 
     La. R.S. 47:294(B) and 47:44.1(A) multiply the prior year's amount by
@@ -219,14 +257,23 @@ def get_la_cpi_u_percentage_increase(cpi: Parameter, year: int) -> float:
     decimal place, as BLS reports it. A fall in the index is not an
     increase, so the percentage is never negative.
 
-    The model's CPI-U series is seasonally adjusted from January 2024, and
-    after its last monthly observation it holds annual projection points at
-    February instants. The index is read at December 1 of each year: the
-    December observation once BLS publishes it, otherwise the latest
-    observation or projection point at or before that date.
+    ``cpi`` is the ``gov.bls.cpi`` node. BLS reports the change from the not
+    seasonally adjusted index, so the published Decembers in
+    ``cpi_u_nsa_december`` are used when both years have one. Otherwise
+    both Decembers come from the model's CPI-U series (seasonally adjusted
+    from January 2024), through ``get_projected_cpi_u_for_month``.
     """
-    change = cpi(f"{year}-12-01") / cpi(f"{year - 1}-12-01") - 1
-    return max(math.floor(1_000 * change + 0.5) / 10, 0)
+    december = cpi.cpi_u_nsa_december
+    published = {int(value.instant_str[:4]) for value in december.values_list}
+    if {year - 1, year} <= published:
+        current = december(f"{year}-12-01")
+        prior = december(f"{year - 1}-12-01")
+    else:
+        current = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year}-12-01"))
+        prior = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 1}-12-01"))
+    change = 100 * (Decimal(repr(current)) / Decimal(repr(prior)) - 1)
+    percentage = change.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return float(max(percentage, 0))
 
 
 def adjust_la_amount_for_inflation(prior_amount: float, percentage: float) -> float:
@@ -253,25 +300,36 @@ def extend_la_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) ->
     200% of the single amount (R.S. 47:294(A)(2)), so it doubles the rounded
     single amount rather than being adjusted on its own. Amounts encoded in
     the YAML take precedence for their own years.
+
+    Like the other projections in this module, the values are fixed when
+    the parameter tree is built. A reform that changes the single amount
+    does not carry through to the other filing statuses or later years.
     """
     la = parameters.gov.states.la.tax.income
-    cpi = parameters.gov.bls.cpi.cpi_u
+    cpi = parameters.gov.bls.cpi
     standard = la.deductions.standard.amount
-    retirement_cap = next(
+    retirement_caps = [
         bracket.amount
         for bracket in la.exempt_income.retirement.cap.brackets
         if bracket.threshold(f"{end_year}-01-01") == 65
-    )
-    for parameter in (standard.SINGLE, retirement_cap):
+    ]
+    if len(retirement_caps) != 1:
+        raise ValueError(
+            "Expected one age-65 bracket in the Louisiana retirement income "
+            f"exemption cap; found {len(retirement_caps)}."
+        )
+    percentages = {}
+    for parameter in (standard.SINGLE, retirement_caps[0]):
         first_projected_year = 1 + max(
             int(value.instant_str[:4]) for value in parameter.values_list
         )
         for year in range(first_projected_year, end_year + 1):
+            if year - 1 not in percentages:
+                percentages[year - 1] = get_la_cpi_u_percentage_increase(cpi, year - 1)
             parameter.update(
                 period=f"year:{year}-01-01:1",
                 value=adjust_la_amount_for_inflation(
-                    parameter(f"{year - 1}-01-01"),
-                    get_la_cpi_u_percentage_increase(cpi, year - 1),
+                    parameter(f"{year - 1}-01-01"), percentages[year - 1]
                 ),
             )
         parameter.update(
