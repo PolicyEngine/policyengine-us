@@ -20,6 +20,11 @@ class il_eitc(Variable):
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.il.tax.income.credits.eitc
+        if not p.expansion_in_effect:
+            # Before 2023 the IL EIC is a match of the federal credit
+            # (Schedule IL-E/EIC Step 4, lines 5 and 6).
+            return tax_unit("eitc", period) * p.match
         person = tax_unit.members
         age = person("age", period)
         has_tin = person("has_tin", period)
@@ -34,7 +39,6 @@ class il_eitc(Variable):
         ) & has_tin
         child_count = tax_unit.sum(qualifying_child)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        p = parameters(period).gov.states.il.tax.income.credits.eitc
         demographic_eligible = (child_count > 0) | tax_unit.any(
             is_head_or_spouse & (age >= p.childless_min_age)
         )
@@ -46,5 +50,4 @@ class il_eitc(Variable):
             demographic_eligible,
             filer_has_tin,
         )
-        match = parameters(period).gov.states.il.tax.income.credits.eitc.match
-        return state_eitc * match
+        return state_eitc * p.match
