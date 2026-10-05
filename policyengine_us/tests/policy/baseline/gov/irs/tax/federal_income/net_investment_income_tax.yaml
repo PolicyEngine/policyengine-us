@@ -66,3 +66,276 @@
     filing_status: SINGLE
   output:
     net_investment_income_tax: 26_600
+
+- name: Estate and trust income above the AGI threshold
+  # With no Schedule K-1 (Form 1041) box 14 code H adjustment, all
+  # Schedule E Part III income counts, as on Form 8960 line 4a.
+  period: 2024
+  input:
+    adjusted_gross_income: 230_000
+    estate_income: 30_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    # 3.8% of min(30,000 NII, 30,000 excess AGI)
+    net_investment_income_tax: 1_140
+
+- name: Estate and trust income below the AGI threshold
+  period: 2024
+  input:
+    adjusted_gross_income: 199_000
+    estate_income: 50_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 50_000
+    net_investment_income_tax: 0
+
+- name: Estate and trust losses reduce net investment income
+  period: 2024
+  input:
+    adjusted_gross_income: 250_000
+    taxable_interest_income: 40_000
+    estate_income: -10_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 30_000
+    net_investment_income_tax: 1_140
+
+- name: Estate income raises AGI above the threshold and counts as net investment income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 190_000
+        estate_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 220_000
+    net_investment_income: 30_000
+    # 3.8% of min(30,000 NII, 220,000 - 200,000 excess AGI)
+    net_investment_income_tax: 760
+
+- name: Beneficiary from Treas. Reg. 1.1411-3(e)(5) Example 1 with a code H adjustment
+  # The regulation's beneficiary receives $1,000 of interest, $1,500 of
+  # dividends, and $7,500 of IRA income, and only the $2,500 is net investment
+  # income. Illustratively, the K-1 would carry the interest in box 1, the
+  # dividends in box 2a, and the IRA income (IRD) in box 5 (Schedule E Part
+  # III), with -7,500 in box 14 code H to remove it on Form 8960 line 7.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+        taxable_interest_income: 1_000
+        ordinary_dividend_income: 1_500
+        estate_income: 7_500
+        estate_income_net_investment_income_adjustment: -7_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 240,000 + 1,000 + 1,500 + 7,500; the IRA income stays in AGI.
+    adjusted_gross_income: 250_000
+    estate_net_investment_income: 0
+    net_investment_income: 2_500
+    # 3.8% of min(2,500, 50,000)
+    net_investment_income_tax: 95
+
+- name: Same beneficiary without the code H adjustment counts all estate income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+        taxable_interest_income: 1_000
+        ordinary_dividend_income: 1_500
+        estate_income: 7_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 250_000
+    net_investment_income: 10_000
+    # 3.8% of min(10,000, 50,000)
+    net_investment_income_tax: 380
+
+- name: A dependent's estate income stays out of the filer's net investment income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 250_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    irs_gross_income: [250_000, 0]
+    adjusted_gross_income: 250_000
+    estate_net_investment_income: [0, 0]
+    net_investment_income: 0
+    net_investment_income_tax: 0
+
+- name: A positive code H adjustment also increases MAGI
+  # Form 8960 line 7 instructions: enter a positive box 14 code H amount on
+  # line 7 and increase MAGI by the same amount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 195_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 205_000
+    net_investment_income: 15_000
+    # MAGI 205,000 + 5,000 = 210,000; 3.8% of min(15,000, 10,000)
+    net_investment_income_tax: 380
+
+- name: A dependent's positive code H adjustment does not change the filer's MAGI
+  # The filer's AGI is below the threshold, so any leak of the child's
+  # +30,000 into MAGI would produce tax (3.8% of min(20,000, 25,000) = 760).
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 175_000
+        taxable_interest_income: 20_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        estate_income_net_investment_income_adjustment: 30_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    adjusted_gross_income: 195_000
+    net_investment_income: 20_000
+    net_investment_income_tax: 0
+
+- name: Several K-1s keep the positive MAGI increase that netting would lose
+  # Trust A reports code H +10,000 (MAGI +10,000). Trust B passes $7,500 of
+  # IRA income in box 5 with code H -7,500 and no MAGI adjustment. The code H
+  # inputs net to +2,500, but MAGI rises by 10,000.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 187_500
+        estate_income: 7_500
+        estate_income_net_investment_income_adjustment: 2_500
+        estate_income_niit_magi_adjustment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 195_000
+    net_investment_income: 10_000
+    # MAGI 195,000 + 10,000 = 205,000; 3.8% of min(10,000, 5,000)
+    net_investment_income_tax: 190
+
+- name: A trust-indicated negative MAGI adjustment lowers MAGI
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 190_000
+        taxable_interest_income: 20_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: -10_000
+        estate_income_niit_magi_adjustment: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 220_000
+    niit_magi: 210_000
+    net_investment_income: 20_000
+    # MAGI 220,000 - 10,000 = 210,000; 3.8% of min(20,000, 10,000)
+    net_investment_income_tax: 380
+
+- name: A spouse's positive code H raises joint MAGI
+  # MFJ threshold 250,000. AGI 240,000 + 10,000 = 250,000; NII 10,000 + 5,000
+  # = 15,000; MAGI 250,000 + 5,000 = 255,000; 3.8% of min(15,000, 5,000).
+  # Counting only the head's MAGI adjustment would give 0.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 240_000
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    adjusted_gross_income: 250_000
+    niit_magi: 255_000
+    net_investment_income: 15_000
+    net_investment_income_tax: 190

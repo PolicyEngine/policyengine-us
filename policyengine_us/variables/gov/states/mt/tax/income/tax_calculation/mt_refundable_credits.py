@@ -7,6 +7,9 @@ class mt_refundable_credits(Variable):
     label = "Montana refundable credits"
     unit = USD
     reference = (
+        # 2022 Montana Form 2 instructions, Other Payments and Refundable
+        # Credits Schedule
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48",
         # 2021 Montana Form 2 instructions, Other Payments and Refundable
         # Credits Schedule
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=50",
