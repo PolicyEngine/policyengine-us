@@ -1,3 +1,10 @@
+## [2.29.0] - 2026-10-05
+
+### Added
+
+- Add North Carolina Low Income Energy Assistance Program (LIEAP) regular heating benefits.
+
+
 ## [2.28.3] - 2026-10-05
 
 ### Fixed
