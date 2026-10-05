@@ -220,9 +220,10 @@ def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
     instants identify the end of the observed series, and no branch reads
     an instant a refresh could have turned from projection into
     observation: a February in the last observation's year is never an
-    anchor. When observations end in January, the February that follows may
-    still hold that year's projection; it is skipped, and the months after
-    January interpolate toward the next year's point.
+    anchor. That only matters when observations end in January (any later
+    month already follows that February): the February may then hold that
+    year's projection or an observation, so it is skipped, and the months
+    after January interpolate toward the next year's point.
     """
     last_observation = max(
         instant(value.instant_str)
