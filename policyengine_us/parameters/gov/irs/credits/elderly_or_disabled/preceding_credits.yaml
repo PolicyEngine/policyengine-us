@@ -1,12 +1,12 @@
 description: Non-refundable tax credits which precede the Elderly or Disabled Credit.
 values:
+  # Section 25D(c) orders the residential clean energy credit after these.
   2013-01-01:
-    - foreign_tax_credit 
+    - foreign_tax_credit
     - cdcc
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
-    - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
 
 metadata:
@@ -16,3 +16,7 @@ metadata:
   reference:
     - title: IRS Schedule 3, Additional Credits and Payments
       href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
+      href: https://www.law.cornell.edu/uscode/text/26/25D#c
+    - title: 2025 Instructions for Schedule R (Form 1040), Credit Limit Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-pdf/i1040sr.pdf#page=4

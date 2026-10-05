@@ -8,8 +8,8 @@ class va_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-        "https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/760-2022.pdf#page=1"
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",
+        "https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/760-2022.pdf#page=1",
     )
     defined_for = StateCode.VA
 

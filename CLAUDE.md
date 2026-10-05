@@ -132,8 +132,9 @@ changelog.d/medicaid-ce-exclusions.md
 
 ## Axiom Parity (required for policy changes)
 - Any PR that adds, updates or fixes policy must also leave the same provision correct in rulespec-us. Put one line in the PR body: `axiom: <legal id> encoded-correct | <rulespec PR> encoded | <rulespec issue> queued | n/a: <reason>`.
-- A `queued` rulespec-us issue must be dispatch-ready and labelled `pe-parity`. It needs the module path and corpus citation, the verbatim law, the required outputs, and companion tests from the same external source as your YAML tests. See `CONTRIBUTING.md#axiom-parity`.
+- Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. A `queued` rulespec-us issue must be dispatch-ready and labelled `pe-parity`. It needs the module path and corpus citation, the verbatim law, the required outputs, and companion tests from the same external source as your YAML tests. See `CONTRIBUTING.md#axiom-parity`.
 - Never hand-write RuleSpec. Modules come from the signed encoder.
+- If you are an external contributor and cannot complete the Axiom work, use `axiom: needed`; a maintainer will follow up.
 
 ## Code Integrity
 - **BEFORE DELETING ANY CODE, VERIFY IT IS ACTUALLY UNUSED**

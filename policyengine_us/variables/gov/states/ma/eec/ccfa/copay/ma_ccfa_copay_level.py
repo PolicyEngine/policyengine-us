@@ -8,7 +8,7 @@ class ma_ccfa_copay_level(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
     reference = (
-        "https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
+        "https://web.archive.org/web/20250902041737/https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
         "https://www.mass.gov/doc/parent-fee-chart-fy2026/download",
     )
 

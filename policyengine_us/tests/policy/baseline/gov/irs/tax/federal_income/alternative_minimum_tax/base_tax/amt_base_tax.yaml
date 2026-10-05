@@ -31,3 +31,22 @@
     # Form 6251 (2025) line 7 "All others" (and line 39): $136,000 is more
     # than $119,550, so 28% * $136,000 - $2,391 = $35,689.
     amt_base_tax: 35_689
+
+- name: A Form 2555 filer's tax on line 3 of the Form 6251 Foreign Earned Income Tax Worksheet
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 150_000
+    foreign_earned_income_exclusion: 130_000
+  output:
+    # Worksheet line 4, "All others": 280,000 x 28% - 4,782.
+    amt_base_tax: 73_618
+
+- name: The exclusion is not added when Form 6251 line 6 is zero
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 0
+    foreign_earned_income_exclusion: 130_000
+  output:
+    amt_base_tax: 0
