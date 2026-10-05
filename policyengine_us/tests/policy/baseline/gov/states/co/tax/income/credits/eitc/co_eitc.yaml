@@ -361,3 +361,33 @@
     # child under IRC 152(c)(3)(B), so the CO EITC pays its match on the
     # 1-child federal-style EITC rather than the childless amount.
     co_eitc: 1_700
+
+- name: Colorado under-25 EITC nets a spouse's self-employment loss (50% x 7.65% x 6,000)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 22
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    co_eitc: 229.5

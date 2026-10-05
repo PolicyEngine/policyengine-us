@@ -116,3 +116,75 @@
       household: {members: [parent], state_fips: 18}
   output:
     in_eitc: 61.20
+
+- name: Indiana decoupled EITC nets a spouse's self-employment loss, 2022 (10% x 2,400)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IN
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    in_eitc: 240
+
+- name: Indiana decoupled EITC nets a spouse's self-employment loss, 2021 (9% x 2,400)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IN
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    in_eitc: 216
