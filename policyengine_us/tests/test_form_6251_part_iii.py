@@ -32,8 +32,21 @@ Two kinds of test:
     scale applied with no factor, bit for bit: their multiplier is 1.
 
 Households with 28-percent rate or unrecaptured section 1250 gain go through
-the Schedule D Tax Worksheet, which is not transcribed here; they are
-checked only against the properties. YAML unit tests cover those lines.
+the Schedule D Tax Worksheet. Its 2025 lines 1 to 47 are transcribed below
+too, and for those households the model is compared with:
+
+- line 47, the regular tax (`income_tax_main_rates` plus
+  `capital_gains_tax`), which taxes at the regular rates the greater of line
+  18 or line 20 (line 21), where line 19 is the taxable income taxed at a
+  rate below 25 percent (26 U.S.C. 1(h)(1)(A)(ii)(I));
+- Form 6251 lines 38 to 40 and 11, with line 14 from Schedule D line 19,
+  line 15 capped by worksheet line 10, line 27 from worksheet line 21 and
+  lines 35 to 37 taxing the rest of the unrecaptured gain at 25 percent.
+
+Further properties for those households: worksheet line 21 lies between
+lines 18 and 14, and equals line 14 without either kind of gain (so line 27
+is then line 20, line 5 of the capital gains worksheet); the regular tax
+never exceeds the tax on all taxable income at the regular rates (line 46).
 """
 
 import numpy as np
@@ -77,14 +90,29 @@ def amt_rates_2025(amount, status):
     return 0.26 * amount if amount <= 239_100 else 0.28 * amount - 4_782
 
 
-def form_6251_part_iii_2025(line_12, line_13, line_20, status):
-    """2025 Form 6251, lines 12 to 40, with no Schedule D Tax Worksheet.
+def form_6251_part_iii_2025(
+    line_12,
+    line_13,
+    line_20,
+    status,
+    line_14=0,
+    worksheet_line_10=None,
+    line_27=None,
+):
+    """2025 Form 6251, lines 12 to 40.
 
     With no Schedule D Tax Worksheet, line 14 is zero, line 15 is line 13
-    and line 27 is line 20 (line 5 of the capital gains worksheet).
+    and line 27 is line 20 (line 5 of the capital gains worksheet). With
+    one, pass line 14 (Schedule D line 19), the worksheet's line 10 and its
+    line 21 for line 27.
     Returns lines 17, 38, 39 and 40.
     """
-    line_15 = line_13
+    if worksheet_line_10 is None:
+        line_15 = line_13
+    else:
+        line_15 = min(line_13 + line_14, worksheet_line_10)
+    if line_27 is None:
+        line_27 = line_20
     line_16 = min(line_12, line_15)
     line_17 = line_12 - line_16
     line_18 = amt_rates_2025(line_17, status)
@@ -92,16 +120,164 @@ def form_6251_part_iii_2025(line_12, line_13, line_20, status):
     line_22 = min(line_12, line_13)
     line_23 = min(line_21, line_22)
     line_24 = line_22 - line_23
-    line_28 = line_21 + line_20
+    line_26 = line_21
+    line_28 = line_26 + line_27
     line_29 = max(0, FIFTEEN_PERCENT_RATE_AMOUNT_2025[status] - line_28)
     line_30 = min(line_24, line_29)
     line_31 = 0.15 * line_30
     line_32 = line_23 + line_30
-    line_33 = line_22 - line_32
-    line_34 = 0.20 * line_33
-    line_38 = line_18 + line_31 + line_34
+    line_33 = line_34 = line_37 = 0
+    # "If lines 32 and 12 are the same, skip lines 33 through 37."
+    if line_32 != line_12:
+        line_33 = line_22 - line_32
+        line_34 = 0.20 * line_33
+        # "If line 14 is zero or blank, skip lines 35 through 37."
+        if line_14 > 0:
+            line_35 = line_17 + line_32 + line_33
+            line_36 = line_12 - line_35
+            line_37 = 0.25 * line_36
+    line_38 = line_18 + line_31 + line_34 + line_37
     line_39 = amt_rates_2025(line_12, status)
     return line_17, line_38, line_39, min(line_38, line_39)
+
+
+# The 2025 Schedule D Tax Worksheet (Instructions for Schedule D (Form 1040)).
+# Line 19: the smaller of line 1 or these amounts, the top of the 24 percent
+# bracket.
+BELOW_25_PERCENT_AMOUNT_2025 = {
+    "SINGLE": 197_300,
+    "SEPARATE": 197_300,
+    "JOINT": 394_600,
+    "SURVIVING_SPOUSE": 394_600,
+    "HEAD_OF_HOUSEHOLD": 197_300,
+}
+
+# Lines 44 and 46 tax amounts at the regular rates. These are the rows of the
+# 2025 Tax Computation Worksheet (2025 Instructions for Form 1040, page 80):
+# (top of the row, multiplication amount, subtraction amount). The model taxes
+# amounts under $100,000 at the same rates rather than at the Tax Table's
+# midpoints, and so does this transcription. The 10 and 12 percent rows'
+# tops are the lower brackets; each matches the Tax Table row containing it
+# (for example, single $48,450-$48,500: $5,579, the tax on $48,475 rounded)
+# and the 22 percent row's subtraction amount (for single, 10% of $48,475
+# plus 2% of $11,925 is $5,086).
+_UNMARRIED_ROWS = [
+    (11_925, 0.10, 0),
+    (48_475, 0.12, 238.50),
+    (103_350, 0.22, 5_086),
+    (197_300, 0.24, 7_153),
+    (250_525, 0.32, 22_937),
+]
+TAX_COMPUTATION_ROWS_2025 = {
+    "SINGLE": _UNMARRIED_ROWS
+    + [(626_350, 0.35, 30_452.75), (float("inf"), 0.37, 42_979.75)],
+    "SEPARATE": _UNMARRIED_ROWS
+    + [(375_800, 0.35, 30_452.75), (float("inf"), 0.37, 37_968.75)],
+    "JOINT": [
+        (23_850, 0.10, 0),
+        (96_950, 0.12, 477),
+        (206_700, 0.22, 10_172),
+        (394_600, 0.24, 14_306),
+        (501_050, 0.32, 45_874),
+        (751_600, 0.35, 60_905.50),
+        (float("inf"), 0.37, 75_937.50),
+    ],
+    "HEAD_OF_HOUSEHOLD": [
+        (17_000, 0.10, 0),
+        (64_850, 0.12, 340),
+        (103_350, 0.22, 6_825),
+        (197_300, 0.24, 8_892),
+        (250_500, 0.32, 24_676),
+        (626_350, 0.35, 32_191),
+        (float("inf"), 0.37, 44_718),
+    ],
+}
+TAX_COMPUTATION_ROWS_2025["SURVIVING_SPOUSE"] = TAX_COMPUTATION_ROWS_2025["JOINT"]
+
+
+def regular_tax_2025(amount, status):
+    """The 2025 tax on an amount at the regular rates."""
+    if amount <= 0:
+        return 0
+    for top, rate, subtraction in TAX_COMPUTATION_ROWS_2025[status]:
+        if amount <= top:
+            return rate * amount - subtraction
+
+
+def schedule_d_tax_worksheet_2025(household, line_1, status):
+    """2025 Schedule D Tax Worksheet, lines 1 to 47, with no Form 4952.
+
+    Schedule D lines 18 and 19 are the household's 28 percent rate gain
+    (collectibles) and unrecaptured section 1250 gain. Returns the lines.
+    """
+    long_term = household["long_term_gains"]
+    schedule_d_18 = max(0, long_term) * household.get("collectibles_share", 0) / 100
+    schedule_d_19 = max(0, long_term) * household.get("section_1250_share", 0) / 100
+    line = {1: line_1}
+    line[2] = household["qualified_dividends"]
+    line[3] = line[4] = line[5] = 0
+    line[6] = max(0, line[2] - line[5])
+    # Schedule D line 15 is the long-term gain, line 16 the net gain.
+    line[7] = min(long_term, long_term + household["short_term_gains"])
+    line[8] = min(line[3], line[4])
+    line[9] = max(0, line[7] - line[8])
+    line[10] = line[6] + line[9]
+    line[11] = schedule_d_18 + schedule_d_19
+    line[12] = min(line[9], line[11])
+    line[13] = line[10] - line[12]
+    line[14] = max(0, line[1] - line[13])
+    line[15] = ZERO_RATE_AMOUNT_2025[status]
+    line[16] = min(line[1], line[15])
+    line[17] = min(line[14], line[16])
+    line[18] = max(0, line[1] - line[10])
+    line[19] = min(line[1], BELOW_25_PERCENT_AMOUNT_2025[status])
+    line[20] = min(line[14], line[19])
+    line[21] = max(line[18], line[20])
+    line[22] = line[16] - line[17]
+    for i in range(23, 44):
+        line[i] = 0
+    # "If lines 1 and 16 are the same, skip lines 23 through 43."
+    if line[1] != line[16]:
+        line[23] = min(line[1], line[13])
+        line[24] = line[22]
+        line[25] = max(0, line[23] - line[24])
+        line[26] = FIFTEEN_PERCENT_RATE_AMOUNT_2025[status]
+        line[27] = min(line[1], line[26])
+        line[28] = line[21] + line[22]
+        line[29] = max(0, line[27] - line[28])
+        line[30] = min(line[25], line[29])
+        line[31] = 0.15 * line[30]
+        line[32] = line[24] + line[30]
+        # "If lines 1 and 32 are the same, skip lines 33 through 43."
+        if line[1] != line[32]:
+            line[33] = line[23] - line[32]
+            line[34] = 0.20 * line[33]
+            # "If Schedule D, line 19, is zero or blank, skip lines 35
+            # through 40."
+            if schedule_d_19 > 0:
+                line[35] = min(line[9], schedule_d_19)
+                line[36] = line[10] + line[21]
+                line[37] = line[1]
+                line[38] = max(0, line[36] - line[37])
+                line[39] = max(0, line[35] - line[38])
+                line[40] = 0.25 * line[39]
+            # "If Schedule D, line 18, is zero or blank, skip lines 41
+            # through 43."
+            if schedule_d_18 > 0:
+                line[41] = line[21] + line[22] + line[30] + line[33] + line[39]
+                line[42] = line[1] - line[41]
+                line[43] = 0.28 * line[42]
+    if line[1] > 0:
+        # Lines 21, 22, 30, 33, 39 and 42 split line 1: the amounts taxed at
+        # the regular rates and at 0, 15, 20, 25 and 28 percent.
+        split = line[21] + line[22] + line[30] + line[33] + line[39] + line[42]
+        assert split == pytest.approx(line[1], abs=0.01), (household, line)
+    line[44] = regular_tax_2025(line[21], status)
+    line[45] = line[31] + line[34] + line[40] + line[43] + line[44]
+    line[46] = regular_tax_2025(line[1], status)
+    line[47] = min(line[45], line[46])
+    line["schedule_d_19"] = schedule_d_19
+    return line
 
 
 def capital_gains_worksheet_line_4(household):
@@ -122,6 +298,11 @@ def capital_gains_worksheet_line_4(household):
 OUTPUTS = [
     "filing_status",
     "taxable_income",
+    "has_qdiv_or_ltcg",
+    "dwks10",
+    "dwks14",
+    "dwks19",
+    "income_tax_main_rates",
     "regular_tax_before_credits",
     "capital_gains_tax",
     "amt_income_less_exemptions",
@@ -248,6 +429,93 @@ def assert_properties(households, law):
     assert np.all(np.abs(part_iii - base)[no_gains] <= tolerance(line_12)[no_gains])
 
 
+def assert_matches_schedule_d_tax_worksheet(households, law):
+    """The 2025 model against the transcribed 2025 Schedule D Tax Worksheet.
+
+    For households with no short-term loss, so that Schedule D lines 18 and
+    19 are the 28 percent rate gain and unrecaptured section 1250 gain as
+    entered (a short-term loss would reduce them on the 28% Rate Gain and
+    Unrecaptured Section 1250 Gain Worksheets, which the model does not do).
+    """
+    for i, h in enumerate(households):
+        assert h["short_term_gains"] >= 0, h
+        status = law["filing_status"][i]
+        assert status == h["status"], (i, status)
+        line_1 = float(law["taxable_income"][i])
+        regular_tax = float(law["income_tax_main_rates"][i]) + float(
+            law["capital_gains_tax"][i]
+        )
+        if line_1 <= 0:
+            assert regular_tax == 0, (i, h)
+            continue
+        worksheet = schedule_d_tax_worksheet_2025(h, line_1, status)
+        if law["has_qdiv_or_ltcg"][i]:
+            for model_line, worksheet_line in (
+                ("dwks10", 10),
+                ("dwks14", 14),
+                ("dwks19", 21),
+            ):
+                assert float(law[model_line][i]) == pytest.approx(
+                    worksheet[worksheet_line], abs=tolerance(line_1)
+                ), (i, h, model_line)
+        # Line 45. The model does not take the smaller of lines 45 and 46,
+        # which differ only when a little gain taxed at 15 percent sits where
+        # the regular rate is 12 percent.
+        assert regular_tax == pytest.approx(worksheet[45], abs=tolerance(line_1)), (
+            i,
+            h,
+            worksheet,
+        )
+        # Form 6251 Part III, with lines 14, 15 and 27 from the worksheet.
+        line_12 = float(law["amt_income_less_exemptions"][i])
+        _, line_38, line_39, line_40 = form_6251_part_iii_2025(
+            line_12,
+            worksheet[13],
+            worksheet[14],
+            status,
+            line_14=worksheet["schedule_d_19"],
+            worksheet_line_10=worksheet[10],
+            line_27=worksheet[21],
+        )
+        assert float(law["amt_tax_including_cg"][i]) == pytest.approx(
+            line_38, abs=tolerance(line_12)
+        ), (i, h)
+        assert float(law["amt_base_tax"][i]) == pytest.approx(
+            line_39, abs=tolerance(line_12)
+        ), (i, h)
+        # Line 11, with line 10 the worksheet's regular tax (line 45, as
+        # above) and no foreign tax credit.
+        amt = max(0, line_40 - worksheet[45])
+        assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
+            amt, abs=tolerance(line_12, line_1)
+        ), (i, h)
+
+
+def assert_schedule_d_properties(households, law):
+    """Schedule D Tax Worksheet line 21 (`dwks19`), for every year."""
+    line_1 = law["taxable_income"].astype(float)
+    line_10 = law["dwks10"].astype(float)
+    line_14 = law["dwks14"].astype(float)
+    line_21 = law["dwks19"].astype(float)
+    has_gains = law["has_qdiv_or_ltcg"].astype(bool)
+    tol = tolerance(line_1)
+    # Line 18 <= line 21 <= line 14: line 21 is the larger of line 18 and
+    # the smaller of line 14 and line 19, and line 18 is at most line 14.
+    line_18 = np.where(has_gains, np.maximum(0, line_1 - line_10), 0)
+    assert (line_18 <= line_21 + tol).all()
+    assert (line_21 <= line_14 + tol).all()
+    # Without 28 percent rate or unrecaptured section 1250 gain, line 13 is
+    # line 10, so line 21 is line 14 (QDCG Worksheet line 5), bit for bit,
+    # and Form 6251 line 27 is line 20.
+    plain = np.array(
+        [
+            h.get("collectibles_share", 0) == 0 and h.get("section_1250_share", 0) == 0
+            for h in households
+        ]
+    )
+    assert np.array_equal(line_21[plain], line_14[plain])
+
+
 # ---------------------------------------------------------------------------
 # Line 18 as a schedule.
 # ---------------------------------------------------------------------------
@@ -370,6 +638,117 @@ def test_separate_filer_with_line_17_of_136_162_50():
     assert law["alternative_minimum_tax"][0] > 0
 
 
+# ---------------------------------------------------------------------------
+# Households with 28 percent rate or unrecaptured section 1250 gain.
+# ---------------------------------------------------------------------------
+
+
+def test_unrecaptured_gain_household_by_hand():
+    # 2025, single: $200,000 of wages and $400,000 of long-term gain, of
+    # which $100,000 is unrecaptured section 1250 gain. Taxable income is
+    # $584,250 (the standard deduction is $15,750).
+    # Schedule D Tax Worksheet: line 10 $400,000; line 13 $300,000; line 14
+    # $284,250; line 18 $184,250; line 19 $197,300; line 20 $197,300; line
+    # 21 $197,300; line 22 $0; line 30 $300,000 (15%: $45,000); line 33 $0;
+    # line 38 $400,000 + $197,300 - $584,250 = $13,050, so line 39 is
+    # $86,950 (25%: $21,737.50); line 44, the tax on $197,300, is $40,199.
+    # Line 45: $106,936.50. Taxing line 18 ($184,250) at the regular rates
+    # and all $100,000 at 25 percent instead gives $107,067.
+    # Form 6251: line 12 $511,900 ($600,000 less the $88,100 exemption);
+    # lines 13 to 17: $300,000, $100,000, $400,000, $400,000, $111,900;
+    # line 18 $29,094; line 20 $284,250; line 21 $0; line 22 $300,000; line
+    # 27 $197,300 (worksheet line 21); line 29 $336,100; line 30 $300,000
+    # (15%: $45,000); line 33 $0; line 36 $100,000 (25%: $25,000). Line 38:
+    # $99,094. Worksheet line 14 on line 27 would leave $249,150 at 15
+    # percent and $50,850 at 20 percent: $101,636.50.
+    household = {
+        "status": "SINGLE",
+        "wages": 200_000,
+        "qualified_dividends": 0,
+        "long_term_gains": 400_000,
+        "short_term_gains": 0,
+        "section_1250_share": 25,
+    }
+    law = calculate([household], 2025)
+    assert law["taxable_income"][0] == 584_250
+    assert law["dwks14"][0] == 284_250
+    assert law["dwks19"][0] == 197_300
+    regular_tax = law["income_tax_main_rates"][0] + law["capital_gains_tax"][0]
+    assert regular_tax == pytest.approx(106_936.50, abs=0.01)
+    assert law["amt_income_less_exemptions"][0] == 511_900
+    assert law["amt_tax_including_cg"][0] == pytest.approx(99_094, abs=0.01)
+    assert law["alternative_minimum_tax"][0] == 0
+    assert_matches_schedule_d_tax_worksheet([household], law)
+
+
+def test_rate_gain_household_by_hand():
+    # 2025, single: $200,000 of wages and $400,000 of long-term gain, of
+    # which $100,000 is collectibles gain (28 percent rate gain). Worksheet
+    # lines 10 to 22 are as in the previous test. Schedule D line 19 is zero,
+    # so lines 35 to 40 are skipped. Line 41: $197,300 + $0 + $300,000 + $0
+    # + $0 = $497,300. Line 42: $86,950 (28%: $24,346). Line 45: $45,000 +
+    # $24,346 + $40,199 = $109,545. Taxing the whole $100,000 at 28 percent
+    # on top would tax $13,050 of it twice.
+    household = {
+        "status": "SINGLE",
+        "wages": 200_000,
+        "qualified_dividends": 0,
+        "long_term_gains": 400_000,
+        "short_term_gains": 0,
+        "collectibles_share": 25,
+    }
+    law = calculate([household], 2025)
+    assert law["dwks19"][0] == 197_300
+    regular_tax = law["income_tax_main_rates"][0] + law["capital_gains_tax"][0]
+    assert regular_tax == pytest.approx(109_545, abs=0.01)
+    assert_matches_schedule_d_tax_worksheet([household], law)
+
+
+SCHEDULE_D_GRID = [
+    {
+        "status": status,
+        "wages": wages,
+        "qualified_dividends": dividends,
+        "long_term_gains": long_term,
+        "short_term_gains": short_term,
+        "section_1250_share": section_1250,
+        "collectibles_share": collectibles,
+        "real_estate_taxes": real_estate_taxes,
+    }
+    for status in STATUSES
+    for wages in (0, 60_000, 150_000, 260_000, 700_000)
+    for real_estate_taxes in (0, 40_000)
+    for (
+        dividends,
+        long_term,
+        short_term,
+        section_1250,
+        collectibles,
+    ) in (
+        (0, 400_000, 0, 25, 0),
+        (0, 400_000, 0, 0, 25),
+        (10_000, 300_000, 20_000, 30, 20),
+        (0, 100_000, 0, 50, 60),
+        (25_000, 900_000, 0, 10, 10),
+        (0, 50_000, 5_000, 100, 0),
+        (3_000, 0, 0, 0, 0),
+        (0, 0, 0, 0, 0),
+    )
+]
+
+
+def test_schedule_d_grid_matches_2025():
+    law = calculate(SCHEDULE_D_GRID, 2025)
+    assert_matches_schedule_d_tax_worksheet(SCHEDULE_D_GRID, law)
+    assert_properties(SCHEDULE_D_GRID, law)
+    assert_schedule_d_properties(SCHEDULE_D_GRID, law)
+    # The grid reaches worksheet line 21 below line 14 (line 19 binding),
+    # and the alternative minimum tax for such a household.
+    below = law["dwks19"] < law["dwks14"]
+    assert below.any()
+    assert (below & (law["alternative_minimum_tax"] > 0)).any()
+
+
 household_strategy = st.fixed_dictionaries(
     {
         "status": st.sampled_from(STATUSES),
@@ -448,4 +827,32 @@ def test_random_households_keep_the_properties(households, year):
         for h in households
     ]
     households = households + no_gains
-    assert_properties(households, calculate(households, year))
+    law = calculate(households, year)
+    assert_properties(households, law)
+    assert_schedule_d_properties(households, law)
+
+
+# Households with 28 percent rate or unrecaptured section 1250 gain and no
+# short-term loss (see assert_matches_schedule_d_tax_worksheet).
+schedule_d_worksheet_household_strategy = st.builds(
+    lambda h, short_term, collectibles, section_1250: {
+        **h,
+        "short_term_gains": short_term,
+        "collectibles_share": collectibles,
+        "section_1250_share": section_1250,
+    },
+    household_strategy,
+    st.one_of(st.just(0), st.integers(1, 300_000)),
+    st.one_of(st.just(0), st.integers(1, 100)),
+    st.one_of(st.just(0), st.integers(1, 100)),
+)
+
+
+@hypothesis.settings(**SETTINGS)
+@hypothesis.given(
+    st.lists(schedule_d_worksheet_household_strategy, min_size=1, max_size=25)
+)
+def test_random_households_match_schedule_d_tax_worksheet_2025(households):
+    law = calculate(households, 2025)
+    assert_matches_schedule_d_tax_worksheet(households, law)
+    assert_schedule_d_properties(households, law)
