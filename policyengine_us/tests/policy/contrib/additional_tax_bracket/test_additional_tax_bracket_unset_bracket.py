@@ -39,8 +39,10 @@ Properties of the reform, run in simulations:
   ``income_tax_main_rates`` and ``regular_tax_before_credits`` are finite and
   at least their values with the bracket removed when r8 >= r7.
 
-Households have no foreign earned income exclusion. That path subtracts the
-tax on the excluded amount, and only the first two properties cover it.
+No simulation here sets a foreign earned income exclusion, so the reform's
+subtraction of the tax on the excluded amount is covered only through the
+properties of ``tax_at_main_rates``, which hold for the excluded amount as for
+any other, and not end to end.
 """
 
 import numpy as np
@@ -178,7 +180,15 @@ UNSET_BRACKET_THRESHOLDS = {
     for status in STATUSES
 }
 UNSET_BRACKET_RATES = [0.10, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37, 0.37]
-SETTINGS = dict(max_examples=300, deadline=None, derandomize=True)
+# A loaded machine can stall a draw; as in the repository's other Hypothesis
+# tests, slow generation is not a failure.
+HEALTH_CHECKS = [hypothesis.HealthCheck.too_slow, hypothesis.HealthCheck.data_too_large]
+SETTINGS = dict(
+    max_examples=300,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=HEALTH_CHECKS,
+)
 
 
 @hypothesis.settings(**SETTINGS)
@@ -400,27 +410,44 @@ simulation_thresholds = st.one_of(
 )
 
 
-def uniform(value):
-    return {status: value for status in STATUSES}
+# Thresholds are set per filing status, so one simulation covers a shape of
+# brackets 7 and 8 for each status: (bracket 7 threshold, bracket 8 threshold).
+THRESHOLD_SHAPES = {
+    # As shipped: both infinite.
+    "SINGLE": (INF, INF),
+    # As the YAML tests use it: a finite bracket 7 threshold, bracket 8
+    # unbounded.
+    "JOINT": (800_000, INF),
+    # Bracket 8's threshold below bracket 7's.
+    "SEPARATE": (900_000, 500_000),
+    # A zero bracket 7 threshold.
+    "HEAD_OF_HOUSEHOLD": (0, INF),
+    # Bracket 7 unbounded above a finite bracket 8 threshold.
+    "SURVIVING_SPOUSE": (INF, 300_000),
+}
+SHAPES_7 = {status: shape[0] for status, shape in THRESHOLD_SHAPES.items()}
+SHAPES_8 = {status: shape[1] for status, shape in THRESHOLD_SHAPES.items()}
 
 
+# Each example runs two simulations on clones of the reform's system, and the
+# file runs in two CI steps, so the generated examples are few; the schedule
+# properties above take 300 examples each.
 @hypothesis.settings(
-    max_examples=12,
+    max_examples=3,
     deadline=None,
     derandomize=True,
+    suppress_health_check=HEALTH_CHECKS,
 )
 @hypothesis.given(
     per_status(simulation_thresholds),
     per_status(simulation_thresholds),
     st.tuples(rate_values, rate_values).map(sorted),
 )
-# The shipped parameters: both thresholds infinite.
-@hypothesis.example(uniform(INF), uniform(INF), [0.396, 0.396])
-# The YAML tests' use: a finite bracket 7 threshold, bracket 8 unbounded.
-@hypothesis.example(uniform(800_000), uniform(INF), [0.396, 0.42])
-# Bracket 8's threshold below bracket 7's, and a zero bracket 7 threshold.
-@hypothesis.example(uniform(900_000), uniform(500_000), [0.3, 0.5])
-@hypothesis.example(uniform(0), uniform(INF), [0.0, 1.0])
+# The shipped rates, equal, so the bracket changes nothing.
+@hypothesis.example(SHAPES_7, SHAPES_8, [0.396, 0.396])
+# A higher top rate, as in the YAML tests.
+@hypothesis.example(SHAPES_7, SHAPES_8, [0.396, 0.42])
+@hypothesis.example(SHAPES_7, SHAPES_8, [0.0, 1.0])
 def test_reform_tax_is_finite_and_at_least_tax_without_the_bracket(
     reform_system, thresholds_7, thresholds_8, rates
 ):

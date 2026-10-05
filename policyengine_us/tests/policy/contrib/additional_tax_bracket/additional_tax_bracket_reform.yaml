@@ -91,8 +91,10 @@
     taxable_income: 1_000_000
     filing_status: JOINT
   output:
-    # The reform's 2026 joint schedule, bracket tops 24,300, 98,600, 199,000,
-    # 303,250, 541,550 and 611,750, rates 10, 15, 25, 28, 33, 35 and 39.6%:
+    # The reform's own 2026 joint schedule, bracket tops 24,300, 98,600,
+    # 199,000, 303,250, 541,550 and 611,750, rates 10, 15, 25, 28, 33, 35 and
+    # 39.6%. Its parameter file sets these from 2026; they are not current
+    # law, whose 2026 rates are 10, 12, 22, 24, 32, 35 and 37%:
     # 0.10 * 24,300 + 0.15 * 74,300 + 0.25 * 100,400 + 0.28 * 104,250
     # + 0.33 * 238,300 + 0.35 * 70,200 + 0.396 * (1,000,000 - 611,750)
     # = 2,430 + 11,145 + 25,100 + 29,190 + 78,639 + 24,570 + 153,747
