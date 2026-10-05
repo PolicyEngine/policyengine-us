@@ -811,7 +811,7 @@ programs:
         variable: fl_liheap
         parameter_prefix: gov.states.fl.commerce.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating eligibility and operational payment matrix. Follows the explicit heating SMI rule; published table anomalies and categorical above-range treatment are documented. Administrative receipt and housing facts use existing-input approximations; historical backfills are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
+        notes: FY2026 regular heating eligibility and operational payment matrix. Follows the explicit 60% SMI rule where the size-13 table conflicts. The $200 base for categorically eligible households above the printed income range is an unverified estimate. Administrative receipt and housing facts use existing-input approximations; historical backfills are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
       - state: OR
         status: in_progress
         name: LIHEAP
