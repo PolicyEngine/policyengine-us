@@ -1,15 +1,14 @@
 from policyengine_us.model_api import *
 
 
-def tax_at_main_rates(taxable_amount, filing_status, bracket):
-    """Tax on an amount at the ordinary rate schedule of 26 U.S.C. 1.
+def amounts_in_brackets(taxable_amount, filing_status, bracket):
+    """Each bracket's key and the part of an amount that falls in it.
 
     `bracket` is a bracket parameter node with `rates` and `thresholds`,
     such as `parameters(period).gov.irs.income.bracket` or a contrib
     reform's replacement schedule. A threshold of infinity leaves every
-    bracket above it empty, so those brackets add nothing.
+    bracket above it empty.
     """
-    tax = 0
     bracket_bottom = 0
     for i in range(1, len(list(bracket.rates.__iter__())) + 1):
         b = str(i)
@@ -25,9 +24,18 @@ def tax_at_main_rates(taxable_amount, filing_status, bracket):
         # additional_tax_bracket reform's unset bracket 8, runs from infinity
         # to infinity: there the clip form is inf - inf = NaN, and this form
         # is zero.
-        amount_in_bracket = max_(0, min_(taxable_amount, bracket_top) - bracket_bottom)
-        tax += bracket.rates[b] * amount_in_bracket
+        yield b, max_(0, min_(taxable_amount, bracket_top) - bracket_bottom)
         bracket_bottom = bracket_top
+
+
+def tax_at_main_rates(taxable_amount, filing_status, bracket):
+    """Tax on an amount at the ordinary rate schedule of 26 U.S.C. 1.
+
+    `bracket` is a bracket parameter node, as in `amounts_in_brackets`.
+    """
+    tax = 0
+    for b, amount in amounts_in_brackets(taxable_amount, filing_status, bracket):
+        tax += bracket.rates[b] * amount
     return tax
 
 
@@ -35,15 +43,11 @@ def amount_taxed_below_rate(taxable_amount, filing_status, bracket, rate):
     """The part of an amount that the ordinary rate schedule taxes below a rate.
 
     For example, 26 U.S.C. 1(h)(1)(A)(ii)(I) refers to "the amount of taxable
-    income taxed at a rate below 25 percent". Brackets are walked and clamped
-    as in tax_at_main_rates, so the amount is consistent with the tax.
+    income taxed at a rate below 25 percent". The brackets are those of
+    tax_at_main_rates, so the amount is consistent with the tax.
     """
-    amount = 0
-    bracket_bottom = 0
-    for i in range(1, len(list(bracket.rates.__iter__())) + 1):
-        b = str(i)
-        bracket_top = max_(bracket_bottom, bracket.thresholds[b][filing_status])
+    amount_below_rate = 0
+    for b, amount in amounts_in_brackets(taxable_amount, filing_status, bracket):
         if bracket.rates[b] < rate:
-            amount += amount_between(taxable_amount, bracket_bottom, bracket_top)
-        bracket_bottom = bracket_top
-    return amount
+            amount_below_rate += amount
+    return amount_below_rate

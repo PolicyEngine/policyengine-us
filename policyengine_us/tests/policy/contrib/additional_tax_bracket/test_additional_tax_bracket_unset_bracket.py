@@ -1,16 +1,18 @@
 """An unset or infinite bracket adds no tax in the additional_tax_bracket reform.
 
 The reform taxes ordinary income on its own eight-bracket schedule,
-``gov.contrib.additional_tax_bracket.bracket``, through the shared loop
-``tax_at_main_rates``. Its parameter file sets the thresholds of brackets 7
-and 8 to infinity for every filing status and year, so the added bracket is
-unset until a user sets bracket 7's threshold. Bracket 8 then runs from
-infinity to infinity. The loop took each bracket's amount as
-``amount_between(x, bottom, top)``, which is ``clip(x, bottom, top) - bottom``,
-and for that bracket clip(x, inf, inf) - inf = inf - inf = NaN. With its
-default parameters the reform therefore gave NaN for ``income_tax_main_rates``
-and ``regular_tax_before_credits`` for every household, including one with no
-taxable income. The loop now takes max(0, min(x, top) - bottom), the form
+``gov.contrib.additional_tax_bracket.bracket``, through the shared functions
+``tax_at_main_rates`` and ``amount_taxed_below_rate``. Its parameter file sets
+the thresholds of brackets 7 and 8 to infinity for every filing status and
+year, so the added bracket is unset until a user sets bracket 7's threshold.
+Bracket 8 then runs from infinity to infinity. Both functions took each
+bracket's amount as ``amount_between(x, bottom, top)``, which is
+``clip(x, bottom, top) - bottom``, and for that bracket
+clip(x, inf, inf) - inf = inf - inf = NaN. With its default parameters the
+reform therefore gave NaN for ``income_tax_main_rates`` and
+``regular_tax_before_credits`` for every household, including one with no
+taxable income. Both now take each bracket's amount from
+``amounts_in_brackets``, as max(0, min(x, top) - bottom), the form
 policyengine-core's ``MarginalRateTaxScale.calc`` uses. It is zero for a
 bracket whose bottom is infinite and equals the clip form whenever the bottom
 is finite.
@@ -30,14 +32,25 @@ any order), rates in [0, 1] and taxable amounts in [0, $10 million]:
 - with bracket 7's threshold at infinity, as shipped, bracket 8 adds exactly
   nothing, whatever its rate or threshold.
 
+``amount_taxed_below_rate``, under the same conditions and for any rate limit
+in [0, 1], is finite, between zero and the amount, bit for bit the tax at
+rates of 1 for the brackets taxed below the limit and 0 for the others, and
+bit for bit the old clip form wherever that form gave a number.
+
 Properties of the reform, run in simulations:
 
-- with its default parameters, every tax is finite in 2025 and 2026;
+- with its default parameters, every tax, and the taxable income taxed
+  below 25 percent, is finite in 2025 and 2026;
 - with its first seven brackets set to current law and the added bracket
   unset, it reproduces the baseline;
 - for any thresholds of brackets 7 and 8, finite or infinite, the reform's
-  ``income_tax_main_rates`` and ``regular_tax_before_credits`` are finite and
-  at least their values with the bracket removed when r8 >= r7.
+  ``income_tax_main_rates``, ``regular_tax_before_credits`` and
+  ``taxable_income_taxed_below_25_percent`` are finite, and its two taxes are
+  at least their values with the bracket removed when r8 >= r7. The
+  households have no 28 percent rate gain or unrecaptured section 1250 gain,
+  so the amount taxed below 25 percent does not change which of their income
+  is taxed at the regular rates (``dwks19`` and
+  ``capital_gains_excluded_from_taxable_income``).
 
 No simulation here sets a foreign earned income exclusion, so the reform's
 subtraction of the tax on the excluded amount is covered only through the
@@ -57,6 +70,7 @@ from policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_refor
 )
 from policyengine_us.system import system as baseline_system
 from policyengine_us.variables.gov.irs.tax.federal_income.before_credits.tax_at_main_rates import (
+    amount_taxed_below_rate,
     tax_at_main_rates,
 )
 from policyengine_us.variables.household.demographic.tax_unit.filing_status import (
@@ -73,7 +87,9 @@ N_BRACKETS = 8
 BRACKET = "gov.contrib.additional_tax_bracket.bracket"
 YEAR = 2026
 REFORM_TAXES = ["income_tax_main_rates", "regular_tax_before_credits"]
-DOWNSTREAM_TAXES = REFORM_TAXES + ["income_tax_before_credits", "income_tax"]
+# Every variable the reform replaces.
+REFORM_VARIABLES = REFORM_TAXES + ["taxable_income_taxed_below_25_percent"]
+DOWNSTREAM_VARIABLES = REFORM_VARIABLES + ["income_tax_before_credits", "income_tax"]
 # Simulation variables are float32, about seven significant digits, so
 # compare taxes of up to a few million dollars to the dollar.
 SIMULATION_TOLERANCE = 1.0
@@ -139,6 +155,19 @@ def clip_form_tax(incomes, filing_status, bracket, n_brackets):
             tax = tax + bracket.rates[str(i)] * (np.clip(incomes, bottom, top) - bottom)
             bottom = top
     return tax
+
+
+def clip_form_amount_below_rate(incomes, filing_status, bracket, n_brackets, limit):
+    """amount_taxed_below_rate as it was before this fix."""
+    amount = 0
+    bottom = 0
+    with np.errstate(invalid="ignore"):
+        for i in range(1, n_brackets + 1):
+            top = np.maximum(bottom, bracket.thresholds[str(i)][filing_status])
+            if bracket.rates[str(i)] < limit:
+                amount = amount + (np.clip(incomes, bottom, top) - bottom)
+            bottom = top
+    return amount
 
 
 threshold_values = st.one_of(
@@ -271,9 +300,55 @@ def test_unset_added_bracket_adds_nothing(schedule, units):
     assert np.array_equal(eight, seven)
 
 
+@hypothesis.settings(**SETTINGS)
+@hypothesis.given(schedules(), households(), rate_values)
+@hypothesis.example(
+    (UNSET_BRACKET_THRESHOLDS, [0.10, 0.12, 0.22, 0.24, 0.32, 0.35, 0.10, 0.10]),
+    (np.array([0.0, 50_000.0, 2_000_000.0]), np.array(["SINGLE", "JOINT", "SEPARATE"])),
+    0.25,
+)
+def test_amount_taxed_below_rate_is_finite_and_matches_indicator_rates(
+    schedule, units, limit
+):
+    thresholds, rates = schedule
+    incomes, statuses = units
+    bracket = bracket_node(thresholds, rates)
+    filing_status = FilingStatus.encode(statuses)
+    # With no rate below the limit the function returns the scalar 0, which
+    # policyengine-core fills into an array for a formula.
+    amount = np.broadcast_to(
+        amount_taxed_below_rate(incomes, filing_status, bracket, limit),
+        incomes.shape,
+    )
+
+    assert np.all(np.isfinite(amount))
+    assert np.all(amount >= 0)
+    # The brackets' pieces sum to at most the amount, up to rounding.
+    assert np.all(amount <= incomes + 1e-6)
+    # The amount is the tax at rates of 1 below the limit and 0 otherwise.
+    indicators = [1.0 if rate < limit else 0.0 for rate in rates]
+    at_indicators = tax_at_main_rates(
+        incomes, filing_status, bracket_node(thresholds, indicators)
+    )
+    assert np.array_equal(amount, at_indicators)
+    np.testing.assert_allclose(
+        amount,
+        scale_tax(incomes, statuses, thresholds, indicators),
+        rtol=1e-12,
+        atol=1e-6,
+    )
+    old = np.broadcast_to(
+        clip_form_amount_below_rate(incomes, filing_status, bracket, N_BRACKETS, limit),
+        incomes.shape,
+    )
+    defined = ~np.isnan(old)
+    assert np.array_equal(amount[defined], old[defined])
+
+
 def test_baseline_schedule_is_unchanged_in_every_year():
     # The baseline's top bracket has an infinite threshold but a finite
-    # bottom, so the clip form was defined; the new form must reproduce it.
+    # bottom, so the clip form was defined; the new form must reproduce it,
+    # for the tax and for the income taxed below 25 percent.
     incomes = np.linspace(0, 2_000_000, 401)
     for status in STATUSES:
         statuses = np.full(incomes.shape, status)
@@ -285,6 +360,14 @@ def test_baseline_schedule_is_unchanged_in_every_year():
             old = clip_form_tax(incomes, filing_status, bracket, n_brackets)
             assert np.all(np.isfinite(tax))
             assert np.array_equal(tax, old), (status, year)
+            limit = baseline_system.parameters(
+                f"{year}-01-01"
+            ).gov.irs.capital_gains.regular_rate_limit
+            below = amount_taxed_below_rate(incomes, filing_status, bracket, limit)
+            old_below = clip_form_amount_below_rate(
+                incomes, filing_status, bracket, n_brackets, limit
+            )
+            assert np.array_equal(below, old_below), (status, year)
 
 
 # ---------------------------------------------------------------------------
@@ -350,7 +433,7 @@ def calculate(variables, year, tax_benefit_system, reform=None):
 
 @pytest.mark.parametrize("year", [2025, 2026])
 def test_default_parameters_give_finite_taxes(reform_system, year):
-    taxes = calculate(DOWNSTREAM_TAXES, year, reform_system)
+    taxes = calculate(DOWNSTREAM_VARIABLES, year, reform_system)
     for variable, values in taxes.items():
         assert len(values) == GRID_SIZE
         assert np.all(np.isfinite(values)), variable
@@ -375,13 +458,13 @@ def current_law_first_seven_brackets(year):
 
 def test_reform_with_unset_bracket_reproduces_current_law(reform_system):
     reform = calculate(
-        DOWNSTREAM_TAXES,
+        DOWNSTREAM_VARIABLES,
         YEAR,
         reform_system,
         reform=current_law_first_seven_brackets(YEAR),
     )
-    baseline = calculate(DOWNSTREAM_TAXES, YEAR, baseline_system)
-    for variable in DOWNSTREAM_TAXES:
+    baseline = calculate(DOWNSTREAM_VARIABLES, YEAR, baseline_system)
+    for variable in DOWNSTREAM_VARIABLES:
         np.testing.assert_allclose(
             reform[variable], baseline[variable], atol=SIMULATION_TOLERANCE
         )
@@ -453,20 +536,21 @@ def test_reform_tax_is_finite_and_at_least_tax_without_the_bracket(
 ):
     rate_7, rate_8 = rates
     with_bracket = calculate(
-        REFORM_TAXES,
+        REFORM_VARIABLES,
         YEAR,
         reform_system,
         reform=added_bracket(thresholds_7, thresholds_8, rate_7, rate_8),
     )
     removed = calculate(
-        REFORM_TAXES,
+        REFORM_VARIABLES,
         YEAR,
         reform_system,
         reform=added_bracket(thresholds_7, thresholds_8, rate_7, rate_7),
     )
-    for variable in REFORM_TAXES:
+    for variable in REFORM_VARIABLES:
         assert np.all(np.isfinite(with_bracket[variable])), variable
         assert np.all(np.isfinite(removed[variable])), variable
+    for variable in REFORM_TAXES:
         assert np.all(
             with_bracket[variable] >= removed[variable] - SIMULATION_TOLERANCE
         ), variable
