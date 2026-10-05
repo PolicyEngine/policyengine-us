@@ -35,7 +35,7 @@ class student_loan_interest_ald_magi(Variable):
             - set(person_alds)
             - set(p_irs.ald.student_loan_interest.magi.excluded_alds)
         )
-        ald_sum_taxunit = add(person.tax_unit, period, other_alds)
+        ald_sum_taxunit = tax_unit_non_dep_add(person.tax_unit, period, other_alds)
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         frac = where(joint, 0.5, 1.0)

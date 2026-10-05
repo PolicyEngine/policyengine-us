@@ -11,6 +11,9 @@ class adjusted_gross_income_person(Variable):
 
     def formula(person, period, parameters):
         gross_income = person("irs_gross_income", period)
+        # A tax unit dependent's deductions are on their own return, as
+        # irs_gross_income leaves their income off this one.
+        not_dependent = ~person("is_tax_unit_dependent", period)
         # calculate ald sums by person
         PERSON_ALDS = [
             "self_employment_tax_ald",
@@ -18,11 +21,11 @@ class adjusted_gross_income_person(Variable):
             "self_employed_pension_contribution_ald",
         ]
         person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
-        ald_sum_person = add(person, period, person_ald_vars)
+        ald_sum_person = not_dependent * add(person, period, person_ald_vars)
         # split other alds evenly between head and spouse
         all_alds = parameters(period).gov.irs.ald.deductions
         other_alds = sorted(set(all_alds) - set(PERSON_ALDS))
-        ald_sum_taxunit = add(person.tax_unit, period, other_alds)
+        ald_sum_taxunit = tax_unit_non_dep_add(person.tax_unit, period, other_alds)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         fstatus = person.tax_unit("filing_status", period)
