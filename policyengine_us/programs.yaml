@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -823,6 +823,22 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: KS
+        status: partial
+        name: Kansas LIEAP
+        full_name: Kansas Low Income Energy Assistance Program
+        variable: ks_liheap
+        parameter_prefix: gov.states.ks.dcf.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
+      - state: MS
+        status: partial
+        name: Mississippi LIHEAP
+        full_name: Mississippi Low Income Home Energy Assistance Program
+        variable: ms_liheap
+        parameter_prefix: gov.states.ms.mdhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1593,8 +1609,8 @@ programs:
 
   # --- Local programs ---
   - id: ez_save
-    name: Los Angeles County EZ Save
-    full_name: Los Angeles County EZ Save
+    name: Los Angeles EZ-SAVE
+    full_name: Los Angeles Department of Water and Power EZ-SAVE Program
     category: Energy
     agency: Local
     status: complete
@@ -1674,14 +1690,14 @@ programs:
     notes: Only includes eligibility rules
 
   - id: share
-    name: Riverside County SHARE
-    full_name: Riverside County Sharing Households Assist Riverside Energy program
+    name: Riverside SHARE
+    full_name: Riverside Public Utilities Sharing Households Assist Riverside's Energy Program
     category: Energy
     agency: Local
     status: complete
     coverage: Riverside County
     variable: ca_riv_share_payment
-    parameter_prefix: gov.local.ca.riv.share
+    parameter_prefix: gov.local.ca.riv.cap.share
 
   - id: ca_sbd_general_relief
     name: San Bernardino County General Relief

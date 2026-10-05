@@ -18,4 +18,4 @@ class nyc_school_credit_income(Variable):
 
     # Recomputed federal AGI is only different from federal AGI if you were required to report any adjustments due to Decoupling from the IRC.
     # If we choose to ignore this possibility for now, then I think School Tax Credit Income = Federal AGI
-    # https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdf
+    # https://www.tax.ny.gov/pdf/2022/inc/it558i_2022.pdf

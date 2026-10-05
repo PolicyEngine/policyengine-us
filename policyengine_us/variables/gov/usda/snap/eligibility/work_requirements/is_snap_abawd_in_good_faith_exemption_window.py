@@ -18,7 +18,7 @@ class is_snap_abawd_in_good_faith_exemption_window(Variable):
     )
     reference = (
         "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim",
-        "https://health.alaska.gov/en/education/hr-1-ak-impacts/",
+        "https://health.alaska.gov/en/services/division-of-public-assistance-dpa-services/snap-nutrition-assistance/#faqs",
     )
 
     def formula(person, period, parameters):
