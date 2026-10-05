@@ -1,16 +1,39 @@
-description: Non-refundable tax credits which precede the Residential Clean Energy Credit.
+description: Non-refundable tax credits which precede the Residential Clean Energy Credit. Section 25D(c) orders this credit after every other credit in subpart A; the Child Tax Credit's share is handled in residential_clean_energy_credit_credit_limit.
 values:
   2013-01-01:
-    - foreign_tax_credit 
+    - foreign_tax_credit
     - cdcc
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
+    - energy_efficient_home_improvement_credit
+    - elderly_disabled_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - foreign_tax_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - elderly_disabled_credit
+    - new_clean_vehicle_credit
+  2022-01-01:
+    - foreign_tax_credit # Schedule 3, line 1
+    - cdcc # Schedule 3, line 2
+    - non_refundable_american_opportunity_credit # Schedule 3, line 3
+    - lifetime_learning_credit # Schedule 3, line 3
+    - savers_credit # Schedule 3, line 4
+    - energy_efficient_home_improvement_credit # Form 5695, line 32 (line 30 in 2022)
+    - elderly_disabled_credit # Schedule 3, line 6d
+    - new_clean_vehicle_credit # Schedule 3, line 6f
+    - used_clean_vehicle_credit # Schedule 3, line 6m
 
 metadata:
   unit: list
   period: year
   label: Non-refundable tax credits preceding the Residential Clean Energy Credit
   reference:
-    - title: IRS Schedule 3, Additional Credits and Payments
-      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
+      href: https://www.law.cornell.edu/uscode/text/26/25D#c
+    - title: 2025 Instructions for Form 5695, Residential Clean Energy Credit Limit Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=5

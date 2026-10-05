@@ -7,3 +7,31 @@
     income_tax_main_rates: 1_000
   output:
     regular_tax_before_credits: 1_000
+
+- name: A Form 2555 filer without gains pays the stacked main-rates tax
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 36_375
+    foreign_earned_income_exclusion: 40_000
+  output:
+    # Foreign Earned Income Tax Worksheet: tax on 76,375 (9,977.50) less tax
+    # on 40,000 (4,460.00).
+    regular_tax_before_credits: 5_517.50
+
+- name: A Form 2555 filer with a capital gain excess
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Line 1 = 134,250 and the gains are cut to 34,250, so the ordinary
+    # income is the 100,000 excluded and its tax cancels against line 5 of
+    # the Foreign Earned Income Tax Worksheet. The 5,137.50 of capital gains
+    # tax is counted separately in capital_gains_tax.
+    regular_tax_before_credits: 0
+    capital_gains_tax: 5_137.50
