@@ -193,7 +193,52 @@ def test_first_projected_year_gets_a_full_year_of_projected_inflation():
     assert cpi_u(last_observation) < december_2026 < cpi_u("2027-02-01")
 
 
-def synthetic_parameters(single_values):
+def last_observed_december(cpi_u):
+    observed = [
+        instant(value.instant_str)
+        for value in cpi_u.values_list
+        if not value.instant_str.endswith("-02-01")
+    ]
+    last = max(observed)
+    return last.year if last.month == 12 else last.year - 1
+
+
+def test_nsa_decembers_are_current_with_the_monthly_series():
+    """Refreshing cpi_u past a December needs that December's NSA value."""
+    newest_nsa = max(
+        int(value.instant_str[:4]) for value in CPI.cpi_u_nsa_december.values_list
+    )
+    assert newest_nsa >= last_observed_december(CPI.cpi_u), (
+        "Add the latest not seasonally adjusted December CPI-U (CUUR0000SA0) to "
+        "gov/bls/cpi/cpi_u_nsa_december.yaml"
+    )
+
+
+@pytest.mark.parametrize("february", [190, 201.5, 260])
+def test_february_in_the_last_observed_year_is_never_an_anchor(february):
+    """Observations ending in January (or a February a refresh observed).
+
+    The February instant may hold that year's projection or, after a
+    refresh, an observation; neither may act as a calendar-year anchor, so
+    its value cannot move any later month.
+    """
+    cpi_u = Parameter(
+        "cpi_u",
+        data={
+            "2030-12-01": 200,
+            "2031-01-01": 201,
+            "2031-02-01": february,
+            "2032-02-01": 211,
+        },
+    )
+    # December 2031 is 11 of the 17.5 months from January 2031 to the 2032
+    # average, placed between June and July 2032.
+    assert get_projected_cpi_u_for_month(cpi_u, instant("2031-12-01")) == pytest.approx(
+        201 * (211 / 201) ** (11 / 17.5)
+    )
+
+
+def synthetic_parameters(single_values, retirement_age=65):
     """A synthetic tree with the structure extend_la_cpi_u_indexed_amounts reads."""
 
     def doubled(values):
@@ -223,7 +268,7 @@ def synthetic_parameters(single_values):
                                 "amount": {"values": {"2021-01-01": 0}},
                             },
                             {
-                                "threshold": {"values": {"2001-01-01": 65}},
+                                "threshold": {"values": {"2001-01-01": retirement_age}},
                                 "amount": {
                                     "values": {
                                         "2001-01-01": 6_000,
@@ -289,6 +334,14 @@ def test_extension_chains_from_published_amounts_and_doubles_the_single_amount()
     assert standard.SINGLE("2040-01-01") == 13_866
     assert standard.JOINT("2040-01-01") == 27_732
     assert retirement("2040-01-01") == 13_310
+
+
+def test_extension_requires_the_age_65_retirement_bracket():
+    parameters, _ = synthetic_parameters(
+        {"2025-01-01": 12_500, "2026-01-01": 12_838}, retirement_age=60
+    )
+    with pytest.raises(ValueError, match="age-65 bracket"):
+        extend_la_cpi_u_indexed_amounts(parameters, 2029)
 
 
 def test_extension_derives_other_statuses_from_an_encoded_single_amount():

@@ -208,13 +208,21 @@ def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
 
     The model's CPI-U series holds BLS monthly observations, then CBO's
     calendar-year averages as projection points at February instants (see
-    ``get_average_for_12_months_ending_august`` and #9608). A calendar-year
-    average sits halfway between June and July of its year. So an
-    unobserved month is interpolated geometrically, by month, between the
-    last observation and the next projection point placed there, or between
-    two such points; past the last point the index holds flat. As in
-    ``get_average_for_12_months_ending_august``, only non-February instants
-    identify the end of the observed series.
+    ``get_average_for_12_months_ending_august`` and #9608; the "# YYYY
+    value" comments in cpi_u.yaml label the tax year a point feeds, not its
+    calendar year). A calendar-year average sits halfway between June and
+    July of its year. So an unobserved month is interpolated geometrically,
+    by month, between the last observation and the next projection point
+    placed there, or between two such points; past the last point the index
+    holds flat.
+
+    As in ``get_average_for_12_months_ending_august``, only non-February
+    instants identify the end of the observed series, and no branch reads
+    an instant a refresh could have turned from projection into
+    observation: a February in the last observation's year is never an
+    anchor. When observations end in January, the February that follows may
+    still hold that year's projection; it is skipped, and the months after
+    January interpolate toward the next year's point.
     """
     last_observation = max(
         instant(value.instant_str)
@@ -231,7 +239,7 @@ def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
         (12 * int(value.instant_str[:4]) + 5.5, value.value)
         for value in cpi.values_list
         if value.instant_str.endswith("-02-01")
-        and instant(value.instant_str) > last_observation
+        and int(value.instant_str[:4]) > last_observation.year
     )
     target = month_index(month)
     for (start, start_level), (end, end_level) in zip(anchors, anchors[1:]):
@@ -261,7 +269,9 @@ def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     seasonally adjusted index, so the published Decembers in
     ``cpi_u_nsa_december`` are used when both years have one. Otherwise
     both Decembers come from the model's CPI-U series (seasonally adjusted
-    from January 2024), through ``get_projected_cpi_u_for_month``.
+    from January 2024), through ``get_projected_cpi_u_for_month``; mixing
+    the two would add December's seasonal factor (about 0.6% in 2025) to
+    the change.
     """
     december = cpi.cpi_u_nsa_december
     published = {int(value.instant_str[:4]) for value in december.values_list}
