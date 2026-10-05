@@ -1,1 +1,1 @@
-Count partnership and S corporation, estate and trust, and Schedule F farm income in Arkansas gross income (AR1000F lines 19 and 20).
+Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
