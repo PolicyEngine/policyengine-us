@@ -1,3 +1,10 @@
+## [2.28.3] - 2026-10-05
+
+### Fixed
+
+- Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
+
+
 ## [2.28.2] - 2026-10-05
 
 ### Fixed
