@@ -1,1 +1,0 @@
-Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
