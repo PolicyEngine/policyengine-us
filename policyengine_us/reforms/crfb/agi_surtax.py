@@ -15,7 +15,12 @@ def agi_surtax_reform() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             p = parameters(period).gov.contrib.crfb.surtax
             if p.increased_base.in_effect:
-                additional_sources = add(tax_unit, period, p.increased_base.sources)
+                # The base expands this return's AGI, so it adds the head's
+                # and spouse's own amounts. A tax unit dependent's income and
+                # deductions are on the dependent's own return.
+                additional_sources = tax_unit_non_dep_add(
+                    tax_unit, period, p.increased_base.sources
+                )
                 agi = agi + additional_sources
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT

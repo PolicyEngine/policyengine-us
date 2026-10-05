@@ -109,3 +109,108 @@
   output:
     # Only AGI 80k used, below 100k threshold
     agi_surtax: 0
+
+# The expanded base adds amounts to this return's AGI, so it counts the head's
+# and spouse's own contributions, exclusions and deductions. A tax unit
+# dependent's are on the dependent's own return. AGI is an input here, so these
+# cases test the additions alone, whichever way the dependents' deductions
+# enter AGI.
+
+- name: Expanded base leaves out a dependent's traditional IRA contribution
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      dependent:
+        age: 17
+        employment_income: 10_000
+        traditional_ira_contributions_desired: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 300_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+  output:
+    filing_status: JOINT
+    # The base stays at AGI, $300,000: (300k - 200k) * 1%. Adding the
+    # dependent's $5,000 would make it $1,050.
+    agi_surtax: 1_000
+
+- name: Expanded base leaves out a dependent's Social Security benefits
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      dependent:
+        age: 10
+        social_security_dependents: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 250_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+  output:
+    filing_status: JOINT
+    # The child's benefits are the child's income, not tax-exempt income of
+    # this return: (250k - 200k) * 1% = 500, not 600.
+    filer_tax_exempt_social_security: 0
+    agi_surtax: 500
+
+- name: Expanded base counts the spouse's items and leaves out the dependent's
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    people:
+      head:
+        age: 45
+        social_security_retirement: 20_000
+      spouse:
+        age: 45
+        employment_income: 50_000
+        traditional_ira_contributions_desired: 5_000
+        tax_exempt_interest_income: 2_000
+      dependent:
+        age: 17
+        employment_income: 20_000
+        traditional_401k_contributions_desired: 3_000
+        tax_exempt_interest_income: 1_000
+        social_security_dependents: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 300_000
+        tax_unit_taxable_social_security: 17_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+  output:
+    filing_status: JOINT
+    # The head's $20,000 of benefits less the $17,000 (85%) in AGI.
+    filer_tax_exempt_social_security: 3_000
+    # 300k + 5k + 2k + 3k = 310k: (310k - 200k) * 1% = 1,100. The dependent's
+    # $3,000, $1,000 and $4,000 would make it $1,180.
+    agi_surtax: 1_100

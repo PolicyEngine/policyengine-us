@@ -1,6 +1,9 @@
 description: Additional income sources for CRFB surtax expanded base beyond IRS gross income.
 values:
   2010-01-01:
+    # Person-level sources are summed over the head and spouse only, the
+    # people whose AGI the base expands; tax-unit-level sources describe the
+    # head's and spouse's own return.
     # Retirement contributions (IRA, 401k, 403b)
     - traditional_ira_contributions
     - traditional_401k_contributions
@@ -10,7 +13,7 @@ values:
     # Deductible student loan interest
     - student_loan_interest_ald
     # Social Security not counted toward AGI
-    - tax_exempt_social_security
+    - filer_tax_exempt_social_security
     # Foreign earnings exclusion (tax unit level, may need special handling)
     - foreign_earned_income_exclusion
     # Tax-free bond interest
