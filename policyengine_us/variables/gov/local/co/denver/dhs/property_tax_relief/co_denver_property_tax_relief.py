@@ -7,7 +7,7 @@ class co_denver_property_tax_relief(Variable):
     unit = USD
     label = "Denver Property Tax Relief"
     definition_period = YEAR
-    reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
+    reference = "https://web.archive.org/web/20240804043816/https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
     adds = [
         "co_denver_homeowner_property_tax_relief",
