@@ -83,10 +83,11 @@ class mi_household_resources(Variable):
         #   specified_possession_income and puerto_rico_income are income
         #   that IRC 135, 137, 931 and 933 exclude from gross income. Total
         #   household resources include "all income exempt or excluded from
-        #   AGI" (book page 26). The federal list subtracts these amounts from
-        #   income sources that hold them, such as savings bond interest on
-        #   line 15 ("including nontaxable interest") and adoption benefits,
-        #   reported on Form W-2, on line 14, so they stay in those lines.
+        #   AGI" (book page 26). Since the federal list subtracts each from
+        #   gross income, the excluded amount is entered in the income it
+        #   comes from: savings bond interest in interest income (line 15,
+        #   "including nontaxable interest"), adoption benefits, reported on
+        #   Form W-2, in wages (line 14). Line 30 leaves it there.
         federal_deductions = parameters(period).gov.irs.ald.deductions
         adjustments = add(
             tax_unit,

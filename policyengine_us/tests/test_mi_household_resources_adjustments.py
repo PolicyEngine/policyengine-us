@@ -14,30 +14,36 @@ Part II adjustments:
   "AGI ... plus all income exempt or excluded from AGI" (page 26), and line 15
   is "All interest and dividend income (including nontaxable interest)".
 
-The federal list subtracts each exclusion from an income source that holds it
-(savings bond interest, wages), so the model's income inputs include the
-excluded amounts. Line 30 must not take them back out.
+Because the federal list subtracts each exclusion from gross income, the
+excluded amount is entered in the income it comes from (savings bond interest
+in interest income, adoption benefits and possession income in wages, as these
+tests do). Line 30 must not take it back out.
 
 Invariants, for every input:
 
-1. Every federal above-the-line deduction from 2021 on is either a Michigan
-   line 30 adjustment or one of the five items above, never both, and every
-   line 30 adjustment is a federal above-the-line deduction.
+1. The Michigan list is exactly the Schedule 1 Part II adjustments named in
+   SCHEDULE_1_ADJUSTMENTS below (written from the 2025 Schedule 1). Every
+   federal above-the-line deduction from 2021 on is either one of them or one
+   of the five items above, never both, and each is a federal above-the-line
+   deduction.
 2. mi_household_resources = max(0, wages + all interest + max(0, Schedule C)
-   - Schedule 1 adjustments - premiums). The adjustments are read from the
-   model one by one (the self-employment tax and student loan interest
-   deductions depend on income); the reference adds none of the exclusions.
-   This is a differential test against a reference written from the form.
-3. Household resources do not depend on the four exclusions: a household
-   with them equals the same household without them, while federal AGI
-   falls by their total. Households with student loan interest are left
-   out of this check on purpose: the student loan interest deduction's
-   modified AGI applies sections 135 and 137 (IRC 221(b)(2)(C)), so an
-   exclusion can change that deduction, which line 30 then follows.
+   - Schedule 1 adjustments - premiums), where the adjustments are the
+   SCHEDULE_1_ADJUSTMENTS the federal list deducts. Their amounts are read
+   from the model one by one, since the self-employment tax and student loan
+   interest deductions depend on income; which variables count comes from
+   this file, not from the parameter. The reference subtracts none of the
+   exclusions. This is a differential test against a reference written from
+   the form.
+3. The exclusions reach household resources only through the student loan
+   interest deduction, whose modified AGI applies sections 135 and 137
+   (IRC 221(b)(2)(C)). Compared with the same household without exclusions,
+   with D the change in that deduction: household resources are
+   max(0, resources without - D) (equal when D = 0), and federal AGI is
+   lower by the exclusions plus D.
 4. Line 30 follows the federal list: a reform that removes the early
    withdrawal penalty and the IRA deduction from gov.irs.ald.deductions
-   removes them from line 30, and one that removes an exclusion from the
-   federal list leaves household resources unchanged.
+   removes them from line 30, and removing an exclusion from the federal
+   list does not put it on line 30.
 
 The model computes in single precision, so a comparison allows one cent or
 eight float32 spacings at the household's total absolute amount, whichever is
@@ -64,6 +70,19 @@ except ImportError:  # Hypothesis is a dev extra.
 YEAR = 2025
 TOLERANCE = 0.01
 
+# Federal above-the-line deductions that are U.S. Schedule 1 Part II
+# adjustments (2025 Schedule 1 line), written from the form.
+SCHEDULE_1_ADJUSTMENTS = {
+    "educator_expense": "11",
+    "health_savings_account_ald": "13",
+    "self_employment_tax_ald": "15",
+    "self_employed_pension_contribution_ald": "16",
+    "self_employed_health_insurance_ald": "17",
+    "early_withdrawal_penalty": "18",
+    "alimony_expense_ald": "19a",
+    "traditional_ira_contributions": "20",
+    "student_loan_interest_ald": "21",
+}
 # Federal above-the-line deductions that are not Schedule 1 Part II
 # adjustments.
 NOT_SCHEDULE_1_ADJUSTMENTS = {
@@ -136,12 +155,17 @@ def calculate(households, reform=None):
         for v in ["mi_household_resources", "adjusted_gross_income"]
     }
     # Each Schedule 1 adjustment the federal list deducts, per tax unit.
-    gov = simulation.tax_benefit_system.parameters(f"{YEAR}-01-01").gov
+    federal = simulation.tax_benefit_system.parameters.gov.irs.ald.deductions(
+        f"{YEAR}-01-01"
+    )
     results["adjustments"] = {
         d: np.asarray(simulation.calculate(d, YEAR, map_to="tax_unit"))
-        for d in gov.states.mi.tax.income.household_resources_adjustments
-        if d in gov.irs.ald.deductions
+        for d in SCHEDULE_1_ADJUSTMENTS
+        if d in federal
     }
+    results["student_loan_interest_ald"] = np.asarray(
+        simulation.calculate("student_loan_interest_ald", YEAR, map_to="tax_unit")
+    )
     return results
 
 
@@ -172,10 +196,12 @@ def exclusions(h):
 
 
 def assert_properties(households):
-    """Invariants 2 and 3 on a list of households."""
+    """Invariants 2 and 3 on a list of households. Returns how many
+    households' exclusions changed the student loan interest deduction."""
     twins = [without_exclusions(h) for h in households]
     model = calculate(households + twins)
     n = len(households)
+    changed = 0
     for i, h in enumerate(households):
         tol = tolerance(h)
         line_30 = sum(float(values[i]) for values in model["adjustments"].values())
@@ -183,14 +209,24 @@ def assert_properties(households):
         assert model["mi_household_resources"][i] == pytest.approx(
             reference(h, line_30), abs=tol
         ), h
-        if h["student_loan_interest"] == 0:
-            # 3. The exclusions change AGI but not household resources.
+        # 3. The exclusions move household resources only through the
+        # student loan interest deduction.
+        change = (
+            model["student_loan_interest_ald"][i]
+            - model["student_loan_interest_ald"][n + i]
+        )
+        assert model["adjusted_gross_income"][n + i] - model["adjusted_gross_income"][
+            i
+        ] == pytest.approx(exclusions(h) + change, abs=tol), h
+        changed += abs(change) > tol
+        without = model["mi_household_resources"][n + i]
+        # Resources without exclusions of 0 hide how far below zero they
+        # were; a larger deduction (change >= 0) keeps them at 0.
+        if without > 0 or change >= 0:
             assert model["mi_household_resources"][i] == pytest.approx(
-                model["mi_household_resources"][n + i], abs=tol
+                max(0, without - change), abs=tol
             ), h
-            assert model["adjusted_gross_income"][n + i] - model[
-                "adjusted_gross_income"
-            ][i] == pytest.approx(exclusions(h), abs=tol), h
+    return changed
 
 
 def household(**amounts):
@@ -217,7 +253,8 @@ EXCLUSION_PATTERNS = [
 
 def grid_households():
     """Wages, interest, Schedule C income, exclusions, Schedule 1
-    adjustments and premiums in every combination (1,536 households)."""
+    adjustments and premiums in every combination (1,536 households), plus
+    each exclusion pattern in the student loan interest phase-out (6)."""
     households = []
     for (
         wages,
@@ -255,6 +292,17 @@ def grid_households():
             source = interest if name == "us_bonds_for_higher_ed" else wages
             h[name] = amount if source >= amount else 0
         households.append(h)
+    # In the student loan interest phase-out ($85,000 to $100,000 of modified
+    # AGI for a single filer in 2025), where an exclusion changes that
+    # deduction.
+    for pattern in EXCLUSION_PATTERNS:
+        h = household(
+            employment_income_before_lsr=92_000,
+            taxable_interest_income=3_000,
+            student_loan_interest=2_500,
+        )
+        h.update(pattern)
+        households.append(h)
     return households
 
 
@@ -274,50 +322,31 @@ def test_federal_deductions_are_classified():
     for date in sorted(dates):
         federal = set(federal_node(date))
         michigan = set(michigan_node(date))
+        assert michigan == set(SCHEDULE_1_ADJUSTMENTS), date
         assert not michigan & NOT_SCHEDULE_1_ADJUSTMENTS, date
         assert michigan <= federal, (date, michigan - federal)
         unclassified = federal - michigan - NOT_SCHEDULE_1_ADJUSTMENTS
         assert not unclassified, (
             f"{date}: classify {sorted(unclassified)} for MI-1040CR line 30: add "
-            "it to gov.states.mi.tax.income.household_resources_adjustments if "
-            "it is a U.S. Schedule 1 Part II adjustment, otherwise to "
-            "NOT_SCHEDULE_1_ADJUSTMENTS here."
+            "it to gov.states.mi.tax.income.household_resources_adjustments "
+            "and SCHEDULE_1_ADJUSTMENTS here if it is a U.S. Schedule 1 Part "
+            "II adjustment, otherwise to NOT_SCHEDULE_1_ADJUSTMENTS."
         )
 
 
-def test_worked_example():
-    """Wages of 50,000 (4,000 of them excluded adoption benefits) and 3,000 of
-    interest (1,000 excluded under section 135); IRA 2,000, early withdrawal
-    penalty 300 and student loan interest 1,000 on Schedule 1; premiums 1,200.
-    Line 33 = 53,000 - 3,300 - 1,200 = 48,500. Federal AGI is 44,700."""
-    model = calculate(
-        [
-            household(
-                employment_income_before_lsr=50_000,
-                qualified_adoption_assistance_expense=4_000,
-                taxable_interest_income=3_000,
-                us_bonds_for_higher_ed=1_000,
-                traditional_ira_contributions=2_000,
-                early_withdrawal_penalty=300,
-                student_loan_interest=1_000,
-                health_insurance_premiums=1_200,
-            )
-        ]
-    )
-    assert model["mi_household_resources"][0] == 48_500
-    assert model["adjusted_gross_income"][0] == 44_700
-
-
 def test_grid():
-    """Invariants 2 and 3 on every grid household."""
-    assert_properties(grid_households())
+    """Invariants 2 and 3 on every grid household. The phase-out households
+    make invariant 3's student loan interest case non-vacuous."""
+    assert assert_properties(grid_households()) > 0
 
 
 def test_line_30_follows_the_federal_list():
     """Invariant 4. Removing the early withdrawal penalty and the IRA
     deduction from the federal list takes them off line 30. Removing two
-    exclusions as well changes AGI but not household resources, because they
-    were never on line 30."""
+    exclusions as well changes AGI, and household resources still match the
+    form: the exclusions were never on line 30, and only the student loan
+    interest deduction, read from the model, follows the higher modified
+    AGI."""
     households = grid_households()
     removed = {
         "early_withdrawal_penalty",
