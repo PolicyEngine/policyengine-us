@@ -1,0 +1,1 @@
+Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable that a filer whose exclusion includes housing amounts can enter directly.

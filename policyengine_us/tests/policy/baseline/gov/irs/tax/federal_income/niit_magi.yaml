@@ -70,3 +70,94 @@
   output:
     adjusted_gross_income: 160_000
     niit_magi: 160_000
+
+- name: The section 911(a)(1) exclusion raises MAGI by the excluded amount
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 26 U.S.C. 1411(d); Form 8960 Line 13 MAGI Worksheet: line 1 AGI
+    # 200,000 plus line 2c 100,000.
+    adjusted_gross_income: 200_000
+    niit_magi_section_911_addition: 100_000
+    niit_magi: 300_000
+
+- name: The section 911 addition and positive code H both raise MAGI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        estate_income: 10_000
+        estate_income_net_investment_income_adjustment: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 160_000
+    niit_magi: 160_000 + 4_000 + 20_000
+
+- name: An entered worksheet amount replaces the default, leaving out housing amounts
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Form 2555 line 45 is 100,000: a 70,000 foreign earned income
+        # exclusion (line 42) and a 30,000 housing exclusion (line 36).
+        # Section 1411(d) adds back only the line 42 amount.
+        foreign_earned_income_exclusion: 100_000
+        niit_magi_section_911_addition: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 200_000
+    niit_magi: 270_000
+
+- name: A negative entered addition leaves MAGI at AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        niit_magi_section_911_addition: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Section 1411(d) adds "the excess (if any)", never a negative amount.
+    niit_magi: 150_000
