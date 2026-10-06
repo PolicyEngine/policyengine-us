@@ -1,0 +1,12 @@
+description: Employers withhold the Additional Medicare Tax from the wages they pay an employee above this amount in a calendar year, regardless of the employee's filing status.
+values:
+  2013-01-01: 200_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Additional Medicare Tax employer withholding threshold
+  reference:
+    - title: 26 U.S. Code § 3102(f)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/3102#f_1
+    - title: 26 CFR § 31.3102-4(a)
+      href: https://www.law.cornell.edu/cfr/text/26/31.3102-4#a
