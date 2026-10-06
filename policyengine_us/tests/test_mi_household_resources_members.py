@@ -16,14 +16,18 @@ lines (page 32):
 
 Line 31 is "insurance premiums you paid for yourself and your family"; a
 premium on any member's record is read as one the claimant or spouse paid
-for the family's coverage.
+for the family's coverage. Line 31 leaves out "any insurance premiums
+deducted on lines 21 or 30" (page 33), so the head's and spouse's
+self-employed health insurance deduction, which is on line 30, is not
+subtracted again. Lines 20 and 24 count gambling winnings and gifts "over
+$300" (MCL 206.510(1)(a) and (b)), one amount for the claimant and spouse.
 
 So for every household:
 
 1. mi_household_resources equals a reference written from the form: the head
    and spouse's lines 14 to 20 and 23 to 26 and their line 30 adjustments,
-   plus every member's lines 21, 22 and 27, less every member's premiums,
-   floored at zero.
+   plus every member's lines 21, 22 and 27, less every member's premiums not
+   deducted on line 30, floored at zero.
 2. A dependent's own income and adjustments do not matter: zeroing them
    leaves household resources unchanged.
 3. Amounts received for the household count wherever they are recorded:
@@ -72,8 +76,10 @@ CLAIMANT_LINES = {
     "long_term_capital_gains": 19,
     "alimony_income": 20,
     "gambling_winnings": 20,
+    "miscellaneous_income": 20,
     "unemployment_compensation": 23,
-    "miscellaneous_income": 24,
+    # Cash gifts from relatives or friends outside the household.
+    "financial_assistance": 24,
     "veterans_benefits": 26,
     "workers_compensation": 26,
     # Guaranteed income pilot payments: the recipient's own (line 25).
@@ -91,6 +97,8 @@ HOUSEHOLD_LINES = {
     "general_assistance": 27,
 }
 PREMIUMS = "health_insurance_premiums"
+# MCL 206.510(1)(a) and (b): the first $300 of gifts and of gambling winnings.
+EXCLUSION = 300
 # Sources that can be negative.
 SIGNED = {"self_employment_income", "s_corp_income", "rental_income"}
 SIGNED.add("long_term_capital_gains")
@@ -126,6 +134,8 @@ def build_situation(households):
             person = {"age": {YEAR: age}}
             for variable in PERSON_INPUTS:
                 person[variable] = {YEAR: p.get(variable, 0)}
+            # Whether the self-employed health insurance deduction applies.
+            person["is_self_employed"] = {YEAR: p.get("is_self_employed", False)}
             # Roles are set for everyone: an adult dependent would otherwise
             # be the spouse, and a variable input for some people gives the
             # others its default value, not its formula.
@@ -170,13 +180,16 @@ def calculate(households):
     result = np.asarray(simulation.calculate("mi_household_resources", YEAR))
     # Each person's model amounts for the line 30 self-employment
     # adjustments, in situation order.
-    adjustments = sum(
-        np.asarray(simulation.calculate(name, YEAR)) for name in PERSON_ADJUSTMENTS
-    )
+    adjustments = {
+        name: np.asarray(simulation.calculate(name, YEAR))
+        for name in PERSON_ADJUSTMENTS
+    }
     per_household, k = [], 0
     for h in households:
         n = len(everyone(h))
-        per_household.append(adjustments[k : k + n])
+        per_household.append(
+            {name: values[k : k + n] for name, values in adjustments.items()}
+        )
         k += n
     return result, per_household
 
@@ -198,14 +211,31 @@ def reference(h, person_adjustments):
     line_17 = max(0, amount(own, ["rental_income"]))
     line_18 = amount(own, by_line(CLAIMANT_LINES, 18))
     line_19 = max(-CAPITAL_LOSS_LIMIT, amount(own, ["long_term_capital_gains"]))
-    lines_20_to_26 = amount(own, by_line(CLAIMANT_LINES, 20, 23, 24, 25, 26))
+    excluded = ["gambling_winnings", "financial_assistance"]
+    lines_20_to_26 = amount(
+        own,
+        [
+            name
+            for name in by_line(CLAIMANT_LINES, 20, 23, 24, 25, 26)
+            if name not in excluded
+        ],
+    )
+    # Lines 20 and 24: gambling winnings and gifts over $300.
+    for name in excluded:
+        lines_20_to_26 += max(0, amount(own, [name]) - EXCLUSION)
     received = amount(everyone(h), list(HOUSEHOLD_LINES))
     # Line 27: the household's Family Independence Program grant, in full.
     received += h.get("tanf", 0)
     # Line 30: the head and spouse come first in each household's slice.
-    line_30 = float(sum(person_adjustments[: len(own)]))
+    filer_adjustments = {
+        name: float(sum(values[: len(own)]))
+        for name, values in person_adjustments.items()
+    }
+    line_30 = sum(filer_adjustments.values())
     line_30 += amount(own, ["early_withdrawal_penalty"])
+    # Line 31: every member's premiums, less those deducted on line 30.
     line_31 = amount(everyone(h), [PREMIUMS])
+    line_31 -= filer_adjustments["self_employed_health_insurance_ald_person"]
     total = line_14 + line_15 + line_16 + line_17 + line_18 + line_19
     total += lines_20_to_26 + received
     return max(0, total - line_30 - line_31)
@@ -441,6 +471,7 @@ if hypothesis is not None:
         names = draw(st.lists(st.sampled_from(PERSON_INPUTS), max_size=5, unique=True))
         for name in names:
             p[name] = draw(SIGNED_AMOUNT if name in SIGNED else AMOUNT)
+        p["is_self_employed"] = draw(st.booleans())
         return p
 
     @st.composite

@@ -28,9 +28,13 @@ values:
     # MI-1040CR line 19, net capital gains and losses from the filer's U.S.
     # Schedule D, a loss limited to $3,000 ($1,500 married filing separately).
     - filer_loss_limited_net_capital_gains
-    # MI-1040CR line 20, alimony and other taxable income.
+    # MI-1040CR line 20, alimony and other taxable income: "awards, prizes,
+    # lottery, bingo, and other gambling winnings over $300" (the first $300
+    # is household_resources_gambling_exclusion) and other taxable income,
+    # such as miscellaneous_income (26 CFR 1.61-14), in full.
     - alimony_income
     - gambling_winnings
+    - miscellaneous_income
     # MI-1040CR line 21, Social Security, SSI and railroad retirement
     # benefits, including amounts received for dependents.
     - social_security
@@ -40,8 +44,12 @@ values:
     - child_support_received
     # MI-1040CR line 23, unemployment compensation.
     - unemployment_compensation
-    # MI-1040CR line 24, gifts received or expenses paid on your behalf.
-    - miscellaneous_income
+    # MI-1040CR line 24, "the value over $300 in gifts of cash or merchandise
+    # received, or expenses paid on your behalf ... by parents, relatives, or
+    # friends" (the first $300 is household_resources_gift_exclusion). Gifts
+    # are excluded from federal gross income (IRC 102) but are total
+    # household resources (MCL 206.510(1)).
+    - financial_assistance
     # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits
     - workers_compensation
@@ -74,3 +82,5 @@ metadata:
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=26
   - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
     href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/
+  - title: MCL 206.510(1), "Income" defined
+    href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510

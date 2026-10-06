@@ -1,0 +1,23 @@
+description: Michigan excludes this amount of awards, prizes, lottery, bingo and other gambling winnings from household resources.
+values:
+  # MCL 206.510(1)(b): a fixed amount in the statute, not indexed. The
+  # MI-1040CR counts winnings "over $300" on line 20, one amount for the
+  # claimant and spouse.
+  2021-01-01: 300
+metadata:
+  unit: currency-USD
+  period: year
+  label: Michigan household resources gambling winnings exclusion
+  reference:
+    - title: MCL 206.510(1)(b), "The first $300.00 received from awards, prizes, lottery, bingo, or other gambling winnings"
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510
+    - title: 2022 MI-1040 Instructions, MI-1040CR line 20
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=32
+    - title: 2023 MI-1040 Instructions, MI-1040CR line 20
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=32
+    - title: 2024 MI-1040 Instructions, MI-1040CR line 20
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=32
+    - title: 2025 MI-1040 Instructions, MI-1040CR line 20
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=32
+    - title: 2025 MI-1040 Instructions, total household resources do not include the first $300 from gambling, bingo, lottery, awards, or prizes
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=27

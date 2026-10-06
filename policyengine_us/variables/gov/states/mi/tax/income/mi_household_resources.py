@@ -16,10 +16,13 @@ class mi_household_resources(Variable):
         # MCL 206.510(1): "Income", including premiums paid for the family.
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510",
         "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
-        # 2025 MI-1040 book: "Total Household Resources" (page 26) and
-        # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
+        # 2025 MI-1040 book: "Total Household Resources" (pages 26 and 27,
+        # with what they do not include) and MI-1040CR lines 14 to 17 (page
+        # 31) and 18 to 31 (pages 32 and 33).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=27",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
@@ -50,6 +53,15 @@ class mi_household_resources(Variable):
             "rental_income",
             "farm_rent_income",
         }
+        # MCL 206.510(1): income does not include "(a) The first $300.00 of
+        # gifts in cash or kind from nongovernmental sources" or "(b) The
+        # first $300.00 received from awards, prizes, lottery, bingo, or
+        # other gambling winnings". The MI-1040CR enters gambling winnings
+        # "over $300" on line 20 and "the value over $300 in gifts" on line
+        # 24 (2025 MI-1040 book, page 32), one amount for the claimant and
+        # spouse, so the exclusion applies once to their total.
+        winnings_sources = {"gambling_winnings"}
+        gift_sources = {"financial_assistance"}
 
         # MCL 206.508(3): "'Household' means a claimant and spouse", and
         # (4) counts "all income received by all persons of a household".
@@ -69,6 +81,8 @@ class mi_household_resources(Variable):
 
         business_income = 0
         rental_income = 0
+        winnings = 0
+        gifts = 0
         other_income = 0
         for source in p.household_resources:
             entity = tax_unit.entity.get_variable(source).entity
@@ -81,9 +95,19 @@ class mi_household_resources(Variable):
                 business_income += amount
             elif source in rental_sources:
                 rental_income += amount
+            elif source in winnings_sources:
+                winnings += amount
+            elif source in gift_sources:
+                gifts += amount
             else:
                 other_income += amount
-        total = other_income + max_(business_income, 0) + max_(rental_income, 0)
+        total = (
+            other_income
+            + max_(business_income, 0)
+            + max_(rental_income, 0)
+            + max_(winnings - p.household_resources_gambling_exclusion, 0)
+            + max_(gifts - p.household_resources_gift_exclusion, 0)
+        )
 
         # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
         # Business, rental and capital losses are income items (Schedule 1
@@ -95,19 +119,32 @@ class mi_household_resources(Variable):
         # Person-level adjustments are summed over the head and spouse, and
         # tax-unit-level ones are the filer's own: the self-employment and
         # alimony deductions sum only the head and spouse.
-        adjustments = tax_unit_non_dep_add(
-            tax_unit,
-            period,
-            [
-                deduction
-                for deduction in parameters(period).gov.irs.ald.deductions
-                if deduction != "loss_ald"
-            ],
-        )
+        deductions = [
+            deduction
+            for deduction in parameters(period).gov.irs.ald.deductions
+            if deduction != "loss_ald"
+        ]
+        adjustments = tax_unit_non_dep_add(tax_unit, period, deductions)
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the
         # person's family". A premium on any member's record is read as one
         # the claimant or spouse paid for the family's coverage.
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
-        return max_(0, total - adjustments - health_insurance_premiums)
+        premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        # "Do not include any insurance premiums deducted on lines 21 or 30"
+        # (2025 MI-1040 book, page 33). Line 30 includes the self-employed
+        # health insurance deduction (Schedule 1 line 17), so those premiums
+        # leave line 31 and each premium dollar is subtracted once.
+        # Line 21 nets out Medicare premiums withheld from Social Security or
+        # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
+        # gross benefits and line 31 the premiums, which subtracts them once
+        # as well.
+        premiums_on_line_30 = (
+            tax_unit_non_dep_add(
+                tax_unit, period, ["self_employed_health_insurance_ald"]
+            )
+            if "self_employed_health_insurance_ald" in deductions
+            else 0
+        )
+        line_31 = max_(premiums - premiums_on_line_30, 0)
+        return max_(0, total - adjustments - line_31)
