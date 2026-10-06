@@ -1,0 +1,1 @@
+Count Riverside County General Relief property once per unit instead of once per member, and limit each earner's General Relief wage deductions to their own CA income tax withholding and Additional Medicare Tax withholding. Add `additional_medicare_tax_withheld`, the Additional Medicare Tax an employer withholds from wages above $200,000 under 26 U.S.C. 3102(f)(1).

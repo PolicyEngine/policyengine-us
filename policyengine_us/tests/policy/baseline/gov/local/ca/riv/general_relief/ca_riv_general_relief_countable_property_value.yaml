@@ -1,0 +1,66 @@
+- name: Case 1, unit cash assets count once in a two-person unit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 300
+      person2:
+        age: 65
+        personal_property: 100
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # $300 cash + $0 countable vehicle value + $100 personal property.
+    ca_riv_general_relief_countable_property_value: 400
+
+- name: Case 2, countable vehicle value counts once in a three-person unit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 40
+      person3:
+        age: 65
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+        household_vehicles_value: 4_850
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    # 4,850 - 4,650 vehicle exemption.
+    ca_riv_general_relief_countable_property_value: 200
+
+- name: Case 3, each member's cash and personal property are summed.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 150
+        personal_property: 50
+      person2:
+        age: 65
+        stock_assets: 200
+        personal_property: 75
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+        household_vehicles_value: 4_700
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Cash 150 + 200, vehicle 4,700 - 4,650 = 50, personal property 50 + 75.
+    ca_riv_general_relief_countable_property_value: 525
