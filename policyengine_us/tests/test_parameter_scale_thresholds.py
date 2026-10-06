@@ -261,6 +261,10 @@ def test_calendar_date_guard_flags_impossible_dates_only():
         "2025-02-29",
         "2025-04-31",
     ]
+    # Forms core's INSTANT_PATTERN or date.fromisoformat accept that are not
+    # full YYYY-MM-DD days.
+    for instant_str in ["2021", "2021-06", "20210630", "2021-W26-3"]:
+        assert not _is_calendar_date(instant_str)
 
 
 def test_parameter_instants_are_calendar_dates():
