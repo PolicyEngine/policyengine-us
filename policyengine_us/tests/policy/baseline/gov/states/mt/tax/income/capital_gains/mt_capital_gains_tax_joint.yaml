@@ -140,9 +140,9 @@
       state_code: MT
   output:
     mt_capital_gains_tax_joint: 82
-    mt_regular_income_tax_joint: 1_765.72
+    mt_regular_income_tax_joint: 1_765.725
     mt_capital_gains_tax_applicable_threshold_joint: 0
-    mt_income_tax: 1_847.72
+    mt_income_tax: 1_847.725
 
 - name: Same household without the dependent's gains
   period: 2025
@@ -159,6 +159,6 @@
       state_code: MT
   output:
     mt_capital_gains_tax_joint: 82
-    mt_regular_income_tax_joint: 1_765.72
+    mt_regular_income_tax_joint: 1_765.725
     mt_capital_gains_tax_applicable_threshold_joint: 0
-    mt_income_tax: 1_847.72
+    mt_income_tax: 1_847.725
