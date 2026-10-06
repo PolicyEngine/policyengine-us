@@ -93,8 +93,8 @@ class ak_hap_base_benefit(Variable):
             & (points >= p.minimum_points)
         )
         # Apply the unrounded minimum before half-up whole-point rounding.
-        # This is the sole-household base amount: no expense cap, sharing
-        # division or utility-allowance reduction is applied. Those final
-        # adjustments remain unresolved; this is not the complete program.
+        # This is the sole-household base amount, without an expense cap.
+        # ak_hap applies sharing and utility-allowance reductions to dollars
+        # under the approved manual-based modeling convention.
         rounded_points = min_(np.floor(points + 0.5), p.maximum_points)
         return where(eligible, rounded_points * p.point_value, 0)

@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, AK
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: AK
+        status: partial
+        name: Alaska HAP
+        full_name: Alaska Heating Assistance Program
+        variable: ak_hap
+        parameter_prefix: gov.states.ak.dpa.hap
+        verified_years: "2027"
+        notes: FY2027 regular heating assistance uses the operating manual's equal eligible-household shares and final-dollar utility-allowance reduction, despite conflicting regulatory text. SPM units approximate economic households; wood and coal default to purchased fuel. Alaska utility allowances must be supplied. Some community mappings, tribal and residency facts, owner/room-renter arrangements and housing step-down exceptions remain unmodeled. Earlier-year results are unverified historical estimates; crisis and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

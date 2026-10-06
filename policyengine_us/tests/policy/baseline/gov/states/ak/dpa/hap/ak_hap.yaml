@@ -1,0 +1,597 @@
+# Approved manual-based convention: compute each household's base first, then
+# apply equal shares and the final-dollar utility-allowance reduction. This
+# conflicts with earlier points-sharing and utility-adjustment regulatory text.
+# SPM units approximate separate economic households within one dwelling.
+# Sources, each URL listed once:
+# Household manual 3002-1 A.3-5:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+# Grant manual 3004-5 steps 1-8 and FY2027 price of $175 per point:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
+# Community table, Fairbanks oil 10, Juneau oil 5, Ambler oil 35:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+# Current income bands:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm
+
+# A single economic household retains the complete sole-household base award.
+- name: Case 1, a sole household keeps its base when no allowance adjustment applies.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+    ak_hap_base_benefit: 1_925
+    receives_housing_assistance: false
+    heat_expense_included_in_rent: false
+    hud_utility_allowance: 0
+  output:
+    ak_hap: 1_925
+
+# Fairbanks 10 oil points, ordinary two-bedroom factor 1. The first unit has
+# zero income and an elderly member: (10 * 1 + 1) * 175 = 1,925. The second
+# has annual income 24,000 in the 100-125% band: 10 * 0.6 * 175 = 1,050.
+# A.3-5 divides each award by two despite unequal member counts and bills.
+# Bills are 25%/75% of combined costs; those proportions do not set the grant.
+- name: Case 2, two Fairbanks households share their independently calculated awards equally.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person4]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 900
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+  output:
+    ak_hap_household_size: [3, 1]
+    ak_hap_countable_income: [0, 24_000]
+    ak_hap_income_factor: [1, 0.6]
+    heating_expense: [300, 900]
+    ak_hap_base_benefit: [1_925, 1_050]
+    ak_hap: [962.50, 525]
+
+# A.5 counts eligible economic households, not people or actual expense shares.
+# Each unit receives one-third of its own base; no monetary rounding follows.
+# The tighter margin distinguishes the fractional award from cent rounding.
+- name: Case 3, three eligible units with different sizes and bases each receive one third.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        ak_hap_base_benefit: 1_925
+        heating_expense: 300
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person2, person3]
+        ak_hap_base_benefit: 1_050
+        heating_expense: 900
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit3:
+        members: [person4, person5, person6]
+        ak_hap_base_benefit: 525
+        heating_expense: 1_800
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AK
+        hud_utility_allowance: 0
+  output:
+    ak_hap: [641.666667, 350, 175]
+
+# A.5 eligible-household denominator and explicit 50% maximum for house sharers.
+# One positive base among three residents still receives one-half, not all or
+# one-third. Two positive bases among three residents each receive one-half.
+# All-zero resident units have no eligible denominator and safely return zero.
+- name: Case 4, only eligible units enter the denominator and a sharer never exceeds half.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        ak_hap_base_benefit: 1_750
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        ak_hap_base_benefit: 0
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        ak_hap_base_benefit: 0
+        receives_housing_assistance: false
+      spm_unit4:
+        members: [person4]
+        ak_hap_base_benefit: 1_750
+        receives_housing_assistance: false
+      spm_unit5:
+        members: [person5]
+        ak_hap_base_benefit: 1_050
+        receives_housing_assistance: false
+      spm_unit6:
+        members: [person6]
+        ak_hap_base_benefit: 0
+        receives_housing_assistance: false
+      spm_unit7:
+        members: [person7]
+        ak_hap_base_benefit: 0
+        receives_housing_assistance: false
+      spm_unit8:
+        members: [person8]
+        ak_hap_base_benefit: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: AK
+        hud_utility_allowance: 0
+      household2:
+        members: [person4, person5, person6]
+        state_code: AK
+        hud_utility_allowance: 0
+      household3:
+        members: [person7, person8]
+        state_code: AK
+        hud_utility_allowance: 0
+  output:
+    ak_hap: [875, 0, 0, 875, 525, 0, 0, 0]
+
+# Separate homes never share a denominator. A supplied positive base outside
+# Alaska cannot bypass the final variable's state restriction.
+- name: Case 5, sharing remains within each physical household in a mixed state vector.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        ak_hap_base_benefit: 1_925
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person3]
+        ak_hap_base_benefit: 1_925
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person4]
+        ak_hap_base_benefit: 1_925
+        receives_housing_assistance: false
+      spm_unit4:
+        members: [person5]
+        ak_hap_base_benefit: 1_925
+        receives_housing_assistance: false
+      spm_unit5:
+        members: [person6]
+        ak_hap_base_benefit: 1_925
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: AK
+        hud_utility_allowance: 0
+      household2:
+        members: [person4]
+        state_code: AK
+        hud_utility_allowance: 0
+      household3:
+        members: [person5, person6]
+        state_code: NH
+        hud_utility_allowance: 0
+  output:
+    ak_hap: [962.50, 962.50, 1_925, 0, 0]
+
+# Grant step8 requires subsidized housing, directly paid heat and a positive
+# allowance. Test all Boolean combinations of those supplied facts, plus a
+# second positive allowance magnitude. Fairbanks zero-income base is 1,750.
+# Subsidized heat-in-rent cases remain zero through the existing base gate.
+- name: Case 6, the allowance reduction requires all conditions and ignores its positive magnitude.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person6:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person7:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person8:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+      person9:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        pre_subsidy_rent: 12_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: true
+      spm_unit4:
+        members: [person4]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: true
+      spm_unit5:
+        members: [person5]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+      spm_unit6:
+        members: [person6]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+      spm_unit7:
+        members: [person7]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+      spm_unit8:
+        members: [person8]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+      spm_unit9:
+        members: [person9]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+      household2:
+        members: [person2]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 1
+      household3:
+        members: [person3]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+      household4:
+        members: [person4]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 1
+      household5:
+        members: [person5]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+      household6:
+        members: [person6]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 1
+      household7:
+        members: [person7]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+      household8:
+        members: [person8]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 1
+      household9:
+        members: [person9]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 12_000
+  output:
+    ak_hap_base_benefit: [1_750, 1_750, 1_750, 1_750, 1_750, 1_750, 0, 0, 1_750]
+    ak_hap: [1_750, 1_750, 1_750, 1_750, 1_750, 875, 0, 0, 875]
+
+# Juneau oil5 * dwelling1 * income factor0.6 =3 points, at least2; $525.
+# Step8 then reduces dollars to262.50. Reducing points first would wrongly
+# deny this household for having only1.5 points.
+- name: Case 7, a three point Juneau household receives half the dollar award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '36400'
+        hud_utility_allowance: 1_200
+  output:
+    ak_hap_household_size: 1
+    ak_hap_countable_income: 24_000
+    ak_hap_income_factor: 0.6
+    heating_expense: 300
+    ak_hap_base_benefit: 525
+    ak_hap: 262.50
+
+# Fairbanks studio10 * .15 =1.5 points fails before rounding. The two elderly
+# units each add1, reach2.5 points, and round up to3 before conversion to$525.
+# The ineligible unit does not enter their two-household denominator; sharing
+# gives262.50 each and the subsidized unit is halved again to131.25.
+- name: Case 8, minimum points and half up rounding precede sharing and allowance adjustments.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: STUDIO_HOTEL_OR_BOARDING_ROOM
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 1_200
+  output:
+    ak_hap_household_size: [1, 1, 1]
+    ak_hap_countable_income: [0, 0, 0]
+    ak_hap_income_factor: [1, 1, 1]
+    ak_hap_base_benefit: [0, 525, 525]
+    ak_hap: [0, 262.50, 131.25]
+
+# Ambler oil35 * large-mobile-home1.4 =49 points, capped at35, giving$6,125.
+# Both eligible resident units get3,062.50; step8 halves only the subsidized
+# unit again to1,531.25. Neither benefit is capped at its $300 heating bill.
+- name: Case 9, the point cap applies before sharing and final dollar reduction.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: LARGE_MOBILE_HOME_OR_BOAT
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: LARGE_MOBILE_HOME_OR_BOAT
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AK
+        place_fips: '01970'
+        hud_utility_allowance: 1_200
+  output:
+    ak_hap_household_size: [1, 1]
+    ak_hap_countable_income: [0, 0]
+    ak_hap_income_factor: [1, 1]
+    ak_hap_base_benefit: [6_125, 6_125]
+    ak_hap: [3_062.50, 1_531.25]
