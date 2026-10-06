@@ -1,0 +1,253 @@
+# California FY2026 State Plan, physical pages 10,188,193,202,203,205,363,364.
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=188
+# The approved quote already reflects eligible quantity, form, climate, storage
+# and prioritization. These tests supply no provider, agency or cords selector.
+# One ordinary annual award is capped at $1,000; no discretionary supplement.
+
+# REQ-001/002/005: Fresno demonstrates that wood is not limited to Madera.
+# Existing wood spending establishes responsibility for all seven households.
+# Omitted and zero quotes both yield zero modeled benefit, not legal denial.
+- name: Case 1, approved wood delivery is bounded by zero and the ordinary WPO maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 120
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: -25
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: 750.25
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: 999.99
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: 1_000
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: WOOD
+        wood_expense: 120
+        ca_liheap_approved_wood_delivery_cost: 1_400
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
+      household2: {members: [person2], state_code: CA, county: FRESNO_COUNTY_CA}
+      household3: {members: [person3], state_code: CA, county: FRESNO_COUNTY_CA}
+      household4: {members: [person4], state_code: CA, county: FRESNO_COUNTY_CA}
+      household5: {members: [person5], state_code: CA, county: FRESNO_COUNTY_CA}
+      household6: {members: [person6], state_code: CA, county: FRESNO_COUNTY_CA}
+      household7: {members: [person7], state_code: CA, county: FRESNO_COUNTY_CA}
+  output:
+    ca_liheap_approved_wood_delivery_cost: [0, 0, -25, 750.25, 999.99, 1_000, 1_400]
+    ca_liheap_wood_heating: [0, 0, 0, 750.25, 999.99, 1_000, 1_000]
+    heating_expense: [120, 120, 120, 120, 120, 120, 120]
+
+# REQ-001/003/004: an approved delivery establishes responsibility before any
+# prior wood purchase, including at zero income. Historic spending remains a
+# separate input. At $12,000 income, $1,200 is burden group 1 and $2,400 group 4;
+# adding the $600 quote to the second household's expense would change its band.
+- name: Case 2, approved wood cost is independent of historical spending and liquid coverage.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 0, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 1_200
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: WOOD
+        wood_expense: 2_400
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1: {members: [person1], state_code: CA, county: MADERA_COUNTY_CA}
+      household2: {members: [person2], state_code: CA, county: MADERA_COUNTY_CA}
+      household3: {members: [person3], state_code: CA, county: MADERA_COUNTY_CA}
+  output:
+    ca_liheap_basic_eligible: [true, true, true]
+    ca_liheap_countable_income: [0, 12_000, 12_000]
+    wood_expense: [0, 1_200, 2_400]
+    heating_expense: [0, 1_200, 2_400]
+    ca_liheap_energy_burden_group: [0, 1, 4]
+    ca_liheap_liquid_heating_covered: [false, false, false]
+    ca_liheap_wood_heating: [600, 600, 600]
+
+# REQ-003/004/005: a quote cannot cause cross-state or cross-fuel payments.
+# The propane household retains the sourced Madera ordinary amount $411+$105
+# and its original $2,040 bill even when an unrelated wood quote is supplied.
+- name: Case 3, mixed states and primary fuels receive only their applicable component.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_040
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_040
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
+      household2: {members: [person2], state_code: OR, county: MULTNOMAH_COUNTY_OR}
+      household3: {members: [person3], state_code: CA, county: MADERA_COUNTY_CA}
+      household4: {members: [person4], state_code: CA, county: MADERA_COUNTY_CA}
+  output:
+    ca_liheap_basic_eligible: [true, false, true, true]
+    ca_liheap_utility_eligible: [false, false, false, true]
+    heating_expense: [0, 0, 2_040, 2_040]
+    ca_liheap_wood_heating: [600, 0, 0, 0]
+    ca_liheap_covered_liquid_heating: [0, 0, 516, 0]
+
+# REQ-003: approval does not override the modeled income or qualified-adult
+# gates. A nonqualified adult with a qualified child still lacks an applicant;
+# age 17 is not assumed emancipated, whereas age 18 meets the applicant gate.
+# The final household is income eligible through actual SNAP receipt, not its
+# approved quote: categorical eligibility remains the existing separate rule.
+- name: Case 4, approved wood delivery preserves income adult and categorical eligibility rules.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 60_000, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: false, employment_income: 12_000, ssi: 0}
+      person3: {age: 5, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 17, is_citizen_or_legal_immigrant: true, pension_income: 12_000, ssi: 0}
+      person5: {age: 18, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 60_000, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person4]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person5]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person6]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 120
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
+      household2: {members: [person2, person3], state_code: CA, county: FRESNO_COUNTY_CA}
+      household3: {members: [person4], state_code: CA, county: FRESNO_COUNTY_CA}
+      household4: {members: [person5], state_code: CA, county: FRESNO_COUNTY_CA}
+      household5: {members: [person6], state_code: CA, county: FRESNO_COUNTY_CA}
+  output:
+    ca_liheap_income_eligible: [false, true, true, true, true]
+    ca_liheap_basic_eligible: [false, false, false, true, true]
+    ca_liheap_wood_heating: [0, 0, 0, 600, 600]

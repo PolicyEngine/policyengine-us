@@ -168,3 +168,83 @@
   output:
     ca_liheap_basic_eligible: [true, true, true, true, true, false, true, false, true, false, false, false]
     ca_liheap_utility_eligible: [false, false, true, true, false, false, false, false, false, false, false, false]
+
+# REQ-003/004: only a positive approved WOOD delivery creates responsibility
+# in the absence of existing bills or qualifying heat-in-rent. The first home
+# is subsidized but has its own approved wood cost. Quotes cannot create
+# responsibility for another primary fuel, including unknown or absent heat.
+- name: Case 2, approved wood delivery establishes energy responsibility only for wood.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 12_000, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        receives_housing_assistance: true
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 0
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: -25
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: ELECTRICITY
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit5:
+        members: [person5]
+        heating_type: PROPANE
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit6:
+        members: [person6]
+        heating_type: UNSPECIFIED
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+      spm_unit7:
+        members: [person7]
+        heating_type: NONE
+        ca_liheap_approved_wood_delivery_cost: 600
+        snap: 0
+        ca_tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
+      household2: {members: [person2], state_code: CA, county: FRESNO_COUNTY_CA}
+      household3: {members: [person3], state_code: CA, county: FRESNO_COUNTY_CA}
+      household4: {members: [person4], state_code: CA, county: FRESNO_COUNTY_CA}
+      household5: {members: [person5], state_code: CA, county: FRESNO_COUNTY_CA}
+      household6: {members: [person6], state_code: CA, county: FRESNO_COUNTY_CA}
+      household7: {members: [person7], state_code: CA, county: FRESNO_COUNTY_CA}
+  output:
+    ca_liheap_basic_eligible: [true, false, false, false, false, false, false]
+    ca_liheap_utility_eligible: [false, false, false, false, false, false, false]
+    heating_expense: [0, 0, 0, 0, 0, 0, 0]
+    ca_liheap_wood_heating: [600, 0, 0, 0, 0, 0, 0]

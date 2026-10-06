@@ -9,11 +9,40 @@ verified coverage. FY2027 evidence acquired during research was a draft.
 `ca_liheap_covered_liquid_heating` also estimates the ordinary propane/fuel-oil
 component where local burden and priority rules have been verified: currently
 Madera County. The statewide liquid base table is encoded, but that alone does
-not establish coverage in other counties. Wood remains unimplemented pending
-approved local quantity prices and county heating-degree-day classification.
-Neither output is a total California LIHEAP award; no generic `ca_liheap` final
-award is provided. Solar, coal, OTHER and UNSPECIFIED fuels have no supported
+not establish coverage in other counties. `ca_liheap_wood_heating` estimates the
+ordinary wood component throughout California when an approved eligible-delivery
+cost is supplied. No output is a total California LIHEAP award; no generic
+`ca_liheap` final award is provided. Solar, coal, OTHER and UNSPECIFIED fuels have no supported
 utility-table crosswalk, and kerosene is not assigned a statewide liquid rule.
+
+## Approved wood delivery
+
+`ca_liheap_approved_wood_delivery_cost` is the approved cost of the eligible
+ordinary wood, wood-pellet or manufactured-log delivery for the modeled program
+year, before the ordinary benefit cap. Enter one program-year delivery amount,
+not annual historical wood spending or an unrestricted vendor quotation. It
+excludes any separately approved discretionary vendor-service supplement.
+
+The approved amount already reflects the allowed quantity, fuel form, climate,
+storage limits, reasonable pricing and administrative prioritization. Those
+facts are supplied through the approved cost; the model does not independently
+recalculate them. Company and agency identities are not distinguished. No cords,
+provider, agency, heating-degree-day or storage inputs are required.
+
+`ca_liheap_wood_heating` applies the shared income and qualified-adult checks,
+requires primary `heating_type = WOOD`, and pays the nonnegative approved cost
+up to the ordinary $1,000 WPO maximum. A positive approved cost establishes
+heating-cost responsibility even if no past wood expense is reported. It does
+not bypass the modeled income or qualified-adult requirements, and a wood quote
+does not establish responsibility for a different primary heating fuel.
+
+The input defaults to zero. Without a supplied approved cost the modeled wood
+component is zero; this does not establish that the household is legally
+ineligible. `wood_expense` alone does not produce a wood award. Neither the
+quote nor the award is added to historical heating/utility expenses or the
+energy-burden numerator. The wood component is not added to household benefit
+aggregates. As with the other components, FY2026 is verified; earlier-year
+backfills are unverified historical estimates.
 
 ## Liquid component coverage and interpretation
 
@@ -30,7 +59,8 @@ Coverage requires propane or fuel-oil heating in Madera, positive countable
 income, and an energy-cost/income ratio from zero through 100%. Zero-income and
 above-100% burden assignments remain unresolved in the acquired local plan and
 are expressly outside calculation coverage. Other counties and wood are also
-outside this component's coverage. The component is not added to household
+outside the liquid component's coverage; the approved-cost wood component has
+its own statewide calculation. The component is not added to household
 benefit aggregates or substituted for the existing utility registry output.
 
 The liquid schedule uses county/income-group base amounts, the shared $19
@@ -58,7 +88,7 @@ The local plan has board-adoption evidence; a separate state approval letter
 was not recovered.
 
 `ca_liheap_basic_eligible` shares the existing qualified-adult, income and
-energy-responsibility checks between utility and liquid calculations. It does
+energy-responsibility checks across utility, liquid and approved wood calculations. It does
 not itself determine local priority or fuel eligibility. The existing utility
 schedule and its documented limitations are preserved.
 
@@ -142,9 +172,9 @@ gains and in-kind assistance are omitted under the source exclusions.
 
 ## References
 
-- [CSD final FY2026 LIHEAP State Plan](https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6,7,9,182,183,184,185,186,187,188,193,196,202,203,205,217,218,219,229,230,231,232,233,234,235,236,237,238,239,240,243,244,245,246,247,248,249,250,257,279,282,283,363,364): utility/liquid matrices, energy-burden precision, eligibility guide and remaining wood rules.
+- [CSD final FY2026 LIHEAP State Plan #page 6,7,9,10,182,183,184,185,186,187,188,193,196,202,203,205,217,218,219,229,230,231,232,233,234,235,236,237,238,239,240,243,244,245,246,247,248,249,250,257,279,282,283,363,364](https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=10): utility/liquid matrices, ordinary WPO cap, wood quantity/pricing, eligibility guide and approved vendor payments.
 - [CSD FY2026 income eligibility webpage](https://www.csd.ca.gov/Pages/LIHEAP-Income-Eligibility.aspx): larger-household rounding conflict.
 - [CSD publication index](https://www.csd.ca.gov/Pages/LIHEAPProgram.aspx): final FY2026 and draft FY2027 status, checked October 3, 2026.
 
-- [Madera FY2026 local plan, October 9, 2025 board packet](https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234): local burden bands, priority points and minimum.
-- [Madera November 13, 2025 board packet](https://maderacap.org/wp-content/uploads/2025/11/Agenda-and-Board-Packet-November-13-2025.pdf#page=4,6): October 9 minutes, consent-calendar approval including item D17.
+- [Madera FY2026 local plan, October 9, 2025 board packet #page 191,233,234](https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191): local burden bands, priority points and minimum.
+- [Madera November 13, 2025 board packet #page 4,6](https://maderacap.org/wp-content/uploads/2025/11/Agenda-and-Board-Packet-November-13-2025.pdf#page=4): October 9 minutes, consent-calendar approval including item D17.

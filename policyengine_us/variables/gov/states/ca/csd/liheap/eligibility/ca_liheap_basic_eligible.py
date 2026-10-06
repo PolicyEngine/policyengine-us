@@ -7,7 +7,8 @@ class ca_liheap_basic_eligible(Variable):
     definition_period = YEAR
     label = "California LIHEAP common household eligibility"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9,193,202,203,205,219,279"
+    # Eligibility details: pages 9, 193, 202-203, 205, 219, and 279.
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=193"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.eligibility
@@ -18,9 +19,13 @@ class ca_liheap_basic_eligible(Variable):
         expense = spm_unit("heating_expense", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         subsidized = spm_unit("receives_housing_assistance", period)
+        heating_type = spm_unit("heating_type", period)
+        approved_wood_cost = (heating_type == heating_type.possible_values.WOOD) & (
+            spm_unit("ca_liheap_approved_wood_delivery_cost", period) > 0
+        )
         # Unsubsidized heat-in-rent is an energy-responsibility proxy; a
         # separately reported charge also permits subsidized households.
-        energy_cost = (expense > 0) | (heat_in_rent & ~subsidized)
+        energy_cost = (expense > 0) | (heat_in_rent & ~subsidized) | approved_wood_cost
         return (
             energy_cost
             & (spm_unit.sum(qualified_adult) > 0)

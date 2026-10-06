@@ -1,1 +1,1 @@
-Add California FY2026 regular gas and electric utility HEAP and the ordinary Madera propane/fuel-oil component, reusing household and income calculations with explicit model coverage; wood and other liquid-fuel areas remain incomplete.
+Add California LIHEAP regular utility heating schedules, a covered Madera propane/fuel-oil calculation, and ordinary wood assistance using an approved eligible-delivery cost.

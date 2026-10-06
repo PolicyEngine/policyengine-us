@@ -10,9 +10,10 @@ class ca_liheap_covered_liquid_heating(Variable):
         "California LIHEAP covered ordinary liquid heating component (check coverage)"
     )
     defined_for = "ca_liheap_liquid_heating_covered"
+    # State plan pages 10 and 185-188; Madera plan pages 191 and 233-234.
     reference = (
-        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=10,185,186,187,188",
-        "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234",
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=185",
+        "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191",
     )
 
     def formula(spm_unit, period, parameters):
@@ -49,6 +50,6 @@ class ca_liheap_covered_liquid_heating(Variable):
         # A zero with coverage=False is unsupported, not an entitlement denial.
         return where(
             eligible & supported_county,
-            min_(amount, p.payment.liquid_maximum),
+            min_(amount, p.payment.wpo_maximum),
             0,
         )
