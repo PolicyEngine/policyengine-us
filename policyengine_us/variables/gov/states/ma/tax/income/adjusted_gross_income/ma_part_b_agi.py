@@ -23,7 +23,13 @@ class ma_part_b_agi(Variable):
         deduction_value = add(tax_unit, period, deductions)
         # U.S. government bond interest is exempt from MA tax.
         us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
+        # Schedule Y line 9c, which the Massachusetts AGI worksheet subtracts
+        # with Schedule Y lines 2 to 10.
+        unemployment_deduction = tax_unit("ma_qualified_unemployment_deduction", period)
         return max_(
             0,
-            part_b_gross_income - deduction_value - us_govt_interest,
+            part_b_gross_income
+            - deduction_value
+            - us_govt_interest
+            - unemployment_deduction,
         )
