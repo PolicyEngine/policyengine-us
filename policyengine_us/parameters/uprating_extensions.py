@@ -170,6 +170,38 @@ def extend_dependent_standard_deduction_parameters(
         )
 
 
+# 26 U.S.C. 62(d)(3) indexing of the 62(a)(2)(D) educator expense cap:
+# statutory dollar amount and 1(f)(3) base year.
+EDUCATOR_EXPENSE_CAP_STATUTORY_BASE = (250, 2014)
+
+
+def extend_educator_expense_cap(parameters: ParameterNode, end_year: int) -> None:
+    """Project the per-educator cap on the educator expense deduction.
+
+    26 U.S.C. 62(d)(3) increases the $250 amount in 62(a)(2)(D) by the
+    1(f)(3) cost-of-living adjustment, substituting calendar year 2014 for
+    2016, and rounds the increase to the nearest multiple of $50. Each year
+    is computed from the statutory base rather than chained from the last
+    rounded value, which can put a $50 step a year or more early or late;
+    IRS values encoded in the YAML take precedence for their own years.
+    """
+    ROUNDING_INTERVAL = 50
+    base, base_year = EDUCATOR_EXPENSE_CAP_STATUTORY_BASE
+    cap = parameters.gov.irs.ald.educator_expense.cap
+    first_projected_year = 1 + max(
+        int(value.instant_str[:4]) for value in cap.values_list
+    )
+    for year in range(first_projected_year, end_year + 1):
+        cola = get_irs_cola(parameters, year, base_year)
+        # Nearest multiple of $50; an exact half rounds up.
+        increase = math.floor(base * cola / ROUNDING_INTERVAL + 0.5) * ROUNDING_INTERVAL
+        cap.update(period=f"year:{year}-01-01:1", value=float(base + increase))
+    cap.update(
+        start=instant(f"{end_year}-01-01"),
+        value=cap(f"{end_year}-01-01"),
+    )
+
+
 def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
     """Project the Oregon Kids' Credit amount and phase-out start.
 
@@ -638,5 +670,10 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # 1997 bases. Must run after the Chained CPI-U extension above so
     # projected windows are available.
     extend_dependent_standard_deduction_parameters(parameters, end_year=END_YEAR)
+
+    # The educator expense cap follows 26 U.S.C. 62(d)(3)'s chained CPI-U
+    # schedule, computed from the statutory $250 and 2014 base year. Must run
+    # after the Chained CPI-U extension above.
+    extend_educator_expense_cap(parameters, end_year=END_YEAR)
 
     return parameters

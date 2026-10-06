@@ -19,14 +19,21 @@ metadata:
   unit: currency-USD
   period: year
   label: Educator expense deduction cap
+  # Values after the last IRS publication are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 62(d)(3): the statutory
+  # $250 increased by the 1(f)(3) cost-of-living adjustment with calendar
+  # year 2014 as the base year, each increase rounded to the nearest multiple
+  # of $50. Computing from the $250 base rather than chaining from the
+  # rounded $350 puts each projected $50 step in the year the statute does on
+  # the model's CPI projection; those values supersede this uprating rule,
+  # which describes the index and rounding.
   uprating:
     parameter: gov.irs.uprating
-    # 26 USC 62(d)(3): any increase is rounded to the nearest multiple of $50.
     rounding:
       type: nearest
       interval: 50
   reference:
-    - title: 26 U.S. Code § 62(a)(2)(D) - Certain expenses of elementary and secondary school teachers
+    - title: 26 U.S. Code § 62(a)(2)(D) - Educator expenses
       href: https://www.law.cornell.edu/uscode/text/26/62#a_2_D
     - title: 26 U.S. Code § 62(d)(3) - Inflation adjustment
       href: https://www.law.cornell.edu/uscode/text/26/62#d_3

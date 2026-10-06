@@ -175,6 +175,29 @@
     educator_expense_ald: 350
     adjusted_gross_income: 49_650
 
+- name: 2030, the projected cap is still $350
+  period: 2030
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50_000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: [teacher]
+    households:
+      household:
+        members: [teacher]
+        state_code: TX
+  output:
+    # 26 USC 62(d)(3) on the model's CPI projection: the increase on the $250
+    # base is $250 x the 2030 COLA (0.451) = $112.80, which rounds to the
+    # nearest $50 at $100. Chaining from the rounded 2026 $350 gave $400.
+    educator_expense_ald_person: 350
+    educator_expense_ald: 350
+    adjusted_gross_income: 49_650
+
 - name: 2022, joint return with two eligible educators, each capped at $300
   period: 2022
   input:
