@@ -6,32 +6,36 @@ class ctc_limiting_tax_liability(Variable):
     entity = TaxUnit
     label = "CTC-limiting tax liability"
     unit = USD
-    documentation = "The tax liability used to determine the maximum amount of the non-refundable CTC. Excludes SALT from all calculations (this is an inaccuracy required to avoid circular dependencies)."
+    documentation = (
+        "The tax liability used to determine the maximum amount of the "
+        "non-refundable CTC (Schedule 8812 Credit Limit Worksheet A, line 5): "
+        "income tax before credits less the credits that precede the CTC, "
+        "less the residential clean energy credit when Credit Limit Worksheet "
+        "B applies. Excludes SALT from income tax before credits (this is an "
+        "inaccuracy required to avoid circular dependencies)."
+    )
     definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/26#a",
+        "https://www.law.cornell.edu/uscode/text/26/24#d_1_B",
+        # 2025 Instructions for Schedule 8812, Credit Limit Worksheets A and B.
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4",
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=6",
+    )
 
     def formula(tax_unit, period, parameters):
-        simulation = tax_unit.simulation
-        no_salt_branch = simulation.get_branch("no_salt")
-        no_salt_branch.set_input("salt_deduction", period, np.zeros(tax_unit.count))
-        # Propagate the parent's itemization determination so the
-        # no_salt branch doesn't re-enter
-        # `tax_unit_itemizes` -> `tax_liability_if_itemizing` ->
-        # `income_tax` -> `refundable_ctc`, which forms a cycle
-        # (issue #8059). The parent's value has already been computed
-        # by the time we get here: either set as input on the
-        # itemizing / not_itemizing branch, or computed and cached on
-        # the top-level sim before `refundable_ctc` was reached (the
-        # `income_tax_before_credits` branch of
-        # `income_tax_before_refundable_credits` runs first).
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        no_salt_branch.set_input("tax_unit_itemizes", period, itemizes)
-        tax_liability_before_credits = no_salt_branch.calculate(
-            "income_tax_before_credits", period
+        liability_after_preceding_credits = tax_unit(
+            "ctc_tax_liability_after_preceding_credits", period
+        )  # Line 3
+        # Section 25D(c) orders the residential clean energy credit after the
+        # CTC, but section 24(d)(1)(B) refunds the CTC by the increase in all
+        # subpart A credits. Worksheet B therefore lets that credit use the
+        # liability first, moving the displaced CTC into the refundable part.
+        p = parameters(period).gov.irs.credits.ctc_tax_liability_limit
+        # add() returns None for an empty list, which a reform may set.
+        subsequent_credits = (
+            add(tax_unit, period, p.subsequent_credits) if p.subsequent_credits else 0
         )
-        non_refundable_credits = parameters(period).gov.irs.credits.non_refundable
-        non_refundable_credits_ex_ctc = [
-            x for x in non_refundable_credits if x != "non_refundable_ctc"
-        ]
-        total_credits = add(tax_unit, period, non_refundable_credits_ex_ctc)
-
-        return max_(0, tax_liability_before_credits - total_credits)
+        worksheet_b_applies = tax_unit("ctc_credit_limit_worksheet_b_applies", period)
+        worksheet_b_amount = where(worksheet_b_applies, subsequent_credits, 0)  # Line 4
+        return max_(0, liability_after_preceding_credits - worksheet_b_amount)  # Line 5

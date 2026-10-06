@@ -6,9 +6,7 @@ class la_school_readiness_credit_refundable_eligible(Variable):
     entity = TaxUnit
     label = "Louisiana refundable school readiness tax credit eligibility"
     definition_period = YEAR
-    reference = (
-        "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
-    )
+    reference = "https://revenue.louisiana.gov/individuals/general-resources/school-readiness-credit/"
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):

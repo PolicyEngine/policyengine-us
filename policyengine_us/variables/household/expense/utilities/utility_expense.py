@@ -12,7 +12,9 @@ class utility_expense(Variable):
         "whose heating_type is UNSPECIFIED also add the deprecated "
         "heating_cooling_expense input, as before the canonical heating inputs "
         "existed; a known heating type reads only the per-fuel bills, so the heating "
-        "cost is never counted twice."
+        "cost is never counted twice. electricity_expense is net of the CARE, "
+        "FERA, and EZ-SAVE electricity subsidies, while gas_expense is the bill "
+        "before any CARE gas discount."
     )
     definition_period = YEAR
 

@@ -21,5 +21,5 @@ class ut_personal_exemption(Variable):
             additional_dependents = tax_unit(
                 "ut_personal_exemption_additional_dependents", period
             )
-            total_dependents += additional_dependents
+            total_dependents = total_dependents + additional_dependents
         return p.personal_exemption * total_dependents

@@ -1,0 +1,131 @@
+# Colorado's approved CCDF Plan 2.2.1(c) (p.23) and 8 CCR 1403-1 section
+# 3.105.1(F) (now 3.111(F)) extend eligibility through age 18 for a child
+# under court supervision. The documented care need is a verification detail.
+# Authority: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=35
+- name: Case 1, court supervision extends the age limit through 18.
+  period: 2026-01
+  input:
+    state_code: [CO, CO, CO, CO, CO]
+    age: [12, 13, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    co_ccap_child_eligible: [true, true, true, true, false]
+
+- name: Case 2, without court supervision the ordinary under-13 limit applies.
+  period: 2026-01
+  input:
+    state_code: [CO, CO]
+    age: [12, 13]
+    is_tax_unit_dependent: [true, true]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_disabled: [false, false]
+    is_under_court_supervision: [false, false]
+  output:
+    co_ccap_child_eligible: [true, false]
+
+- name: Case 3, court supervision does not replace the dependency requirement.
+  period: 2026-01
+  input:
+    state_code: CO
+    age: 15
+    is_tax_unit_dependent: false
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    co_ccap_child_eligible: false
+
+- name: Case 4, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [CO, CO, CO, CO]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    co_ccap_child_eligible: [true, true, true, false]
+
+- name: Case 5, a court-supervised 15-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 15
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    # Parameters are read at the 2025-10-01 fiscal-year instant.
+    # person2: age 15, not disabled, under court supervision => age limit
+    # 19; 15 < 19 and a tax unit dependent => eligible child.
+    co_ccap_child_eligible: [false, true]
+    co_ccap_eligible_children: 1
+    # 30,000 / 12 = 2,500
+    co_ccap_countable_income: 2_500
+    # 2026 FPG for 2 people: (15,960 + 5,680) / 12 = 1,803.33
+    spm_unit_fpg: 1_803.33
+    # Denver entry limit: 1,803.33 * 2.35 = 4,237.83 > 2,500
+    co_ccap_fpg_eligible: true
+    # SMI: 138,760 * (0.52 + 0.16) / 12 = 7,863.07;
+    # 85% limit = 6,683.61 > 2,500
+    co_ccap_smi: 7_863.07
+    co_ccap_smi_eligible: true
+    co_ccap_eligible: true
+    # Base fee: 0.01 * 1,803.33 + 0.14 * (2,500 - 1,803.33)
+    # = 18.03 + 97.53 = 115.57
+    co_ccap_base_parent_fee: 115.57
+    # Add-on: (1 eligible child - 1) * 15 = 0
+    co_ccap_add_on_parent_fee: 0
+    # 8 hours/day => hours rate 1; facility rating 0 => no discount (1).
+    # 115.57 * 1 * 1 = 115.57
+    co_ccap_parent_fee: 115.57
+    # Expenses 12,000 / 12 = 1,000 - 115.57 = 884.43
+    co_ccap_subsidy: 884.43
+
+- name: Case 6, without court supervision the same teenager receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 15
+        is_disabled: false
+        is_under_court_supervision: false
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    # person2: age 15 >= ordinary age limit 13 => no eligible child.
+    co_ccap_child_eligible: [false, false]
+    co_ccap_eligible: false
+    co_ccap_subsidy: 0

@@ -1,6 +1,7 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
+from policyengine_us.tools.period_branch import get_branch_for_period
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
@@ -13,6 +14,27 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
         tax_unit.members(var, period)
         * not_(tax_unit.members("is_tax_unit_dependent", period))
     )
+
+
+def tax_unit_non_dep_add(tax_unit, period, variables):
+    """
+    Add variables over a tax unit's head and spouse, leaving out dependents.
+
+    Like `add`, but a person-level variable is summed only over members who
+    are not tax unit dependents, whose items belong on their own returns. A
+    tax-unit-level variable is added as is, so it must already describe the
+    filer's own return.
+    """
+    total = 0
+    for variable in variables:
+        variable_entity = tax_unit.entity.get_variable(
+            variable, check_existence=True
+        ).entity
+        if variable_entity.is_person:
+            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
+        else:
+            total = total + tax_unit(variable, period)
+    return total
 
 
 def sum_contained_tax_units(var, population, period):

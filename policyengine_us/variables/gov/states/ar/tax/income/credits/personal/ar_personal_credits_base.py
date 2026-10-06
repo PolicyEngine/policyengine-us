@@ -8,9 +8,9 @@ class ar_personal_credits_base(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1"
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12"
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
     )
     defined_for = StateCode.AR
 
@@ -22,8 +22,19 @@ class ar_personal_credits_base(Variable):
         aged = person("age", period) >= p.age_threshold
         # Arkansas provides an additional "aged special" credit for people who
         # do not receive retirement or disability benefit exemptions.
-        receives_retirement_or_disability_exemption = (
+        claims_pension_exemption = (
             person("ar_retirement_or_disability_benefits_exemption_person", period) > 0
+        )
+        # Before 2018, military retirement was reported on the same line as
+        # pensions and claimed the same exemption.
+        p_retirement = parameters(
+            period
+        ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
+        claims_military_retirement_on_pension_line = (
+            person("ar_military_retirement_income_person", period) > 0
+        ) & (not p_retirement.military_retirement_fully_exempt)
+        receives_retirement_or_disability_exemption = (
+            claims_pension_exemption | claims_military_retirement_on_pension_line
         )
         aged_special = aged & ~receives_retirement_or_disability_exemption
         # Blind filers get an additional personal tax credit amount
