@@ -1,0 +1,181 @@
+# 26 U.S.C. 1(h)(4): collectibles gain and section 1202 gain less collectibles
+# loss, the net short-term capital loss and the long-term capital loss carried
+# to the year, if more than zero. Line references are to the 2025 28% Rate
+# Gain Worksheet (Instructions for Schedule D, page 11); line 7 is Schedule D
+# line 18. Amounts before netting are collectibles_gain_or_loss and
+# section_1202_gain; amounts already netted, as the microdata carry Schedule D
+# line 18, are long_term_capital_gains_on_collectibles and
+# long_term_capital_gains_on_small_business_stock and pass through.
+- name: Without losses the 28 percent rate gain is the collectibles gain
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+  output:
+    capital_gains_28_percent_rate_gain: 10_000
+
+- name: A short-term loss reduces the 28 percent rate gain
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    short_term_capital_gains: -8_000
+  output:
+    # Line 1 = 10,000, line 6 = (8,000), line 7 = 2,000.
+    capital_gains_28_percent_rate_gain: 2_000
+
+- name: A short-term loss larger than the gain leaves none
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    short_term_capital_gains: -15_000
+  output:
+    # Line 7 = 10,000 - 15,000, zero or less, so 0.
+    capital_gains_28_percent_rate_gain: 0
+
+- name: A short-term gain does not reduce it
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    short_term_capital_gains: 5_000
+  output:
+    # Line 6 is zero when Schedule D line 7 is a gain.
+    capital_gains_28_percent_rate_gain: 10_000
+
+- name: A long-term capital loss carryover reduces it
+  period: 2025
+  input:
+    long_term_capital_gains: 47_000
+    collectibles_gain_or_loss: 10_000
+    long_term_capital_loss_carryover: 3_000
+  output:
+    # Line 5 = (3,000), line 7 = 7,000. long_term_capital_gains is net of the
+    # carryover, as Schedule D line 15 is.
+    capital_gains_28_percent_rate_gain: 7_000
+
+- name: Section 1202 gain, a short-term loss and a carryover together
+  period: 2025
+  input:
+    long_term_capital_gains: 47_000
+    collectibles_gain_or_loss: 10_000
+    section_1202_gain: 4_000
+    long_term_capital_loss_carryover: 3_000
+    short_term_capital_gains: -5_000
+  output:
+    # Lines 1 + 2 = 14,000, line 5 = (3,000), line 6 = (5,000), line 7 =
+    # 6,000.
+    capital_gains_28_percent_rate_gain: 6_000
+
+- name: A collectibles loss offsets section 1202 gain
+  period: 2025
+  input:
+    long_term_capital_gains: 20_000
+    collectibles_gain_or_loss: -2_000
+    section_1202_gain: 5_000
+  output:
+    # Line 1 = (2,000), line 2 = 5,000, line 7 = 3,000.
+    capital_gains_28_percent_rate_gain: 3_000
+
+- name: A net collectibles loss leaves no 28 percent rate gain
+  period: 2025
+  input:
+    long_term_capital_gains: 20_000
+    collectibles_gain_or_loss: -4_000
+  output:
+    capital_gains_28_percent_rate_gain: 0
+
+- name: Spouses' gains and losses are netted on the joint return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        long_term_capital_gains: 30_000
+        collectibles_gain_or_loss: 6_000
+      spouse:
+        age: 50
+        short_term_capital_gains: -2_000
+        long_term_capital_gains: -1_000
+        long_term_capital_loss_carryover: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Line 1 = 6,000, line 5 = (1,000), line 6 = (2,000), line 7 = 3,000.
+    capital_gains_28_percent_rate_gain: 3_000
+
+- name: Section 1202 gain and collectibles gain net together against a short-term loss
+  period: 2025
+  input:
+    long_term_capital_gains: 60_000
+    collectibles_gain_or_loss: 10_000
+    section_1202_gain: 15_000
+    short_term_capital_gains: -8_000
+  output:
+    # Line 1 = 10,000, line 2 = 15,000, line 6 = (8,000), line 7 = 17,000.
+    capital_gains_28_percent_rate_gain: 17_000
+
+- name: A spouse's short-term gain offsets the other's short-term loss first
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        long_term_capital_gains: 30_000
+        short_term_capital_gains: -3_000
+      spouse:
+        age: 50
+        long_term_capital_gains: 10_000
+        collectibles_gain_or_loss: 10_000
+        short_term_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Schedule D line 7 = -3,000 + 1,000 = (2,000); line 7 = 10,000 - 2,000.
+    capital_gains_28_percent_rate_gain: 8_000
+
+- name: A negative section 1202 gain or carryover entry counts as zero
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    section_1202_gain: -1_000
+    long_term_capital_loss_carryover: -2_000
+  output:
+    # Section 1202 gain is an excess of gain over excluded gain, and the
+    # carryover is a positive amount (Schedule D line 14).
+    capital_gains_28_percent_rate_gain: 10_000
+
+- name: Default dataset unit 1053056 (2025) is unchanged without losses
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_income: 1_215_443.5
+    net_capital_gain: 1_110_012.88
+    long_term_capital_gains_on_collectibles: 610_988.38
+    unrecaptured_section_1250_gain: 208_514.11
+    foreign_earned_income_exclusion: 0
+  output:
+    # The dataset carries Schedule D lines 18 and 19 (PUF E24518 and E24515)
+    # and no capital losses, so netting leaves them as they are.
+    capital_gains_28_percent_rate_gain: 610_988.38
+    schedule_d_unrecaptured_section_1250_gain: 208_514.11
+    adjusted_net_capital_gain: 290_510.39
