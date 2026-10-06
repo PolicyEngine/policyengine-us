@@ -55,7 +55,8 @@
         members: [person1]
         state_name: MT
   output:
-    # § 15-30-2337(9)(a): federal AGI "without regard to loss". 2023 Form 2EC:
+    # § 15-30-2337(9)(a): federal AGI "without regard to loss". 2023 Elderly
+    # Homeowner/Renter Credit Schedule:
     # line 1 federal AGI 20_000 - 3_000 = 17_000; line 9 adds back the 3_000
     # capital loss; line 10 = 20_000.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
@@ -81,6 +82,6 @@
         state_name: MT
   output:
     # Federal AGI 20_000 - 5_000 = 15_000; the 5_000 loss is added back, so
-    # gross household income is 20_000 (Form 2EC line 18). Net household
+    # gross household income is 20_000 (2024 Schedule 2EC line 18). Net household
     # income: (20_000 - 12_600) * 0.035 = 259, allocated to the head.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]
