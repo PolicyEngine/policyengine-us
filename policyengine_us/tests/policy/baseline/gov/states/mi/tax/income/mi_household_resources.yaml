@@ -605,3 +605,42 @@
     # dependent's Schedule E income is not on line 16. Line 30: 0.
     # Line 33: 50,000.
     mi_household_resources: 50_000
+
+- name: A dependent's own Schedule 1 adjustments are not on the claimant's line 30
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 50_000
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        traditional_ira_contributions: 2_000
+        early_withdrawal_penalty: 100
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      dependent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 50,000. Line 30 is "your U.S. Form 1040, Schedule 1": the
+    # dependent's IRA deduction, early withdrawal penalty and educator
+    # expenses are on the dependent's own Schedule 1, so line 30 is 0.
+    # Line 33: 50,000.
+    mi_household_resources: 50_000
+

@@ -82,15 +82,21 @@ class mi_household_resources(Variable):
         #   "including nontaxable interest"), adoption benefits, reported on
         #   Form W-2, in wages (line 14), and possession or Puerto Rico income
         #   in the source that earned it. Line 30 leaves it there.
-        federal_deductions = parameters(period).gov.irs.ald.deductions
-        adjustments = add(
+        # The Schedule 1 is the claimant's own (MCL 206.508(3)): a person-level
+        # adjustment, such as a dependent's IRA contribution, early withdrawal
+        # penalty or educator expenses, is summed over the head and spouse, as
+        # above_the_line_deductions does. A tax-unit-level adjustment already
+        # describes the filer's return.
+        ald = parameters(period).gov.irs.ald
+        adjustments = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
                 deduction
                 for deduction in p.household_resources_adjustments
-                if deduction in federal_deductions
+                if deduction in ald.deductions
             ],
+            include_dependents=ald.filer_amounts_recorded_on_dependents,
         )
         # Line 31: health insurance premiums.
         health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
