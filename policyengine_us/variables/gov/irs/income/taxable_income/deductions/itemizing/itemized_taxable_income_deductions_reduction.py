@@ -7,6 +7,13 @@ class itemized_taxable_income_deductions_reduction(Variable):
     label = "Itemized taxable income deductions reduction"
     unit = USD
     definition_period = YEAR
+    reference = [
+        # Section 68 before P.L. 119-21, including subsection (c).
+        "https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partI-sec68.htm",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=13",
+        # Section 68 as amended by P.L. 119-21, sec. 70111, from 2026.
+        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section68&num=0&edition=prelim",
+    ]
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized.limitation
@@ -19,9 +26,6 @@ class itemized_taxable_income_deductions_reduction(Variable):
             agi_excess_reduction = agi_excess * p.agi_rate
             maximum_deductions = tax_unit(
                 "total_itemized_taxable_income_deductions", period
-            )
-            maximum_deductions_reduction = (
-                maximum_deductions * p.itemized_deduction_rate
             )
             if p.obbb.applies:
                 top_rate_threshold = parameters(
@@ -37,5 +41,13 @@ class itemized_taxable_income_deductions_reduction(Variable):
                     total_itemized_deductions, taxable_income_excess
                 )
                 return p.obbb.rate * lesser_of_deductions_or_excess
+            # Section 68(c) excludes medical expenses, investment interest,
+            # and casualty, theft and wagering losses from the itemized
+            # deductions the 80 percent ceiling applies to.
+            excluded_deductions = add(tax_unit, period, p.excluded_deductions)
+            limited_deductions = max_(0, maximum_deductions - excluded_deductions)
+            maximum_deductions_reduction = (
+                limited_deductions * p.itemized_deduction_rate
+            )
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0

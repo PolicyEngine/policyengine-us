@@ -81,3 +81,194 @@
         state_code: MO
   output:
     meets_snap_net_income_test: false
+
+- name: Nine-person Missouri household at the published FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # 7 CFR 273.9(a)(3)(ii) adds a separately rounded-up increment to
+        # the eight-person standard: $54,150 / 12 = $4,512.50, rounded up to
+        # $4,513, plus $5,500 / 12 = $458.33, rounded up to $459, gives
+        # $4,972, matching the USDA FY 2026 table. Rounding up the whole
+        # nine-person guideline ($59,650 / 12 = $4,970.83) gives only $4,971.
+        snap_net_income: 4_972
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    meets_snap_net_income_test: true
+
+- name: Nine-person Texas household just above the published FY 2026 net limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        snap_net_income: 4_973
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_net_income_test: false
+
+- name: Twelve-person Illinois household at the published FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $4,513 + 4 x $459 = $6,349 under 7 CFR 273.9(a)(3)(ii); rounding
+        # up the whole twelve-person guideline ($76,150 / 12 = $6,345.83)
+        # would give $6,346.
+        snap_net_income: 6_349
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    meets_snap_net_income_test: true
+
+- name: Twelve-person Colorado household just above the published FY 2026 net limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        snap_net_income: 6_350
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    meets_snap_net_income_test: false
+
+- name: Net income of exactly 50 cents over the one-person FY 2026 net limit rounds up and fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,048.65 - $743.15 = $1,305.50, which 7 CFR 273.10(e)(1)(ii)(A)
+        # rounds up to $1,306, above the $1,305 standard. In single
+        # precision the difference is $1,305.4999, which must not round
+        # down to $1,305.
+        snap_gross_income: 2_048.65
+        snap_deductions: 743.15
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    snap_net_income: 1_306
+    meets_snap_net_income_test: false
+
+- name: Nine-person Alaska household at the FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2026 uses the 2025 Alaska guidelines ($19,550 first person,
+        # $6,880 each additional). The eight-person guideline is $19,550 +
+        # 7 x $6,880 = $67,710; $67,710 / 12 = $5,642.50, rounded up to
+        # $5,643, plus $6,880 / 12 = $573.33, rounded up to $574, gives
+        # $6,217 under 7 CFR 273.9(a)(3)(ii). Rounding up the whole
+        # nine-person guideline ($74,590 / 12 = $6,215.83) gives only $6,216.
+        snap_net_income: 6_217
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    meets_snap_net_income_test: true
+
+- name: Ten-person Hawaii household at the FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # FY 2026 uses the 2025 Hawaii guidelines ($17,990 first person,
+        # $6,330 each additional). The eight-person guideline is $17,990 +
+        # 7 x $6,330 = $62,300; $62,300 / 12 = $5,191.67, rounded up to
+        # $5,192, plus 2 x ($6,330 / 12 = $527.50, rounded up to $528) gives
+        # $6,248 under 7 CFR 273.9(a)(3)(ii). Rounding up the whole
+        # ten-person guideline ($74,960 / 12 = $6,246.67) gives only $6,247.
+        snap_net_income: 6_248
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    meets_snap_net_income_test: true
+
+- name: Nine-person New York household at the FY 2027 net limit passes
+  period: 2027-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2027 uses the 2026 contiguous-state guidelines ($15,960 first
+        # person, $5,680 each additional). The eight-person guideline is
+        # $15,960 + 7 x $5,680 = $55,720; $55,720 / 12 = $4,643.33, rounded
+        # up to $4,644, plus $5,680 / 12 = $473.33, rounded up to $474,
+        # gives $5,118 under 7 CFR 273.9(a)(3)(ii). Rounding up the whole
+        # nine-person guideline ($61,400 / 12 = $5,116.67) gives only $5,117.
+        snap_net_income: 5_118
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    meets_snap_net_income_test: true
+
+- name: Twelve-person Hawaii household at the FY 2027 net limit passes
+  period: 2027-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # FY 2027 uses the 2026 Hawaii guidelines ($18,360 first person,
+        # $6,530 each additional). The eight-person guideline is $18,360 +
+        # 7 x $6,530 = $64,070; $64,070 / 12 = $5,339.17, rounded up to
+        # $5,340, plus 4 x ($6,530 / 12 = $544.17, rounded up to $545) gives
+        # $7,520 under 7 CFR 273.9(a)(3)(ii). Rounding up the whole
+        # twelve-person guideline ($90,190 / 12 = $7,515.83) gives only
+        # $7,516.
+        snap_net_income: 7_520
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    meets_snap_net_income_test: true

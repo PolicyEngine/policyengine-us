@@ -1,0 +1,145 @@
+# Kansas LIEAP overall eligibility: Kansas residence (KEESM 13310), income
+# (KEESM 13100), at least one citizen or qualified-alien member (KEESM 13330),
+# energy vulnerability - responsible for the primary heating cost, so a home
+# with no heating is not vulnerable (KEESM 13340), and not a renter in
+# subsidized housing whose heating fuel costs are included in the rent
+# (KEESM 13340; KS LIHEAP State Plan FY2026 2.3, #page=8). No asset test
+# (plan 2.3).
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, the same household in Missouri is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    ks_liheap_eligible: false
+
+- name: Case 2, household with no citizen or qualified member is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_eligible: false
+
+- name: Case 3, mixed-status household with one citizen member is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # KEESM 13330: at least one citizen (the child); size 1 limit 23,472 >
+    # 12,000 (the parent's income counts).
+    ks_liheap_eligible: true
+
+- name: Case 4, subsidized-housing renter who pays heat separately is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # KEESM 13340: pays heating costs directly to a utility -> vulnerable.
+    ks_liheap_eligible: true
+
+- name: Case 5, no asset test so large savings do not disqualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 14_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 50_000
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Plan 2.3: "Do you require an Assets test? No".
+    ks_liheap_eligible: true
+
+- name: Case 6, TANF receipt does not waive the household income limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 32_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        ks_tanf: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 2025 season size 2 limit: 1.5 x (15,060 + 5,380) = 30,660 < 33,200
+    # gross; verified TANF income still enters the household test (KEESM 13360).
+    ks_liheap_eligible: false

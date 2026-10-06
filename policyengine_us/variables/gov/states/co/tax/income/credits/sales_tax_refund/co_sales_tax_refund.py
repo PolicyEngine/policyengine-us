@@ -11,7 +11,7 @@ class co_sales_tax_refund(Variable):
         # C.R.S. 39-22-2003(1)(a) defines a "qualified individual"; (3) sets the
         # per-person refund amount and its doubling for a joint return.
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=23",
     )
     defined_for = "co_sales_tax_refund_eligible"
 

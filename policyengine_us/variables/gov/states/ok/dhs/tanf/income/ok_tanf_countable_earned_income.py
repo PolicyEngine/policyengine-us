@@ -7,7 +7,7 @@ class ok_tanf_countable_earned_income(Variable):
     label = "Oklahoma TANF countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html"
+    reference = "https://web.archive.org/web/20250808211623/https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html"
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):

@@ -71,7 +71,7 @@
   output:
     ca_care_categorically_eligible: true
 
-- name: Tribal household reporting TANF receipt with a zero modeled benefit is categorically eligible.
+- name: Tribal household reporting TANF receipt with a zero modeled benefit qualifies through the general list.
   period: 2023
   input:
     state_code: CA
@@ -82,7 +82,7 @@
   output:
     ca_care_categorically_eligible: true
 
-- name: Tribal household reporting SSI receipt is not qualified via the non-tribal list.
+- name: Tribal household reporting SSI receipt qualifies through the general list.
   period: 2023
   input:
     state_code: CA
@@ -95,5 +95,49 @@
     ssi: 0
     receives_ssi: true
   output:
-    # SSI is only in the non-tribal list, which tribal households do not read.
+    # Tribal households qualify through every listed program; Head Start is
+    # the tribal-only addition.
+    ca_care_categorically_eligible: true
+
+- name: Case 9, non-tribal household receiving TANF is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_on_tribal_land: false
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    tanf: 100
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Case 10, non-tribal household reporting TANF receipt with a zero modeled benefit is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_on_tribal_land: false
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    tanf: 0
+    receives_tanf: true
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Case 11, non-tribal household in Head Start alone is not categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_on_tribal_land: false
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    tanf: 0
+    head_start: 10
+  output:
     ca_care_categorically_eligible: false

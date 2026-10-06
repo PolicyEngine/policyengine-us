@@ -29,10 +29,16 @@ class is_mo_tanf_earned_income_exempt(Variable):
         # equivalent level of vocational or technical training.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         is_dependent = person("is_tax_unit_dependent", period.this_year)
-        caretaker = (
-            head_or_spouse & ~is_dependent & person.tax_unit.any(dependent_child)
+        # The exemption is for a parent; a non-parent caretaker relative or
+        # legal guardian does not qualify.
+        non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
+        parent = (
+            head_or_spouse
+            & ~is_dependent
+            & ~non_parent
+            & person.tax_unit.any(dependent_child)
         )
         age = person("monthly_age", period)
         p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
-        teen_parent_student = caretaker & (age < p.student) & in_secondary_school
+        teen_parent_student = parent & (age < p.student) & in_secondary_school
         return student_child | teen_parent_student
