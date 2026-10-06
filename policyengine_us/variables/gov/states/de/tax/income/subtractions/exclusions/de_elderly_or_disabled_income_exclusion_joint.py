@@ -44,7 +44,9 @@ class de_elderly_or_disabled_income_exclusion_joint(Variable):
 
         # Line 10 of the joint return, as de_agi_joint totals it.
         joint_pre_exclusions_agi = tax_unit.sum(person("de_pre_exclusions_agi", period))
-        agi_eligible = joint_pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
+        agi_eligible = (
+            joint_pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
+        )
 
         joint_eligible = (
             head_or_spouse
