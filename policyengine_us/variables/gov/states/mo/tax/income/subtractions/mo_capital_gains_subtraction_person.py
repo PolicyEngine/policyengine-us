@@ -17,12 +17,25 @@ class mo_capital_gains_subtraction_person(Variable):
         tax_unit = person.tax_unit
         # Get the tax unit level capital gains subtraction
         tax_unit_subtraction = tax_unit("mo_capital_gains_subtraction", period)
-        # Allocate only across people with positive capital gains so
-        # spouse-level capital losses do not over-allocate the unit total.
-        person_positive_cg = max_(0, person("capital_gains", period))
+        # The Department of Revenue enters the Form 1040 line 7a amount in the
+        # Form MO-A column of the spouse with the gain. Allocate only across
+        # the head and spouse with a positive gain of their own, capital gain
+        # distributions included, so a spouse's capital loss does not
+        # over-allocate the unit total. A tax unit dependent's gains are on
+        # the dependent's own return and get no share.
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        own_gains = person("capital_gains", period) + max_(
+            0, person("non_sch_d_capital_gains", period)
+        )
+        person_positive_cg = not_dependent * max_(0, own_gains)
         tax_unit_positive_cg = tax_unit.sum(person_positive_cg)
-        # Use mask to avoid divide-by-zero, default to zero allocation
-        person_share = np.zeros_like(tax_unit_positive_cg)
-        mask = tax_unit_positive_cg > 0
-        person_share[mask] = person_positive_cg[mask] / tax_unit_positive_cg[mask]
+        # If no head or spouse has a positive gain of their own (only possible
+        # when the tax unit amount is supplied as an input), the head takes it.
+        default_share = where(person("is_tax_unit_head", period), 1.0, 0.0)
+        person_share = np.divide(
+            person_positive_cg,
+            tax_unit_positive_cg,
+            out=default_share,
+            where=tax_unit_positive_cg > 0,
+        )
         return person_share * tax_unit_subtraction

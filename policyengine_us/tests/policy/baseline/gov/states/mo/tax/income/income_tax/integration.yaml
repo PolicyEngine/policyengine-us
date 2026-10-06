@@ -205,3 +205,31 @@
     mo_wftc_liability_cap: 0
     mo_wftc: 0
     mo_income_tax: -573.84
+
+- name: MO head's AGI keeps the full capital gains subtraction when a dependent has a capital loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # Federal AGI = 40,000 wages + 10,000 line 7a; the child's loss is on the
+    # child's own return. MO AGI = 50,000 - 10,000 subtraction = 40,000.
+    # Pooling the child's loss gave a 6,000 subtraction and MO AGI 44,000.
+    adjusted_gross_income: 50_000
+    mo_capital_gains_subtraction: 10_000
+    mo_adjusted_gross_income: [40_000, 0]
