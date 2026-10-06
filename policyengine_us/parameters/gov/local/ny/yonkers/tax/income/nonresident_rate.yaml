@@ -1,12 +1,24 @@
 description: Yonkers taxes the Yonkers-source wages of nonresidents at this rate.
 values:
   2021-01-01: 0.005
+  # Tax Law § 1340 and § 3 of its model local law authorize the earnings tax
+  # only for taxable years beginning before 2028 (as last extended by Chapter
+  # 159 of 2025), so it lapses in 2028 absent a further extension.
+  2028-01-01: 0
 metadata:
   unit: /1
   period: year
   label: Yonkers nonresident earnings tax rate
   reference:
+    - title: NY Tax Law § 1340(b)(i)-(ii) and (c), model local law §§ 2-3 (rate not to exceed one-half of one percent; taxable years beginning before 2028)
+      href: https://www.nysenate.gov/legislation/laws/TAX/1340
+    - title: NY Laws of 2025, Chapter 159 (A.5318), § 3 (extends Tax Law § 1340(b) to taxable years beginning before 2028)
+      href: https://legislation.nysenate.gov/pdf/bills/2025/A5318#page=2
+    - title: NY Laws of 2025, Chapter 159 (A.5318), § 4 (extends model local law § 3 to taxable years beginning before 2028)
+      href: https://legislation.nysenate.gov/pdf/bills/2025/A5318#page=3
     - title: New York DTF Form Y-203-I, Instructions for Form Y-203 (Yonkers nonresident earnings tax, line 6 rate 0.5%)
       href: https://www.tax.ny.gov/pdf/current_forms/it/y203i.pdf#page=2
+    - title: New York DTF Publication NYS-50-T-Y (1/26), Yonkers withholding tables effective January 1, 2026 (Yonkers nonresident rate 0.50%)
+      href: https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_y.pdf#page=3
     - title: New York DTF — New York City and Yonkers tax
       href: https://www.tax.ny.gov/pit/file/nyc_yonkers_residents.htm

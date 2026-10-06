@@ -7,29 +7,21 @@ class nj_eitc_income_eligible(Variable):
     label = "New Jersey Eligible for EITC"
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+        "https://pub.njleg.gov/bills/2020/PL21/130_.PDF#page=2",
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2024/1040i.pdf#page=44",
     )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        # Get parameter tree for federal EITC.
+        # N.J.S.A. 54A:4-7a.(4) requires filers on the age-expanded path to
+        # "meet all qualifications, except for the minimum or maximum age,
+        # for the federal earned income tax credit". That includes the
+        # federal investment income test, so reuse the federal
+        # disqualified-income measure (Pub 596 Worksheet 1 baskets) rather
+        # than a separate sum that lets rental or passive losses offset
+        # interest and dividends.
         p = parameters(period).gov.irs.credits.eitc
-
-        # Check if they are above the investment income limit.
-        no_loss_capital_gains = max_(0, tax_unit("net_capital_gains", period))
-        eitc_investment_income = (
-            add(
-                tax_unit,
-                period,
-                ["net_investment_income", "tax_exempt_interest_income"],
-            )
-            # replace limited-loss capital gains with no-loss capital gains
-            - tax_unit("loss_limited_net_capital_gains", period)
-            + no_loss_capital_gains
-        )
-        inv_income_disqualified = (
-            eitc_investment_income > p.phase_out.max_investment_income
-        )
+        investment_income_eligible = tax_unit("eitc_investment_income_eligible", period)
 
         # Determine if filer is above federal EITC income threshold.
         # We can find the income threshold by looking at their filing status and the phase-out rate for 0 children.
@@ -42,4 +34,4 @@ class nj_eitc_income_eligible(Variable):
         completed_phaseout = max_credit / phaseout_rate + phaseout_start
         return (
             tax_unit("adjusted_gross_income", period) < completed_phaseout
-        ) & ~inv_income_disqualified
+        ) & investment_income_eligible

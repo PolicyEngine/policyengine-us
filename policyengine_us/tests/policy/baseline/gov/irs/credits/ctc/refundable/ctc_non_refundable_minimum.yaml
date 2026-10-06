@@ -1,0 +1,26 @@
+- name: The refundable maximum binds.
+  period: 2025
+  input:
+    ctc: 4_400 # Credit Limit Worksheet B, line 1
+    ctc_refundable_maximum: 3_400 # Line 2: two children at $1,700
+    ctc_phase_in: 8_625 # Line 12: 15% x ($60,000 - $2,500)
+  output:
+    ctc_non_refundable_minimum: 1_000 # Line 14: 4,400 - min(3,400, 8,625)
+
+- name: The earned income phase-in binds.
+  period: 2025
+  input:
+    ctc: 4_400
+    ctc_refundable_maximum: 3_400
+    ctc_phase_in: 1_000
+  output:
+    ctc_non_refundable_minimum: 3_400 # 4,400 - min(3,400, 1,000)
+
+- name: Zero when the whole credit could be refunded.
+  period: 2025
+  input:
+    ctc: 1_000
+    ctc_refundable_maximum: 1_700
+    ctc_phase_in: 5_000
+  output:
+    ctc_non_refundable_minimum: 0

@@ -899,31 +899,62 @@ class SPMSimulationMixin:
         on this simulation's own provider and on its branches', because a
         reform simulation's baseline arm is handed a separate provider that
         never sees an input of its own.
+
+        Each simulation records the county it reads itself, not the one this
+        simulation was handed. A branch stores its inputs under its own name,
+        and its holders start as a copy of what its parent held when it was
+        created, so an input set on a branch never reaches its parent, and one
+        set on the parent afterwards never reaches the branch. Recording one
+        array across the family let a branch's mistyped county escape (a read
+        without the branch name saw the parent's text), kept rejecting a branch
+        that corrected its own county, and let a later parent input overwrite
+        a branch's record of a county the branch still reads.
         """
-        holder = self.get_holder("county_fips")
-        periods = (
-            holder.get_known_periods() if period is None else [periods_.period(period)]
+        for simulation in self._simulation_family():
+            simulation._record_own_county_input_types(period)
+
+    def _record_own_county_input_types(self, period=None):
+        """Record which counties this simulation itself reads as non-text."""
+        record = getattr(
+            self.tax_benefit_system.spm_forecast_provider,
+            "record_county_input_types",
+            None,
         )
+        if record is None:
+            return
+        holder = self.get_holder("county_fips")
+        if period is None:
+            # A branch's holder lists a period once per branch that stored it.
+            periods = dict.fromkeys(holder.get_known_periods())
+        else:
+            periods = [periods_.period(period)]
         for known_period in periods:
-            array = holder.get_array(known_period)
-            if array is None or array.dtype.kind in "SU":
-                # A real text dtype cannot be hiding an integer.
+            # The array this simulation's formulas read: its own input, else
+            # its nearest ancestor's, else the default branch's.
+            array = holder.get_array(known_period, self.branch_name)
+            if array is None:
                 continue
-            year = int(known_period.start.year)
-            for simulation in self._simulation_family():
-                record = getattr(
-                    simulation.tax_benefit_system.spm_forecast_provider,
-                    "record_county_input_types",
-                    None,
-                )
-                if record is not None:
-                    record(year, array)
+            # A real text dtype cannot be hiding an integer, but it still
+            # replaces whatever this year's record held before.
+            record(
+                int(known_period.start.year),
+                () if array.dtype.kind in "SU" else array,
+            )
 
     def _simulation_family(self):
-        """This simulation and every branch that reads the same inputs."""
+        """This simulation and every branch descended from it."""
         yield self
         for branch in getattr(self, "branches", {}).values():
             yield from branch._simulation_family()
+
+    def subsample(self, *args, **kwargs):
+        result = super().subsample(*args, **kwargs)
+        # Core rebuilds the baseline arm from the subsampled population, then
+        # hands it the previous arm's policy and so its provider, which
+        # recorded the counties the previous arm read. Record what every
+        # simulation in the family reads now.
+        self._record_county_input_types()
+        return result
 
     def set_input(self, variable_name, period, value):
         # Core's loader calls set_input for every dataset format. Reject saved

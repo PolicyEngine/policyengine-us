@@ -11,17 +11,40 @@ def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
     return tuple(scale.brackets[index].threshold(period) for index in bracket_indexes)
 
 
-def test_ar_income_tax_thresholds_round_down_after_last_published_year():
-    scale = SYSTEM.parameters.gov.states.ar.tax.income.rates.main.rate
-
-    assert _thresholds(scale, "2027-01-01", (1, 2, 3, 4)) == (
-        5_700,
-        11_500,
-        16_400,
-        27_100,
-    )
-    assert isinf(scale.brackets[5].threshold("2027-01-01"))
-    assert isinf(scale.brackets[6].threshold("2027-01-01"))
+def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
+    # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
+    # nearest one hundred dollars ($100)". Expected values follow the loaded
+    # index, so a CPI refresh moves them without breaking the test.
+    main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
+    uprating = SYSTEM.parameters.gov.irs.uprating
+    high_income = main.high_income
+    bounds_2026 = {
+        "rate": (main.rate, (1, 2, 3, 4), (5_600, 11_200, 16_000, 26_400)),
+        "high-income threshold": (None, None, (94_700,)),
+        "(B) 2% row top": (high_income.rate, (1,), (4_700,)),
+        "(C) rows": (
+            high_income.bracket_adjustment,
+            tuple(range(30)),
+            tuple(range(94_700, 97_601, 100)),
+        ),
+    }
+    differs_from_rounding_down = False
+    for year in range(2027, 2036):
+        period = f"{year}-01-01"
+        factor = uprating(period) / uprating("2026-01-01")
+        for name, (scale, indexes, bases) in bounds_2026.items():
+            if scale is None:
+                loaded = (high_income.threshold(period),)
+            else:
+                loaded = _thresholds(scale, period, indexes)
+            expected = tuple(round(base * factor / 100) * 100 for base in bases)
+            assert loaded == expected, (year, name)
+            rounded_down = tuple(base * factor // 100 * 100 for base in bases)
+            differs_from_rounding_down |= loaded != rounded_down
+        assert isinf(main.rate.brackets[5].threshold(period))
+        assert isinf(main.rate.brackets[6].threshold(period))
+    # With 2027's factor, 5,600 x 1.0298 = 5,766.9 rounds up to 5,800.
+    assert differs_from_rounding_down
 
 
 def test_nm_low_income_rebate_amounts_round_to_whole_dollars():

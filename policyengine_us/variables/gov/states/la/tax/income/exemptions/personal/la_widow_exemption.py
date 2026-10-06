@@ -5,7 +5,7 @@ class la_surviving_spouse_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana qualifying surviving spouse exemption"
-    reference = "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf#page=1"
+    reference = "https://dam.ldr.la.gov/taxforms/6935(11_02)F.pdf#page=1"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.LA

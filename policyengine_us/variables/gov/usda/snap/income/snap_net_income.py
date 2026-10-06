@@ -23,4 +23,9 @@ class snap_net_income(Variable):
         # than np.round's round-half-to-even. This is the rounding option
         # PolicyEngine applies for all states; states may instead elect
         # their TANF rounding procedure under 273.10(e)(1)(ii)(B).
-        return np.floor(net_income + 0.5)
+        # 273.10(e)(1)(ii)(A) states the rule in whole cents, so net income
+        # is rounded to cents first and the effective dollar boundary is
+        # X.495. Rounding to cents also absorbs single-precision error on an
+        # exact 50-cent amount (e.g. 1,305.50 stored as 1,305.4999), matching
+        # snap_expected_contribution.
+        return np.floor(np.round(net_income, 2) + 0.5)

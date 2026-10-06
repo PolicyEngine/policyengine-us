@@ -172,8 +172,9 @@
   # (Pub. 972 p.7) uses the CDCC (Form 2441) BEFORE the CTC when computing the
   # CTC's tax-liability limit, and Schedule 8812 then routes the unused CTC to
   # the ACTC. The recompute branch pins the CDCC out of the refundable list but
-  # must ALSO add it to the non-refundable list read by ctc_limiting_tax_liability
-  # so the recomputed CDCC reduces that limit. This is the one case that makes the
+  # must ALSO add it to the list of credits preceding the CTC
+  # (gov.irs.credits.ctc_tax_liability_limit.preceding_credits) so the
+  # recomputed CDCC reduces that limit. This is the one case that makes the
   # ordering bind: line_6 floors at 0, so the extra ACTC (not offset by line_6)
   # flows straight into Part II and cancels the NIIT.
   #

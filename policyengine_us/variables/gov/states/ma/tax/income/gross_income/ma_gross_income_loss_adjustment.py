@@ -16,14 +16,20 @@ class ma_gross_income_loss_adjustment(Variable):
         # zero, so this variable captures the losses that were dropped.
         # Line 10 instruction: "Be sure to subtract any losses
         # in lines 6 or 7."
+        # irs_gross_income leaves out tax unit dependents, whose items are
+        # on their own returns, so their losses are left out here too.
         # Line 6a: Business/profession loss (Schedule C)
-        se_income = add(tax_unit, period, ["total_self_employment_income"])
+        se_income = tax_unit_non_dep_add(
+            tax_unit, period, ["total_self_employment_income"]
+        )
         # Line 6b: Farm loss (Schedule F)
-        farm = add(tax_unit, period, ["farm_operations_income"])
+        farm = tax_unit_non_dep_add(tax_unit, period, ["farm_operations_income"])
         # Line 7: Rental, partnership, S-corp, farm rent losses
-        rental = add(tax_unit, period, ["rental_income"])
-        partnership = add(tax_unit, period, ["partnership_s_corp_income"])
-        farm_rent = add(tax_unit, period, ["farm_rent_income"])
+        rental = tax_unit_non_dep_add(tax_unit, period, ["rental_income"])
+        partnership = tax_unit_non_dep_add(
+            tax_unit, period, ["partnership_s_corp_income"]
+        )
+        farm_rent = tax_unit_non_dep_add(tax_unit, period, ["farm_rent_income"])
         return (
             min_(se_income, 0)
             + min_(farm, 0)

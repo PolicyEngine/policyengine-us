@@ -17,6 +17,27 @@ uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policye
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
+### Memory: running suites locally
+
+`make test` runs the same suites as CI, one batched subprocess at a time
+(`policyengine_us/tests/test_batched.py`). CI sizes those batches to stay
+under about 8 GB each on 16 GB runners, so this is the safe way to run
+everything on a laptop.
+
+- One area: its `make test-yaml-*` target, or
+  `uv run python policyengine_us/tests/test_batched.py <dir> --mode per-subdir --workers 1`.
+- A few files: `uv run policyengine-core test <files> -c policyengine_us`.
+- Never give one `policyengine-core test` process a whole directory tree or
+  hundreds of files. The YAML runner keeps every case's simulation, a full
+  copy of the tax-benefit system for each distinct `reforms` /
+  dotted-parameter combination (about 1.2 GB each), and a copy of the
+  parameter tree for every date a case asked about, all for the life of the
+  process. A 1,500-file baseline run reached 118 GB on 2026-10-02.
+  PolicyEngine/policyengine-core#569 and #570 (open drafts) would bound
+  this; until they are released, keep each process to a bounded batch.
+- Run one large suite at a time: don't start several `make test-yaml-*`
+  targets, or several `test_batched.py` runs, in parallel.
+
 Python 3.9–3.14 (`requires-python = ">=3.9,<3.15"`; CI smoke-imports on every minor). Default branch: `main`.
 
 ## Writing variables and programs
@@ -47,6 +68,14 @@ See [CLAUDE.md](./CLAUDE.md) for variable/parameter/period/testing patterns in d
 ## Program registry
 
 `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata and drives the `/us/metadata` API. When adding a new program, add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`. When extending year coverage, bump the entry's year field — most entries use `verified_start_year`; a few use a `verified_years` range (e.g. `"2022-2026"`) — after verifying parameters and tests cover the new year. When adding a state implementation of a federal program, add it to `state_implementations` under the parent federal entry.
+
+## Axiom parity
+
+Every policy change here must also be correct in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). That covers a new program, a parameter or threshold update, an eligibility rule and a bug fix. The shared guide, [Mirror policy changes in Axiom](https://github.com/PolicyEngine/.github/blob/main/CONTRIBUTING.md#mirror-policy-changes-in-axiom), defines the `axiom:` line your PR description needs and what a `queued` issue must contain. US specifics:
+
+- Federal modules live under `us/` (for example `us/statutes/26/32.yaml` for the EITC and `us/policies/irs/rev-proc-2025-32/` for annual IRS amounts). State modules live under `us-<state>/` (for example `us-nj/statutes/54a:4-7.yaml`). Search `main` there before opening a new issue.
+- An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
+- Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
 
 ## Repo-specific anti-patterns
 
