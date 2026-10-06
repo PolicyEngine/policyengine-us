@@ -1,3 +1,11 @@
+## [2.29.11] - 2026-10-06
+
+### Fixed
+
+- Load parameter references that sat outside metadata, add a code-health test that every variable, reform and parameter reference entry is a single bare URL, and correct Arkansas DFA #page anchors that pointed at the wrong booklet or form page.
+- Program registry LIHEAP fixes: DC LIHEAP now points at `dc_liheap_payment` (`dc_liheap` does not exist); Riverside County LIHEAP's parameter prefix is `gov.local.ca.riv.cap.liheap`; the Oregon LIHEAP entry, which had no code on main or open PR, is removed; DC, Massachusetts and Illinois gain parameter prefixes; and Texas CEAP's note gives the SMI limit's actual years. A new registry test checks that every listed variable and parameter prefix exists.
+
+
 ## [2.29.10] - 2026-10-06
 
 ### Changed
