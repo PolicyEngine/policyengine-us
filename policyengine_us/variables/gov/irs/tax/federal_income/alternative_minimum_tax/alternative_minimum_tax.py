@@ -11,7 +11,7 @@ class alternative_minimum_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         # Line 7 consists of 3 parts:
-        # 1. Tax on Foreign income (not modelled)
+        # 1. Tax on Foreign income (Foreign Earned Income Tax Worksheet)
         # 2. Tax on capital gains (Part III)
         # 3. Regular AMT tax
         # If Form 6251, Part III is required, the regular AMT tax is calculated
@@ -26,6 +26,27 @@ class alternative_minimum_tax(Variable):
         amt_tax_including_cg = tax_unit("amt_tax_including_cg", period)
         smaller_tax = min_(amt_base_tax, amt_tax_including_cg)
         total_amt_tax = where(form_6251_part_iii_required, smaller_tax, amt_base_tax)
+
+        # 26 U.S.C. 911(f)(1)(B): a taxpayer excluding foreign earned income
+        # figures the taxes above on the taxable excess plus the excluded
+        # amount, then subtracts the tax at the AMT rates on the excluded
+        # amount alone (Form 6251 Foreign Earned Income Tax Worksheet, lines
+        # 5 and 6). It applies only if there is a taxable excess.
+        p = parameters(period).gov.irs.income.amt
+        filing_status = tax_unit("filing_status", period)
+        taxable_excess = tax_unit("amt_income_less_exemptions", period)
+        excluded = where(
+            taxable_excess > 0,
+            max_(0, tax_unit("foreign_earned_income_exclusion", period)),
+            0,
+        )
+        tax_rate_threshold = p.brackets.thresholds[-1] * p.multiplier[filing_status]
+        tax_on_excluded = p.brackets.rates[0] * min_(
+            excluded, tax_rate_threshold
+        ) + p.brackets.rates[1] * max_(0, excluded - tax_rate_threshold)
+        total_amt_tax = where(
+            excluded > 0, max_(0, total_amt_tax - tax_on_excluded), total_amt_tax
+        )
 
         # Form 6251, Part II bottom
         # Line 8
