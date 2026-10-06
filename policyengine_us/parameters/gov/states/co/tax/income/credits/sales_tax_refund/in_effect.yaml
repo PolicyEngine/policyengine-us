@@ -1,0 +1,23 @@
+description: Colorado pays the state sales tax refund for a tax year if this is true, which requires excess state revenues for the state fiscal year ending in that tax year.
+values:
+  2021-01-01: true
+  # FY 2025-26 revenue fell $175.9 million short of the Referendum C cap, as
+  # the State Controller certified on 2026-09-08, so no tax year 2026 refund.
+  2026-01-01: false
+  # The LCS June 2026 forecast expects the six-tier refund to apply for tax
+  # years 2027 and 2028; the tier amounts carry forward until CDOR publishes
+  # each year's table.
+  2027-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Colorado sales tax refund in effect
+  reference:
+    - title: C.R.S. 39-22-2003(2)
+      href: https://colorado.public.law/statutes/crs_39-22-2003
+    - title: Colorado Legislative Council Staff, Economic and Revenue Forecast, June 2026, Table 9 (tax year 2026 refunds $0 in every tier)
+      href: https://content.leg.colorado.gov/sites/default/files/june-2026-forecast-for-posting-accessible_0.pdf#page=31
+    - title: Colorado Legislative Council Staff, Economic and Revenue Forecast, June 2026 (six-tier refund expected for tax years 2027 and 2028)
+      href: https://content.leg.colorado.gov/sites/default/files/june-2026-forecast-for-posting-accessible_0.pdf#page=30
+    - title: Colorado Legislative Council Staff, Economic and Revenue Forecast, September 2026 (State Controller certification of FY 2025-26)
+      href: https://content.leg.colorado.gov/sites/default/files/2026-09/sept2026-forecast-with-cover-for-remediation-and-posting-accessible.pdf#page=9

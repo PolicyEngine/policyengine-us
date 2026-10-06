@@ -461,3 +461,69 @@
         state_code: CO
   output:
     co_sales_tax_refund: 153
+
+# C.R.S. 39-22-2003(2) allows the refund for a tax year only "if there were
+# excess state revenues for the fiscal year ending in that tax year". FY 2025-26
+# ended on 2026-06-30 below the Referendum C cap: the LCS June 2026 forecast
+# (Table 9) showed $0 in every tax year 2026 tier, and on 2026-09-08 the State
+# Controller certified a $175.9 million shortfall (LCS September 2026 forecast,
+# p. 9). PolicyBench reference audit 2026-10-05, scenario_043.
+- name: 2026 Single - no refund without FY 2025-26 excess state revenues
+  period: 2026
+  input:
+    state_code: CO
+    age: 66
+    co_modified_agi: 4_625
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 0
+
+- name: 2026 Joint - no refund for either eligible spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 400_000
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: true
+    co_sales_tax_refund: 0
+
+# scenario_043: a childless single filer aged 66 with $4,088 of wages and $553
+# of taxable pension. The federal EITC requires a childless filer to be under
+# 65 (26 U.S.C. 32(c)(1)(A)(ii)(II)), and no other Colorado refundable credit
+# applies, so with no tax year 2026 sales tax refund the total is $0.
+- name: 2026 scenario_043 - no Colorado refundable credits for a childless 66-year-old
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 4_088
+        taxable_private_pension_income: 553
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: true
+    co_eitc: 0
+    co_sales_tax_refund: 0
+    co_refundable_credits: 0
