@@ -39,8 +39,9 @@ CHILD_COUNTS = [0, 1, 2, 3]
 # Frames are named by the number of adults; two adults file jointly.
 ADULT_FRAMES = ["1", "2"]
 # Stored credits are the credit rounded to whole dollars, so they sit within
-# half a dollar of the exact amount; the extra cent absorbs float32 noise.
-CREDIT_TOLERANCE = 0.51
+# half a dollar of the exact amount, plus float32 noise (about 5e-4 at these
+# amounts).
+CREDIT_TOLERANCE = 0.502
 RATE_TOLERANCE = 1e-4  # stored rates come from float32 credits
 
 
@@ -77,10 +78,17 @@ def _by_child_count(file_name, year):
     raw = yaml.load((EITC / file_name).read_text(), Loader=_DateStringLoader)
     # Core also applies uprating declared on the whole scale to its leaves.
     scale_uprated = any("uprating" in key for key in raw.get("metadata", {}))
+
+    def uprated(bracket):
+        # ... and uprating declared on a bracket to its components.
+        return scale_uprated or any(
+            "uprating" in key for key in bracket.get("metadata", {})
+        )
+
     rows = sorted(
         (
-            _value_in(row["threshold"], year, scale_uprated),
-            _value_in(row["amount"], year, scale_uprated),
+            _value_in(row["threshold"], year, uprated(row)),
+            _value_in(row["amount"], year, uprated(row)),
         )
         for row in raw["brackets"]
     )
@@ -124,7 +132,7 @@ def _notebook():
         r"sim\.vary\(\"employment_income\", max=([\d_]+), step=(\d+)\)", setup
     )
     wages = list(range(0, int(vary.group(1).replace("_", "")) + 1, int(vary.group(2))))
-    charts = {}
+    charts, titles = {}, {}
     for cell in notebook["cells"]:
         source = "".join(cell["source"])
         if cell["cell_type"] != "code" or "px.line(" not in source:
@@ -137,8 +145,9 @@ def _notebook():
         ]
         assert len(outputs) == 1, f"the {measure} cell has no single stored chart"
         charts[measure] = outputs[0]["data"][PLOTLY_MIME]
+        titles[measure] = re.search(r'title="([^"]+)"', source).group(1)
     assert set(charts) == {"eitc", "mtr"}
-    return year, wages, charts
+    return year, wages, charts, titles
 
 
 def _views(chart):
@@ -149,13 +158,17 @@ def _views(chart):
     ]
 
 
-def _label_errors(chart, measure, year):
+def _label_errors(chart, measure, year, title):
     errors = []
-    if str(year) not in chart["layout"]["title"]["text"]:
-        errors.append(f"{measure}: title does not name {year}")
+    stored_title = chart["layout"]["title"]["text"]
+    if stored_title != title or str(year) not in stored_title:
+        errors.append(f"{measure}: title {stored_title!r} is not the cell's {title!r}")
     if [frame["name"] for frame in chart["frames"]] != ADULT_FRAMES:
         errors.append(f"{measure}: frames are not {ADULT_FRAMES}")
-    for step in chart["layout"]["sliders"][0]["steps"]:
+    steps = chart["layout"]["sliders"][0]["steps"]
+    if [step["label"] for step in steps] != ADULT_FRAMES:
+        errors.append(f"{measure}: slider steps are not {ADULT_FRAMES}")
+    for step in steps:
         if step["args"][0] != [step["label"]]:
             errors.append(
                 f"{measure}: slider step {step['label']} plays {step['args'][0]}"
@@ -163,10 +176,11 @@ def _label_errors(chart, measure, year):
     return errors
 
 
-def _chart_errors(chart, measure, year, wages, credit):
-    errors = _label_errors(chart, measure, year)
+def _chart_errors(chart, measure, year, title, wages, credit):
+    errors = _label_errors(chart, measure, year, title)
     for adults, traces in _views(chart):
-        names = sorted(int(trace["name"]) for trace in traces)
+        # Plotly matches a frame's curves to the initial view's by position.
+        names = [int(trace["name"]) for trace in traces]
         if names != CHILD_COUNTS:
             errors.append(f"{measure}, {adults} adult(s): curves are {names}")
             continue
@@ -202,14 +216,16 @@ def _chart_errors(chart, measure, year, wages, credit):
 
 @pytest.fixture(scope="module")
 def stored():
-    year, wages, charts = _notebook()
-    return year, wages, charts, _schedule(year)
+    year, wages, charts, titles = _notebook()
+    return year, wages, charts, titles, _schedule(year)
 
 
 @pytest.mark.parametrize("measure", ["eitc", "mtr"])
 def test_stored_eitc_chart_matches_parameters(stored, measure):
-    year, wages, charts, credit = stored
-    errors = _chart_errors(charts[measure], measure, year, wages, credit)
+    year, wages, charts, titles, credit = stored
+    errors = _chart_errors(
+        charts[measure], measure, year, titles[measure], wages, credit
+    )
 
     assert not errors, f"{len(errors)} stored points differ:\n" + "\n".join(errors[:20])
 
@@ -257,8 +273,11 @@ def _swap_slider_frames(chart):
                 3, chart["frames"][1]["data"][2]
             ),
         ),
+        # Curves out of order, which plotly would pair with the wrong colour.
+        ("mtr", lambda chart: chart["frames"][0]["data"].reverse()),
         # Labels that misdescribe the curves.
         ("eitc", _swap_slider_frames),
+        ("eitc", lambda chart: chart["layout"]["sliders"][0]["steps"].pop()),
         (
             "mtr",
             lambda chart: chart["frames"][1]["data"][0].__setitem__(
@@ -271,10 +290,16 @@ def _swap_slider_frames(chart):
                 "text", "Earned income tax credit, 2021"
             ),
         ),
+        (
+            "eitc",
+            lambda chart: chart["layout"]["title"].__setitem__(
+                "text", "EITC for single filers by number of qualifying children, 2022"
+            ),
+        ),
     ],
 )
 def test_chart_check_rejects_corrupted_charts(stored, measure, change):
-    year, wages, charts, credit = stored
+    year, wages, charts, titles, credit = stored
     chart = _mutated(charts[measure], change)
 
-    assert _chart_errors(chart, measure, year, wages, credit)
+    assert _chart_errors(chart, measure, year, titles[measure], wages, credit)
