@@ -1,0 +1,16 @@
+description: Arkansas excludes earnings of students younger than this age under the Low Income Home Energy Assistance Program.
+# Manual Appendix F (page 133) excludes a child's earnings only while the child
+# attends school at least half time. Plan Section 1.9 (page 6) leaves "Earned
+# income of a child under the age of 18" unchecked and application Section III
+# (page 2) requests work income from members "18 and older"; both exclude every
+# minor's earnings. The manual is followed.
+values:
+  2024-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP child student earnings exclusion age limit
+  reference:
+    - title: Arkansas LIHEAP draft manual FY2025, Appendix F, Earnings of a child
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=133

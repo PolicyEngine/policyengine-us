@@ -1,0 +1,21 @@
+description: Arkansas excludes earnings of dependent full-time college students up to this age under the Low Income Home Energy Assistance Program.
+# Manual Appendix F (page 134), row "Earnings of a full-time college student",
+# covers full-time college students "up to age 23, who are listed as dependents
+# of a household member"; the Section 17.0 definition of a full-time student
+# (page 116) repeats the age. Application Section III (page 2) excludes every
+# full-time student; the manual is followed. The row text says "Income
+# received"; the model follows the heading and excludes only earnings, so the
+# student's unearned income still counts. Reading the text instead would
+# exclude all of the student's income.
+# Age 23 is read as included, like the federal dependent-student limit of under
+# 24; reading it as under 23 changes the result only at age 23.
+values:
+  2024-10-01: 23
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP college student earnings exclusion maximum age
+  reference:
+    - title: Arkansas LIHEAP draft manual FY2025, Appendix F, Earnings of a full-time college student
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=134

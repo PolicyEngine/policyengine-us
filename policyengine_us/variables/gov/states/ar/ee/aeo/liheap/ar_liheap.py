@@ -9,8 +9,8 @@ class ar_liheap(Variable):
     label = "Arkansas LIHEAP regular heating benefit"
     defined_for = "ar_liheap_eligible"
     documentation = (
-        "Annual regular heating grant from the FY2026 fuel matrices. Earlier "
-        "or later results use parameter backfilling and are unverified estimates. "
+        "Annual regular heating grant from the FY2025 and FY2026 fuel matrices. "
+        "Other years use parameter backfilling and are unverified estimates. "
         "The proposed FY2027 increase is not treated as an adopted schedule."
     )
     reference = (

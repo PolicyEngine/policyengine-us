@@ -25,8 +25,11 @@
   output:
     ar_liheap_countable_income: 12_000
 
-# Application p2 excludes full-time students from work-income reporting; unearned1200 remains fully countable.
-- name: Case 2, full time adult student work is excluded but Social Security remains.
+# Manual Appendix F p134 excludes only full-time college students up to 23 listed as a
+# household member's dependent. Living alone, this 22-year-old is not a dependent, so
+# work counts: (15000 + 3000) x 0.8 = 14400 + Social Security 1200 = 15600; MCI 1300.
+# Under 65 without SSDI there is no Part B premium to net from Social Security.
+- name: Case 2, a full time college student living alone has work counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -35,10 +38,13 @@
         age: 22
         immigration_status: CITIZEN
         is_full_time_student: true
+        is_full_time_college_student: true
+        is_tax_unit_dependent: false
         ssi: 0
         employment_income: 15_000
         self_employment_income: 3_000
         social_security: 1_200
+        medicare_part_b_premium: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -50,10 +56,12 @@
         members: [person1]
         state_code: AR
   output:
-    ar_liheap_countable_income: 1_200
+    ar_liheap_countable_income: 15_600
 
-# Application p2 work-income age18 boundary; SSI2400+support3600=6000 remain countable.
-- name: Case 3, minor work is excluded but SSI and child support remain.
+# Manual Appendix F p133 excludes a minor's earnings only while attending school at
+# least half time. This 17-year-old attends no school, so work counts:
+# (15000 + 3000) x 0.8 = 14400 + SSI 2400 + child support 3600 = 20400; MCI 1700.
+- name: Case 3, a minor not attending school has work counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -82,7 +90,7 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_liheap_countable_income: 6_000
+    ar_liheap_countable_income: 20_400
 
 # Exactly18 and not a full-time student makes wages countable, after20%disregard.
 - name: Case 4, age eighteen nonstudent earnings are counted.
@@ -115,6 +123,7 @@
     ar_liheap_countable_income: 12_000
 
 # Countable adult existing earned inputs total20000; standard20%disregard gives16000, without a new business-expense calculation.
+# Manual p42 rounds MCI to whole dollars: 16000/12=1333.33 -> 1333; x12=15996.
 - name: Case 5, existing business sources receive the standard earned disregard.
   period: 2026
   absolute_error_margin: 0.01
@@ -141,7 +150,7 @@
         members: [person1]
         state_code: AR
   output:
-    ar_liheap_countable_income: 16_000
+    ar_liheap_countable_income: 15_996
 
 # Contract specifies nonnegative earned sources: wages12000×0.8+pension1200=10800.
 - name: Case 6, source losses do not offset wages or unearned receipts.
@@ -171,8 +180,13 @@
   output:
     ar_liheap_countable_income: 10_800
 
-# 9600 counted wages+2400rent+1200farmrent+600survivor+2400SSI=16200. Plan pp6–7 excludes TANF although application requests disclosure.
-- name: Case 7, farm rent survivors and child SSI count while TANF is excluded.
+# Manual Appendix F p141 treats rental property as self-employment, so rental and farm
+# rent take the 20% disregard with wages: (12000 + 2400 + 1200) x 0.8 = 12480.
+# Survivor 600 + child SSI 2400 count in full: 15480.
+# Manual Appendix E p130 counts TEA (plan 1.9 leaves TANF unchecked); TEA flows
+# through take-up-gated tanf. TEA 1944 = two-person maximum $162 x 12.
+# 15480 + 1944 = 17424; MCI 1452 is already whole.
+- name: Case 7, rental and farm rent take the earned disregard; other income counts.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -196,10 +210,476 @@
         members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
-        ar_tea: 3_600
+        ar_tea: 1_944
     households:
       household:
         members: [person1, person2]
         state_code: AR
   output:
-    ar_liheap_countable_income: 16_200
+    ar_liheap_countable_income: 17_424
+
+# Plan 1.9 p6 counts SSA "Excluding MediCare deduction"; manual 4.7.2 p43 nets the Part B premium.
+# 2026 Part B 202.90 x 12 = 2434.80; 29400-2434.80=26965.20; MCI 2247.10 rounds to 2247; x12=26964.
+- name: Case 8, Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 29_400
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 26_964
+
+# Manual 4.7.2 p43 applies the Part B netting to Railroad Retirement too.
+# (18000-2434.80)+(15600-2434.80)=15565.20+13165.20=28730.40; MCI 2394.20 rounds to 2394; x12=28728.
+- name: Case 9, Social Security and railroad retirement are each net of the member's premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 18_000
+        medicare_part_b_premium: 2_434.8
+      person2:
+        age: 68
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        railroad_benefits: 15_600
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 28_728
+
+# Boundary: a premium above a small benefit floors that member's net Social Security at 0
+# and does not reduce other income. max(1200-2434.80,0)=0; pension 12000; MCI 1000.
+- name: Case 10, a premium larger than Social Security does not offset a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 1_200
+        medicare_part_b_premium: 2_434.8
+        pension_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 12_000
+
+# Manual Appendix F: military retirement p141, workers' compensation p144 (also Appendix E p130),
+# gaming or gambling winnings p135, capital gains p132. Each counts in full; every MCI is whole:
+# 24000/12=2000, 15600/12=1300, 1200/12=100, 3000/12=250.
+- name: Case 11, military retirement workers compensation gambling winnings and capital gains count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR]
+    age: [55, 45, 60, 62]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false]
+    ssi: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [900, 900, 900, 900]
+    ar_tea: [0, 0, 0, 0]
+    military_retirement_pay: [24_000, 0, 0, 0]
+    workers_compensation: [0, 15_600, 0, 0]
+    gambling_winnings: [0, 0, 1_200, 0]
+    capital_gains: [0, 0, 0, 3_000]
+  output:
+    ar_liheap_countable_income: [24_000, 15_600, 1_200, 3_000]
+
+# Manual Appendix E p130 counts TEA once monthly; take-up-gated tanf includes ar_tea.
+# Three-person TEA maximum $204 x 12 = 2448; MCI 204.
+- name: Case 12, TEA the household takes up is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 2_448
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 2_448
+
+# Same family without TEA take-up: tanf is 0, so the unreceived entitlement is not counted.
+- name: Case 13, TEA the household does not take up is not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 2_448
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 0
+
+# Each source is floored at 0. Farm rent -1000 and rental -2000 are earned sources
+# (manual p141) and do not offset wages; capital gains -3000 (manual p132 excludes
+# capital losses) does not offset child support. 36000 x 0.8 = 28800 + 2400 = 31200;
+# MCI 2600.
+# Without the floors: (36000 - 3000) x 0.8 = 26400 + (2400 - 3000) = 25800.
+- name: Case 14, rental farm rent and capital losses do not offset other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 36_000
+        farm_rent_income: -1_000
+        rental_income: -2_000
+        capital_gains: -3_000
+        child_support_received: 2_400
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 31_200
+
+# Boundary: manual p42 rounds MCI to the nearest whole dollar, halves up.
+# Alimony counts in full (interest below $200 a month would be disregarded).
+# 833.88 / 12 = 69.49 -> 69 -> 828; 834 / 12 = 69.50 -> 70 -> 840.
+- name: Case 15, monthly countable alimony rounds half up to whole dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [30, 30]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+    ar_tea: [0, 0]
+    alimony_income: [833.88, 834]
+  output:
+    ar_liheap_countable_income: [828, 840]
+
+# Manual Appendix F p137 counts only interest "amount over $200.00", read per recipient
+# per month. 2400 / 12 = 200 is not over the disregard: 0. 3000 - 200 x 12 = 600;
+# MCI 50.
+- name: Case 16, interest counts only above two hundred dollars a month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [62, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    interest_income: [2_400, 3_000]
+  output:
+    ar_liheap_countable_income: [0, 600]
+
+# Manual p137 does not say whose interest the $200 applies to; the chosen reading applies
+# it to each person. Each spouse's 2400 (200 a month) is fully disregarded, leaving the
+# pension 12000; MCI 1000. A household-wide $200 would give
+# 12000 + (4800 - 2400) = 14400.
+- name: Case 17, each spouse receives a separate interest disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        pension_income: 12_000
+        interest_income: 2_400
+      person2:
+        age: 64
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        interest_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 12_000
+
+# Manual Appendix F p141: "Ownership of rental property will be considered a
+# self-employment enterprise", so rental income takes the 20% disregard:
+# 15000 x 0.8 = 12000; MCI 1000. A farm rent loss of 3000 is floored at 0 and does not
+# offset the rental income: still 12000.
+- name: Case 18, rental income receives the twenty percent self employment disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [58, 58]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    rental_income: [15_000, 15_000]
+    farm_rent_income: [0, -3_000]
+  output:
+    ar_liheap_countable_income: [12_000, 12_000]
+
+# Case 3's household, but the 17-year-old attends high school and works part time
+# (manual Appendix F p133): wages 6000 and self-employment 1200 are excluded;
+# SSI 2400 + child support 3600 = 6000; MCI 500.
+# Counting the earnings would give 7200 x 0.8 = 5760 + 6000 = 11760.
+- name: Case 19, a minor attending high school has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 6_000
+
+# Half-time college attendance also qualifies (manual Appendix F p133): a 17-year-old
+# part-time college student who is not a full-time student has wages 6000 excluded;
+# SSI 2400 + child support 3600 = 6000; MCI 500.
+- name: Case 20, a minor attending college part time has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        is_part_time_college_student: true
+        ssi: 2_400
+        employment_income: 6_000
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 6_000
+
+# Manual Appendix F p134 excludes earnings of full-time college students up to age 23
+# listed as a household member's dependent. The 22-year-old dependent's wages 6000 are
+# excluded; the parent's 24000 x 0.8 = 19200; MCI 1600. Case 2 is a 22-year-old
+# full-time college student living alone, whose work counts.
+- name: Case 21, a dependent college student aged twenty two has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 24_000
+      person2:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 19_200
+
+# Boundary: "up to age 23" is read as including 23, so the dependent student's wages
+# 6000 remain excluded: 24000 x 0.8 = 19200; MCI 1600. Reading it as under 23 would
+# give 24000.
+- name: Case 22, a dependent college student aged twenty three still has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 24_000
+      person2:
+        age: 23
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 19_200
+
+# Above the age limit a dependent full-time college student's work counts:
+# (24000 + 6000) x 0.8 = 24000; MCI 2000.
+- name: Case 23, a dependent college student aged twenty four has work counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 24_000
+      person2:
+        age: 24
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 24_000

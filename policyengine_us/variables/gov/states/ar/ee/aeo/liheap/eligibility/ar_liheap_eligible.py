@@ -7,7 +7,7 @@ class ar_liheap_eligible(Variable):
     definition_period = YEAR
     label = "Eligible for Arkansas LIHEAP regular heating assistance"
     defined_for = StateCode.AR
-    # Plan sections 1.5 and 2.1-2.3, pages 5 and 9-10: no categorical
+    # Plan question 1.4 and sections 2.1-2.3, pages 5 and 9-10: no categorical
     # income bypass or asset test; direct or indirect heating burden required.
     reference = "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=9"
 

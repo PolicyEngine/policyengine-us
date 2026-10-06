@@ -1,199 +1,510 @@
 # Official FY2026 gas matrix: monthly370-429 gives227 for size1-2; monthly2130-2347 gives68; zero income gives308. Oil zero-income size5+ gives570. The 20 percent earned disregard applies before these lookups.
+# TEA now counts through take-up-gated tanf, so Cases 1 and 3 pin ar_tea to 0 to keep their
+# household-size and zero-income checks; TEA counting is covered in ar_liheap_countable_income.yaml.
 
 - name: Case 1, a nonqualified parents full counted income uses two qualified children for the grant.
   period: 2026
   input:
     people:
-      parent:
+      person1:
         age: 40
         immigration_status: UNDOCUMENTED
         ssi: 0
         is_full_time_student: false
-        employment_income: 6000
-      child1:
+        employment_income: 6_000
+      person2:
         age: 12
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      child2:
+      person3:
         age: 8
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
     spm_units:
-      family:
-        members: &id001
-        - parent
-        - child1
-        - child2
+      spm_unit:
+        members: [person1, person2, person3]
         heating_type: NATURAL_GAS
         heating_expense: 50
+        ar_tea: 0
     households:
-      home:
-        members: *id001
+      household:
+        members: [person1, person2, person3]
         state_code: AR
   output:
     ar_liheap_household_size: 2
-    ar_liheap_countable_income: 4800
-    ar_liheap_income_limit: 36840
+    ar_liheap_countable_income: 4_800
+    ar_liheap_income_limit: 36_840
     ar_liheap_matrix_amount: 227
     ar_liheap: 227
-- name: Case 2, a one cent monthly excess denies the final grant at the one person boundary.
+
+# Manual p42 rounds MCI to whole dollars. Alimony counts in full (rental income would
+# take the 20% disregard): 28164 / 12 = 2347 and 28164.12 / 12 = 2347.01 rounds to 2347,
+# so a one-cent monthly excess stays within the 2347 size-one limit; gas 2130-2347 pays
+# 68 for 1&2.
+- name: Case 2, a one cent monthly alimony excess rounds away at the one person limit.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 1200
-    - 1200
-    rental_income:
-    - 28164
-    - 28164.12
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+    alimony_income: [28_164, 28_164.12]
   output:
-    ar_liheap:
-    - 68
-    - 0
+    ar_liheap: [68, 68]
+
 - name: Case 3, five qualified household members receive the large household oil grant.
   period: 2026
   input:
     people:
-      parent1:
+      person1:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      parent2:
+      person2:
         age: 39
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      child1:
+      person3:
         age: 12
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      child2:
+      person4:
         age: 8
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      child3:
+      person5:
         age: 4
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
     spm_units:
-      family:
-        members: &id002
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
         heating_type: FUEL_OIL
         heating_expense: 100
+        ar_tea: 0
     households:
-      home:
-        members: *id002
+      household:
+        members: [person1, person2, person3, person4, person5]
         state_code: AR
   output:
     ar_liheap_household_size: 5
     ar_liheap: 570
+
 - name: Case 4, the final grant follows heat in rent eligibility without an expense cap.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 0
-    - 0
-    - 10
-    heat_expense_included_in_rent:
-    - true
-    - true
-    - true
-    receives_housing_assistance:
-    - false
-    - true
-    - true
+    state_code: [AR, AR, AR]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0]
+    is_full_time_student: [false, false, false]
+    employment_income: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [0, 0, 10]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, true]
   output:
-    ar_liheap:
-    - 308
-    - 0
-    - 308
+    ar_liheap: [308, 0, 308]
+
 - name: Case 5, a mixed state population pays only Arkansas households.
   period: 2026
   input:
-    state_code:
-    - AR
-    - GA
-    age:
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 10
-    - 10
+    state_code: [AR, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [10, 10]
   output:
-    ar_liheap:
-    - 308
-    - 0
+    ar_liheap: [308, 0]
+
+# FY2025: wages 21000x0.8=16800, MCI 1400; size-one limit 2251 (x12=27012).
+# FFY2025 electric row 1390-1449 pays 91 for 1&2 (the FY2026 row pays 88).
+- name: Case 6, FY2025 electric grant for a one person household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 21_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 16_800
+    ar_liheap_income_limit: 27_012
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 91
+    ar_liheap: 91
+
+# FY2025: wages 34500x0.8=27600, MCI 2300; size-three limit 3636 (x12=43632).
+# FFY2025 electric row 2250-2944 pays 64 for 3&4 (FY2026 puts 2300 in 2130-2347, paying 70).
+- name: Case 7, FY2025 electric grant uses the FY2025 income bands.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 32
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 34_500
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_100
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 3
+    ar_liheap_countable_income: 27_600
+    ar_liheap_income_limit: 43_632
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 64
+    ar_liheap: 64
+
+# Boundary: FY2025 size 7 uses 150% FPG, 47340x1.5/12=5917.50 -> 5918 (x12=71016); 60% SMI would be 5844.
+# Wages (50000+38500)x0.8=70800, MCI 5900, so eligible; FFY2025 electric 5140-Max pays 60 for 5&up.
+- name: Case 8, FY2025 seven person household between the SMI and FPG limits is paid.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 50_000
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 38_500
+      person3:
+        age: 16
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 14
+        immigration_status: CITIZEN
+        ssi: 0
+      person5:
+        age: 11
+        immigration_status: CITIZEN
+        ssi: 0
+      person6:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person7:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 7
+    ar_liheap_countable_income: 70_800
+    ar_liheap_income_limit: 71_016
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 60
+    ar_liheap: 60
+
+# FY2025 Medicare-net Social Security (plan 1.9 p6; manual 4.7.2 p43): 2025 Part B 185x12=2220;
+# 26400-2220=24180, MCI 2015; size-one limit 27012; FFY2025 gas 2010-2129 pays 73 for 1&2.
+- name: Case 9, FY2025 Social Security net of the Part B premium sets the gas grant.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 26_400
+        medicare_part_b_premium: 2_220
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 24_180
+    ar_liheap_income_limit: 27_012
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 73
+    ar_liheap: 73
+
+# 2026 Part B 202.90x12=2434.80; 29400-2434.80=26965.20, MCI 2247.10 -> 2247 (x12=26964) <= 28164.
+# Gross Social Security (2450/month) would exceed the 2347 limit. Gas 2130-2347 pays 68 for 1&2.
+- name: Case 10, netting the Part B premium makes a Social Security recipient eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 29_400
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 26_964
+    ar_liheap_income_limit: 28_164
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 68
+    ar_liheap: 68
+
+# Per-source floor: farm rent is an earned source (manual p141) and its 1000 loss counts
+# as 0, so 36000 x 0.8 = 28800 > 28164 and no grant is paid. Netting the loss would give
+# (36000 - 1000) x 0.8 = 28000, MCI 2333 (27996), eligible, and a 68 grant.
+# The ungated gas row 2348-3070 shows 62 for 1&2.
+- name: Case 11, a farm rent loss does not make a wage earner eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 36_000
+        farm_rent_income: -1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 28_800
+    ar_liheap_income_limit: 28_164
+    ar_liheap_eligible: false
+    ar_liheap_matrix_amount: 62
+    ar_liheap: 0
+
+# Boundary: manual p42 half-up MCI rounding at the 2347 size-one limit.
+# 28169.88/12=2347.49 -> 2347 (28164, eligible, gas 2130-2347 pays 68);
+# 28170/12=2347.50 -> 2348 (28176 > 28164, ineligible; ungated gas 2348-3070 shows 62).
+- name: Case 12, half-up rounding decides eligibility at the income limit.
+  period: 2026
+  input:
+    state_code: [AR, AR]
+    age: [60, 60]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [900, 900]
+    ar_tea: [0, 0]
+    pension_income: [28_169.88, 28_170]
+  output:
+    ar_liheap_countable_income: [28_164, 28_176]
+    ar_liheap_income_limit: [28_164, 28_164]
+    ar_liheap_eligible: [true, false]
+    ar_liheap_matrix_amount: [68, 62]
+    ar_liheap: [68, 0]
+
+# Boundary: half-up rounding moves MCI 69.50 into the 70-129 band. Alimony counts in
+# full.
+# 833.88 / 12 = 69.49 -> 69 (828), electric 0-69 pays 242 for 1&2;
+# 834 / 12 = 69.50 -> 70 (840), 70-129 pays 233.
+- name: Case 13, half-up rounding of alimony decides the income band.
+  period: 2026
+  input:
+    state_code: [AR, AR]
+    age: [30, 30]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+    ar_tea: [0, 0]
+    alimony_income: [833.88, 834]
+  output:
+    ar_liheap_countable_income: [828, 840]
+    ar_liheap_eligible: [true, true]
+    ar_liheap_matrix_amount: [242, 233]
+    ar_liheap: [242, 233]
+
+# Case 3's family with TEA received: manual Appendix E p130 counts TEA, read through take-up-gated tanf.
+# Five-person TEA maximum $286/month x 12 = 3432; MCI 286 (whole); size-five limit 5236 (62832).
+# FY2026 fuel oil 250-309 pays 497 for 5&up, down from 570 at zero income (0-69).
+- name: Case 14, received TEA lowers the large household oil grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+      person5:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: FUEL_OIL
+        heating_expense: 100
+        ar_tea: 3_432
+        takes_up_tanf_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AR
+  output:
+    tanf: 3_432
+    ar_liheap_household_size: 5
+    ar_liheap_countable_income: 3_432
+    ar_liheap_income_limit: 62_832
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 497
+    ar_liheap: 497
+
+# Manual Appendix F p137 counts interest only over $200 a month: 3000 - 200 x 12 = 600.
+# Pension 12000 + 600 = 12600; MCI 1050; size-one limit 28164; electric 1030-1089 pays
+# 121 for 1&2. Counting all interest would give MCI 1250 and the 1210-1269 row, 104.
+- name: Case 15, only interest above the monthly disregard lowers the electric grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        pension_income: 12_000
+        interest_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 12_600
+    ar_liheap_income_limit: 28_164
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 121
+    ar_liheap: 121
+
+# Manual Appendix F p141 treats rental property as self-employment, so the 20% disregard
+# applies: 30000 x 0.8 = 24000, MCI 2000 <= 2347 size-one limit; gas 1990-2009 pays 79
+# for 1&2. Gross rental of 2500 a month would exceed the limit.
+- name: Case 16, the self employment disregard makes a landlord eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        rental_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 1
+    ar_liheap_countable_income: 24_000
+    ar_liheap_income_limit: 28_164
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 79
+    ar_liheap: 79

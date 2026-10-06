@@ -810,8 +810,8 @@ programs:
         full_name: Arkansas Low Income Home Energy Assistance Program
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        verified_years: "2026"
-        notes: FY2026 regular heating eligibility and published award matrix. Uses qualified household size and full countable household income. Solar-heating payment treatment is not verified; its modeled zero does not establish legal ineligibility. Administrative household and billing facts use documented existing-input approximations; historical backfills and FY2027 draft changes are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, with qualified household size and the published fuel matrices. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: OR
         status: in_progress
         name: LIHEAP

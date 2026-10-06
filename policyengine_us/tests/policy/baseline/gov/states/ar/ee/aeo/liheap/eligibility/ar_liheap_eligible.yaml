@@ -3,214 +3,111 @@
 - name: Case 1, the exact income ceiling is inclusive and does not impose an asset test.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 1200
-    - 1200
-    ar_liheap_countable_income:
-    - 28164
-    - 28164.12
-    spm_unit_assets:
-    - 1000000
-    - 1000000
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+    ar_liheap_countable_income: [28_164, 28_164.12]
+    spm_unit_assets: [1_000_000, 1_000_000]
   output:
-    ar_liheap_eligible:
-    - true
-    - false
-- name: Case 2, subsidized heat in rent requires a reported residual charge despite a general obligation
-    flag.
+    ar_liheap_eligible: [true, false]
+
+- name: Case 2, subsidized heat in rent requires a reported residual charge despite a general obligation flag.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    - AR
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    - 40
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    - CITIZEN
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 0
-    - 0
-    - 120
-    - 0
-    - 120
-    has_heating_expense:
-    - false
-    - true
-    - true
-    - true
-    - true
-    heat_expense_included_in_rent:
-    - true
-    - true
-    - true
-    - true
-    - true
-    receives_housing_assistance:
-    - false
-    - true
-    - true
-    - false
-    - false
-    is_in_public_housing:
-    - false
-    - false
-    - false
-    - true
-    - true
+    state_code: [AR, AR, AR, AR, AR]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0, 0, 0]
+    is_full_time_student: [false, false, false, false, false]
+    employment_income: [0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [0, 0, 120, 0, 120]
+    has_heating_expense: [false, true, true, true, true]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, true, true, false, false]
+    is_in_public_housing: [false, false, false, true, true]
   output:
-    ar_liheap_eligible:
-    - true
-    - false
-    - true
-    - false
-    - true
+    ar_liheap_eligible: [true, false, true, false, true]
+
 - name: Case 3, a direct heating obligation can be reported without a current positive bill.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - CITIZEN
-    ssi:
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 0
-    - 0
-    has_heating_expense:
-    - true
-    - false
-    heat_expense_included_in_rent:
-    - false
-    - false
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [0, 0]
+    has_heating_expense: [true, false]
+    heat_expense_included_in_rent: [false, false]
   output:
-    ar_liheap_eligible:
-    - true
-    - false
+    ar_liheap_eligible: [true, false]
+
 - name: Case 4, explicit no heating and no qualified member each prevent eligibility.
   period: 2026
   input:
-    state_code:
-    - AR
-    - AR
-    age:
-    - 40
-    - 40
-    immigration_status:
-    - CITIZEN
-    - UNDOCUMENTED
-    ssi:
-    - 0
-    - 0
-    is_full_time_student:
-    - false
-    - false
-    employment_income:
-    - 0
-    - 0
-    heating_type:
-    - NONE
-    - NATURAL_GAS
-    heating_expense:
-    - 1200
-    - 1200
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [0, 0]
+    heating_type: [NONE, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
   output:
-    ar_liheap_eligible:
-    - false
-    - false
+    ar_liheap_eligible: [false, false]
+
+# An aged SSI recipient (Social Security 600/month; SSI (994-(600-20))x12=4968) lives with a
+# working adult son. The State's Medicaid buy-in pays Part B for an SSI recipient, so no premium is netted.
+# 40000x0.8=32000 + 4968 + 7200 = 44168; MCI 3680.67 rounds to 3681; x12=44172 > 36840 two-person limit.
 - name: Case 5, SSI receipt does not waive the ordinary income ceiling.
   period: 2026
   input:
-    state_code:
-    - AR
-    age:
-    - 40
-    immigration_status:
-    - CITIZEN
-    ssi:
-    - 36000
-    is_full_time_student:
-    - false
-    employment_income:
-    - 0
-    heating_type:
-    - NATURAL_GAS
-    heating_expense:
-    - 1200
-    snap:
-    - 6000
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 4_968
+        social_security: 7_200
+        medicare_part_b_premium: 0
+      person2:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
   output:
-    ar_liheap_countable_income:
-    - 36000
-    ar_liheap_eligible:
-    - false
+    ar_liheap_countable_income: 44_172
+    ar_liheap_eligible: false
+
+# Boundary: FY2025 plan 2.1 (p8) and chart set size 7 at 150% FPG: 47340x1.5/12=5917.50 -> 5918
+# (annual 71016). MCI 5900 (70800) and 5918 (71016) are eligible; 5919 (71028) is not.
+# 60% SMI would have given 5844 and denied MCI 5900.
+- name: Case 6, FY2025 size seven households use the poverty guideline limit.
+  period: 2025
+  input:
+    state_code: [AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [2_400, 2_400, 2_400]
+    ar_liheap_household_size: [7, 7, 7]
+    ar_liheap_countable_income: [70_800, 71_016, 71_028]
+  output:
+    ar_liheap_eligible: [true, true, false]

@@ -13,6 +13,8 @@ class ar_liheap_income_limit(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=9",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf",
+        "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=8",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf",
     )
 
     def formula(spm_unit, period, parameters):
@@ -25,25 +27,13 @@ class ar_liheap_income_limit(Variable):
         guideline = fpg(
             capped_size, state_group, period, parameters, year_lag=p.fpg_year_lag
         )
-        additional_guideline = (
-            fpg(
-                capped_size + 1,
-                state_group,
-                period,
-                parameters,
-                year_lag=p.fpg_year_lag,
-            )
-            - guideline
-        )
         monthly_fpg = guideline * p.fpg_rate / MONTHS_IN_YEAR
-        monthly_increment = additional_guideline * p.fpg_rate / MONTHS_IN_YEAR
         monthly_base = where(size <= p.smi_max_size, monthly_smi, monthly_fpg)
-        # Half-up monthly rounding reproduces the published FY2026 table;
-        # it is a reconciled numerical pattern, not an express rounding rule.
-        # The chart separately adds $688 for each person above size 20.
+        # Half-up monthly rounding reproduces the published FY2025 and FY2026
+        # tables; it is a reconciled numerical pattern, not an express rule.
         rounding = p.rounding_increment
         rounded_base = np.floor(monthly_base / rounding + 0.5) * rounding
-        rounded_increment = np.floor(monthly_increment / rounding + 0.5) * rounding
+        # The charts add a printed amount for each person above size 20.
         extra_people = max_(size - p.max_table_size, 0)
-        monthly_limit = rounded_base + extra_people * rounded_increment
+        monthly_limit = rounded_base + extra_people * p.additional_member_amount
         return where(size > 0, monthly_limit * MONTHS_IN_YEAR, 0)

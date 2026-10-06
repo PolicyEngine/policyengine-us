@@ -15,6 +15,11 @@ class ar_liheap_matrix_amount(Variable):
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Propane.pdf#page=1",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Fuel-Oil.pdf#page=1",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Other-Wood-Pellets.pdf#page=1",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Electric.pdf#page=1",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Natural-Gas.pdf#page=1",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Propane.pdf#page=1",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Fuel-Oil.pdf#page=1",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Other-Wood-Pellets.pdf#page=1",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=3",
     )
 
@@ -22,8 +27,8 @@ class ar_liheap_matrix_amount(Variable):
         p = parameters(period).gov.states.ar.ee.aeo.liheap.payment
         income = spm_unit("ar_liheap_countable_income", period) / MONTHS_IN_YEAR
         size = spm_unit("ar_liheap_household_size", period)
-        # Tables use the printed lower bounds: $70 starts the next band.
-        # Cents remain in the lower band until that next whole-dollar bound.
+        # Countable income is already rounded to whole monthly dollars, and
+        # the printed lower bounds are inclusive: $70 starts the second band.
         band = p.income_band.calc(max_(income, 0)).astype(int)
         size_group = p.household_size_group.calc(max_(size, 1)).astype(int)
         fuel = spm_unit("heating_type", period)

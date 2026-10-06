@@ -4,71 +4,65 @@
   period: 2026
   input:
     people:
-      adult1:
+      person1:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
         is_full_time_student: false
-      adult2:
+      person2:
         age: 39
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi: 0
         is_full_time_student: false
-      adult3:
+      person3:
         age: 19
         immigration_status: ASYLEE
         ssi: 0
         is_full_time_student: false
-      child1:
+      person4:
         age: 17
         immigration_status: DACA
         ssi: 0
         is_full_time_student: false
-      child2:
+      person5:
         age: 8
         immigration_status: UNDOCUMENTED
         ssi: 0
         is_full_time_student: false
     spm_units:
-      family:
-        members: &id001
-        - adult1
-        - adult2
-        - adult3
-        - child1
-        - child2
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
         heating_type: NATURAL_GAS
-        heating_expense: 1200
+        heating_expense: 1_200
     households:
-      home:
-        members: *id001
+      household:
+        members: [person1, person2, person3, person4, person5]
         state_code: AR
   output:
     ar_liheap_household_size: 3
+
 - name: Case 2, a household with no qualified member has zero eligible household size.
   period: 2026
   input:
     people:
-      parent:
+      person1:
         age: 40
         immigration_status: UNDOCUMENTED
         ssi: 0
         is_full_time_student: false
-      child:
+      person2:
         age: 8
         immigration_status: DACA
         ssi: 0
         is_full_time_student: false
     spm_units:
-      family:
-        members: &id002
-        - parent
-        - child
+      spm_unit:
+        members: [person1, person2]
         heating_type: NATURAL_GAS
-        heating_expense: 1200
+        heating_expense: 1_200
     households:
-      home:
-        members: *id002
+      household:
+        members: [person1, person2]
         state_code: AR
   output:
     ar_liheap_household_size: 0

@@ -321,7 +321,7 @@
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
     gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ar_liheap_household_size: [3, 3, 3, 3, 3, 3]
-    ar_liheap_countable_income: [839.88, 840, 23879.88, 23_880, 24119.88, 24_120]
+    ar_liheap_countable_income: [839.88, 840, 23_879.88, 23_880, 24_119.88, 24_120]
     pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
   output:
     ar_liheap_matrix_amount: [288, 276, 86, 80, 80, 76]
@@ -372,3 +372,94 @@
     ar_liheap_countable_income: 0
   output:
     ar_liheap_matrix_amount: 0
+
+# FFY2025 Electric matrix pp1-2: top bands start at 2250/2945/4330/5022/5140 (annual x12 =
+# 27000/35340/51960/60264/61680) for sizes 1&2, 3&4, 5&up; 1390-1449 pays 91 for 1&2
+# (FY2026: 88). Annual 16800 = MCI 1400.
+- name: Case 10, FY2025 electric top bands and a changed size one cell.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1]
+    ar_liheap_countable_income: [27_000, 27_000, 27_000, 35_340, 35_340, 35_340, 51_960, 51_960, 51_960,
+      60_264, 60_264, 60_264, 61_680, 61_680, 61_680, 16_800]
+  output:
+    ar_liheap_matrix_amount: [60, 64, 73, 0, 60, 67, 0, 0, 61, 0, 0, 60, 0, 0, 60, 91]
+
+# FFY2025 Natural Gas matrix p2: same top bands; 1450-1509 pays 163 for 5&up (FY2026: 162).
+# Annual 17400 = MCI 1450.
+- name: Case 11, FY2025 natural gas top bands and a changed large household cell.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 5]
+    ar_liheap_countable_income: [27_000, 27_000, 27_000, 35_340, 35_340, 35_340, 51_960, 51_960, 51_960,
+      60_264, 60_264, 60_264, 61_680, 61_680, 61_680, 17_400]
+  output:
+    ar_liheap_matrix_amount: [64, 82, 92, 60, 74, 85, 60, 60, 60, 0, 60, 60, 0, 0, 60, 163]
+
+# FFY2025 Propane matrix p2: same top bands; 1870-1989 pays 109 for 1&2 (FY2026: 110).
+# Annual 22440 = MCI 1870.
+- name: Case 12, FY2025 propane top bands and a changed size one cell.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1]
+    ar_liheap_countable_income: [27_000, 27_000, 27_000, 35_340, 35_340, 35_340, 51_960, 51_960, 51_960,
+      60_264, 60_264, 60_264, 61_680, 61_680, 61_680, 22_440]
+  output:
+    ar_liheap_matrix_amount: [80, 106, 119, 73, 96, 110, 66, 86, 109, 0, 77, 100, 0, 0, 90, 109]
+
+# FFY2025 Fuel Oil matrix p2: rows 2250-2944 through 5140-Max for sizes 1&2, 3&4, 5&up.
+- name: Case 13, FY2025 fuel oil top bands.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [27_000, 27_000, 27_000, 35_340, 35_340, 35_340, 51_960, 51_960, 51_960,
+      60_264, 60_264, 60_264, 61_680, 61_680, 61_680]
+  output:
+    ar_liheap_matrix_amount: [82, 107, 121, 74, 97, 112, 67, 88, 102, 0, 78, 92, 0, 0, 83]
+
+# FFY2025 Other/Wood/Pellets matrix p2: rows 2250-2944 through 5140-Max; the 5140-Max row pays 0 in
+# every column (FY2026 pays 61 for 5&up).
+- name: Case 14, FY2025 other fuel top bands.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER]
+    ar_liheap_household_size: [1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 5]
+    ar_liheap_countable_income: [27_000, 27_000, 27_000, 35_340, 35_340, 35_340, 51_960, 51_960, 51_960,
+      60_264, 60_264, 60_264, 61_680, 61_680, 61_680]
+  output:
+    ar_liheap_matrix_amount: [60, 77, 88, 60, 70, 80, 60, 64, 74, 0, 60, 67, 0, 0, 0]
+
+# SOLAR and UNSPECIFIED have no supported fuel schedule, so the matrix pays 0 (unverified estimate).
+# Electric at zero income pays 242 for 1&2 as a control; an empty qualified household pays 0.
+- name: Case 15, solar unspecified fuel and an empty household have no matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR]
+    heating_type: [SOLAR, UNSPECIFIED, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_800, 1_800, 1_800, 1_800]
+    ar_liheap_household_size: [1, 1, 1, 0]
+    ar_liheap_countable_income: [0, 0, 0, 0]
+  output:
+    ar_liheap_matrix_amount: [0, 0, 242, 0]
