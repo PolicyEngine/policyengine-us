@@ -3,8 +3,9 @@
 # Physical PDF pages: 10, 17, 18, 35, 36, 74, 76, 77, 78.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
-# This is the base schedule using actual or estimated costs, before unresolved heat-in-rent adjustment.
-# No final nh_fap award or unsupported fuel amount is asserted.
+# Final modeled awards use actual or estimated costs and the ordinary fuel schedule.
+# No additional heat-in-rent reduction is applied under the approved modeling assumption.
+# This assumption is not agency-confirmed; unsupported fuel amounts remain zero.
 
 # Manual p78, delivered DD/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 1, delivered matrix cost tier DD and income band A."
@@ -31,7 +32,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 750
+    nh_fap: 750
 
 # Manual p78, utility DD/A cell, including published whole-dollar rounding.
 - name: "Case 2, utility matrix cost tier DD and income band A."
@@ -58,7 +59,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 563
+    nh_fap: 563
 
 # Manual p78, delivered DD/B cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 3, delivered matrix cost tier DD and income band B."
@@ -85,7 +86,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 650
+    nh_fap: 650
 
 # Manual p78, utility DD/B cell, including published whole-dollar rounding.
 - name: "Case 4, utility matrix cost tier DD and income band B."
@@ -112,7 +113,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 488
+    nh_fap: 488
 
 # Manual p78, delivered DD/C cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 5, delivered matrix cost tier DD and income band C."
@@ -139,7 +140,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 550
+    nh_fap: 550
 
 # Manual p78, utility DD/C cell, including published whole-dollar rounding.
 - name: "Case 6, utility matrix cost tier DD and income band C."
@@ -166,7 +167,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 413
+    nh_fap: 413
 
 # Manual p78, delivered DD/D cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 7, delivered matrix cost tier DD and income band D."
@@ -193,7 +194,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 500
+    nh_fap: 500
 
 # Manual p78, utility DD/D cell, including published whole-dollar rounding.
 - name: "Case 8, utility matrix cost tier DD and income band D."
@@ -220,7 +221,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 375
+    nh_fap: 375
 
 # Manual p78, delivered DD/E cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 9, delivered matrix cost tier DD and income band E."
@@ -247,7 +248,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 440
+    nh_fap: 440
 
 # Manual p78, utility DD/E cell, including published whole-dollar rounding.
 - name: "Case 10, utility matrix cost tier DD and income band E."
@@ -274,7 +275,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 330
+    nh_fap: 330
 
 # Manual p78, delivered DD/F cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 11, delivered matrix cost tier DD and income band F."
@@ -301,7 +302,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 400
+    nh_fap: 400
 
 # Manual p78, utility DD/F cell, including published whole-dollar rounding.
 - name: "Case 12, utility matrix cost tier DD and income band F."
@@ -328,7 +329,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 300
+    nh_fap: 300
 
 # Manual p78, delivered CC/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 13, delivered matrix cost tier CC and income band A."
@@ -355,7 +356,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 1_460
+    nh_fap: 1_460
 
 # Manual p78, utility CC/A cell, including published whole-dollar rounding.
 - name: "Case 14, utility matrix cost tier CC and income band A."
@@ -382,7 +383,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 1_095
+    nh_fap: 1_095
 
 # Manual p78, delivered CC/B cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 15, delivered matrix cost tier CC and income band B."
@@ -409,7 +410,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 1_270
+    nh_fap: 1_270
 
 # Manual p78, utility CC/B cell, including published whole-dollar rounding.
 - name: "Case 16, utility matrix cost tier CC and income band B."
@@ -436,7 +437,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 953
+    nh_fap: 953
 
 # Manual p78, delivered CC/C cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 17, delivered matrix cost tier CC and income band C."
@@ -463,7 +464,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 1_150
+    nh_fap: 1_150
 
 # Manual p78, utility CC/C cell, including published whole-dollar rounding.
 - name: "Case 18, utility matrix cost tier CC and income band C."
@@ -490,7 +491,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 863
+    nh_fap: 863
 
 # Manual p78, delivered CC/D cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 19, delivered matrix cost tier CC and income band D."
@@ -517,7 +518,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 950
+    nh_fap: 950
 
 # Manual p78, utility CC/D cell, including published whole-dollar rounding.
 - name: "Case 20, utility matrix cost tier CC and income band D."
@@ -544,7 +545,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 713
+    nh_fap: 713
 
 # Manual p78, delivered CC/E cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 21, delivered matrix cost tier CC and income band E."
@@ -571,7 +572,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 730
+    nh_fap: 730
 
 # Manual p78, utility CC/E cell, including published whole-dollar rounding.
 - name: "Case 22, utility matrix cost tier CC and income band E."
@@ -598,7 +599,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 548
+    nh_fap: 548
 
 # Manual p78, delivered CC/F cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 23, delivered matrix cost tier CC and income band F."
@@ -625,7 +626,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 525
+    nh_fap: 525
 
 # Manual p78, utility CC/F cell, including published whole-dollar rounding.
 - name: "Case 24, utility matrix cost tier CC and income band F."
@@ -652,7 +653,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 394
+    nh_fap: 394
 
 # Manual p78, delivered BB/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 25, delivered matrix cost tier BB and income band A."
@@ -679,7 +680,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 2_350
+    nh_fap: 2_350
 
 # Manual p78, utility BB/A cell, including published whole-dollar rounding.
 - name: "Case 26, utility matrix cost tier BB and income band A."
@@ -706,7 +707,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 1_763
+    nh_fap: 1_763
 
 # Manual p78, delivered BB/B cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 27, delivered matrix cost tier BB and income band B."
@@ -733,7 +734,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 2_040
+    nh_fap: 2_040
 
 # Manual p78, utility BB/B cell, including published whole-dollar rounding.
 - name: "Case 28, utility matrix cost tier BB and income band B."
@@ -760,7 +761,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 1_530
+    nh_fap: 1_530
 
 # Manual p78, delivered BB/C cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 29, delivered matrix cost tier BB and income band C."
@@ -787,7 +788,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 1_720
+    nh_fap: 1_720
 
 # Manual p78, utility BB/C cell, including published whole-dollar rounding.
 - name: "Case 30, utility matrix cost tier BB and income band C."
@@ -814,7 +815,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 1_290
+    nh_fap: 1_290
 
 # Manual p78, delivered BB/D cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 31, delivered matrix cost tier BB and income band D."
@@ -841,7 +842,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 1_410
+    nh_fap: 1_410
 
 # Manual p78, utility BB/D cell, including published whole-dollar rounding.
 - name: "Case 32, utility matrix cost tier BB and income band D."
@@ -868,7 +869,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 1_058
+    nh_fap: 1_058
 
 # Manual p78, delivered BB/E cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 33, delivered matrix cost tier BB and income band E."
@@ -895,7 +896,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 1_100
+    nh_fap: 1_100
 
 # Manual p78, utility BB/E cell, including published whole-dollar rounding.
 - name: "Case 34, utility matrix cost tier BB and income band E."
@@ -922,7 +923,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 825
+    nh_fap: 825
 
 # Manual p78, delivered BB/F cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 35, delivered matrix cost tier BB and income band F."
@@ -949,7 +950,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual p78, utility BB/F cell, including published whole-dollar rounding.
 - name: "Case 36, utility matrix cost tier BB and income band F."
@@ -976,7 +977,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 600
+    nh_fap: 600
 
 # Manual p78, delivered AA/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 37, delivered matrix cost tier AA and income band A."
@@ -1003,7 +1004,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 2_500
+    nh_fap: 2_500
 
 # Manual p78, utility AA/A cell, including published whole-dollar rounding.
 - name: "Case 38, utility matrix cost tier AA and income band A."
@@ -1030,7 +1031,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 10_000
-    nh_fap_base_benefit: 1_875
+    nh_fap: 1_875
 
 # Manual p78, delivered AA/B cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 39, delivered matrix cost tier AA and income band B."
@@ -1057,7 +1058,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 2_150
+    nh_fap: 2_150
 
 # Manual p78, utility AA/B cell, including published whole-dollar rounding.
 - name: "Case 40, utility matrix cost tier AA and income band B."
@@ -1084,7 +1085,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 14_000
-    nh_fap_base_benefit: 1_613
+    nh_fap: 1_613
 
 # Manual p78, delivered AA/C cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 41, delivered matrix cost tier AA and income band C."
@@ -1111,7 +1112,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 1_825
+    nh_fap: 1_825
 
 # Manual p78, utility AA/C cell, including published whole-dollar rounding.
 - name: "Case 42, utility matrix cost tier AA and income band C."
@@ -1138,7 +1139,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 18_000
-    nh_fap_base_benefit: 1_369
+    nh_fap: 1_369
 
 # Manual p78, delivered AA/D cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 43, delivered matrix cost tier AA and income band D."
@@ -1165,7 +1166,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 1_500
+    nh_fap: 1_500
 
 # Manual p78, utility AA/D cell, including published whole-dollar rounding.
 - name: "Case 44, utility matrix cost tier AA and income band D."
@@ -1192,7 +1193,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 22_000
-    nh_fap_base_benefit: 1_125
+    nh_fap: 1_125
 
 # Manual p78, delivered AA/E cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 45, delivered matrix cost tier AA and income band E."
@@ -1219,7 +1220,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 1_200
+    nh_fap: 1_200
 
 # Manual p78, utility AA/E cell, including published whole-dollar rounding.
 - name: "Case 46, utility matrix cost tier AA and income band E."
@@ -1246,7 +1247,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 26_000
-    nh_fap_base_benefit: 900
+    nh_fap: 900
 
 # Manual p78, delivered AA/F cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 47, delivered matrix cost tier AA and income band F."
@@ -1273,7 +1274,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 825
+    nh_fap: 825
 
 # Manual p78, utility AA/F cell, including published whole-dollar rounding.
 - name: "Case 48, utility matrix cost tier AA and income band F."
@@ -1300,7 +1301,7 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: 40_000
-    nh_fap_base_benefit: 619
+    nh_fap: 619
 
 # Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
 - name: "Case 49, income exactly 11970 remains in its inclusive FPG band."
@@ -1326,7 +1327,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_500
+    nh_fap: 2_500
 
 # Manual pp17,74 and78; strict upper-band transition.
 - name: "Case 50, income one cent above 11970 enters the next FPG band."
@@ -1352,7 +1353,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_150
+    nh_fap: 2_150
 
 # Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
 - name: "Case 51, income exactly 15960 remains in its inclusive FPG band."
@@ -1378,7 +1379,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_150
+    nh_fap: 2_150
 
 # Manual pp17,74 and78; strict upper-band transition.
 - name: "Case 52, income one cent above 15960 enters the next FPG band."
@@ -1404,7 +1405,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_825
+    nh_fap: 1_825
 
 # Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
 - name: "Case 53, income exactly 19950 remains in its inclusive FPG band."
@@ -1430,7 +1431,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_825
+    nh_fap: 1_825
 
 # Manual pp17,74 and78; strict upper-band transition.
 - name: "Case 54, income one cent above 19950 enters the next FPG band."
@@ -1456,7 +1457,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_500
+    nh_fap: 1_500
 
 # Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
 - name: "Case 55, income exactly 23940 remains in its inclusive FPG band."
@@ -1482,7 +1483,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_500
+    nh_fap: 1_500
 
 # Manual pp17,74 and78; strict upper-band transition.
 - name: "Case 56, income one cent above 23940 enters the next FPG band."
@@ -1508,7 +1509,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_200
+    nh_fap: 1_200
 
 # Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
 - name: "Case 57, income exactly 27930 remains in its inclusive FPG band."
@@ -1534,7 +1535,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_200
+    nh_fap: 1_200
 
 # Manual pp17,74 and78; strict upper-band transition.
 - name: "Case 58, income one cent above 27930 enters the next FPG band."
@@ -1560,7 +1561,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 825
+    nh_fap: 825
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 59, delivered annual cost 999.99 selects the current cost tier."
@@ -1586,7 +1587,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 750
+    nh_fap: 750
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 60, utility annual cost 999.99 selects the current cost tier."
@@ -1612,7 +1613,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 563
+    nh_fap: 563
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 61, delivered annual cost 1000 selects the current cost tier."
@@ -1638,7 +1639,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_460
+    nh_fap: 1_460
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 62, utility annual cost 1000 selects the current cost tier."
@@ -1664,7 +1665,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_095
+    nh_fap: 1_095
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 63, delivered annual cost 1749.99 selects the current cost tier."
@@ -1690,7 +1691,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_460
+    nh_fap: 1_460
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 64, utility annual cost 1749.99 selects the current cost tier."
@@ -1716,7 +1717,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_095
+    nh_fap: 1_095
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 65, delivered annual cost 1750 selects the current cost tier."
@@ -1742,7 +1743,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_350
+    nh_fap: 2_350
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 66, utility annual cost 1750 selects the current cost tier."
@@ -1768,7 +1769,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_763
+    nh_fap: 1_763
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 67, delivered annual cost 3499.99 selects the current cost tier."
@@ -1794,7 +1795,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_350
+    nh_fap: 2_350
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 68, utility annual cost 3499.99 selects the current cost tier."
@@ -1820,7 +1821,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_763
+    nh_fap: 1_763
 
 # Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
 - name: "Case 69, delivered annual cost 3500 selects the current cost tier."
@@ -1846,7 +1847,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_500
+    nh_fap: 2_500
 
 # Manual pp77-78 exact cost ranges and utility schedule.
 - name: "Case 70, utility annual cost 3500 selects the current cost tier."
@@ -1872,7 +1873,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 1_875
+    nh_fap: 1_875
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
 - name: "Case 71, kerosene uses the full delivered-fuel schedule."
@@ -1898,7 +1899,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
 - name: "Case 72, propane uses the full delivered-fuel schedule."
@@ -1924,7 +1925,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
 - name: "Case 73, wood uses the full delivered-fuel schedule."
@@ -1950,7 +1951,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
 - name: "Case 74, coal uses the full delivered-fuel schedule."
@@ -1976,7 +1977,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual p78 DD/A amount is750; no actual-cost cap is stated.
 - name: "Case 75, actual-cost schedule is not capped at a small positive bill."
@@ -2002,7 +2003,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 750
+    nh_fap: 750
 
 # Manual p10 provides application priority; pp77-78 contain no age supplement.
 - name: "Case 76, an older adult receives the same regular schedule."
@@ -2028,7 +2029,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_150
+    nh_fap: 2_150
 
 # Manual p10 provides application priority; pp77-78 contain no disability supplement.
 - name: "Case 77, disability does not add an unsourced regular supplement."
@@ -2055,7 +2056,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 2_150
+    nh_fap: 2_150
 
 # Manual p74: size 2 D band ends at 32,460; p78 AA/D is 1500.
 - name: "Case 78, two qualified members use the published two-person FPG."
@@ -2088,7 +2089,7 @@
   output:
     nh_fap_household_size: 2
     nh_fap_countable_income: 30_000
-    nh_fap_base_benefit: 1_500
+    nh_fap: 1_500
 
 # Manual p36 includes ineligible-member income but excludes their size; size 1 band F applies without income proration.
 - name: "Case 79, mixed status counts both incomes but only the qualified person."
@@ -2121,7 +2122,7 @@
   output:
     nh_fap_household_size: 1
     nh_fap_countable_income: 30_000
-    nh_fap_base_benefit: 825
+    nh_fap: 825
 
 # Manual p74 size 1 ceiling 48,713; p78 AA/F is 825.
 - name: "Case 80, the inclusive income ceiling retains the base schedule."
@@ -2147,7 +2148,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 825
+    nh_fap: 825
 
 # Manual p74 size 1 maximum 48,713.
 - name: "Case 81, income above the ceiling removes the scheduled benefit."
@@ -2173,9 +2174,9 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_base_benefit: 0
+    nh_fap: 0
 
-# Manual pp76-78 formula and matrix with four bedrooms alone: cost 2272.564 selects BB, income 45120 selects F, yielding 800 before any heat-in-rent adjustment.
+# Manual pp76-78 formula and matrix with four bedrooms alone: cost 2272.564 selects BB, income 45120 selects F, yielding a modeled award of 800.
 - name: "Case 82, bedrooms alone determine the two-person oil benefit cost band."
   period: 2027
   absolute_error_margin: 0.01
@@ -2208,7 +2209,7 @@
   output:
     nh_fap_heating_cost: 2_272.564431
     nh_fap_countable_income: 45_120
-    nh_fap_base_benefit: 800
+    nh_fap: 800
 
 # Manual pp18,77-78: two bedrooms alone give estimated cost 1136.282, selecting CC/A 1460; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
 - name: "Case 83, the larger cost basis determines the delivered benefit."
@@ -2256,7 +2257,7 @@
         bedrooms: 2
   output:
     nh_fap_heating_cost: [1_136.282215, 4_000]
-    nh_fap_base_benefit: [1_460, 2_500]
+    nh_fap: [1_460, 2_500]
 
 # Manual pp77-78: two-bedroom Coos gas cost 561.366 selects DD/A 750 * .75 =562.50, rounded to 563; actual 4000 selects AA/A 2500 * .75 =1875.
 - name: "Case 84, utility reduction follows the selected proxy or actual cost band."
@@ -2304,4 +2305,188 @@
         bedrooms: 2
   output:
     nh_fap_heating_cost: [561.365854, 4_000]
-    nh_fap_base_benefit: [563, 1_875]
+    nh_fap: [563, 1_875]
+
+# Approved heat-in-rent assumption; this is not an agency-confirmed rent reduction.
+# Manual pp76-78: default single-family factor 2000, Belknap HDD 6610,
+# 3 bedrooms used as rooms, electricity 64.706/MBTU at efficiency 1.
+# Estimated cost = 2000 * 3 * 6610 / 1_000_000 * 64.706 = 2566.23996.
+# Income band A and cost band BB: 2350 * 0.75, rounded half up = 1763.
+- name: Case 85, unsubsidized heat-in-rent with three bedrooms and electricity receives the modeled final award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      parent2:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent1, parent2, child]
+        nh_fanf: 0
+        heating_expense: 0
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      home:
+        members: [parent1, parent2, child]
+        state_code: NH
+        bedrooms: 3
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap_heating_cost: 2_566.23996
+    nh_fap_eligible: true
+    nh_fap: 1_763
+
+# Manual p78 AA/A: delivered 2500; electricity and gas 2500 * 0.75 = 1875.
+# Approved assumption applies that fuel schedule once to direct-pay and heat-in-rent.
+# Manual p21 excludes subsidized heat-in-rent, not subsidized direct-pay households.
+- name: Case 86, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      electric_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      electric_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      gas_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      gas_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      oil_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      oil_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      subsidized_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      subsidized_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+    spm_units:
+      electric_direct:
+        members: [electric_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      electric_rent:
+        members: [electric_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      gas_direct:
+        members: [gas_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      gas_rent:
+        members: [gas_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      oil_direct:
+        members: [oil_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      oil_rent:
+        members: [oil_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      subsidized_rent:
+        members: [subsidized_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      subsidized_direct:
+        members: [subsidized_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      electric_direct:
+        members: [electric_direct]
+        state_code: NH
+        bedrooms: 3
+      electric_rent:
+        members: [electric_rent]
+        state_code: NH
+        bedrooms: 3
+      gas_direct:
+        members: [gas_direct]
+        state_code: NH
+        bedrooms: 3
+      gas_rent:
+        members: [gas_rent]
+        state_code: NH
+        bedrooms: 3
+      oil_direct:
+        members: [oil_direct]
+        state_code: NH
+        bedrooms: 3
+      oil_rent:
+        members: [oil_rent]
+        state_code: NH
+        bedrooms: 3
+      subsidized_rent:
+        members: [subsidized_rent]
+        state_code: NH
+        bedrooms: 3
+      subsidized_direct:
+        members: [subsidized_direct]
+        state_code: NH
+        bedrooms: 3
+  output:
+    nh_fap_eligible: [true, true, true, true, true, true, false, true]
+    nh_fap: [1_875, 1_875, 1_875, 1_875, 2_500, 2_500, 0, 1_875]

@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, NH, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: NH
+        status: partial
+        name: New Hampshire FAP
+        full_name: New Hampshire Fuel Assistance Program
+        variable: nh_fap
+        parameter_prefix: gov.states.nh.doe.fap
+        verified_years: "2027"
+        notes: PY2027 regular heating only. Bedrooms alone approximate room count, and one annual $50 exclusion applies to combined interest and dividends per SPM unit. Unsubsidized heat-in-rent uses the ordinary fuel schedule without an additional reduction under an approved modeling assumption; the state's reduction is unverified and awards may be overstated. Subsidized heat-in-rent is ineligible. Unsupported fuel or heating-cost cases return zero. Earlier years are unverified historical estimates; crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

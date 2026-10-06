@@ -1,1 +1,1 @@
-Add New Hampshire FAP eligibility, countable income, and actual-cost benefit schedule components for PY2027; the final heat-in-rent adjustment remains pending.
+Add New Hampshire FAP eligibility, countable income, and regular heating awards for PY2027, with a documented assumption that unsubsidized heat-in-rent receives the ordinary fuel schedule without an additional reduction.

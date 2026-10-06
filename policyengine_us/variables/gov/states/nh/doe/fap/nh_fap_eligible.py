@@ -6,7 +6,8 @@ class nh_fap_eligible(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "Eligible for New Hampshire FAP"
-    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=10, 11, 12, 17, 18, 21, 34, 35, 36, 57, 74, 76, 77"
+    # PY2027 manual, pages 10-12, 17-18, 21, 34-36, 57, 74, 76-77.
+    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=21"
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):
@@ -19,7 +20,7 @@ class nh_fap_eligible(Variable):
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values
         # Subsidized heat-in-rent is excluded. Nonsubsidized heat-in-rent can
-        # qualify even when its actual cost or payment adjustment is unknown.
+        # qualify without a separately reported heating bill.
         housing_eligible = ~(heat_in_rent & subsidized)
         heating_eligible = (heating_cost > 0) | heat_in_rent
         return (
