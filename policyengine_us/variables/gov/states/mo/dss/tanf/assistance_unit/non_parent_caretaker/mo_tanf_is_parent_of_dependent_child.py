@@ -14,13 +14,16 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "home, other than a cash-eligible child, also excludes a non-parent "
         "caretaker. Defaults to having one's own children in the household "
         "(own_children_in_household) and being 12 to 50 years older than one "
-        "of the tax unit's dependent children. The count also includes adult "
-        "children and children outside the tax unit, so set this input "
-        "directly when it does not match: false, for example, for a "
-        "dependent whose own child in the home is an adult. Setting it for "
-        "one person sets it to false for everyone else not given a value, so "
-        "set it for every parent it applies to. Heads and spouses not marked "
-        "as non-parent caretakers are always treated as parents; this input "
+        "of the tax unit's dependent children, as of January of the year. "
+        "The age window is an imputation rule, not law. The count also "
+        "includes adult children and children outside the tax unit, so set "
+        "this input directly when it does not match: false, for example, for "
+        "a dependent whose own child in the home is an adult, and true for an "
+        "adoptive parent outside the 12-to-50-year window. Setting it for one "
+        "person for a year sets it to false for everyone else not given a "
+        "value for that year, so set it for every parent it applies to; other "
+        "years still use the default. Heads and spouses not marked as "
+        "non-parent caretakers are always treated as parents; this input "
         "applies to other tax-unit members."
     )
     definition_period = YEAR
@@ -37,13 +40,16 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         # whose own child in the home is the head. Also require the person
         # to be 12 to 50 years older than at least one of the tax unit's
         # dependent children: a parent is at least 12 at a child's birth,
-        # and births after 50 are rare. Dependent children are all under 19,
-        # so their ages span less than the 38-year window, and "some child
-        # is 12 to 50 years younger" reduces to the youngest being at least
-        # 12 years younger and the oldest at most 50. In the CPS-based
-        # default dataset this keeps every weighted parent of a dependent
-        # child in the unit and drops the weighted non-parents the count
-        # alone marks.
+        # and births after 50 are rare. This window is an imputation rule,
+        # not law: the rule covers adoptive parents of any age, so a genuine
+        # adoptive parent outside the window needs this input set to true.
+        # Dependent children are all under 19, so their ages span less than
+        # the 38-year window, and "some child is 12 to 50 years younger"
+        # reduces to the youngest being at least 12 years younger and the
+        # oldest at most 50.
+        # The flag is annual and reads January's dependent children, so a
+        # change in who is a dependent child later in the year (for example
+        # a child aging out through monthly_age inputs) does not update it.
         has_own_children = person("is_parent", period)
         age = person("age", period)
         dependent_child = person("mo_tanf_dependent_child", period.first_month)

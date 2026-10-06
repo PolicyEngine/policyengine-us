@@ -4,32 +4,45 @@
 adoptive parents of one or more of the eligible children" in the assistance
 unit, whoever claims them for taxes. SSI recipients are excluded (13 CSR
 40-2.310(1)(F)). A parent who is also a cash-eligible child is a member as a
-child, and DSS Manual 0210.005.30 lets that three-generation family file as
-one group. A non-parent caretaker relative is excluded while a parent is in
-the home (0210.005.10).
+child. For a minor parent (the grid's 16-year-old), DSS Manual 0210.005.30
+lets that three-generation family file as one group. For an 18-year-old
+parent in secondary school the sources leave the grouping open; the grid
+checks the model's retained interpretation (i), one combined unit. A
+non-parent caretaker relative is excluded while a parent is in the home
+(0210.005.10).
 
 Every combination in a grid of households shares one simulation and is
-checked against those rules, restated here independently of the formulas:
+checked against those rules as restated here. Where an expectation still
+reads a model output, the item says so:
 
 1. Membership: children not on SSI; unmarked heads and spouses not on SSI;
    a tax-dependent adult when they are a dependent child, or when they are a
-   parent of the children and not on SSI; a marked head or spouse only as an
-   included non-parent caretaker, which needs no parent in the home.
-2. A dependent parent who is a member always excludes the non-parent
-   caretaker.
-3. Marking the dependent adult as a parent adds exactly that adult to the
-   unit and removes, at most, an included non-parent caretaker.
+   parent of the children and not on SSI; a marked head or spouse only as the
+   non-parent caretaker identified in item 2, when the model includes them.
+   Inclusion (neediness and the grant comparison) is the model's own
+   mo_tanf_non_parent_caretaker_included, not restated here.
+2. Non-parent caretaker identification, person by person: with no parent in
+   the home, the marked head, or the marked spouse when the head is on SSI;
+   with a parent in the home, nobody. A dependent parent who is a member
+   always excludes the non-parent caretaker.
+3. Marking the dependent adult as a parent, against the same households with
+   the adult marked not a parent, adds exactly that adult to the unit and
+   removes, at most, an included non-parent caretaker. Both sides run the
+   current code; the comparison does not execute the code before this rule.
 4. Unit income is the sum of members' income, less the student exemption.
 5. With no income anywhere, the grant is the payment standard for the unit
-   size, and marking a parent never lowers it, unless the parent receives
-   SSI: then they stay out of the unit but still exclude the non-parent
-   caretaker (intended).
+   size, and marking a parent never lowers it (against the model's grant
+   with the adult marked not a parent), unless the parent receives SSI: then
+   they stay out of the unit but still exclude the non-parent caretaker
+   (intended).
 6. The default input (own children in the household) gives the same answer
    as marking the parent directly, and each household gets the same answer
    alone as in the shared simulation.
 7. The default marks a person with own children in the household only when
    some dependent child in the tax unit is 12 to 50 years younger, checked
    pair by pair against the formula's youngest-and-oldest shortcut.
+8. An explicit parent flag adds a person only when their own tax unit has a
+   dependent child.
 """
 
 import itertools
@@ -217,6 +230,22 @@ def _parent_in_home(h, kind=None):
     return unmarked_caretaker or adult_parent
 
 
+def _expected_non_parent_caretaker(h, role):
+    """The non-parent caretaker considered for the unit, restated.
+
+    13 CSR 40-2.300(5)(D) admits one only "if there are no natural or
+    adoptive parents in the home"; DSS Manual 0210.005.35 bars one on SSI.
+    One per couple: the head, or the spouse when the head is on SSI. Only
+    the head and spouse are marked, and the spouse is never on SSI here.
+    """
+    eligible = h["marked"] and not _parent_in_home(h)
+    if role == "head":
+        return eligible and not h["head_ssi"]
+    if role == "spouse":
+        return eligible and h["head_ssi"]
+    return False
+
+
 def _expected_member(h, role, kind=None):
     """Restated membership, or None where the non-parent caretaker rules decide."""
     kind = kind or h["adult"]
@@ -250,19 +279,46 @@ def non_parent_sim():
 
 def test_membership_matches_the_restated_rule(sim):
     member = _calc(sim, "mo_tanf_is_assistance_unit_member")
-    npcr = _calc(sim, "mo_tanf_non_parent_caretaker")
+    # Inclusion of an identified caretaker is the model's own decision.
     included = _calc(sim, "mo_tanf_non_parent_caretaker_included")
     for k, (i, role) in enumerate(PEOPLE):
         h = HOUSEHOLDS[i]
         expected = _expected_member(h, role)
         if expected is None:
-            # A marked head or spouse is a member only as an included
-            # non-parent caretaker, which requires no parent in the home.
-            assert member[k] == (npcr[k] and included[i]), (h, role)
-            if member[k]:
-                assert not _parent_in_home(h), (h, role)
+            # A marked head or spouse is a member only as the identified
+            # non-parent caretaker, and only when included.
+            npcr = _expected_non_parent_caretaker(h, role)
+            assert member[k] == (npcr and included[i]), (h, role)
         else:
             assert member[k] == expected, (h, role)
+
+
+def test_non_parent_caretaker_identification_matches_independent_rule(sim):
+    npcr = _calc(sim, "mo_tanf_non_parent_caretaker")
+    expected = np.array(
+        [_expected_non_parent_caretaker(HOUSEHOLDS[i], role) for i, role in PEOPLE]
+    )
+    mismatches = [
+        (HOUSEHOLDS[i], role, bool(npcr[k]))
+        for k, (i, role) in enumerate(PEOPLE)
+        if npcr[k] != expected[k]
+    ]
+    assert not mismatches, mismatches[:5]
+    has_npcr = np.zeros(N, dtype=bool)
+    for k, (i, role) in enumerate(PEOPLE):
+        has_npcr[i] |= npcr[k]
+    expected_has_npcr = np.array(
+        [
+            h["marked"]
+            and not _parent_in_home(h)
+            and (not h["head_ssi"] or h["married"])
+            for h in HOUSEHOLDS
+        ]
+    )
+    assert has_npcr.tolist() == expected_has_npcr.tolist()
+    # The grid has households where a caretaker must be found and where none
+    # may be, so neither "never" nor "always" passes.
+    assert expected_has_npcr.any() and not expected_has_npcr.all()
 
 
 def test_a_dependent_parent_member_excludes_the_non_parent_caretaker(sim):
@@ -276,8 +332,8 @@ def test_a_dependent_parent_member_excludes_the_non_parent_caretaker(sim):
             parent_member[i] |= member[k]
     assert parent_member.any()
     assert not (parent_member & has_npcr).any()
-    # The non-parent caretaker rules see a parent in the home exactly when
-    # the restated rule does.
+    # A parent in the home rules out a caretaker; the converse, that one is
+    # found when no parent is home, is in the identification test above.
     for i, h in enumerate(HOUSEHOLDS):
         if _parent_in_home(h):
             assert not has_npcr[i], h
@@ -294,8 +350,9 @@ def test_marking_a_parent_adds_only_that_parent(sim, non_parent_sim):
             # Only an included non-parent caretaker can leave, displaced by
             # the parent now seen in the home.
             assert off_npcr[k], (HOUSEHOLDS[i], role)
-    # Before this rule, a dependent adult who is not a dependent child was
-    # never a member.
+    # With the adult marked not a parent, a dependent adult who is not a
+    # dependent child is never a member. This runs the current code with
+    # that input, not the code before parents claimed as dependents counted.
     for k, (i, role) in enumerate(PEOPLE):
         if role == "adult" and not _adult_is_dependent_child(HOUSEHOLDS[i]):
             assert not off[k]
@@ -378,6 +435,49 @@ def test_each_household_alone_matches_the_shared_simulation(sim, i):
     alone = Simulation(situation=_situation([HOUSEHOLDS[i]]))
     for variable in ("mo_tanf_assistance_unit_size", "mo_tanf"):
         assert _calc(alone, variable)[0] == pytest.approx(_calc(sim, variable)[i])
+
+
+def test_parent_flag_needs_a_dependent_child_in_the_persons_tax_unit():
+    # Each household: a mother (30) heading a tax unit with her 5-year-old,
+    # and an adult explicitly marked a parent who either files alone (no
+    # dependent child in their tax unit) or is claimed in the mother's unit.
+    cases = list(itertools.product((18, 25, 40, 60), (False, True)))
+    people, tax_units, spm_units, units = {}, {}, {}, {}
+    for i, (age, files_alone) in enumerate(cases):
+        mother, child, adult = (f"g{i}_{r}" for r in ("mother", "child", "adult"))
+        people[mother] = {"age": {YEAR: 30}, "is_tax_unit_dependent": {YEAR: False}}
+        people[child] = {"age": {YEAR: 5}, "is_tax_unit_dependent": {YEAR: True}}
+        people[adult] = {
+            "age": {YEAR: age},
+            "is_tax_unit_dependent": {YEAR: not files_alone},
+            "mo_tanf_is_parent_of_dependent_child": {YEAR: True},
+        }
+        if files_alone:
+            tax_units[f"g{i}_family"] = {"members": [mother, child]}
+            tax_units[f"g{i}_adult"] = {"members": [adult]}
+        else:
+            tax_units[f"g{i}_family"] = {"members": [mother, child, adult]}
+        spm_units[f"g{i}_spm"] = {"members": [mother, child, adult]}
+        units[f"g{i}_hh"] = {
+            "members": [mother, child, adult],
+            "state_code": {YEAR: "MO"},
+        }
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "spm_units": spm_units,
+            "households": units,
+        }
+    )
+    member = _calc(simulation, "mo_tanf_is_assistance_unit_member")
+    size = _calc(simulation, "mo_tanf_assistance_unit_size")
+    grant = _calc(simulation, "mo_tanf")
+    for i, (age, files_alone) in enumerate(cases):
+        expected = [True, True, not files_alone]
+        assert member[3 * i : 3 * i + 3].tolist() == expected, (age, files_alone)
+        assert size[i] == sum(expected), (age, files_alone)
+        assert grant[i] == pytest.approx(_payment(sum(expected)), abs=1e-3)
 
 
 def test_default_parent_input_matches_the_pairwise_age_rule():
