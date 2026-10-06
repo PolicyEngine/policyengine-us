@@ -1,5 +1,7 @@
 # FY2026 plan p10: funded IIJA supplement is $100 for each regular heating award.
-# Manual pp22,57: subtract one monthly HUD allowance from the current award.
+# Manual pp22,57: subtract one monthly HUD allowance from the regular award.
+# Interpret the supplement as requiring a positive regular payment afterward;
+# the plan does not expressly address a regular payment reduced to zero.
 # The discretionary high-need award requires an unobserved agency determination.
 
 - name: Case 1, the funded supplement is added without capping the award at a small bill.
@@ -57,9 +59,10 @@
     al_liheap_base_payment: 470
     al_liheap: 570
 
-# Annual HUD allowances below represent $0/$100/$450/$500/$540/$600 per month.
-# One-person band-one electricity is $440; the funded regular total is $540.
-- name: Case 3, monthly HUD allowances reduce the combined award and never make it negative.
+# Annual HUD allowances below represent $0/$100/$439/$440/$450/$600 per month.
+# The $440 electric base nets to $440/$340/$1/$0/$0/$0. Only the first three
+# households receive the full $100 supplement under the accepted interpretation.
+- name: Case 3, the supplement requires a positive regular payment after the HUD allowance.
   period: 2026
   input:
     state_code: [AL, AL, AL, AL, AL, AL]
@@ -70,9 +73,10 @@
     al_tanf: [0, 0, 0, 0, 0, 0]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
     heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    hud_utility_allowance: [0, 1_200, 5_400, 6_000, 6_480, 7_200]
+    hud_utility_allowance: [0, 1_200, 5_268, 5_280, 5_400, 7_200]
   output:
-    al_liheap: [540, 440, 90, 40, 0, 0]
+    al_liheap_base_payment: [440, 440, 440, 440, 440, 440]
+    al_liheap: [540, 440, 101, 0, 0, 0]
 
 - name: Case 4, the funded supplement cannot pay an income or heating or immigration ineligible household.
   period: 2026
