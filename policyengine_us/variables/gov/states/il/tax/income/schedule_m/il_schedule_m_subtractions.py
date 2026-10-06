@@ -7,5 +7,5 @@ class il_schedule_m_subtractions(Variable):
     label = "IL Schedule M deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/il-1040-schedule-m.pdf"
+    reference = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2019/individual/il-1040-schedule-m.pdf"
     defined_for = StateCode.IL

@@ -13,7 +13,9 @@ class id_income_tax_if_receiving_aged_or_disabled_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        branch = simulation.get_branch("id_receives_aged_or_disabled_credit_branch")
+        branch = get_branch_for_period(
+            simulation, "id_receives_aged_or_disabled_credit_branch", period
+        )
         branch.set_input(
             "id_receives_aged_or_disabled_credit",
             period,

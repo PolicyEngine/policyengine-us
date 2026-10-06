@@ -52,7 +52,7 @@ Two equivalent tools write this CSV; both **append** a new `--year` rather than
 overwriting, so multiple fiscal years coexist.
 
 From the HUD User API (needs a free `HUD_API_TOKEN`, register at
-<https://www.huduser.gov/hudapi/>):
+<https://www.huduser.gov/portal/dataset/fmr-api.html>):
 
 ```
 python -m policyengine_us.tools.download_hud_fmr --year 2025 --output \

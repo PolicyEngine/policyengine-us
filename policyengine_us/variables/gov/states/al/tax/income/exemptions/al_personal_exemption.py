@@ -7,9 +7,7 @@ class al_personal_exemption(Variable):
     label = "Alabama personal exemption"
     unit = USD
     # The Code of Alabama 1975 Section 40-18-19 (a)(8).
-    documentation = (
-        "https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
-    )
+    documentation = "https://alison.legislature.state.al.us/code-of-alabama"
     definition_period = YEAR
     defined_for = StateCode.AL
 
