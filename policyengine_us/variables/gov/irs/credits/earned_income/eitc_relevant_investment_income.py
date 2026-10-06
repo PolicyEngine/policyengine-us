@@ -50,12 +50,19 @@ class eitc_relevant_investment_income(Variable):
         net_capital_gains = tax_unit("net_capital_gains", period)
         # A tax unit amount supplied for net_capital_gains is kept: it is read
         # as covering every member, and any dependent's gains and losses are
-        # taken out. Otherwise net_capital_gains is the members' own gains
-        # and losses (its adds), stored in float32, so the head's and
-        # spouse's are summed directly; subtracting a dependent's gain from
-        # the rounded total could move the filers' amount once the total
-        # passes about $16.8 million.
-        aggregate_supplied = net_capital_gains != member_gains.astype(np.float32)
+        # taken out. It counts as supplied only where it was set as an input
+        # and differs from the members' own gains and losses (its adds), so an
+        # abolished or stale net_capital_gains is not read as supplied. A
+        # supplied amount is stored in float32, like any input. Otherwise the
+        # head's and spouse's gains are summed directly: net_capital_gains is
+        # stored in float32, and subtracting a dependent's gain from the
+        # rounded total could move the filers' amount once the total passes
+        # about $16.8 million. Core sums tax unit totals in float64 before
+        # storing them, so a computed net_capital_gains equals
+        # float32(member_gains) exactly.
+        aggregate_supplied = is_input(
+            tax_unit.simulation, "net_capital_gains", period
+        ) & (net_capital_gains != member_gains.astype(np.float32))
         schedule_d_gains = where(
             aggregate_supplied,
             net_capital_gains - (member_gains - filer_gains),

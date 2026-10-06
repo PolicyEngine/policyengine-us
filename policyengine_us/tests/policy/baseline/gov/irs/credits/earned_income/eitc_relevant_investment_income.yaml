@@ -6,10 +6,11 @@
 # 596 Worksheet 1 reads the filer's own Form 1040 and picks up a child's income
 # only through a Form 8814 election (lines 2 and 4 directly, lines 3 and 5
 # through Form 1040 lines 3b and 7a), which is not modeled; from $13,500 the
-# child must file their own return (2025 Form 8814, line 4). The worksheet's capital gain line (line 5) is the
-# filer's own Form 1040 line 7a. So eitc_relevant_investment_income counts the
-# head and spouse only, in both directions: a dependent's income cannot deny
-# the credit, and a dependent's loss cannot offset the filer's income.
+# child must file their own return (2025 Form 8814, line 4). The worksheet's
+# capital gain line (line 5) is the filer's own Form 1040 line 7a. So
+# eitc_relevant_investment_income counts the head and spouse only, in both
+# directions: a dependent's income cannot deny the credit, and a dependent's
+# loss cannot offset the filer's income.
 #
 # Unless noted, the filer is a 30-year-old head of household in TX for 2025
 # with $20,000 of wages and one qualifying child aged 8. 2025 amounts:
