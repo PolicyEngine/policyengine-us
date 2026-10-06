@@ -29,15 +29,18 @@ class dc_eitc_with_qualifying_child(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         child_count = tax_unit.sum(person("is_eitc_qualifying_child", period) & has_tin)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        # An individual who has a qualifying child is an eligible individual
-        # under IRC 32(c)(1)(A)(i), with no age test, even when no child is
-        # counted in the computation.
+        # The federal demographic test with these children counted: a unit
+        # with none in the count qualifies only through the childless age
+        # rules, as for the federal credit.
+        demographic_eligible = (child_count > 0) | tax_unit(
+            "eitc_demographic_eligible", period
+        )
         itin_eitc = calculate_eitc_like_amount(
             tax_unit,
             period,
             parameters,
             child_count,
-            tax_unit("dc_eitc_has_qualifying_child", period),
+            demographic_eligible,
             filer_has_tin,
         )
         p = parameters(period).gov.states.dc.tax.income.credits.eitc

@@ -13,10 +13,11 @@ class dc_eitc_has_qualifying_child(Variable):
         # IRC 32(c)(3)(D) keeps a child without a Social Security number out of
         # the credit computation without making it a non-qualifying child.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_D",
-        # From 2023: "If you and your spouse have SSNs or ITINs but your
-        # child(ren) do not, you need to claim the DC EITC for filers without
-        # a qualifying child."
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=10",
+        # From 2023, Line 27a: "Each qualifying child must have a valid social
+        # security number (SSN) or individual taxpayer identification number
+        # (ITIN) issued by the IRS. If you have no children who qualify, you
+        # must claim the DC EITC without qualifying children."
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=18",
     )
     defined_for = StateCode.DC
 

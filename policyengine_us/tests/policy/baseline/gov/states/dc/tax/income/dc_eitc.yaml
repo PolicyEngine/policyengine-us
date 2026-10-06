@@ -331,6 +331,7 @@
     # 70% x 7.65% x 6,000 = 321.30, as for the ITIN child. The childless
     # schedule would have paid 459.
     eitc: 459
+    dc_eitc_has_qualifying_child: true
     dc_eitc_with_qualifying_child: 321.3
     dc_eitc_without_qualifying_child: 0
     dc_eitc: 321.3
@@ -394,10 +395,11 @@
         members: [head, dependent]
         state_code: DC
   output:
-    # 2023 D-40 instructions, p. 10: "If you and your spouse have SSNs or
-    # ITINs but your child(ren) do not, you need to claim the DC EITC for
-    # filers without a qualifying child." (f)(1)(C): 600, below the 21,888
-    # phase-out start.
+    # 2023 D-40 instructions, Line 27a (p. 18): "Each qualifying child must
+    # have a valid social security number (SSN) or individual taxpayer
+    # identification number (ITIN) issued by the IRS. If you have no children
+    # who qualify, you must claim the DC EITC without qualifying children."
+    # (f)(1)(C): 600, below the 21,888 phase-out start.
     eitc: 0
     dc_eitc_has_qualifying_child: false
     dc_eitc_with_qualifying_child: 0
@@ -436,6 +438,40 @@
     dc_eitc_with_qualifying_child: 321.3
     dc_eitc_without_qualifying_child: 0
     dc_eitc: 321.3
+
+- name: Without the TIN rule, a filer under 25 whose qualifying child has no TIN gets no DC EITC in 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    gov.states.dc.tax.income.credits.eitc.qualifying_child_tin_required: false
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # With no child in the count, the federal demographic test falls back on
+    # the childless minimum age of 25, as the federal credit that is the
+    # pre-2023 base does, so the self-only amount is 0.
+    eitc: 0
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 0
 
 - name: DC EITC uses the one-child credit for an ITIN child in TY2023 at low earnings
   period: 2023
