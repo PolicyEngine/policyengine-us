@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 
 def rate_gains_less_losses(tax_unit, period):
@@ -12,16 +15,24 @@ def rate_gains_less_losses(tax_unit, period):
     The same amount is lines 14 to 16 of the Unrecaptured Section 1250 Gain
     Worksheet combined. Amounts entered already netted, as Schedule D lines
     18 and 19 report them, are not part of it.
+
+    The worksheets are the head and spouse's: a tax unit dependent's gains
+    and losses are on the dependent's own return.
     """
     # Collectibles gain or (loss); a net collectibles loss is negative.
-    collectibles = add(tax_unit, period, ["collectibles_gain_or_loss"])
-    section_1202_gain = max_(0, add(tax_unit, period, ["section_1202_gain"]))
+    collectibles = tax_unit_non_dep_add(tax_unit, period, ["collectibles_gain_or_loss"])
+    section_1202_gain = max_(
+        0, tax_unit_non_dep_add(tax_unit, period, ["section_1202_gain"])
+    )
     # 26 U.S.C. 1222(6), the same net short-term capital loss net_capital_gain
     # subtracts: Schedule D line 7, if a loss.
     net_short_term_capital_loss = max_(
-        0, -add(tax_unit, period, ["short_term_capital_gains"])
+        0, -filer_schedule_d_lines(tax_unit, period).line_7
     )
-    carryover = max_(0, add(tax_unit, period, ["long_term_capital_loss_carryover"]))
+    carryover = max_(
+        0,
+        tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_loss_carryover"]),
+    )
     return collectibles + section_1202_gain - net_short_term_capital_loss - carryover
 
 
@@ -51,7 +62,7 @@ class capital_gains_28_percent_rate_gain(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
-        reported = add(
+        reported = tax_unit_non_dep_add(
             tax_unit,
             period,
             [

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 
 class filer_loss_limited_net_capital_gains(Variable):
@@ -25,15 +28,8 @@ class filer_loss_limited_net_capital_gains(Variable):
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         loss_limit = p.capital_gains.loss_limit[filing_status]
-        net_capital_gains = tax_unit_non_dep_add(
-            tax_unit, period, ["long_term_capital_gains", "short_term_capital_gains"]
-        )
-        # Capital gain distributions go on Schedule D line 13 with the other
-        # gains and losses, so they net before the limit. Each filer's input
-        # is floored at zero, as in irs_gross_income.
-        person = tax_unit.members
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        distributions = tax_unit.sum(
-            not_dependent * max_(0, person("non_sch_d_capital_gains", period))
-        )
-        return max_(-loss_limit, net_capital_gains + distributions)
+        # Schedule D line 16 of the head and spouse. Capital gain
+        # distributions go on line 13 with the other gains and losses, so
+        # they net before the limit (line 21).
+        lines = filer_schedule_d_lines(tax_unit, period)
+        return max_(-loss_limit, lines.line_16)

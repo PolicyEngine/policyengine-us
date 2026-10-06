@@ -179,3 +179,62 @@
     capital_gains_28_percent_rate_gain: 610_988.38
     schedule_d_unrecaptured_section_1250_gain: 208_514.11
     adjusted_net_capital_gain: 290_510.39
+
+- name: A dependent's collectibles gain is on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 10_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 5_000
+        collectibles_gain_or_loss: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    # The head's worksheet has no collectibles gain.
+    capital_gains_28_percent_rate_gain: 0
+    net_capital_gain: 10_000
+    adjusted_net_capital_gain: 10_000
+
+- name: A dependent's Schedule D line 18 amounts are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 10_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 5_000
+        long_term_capital_gains_on_collectibles: 2_000
+        long_term_capital_gains_on_small_business_stock: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    capital_gains_28_percent_rate_gain: 0
+
+- name: A dependent's short-term loss does not reduce the head's 28 percent rate gain
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 50_000
+        collectibles_gain_or_loss: 10_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -8_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    # Line 6 is the head's Schedule D line 7 loss: none.
+    capital_gains_28_percent_rate_gain: 10_000

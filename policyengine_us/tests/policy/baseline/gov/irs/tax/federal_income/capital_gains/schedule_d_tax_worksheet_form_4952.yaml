@@ -293,3 +293,29 @@
     # 48,350; line 29 = 533,400 - 48,350 = 485,050; line 30 = 197,800; line
     # 31 = 29,670; line 38 = 29,670. Before the fix: 24,532.50.
     amt_tax_including_cg: 29_670
+
+- name: A dependent's gains are not in the head's worksheet or Form 4952
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 2_000
+        qualified_dividend_income: 6_000
+        investment_income_elected_form_4952: 5_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    # Line 2 = 6,000; line 3 = 5,000; line 4 = min(2,000, 2,000) = 2,000;
+    # line 5 = 3,000; line 6 = 3,000.
+    dividend_income_reduced_by_investment_income: 3_000
+    # Line 7 = min(2,000, 2,000); line 8 = min(5,000, 2,000); line 9 = 0.
+    dwks09: 0
+    dwks10: 3_000
+    net_capital_gain: 3_000
