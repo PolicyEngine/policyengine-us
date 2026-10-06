@@ -1,6 +1,6 @@
 # PA total taxable income starts from federal gross income, which leaves out a
 # tax unit dependent's income, and subtracts the amounts in it that Pennsylvania
-# does not tax. A dependent files their own PA return (2025 PA-40 IN, page 3,
+# does not tax. A dependent files their own PA return (2025 PA-40 IN, page 4,
 # "Minors"), so only the head's and spouse's nontaxable amounts are subtracted.
 
 - name: A dependent's retirement income does not reduce the filer's PA taxable income.
