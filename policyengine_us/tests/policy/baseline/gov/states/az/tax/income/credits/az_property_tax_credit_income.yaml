@@ -890,3 +890,35 @@
     az_property_tax_credit_income: 1_500
     # Line 11a: Schedule 1, 0 - 1,750 -> 502. Line 13: 750.
     az_property_tax_credit: 502
+
+# A dependent's federal adjustments belong on the dependent's own return
+# (#9801), so they never reduce the claimant's federal AGI; Form 140PTC lines A
+# to I take no IRA adjustment.
+- name: A dependent's IRA contribution does not lower household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: 4_000
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 1_600
+        traditional_ira_contributions: 200
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # The claimant's federal AGI: long-term gain 4,000.
+    adjusted_gross_income: 4_000
+    # Line A: column 3 wages 1,600. Line D: column 1 gain 4,000.
+    # Line J: 5,600.
+    az_property_tax_credit_income: 5_600
+    # Line 11b: Schedule 2 pays nothing at 5,501 or more.
+    az_property_tax_credit: 0
