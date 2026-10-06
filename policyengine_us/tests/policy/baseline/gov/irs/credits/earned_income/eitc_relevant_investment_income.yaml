@@ -3,10 +3,10 @@
 # income of the taxpayer" exceeds the limit, and 32(i)(2)(A) counts interest
 # and dividends only "to the extent includible in gross income", which a
 # dependent's are not (irs_gross_income leaves them out of AGI). Publication
-# 596 Worksheet 1 reads the filer's own Form 1040 and picks up a child's
-# interest and dividends only through a Form 8814 election (lines 2 and 4),
-# which is not modeled; from $13,500 the child must file their own return
-# (2025 Form 8814, line 4). The worksheet's capital gain line (line 5) is the
+# 596 Worksheet 1 reads the filer's own Form 1040 and picks up a child's income
+# only through a Form 8814 election (lines 2 and 4 directly, lines 3 and 5
+# through Form 1040 lines 3b and 7a), which is not modeled; from $13,500 the
+# child must file their own return (2025 Form 8814, line 4). The worksheet's capital gain line (line 5) is the
 # filer's own Form 1040 line 7a. So eitc_relevant_investment_income counts the
 # head and spouse only, in both directions: a dependent's income cannot deny
 # the credit, and a dependent's loss cannot offset the filer's income.
@@ -319,4 +319,59 @@
     # The supplied 10,000 is read as the whole unit's net gain, including the
     # child's 3,000, which is then taken out: 10,000 - 3,000 = 7,000.
     eitc_relevant_investment_income: 7_000
+    eitc_investment_income_eligible: true
+
+- name: A dependent's very large gain does not move the filer across the limit from below
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_950
+        long_term_capital_gains: 1
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,950 + 1 = 11,951 > 11,950. net_capital_gains is stored in float32,
+    # where 20,000,001 rounds to 20,000,000, so taking the child's gain out
+    # of it would give 11,950 and allow the credit.
+    eitc_relevant_investment_income: 11_951
+    eitc_investment_income_eligible: false
+
+- name: A dependent's very large gain does not move the filer across the limit from above
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_947
+        long_term_capital_gains: 3
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,947 + 3 = 11,950 <= 11,950. In float32, 20,000,003 rounds to
+    # 20,000,004, so taking the child's gain out of it would give 11,951.
+    eitc_relevant_investment_income: 11_950
     eitc_investment_income_eligible: true

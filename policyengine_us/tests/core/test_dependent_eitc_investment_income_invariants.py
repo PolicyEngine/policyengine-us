@@ -10,11 +10,14 @@ through a Form 8814 election, which the model does not implement. So
 
 Hypothesis draws batches of tax units (single, head of household with
 dependents, joint with and without dependents), and a seeded population of 200
-such units adds breadth. Each batch runs as one vectorized simulation, twice:
-with the dependents' investment income inputs as drawn, of either sign, and
-with them set to zero. For every tax unit:
+such units adds breadth. Dependents' capital gains are sometimes $16 million
+or more, where float32 rounding of a tax unit total would show. Each batch runs
+as one vectorized simulation three times: as drawn; with the dependents'
+investment income inputs set to zero; and with $1,000 more of the head's
+interest. For every tax unit:
 
-1. The dependents' investment income never changes the filer's
+1. The dependents' investment income, of any size or sign, never changes the
+   filer's
    `eitc_relevant_investment_income`, `eitc_investment_income_eligible`,
    `eitc`, `filer_loss_limited_net_capital_gains` or AGI.
 2. Differential: `eitc_relevant_investment_income` equals an independent numpy
@@ -22,11 +25,15 @@ with them set to zero. For every tax unit:
    interest and dividends, plus their Schedule D gain with capital gain
    distributions floored at zero (line 7), plus their net rental and passive
    income floored at zero (line 13).
-3. Bounds: it is at least the filers' interest and dividends, so never
-   negative, and a filer's extra dollar of interest raises it by a dollar.
+3. Bounds: it is at least the filers' interest and dividends (drawn
+   nonnegative), so never negative, and $1,000 more of the head's interest
+   raises it by exactly $1,000.
 4. For tax units without dependents and without a negative distributions
    input, it equals the previous all-member formula, so leaving dependents out
    changes nothing for them.
+
+Gains are entered per person, so `net_capital_gains` is computed rather than
+supplied; the YAML cases cover a supplied tax unit amount.
 """
 
 import numpy as np
@@ -64,14 +71,17 @@ INTEREST_SHIFT = 1_000.0
 
 nonnegative = st.one_of(st.just(0.0), st.integers(1, 8_000).map(float))
 signed = st.one_of(st.just(0.0), st.integers(-12_000, 12_000).map(float))
+# $16 million to $64 million, in multiples of 16 so float32 holds them exactly.
+very_large = st.integers(-4_000_000, 4_000_000).map(lambda x: 16.0 * x)
 
 
 @st.composite
-def investment_amounts(draw):
+def investment_amounts(draw, dependent=False):
     passive = draw(signed)
+    capital = st.one_of(signed, very_large) if dependent else signed
     return {
         **{name: draw(nonnegative) for name in PORTFOLIO_INPUTS},
-        **{name: draw(signed) for name in CAPITAL_INPUTS},
+        **{name: draw(capital) for name in CAPITAL_INPUTS},
         # Form 1099-DIV box 2a amounts are not negative, but the input can be;
         # the model floors each person's amount at zero.
         DISTRIBUTIONS: draw(st.one_of(nonnegative, st.integers(-3_000, -1).map(float))),
@@ -91,7 +101,10 @@ def tax_units(draw):
         "head": draw(investment_amounts()),
         "spouse": draw(investment_amounts()) if kind.startswith("joint") else None,
         "dependents": [
-            {"age": draw(st.integers(1, 17)), **draw(investment_amounts())}
+            {
+                "age": draw(st.integers(1, 17)),
+                **draw(investment_amounts(dependent=True)),
+            }
             for _ in range(n_dependents)
         ],
     }
@@ -100,14 +113,19 @@ def tax_units(draw):
 SEED = 20261006
 
 
-def _seeded_amounts(rng):
+def _seeded_amounts(rng, dependent=False):
     def some(low, high, p=0.5):
         return float(round(rng.uniform(low, high))) if rng.random() < p else 0.0
+
+    def capital():
+        if dependent and rng.random() < 0.2:
+            return 16.0 * int(rng.integers(1_000_000, 4_000_000))
+        return some(-12_000, 12_000)
 
     passive = some(-12_000, 12_000)
     return {
         **{name: some(1, 8_000) for name in PORTFOLIO_INPUTS},
-        **{name: some(-12_000, 12_000) for name in CAPITAL_INPUTS},
+        **{name: capital() for name in CAPITAL_INPUTS},
         DISTRIBUTIONS: some(-3_000, 8_000),
         "rental_income": some(-12_000, 12_000),
         "partnership_s_corp_income": passive,
@@ -129,7 +147,10 @@ def _seeded_units(n=200):
                 "head": _seeded_amounts(rng),
                 "spouse": (_seeded_amounts(rng) if kind.startswith("joint") else None),
                 "dependents": [
-                    {"age": int(rng.integers(1, 18)), **_seeded_amounts(rng)}
+                    {
+                        "age": int(rng.integers(1, 18)),
+                        **_seeded_amounts(rng, dependent=True),
+                    }
                     for _ in range(n_dependents)
                 ],
             }
