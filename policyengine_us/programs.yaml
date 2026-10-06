@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: GA, OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, GA, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
       - state: GA
         status: partial
@@ -810,8 +810,8 @@ programs:
         full_name: Georgia Low Income Home Energy Assistance Program
         variable: ga_liheap
         parameter_prefix: gov.states.ga.dfcs.liheap
-        verified_years: "2026"
-        notes: FY2026 ordinary regular heating eligibility and published fuel payments. Unlisted fuel payments and the Level I cutoff above household size 16 remain unverified; zero for an unlisted fuel is not a legal denial. Actual categorical recipient membership, assistance-only resources and utility credit balances use documented existing-input approximations. Historical backfills and FY2027 draft changes are unverified. Regular heating only; crisis, cooling, weatherization and equipment assistance are excluded.
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: OR
         status: in_progress
         name: LIHEAP

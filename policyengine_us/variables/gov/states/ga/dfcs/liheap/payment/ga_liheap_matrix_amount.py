@@ -45,7 +45,11 @@ class ga_liheap_matrix_amount(Variable):
             base_amounts,
             default=0,
         )
-        # Applicant payments use the lowest award in the income level.
+        # Applicant payments use the lowest award in the income level (plan
+        # page 30). Heat-in-rent renters billed directly for electric, subsidized
+        # or not, are paid to the electric vendor (manual pages 4 and 89), so
+        # they keep the matrix step 2 amount for their main heating fuel and an
+        # unspecified fuel pays 0.
         direct_payment = ga_liheap_has_direct_payment_route(spm_unit, period)
         base = where(
             direct_payment & (heating_type != fuel.NONE),
