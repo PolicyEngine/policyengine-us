@@ -143,7 +143,6 @@ from .crfb import (
     create_senior_deduction_extension_reform,
     create_agi_surtax_reform,
 )
-from .states.ca.prop3.ca_prop3_reform import create_ca_prop3_reform
 from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
@@ -290,6 +289,9 @@ from .refundable_credit_conversion import (
 
 from .states.ca.ab2591 import (
     create_ca_ab2591_reform,
+)
+from .states.ca.prop3 import (
+    create_ca_prop3_reform,
 )
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
@@ -492,7 +494,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
 
     ut_ctc = create_ut_ctc_reform(parameters, period)
-    ca_prop3 = create_ca_prop3_reform(parameters, period)
 
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
@@ -564,6 +565,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     ca_ab2591 = create_ca_ab2591_reform(parameters, period)
+    ca_prop3 = create_ca_prop3_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
@@ -659,7 +661,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         ut_hb210,
         ut_hb210_s2,
         ut_ctc,
-        ca_prop3,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -715,6 +716,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
+        ca_prop3,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,

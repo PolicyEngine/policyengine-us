@@ -32,3 +32,17 @@
   output:
     # (50000 - 1000) + 2000 + 5000 = 56000
     ca_income_tax_before_refundable_credits: 56_000
+
+- name: The 1% mental health services tax stacks on the 2031 regular tax
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_taxable_income: 2_000_000
+    ca_non_refundable_credits: 0
+    ca_amt: 0
+  output:
+    # Regular tax 3,201.97f + .093 x (2,000,000 - 72,724f) = 181,942.90 (f = 196.85 / 172.797),
+    # plus mental health services tax .01 x (2,000,000 - 1,000,000) = 10,000.
+    ca_income_tax_before_refundable_credits: 191_942.90

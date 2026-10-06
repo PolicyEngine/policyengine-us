@@ -70,6 +70,8 @@ brackets:
         uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.103
+      # Proposition 3 (November 3, 2026 ballot) would repeal this 2031 reversion here and in
+      # the next two brackets; check the certified result and remove these entries if it passes.
       2031-01-01: 0.093
   - threshold:
       values:
@@ -115,6 +117,9 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf
     - title: Cal. Const. art. XIII, § 36(f)(2) (rates above 9.3% apply to taxable years before January 1, 2031)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&sectionNum=SEC.%2036.&article=XIII
-    - title: Cal. Rev. & Tax. Code § 17041
+    - title: Proposition 55 (2016), Text of Proposed Law, SEC. 4, amending Cal. Const. art. XIII, § 36(f)(2) to end the rates above 9.3% before January 1, 2031
+      href: https://vig.cdn.sos.ca.gov/2016/general/en/pdf/text-proposed-laws.pdf#page=16
+    - title: Cal. Rev. & Tax. Code § 17041(a)(1), (h)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17041.&lawCode=RTC
-      # Index according to federal tax parameter rules until we add California CPI trend.
+    - title: Cal. Rev. & Tax. Code § 17045 (joint and surviving spouse tax is twice the tax on one-half of taxable income)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17045.&lawCode=RTC

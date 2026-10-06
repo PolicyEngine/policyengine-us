@@ -11,7 +11,7 @@
     ca_income_tax_before_credits: 464.61
 
 
-- name: Single filing, income in 3rd tax bracket 
+- name: Head of household with $1 million in 2021 reaches the 12.3% bracket
   period: 2021
   absolute_error_margin: 1
   input:
@@ -22,6 +22,13 @@
   # 82_046.3 + (12.30% of (1_000_000 - 850_503)) = 100_434.131
     ca_income_tax_before_credits: 100_434.131
 
+# 2030-2031 cases: thresholds are the FTB 2025 schedules uprated by gov.states.ca.cpi,
+# a factor of f2030 = 193 / 172.797 for 2030 and f2031 = 196.85 / 172.797 for 2031.
+# Single and separate tax at the 9.3% threshold is 3,201.97f (head of household 3,616.45f).
+# Joint and surviving spouse tax is twice the single tax on half the income (RTC § 17045).
+# The higher rates apply before January 1, 2031 (Cal. Const. art. XIII, § 36(f)(2)-(3)).
+# These are also the reform-off controls for contrib/states/ca/prop3/ca_prop3.yaml.
+
 - name: Single filer with $1 million in 2030 pays the 10.3%, 11.3% and 12.3% rates
   period: 2030
   absolute_error_margin: 1
@@ -30,7 +37,8 @@
     filing_status: SINGLE
     state_code: CA
   output:
-    # Cal. Const. art. XIII, § 36(f)(2): the rates above 9.3% apply before January 1, 2031.
+    # 3,201.97f + .093 x (1,000,000 - 72,724f) + .01 x (1,000,000 - 371,479f)
+    # + .01 x (1,000,000 - 445,771f) + .01 x (1,000,000 - 742,953f), f = f2030
     ca_income_tax_before_credits: 101_596.07
 
 - name: Single filer with $1 million in 2031 pays 9.3% on all income above the 9.3% threshold
@@ -41,7 +49,7 @@
     filing_status: SINGLE
     state_code: CA
   output:
-    # 2031 thresholds: 9.3% starts at 82,847.04; the three higher brackets revert to 9.3%.
+    # 3,201.97f + .093 x (1,000,000 - 72,724f), f = f2031; the 9.3% threshold is 82,847.04.
     ca_income_tax_before_credits: 88_942.90
 
 - name: Joint filers with $2 million in 2031 pay 9.3% on all income above the 9.3% threshold
@@ -52,4 +60,50 @@
     filing_status: JOINT
     state_code: CA
   output:
+    # 2 x 88,942.90, the single tax on $1 million.
     ca_income_tax_before_credits: 177_885.81
+
+- name: Separate filer with $1 million in 2031 pays 9.3% on all income above the 9.3% threshold
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SEPARATE
+    state_code: CA
+  output:
+    # Same schedule as single: 3,201.97f + .093 x (1,000,000 - 72,724f), f = f2031.
+    ca_income_tax_before_credits: 88_942.90
+
+- name: Surviving spouse with $2 million in 2031 pays 9.3% on all income above the 9.3% threshold
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 2_000_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: CA
+  output:
+    # Treated as a joint return (RTC § 17045): 2 x 88,942.90.
+    ca_income_tax_before_credits: 177_885.81
+
+- name: Head of household with $1.5 million in 2031 pays 9.3% on all income above the 9.3% threshold
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+    # 3,616.45f + .093 x (1,500,000 - 98,990f), f = f2031.
+    ca_income_tax_before_credits: 133_132.32
+
+- name: Head of household with $1.5 million in 2030 pays the 10.3%, 11.3% and 12.3% rates
+  period: 2030
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+    # 3,616.45f + .093 x (1,500,000 - 98,990f) + .01 x (1,500,000 - 505,208f)
+    # + .01 x (1,500,000 - 606,251f) + .01 x (1,500,000 - 1,010,417f), f = f2030
+    ca_income_tax_before_credits: 154_557.25
