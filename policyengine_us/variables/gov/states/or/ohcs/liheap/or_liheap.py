@@ -10,7 +10,14 @@ class or_liheap(Variable):
     defined_for = "or_liheap_eligible"
     # PDF pages 61, 62, 67, 78, 79, 80, 81, 93, 94.
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=61"
-    documentation = "Annual regular heating assistance, verified for FY2026. Earlier years use parameter backfilling and are unverified historical estimates. No actual-expense cap applies. Heat-in-rent households need the building heating fuel. Discretionary bulk-fuel minimum-delivery payments and local supplements are unsupported because the necessary award information is absent. Cooling, crisis and equipment assistance are excluded."
+    documentation = (
+        "Annual regular heating assistance, verified for FY2026. Earlier years use "
+        "parameter backfilling and are unverified historical estimates. No "
+        "actual-expense cap applies. Heat-in-rent households need the building heating "
+        "fuel. Discretionary bulk-fuel minimum-delivery payments and local supplements "
+        "are unsupported because the necessary award information is absent. Cooling, "
+        "crisis and equipment assistance are excluded."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["or"].ohcs.liheap.payment

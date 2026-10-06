@@ -1,13 +1,50 @@
-- name: Adult earnings exclude secondary students and do not offset wages with business losses
+# Page numbers in the comments are those of the FY2026 Oregon Energy Assistance
+# Intake, Operations and Policy Manual (earned income on page 39,
+# self-employment income on page 45, earnings of minors and of high-school
+# students on pages 41 and 53):
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=41
+- name: Case 1, earnings of a minor and of a high-school student are excluded and a business loss does not offset wages.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    state_code: [OR, OR, OR, OR]
-    age: [17, 18, 19, 40]
-    is_in_secondary_school: [false, true, false, false]
-    employment_income: [1000, 2000, 3000, 4000]
-    self_employment_income: [100, 200, 300, -5000]
-    sstb_self_employment_income: [0, 0, 400, 500]
-    farm_operations_income: [0, 0, 500, 600]
+    people:
+      person1:
+        age: 17
+        employment_income: 1_000
+        self_employment_income: 100
+      person2:
+        age: 18
+        is_in_secondary_school: true
+        employment_income: 2_000
+        self_employment_income: 200
+      person3:
+        age: 19
+        employment_income: 3_000
+        self_employment_income: 300
+        sstb_self_employment_income: 400
+        farm_operations_income: 500
+      person4:
+        age: 40
+        employment_income: 4_000
+        self_employment_income: -5_000
+        sstb_self_employment_income: 500
+        farm_operations_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OR
   output:
-    or_liheap_countable_earned_income: [0, 0, 4200, 5100]
+    # person1: "Income Earned by minors", household members under eighteen,
+    # is not counted (pages 41 and 53), 0.
+    # person2: income earned by household members eighteen and over who are
+    # enrolled in high school is not counted (pages 41 and 53), 0.
+    # person3: wages 3,000 (page 39) + self-employment income, "income from a
+    # business, less business expenses" (page 45), 300 + 400 + farm 500 =
+    # 4,200.
+    # person4: wages 4,000 (page 39) + specified-service self-employment 500 +
+    # farm 600 (page 45) = 5,100. The 5,000 business loss is floored at zero,
+    # a modeling convention: the manual does not say that a current-period
+    # loss offsets other earnings.
+    or_liheap_countable_earned_income: [0, 0, 4_200, 5_100]

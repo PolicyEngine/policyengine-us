@@ -2,7 +2,7 @@
 # Operations and Policy Manual (income limits on page 77, Region 1 matrix on
 # pages 78-79, Region 2 matrix on pages 80-81):
 # https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
-- name: Adult net earnings and child interest count but child wages do not
+- name: Case 1, adult net earnings and child interest count but child wages do not.
   period: 2026
   input:
     people:
@@ -59,7 +59,7 @@
     or_liheap_eligible: true
     # Region 2, size 2, "$12,550 $25,098", Electricity $505 (page 80).
     or_liheap: 505
-- name: Adult secondary-school earnings are excluded for a nonsubsidized heat-in-rent household
+- name: Case 2, adult secondary-school earnings are excluded for a nonsubsidized heat-in-rent household.
   period: 2026
   input:
     state_code: OR
@@ -89,7 +89,7 @@
     # Region 1 (Multnomah, page 78), size 1, "$0 $9,597", Electricity $465
     # (page 78).
     or_liheap: 465
-- name: Public-housing household paying its own heat can receive a standard grant
+- name: Case 3, public-housing household paying its own heat can receive a standard grant.
   period: 2026
   input:
     state_code: OR

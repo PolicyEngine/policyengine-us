@@ -1,13 +1,19 @@
-- name: Interest threshold and counted benefits, including child support and Oregon TANF
+# Page numbers in the comments are those of the FY2026 Oregon Energy Assistance
+# Intake, Operations and Policy Manual (income and income exclusion chart on
+# pages 37-48, proof of income on pages 49-51, private disability insurance
+# examples on pages 55-56):
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=50
+- name: Case 1, interest counts only above $200 and every listed unearned source counts.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     state_code: [OR, OR]
     or_liheap_countable_earned_income: [0, 0]
+    # The only difference between the two households: interest at the $200
+    # threshold and one dollar over it.
     interest_income: [200, 201]
     ordinary_dividend_income: [100, 100]
     rental_income: [300, 300]
-    social_security: [1000, 1000]
+    social_security: [1_000, 1_000]
     railroad_benefits: [120, 120]
     ssi: [0, 0]
     tanf: [500, 500]
@@ -22,30 +28,50 @@
     general_assistance: [0, 0]
     estate_income: [0, 0]
   output:
-    or_liheap_countable_income: [2880, 3081]
-- name: Manual disability insurance examples count the insurer payment plus Social Security once
+    # Each source is marked "Considered Income? Yes" in the chart: dividends
+    # 100 (page 39) + rental income 300 (page 44) + Social Security 1,000
+    # (page 46) + Railroad Retirement 120 (page 44) + TANF 500 (page 47) +
+    # pensions 200 (page 44) + unemployment insurance 150 (page 48) + child
+    # support 250 (page 38) + workers compensation 100 (page 49) + private
+    # disability insurance 75 (page 39) + veterans benefits 50 (page 48) +
+    # alimony 25 (page 37) + strike benefits 10 (page 47) = 2,880.
+    # Interest is counted "only if amount is over $200" (pages 43 and 50):
+    # $200 adds nothing, $201 is counted in full, 2,880 + 201 = 3,081.
+    or_liheap_countable_income: [2_880, 3_081]
+
+- name: Case 2, the manual's private disability insurance examples count the insurer's payment plus Social Security once.
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: [OR, OR]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     or_liheap_countable_earned_income: [0, 0]
-    # Manual pages 55-56: annualize the insurer's payment after its SSA offset.
-    disability_benefits: [3832.68, 8511.96]
-    social_security: [10164, 14868]
+    # Example A (page 55): net monthly insurer benefit $319.39 x 12 = 3,832.68.
+    # Example B (page 55): monthly benefit paid $709.33 x 12 = 8,511.96.
+    disability_benefits: [3_832.68, 8_511.96]
+    # Example A (page 55): Social Security $847.00 x 12 = 10,164.
+    # Example B (page 55): Social Security $825.00 + $414.00 = $1,239.00 x 12
+    # = 14,868.
+    social_security: [10_164, 14_868]
     ssi: [0, 0]
     tanf: [0, 0]
   output:
-    or_liheap_countable_income: [13996.68, 23379.96]
+    # Example A (page 55): "the maximum the client will ever receive from both
+    # sources is $1,166.39" a month, x 12 = 13,996.68.
+    # Example B (page 56): "$1,948.33 ($1,786.15 + $162.18)" a month,
+    # x 12 = 23,379.96.
+    or_liheap_countable_income: [13_996.68, 23_379.96]
 
-- name: State cash entitlement counts only when TANF is taken up
+- name: Case 3, an Oregon TANF entitlement counts only when it is taken up.
   period: 2026
   input:
     state_code: [OR, OR]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     age: [40, 40]
-    or_tanf: [1200, 1200]
+    or_tanf: [1_200, 1_200]
     takes_up_tanf_if_eligible: [false, true]
     ssi: [0, 0]
   output:
-    or_liheap_countable_income: [0, 1200]
+    # TANF is "Considered Income? Yes" (page 47) and the proof of income is
+    # documentation "showing amount of assistance", so the model counts TANF
+    # actually received: the first household does not take up its $1,200
+    # entitlement, 0; the second receives it, 1,200.
+    or_liheap_countable_income: [0, 1_200]
