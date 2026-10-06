@@ -16,11 +16,16 @@ class al_liheap_countable_income(Variable):
         person = spm_unit.members
         adult = person("age", period) >= p.earned_income_min_age
         # Annual income approximates the preceding calendar month's income.
-        # Existing signed net business inputs need no further expense deduction.
-        # The manual does not expressly settle whether losses offset other income;
-        # preserve the signed inputs and floor the combined household total.
-        earned = add(person, period, p.sources.earned)
-        unearned = add(spm_unit, period, p.sources.unearned, options=[ADD])
+        # Existing net business inputs need no further expense deduction.
+        # Manual 5.5.1 counts "total monthly cash receipts before taxes from
+        # all sources", so each source is floored at zero and a loss in one
+        # source cannot offset another.
+        earned = 0
+        for source in p.sources.earned:
+            earned = earned + max_(person(source, period), 0)
+        unearned = 0
+        for source in p.sources.unearned:
+            unearned = unearned + max_(person(source, period), 0)
         net_gambling = max_(
             person("gambling_winnings", period) - person("gambling_losses", period),
             0,
@@ -32,7 +37,9 @@ class al_liheap_countable_income(Variable):
         # principal or nonperiodic receipts. Financial assistance covers cash
         # support from family or friends; royalties, stipends, and some
         # severance payments remain unavailable as distinct inputs.
-        return max_(
-            spm_unit.sum(earned * adult + net_gambling) + unearned,
-            0,
+        # The annual tanf aggregate includes al_tanf and applies take-up;
+        # al_tanf alone is the entitlement and would count benefits a
+        # nonrecipient could get.
+        return spm_unit.sum(earned * adult + unearned + net_gambling) + spm_unit(
+            "tanf", period
         )

@@ -197,8 +197,9 @@
   output:
     al_liheap_countable_income: 12_000
 
-# Contract v1.1 preserves existing signed net inputs, then floors the household total; the source does not expressly settle loss offsets.
-- name: Case 7, negative combined existing income is floored at zero.
+# Manual p17 counts "total monthly cash receipts ... from all sources", so each source is floored at zero.
+# max(6_000, 0) wages + max(-18_000, 0) self-employment = 6_000 + 0 = 6_000.
+- name: Case 7, a business loss does not offset wages.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -223,7 +224,7 @@
         state_code: AL
         hud_utility_allowance: 0
   output:
-    al_liheap_countable_income: 0
+    al_liheap_countable_income: 6_000
 
 # Manual p18 counts net gambling winnings; gambling losses cannot create negative gambling income.
 - name: Case 8, gambling receipts are net of losses without a negative gambling offset.
@@ -355,3 +356,125 @@
     al_liheap_countable_income: 24_000
     al_liheap_income_limit: 23_472
     al_liheap_eligible: false
+
+# Manual p18 counts "Government employee pensions (including military retirement pay)".
+# Military retirement pay 6_000 + civilian pension 1_200 = 7_200; 7_200 / 12 = 600 <= 652
+# size-one band 1 top, so electricity 440 - 0 + IIJA 100 = 540.
+- name: Case 12, military retirement pay is counted alongside a civilian pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        ssi: 0
+        military_retirement_pay: 6_000
+        taxable_pension_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 7_200
+    al_liheap_income_band: 1
+    al_liheap: 540
+
+# Manual p17 counts cash receipts from all sources, so each person's source is floored at zero.
+# person1: wages 12_000 + rent 6_000 = 18_000. person2: max(-4_000, 0) business
+# + max(-6_000, 0) rent + farm rent 1_200 = 1_200. Total 19_200; 19_200 / 12 = 1_600 is above
+# the size-two band 1 top 881 and at most the band 2 top 1_763. Propane 500 - 30 + 10 + 100 = 580.
+- name: Case 13, one member's losses offset neither another source nor another member's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 6_000
+      person2:
+        age: 44
+        immigration_status: CITIZEN
+        ssi: 0
+        self_employment_income: -4_000
+        rental_income: -6_000
+        farm_rent_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 19_200
+    al_liheap_income_limit: 31_728
+    al_liheap_income_band: 2
+    al_liheap: 580
+
+# Both families have the same 3_600 annual (300 per month) Alabama TANF entitlement.
+# The first takes up TANF: wages 1_200 + tanf 3_600 = 4_800.
+# The second does not: tanf is 0, so countable income is wages 1_200 only.
+- name: Case 14, TANF is counted only when the family takes it up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person4:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 3_600
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 3_600
+        takes_up_tanf_if_eligible: false
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+      household2:
+        members: [person3, person4]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_tanf: [3_600, 3_600]
+    tanf: [3_600, 0]
+    al_liheap_countable_income: [4_800, 1_200]
