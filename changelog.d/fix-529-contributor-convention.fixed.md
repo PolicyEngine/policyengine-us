@@ -1,0 +1,1 @@
+State 529 deductions and credits count only the head's and spouse's own contributions, so a contribution recorded on a dependent is the dependent's own. Ohio limits its 529 deduction to $4,000 for each beneficiary, for the taxpayer and spouse combined, and deducts contributions carried forward.
