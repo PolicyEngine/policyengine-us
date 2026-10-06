@@ -37,9 +37,9 @@ class nh_fap_countable_income(Variable):
                 0,
             )
         )
-        # Page 16 separately excludes the first $50 of each source; page 17's
-        # "and/or" summary is ambiguous. Apply each exclusion once per household
-        # source, not per person. This interpretation lacks agency confirmation.
+        # The investment disregard is set to zero while its source and
+        # person/household application remain unresolved. Count these receipts
+        # without that deduction; see the parameter's modeling-omission note.
         interest = add(spm_unit, period, ["interest_income"])
         dividends = add(spm_unit, period, ["ordinary_dividend_income"])
         investment_income = max_(interest - p.investment_disregard, 0) + max_(

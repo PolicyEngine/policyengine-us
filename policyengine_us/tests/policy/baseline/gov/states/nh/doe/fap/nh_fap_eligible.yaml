@@ -1108,3 +1108,33 @@
         bedrooms: 4
   output:
     nh_fap_eligible: [true, false, false, false, false, false, false, false, true]
+
+# The user-approved omission counts all $25 of interest; 48,713 + 25 = 48,738
+# exceeds the one-person income limit. Previously the investment disregard
+# excluded this interest and left the household eligible at the limit.
+- name: "Case 28, interest below fifty dollars can put income above the limit when the deduction is deferred."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713
+        interest_income: 25
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 48_738
+    nh_fap_eligible: false
+    nh_fap_base_benefit: 0

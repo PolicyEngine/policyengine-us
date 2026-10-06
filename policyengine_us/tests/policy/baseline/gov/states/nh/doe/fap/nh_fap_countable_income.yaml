@@ -487,8 +487,8 @@
   output:
     nh_fap_countable_income: 1_400
 
-# Manual pp15-16 separate interest and dividend exclusions; p17 wording ambiguity is retained in source documentation.
-- name: "Case 17, the first fifty dollars of each investment source is excluded."
+# User-approved omission: the ambiguous investment deduction is disabled; 50 + 50 = 100.
+- name: "Case 17, interest and dividends are counted without the deferred deduction."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -512,10 +512,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 0
+    nh_fap_countable_income: 100
 
-# Manual pp15-16: (51-50)+(51-50)=2 under the documented separate-source interpretation.
-- name: "Case 18, one dollar above each investment disregard is countable."
+# Skipping the ambiguous deduction counts the full 51 + 51 = 102.
+- name: "Case 18, investment receipts above fifty dollars remain fully countable."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -539,10 +539,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 2
+    nh_fap_countable_income: 102
 
-# Contract interpretation of household income: (80-50)+(60-50)=40, not a separate 50 allowance per person.
-- name: "Case 19, investment disregards apply once per household source."
+# With no investment deduction, both household members contribute their full receipts: 40 + 20 + 40 + 40 = 140.
+- name: "Case 19, investment receipts are counted for every household member without deductions."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -572,9 +572,9 @@
         members: ["person1", "person2"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 40
+    nh_fap_countable_income: 140
 
-# Manual pp15-16 counts dividends above 50; canonical ordinary_dividend_income includes both dividend components.
+# The canonical ordinary_dividend_income includes both dividend components; the deferred deduction is not applied.
 - name: "Case 20, qualified and nonqualified dividends feed the canonical ordinary aggregate."
   period: 2027
   absolute_error_margin: 0.01
@@ -599,7 +599,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 150
+    nh_fap_countable_income: 200
 
 # Manual p15; annual SSI receipts count once. Medicare reconstruction is expressly deferred.
 - name: "Case 21, gross Social Security and adult SSI are both countable."

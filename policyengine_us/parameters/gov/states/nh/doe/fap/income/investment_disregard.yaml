@@ -1,14 +1,17 @@
-description: New Hampshire excludes this annual amount of each household's interest and dividend income under the Fuel Assistance Program.
-# Page 16 lists this exclusion separately for interest and dividends. Its
-# application to each household source follows that specific list; page 17's
-# combined "and/or" summary is ambiguous and lacks agency clarification.
+description: PolicyEngine applies this modeled annual investment-income disregard per source when calculating countable income under the New Hampshire Fuel Assistance Program.
+# Modeling omission: skip this deduction for now, as requested by the user.
+# The PY2027 manual lists the first $50 of interest and dividends separately
+# on pages 15-16, but page 17 combines them as interest "and/or" dividends.
+# It does not specify whether the allowance applies per person or household.
+# Zero deliberately disables the deduction; it is not the published policy
+# amount. Revisit both the amount and its application when clarified.
 values:
-  2026-10-01: 50
+  2026-10-01: 0
 
 metadata:
   unit: currency-USD
   period: year
-  label: New Hampshire FAP annual disregard for each investment income source
+  label: New Hampshire FAP modeled annual investment income disregard
   reference:
-    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Non-countable Income and Allowable Expenses
-      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=15, 16, 17
+    - title: "PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Countable and Non-countable Income and Allowable Expenses #page 15,16,17"
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=15
