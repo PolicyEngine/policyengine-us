@@ -11,10 +11,13 @@ as one vectorized simulation. Each unit is single or joint, with wages,
 retirement income and Social Security for the head and spouse, who are aged
 from 35 to 80: under and over the common retirement-exclusion ages, and over
 the ages that gate credits such as Utah's retirement credit (born in 1952 or
-earlier). Each has zero to two dependents, either children or an elderly
-relative. Social Security and the older ages matter: Utah's military
-retirement credit, for example, is open only when the Social Security credit
-outweighs the age-gated retirement credit.
+earlier). The filers' incomes are drawn at full or at a quarter scale, so
+units fall both above and below the limits on income-tested credits and
+exclusions. Each unit has zero to two dependents, either children or an
+elderly relative. Social Security, moderate incomes and the older ages all
+matter: Utah's military retirement credit, for example, is open only when
+the income-limited Social Security credit outweighs the age-gated retirement
+credit, and Pennsylvania excludes retirement income only past age 59.5.
 
 1. `tax_unit_non_dep_add` equals a numpy reference: the head's and spouse's
    amounts of person-level variables plus tax-unit-level variables. For tax
@@ -25,6 +28,9 @@ outweighs the age-gated retirement credit.
    state taxable income. (State income tax itself may still rise: credits
    keyed to household income, such as Oklahoma's sales tax relief credit,
    count every household member's income.)
+3. A unit whose dependents have no income has the same inputs in both
+   populations, so its state income tax, AGI and taxable income are the same
+   in both: no unit's results depend on another unit's inputs.
 """
 
 import numpy as np
@@ -40,8 +46,15 @@ TOLERANCE = 0.01  # dollars
 # Ages that reach every retirement age test, including Utah's retirement
 # credit (born in 1952 or earlier, so 73 or older in 2025).
 FILER_AGES = [35, 60, 67, 70, 75, 80]
-# A qualifying relative's gross income must stay under the exemption amount
-# ($5,200 in 2025), so an elderly dependent's draws are kept small.
+# Most units draw incomes well above the limits on income-tested credits and
+# exclusions (Utah's Social Security credit phases out above $75,000 of
+# modified AGI for a single filer, for example), so a unit's filer income is
+# scaled by one of these.
+FILER_INCOME_SCALES = [0.25, 1.0]
+# The share of dependents who are an elderly qualifying relative, such as a
+# parent, rather than a child. A qualifying relative's gross income must stay
+# under the exemption amount ($5,200 in 2025), so their draws are kept small.
+ELDERLY_DEPENDENT_SHARE = 1 / 3
 ELDERLY_DEPENDENT_SCALE = 800
 RETIREMENT_INPUTS = [
     "taxable_public_pension_income",
@@ -58,6 +71,9 @@ def _draw_units(n, rng):
     for _ in range(n):
         joint = bool(rng.random() < 0.5)
         n_dependents = int(rng.integers(0, 3))
+        # Scale the filers' income down in some units, so the draws reach the
+        # moderate incomes that income-limited credits and exclusions need.
+        income_scale = float(rng.choice(FILER_INCOME_SCALES))
 
         def draw(scale):
             return float(round(rng.choice([0.0, rng.uniform(0, scale)])))
@@ -66,10 +82,13 @@ def _draw_units(n, rng):
             return {name: draw(scale) for name in RETIREMENT_INPUTS}
 
         def filer():
-            return {**retirement(40_000), "social_security": draw(40_000)}
+            return {
+                **retirement(40_000 * income_scale),
+                "social_security": draw(40_000 * income_scale),
+            }
 
         def dependent():
-            if rng.random() < 0.2:
+            if rng.random() < ELDERLY_DEPENDENT_SHARE:
                 # A qualifying relative, such as an elderly parent.
                 return {
                     "age": int(rng.choice([70, 78, 85])),
@@ -84,7 +103,7 @@ def _draw_units(n, rng):
                 "joint": joint,
                 "head_age": int(rng.choice(FILER_AGES)),
                 "spouse_age": int(rng.choice(FILER_AGES)),
-                "head_wages": float(round(rng.uniform(0, 120_000))),
+                "head_wages": float(round(rng.uniform(0, 120_000 * income_scale))),
                 "head": filer(),
                 "spouse": filer() if joint else None,
                 "dependents": [dependent() for _ in range(n_dependents)],
@@ -102,7 +121,11 @@ def _filer_ages(u):
 
 
 def _situation(units, states, year, *, zero_dependents=False):
+    # Every group entity gets one instance per unit. Core puts every person in
+    # a single instance of any group entity the situation leaves out, which
+    # would pool SPM-unit benefits such as TANF across all units and states.
     people, tax_units, marital_units, households = {}, {}, {}, {}
+    spm_units, families = {}, {}
     for s, state in enumerate(states):
         for i, u in enumerate(units):
             key = f"{s}_{i}"
@@ -145,6 +168,16 @@ def _situation(units, states, year, *, zero_dependents=False):
                     },
                 }
             tax_units[f"tu_{key}"] = {"members": members}
+            # No unit takes up SNAP. Idaho's grocery credit is not allowed for
+            # months the household receives SNAP (Idaho Code 63-3024A), so a
+            # dependent's income could end the household's SNAP and raise the
+            # credit: a benefit interaction, not a subtraction from the
+            # filer's income, which is what these properties check.
+            spm_units[f"spm_{key}"] = {
+                "members": members,
+                "takes_up_snap_if_eligible": {year: False},
+            }
+            families[f"fam_{key}"] = {"members": members}
             households[f"hh_{key}"] = {
                 "members": members,
                 "state_name": {year: state},
@@ -153,6 +186,8 @@ def _situation(units, states, year, *, zero_dependents=False):
         "people": people,
         "tax_units": tax_units,
         "marital_units": marital_units,
+        "spm_units": spm_units,
+        "families": families,
         "households": households,
     }
 
@@ -246,11 +281,15 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
             )
             > TOLERANCE
         )
+    tax_changed = np.abs(tax_with - tax_without) > TOLERANCE
     states = np.repeat(INCOME_TAX_STATES, len(units))
     unit_has_dependent_income = np.array(
         [any(any(d["income"].values()) for d in u["dependents"]) for u in units]
     )
     has_dependent_income = np.tile(unit_has_dependent_income, len(INCOME_TAX_STATES))
+
+    leaked = ~has_dependent_income & (changed | tax_changed)
+    assert not leaked.any(), sorted(set(states[leaked]))
 
     lowered = tax_with < tax_without - TOLERANCE
     assert not lowered.any(), sorted(set(states[lowered]))
