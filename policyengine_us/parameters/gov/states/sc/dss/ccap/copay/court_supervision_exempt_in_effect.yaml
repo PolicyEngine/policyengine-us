@@ -1,0 +1,20 @@
+description: South Carolina exempts a family with a court-supervised child from the copay under the Child Care Scholarship Program if this is true.
+# The protective services definition, whose families have no copay, includes
+# children under court supervision from the FFY 2025-2027 CCDF Plan.
+values:
+  2022-10-01: false
+  2024-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: South Carolina CCAP court supervision copay exemption in effect
+  reference:
+    - title: SC CCDF State Plan FFY 2025-2027, Section 2.2.2(f), protective services definition
+      href: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=24
+    - title: SC CCDF State Plan FFY 2025-2027, Section 3.3.1(vi), co-payments waived for protective services
+      href: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=47
+    - title: SC Child Care Scholarship Policy Manual, Section 2.4, Specific Child Care Eligibility Categories
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=65
+    - title: SC Child Care Scholarship Policy Manual, Section 3.4.2, Client Copayments
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=108

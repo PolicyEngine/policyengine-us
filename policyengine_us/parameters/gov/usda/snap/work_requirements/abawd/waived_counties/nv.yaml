@@ -1,0 +1,21 @@
+description: Counties in Nevada with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  # Nevada's statewide waiver (waived_states) ran through 2026-01-31. FY2026
+  # waiver (unemployment over 10 percent): Mineral County plus 12
+  # reservation areas and colonies (sub-county, not modeled), 2026-02-01
+  # through 2027-01-31 (FNS response, February 10, 2026).
+  2026-02-01:
+    - MINERAL_COUNTY_NV # FIPS 32021
+  2027-02-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Nevada
+  reference:
+    - title: USDA FNS Nevada ABAWD Waiver Response, February 10, 2026 - requested area and Mineral County
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nv-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Nevada ABAWD Waiver Response, February 10, 2026 - reservation areas and colonies, implementation date (2026-02-01), and expiration date (2027-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nv-abawd-response-fy2026.pdf#page=3

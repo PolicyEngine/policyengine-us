@@ -1,0 +1,155 @@
+# Kansas LIEAP benefit matrix household size group
+# (KS_BenefitMatrix_2026.pdf columns "Household Size 1-4" and "Household Size
+# 5 and Over"): group 1 for one to four countable members, group 2 for five
+# or more. Size counts only citizens and qualified aliens (KEESM 13330).
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, single person is in the 1-4 group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size_group: 1
+
+- name: Case 2, four members are the top of the 1-4 group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    ks_liheap_household_size_group: 1
+
+- name: Case 3, five members are the bottom of the 5 and over group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 6
+      person5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    ks_liheap_household_size_group: 2
+
+- name: Case 4, seven members are in the 5 and over group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 12
+      person5:
+        age: 9
+      person6:
+        age: 5
+      person7:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: KS
+  output:
+    ks_liheap_household_size_group: 2
+
+- name: Case 5, five members with one undocumented member fall in the 1-4 group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+      person4:
+        age: 6
+      person5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # KEESM 13330: countable size 4 -> "Household Size 1-4"
+    ks_liheap_household_size_group: 1
+
+- name: Case 6, FY2025 season uses the same size groups.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 6
+      person5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # KS_BenefitMatrix_2025.pdf columns are the same 1-4 / 5 and over split.
+    ks_liheap_household_size_group: 2

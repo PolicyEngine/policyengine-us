@@ -1,0 +1,86 @@
+# KEESM 13340, including facts that cannot be inferred from fuel bills.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+- name: Case 1, purchased wood qualifies.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heating_type: WOOD
+    wood_expense: 600
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+- name: Case 2, an unknown heating fuel with no cost information does not establish vulnerability.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heating_type: UNSPECIFIED
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: Case 3, unsubsidized heat included in rent qualifies and is paid from the other-fuel table.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+    # An unspecified fuel uses the Other table: 10,000 / 12 = 833 -> 0-899;
+    # KS_BenefitMatrix_2026.pdf p.4 (80%) House, size 1-4 = 639; max(639, 130).
+    ks_liheap_fuel_category: OTHER
+    ks_liheap: 639
+- name: Case 4, subsidized heat included in rent does not qualify by default.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: Case 5, subsidized excess heating charges can establish vulnerability.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+    ks_liheap_energy_vulnerable: true
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true
+- name: Case 6, shared unmetered heat can be explicitly excluded.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heat_expense_included_in_rent: true
+    ks_liheap_energy_vulnerable: false
+  output:
+    ks_liheap_energy_vulnerable: false
+    ks_liheap_eligible: false
+- name: Case 7, a homeless household with qualifying prior-address heating debt can qualify.
+  period: 2026
+  input:
+    state_code: KS
+    age: 40
+    ks_liheap_countable_income: 10_000
+    heating_type: NONE
+    ks_liheap_energy_vulnerable: true
+  output:
+    ks_liheap_energy_vulnerable: true
+    ks_liheap_eligible: true

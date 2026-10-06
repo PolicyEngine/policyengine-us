@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ar.tax.income.ar_income_tax_helpers import (
+    ar_main_income_tax,
+)
 
 
 class ar_income_tax_before_non_refundable_credits_joint(Variable):
@@ -18,10 +21,6 @@ class ar_income_tax_before_non_refundable_credits_joint(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_joint", period)
-
-        main_rate = p.rate.calc(taxable_income)
-        pre_reduction_tax = main_rate * taxable_income
-        reduction = p.reduction.calc(taxable_income)
-        total_main_rate = max_(pre_reduction_tax - reduction, 0)
+        total_main_rate = max_(ar_main_income_tax(taxable_income, p), 0)
         low_income_tax = person("ar_low_income_tax_joint", period)
         return min_(total_main_rate, low_income_tax)

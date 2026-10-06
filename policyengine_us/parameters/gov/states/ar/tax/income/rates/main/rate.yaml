@@ -1,4 +1,4 @@
-description: Arkansas taxes personal income at these amounts.
+description: Arkansas taxes personal income at these rates, by taxable income. Through 2025 the row's rate applies to all taxable income, less the published reduction; from 2026 each rate applies to the income within its row, up to the high-income threshold.
 metadata:
   type: single_amount 
   threshold_unit: currency-USD
@@ -7,13 +7,29 @@ metadata:
   period: year
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A) # (d)(1) for uprating.
-    href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
+    href: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-2/section-26-51-201/
+  - title: Arkansas Act 1459 of 2013, § 1 (0.9% first bracket from tax year 2014)
+    href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=1
+  - title: Arkansas Act 22 of 2015, § 2, amending Ark. Code § 26-51-201(a) (tax year 2014-2018 tables and the bracket adjustment above $75,000)
+    href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2015R%2FPublic%2F&file=22.pdf&ddBienniumSession=2015%2F2015R#page=1
+  - title: Arkansas Act 78 of 2017, § 2, amending Ark. Code § 26-51-201(a)(7)-(8) (tax year 2019)
+    href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2F&file=78.pdf&ddBienniumSession=2017%2F2017R#page=1
+  - title: Arkansas Act 182 of 2019, § 3, amending Ark. Code § 26-51-201(a)(7)-(10) (tax year 2020)
+    href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2019R%2FPublic%2F&file=182.pdf&ddBienniumSession=2019%2F2019R#page=2
+  - title: 2014 Indexed Tax Brackets (DFA sheet, archived copy)
+    href: https://web.archive.org/web/20150105194030/http://www.dfa.arkansas.gov/offices/incomeTax/individual/Documents/TaxBrackets_2014.pdf
   - title: 2014 AR1000F and AR1000NR Instructions (tax bracket reduced to 0.9% for 2014)
     href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=6
   - title: 2014 AR1000F and AR1000NR Instructions (2014 Regular Tax Table)
     href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=28
   - title: 2015 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2015.pdf#page=1
+  - title: 2016 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/Tax%20Brackets_2016.pdf#page=1
+  - title: 2017 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets2017.pdf#page=1
+  - title: 2018 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2018_Tax_Brackets.pdf#page=1
   - title: 2019 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2019.pdf#page=1
   - title: 2020 Indexed Tax Brackets
@@ -26,12 +42,18 @@ metadata:
     href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
   - title: 2024 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
-  - title: Arkansas 2025 Individual Income Tax Forms and Instructions
+  - title: 2025 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_TaxBrackets.pdf#page=1
+  - title: Arkansas 2025 Individual Income Tax Forms and Instructions (2025 Regular Income Tax Table)
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=30
   - title: Arkansas Act 1 of 2026 (HB1001, 1st Extraordinary Session), Section 1 amending A.C.A. § 26-51-201(a)(4)
     href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FBills%2F2026S1%2FPublic%2FHB1001.pdf#page=2
   - title: Arkansas Legislature HB1001 status page (enacted as Act 1, 2026 1st Extraordinary Session)
     href: https://arkleg.state.ar.us/Bills/Detail?id=hb1001&ddBienniumSession=2025%2F2026S1
+  - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - title: A.C.A. § 26-51-201(a)(5), added by Act 1 of 2026 (1st Extraordinary Session), § 1 (the (a)(1)-(4) tables are indexed under (d))
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
 
 brackets:
   - threshold:
@@ -41,7 +63,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.009 
@@ -49,6 +71,8 @@ brackets:
   - threshold:
       values:
         2014-01-01: 4_300
+        2017-01-01: 4_400
+        2018-01-01: 4_500
         2019-01-01: 4_600
         2020-01-01: 4_700
         2021-01-01: 4_800
@@ -61,7 +85,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.025
@@ -70,6 +94,9 @@ brackets:
   - threshold:
       values:
         2014-01-01: 8_400
+        2016-01-01: 8_500
+        2017-01-01: 8_700
+        2018-01-01: 8_900
         2019-01-01: 9_100
         2020-01-01: 9_200
         2021-01-01: 9_500
@@ -82,7 +109,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.035
@@ -92,6 +119,8 @@ brackets:
       values:
         2014-01-01: 12_600
         2015-01-01: 12_700
+        2017-01-01: 13_100
+        2018-01-01: 13_400
         2019-01-01: 13_700
         2020-01-01: 13_900
         2021-01-01: 14_300
@@ -104,7 +133,7 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.045
@@ -114,6 +143,9 @@ brackets:
       values:
         2014-01-01: 21_000
         2015-01-01: 21_100
+        2016-01-01: 21_200
+        2017-01-01: 21_700
+        2018-01-01: 22_200
         2019-01-01: 22_600
         2020-01-01: 22_900
         2021-01-01: 23_600
@@ -126,11 +158,11 @@ brackets:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: downwards
+            type: nearest
             interval: 100
     amount:
       2014-01-01: 0.06
-      2019-01-01: 0.05
+      2016-01-01: 0.05
       2022-01-01: 0.049
       2023-01-01: 0.047
       2024-01-01: 0.039
@@ -139,35 +171,29 @@ brackets:
       values:
         2014-01-01: 35_100
         2015-01-01: 35_300
+        2016-01-01: 35_100
+        2017-01-01: 36_300
+        2018-01-01: 37_200
         2019-01-01: 37_900
         2020-01-01: 38_500
         2021-01-01: 39_700
         2022-01-01: .inf
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 100
     amount:
       2014-01-01: 0.07
-      2019-01-01: 0.06
+      2016-01-01: 0.06
       2020-01-01: 0.059
       2022-01-01: .inf
   - threshold:
       values:
         2014-01-01: .inf
-        2019-01-01: 80_801 
+        2016-01-01: 75_001
+        2017-01-01: 77_401
+        2018-01-01: 79_301
+        2019-01-01: 80_801
         2020-01-01: 82_001
         2021-01-01: .inf
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 100
     amount:
       2014-01-01: .inf
-      2019-01-01: 0.069
+      2016-01-01: 0.069
       2020-01-01: 0.066
       2021-01-01: .inf

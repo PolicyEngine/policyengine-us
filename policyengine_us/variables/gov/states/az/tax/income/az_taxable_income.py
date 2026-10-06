@@ -6,7 +6,7 @@ class az_taxable_income(Variable):
     entity = TaxUnit
     label = "Arizona taxable income"
     unit = USD
-    reference = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140Ai.pdf#page=8"
+    documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140Ai.pdf#page=8\nhttps://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140Ai.pdf#page=8"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
