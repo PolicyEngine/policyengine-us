@@ -1,4 +1,10 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.section_911_net_capital_gain_other_than_dividends import (
+    section_911_net_capital_gain_other_than_dividends,
+)
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.capital_gains_tax import (
+    rate_gain_taxed_at_28_percent,
+)
 
 
 def create_capital_gains_tax_increase() -> Reform:
@@ -10,10 +16,16 @@ def create_capital_gains_tax_increase() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            net_cg = tax_unit("net_capital_gain", period)
-            taxable_income = tax_unit("taxable_income", period)
+            # As in the baseline formula, a taxpayer excluding foreign earned
+            # income applies the rates to taxable income plus the excluded
+            # amount, with gains reduced by any capital gain excess
+            # (26 U.S.C. 911(f)).
+            net_cg = tax_unit("section_911_net_capital_gain", period)
+            taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
             adjusted_net_cg = min_(
-                tax_unit("adjusted_net_capital_gain", period),
+                tax_unit("section_911_adjusted_net_capital_gain", period),
                 taxable_income,
             )  # ANCG is referred to in all cases as ANCG or taxable income if less.
 
@@ -42,7 +54,12 @@ def create_capital_gains_tax_increase() -> Reform:
 
             p_reform = parameters(period).gov.contrib.biden.budget_2025.capital_gains
             income_threshold = p_reform.income_threshold[filing_status]
-            excess_income = max_(0, taxable_income - income_threshold)
+            # The threshold tests the filer's own income, which leaves out an
+            # amount excluded under section 911, so it uses taxable income
+            # before the excluded amount is added back; the rates still stack.
+            excess_income = max_(
+                0, tax_unit("taxable_income", period) - income_threshold
+            )
 
             cg_in_top_bracket = min_(adjusted_net_cg, excess_income)
 
@@ -90,14 +107,18 @@ def create_capital_gains_tax_increase() -> Reform:
             )
 
             unrecaptured_s_1250_gain = tax_unit(
-                "unrecaptured_section_1250_gain", period
+                "section_911_unrecaptured_section_1250_gain", period
             )
 
-            qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
-
+            # Net capital gain determined without regard to section 1(h)(11),
+            # reduced first by any capital gain excess (26 U.S.C.
+            # 911(f)(2)(A)(i)).
+            net_cg_other_than_dividends = (
+                section_911_net_capital_gain_other_than_dividends(tax_unit, period)
+            )
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,
-                max_(0, net_cg - qualified_dividends),
+                net_cg_other_than_dividends,
             )
             unrecaptured_gain_deduction = max_(
                 non_cg_taxable_income + net_cg - taxable_income,
@@ -112,9 +133,16 @@ def create_capital_gains_tax_increase() -> Reform:
                 cg.unrecaptured_s_1250_rate * taxable_unrecaptured_gain
             )
 
-            remaining_cg_tax = (
-                tax_unit("capital_gains_28_percent_rate_gain", period)
-                * cg.other_cg_rate
+            # As in the baseline formula, 28 percent of the rest of taxable
+            # income (26 U.S.C. 1(h)(1)(F)): the 28 percent rate gain less
+            # any of it taxed at the regular rates.
+            remaining_cg_tax = cg.other_cg_rate * rate_gain_taxed_at_28_percent(
+                tax_unit,
+                period,
+                taxable_income,
+                non_cg_taxable_income,
+                adjusted_net_cg,
+                taxable_unrecaptured_gain,
             )
             return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
 

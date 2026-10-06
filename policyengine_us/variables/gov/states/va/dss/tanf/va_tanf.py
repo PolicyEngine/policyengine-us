@@ -8,7 +8,7 @@ class va_tanf(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "va_tanf_eligibility"
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
