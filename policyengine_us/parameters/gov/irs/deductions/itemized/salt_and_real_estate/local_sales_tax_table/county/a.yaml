@@ -4,6 +4,20 @@ metadata:
   period: year
   label: Counties using Optional Local Sales Tax Table A
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18
+    - title: 2016 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18
+    - title: 2017 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19
+    - title: 2018 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18
+    - title: 2019 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19
+    - title: 2020 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18
+    - title: 2021 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18
     - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
     - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
@@ -19,8 +33,289 @@ metadata:
 # precedence (place lists), as in "Dekalb County (excluding Atlanta)".
 # New York City's five counties (Bronx, Kings, New York, Queens and
 # Richmond) lie wholly within the city, which the selector names
-# ("Cities: New York"), so they are listed as Table A counties.
+# ("Cities: New York"; in 2015 "New York City"), so they are listed as
+# Table A counties.
+# The 2017 lists are from the February 2018 revision at irs-prior; the
+# original January 2018 printing has the same selector.
+# Readings of the 2015-2021 selectors:
+# - 2015 and 2016, Colorado: "Denver City/Denver County" names both, so
+#   Denver County is listed here and Denver city in place/a.yaml.
+# - 2018, New York: the Table A "Counties:" row names all 57 counties outside
+#   New York City, and its "Cities:" row (place/a.yaml) New York City.
+# - 2018, South Carolina: the Table A row prints a bare "Allendale" among
+#   "Aiken County, ..., Andersonn County, Bamberg County, ..."; 28 of the
+#   row's 29 other entries are counties, and 2017 and 2019-2022 print
+#   "Allendale County". It is read as Allendale County, not the town.
+# - Misprints are read as the evident county: "Andersonn County" (South
+#   Carolina, 2017 and 2018) as Anderson County, "Yatess" (New York, 2018) as
+#   Yates County, and the repeated "Columbia, Columbia" (New York, 2016) as
+#   Columbia County once.
 values:
+  2015-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08031"  # Denver County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "36117"  # Wayne County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45043"  # Georgetown County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45091"  # York County, SC
+  2016-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08031"  # Denver County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "36117"  # Wayne County, NY
+  2017-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "36117"  # Wayne County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45043"  # Georgetown County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45091"  # York County, SC
+  2018-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08059"  # Jefferson County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "22019"  # Calcasieu Parish, LA
+    - "36001"  # Albany County, NY
+    - "36003"  # Allegany County, NY
+    - "36005"  # Bronx County, NY
+    - "36007"  # Broome County, NY
+    - "36009"  # Cattaraugus County, NY
+    - "36011"  # Cayuga County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36015"  # Chemung County, NY
+    - "36017"  # Chenango County, NY
+    - "36019"  # Clinton County, NY
+    - "36021"  # Columbia County, NY
+    - "36023"  # Cortland County, NY
+    - "36025"  # Delaware County, NY
+    - "36027"  # Dutchess County, NY
+    - "36029"  # Erie County, NY
+    - "36031"  # Essex County, NY
+    - "36033"  # Franklin County, NY
+    - "36035"  # Fulton County, NY
+    - "36037"  # Genesee County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36043"  # Herkimer County, NY
+    - "36045"  # Jefferson County, NY
+    - "36047"  # Kings County, NY
+    - "36049"  # Lewis County, NY
+    - "36051"  # Livingston County, NY
+    - "36053"  # Madison County, NY
+    - "36055"  # Monroe County, NY
+    - "36057"  # Montgomery County, NY
+    - "36059"  # Nassau County, NY
+    - "36061"  # New York County, NY
+    - "36063"  # Niagara County, NY
+    - "36065"  # Oneida County, NY
+    - "36067"  # Onondaga County, NY
+    - "36069"  # Ontario County, NY
+    - "36071"  # Orange County, NY
+    - "36073"  # Orleans County, NY
+    - "36075"  # Oswego County, NY
+    - "36077"  # Otsego County, NY
+    - "36079"  # Putnam County, NY
+    - "36081"  # Queens County, NY
+    - "36083"  # Rensselaer County, NY
+    - "36085"  # Richmond County, NY
+    - "36087"  # Rockland County, NY
+    - "36089"  # St. Lawrence County, NY
+    - "36091"  # Saratoga County, NY
+    - "36093"  # Schenectady County, NY
+    - "36095"  # Schoharie County, NY
+    - "36097"  # Schuyler County, NY
+    - "36099"  # Seneca County, NY
+    - "36101"  # Steuben County, NY
+    - "36103"  # Suffolk County, NY
+    - "36105"  # Sullivan County, NY
+    - "36107"  # Tioga County, NY
+    - "36109"  # Tompkins County, NY
+    - "36111"  # Ulster County, NY
+    - "36113"  # Warren County, NY
+    - "36115"  # Washington County, NY
+    - "36117"  # Wayne County, NY
+    - "36119"  # Westchester County, NY
+    - "36121"  # Wyoming County, NY
+    - "36123"  # Yates County, NY
+    - "45003"  # Aiken County, SC
+    - "45005"  # Allendale County, SC
+    - "45007"  # Anderson County, SC
+    - "45009"  # Bamberg County, SC
+    - "45011"  # Barnwell County, SC
+    - "45021"  # Cherokee County, SC
+    - "45023"  # Chester County, SC
+    - "45025"  # Chesterfield County, SC
+    - "45029"  # Colleton County, SC
+    - "45031"  # Darlington County, SC
+    - "45033"  # Dillon County, SC
+    - "45041"  # Florence County, SC
+    - "45043"  # Georgetown County, SC
+    - "45047"  # Greenwood County, SC
+    - "45049"  # Hampton County, SC
+    - "45051"  # Horry County, SC
+    - "45055"  # Kershaw County, SC
+    - "45057"  # Lancaster County, SC
+    - "45061"  # Lee County, SC
+    - "45063"  # Lexington County, SC
+    - "45065"  # McCormick County, SC
+    - "45067"  # Marion County, SC
+    - "45069"  # Marlboro County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45085"  # Sumter County, SC
+    - "45089"  # Williamsburg County, SC
+    - "45091"  # York County, SC
+  2019-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "36117"  # Wayne County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45043"  # Georgetown County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45091"  # York County, SC
+  2020-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45091"  # York County, SC
+  2021-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36005"  # Bronx County, NY
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36047"  # Kings County, NY
+    - "36061"  # New York County, NY
+    - "36081"  # Queens County, NY
+    - "36085"  # Richmond County, NY
+    - "36107"  # Tioga County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45091"  # York County, SC
   2022-01-01:
     - "08001"  # Adams County, CO
     - "08013"  # Boulder County, CO

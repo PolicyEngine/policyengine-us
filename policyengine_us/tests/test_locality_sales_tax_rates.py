@@ -32,10 +32,10 @@ Invariants, each tested below:
 - L8 state rates: the official state general rates cover every covered
   state but Nevada, at the statutory rates (New York 4%, Virginia 4.3%,
   Minnesota 6.875%), with South Dakota's cut from 4.5% to 4.2% on 2023-07-01.
-- L7 selector lists: each year's county and place lists are disjoint across
-  tables, and name only counties and places in states that use the local
-  tables (local_sales_tax_table.yaml tests the precedence place > county >
-  state default).
+- L7 selector lists: each IRS year's (2015-2025) county and place lists are
+  disjoint across tables, and name only counties and places in states that
+  use the local tables (local_sales_tax_table.yaml tests the precedence
+  place > county > state default).
 """
 
 from datetime import date, timedelta
@@ -70,6 +70,9 @@ SALT = REPO.joinpath(
 SELECTOR = SALT / "local_sales_tax_table"
 TABLES = ("a", "b", "c", "d")
 IRS_YEARS = (2022, 2023, 2024, 2025)
+# The IRS table selector has its own lists for each year from 2015; the
+# locality rates start in 2022.
+SELECTOR_YEARS = tuple(range(2015, 2026))
 SCHEDULE = locality_rate_schedule()
 COVERED_STATES = sorted(SCHEDULE["state_code"].unique())
 KEYS = ["county_fips", "place_fips"]
@@ -318,7 +321,7 @@ def test_l6_lookup_precedence(year):
     np.testing.assert_allclose(actual, expected, rtol=1e-6)
 
 
-@pytest.mark.parametrize("year", IRS_YEARS)
+@pytest.mark.parametrize("year", SELECTOR_YEARS)
 def test_l7_selector_lists(year):
     """L7: county and place lists of each IRS year."""
 

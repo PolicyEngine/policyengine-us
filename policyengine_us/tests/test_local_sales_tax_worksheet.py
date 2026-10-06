@@ -1,11 +1,12 @@
 """Invariants of the local general sales tax worksheet (local_sales_tax).
 
 The State and Local General Sales Tax Deduction Worksheet (Instructions for
-Schedule A (Form 1040), 2022-2025) sets line 6, the local amount, as:
+Schedule A (Form 1040), 2015-2025) sets line 6, the local amount, as:
 - 0 for full-year residents of the ten jurisdictions it names after line 1;
 - line 2 x line 3 in the states it names on line 2, where line 2 is the
   Optional Local Sales Tax Table amount (for a 1% local rate) and line 3 the
-  local rate in percentage points;
+  local rate in percentage points; through 2017 the tables' columns count
+  exemptions rather than family size, both taken as tax_unit_size;
 - otherwise line 1 x line 3 / line 4, where line 1 is the state table amount
   and line 4 the state rate in the state table heading.
 PolicyEngine takes line 3 (local_sales_tax_rate) as the combined state and
@@ -24,15 +25,16 @@ Invariants, each tested below:
 - I2 non-negativity: local_sales_tax >= 0 for any combined rate.
 - I3 no-local zero: local_sales_tax = 0 in the ten no-local jurisdictions.
 - I4 threshold: local_sales_tax = 0 whenever the combined rate is at or below
-  the state rate b (California at 7.25%, Nevada at 6.85%).
+  the state rate b (California at 7.5% in 2015 and 2016 and 7.25% from 2017,
+  Nevada at 6.85%).
 - I5 linearity in line 3: f(b + k x) = k f(b + x), and f never falls as the
   combined rate rises.
 - I6 differential: local_sales_tax equals a pure-Python worksheet that reads
-  the raw parameter YAML files, over every state, year (2022-2026, 2030),
+  the raw parameter YAML files, over every state, year (2015-2026, 2030),
   family size 1-8, income row, table letter, and several rates.
 - I7 local_sales_tax never falls as the income row or family size rises.
 - I8 Table D equals the New York state table / 4, rounded half up, in
-  2022-2024, and is within 1 of it in 2025 (as printed by the IRS).
+  2015-2024, and is within 1 of it in 2025 (as printed by the IRS).
 - I9 with no rate input, the combined rate is the heading rate and
   local_sales_tax is 0 in every state without official locality rates; in
   the states with them, the combined rate is the state's official
@@ -65,7 +67,7 @@ STATE_RATES = REPO.joinpath("data", "local_sales_tax", "state_rates.csv")
 SALT = REPO.joinpath(
     "parameters", "gov", "irs", "deductions", "itemized", "salt_and_real_estate"
 )
-IRS_YEARS = (2022, 2023, 2024, 2025)
+IRS_YEARS = tuple(range(2015, 2026))
 CHECKED_YEARS = IRS_YEARS + (2026, 2030)
 TABLES = ("A", "B", "C", "D")
 FAMILY_SIZES = range(1, 9)
@@ -75,21 +77,24 @@ STATES = sorted(
     "MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV "
     "WI WY".split()
 )
-# State table footnotes, 2022-2025. Footnote 4: "This state does not have a
-# local general sales tax, so the amount in the state table is the only
-# amount to be deducted."
+# State table footnotes, 2015-2025, keyed by the first year each set is in
+# force. Footnote 4: "This state does not have a local general sales tax, so
+# the amount in the state table is the only amount to be deducted."
 NO_LOCAL = {"CT", "DC", "IN", "KY", "MA", "MD", "ME", "MI", "NJ", "RI"}
 # Footnote 2: "Follow the instructions on the next page to determine your
-# local sales tax deduction." Worksheet line 2 lists these states and Alaska.
+# local sales tax deduction" (2015-2018 add ", then add that to the
+# appropriate amount in the state table"). Worksheet line 2 lists these
+# states and Alaska. The 2015-2021 tables mark the same states as 2022.
 FOOTNOTE_2 = {
-    2022: set("AR AZ CO GA IL LA MO MS NC NY SC TN UT VA".split()),
+    2015: set("AR AZ CO GA IL LA MO MS NC NY SC TN UT VA".split()),
     2023: set("AL AR AZ CO GA IL KS LA MO MS NC NY SC TN UT VA".split()),
 }
 # Footnote 1: "Use the Ratio Method to determine your local sales tax
-# deduction." Footnotes 3 and 5 send California and Nevada residents with a
-# larger local tax to the Ratio Method too.
+# deduction" (2015-2018 add the same clause). Footnotes 3 and 5 send
+# California and Nevada residents with a larger local tax to the Ratio Method
+# too.
 FOOTNOTE_1 = {
-    2022: set("AL FL HI IA ID KS MN ND NE NM OH OK PA SD TX VT WA WI WV WY".split()),
+    2015: set("AL FL HI IA ID KS MN ND NE NM OH OK PA SD TX VT WA WI WV WY".split()),
     2023: set("FL HI IA ID MN ND NE NM OH OK PA SD TX VT WA WI WV WY".split()),
 }
 NO_STATE_TABLE = {"DE", "MT", "NH", "OR"}
@@ -98,12 +103,12 @@ NO_STATE_TABLE = {"DE", "MT", "NH", "OR"}
 OFFICIAL_RATE_STATES = sorted(
     "AR GA IA KS MN NC ND NE NV NY OH OK SD TN UT VA VT WA WI WV WY".split()
 )
-TABLE_D_NOTE_EXACT_YEARS = (2022, 2023, 2024)
+TABLE_D_NOTE_EXACT_YEARS = tuple(range(2015, 2025))
 
 
-def _irs_year(year):
-    """The IRS table year whose lists apply (2023's lists carry on)."""
-    return 2022 if year == 2022 else 2023
+def _in_force(by_first_year, year):
+    """The value of the latest key at or before the year."""
+    return by_first_year[max(y for y in by_first_year if y <= year)]
 
 
 def _load(path):
@@ -249,8 +254,10 @@ points = st.lists(
 years = st.sampled_from(CHECKED_YEARS)
 # A fixed seed and no example database keep CI runs reproducible and leave no
 # files behind; the grid tests below cover the finite dimensions exhaustively.
+# About four examples per checked year, as when the years were 2022-2026 and
+# 2030 at 25 examples.
 HYPOTHESIS_SETTINGS = settings(
-    max_examples=25,
+    max_examples=4 * len(CHECKED_YEARS),
     deadline=None,
     derandomize=True,
     database=None,
@@ -265,7 +272,6 @@ HYPOTHESIS_SETTINGS = settings(
 @pytest.mark.parametrize("year", IRS_YEARS)
 def test_i1_methods_partition_the_jurisdictions(raw, year):
     """I1: every state and DC gets exactly one worksheet method."""
-    irs_year = _irs_year(year)
     no_local = set(_dated(raw["no_local"], year))
     local_table = set(_dated(raw["local_states"], year))
     rates = {s: _dated(raw["rate"][s], year) for s in raw["rate"] if len(s) == 2}
@@ -274,8 +280,8 @@ def test_i1_methods_partition_the_jurisdictions(raw, year):
     }
     no_table = {s for s in STATES if rates.get(s, 0) == 0} - local_table
     assert no_local == NO_LOCAL
-    assert local_table == FOOTNOTE_2[irs_year] | {"AK"}
-    assert ratio == FOOTNOTE_1[irs_year] | {"CA", "NV"}
+    assert local_table == _in_force(FOOTNOTE_2, year) | {"AK"}
+    assert ratio == _in_force(FOOTNOTE_1, year) | {"CA", "NV"}
     assert no_table == NO_STATE_TABLE
     groups = [no_local, local_table, ratio, no_table]
     assert sum(len(g) for g in groups) == len(STATES) == 51
@@ -330,10 +336,14 @@ def test_i4_zero_at_or_below_the_heading_rate(year, batch, shares):
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
 def test_i4_california_and_nevada_no_box(year):
-    """I4: California at 7.25% and Nevada at 6.85% enter no local rate."""
-    amounts = _simulate(year, ["CA", "NV"], [2, 2], [8, 8], [0.0725, 0.0685])
+    """I4: California at its heading rate (7.5% in 2015 and 2016, 7.25% from
+    2017) and Nevada at 6.85% enter no local rate; 0.01 point more does."""
+    headings = _heading_rates(year)
+    at = [headings["CA"], headings["NV"]]
+    assert at == pytest.approx([0.075 if year <= 2016 else 0.0725, 0.0685])
+    amounts = _simulate(year, ["CA", "NV"], [2, 2], [8, 8], at)
     assert list(amounts) == [0, 0]
-    above = _simulate(year, ["CA", "NV"], [2, 2], [8, 8], [0.0726, 0.0686])
+    above = _simulate(year, ["CA", "NV"], [2, 2], [8, 8], [r + 0.0001 for r in at])
     assert (above > 0).all()
 
 
@@ -388,7 +398,7 @@ def test_i7_never_falls_as_income_row_or_family_size_rises(year):
 @pytest.mark.parametrize("year", IRS_YEARS)
 def test_i8_table_d_is_a_quarter_of_the_new_york_table(raw, year):
     """I8: selector note "* Note: Local Table D is just 25% of the NY State
-    table." Exact after half-up rounding in 2022-2024; the printed 2025 Table D
+    table." Exact after half-up rounding in 2015-2024; the printed 2025 Table D
     departs from it by up to 1 in some cells."""
     instant = date(year, 1, 1)
     gaps = []
@@ -404,7 +414,7 @@ def test_i8_table_d_is_a_quarter_of_the_new_york_table(raw, year):
         assert all(distance <= 1 for _, distance in gaps)
 
 
-@pytest.mark.parametrize("year", CHECKED_YEARS + (2021,))
+@pytest.mark.parametrize("year", CHECKED_YEARS)
 def test_i9_no_rate_input(year):
     """I9: every state and DC, every family size and income row, with no rate
     input and no county."""
