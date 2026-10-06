@@ -22,7 +22,7 @@ class hi_reduced_itemized_deductions(Variable):
             period,
             [
                 "hi_medical_expense_deduction",
-                "investment_interest_expense",
+                "hi_investment_interest_deduction",
                 "hi_casualty_loss_deduction",
             ],
         )
