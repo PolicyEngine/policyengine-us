@@ -19,8 +19,17 @@ class az_long_term_capital_gains_subtraction(Variable):
         # Per ARS 43-1022(22): subtraction is for "net long-term capital gain
         # included in federal adjusted gross income". When there's an overall
         # capital loss, no LTCG is included in federal AGI.
-        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
-        net_capital_gains = tax_unit("net_capital_gains", period)
+        # Federal adjusted gross income leaves out a tax unit dependent's gains,
+        # which are on the dependent's own return, so only the head's and
+        # spouse's gains count.
+        long_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["long_term_capital_gains"]
+        )
+        net_capital_gains = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            ["long_term_capital_gains", "short_term_capital_gains"],
+        )
 
         # Only include LTCG when there's a net capital gain overall
         ltcg_in_agi = where(

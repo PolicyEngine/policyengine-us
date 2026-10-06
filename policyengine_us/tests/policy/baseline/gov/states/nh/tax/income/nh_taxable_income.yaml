@@ -1,0 +1,18 @@
+- name: A dependent's interest and dividends are on the dependent's own return
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        taxable_interest_income: 3_000
+      child:
+        age: 10
+        taxable_interest_income: 50_000
+        qualified_dividend_income: 5_000
+    household:
+      state_code: NH
+  output:
+    nh_taxable_income: 600
+    nh_total_exemptions: 2_400

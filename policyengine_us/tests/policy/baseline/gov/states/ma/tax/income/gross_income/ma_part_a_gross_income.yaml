@@ -1,0 +1,20 @@
+- name: A dependent's dividends and short-term gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 1_000
+      child:
+        age: 10
+        qualified_dividend_income: 5_000
+        short_term_capital_gains: 50_000
+    household:
+      state_code: MA
+  output:
+    ma_part_a_gross_income: 1_000
+    ma_part_a_agi: 1_000
+    ma_part_b_gross_income: 60_000
+    ma_part_a_taxable_dividend_income: 1_000
