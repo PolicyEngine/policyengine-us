@@ -1,0 +1,97 @@
+- name: A dependent's U.S. government interest is not subtracted
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        us_govt_interest_person: 200
+        taxable_interest_income: 200
+      child:
+        age: 10
+        us_govt_interest_person: 50_000
+        taxable_interest_income: 50_000
+    household:
+      state_code: DC
+  output:
+    dc_income_subtractions: [200, 0]
+
+- name: A dependent's unemployment compensation and state tax refund are not subtracted
+  # D-40 line 13 subtracts unemployment benefits "included on Line 4" (federal
+  # AGI) and line 9 takes refunds from the filer's own federal return. The
+  # child's are on the child's own return.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        unemployment_compensation: 1_000
+        salt_refund_income: 300
+      child:
+        age: 16
+        unemployment_compensation: 10_000
+        salt_refund_income: 5_000
+    household:
+      state_code: DC
+  output:
+    dc_income_subtractions: [1_300, 0]
+
+- name: A dependent's persons-with-disabilities exclusion is not subtracted
+  # D.C. Code 47-1803.02(a)(2)(V) excludes the disabled person's own income.
+  # The disabled head gets the $10,000 exclusion, plus $6,200 of taxable
+  # Social Security Disability (D-40 line 10). The disabled child's exclusion
+  # would be on the child's own return.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 30_000
+        is_permanently_and_totally_disabled: true
+        social_security_disability: 12_000
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        is_permanently_and_totally_disabled: true
+        ssi: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    dc_disabled_exclusion_subtraction: [10_000, 10_000]
+    dc_income_subtractions: [16_200, 0]
+
+- name: Without the head's disability, a disabled child gives the filer no exclusion
+  # Taxable income is $30,000 of wages less the $22,500 head of household
+  # standard deduction. Counting the child's exclusion took it to -$2,500.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 30_000
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        is_permanently_and_totally_disabled: true
+        ssi: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    dc_disabled_exclusion_subtraction: [0, 10_000]
+    dc_income_subtractions: [0, 0]
+    dc_taxable_income_joint: 7_500

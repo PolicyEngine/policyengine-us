@@ -12,3 +12,20 @@
       state_code: ND
   output:
     nd_qdiv_subtraction: 800 * 0.40
+
+- name: A dependent's qualified dividends are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        qualified_dividend_income: 1_000
+      child:
+        age: 10
+        qualified_dividend_income: 5_000
+    household:
+      state_code: ND
+  output:
+    nd_qdiv_subtraction: 400

@@ -14,12 +14,13 @@ class mt_agi_joint(Variable):
         # Pool federal AGI at tax unit level
         agi = add(tax_unit, period, ["adjusted_gross_income_person"])
 
-        # Pool Montana additions at tax unit level
-        additions = add(tax_unit, period, ["mt_additions"])
-
-        # Pool Montana subtractions at tax unit level
-        # This allows spouse's subtractions to offset head's income
-        subtractions = add(tax_unit, period, ["mt_subtractions"])
+        # Pool the head's and spouse's Montana additions and subtractions.
+        # This allows spouse's subtractions to offset head's income. Federal
+        # AGI leaves out a tax unit dependent's income, which is on the
+        # dependent's own return, so the dependent's adjustments (such as
+        # their U.S. government interest) are left out too.
+        additions = tax_unit_non_dep_add(tax_unit, period, ["mt_additions"])
+        subtractions = tax_unit_non_dep_add(tax_unit, period, ["mt_subtractions"])
 
         # Apply pooled subtractions to pooled income
         reduced_agi = max_(agi + additions - subtractions, 0)

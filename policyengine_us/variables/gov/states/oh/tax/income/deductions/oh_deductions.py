@@ -13,4 +13,16 @@ class oh_deductions(Variable):
         "https://cms7files1.revize.com/starkcountyoh/Document_center/Offices/Auditor/Services/Homestead%20Exemption/Ohio_Adj_Gross_Income.pdf",
     )
     defined_for = StateCode.OH
-    adds = "gov.states.oh.tax.income.deductions.deductions"
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.oh.tax.income.deductions
+        # Each person's Ohio AGI is summed into the filer's (oh_agi), so a tax
+        # unit dependent gets only the filer's amounts recorded on them, such
+        # as medical expenses the filer paid for them. The dependent's own
+        # income and expenses belong on their own return.
+        return person_non_dep_add(
+            person,
+            period,
+            p.deductions,
+            include_dependents=p.filer_amounts_recorded_on_dependents,
+        )

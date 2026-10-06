@@ -17,12 +17,20 @@ class ut_retirement_credit_max(Variable):
         """
         p = parameters(period).gov.states.ut.tax.income
         p_credit = p.credits.retirement
-        age = tax_unit.members("age", period)
+        person = tax_unit.members
+        age = person("age", period)
         birth_year = -(age - period.start.year)
-        meets_age_conditions = birth_year <= p_credit.birth_year
+        # The credit is for the claimant and, on a joint return, the spouse;
+        # a tax unit dependent is not a claimant on this return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        meets_age_conditions = (birth_year <= p_credit.birth_year) & head_or_spouse
         max_value = p_credit.max * tax_unit.sum(meets_age_conditions)
         total_income = tax_unit("ut_total_income", period)
-        tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"])
+        # The head's and spouse's municipal bond interest, as Utah total
+        # income leaves out a tax unit dependent's income.
+        tax_exempt_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["tax_exempt_interest_income"]
+        )
         modified_agi = total_income + tax_exempt_interest
         filing_status = tax_unit("filing_status", period)
         phase_out_income = max_(
