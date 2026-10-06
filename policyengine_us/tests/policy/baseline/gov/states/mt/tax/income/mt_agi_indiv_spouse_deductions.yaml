@@ -159,3 +159,77 @@
     # The joint 2023 limit allows $578,000 of the loss; each spouse takes
     # $289,000. Head: 650,000 - 289,000. Spouse: 10,000 - 289,000, floored.
     mt_agi_indiv: [361_000, 0]
+
+- name: A spousal IRA above the spouse's income still lowers the joint deductions' AGI.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 30_000
+      spouse:
+        age: 45
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The spouse's own Montana AGI, -6,000, is floored at zero, but the joint
+    # return's Montana AGI is 30,000 - 6,000 = 24,000. The joint standard
+    # deduction is 20% of it, 4,800, raised to the 4,920 floor.
+    mt_agi_indiv: [30_000, 0]
+    mt_agi_joint: 24_000
+    mt_standard_deduction_joint: [4_920, 0]
+
+- name: A single filer's loss is their own.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: MT
+  output:
+    # The $3,000 allowed capital loss: 40,000 - 3,000.
+    mt_loss_ald_reallocation: 0
+    mt_agi_indiv: 37_000
+
+- name: Each spouse's student loan interest and IRA deduction stay in their own column.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        student_loan_interest: 2_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        traditional_ira_contributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Joint MAGI for the student loan interest phase-out is 95,000, under the
+    # 2023 joint start of 155,000, so the full 2,000 is deducted. Splitting
+    # all deductions equally would give [3_500, 3_500] and [56_500, 36_500].
+    mt_applicable_ald_deductions: [2_000, 5_000]
+    mt_agi_indiv: [58_000, 35_000]
