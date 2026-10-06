@@ -59,13 +59,15 @@ properties of ``tax_at_main_rates``, which hold for the excluded amount as for
 any other, and not end to end.
 """
 
+import gc
+
 import numpy as np
 import pytest
 from policyengine_core.parameters import ParameterNode
 from policyengine_core.reforms import Reform
 from policyengine_core.taxscales import MarginalRateTaxScale
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
 from policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform import (
     additional_tax_bracket,
 )
@@ -419,29 +421,34 @@ def grid_situation(year):
 GRID_SIZE = len(STATUSES) * len(ORDINARY_INCOMES) * len(PREFERENTIAL_INCOME)
 
 
-@pytest.fixture(scope="module")
-def reform_system():
-    """The reform's system, built once; each simulation that changes its
-    parameters works on its own clone."""
-    return CountryTaxBenefitSystem(reform=additional_tax_bracket)
+def calculate(variables, year, reforms=None):
+    """The grid's values of some variables, under the reform and any parameter
+    changes, or under the baseline when ``reforms`` is None.
 
-
-def calculate(variables, year, tax_benefit_system, reform=None):
+    A reformed simulation runs on its own clone of the loaded default system.
+    This file also runs inside the contrib YAML batch, whose memory is
+    budgeted, so collect each simulation before building the next.
+    """
     sim = Simulation(
-        tax_benefit_system=tax_benefit_system,
-        reform=reform,
+        tax_benefit_system=baseline_system,
+        reform=None if reforms is None else (additional_tax_bracket, *reforms),
         situation=grid_situation(year),
     )
     assert np.array_equal(
         sim.calculate("filing_status", year).decode_to_str(),
         np.repeat(STATUSES, GRID_SIZE // len(STATUSES)),
     )
-    return {variable: sim.calculate(variable, year) for variable in variables}
+    values = {
+        variable: np.array(sim.calculate(variable, year)) for variable in variables
+    }
+    del sim
+    gc.collect()
+    return values
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
-def test_default_parameters_give_finite_taxes(reform_system, year):
-    taxes = calculate(DOWNSTREAM_VARIABLES, year, reform_system)
+def test_default_parameters_give_finite_taxes(year):
+    taxes = calculate(DOWNSTREAM_VARIABLES, year, reforms=())
     for variable, values in taxes.items():
         assert len(values) == GRID_SIZE
         assert np.all(np.isfinite(values)), variable
@@ -464,14 +471,13 @@ def current_law_first_seven_brackets(year):
     return Reform.from_dict(changes, country_id="us")
 
 
-def test_reform_with_unset_bracket_reproduces_current_law(reform_system):
+def test_reform_with_unset_bracket_reproduces_current_law():
     reform = calculate(
         DOWNSTREAM_VARIABLES,
         YEAR,
-        reform_system,
-        reform=current_law_first_seven_brackets(YEAR),
+        reforms=(current_law_first_seven_brackets(YEAR),),
     )
-    baseline = calculate(DOWNSTREAM_VARIABLES, YEAR, baseline_system)
+    baseline = calculate(DOWNSTREAM_VARIABLES, YEAR)
     for variable in DOWNSTREAM_VARIABLES:
         np.testing.assert_allclose(
             reform[variable], baseline[variable], atol=SIMULATION_TOLERANCE
@@ -520,9 +526,9 @@ SHAPES_7 = {status: shape[0] for status, shape in THRESHOLD_SHAPES.items()}
 SHAPES_8 = {status: shape[1] for status, shape in THRESHOLD_SHAPES.items()}
 
 
-# Each example runs two simulations on clones of the reform's system, and the
-# file runs in two CI steps, so the generated examples are few; the schedule
-# properties above take 300 examples each.
+# Each example runs two simulations, each on its own clone of the default
+# system, and the file runs in two CI steps, so the generated examples are
+# few; the schedule properties above take 300 examples each.
 @hypothesis.settings(
     max_examples=3,
     deadline=None,
@@ -540,20 +546,18 @@ SHAPES_8 = {status: shape[1] for status, shape in THRESHOLD_SHAPES.items()}
 @hypothesis.example(SHAPES_7, SHAPES_8, [0.396, 0.42])
 @hypothesis.example(SHAPES_7, SHAPES_8, [0.0, 1.0])
 def test_reform_tax_is_finite_and_at_least_tax_without_the_bracket(
-    reform_system, thresholds_7, thresholds_8, rates
+    thresholds_7, thresholds_8, rates
 ):
     rate_7, rate_8 = rates
     with_bracket = calculate(
         REFORM_VARIABLES,
         YEAR,
-        reform_system,
-        reform=added_bracket(thresholds_7, thresholds_8, rate_7, rate_8),
+        reforms=(added_bracket(thresholds_7, thresholds_8, rate_7, rate_8),),
     )
     removed = calculate(
         REFORM_VARIABLES,
         YEAR,
-        reform_system,
-        reform=added_bracket(thresholds_7, thresholds_8, rate_7, rate_7),
+        reforms=(added_bracket(thresholds_7, thresholds_8, rate_7, rate_7),),
     )
     for variable in REFORM_VARIABLES:
         assert np.all(np.isfinite(with_bracket[variable])), variable
