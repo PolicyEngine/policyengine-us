@@ -1,6 +1,8 @@
 description: Employee-side New Jersey family leave insurance contribution rate.
 values:
   0000-01-01: 0
+  2024-01-01: 0.0009
+  2025-01-01: 0.0033
   2026-01-01: 0.0023
 
 metadata:
@@ -12,3 +14,5 @@ metadata:
       href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=61
     - title: New Jersey Temporary Disability and Family Leave Insurance information for employers
       href: https://www.nj.gov/labor/myleavebenefits/employer/index.shtml
+    - title: New Jersey Department of Labor and Workforce Development, Employer rate information (worker contribution rates and taxable wage bases by calendar year)
+      href: https://www.nj.gov/labor/ea/employer-services/rate-info/
