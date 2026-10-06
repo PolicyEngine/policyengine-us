@@ -37,3 +37,51 @@
     # § 15-30-2337(9)(a)(viii) requires all SS to be counted, even the
     # portion excluded from federal AGI.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A capital loss deducted in federal AGI is added back
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -3_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a): federal AGI "without regard to loss". 2023 Elderly
+    # Homeowner/Renter Credit Schedule:
+    # line 1 federal AGI 20_000 - 3_000 = 17_000; line 9 adds back the 3_000
+    # capital loss; line 10 = 20_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+
+- name: A business loss deducted in federal AGI is added back once for the return
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        mt_refundable_credits_before_renter_credit: 0
+      person2:
+        age: 68
+        self_employment_income: -5_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Federal AGI 20_000 - 5_000 = 15_000; the 5_000 loss is added back, so
+    # gross household income is 20_000 (2024 Schedule 2EC line 18). Net household
+    # income: (20_000 - 12_600) * 0.035 = 259, allocated to the head.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]

@@ -19,8 +19,8 @@
         state_code: MT
   output:
     # One qualifying individual caps expenses at 2_400.
-    # Head receives half: 2_400 * 0.5 = 1_200.
-    mt_child_dependent_care_expense_deduction: [1_200, 0]
+    # A single filer enters the full line 7 amount: 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 0]
 
 - name: Care expense greater than maximum amount with moderate AGI and 1 child
   period: 2021
@@ -43,8 +43,8 @@
         state_code: MT
   output:
     # 2_400 - 0.5 * (20_000 - 18_000) = 1_400.
-    # Head receives half: 1_400 * 0.5 = 700.
-    mt_child_dependent_care_expense_deduction: [700, 0]
+    # A single filer enters the full line 7 amount: 1_400.
+    mt_child_dependent_care_expense_deduction: [1_400, 0]
 
 - name: Care expense greater than maximum amount with high AGI and 1 child
   period: 2021
@@ -92,8 +92,8 @@
         state_code: MT
   output:
     # Two qualifying individuals cap expenses at 3_600.
-    # Head receives half: 3_600 * 0.5 = 1_800.
-    mt_child_dependent_care_expense_deduction: [1_800, 0, 0]
+    # A single filer enters the full line 7 amount: 3_600.
+    mt_child_dependent_care_expense_deduction: [3_600, 0, 0]
 
 - name: Care expense greater than maximum amount with moderate AGI and 2 children
   period: 2021
@@ -119,8 +119,8 @@
         state_code: MT
   output:
     # 3_600 - 0.5 * (22_000 - 18_000) = 1_600.
-    # Head receives half: 1_600 * 0.5 = 800.
-    mt_child_dependent_care_expense_deduction: [800, 0, 0]
+    # A single filer enters the full line 7 amount: 1_600.
+    mt_child_dependent_care_expense_deduction: [1_600, 0, 0]
 
 - name: Care expense greater than maximum amount with high AGI and 2 children
   period: 2021
@@ -174,8 +174,8 @@
         state_code: MT
   output:
     # Three qualifying individuals cap expenses at 4_800.
-    # Head receives half: 4_800 * 0.5 = 2_400.
-    mt_child_dependent_care_expense_deduction: [2_400, 0, 0, 0]
+    # A single filer enters the full line 7 amount: 4_800.
+    mt_child_dependent_care_expense_deduction: [4_800, 0, 0, 0]
 
 - name: Care expense greater than maximum amount with moderate AGI and 3 children
   period: 2021
@@ -204,8 +204,8 @@
         state_code: MT
   output:
     # 4_800 - 0.5 * (24_000 - 18_000) = 1_800.
-    # Head receives half: 1_800 * 0.5 = 900.
-    mt_child_dependent_care_expense_deduction: [900, 0, 0, 0]
+    # A single filer enters the full line 7 amount: 1_800.
+    mt_child_dependent_care_expense_deduction: [1_800, 0, 0, 0]
 
 - name: Care expense greater than maximum amount with high AGI and 3 children
   period: 2021
@@ -255,8 +255,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # Head receives half: 2_000 * 0.5 = 1_000.
-    mt_child_dependent_care_expense_deduction: [1_000, 0]
+    # A single filer enters the full line 7 amount: 2_000.
+    mt_child_dependent_care_expense_deduction: [2_000, 0]
 
 - name: Care expense less than maximum amount with high AGI and 1 child
   period: 2021
@@ -303,8 +303,8 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    # Head receives half: 3_000 * 0.5 = 1_500.
-    mt_child_dependent_care_expense_deduction: [1_500, 0, 0]
+    # A single filer enters the full line 7 amount: 3_000.
+    mt_child_dependent_care_expense_deduction: [3_000, 0, 0]
 
 - name: Care expense less than maximum amount with high AGI and 2 children
   period: 2021
@@ -357,8 +357,8 @@
         members: [person1, person2, person3, person4]
         state_code: MT
   output:
-    # Head receives half: 4_000 * 0.5 = 2_000.
-    mt_child_dependent_care_expense_deduction: [2_000, 0, 0, 0]
+    # A single filer enters the full line 7 amount: 4_000.
+    mt_child_dependent_care_expense_deduction: [4_000, 0, 0, 0]
 
 - name: Care expense less than maximum amount with high AGI and 3 children
   period: 2021
@@ -441,8 +441,8 @@
         state_code: MT
   output:
     # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
-    # Head receives half: 2_400 * 0.5 = 1_200.
-    mt_child_dependent_care_expense_deduction: [1_200, 0]
+    # A single filer enters the full line 7 amount: 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 0]
 
 - name: Case 18, capable disabled adult care expenses are excluded.
   period: 2021
@@ -470,8 +470,8 @@
         state_code: MT
   output:
     # Only the child qualifies, so 2_000 of adult care expenses are excluded.
-    # Head receives half of the 1_000 childcare expense deduction.
-    mt_child_dependent_care_expense_deduction: [500, 0, 0]
+    # A single filer enters the full 1_000 childcare expense deduction.
+    mt_child_dependent_care_expense_deduction: [1_000, 0, 0]
 
 - name: Case 19, a child and an incapacitated adult dependent both count toward the tier.
   period: 2021
@@ -500,8 +500,8 @@
   output:
     # Two qualifying individuals cap expenses at 3_600 (Form 2441-M line 2).
     # Childcare 3_000 + adult care 1_000 = 4_000, capped at 3_600.
-    # Head receives half: 3_600 * 0.5 = 1_800.
-    mt_child_dependent_care_expense_deduction: [1_800, 0, 0]
+    # A single filer enters the full line 7 amount: 3_600.
+    mt_child_dependent_care_expense_deduction: [3_600, 0, 0]
 
 - name: Case 20, adult care expenses cannot exceed the one-qualifying-individual tier cap.
   period: 2021
@@ -525,8 +525,8 @@
         state_code: MT
   output:
     # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
-    # Head receives half: 2_400 * 0.5 = 1_200.
-    mt_child_dependent_care_expense_deduction: [1_200, 0]
+    # A single filer enters the full line 7 amount: 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 0]
 
 - name: Case 21, incapacitated spouse care expenses qualify.
   period: 2021
@@ -606,8 +606,8 @@
   output:
     # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
     # Childcare 1_500 + care expenses 1_000 = 2_500, capped at 2_400.
-    # Head receives half: 2_400 * 0.5 = 1_200.
-    mt_child_dependent_care_expense_deduction: [1_200, 0]
+    # A single filer enters the full line 7 amount: 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 0]
 
 - name: Case 24, combined childcare and adult care expenses are capped by the three-qualifying-individual tier.
   period: 2021
@@ -643,3 +643,109 @@
     # Childcare 4_000 + adult care 2_000 = 6_000, capped at 4_800.
     # The deduction is divided equally between spouses: 4_800 * 0.5 = 2_400.
     mt_child_dependent_care_expense_deduction: [2_400, 2_400, 0, 0]
+
+- name: Case 25, the phase-out uses the couple's combined Montana AGI, then each column gets half
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi_indiv: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 0
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Form 2441-M (2022): line 2 = min(3_000, 2_400) = 2_400; line 3 adds
+    # columns A and B of Form 2 line 14 = 20_000 + 0 = 20_000; line 5 = 2_000;
+    # line 6 = 1_000; line 7 = 1_400. Filing separately on the same form, each
+    # spouse enters one-half of line 7 (700). Applying the phase-out to each
+    # spouse's own AGI would give 700 and 1_200.
+    mt_child_dependent_care_expense_deduction_eligible_expenses: 2_400
+    mt_child_dependent_care_expense_deduction: [700, 700, 0]
+
+- name: Case 26, a joint return uses the return's Montana AGI and claims the whole deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+        mt_agi_joint: 20_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Form 2441-M lines 2-7 with line 3 = 20_000: 2_400 - 0.5 * 2_000 = 1_400,
+    # entered in full on the joint return.
+    mt_child_dependent_care_expense_deduction_joint: 1_400
+
+- name: Case 27, the joint deduction is repealed beginning in 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 3_000
+        mt_agi_joint: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_joint: 0
+
+- name: Case 28, a married person filing on a separate form cannot take the deduction
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi_indiv: 15_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 2_000
+        mt_agi_joint: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # MCA 15-30-2131(1)(c)(vi)(A): "married couples shall file a joint return
+    # or file separately on the same form". 2022 instructions, line 14: "If
+    # you are married and filing separately on separate forms, or your spouse
+    # is not filing, you cannot qualify for this deduction."
+    mt_child_dependent_care_expense_deduction: [0, 0]
+    mt_child_dependent_care_expense_deduction_joint: 0
