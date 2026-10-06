@@ -13,7 +13,12 @@ class ny_cdcc_max(Variable):
     def formula(tax_unit, period, parameters):
         ny_cdcc = parameters(period).gov.states.ny.tax.income.credits.cdcc
         count_eligible = tax_unit("count_cdcc_eligible", period)
-        cdcc_expenses = tax_unit("cdcc_relevant_expenses", period)
+        # Form IT-216 line 5 caps the total qualified expenses (line 3a) at the
+        # New York amount for the number of qualifying persons, not at the
+        # federal Form 2441 limit.
+        cdcc_expenses = tax_unit("tax_unit_childcare_expenses", period) + add(
+            tax_unit, period, ["care_expenses"]
+        )
         lower_earnings = tax_unit("min_head_spouse_earned", period)
         ny_cap = ny_cdcc.max.calc(count_eligible)
         return min_(cdcc_expenses, min_(ny_cap, lower_earnings))
