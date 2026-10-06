@@ -6,3 +6,31 @@
     non_refundable_ctc: 10
   output:
     ctc_limiting_tax_liability: 80
+
+- name: Credit Limit Worksheet B applies, so the residential clean energy credit reduces the limit.
+  period: 2025
+  input:
+    ctc_tax_liability_after_preceding_credits: 2_943 # Worksheet A, line 3
+    ctc_credit_limit_worksheet_b_applies: true
+    residential_clean_energy_credit: 1_943 # Worksheet B, line 15
+  output:
+    ctc_limiting_tax_liability: 1_000 # Worksheet A, line 5
+
+- name: Without Credit Limit Worksheet B, the residential clean energy credit does not reduce the limit.
+  period: 2025
+  input:
+    ctc_tax_liability_after_preceding_credits: 2_943
+    ctc_credit_limit_worksheet_b_applies: false
+    residential_clean_energy_credit: 1_943
+  output:
+    ctc_limiting_tax_liability: 2_943
+
+- name: A reform that empties the list of subsequent credits leaves the limit at line 3.
+  period: 2025
+  input:
+    gov.irs.credits.ctc_tax_liability_limit.subsequent_credits: []
+    ctc_tax_liability_after_preceding_credits: 2_943
+    ctc_credit_limit_worksheet_b_applies: true
+    residential_clean_energy_credit: 1_943
+  output:
+    ctc_limiting_tax_liability: 2_943

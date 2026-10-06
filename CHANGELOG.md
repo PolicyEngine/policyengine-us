@@ -1,3 +1,137 @@
+## [2.29.4] - 2026-10-06
+
+### Fixed
+
+- Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
+
+
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
+## [2.29.0] - 2026-10-05
+
+### Added
+
+- Add North Carolina Low Income Energy Assistance Program (LIEAP) regular heating benefits.
+
+
+## [2.28.3] - 2026-10-05
+
+### Fixed
+
+- Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
+
+
+## [2.28.2] - 2026-10-05
+
+### Fixed
+
+- Tax 28 percent rate and unrecaptured section 1250 gain at the regular rates on taxable income up to the top of the 24 percent bracket, the amount taxed below 25 percent under 26 U.S.C. 1(h)(1)(A), and enter Schedule D Tax Worksheet line 21 on Form 6251 Part III line 27.
+
+
+## [2.28.1] - 2026-10-05
+
+### Changed
+
+- Test a Form 4952 line 4g election together with the section 911(f) stacked tax on generated households.
+
+
+## [2.28.0] - 2026-10-05
+
+### Added
+
+- Add Indiana Energy Assistance Program (EAP) regular heating assistance and the winter electric allowance.
+
+### Fixed
+
+- Apply the married-filing-separately 28% breakpoint (26 U.S.C. 55(b)(1)(C)) on Form 6251 Part III line 18, so separate filers with qualified dividends or capital gains no longer get the full breakpoint in the capital gains computation of the alternative minimum tax.
+- Use Louisiana's official 2026 standard deduction ($12,838 single or separate, $25,676 joint, head of household or surviving spouse) and age-65 retirement income exemption ($12,324) from LDR Revenue Information Bulletin 26-019, and project both after 2026 with La. R.S. 47:294(B) and 47:44.1(A)'s annual CPI-U adjustment, using BLS's not seasonally adjusted December CPI-U (new gov.bls.cpi.cpi_u_nsa_december) where published.
+
+
+## [2.27.0] - 2026-10-05
+
+### Added
+
+- Add Kentucky LIHEAP regular heating assistance for FY2025 and FY2026.
+
+### Fixed
+
+- Order the federal non-refundable credits as their IRS credit limit worksheets do: the elderly or disabled credit is limited only by the foreign tax and child and dependent care credits (Schedule R) and precedes the education, retirement savings and energy efficient home improvement credits (Forms 8863, 8880 and 5695); the previously owned clean vehicle credit precedes the new clean vehicle credit (Form 8936) and is now limited by tax; the foreign tax credit applies against tax before 2022; the refundable 2021 child and dependent care credit no longer reduces other credits' limits; and Oklahoma's federal Child Tax Credit applies the credits that Schedule 8812 Credit Limit Worksheet A subtracts before the CTC, not those listed before it.
+
+
+## [2.26.0] - 2026-10-05
+
+### Added
+
+- Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with single-family and multifamily schedules and assumed economic vulnerability for separately billed or rent-included heating.
+
+
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
+## [2.25.1] - 2026-10-05
+
+### Fixed
+
+- Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.25.0] - 2026-10-05
+
+### Added
+
+- Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.
+
+
+## [2.24.7] - 2026-10-05
+
+### Fixed
+
+- Use the SSI federal benefit rate, not 75% of the poverty guideline, as the Medicaid income limit for aged, blind, and disabled people who do not receive SSI in Colorado, Iowa, Louisiana, Montana, Ohio, Oregon, and Washington.
+
+
+## [2.24.6] - 2026-10-05
+
+### Fixed
+
+- Replace dead federal and miscellaneous reference URLs (IRS, SSA, CMS, USDA, CBO, Medicaid, KFF, Justia and others) with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Michigan Department of Treasury and Legislature reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Minnesota Department of Revenue reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Louisiana, Mississippi, Alabama, Texas and Georgia reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead South Carolina, Kentucky, Oklahoma, Florida, Ohio, Missouri, North Carolina and South Dakota reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Tax the income of filers who exclude foreign earned income at the rates it would face on top of the excluded amount, in the regular tax, the capital gains rates and the alternative minimum tax (26 U.S.C. 911(f), the Foreign Earned Income Tax Worksheet).
+
+
+## [2.24.5] - 2026-10-05
+
+### Fixed
+
+- Order the residential clean energy credit after the Child Tax Credit, as Schedule 8812 Credit Limit Worksheets A and B and Form 5695 do: the CTC's tax-liability limit subtracts that credit only when Credit Limit Worksheet B applies, the credit's own limit subtracts every other non-refundable credit (including the CTC that cannot be refunded), and it no longer precedes the energy efficient home improvement, elderly or disabled, and clean vehicle credits. Colorado's federal CTC replica uses Schedule 8812 line 13 from 2023, as the 2023 DR 0104CN does.
+
+
 ## [2.24.4] - 2026-10-04
 
 ### Fixed

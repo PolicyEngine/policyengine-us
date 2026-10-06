@@ -11,13 +11,14 @@ shipped exactly this shape for SEPARATE filers (bracket 5 top $541,550
 above bracket 6 top $305,875), worth a flat −$82,486 per
 married-filing-separately filer under TCJA-expiration counterfactuals.
 
-Three code sites carry the same loop and all must clamp together:
+Three code sites run the schedule and all must clamp together:
 `income_tax_main_rates`, the AMT regular-tax worksheet
 (`regular_tax_before_credits`, taken when the unit has qualified
 dividends or long-term gains), and the `additional_tax_bracket` contrib
 reform's copies of both. Clamping only the first diverges the AMT
 comparator from the corrected main-rates tax and manufactures phantom
-AMT for any affected filer with $1 of preferential income.
+AMT for any affected filer with $1 of preferential income. They now
+share one loop, `tax_at_main_rates`, which carries the clamp.
 
 Note the fixture detail that makes these tests real: situation values
 must be period-keyed (`{"2026": ...}`). An undated `filing_status`

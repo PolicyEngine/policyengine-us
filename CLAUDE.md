@@ -53,6 +53,18 @@ make test-yaml-no-structural-other-irs   # e.g. IRS shard; other shards: househo
 make documentation
 ```
 
+## Test design and CI cost
+
+CI time and memory are part of test design. Full model construction, parameter-tree copies, and dataset loading can make a small Python test expensive; test count alone does not measure cost.
+
+- **Use YAML for policy calculations.** Add household examples, thresholds, edge cases, and mixed-household/vectorized cases to the corresponding variable-named YAML files. Do not add a Python test when the existing YAML framework can exercise the same behavior. Avoid generic policy test files such as `regression.yaml` or `vectorized.yaml`.
+- **Justify Python coverage.** Use Python for behavior YAML cannot exercise, such as Core integration, data compatibility, simulation APIs, cache/mutation isolation, or tooling. Search existing tests first and explain the distinct failure the new test detects. Do not duplicate a policy formula in Python merely to test it against itself; retain independent reference calculations when they provide meaningful invariant or compatibility coverage.
+- **Minimize expensive setup safely.** Use the smallest population, dataset, and set of years that exercise the behavior. Reuse read-only reference models or fixtures where isolation permits. Do not share mutable simulations, reforms, parameter trees, or caches across cases that need independent state, and do not repeatedly construct a full model just to read parameters.
+- **Measure simulation-heavy additions.** For new or expanded Python tests that build models, copy policy trees, or load datasets, report before/after elapsed time (including setup) and peak memory where available. Identify the affected CI group and check its existing timing/memory reports. Label local measurements separately from Linux CI results; if resource measurements are unavailable, say so rather than claiming the addition is cheap. Use existing CI artifacts instead of triggering extra full runs solely to benchmark.
+- **Keep the existing runner budget.** Do not add jobs, matrix entries, or concurrent heavy processes to absorb test growth without explicit authorization. Assign tests by purpose: simulation/data compatibility belongs with Microsimulation, policy cases with their policy suites, and tooling with code-health checks. Check the Makefile and workflow selectors so moving a file does not omit coverage or accidentally duplicate it within the full suite; selective feedback may intentionally overlap.
+- **Preserve memory isolation.** Keep heavy groups in separate, sequential processes on the existing runner. Passing individually does not establish that groups fit together in one process or in parallel. Leave headroom for the runner and future growth; never treat a run just below the memory limit as a safe budget.
+- **Do not delete distinct coverage to improve timing.** Preserve essential Core/data compatibility, reform, cache, and isolation tests. Before consolidating tests, compare their setup, operation order, branching, and mutable state as well as their assertions. Identical assertions can protect different behaviors. For changes that only move or delete existing cases, verify the retained contents and collection/routing statically rather than rerunning tests.
+
 ## GitHub Workflow
 - **Default branch is `main`, NOT `master`.** Base new work on `main`:
   `git fetch upstream main && git checkout -b <branch> upstream/main`. A personal

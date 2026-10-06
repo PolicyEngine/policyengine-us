@@ -176,10 +176,20 @@ def units():
     return _draw_units()
 
 
+@pytest.fixture(scope="module")
+def reference_parameters():
+    # The reference calculations only read policy. Build an independent model
+    # once per module instead of rebuilding it for each assertion and year.
+    return CountryTaxBenefitSystem().parameters
+
+
 @pytest.fixture(scope="module", params=YEARS)
-def runs(request, units):
+def runs(request, units, reference_parameters):
     year = request.param
-    out = {"year": year}
+    out = {
+        "year": year,
+        "irs": reference_parameters(f"{year}-01-01").gov.irs,
+    }
     for name, kwargs in {"with": {}, "no_dependent": {"zero_dependents": True}}.items():
         sim = Simulation(situation=_situation(units, year, **kwargs))
         out[name] = {
@@ -241,7 +251,7 @@ def test_dependents_losses_stay_off_filer_agi(runs, units):
 
 
 def _capital_loss_cap(runs):
-    p = CountryTaxBenefitSystem().parameters(f"{runs['year']}-01-01").gov.irs
+    p = runs["irs"]
     return p.ald.loss.capital.max[runs["with"]["filing_status"]]
 
 
@@ -263,7 +273,7 @@ def test_loss_ald_at_least_limited_capital_loss(runs):
 
 def test_units_without_dependents_match_all_member_formula(runs, units):
     """Differential check against the all-member formula."""
-    p = CountryTaxBenefitSystem().parameters(f"{runs['year']}-01-01").gov.irs
+    p = runs["irs"]
     filing_status = runs["with"]["filing_status"]
     se = _by_person(units, "self_employment_income") + _by_person(
         units, "sstb_self_employment_income"
