@@ -14,7 +14,7 @@ it against the statute applied directly, which never mentions the worksheets:
   other subpart A credit.
 
 Households are married or single filers in Texas who take the standard
-deduction, so the CTC limit's no-SALT liability equals actual liability.
+deduction.
 """
 
 import numpy as np

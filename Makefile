@@ -14,9 +14,9 @@
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
 TESTS := policyengine_us/tests
-# Run the expensive SPM construction/isolation tests in a separate process
-# before the remaining files on the same CI runner, releasing their heap.
-# The remaining Python tests then run in REST_PYTHON_GROUPS below.
+# Run SPM construction/isolation tests in their own process on the existing
+# Microsimulation CI runner, before the dataset tests. Rest excludes these
+# files and runs every other Python test in REST_PYTHON_GROUPS below.
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
 	$(TESTS)/core/test_spm_system.py
@@ -70,10 +70,40 @@ format:
 	uv run ruff check .
 install:
 	pip install -e .[dev]
-test:
-	pytest $(TESTS)/ --maxfail=0
-	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test $(TESTS)/policy/ -c policyengine_us
-	coverage xml -i
+# Run every target serially, whatever -j says: several YAML suites resident
+# at once is the memory blow-up `make test` exists to prevent. GNU make 3.81
+# (macOS) supports only this whole-file form. CI calls single targets.
+.NOTPARALLEL:
+
+# Full local suite: the same suites CI runs, one bounded subprocess at a time.
+# Never hand the whole policy tree, or a long file list, to one
+# `policyengine-core test` process: a 1,500-file baseline run reached 118 GB
+# on a 128 GB Mac on 2026-10-02 (see CONTRIBUTING.md, "Memory").
+test: test-other-python-spm test-other-python-rest test-microsimulation test-policy-contrib-python test-yaml
+# Every YAML suite in .github/workflows/pr.yaml, in sequence. .NOTPARALLEL
+# below keeps Make to one prerequisite at a time even under `make -j` or a
+# -j in MAKEFLAGS, and each target already runs --workers 1 (partners runs
+# two small batches at once), so at most one large batch is resident.
+# test_make_test_matches_ci.py keeps this list in step with CI.
+test-yaml: test-yaml-no-structural-states \
+	test-yaml-no-structural-other-irs \
+	test-yaml-no-structural-other-household \
+	test-yaml-no-structural-other-ssa-usda \
+	test-yaml-no-structural-other-rest-a \
+	test-yaml-no-structural-other-rest-b \
+	test-yaml-contrib-hhs \
+	test-yaml-reform \
+	test-yaml-no-structural-other-partners \
+	test-yaml-structural-heavy-shard-1 \
+	test-yaml-structural-heavy-shard-2 \
+	test-yaml-structural-heavy-shard-3 \
+	test-yaml-structural-heavy-shard-4 \
+	test-yaml-structural-other \
+	test-yaml-structural-other-shard-2a \
+	test-yaml-structural-other-shard-2b \
+	test-yaml-structural-other-shard-3 \
+	test-yaml-structural-congress \
+	test-yaml-variables
 test-yaml-structural:
 	$(BATCH) $(TESTS)/policy/contrib --exclude states
 test-yaml-structural-heavy:

@@ -42,21 +42,25 @@ class amt_tax_including_cg(Variable):
         capped_income = min_(capped_capital_gains, reduced_income)
         # Line 17: Line 12 minus Line 16 (ordinary AMTI).
         excess_income = max_(0, reduced_income - capped_income)
-        # Line 18: apply the 26%/28% AMT bracket to Line 17.
+        # Line 18: apply the 26%/28% AMT bracket to Line 17. The 28% rate
+        # starts at half the breakpoint for married filing separately
+        # (26 U.S.C. 55(b)(1)(C)), as on Line 39.
         p = parameters(period).gov.irs
-        income_taxes_at_amt_rates = p.income.amt.brackets.calc(excess_income)
-        # Line 19: 0% LTCG bracket threshold for the filing status.
         filing_status = tax_unit("filing_status", period)
+        income_taxes_at_amt_rates = p.income.amt.brackets.calc(
+            excess_income, factor=p.income.amt.multiplier[filing_status]
+        )
+        # Line 19: 0% LTCG bracket threshold for the filing status.
         cg_bracket = p.capital_gains.thresholds["1"][filing_status]
         # Line 20: amount from QDCG Worksheet line 5 or Schedule D Tax
-        # Worksheet line 14 (as figured for the regular tax). This is the
-        # ordinary-income portion of taxable income. For a Form 2555 filer
+        # Worksheet line 14 (as figured for the regular tax): taxable income
+        # less the gains taxed at 0, 15 and 20 percent. For a Form 2555 filer
         # it reflects the regular tax capital gain excess, not the AMT one
         # (26 U.S.C. 911(f)(2)(B)(ii)).
-        regular_ordinary_income = tax_unit("dwks14", period)
+        regular_tax_income_less_gains = tax_unit("dwks14", period)
         # Line 21: Line 19 minus Line 20. Room left in the 0% bracket after
         # accounting for ordinary income already filling it.
-        reduced_cg_bracket = max_(0, cg_bracket - regular_ordinary_income)
+        reduced_cg_bracket = max_(0, cg_bracket - regular_tax_income_less_gains)
         # Line 22: smaller of Line 12 or Line 13.
         smaller_of_income_or_cg = min_(reduced_income, cg_distributions)
         # Line 23: smaller of Line 21 or Line 22. This is the amount taxed at
@@ -74,11 +78,18 @@ class amt_tax_including_cg(Variable):
         second_cg_bracket = p.capital_gains.thresholds["2"][filing_status]
         # Line 26: same as Line 21.
         # Line 27: amount from QDCG Worksheet line 5 or Schedule D Tax
-        # Worksheet line 21 (as figured for the regular tax). For the QDCG
-        # path this is the same ordinary-income value used on Line 20.
+        # Worksheet line 21 (as figured for the regular tax), the amount the
+        # regular tax taxes at the regular rates (26 U.S.C. 1(h)(1)(A)).
+        # With 28 percent rate or unrecaptured section 1250 gain, Schedule D
+        # Tax Worksheet line 21 caps line 14 at the top of the 24 percent
+        # bracket (but not below line 18), so it can be less than Line 20.
+        # Without them, it is line 14, the same as QDCG Worksheet line 5 and
+        # Line 20. For a Form 2555 filer it reflects the regular tax capital
+        # gain excess, not the AMT one.
+        regular_tax_ordinary_income = tax_unit("dwks19", period)
         # Line 28: Line 26 plus Line 27.
         first_cg_bracket_increased_by_ordinary = (
-            reduced_cg_bracket + regular_ordinary_income
+            reduced_cg_bracket + regular_tax_ordinary_income
         )
         # Line 29: Line 25 minus Line 28 (room left in the 15% bracket).
         reduced_second_cg_bracket = max_(
