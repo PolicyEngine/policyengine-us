@@ -1,0 +1,69 @@
+# Worksheet line 3: the combined rate above the state table heading rate.
+
+- name: Nevada, only the part of the combined rate above 6.85%
+  # Line 3 instructions: "If you lived in Nevada, ... include on line 3 only
+  # the part of the combined rate that is more than 6.8500%." Clark County:
+  # 8.375% - 6.85% = 1.525%.
+  period: 2025
+  input:
+    state_code: NV
+    county_fips: "32003"
+  output:
+    local_sales_tax_rate: 0.01525
+
+- name: California with no rate input, the "No" box
+  # "If you lived in California, check the "No" box if your combined state
+  # and local general sales tax rate is 7.2500%."
+  period: 2025
+  input:
+    state_code: CA
+  output:
+    local_sales_tax_rate: 0
+
+- name: California with a user-supplied combined rate
+  # 9.5% - 7.25% = 2.25%.
+  period: 2025
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.095
+  output:
+    local_sales_tax_rate: 0.0225
+
+- name: A combined rate below the heading rate enters nothing
+  period: 2025
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.07
+  output:
+    local_sales_tax_rate: 0
+
+- name: New York City, 8.875% less the 4% New York heading
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+  output:
+    local_sales_tax_rate: 0.04875
+
+- name: Sioux Falls, South Dakota, 2023, heading averages the state rate cut
+  # SDR2026Q3JUN02: Sioux Falls 6.5% (4.5% state + 2% city) until June 30,
+  # 2023 and 6.2% (4.2% + 2%) from July 1: (181 x 6.5 + 184 x 6.2) / 365 =
+  # 6.34877%. The 2023 South Dakota heading, 4.35%, is "an average for the
+  # year" (2023 table footnote 7), so line 3 is 1.99877%.
+  period: 2023
+  absolute_error_margin: 0.000001
+  input:
+    state_code: SD
+    county_fips: "46099"
+    place_fips: "59020"
+  output:
+    local_sales_tax_rate: 0.0199877
+
+- name: A user-supplied local rate is used as entered
+  period: 2025
+  input:
+    state_code: TX
+    local_sales_tax_rate: 0.02
+  output:
+    local_sales_tax_rate: 0.02

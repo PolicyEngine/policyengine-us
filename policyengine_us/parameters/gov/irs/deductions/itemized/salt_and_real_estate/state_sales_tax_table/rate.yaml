@@ -1,0 +1,277 @@
+description: The IRS prints this state general sales tax rate in the heading of each state's Optional State Sales Tax Table; the sales tax deduction worksheet divides the local rate by it.
+metadata:
+  unit: /1
+  period: year
+  breakdown:
+  - state_code
+  label: Optional state sales tax table heading rate
+  reference:
+    - title: 2022 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=13
+    - title: 2023 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=13
+    - title: 2024 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=12
+    - title: 2025 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=13
+    - title: 2022 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5
+    - title: 2023 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5
+    - title: 2024 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4
+    - title: 2025 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4
+# Worksheet line 4: "Enter your state general sales tax rate (shown in the
+# table heading for your state), but omit the percentage sign." Table
+# footnote 1: "Your state sales tax rate is provided next to the state name."
+# Values are the printed heading rates (four decimals in 2022 and 2023, two
+# in 2024 and 2025) divided by 100.
+# The California and Nevada headings (7.25% and 6.85%) include uniform local
+# rates: "The California table includes the 1.25% uniform local sales tax
+# rate in addition to the 6.00% state sales tax rate for a total of 7.25%"
+# and "The Nevada table includes the 2.25% uniform local sales tax rate in
+# addition to the 4.6000% state sales tax rate for a total of 6.85%" (table
+# footnotes 3 and 5, 2022-2025); their ratio denominators are 7.25% and 6.85%.
+# 2023 footnote 7 (New Mexico, South Dakota): "The rate decreased during
+# 2023 so the given rate is an average for the year."
+# Delaware, Montana, New Hampshire, Oregon, and the territories have no IRS
+# state table and are left out, so they default to 0.
+AK:
+  # No Alaska state table: "Residents of Alaska do not have a state sales
+  # tax, but should follow the instructions on the next page to determine
+  # their local sales tax amount." (Note beside the Wyoming table, 2022-2025.)
+  2022-01-01: 0
+  2023-01-01: 0
+  2024-01-01: 0
+  2025-01-01: 0
+AL:
+  2022-01-01: 0.04
+  2023-01-01: 0.04
+  2024-01-01: 0.04
+  2025-01-01: 0.04
+AR:
+  2022-01-01: 0.065
+  2023-01-01: 0.065
+  2024-01-01: 0.065
+  2025-01-01: 0.065
+AZ:
+  2022-01-01: 0.056
+  2023-01-01: 0.056
+  2024-01-01: 0.056
+  2025-01-01: 0.056
+CA:
+  2022-01-01: 0.0725
+  2023-01-01: 0.0725
+  2024-01-01: 0.0725
+  2025-01-01: 0.0725
+CO:
+  2022-01-01: 0.029
+  2023-01-01: 0.029
+  2024-01-01: 0.029
+  2025-01-01: 0.029
+CT:
+  2022-01-01: 0.0635
+  2023-01-01: 0.0635
+  2024-01-01: 0.0635
+  2025-01-01: 0.0635
+DC:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+FL:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+GA:
+  2022-01-01: 0.04
+  2023-01-01: 0.04
+  2024-01-01: 0.04
+  2025-01-01: 0.04
+HI:
+  2022-01-01: 0.04
+  2023-01-01: 0.04
+  2024-01-01: 0.04
+  2025-01-01: 0.04
+IA:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+ID:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+IL:
+  2022-01-01: 0.0625
+  2023-01-01: 0.0625
+  2024-01-01: 0.0625
+  2025-01-01: 0.0625
+IN:
+  2022-01-01: 0.07
+  2023-01-01: 0.07
+  2024-01-01: 0.07
+  2025-01-01: 0.07
+KS:
+  2022-01-01: 0.065
+  2023-01-01: 0.065
+  2024-01-01: 0.065
+  2025-01-01: 0.065
+KY:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+LA:
+  2022-01-01: 0.0445
+  2023-01-01: 0.0445
+  2024-01-01: 0.0445
+  2025-01-01: 0.05
+MA:
+  2022-01-01: 0.0625
+  2023-01-01: 0.0625
+  2024-01-01: 0.0625
+  2025-01-01: 0.0625
+MD:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+ME:
+  2022-01-01: 0.055
+  2023-01-01: 0.055
+  2024-01-01: 0.055
+  2025-01-01: 0.055
+MI:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+MN:
+  2022-01-01: 0.06875
+  2023-01-01: 0.0688
+  2024-01-01: 0.0688
+  2025-01-01: 0.0688
+MO:
+  2022-01-01: 0.04225
+  2023-01-01: 0.0423
+  2024-01-01: 0.0423
+  2025-01-01: 0.0423
+MS:
+  2022-01-01: 0.07
+  2023-01-01: 0.07
+  2024-01-01: 0.07
+  2025-01-01: 0.07
+NC:
+  2022-01-01: 0.0475
+  2023-01-01: 0.0475
+  2024-01-01: 0.0475
+  2025-01-01: 0.0475
+ND:
+  2022-01-01: 0.05
+  2023-01-01: 0.05
+  2024-01-01: 0.05
+  2025-01-01: 0.05
+NE:
+  2022-01-01: 0.055
+  2023-01-01: 0.055
+  2024-01-01: 0.055
+  2025-01-01: 0.055
+NJ:
+  2022-01-01: 0.06625
+  2023-01-01: 0.0663
+  2024-01-01: 0.0663
+  2025-01-01: 0.0663
+NM:
+  2022-01-01: 0.05062
+  2023-01-01: 0.0494
+  2024-01-01: 0.0488
+  2025-01-01: 0.0488
+NV:
+  2022-01-01: 0.0685
+  2023-01-01: 0.0685
+  2024-01-01: 0.0685
+  2025-01-01: 0.0685
+NY:
+  2022-01-01: 0.04
+  2023-01-01: 0.04
+  2024-01-01: 0.04
+  2025-01-01: 0.04
+OH:
+  2022-01-01: 0.0575
+  2023-01-01: 0.0575
+  2024-01-01: 0.0575
+  2025-01-01: 0.0575
+OK:
+  2022-01-01: 0.045
+  2023-01-01: 0.045
+  2024-01-01: 0.045
+  2025-01-01: 0.045
+PA:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+RI:
+  2022-01-01: 0.07
+  2023-01-01: 0.07
+  2024-01-01: 0.07
+  2025-01-01: 0.07
+SC:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+SD:
+  2022-01-01: 0.045
+  2023-01-01: 0.0435
+  2024-01-01: 0.042
+  2025-01-01: 0.042
+TN:
+  2022-01-01: 0.07
+  2023-01-01: 0.07
+  2024-01-01: 0.07
+  2025-01-01: 0.07
+TX:
+  2022-01-01: 0.0625
+  2023-01-01: 0.0625
+  2024-01-01: 0.0625
+  2025-01-01: 0.0625
+UT:
+  2022-01-01: 0.0485
+  2023-01-01: 0.0485
+  2024-01-01: 0.0485
+  2025-01-01: 0.0485
+VA:
+  2022-01-01: 0.043
+  2023-01-01: 0.043
+  2024-01-01: 0.043
+  2025-01-01: 0.043
+VT:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+WA:
+  2022-01-01: 0.065
+  2023-01-01: 0.065
+  2024-01-01: 0.065
+  2025-01-01: 0.065
+WI:
+  2022-01-01: 0.05
+  2023-01-01: 0.05
+  2024-01-01: 0.05
+  2025-01-01: 0.05
+WV:
+  2022-01-01: 0.06
+  2023-01-01: 0.06
+  2024-01-01: 0.06
+  2025-01-01: 0.06
+WY:
+  2022-01-01: 0.04
+  2023-01-01: 0.04
+  2024-01-01: 0.04
+  2025-01-01: 0.04

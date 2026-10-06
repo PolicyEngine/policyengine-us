@@ -30,7 +30,11 @@ formulas that read the table:
   it.
 - state_sales_tax never falls as adjusted gross income or family size rises.
 - local_sales_tax is zero in the ten jurisdictions whose residents the
-  worksheet sends to -0- on line 6, and 20% of state_sales_tax elsewhere.
+  worksheet sends to -0- on line 6. One percentage point above the heading
+  rate, it is the Optional Local Sales Tax Table amount in the worksheet's
+  line-2 states and state_sales_tax divided by the heading rate (in points)
+  in the other states with a state table (test_local_sales_tax_worksheet.py
+  tests the worksheet in full).
 - state_and_local_sales_or_income_tax is the larger of the income tax (state
   withholding plus local income tax) and the sales tax (state plus local).
 
@@ -294,8 +298,10 @@ def test_every_income_source_counts_toward_the_income_row(year):
 
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
-def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
-    """Every state, family size 1 to 8, and income row."""
+def test_local_sales_tax_one_point_above_the_heading_rate(year):
+    """Every state, family size 1 to 8, and income row, at a combined rate one
+    percentage point above the state's heading rate, with each state's
+    default local table."""
     grid = list(
         product(
             sorted(IRS_JURISDICTIONS | {"AK"}),
@@ -304,14 +310,38 @@ def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
         )
     )
     states, sizes, brackets = zip(*grid)
+    salt = system.parameters.gov.irs.deductions.itemized.salt_and_real_estate
+    headings = salt.state_sales_tax_table.rate(f"{year}-01-01")
+    heading = np.array([headings[state] for state in states])
     simulation = _grid_simulation(
-        year, states, sizes, state_sales_tax_income_bracket=brackets
+        year,
+        states,
+        sizes,
+        state_sales_tax_income_bracket=brackets,
+        combined_sales_tax_rate=heading + 0.01,
     )
     state_amount = simulation.calculate("state_sales_tax", year)
     local_amount = simulation.calculate("local_sales_tax", year)
+    local_tables = salt.local_sales_tax_table.tax(f"{year}-01-01")
+    table = simulation.calculate("local_sales_tax_table", year).decode_to_str()
+    table_amount = np.array(
+        [
+            local_tables[str(letter)][str(min(size, 6))][str(bracket)]
+            for letter, size, bracket in zip(table, sizes, brackets)
+        ]
+    )
     no_local = np.isin(states, NO_LOCAL_SALES_TAX)
+    uses_table = np.isin(states, salt.local_sales_tax_table.states(f"{year}-01-01"))
+    ratio = ~no_local & ~uses_table
     assert (local_amount[no_local] == 0).all()
-    assert np.allclose(local_amount[~no_local], 0.2 * state_amount[~no_local])
+    np.testing.assert_allclose(
+        local_amount[uses_table], table_amount[uses_table], rtol=1e-4
+    )
+    np.testing.assert_allclose(
+        local_amount[ratio],
+        state_amount[ratio] / (100 * heading[ratio]),
+        rtol=1e-4,
+    )
 
 
 @pytest.mark.parametrize("year", IRS_TABLE_YEARS)

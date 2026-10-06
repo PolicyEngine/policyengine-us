@@ -1,3 +1,4 @@
+from functools import lru_cache
 from importlib import resources
 from pathlib import Path
 
@@ -39,6 +40,18 @@ def load_county_fips_dataset() -> pd.DataFrame:
     )
     with package_dataset.open("rb") as dataset_file:
         return _read_county_fips_dataset(dataset_file)
+
+
+@lru_cache(maxsize=None)
+def state_fips_by_state_code() -> "pd.Series[str]":
+    """Two-digit state FIPS code of each state code, from the county FIPS
+    dataset (a county FIPS code starts with its state's FIPS code)."""
+    counties = load_county_fips_dataset()
+    return (
+        counties.assign(state_fips=counties["county_fips"].str[:2])
+        .drop_duplicates("state")
+        .set_index("state")["state_fips"]
+    )
 
 
 def map_county_string_to_enum(

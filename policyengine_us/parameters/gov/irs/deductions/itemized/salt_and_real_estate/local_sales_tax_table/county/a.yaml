@@ -1,0 +1,105 @@
+description: The IRS has residents of these counties use Optional Local Sales Tax Table A.
+metadata:
+  unit: list
+  period: year
+  label: Counties using Optional Local Sales Tax Table A
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Counties (and Louisiana parishes and Alaska boroughs) that the IRS selector
+# names for this table, by 2020 Census county FIPS code. The 2025 selector
+# names the same localities with the same tables as the 2024 selector, so
+# the 2024 value applies to 2025. A place named in another row takes
+# precedence (place lists), as in "Dekalb County (excluding Atlanta)".
+values:
+  2022-01-01:
+    - "08001"  # Adams County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36027"  # Dutchess County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36107"  # Tioga County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45091"  # York County, SC
+  2023-01-01:
+    - "08001"  # Adams County, CO
+    - "08005"  # Arapahoe County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36027"  # Dutchess County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36107"  # Tioga County, NY
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45047"  # Greenwood County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45091"  # York County, SC
+  2024-01-01:
+    - "08001"  # Adams County, CO
+    - "08013"  # Boulder County, CO
+    - "08041"  # El Paso County, CO
+    - "08069"  # Larimer County, CO
+    - "08101"  # Pueblo County, CO
+    - "13089"  # DeKalb County, GA
+    - "36013"  # Chautauqua County, NY
+    - "36017"  # Chenango County, NY
+    - "36021"  # Columbia County, NY
+    - "36025"  # Delaware County, NY
+    - "36027"  # Dutchess County, NY
+    - "36039"  # Greene County, NY
+    - "36041"  # Hamilton County, NY
+    - "36107"  # Tioga County, NY
+    - "45005"  # Allendale County, SC
+    - "45009"  # Bamberg County, SC
+    - "45011"  # Barnwell County, SC
+    - "45017"  # Calhoun County, SC
+    - "45019"  # Charleston County, SC
+    - "45021"  # Cherokee County, SC
+    - "45023"  # Chester County, SC
+    - "45025"  # Chesterfield County, SC
+    - "45029"  # Colleton County, SC
+    - "45031"  # Darlington County, SC
+    - "45033"  # Dillon County, SC
+    - "45037"  # Edgefield County, SC
+    - "45041"  # Florence County, SC
+    - "45053"  # Jasper County, SC
+    - "45055"  # Kershaw County, SC
+    - "45057"  # Lancaster County, SC
+    - "45059"  # Laurens County, SC
+    - "45061"  # Lee County, SC
+    - "45065"  # McCormick County, SC
+    - "45067"  # Marion County, SC
+    - "45069"  # Marlboro County, SC
+    - "45081"  # Saluda County, SC
+    - "45089"  # Williamsburg County, SC

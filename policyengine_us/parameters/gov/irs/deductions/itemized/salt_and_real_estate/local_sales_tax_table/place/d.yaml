@@ -1,0 +1,22 @@
+description: The IRS has residents of these cities use Optional Local Sales Tax Table D.
+metadata:
+  unit: list
+  period: year
+  label: Places using Optional Local Sales Tax Table D
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Cities that the IRS selector names for this table, by 2020 Census place
+# GEOID (state FIPS code and place code). The 2025 selector names the same
+# localities with the same tables as the 2024 selector, so the 2024 value
+# applies to 2025. A place's row takes precedence over its county's row.
+values:
+  2022-01-01: []
+  2023-01-01: []
+  2024-01-01: []
