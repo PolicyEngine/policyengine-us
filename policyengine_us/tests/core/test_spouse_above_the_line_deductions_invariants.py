@@ -530,7 +530,7 @@ def _check(units, year):
         # alimony_expense_ald_person is each payer's own alimony, so it adds up
         # to alimony_expense_ald unless that is set directly;
         # above_the_line_deductions_person reconciles the difference.
-        kept = set_directly != unit_name
+        kept = (unit_name != "alimony_expense_ald") | (set_directly != unit_name)
         _close(
             _unit_sum(run, filer * run[person_name])[kept],
             run[unit_name][kept],
