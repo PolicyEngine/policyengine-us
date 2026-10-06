@@ -16,6 +16,12 @@ for every household and every adult the rate measures:
    were.
 4. Right after construction, ``input_variables`` lists exactly the variables
    that hold values.
+5. In a reformed simulation with behavioral responses, the rates hold the
+   responses at their simulated values: invariant 1 holds against fresh
+   simulations that raise the pre-response input and keep every response.
+6. A reformed simulation's baseline branch, and the baseline and reform
+   branches that measure behavioral responses, equal fresh simulations of the
+   baseline and of the reform without responses.
 
 Invariant 4 is what the branches rely on. The ``Simulation`` and
 ``Microsimulation`` wrappers move ``employment_income`` and similar inputs onto
@@ -34,11 +40,17 @@ import copy
 import numpy as np
 import pandas as pd
 import pytest
+from policyengine_core.periods import period as make_period
+from policyengine_core.reforms import Reform
 
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    BEHAVIORAL_RESPONSE_CACHE_ATTR,
     PRE_RESPONSE_INPUTS,
+)
+from policyengine_us.variables.household.marginal_tax_rate_helpers import (
+    HELD_BEHAVIORAL_RESPONSE_VARIABLES,
 )
 
 YEAR = 2026
@@ -60,6 +72,27 @@ COMPONENT_TAXES = {
     "state_marginal_tax_rate": "state_income_tax",
     "fica_marginal_tax_rate": "employee_payroll_tax",
 }
+DATE_RANGE = "2020-01-01.2100-12-31"
+# The reforms of tests/microsimulation/test_lsr_cg_interaction.py: a top
+# rate 10 points higher, CBO's labor supply elasticities and a capital gains
+# realization elasticity.
+TOP_RATE = {"gov.irs.income.bracket.rates.7": {DATE_RANGE: 0.47}}
+CBO_LABOR_SUPPLY = {
+    "gov.simulation.labor_supply_responses.elasticities.income": {DATE_RANGE: -0.05},
+    "gov.simulation.labor_supply_responses.elasticities.substitution.all": {
+        DATE_RANGE: 0.25
+    },
+}
+CAPITAL_GAINS_RESPONSE = {
+    "gov.simulation.capital_gains_responses.elasticity": {DATE_RANGE: -0.62}
+}
+
+
+def reform(*parameter_changes):
+    changes = {}
+    for change in parameter_changes:
+        changes.update(change)
+    return Reform.from_dict(changes, country_id="us")
 
 
 def situation(households, geography="state_code"):
@@ -114,19 +147,27 @@ def situation(households, geography="state_code"):
     return result
 
 
+EARNINGS = (
+    "employment_income",
+    "self_employment_income",
+    "sstb_self_employment_income",
+)
+
+
 def raise_earnings(base_situation, simulation, adult_index):
     """Raise the earnings of each household's ``adult_index``-th earner.
 
     Splits ``DELTA`` across wages, non-SSTB and SSTB self-employment income in
     proportion to the person's positive earnings, wages when there are none;
-    the split the rates document.
+    the split the rates document. The situation's earnings are the
+    pre-response inputs, so the raise goes on those.
     """
     ranks = simulation.calculate("adult_earnings_index", YEAR)
-    wages = simulation.calculate("employment_income", YEAR)
-    self_employment = simulation.calculate("self_employment_income", YEAR)
-    sstb = simulation.calculate("sstb_self_employment_income", YEAR)
-    positive = [np.maximum(x, 0) for x in (wages, self_employment, sstb)]
+    positive = [np.maximum(simulation.calculate(x, YEAR), 0) for x in EARNINGS]
     total = sum(positive)
+    pre_response = [
+        simulation.calculate(PRE_RESPONSE_INPUTS[x], YEAR) for x in EARNINGS
+    ]
     raised = copy.deepcopy(base_situation)
     for i, person in enumerate(base_situation["people"]):
         if ranks[i] != adult_index:
@@ -134,22 +175,14 @@ def raise_earnings(base_situation, simulation, adult_index):
         shares = (
             [x[i] / total[i] for x in positive] if total[i] > 0 else [1.0, 0.0, 0.0]
         )
-        for variable, base, share in zip(
-            (
-                "employment_income",
-                "self_employment_income",
-                "sstb_self_employment_income",
-            ),
-            (wages, self_employment, sstb),
-            shares,
-        ):
+        for variable, base, share in zip(EARNINGS, pre_response, shares):
             raised["people"][person][variable] = {YEAR: float(base[i] + DELTA * share)}
     return raised, ranks == adult_index
 
 
 def raise_long_term_gains(base_situation, simulation, adult_index):
     ranks = simulation.calculate("adult_index_cg", YEAR)
-    gains = simulation.calculate("long_term_capital_gains", YEAR)
+    gains = simulation.calculate(PRE_RESPONSE_INPUTS["long_term_capital_gains"], YEAR)
     raised = copy.deepcopy(base_situation)
     for i, person in enumerate(base_situation["people"]):
         if ranks[i] == adult_index:
@@ -157,6 +190,31 @@ def raise_long_term_gains(base_situation, simulation, adult_index):
                 YEAR: float(gains[i] + DELTA)
             }
     return raised, ranks == adult_index
+
+
+def hold_responses(raised_situation, simulation):
+    """Give every person the behavioral responses they have in ``simulation``."""
+    responses = {
+        variable: simulation.calculate(variable, YEAR)
+        for variable in HELD_BEHAVIORAL_RESPONSE_VARIABLES
+    }
+    for i, person in enumerate(raised_situation["people"]):
+        for variable, values in responses.items():
+            raised_situation["people"][person][variable] = {YEAR: float(values[i])}
+    return raised_situation
+
+
+def fresh_simulation(raised_situation, simulation, policy):
+    """A fresh simulation of the raised households under ``policy``.
+
+    Under a reform, the fresh simulation keeps the responses ``simulation``
+    has, so the difference measures the rate at fixed behavior.
+    """
+    if policy is None:
+        return Simulation(situation=raised_situation)
+    return Simulation(
+        situation=hold_responses(raised_situation, simulation), reform=policy
+    )
 
 
 def household_values(simulation, variable):
@@ -171,7 +229,7 @@ def head_taxes(simulation, variable):
     return household.project(household.sum(person_tax))
 
 
-def fresh_earnings_rates(base_situation, simulation):
+def fresh_earnings_rates(base_situation, simulation, policy=None):
     """Each earnings rate as a difference between fresh simulations."""
     adult_count = simulation.tax_benefit_system.parameters(
         YEAR
@@ -186,7 +244,7 @@ def fresh_earnings_rates(base_situation, simulation):
     expected = {rate: np.zeros(len(base_situation["people"])) for rate in base}
     for adult_index in range(1, adult_count + 1):
         raised_situation, mask = raise_earnings(base_situation, simulation, adult_index)
-        raised = Simulation(situation=raised_situation)
+        raised = fresh_simulation(raised_situation, simulation, policy)
         alt = {
             "marginal_tax_rate": household_values(raised, "household_net_income"),
             "marginal_tax_rate_including_health_benefits": household_values(
@@ -204,7 +262,7 @@ def fresh_earnings_rates(base_situation, simulation):
     return expected
 
 
-def fresh_capital_gains_rate(base_situation, simulation):
+def fresh_capital_gains_rate(base_situation, simulation, policy=None):
     base = household_values(simulation, "household_net_income")
     expected = np.zeros(len(base_situation["people"]))
     for adult_index in (1, 2):
@@ -212,7 +270,8 @@ def fresh_capital_gains_rate(base_situation, simulation):
             base_situation, simulation, adult_index
         )
         alt = household_values(
-            Simulation(situation=raised_situation), "household_net_income"
+            fresh_simulation(raised_situation, simulation, policy),
+            "household_net_income",
         )
         expected = np.where(mask, 1 - (alt - base) / DELTA, expected)
     return expected
@@ -232,6 +291,30 @@ OHIO_PARENT = (
     "OH",
     {"parent": {"age": 30, "employment_income": 28_000}},
     [4, 8],
+)
+# The Ohio Works First recipient of _ohio_parent_dataset(6_000).
+OHIO_WORKS_FIRST_PARENT = (
+    "OH",
+    {
+        "parent": {
+            "age": 30,
+            "employment_income": 6_000,
+            "weekly_hours_worked": 30,
+            "long_term_capital_gains": 500,
+        }
+    },
+    [4, 8],
+)
+TEXAS_GAINS_FILER = (
+    "TX",
+    {
+        "filer": {
+            "age": 45,
+            "employment_income": 60_000,
+            "long_term_capital_gains": 15_000,
+        }
+    },
+    [],
 )
 
 
@@ -391,21 +474,7 @@ def test_capital_gains_rate_applies_preferential_rates():
     Texas has no income tax and the filer is below the net investment income
     tax threshold, so an extra dollar of gains costs 15 cents.
     """
-    base_situation = situation(
-        [
-            (
-                "TX",
-                {
-                    "filer": {
-                        "age": 45,
-                        "employment_income": 60_000,
-                        "long_term_capital_gains": 15_000,
-                    }
-                },
-                [],
-            )
-        ]
-    )
+    base_situation = situation([TEXAS_GAINS_FILER])
     simulation = Simulation(situation=base_situation)
 
     rate = simulation.calculate("marginal_tax_rate_on_capital_gains", YEAR)
@@ -455,3 +524,176 @@ def test_marginal_rates_match_fresh_simulations_for_random_households(seed):
     )
 
     assert_rates_match(simulation, expected, expected)
+
+
+# Households whose taxes 10-point higher 12% and 22% rates raise, so CBO's
+# elasticities give them labor supply responses.
+RESPONDING_HOUSEHOLDS = [
+    ("TX", {"worker": {"age": 40, "employment_income": 50_000}}, []),
+    (
+        "CA",
+        {
+            "head": {
+                "age": 45,
+                "employment_income": 70_000,
+                "self_employment_income": 20_000,
+                "weekly_hours_worked": 40,
+            },
+            "spouse": {
+                "age": 43,
+                "sstb_self_employment_income": 30_000,
+                "weekly_hours_worked": 25,
+            },
+        },
+        [10],
+    ),
+    (
+        "NY",
+        {
+            "retiree": {
+                "age": 67,
+                "employment_income": 35_000,
+                "social_security_retirement": 18_000,
+            }
+        },
+        [],
+    ),
+    OHIO_WORKS_FIRST_PARENT,
+]
+MIDDLE_RATES = {
+    "gov.irs.income.bracket.rates.2": {DATE_RANGE: 0.22},
+    "gov.irs.income.bracket.rates.3": {DATE_RANGE: 0.32},
+}
+
+
+def test_rates_in_a_dynamic_reform_hold_behavioral_responses():
+    """Invariant 5 for the earnings rates.
+
+    Under CBO's elasticities, 10-point higher 12% and 22% rates cut the Texas
+    worker's earnings by $1,429 (substitution elasticity 0.25 times their
+    after-tax wage change, times $50,000). Before the fix the branch
+    recomputed that response on the raised pre-response earnings, so $1,000
+    more earnings became about $971 of wages and their rate read 0.3166
+    where fresh simulations at fixed behavior give 0.2965.
+    """
+    policy = reform(MIDDLE_RATES, CBO_LABOR_SUPPLY)
+    base_situation = situation(RESPONDING_HOUSEHOLDS)
+    simulation = Simulation(situation=base_situation, reform=policy)
+    responses = simulation.calculate("labor_supply_behavioral_response", YEAR)
+    assert (np.abs(responses) > 100).sum() >= 4
+
+    assert_rates_match(
+        simulation,
+        fresh_earnings_rates(base_situation, simulation, policy),
+        EARNINGS_RATES,
+    )
+
+
+def test_capital_gains_rate_in_a_dynamic_reform_holds_the_response():
+    """Invariant 5 for the capital gains rate.
+
+    A 20% rate on the Texas filer's gains (see
+    test_capital_gains_rate_applies_preferential_rates) and a -0.62
+    elasticity cut their $15,000 of gains by
+    15,000 * (exp(-0.62 * ln(0.20 / 0.15)) - 1) = -$2,450. Before the fix
+    the branch recomputed the response on $16,000, so $1,000 more gains
+    became $837 and the rate read 0.3307 instead of 0.20.
+    """
+    policy = reform(
+        {"gov.irs.capital_gains.rates.2": {DATE_RANGE: 0.20}},
+        CAPITAL_GAINS_RESPONSE,
+    )
+    base_situation = situation([TEXAS_GAINS_FILER])
+    simulation = Simulation(situation=base_situation, reform=policy)
+    response = simulation.calculate("capital_gains_behavioral_response", YEAR)
+    assert response[0] == pytest.approx(-2_450.4, abs=0.5)
+
+    rate = simulation.calculate("marginal_tax_rate_on_capital_gains", YEAR)
+
+    assert rate[0] == pytest.approx(0.20, abs=TOLERANCE)
+    assert rate[0] == pytest.approx(
+        fresh_capital_gains_rate(base_situation, simulation, policy)[0],
+        abs=TOLERANCE,
+    )
+
+
+def values(simulation, variable):
+    return np.asarray(simulation.calculate(variable, YEAR, map_to="person"))
+
+
+@pytest.mark.parametrize("wrapper", [Simulation, Microsimulation])
+def test_reformed_simulations_branch_the_baseline_after_moving_inputs(wrapper):
+    """Invariant 6 for the baseline branch of either wrapper.
+
+    Core branches the baseline while it constructs a reformed simulation,
+    before the wrappers move inputs. The branch kept the Ohio Works First
+    parent's wages on employment_income and none on
+    employment_income_before_lsr, so its TANF counted no earnings ($7,474.60
+    instead of $5,974.60) and its marginal tax rate read -0.2335 instead of
+    0.1195.
+    """
+    policy = reform(TOP_RATE, CBO_LABOR_SUPPLY)
+    if wrapper is Simulation:
+        base_situation = situation([OHIO_WORKS_FIRST_PARENT])
+        reformed = Simulation(situation=base_situation, reform=policy)
+        fresh = Simulation(situation=base_situation)
+    else:
+        reformed = Microsimulation(dataset=_ohio_parent_dataset(6_000), reform=policy)
+        fresh = Microsimulation(dataset=_ohio_parent_dataset(6_000))
+    baseline = reformed.baseline
+
+    assert baseline is reformed.branches["baseline"]
+    assert baseline.baseline is None
+    assert baseline.tax_benefit_system is not reformed.tax_benefit_system
+    assert set(baseline.input_variables) == set(fresh.input_variables)
+    for variable in (
+        "employment_income_before_lsr",
+        "weekly_hours_worked_before_lsr",
+        "long_term_capital_gains",
+        "tanf",
+        "household_net_income",
+        "marginal_tax_rate",
+    ):
+        np.testing.assert_allclose(
+            values(baseline, variable),
+            values(fresh, variable),
+            atol=TOLERANCE,
+            err_msg=variable,
+        )
+
+
+def test_behavioral_response_measurements_match_fresh_simulations():
+    """Invariant 6 for the branches that measure behavioral responses.
+
+    The top-rate reform changes no tax or benefit of these households, so
+    none of them responds. Before the fix, the baseline measurement branch
+    erased the Ohio Works First parent's pre-response wages in its rate
+    branch. It measured a -0.2335 baseline rate against the reform's 0.1195
+    and a $24,365 baseline net income against $23,318, so the parent
+    responded to a reform that does not touch them with $416 less earnings.
+    """
+    policy = reform(TOP_RATE, CBO_LABOR_SUPPLY)
+    base_situation = situation(RESPONDING_HOUSEHOLDS)
+    simulation = Simulation(situation=base_situation, reform=policy)
+    response = simulation.calculate("labor_supply_behavioral_response", YEAR)
+    measurements = getattr(simulation, BEHAVIORAL_RESPONSE_CACHE_ATTR)[
+        str(make_period(YEAR))
+    ]
+    fresh = {
+        "baseline": Simulation(situation=base_situation),
+        "reform": Simulation(situation=base_situation, reform=reform(TOP_RATE)),
+    }
+
+    for name, comparison in fresh.items():
+        for measurement, variable in (
+            ("mtr", "marginal_tax_rate"),
+            ("capital_gains_mtr", "marginal_tax_rate_on_capital_gains"),
+            ("net_income", "household_net_income"),
+        ):
+            np.testing.assert_allclose(
+                measurements[f"{name}_{measurement}"],
+                values(comparison, variable),
+                atol=TOLERANCE,
+                err_msg=f"{name}_{measurement}",
+            )
+    np.testing.assert_allclose(response, 0, atol=TOLERANCE)

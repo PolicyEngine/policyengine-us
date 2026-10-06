@@ -93,7 +93,8 @@
 # earnings less the $14,600 standard deduction, so the $90,000 earner is in the
 # 22% bracket and the $60,000 and $30,000 earners are in the 12% bracket; each
 # also pays 7.65% employee payroll tax. The federal and FICA components check the
-# shared component helper, which has its own copy of the adult loop.
+# component helper, which runs the same adult loop (marginal_earnings_change) as
+# marginal_tax_rate.
 # The same household with the cap raised to 3 is in
 # tests/core/test_marginal_tax_rate_coverage.py, which avoids another cached
 # tax-benefit system in the batched YAML runner.

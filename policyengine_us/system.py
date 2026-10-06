@@ -219,6 +219,32 @@ def _sync_input_variables(simulation):
     ]
 
 
+def _rebuild_baseline_branch(simulation):
+    """Branch a reformed simulation's baseline again, after the moves.
+
+    Core branches the baseline while it constructs a reformed simulation,
+    before the wrappers move inputs and backfill ``state_code``. The branch
+    therefore kept ``employment_income`` and ``weekly_hours_worked`` as
+    inputs, left ``employment_income_before_lsr`` and
+    ``weekly_hours_worked_before_lsr`` empty, and kept the stale
+    ``input_variables``. Its TANF counted no earnings, and the baseline
+    marginal tax rate that labor supply responses compare against erased
+    pre-response wages. Branching again from the simulation, as core's
+    ``subsample`` does, gives the baseline the same inputs as the reform.
+    """
+    baseline = simulation.branches.pop("baseline", None)
+    if baseline is None:
+        return
+    # A branch copies its parent's attributes, and a baseline whose own
+    # baseline is set would compute behavioral responses.
+    simulation.baseline = None
+    rebuilt = simulation.get_branch("baseline")
+    rebuilt.trace = simulation.trace
+    rebuilt.tracer = simulation.tracer
+    rebuilt.tax_benefit_system = baseline.tax_benefit_system
+    simulation.baseline = rebuilt
+
+
 def _backfill_state_code_from_str(simulation):
     """Backfill the ``state_code`` enum from a ``state_code_str`` input.
 
@@ -289,6 +315,7 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
         _sync_input_variables(self)
+        _rebuild_baseline_branch(self)
 
 
 def _download_or_explain(dataset_str, download):
@@ -515,6 +542,7 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         # explicitly supply state_code_str.
         _backfill_state_code_from_str(self)
         _sync_input_variables(self)
+        _rebuild_baseline_branch(self)
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated

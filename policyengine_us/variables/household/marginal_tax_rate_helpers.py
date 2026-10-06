@@ -1,6 +1,15 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
     PRE_RESPONSE_INPUTS,
+)
+
+# Behavioral responses to a reform, which each aggregate in
+# PRE_RESPONSE_INPUTS adds to its pre-response input. A perturbed branch holds
+# them at their values in the simulation.
+HELD_BEHAVIORAL_RESPONSE_VARIABLES = (
+    *NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
+    "weekly_hours_worked_behavioural_response",
 )
 
 
@@ -15,6 +24,15 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     aggregate itself would hide the increase from those programs, so the
     increase goes to the variable that holds the input.
 
+    The branch holds behavioral responses to a reform at their values in the
+    simulation, so a rate measured in a reformed simulation with labor supply
+    or capital gains elasticities excludes any response to the increase
+    itself. Recomputing them would scale the response with the raised
+    pre-response input (a substitution response of -2.5% of earnings turns a
+    $1,000 raise into $975 of wages). Responses neutralized in the
+    simulation, as in the behavioral response measurement branches, are zero
+    in both.
+
     Args:
         simulation: The simulation to branch from.
         period: The period whose inputs rise.
@@ -25,10 +43,18 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
         The branch simulation.
     """
     input_variables = set(simulation.input_variables)
+    variables = simulation.tax_benefit_system.variables
+    responses = {
+        variable: simulation.person(variable, period)
+        for variable in HELD_BEHAVIORAL_RESPONSE_VARIABLES
+        if not variables[variable].is_neutralized
+    }
     branch = simulation.get_branch(branch_name)
-    for variable in simulation.tax_benefit_system.variables:
+    for variable in variables:
         if variable not in input_variables:
             branch.delete_arrays(variable)
+    for variable, response in responses.items():
+        branch.set_input(variable, period, response)
     for variable, increment in increments.items():
         if variable not in input_variables:
             variable = PRE_RESPONSE_INPUTS.get(variable, variable)
