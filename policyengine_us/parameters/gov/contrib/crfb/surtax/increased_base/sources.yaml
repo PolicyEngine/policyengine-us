@@ -1,9 +1,15 @@
 description: Additional income sources for CRFB surtax expanded base beyond IRS gross income.
 values:
   2010-01-01:
-    # Person-level sources are summed over the head and spouse only, the
-    # people whose AGI the base expands; tax-unit-level sources describe the
-    # head's and spouse's own return.
+    # CRFB's Break Glass plan (footnote 2) applies the surtax to "a broad
+    # definition of income that includes Adjusted Gross Income (AGI) plus"
+    # retirement contributions, HSA/MSA contributions, deductible student
+    # loan interest, Social Security not counted toward AGI, tax-free bond
+    # interest and employer-provided health insurance. It does not address
+    # dependents. The base starts from the return's AGI, so person-level
+    # sources are summed over the head and spouse only, the people whose AGI
+    # it is; that attribution is inferred. Tax-unit-level sources describe
+    # the head's and spouse's own return.
     # Retirement contributions (IRA, 401k, 403b)
     - traditional_ira_contributions
     - traditional_401k_contributions
@@ -25,3 +31,6 @@ metadata:
   unit: list
   period: year
   label: CRFB surtax expanded base additional sources
+  reference:
+    - title: "Committee for a Responsible Federal Budget, Break Glass: A Plan for the Next Economic Shock, footnote 2"
+      href: https://www.crfb.org/papers/break-glass-plan-next-economic-shock
