@@ -11,10 +11,12 @@ metadata:
   label: Ohio business income sources
   reference:
     # "Generally, income recognized by a sole proprietorship or pass-through
-    # entity is business income." Interest, dividends, capital gains, rents,
-    # royalties and trust income are business income only when they arise in
-    # a trade or business, which the model cannot observe, so they are treated
-    # as nonbusiness income.
+    # entity is business income." Interest, dividends, capital gains, rents
+    # (including farm rent), royalties, trust income and Form 4797 gains are
+    # business income only when they arise in a trade or business, which the
+    # model cannot observe, so they are treated as nonbusiness income. Wages
+    # and guaranteed payments a pass-through pays a 20%-or-more owner
+    # (schedule line 5) are not modeled.
     - title: R.C. 5747.01(B) and (C)
       href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
     - title: 2024 Ohio IT 1040 Instructions, Definitions and Examples of Business and Nonbusiness Income

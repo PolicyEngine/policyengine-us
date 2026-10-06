@@ -16,8 +16,11 @@ class oh_business_income_deduction_person(Variable):
     defined_for = StateCode.OH
 
     def formula(person, period, parameters):
-        # The deduction comes out of the business income of the filer who
-        # earned it, in proportion to each filer's positive business income.
+        # The deduction comes out of each filer's business income. The statute
+        # caps the deduction per return and does not say how a joint cap is
+        # divided; as a modeling convention, it is shared in proportion to
+        # each filer's positive business income. The split matters only for
+        # each spouse's Ohio AGI (joint filing credit qualifying income).
         deduction = person.tax_unit("oh_business_income_deduction", period)
         business_income = max_(person("oh_business_income_person", period), 0)
         total_business_income = person.tax_unit.sum(business_income)

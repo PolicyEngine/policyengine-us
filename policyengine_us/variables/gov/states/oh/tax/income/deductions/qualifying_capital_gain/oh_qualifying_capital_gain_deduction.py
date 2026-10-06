@@ -5,6 +5,13 @@ class oh_qualifying_capital_gain_deduction(Variable):
     value_type = float
     entity = Person
     label = "Ohio qualifying capital gain deduction"
+    documentation = (
+        "The lesser of the qualifying capital gain or the deductible payroll "
+        "(R.C. 5747.79(B)), computed for the sale of interests in one entity. "
+        "For sales in several entities, the deduction is the sum of the lesser "
+        "amount for each entity (R.C. 5747.79(C)(2)); set this variable "
+        "directly in that case."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -23,7 +30,13 @@ class oh_qualifying_capital_gain_deduction(Variable):
         # The lesser of the qualifying capital gain or the deductible payroll.
         # The model counts capital gains as nonbusiness income, so none of
         # this gain is also deducted as business income under (A)(28).
-        gain = max_(person("oh_qualifying_capital_gain", period), 0)
+        # The qualifying gain must be included in federal adjusted gross
+        # income (R.C. 5747.79(A)(1)), so it cannot exceed the capital gains
+        # reported.
+        gain = min_(
+            max_(person("oh_qualifying_capital_gain", period), 0),
+            max_(person("capital_gains", period), 0),
+        )
         payroll = max_(
             person("oh_qualifying_capital_gain_deductible_payroll", period), 0
         )

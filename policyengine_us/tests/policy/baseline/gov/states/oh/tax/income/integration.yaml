@@ -92,7 +92,9 @@
     # Ohio's business income deduction (R.C. 5747.01(A)(28)). With it: the
     # Schedule C income of 160_010 is deducted in full (Schedule of Business
     # Income lines 10-13); Ohio AGI 242_927.34; MAGI 402_937.34, so five
-    # exemptions of 1_900; lines 5 and 7 = 233_427.34; line 8a = 8_021.96;
+    # exemptions of 1_900; lines 5 and 7 = 233_427.34; line 8a = 8_021.96 in
+    # the model (the 2021 table's $346.16 base gives 8_021.87; the model's
+    # first-bracket rate gives a $0.09 higher base, as before this change);
     # joint filing credit 5% = 401.10; tax 7_620.86.
     oh_business_income_deduction: 160_010
     oh_income_tax: 7_620.86
@@ -133,7 +135,8 @@
     # Ohio's business income deduction (R.C. 5747.01(A)(28)). With it: the
     # Schedule C income of 28_010 is deducted in full; Ohio AGI 80_081.16;
     # MAGI 108_091.16, so three exemptions of 1_900; lines 5 and 7 =
-    # 74_381.16; line 8a = 1_850.54.
+    # 74_381.16; line 8a = 1_850.54 in the model (1_850.45 on the 2021 table,
+    # the same pre-existing $0.09 base difference).
     oh_business_income_deduction: 28_010
     oh_income_tax: 1_850.54
 
