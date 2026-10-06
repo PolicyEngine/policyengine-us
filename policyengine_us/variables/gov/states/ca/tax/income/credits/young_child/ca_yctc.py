@@ -38,7 +38,10 @@ class ca_yctc(Variable):
         has_no_earned_income = tax_unit("tax_unit_earned_income", period) <= 0
         # ... ... (B)(ii): net losses within the threshold. FTB 3514 line 23b
         # measures the net loss from Form 540 line 17 without utilization
-        # limitations, so the capital loss limit does not apply.
+        # limitations, so the capital loss limit does not apply. AGI carries
+        # loss_limited_net_capital_gains, which already includes capital gain
+        # distributions (they net against losses on Schedule D line 13), so the
+        # unlimited amount adds them back to net_capital_gains as well.
         limited_capital_gains = tax_unit("loss_limited_net_capital_gains", period)
         distributions = tax_unit.sum(max_(0, person("non_sch_d_capital_gains", period)))
         unlimited_capital_gains = tax_unit("net_capital_gains", period) + distributions
@@ -48,8 +51,9 @@ class ca_yctc(Variable):
         total_net_loss = max_(0, -total_income)
         has_limited_losses = total_net_loss <= p.loss_threshold
         # ... ... (B)(iii): wages, salaries, tips, and other employee
-        # compensation within the same threshold (FTB 3514 line 23a)
-        wages = add(tax_unit, period, ["employment_income"])
+        # compensation within the same threshold (FTB 3514 line 23a, which
+        # carries the filers' wages from line 13)
+        wages = tax_unit_non_dep_sum("employment_income", tax_unit, period)
         has_limited_wages = wages <= p.loss_threshold
         # ... ... combine all the (b) elements where appropriate
         is_loss_eligible = where(

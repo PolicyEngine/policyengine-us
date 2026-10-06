@@ -253,3 +253,52 @@
   output:
     # Line 23b: net loss of $60,000 exceeds $32,490.
     ca_yctc: 0
+
+- name: Capital gain distributions reduce a self-employment loss to within $32,490, so eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -35_000
+        non_sch_d_capital_gains: 3_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23b: Form 540 line 17 is -35,000 + 3,000 = -32,000, a net loss of
+    # $32,000, within $32,490. Investment income of $3,000 is within $4,389.
+    ca_yctc: 1_083
+
+- name: A dependent's wages do not count toward the $32,490 wage limit in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -10_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+      teen:
+        age: 17
+        employment_income: 40_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, teen]
+    households:
+      household:
+        members: [parent, child, teen]
+        state_code: CA
+  output:
+    # Line 23a carries the filer's wages (line 13), which are $0; the
+    # dependent's $40,000 is on the dependent's own return.
+    ca_yctc: 1_083
