@@ -1,19 +1,30 @@
 description: New York allows an itemized deduction for medical and dental expenses exceeding this share of federal adjusted gross income.
 values:
+  # Through 2017, Form IT-201-D line 1 took the medical deduction from federal
+  # Schedule A line 4, after the federal floor: 10% from 2013 (7.5% for filers
+  # 65 and over through 2016, not modeled), then 7.5% for 2017 under Public
+  # Law 115-97 § 11027.
+  2013-01-01: 0.1
+  2017-01-01: 0.075
+  # From 2018, NY Tax Law § 615(a) computes NY itemized deductions as federal
+  # deductions existed immediately prior to Public Law 115-97, so NY keeps the
+  # pre-TCJA 26 U.S.C. 213(a) 10% floor (Form IT-196 line 3).
   2018-01-01: 0.1
 metadata:
   unit: /1
   period: year
   label: New York itemized medical expense deduction floor
   reference:
-    # NY Tax Law § 615(a) computes NY itemized deductions as federal
-    # deductions existed immediately prior to Public Law 115-97 (TCJA).
-    # Pre-TCJA 26 U.S.C. 213(a) set a 10% floor; TCJA § 11027 lowered the
-    # federal floor to 7.5%, which NY does not follow.
     - title: NY Tax Law § 615(a)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
     - title: 26 U.S. Code § 213(a) (2016 edition, before Public Law 115-97)
       href: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partVII-sec213.htm
+    - title: 2016 NY Form IT-201-D, line 1 (federal Schedule A, line 4)
+      href: https://www.tax.ny.gov/pdf/2016/inc/it201d_2016_fill_in.pdf#page=1
+    - title: 2017 NY Form IT-201-D, line 1 (federal Schedule A, line 4)
+      href: https://www.tax.ny.gov/pdf/2017/inc/it201d_2017_fill_in.pdf#page=1
+    - title: 2017 federal Schedule A, line 3 (multiply line 2 by 7.5%)
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2017.pdf#page=1
     - title: 2018 NY Form IT-196, line 3 (multiply line 2 by 10%)
       href: https://www.tax.ny.gov/pdf/2018/inc/it196_2018_fill_in.pdf#page=1
     - title: 2025 NY Form IT-196, line 3 (multiply line 2 by 10%)

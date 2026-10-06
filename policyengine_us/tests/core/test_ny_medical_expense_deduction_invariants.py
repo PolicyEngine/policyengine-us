@@ -4,6 +4,8 @@ NY Tax Law 615(a) computes New York itemized deductions as federal deductions
 existed immediately before Public Law 115-97, so Form IT-196 lines 1-4 keep
 the 10% floor of pre-TCJA 26 USC 213(a): line 4 is medical and dental
 expenses less 10% of federal AGI. The federal floor has been 7.5% since 2017.
+Through 2017, Form IT-201-D line 1 took federal Schedule A line 4, so New
+York followed the federal 7.5% floor in 2017.
 
 Hypothesis draws batches of tax units (single or joint, in New York or
 another state, with AGI from negative to several million, medical expenses,
@@ -16,7 +18,9 @@ every tax unit:
    and it is zero outside New York.
 2. Differential: in New York, ny_medical_expense_deduction equals an
    independent numpy max(0, expenses - floor * max(AGI, 0)), with the floor
-   read from Form IT-196 line 3 rather than from the model's parameters.
+   read from the forms (Form IT-196 line 3 from 2018; for 2017, the federal
+   Schedule A line 3 that IT-201-D line 1 used) rather than from the model's
+   parameters.
 3. Order: it never exceeds the federal medical_expense_deduction.
 4. Monotone: raising expenses by d raises it by at least 0 and at most d.
 5. Composition: ny_itemized_deductions_max less ny_medical_expense_deduction
@@ -29,19 +33,23 @@ every tax unit:
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
 
 TOLERANCE = 0.01  # dollars
-# The model stores float32, about 7 significant digits, so amounts in the
-# hundreds of thousands also get a relative tolerance of a few float32 ulps.
+# The model computes in float32, about 7 significant digits. A difference of
+# float32 amounts can be off by a few ulps of its largest operand (half an
+# ulp is about 0.03 near 600,000) even when the result is near zero, so each
+# comparison also allows RTOL times the largest amount that went into it.
 RTOL = 1e-6
 
 # Form IT-196 line 3, "Multiply line 2 by 10% (0.10)", on the 2018, 2021,
 # 2024 and 2025 forms (tax.ny.gov/pdf/<year>/inc/it196_<year>_fill_in.pdf).
-PUBLISHED_FLOOR = {2018: 0.1, 2021: 0.1, 2024: 0.1, 2025: 0.1}
+# For 2017, IT-201-D line 1 took federal Schedule A line 4, and the 2017
+# Schedule A line 3 reads "Multiply line 2 by 7.5% (0.075)".
+PUBLISHED_FLOOR = {2017: 0.075, 2018: 0.1, 2021: 0.1, 2024: 0.1, 2025: 0.1}
 YEARS = sorted(PUBLISHED_FLOOR)
 STATES = ["NY", "NY", "NY", "CA", "TX"]
 
@@ -151,8 +159,13 @@ def _run(units, year, *, raised=False):
     }
 
 
-def _slack(values):
-    return TOLERANCE + RTOL * np.abs(values)
+def _slack(*operands):
+    return TOLERANCE + RTOL * np.max(np.abs(np.stack(operands)), axis=0)
+
+
+def _assert_close(actual, desired, slack, what):
+    off = np.abs(actual - desired) > slack
+    assert not off.any(), f"{what}: {actual[off]} != {desired[off]}"
 
 
 def _check(units, year):
@@ -161,46 +174,47 @@ def _check(units, year):
     expenses = base["itemized_medical_expenses"]
     deduction = base["ny_medical_expense_deduction"]
 
+    agi = np.maximum(base["adjusted_gross_income"], 0)
+    slack = _slack(expenses, agi)
+
     # 1. Bounds, and zero outside New York.
     assert (deduction >= 0).all()
-    assert (deduction <= expenses + _slack(expenses)).all()
+    assert (deduction <= expenses + slack).all()
     assert (deduction[~in_ny] == 0).all()
 
     # 2. Differential against numpy and the published floor.
-    floor = PUBLISHED_FLOOR[year] * np.maximum(base["adjusted_gross_income"], 0)
-    np.testing.assert_allclose(
-        deduction[in_ny],
-        np.maximum(expenses - floor, 0)[in_ny],
-        atol=TOLERANCE,
-        rtol=RTOL,
-    )
+    expected = np.maximum(expenses - PUBLISHED_FLOOR[year] * agi, 0)
+    _assert_close(deduction[in_ny], expected[in_ny], slack[in_ny], "differential")
 
-    # 3. Never more than the federal deduction, whose floor is lower.
-    federal = base["medical_expense_deduction"]
-    assert (deduction <= federal + _slack(federal)).all()
+    # 3. Never more than the federal deduction, whose floor is no higher.
+    assert (deduction <= base["medical_expense_deduction"] + slack).all()
 
     # 4. Monotone, and at most dollar for dollar, in expenses.
     raised = _run(units, year, raised=True)
+    raised_slack = _slack(raised["itemized_medical_expenses"], agi)
     increase = raised["itemized_medical_expenses"] - expenses
     gain = raised["ny_medical_expense_deduction"] - deduction
-    assert (gain >= -_slack(deduction)).all()
-    assert (gain <= increase + _slack(raised["ny_medical_expense_deduction"])).all()
+    assert (gain >= -raised_slack).all()
+    assert (gain <= increase + raised_slack).all()
 
     # 5. Medical expenses reach the NY itemized total only through the NY
     # medical deduction.
-    np.testing.assert_allclose(
+    total_slack = _slack(
+        raised["ny_itemized_deductions_max"], base["ny_itemized_deductions_max"]
+    )
+    _assert_close(
         raised["ny_itemized_deductions_max"] - raised["ny_medical_expense_deduction"],
         base["ny_itemized_deductions_max"] - deduction,
-        atol=TOLERANCE,
-        rtol=RTOL,
+        total_slack,
+        "composition",
     )
 
     # 6. The Line 40 limitation is unaffected by medical expenses.
-    np.testing.assert_allclose(
+    _assert_close(
         raised["ny_itemized_deductions_phase_out"],
         base["ny_itemized_deductions_phase_out"],
-        atol=TOLERANCE,
-        rtol=RTOL,
+        total_slack,
+        "Line 40",
     )
 
 
@@ -214,8 +228,24 @@ SETTINGS = dict(
 )
 
 
+def _near_floor(agi, medical):
+    return {
+        "joint": False,
+        "state": "NY",
+        "agi": float(agi),
+        "medical": float(medical),
+        "real_estate_taxes": 0.0,
+        "charity": 0.0,
+        "increase": 0.0,
+    }
+
+
 @settings(**SETTINGS)
 @given(st.sampled_from(YEARS), st.lists(tax_units(), min_size=5, max_size=30))
+# Expenses within float32 rounding of a large floor, where a tolerance scaled
+# by the result rather than the operands fails (review of #9931).
+@example(2025, [_near_floor(5_999_999, 600_000)] * 5)
+@example(2025, [_near_floor(5_999_997, 600_000), _near_floor(5_242_881, 524_290)])
 def test_ny_medical_expense_deduction_invariants(year, units):
     _check(units, year)
 

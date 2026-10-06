@@ -1,9 +1,11 @@
 # NY Form IT-196 lines 1-4: medical and dental expenses (line 1) less 10% of
-# federal AGI (line 2, Form IT-201 or IT-203 line 19; line 3 multiplies by
-# 10% on every IT-196 from 2018 through 2025). NY Tax Law § 615(a) computes
-# NY itemized deductions as federal deductions existed immediately before
-# Public Law 115-97, so NY keeps pre-TCJA 26 U.S.C. 213(a)'s 10% floor, not
-# the federal 7.5% floor.
+# federal AGI (line 2, Form IT-201 or IT-203 line 19, or line 19a, recomputed
+# federal AGI, in 2020-2022; line 3 multiplies by 10% on every IT-196 from
+# 2018 through 2025). NY Tax Law § 615(a) computes NY itemized deductions as
+# federal deductions existed immediately before Public Law 115-97, so NY
+# keeps pre-TCJA 26 U.S.C. 213(a)'s 10% floor, not the federal 7.5% floor.
+# Through 2017, Form IT-201-D line 1 took the federal Schedule A line 4
+# amount, so NY followed the federal floor.
 
 - name: Expenses above 10% of AGI are deductible; the federal floor is lower.
   period: 2025
@@ -70,6 +72,30 @@
     ny_medical_expense_deduction: 3_000
     # TCJA section 11027 floor for 2018: 8,000 - 50,000 * 0.075 = 4,250.
     medical_expense_deduction: 4_250
+
+- name: 2017 follows the federal 7.5% floor (IT-201-D line 1 used federal Schedule A).
+  period: 2017
+  input:
+    state_code: NY
+    adjusted_gross_income: 100_000
+    other_medical_expenses: 9_000
+  output:
+    # 2017 IT-201-D line 1 = federal Schedule A line 4; 2017 Schedule A
+    # line 3 multiplies AGI by 7.5%: 9,000 - 7,500 = 1,500.
+    ny_medical_expense_deduction: 1_500
+    medical_expense_deduction: 1_500
+
+- name: 2016 follows the federal 10% floor.
+  period: 2016
+  input:
+    state_code: NY
+    adjusted_gross_income: 100_000
+    other_medical_expenses: 12_000
+  output:
+    # 2016 Schedule A line 3 multiplies AGI by 10% for filers under 65:
+    # 12,000 - 10,000 = 2,000.
+    ny_medical_expense_deduction: 2_000
+    medical_expense_deduction: 2_000
 
 - name: 2026 keeps the 10% floor.
   period: 2026
