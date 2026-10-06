@@ -34,17 +34,30 @@ class ca_yctc(Variable):
         gets_caleitc = tax_unit("ca_eitc", period) > 0
         # ... determine (b) part two
         is_caleitc_eligible = tax_unit("ca_eitc_eligible", period)
-        # ... ... determine if losses are limited to modest amount
-        federal_gross_income = add(tax_unit, period, ["irs_gross_income"])
-        total_federal_net_loss = max_(0, -federal_gross_income)
-        has_limited_losses = total_federal_net_loss <= p.loss_threshold
-        # ... ... determine if earnings are limited to modest amount
-        total_earnings = tax_unit("tax_unit_earned_income", period)
-        has_limited_earnings = total_earnings <= p.loss_threshold
+        # ... ... R&TC 17052.1(b)(1)(B)(i): earned income of zero or less
+        has_no_earned_income = tax_unit("tax_unit_earned_income", period) <= 0
+        # ... ... (B)(ii): net losses within the threshold. FTB 3514 line 23b
+        # measures the net loss from Form 540 line 17 without utilization
+        # limitations, so the capital loss limit does not apply.
+        limited_capital_gains = tax_unit("loss_limited_net_capital_gains", period)
+        distributions = tax_unit.sum(max_(0, person("non_sch_d_capital_gains", period)))
+        unlimited_capital_gains = tax_unit("net_capital_gains", period) + distributions
+        total_income = (
+            tax_unit("ca_agi", period) - limited_capital_gains + unlimited_capital_gains
+        )
+        total_net_loss = max_(0, -total_income)
+        has_limited_losses = total_net_loss <= p.loss_threshold
+        # ... ... (B)(iii): wages, salaries, tips, and other employee
+        # compensation within the same threshold (FTB 3514 line 23a)
+        wages = add(tax_unit, period, ["employment_income"])
+        has_limited_wages = wages <= p.loss_threshold
         # ... ... combine all the (b) elements where appropriate
         is_loss_eligible = where(
             p.loss_threshold > 0,
-            is_caleitc_eligible & has_limited_losses & has_limited_earnings,
+            is_caleitc_eligible
+            & has_no_earned_income
+            & has_limited_losses
+            & has_limited_wages,
             False,
         )
         # ... combine (a) and (b) parts to determine eligibility

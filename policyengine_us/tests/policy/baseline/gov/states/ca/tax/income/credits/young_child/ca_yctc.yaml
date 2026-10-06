@@ -148,7 +148,7 @@
     people:
       parent:
         age: 30
-        irs_gross_income: -20_000  # modest capital losses
+        short_term_capital_gains: -20_000  # modest capital losses
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
@@ -169,7 +169,7 @@
     people:
       parent:
         age: 30
-        irs_gross_income: -40_000  # large capital losses
+        short_term_capital_gains: -40_000  # large capital losses
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
@@ -183,3 +183,73 @@
   output:
     # ca_eitc: 0  # because of zero earnings
     ca_yctc: 0  # not eligible for YCTC in 2022 because of large losses
+
+# R&TC 17052.1(b)(1)(B) and the 2022 FTB 3514 instructions, Step 8 (lines 23a
+# and 23b): a filer with zero or negative earned income qualifies only if net
+# losses (Form 540 line 17 without utilization limitations) and wages are each
+# $32,490 or less in 2022.
+- name: Self-employment loss above wages, modest net loss, so eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -30_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Earned income -10,000; net loss 10,000; wages 20,000.
+    ca_yctc: 1_083
+
+- name: Wages above $32,490 with negative earned income, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 71_846
+        self_employment_income: -92_009
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23a: wages of $71,846 exceed $32,490.
+    ca_yctc: 0
+
+- name: Self-employment net loss above $32,490, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -80_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23b: net loss of $60,000 exceeds $32,490.
+    ca_yctc: 0
