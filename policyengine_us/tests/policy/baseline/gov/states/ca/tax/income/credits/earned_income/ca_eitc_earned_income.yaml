@@ -68,3 +68,68 @@
   output:
     ca_eitc_earned_income: 20_000
     ca_yctc: 1_117
+
+- name: Farm income counts in line 19, less the deductible part of SE tax
+  period: 2023
+  # Worksheet 3 line 2 (Schedule 1 line 6) = 20,000. Schedule SE net earnings
+  # = 20,000 x 0.9235 = 18,470; SE tax = 18,470 x 15.3% = 2,825.91; line 4
+  # (Schedule 1 line 15) = 2,825.91 / 2 = 1,412.955. Line 18 = line 19
+  # = 20,000 - 1,412.955 = 18,587.045.
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        farm_operations_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 18_587.045
+
+- name: A spouse's farm loss offsets the other spouse's wages (FTB 3514 line 19)
+  period: 2023
+  # Line 16 = 20,000. Worksheet 3 line 2 = -10,000; a loss has no SE tax, so
+  # line 4 = 0 and line 18 = -10,000. Line 19 = 20,000 - 10,000 = 10,000.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      spouse:
+        age: 30
+        farm_operations_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 10_000
+
+- name: Partnership self-employment earnings count in line 19
+  period: 2023
+  # Worksheet 3 line 3 (K-1 box 14, code A) = 20,000. Line 4 = 1,412.955 as in
+  # the farm case above. Line 19 = 20,000 - 1,412.955 = 18,587.045.
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        partnership_income: 20_000
+        partnership_self_employment_net_earnings: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 18_587.045
