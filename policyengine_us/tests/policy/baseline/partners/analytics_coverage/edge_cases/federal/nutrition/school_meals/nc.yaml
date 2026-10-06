@@ -1,0 +1,207 @@
+# North Carolina covers both reduced-price breakfast and lunch copays.
+# These households have no categorical free-meal route. Assume the child
+# attends a public school offering both programs, outside CEP/other schoolwide
+# free-meal arrangements. NC's copay coverage does not extend above 185% FPG.
+# N.C. Gen. Stat. 115C-264(a1), from July 2025:
+# https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_115C/GS_115C-264.html
+# Earlier coverage: S.L. 2023-134 sec. 7.58 (page 119).
+# https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2023-2024/SL2023-134.pdf#page=119
+# The combined FREE tier represents no family copay. Its subsidy is the model's
+# valuation, not an estimate of NC's spending: one breakfast plus one lunch,
+# less the PAID-tier reimbursement, for one enrolled child and 180 school days.
+# See federal.yaml for annual-period assumptions and federal rate sources.
+- name: school_meals_copay_coverage_exactly_at_185pct (nc)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_542
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: NC
+        zip_code: '27613'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    people:
+      child1:
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        # 50,542 / 27,320 = 185% FPG. Federal REDUCED becomes FREE in NC.
+        school_meal_countable_income: 50_542
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
+        school_meal_daily_subsidy: 7.06
+        school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0
+- name: school_meals_paid_above_copay_coverage_limit (nc)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_700
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: NC
+        zip_code: '27613'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    people:
+      child1:
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        # 50,700 / 27,320 > 185% FPG. No copay coverage or categorical route.
+        school_meal_countable_income: 50_700
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
+        school_meal_daily_subsidy: 0.84
+        school_meal_tier: 2  # PAID
+        school_meal_net_subsidy: 0.00
+        free_school_meals: 0.00
+        reduced_price_school_meals: 0
+- name: school_meals_2025_copay_coverage_below_185pct (nc)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 49_200
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: NC
+        zip_code: '27613'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    people:
+      child1:
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        # 49,200 / 26,650 = 184.6% FPG. Both reduced-price copays are covered.
+        school_meal_countable_income: 49_200
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
+        school_meal_daily_subsidy: 6.80
+        school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1078.20
+        free_school_meals: 1078.20
+        reduced_price_school_meals: 0
