@@ -411,7 +411,18 @@ def test_grid_matches_the_2025_forms():
     elects = column(GRID, "election") > 0
     rate_gain = column(GRID, "collectibles") > 0
     line_46 = law["tax_on_taxable_income_at_main_rates"]
-    assert (elects & rate_gain & (law["capital_gains_tax"] > 0)).any()
+    taxed_at_28 = [
+        i
+        for i, h in enumerate(GRID)
+        if elects[i]
+        and rate_gain[i]
+        and float(law["taxable_income"][i]) > 0
+        and worksheet_for(
+            h, float(law["taxable_income"][i]), str(law["filing_status"][i])
+        )[42]
+        > 0
+    ]
+    assert taxed_at_28
     assert (np.abs(law["regular_tax"] - line_46) < 0.01)[
         law["capital_gains_tax"] > 0
     ].any()

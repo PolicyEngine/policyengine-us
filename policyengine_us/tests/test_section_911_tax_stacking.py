@@ -658,7 +658,7 @@ def test_grid_matches_the_2025_worksheets():
     # unrecaptured section 1250 gain after modification 4.
     unrecaptured = np.array([h["unrecaptured_section_1250_gain"] for h in GRID])
     line_9 = np.array([net_gain(h) for h in GRID]) - excess
-    reduced_1250 = unrecaptured - (excess - collectibles)
+    reduced_1250 = np.maximum(0, unrecaptured - (excess - collectibles))
     assert (section_1250 & (excess > collectibles) & (line_9 > reduced_1250)).sum() >= 2
     assert (
         (rate_gain | section_1250) & excludes & (law["alternative_minimum_tax"] > 0)

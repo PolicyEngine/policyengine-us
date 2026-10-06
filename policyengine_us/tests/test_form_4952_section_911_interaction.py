@@ -914,7 +914,7 @@ def test_grid():
     # unrecaptured section 1250 gain after modification 4.
     rate_gain = column(GRID, "rate_gain_28")
     line_9 = law["dwks09"] - excess
-    reduced_1250 = column(GRID, "section_1250") - (excess - rate_gain)
+    reduced_1250 = np.maximum(0, column(GRID, "section_1250") - (excess - rate_gain))
     reaches_1250 = (
         (column(GRID, "section_1250") > 0)
         & (column(GRID, "short_term") >= 0)

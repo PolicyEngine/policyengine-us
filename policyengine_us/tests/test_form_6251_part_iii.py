@@ -498,7 +498,7 @@ def assert_matches_schedule_d_tax_worksheet(households, law):
     For households with no short-term loss, so that Schedule D lines 18 and
     19 are the 28 percent rate gain and unrecaptured section 1250 gain as
     entered (a short-term loss would reduce them on the 28% Rate Gain and
-    Unrecaptured Section 1250 Gain Worksheets, which the model does not do).
+    Unrecaptured Section 1250 Gain Worksheets, which the transcription does not do).
     """
     for i, h in enumerate(households):
         assert h["short_term_gains"] >= 0, h
