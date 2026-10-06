@@ -21,11 +21,16 @@ class ma_long_term_loss_against_dividends(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, whose interest, dividends and gains are on their
+        # own returns, so Parts A and C count only the head's and spouse's.
+        short_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["short_term_capital_gains"]
+        )
         nonnegative_short_term_capital_gains = max_(0, short_term_capital_gains)
         # Massachusetts Schedule D, line 13 includes capital gain
         # distributions reported without a federal Schedule D (line 6).
-        long_term_capital_gains = add(
+        long_term_capital_gains = tax_unit_non_dep_add(
             tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
         )
         long_term_capital_loss = max_(0, -long_term_capital_gains)
@@ -33,7 +38,7 @@ class ma_long_term_loss_against_dividends(Variable):
         remaining_long_term_loss = max_(
             0, long_term_capital_loss - nonnegative_short_term_capital_gains
         )
-        dividends = add(tax_unit, period, ["dividend_income"])
+        dividends = tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
         short_term_loss_applied = tax_unit(
             "ma_short_term_loss_against_dividends", period
         )

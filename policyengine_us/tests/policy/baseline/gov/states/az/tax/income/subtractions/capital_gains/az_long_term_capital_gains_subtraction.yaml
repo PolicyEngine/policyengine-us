@@ -102,3 +102,37 @@
   output:
     # Net capital gains = 40,000 (gain), so 25% of $50K LTCG = $12,500
     az_long_term_capital_gains_subtraction: 12_500
+
+- name: A dependent's long-term gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 100_000
+    household:
+      state_code: AZ
+  output:
+    az_long_term_capital_gains_subtraction: 2_500
+
+- name: A dependent's short-term loss does not take away the filer's subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        short_term_capital_gains: -50_000
+    household:
+      state_code: AZ
+  output:
+    az_long_term_capital_gains_subtraction: 2_500

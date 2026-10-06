@@ -123,3 +123,42 @@
         state_code: MT
   output:
     mt_capital_gains_tax_joint: 409
+
+- name: A dependent's gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        long_term_capital_gains: 300_000
+    household:
+      state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 82
+    mt_regular_income_tax_joint: 1_765.72
+    mt_capital_gains_tax_applicable_threshold_joint: 0
+    mt_income_tax: 1_847.72
+
+- name: Same household without the dependent's gains
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+    household:
+      state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 82
+    mt_regular_income_tax_joint: 1_765.72
+    mt_capital_gains_tax_applicable_threshold_joint: 0
+    mt_income_tax: 1_847.72

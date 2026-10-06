@@ -244,3 +244,20 @@
     # Net capital gains: $300,000 (should potentially be less with exclusions)
     # Surtax: $300,000 * 2% = $6,000 (may overstate actual liability)
     md_capital_gains_surtax: 6_000
+
+- name: A dependent's gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 400_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 300_000
+    household:
+      state_code: MD
+  output:
+    md_capital_gains_surtax: 200

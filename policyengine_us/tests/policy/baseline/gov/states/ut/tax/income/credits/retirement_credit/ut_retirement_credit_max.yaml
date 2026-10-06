@@ -138,3 +138,20 @@
         state_code: UT
   output: 
     ut_retirement_credit_max: 300
+
+- name: An elderly dependent is not a claimant, and a dependent's interest is on their own return
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 75
+        taxable_pension_income: 20_000
+      parent:
+        age: 95
+        is_tax_unit_dependent: true
+        tax_exempt_interest_income: 50_000
+    household:
+      state_code: UT
+  output:
+    ut_retirement_credit_max: 450

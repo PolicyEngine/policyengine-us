@@ -21,7 +21,9 @@ class ut_ctc_potential(Variable):
         base_amount = p.amount * eligible_children
         # Utah reduces the CTC based on the state income in addition to
         # tax exempt interest income
-        relevant_income = add(
+        # The head's and spouse's interest, as Utah taxable income leaves out
+        # a tax unit dependent's income.
+        relevant_income = tax_unit_non_dep_add(
             tax_unit,
             period,
             ["tax_exempt_interest_income", "ut_taxable_income"],

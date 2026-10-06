@@ -13,3 +13,20 @@
     state_code: MT
   output:
     mt_capital_gain_credit: 60
+
+- name: A dependent's gains give no credit on this return
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        long_term_capital_gains: 50_000
+    household:
+      state_code: MT
+  output:
+    mt_capital_gain_credit: [40, 0]

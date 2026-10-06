@@ -43,3 +43,43 @@
     long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 10_000
   output:
     vt_percentage_capital_gains_exclusion: 4_000  # 40% of 10k eligible only
+
+- name: A dependent's eligible gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 150_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 100_000
+    household:
+      state_code: VT
+  output:
+    vt_percentage_capital_gains_exclusion: 0
+    vt_capital_gains_exclusion: 5_000
+    adjusted_gross_income: 160_000
+    vt_income_tax: 6_623.2
+
+- name: Same household without the dependent's gains
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 150_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+    household:
+      state_code: VT
+  output:
+    vt_percentage_capital_gains_exclusion: 0
+    vt_capital_gains_exclusion: 5_000
+    adjusted_gross_income: 160_000
+    vt_income_tax: 6_623.2

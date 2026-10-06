@@ -58,3 +58,21 @@
   output:
     mt_interest_exemption_person: [0, 0]
   
+
+- name: A dependent's interest does not dilute the filer's share
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        taxable_interest_income: 2_000
+        social_security_retirement: 20_000
+      child:
+        age: 10
+        taxable_interest_income: 50_000
+    household:
+      state_code: MT
+  output:
+    mt_interest_exemption_person: [800, 0]
+    mt_interest_exemption: 800

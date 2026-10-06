@@ -15,8 +15,14 @@ class wa_millionaires_tax_base_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
-        tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"])
+        # Federal adjusted gross income leaves out a tax unit dependent's
+        # income, so the gains and interest are the head's and spouse's too.
+        long_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["long_term_capital_gains"]
+        )
+        tax_exempt_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["tax_exempt_interest_income"]
+        )
 
         p = parameters(period).gov.states.wa.tax.income.capital_gains
         charitable_contributions = add(
