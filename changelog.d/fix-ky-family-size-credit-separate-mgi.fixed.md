@@ -1,0 +1,1 @@
+Kentucky's family size tax credit now treats a spouse's negative income as zero when a couple files separately on a combined return, and each filing path uses its own credit rate when the model picks the cheaper path.

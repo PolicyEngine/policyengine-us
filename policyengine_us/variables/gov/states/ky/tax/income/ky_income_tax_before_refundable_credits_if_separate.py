@@ -35,6 +35,7 @@ class ky_income_tax_before_refundable_credits_if_separate(Variable):
         # summing.
         indiv_personal = person("ky_personal_tax_credits_indiv", period)
         personal_potential = tax_unit.sum(min_(indiv_personal, indiv_base))
+        family_size_rate = tax_unit("ky_family_size_tax_credit_rate_if_separate", period)
         return ky_income_tax_after_non_refundable_credits_for_path(
-            tax_unit, period, base, personal_potential
+            tax_unit, period, base, personal_potential, family_size_rate
         )

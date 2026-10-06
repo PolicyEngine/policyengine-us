@@ -145,3 +145,55 @@
         state_code: KY
   output:
     ky_files_separately: false
+
+# KRS 141.066(4): each filing path uses its own family size credit rate. The
+# spouse has a federal loss but positive Kentucky AGI; the head's Kentucky AGI is
+# below their federal AGI. Treating the spouse's negative federal AGI as zero
+# raises combined-separate modified gross income from 35,000 to 40,000, which
+# lowers that path's credit rate and makes the joint return cheaper.
+- name: Each path's family size credit rate decides the combined-separate election
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 40_000
+        ky_agi: 30_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: -10_000
+        ky_agi: 5_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: KY
+  output:
+    # Threshold for a family of four in 2024: 15,060 + 3 x 5,380 = 31,200.
+    ky_family_size_tax_credit_threshold: 31_200
+    # Joint: greater of 30,000 and 35,000; 35,000 / 31,200 = 112.2%, rate 60%.
+    ky_modified_agi_if_joint: 35_000
+    ky_family_size_tax_credit_rate_if_joint: 0.6
+    # Separate: greater of 40,000 + 0 and 30,000 + 5,000; 40,000 / 31,200 =
+    # 128.2%, rate 20%.
+    ky_modified_agi_if_separate: 40_000
+    ky_family_size_tax_credit_rate_if_separate: 0.2
+    # Joint: (35,000 - 3,160) x 4% = 1,273.60, less 60% = 509.44.
+    ky_income_tax_before_refundable_credits_if_joint: 509.44
+    # Separate: (30,000 - 3,160) x 4% + (5,000 - 3,160) x 4% = 1,147.20,
+    # less 20% = 917.76.
+    ky_income_tax_before_refundable_credits_if_separate: 917.76
+    ky_files_separately: false
+    ky_modified_agi: 35_000
+    ky_family_size_tax_credit_rate: 0.6
+    ky_income_tax: 509.44

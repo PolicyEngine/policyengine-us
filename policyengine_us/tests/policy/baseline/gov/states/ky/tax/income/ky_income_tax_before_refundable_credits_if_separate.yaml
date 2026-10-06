@@ -33,3 +33,37 @@
     # $42,800 modified gross income for a 2-person family. 1,863.00 - 41.50.
     # CI-RISK: hand-derived; pin the CI actual if it differs.
     ky_income_tax_before_refundable_credits_if_separate: 1_821.50
+
+# KRS 141.066(4): the combined-separate path computes the family size credit
+# from combined modified gross income with the spouse's negative amount treated
+# as zero ($30,000), not the joint return's $20,000.
+- name: Combined-separate family size credit rate treats a spouse's negative income as zero
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 30_000
+        ky_agi: 30_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: -10_000
+        ky_agi: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Threshold for a family of two in 2024: 15,060 + 5,380 = 20,440.
+    # 30,000 / 20,440 = 147% of the threshold, so the rate is 0.
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # Head column: (30,000 - 3,160) x 4% = 1,073.60; spouse column: 0.
+    ky_income_tax_before_refundable_credits_if_separate: 1_073.60
+    # The joint return's 20,000 is 98% of the threshold, a 100% credit.
+    ky_family_size_tax_credit_rate_if_joint: 1
+    ky_income_tax_before_refundable_credits_if_joint: 0
