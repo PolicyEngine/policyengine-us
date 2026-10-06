@@ -1,0 +1,295 @@
+# Final 2023 workbook: page 1 factors, page 8 counties, pages 9-11 formula/tables.
+# Payments after 2023 carry historical values forward. Above 150% FPG is a user-approved
+# extrapolation; PIPP enrollment/reduction remains unmodeled. Every case gives heating_type.
+# Case 11 uses the explicit .5523 gas factor: printed amounts are 334 and 579 instead.
+- name: Case 1, published ordinary fuel amounts are not capped at a small reported heating bill.
+  period: 2023
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH,
+      FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, PROPANE, FUEL_OIL, KEROSENE, COAL, WOOD]
+    heating_expense: [1, 1, 1, 1, 1, 1, 1]
+  output:
+    oh_liheap: [367, 367, 665, 665, 665, 399, 399]
+- name: Case 2, the weighted award uses the elderly disability and young-child boundaries.
+  period: 2023
+  input:
+    people:
+      age59_adult:
+        age: 59
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 0
+      age60_adult:
+        age: 60
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 0
+      disabled_adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 0
+        employment_income: 0
+      child5_adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 0
+      child5_child:
+        age: 5
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      child6_adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 0
+      child6_child:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      age59:
+        members: &id001 [age59_adult]
+        heating_type: PROPANE
+        heating_expense: 1
+      age60:
+        members: &id002 [age60_adult]
+        heating_type: PROPANE
+        heating_expense: 1
+      disabled:
+        members: &id003 [disabled_adult]
+        heating_type: PROPANE
+        heating_expense: 1
+      child5:
+        members: &id004 [child5_adult, child5_child]
+        heating_type: PROPANE
+        heating_expense: 1
+      child6:
+        members: &id005 [child6_adult, child6_child]
+        heating_type: PROPANE
+        heating_expense: 1
+    households:
+      age59:
+        members: *id001
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+      age60:
+        members: *id002
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+      disabled:
+        members: *id003
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+      child5:
+        members: *id004
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+      child6:
+        members: *id005
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+  output:
+    oh_liheap: [665, 1164, 1164, 1164, 665]
+- name: Case 3, all eighty-eight published county assignments select the correct regional payment.
+  period: 2023
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH,
+      OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH,
+      OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH,
+      OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH]
+    county: [ADAMS_COUNTY_OH, ALLEN_COUNTY_OH, ASHLAND_COUNTY_OH, ASHTABULA_COUNTY_OH, ATHENS_COUNTY_OH,
+      AUGLAIZE_COUNTY_OH, BELMONT_COUNTY_OH, BROWN_COUNTY_OH, BUTLER_COUNTY_OH, CARROLL_COUNTY_OH, CHAMPAIGN_COUNTY_OH,
+      CLARK_COUNTY_OH, CLERMONT_COUNTY_OH, CLINTON_COUNTY_OH, COLUMBIANA_COUNTY_OH, COSHOCTON_COUNTY_OH,
+      CRAWFORD_COUNTY_OH, CUYAHOGA_COUNTY_OH, DARKE_COUNTY_OH, DEFIANCE_COUNTY_OH, DELAWARE_COUNTY_OH,
+      ERIE_COUNTY_OH, FAIRFIELD_COUNTY_OH, FAYETTE_COUNTY_OH, FRANKLIN_COUNTY_OH, FULTON_COUNTY_OH, GALLIA_COUNTY_OH,
+      GEAUGA_COUNTY_OH, GREENE_COUNTY_OH, GUERNSEY_COUNTY_OH, HAMILTON_COUNTY_OH, HANCOCK_COUNTY_OH, HARDIN_COUNTY_OH,
+      HARRISON_COUNTY_OH, HENRY_COUNTY_OH, HIGHLAND_COUNTY_OH, HOCKING_COUNTY_OH, HOLMES_COUNTY_OH, HURON_COUNTY_OH,
+      JACKSON_COUNTY_OH, JEFFERSON_COUNTY_OH, KNOX_COUNTY_OH, LAKE_COUNTY_OH, LAWRENCE_COUNTY_OH, LICKING_COUNTY_OH,
+      LOGAN_COUNTY_OH, LORAIN_COUNTY_OH, LUCAS_COUNTY_OH, MADISON_COUNTY_OH, MAHONING_COUNTY_OH, MARION_COUNTY_OH,
+      MEDINA_COUNTY_OH, MEIGS_COUNTY_OH, MERCER_COUNTY_OH, MIAMI_COUNTY_OH, MONROE_COUNTY_OH, MONTGOMERY_COUNTY_OH,
+      MORGAN_COUNTY_OH, MORROW_COUNTY_OH, MUSKINGUM_COUNTY_OH, NOBLE_COUNTY_OH, OTTAWA_COUNTY_OH, PAULDING_COUNTY_OH,
+      PERRY_COUNTY_OH, PICKAWAY_COUNTY_OH, PIKE_COUNTY_OH, PORTAGE_COUNTY_OH, PREBLE_COUNTY_OH, PUTNAM_COUNTY_OH,
+      RICHLAND_COUNTY_OH, ROSS_COUNTY_OH, SANDUSKY_COUNTY_OH, SCIOTO_COUNTY_OH, SENECA_COUNTY_OH, SHELBY_COUNTY_OH,
+      STARK_COUNTY_OH, SUMMIT_COUNTY_OH, TRUMBULL_COUNTY_OH, TUSCARAWAS_COUNTY_OH, UNION_COUNTY_OH, VAN_WERT_COUNTY_OH,
+      VINTON_COUNTY_OH, WARREN_COUNTY_OH, WASHINGTON_COUNTY_OH, WAYNE_COUNTY_OH, WILLIAMS_COUNTY_OH, WOOD_COUNTY_OH,
+      WYANDOT_COUNTY_OH]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
+      40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
+      40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
+      40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN,
+      CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE]
+    heating_expense: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  output:
+    oh_liheap: [625, 665, 665, 705, 665, 665, 665, 625, 665, 665, 665, 665, 625, 665, 665, 665, 665, 705,
+      665, 705, 665, 705, 665, 665, 665, 705, 625, 705, 665, 665, 625, 705, 665, 665, 705, 625, 665, 665,
+      705, 625, 665, 665, 705, 625, 665, 665, 705, 705, 665, 705, 665, 705, 625, 665, 665, 665, 665, 665,
+      665, 665, 665, 705, 705, 665, 665, 625, 705, 665, 705, 665, 665, 705, 625, 705, 665, 665, 705, 705,
+      665, 665, 665, 665, 665, 665, 665, 705, 705, 665]
+- name: Case 4, the 2023 poverty floor and published percentage rows use the 2022 guideline.
+  period: 2023
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    employment_income: [0, 6795, 6930.9, 13590, 20385]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [1, 1, 1, 1, 1]
+  output:
+    oh_liheap: [665, 665, 664, 599, 532]
+- name: Case 5, the approved extrapolation covers income above 150 percent while ordinary eligibility
+    still applies.
+  period: 2026
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    employment_income: [23475, 23475.01, 25431.25, 27387, 27388]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [1, 1, 1, 1, 1]
+  output:
+    oh_liheap_eligible: [true, true, true, true, false]
+    oh_liheap: [532, 532, 515, 499, 0]
+- name: Case 6, the 2026 estimate carries payment values forward but updates the lagged poverty guideline.
+  period: 2026
+  input:
+    state_code: [OH]
+    county: [FRANKLIN_COUNTY_OH]
+    age: [40]
+    immigration_status: [CITIZEN]
+    is_tax_unit_dependent: [false]
+    ssi: [0]
+    employment_income: [15650]
+    heating_type: [PROPANE]
+    heating_expense: [1]
+  output:
+    oh_liheap: [599]
+- name: Case 7, the 2027 estimate carries payment values forward but updates the lagged poverty guideline.
+  period: 2027
+  input:
+    state_code: [OH]
+    county: [FRANKLIN_COUNTY_OH]
+    age: [40]
+    immigration_status: [CITIZEN]
+    is_tax_unit_dependent: [false]
+    ssi: [0]
+    employment_income: [15960]
+    heating_type: [PROPANE]
+    heating_expense: [1]
+  output:
+    oh_liheap: [599]
+- name: Case 8, eligible heat-in-rent households use their reported primary fuel and existing liability
+    rules.
+  period: 2026
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0]
+    heating_type: [FUEL_OIL, NATURAL_GAS, NATURAL_GAS, UNSPECIFIED, NONE]
+    heating_expense: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, true, true, false, false]
+    is_in_public_housing: [false, false, false, false, false]
+    electricity_expense: [0, 1200, 0, 0, 0]
+  output:
+    oh_liheap: [665, 367, 0, 0, 0]
+- name: Case 9, unpriced fuels and unknown or foreign counties have unsupported zero estimates.
+  period: 2026
+  input:
+    state_code: [OH, OH, OH, OH, OH, PA]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, UNKNOWN, LOS_ANGELES_COUNTY_CA,
+      FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0, 0]
+    heating_type: [SOLAR, OTHER, UNSPECIFIED, NATURAL_GAS, NATURAL_GAS, PROPANE]
+    heating_expense: [1, 1, 1, 1, 1, 1]
+  output:
+    oh_liheap: [0, 0, 0, 0, 0, 0]
+- name: Case 10, rounding follows all regional and targeted adjustments rather than rounding intermediate
+    payments.
+  period: 2023
+  input:
+    state_code: [OH, OH, OH, OH]
+    county: [ASHTABULA_COUNTY_OH, ADAMS_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [60, 60, 60, 60]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false]
+    ssi: [0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0]
+    heating_type: [PROPANE, PROPANE, WOOD, NATURAL_GAS]
+    heating_expense: [1, 1, 1, 1]
+  output:
+    oh_liheap: [1234, 1094, 698, 643]
+- name: Case 11, the printed gas factor determines estimates at cells with unpublished precision differences.
+  period: 2023
+  input:
+    state_code: [OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 60]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    ssi: [0, 0]
+    employment_income: [13046.4, 13590]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1, 1]
+  output:
+    oh_liheap: [333, 578]

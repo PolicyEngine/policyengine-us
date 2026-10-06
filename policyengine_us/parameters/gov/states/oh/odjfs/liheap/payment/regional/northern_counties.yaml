@@ -1,0 +1,35 @@
+description: Ohio increases payments for these counties under the Home Energy Assistance Program.
+# Final 2023 county assignment; carried forward pending an updated schedule.
+values:
+  2023-01-01:
+    - ASHTABULA_COUNTY_OH
+    - CUYAHOGA_COUNTY_OH
+    - DEFIANCE_COUNTY_OH
+    - ERIE_COUNTY_OH
+    - FULTON_COUNTY_OH
+    - GEAUGA_COUNTY_OH
+    - HANCOCK_COUNTY_OH
+    - HENRY_COUNTY_OH
+    - HURON_COUNTY_OH
+    - LAKE_COUNTY_OH
+    - LORAIN_COUNTY_OH
+    - LUCAS_COUNTY_OH
+    - MAHONING_COUNTY_OH
+    - MEDINA_COUNTY_OH
+    - OTTAWA_COUNTY_OH
+    - PAULDING_COUNTY_OH
+    - PORTAGE_COUNTY_OH
+    - PUTNAM_COUNTY_OH
+    - SANDUSKY_COUNTY_OH
+    - SENECA_COUNTY_OH
+    - SUMMIT_COUNTY_OH
+    - TRUMBULL_COUNTY_OH
+    - WILLIAMS_COUNTY_OH
+    - WOOD_COUNTY_OH
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP northern counties
+  reference:
+    - title: "Ohio 2023 FINAL LIHEAP Benefit Matrix, #page 8"
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=8

@@ -805,11 +805,12 @@ programs:
     coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
     state_implementations:
       - state: OH
-        status: in_progress
+        status: partial
         name: Ohio LIHEAP
         full_name: Ohio Low Income Home Energy Assistance Program
+        variable: oh_liheap
         parameter_prefix: gov.states.oh.odjfs.liheap
-        notes: Income and ordinary eligibility components are implemented. Income limits follow the stated FPG/SMI rates, with the published large-household dollar discrepancy documented in code. The current final award is deferred pending an adopted FY2026/FY2027 payment matrix; historical workbooks and provisional current ranges do not establish current awards. Regular heating only; historical backfills do not establish verified coverage.
+        notes: Regular heating eligibility and a non-PIPP payment estimate using final 2023 workbook values, dated from 2023 and carried forward pending an updated final schedule. Formula extension above the printed 150% poverty payment range is an approved estimate; the workbook's cover allows 175%. PIPP enrollment and its payment reduction are unmodeled. Some gas/electric table cells differ by one dollar from the printed fuel ratio. Unpriced fuels and unknown counties remain unsupported. Income limits follow the stated FPG/SMI rates with the published large-household discrepancy documented. Earlier-year backfills and later-year payments are unverified estimates; complete historical-year coverage is not claimed.
       - state: OR
         status: in_progress
         name: LIHEAP
