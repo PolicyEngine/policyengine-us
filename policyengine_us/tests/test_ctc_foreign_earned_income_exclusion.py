@@ -11,10 +11,14 @@ reform that switches the bar off, which reproduces the formula without it.
 Households live in Texas and take the standard deduction, so the CTC's
 tax-liability limit equals the tax the model computes.
 
-The model does not apply the section 911(f) rule that taxes included income
-at the rates it would face if the excluded amount were added back (the Foreign
-Earned Income Tax Worksheet). The tax identity below is a property of the
-model's liability, not a worksheet result.
+Both runs tax an excluding filer's included income at the rates it would face
+if the excluded amount were added back (section 911(f), the Foreign Earned
+Income Tax Worksheet), so the tax identity below holds for that stacked tax.
+The grid includes filers whose stacked tax leaves part of the credit to
+refund.
+
+Schedule 8812 Credit Limit Worksheet B is not for Form 2555 filers, and it
+reads the bar, so a barred filer never completes it.
 
 Section 32(c)(1)(C) also denies the EITC to a section 911 claimant, in every
 year, so the EITC of a filer with an exclusion is zero under both runs.
@@ -184,6 +188,13 @@ def test_grid_invariants():
     excludes = law["foreign_earned_income_exclusion"] > 0
     # The grid reaches filers whose refund the bar removes.
     assert (excludes & (no_bar["refundable_ctc"] > 0)).any()
+    # Some of them have section 911(f) stacked tax above the tax on the same
+    # household without the exclusion, so the tax identity is checked on
+    # stacked tax.
+    twin = [GRID.index({**h, "exclusion": 0}) for h in GRID]
+    tax = law["income_tax_before_credits"]
+    stacked = tax > tax[twin] + 1
+    assert (excludes & stacked & (no_bar["refundable_ctc"] > 0)).any()
 
 
 def test_bar_applies_from_2015_but_not_in_2021():
