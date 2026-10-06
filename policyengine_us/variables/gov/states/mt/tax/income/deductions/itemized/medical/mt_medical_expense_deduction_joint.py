@@ -28,6 +28,8 @@ class mt_medical_expense_deduction_joint(Variable):
         else:
             # From 2024 Montana starts from federal itemized deductions, whose
             # floor is a share of federal AGI; that is not modeled here yet.
+            # mt_agi_indiv is zero for everyone from 2024, so this floor is
+            # zero, as on main.
             agi = add(person.tax_unit, period, ["mt_agi_indiv"])
         medical_floor = p.floor * agi
         is_head = person("is_tax_unit_head", period)
