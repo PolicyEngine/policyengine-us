@@ -27,6 +27,7 @@ class eitc_relevant_investment_income(Variable):
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
+        "https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -62,11 +63,26 @@ class eitc_relevant_investment_income(Variable):
             * max_(0, person("non_sch_d_capital_gains", period))
         )
         capital_gains = filer_gains + distributions
-        # The model's undifferentiated rental input is treated as passive
-        # rental income, consistently with its NIIT income mapping. Net the
-        # passive amounts across the head and spouse before applying the zero
-        # floor.
+        # Worksheet 1 lines 11-13. The model's undifferentiated rental input is
+        # treated as passive rental income, consistently with its NIIT income
+        # mapping. Farm rental income (Form 4835, Schedule E line 40, which
+        # lines 11 and 12 name) is treated as passive in the same way; Form
+        # 4835 is for rental activities under the passive activity rules,
+        # and the model has no input for a real estate professional's
+        # nonpassive farm rental. 32(i)(2)(E) determines passive income and
+        # losses without regard to amounts included in earned income, so the
+        # signed part of passive income also in earned income is removed. Net
+        # the passive amounts across the head and spouse before applying the
+        # zero floor.
         passive_income = tax_unit_non_dep_add(
-            tax_unit, period, ["rental_income", "passive_partnership_s_corp_income"]
+            tax_unit,
+            period,
+            [
+                "rental_income",
+                "farm_rent_income",
+                "passive_partnership_s_corp_income",
+            ],
+        ) - tax_unit_non_dep_add(
+            tax_unit, period, ["eitc_passive_income_also_in_earned_income"]
         )
         return portfolio_income + max_(0, capital_gains) + max_(0, passive_income)

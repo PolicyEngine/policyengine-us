@@ -354,3 +354,362 @@
     # Before: 12,000.
     eitc_relevant_investment_income: 0
     adjusted_gross_income: 0
+
+# Passive income that is also earned income, and farm rent (#9635 items 2
+# and 3). 26 USC 32(i)(2)(E) determines passive income and losses "without
+# regard to any amount included in earned income under subsection (c)(2)", and
+# the Worksheet 1 instructions for lines 11 and 12 leave out "any income (or
+# loss) included in your earned income". eitc_passive_income_also_in_earned_income
+# is that amount, signed. Lines 11 and 12 name Schedule E line 40, net farm
+# rental income or loss from Form 4835, which the model treats as passive.
+#
+# Unless noted, the household is a 35-year-old head of household in TX for
+# 2025 with two qualifying children aged 15 and 5. 2025 amounts (Rev. Proc.
+# 2024-40 section 2.06): investment income limit 11,950; maximum credit with
+# two children 7,152; phase-out start 23,350; phase-out rate 21.06%.
+
+- name: A general partner's passive share that is also earned income is left out
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+        partnership_income: 8_000
+        passive_partnership_s_corp_income: 8_000
+        partnership_self_employment_net_earnings: 8_000
+        eitc_passive_income_also_in_earned_income: 8_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # Line 1 5,000 + line 13 max(0, 8,000 - 8,000) = 5,000.
+    eitc_relevant_investment_income: 5_000
+    eitc_investment_income_eligible: true
+    # Self-employment tax 8,000 x 0.9235 x 0.153 = 1,130.364, half deducted.
+    # AGI 15,000 + 5,000 + 8,000 - 565.182 = 27,434.818 exceeds earned income
+    # 22,434.818, so 7,152 - 0.2106 x (27,434.818 - 23,350) = 6,291.74.
+    eitc: 6_291.74
+
+- name: A general partner's passive loss that is also earned income does not offset rental income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        rental_income: 4_000
+        partnership_income: -4_000
+        passive_partnership_s_corp_income: -4_000
+        partnership_self_employment_net_earnings: -4_000
+        eitc_passive_income_also_in_earned_income: -4_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # 9,000 + max(0, 4,000 - 4,000 - (-4,000)) = 13,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: A limited partner's passive share stays in the passive basket
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+        partnership_income: 8_000
+        passive_partnership_s_corp_income: 8_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # 26 USC 1402(a)(13) keeps a limited partner's share out of net earnings
+    # from self-employment, so none of it is earned: 5,000 + 8,000 = 13,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: Only the part of a passive share included in earned income is left out
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+        partnership_income: 8_000
+        passive_partnership_s_corp_income: 8_000
+        partnership_self_employment_net_earnings: 5_000
+        eitc_passive_income_also_in_earned_income: 5_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # 5,000 + (8,000 - 5,000) = 8,000.
+    eitc_relevant_investment_income: 8_000
+    eitc_investment_income_eligible: true
+
+- name: An unrelated self-employment loss does not change passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+        partnership_income: 5_000
+        passive_partnership_s_corp_income: 8_000
+        partnership_self_employment_net_earnings: -3_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # An 8,000 passive limited partnership share and a separate active
+    # general partnership loss of 3,000; none of the passive share is earned.
+    # 5,000 + 8,000 = 13,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: A spouse's self-employment earnings do not change the head's passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+        partnership_income: 8_000
+        passive_partnership_s_corp_income: 8_000
+      spouse:
+        age: 33
+        partnership_income: 8_000
+        partnership_self_employment_net_earnings: 8_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    # 5,000 + the head's 8,000 = 13,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: Passive S corporation income is not offset by unrelated partnership earnings
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    taxable_interest_income: 5_000
+    s_corp_income: 8_000
+    partnership_income: 8_000
+    passive_partnership_s_corp_income: 8_000
+    partnership_self_employment_net_earnings: 8_000
+  output:
+    # The passive 8,000 is the S corporation share; the partnership's 8,000
+    # of self-employment earnings is not passive. Overlap 0: 5,000 + 8,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+
+- name: Earned overlap can exceed net passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    taxable_interest_income: 9_000
+    rental_income: 4_000
+    partnership_income: 3_000
+    passive_partnership_s_corp_income: 3_000
+    partnership_self_employment_net_earnings: 8_000
+    eitc_passive_income_also_in_earned_income: 8_000
+  output:
+    # The passive 3,000 is an earned profit of 8,000 and an unrelated passive
+    # loss of 5,000: 9,000 + max(0, 4,000 + 3,000 - 8,000) = 9,000.
+    eitc_relevant_investment_income: 9_000
+    eitc_investment_income_eligible: true
+
+- name: Removing an earned loss keeps an unrelated passive profit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    taxable_interest_income: 9_000
+    partnership_income: -3_000
+    passive_partnership_s_corp_income: -3_000
+    partnership_self_employment_net_earnings: -8_000
+    eitc_passive_income_also_in_earned_income: -8_000
+  output:
+    # 9,000 + max(0, -3,000 - (-8,000)) = 14,000.
+    eitc_relevant_investment_income: 14_000
+    eitc_investment_income_eligible: false
+
+- name: Farm rental income is passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 8_000
+        farm_rent_income: 5_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # Line 11 5,000: 8,000 + 5,000 = 13,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: A farm rental loss nets against rental income in the passive basket
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        rental_income: 4_000
+        farm_rent_income: -4_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # Lines 11 and 12 are 4,000 and -4,000, so line 13 is 0: 9,000.
+    eitc_relevant_investment_income: 9_000
+    eitc_investment_income_eligible: true
+    # AGI 20,000 + 9,000 + 4,000 - 4,000 = 29,000:
+    # 7,152 - 0.2106 x (29,000 - 23,350) = 5,962.11.
+    adjusted_gross_income: 29_000
+    eitc: 5_962.11
+
+- name: Farm rent at the 2025 investment income limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        farm_rent_income: 11_950
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 11_950
+    eitc_investment_income_eligible: true
+    # 7,152 - 0.2106 x (31,950 - 23,350) = 5,340.84.
+    eitc: 5_340.84
+
+- name: Farm rent one dollar over the 2025 investment income limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        farm_rent_income: 11_951
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 11_951
+    eitc_investment_income_eligible: false
+    eitc: 0

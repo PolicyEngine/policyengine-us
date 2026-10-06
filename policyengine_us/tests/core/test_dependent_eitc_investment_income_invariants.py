@@ -1,4 +1,4 @@
-"""Invariants for dependents' income in the filer's EITC investment income test.
+"""Invariants for the EITC investment income test.
 
 26 USC 32(i)(1) denies the credit when the "disqualified income of the
 taxpayer" exceeds the limit. A tax unit dependent's interest, dividends,
@@ -6,7 +6,10 @@ capital gains, rents and passive income are on the dependent's own return, and
 Publication 596 Worksheet 1 picks up a child's interest and dividends only
 through a Form 8814 election, which the model does not implement. So
 `eitc_relevant_investment_income` counts the head and spouse only, as
-`irs_gross_income` does for AGI.
+`irs_gross_income` does for AGI. 32(i)(2)(E) determines passive income and
+losses without regard to amounts included in earned income, so the passive
+basket removes the signed `eitc_passive_income_also_in_earned_income`, and it
+includes farm rental income, which Worksheet 1 lines 11 and 12 name.
 
 Hypothesis draws batches of tax units (single, head of household with
 dependents, joint with and without dependents), and a seeded population of 200
@@ -14,7 +17,8 @@ such units adds breadth. Dependents' capital gains are sometimes $16 million
 or more, where float32 rounding of a tax unit total would show. Each batch runs
 as one vectorized simulation three times: as drawn; with the dependents'
 investment income inputs set to zero; and with $1,000 more of the head's
-interest. For every tax unit:
+interest and different partnership self-employment earnings for the head and
+spouse. For every tax unit:
 
 1. The dependents' investment income, of any size or sign, never changes the
    filer's `eitc_relevant_investment_income`, `eitc_investment_income_eligible`,
@@ -22,16 +26,19 @@ interest. For every tax unit:
 2. Differential: `eitc_relevant_investment_income` equals an independent numpy
    computation of Worksheet 1 over the head and spouse: interest, tax-exempt
    interest and dividends, plus their Schedule D gain with capital gain
-   distributions floored at zero (line 7), plus their net rental and passive
-   income floored at zero (line 13).
+   distributions floored at zero (line 7), plus their net rental, farm rental
+   and passive income less the signed part also in earned income, floored at
+   zero (line 13).
 3. Bounds: it is at least the filers' interest and dividends (drawn
    nonnegative), so never negative, and $1,000 more of the head's interest
-   raises it by exactly $1,000.
+   raises it by exactly $1,000 even though the filers' partnership
+   self-employment earnings change too: only the explicit overlap input moves
+   passive income out of the basket.
 4. For tax units without dependents and without a negative distributions
-   input, it equals the previous all-member formula, so leaving dependents out
-   changes nothing for them. (With filer gains in the drawn range. Past about
-   $16.8 million the previous formula's float32 tax unit total could be off by
-   a few dollars, which the direct sum corrects.)
+   input, it equals the same worksheet summed over every member, so leaving
+   dependents out changes nothing for them. (With filer gains in the drawn
+   range. Past about $16.8 million the previous formula's float32 tax unit
+   total could be off by a few dollars, which the direct sum corrects.)
 
 The formula reads the head's and spouse's person-level gains, never the tax
 unit's `net_capital_gains`; a YAML case pins that a supplied tax unit amount is
@@ -57,7 +64,13 @@ CAPITAL_INPUTS = ["long_term_capital_gains", "short_term_capital_gains"]
 DISTRIBUTIONS = "non_sch_d_capital_gains"
 # passive_partnership_s_corp_income is the passive subset of
 # partnership_s_corp_income; both are drawn together below.
-PASSIVE_INPUTS = ["rental_income", "passive_partnership_s_corp_income"]
+PASSIVE_INPUTS = [
+    "rental_income",
+    "farm_rent_income",
+    "passive_partnership_s_corp_income",
+]
+OVERLAP = "eitc_passive_income_also_in_earned_income"
+SE_EARNINGS = "partnership_self_employment_net_earnings"
 # The filer's amounts, which a dependent's income must not change.
 FILER_OUTPUTS = [
     "eitc_relevant_investment_income",
@@ -68,8 +81,10 @@ FILER_OUTPUTS = [
 ]
 # Sums every member, for the previous formula in property 4.
 OUTPUTS = FILER_OUTPUTS + ["net_capital_gains"]
-# More of the head's interest, in the third run.
+# More of the head's interest, and different partnership self-employment
+# earnings for the head and spouse, in the third run.
 INTEREST_SHIFT = 1_000.0
+SE_EARNINGS_SHIFT = 5_000.0
 
 nonnegative = st.one_of(st.just(0.0), st.integers(1, 8_000).map(float))
 signed = st.one_of(st.just(0.0), st.integers(-12_000, 12_000).map(float))
@@ -89,8 +104,20 @@ def investment_amounts(draw, dependent=False):
         # the model floors each person's amount at zero.
         DISTRIBUTIONS: draw(st.one_of(nonnegative, st.integers(-3_000, -1).map(float))),
         "rental_income": draw(signed),
+        "farm_rent_income": draw(signed),
         "partnership_s_corp_income": passive,
         "passive_partnership_s_corp_income": passive,
+        # None, all, half or an unrelated signed amount of the passive share
+        # is also earned income; the formula removes exactly this amount.
+        OVERLAP: draw(
+            st.one_of(
+                st.just(0.0),
+                st.just(passive),
+                st.just(float(round(passive / 2))),
+                signed,
+            )
+        ),
+        SE_EARNINGS: draw(signed),
     }
 
 
@@ -126,13 +153,22 @@ def _seeded_amounts(rng, dependent=False):
         return some(-12_000, 12_000)
 
     passive = some(-12_000, 12_000)
+    overlap = rng.choice(["none", "all", "half", "other"])
     return {
         **{name: some(1, 8_000) for name in PORTFOLIO_INPUTS},
         **{name: capital() for name in CAPITAL_INPUTS},
         DISTRIBUTIONS: some(-3_000, 8_000),
         "rental_income": some(-12_000, 12_000),
+        "farm_rent_income": some(-12_000, 12_000, 0.3),
         "partnership_s_corp_income": passive,
         "passive_partnership_s_corp_income": passive,
+        OVERLAP: {
+            "none": 0.0,
+            "all": passive,
+            "half": float(round(passive / 2)),
+            "other": some(-12_000, 12_000),
+        }[overlap],
+        SE_EARNINGS: some(-12_000, 12_000),
     }
 
 
@@ -161,7 +197,7 @@ def _seeded_units(n=200):
     return units
 
 
-def _situation(units, year, *, zero_dependents=False, interest_shift=0.0):
+def _situation(units, year, *, zero_dependents=False, shift=False):
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
     for i, u in enumerate(units):
         head = f"head_{i}"
@@ -171,10 +207,10 @@ def _situation(units, year, *, zero_dependents=False, interest_shift=0.0):
             "is_tax_unit_dependent": False,
             "employment_income": u["head_wages"],
             **u["head"],
-            "taxable_interest_income": (
-                u["head"]["taxable_interest_income"] + interest_shift
-            ),
         }
+        if shift:
+            people[head]["taxable_interest_income"] += INTEREST_SHIFT
+            people[head][SE_EARNINGS] += SE_EARNINGS_SHIFT
         members, couple = [head], [head]
         if u["spouse"] is not None:
             spouse = f"spouse_{i}"
@@ -184,6 +220,8 @@ def _situation(units, year, *, zero_dependents=False, interest_shift=0.0):
                 "is_tax_unit_dependent": False,
                 **u["spouse"],
             }
+            if shift:
+                people[spouse][SE_EARNINGS] -= SE_EARNINGS_SHIFT
             members.append(spouse)
             couple.append(spouse)
         groups["marital_units"][f"couple_{i}"] = {"members": couple}
@@ -247,7 +285,7 @@ def _unit_sum(run, values):
 def _check(units, year):
     run = _run(units, year)
     zeroed = _run(units, year, zero_dependents=True)
-    shifted = _run(units, year, interest_shift=INTEREST_SHIFT)
+    shifted = _run(units, year, shift=True)
     filer = ~_by_person(units, "is_dependent")
     assert np.array_equal(~run["is_dependent"], filer)
     has_dependent = _unit_sum(run, (~filer).astype(float)) > 0
@@ -267,7 +305,7 @@ def _check(units, year):
         run, filer * np.maximum(0, _by_person(units, DISTRIBUTIONS))
     )
     capital = np.maximum(0, filer_sum(CAPITAL_INPUTS) + distributions)
-    passive = np.maximum(0, filer_sum(PASSIVE_INPUTS))
+    passive = np.maximum(0, filer_sum(PASSIVE_INPUTS) - filer_sum([OVERLAP]))
     expected = portfolio + capital + passive
     investment_income = run["eitc_relevant_investment_income"]
     np.testing.assert_allclose(investment_income, expected, atol=TOLERANCE)
@@ -277,7 +315,8 @@ def _check(units, year):
     )
     assert not (run["eitc"][expected > run["limit"]] > 0).any()
 
-    # 3. Bounds and an exact shift in the filer's interest.
+    # 3. Bounds, and an exact shift in the head's interest while the filers'
+    # partnership self-employment earnings change too.
     assert (investment_income >= portfolio - TOLERANCE).all()
     assert (investment_income >= -TOLERANCE).all()
     np.testing.assert_allclose(
@@ -286,8 +325,8 @@ def _check(units, year):
         atol=TOLERANCE,
     )
 
-    # 4. No dependents and no negative distributions input: the previous
-    # all-member formula, unchanged.
+    # 4. No dependents and no negative distributions input: the same worksheet
+    # summed over every member, unchanged.
     no_negative_distributions = (
         _unit_sum(run, (_by_person(units, DISTRIBUTIONS) < 0).astype(float)) == 0
     )
@@ -299,7 +338,12 @@ def _check(units, year):
             run["net_capital_gains"] + _unit_sum(run, _by_person(units, DISTRIBUTIONS)),
         )
         + np.maximum(
-            0, _unit_sum(run, sum(_by_person(units, n) for n in PASSIVE_INPUTS))
+            0,
+            _unit_sum(
+                run,
+                sum(_by_person(units, n) for n in PASSIVE_INPUTS)
+                - _by_person(units, OVERLAP),
+            ),
         )
     )
     np.testing.assert_allclose(
