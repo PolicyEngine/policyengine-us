@@ -4,13 +4,18 @@ from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 # 42 U.S.C. 1395r(i)(4)(A): adjusted gross income (i) determined without
 # regard to sections 135, 911, 931 and 933 of the Internal Revenue Code and
 # (ii) increased by tax-exempt interest. Income inputs are net of the section
-# 911 exclusion; sections 135, 931 and 933 are above-the-line deductions in
-# this model. Adding each amount back undoes it.
+# 911 amounts (Form 2555 lines 45 and 50); sections 135, 931 and 933 are
+# above-the-line deductions in this model. Adding each amount back undoes it.
 TAX_UNIT_ADDITIONS = [
-    "foreign_earned_income_exclusion",
+    "section_911_excluded_income",
     "specified_possession_income",
     "puerto_rico_income",
 ]
+# Summed over every member, as adjusted gross income deducts them. Only a
+# bond issued to an owner aged 24 or older qualifies for the section 135
+# exclusion (26 U.S.C. 135(c)(1)(B)), so a bond in a child's name does not
+# (Form 8815); an amount recorded on a dependent is the filer's exclusion for
+# the dependent's tuition, and adjusted gross income deducts it.
 PERSON_ADDITIONS = ["tax_exempt_interest_income", "us_bonds_for_higher_ed"]
 
 
@@ -20,7 +25,11 @@ class medicare_irmaa_magi_two_years_prior(Variable):
     label = "Medicare IRMAA MAGI from two years prior"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/42/1395r#i_4"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1395r#i_4",
+        "https://www.law.cornell.edu/uscode/text/26/135#c_1",
+        "https://www.irs.gov/pub/irs-prior/f8815--2025.pdf#page=3",
+    )
     documentation = (
         "Modified adjusted gross income used to determine Medicare IRMAA "
         "charges. Callers may provide this value directly for the current "
@@ -52,6 +61,9 @@ class medicare_irmaa_magi_two_years_prior(Variable):
         def provided(variable, population):
             holder = simulation.get_holder(variable)
             value = holder.get_array(prior_period, simulation.branch_name)
+            if value is None and variable == "section_911_excluded_income":
+                # Defaults to the stacking amount, as its formula does.
+                return provided("foreign_earned_income_exclusion", population)
             return population.empty_array() if value is None else value
 
         magi = provided("adjusted_gross_income", tax_unit)

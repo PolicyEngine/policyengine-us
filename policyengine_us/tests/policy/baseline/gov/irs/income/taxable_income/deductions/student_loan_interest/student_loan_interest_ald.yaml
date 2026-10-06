@@ -240,3 +240,22 @@
   output:
     # AGI 160,000; MAGI 190,000: reduced by (190,000 - 165,000) / 30,000.
     student_loan_interest_ald: [416.67, 0]
+
+- name: Disallowed deductions do not reduce the section 911 add-back
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        student_loan_interest: 2_500
+        irs_employment_income: 70_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        section_911_excluded_income: 15_000
+        foreign_earned_income_exclusion: 5_000
+  output:
+    # MAGI 70,000 + 15,000 = 85,000; reduced by (85,000 - 80,000) / 15,000.
+    student_loan_interest_ald: 1_666.67

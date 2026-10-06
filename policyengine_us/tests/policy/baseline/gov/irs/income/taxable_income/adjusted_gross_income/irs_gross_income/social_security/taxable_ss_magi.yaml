@@ -46,3 +46,27 @@
     taxable_ss_magi: 30_000
     tax_unit_taxable_social_security: 9_600
     adjusted_gross_income: 29_600
+
+- name: Section 911 adds back Form 2555 lines 45 and 50, before disallowed deductions
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        irs_employment_income: 20_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        section_911_excluded_income: 10_000
+        # The rate stacking amount after 4,000 of disallowed deductions.
+        foreign_earned_income_exclusion: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # As in the first case: 20,000 of wages plus Form 2555 lines 45 and 50.
+    taxable_ss_magi: 30_000
+    tax_unit_taxable_social_security: 9_600

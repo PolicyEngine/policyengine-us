@@ -81,3 +81,64 @@
   output:
     # 26 U.S.C. 30D(f)(10)(C): modified AGI 160,000 is over the 150,000 limit.
     new_clean_vehicle_credit_eligible: false
+
+- name: The preceding year's modified AGI qualifies when this year's, with the section 911 add-back, does not.
+  period: 2024
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 50_000
+    adjusted_gross_income: 140_000
+    foreign_earned_income_exclusion: 20_000
+    # Form 8936 line 4: 2023 modified AGI.
+    clean_vehicle_credit_prior_year_magi: 130_000
+  output:
+    # 26 U.S.C. 30D(f)(10)(A): the lesser of 160,000 and 130,000 is within
+    # the 150,000 limit.
+    new_clean_vehicle_credit_eligible: true
+
+- name: Neither year's modified AGI qualifies.
+  period: 2024
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 50_000
+    adjusted_gross_income: 140_000
+    foreign_earned_income_exclusion: 20_000
+    clean_vehicle_credit_prior_year_magi: 150_001
+  output:
+    new_clean_vehicle_credit_eligible: false
+
+- name: After a change in filing status, the preceding year's modified AGI is tested against that year's limit.
+  period: 2024
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 50_000
+    filing_status: SINGLE
+    adjusted_gross_income: 200_000
+    clean_vehicle_credit_prior_year_magi: 250_000
+    clean_vehicle_credit_prior_year_filing_status: JOINT
+  output:
+    # 26 CFR 1.30D-4(b)(3): 250,000 is within the 300,000 joint limit that
+    # applied to the 2023 return, though over this year's 150,000 limit.
+    new_clean_vehicle_credit_eligible: true
+
+- name: After a change in filing status, the lesser modified AGI is not tested against the other year's limit.
+  period: 2024
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 50_000
+    filing_status: JOINT
+    adjusted_gross_income: 350_000
+    clean_vehicle_credit_prior_year_magi: 200_000
+    clean_vehicle_credit_prior_year_filing_status: SINGLE
+  output:
+    # 26 CFR 1.30D-4(b)(3): 350,000 is over the 300,000 joint limit, and
+    # 200,000 over the 150,000 single limit of the 2023 return.
+    new_clean_vehicle_credit_eligible: false

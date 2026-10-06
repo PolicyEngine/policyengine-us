@@ -14,9 +14,11 @@ class agi_plus_section_911_931_933_exclusions(Variable):
         "adjusted gross income of the child tax credit, the education "
         "credits, the saver's credit, the clean vehicle credits, the SALT "
         "cap phase-down and the senior, tip, overtime and car loan interest "
-        "deductions. Income inputs are net of the section 911 exclusion, so "
-        "it is added back; sections 931 and 933 are above-the-line "
-        "deductions in this model, so adding them back reverses them."
+        "deductions. Income inputs are net of the section 911 amounts, so "
+        "they are added back in full (Form 2555 lines 45 and 50, before the "
+        "disallowed deductions the section 911(f) rate stacking subtracts); "
+        "sections 931 and 933 are above-the-line deductions in this model, "
+        "so adding them back reverses them."
     )
     definition_period = YEAR
     reference = (
@@ -33,7 +35,7 @@ class agi_plus_section_911_931_933_exclusions(Variable):
     )
     adds = [
         "adjusted_gross_income",
-        "foreign_earned_income_exclusion",
+        "section_911_excluded_income",
         "specified_possession_income",
         "puerto_rico_income",
     ]

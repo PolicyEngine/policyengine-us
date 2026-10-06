@@ -46,15 +46,16 @@ class student_loan_interest_ald_magi(Variable):
             set(p_irs.ald.deductions) - set(p.person_alds) - set(p.excluded_alds)
         )
         ald_sum_taxunit = add(person.tax_unit, period, other_alds)
-        # Income inputs are net of the section 911 exclusion; add it back.
-        foreign_earned_income_exclusion = person.tax_unit(
-            "foreign_earned_income_exclusion", period
+        # Income inputs are net of the section 911 amounts; add them back in
+        # full (Form 2555 lines 45 and 50; Pub. 970 Worksheet 4-1 lines 5-6).
+        section_911_excluded_income = person.tax_unit(
+            "section_911_excluded_income", period
         )
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         frac = where(joint, 0.5, 1.0)
         taxunit_adjustment_shared = (
-            not_dependent * (foreign_earned_income_exclusion - ald_sum_taxunit) * frac
+            not_dependent * (section_911_excluded_income - ald_sum_taxunit) * frac
         )
         modified_adjusted_gross_income = (
             total_gross_income - ald_sum_person + taxunit_adjustment_shared
