@@ -809,7 +809,7 @@ programs:
         name: Ohio LIHEAP
         full_name: Ohio Low Income Home Energy Assistance Program
         parameter_prefix: gov.states.oh.odjfs.liheap
-        notes: Income and ordinary eligibility components are implemented. The operative FY2026/FY2027 final payment matrix is still unavailable; historical final workbooks and provisional current ranges do not establish current awards. Regular heating only; historical backfills do not establish verified coverage.
+        notes: Income and ordinary eligibility components are implemented. Income limits follow the stated FPG/SMI rates, with the published large-household dollar discrepancy documented in code. The current final award is deferred pending an adopted FY2026/FY2027 payment matrix; historical workbooks and provisional current ranges do not establish current awards. Regular heating only; historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP
