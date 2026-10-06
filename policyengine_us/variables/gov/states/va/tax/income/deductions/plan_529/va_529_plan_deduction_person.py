@@ -18,8 +18,10 @@ class va_529_plan_deduction_person(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.tax.income.subtractions.plan_529
         # Only the owner of record of an account may claim the deduction, so
-        # each filer deducts their own contributions. A dependent's account is
-        # claimed on the dependent's own return.
+        # each filer deducts the contributions to accounts they own; the model
+        # reads a person's 529 contributions as contributions to their own
+        # accounts. Dependents file their own returns, which this tax unit
+        # does not model, so dependent-owned accounts are excluded.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         contributions = person("investment_in_529_plan_indv", period)
         accounts = person("count_529_contribution_beneficiaries", period)
