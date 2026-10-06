@@ -12,8 +12,11 @@ class mi_household_resources(Variable):
         "https://law.justia.com/codes/michigan/2022/chapter-206/"
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
+        "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        # 2025 MI-1040 book, MI-1040CR lines 19 (capital gains) and 30
+        # (adjustments from U.S. Schedule 1).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
     )
 
     def formula(tax_unit, period, parameters):
@@ -45,7 +48,15 @@ class mi_household_resources(Variable):
                 total += add(tax_unit, period, [source])
 
         health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
-        above_the_line_deductions = tax_unit("above_the_line_deductions", period)
+        # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
+        # Capital losses are not Schedule 1 adjustments: they are already
+        # netted and limited in the capital gains line (Form 1040 line 7a),
+        # so the capital parts of loss_ald are not subtracted again.
+        above_the_line_deductions = tax_unit("above_the_line_deductions", period) - add(
+            tax_unit,
+            period,
+            ["capital_losses_allowed_against_gains", "limited_capital_loss"],
+        )
         return max_(
             0,
             total - health_insurance_premiums - above_the_line_deductions,

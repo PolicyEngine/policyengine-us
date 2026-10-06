@@ -8,8 +8,8 @@ class wi_homestead_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleH.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleH.pdf",
     )
     defined_for = StateCode.WI
 

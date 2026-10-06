@@ -1,0 +1,32 @@
+description: Mississippi reduces the heating cap by this amount for each income band above the first, by primary heating fuel, under the Low Income Home Energy Assistance Program.
+UNSPECIFIED:
+  2025-10-01: 0
+ELECTRICITY:
+  2025-10-01: 100
+NATURAL_GAS:
+  2025-10-01: 50
+FUEL_OIL:
+  2025-10-01: 40
+KEROSENE:
+  2025-10-01: 40
+PROPANE:
+  2025-10-01: 50
+WOOD:
+  2025-10-01: 40
+COAL:
+  2025-10-01: 40
+SOLAR:
+  2025-10-01: 0
+OTHER:
+  2025-10-01: 40
+NONE:
+  2025-10-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Mississippi LIHEAP payment reduction
+  breakdown:
+    - heating_type
+  reference:
+    - title: Mississippi FY2026 benefit matrix, Propane, Natural Gas, Wood/Other Fuel and Total Electric columns, pages 1-6
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MS_BenefitMatrix_Heat-Cool_2026.pdf#page=1
