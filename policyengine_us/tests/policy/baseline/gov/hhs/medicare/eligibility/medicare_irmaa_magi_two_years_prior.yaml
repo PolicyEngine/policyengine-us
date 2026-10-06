@@ -197,8 +197,66 @@
       household:
         members: [head, spouse, child]
   output:
-    # The 4,000 recorded on the child is the couple's exclusion too.
+    # The 4,000 recorded on the child is the couple's exclusion too
+    # (gov.irs.ald.filer_amounts_recorded_on_dependents).
     medicare_irmaa_magi_two_years_prior: 107_000
+
+- name: A dependent's tax-exempt interest is on the dependent's own return.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2024: 64
+          2026: 66
+        employment_income:
+          2024: 100_000
+          2026: 0
+        tax_exempt_interest_income:
+          2024: 3_000
+          2026: 0
+      child:
+        age:
+          2024: 13
+          2026: 15
+        tax_exempt_interest_income:
+          2024: 2_000
+          2026: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # 2024 AGI 100,000 leaves out the child's income; only the parent's
+    # 3,000 of tax-exempt interest is added.
+    medicare_irmaa_magi_two_years_prior: 103_000
+
+- name: A dependent's tax-exempt interest provided for an unmodeled lag year is not added.
+  period: 2016
+  input:
+    people:
+      parent:
+        age: 66
+        tax_exempt_interest_income:
+          2014: 3_000
+          2016: 0
+      child:
+        age: 15
+        tax_exempt_interest_income:
+          2014: 2_000
+          2016: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income:
+          2014: 100_000
+    households:
+      household:
+        members: [parent, child]
+  output:
+    medicare_irmaa_magi_two_years_prior: 103_000
 
 - name: Every member's section 135 exclusion for an unmodeled lag year is added back.
   period: 2016

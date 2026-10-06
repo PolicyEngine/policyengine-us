@@ -46,13 +46,16 @@ Two kinds of test, on random households:
 
 A third test checks the Medicare IRMAA modified AGI of 42 U.S.C.
 1395r(i)(4), from income two years before the benefit year. With AGI
-provided, it equals AGI plus tax-exempt interest, every member's section 135
-exclusion, and the section 911 (Form 2555 lines 45 and 50), 931 and 933
-amounts. AGI deducts the section 135 exclusion wherever it is recorded in
-the tax unit: only a bond issued to an owner aged 24 or older qualifies
-(section 135(c)(1)(B)), so an amount recorded on a dependent is the filer's
-exclusion for the dependent's tuition. With AGI computed from wages, the
-IRMAA MAGI therefore does not depend on section 135 amounts at all.
+provided, it equals AGI plus the head's and spouse's tax-exempt interest,
+every member's section 135 exclusion, and the section 911 (Form 2555 lines
+45 and 50), 931 and 933 amounts. A dependent's own tax-exempt interest is on
+the dependent's return, as the rest of the dependent's income is. AGI
+deducts the section 135 exclusion wherever it is recorded in the tax unit
+(`gov.irs.ald.filer_amounts_recorded_on_dependents`): only a bond issued to
+an owner aged 24 or older qualifies (section 135(c)(1)(B)), so an amount
+recorded on a dependent is the filer's exclusion for the dependent's
+tuition. With AGI computed from wages, the IRMAA MAGI therefore does not
+depend on section 135 amounts at all.
 """
 
 import numpy as np
@@ -535,6 +538,8 @@ irmaa_household_strategy = st.fixed_dictionaries(
         "wages": st.integers(0, 400_000),
         "spouse_wages": st.one_of(st.just(0), st.integers(1, 200_000)),
         "tax_exempt_interest": st.one_of(st.just(0), st.integers(1, 20_000)),
+        "spouse_tax_exempt_interest": st.one_of(st.just(0), st.integers(1, 20_000)),
+        "dependent_tax_exempt_interest": st.one_of(st.just(0), st.integers(1, 20_000)),
         "head_bonds": st.one_of(st.just(0), st.integers(1, 10_000)),
         "spouse_bonds": st.one_of(st.just(0), st.integers(1, 10_000)),
         "dependent_bonds": st.one_of(st.just(0), st.integers(1, 10_000)),
@@ -555,22 +560,23 @@ def build_irmaa_situation(households, year, computed):
     """Households for an IRMAA benefit year.
 
     With `computed`, the lag year's AGI comes from wages, which include any
-    possession and Puerto Rico income (deducted again above the line), and
-    ages are set for both years so the lag year's roles match. Otherwise AGI
-    is provided for the lag year and ages for the benefit year only.
+    possession and Puerto Rico income (deducted again above the line).
+    Otherwise AGI is provided for the lag year. Ages are set for both years,
+    so the lag year's tax unit roles (which decide whose tax-exempt interest
+    is on the return) are the benefit year's; age defaults to 40 otherwise.
     """
     lag = year - 2
     set_911 = sets_section_911_amount(households)
     people, tax_units, marital_units = {}, {}, {}
     groups = {"households": {}, "spm_units": {}, "families": {}}
 
-    def person(age, bonds, wages=0, **extra):
+    def person(age, bonds, interest, wages=0):
         # An input carries forward to later years it is not supplied for, so
         # the benefit year's amounts are set to zero.
         p = {
-            "age": {lag: age - 2, year: age} if computed else {year: age},
+            "age": {lag: age - 2, year: age},
             "us_bonds_for_higher_ed": {lag: bonds, year: 0},
-            **extra,
+            "tax_exempt_interest_income": {lag: interest, year: 0},
         }
         if computed:
             p["employment_income"] = {lag: wages, year: 0}
@@ -581,19 +587,26 @@ def build_irmaa_situation(households, year, computed):
         people[head] = person(
             66,
             h["head_bonds"],
+            h["tax_exempt_interest"],
             h["wages"] + h["specified_possession_income"] + h["puerto_rico_income"],
-            tax_exempt_interest_income={lag: h["tax_exempt_interest"], year: 0},
         )
         members = [head]
         marital_units[f"marital_unit_{i}"] = {"members": [head]}
         if h["joint"]:
             spouse = f"spouse_{i}"
-            people[spouse] = person(64, h["spouse_bonds"], h["spouse_wages"])
+            people[spouse] = person(
+                64,
+                h["spouse_bonds"],
+                h["spouse_tax_exempt_interest"],
+                h["spouse_wages"],
+            )
             members.append(spouse)
             marital_units[f"marital_unit_{i}"]["members"].append(spouse)
         if h["has_dependent"]:
             child = f"child_{i}"
-            people[child] = person(15, h["dependent_bonds"])
+            people[child] = person(
+                15, h["dependent_bonds"], h["dependent_tax_exempt_interest"]
+            )
             members.append(child)
             marital_units[f"marital_unit_{i}_child"] = {"members": [child]}
         tax_units[f"tax_unit_{i}"] = {
@@ -625,9 +638,13 @@ def assert_irmaa_identity(households, year, computed):
     magi = simulation.calculate("medicare_irmaa_magi_two_years_prior", year)
     for i, h in enumerate(households):
         # 42 U.S.C. 1395r(i)(4)(A): AGI without regard to sections 135, 911,
-        # 931 and 933, plus tax-exempt interest. AGI deducts the section 135
-        # exclusion wherever it is recorded in the tax unit, and the IRMAA
-        # MAGI adds back the same amount.
+        # 931 and 933, plus tax-exempt interest on the return. AGI deducts the
+        # section 135 exclusion wherever it is recorded in the tax unit, and
+        # the IRMAA MAGI adds back the same amount. A dependent's tax-exempt
+        # interest, like the rest of the dependent's income, is not on it.
+        interest = h["tax_exempt_interest"] + (
+            h["spouse_tax_exempt_interest"] if h["joint"] else 0
+        )
         bonds = (
             h["head_bonds"]
             + (h["spouse_bonds"] if h["joint"] else 0)
@@ -642,7 +659,7 @@ def assert_irmaa_identity(households, year, computed):
             agi_without_135 = h["agi"] + bonds
         expected = (
             agi_without_135
-            + h["tax_exempt_interest"]
+            + interest
             + section_911_excluded_income(h)
             + h["specified_possession_income"]
             + h["puerto_rico_income"]
@@ -684,6 +701,8 @@ IRMAA_GRID = [
         wages=100_000,
         spouse_wages=0,
         tax_exempt_interest=0,
+        spouse_tax_exempt_interest=0,
+        dependent_tax_exempt_interest=0,
         head_bonds=0,
         spouse_bonds=0,
         dependent_bonds=1_000,
@@ -700,6 +719,9 @@ IRMAA_GRID = [
         wages=120_000,
         spouse_wages=30_000,
         tax_exempt_interest=2_000,
+        spouse_tax_exempt_interest=1_500,
+        # The child's own; not on the parents' return.
+        dependent_tax_exempt_interest=2_500,
         head_bonds=1_000,
         spouse_bonds=2_000,
         dependent_bonds=4_000,
