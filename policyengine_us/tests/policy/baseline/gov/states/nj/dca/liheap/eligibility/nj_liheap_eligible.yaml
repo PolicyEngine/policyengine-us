@@ -4,6 +4,8 @@
 # - FY2026 LIHEAP Handbook, sections 2.2 (pages 5 and 6), 2.3.B (page 7) and
 #   3.1.a.2 (page 11):
 #   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5
+# - N.J.A.C. 5:49-2.3(b), the public housing and rent subsidy denials:
+#   https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-3
 # - FY2026 Benefit Matrix (one page):
 #   https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
 
@@ -25,24 +27,28 @@
   output:
     nj_liheap_eligible: [true, false]
 
-# Two renters with heat included in rent and no income. Handbook section 2.2
-# (page 6) makes a renter whose heating costs are included in rent eligible,
-# and lists as not eligible households "receiving a rent subsidy which includes
-# all heating costs".
-# - No rent subsidy: eligible.
-# - Rent subsidy: not eligible, even with a heating bill reported.
-- name: Case 2, heat included in subsidized rent is ineligible.
+# Three renters with heat included in rent, no bill of their own and no income.
+# Handbook section 2.2 (page 6) makes a renter whose heating costs are included
+# in rent eligible, and lists as not eligible "Households residing in publicly
+# operated housing where their heat is included in their rent or are receiving
+# a rent subsidy which includes all heating costs" (also N.J.A.C.
+# 5:49-2.3(b)1 and 2).
+# - Unsubsidized rent: eligible.
+# - Section 8 voucher: not eligible.
+# - Public housing: not eligible.
+- name: Case 2, heat included in subsidized or public housing rent is ineligible.
   period: 2026
   input:
-    state_code: [NJ, NJ]
-    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
-    nj_liheap_countable_income: [0, 0]
-    has_heating_expense: [true, true]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
-    heat_expense_included_in_rent: [true, true]
-    receives_housing_assistance: [false, true]
+    state_code: [NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0, 0]
+    has_heating_expense: [false, false, false]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, false]
+    is_in_public_housing: [false, false, true]
   output:
-    nj_liheap_eligible: [true, false]
+    nj_liheap_eligible: [true, false, false]
 
 # Handbook section 2.2 (page 6), ineligible households item 3, and section
 # 2.3.B.5 (page 7): "Households consisting entirely of students who are tax
@@ -90,10 +96,27 @@
   period: 2026
   input:
     state_code: [NJ, NJ, NY]
-    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, KINGS_COUNTY_NY]
     nj_liheap_countable_income: [0, 0, 0]
     has_heating_expense: [false, true, true]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     immigration_status: [CITIZEN, UNDOCUMENTED, CITIZEN]
   output:
     nj_liheap_eligible: [false, false, false]
+
+# The students-only denial (handbook section 2.2, page 6, item 3) needs both
+# conditions: a full-time student who is nobody's tax dependent, and a tax
+# dependent who is not a student, each living alone with a heating bill and no
+# income, are both eligible.
+- name: Case 6, a student who is not a dependent and a dependent who is not a student are eligible.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0]
+    has_heating_expense: [true, true]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    is_full_time_student: [true, false]
+    is_tax_unit_dependent: [false, true]
+  output:
+    nj_liheap_eligible: [true, true]

@@ -199,3 +199,35 @@
     # Gas panel, "All Other (19) counties", row "$6440 - $8886", column
     # "5 to 8": $373.
     nj_liheap: 373
+
+# Two Hudson County retirees aged 70 living alone, each with $4,200 a month of
+# Social Security ($50,400 a year) and natural gas billed in their own name
+# (about $1,200 a year). The first pays a Medicare Part B premium of about
+# $2,435 a year; the second has it paid by a Medicare Savings Program.
+- name: Case 5, Social Security counts net of the Medicare Part B premium the person pays.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [HUDSON_COUNTY_NJ, HUDSON_COUNTY_NJ]
+    age: [70, 70]
+    social_security: [50_400, 50_400]
+    medicare_part_b_premium: [2_435, 0]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    # Handbook section 2.3.F.7(a) (page 10) deducts the Part B premium from
+    # gross Social Security: 50_400 - 2_435 = 47_965. The second retiree pays
+    # no premium, so 50_400 counts.
+    nj_liheap_countable_income_person: [47_965, 50_400]
+    # 47_965 / 12 = 3,997.08 -> 3,997 a month (section 2.3.F, page 9);
+    # 3,997 * 12 = 47_964. 50_400 / 12 = 4,200, a whole dollar.
+    nj_liheap_countable_income: [47_964, 50_400]
+    # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+    nj_liheap_income_limit: [50_004, 50_004]
+    # 3,997 does not exceed 4,167; 4,200 does (section 2.3.A, page 7).
+    nj_liheap_eligible: [true, false]
+    # Gas panel, "All Other (19) counties", row "$2001 - $6439", column
+    # "1 to 4": $334.
+    nj_liheap: [334, 0]

@@ -7,6 +7,11 @@
 # - FY2026 LIHEAP Handbook, sections 2.2 (page 5), 2.3.A (page 7), 3.1.a.3
 #   (page 11) and 3.2.F (page 12):
 #   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5
+# - FY2027 Benefit Matrix (one page; identical to FY2026 except one Warren &
+#   Sussex renters cell, Case 18):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20Benefit%20Matrix.png
+# - N.J.A.C. 5:49-2.2(d)1.i, the renter's level for subsidized direct payers
+#   (Case 13): https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-2
 #
 # Cases 1 to 8 read the printed cells of one panel and one county column each.
 # Eligibility is set directly because these cases test the grid lookup, not the
@@ -17,8 +22,9 @@
 #   and "$2001 - $6439" print the same amounts as "$0 - $1000" (Case 10).
 # - Sizes 2, 6, 10 and 14 are the smallest even sizes in the printed columns
 #   "1 to 4", "5 to 8", "9 to 12" and "13 or More". One even size stands for
-#   each size group here; the odd sizes are asserted in
-#   eligibility/nj_liheap_income_limit.yaml.
+#   each size group here; Case 15 crosses the column edges at sizes 8, 9, 12
+#   and 13, and eligibility/nj_liheap_income_limit.yaml asserts the published
+#   limit for every size.
 
 # Deliverables panel, "All Other (19) counties", sizes 2, 6, 10 and 14 (columns
 # "1 to 4", "5 to 8", "9 to 12" and "13 or More"). Printed cells by row:
@@ -182,8 +188,11 @@
 # - Electricity: Electric panel, $529. Natural gas: Gas panel, $334.
 # - Oil, kerosene, propane, wood and coal are the delivered fuels (section
 #   3.1.a.3, page 11) and read the Deliverables panel: $641 each.
-# - Solar, other, unspecified and no heating are not listed fuel types, and no
-#   panel applies to a household paying its own heating bill: $0.
+# - Solar: a grid-tied solar home pays an electricity bill, the pairing
+#   heating_expense uses, so it reads the Electric panel: $529.
+# - Other, unspecified and no heating are not listed fuel types, and no panel
+#   applies to a household paying its own heating bill: $0. The unspecified
+#   default is tracked in #9754.
 - name: Case 9, each heating fuel reads its own panel.
   period: 2026
   input:
@@ -193,7 +202,7 @@
     nj_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, WOOD, COAL, SOLAR, OTHER, UNSPECIFIED, NONE]
   output:
-    nj_liheap: [529, 334, 641, 641, 641, 641, 641, 0, 0, 0, 0]
+    nj_liheap: [529, 334, 641, 641, 641, 641, 641, 529, 0, 0, 0]
 
 # Gas panel, "All Other (19) counties", column "1 to 4" (size 4). Annual incomes
 # divided by 12 are the last and first dollars of each printed row:
@@ -247,13 +256,10 @@
     state_code: NJ
     county: SUSSEX_COUNTY_NJ
     age: 45
-    immigration_status: CITIZEN
     employment_income: 36_000
     farm_rent_income: 24_000
-    rental_income: 0
     ssi: 0
     tanf: 0
-    snap: 0
     heating_type: NATURAL_GAS
     gas_expense: 1_200
   output:
@@ -264,3 +270,129 @@
     nj_liheap_income_limit: 50_004
     nj_liheap_eligible: false
     nj_liheap: 0
+
+# Three Essex County adults with $12,000 of wages who heat with electricity
+# billed in their own name (about $1,500 a year). Row "$0 - $1000", column
+# "1 to 4", "All Other (19) counties".
+# - No housing subsidy: Electric panel, $529 (handbook section 3.2.F.1,
+#   page 12).
+# - Section 8 voucher: N.J.A.C. 5:49-2.2(d)1.i, "Households receiving a rent
+#   subsidy which does not include all of their heating costs and have a
+#   heating bill in their name are entitled to assistance at a renter's
+#   benefit level": Renters panel, $234. Handbook section 2.2 (page 6) copies
+#   (d)1 without that subparagraph and prints no contrary rule.
+# - Public housing with its own bill: eligible under N.J.A.C. 5:49-2.3(b)1 and
+#   read with the rent subsidy, so also $234.
+- name: Case 13, subsidized tenants paying their own heating bill receive the renters level.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    age: [40, 40, 40]
+    employment_income: [12_000, 12_000, 12_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500]
+    receives_housing_assistance: [false, true, false]
+    is_in_public_housing: [false, false, true]
+  output:
+    has_heating_expense: [true, true, true]
+    nj_liheap_eligible: [true, true, true]
+    nj_liheap: [529, 234, 234]
+
+# Essex County tenant with $12,000 of wages whose natural-gas heat is included
+# in an unsubsidized rent. Handbook section 3.2.F.2 (page 12): households
+# whose heat is included in the rent "shall receive benefits as heat is
+# included in the rent fuel type", so the known fuel does not read the Gas
+# panel ($334). Renters panel, row "$0 - $1000", column "1 to 4": $234.
+- name: Case 14, heat included in rent outranks a known heating fuel.
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    age: 40
+    employment_income: 12_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    nj_liheap_eligible: true
+    nj_liheap: 234
+
+# Gas panel, "All Other (19) counties", row "$0 - $1000", at the sizes on each
+# side of the printed column edges: size 8 is the last of "5 to 8" (448), size
+# 9 the first of "9 to 12" (535), size 12 the last of "9 to 12" (535) and size
+# 13 the first of "13 or More" (589).
+- name: Case 15, household size group edges at 8, 9, 12 and 13.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_eligible: [true, true, true, true]
+    nj_liheap_household_size: [8, 9, 12, 13]
+    nj_liheap_countable_income: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+  output:
+    nj_liheap: [448, 535, 535, 589]
+
+# A New Jersey household with no county input takes the first New Jersey
+# county, Atlantic, which is under "All Other (19) counties". Single adult,
+# $12,000 of wages, natural gas billed in their own name: Gas panel, row
+# "$0 - $1000", column "1 to 4": $334.
+- name: Case 16, a household with no county input is paid under the other nineteen counties.
+  period: 2026
+  input:
+    state_code: NJ
+    age: 40
+    employment_income: 12_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_300
+  output:
+    nj_liheap_region: 1
+    nj_liheap: 334
+
+# Essex County adult with $60,000 of wages and a $20,000 rental loss, heating
+# with natural gas billed in their own name. State Plan section 1.8 (page 6)
+# counts gross income and handbook section 2.3.D (page 8) counts receipts from
+# the rental of property, so the loss is floored at zero and does not offset
+# the wages: 60_000 / 12 = 5,000 a month exceeds the one-person limit of
+# $4,167 (fact sheet, page 2).
+- name: Case 17, a rental loss does not offset wages.
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    age: 40
+    employment_income: 60_000
+    rental_income: -20_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    nj_liheap_countable_income: 60_000
+    nj_liheap_eligible: false
+    nj_liheap: 0
+
+# FY2027 Benefit Matrix, Renters panel, "Warren & Sussex Counties", column
+# "13 or More": the rows "$0 - $1000" and "$1001 - $2000" print 471 and the
+# row "$2001 - $6439" prints 474, where every other year prints 471 in all
+# three. The model combines the three rows and keeps 471 for all of them.
+# Monthly incomes 12_000 / 12 = 1,000 and 36_000 / 12 = 3,000.
+- name: Case 18, FY2027 Warren and Sussex renters with 13 members keep the combined band value.
+  period: 2027
+  input:
+    state_code: [NJ, NJ]
+    county: [WARREN_COUNTY_NJ, WARREN_COUNTY_NJ]
+    nj_liheap_eligible: [true, true]
+    nj_liheap_household_size: [13, 13]
+    nj_liheap_countable_income: [12_000, 36_000]
+    heating_type: [UNSPECIFIED, UNSPECIFIED]
+    heat_expense_included_in_rent: [true, true]
+  output:
+    nj_liheap_income_band: [1, 1]
+    nj_liheap: [471, 471]

@@ -1,14 +1,14 @@
-description: New Jersey pays this annual regular heating benefit in the deliverables panel under the Low Income Home Energy Assistance Program, by county region, monthly income band and household size group.
-'1':
+description: New Jersey provides this annual regular heating benefit to households in the deliverables panel, by county region, monthly income band and household size group, under the Low Income Home Energy Assistance Program.
+1:
   1:
     1:
       2025-10-01: 641
     2:
       2025-10-01: 859
     3:
-      2025-10-01: 1025
+      2025-10-01: 1_025
     4:
-      2025-10-01: 1128
+      2025-10-01: 1_128
   2:
     1:
       2025-10-01: 535
@@ -36,16 +36,16 @@ description: New Jersey pays this annual regular heating benefit in the delivera
       2025-10-01: 513
     4:
       2025-10-01: 564
-'2':
+2:
   1:
     1:
       2025-10-01: 961
     2:
       2025-10-01: 983
     3:
-      2025-10-01: 1162
+      2025-10-01: 1_162
     4:
-      2025-10-01: 1278
+      2025-10-01: 1_278
   2:
     1:
       2025-10-01: 613
@@ -54,7 +54,7 @@ description: New Jersey pays this annual regular heating benefit in the delivera
     3:
       2025-10-01: 979
     4:
-      2025-10-01: 1077
+      2025-10-01: 1_077
   3:
     1:
       2025-10-01: 491
@@ -82,5 +82,7 @@ metadata:
   - range(1, 5)
   - range(1, 5)
   reference:
-  - title: FY2026 heating benefit grid
+  - title: FY2026 Benefit Matrix
     href: https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+  - title: FY2027 Benefit Matrix
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20Benefit%20Matrix.png

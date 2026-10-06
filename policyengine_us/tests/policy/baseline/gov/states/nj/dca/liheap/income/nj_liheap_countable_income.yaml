@@ -13,7 +13,6 @@
 - name: Case 1, monthly household income rounds to the nearest dollar after TANF is added once.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     state_code: [NJ, NJ]
     nj_liheap_countable_income_person: [10_001, 10_002]
     tanf: [1_200, 1_200]
@@ -30,7 +29,6 @@
   period: 2026
   input:
     state_code: [NJ, NJ]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     age: [40, 40]
     nj_wfnj: [1_200, 1_200]
     takes_up_tanf_if_eligible: [false, true]

@@ -10,6 +10,10 @@ class nj_liheap_eligible(Variable):
     reference = (
         # PDF pages 5, 6, 7, 11, 12.
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5",
+        # PDF pages 5, 6, 7, 12, 13.
+        "https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=5",
+        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-2",
+        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-3",
     )
     documentation = (
         "Automatic enrollment does not waive the income test, and regular heating has "
@@ -20,6 +24,8 @@ class nj_liheap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        # Handbook 2.2 (page 6) and N.J.A.C. 5:49-2.3(b)1-2 deny public housing
+        # and rent-subsidy households only when the subsidy covers the heat.
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
