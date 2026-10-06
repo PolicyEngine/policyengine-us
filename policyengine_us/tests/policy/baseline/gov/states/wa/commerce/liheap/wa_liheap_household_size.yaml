@@ -1,0 +1,45 @@
+# Approved mixed-status convention; the SPM unit approximates shared-heat residents.
+- name: Case 1, a citizen child counts and an undocumented parent does not.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, immigration_status: UNDOCUMENTED}
+      person2: {age: 10, immigration_status: CITIZEN}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+    households:
+      household1: {members: [person1, person2], state_code: WA}
+  output:
+    wa_liheap_household_size: 1
+
+- name: Case 2, refugees and asylees count but DACA and TPS do not.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, immigration_status: REFUGEE}
+      person2: {age: 35, immigration_status: ASYLEE}
+      person3: {age: 30, immigration_status: DACA}
+      person4: {age: 28, immigration_status: TPS}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+    households:
+      household1: {members: [person1, person2, person3, person4], state_code: WA}
+  output:
+    wa_liheap_household_size: [2, 0]
+
+- name: Case 3, permanent residents use the existing qualified-status indicator.
+  period: 2026
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    wa_liheap_household_size: 1
+
+- name: Case 4, Washington household size is zero outside Washington.
+  period: 2026
+  input:
+    state_code: OR
+    immigration_status: CITIZEN
+  output:
+    wa_liheap_household_size: 0

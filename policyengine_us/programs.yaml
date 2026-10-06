@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, WA
     state_implementations:
       - state: OR
         status: in_progress
@@ -839,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: WA
+        status: partial
+        name: Washington LIHEAP
+        full_name: Washington Low Income Home Energy Assistance Program
+        variable: wa_liheap
+        parameter_prefix: gov.states.wa.commerce.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with reported annual costs only. Qualified-member size, intermediate rounding and a final cost cap are modeling conventions. Missing-cost surrogates, Social Security deductions and household adjusters above size 24 remain unsupported; the worksheet contains older poverty displays. Cooling, crisis and equipment assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

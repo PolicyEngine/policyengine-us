@@ -1,0 +1,14 @@
+description: Washington carries intermediate worksheet values at this modeled precision under the Low Income Home Energy Assistance Program.
+# Modeling convention: round the income/adjuster and subsequent quotient
+# to two decimal places, with half-up ties. The printed 0.46 and 0.84 carry
+# into the $336 example; the full tie convention is not explicit in policy.
+values:
+  2025-10-01: 0.01
+
+metadata:
+  unit: /1
+  period: year
+  label: Washington LIHEAP intermediate worksheet rounding increment
+  reference:
+    - title: "FY2026 Benefit Matrix, Actual and Surrogate Heat Cost worksheet #page 1"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1

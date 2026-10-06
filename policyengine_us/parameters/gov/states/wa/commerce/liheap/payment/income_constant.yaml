@@ -1,0 +1,13 @@
+description: Washington uses this monthly income constant in the Low Income Home Energy Assistance Program benefit worksheet.
+# Preserve the FY2026-labelled worksheet's constants. Its embedded poverty
+# table is older; annual recalibration was not recovered.
+values:
+  2025-10-01: 3648.1
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington LIHEAP monthly income constant
+  reference:
+    - title: "FY2026 Benefit Matrix, Actual and Surrogate Heat Cost worksheet #page 1"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1

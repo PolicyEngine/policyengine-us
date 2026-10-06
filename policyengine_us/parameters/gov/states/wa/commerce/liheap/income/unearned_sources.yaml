@@ -1,0 +1,35 @@
+description: Washington counts these unearned income sources without an additional deduction under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    - general_assistance
+    - strike_benefits
+    - financial_assistance
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - railroad_benefits
+    - survivor_benefits
+
+# Income of minors is counted except earnings. TANF and State Family
+# Assistance are added separately once per SPM unit; general assistance
+# represents other aid, such as ABD, not those same payments again.
+# FY2026 excludes VA benefits, insurance payments, one-time lump sums, refunds
+# and balances. Broad annual inputs cannot identify every exempt subtype.
+# Medicare deductions remain deferred. Social Security is counted once via
+# its aggregate and receives no unverified retirement deduction.
+# Repayable loans, structured settlements, foster payments, jury pay and
+# royalties lack dedicated inputs. Work-study wages may be included in
+# employment income; do not add a duplicate amount or invent new inputs.
+# The FY2027 draft changes categories and is not adopted for this snapshot.
+metadata:
+  unit: list
+  period: year
+  label: Washington LIHEAP unearned sources
+  reference:
+    - title: "FY2026 State Plan, section 1.9 #page 5,6,7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=6
