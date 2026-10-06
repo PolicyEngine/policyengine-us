@@ -13,19 +13,25 @@ class is_medicaid_ltss_income_eligible(Variable):
         "does not validate a trust, expense, service, or facility rate. The "
         "Washington institutional branch models the WAC 182-513-1395(4) "
         "payment threshold using income only: the excess-resources term in "
-        "subsection (4)(a) is unmodeled (slightly lenient; resources are "
-        "screened separately), as are the three- or six-month spenddown "
-        "process in subsection (5) and the WAC 182-515-1507 categorically "
-        "needy route that bypasses the special income limit. The Delaware "
-        "special income limit is 250% of the SSI standard (DSSM 20100.2.2), "
-        "and its $20 disregard with the needs-based carve-out follows DSSM "
-        "20240.1 and 20990."
+        "subsection (4)(a) is unmodeled, which makes this variable slightly "
+        "lenient on its own, although the composite screen still applies "
+        "the resource test. The three- or six-month spenddown process in "
+        "subsection (5) and the WAC 182-515-1507 categorically needy route "
+        "that bypasses the special income limit are also unmodeled. The "
+        "Delaware special income limit is 250% of the SSI standard and "
+        "applies only to nursing facility residents (DSSM 20100.2.2); "
+        "Delaware's 100%-of-SSI standard for hospital stays is unmodeled, "
+        "so the institutional setting should not be used for a hospitalized "
+        "Delaware applicant. Delaware's $20 disregard, with the needs-based "
+        "carve-out and one disregard per couple, follows DSSM 20240.1 and "
+        "20990."
     )
     reference = (
-        "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",
+        "https://www.law.cornell.edu/cfr/text/42/435.236",
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust",
-        "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf",
-        "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78",
+        "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=1",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=1",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508",
     )
@@ -38,31 +44,13 @@ class is_medicaid_ltss_income_eligible(Variable):
         settings = setting.possible_values
         pathway = person("medicaid_ltss_financial_pathway", period)
         pathways = pathway.possible_values
-        assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
         income = person("medicaid_ltss_qit_adjusted_income", period)
+        # The special income limit is zero outside the modeled states and
+        # assistance-unit sizes; the SPECIAL_INCOME pathway gate below is what
+        # keeps an unmodeled person from passing with zero income.
+        special_income_limit = person("medicaid_ltss_special_income_limit", period)
 
-        special_income_limit = select(
-            [
-                (state == states.TX) & (assistance_unit_size == 1),
-                (state == states.TX) & (assistance_unit_size == 2),
-                (state == states.DE) & (assistance_unit_size == 1),
-                (state == states.DE) & (assistance_unit_size == 2),
-                (state == states.WA) & (assistance_unit_size == 1),
-            ],
-            [
-                p.tx.special_income_limit.individual,
-                p.tx.special_income_limit.couple,
-                p.de.special_income_limit.individual,
-                p.de.special_income_limit.couple,
-                p.wa.special_income_limit.individual,
-            ],
-            default=0,
-        )
-
-        needs_based_income = min_(
-            person("medicaid_ltss_needs_based_income", period),
-            income,
-        )
+        needs_based_income = person("medicaid_ltss_needs_based_income", period)
         non_needs_based_income = max_(income - needs_based_income, 0)
         delaware_disregard = min_(
             non_needs_based_income,

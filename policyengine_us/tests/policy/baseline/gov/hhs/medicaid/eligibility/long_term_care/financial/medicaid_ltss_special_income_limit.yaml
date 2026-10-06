@@ -1,0 +1,66 @@
+- name: Case 1, special income limits derive from the SSI federal benefit rate.
+  period: 2026-07
+  input:
+    people:
+      texas_individual:
+        medicaid_ltss_assistance_unit_size: 1
+      texas_couple:
+        medicaid_ltss_assistance_unit_size: 2
+      delaware_individual:
+        medicaid_ltss_assistance_unit_size: 1
+      delaware_couple:
+        medicaid_ltss_assistance_unit_size: 2
+      washington_individual:
+        medicaid_ltss_assistance_unit_size: 1
+      washington_couple:
+        medicaid_ltss_assistance_unit_size: 2
+      california_individual:
+        medicaid_ltss_assistance_unit_size: 1
+    households:
+      texas_individual_household:
+        members: [texas_individual]
+        state_code:
+          2026: TX
+      texas_couple_household:
+        members: [texas_couple]
+        state_code:
+          2026: TX
+      delaware_individual_household:
+        members: [delaware_individual]
+        state_code:
+          2026: DE
+      delaware_couple_household:
+        members: [delaware_couple]
+        state_code:
+          2026: DE
+      washington_individual_household:
+        members: [washington_individual]
+        state_code:
+          2026: WA
+      washington_couple_household:
+        members: [washington_couple]
+        state_code:
+          2026: WA
+      california_individual_household:
+        members: [california_individual]
+        state_code:
+          2026: CA
+  output:
+    # 300% of $994, twice that for a Texas couple, 250% of $994 and $1,491 in Delaware.
+    medicaid_ltss_special_income_limit: [2_982, 5_964, 2_485, 3_727.5, 2_982, 0, 0]
+
+- name: Case 2, the special income limit is zero outside the modeled assistance-unit sizes.
+  period: 2026-07
+  input:
+    people:
+      no_unit:
+        medicaid_ltss_assistance_unit_size: 0
+      three_person_unit:
+        medicaid_ltss_assistance_unit_size: 3
+    households:
+      household:
+        members: [no_unit, three_person_unit]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_special_income_limit: [0, 0]

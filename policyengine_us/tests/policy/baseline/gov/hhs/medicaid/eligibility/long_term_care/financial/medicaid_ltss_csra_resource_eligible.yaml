@@ -615,3 +615,195 @@
     medicaid_ltss_financial_pathway:
       [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
     medicaid_ltss_csra_resource_eligible: [true, true, false, false]
+
+- name: Case 13, the federal minimum governs over the Delaware state spousal share.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 50_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 32_532
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 50_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 32_533
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 14, half of snapshot resources governs between the Delaware CSRA bounds.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 50_000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 50_001
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 15, the federal CSRA maximum caps the Delaware allowance.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_660
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_661
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 16, the Washington state spousal resource standard binds above half of snapshot resources.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 72_529
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 72_530
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 17, half of snapshot resources governs between the Washington CSRA bounds.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 200_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 100_000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 200_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 100_001
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 18, the federal CSRA maximum caps the Washington allowance.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_660
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_661
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]

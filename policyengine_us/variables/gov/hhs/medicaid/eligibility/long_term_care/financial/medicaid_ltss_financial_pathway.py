@@ -2,9 +2,9 @@ from policyengine_us.model_api import *
 
 
 class MedicaidLTSSFinancialPathway(Enum):
-    UNMODELED = "Unmodeled"
     SPECIAL_INCOME = "Special income"
     INSTITUTIONAL_MEDICALLY_NEEDY = "Institutional medically needy"
+    UNMODELED = "Unmodeled"
 
 
 class medicaid_ltss_financial_pathway(Variable):
@@ -24,13 +24,17 @@ class medicaid_ltss_financial_pathway(Variable):
         "source-named COPES, New Freedom, and Residential Support waivers; "
         "their enabled flags exist for reform analysis, so the disabled "
         "branch is reform-only-reachable. All other states, settings, "
-        "waivers, and unsupported assistance-unit sizes are unmodeled."
+        "waivers, and unsupported assistance-unit sizes are unmodeled. "
+        "Aged, blind, or disabled status is an annual input, so it cannot "
+        "change within a year on this monthly screen. The setting input is "
+        "independent of is_in_medicaid_facility; populating only that "
+        "variable leaves the setting UNKNOWN and the pathway unmodeled."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.236",
         "https://www.law.cornell.edu/cfr/text/42/435.1005",
-        "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",
-        "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78",
+        "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-26-2.pdf#page=465",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=1",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1505",
     )
@@ -45,6 +49,7 @@ class medicaid_ltss_financial_pathway(Variable):
         waivers = waiver.possible_values
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
         income = person("medicaid_ltss_qit_adjusted_income", period)
+        special_income_limit = person("medicaid_ltss_special_income_limit", period)
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
 
         institutional = (setting == settings.INSTITUTIONAL) & (waiver == waivers.NONE)
@@ -67,10 +72,10 @@ class medicaid_ltss_financial_pathway(Variable):
             & (assistance_unit_size == 1)
         )
         washington_special_income = washington_modeled_setting & (
-            income <= p.wa.special_income_limit.individual
+            income <= special_income_limit
         )
         washington_medically_needy = washington_modeled_setting & (
-            income > p.wa.special_income_limit.individual
+            income > special_income_limit
         )
 
         return select(

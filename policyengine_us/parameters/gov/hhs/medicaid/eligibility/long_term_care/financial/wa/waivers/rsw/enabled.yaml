@@ -1,11 +1,11 @@
-description: Washington models RSW as a named Home and Community Services Medicaid HCBS waiver for the LTSS financial screen.
+description: Washington models the Residential Support Waiver home and community-based services waiver under Medicaid long-term services and supports if this is true.
 values:
   2026-01-01: true
 
 metadata:
   unit: bool
-  period: month
-  label: Washington Medicaid LTSS RSW waiver enabled
+  period: year
+  label: Washington Medicaid LTSS Residential Support Waiver waiver enabled
   reference:
     - title: WAC 182-515-1505 - HCB waiver services authorized by Home and Community Services
       href: https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1505

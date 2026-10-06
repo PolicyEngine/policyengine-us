@@ -2,11 +2,11 @@ from policyengine_us.model_api import *
 
 
 class MedicaidLTSSWaiver(Enum):
-    NONE = "None"
     WA_COPES = "Washington COPES"
     WA_NEW_FREEDOM = "Washington New Freedom"
     WA_RSW = "Washington Residential Support Waiver"
     UNKNOWN = "Unknown"
+    NONE = "None"
 
 
 class medicaid_ltss_waiver(Variable):

@@ -310,7 +310,7 @@
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 9, encumbrances and ownership share land exactly at the Texas cap.
+- name: Case 9, encumbrances land exactly at the Texas cap.
   period: 2026-07
   input:
     people:
@@ -474,3 +474,69 @@
     medicaid_ltss_financial_pathway: [UNMODELED, UNMODELED, UNMODELED]
     medicaid_ltss_home_equity_eligible: [true, true, false]
     is_medicaid_ltss_financial_threshold_eligible: [false, false, false]
+
+- name: Case 12, resident exceptions and hardship waivers pass despite an invalid ownership share.
+  period: 2026-07
+  input:
+    people:
+      spouse_exception:
+        medicaid_ltss_home_market_value: 2_000_000
+        medicaid_ltss_home_ownership_share: 1.5
+        medicaid_ltss_home_occupied_by_spouse: true
+      hardship_waiver:
+        medicaid_ltss_home_market_value: 2_000_000
+        medicaid_ltss_home_ownership_share: -0.5
+        medicaid_ltss_home_equity_hardship_waiver: true
+    households:
+      household:
+        members: [spouse_exception, hardship_waiver]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_home_equity_eligible: [true, true]
+
+- name: Case 13, a zero ownership share and negative equity both pass.
+  period: 2026-07
+  input:
+    people:
+      zero_share:
+        medicaid_ltss_home_market_value: 5_000_000
+        medicaid_ltss_home_ownership_share: 0
+      negative_equity:
+        medicaid_ltss_home_market_value: 500_000
+        medicaid_ltss_home_encumbrances: 900_000
+        medicaid_ltss_home_ownership_share: 1
+    households:
+      household:
+        members: [zero_share, negative_equity]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_home_equity_eligible: [true, true]
+
+- name: Case 14, resident-child exceptions apply above the Delaware and Washington caps.
+  period: 2026-07
+  input:
+    people:
+      delaware_child_under_21:
+        medicaid_ltss_home_market_value: 2_000_000
+        medicaid_ltss_home_ownership_share: 1
+        medicaid_ltss_home_occupied_by_child_under_21: true
+      washington_disabled_child:
+        medicaid_ltss_home_market_value: 2_000_000
+        medicaid_ltss_home_ownership_share: 1
+        medicaid_ltss_home_occupied_by_blind_or_disabled_child: true
+      washington_no_exception:
+        medicaid_ltss_home_market_value: 2_000_000
+        medicaid_ltss_home_ownership_share: 1
+    households:
+      delaware:
+        members: [delaware_child_under_21]
+        state_code:
+          2026: DE
+      washington:
+        members: [washington_disabled_child, washington_no_exception]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_home_equity_eligible: [true, true, false]

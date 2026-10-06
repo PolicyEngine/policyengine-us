@@ -7,20 +7,27 @@ class medicaid_ltss_csra_resource_eligible(Variable):
     label = "Meets modeled Medicaid LTSS resource threshold after CSRA"
     definition_period = MONTH
     documentation = (
-        "Tests trusted comprehensive LTSS countable-resource inputs. For an "
-        "applicant with a community spouse, the initial CSRA is the greater "
-        "of the applicable state/federal floor or the fixed statutory "
-        "one-half of the couple's snapshot resources under 42 USC "
-        "1396r-5(f)(2)(A), capped at the federal maximum. Delaware's "
-        "$25,000 state spousal share (DSSM 20910.10) sits below the federal "
-        "minimum, which therefore governs. Court and fair-hearing "
-        "adjustments, resource-hardship overrides, and detailed state asset "
-        "exclusions are not modeled."
+        "Tests trusted comprehensive LTSS countable-resource inputs. Texas "
+        "and Delaware use the SSI resource limits (1 TAC 358.323 and "
+        "358.437; DSSM 20100.2.2 and 20300); Washington uses its own "
+        "resource standard (WAC 182-513-1350). For an applicant with a "
+        "community spouse, the initial CSRA is the greater of the applicable "
+        "floor or the fixed statutory one-half of the couple's snapshot "
+        "resources under 42 USC 1396r-5(c)(1)(A)(ii) and (f)(2)(A), capped "
+        "at the federal maximum. Texas uses the federal minimum as its "
+        "floor; Delaware's $25,000 state spousal share (DSSM 20910.10) sits "
+        "below the federal minimum, which therefore governs; Washington's "
+        "state spousal resource standard sits above it. Court and "
+        "fair-hearing adjustments, resource-hardship overrides, and "
+        "detailed state asset exclusions are not modeled."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396r-5#f_2",
-        "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",
-        "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78",
+        "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-358-323",
+        "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-26-2.pdf#page=465",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=69",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1350",
         "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3",
     )
 
@@ -33,19 +40,17 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
         resources = person("medicaid_ltss_countable_resources", period)
 
+        ssi_resource_limit = parameters(period).gov.ssa.ssi.eligibility.resources.limit
+        texas_or_delaware = (state == states.TX) | (state == states.DE)
         resource_limit = select(
             [
-                (state == states.TX) & (assistance_unit_size == 1),
-                (state == states.TX) & (assistance_unit_size == 2),
-                (state == states.DE) & (assistance_unit_size == 1),
-                (state == states.DE) & (assistance_unit_size == 2),
+                texas_or_delaware & (assistance_unit_size == 1),
+                texas_or_delaware & (assistance_unit_size == 2),
                 (state == states.WA) & (assistance_unit_size == 1),
             ],
             [
-                p.tx.resources.individual,
-                p.tx.resources.couple,
-                p.de.resources.individual,
-                p.de.resources.couple,
+                ssi_resource_limit.individual,
+                ssi_resource_limit.couple,
                 p.wa.resources.individual,
             ],
             default=0,
@@ -59,7 +64,7 @@ class medicaid_ltss_csra_resource_eligible(Variable):
                 state == states.WA,
             ],
             [
-                max_(p.tx.csra.state_minimum, p.federal.csra.minimum),
+                p.federal.csra.minimum,
                 max_(p.de.csra.state_minimum, p.federal.csra.minimum),
                 max_(p.wa.csra.state_minimum, p.federal.csra.minimum),
             ],

@@ -18,7 +18,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_community_spouse_shelter_expenses: 811.50
+        medicaid_ltss_community_spouse_shelter_expenses: 811.5
       high_shelter:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
@@ -62,7 +62,7 @@
         state_code:
           2026: TX
   output:
-    medicaid_ltss_mmmna: [4_066.50, 4_066.50, 4_066.50]
+    medicaid_ltss_mmmna: [4_066.5, 4_066.5, 4_066.5]
 
 - name: Case 2, the Delaware federal formula uses the base, shelter threshold, and maximum.
   period: 2026-07
@@ -84,7 +84,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_community_spouse_shelter_expenses: 811.50
+        medicaid_ltss_community_spouse_shelter_expenses: 811.5
       maximum:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
@@ -128,7 +128,7 @@
         state_code:
           2026: DE
   output:
-    medicaid_ltss_mmmna: [2_705, 2_705, 4_066.50]
+    medicaid_ltss_mmmna: [2_705, 2_705, 4_066.5]
 
 - name: Case 3, the Washington formula adds interior excess shelter above the threshold.
   period: 2026-07
@@ -142,7 +142,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_community_spouse_shelter_expenses: 1_811.50
+        medicaid_ltss_community_spouse_shelter_expenses: 1_811.5
       cent_below_threshold:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
@@ -257,4 +257,125 @@
         state_code:
           2026: DE
   output:
-    medicaid_ltss_mmmna: [4_066.50, 2_893.50]
+    medicaid_ltss_mmmna: [4_066.5, 2_893.5]
+
+- name: Case 7, the Delaware formula caps above the federal maximum and states without a community spouse pay nothing.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      delaware_above_cap:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 3_000
+      delaware_cent_above_cap:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 2_173.01
+      texas_no_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: false
+        medicaid_ltss_community_spouse_shelter_expenses: 2_000
+      washington_no_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: false
+        medicaid_ltss_community_spouse_shelter_expenses: 2_000
+    households:
+      delaware:
+        members: [delaware_above_cap, delaware_cent_above_cap]
+        state_code:
+          2026: DE
+      texas:
+        members: [texas_no_spouse]
+        state_code:
+          2026: TX
+      washington:
+        members: [washington_no_spouse]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_mmmna: [4_066.5, 4_066.5, 0, 0]
+
+- name: Case 8, January through June 2026 use the July 2025 federal minimum and the January 2026 maximum.
+  period: 2026-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      texas:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 0
+      delaware_base:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 0
+      washington_excess_shelter:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 1_000
+    households:
+      texas:
+        members: [texas]
+        state_code:
+          2026: TX
+      delaware:
+        members: [delaware_base]
+        state_code:
+          2026: DE
+      washington:
+        members: [washington_excess_shelter]
+        state_code:
+          2026: WA
+  output:
+    # Washington: 2_643.75 + (1_000 - 0.3 * 2_643.75) = 2_850.625.
+    medicaid_ltss_mmmna: [4_066.5, 2_643.75, 2_850.625]
+
+- name: Case 9, June 2026 is the last month before the July 2026 federal minimum.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      delaware_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 1_000
+    households:
+      delaware:
+        members: [delaware_spouse]
+        state_code:
+          2026: DE
+  output:
+    # 2_643.75 + (1_000 - 793.125) = 2_850.625; Case 6 gives 2_893.5 for July.
+    medicaid_ltss_mmmna: 2_850.625

@@ -1,10 +1,10 @@
-description: Washington models COPES as a named Home and Community Services Medicaid HCBS waiver for the LTSS financial screen.
+description: Washington models the COPES home and community-based services waiver under Medicaid long-term services and supports if this is true.
 values:
   2026-01-01: true
 
 metadata:
   unit: bool
-  period: month
+  period: year
   label: Washington Medicaid LTSS COPES waiver enabled
   reference:
     - title: WAC 182-515-1505 - HCB waiver services authorized by Home and Community Services
