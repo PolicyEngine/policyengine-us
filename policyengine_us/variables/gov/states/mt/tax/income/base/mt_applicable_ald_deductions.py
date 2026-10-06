@@ -26,10 +26,14 @@ class mt_applicable_ald_deductions(Variable):
 
     def formula(person, period, parameters):
         # Items attributable to one spouse are claimed by that spouse (ARM
-        # 42.15.206(1)); a joint net capital loss may be divided by ownership
-        # (ARM 42.15.206(3)(a)), as above_the_line_deductions_person divides
-        # it. MCA 15-30-2110(9)(a) also lets spouses split student loan
-        # interest equally or by AGI; the instructions have each spouse claim
-        # their own, which is what this uses.
+        # 42.15.206(1)), and an IRA deduction by the spouse who made the
+        # contribution (former MCA 15-30-2110(8)). MCA 15-30-2110(9)(a) also
+        # lets spouses split student loan interest equally or by AGI; the
+        # instructions have each spouse claim their own, which is what this
+        # uses. The return's business and capital losses are divided equally
+        # (mt_loss_ald_reallocation), pending Montana's own loss allocation.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return head_or_spouse * person("above_the_line_deductions_person", period)
+        deductions = person("above_the_line_deductions_person", period) - person(
+            "mt_loss_ald_reallocation", period
+        )
+        return head_or_spouse * deductions
