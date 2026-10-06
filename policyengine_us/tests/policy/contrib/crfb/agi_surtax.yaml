@@ -216,7 +216,7 @@
     agi_surtax: 1_100
 
 # Here AGI is calculated. The dependent's IRA deduction is on the dependent's
-# own return, so it is subtracted from neither the filer's AGI nor added back
+# own return, so it is neither subtracted from the filer's AGI nor added back
 # to the base (PolicyEngine/policyengine-us#9801 keeps it off the filer's AGI).
 
 - name: Expanded base with AGI calculated leaves a dependent's IRA contribution out of both AGI and the additions

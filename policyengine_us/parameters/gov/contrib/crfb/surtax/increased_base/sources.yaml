@@ -9,7 +9,10 @@ values:
     # dependents. The base starts from the return's AGI, so person-level
     # sources are summed over the head and spouse only, the people whose AGI
     # it is; that attribution is inferred. Tax-unit-level sources describe
-    # the head's and spouse's own return.
+    # the head's and spouse's own return. Which items belong, and which
+    # variable stands for each, is a separate question
+    # (PolicyEngine/policyengine-us#9763); the footnote does not list the
+    # foreign earned income exclusion.
     # Retirement contributions (IRA, 401k, 403b)
     - traditional_ira_contributions
     - traditional_401k_contributions
