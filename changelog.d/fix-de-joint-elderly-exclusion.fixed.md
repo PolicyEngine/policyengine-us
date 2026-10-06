@@ -1,0 +1,1 @@
+Delaware's joint-return exclusion for people 60 or older or disabled now tests the couple's combined earned income and joint line 10 against the $5,000 and $20,000 limits, instead of requiring each spouse to meet the individual limits.
