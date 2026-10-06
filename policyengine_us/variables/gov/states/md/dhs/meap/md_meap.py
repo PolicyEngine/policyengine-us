@@ -15,7 +15,16 @@ class md_meap(Variable):
         "https://regs.maryland.gov/us/md/exec/comar/07.03.21.07",
         "https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1",
     )
-    documentation = "Annual regular heating assistance, verified for state FY26 (July 2025-June 2026), modeled in period 2026. Earlier results are unverified backfilled estimates. No actual-bill cap applies. Kerosene uses oil (explicitly labeled together in FY27); heat-in-rent uses the building's known fuel row, an inference because no separate renter table is published. Unknown fuels return zero; unknown county receives the statewide amount and cannot receive the Garrett supplement. Means-tested VA eligibility remains unsupported. Cooling, EUSP, arrearages, crisis and equipment benefits are excluded."
+    documentation = (
+        "Annual regular heating assistance, verified for state FY26 (July 2025-June "
+        "2026), modeled in period 2026. Earlier results are unverified backfilled "
+        "estimates. No actual-bill cap applies. Kerosene uses oil (explicitly labeled "
+        "together in FY27); heat-in-rent uses the building's known fuel row, an "
+        "inference because no separate renter table is published. Unknown fuels return "
+        "zero; unknown county receives the statewide amount and cannot receive the "
+        "Garrett supplement. Means-tested VA eligibility remains unsupported. Cooling, "
+        "EUSP, arrearages, crisis and equipment benefits are excluded."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.dhs.meap.payment

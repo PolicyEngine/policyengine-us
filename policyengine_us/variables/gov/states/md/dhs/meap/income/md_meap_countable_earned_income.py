@@ -9,7 +9,11 @@ class md_meap_countable_earned_income(Variable):
     unit = USD
     defined_for = StateCode.MD
     reference = ("https://regs.maryland.gov/us/md/exec/comar/07.03.21.04",)
-    documentation = "Uses existing net business income without an additional expense deduction. MEAP depreciation add-backs are unsupported. Flooring losses is a modeling convention because the sources do not specify their treatment."
+    documentation = (
+        "Uses existing net business income without an additional expense deduction. "
+        "MEAP depreciation add-backs are unsupported. Flooring losses is a modeling "
+        "convention because the sources do not specify their treatment."
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.md.dhs.meap.income

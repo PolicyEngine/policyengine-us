@@ -12,6 +12,13 @@ class md_meap_household_size(Variable):
         # PDF pages 107, 108.
         "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=107",
     )
-    documentation = "Follows COMAR 07.03.21.04C: nonqualified members are excluded from size and their income counts in full. The May 2025 manual instead includes all children under 18 regardless of status; this unresolved conflict is recorded explicitly, and this draft follows the regulation. SPM membership approximates the energy-sharing household. No SNAP-specific immigration bars apply."
+    documentation = (
+        "Follows COMAR 07.03.21.04C: nonqualified members are excluded from size and "
+        "their income counts in full. The May 2025 manual instead includes all "
+        "children under 18 regardless of status; this unresolved conflict is recorded "
+        "explicitly, and this draft follows the regulation. SPM membership "
+        "approximates the energy-sharing household. No SNAP-specific immigration bars "
+        "apply."
+    )
 
     adds = ["is_citizen_or_legal_immigrant"]

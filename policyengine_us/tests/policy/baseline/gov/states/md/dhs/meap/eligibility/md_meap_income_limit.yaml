@@ -2,21 +2,21 @@
 # page), annual 200% FPG table and the 60% SMI footnote for households of 11 or more:
 # https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
 
-- name: Case 1, published annual limits for sizes one to eight and the rate for nine and ten.
+- name: Case 1, published annual limits at the odd sizes one to nine.
   period: 2026
   input:
-    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    md_meap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    state_code: [MD, MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_household_size: [1, 3, 5, 7, 9]
   output:
-    # Income Guidelines, annual table, sizes 1 to 8: $31,300, $42,300, $53,300,
-    # $64,300, $75,300, $86,300, $97,300, $108,300, each 200% of the 2025 HHS poverty
-    # guideline ($15,650 plus $5,500 per additional person). Sizes 9 and 10 are not
-    # printed as rows; 200% of the guideline gives $119,300 and $130,300. The page's
-    # "for each additional HH member add $11,004" line would instead give $119,304
-    # and $130,308; the model follows the 200% rate (noted in the variable
-    # documentation).
-    md_meap_income_limit: [31_300, 42_300, 53_300, 64_300, 75_300, 86_300, 97_300, 108_300, 119_300, 130_300]
+    # Income Guidelines FY2026, annual table: sizes 1, 3, 5 and 7 print $31,300,
+    # $53,300, $75,300 and $97,300, each 200% of the 2025 HHS poverty guideline
+    # ($15,650 plus $5,500 per additional person). Size 9 has no printed row;
+    # 200% of the guideline gives $119,300, where the page's "for each additional
+    # HH member add $11,004" line would give $119,304; the model follows the 200%
+    # rate (noted in the variable documentation). Even sizes are exercised by the
+    # integration cases; the 60% SMI rule from size 11 is Case 2.
+    md_meap_income_limit: [31_300, 53_300, 75_300, 97_300, 119_300]
 
 - name: Case 2, sizes eleven and twelve use 60 percent of state median income.
   period: 2026
