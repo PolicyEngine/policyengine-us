@@ -194,15 +194,18 @@ def test_mixed_statuses_only_the_separate_row_responds(inverted_bracket_system):
 
 
 def test_shipped_additional_tax_bracket_reform_is_clamped():
-    # The contrib reform replaces both bracket loops and its parameter
-    # tree still carries the expiration projection's inverted SEPARATE
-    # thresholds (bracket 5 top 541,550 above bracket 6 top 305,875),
-    # so it must clamp too: before the fix a zero-income 2026 MFS filer
-    # owed a flat −$82,486 under this shipped reform. The reform's
-    # user-supplied extra bracket is filled as in its own yaml tests;
-    # brackets 1–6 stay at the shipped (inverted) values.
+    # The contrib reform replaces both bracket loops, so it must clamp too.
+    # Its parameter tree used to carry the expiration projection's inverted
+    # SEPARATE thresholds (bracket 5 top 541,550 above bracket 6 top
+    # 305,875), and before the clamp a zero-income 2026 MFS filer owed a flat
+    # −$82,486 under the shipped reform. The file now has the correct
+    # 270,775, so this reform recreates that inversion. The reform's
+    # user-supplied extra bracket is filled as in its own yaml tests.
     fill_extra_bracket = Reform.from_dict(
         {
+            "gov.contrib.additional_tax_bracket.bracket.thresholds.5.SEPARATE": {
+                "2026-01-01.2026-12-31": 541_550
+            },
             "gov.contrib.additional_tax_bracket.bracket.thresholds.7.SEPARATE": {
                 "2026-01-01.2026-12-31": 800_000
             },
@@ -220,3 +223,17 @@ def test_shipped_additional_tax_bracket_reform_is_clamped():
     before_credits = sim.calculate("income_tax_before_credits", 2026)[0]
     assert main == 0
     assert before_credits == 0
+
+    # A zero-income filer owes nothing under any non-negative loop, so also
+    # check a filer inside the inverted band. Clamped, bracket 6 is empty and
+    # 151,625-400,000 is all taxed at bracket 5's 33%: 115,896.25. Without
+    # the inversion the tax is 122,810.50, and an unclamped loop gives yet
+    # another figure.
+    situation = separate_filer(0)
+    situation["tax_units"]["tu"]["taxable_income"] = {"2026": 400_000}
+    sim = Simulation(
+        reform=(fill_extra_bracket, additional_tax_bracket), situation=situation
+    )
+    assert sim.calculate("income_tax_main_rates", 2026)[0] == pytest.approx(
+        115_896.25, abs=0.01
+    )

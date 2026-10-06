@@ -13,6 +13,16 @@ $196 and the $92 row disappeared.
 Duplicate `+inf` thresholds are exempt: tables whose length changes over
 time park unused brackets there, and no finite value reaches them. `-inf` is
 a reachable bottom row, so duplicates there are flagged.
+
+Federal-style rate schedules such as `gov.irs.income.bracket` are not scales:
+their `thresholds` node maps bracket numbers 1..N to a value per filing status,
+and `tax_at_main_rates` reads bracket i's threshold as its top. A repeated
+threshold empties a bracket and an inverted one is clamped (#9084), so either
+silently taxes a band at the wrong rate. Each filing status's thresholds must
+therefore strictly increase at every instant, again exempting `+inf`.
+
+YAML's `.nan` loads as a float in a scalar or inside a list value, and every
+comparison with it is false, so no parameter value may hold NaN at any depth.
 """
 
 import math
@@ -20,7 +30,7 @@ from collections import defaultdict
 from datetime import date
 
 import pytest
-from policyengine_core.parameters import ParameterNode, ParameterScale
+from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
@@ -259,4 +269,194 @@ def test_parameter_scales_have_no_duplicate_thresholds():
     errors = [error for scale in scales for error in _duplicate_threshold_errors(scale)]
 
     assert scales
+    assert not errors, "\n".join(errors)
+
+
+def _mapped_threshold_tables():
+    # A rate schedule's `thresholds` node sits beside the `rates` node that
+    # `tax_at_main_rates` reads with it, and maps bracket numbers 1..N.
+    return [
+        node.children["thresholds"]
+        for node in system.parameters.get_descendants()
+        if isinstance(node, ParameterNode)
+        and "rates" in node.children
+        and isinstance(node.children.get("thresholds"), ParameterNode)
+        and node.children["thresholds"].children
+        and sorted(node.children["thresholds"].children)
+        == sorted(
+            str(i) for i in range(1, len(node.children["thresholds"].children) + 1)
+        )
+    ]
+
+
+def _mapped_threshold_errors(node):
+    brackets = sorted(node.children, key=int)
+    columns = defaultdict(dict)
+    for bracket in brackets:
+        child = node.children[bracket]
+        if isinstance(child, ParameterNode):
+            for column, leaf in child.children.items():
+                columns[column][bracket] = leaf
+        else:
+            columns[None][bracket] = child
+    instants_by_error = defaultdict(list)
+    for column, leaves in columns.items():
+        instants = sorted(
+            {
+                value_at_instant.instant_str
+                for leaf in leaves.values()
+                for value_at_instant in leaf.values_list
+            }
+        )
+        for instant_str in instants:
+            present = [
+                (bracket, value)
+                for bracket in brackets
+                if bracket in leaves
+                and (value := leaves[bracket]._get_at_instant(instant_str)) is not None
+            ]
+            for (lower, low), (upper, high) in zip(present, present[1:]):
+                if not low < high and not low == high == math.inf:
+                    instants_by_error[(column, lower, upper)].append(
+                        (instant_str, low, high)
+                    )
+    errors = []
+    for (column, lower, upper), cases in instants_by_error.items():
+        instant_str, low, high = cases[0]
+        when = instant_str
+        if len(cases) > 1:
+            when = (
+                f"{instant_str} and {len(cases) - 1} later instants to {cases[-1][0]}"
+            )
+        name = node.name if column is None else f"{node.name}.*.{column}"
+        errors.append(
+            f"{name}: bracket {upper} threshold {high:,.15g} does not exceed "
+            f"bracket {lower} threshold {low:,.15g} at {when}"
+        )
+    return errors
+
+
+def _mapped_table(thresholds):
+    return ParameterNode("root", data={"thresholds": thresholds}).thresholds
+
+
+def test_mapped_threshold_guard_flags_repeats_and_inversions():
+    table = _mapped_table(
+        {
+            1: {"SINGLE": {"2024-01-01": 100}, "JOINT": {"2024-01-01": 200}},
+            2: {
+                "SINGLE": {"2024-01-01": 100},
+                "JOINT": {"2024-01-01": 400, "2025-01-01": 150},
+            },
+            3: {"SINGLE": {"2024-01-01": 300}, "JOINT": {"2024-01-01": 600}},
+        }
+    )
+
+    assert _mapped_threshold_errors(table) == [
+        "root.thresholds.*.SINGLE: bracket 2 threshold 100 does not exceed "
+        "bracket 1 threshold 100 at 2024-01-01",
+        "root.thresholds.*.JOINT: bracket 2 threshold 150 does not exceed "
+        "bracket 1 threshold 200 at 2025-01-01",
+    ]
+
+
+def test_mapped_threshold_guard_flags_negative_infinity_repeats_and_nan():
+    table = _mapped_table(
+        {
+            1: {"SINGLE": {"2024-01-01": -math.inf}, "JOINT": {"2024-01-01": 100}},
+            2: {
+                "SINGLE": {"2024-01-01": -math.inf},
+                "JOINT": {"2024-01-01": math.nan},
+            },
+            3: {"SINGLE": {"2024-01-01": 300}, "JOINT": {"2024-01-01": 600}},
+        }
+    )
+
+    assert _mapped_threshold_errors(table) == [
+        "root.thresholds.*.SINGLE: bracket 2 threshold -inf does not exceed "
+        "bracket 1 threshold -inf at 2024-01-01",
+        "root.thresholds.*.JOINT: bracket 2 threshold nan does not exceed "
+        "bracket 1 threshold 100 at 2024-01-01",
+        "root.thresholds.*.JOINT: bracket 3 threshold 600 does not exceed "
+        "bracket 2 threshold nan at 2024-01-01",
+    ]
+
+
+def test_mapped_threshold_guard_ignores_only_parked_positive_infinity():
+    def table_with_top(top):
+        return _mapped_table(
+            {
+                1: {"SINGLE": {"2024-01-01": 100}},
+                2: {"SINGLE": {"2024-01-01": math.inf}},
+                3: {"SINGLE": {"2024-01-01": top}},
+            }
+        )
+
+    assert _mapped_threshold_errors(table_with_top(math.inf)) == []
+    assert _mapped_threshold_errors(table_with_top(500)) == [
+        "root.thresholds.*.SINGLE: bracket 3 threshold 500 does not exceed "
+        "bracket 2 threshold inf at 2024-01-01"
+    ]
+
+
+def test_mapped_bracket_thresholds_strictly_increase():
+    tables = _mapped_threshold_tables()
+    errors = [error for table in tables for error in _mapped_threshold_errors(table)]
+
+    assert {
+        "gov.irs.income.bracket.thresholds",
+        "gov.irs.capital_gains.thresholds",
+    } <= {table.name for table in tables}
+    assert not errors, "\n".join(errors)
+
+
+def _nan_paths(value, path=""):
+    if isinstance(value, float) and math.isnan(value):
+        yield path or "value"
+    elif isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            yield from _nan_paths(item, f"{path}[{index}]")
+
+
+def _nan_values(parameter):
+    return [
+        f"{value_at_instant.instant_str} {path}"
+        for value_at_instant in parameter.values_list
+        for path in _nan_paths(value_at_instant.value)
+    ]
+
+
+def test_nan_guard_flags_nan_in_scalars_and_nested_lists():
+    parameter = Parameter(
+        "test_parameter",
+        {
+            "values": {
+                "2023-01-01": [1.0, [2.0, 3.0]],
+                "2024-01-01": [1.0, [2.0, math.nan]],
+                "2025-01-01": math.nan,
+                "2026-01-01": [math.nan],
+            }
+        },
+    )
+
+    assert sorted(_nan_values(parameter)) == [
+        "2024-01-01 [1][1]",
+        "2025-01-01 value",
+        "2026-01-01 [0]",
+    ]
+
+
+def test_parameter_values_are_not_nan():
+    parameters = [
+        parameter
+        for parameter in system.parameters.get_descendants()
+        if isinstance(parameter, Parameter)
+    ]
+    errors = [
+        f"{parameter.name}: {error}"
+        for parameter in parameters
+        for error in _nan_values(parameter)
+    ]
+
+    assert parameters
     assert not errors, "\n".join(errors)

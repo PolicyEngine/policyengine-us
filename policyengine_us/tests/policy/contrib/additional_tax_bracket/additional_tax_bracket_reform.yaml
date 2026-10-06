@@ -172,3 +172,30 @@
     taxable_income_taxed_below_25_percent: 201_775
     dwks19: 200_000
     capital_gains_excluded_from_taxable_income: 100_000
+
+- name: A separate filer's 33% bracket ends at half the joint threshold under the reform.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 300_000
+    filing_status: SEPARATE
+  output:
+    # 2026 separate thresholds 12,150 / 49,300 / 99,500 / 151,625 / 270,775 /
+    # 305,875 at 10 / 15 / 25 / 28 / 33 / 35%:
+    # 1,215 + 5,572.50 + 12,550 + 14,595 + 39,319.50 + 0.35 * 29,225.
+    income_tax_main_rates: 83_480.75
+
+- name: A separate filer above the 35% bracket pays 39.6% under the reform.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 400_000
+    filing_status: SEPARATE
+  output:
+    # 83,480.75 on the first 300,000 (case above), plus 35% of 5,875 up to
+    # 305,875, plus 39.6% of the remaining 94,125.
+    income_tax_main_rates: 122_810.50
