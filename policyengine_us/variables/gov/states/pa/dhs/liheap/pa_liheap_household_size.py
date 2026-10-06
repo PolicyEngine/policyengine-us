@@ -8,8 +8,9 @@ class pa_liheap_household_size(Variable):
     label = "Pennsylvania LIHEAP household size"
     defined_for = StateCode.PA
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=40",
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=37",
+        # Section 601.41(1), FY2026 pages 41-42 and FY2027 pages 38-39.
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=41",
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=38",
     )
 
     # Nonqualified members' income counts in full, but they do not increase size.

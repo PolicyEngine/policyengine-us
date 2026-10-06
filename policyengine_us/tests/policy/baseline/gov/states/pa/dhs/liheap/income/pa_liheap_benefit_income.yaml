@@ -1,6 +1,6 @@
 # Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
 
-# FY2026 final plan p42:6250-20%*6250=5000 benefit income; eligibility income remains6250.
+# FY2026 final plan page 42: 6,250 - 20% * 6,250 = 5,000 benefit income; eligibility income remains 6,250.
 - name: Case 1, wages receive the twenty percent benefit income disregard.
   period: 2026
   absolute_error_margin: 0.01
@@ -26,7 +26,7 @@
     pa_liheap_income: 6_250
     pa_liheap_benefit_income: 5_000
 
-# FY2026 final plan p42 specifies gross wages, not self-employment profit;6250 business income stays6250.
+# FY2026 final plan page 42 specifies gross wages, not self-employment profit; 6,250 of business income stays 6,250.
 - name: Case 2, business profit receives no wage disregard.
   period: 2026
   absolute_error_margin: 0.01
@@ -52,7 +52,7 @@
     pa_liheap_income: 6_250
     pa_liheap_benefit_income: 6_250
 
-# FY2026 final plan pp42,53:12000 adult wages+1200 child business=13200; subtract only2400 adult wage disregard, leaving10800.
+# FY2026 final plan pages 42 and 53: 12,000 adult wages + 1,200 child business = 13,200; subtract only the 2,400 adult wage disregard, leaving 10,800.
 - name: Case 3, excluded dependent wages are not deducted a second time.
   period: 2026
   absolute_error_margin: 0.01
@@ -85,7 +85,7 @@
     pa_liheap_income: 13_200
     pa_liheap_benefit_income: 10_800
 
-# FY2026 final plan p50 prohibits source loss offsets; no wages or positive sources yields0 for both income definitions.
+# FY2026 final plan page 50 prohibits source loss offsets; no wages or positive sources yields 0 for both income definitions.
 - name: Case 4, zero countable income cannot become negative benefit income.
   period: 2026
   absolute_error_margin: 0.01

@@ -8,8 +8,12 @@ class pa_liheap_supplement(Variable):
     unit = USD
     label = "Pennsylvania LIHEAP vulnerable household heating supplement"
     defined_for = StateCode.PA
-    # OPS 26-07-01, pages 1-2, governs the actual July 2026 issuance.
-    reference = "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2025-2026%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29.pdf#page=1"
+    # OPS 25-08-01 (August 2025) and OPS 26-07-01 (July 2026), pages 1-2, govern
+    # the two issuances; both state the same vulnerability criteria on page 2.
+    reference = (
+        "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2024-2025%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Supplemental%20Payments.pdf#page=1",
+        "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2025-2026%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29.pdf#page=1",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.pa.dhs.liheap.payment.supplement
@@ -28,8 +32,8 @@ class pa_liheap_supplement(Variable):
         vulnerable = spm_unit.any(
             (age >= p.elderly_age) | (age < p.child_age_limit) | disability_assistance
         )
-        # The operative memo uses under five; the July 30 news release instead
-        # says under six. This component follows the issuance directive.
+        # Both memos use under five; the July 30, 2026 news release instead
+        # says under six. This component follows the issuance directives.
         # Annual eligibility approximates actual prior Cash-grant receipt.
         # Existing inputs do not identify application-date age or address
         # changes after payment; assume the household retains its residence.

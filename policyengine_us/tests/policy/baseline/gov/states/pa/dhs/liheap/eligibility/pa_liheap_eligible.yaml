@@ -1,8 +1,9 @@
 # Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
 
-# FY2026 final plan pp10,51 inclusive23475 ceiling; federal plan p8 has no resource test. Asset balances are not income.
+# FY2026 final plan pages 10 and 51: the 23,475 ceiling is inclusive. The federal plan, page 8, has no resource test. Asset balances are not income.
 - name: Case 1, exact opening income ceiling qualifies without an asset test.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -27,9 +28,10 @@
     pa_liheap_income_limit: 23_475
     pa_liheap_eligible: true
 
-# FY2026 final plan pp42,51:23476 exceeds23475 even though20% wage disregard would lower benefit income. SNAP does not confer categorical eligibility.
+# FY2026 final plan pages 42 and 51: 23,476 exceeds 23,475 even though the 20% wage disregard would lower benefit income. SNAP does not confer categorical eligibility.
 - name: Case 2, gross income above the limit fails despite the benefit wage disregard and SNAP.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -54,7 +56,7 @@
     pa_liheap_income_limit: 23_475
     pa_liheap_eligible: false
 
-# FY2026 final plan pp38-39 permits indirect primary heating responsibility in unsubsidized rent.
+# FY2026 final plan pages 38-39 permit indirect primary heating responsibility in unsubsidized rent.
 - name: Case 3, unsubsidized heat in rent qualifies with no separate fuel bill.
   period: 2026
   input:
@@ -79,7 +81,7 @@
   output:
     pa_liheap_eligible: true
 
-# FY2026 final plan pp38-39 excludes income-based rent that includes heat unless a primary-fuel obligation is established.
+# FY2026 final plan pages 38-39 exclude income-based rent that includes heat unless a primary-fuel obligation is established.
 - name: Case 4, subsidized heat in rent without a separate primary obligation fails.
   period: 2026
   input:
@@ -105,7 +107,7 @@
   output:
     pa_liheap_eligible: false
 
-# FY2026 final plan pp38-39: the public housing flag independently approximates income-based rent including heat.
+# FY2026 final plan pages 38-39: the public housing flag independently approximates income-based rent including heat.
 - name: Case 5, public housing also applies the heat in rent restriction.
   period: 2026
   input:
@@ -131,7 +133,7 @@
   output:
     pa_liheap_eligible: false
 
-# FY2026 final plan p39 expressly admits a subsidized household newly responsible for part of its primary heating cost. Explicit fact represents verified primary responsibility.
+# FY2026 final plan page 39 expressly admits a subsidized household newly responsible for part of its primary heating cost. Explicit fact represents verified primary responsibility.
 - name: Case 6, a verified separate primary obligation restores subsidized renter eligibility.
   period: 2026
   input:
@@ -158,7 +160,7 @@
   output:
     pa_liheap_eligible: true
 
-# FY2026 final plan p38 requires primary heating responsibility for Cash assistance; a secondary fuel bill alone does not suffice.
+# FY2026 final plan page 38 requires primary heating responsibility for Cash assistance; a secondary fuel bill alone does not suffice.
 - name: Case 7, a secondary electricity bill cannot establish natural gas heating responsibility.
   period: 2026
   input:
@@ -208,7 +210,7 @@
   output:
     pa_liheap_eligible: false
 
-# FY2026 final plan pp40-42 requires a qualified member; ordinary income and a fuel bill are insufficient.
+# FY2026 final plan pages 40-42 require a qualified member; ordinary income and a fuel bill are insufficient.
 - name: Case 9, no qualified member fails even with a heating bill.
   period: 2026
   input:
@@ -232,7 +234,7 @@
     pa_liheap_household_size: 0
     pa_liheap_eligible: false
 
-# FY2026 final plan p40 requires Pennsylvania residence.
+# FY2026 final plan page 40 requires Pennsylvania residence.
 - name: Case 10, an out of state resident does not qualify.
   period: 2026
   input:

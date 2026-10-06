@@ -1,9 +1,18 @@
 description: Pennsylvania counts these unearned income sources before the support disregard under the Low Income Home Energy Assistance Program.
+# The formula counts Social Security and railroad retirement net of the
+# Medicare premium (handbook 650.6(10)), interest and dividends over the
+# monthly disregard (handbook 650.3(9)) and the take-up-gated tanf aggregate.
+# It floors each source listed here at zero (section 601.82(2)(ii)).
 values:
   2025-11-03:
-    - social_security
     - ssi
+    # pension_income already adds its taxable and tax-exempt components.
     - pension_income
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other. It includes military survivor benefits, which are
+    # not reported again in survivor_benefits.
+    - military_retirement_pay
     - survivor_benefits
     - unemployment_compensation
     - strike_benefits
@@ -12,17 +21,13 @@ values:
     - veterans_benefits
     - general_assistance
     - financial_assistance
-    - pa_tanf
-    - interest_income
-    - ordinary_dividend_income
     - child_support_received
     - alimony_income
     - rental_income
     - farm_rent_income
+    # Actual IRA distributions are counted; capital gains are not a proxy for
+    # the source's broader CD withdrawals and stock sale proceeds.
     - retirement_distributions
-# Pension subcomponents and auxiliary military retirement amounts are not added
-# again. Actual IRA distributions are counted; capital gains are not a proxy for
-# the source's broader CD withdrawals and stock sale proceeds.
 metadata:
   unit: list
   period: year

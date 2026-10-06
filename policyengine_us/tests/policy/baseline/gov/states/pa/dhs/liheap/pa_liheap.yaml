@@ -12,7 +12,7 @@
     county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
     age: [40, 60, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    employment_income: [6_250, 6_250, 6_250, 6_250, 6_250, 23475.01, 6_250]
+    employment_income: [6_250, 6_250, 6_250, 6_250, 6_250, 23_475.01, 6_250]
     is_tax_unit_dependent: [false, false, false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0, 0, 0]
     pa_tanf: [0, 0, 0, 0, 0, 0, 0]
@@ -56,3 +56,138 @@
     pa_liheap_matrix_amount: 580
     pa_liheap_supplement: 0
     pa_liheap: 580
+
+# FY2026 final plan page 52, section 601.84(10), and federal plan page 6
+# exclude the Medicare premium deducted from Social Security. A 2,000 a month
+# retirement benefit is above the Medicare Savings Program limits, so the
+# 2026 standard premium of 202.90 a month is paid: 24,000 - 2,434.80 =
+# 21,565.20, under the 23,475 limit (gross 24,000 would fail). With no wages,
+# benefit income is also 21,565.20, band 21,000-21,999. Dated FY2026 matrix
+# page 7, Adams electric, size 1: 200. OPS 26-07-01 adds 100 for age 60 or
+# older: 200 + 100 = 300.
+- name: Case 3, a retiree qualifies once the Medicare premium is excluded from Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        social_security_retirement: 24_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ADAMS_COUNTY_PA
+  output:
+    pa_liheap_income: 21_565.2
+    pa_liheap_income_limit: 23_475
+    pa_liheap_benefit_income: 21_565.2
+    pa_liheap_eligible: true
+    pa_liheap_matrix_amount: 200
+    pa_liheap_supplement: 100
+    pa_liheap: 300
+
+# The Case 1 household in FY2025: 6,250 - 20% * 6,250 = 5,000 benefit income,
+# under the FY2025 one-person limit of 22,590 (2024 guideline 15,060 * 1.5).
+# FY2025 chart (Energy Year 2024-2025) page 2, Adams electric, 5,000-5,999,
+# size 1: 490, not the FY2026 552 or the FY2027 580. Age 40 with no child or
+# disability receipt, so no OPS 25-08-01 supplement: 490 + 0 = 490.
+- name: Case 4, the FY2025 award uses the published FY2025 benefit chart.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 6_250
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ADAMS_COUNTY_PA
+  output:
+    pa_liheap_income: 6_250
+    pa_liheap_income_limit: 22_590
+    pa_liheap_benefit_income: 5_000
+    pa_liheap_eligible: true
+    pa_liheap_matrix_amount: 490
+    pa_liheap_supplement: 0
+    pa_liheap: 490
+
+# Handbook 638.3 fuel codes 701-708 have no solar code. A grid-tied solar home
+# pays an electricity bill, which establishes its heating obligation, and takes
+# the electric row: dated FY2026 matrix page 2, Adams, 5,000-5,999, size 1: 552.
+- name: Case 5, a solar-heated household receives the electricity payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 6_250
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ADAMS_COUNTY_PA
+  output:
+    heating_expense: 1_200
+    pa_liheap_benefit_income: 5_000
+    pa_liheap_eligible: true
+    pa_liheap_matrix_amount: 552
+    pa_liheap_supplement: 0
+    pa_liheap: 552
+
+# FY2026 final plan pages 50-51. Household 1: a 2,500 a month military
+# retirement annuity (30,000) is a pension and exceeds the 23,475 limit, so
+# neither the gas payment nor the age-60 supplement is paid. Household 2:
+# 26,000 of wages with a 4,000 rental loss stays 26,000 because one source's
+# loss cannot offset another, which is also over the limit.
+- name: Case 6, military retirement pay and a non-offsetting rental loss keep income over the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    age: [62, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    military_retirement_pay: [30_000, 0]
+    employment_income: [0, 26_000]
+    rental_income: [0, -4_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY]
+    gas_expense: [1_200, 0]
+    pre_subsidy_electricity_expense: [0, 1_200]
+  output:
+    pa_liheap_income: [30_000, 26_000]
+    pa_liheap_eligible: [false, false]
+    pa_liheap: [0, 0]
