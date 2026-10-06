@@ -102,3 +102,24 @@
     # 3,000 = 1,000.
     alimony_expense_ald_person: [0, 3_000]
     medicaid_adjusted_gross_income_person: [50_000, 1_000]
+
+- name: Case 5, a tax-unit alimony deduction supplied as an input goes to the head.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        alimony_expense_ald: 3_000
+    households:
+      household:
+        members: [filer]
+        state_code: TX
+  output:
+    adjusted_gross_income: 47_000
+    medicaid_adjusted_gross_income_person: 47_000

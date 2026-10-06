@@ -41,6 +41,23 @@ def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     return total
 
 
+def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_variable):
+    """
+    Attribute a tax unit's amount to its members.
+
+    Each member gets their own person-level amount. Any difference between
+    the tax unit's amount and its head's and spouse's own amounts, as when the
+    tax-unit variable is an input or a reform changes its formula, goes to
+    the head. Dependents keep their own amounts, which a tax-unit amount that
+    describes the filer's return leaves out.
+    """
+    own = person(person_variable, period)
+    not_dependent = ~person("is_tax_unit_dependent", period)
+    filers_own = person.tax_unit.sum(own * not_dependent)
+    residual = person.tax_unit(tax_unit_variable, period) - filers_own
+    return own + person("is_tax_unit_head", period) * residual
+
+
 def sum_contained_tax_units(var, population, period):
     tax_unit = population.members.tax_unit.reference_entity
     values = tax_unit(var, period)

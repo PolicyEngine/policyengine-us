@@ -414,3 +414,82 @@ def test_dependent_deductions_stay_off_the_filers_return_2020(units):
 @pytest.mark.parametrize("year", [2020, 2025])
 def test_seeded_population(year):
     _check(_seeded_units(), year)
+
+
+def _single_filer(year, state, **inputs):
+    return {
+        "people": {
+            "filer": {
+                "age": {year: 45},
+                "employment_income": {year: 50_000},
+                "is_tax_unit_head": {year: True},
+            }
+        },
+        "tax_units": {
+            "tax_unit": {
+                "members": ["filer"],
+                **{name: {year: value} for name, value in inputs.items()},
+            }
+        },
+        "households": {
+            "household": {"members": ["filer"], "state_code": {year: state}}
+        },
+    }
+
+
+def test_person_splits_honor_tax_unit_inputs():
+    # A tax-unit deduction supplied as an input still reaches the per-person
+    # Medicaid AGI and the Mississippi adjustments, attributed to the head.
+    sim = Simulation(
+        situation=_single_filer(
+            2025,
+            "MS",
+            alimony_expense_ald=3_000,
+            self_employed_health_insurance_ald=200,
+            self_employed_pension_contribution_ald=100,
+        )
+    )
+    agi = sim.calculate("adjusted_gross_income", 2025)
+    assert np.allclose(agi, 50_000 - 3_000 - 200 - 100)
+    assert np.allclose(
+        sim.calculate("medicaid_adjusted_gross_income_person", 2025), agi
+    )
+    assert np.allclose(
+        sim.calculate("ms_self_employed_health_insurance_adjustment", 2025), 200
+    )
+    assert np.allclose(
+        sim.calculate("ms_self_employed_retirement_adjustment", 2025), 100
+    )
+
+
+def test_person_splits_follow_the_deduction_list():
+    # Removing alimony from gov.irs.ald.deductions removes it from both the
+    # federal AGI and the Medicaid AGI built per person.
+    from policyengine_core.periods import instant
+    from policyengine_core.reforms import Reform
+
+    class drop_alimony_deduction(Reform):
+        def apply(self):
+            def modify(parameters):
+                node = parameters.gov.irs.ald.deductions
+                start = instant("2025-01-01")
+                kept = [d for d in node(start) if d != "alimony_expense_ald"]
+                node.update(start=start, stop=instant("2025-12-31"), value=kept)
+                return parameters
+
+            self.modify_parameters(modify)
+
+    situation = _single_filer(2025, "TX")
+    situation["people"]["filer"].update(
+        alimony_expense={2025: 1_000}, divorce_year={2025: 2010}
+    )
+    baseline = Simulation(situation=situation)
+    assert np.allclose(baseline.calculate("adjusted_gross_income", 2025), 49_000)
+    assert np.allclose(
+        baseline.calculate("medicaid_adjusted_gross_income_person", 2025), 49_000
+    )
+    reformed = Simulation(situation=situation, reform=drop_alimony_deduction)
+    assert np.allclose(reformed.calculate("adjusted_gross_income", 2025), 50_000)
+    assert np.allclose(
+        reformed.calculate("medicaid_adjusted_gross_income_person", 2025), 50_000
+    )

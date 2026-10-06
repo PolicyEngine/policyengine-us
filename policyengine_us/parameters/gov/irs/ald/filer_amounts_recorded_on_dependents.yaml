@@ -6,10 +6,12 @@ values:
     # adoption credit reads it.
     - qualified_adoption_assistance_expense
     # Savings bond interest used for education is excluded for the bond's
-    # owner. "A bond bought by a parent and issued in the name of his or her
-    # child under age 24 does not qualify for the exclusion by the parent or
-    # child" (Form 8815), so an amount recorded on a dependent student is the
-    # parent's.
+    # owner, who must have been at least 24 when the bond was issued, and the
+    # expenses may be a dependent's. "A bond bought by a parent and issued in
+    # the name of his or her child under age 24 does not qualify for the
+    # exclusion by the parent or child" (Form 8815). By convention, an amount
+    # recorded on a dependent is the parent-owned bond's exclusion recorded on
+    # the student whose expenses it paid.
     - us_bonds_for_higher_ed
 metadata:
   unit: list
