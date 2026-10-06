@@ -235,6 +235,11 @@ def test_known_dead_url_entries_are_well_formed():
         "# https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdf",
         "href: HTTPS://WWW.TAX.NY.GOV/pit/child-earned-payments.htm#amount",
         '"[IT-201-I](https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf)"',
+        # casetext.com is listed as a whole host: statute, regulation and case
+        # pages are all flagged.
+        "# http://www.casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual",
+        "href: https://casetext.com/regulation/new-jersey-administrative-code/title-18-treasury-taxation/chapter-35-new-jersey-gross-income-tax/subchapter-2-exclusions-and-deductions/section-1835-29-medical-expenses-deduction",
+        '"[Marbury v. Madison](https://casetext.com/case/marbury-v-madison)"',
     ],
 )
 def test_dead_urls_are_flagged(text):
@@ -252,6 +257,7 @@ def test_dead_urls_are_flagged(text):
         "href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=25",
         "href: https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdfx",
         "href: https://www.tax.ny.gov/pit/inflation-refund-checks-faq.htm",
+        "href: https://web.archive.org/web/2023/https://casetext.com/case/marbury-v-madison",
     ],
 )
 def test_archived_and_live_urls_are_not_flagged(text):
