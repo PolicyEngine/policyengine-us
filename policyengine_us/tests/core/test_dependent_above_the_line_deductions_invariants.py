@@ -82,6 +82,7 @@ AGGREGATES = {
     "self_employed_health_insurance_ald": "self_employed_health_insurance_ald_person",
     "self_employed_pension_contribution_ald": "self_employed_pension_contribution_ald_person",
     "alimony_expense_ald": "alimony_expense_ald_person",
+    "educator_expense_ald": "educator_expense_ald_person",
 }
 TAX_UNIT_OUTPUTS = [
     "adjusted_gross_income",
