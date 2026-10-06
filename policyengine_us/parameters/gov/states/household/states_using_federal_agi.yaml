@@ -1,0 +1,32 @@
+description: List of USPS state codes whose state adjusted gross income, as reported in TAXSIM's state AGI output, is federal adjusted gross income.
+metadata:
+  unit: list
+  period: year
+  label: States reporting federal AGI as state AGI
+  reference:
+    - title: 2022 Montana Form 2, page 1, line 14 - Montana adjusted gross income (federal adjusted gross income plus Montana additions minus Montana subtractions)
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1
+    - title: 2024 Montana Form 2 Instructions, page i - Montana taxable income is now calculated from federal taxable income
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
+    - title: 2024 Montana Form 2 Instructions, page 7 - Line 1, federal adjusted gross income
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
+values:
+  0000-01-01:
+    - CO
+    - MI
+    - MN
+    - NC
+    - ND
+    - NM
+    - SC
+  # From 2024 Montana Form 2 starts from federal adjusted gross income (line 1)
+  # and federal taxable income, and has no Montana adjusted gross income line.
+  2024-01-01:
+    - CO
+    - MI
+    - MN
+    - MT
+    - NC
+    - ND
+    - NM
+    - SC

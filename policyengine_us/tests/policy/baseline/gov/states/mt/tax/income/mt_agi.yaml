@@ -1,0 +1,101 @@
+# Montana adjusted gross income of the filing path used (Form 2, page 1,
+# line 14 for 2021-2023): the joint Montana AGI, or the sum of each spouse's
+# Montana AGI when the couple files separately on the same form.
+
+- name: Separate filing on the same form adds each spouse's Montana AGI
+  period: 2022
+  input:
+    people:
+      head:
+        mt_agi_indiv: 60_000
+      spouse:
+        mt_agi_indiv: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_agi_joint: 85_000
+        mt_files_separately: true
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_agi: 90_000
+
+- name: Joint filing takes the joint Montana AGI
+  period: 2022
+  input:
+    people:
+      head:
+        mt_agi_indiv: 60_000
+      spouse:
+        mt_agi_indiv: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_agi_joint: 85_000
+        mt_files_separately: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_agi: 85_000
+
+- name: Joint return pools a spouse's loss with the other spouse's wages
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_files_separately: false
+    mt_agi_indiv: [100_000, 0]
+    mt_agi: 80_000
+
+- name: From 2024 every return takes the joint Montana base
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    mt_files_separately: false
+    mt_agi_joint: 94_500
+    mt_agi: 94_500
+
+- name: Zero outside Montana
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ID
+  output:
+    mt_agi: 0
