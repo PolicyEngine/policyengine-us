@@ -87,8 +87,15 @@
       household:
         members: [person1, person2, person3, person4, person5]
         state_fips: 39  # OH
-  output:  # expected results from patched TAXSIM35 2024-02-21 version
-    oh_income_tax: 13_756.36
+  output:
+    # Patched TAXSIM35 (2024-02-21) gives 13_756.36, but it does not apply
+    # Ohio's business income deduction (R.C. 5747.01(A)(28)). With it: the
+    # Schedule C income of 160_010 is deducted in full (Schedule of Business
+    # Income lines 10-13); Ohio AGI 242_927.34; MAGI 402_937.34, so five
+    # exemptions of 1_900; lines 5 and 7 = 233_427.34; line 8a = 8_021.96;
+    # joint filing credit 5% = 401.10; tax 7_620.86.
+    oh_business_income_deduction: 160_010
+    oh_income_tax: 7_620.86
 
 - name: Tax unit with taxsimid 97470 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01
@@ -121,8 +128,14 @@
       household:
         members: [person1, person2, person3]
         state_fips: 39  # OH
-  output:  # expected results from patched TAXSIM35 2024-03-09 version
-    oh_income_tax: 2_818.55
+  output:
+    # Patched TAXSIM35 (2024-03-09) gives 2_818.55, but it does not apply
+    # Ohio's business income deduction (R.C. 5747.01(A)(28)). With it: the
+    # Schedule C income of 28_010 is deducted in full; Ohio AGI 80_081.16;
+    # MAGI 108_091.16, so three exemptions of 1_900; lines 5 and 7 =
+    # 74_381.16; line 8a = 1_850.54.
+    oh_business_income_deduction: 28_010
+    oh_income_tax: 1_850.54
 
 - name: 0-OH.yaml
   absolute_error_margin: 2
