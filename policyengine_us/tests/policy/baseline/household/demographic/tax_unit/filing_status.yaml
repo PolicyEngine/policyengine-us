@@ -251,3 +251,42 @@
   output:
     # Each parent has 5,100 of taxable benefits, not below 4,400.
     filing_status: SINGLE
+
+- name: A separated adult dependent does not stop a married couple filing jointly.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_dependent: false
+        employment_income: 80_000
+      spouse:
+        age: 38
+        is_tax_unit_dependent: false
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+        is_separated: true
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    tax_unit_married: true
+    # Rev. Proc. 2023-34: 2024 joint standard deduction is 29,200.
+    standard_deduction: 29_200
+    # 80,000 - 29,200.
+    taxable_income: 50_800
+    # 2024 joint brackets: 10% of 23,200 plus 12% of (50,800 - 23,200).
+    income_tax_before_credits: 5_632
+    # The 18-year-old dependent qualifies for the 500 credit for other dependents.
+    income_tax: 5_132

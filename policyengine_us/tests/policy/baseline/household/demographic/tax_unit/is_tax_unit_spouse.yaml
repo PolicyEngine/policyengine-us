@@ -103,3 +103,125 @@
     is_tax_unit_head: [true, false, false, false]
     is_tax_unit_spouse: [false, true, false, false]
     tax_unit_dependents: 2
+
+- name: A separated adult dependent does not remove the filer's spouse.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_dependent: false
+      spouse:
+        age: 38
+        is_tax_unit_dependent: false
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+  output:
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]
+    tax_unit_married: true
+
+- name: A separated elderly dependent older than the couple does not remove the spouse.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+      parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+  output:
+    is_tax_unit_spouse: [false, true, false]
+
+- name: A separated younger adult who is neither head nor spouse does not remove the spouse.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+      other_adult:
+        age: 30
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, other_adult]
+  output:
+    is_tax_unit_spouse: [false, true, false]
+
+- name: A separated head has no spouse in the tax unit.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_separated: true
+      other_adult:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [head, other_adult]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    tax_unit_married: false
+
+- name: A separated second-oldest adult is not the spouse, and no younger adult takes the role.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      separated_adult:
+        age: 38
+        is_separated: true
+      younger_adult:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, separated_adult, younger_adult]
+  output:
+    is_tax_unit_spouse: [false, false, false]
+    tax_unit_married: false
+
+- name: Separation only affects the spouse in its own tax unit.
+  period: 2024
+  input:
+    people:
+      head_a:
+        age: 40
+      spouse_a:
+        age: 38
+      dependent_a:
+        age: 20
+        is_tax_unit_dependent: true
+        is_separated: true
+      head_b:
+        age: 50
+        is_separated: true
+      adult_b:
+        age: 45
+    tax_units:
+      tax_unit_a:
+        members: [head_a, spouse_a, dependent_a]
+      tax_unit_b:
+        members: [head_b, adult_b]
+    households:
+      household:
+        members: [head_a, spouse_a, dependent_a, head_b, adult_b]
+  output:
+    is_tax_unit_head: [true, false, false, true, false]
+    is_tax_unit_spouse: [false, true, false, false, false]
+    tax_unit_married: [true, false]
