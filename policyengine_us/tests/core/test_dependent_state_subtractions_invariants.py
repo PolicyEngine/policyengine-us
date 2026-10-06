@@ -26,7 +26,11 @@ D-2440 disability payments, SSI, Pell grants, disability benefits, Ohio
 section 179 add-backs, uniformed services retirement and educator expenses):
 
 1. DC, Delaware and Ohio AGI, taxable income and tax before credits are the
-   same as when the dependents have none of these items.
+   same as when the dependents have none of these items. DC units with a
+   disabled filer are left out: the (V) exclusion's limit on household
+   adjusted gross income counts every household member's income, so a
+   dependent's income can rightly end a filer's exclusion (the model tests
+   tax-unit AGI for now).
 2. A dependent's dc_income_subtractions and de_subtractions are zero, and
    their oh_deductions are their shares of the filer's 529 and medical
    deductions.
@@ -245,9 +249,18 @@ def check(units):
     dependent = people["is_tax_unit_dependent"].astype(bool)
 
     # 1. The same state AGI, taxable income and tax as without the
-    # dependents' own items.
+    # dependents' own items, except DC units with a disabled filer, whose
+    # household income test counts the dependents' income.
+    disabled_filer = np.array(
+        [
+            any(
+                filer["is_permanently_and_totally_disabled"] for filer in unit["filers"]
+            )
+            for unit in units
+        ]
+    )
     for state, variables in SAME_AS_WITHOUT_DEPENDENT_ITEMS.items():
-        in_state = states == state
+        in_state = (states == state) & ~((states == "DC") & disabled_filer)
         for variable in variables:
             np.testing.assert_allclose(
                 unit_results[variable][:n][in_state],
@@ -331,8 +344,9 @@ def test_dependent_items_stay_off_dc_de_and_oh_returns(units):
 def test_reported_examples():
     """A head with $60,000 of wages and a dependent child with their own
     unemployment compensation, state tax refund, disability exclusion and
-    Ohio items, in each state; and an Ohio household whose medical deduction
-    used to be given to every member."""
+    Ohio items, in each state; an Ohio household whose medical deduction used
+    to be given to every member; and a DC couple with a positive D-2440
+    exclusion, which used to be given to every member too."""
     zero = {name: 0.0 for name in OWN_ITEMS + FILER_ITEMS}
     filer = {
         "age": 40,
@@ -362,9 +376,33 @@ def test_reported_examples():
             "dependents": [{**zero, "age": 10, "other_medical_expenses": 3_000.0}],
         }
     )
+    units.append(
+        {
+            "state": "DC",
+            "filers": [
+                {
+                    **filer,
+                    "employment_income": 8_000.0,
+                    "total_disability_payments": 6_000.0,
+                },
+                {
+                    **filer,
+                    "employment_income": 0.0,
+                    "total_disability_payments": 3_000.0,
+                },
+            ],
+            "dependents": [{**zero, "age": 10, "total_disability_payments": 5_000.0}],
+        }
+    )
     check(units)
     unit_results, person_results, _ = calculate(units)
     # DC: $60,000 less the $22,500 head of household standard deduction.
     assert unit_results["dc_taxable_income_joint"][0] == 37_500
     # Ohio: 9,000 of medical expenses over 7.5% of 60,000, once.
     assert unit_results["oh_unreimbursed_medical_care_expense_deduction"][3] == 4_500
+    # D-2440: line 4 is 5,200 + 3,000 (the child's payments are on the
+    # child's return), and line 9 is zero, as federal AGI of 8,000 is under
+    # $15,000. Line 10 is 8,200 for the return, shared 5,200 and 3,000.
+    np.testing.assert_allclose(
+        person_results["dc_disability_exclusion"][-3:], [5_200, 3_000, 0]
+    )

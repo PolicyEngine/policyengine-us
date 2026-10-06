@@ -1,10 +1,13 @@
-description: Ohio deducts these per-person amounts from the filer's federal adjusted gross income even when they are recorded on a tax unit dependent, as they are the filer's amounts. Other deductions on a dependent are the dependent's own and belong on their own return.
+description: Ohio deducts these per-person amounts from the filer's federal adjusted gross income even when they are recorded on a tax unit dependent. Other deductions on a dependent are the dependent's own and belong on their own return.
 values:
   2021-01-01:
-    # The filer's 529 contributions. oh_529_plan_deduction caps the tax unit's
-    # contributions at $4,000 per beneficiary, and each person's share
-    # follows the contributions recorded on them, as in the other states'
-    # 529 deductions.
+    # A modelling convention: oh_529_plan_deduction caps the contributions
+    # recorded on every tax unit member at $4,000 per beneficiary, as the
+    # other states' 529 deductions pool them, and each member's share of
+    # that tax-unit deduction follows their contributions. Masking a
+    # dependent's share would leave the shares short of the tax-unit amount.
+    # investment_in_529_plan_indv is documented per contributor, so what an
+    # amount on a dependent means is an open question across states.
     - oh_529_plan_deduction_person
     # Premiums and medical care the taxpayer paid "for the taxpayer, the
     # taxpayer's spouse, and dependents" (R.C. 5747.01(A)(10)), recorded on

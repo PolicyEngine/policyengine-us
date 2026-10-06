@@ -73,9 +73,10 @@
     oh_deductions: [3_000, 1_500]
     oh_agi: 55_500
 
-- name: A 529 contribution recorded on a dependent is deducted
-  # The tax unit's $1,000 contribution for one beneficiary is under the
-  # $4,000 limit (R.C. 5747.01(A)(9), 5747.70).
+- name: A 529 contribution recorded on a dependent stays in the tax unit's deduction
+  # oh_529_plan_deduction pools the contributions recorded on every member,
+  # here $1,000 for one beneficiary, under the $4,000 limit (R.C.
+  # 5747.01(A)(9), 5747.70). The child keeps their share of it.
   period: 2025
   input:
     people:
