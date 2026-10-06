@@ -69,7 +69,7 @@ standards with a 2026 effective date.
 ## Source
 
 - TDHCA Section 8 Housing Choice Voucher program:
-  <https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program>
+  <https://www.tdhca.texas.gov/programs/housing-choice-voucher-section8-housing>
 - TDHCA Section 8 resources (payment-standard PDFs by year):
   <https://www.tdhca.texas.gov/section-8-resources>
 - "2025-Payment Standard-HCV" schedule (TDHCA, published 2025-01-24):
@@ -77,7 +77,7 @@ standards with a 2026 effective date.
   (retrieved 2026-07-06; latest published).
 - Houston Housing Authority (Housing Alliance HTX) Payment Standards and ZIP
   code list, effective 2025-01-01:
-  <https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/>
+  <https://web.archive.org/web/20251109130455/https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/>
   and the "Payment Standards for 2026" PDF (Effective 01/01/2025) linked from
   <https://www.alliancehtx.org/landlords> (both retrieved 2026-07-06).
 - Regulatory citation: 24 CFR §982.503 (HCV payment standards, 90-110 percent

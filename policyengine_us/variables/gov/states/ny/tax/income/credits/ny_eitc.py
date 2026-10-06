@@ -23,7 +23,7 @@ class ny_eitc(Variable):
             # does not conform. Recompute the federal EITC with
             # pre-ARPA (2020) parameter values.
             simulation = tax_unit.simulation
-            branch = simulation.get_branch("ny_pre_arpa_eitc")
+            branch = get_branch_for_period(simulation, "ny_pre_arpa_eitc", period)
             branch.tax_benefit_system = get_pre_arpa_eitc_tbs(
                 simulation.tax_benefit_system
             )

@@ -5,10 +5,17 @@ metadata:
   label: State sales tax table income sources
   # "Your 2025 income is the amount shown on your Form 1040 or 1040-SR, line
   # 11b, plus any nontaxable items, such as the following." The 2020-2024
-  # instructions cite line 11, the 2019 instructions line 8b, and the 2018
-  # instructions Form 1040, line 7; each is the adjusted gross income line of
-  # that year's form, and every year lists the same items.
+  # instructions cite line 11, the 2019 instructions line 8b, the 2018
+  # instructions Form 1040, line 7, and the 2015-2017 instructions Form 1040,
+  # line 38; each is the adjusted gross income line of that year's form, and
+  # every year lists the same items.
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=4
+    - title: 2016 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=4
+    - title: 2017 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=4
     - title: 2018 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=4
     - title: 2018 Instructions for Schedule A (Form 1040), Optional Sales Tax Tables, Income (list continued)
@@ -31,7 +38,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5
 
 values:
-  2018-01-01:
+  2015-01-01:
     - adjusted_gross_income
     - tax_exempt_interest_income
     - veterans_benefits
