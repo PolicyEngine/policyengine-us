@@ -140,8 +140,12 @@ def test_a_branch_measures_a_new_period_without_touching_its_parent():
     response(parent)
     branch = parent.get_branch("next_year")
     set_wages(branch, 100_000, YEAR + 1)
+    # The branch's inputs: this year's wages from the household, next year's
+    # set exactly (a household's own next-year wages would be uprated).
+    fresh = Simulation(situation=household(50_000), reform=LSR_REFORM)
+    fresh.set_input("employment_income_before_lsr", YEAR + 1, np.array([100_000]))
     np.testing.assert_allclose(
-        response(branch, YEAR + 1), fresh_response(100_000, YEAR + 1), atol=1e-3
+        response(branch, YEAR + 1), response(fresh, YEAR + 1), atol=1e-3
     )
     assert str(YEAR + 1) not in parent.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR]
     np.testing.assert_allclose(
