@@ -8,15 +8,17 @@ class filer_loss_limited_net_capital_gains(Variable):
     label = "Filer's loss-limited net capital gains"
     unit = USD
     documentation = (
-        "Schedule D net capital gain or loss of the head and spouse, with a "
-        "net loss limited under 26 USC 1211(b): the Schedule D part of Form "
-        "8960 line 5a. A tax unit dependent's gains and losses are on the "
-        "dependent's own return. Unlike loss_limited_net_capital_gains, this "
-        "leaves dependents out."
+        "Form 1040 line 7a of the head and spouse: their Schedule D net "
+        "capital gain or loss, including capital gain distributions (line "
+        "13), with a net loss limited under 26 USC 1211(b). This is Form 8960 "
+        "line 5a without Schedule 1 line 4. A tax unit dependent's gains and "
+        "losses are on the dependent's own return. Unlike "
+        "loss_limited_net_capital_gains, this leaves dependents out."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/1211#b",
         "https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=7",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -26,4 +28,12 @@ class filer_loss_limited_net_capital_gains(Variable):
         net_capital_gains = tax_unit_non_dep_add(
             tax_unit, period, ["long_term_capital_gains", "short_term_capital_gains"]
         )
-        return max_(-loss_limit, net_capital_gains)
+        # Capital gain distributions go on Schedule D line 13 with the other
+        # gains and losses, so they net before the limit. Each filer's input
+        # is floored at zero, as in irs_gross_income.
+        person = tax_unit.members
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        distributions = tax_unit.sum(
+            not_dependent * max_(0, person("non_sch_d_capital_gains", period))
+        )
+        return max_(-loss_limit, net_capital_gains + distributions)

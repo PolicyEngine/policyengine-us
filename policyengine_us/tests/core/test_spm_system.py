@@ -3,6 +3,7 @@
 import ast
 import hashlib
 import inspect
+import itertools
 import json
 from pathlib import Path
 import re
@@ -499,6 +500,169 @@ def test_a_reform_simulations_baseline_arm_rejects_the_same_county_input():
         with pytest.raises(SPMInputError) as error:
             arm.calculate("spm_unit_spm_threshold", 2024)
         assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+
+
+def simulation_reading_county(county):
+    situation = single_person_situation()
+    situation["households"]["household"]["county_fips"] = {2024: county}
+    return Simulation(situation=situation)
+
+
+def rejects_its_county(simulation):
+    """Whether this simulation's county measurement rejects its 2024 county."""
+    try:
+        threshold = simulation.calculate("spm_unit_spm_threshold", 2024)
+    except SPMInputError as error:
+        assert error.code == "SPM_GEOGRAPHY_REQUIRED"
+        assert "not as text" in str(error)
+        return True
+    assert threshold[0] > 0
+    return False
+
+
+@pytest.mark.parametrize("clone_system", [False, True])
+def test_a_mistyped_county_set_on_a_branch_is_rejected_in_that_branch_only(
+    clone_system,
+):
+    """A branch stores its inputs under its own name.
+
+    Reading the holder without that name returned the parent's text county, so
+    the branch's integer was never recorded and its measurement accepted it.
+    """
+    simulation = simulation_reading_county("36061")
+    branch = simulation.get_branch("mistyped", clone_system=clone_system)
+    branch.set_input("county_fips", 2024, [36_061])
+
+    assert branch.calculate("county_fips", 2024)[0] == 36_061
+    with pytest.raises(SPMInputError) as error:
+        branch.calculate("spm_unit_spm_threshold", 2024)
+    assert error.value.code == "SPM_GEOGRAPHY_REQUIRED"
+    assert "County 36061 was supplied for 2024" in str(error.value)
+    assert "not as text" in str(error.value)
+    # The parent never reads the branch's input, and holds its own provider,
+    # so its correct county is still accepted.
+    assert simulation.calculate("county_fips", 2024)[0] == "36061"
+    assert simulation.tax_benefit_system.spm_forecast_provider._untyped_counties == {}
+    assert not rejects_its_county(simulation)
+
+
+def test_a_branch_that_corrects_its_county_is_no_longer_rejected():
+    """The branch's record has to follow the county the branch reads."""
+    simulation = simulation_reading_county(36_061)
+    branch = simulation.get_branch("corrected")
+    branch.set_input("county_fips", 2024, ["36061"])
+
+    assert not rejects_its_county(branch)
+    assert rejects_its_county(simulation)
+
+
+def test_a_parents_later_county_input_leaves_its_branchs_record_alone():
+    """An input set on the parent after branching never reaches the branch."""
+    simulation = simulation_reading_county("36061")
+    branch = simulation.get_branch("mistyped")
+    branch.set_input("county_fips", 2024, [36_061])
+
+    simulation.set_input("county_fips", 2024, ["36061"])
+
+    assert branch.calculate("county_fips", 2024)[0] == 36_061
+    assert rejects_its_county(branch)
+    assert not rejects_its_county(simulation)
+
+
+COUNTY_INPUTS = {"text": "36061", "number": 36_061}
+
+
+def county_input_histories():
+    """Every order of up to two county inputs around creating two branches.
+
+    A history starts from a parent holding either kind of county, creates a
+    branch and then a branch of that branch, and sets a county on any
+    simulation that exists at that point. Shorter histories come first, so the
+    first failure is a minimal one.
+    """
+    inputs = [
+        (target, kind)
+        for target in ("parent", "branch", "nested")
+        for kind in COUNTY_INPUTS
+    ]
+    for count in range(3):
+        for chosen in itertools.product(inputs, repeat=count):
+            for created_at in itertools.combinations(range(count + 2), 2):
+                events = list(chosen)
+                for position, name in zip(created_at, ("branch", "nested")):
+                    events.insert(position, ("create", name))
+                exists = {"parent"}
+                for target, name in events:
+                    if target == "create":
+                        exists.add(name)
+                    elif target not in exists:
+                        break
+                else:
+                    for initial in COUNTY_INPUTS:
+                        yield initial, tuple(events)
+
+
+def test_every_simulation_rejects_exactly_the_non_text_county_it_reads():
+    """Invariant: a provider rejects a county if and only if it was not text.
+
+    This holds for a simulation, its branches and their branches, whichever
+    of them an input was set on and whether that happened before or after a
+    branch was created. Each holds its own provider, so none of them is
+    rejected, or let through, on account of what another one reads.
+
+    Every county measurement asks its provider's ``require_county_input``
+    first, so the histories check that directly; the tests above calculate
+    the measurement itself.
+    """
+    histories = list(county_input_histories())
+    assert len(histories) == 226
+    for initial, events in histories:
+        family = {"parent": simulation_reading_county(COUNTY_INPUTS[initial])}
+        for target, name in events:
+            if target == "create":
+                parent = family["parent" if name == "branch" else "branch"]
+                family[name] = parent.get_branch(name)
+            else:
+                family[target].set_input("county_fips", 2024, [COUNTY_INPUTS[name]])
+        providers = {
+            name: simulation.tax_benefit_system.spm_forecast_provider
+            for name, simulation in family.items()
+        }
+        assert len({id(provider) for provider in providers.values()}) == 3
+        for name, simulation in family.items():
+            county = simulation.calculate("county_fips", 2024)[0]
+            try:
+                providers[name].require_county_input(2024, str(county))
+                rejected = False
+            except SPMInputError as error:
+                assert "not as text" in str(error)
+                rejected = True
+            assert rejected is not isinstance(county, str), (
+                f"{name} reads {county!r} after starting from {initial} and {events}"
+            )
+
+
+def test_subsampling_records_the_counties_each_arm_then_reads():
+    """Core rebuilds the baseline arm and hands it the previous arm's provider."""
+    source = small_dataset()
+    # The mistyped household carries no weight, so the subsample drops it.
+    source.household["county_fips"] = [36_061, "36061"]
+    source.household["household_weight"] = [0.0, 1.0]
+    simulation = Microsimulation(
+        dataset=source,
+        reform=Reform.from_dict(
+            {"gov.irs.credits.ctc.amount.base[0].amount": {"2024": 0}}
+        ),
+    )
+    for arm in (simulation, simulation.baseline):
+        provider = arm.tax_benefit_system.spm_forecast_provider
+        assert provider._untyped_counties[(2024, "36061")] == "36061"
+
+    simulation.subsample(1)
+
+    for arm in (simulation, simulation.baseline):
+        assert list(arm.calculate("county_fips", 2024)) == ["36061"]
+        assert np.all(arm.calculate("spm_unit_spm_threshold", 2024) > 0)
 
 
 def test_a_national_selection_records_no_county_input_types():
