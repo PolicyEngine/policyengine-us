@@ -11,8 +11,7 @@ class ctc_limiting_tax_liability(Variable):
         "non-refundable CTC (Schedule 8812 Credit Limit Worksheet A, line 5): "
         "income tax before credits less the credits that precede the CTC, "
         "less the residential clean energy credit when Credit Limit Worksheet "
-        "B applies. Excludes SALT from income tax before credits (this is an "
-        "inaccuracy required to avoid circular dependencies)."
+        "B applies."
     )
     definition_period = YEAR
     reference = (

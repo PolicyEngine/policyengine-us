@@ -60,10 +60,11 @@ class az_property_tax_credit_agi(Variable):
         # R15-2C-502(C)(3) and ITR 12-1 item (7) count each member's net
         # capital gain or loss, with a net loss limited to $1,500 for each
         # member. Federal AGI instead adds each non-dependent's positive
-        # capital gains (irs_gross_income) and subtracts a capital loss
-        # deduction limited per return (limited_capital_loss, within
-        # loss_ald). Those federal amounts are taken out and each
-        # non-dependent's line D amount is put in. Only what federal AGI
+        # capital gains (irs_gross_income) and, within loss_ald, deducts the
+        # return's capital losses up to its gains
+        # (capital_losses_allowed_against_gains) plus a net loss limited per
+        # return (limited_capital_loss). Those federal amounts are taken out
+        # and each non-dependent's line D amount is put in. Only what federal AGI
         # actually holds is taken out: a reform that drops a source from
         # gross income or the loss deduction from the above-the-line list
         # leaves nothing to reverse. Line D still counts gains left out of
@@ -78,15 +79,22 @@ class az_property_tax_credit_agi(Variable):
                 capital_gains_in_agi += max_(0, person(source, period))
         federal_capital_gains = tax_unit.sum(not_dependent * capital_gains_in_agi)
         if "loss_ald" in p.ald.deductions:
-            # loss_ald adds limited_business_loss (section 461(l)) and
-            # limited_capital_loss. Its capital part is what remains after the
-            # business part, so a replaced or supplied loss_ald that holds
-            # business losses only is not read as a capital deduction.
+            # loss_ald adds limited_business_loss (section 461(l)) and the two
+            # capital parts. Its capital part is what remains after the
+            # business part, at most the two capital parts, so a supplied
+            # loss_ald, or a replacement formula built on
+            # limited_business_loss, that holds business losses only is not
+            # read as a capital deduction. A replacement that computes its
+            # own business losses should replace limited_business_loss too.
             federal_capital_loss = clip(
                 tax_unit("loss_ald", period)
                 - tax_unit("limited_business_loss", period),
                 0,
-                tax_unit("limited_capital_loss", period),
+                add(
+                    tax_unit,
+                    period,
+                    ["capital_losses_allowed_against_gains", "limited_capital_loss"],
+                ),
             )
         else:
             federal_capital_loss = 0

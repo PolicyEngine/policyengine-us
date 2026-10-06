@@ -10,7 +10,7 @@ class limited_business_loss(Variable):
         "Business, farm, rental, estate and partnership/S corporation losses of "
         "members who are not dependents, deducted above the line up to the "
         "section 461(l) limit: business income plus the threshold amount. "
-        "loss_ald is this plus limited_capital_loss."
+        "loss_ald is this plus its two capital loss parts."
     )
     definition_period = YEAR
     reference = (

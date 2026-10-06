@@ -18,12 +18,14 @@ vectorized simulation:
    AGI, NIIT MAGI or `net_investment_income_tax`.
 2. `net_investment_income` equals an independent numpy computation over the
    head and spouse: their interest, dividends, rents, passive pass-through,
-   estate and trust income and capital gain distributions, plus their netted
-   Schedule D gain or loss, limited under 26 USC 1211(b).
+   estate and trust income, plus their netted Schedule D gain or loss with
+   capital gain distributions on line 13, limited under 26 USC 1211(b).
 3. -loss limit <= `filer_loss_limited_net_capital_gains`, and it equals
    `loss_limited_net_capital_gains` when the unit has no dependents.
 4. For tax units without dependents, `net_investment_income` equals the
-   pre-change all-member formula, so filers without dependents see no change.
+   all-member formula (person-level sources plus
+   `loss_limited_net_capital_gains`), so leaving dependents out changes
+   nothing for filers without dependents.
 5. 0 <= NIIT = 3.8% x min(max(0, NII), max(0, MAGI - threshold)).
 """
 
@@ -56,7 +58,12 @@ INPUTS = (
     + NONNEGATIVE_INPUTS
     + ["partnership_s_corp_income", "passive_partnership_s_corp_income"]
 )
-CAPITAL_INPUTS = ["short_term_capital_gains", "long_term_capital_gains"]
+# Schedule D gains and losses, with capital gain distributions (line 13).
+CAPITAL_INPUTS = [
+    "short_term_capital_gains",
+    "long_term_capital_gains",
+    "non_sch_d_capital_gains",
+]
 # Every person-level amount Form 8960 counts, other than Schedule D gains.
 NII_PERSON_INPUTS = [
     "taxable_interest_income",
@@ -65,7 +72,6 @@ NII_PERSON_INPUTS = [
     "rental_income",
     "passive_partnership_s_corp_income",
     "estate_income",
-    "non_sch_d_capital_gains",
 ]
 OUTPUTS = [
     "net_investment_income",
@@ -305,8 +311,8 @@ def test_filer_capital_gains_within_loss_limit(runs, units):
     )
 
 
-def test_units_without_dependents_match_pre_change_formula(runs, units):
-    """Differential check against the all-member formula used before."""
+def test_units_without_dependents_match_all_member_formula(runs, units):
+    """Differential check against the all-member formula."""
     person_nii = sum(_by_person(units, name) for name in NII_PERSON_INPUTS)
     old = _unit_sum(runs, person_nii) + runs["with"]["loss_limited_net_capital_gains"]
     no_dependents = np.array([not u["dependents"] for u in units])

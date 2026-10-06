@@ -495,8 +495,8 @@
     # Line A: wages 3,000 (column 1).
     # Line D: (4,000) limited to (1,500) (column 1) + 2,000 (column 2) = 500.
     # Line J: 3,000 + 500 = 3,500.
-    # The federal model's AGI is 3,000 + 2,000 - 3,000 = 2,000 (netting the
-    # return's gains and losses first would give 1,000); neither is line D.
+    # Federal AGI nets the return's gains and losses first:
+    # 3,000 + 2,000 - 2,000 - 2,000 = 1,000.
     az_property_tax_credit_income: 3_500
     # Line 11b: Schedule 2, 3,401 - 3,550 -> 345.
     # Line 13: 750. Line 15: smaller of 345 and 750.
@@ -696,8 +696,9 @@
     # Line A: wages 4,000.
     # Line D: distributions 1,000 + net loss (4,000) = (3,000), limited to
     # (1,500).
-    # Line J: 4,000 - 1,500 = 2,500. Federal AGI is 4,000 + 1,000 - 3,000.
-    adjusted_gross_income: 2_000
+    # Line J: 4,000 - 1,500 = 2,500. Federal AGI nets the distributions
+    # against the loss first: 4,000 + 1,000 - 1,000 - 3,000 = 1,000.
+    adjusted_gross_income: 1_000
     az_property_tax_credit_income: 2_500
     # Line 11a: Schedule 1, 2,451 - 2,550 -> 323.
     # Line 13: 750. Line 15: smaller of 323 and 750.

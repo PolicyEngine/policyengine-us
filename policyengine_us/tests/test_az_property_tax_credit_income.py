@@ -257,9 +257,10 @@ def test_sample_covers_the_loss_limit_and_negative_line_j():
     assert len(beyond_limit) >= 20
     assert any(m["role"] == "dependent" for m in beyond_limit)
 
-    # Units where federal AGI's capital gains and losses (non-dependents'
-    # positive gains and distributions, less their losses limited to $3,000
-    # per return) differ from every member's line D.
+    # Units where federal AGI's capital gains and losses differ from every
+    # member's line D. Federal AGI adds non-dependents' positive gains and
+    # distributions, then deducts their losses up to those gains plus a net
+    # loss of up to $3,000 per return.
     def federal_capital(unit: dict) -> float:
         filers = [m for m in unit["members"] if m["role"] != "dependent"]
         gains = sum(
@@ -271,7 +272,10 @@ def test_sample_covers_the_loss_limit_and_negative_line_j():
             max(0, -(m["long_term_capital_gains"] + m["short_term_capital_gains"]))
             for m in filers
         )
-        return gains - min(3_000, losses)
+        allowed_against_gains = min(losses, gains)
+        return (
+            gains - allowed_against_gains - min(3_000, losses - allowed_against_gains)
+        )
 
     federal = np.array([federal_capital(unit) for unit in UNITS])
     line_d = np.array([sum(_line_d(m) for m in unit["members"]) for unit in UNITS])
@@ -381,30 +385,29 @@ def test_income_does_not_read_preferential_rate_amount():
 
 
 def test_line_d_survives_a_loss_deduction_without_capital_losses():
-    """A reform whose loss_ald holds only rental losses leaves line J whole.
+    """A reform that drops the federal capital loss deduction leaves line J whole.
 
     az_property_tax_credit_agi adds back only the capital part of loss_ald
     (loss_ald less limited_business_loss), so a federal loss deduction with no
-    capital loss in it is not reversed as one.
+    capital loss in it is not reversed as one. The reform is applied to an
+    existing simulation, which replaces the variable without rebuilding the
+    country model.
     """
     from policyengine_core.reforms import Reform
     from policyengine_us.model_api import YEAR as ANNUAL
-    from policyengine_us.model_api import TaxUnit, USD, Variable, max_
+    from policyengine_us.model_api import TaxUnit, USD, Variable
 
-    class rental_losses_only(Reform):
+    class business_losses_only(Reform):
         def apply(self):
             class loss_ald(Variable):
                 value_type = float
                 entity = TaxUnit
-                label = "Rental losses only"
+                label = "Business losses only"
                 unit = USD
                 definition_period = ANNUAL
 
                 def formula(tax_unit, period, parameters):
-                    person = tax_unit.members
-                    not_dependent = ~person("is_tax_unit_dependent", period)
-                    rental_loss = max_(0, -person("rental_income", period))
-                    return tax_unit.sum(not_dependent * rental_loss)
+                    return tax_unit("limited_business_loss", period)
 
             self.update_variable(loss_ald)
 
@@ -422,7 +425,8 @@ def test_line_d_survives_a_loss_deduction_without_capital_losses():
         "tax_units": {"tax_unit": {"members": ["head"]}},
         "households": {"household": {"members": ["head"], "state_code": {year: "AZ"}}},
     }
-    sim = Simulation(situation=situation, reform=rental_losses_only)
+    sim = Simulation(situation=situation)
+    sim.apply_reform(business_losses_only)
     # Federal AGI takes the rental loss only: 4,000 - 1,000.
     assert sim.calculate("adjusted_gross_income", YEAR)[0] == 3_000
     # Form 140PTC: line A 4,000 + line D (1,500) + line F (1,000) = 1,500.
