@@ -1,3 +1,10 @@
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
 ## [2.29.2] - 2026-10-06
 
 ### Fixed
