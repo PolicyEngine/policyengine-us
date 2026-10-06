@@ -1,0 +1,31 @@
+# Court supervision extends the age limit and, from October 2024, waives the
+# copay because the protective services definition includes it. The activity
+# waiver is case-by-case (plan 2.2.2(h)) and not modeled, so a court-supervised
+# child does not waive the family activity requirement.
+# Authority: https://scchildcare.org/media/bxkiasbl/acf-118-ccdf-ffy-2025-2027-for-south-carolina-approved-state-plan.pdf#page=24
+- name: Case 1, court supervision does not waive the activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+    sc_ccap_activity_eligible: false

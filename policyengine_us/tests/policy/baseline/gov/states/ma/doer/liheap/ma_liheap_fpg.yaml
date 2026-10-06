@@ -21,3 +21,15 @@
     state_code: MA
   output:
     ma_liheap_fpg: 30_000
+
+- name: Case 4, LIHEAP uses the prior guideline and SPM size while tax units use the current guideline.
+  period: 2026
+  input:
+    state_code: [MA, MA, MA]
+    spm_unit_size: [1, 4, 9]
+    tax_unit_size: [2, 3, 1]
+  output:
+    # LIHEAP uses the 2025 guideline, including its additional-person amount.
+    ma_liheap_fpg: [15_650, 32_150, 59_650]
+    # The existing helper default continues using the 2026 guideline.
+    tax_unit_fpg: [21_640, 27_320, 15_960]

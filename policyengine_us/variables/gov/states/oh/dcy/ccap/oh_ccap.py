@@ -10,7 +10,7 @@ class oh_ccap(Variable):
     defined_for = "oh_ccap_eligible"
     reference = (
         "https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-10",
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-05",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-05_20221211.pdf",
     )
 
     def formula(spm_unit, period, parameters):

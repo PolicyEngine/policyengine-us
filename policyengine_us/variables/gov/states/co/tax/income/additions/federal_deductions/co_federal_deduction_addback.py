@@ -9,7 +9,7 @@ class co_federal_deduction_addback(Variable):
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)(p)
-        "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-upon-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal",
+        "https://law.justia.com/codes/colorado/2023/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-104/",
         # C.R.S. 39-22-104(3)(p.5)(I) (2023-2025) and (3)(p.7)(I) (2026+),
         # Colorado Revised Statutes 2025 official compilation, pp. 382-384
         "https://olls.info/crs/crs2025-title-39.pdf",

@@ -7,3 +7,370 @@
     income_tax_main_rates: 1_000
   output:
     regular_tax_before_credits: 1_000
+
+- name: A Form 2555 filer without gains pays the stacked main-rates tax
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 36_375
+    foreign_earned_income_exclusion: 40_000
+  output:
+    # Foreign Earned Income Tax Worksheet: tax on 76,375 (9,977.50) less tax
+    # on 40,000 (4,460.00).
+    regular_tax_before_credits: 5_517.50
+
+- name: A Form 2555 filer with a capital gain excess
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Line 1 = 134,250 and the gains are cut to 34,250, so the ordinary
+    # income is the 100,000 excluded and its tax cancels against line 5 of
+    # the Foreign Earned Income Tax Worksheet. The regular tax is the
+    # 5,137.50 of capital gains tax.
+    income_tax_main_rates: 0
+    capital_gains_tax: 5_137.50
+    regular_tax_before_credits: 5_137.50
+
+# Tax units from the default dataset (populace_us_2024 at
+# populace-us-2024-spm-20260909), with their 2025 inputs as the
+# microsimulation uprates them. In a 2025 run before #9781, these were among
+# the 18 tax units whose regular_tax_before_credits fell below
+# income_tax_main_rates, which understated Form 6251 line 10. All 18 elect
+# under Form 4952 line 4g. net_capital_gain applied the election but worksheet
+# line 10 (dwks10) did not, so worksheet line 21 (dwks19) was too small. A
+# second Schedule D Tax Worksheet, which took worksheet line 28 as the smaller
+# of lines 21 and 22 instead of their sum, then taxed line 23 at 15 percent
+# instead of 20. Form 6251 line 10 used the smaller of that worksheet's tax and
+# income_tax_main_rates. Line 10 is now the regular tax the model charges,
+# income_tax_main_rates plus capital_gains_tax.
+- name: Dataset tax unit 1101624, a Form 4952 election against long-term gain
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        long_term_capital_gains: 110_314.59
+        short_term_capital_gains: 15_101.07
+        qualified_dividend_income: 917.84
+      person2:
+        age: 58
+        long_term_capital_gains: 110_314.59
+        short_term_capital_gains: 15_101.07
+        qualified_dividend_income: 917.84
+        investment_income_elected_form_4952: 141_871.53
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        taxable_income: 3_437_082.75
+        amt_income_less_exemptions: 3_447_082.75
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Schedule D Tax Worksheet: line 7 220,629.18; line 8 141,871.53; line 9
+    # 78,757.65; line 6 1,835.68; line 10 80,593.33, the net capital gain.
+    net_capital_gain: 80_593.33
+    dwks10: 80_593.33
+    # Line 21 = line 18 = 3,437,082.75 - 80,593.33.
+    dwks19: 3_356_489.42
+    # Line 44: 37% x 3,356,489.42 - 75,937.50. Line 34: 20% x 80,593.33.
+    income_tax_main_rates: 1_165_963.59
+    capital_gains_tax: 16_118.67
+    # Line 47 = line 45 = 1,182,082.26 (line 46: 1,195,768.12).
+    regular_tax_before_credits: 1_182_082.26
+    # Form 6251: line 17 3,366,489.42; line 18 937,835.04; line 33 80,593.33
+    # (20%: 16,118.67); line 38 953,953.71, below line 10.
+    amt_tax_including_cg: 953_953.71
+    alternative_minimum_tax: 0
+
+- name: Dataset tax unit 1004930, an election larger than the gains and dividends
+  absolute_error_margin: 0.5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 85
+        investment_income_elected_form_4952: 130_193.69
+      person2:
+        age: 85
+        long_term_capital_gains: 80_880.30
+        short_term_capital_gains: 10_988.80
+        qualified_dividend_income: 2_748.49
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        taxable_income: 186_864.59
+        amt_income_less_exemptions: 84_564.59
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Line 8 takes all 80,880.30 of the gain and line 5 the other 49,313.39
+    # from the 2,748.49 of dividends, so lines 6, 9 and 10 are zero.
+    net_capital_gain: 0
+    dwks10: 0
+    dwks19: 186_864.59
+    # 11,157 + 22% x (186,864.59 - 96,950).
+    income_tax_main_rates: 30_938.21
+    capital_gains_tax: 0
+    regular_tax_before_credits: 30_938.21
+    # Form 6251 line 39: 26% x 84,564.59 = 21,986.79, below line 10.
+    alternative_minimum_tax: 0
+
+- name: Dataset tax unit 1156248, an election and unrecaptured section 1250 gain
+  absolute_error_margin: 0.5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 36
+        long_term_capital_gains: 11_073.12
+        short_term_capital_gains: 1_512.26
+        qualified_dividend_income: 763.81
+        investment_income_elected_form_4952: 6_819.79
+      person2:
+        age: 36
+        long_term_capital_gains: 171.63
+        short_term_capital_gains: 23.44
+        qualified_dividend_income: 50.92
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        taxable_income: 535_956.88
+        amt_income_less_exemptions: 430_456.88
+        unrecaptured_section_1250_gain: 85.57
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Schedule D Tax Worksheet: line 9 4,424.96; line 10 5,239.69; line 12
+    # 85.57; line 13 5,154.12; line 14 530,802.76; line 18 530,717.19; line
+    # 19 394,600; line 21 530,717.19.
+    net_capital_gain: 5_239.69
+    dwks10: 5_239.69
+    dwks19: 530_717.19
+    # Line 44: 35% x 530,717.19 - 60,905.50. Line 30 5,154.12 at 15%
+    # (773.12) and line 39 85.57 at 25% (21.39).
+    income_tax_main_rates: 124_845.52
+    capital_gains_tax: 794.51
+    # Line 47 = line 45 = 125,640.03 (line 46: 126,679.41).
+    regular_tax_before_credits: 125_640.03
+    # Form 6251: line 18 114,278.81; line 31 773.12; line 37 21.39.
+    amt_tax_including_cg: 115_073.32
+    alternative_minimum_tax: 0
+
+- name: Dataset tax unit 1032460, an election that spills into qualified dividends
+  absolute_error_margin: 0.05
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 76
+      person2:
+        age: 76
+        long_term_capital_gains: 1_109.12
+        short_term_capital_gains: 153.57
+        qualified_dividend_income: 2_804.45
+        investment_income_elected_form_4952: 2_681.56
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        taxable_income: 11_777.39
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Line 8 takes the 1,109.12 of gain and line 5 the other 1,572.44 from
+    # the dividends: line 6 1,232.01, line 9 0, line 10 1,232.01.
+    net_capital_gain: 1_232.01
+    dwks10: 1_232.01
+    dwks19: 10_545.38
+    # 10% x 10,545.38; the dividends are taxed at 0 percent.
+    income_tax_main_rates: 1_054.54
+    capital_gains_tax: 0
+    regular_tax_before_credits: 1_054.54
+
+# 26 U.S.C. 1(h)(1): with a net capital gain, "the tax imposed by this section
+# for such taxable year shall not exceed the sum of" subparagraphs (A) to (F).
+# The 2025 Schedule D Tax Worksheet takes "the smaller of line 45 or line 46"
+# on line 47, and the Qualified Dividends and Capital Gain Tax Worksheet "the
+# smaller of line 23 or line 24" on line 25. The two differ where gain taxed at
+# 15 percent falls in the 12 percent bracket: in 2025 the 0 percent rate
+# amount ends $125 ($250 joint, $100 head of household) below the top of that
+# bracket, and in 2026 $950 ($1,900 joint, $1,250 head of household). These
+# cases put that much qualified dividend income on top of ordinary income that
+# fills the 0 percent rate amount. Amounts are taxed at the rates, as the Tax
+# Computation Worksheet does; the Tax Table rounds within $50 rows. Line
+# numbers are the Schedule D Tax Worksheet's, which gives the same tax.
+- name: 2025 single, line 45 exceeds line 46 by $3.75
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 48_475
+    qualified_dividend_income: 125
+  output:
+    # Line 21 = 48,350; tax 1,192.50 + 12% x 36,425 = 5,563.50.
+    income_tax_main_rates: 5_563.50
+    # Line 46: tax on 48,475 = 1,192.50 + 12% x 36,550 = 5,578.50.
+    tax_on_taxable_income_at_main_rates: 5_578.50
+    # Line 30 = 125 at 15% = 18.75, so line 45 = 5,582.25. Line 47 = 5,578.50,
+    # which leaves 15.00 for the gains.
+    capital_gains_tax: 15
+    regular_tax_before_credits: 5_578.50
+
+- name: 2025 joint, line 45 exceeds line 46 by $7.50
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_income: 96_950
+    qualified_dividend_income: 250
+  output:
+    # Line 44: 2,385 + 12% x (96,700 - 23,850) = 11,127. Line 46: 2,385 + 12%
+    # x 73,100 = 11,157. Line 45: 11,127 + 15% x 250 = 11,164.50.
+    income_tax_main_rates: 11_127
+    tax_on_taxable_income_at_main_rates: 11_157
+    capital_gains_tax: 30
+    regular_tax_before_credits: 11_157
+
+- name: 2026 single, line 45 exceeds line 46 by $28.50
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    taxable_income: 50_400
+    qualified_dividend_income: 950
+  output:
+    # Rev. Proc. 2025-32, sections 4.01 (Table 3) and 4.03: the 12 percent
+    # bracket ends at 50,400 and the 0 percent rate amount at 49,450.
+    # Line 44: 1,240 + 12% x 37,050 = 5,686. Line 46: 5,800. Line 45: 5,686
+    # + 15% x 950 = 5,828.50.
+    income_tax_main_rates: 5_686
+    tax_on_taxable_income_at_main_rates: 5_800
+    capital_gains_tax: 114
+    regular_tax_before_credits: 5_800
+
+- name: 2026 head of household, line 45 exceeds line 46 by $37.50
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 67_450
+    qualified_dividend_income: 1_250
+  output:
+    # Rev. Proc. 2025-32, Table 2 and section 4.03: 12 percent to 67,450, 0
+    # percent rate amount 66,200. Line 44: 1,770 + 12% x 48,500 = 7,590.
+    # Line 46: 7,740. Line 45: 7,590 + 15% x 1,250 = 7,777.50.
+    income_tax_main_rates: 7_590
+    tax_on_taxable_income_at_main_rates: 7_740
+    capital_gains_tax: 150
+    regular_tax_before_credits: 7_740
+
+- name: 2026 joint, line 45 exceeds line 46 by $57
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    taxable_income: 100_800
+    qualified_dividend_income: 1_900
+  output:
+    # Rev. Proc. 2025-32, Table 1 and section 4.03: 12 percent to 100,800, 0
+    # percent rate amount 98,900. Line 44: 2,480 + 12% x 74,100 = 11,372.
+    # Line 46: 11,600. Line 45: 11,372 + 15% x 1,900 = 11,657.
+    income_tax_main_rates: 11_372
+    tax_on_taxable_income_at_main_rates: 11_600
+    capital_gains_tax: 228
+    regular_tax_before_credits: 11_600
+
+- name: 2026 separate, long-term gain, line 45 exceeds line 46 by $28.50
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    taxable_income: 50_400
+    long_term_capital_gains: 950
+  output:
+    # Rev. Proc. 2025-32, Table 4 and section 4.03, as for single filers.
+    income_tax_main_rates: 5_686
+    tax_on_taxable_income_at_main_rates: 5_800
+    capital_gains_tax: 114
+    regular_tax_before_credits: 5_800
+
+- name: 2026 single, gain into the 22 percent bracket leaves line 45 below line 46
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    taxable_income: 60_000
+    qualified_dividend_income: 10_000
+  output:
+    # Line 44: 1,240 + 12% x 37,600 = 5,752. Line 45: 5,752 + 15% x 10,000
+    # = 7,252. Line 46: 5,800 + 22% x 9,600 = 7,912.
+    income_tax_main_rates: 5_752
+    tax_on_taxable_income_at_main_rates: 7_912
+    capital_gains_tax: 1_500
+    regular_tax_before_credits: 7_252
+
+- name: 2025 single, more gain than the overlap leaves line 45 below line 46
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 49_350
+    qualified_dividend_income: 1_000
+  output:
+    # Line 45: 5,563.50 + 15% x 1,000 = 5,713.50. Line 46: 5,578.50 + 22% x
+    # 875 = 5,771. Line 47 is line 45.
+    income_tax_main_rates: 5_563.50
+    tax_on_taxable_income_at_main_rates: 5_771
+    capital_gains_tax: 150
+    regular_tax_before_credits: 5_713.50
+
+- name: 2025 single, gain partly in the 0 percent rate amount leaves line 45 below line 46
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 48_475
+    qualified_dividend_income: 475
+  output:
+    # Line 21 = 48,000 (tax 5,521.50); line 22 = 350 at 0%; line 30 = 125 at
+    # 15% (18.75). Line 45 = 5,540.25; line 46 = 5,578.50.
+    income_tax_main_rates: 5_521.50
+    tax_on_taxable_income_at_main_rates: 5_578.50
+    capital_gains_tax: 18.75
+    regular_tax_before_credits: 5_540.25
+
+- name: 2025 single Form 2555 filer, line 47 less the tax on the excluded amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 8_475
+    qualified_dividend_income: 125
+    foreign_earned_income_exclusion: 40_000
+  output:
+    # Foreign Earned Income Tax Worksheet: line 3 = 48,475; line 4 = Schedule
+    # D Tax Worksheet line 47, the tax on 48,475 (5,578.50), as in the first
+    # 2025 case; line 5 = tax on 40,000 = 1,192.50 + 12% x 28,075 = 4,561.50;
+    # line 6 = 1,017.
+    income_tax_main_rates: 1_002
+    tax_on_taxable_income_at_main_rates: 1_017
+    capital_gains_tax: 15
+    regular_tax_before_credits: 1_017
