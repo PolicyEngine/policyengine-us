@@ -49,8 +49,9 @@ def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_va
     describing the filer's return leaves out. The head and spouse get their
     own amounts when those sum to the tax unit's amount. When the tax-unit
     amount differs, as when it is an input or a reform changes its formula,
-    the head's and spouse's own amounts are scaled to sum to it, so neither
-    share turns negative; if they have no own amounts, the head takes it.
+    the head's and spouse's own amounts are scaled to sum to it; if they have
+    no own amounts, the head takes it. With non-negative own amounts and a
+    non-negative tax-unit amount, as for deductions, no share is negative.
     Every tax unit is assumed to have a head.
     """
     # The person-level projector returns tax-unit values for each member.
