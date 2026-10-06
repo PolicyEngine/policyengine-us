@@ -1,0 +1,145 @@
+# 2025 Form IT-196 instructions, line 20 (PDF p. 3): "Your New York itemized
+# deduction for casualty and theft losses is calculated using the federal rules
+# that applied to tax year 2017." A loss is deductible only to the extent "the
+# amount of each separate casualty or theft loss is more than $100, and ... the
+# total amount of all losses during the year (reduced by the $100 limit in
+# number 1 above) is more than 10% of the amount on Form IT-201, line 19".
+# Casualty and theft worksheet, Section A (PDF p. 4): line 11 "Limitation per
+# casualty" 100; line 17 "Enter 10% of your federal AGI from Form IT-201, line
+# 19"; line 18 "Subtract line 17 from line 16 ... If the amount is zero or
+# less, enter 0."
+# IRS Publication 547 (2017, PDF p. 10): "If you and your spouse file a joint
+# return, you are treated as one individual in applying the $100 rule."
+# The model records one loss amount per person, not separate casualty events,
+# so a return's losses are treated as one casualty. A dependent's loss belongs
+# on the dependent's own return, as the dependent's income does.
+
+- name: Case 1, the $100 reduction applies before the 10 percent floor.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    casualty_loss: 15_000
+  output:
+    # Worksheet: line 12 = 15,000 - 100 = 14,900; line 17 = 10% x 100,000
+    # = 10,000; line 18 = 14,900 - 10,000.
+    ny_casualty_loss_deduction: 4_900
+    # New York allows the loss though the federal deduction is suspended.
+    casualty_loss_deduction: 0
+
+- name: Case 2, a loss $100 above the floor nets to zero.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    casualty_loss: 10_100
+  output:
+    # (10,100 - 100) - 10% x 100,000 = 10,000 - 10,000
+    ny_casualty_loss_deduction: 0
+
+- name: Case 3, a loss $101 above the floor leaves $1.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    casualty_loss: 10_101
+  output:
+    # (10,101 - 100) - 10% x 100,000 = 10,001 - 10,000
+    ny_casualty_loss_deduction: 1
+
+- name: Case 4, a loss of exactly $100 is fully absorbed by the $100 reduction.
+  period: 2025
+  input:
+    state_code: NY
+    casualty_loss: 100
+  output:
+    ny_casualty_loss_deduction: 0
+
+- name: Case 5, a loss under $100 is not deductible.
+  period: 2025
+  input:
+    state_code: NY
+    casualty_loss: 90
+  output:
+    ny_casualty_loss_deduction: 0
+
+- name: Case 6, Publication 547 Example 1 with $80,000 of AGI.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 80_000
+    casualty_loss: 14_800
+  output:
+    # IRS Publication 547 (2017, PDF p. 10), Example 1: loss after
+    # reimbursement 14,800; subtract $100 = 14,700; subtract 10% of 80,000 AGI
+    # = 6,700.
+    ny_casualty_loss_deduction: 6_700
+
+- name: Case 7, a joint return reduces the spouses' pooled losses by $100 once.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 10_000
+      person2:
+        age: 40
+        employment_income: 40_000
+        casualty_loss: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    filing_status: JOINT
+    # (10,000 + 5,000 - 100) - 10% x 100,000 = 14,900 - 10,000
+    ny_casualty_loss_deduction: 4_900
+
+- name: Case 8, a dependent's loss is left to the dependent's own return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        casualty_loss: 15_000
+      person2:
+        age: 10
+        casualty_loss: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    is_tax_unit_dependent: [false, true]
+    # The child's 5,000 is not the parent's loss.
+    # (15,000 - 100) - 10% x 100,000 = 14,900 - 10,000
+    ny_casualty_loss_deduction: 4_900
+
+- name: Case 9, a loss only the dependent had gives the parent nothing.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+      person2:
+        age: 10
+        casualty_loss: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    is_tax_unit_dependent: [false, true]
+    ny_casualty_loss_deduction: 0
