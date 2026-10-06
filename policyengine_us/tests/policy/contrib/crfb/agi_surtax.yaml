@@ -214,3 +214,40 @@
     # 300k + 5k + 2k + 3k = 310k: (310k - 200k) * 1% = 1,100. The dependent's
     # $3,000, $1,000 and $4,000 would make it $1,180.
     agi_surtax: 1_100
+
+# Here AGI is calculated. The dependent's IRA deduction is on the dependent's
+# own return, so it is subtracted from neither the filer's AGI nor added back
+# to the base (PolicyEngine/policyengine-us#9801 keeps it off the filer's AGI).
+
+- name: Expanded base with AGI calculated leaves a dependent's IRA contribution out of both AGI and the additions
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    people:
+      head:
+        age: 45
+        employment_income: 150_000
+      dependent:
+        age: 17
+        employment_income: 10_000
+        traditional_ira_contributions_desired: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    marital_units:
+      marital_unit:
+        members: [head]
+      dependent_marital_unit:
+        members: [dependent]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    traditional_ira_contributions: [0, 5_000]
+    # Only the head's $150,000 of wages. Subtracting the dependent's $5,000
+    # IRA deduction would make it $145,000.
+    adjusted_gross_income: 150_000
+    # (150k - 100k) * 1% = 500. With the deduction in AGI and no add-back,
+    # the base would be $145,000 and the surtax $450.
+    agi_surtax: 500

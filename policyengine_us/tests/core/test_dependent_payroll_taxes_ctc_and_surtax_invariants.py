@@ -20,22 +20,25 @@ tax unit:
    premiums never change `ctc_social_security_tax`, the Puerto Rico
    equivalent, `additional_medicare_tax` or the CRFB surtax's additions to
    AGI.
-2. A dependent's wages, 401(k) and 403(b) deferrals and Social Security
-   benefits, none of which enters the filer's AGI or deductions, never change
-   the filer's AGI, refundable or non-refundable CTC, federal income tax or
-   CRFB surtax.
+2. A dependent's wages, traditional IRA contributions, 401(k) and 403(b)
+   deferrals and Social Security benefits, none of which enters the filer's
+   AGI or deductions, never change the filer's AGI, refundable or
+   non-refundable CTC, federal income tax or CRFB surtax. A dependent's IRA
+   deduction is on the dependent's own return (#9801), so the surtax neither
+   subtracts it through AGI nor adds it back.
 3. Differential: `ctc_social_security_tax`, the Puerto Rico equivalent,
    `additional_medicare_tax` and the surtax equal an independent numpy
    calculation over the head and spouse.
 
-Invariant 2 leaves out two kinds of dependent amount, which invariant 1
+Invariant 2 leaves out three kinds of dependent amount, which invariant 1
 checks with AGI and its taxable Social Security given as inputs:
 
-- A dependent's IRA contribution and the deductible part of their
-  self-employment tax are subtracted from the filer's AGI and Social Security
-  MAGI until PolicyEngine/policyengine-us#9801 lands.
+- A dependent's self-employment income still adds to the filer's qualified
+  business income deduction, which sums every member's `qbid_amount`.
 - A dependent's tax-exempt interest counts toward the filer's EITC
   investment income limit (#9635).
+- Health insurance premiums a parent pays for a dependent may be the
+  parent's deductible medical expenses.
 """
 
 from functools import cache
@@ -59,15 +62,15 @@ SURTAX_ON = {
 # Dependent amounts that never enter the filer's AGI, deductions or credits.
 OFF_RETURN_INPUTS = [
     "employment_income",
+    "traditional_ira_contributions_desired",
     "traditional_401k_contributions_desired",
     "traditional_403b_contributions_desired",
     "social_security_dependents",
 ]
 # Dependent amounts that reach the filer's return elsewhere: see the module
-# docstring. Premiums a parent pays may be deductible medical expenses.
+# docstring.
 OTHER_INPUTS = [
     "self_employment_income",
-    "traditional_ira_contributions_desired",
     "tax_exempt_interest_income",
     "health_insurance_premiums",
 ]
@@ -122,6 +125,9 @@ def dependent(draw, *, every_amount):
     person = {
         "age": draw(st.integers(0, 17)),
         "employment_income": draw(maybe(money)),
+        "traditional_ira_contributions_desired": draw(
+            maybe(st.integers(1, 7_000).map(float))
+        ),
         "traditional_401k_contributions_desired": draw(maybe(money)),
         "traditional_403b_contributions_desired": draw(maybe(money)),
         "social_security_dependents": draw(maybe(st.integers(1, 15_000).map(float))),
@@ -129,9 +135,6 @@ def dependent(draw, *, every_amount):
     if every_amount:
         person["self_employment_income"] = draw(
             maybe(st.integers(-5_000, 60_000).map(float))
-        )
-        person["traditional_ira_contributions_desired"] = draw(
-            maybe(st.integers(1, 7_000).map(float))
         )
         person["tax_exempt_interest_income"] = draw(maybe(money))
         person["health_insurance_premiums"] = draw(
@@ -412,8 +415,8 @@ def low_wage_family(married, dependent_wages):
 
 
 # The dependent's wages would push the parents over the joint Additional
-# Medicare Tax threshold, and their deferral and benefits would add to the
-# surtax base.
+# Medicare Tax threshold, their IRA deduction would lower the parents' AGI,
+# and their contributions and benefits would add to the surtax base.
 HIGH_INCOME_COUPLE = {
     "head": {"age": 50, "employment_income": 150_000.0},
     "spouse": {"age": 48, "employment_income": 90_000.0},
@@ -421,6 +424,7 @@ HIGH_INCOME_COUPLE = {
         {
             "age": 17,
             "employment_income": 25_000.0,
+            "traditional_ira_contributions_desired": 5_000.0,
             "traditional_401k_contributions_desired": 5_000.0,
             "social_security_dependents": 6_000.0,
         }
