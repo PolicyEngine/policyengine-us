@@ -1,0 +1,108 @@
+# Md. Code, Tax-General 10-105(a)(4): the additional tax applies to
+# individuals "with a federal adjusted gross income in excess of $350,000".
+# 2025 Form 502CG general instructions: "a federal adjusted gross income of
+# more than $350,000 on Line 1 of Form 502". The test is on federal AGI, not
+# Maryland AGI, and is the same for every filing status.
+
+- name: Maryland subtractions do not take federal AGI under the threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 360_000
+        md_total_subtractions: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Maryland AGI = $360,000 - $20,000 = $340,000, but federal AGI is over
+    # $350,000. Form 502CG line 1 = $100,000; surtax $2,000.
+    md_agi: 340_000
+    md_capital_gains_surtax_applies: true
+    md_capital_gains_surtax: 2_000
+
+- name: Maryland additions do not put federal AGI over the threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 340_000
+        md_total_additions: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_agi: 360_000
+    md_capital_gains_surtax_applies: false
+    md_capital_gains_surtax: 0
+
+- name: Federal AGI equal to the threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 350_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_capital_gains_surtax_applies: false
+
+- name: Joint filers face the same threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        long_term_capital_gains: 40_000
+      person2:
+        age: 48
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 351_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_capital_gains_surtax_applies: true
+    md_capital_gains_surtax: 800
+
+- name: Not in effect before 2025
+  period: 2024
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_capital_gains_surtax_applies: false
