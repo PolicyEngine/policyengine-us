@@ -1,3 +1,15 @@
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
 ## [2.29.5] - 2026-10-06
 
 ### Fixed
