@@ -10,6 +10,64 @@
     dc_self_employment_loss_addition: 8_000
     dc_agi: 68_000
 
+- name: A dependent's self-employment loss does not dilute the head's addition.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DC
+  output:
+    # The dependent's loss is on their own return, so loss_ald holds only
+    # the head's $20,000. Addition: max(0, 20,000 - 12,000) = 8,000, all
+    # of it the head's.
+    dc_self_employment_loss_addition: [8_000, 0, 0]
+
+- name: Both spouses' losses share the addition; a dependent's loss is left out.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        employment_income: 50_000
+        self_employment_income: -10_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DC
+  output:
+    # Addition: max(0, 30,000 - 12,000) = 18,000, split 20:10 by the
+    # spouses' own losses.
+    dc_self_employment_loss_addition: [12_000, 6_000, 0]
+
 - name: Case 3, large SE loss capped by federal 461(l).
   absolute_error_margin: 0.01
   period: 2024

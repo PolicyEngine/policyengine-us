@@ -14,7 +14,13 @@ class dc_self_employment_loss_addition(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        loss_person = max_(0, -person("total_self_employment_income", period))
+        # Only the head's and spouse's losses are on this return: a tax-unit
+        # dependent's losses are not in loss_ald, so counting them would
+        # dilute the filers' shares of the addition.
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        loss_person = is_head_or_spouse * max_(
+            0, -person("total_self_employment_income", period)
+        )
         loss_taxunit = person.tax_unit.sum(loss_person)
         # Cap at SE loss actually deducted in federal AGI via loss_ald.
         # loss_ald includes both SE and capital losses; isolate SE portion.
@@ -35,6 +41,4 @@ class dc_self_employment_loss_addition(Variable):
         mask = loss_taxunit > 0
         loss_fraction[mask] = loss_person[mask] / loss_taxunit[mask]
         addition_fraction = where(is_joint, loss_fraction, 1)
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        return (is_head | is_spouse) * addition_taxunit * addition_fraction
+        return is_head_or_spouse * addition_taxunit * addition_fraction
