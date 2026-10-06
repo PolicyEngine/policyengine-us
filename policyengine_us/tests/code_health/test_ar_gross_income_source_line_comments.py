@@ -13,10 +13,11 @@ distributions and taxable annuities, 17A/17B employer pensions and qualified
 IRAs, where military retirement and disability retirement also go, 18 Schedule
 E, 19 Schedule F, 20 other income (Form AR-OI, including gambling winnings).
 
-TY2018+ AR1000F (2018 booklet form on #page=19; 2022 and 2025 AR1000F page 1):
-13 business income, 14 capital gains, 16 nonqualified IRA distributions,
-17 military retirement, 18A/18B employer pensions and qualified IRAs, 19
-Schedule E, 20 Schedule F, 21 unemployment, 22 other income.
+TY2018+ AR1000F (2018 booklet, form on #page=15; 2022 and 2025 AR1000F,
+#page=2): 13 business income, 14 capital gains, 16 nonqualified IRA
+distributions, 17 military retirement (17A/17B on the 2018 form), 18A/18B
+employer pensions and qualified IRAs, 19 Schedule E, 20 Schedule F,
+21 unemployment, 22 other income.
 
 The check reads the YAML text without importing the model, so it costs nothing.
 A new source must be added to EXPECTED_LINES after checking the form.
@@ -26,6 +27,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 
 SOURCES = (
@@ -43,9 +45,9 @@ TY2015_2017 = {
     "ar_taxable_capital_gains": "14",
     "taxable_ira_distributions": "16",
     "taxable_roth_conversions": "16",
-    "military_retirement_pay": "17A",
-    "taxable_pension_income": "17A",
-    "disability_benefits": "17A",
+    "military_retirement_pay": "17A/17B",
+    "taxable_pension_income": "17A/17B",
+    "disability_benefits": "17A/17B",
     "rental_income": "18",
     "estate_income": "18",
     "farm_rent_income": "18",
@@ -64,12 +66,12 @@ TY2018_ON = {
     "taxable_ira_distributions": "16",
     "taxable_roth_conversions": "16",
     "military_retirement_pay": "17",
-    "taxable_pension_income": "18A",
-    "taxable_401k_distributions": "18A",
-    "taxable_403b_distributions": "18A",
-    "taxable_sep_distributions": "18A",
-    "keogh_distributions": "18A",
-    "disability_benefits": "18A",
+    "taxable_pension_income": "18A/18B",
+    "taxable_401k_distributions": "18A/18B",
+    "taxable_403b_distributions": "18A/18B",
+    "taxable_sep_distributions": "18A/18B",
+    "keogh_distributions": "18A/18B",
+    "disability_benefits": "18A/18B",
     "rental_income": "19",
     "estate_income": "19",
     "farm_rent_income": "19",
@@ -85,9 +87,9 @@ EXPECTED_LINES = {
     "2022-01-01": TY2018_ON,
 }
 
-PERIOD = re.compile(r"^  (\d{4}-\d{2}-\d{2}):\s*$")
-ENTRY = re.compile(r"^    - (\w+)\s*(?:#\s*(.*))?$")
-LINE = re.compile(r"^Line (\d+[A-Za-z]?)\b")
+PERIOD = re.compile(r"^\s*(\d{4}-\d{2}-\d{2}):\s*$")
+ENTRY = re.compile(r"^\s*- (\w+)\s*(?:#\s*(.*))?$")
+LINE = re.compile(r"^Line ([0-9A-Za-z/]+)")
 
 
 def line_comments(path: Path) -> dict[str, list[tuple[str, str | None]]]:
@@ -112,7 +114,14 @@ def line_comments(path: Path) -> dict[str, list[tuple[str, str | None]]]:
 
 @pytest.mark.parametrize("file_name", ["joint.yaml", "individual.yaml"])
 def test_ar_gross_income_sources_cite_the_form_line_for_their_year(file_name):
-    blocks = line_comments(SOURCES / file_name)
+    path = SOURCES / file_name
+    blocks = line_comments(path)
+    # The text parse must see exactly the lists the parameter loader sees, so a
+    # reformatted file cannot make this check pass with nothing to check.
+    values = yaml.safe_load(path.read_text())["values"]
+    assert {str(period): sources for period, sources in values.items()} == {
+        period: [source for source, _ in entries] for period, entries in blocks.items()
+    }
     assert sorted(blocks) == sorted(EXPECTED_LINES)
     errors = []
     for period, entries in blocks.items():

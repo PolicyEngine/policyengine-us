@@ -13,8 +13,8 @@ values:
     - dividend_income # Line 11
     - alimony_income # Line 12
     - ar_taxable_capital_gains_indiv # Line 14
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
+    - taxable_ira_distributions # Line 16, or Lines 17A/17B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 17A/17B after age 59 1/2
     - military_retirement_pay # Line 17A/17B
     - taxable_pension_income # Line 17A/17B
     - disability_benefits # Line 17A/17B
@@ -38,9 +38,9 @@ values:
     - dividend_income # Line 11
     - alimony_income # Line 12
     - ar_taxable_capital_gains_indiv # Line 14
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
-    - military_retirement_pay # Line 17
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
+    - military_retirement_pay # Line 17 (Lines 17A/17B on the 2018 form)
     - taxable_pension_income # Line 18A/18B
     - disability_benefits # Line 18A/18B
     - rental_income # Line 19
@@ -57,8 +57,8 @@ values:
     - dividend_income # Line 11
     - alimony_income # Line 12
     - ar_taxable_capital_gains_indiv # Line 14
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
     - military_retirement_pay # Line 17
     - taxable_pension_income # Line 18A/18B
     - disability_benefits # Line 18A/18B
@@ -75,8 +75,8 @@ values:
     - dividend_income # Line 11
     - alimony_income # Line 12
     - ar_taxable_capital_gains_indiv # Line 14
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
     - military_retirement_pay # Line 17
     - taxable_pension_income # Line 18A/18B
     - taxable_401k_distributions # Line 18A/18B
@@ -119,7 +119,7 @@ metadata:
     - title: Arkansas 2015 Form AR1000F (TY2015-2017 income lines; Schedule C on Line 13, pensions on Lines 17A/17B, Schedule E on Line 18, Schedule F on Line 19, other income on Line 20)
       href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=17
     - title: Arkansas 2018 Form AR1000F (TY2018 and later income lines; Schedule C on Line 13, pensions on Lines 18A/18B, Schedule E on Line 19, other income on Line 22)
-      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions_2018.pdf#page=19
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions_2018.pdf#page=15
     - title: Arkansas 2022 AR1000F Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13
     - title: 2022 Arkansas AR1000F
