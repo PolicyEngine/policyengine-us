@@ -7,15 +7,19 @@ tax-unit dependent's losses belong on the dependent's own return and are not in
 
 The properties must hold for every tax unit, so the tests draw a seeded random
 population of D.C. tax units (single, head of household, joint, joint with
-dependents) whose members have wages and self-employment income of either sign,
-and run it twice as vectorized simulations: as drawn, and with the dependents'
-self-employment income set to zero.
+dependents). Filers have wages, and self-employment and rental income of
+either sign; dependents have self-employment income of either sign. The tests
+run it twice as vectorized simulations: as drawn, and with the dependents'
+self-employment income set to zero. Losses stay far below the section 461(l)
+limit, so every filer loss is deducted in federal AGI.
 
 1. Dependents' self-employment income never changes anyone's addition.
 2. Dependents get no addition, and no addition is negative.
-3. A joint return splits the addition between the spouses in proportion to
+3. The tax unit's addition is the head's and spouse's self-employment losses
+   less $12,000, and never less than zero. A filer's rental loss and a
+   dependent's loss leave it unchanged.
+4. A joint return splits the addition between the spouses in proportion to
    their own losses.
-4. The tax unit's addition never exceeds the filers' losses less $12,000.
 """
 
 import numpy as np
@@ -52,6 +56,7 @@ def _situation(zero_dependents=False):
                 "self_employment_income": {
                     YEAR: _self_employment(rng, -60_000, 40_000)
                 },
+                "rental_income": {YEAR: _self_employment(rng, -40_000, 30_000)},
                 f"is_tax_unit_{role}": {YEAR: True},
             }
         if kind in ("hoh", "joint_dependents"):
@@ -117,27 +122,27 @@ def test_dependents_get_nothing_and_nothing_is_negative(run):
     assert np.all(run["with"] >= 0)
 
 
-def test_joint_split_follows_each_spouses_loss(run):
+def _filer_loss(run):
     loss = np.maximum(0, -run["total_self_employment_income"])
-    filer = ~run["is_tax_unit_dependent"]
-    unit_loss = _unit_sum(run, filer * loss)
-    unit_addition = _unit_sum(run, run["with"])
-    joint_filer = filer & run["joint"][run["person_tax_unit"]]
-    expected = np.zeros_like(loss)
-    has_loss = unit_loss[run["person_tax_unit"]] > 0
+    return loss * ~run["is_tax_unit_dependent"]
+
+
+def test_addition_is_filers_losses_over_threshold(run):
+    expected = np.maximum(0, _unit_sum(run, _filer_loss(run)) - THRESHOLD)
+    np.testing.assert_allclose(_unit_sum(run, run["with"]), expected, atol=TOLERANCE)
+
+
+def test_joint_split_follows_each_spouses_loss(run):
+    filer_loss = _filer_loss(run)
+    unit = run["person_tax_unit"]
+    unit_loss = _unit_sum(run, filer_loss)[unit]
+    unit_addition = np.maximum(0, unit_loss - THRESHOLD)
     share = np.divide(
-        loss, unit_loss[run["person_tax_unit"]], out=expected.copy(), where=has_loss
+        filer_loss, unit_loss, out=np.zeros_like(filer_loss), where=unit_loss > 0
     )
+    joint_filer = ~run["is_tax_unit_dependent"] & run["joint"][unit]
     np.testing.assert_allclose(
         run["with"][joint_filer],
-        (share * unit_addition[run["person_tax_unit"]])[joint_filer],
+        (share * unit_addition)[joint_filer],
         atol=TOLERANCE,
-    )
-
-
-def test_addition_never_exceeds_filers_losses_over_threshold(run):
-    loss = np.maximum(0, -run["total_self_employment_income"])
-    filer_loss = _unit_sum(run, ~run["is_tax_unit_dependent"] * loss)
-    assert np.all(
-        _unit_sum(run, run["with"]) <= np.maximum(0, filer_loss - THRESHOLD) + TOLERANCE
     )

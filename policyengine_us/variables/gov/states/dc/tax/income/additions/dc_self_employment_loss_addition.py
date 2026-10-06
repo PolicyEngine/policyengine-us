@@ -14,24 +14,25 @@ class dc_self_employment_loss_addition(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        # Only the head's and spouse's losses are on this return: a tax-unit
-        # dependent's losses are not in loss_ald, so counting them would
-        # dilute the filers' shares of the addition.
+        # Only the head's and spouse's losses are on this return. A tax-unit
+        # dependent's losses are not in loss_ald, so counting them would raise
+        # the addition or dilute the filers' shares of it.
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         loss_person = is_head_or_spouse * max_(
             0, -person("total_self_employment_income", period)
         )
         loss_taxunit = person.tax_unit.sum(loss_person)
-        # Cap at SE loss actually deducted in federal AGI via loss_ald.
-        # loss_ald includes both SE and capital losses; isolate SE portion.
+        # Cap at the business losses actually deducted in federal AGI: loss_ald
+        # less its capital loss parts (self-employment, farm, rental,
+        # partnership, estate and other business losses after section 461(l)).
         loss_ald = person.tax_unit("loss_ald", period)
         capital_loss_in_ald = add(
             person.tax_unit,
             period,
             ["capital_losses_allowed_against_gains", "limited_capital_loss"],
         )
-        se_loss_in_ald = max_(0, loss_ald - capital_loss_in_ald)
-        effective_loss = min_(loss_taxunit, se_loss_in_ald)
+        business_loss_in_ald = max_(0, loss_ald - capital_loss_in_ald)
+        effective_loss = min_(loss_taxunit, business_loss_in_ald)
         p = parameters(period).gov.states.dc.tax.income.additions
         addition_taxunit = max_(0, effective_loss - p.self_employment_loss.threshold)
         # allocate taxunit addition in proportion to head and spouse losses

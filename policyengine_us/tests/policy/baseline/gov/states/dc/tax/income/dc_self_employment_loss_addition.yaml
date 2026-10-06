@@ -39,6 +39,33 @@
     # of it the head's.
     dc_self_employment_loss_addition: [8_000, 0, 0]
 
+- name: A dependent's self-employment loss does not raise a head of household's addition.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -5_000
+        rental_income: -30_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # The head's own self-employment loss is $5,000, under the $12,000
+    # threshold. Counting the dependent's $20,000 would give
+    # min(25,000, 35,000 of business losses in loss_ald) - 12,000 = 13,000.
+    dc_self_employment_loss_addition: [0, 0]
+
 - name: Both spouses' losses share the addition; a dependent's loss is left out.
   absolute_error_margin: 0.01
   period: 2024
