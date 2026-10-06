@@ -1,0 +1,21 @@
+description: Massachusetts adds the federal excess business loss back to 5.0% income if this is true.
+
+values:
+  2018-01-01: false
+  # Massachusetts conforms to the Code as amended on January 1, 2022 for tax
+  # years beginning on or after January 1, 2022, including Section 461(l).
+  2022-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts excess business loss add-back in effect
+  reference:
+    - title: 2022 Form 1 instructions, Updated IRC Conformity Date ("Code Update")
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2022/dor-2022-inc_form-1_instructions.pdf#page=4
+    - title: 2022 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2022/dor-2022-inc_form-1_instructions.pdf#page=20
+    - title: 2024 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2024/dor-2024-inc-form-1-inst_1.pdf#page=20
+    - title: 2025 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-form-1-inst.pdf#page=19

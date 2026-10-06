@@ -1,0 +1,96 @@
+# Massachusetts adds the federal excess business loss (Schedule 1, line 8p)
+# back to 5.0% income from 2022 (Schedule X, line 6). The interest is
+# Massachusetts bank interest, so it is 5.0% income.
+
+- name: 2022 joint return adds back the loss above $540,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 460_000
+    # 2,000,000 - 1,000,000 + 460,000
+    ma_gross_income: 1_460_000
+    # 1,460,000 - 200 bank interest exemption - 8,800 exemption
+    ma_part_b_taxable_income: 1_451_000
+    ma_income_tax_before_credits: 72_550
+
+- name: 2022 single return adds back the loss above $270,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 730_000
+    # 2,000,000 - 270,000 - 100 bank interest exemption - 4,400 exemption
+    ma_part_b_taxable_income: 1_725_500
+
+- name: 2024 joint return uses the $610,000 threshold
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 390_000
+    # 2,000,000 - 610,000 - 8,800 exemption (no bank interest exemption from 2024)
+    ma_part_b_taxable_income: 1_381_200
+
+- name: No add-back in 2021, before the Code Update
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        taxable_interest_income: 2_000_000
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_excess_business_loss_adjustment: 0
+    # 2,000,000 - 1,000,000 - 200 - 8,800
+    ma_part_b_taxable_income: 991_000
