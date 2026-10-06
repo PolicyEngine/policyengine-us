@@ -15,7 +15,14 @@ class nj_liheap(Variable):
         # PDF pages 9, 10.
         "https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=9",
     )
-    documentation = "Annual regular heating payment, verified for FY2026. Earlier years use backfilled parameters and are unverified historical estimates. Amounts preserve all published grid anomalies; no expense cap applies. Unknown/unsupported direct fuels return zero. Separate fuel charges paid to landlords cannot be distinguished from vendor bills without a direct benefit override. Crisis, cooling, furnace and utility-program benefits are excluded."
+    documentation = (
+        "Annual regular heating payment, verified for FY2026. Earlier years use "
+        "backfilled parameters and are unverified historical estimates. Amounts "
+        "preserve all published grid anomalies; no expense cap applies. "
+        "Unknown/unsupported direct fuels return zero. Separate fuel charges paid to "
+        "landlords cannot be distinguished from vendor bills without a direct benefit "
+        "override. Crisis, cooling, furnace and utility-program benefits are excluded."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.dca.liheap.payment

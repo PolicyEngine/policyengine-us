@@ -2,22 +2,22 @@
 # "FY2026 Program Income Limit ... (60% State Median Income)":
 # https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
 # The income test is monthly (FY2026 LIHEAP Handbook section 2.3.A, page 7), so
-# each expected value is the published monthly limit times 12:
+# each expected value is the published monthly limit times 12. This file
+# asserts the odd sizes of the published table (1, 3, 5, 7, 9 and 11) plus the
+# additional-member increment; the grid cases in ../nj_liheap.yaml use the even
+# sizes.
 #   size 1:  4,167 * 12 = 50_004      size 7:  10,819 * 12 = 129_828
-#   size 2:  5,449 * 12 = 65_388      size 8:  11,059 * 12 = 132_708
 #   size 3:  6,732 * 12 = 80_784      size 9:  11,299 * 12 = 135_588
-#   size 4:  8,014 * 12 = 96_168      size 10: 11,540 * 12 = 138_480
 #   size 5:  9,296 * 12 = 111_552     size 11: 11,780 * 12 = 141_360
-#   size 6: 10,578 * 12 = 126_936     size 12: 12,021 * 12 = 144_252
 # "Household members greater than 12 - Please add $241 for each additional
-# member for monthly income limit":
+# member for monthly income limit", starting from the size-12 limit of 12,021:
 #   size 13: (12,021 + 241) * 12 = 12,262 * 12 = 147_144
 #   size 14: (12,021 + 2 * 241) * 12 = 12,503 * 12 = 150_036
-- name: Case 1, published monthly limits for sizes 1 to 12 and the additional-member increment.
+- name: Case 1, published monthly limits for the odd sizes 1 to 11 and the additional-member increment.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
-    nj_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    nj_liheap_household_size: [1, 3, 5, 7, 9, 11, 13, 14]
   output:
-    nj_liheap_income_limit: [50_004, 65_388, 80_784, 96_168, 111_552, 126_936, 129_828, 132_708, 135_588, 138_480, 141_360, 144_252, 147_144, 150_036]
+    nj_liheap_income_limit: [50_004, 80_784, 111_552, 129_828, 135_588, 141_360, 147_144, 150_036]

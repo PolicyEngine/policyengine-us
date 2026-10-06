@@ -8,7 +8,10 @@ class nj_liheap_region(Variable):
     label = "New Jersey LIHEAP payment region"
     defined_for = StateCode.NJ
     reference = ("https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf",)
-    documentation = "Region 2 is Warren/Sussex; region 1 is the other nineteen counties. Zero means a county is unknown or outside New Jersey."
+    documentation = (
+        "Region 2 is Warren/Sussex; region 1 is the other nineteen counties. Zero "
+        "means a county is unknown or outside New Jersey."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.dca.liheap.payment.regions

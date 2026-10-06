@@ -11,7 +11,12 @@ class nj_liheap_eligible(Variable):
         # PDF pages 5, 6, 7, 11, 12.
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5",
     )
-    documentation = "Automatic enrollment does not waive the income test, and regular heating has no asset test. Striker and institutional-residence exclusions, full utility-allowance coverage and payments by people outside the household need inputs not available here. Unknown county is unsupported, not a legal denial."
+    documentation = (
+        "Automatic enrollment does not waive the income test, and regular heating has "
+        "no asset test. Striker and institutional-residence exclusions, full "
+        "utility-allowance coverage and payments by people outside the household need "
+        "inputs not available here. Unknown county is unsupported, not a legal denial."
+    )
 
     def formula(spm_unit, period, parameters):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)

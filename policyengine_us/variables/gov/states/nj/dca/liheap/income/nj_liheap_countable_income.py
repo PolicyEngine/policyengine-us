@@ -12,7 +12,12 @@ class nj_liheap_countable_income(Variable):
         # PDF pages 6, 9, 10.
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=6",
     )
-    documentation = "Annual inputs approximate the four-week verification period. The summed monthly income is rounded to the nearest dollar, with half dollars rounded up. WFNJ benefits are counted once at the unit level; rental income is assumed nonnegative."
+    documentation = (
+        "Annual inputs approximate the four-week verification period. The summed "
+        "monthly income is rounded to the nearest dollar, with half dollars rounded "
+        "up. WFNJ benefits are counted once at the unit level; rental income is "
+        "assumed nonnegative."
+    )
 
     def formula(spm_unit, period, parameters):
         # The annual TANF aggregate applies take-up to WFNJ entitlement.

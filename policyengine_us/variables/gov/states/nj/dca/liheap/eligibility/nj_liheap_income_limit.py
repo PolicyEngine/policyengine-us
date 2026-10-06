@@ -14,7 +14,13 @@ class nj_liheap_income_limit(Variable):
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7",
         "https://www.nj.gov/dca/hmfa/about/regulations/docs/noticeofadoption10.20.25njr.pdf#page=6",
     )
-    documentation = "FY2026 handbook and published limits use 60% SMI rather than the codified 175%-FPG ceiling. Chapter 5:49 was readopted without change effective September 22, 2025; its 2017 expiration does not resolve this conflict. This draft follows the operating handbook while legal reconciliation remains open. Annualized monthly limits control this monthly-income eligibility test."
+    documentation = (
+        "FY2026 handbook and published limits use 60% SMI rather than the codified "
+        "175%-FPG ceiling. Chapter 5:49 was readopted without change effective "
+        "September 22, 2025; its 2017 expiration does not resolve this conflict. This "
+        "draft follows the operating handbook while legal reconciliation remains open. "
+        "Annualized monthly limits control this monthly-income eligibility test."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.dca.liheap.eligibility
