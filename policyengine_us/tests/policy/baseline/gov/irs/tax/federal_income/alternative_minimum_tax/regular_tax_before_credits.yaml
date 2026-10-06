@@ -282,6 +282,51 @@
     capital_gains_tax: 150
     regular_tax_before_credits: 7_740
 
+- name: 2026 joint, line 45 exceeds line 46 by $57
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    taxable_income: 100_800
+    qualified_dividend_income: 1_900
+  output:
+    # Rev. Proc. 2025-32, Table 1 and section 4.03: 12 percent to 100,800, 0
+    # percent rate amount 98,900. Line 44: 2,480 + 12% x 74,100 = 11,372.
+    # Line 46: 11,600. Line 45: 11,372 + 15% x 1,900 = 11,657.
+    income_tax_main_rates: 11_372
+    tax_on_taxable_income_at_main_rates: 11_600
+    capital_gains_tax: 228
+    regular_tax_before_credits: 11_600
+
+- name: 2026 separate, long-term gain, line 45 exceeds line 46 by $28.50
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    taxable_income: 50_400
+    long_term_capital_gains: 950
+  output:
+    # Rev. Proc. 2025-32, Table 4 and section 4.03, as for single filers.
+    income_tax_main_rates: 5_686
+    tax_on_taxable_income_at_main_rates: 5_800
+    capital_gains_tax: 114
+    regular_tax_before_credits: 5_800
+
+- name: 2026 single, gain into the 22 percent bracket leaves line 45 below line 46
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    taxable_income: 60_000
+    qualified_dividend_income: 10_000
+  output:
+    # Line 44: 1,240 + 12% x 37,600 = 5,752. Line 45: 5,752 + 15% x 10,000
+    # = 7,252. Line 46: 5,800 + 22% x 9,600 = 7,912.
+    income_tax_main_rates: 5_752
+    tax_on_taxable_income_at_main_rates: 7_912
+    capital_gains_tax: 1_500
+    regular_tax_before_credits: 7_252
+
 - name: 2025 single, more gain than the overlap leaves line 45 below line 46
   absolute_error_margin: 0.01
   period: 2025
