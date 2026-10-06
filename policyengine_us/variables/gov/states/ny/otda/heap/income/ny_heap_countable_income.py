@@ -12,7 +12,14 @@ class ny_heap_countable_income(Variable):
         # PDF pages 36, 37, 38, 39, 40, 41, 42, 43, 44.
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37",
     )
-    documentation = "Annual inputs approximate application-month income; final monthly income is rounded down and annualized. Income of nonqualified members counts in full. Medicare-premium deductions remain deferred. Royalties, regular gifts, aid-and-attendance exclusions and irregular-income exclusions cannot be isolated reliably. Rental income is assumed nonnegative. No new self-employment or work-expense deduction is applied."
+    documentation = (
+        "Annual inputs approximate application-month income; final monthly income is "
+        "rounded down and annualized. Income of nonqualified members counts in full. "
+        "Medicare-premium deductions remain deferred. Royalties, regular gifts, "
+        "aid-and-attendance exclusions and irregular-income exclusions cannot be "
+        "isolated reliably. Rental income is assumed nonnegative. No new "
+        "self-employment or work-expense deduction is applied."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.income

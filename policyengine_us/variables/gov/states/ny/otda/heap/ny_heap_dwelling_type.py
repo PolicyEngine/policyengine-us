@@ -18,4 +18,11 @@ class ny_heap_dwelling_type(Variable):
     label = "New York HEAP dwelling arrangement"
     # PDF pages 45, 46, 47.
     reference = "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45"
-    documentation = "Eligible group residences are the treatment, enriched housing, supervised/supportive living and other settings listed in Chapter 8 F.3 (group living facilities must have at most 16 residents). Ineligible residences include private roomers/boarders, hotels, motels, vehicles, dormitories and congregate care under F.4. Ordinary subsidized housing uses the existing housing-assistance and heat-in-rent inputs."
+    documentation = (
+        "Eligible group residences are the treatment, enriched housing, "
+        "supervised/supportive living and other settings listed in Chapter 8 F.3 "
+        "(group living facilities must have at most 16 residents). Ineligible "
+        "residences include private roomers/boarders, hotels, motels, vehicles, "
+        "dormitories and congregate care under F.4. Ordinary subsidized housing uses "
+        "the existing housing-assistance and heat-in-rent inputs."
+    )

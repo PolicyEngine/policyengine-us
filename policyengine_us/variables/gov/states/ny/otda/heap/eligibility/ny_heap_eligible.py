@@ -11,7 +11,11 @@ class ny_heap_eligible(Variable):
         # PDF pages 34, 37, 44, 45, 46, 47, 48.
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34",
     )
-    documentation = "Regular heating has no resource test. SPM units approximate energy-sharing households. Application timing, SSN documentation, duplicate payments and the full set of excluded member categories are not modeled."
+    documentation = (
+        "Regular heating has no resource test. SPM units approximate energy-sharing "
+        "households. Application timing, SSN documentation, duplicate payments and the "
+        "full set of excluded member categories are not modeled."
+    )
 
     def formula(spm_unit, period, parameters):
         dwelling = spm_unit("ny_heap_dwelling_type", period)

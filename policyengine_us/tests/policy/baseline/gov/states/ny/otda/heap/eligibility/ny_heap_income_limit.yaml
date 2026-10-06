@@ -7,16 +7,18 @@
 # https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9
 # https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
 
-- name: Case 1, all published size one through thirteen income limits.
+- name: Case 1, odd household sizes one through thirteen published income limits.
   period: 2026
   input:
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
-    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 3, 5, 7, 9, 11, 13]
   output:
-    # Published monthly Tier II maximums 3,473; 4,542; 5,611; 6,680; 7,749;
-    # 8,818; 9,018; 9,218; 9,419; 9,619; 9,820; 10,020; 10,221, each x 12.
-    ny_heap_income_limit: [41_676, 54_504, 67_332, 80_160, 92_988, 105_816, 108_216, 110_616, 113_028, 115_428, 117_840, 120_240, 122_652]
+    # Odd sizes 1, 3, 5, 7, 9, 11 and 13; payment/ny_heap_tier_one.yaml covers
+    # the even sizes of the same matrix. Published monthly Tier II maximums
+    # 3,473; 5,611; 7,749; 9,018; 9,419; 9,820; 10,221 (benefit matrix Tier II
+    # column; State Plan 2.1, page 9), each x 12.
+    ny_heap_income_limit: [41_676, 67_332, 92_988, 108_216, 113_028, 117_840, 122_652]
 
 - name: Case 2, size fourteen follows the plan poverty rate rather than the matrix increment.
   period: 2026

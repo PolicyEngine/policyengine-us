@@ -10,7 +10,11 @@ class ny_heap_countable_earned_income(Variable):
     defined_for = StateCode.NY
     # PDF pages 37, 39, 42, 43.
     reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37",)
-    documentation = "Existing net business income is used without further deductions. HEAP-specific depreciation add-backs, separate accounting periods and wage bonus exclusions are unsupported."
+    documentation = (
+        "Existing net business income is used without further deductions. "
+        "HEAP-specific depreciation add-backs, separate accounting periods and wage "
+        "bonus exclusions are unsupported."
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.income

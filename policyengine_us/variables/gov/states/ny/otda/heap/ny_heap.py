@@ -15,7 +15,15 @@ class ny_heap(Variable):
         # PDF pages 45, 46, 47, 48, 49, 84, 87, 88.
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45",
     )
-    documentation = "Annual regular heating benefit and ordinary Tier I/vulnerability supplements, verified for FY2026. Earlier years are unverified backfilled estimates. Housing assistance approximates subsidized rent (market-rent voucher exceptions are unsupported). Unknown direct-heating fuel returns zero; solar falls within other fuels. No bill cap. Crisis, cooling and equipment components are excluded. Mid-year moves and previously advanced nominal payments are not separately tracked."
+    documentation = (
+        "Annual regular heating benefit and ordinary Tier I/vulnerability supplements, "
+        "verified for FY2026. Earlier years are unverified backfilled estimates. "
+        "Housing assistance approximates subsidized rent (market-rent voucher "
+        "exceptions are unsupported). Unknown direct-heating fuel returns zero; solar "
+        "falls within other fuels. No bill cap. Crisis, cooling and equipment "
+        "components are excluded. Mid-year moves and previously advanced nominal "
+        "payments are not separately tracked."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.payment

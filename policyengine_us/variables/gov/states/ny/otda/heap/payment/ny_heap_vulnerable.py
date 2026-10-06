@@ -9,7 +9,13 @@ class ny_heap_vulnerable(Variable):
     defined_for = StateCode.NY
     # PDF pages 44, 45, 49.
     reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=44",)
-    documentation = "The manual adopts the SNAP benefit-receipt disability criteria. Reuses the existing USDA calculation, including its qualifying veteran and survivor flags. A disability flag alone does not establish receipt or certification. The existing USDA flags approximate detailed VA certification; railroad, FECA and disability-based Medicaid pathways remain incomplete."
+    documentation = (
+        "The manual adopts the SNAP benefit-receipt disability criteria. Reuses the "
+        "existing USDA calculation, including its qualifying veteran and survivor "
+        "flags. A disability flag alone does not establish receipt or certification. "
+        "The existing USDA flags approximate detailed VA certification; railroad, FECA "
+        "and disability-based Medicaid pathways remain incomplete."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.otda.heap.payment

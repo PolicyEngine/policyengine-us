@@ -12,7 +12,13 @@ class ny_heap_categorically_eligible(Variable):
         # PDF pages 37, 110.
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37",
     )
-    documentation = "Receipt of SNAP, TANF or SSI in a federal own-household arrangement. State SSI Code A and recurring receipt on the application date are approximated; expedited/emergency-only benefits and roomer-only awards cannot be distinguished. Chapter 8 D.10 also qualifies Safety Net Assistance, but no NY-specific receipt input identifies it."
+    documentation = (
+        "Receipt of SNAP, TANF or SSI in a federal own-household arrangement. State "
+        "SSI Code A and recurring receipt on the application date are approximated; "
+        "expedited/emergency-only benefits and roomer-only awards cannot be "
+        "distinguished. Chapter 8 D.10 also qualifies Safety Net Assistance, but no "
+        "NY-specific receipt input identifies it."
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
