@@ -8,7 +8,7 @@ class az_ccap_special_needs_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.AZ
     # CCA-1210B item 14: definition of a child with special needs.
-    reference = "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=14"
+    reference = "https://web.archive.org/web/20251031002516/https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=14"
 
     def formula(person, period, parameters):
         # CCA-1210B item 14: a child with special needs has a documented disability

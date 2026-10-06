@@ -16,7 +16,7 @@ def agi_surtax_reform() -> Reform:
             p = parameters(period).gov.contrib.crfb.surtax
             if p.increased_base.in_effect:
                 additional_sources = add(tax_unit, period, p.increased_base.sources)
-                agi += additional_sources
+                agi = agi + additional_sources
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             return where(joint, p.rate.joint.calc(agi), p.rate.single.calc(agi))

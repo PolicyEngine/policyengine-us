@@ -8,7 +8,7 @@ class ms_national_guard_or_reserve_pay_adjustment(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=12",
         "https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-18/",  # 4(m)
     ]
     defined_for = StateCode.MS
