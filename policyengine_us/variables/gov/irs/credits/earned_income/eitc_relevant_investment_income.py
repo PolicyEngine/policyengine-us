@@ -15,8 +15,10 @@ class eitc_relevant_investment_income(Variable):
         "elected dividends and capital gain distributions reach lines 3 and 5 "
         "through Form 1040 lines 3b and 7a. The election is not modeled, which "
         "can overstate the credit for a parent who makes it. Capital gains "
-        "are the head's and spouse's own person-level gains; a "
-        "net_capital_gains amount supplied for the tax unit is not read."
+        "are the head's and spouse's own long_term_capital_gains and "
+        "short_term_capital_gains; a net_capital_gains amount supplied for "
+        "the tax unit, or a capital_gains amount set directly on a person, "
+        "is not read."
     )
     unit = USD
     definition_period = YEAR
@@ -42,13 +44,13 @@ class eitc_relevant_investment_income(Variable):
         )
         # Worksheet 1 line 5: Form 1040 line 7a, the head and spouse's
         # Schedule D gain with capital gain distributions (line 13), or zero
-        # if a loss. Sum their own gains and losses rather than taking
-        # dependents' out of the tax unit's net_capital_gains: core stores
-        # that total in float32, so a dependent's large gain would move the
-        # filers' amount once the total passes about $16.8 million. A
-        # net_capital_gains amount supplied for the tax unit is therefore not
-        # read, as in irs_gross_income and the NIIT base
-        # (filer_loss_limited_net_capital_gains).
+        # if a loss. Sum their own gains and losses directly, as the NIIT base
+        # (filer_loss_limited_net_capital_gains) does. Reading the tax unit's
+        # net_capital_gains and taking dependents' gains out of it would let a
+        # dependent's large gain move the filers' amount through float32
+        # rounding of the total, and core does not record which tax units
+        # supplied that total. So a net_capital_gains amount supplied for the
+        # tax unit is not read.
         filer_gains = tax_unit_non_dep_add(
             tax_unit, period, ["long_term_capital_gains", "short_term_capital_gains"]
         )
