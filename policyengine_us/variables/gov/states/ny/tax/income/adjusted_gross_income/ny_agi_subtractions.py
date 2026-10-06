@@ -9,6 +9,8 @@ class ny_agi_subtractions(Variable):
     documentation = "Subtractions from NY AGI over federal AGI."
     definition_period = YEAR
     reference = (
+        # N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3
+        "https://www.law.cornell.edu/regulations/new-york/20-NYCRR-112.3",
         # N.Y. Tax Law § 612(a), (c)(3), (c)(3-a), (c)(3-c), (c)(7)
         "https://newyork.public.law/laws/n.y._tax_law_section_612",
         # 2025 Form IT-201-I, who must file (dependents)

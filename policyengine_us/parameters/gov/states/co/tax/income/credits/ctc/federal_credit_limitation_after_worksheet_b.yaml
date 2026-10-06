@@ -1,0 +1,15 @@
+description: Colorado limits its replica of the federal Child Tax Credit by Schedule 8812 line 13, which reflects Credit Limit Worksheet B, if this is true; otherwise Colorado subtracts its own list of federal credits from federal income tax.
+values:
+  # DR 0104CN lines 4-6 subtract listed credits from Form 1040 line 18.
+  2022-01-01: false
+  # DR 0104CN line 4 is Schedule 8812 line 13 (Credit Limit Worksheet A, line 5).
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Colorado federal CTC limitation after Credit Limit Worksheet B
+  reference:
+    - title: 2022 Colorado Child Tax Credit (DR 0104CN), lines 4-6
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2022.pdf#page=1
+    - title: 2023 Colorado Child Tax Credit (DR 0104CN), line 4 instructions
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2023.pdf#page=2

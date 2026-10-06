@@ -8,9 +8,9 @@ class mi_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/Schedule-1.pdf",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/Schedule-1.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040.pdf",
         # MCL 206.30(1)(d), (e), (q): subtract amounts "to the extent included in adjusted gross income"
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",
         # 2025 MI-1040 booklet: who must file (page 3); Schedule 1 lines 11, 14, 16 (pages 14-15)

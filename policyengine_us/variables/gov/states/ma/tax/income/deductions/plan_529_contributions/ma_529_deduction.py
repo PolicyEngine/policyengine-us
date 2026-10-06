@@ -9,7 +9,7 @@ class ma_529_deduction(Variable):
     definition_period = YEAR
     reference = (
         "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3",
-        "https://www.mass.gov/info-details/529-plan-deduction",
+        "https://www.mass.gov/technical-information-release/tir-22-5-tax-provisions-in-recent-massachusetts-legislation#ii-provisions-only-affecting-individual-taxpayers",
     )
     defined_for = StateCode.MA
 

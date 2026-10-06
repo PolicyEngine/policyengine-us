@@ -1,6 +1,7 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
+from policyengine_us.tools.period_branch import get_branch_for_period
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
@@ -16,17 +17,26 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
 
 
 def tax_unit_non_dep_add(tax_unit, period, variables):
-    """Like add(tax_unit, period, variables), but person-level variables count
-    only the head and spouse.
-
-    irs_gross_income excludes each tax-unit dependent's income, so that income
-    never enters the tax unit's federal AGI; the dependent reports it on their
-    own return. Subtractions from federal AGI therefore must not count a
-    dependent's amounts either. Tax-unit-level variables are added as-is.
     """
+    Add variables over a tax unit's head and spouse, leaving out dependents.
+
+    Like `add`, but a person-level variable is summed only over members who
+    are not tax unit dependents, whose items belong on their own returns
+    (irs_gross_income leaves them out of the filer's federal AGI the same
+    way). A variable of any other entity falls back to `add`, so a
+    tax-unit-level variable is added as is and must already describe the
+    filer's own return.
+    """
+    if tax_unit.entity.key != "tax_unit":
+        raise ValueError(
+            f"tax_unit_non_dep_add needs a tax unit, not a {tax_unit.entity.key}."
+        )
     total = np.zeros(tax_unit.count)
     for variable in variables:
-        if tax_unit.entity.get_variable(variable).entity.is_person:
+        variable_entity = tax_unit.entity.get_variable(
+            variable, check_existence=True
+        ).entity
+        if variable_entity.is_person:
             total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
         else:
             total = total + add(tax_unit, period, [variable])

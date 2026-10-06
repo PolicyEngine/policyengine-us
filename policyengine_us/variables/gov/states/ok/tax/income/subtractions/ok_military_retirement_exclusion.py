@@ -9,7 +9,7 @@ class ok_military_retirement_exclusion(Variable):
     definition_period = YEAR
     reference = (
         # (g)
-        "https://casetext.com/regulation/oklahoma-administrative-code/title-710-oklahoma-tax-commission/chapter-50-income/subchapter-15-oklahoma-taxable-income/part-5-other-adjustments-to-income/section-71050-15-49-deduction-for-retirement-income",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-49",
         # 68 O.S. § 2358(E)(17)
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1017",
         # Schedule 511-A, line 4

@@ -9,7 +9,8 @@ class ny_pension_exclusion(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
     reference = (
-        "https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income",
+        # N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3
+        "https://www.law.cornell.edu/regulations/new-york/20-NYCRR-112.3",
         # N.Y. Tax Law § 612(c)(3-a)
         "https://newyork.public.law/laws/n.y._tax_law_section_612",
         # 2025 Form IT-201-I, line 29 and "Married taxpayers"
