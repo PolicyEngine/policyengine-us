@@ -10,7 +10,7 @@ surplus, at the per-person tier amounts in the Legislative Council Staff March
 Hypothesis draws batches of tax units (single, joint, or head of household
 with a dependent), each with a modified AGI, filer ages and wages; a seeded
 population of 100 units adds breadth. Each batch runs as one vectorized
-simulation per year. For every tax unit:
+simulation covering all three years. For every tax unit:
 
 1. Gate: in 2026 the refund is zero, whatever the income, filing status or
    eligibility.
@@ -91,7 +91,14 @@ def _seeded_units(n=100):
     return units
 
 
-def _situation(units, year):
+YEARS = (2025, 2026, 2027)
+
+
+def _situation(units):
+    # One simulation holds every year: each input is keyed by all of YEARS.
+    def every_year(value):
+        return {year: value for year in YEARS}
+
     people, groups = {}, {"tax_units": {}, "households": {}}
     for i, unit in enumerate(units):
         head = f"head_{i}"
@@ -107,45 +114,40 @@ def _situation(units, year):
             members.append(child)
         groups["tax_units"][f"tax_unit_{i}"] = {
             "members": members,
-            "co_modified_agi": unit["agi"],
-            "co_income_tax_before_non_refundable_credits": 0,
+            "co_modified_agi": every_year(unit["agi"]),
+            "co_income_tax_before_non_refundable_credits": every_year(0),
         }
         groups["households"][f"household_{i}"] = {
             "members": members,
-            "state_code": "CO",
+            "state_code": every_year("CO"),
         }
     people = {
-        name: {key: {year: value} for key, value in values.items()}
+        name: {key: every_year(value) for key, value in values.items()}
         for name, values in people.items()
-    }
-    groups = {
-        group: {
-            name: {
-                key: value if key == "members" else {year: value}
-                for key, value in values.items()
-            }
-            for name, values in entities.items()
-        }
-        for group, entities in groups.items()
     }
     return {"people": people, **groups}
 
 
-def _run(units, year):
-    sim = Simulation(situation=_situation(units, year))
-    eligible = np.asarray(
-        sim.calculate("co_sales_tax_refund_person_eligible", year), dtype=float
-    )
+def _run(units):
+    sim = Simulation(situation=_situation(units))
     unit = sim.populations["tax_unit"].members_entity_id
-    return {
-        "refund": np.asarray(sim.calculate("co_sales_tax_refund", year), dtype=float),
-        "agi": np.asarray(sim.calculate("co_modified_agi", year), dtype=float),
-        "count": np.bincount(unit, weights=eligible, minlength=len(units)),
-    }
+    by_year = {}
+    for year in YEARS:
+        eligible = np.asarray(
+            sim.calculate("co_sales_tax_refund_person_eligible", year), dtype=float
+        )
+        by_year[year] = {
+            "refund": np.asarray(
+                sim.calculate("co_sales_tax_refund", year), dtype=float
+            ),
+            "agi": np.asarray(sim.calculate("co_modified_agi", year), dtype=float),
+            "count": np.bincount(unit, weights=eligible, minlength=len(units)),
+        }
+    return by_year
 
 
 def _check(units):
-    by_year = {year: _run(units, year) for year in (2025, 2026, 2027)}
+    by_year = _run(units)
     published = PUBLISHED_2025_AMOUNTS[
         np.searchsorted(PUBLISHED_2025_STARTS, by_year[2025]["agi"], side="right")
     ]
