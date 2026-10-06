@@ -3,30 +3,30 @@ values:
   2013-01-01:
     - foreign_tax_credit
     - cdcc
+    - elderly_disabled_credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
     - energy_efficient_home_improvement_credit
-    - elderly_disabled_credit
   # The Child and Dependent Care Credit was refundable for 2021 only.
   2021-01-01:
     - foreign_tax_credit
+    - elderly_disabled_credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
     - energy_efficient_home_improvement_credit
-    - elderly_disabled_credit
     - new_clean_vehicle_credit
   2022-01-01:
     - foreign_tax_credit # Schedule 3, line 1
     - cdcc # Schedule 3, line 2
+    - elderly_disabled_credit # Schedule 3, line 6d
     - non_refundable_american_opportunity_credit # Schedule 3, line 3
     - lifetime_learning_credit # Schedule 3, line 3
     - savers_credit # Schedule 3, line 4
     - energy_efficient_home_improvement_credit # Form 5695, line 32 (line 30 in 2022)
-    - elderly_disabled_credit # Schedule 3, line 6d
-    - new_clean_vehicle_credit # Schedule 3, line 6f
     - used_clean_vehicle_credit # Schedule 3, line 6m
+    - new_clean_vehicle_credit # Schedule 3, line 6f
 
 metadata:
   unit: list
@@ -37,3 +37,7 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/25D#c
     - title: 2025 Instructions for Form 5695, Residential Clean Energy Credit Limit Worksheet, line 2
       href: https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=5
+    - title: 2022 Instructions for Form 5695, Residential Clean Energy Credit Limit Worksheet—Line 14, line 2
+      href: https://www.irs.gov/pub/irs-prior/i5695--2022.pdf#page=4
+    - title: 2013 Form 5695, Residential Energy Efficient Property Credit Limit Worksheet—Line 14, lines 2 to 9
+      href: https://www.irs.gov/pub/irs-prior/f5695--2013.pdf#page=5
