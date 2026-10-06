@@ -1,3 +1,10 @@
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
 ## [2.29.0] - 2026-10-05
 
 ### Added
