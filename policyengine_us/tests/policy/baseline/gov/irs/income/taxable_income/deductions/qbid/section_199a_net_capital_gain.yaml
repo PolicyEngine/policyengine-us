@@ -113,3 +113,30 @@
     # Schedule D line 15 = $20,000; line 16 = $15,000. Line 3a = $3,000.
     # Form 8995 line 12 = $3,000 + $15,000 = $18,000.
     section_199a_net_capital_gain: 18_000
+
+- name: A negative qualified dividend input adds nothing
+  period: 2025
+  input:
+    long_term_capital_gains: 10_000
+    qualified_dividend_income: -2_000
+  output:
+    # Form 1040 line 3a cannot be negative; the gain is not reduced.
+    section_199a_net_capital_gain: 10_000
+
+- name: Spouses' qualified dividends are summed before the zero floor
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        qualified_dividend_income: -2_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+  output:
+    # 10,000 + max(0, 5,000 - 2,000).
+    section_199a_net_capital_gain: 13_000
