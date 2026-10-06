@@ -65,7 +65,10 @@
         members: [person1, person2]
         state_code: UT
   output:  
-    ut_retirement_credit_max: 737.5 # phase-out reduction partially eliminates credit: 900-(30000+3*500-25000)/0.025 = 737.5
+    # person1 is the head, person3 the spouse and person2 a dependent, whose
+    # tax-exempt interest is on their own return. Phase-out reduction:
+    # 900 - (30_000 + 2 * 500 - 25_000) * 0.025 = 750.
+    ut_retirement_credit_max: 750
 
 - name: UT retirement credit max unit test 4
   period: 2022
@@ -115,7 +118,9 @@
         members: [person1, person2]
         state_code: UT
   output:  
-    ut_retirement_credit_max: 662.5
+    # person2 is a dependent, so only the head's and spouse's tax-exempt
+    # interest counts: 900 - (40_000 + 2 * 500 - 32_000) * 0.025 = 675.
+    ut_retirement_credit_max: 675
 
 - name: Edge case test, birth year
   period: 2022
