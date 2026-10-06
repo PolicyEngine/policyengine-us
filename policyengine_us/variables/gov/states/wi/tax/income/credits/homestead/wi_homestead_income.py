@@ -19,6 +19,4 @@ class wi_homestead_income(Variable):
         income = add(tax_unit, period, p.homestead.income.sources)
         disqualified_losses = tax_unit("wi_homestead_disqualified_losses", period)
         dependents = tax_unit("tax_unit_dependents", period)
-        return (
-            income + disqualified_losses - dependents * p.homestead.income.exemption
-        )
+        return income + disqualified_losses - dependents * p.homestead.income.exemption
