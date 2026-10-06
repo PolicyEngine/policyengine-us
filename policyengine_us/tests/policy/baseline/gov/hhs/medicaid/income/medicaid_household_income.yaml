@@ -399,3 +399,47 @@
     medicaid_person_is_required_to_file: [true, true, false]
     medicaid_magi_person: [30_000, -3_000, -20_000]
     medicaid_household_income: [7_000, 7_000, 10_000]
+
+- name: Married non-filer parents' loss offsets their wages in their child's household.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 35
+        employment_income: 12_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      father:
+        age: 35
+        self_employment_income: -5_000
+        own_children_in_household: 1
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_head: true
+    tax_units:
+      parents:
+        members: [mother, father]
+        tax_unit_is_filer: false
+      child_unit:
+        members: [child]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [mother, father, child]
+    marital_units:
+      couple:
+        members: [mother, father]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: TX
+  output:
+    # Each parent's household is the parent, their spouse and their child
+    # (42 CFR 435.603(f)(3)(i)-(ii)), and the child's is the child and both
+    # parents ((f)(3)(iii)): 12,000 - 5,000 = 7,000 for all three.
+    medicaid_uses_non_filer_rules: [true, true, true]
+    medicaid_household_income: [7_000, 7_000, 7_000]
