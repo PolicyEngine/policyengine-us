@@ -167,6 +167,37 @@
     # Surtax: $100,000 * 2% = $2,000
     md_capital_gains_surtax: 2_000
 
+- name: MD Capital gains surtax 2025 - One spouse's loss within the other's gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        long_term_capital_gains: 100_000
+      person2:
+        age: 48
+        short_term_capital_gains: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 450_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Joint federal Schedule D line 16 = $100,000 - $20,000 = $80,000. The
+    # loss is within the gains, so 26 U.S.C. 1211(b) allows it in full and
+    # no $3,000 capped loss is left to subtract again.
+    # 2025 Form 502CG line 1 (federal line 7a): $80,000
+    # Surtax: $80,000 * 2% = $1,600 (subtracting a $3,000 capped loss again
+    # gave $1,540)
+    md_capital_gains_surtax: 1_600
+
 - name: MD Capital gains surtax 2025 - High earner with large gains
   period: 2025
   absolute_error_margin: 0.01
