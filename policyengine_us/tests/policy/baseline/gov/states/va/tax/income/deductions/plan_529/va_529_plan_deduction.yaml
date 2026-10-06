@@ -1,0 +1,155 @@
+- name: Contribution below cap with one beneficiary
+  period: 2024
+  input:
+    state_code: VA
+    investment_in_529_plan_indv: 3_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    va_529_plan_deduction: 3_000
+
+- name: Contribution above cap with one beneficiary
+  period: 2024
+  input:
+    state_code: VA
+    investment_in_529_plan_indv: 6_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    va_529_plan_deduction: 4_000
+
+- name: Two beneficiaries increases the cap
+  period: 2024
+  input:
+    people:
+      person1:
+        investment_in_529_plan_indv: 7_000
+        count_529_contribution_beneficiaries: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_529_plan_deduction: 7_000
+
+- name: Zero contributions
+  period: 2024
+  input:
+    state_code: VA
+    investment_in_529_plan_indv: 0
+    count_529_contribution_beneficiaries: 0
+  output:
+    va_529_plan_deduction: 0
+
+- name: Only the owner of record deducts the contribution, not both spouses by income share
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 45
+        employment_income: 40_000
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 2024 Form 760 instructions, code 104: "Only the owner of record for an
+    # account may claim a deduction for contributions made."
+    va_529_plan_deduction_person: [0, 3_000]
+    va_529_plan_deduction: 3_000
+
+- name: An owner age 70 or older deducts the full contribution
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        investment_in_529_plan_indv: 10_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Va. Code § 58.1-322.03(7)(b); code 104: "if you are age 70 or older on or
+    # before December 31 of the taxable year, you may deduct the entire amount
+    # contributed during the taxable year."
+    va_529_plan_deduction: 10_000
+
+- name: An owner under 70 is held to the per-account cap
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 69
+        investment_in_529_plan_indv: 10_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_529_plan_deduction: 4_000
+
+- name: Each spouse's own accounts carry their own cap
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        investment_in_529_plan_indv: 6_000
+        count_529_contribution_beneficiaries: 1
+      person2:
+        age: 71
+        investment_in_529_plan_indv: 6_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Person 1 is capped at 4_000 for one account; person 2 is 70 or older and
+    # deducts the full 6_000.
+    va_529_plan_deduction_person: [4_000, 6_000]
+    va_529_plan_deduction: 10_000
+
+- name: A dependent's account is not deducted on the parents' return
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        investment_in_529_plan_indv: 1_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_529_plan_deduction_person: [0, 0]
+    va_529_plan_deduction: 0
