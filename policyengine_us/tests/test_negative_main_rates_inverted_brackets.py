@@ -223,3 +223,17 @@ def test_shipped_additional_tax_bracket_reform_is_clamped():
     before_credits = sim.calculate("income_tax_before_credits", 2026)[0]
     assert main == 0
     assert before_credits == 0
+
+    # A zero-income filer owes nothing under any non-negative loop, so also
+    # check a filer inside the inverted band. Clamped, bracket 6 is empty and
+    # 151,625-400,000 is all taxed at bracket 5's 33%: 115,896.25. Without
+    # the inversion the tax is 122,810.50, and an unclamped loop gives yet
+    # another figure.
+    situation = separate_filer(0)
+    situation["tax_units"]["tu"]["taxable_income"] = {"2026": 400_000}
+    sim = Simulation(
+        reform=(fill_extra_bracket, additional_tax_bracket), situation=situation
+    )
+    assert sim.calculate("income_tax_main_rates", 2026)[0] == pytest.approx(
+        115_896.25, abs=0.01
+    )

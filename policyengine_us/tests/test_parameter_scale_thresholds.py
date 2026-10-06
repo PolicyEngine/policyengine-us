@@ -281,6 +281,7 @@ def _mapped_threshold_tables():
         if isinstance(node, ParameterNode)
         and "rates" in node.children
         and isinstance(node.children.get("thresholds"), ParameterNode)
+        and node.children["thresholds"].children
         and sorted(node.children["thresholds"].children)
         == sorted(
             str(i) for i in range(1, len(node.children["thresholds"].children) + 1)
