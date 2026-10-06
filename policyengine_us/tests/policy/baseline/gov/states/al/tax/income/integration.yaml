@@ -25,3 +25,67 @@
   output:
     al_federal_income_tax_deduction: 1_010_474
     al_income_tax: 79_786
+
+- name: A dependent's wages do not raise the parent's Alabama tax, 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 20_000
+      child:
+        age: 16
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # The child's 10,000 of wages go on the child's own return (2021 Form 40
+    # booklet p. 5), so the parent's head of family return has AGI of 20,000:
+    # standard deduction 4,700 (chart, AGI 0-23,499), personal exemption
+    # 3,000 and dependent exemption 1,000 (AGI not over 20,000). Federal tax
+    # after refundable credits is zero, so no federal tax deduction.
+    # Taxable income 11,300; tax 2% x 500 + 4% x 2,500 + 5% x 8,300 = 525.
+    al_agi: 20_000
+    al_standard_deduction: 4_700
+    al_personal_exemption: 3_000
+    al_dependent_exemption: 1_000
+    al_federal_income_tax_deduction: 0
+    al_taxable_income: 11_300
+    al_income_tax: 525
+
+- name: A dependent's wages do not raise the parent's Alabama tax, 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 24_000
+      child:
+        age: 16
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # The parent's head of family return has AGI of 24,000 (2025 Form 40
+    # booklet p. 5): standard deduction 5,200 (chart, AGI 0-25,999), personal
+    # exemption 3,000 and dependent exemption 1,000 (AGI not over 50,000).
+    # Federal tax is offset by the nonrefundable child tax credit, so no
+    # federal tax deduction. Taxable income 14,800; tax 2% x 500 + 4% x 2,500
+    # + 5% x 11,800 = 700.
+    al_agi: 24_000
+    al_standard_deduction: 5_200
+    al_personal_exemption: 3_000
+    al_dependent_exemption: 1_000
+    al_federal_income_tax_deduction: 0
+    al_taxable_income: 14_800
+    al_income_tax: 700
