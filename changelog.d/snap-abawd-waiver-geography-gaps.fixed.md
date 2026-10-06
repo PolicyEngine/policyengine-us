@@ -1,1 +1,0 @@
-Encode the missing SNAP ABAWD county waivers (FY2024 lists for Kentucky, Michigan, New Jersey, Oregon, and Washington from November 2024; FY2026 lists for Arizona, Kentucky, Michigan, Minnesota, New Jersey, and Nevada) and document the sources for Alaska's good-faith exemption geography.

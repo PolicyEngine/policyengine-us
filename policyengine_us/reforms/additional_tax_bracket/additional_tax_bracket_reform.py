@@ -1,6 +1,13 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
+from policyengine_us.variables.gov.irs.tax.federal_income.before_credits.tax_at_main_rates import (
+    amount_taxed_below_rate,
+    tax_at_main_rates,
+)
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
+    schedule_d_tax_worksheet_after_capital_gain_excess,
+)
 
 
 def create_additional_tax_bracket() -> Reform:
@@ -15,14 +22,19 @@ def create_additional_tax_bracket() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs
             filing_status = tax_unit("filing_status", period)
-            dwks1 = tax_unit("taxable_income", period)
+            # As in the baseline formula, a Form 2555 filer stacks taxable
+            # income on the excluded amount (26 U.S.C. 911(f)).
+            dwks1 = tax_unit("taxable_income_plus_section_911_exclusion", period)
+            worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
+                tax_unit, period, tax_unit("taxable_income", period)
+            )
 
             dwks16 = min_(p.capital_gains.thresholds["1"][filing_status], dwks1)
             dwks17 = min_(tax_unit("dwks14", period), dwks16)
             dwks20 = dwks16 - dwks17
             lowest_rate_tax = p.capital_gains.rates["1"] * dwks20
             # Break in worksheet lines
-            dwks13 = tax_unit("dwks13", period)
+            dwks13 = worksheet.line_13
             dwks21 = min_(dwks1, dwks13)
             dwks22 = dwks20
             dwks23 = max_(0, dwks21 - dwks22)
@@ -36,11 +48,8 @@ def create_additional_tax_bracket() -> Reform:
             dwks31 = dwks21 - dwks30
             dwks32 = p.capital_gains.rates["3"] * dwks31
             # Break in worksheet lines
-            dwks33 = min_(
-                tax_unit("dwks09", period),
-                add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
-            )
-            dwks10 = tax_unit("dwks10", period)
+            dwks33 = min_(worksheet.line_9, worksheet.unrecaptured_section_1250_gain)
+            dwks10 = worksheet.line_10
             dwks34 = dwks10 + dwks19
             dwks36 = max_(0, dwks34 - dwks1)
             dwks37 = max_(0, dwks33 - dwks36)
@@ -54,25 +63,18 @@ def create_additional_tax_bracket() -> Reform:
             dwks41 = p.amt.brackets.rates[-1] * dwks40
 
             # Compute regular tax using bracket rates and thresholds
+            # The shared schedule clamps inverted brackets as in the
+            # baseline formulas (#9084).
             reg_taxinc = max_(0, dwks19)
-            p_reform = parameters(period).gov.contrib.additional_tax_bracket
-            bracket_tops = p_reform.bracket.thresholds
-            bracket_rates = p_reform.bracket.rates
-            reg_tax = 0
-            bracket_bottom = 0
-            for i in range(1, len(list(bracket_rates.__iter__())) + 1):
-                b = str(i)
-                # Clamp as in the baseline formulas (#9084): an
-                # inverted bracket contributes zero width.
-                bracket_top = max_(bracket_bottom, bracket_tops[b][filing_status])
-                reg_tax += bracket_rates[b] * amount_between(
-                    reg_taxinc, bracket_bottom, bracket_top
-                )
-                bracket_bottom = bracket_top
+            bracket = parameters(period).gov.contrib.additional_tax_bracket.bracket
+            reg_tax = tax_at_main_rates(reg_taxinc, filing_status, bracket)
 
             # Return to worksheet lines
             dwks42 = reg_tax
             dwks43 = dwks29 + dwks32 + dwks38 + dwks41 + dwks42 + lowest_rate_tax
+            excluded = max_(0, tax_unit("foreign_earned_income_exclusion", period))
+            tax_on_excluded = tax_at_main_rates(excluded, filing_status, bracket)
+            dwks43 = where(excluded > 0, max_(0, dwks43 - tax_on_excluded), dwks43)
             dwks44 = tax_unit("income_tax_main_rates", period)
             dwks45 = min_(dwks43, dwks44)
             return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)
@@ -82,38 +84,59 @@ def create_additional_tax_bracket() -> Reform:
         entity = TaxUnit
         definition_period = YEAR
         label = "Income tax main rates"
-        reference = "https://www.law.cornell.edu/uscode/text/26/1"
+        reference = [
+            "https://www.law.cornell.edu/uscode/text/26/1",
+            "https://www.law.cornell.edu/uscode/text/26/911#f_1_A",
+        ]
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            # compute taxable income that is taxed at the main rates
-            full_taxable_income = tax_unit("taxable_income", period)
+            # compute taxable income that is taxed at the main rates; as in
+            # the baseline formula, a taxpayer excluding foreign earned
+            # income adds the excluded amount back (26 U.S.C. 911(f)(1)(A))
+            full_taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
             cg_exclusion = tax_unit(
                 "capital_gains_excluded_from_taxable_income", period
             )
             taxinc = max_(0, full_taxable_income - cg_exclusion)
             # compute tax using bracket rates and thresholds
-            p = parameters(period).gov.contrib.additional_tax_bracket
-            bracket_tops = p.bracket.thresholds
-            bracket_rates = p.bracket.rates
+            bracket = parameters(period).gov.contrib.additional_tax_bracket.bracket
             filing_status = tax_unit("filing_status", period)
-            tax = 0
-            bracket_bottom = 0
-            for i in range(1, len(list(bracket_rates.__iter__())) + 1):
-                b = str(i)
-                # Clamp as in the baseline formulas (#9084): an
-                # inverted bracket contributes zero width.
-                bracket_top = max_(bracket_bottom, bracket_tops[b][filing_status])
-                tax += bracket_rates[b] * amount_between(
-                    taxinc, bracket_bottom, bracket_top
-                )
-                bracket_bottom = bracket_top
-            return tax
+            tax = tax_at_main_rates(taxinc, filing_status, bracket)
+            # less the tax on the excluded amount alone
+            excluded = max_(0, tax_unit("foreign_earned_income_exclusion", period))
+            tax_on_excluded = tax_at_main_rates(excluded, filing_status, bracket)
+            return where(excluded > 0, max_(0, tax - tax_on_excluded), tax)
+
+    class taxable_income_taxed_below_25_percent(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Taxable income taxed at a rate below 25 percent"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/1#h_1_A_ii_I"
+
+        def formula(tax_unit, period, parameters):
+            # 26 U.S.C. 1(h)(1)(A)(ii)(I) on the reform's rate schedule, as
+            # in the baseline formula on the baseline schedule.
+            taxable_income = tax_unit(
+                "taxable_income_plus_section_911_exclusion", period
+            )
+            filing_status = tax_unit("filing_status", period)
+            return amount_taxed_below_rate(
+                taxable_income,
+                filing_status,
+                parameters(period).gov.contrib.additional_tax_bracket.bracket,
+                parameters(period).gov.irs.capital_gains.regular_rate_limit,
+            )
 
     class reform(Reform):
         def apply(self):
             self.update_variable(income_tax_main_rates)
             self.update_variable(regular_tax_before_credits)
+            self.update_variable(taxable_income_taxed_below_25_percent)
 
     return reform
 

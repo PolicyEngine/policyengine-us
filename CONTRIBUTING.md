@@ -54,7 +54,7 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 
 - Federal modules live under `us/` (for example `us/statutes/26/32.yaml` for the EITC and `us/policies/irs/rev-proc-2025-32/` for annual IRS amounts). State modules live under `us-<state>/` (for example `us-nj/statutes/54a:4-7.yaml`). Search `main` there before opening a new issue.
 - An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
-- Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
+- Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
 
 ## Repo-specific anti-patterns
 
