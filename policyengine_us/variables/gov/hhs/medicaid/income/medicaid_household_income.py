@@ -10,8 +10,22 @@ class medicaid_household_income(Variable):
     entity = Person
     label = "Medicaid MAGI household income"
     unit = USD
+    documentation = (
+        "The sum of the MAGI-based income of every member of the person's "
+        "Medicaid household (42 CFR 435.603(d)(1)). Members' amounts are "
+        "added before any floor, so a loss of one member, such as a spouse's "
+        "business loss on a joint return, offsets the others' income, as it "
+        "does in the couple's joint AGI. Only the total is floored at zero, "
+        "as Form 8962 combines the taxpayer's and dependents' modified AGIs "
+        "'even if one or both of them are negative' before entering a "
+        "negative total as zero."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/435.603#d"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/42/435.603#d",
+        "https://www.law.cornell.edu/uscode/text/26/36B#d_2_A",
+        "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
+    )
 
     def formula(person, period, parameters):
         child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
@@ -67,7 +81,7 @@ class medicaid_household_income(Variable):
             person, period, tax_household_income
         )
 
-        return where(
+        household_income = where(
             non_filer_rules,
             non_filer_household_income,
             where(
@@ -76,3 +90,6 @@ class medicaid_household_income(Variable):
                 tax_household_income,
             ),
         )
+        # Each member's MAGI-based income can be negative; only the
+        # household's total is floored.
+        return max_(0, household_income)
