@@ -1,4 +1,4 @@
-"""Properties of supplied tax-unit roles and filing statuses over generated units.
+"""Properties of supplied tax-unit roles over generated units.
 
 Invariants, each checked for every generated household:
 
@@ -7,36 +7,29 @@ Invariants, each checked for every generated household:
    equal the supplied roles, so the unit has exactly one head and at most one
    spouse.
 3. Fallback: in a unit without supplied roles, the roles equal an independent
-   implementation of age ordering (the oldest adult heads the unit, earliest
-   member on ties; the next-oldest adult is the spouse unless any member is
-   separated).
-4. Supplied statuses hold: a supplied filing status is the filing status, and a
-   supplied unit files jointly exactly when it has a spouse.
-5. Workaround equivalence (differential): supplying roles and statuses through
-   the input variables gives the same filing status and income tax as setting
-   is_tax_unit_head, is_tax_unit_spouse, is_tax_unit_dependent and
-   filing_status directly, the policyengine-taxsim workaround. The explicit pin
-   must cover every unit: a situation that sets filing_status for some tax
-   units gives the rest the default (SINGLE) rather than the formula.
-6. Switch-off locality: abolishing one status's eligibility rule re-derives the
-   units supplied with that status and no others.
-7. Error contract: supplied roles raise exactly when malformed - supplied for
+   implementation of age ordering. The oldest adult heads the unit, earliest
+   member on ties, skipping adults input as tax unit dependents unless every
+   adult is one; the next such adult is the spouse unless any member of the
+   unit is separated.
+4. Filing status is computed: no supplied status is read, so a unit files
+   jointly exactly when it has a spouse, supplied or inferred.
+5. Workaround equivalence (differential): supplying roles through
+   tax_unit_role_input gives the same filing status and income tax as setting
+   is_tax_unit_head, is_tax_unit_spouse and is_tax_unit_dependent directly,
+   the policyengine-taxsim workaround. Neither side sets filing_status, so both
+   compute it from the same roles.
+6. Error contract: supplied roles raise exactly when malformed - supplied for
    only some members, or not exactly one HEAD and at most one SPOUSE.
 """
-
-from functools import cache
 
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 import numpy as np
 import pytest
 
-from policyengine_core.reforms import Reform
-
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
 
 YEAR = 2024
-STATUSES = ["SINGLE", "SEPARATE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE"]
 SETTINGS = dict(
     derandomize=True,
     deadline=None,
@@ -45,8 +38,13 @@ SETTINGS = dict(
 
 
 @st.composite
-def tax_units(draw, supplied=None, every_status=False, status=None):
-    """One tax unit; ``status`` forces a supplied unit with that non-joint status."""
+def tax_units(draw, supplied=None, dependent_inputs=False):
+    """One tax unit, with supplied roles when ``supplied`` (drawn if None).
+
+    With ``dependent_inputs``, a unit without supplied roles also flags some
+    members as input tax unit dependents, and a supplied unit flags exactly
+    its supplied dependents.
+    """
     size = draw(st.integers(1, 4))
     ages = draw(st.lists(st.integers(0, 90), min_size=size, max_size=size))
     separated = draw(
@@ -59,32 +57,32 @@ def tax_units(draw, supplied=None, every_status=False, status=None):
     earnings = draw(
         st.lists(st.sampled_from([0, 15_000, 60_000]), min_size=size, max_size=size)
     )
-    forced = status
-    with_roles = forced is not None or (
-        draw(st.booleans()) if supplied is None else supplied
-    )
+    with_roles = draw(st.booleans()) if supplied is None else supplied
     roles = None
-    status = None
     if with_roles:
         head = draw(st.integers(0, size - 1))
         others = [i for i in range(size) if i != head]
         spouse = None
-        if others and forced is None:
+        if others:
             spouse = draw(st.one_of(st.none(), st.sampled_from(others)))
         roles = ["DEPENDENT"] * size
         roles[head] = "HEAD"
         if spouse is not None:
             roles[spouse] = "SPOUSE"
-        if forced is not None:
-            status = forced
-        elif every_status or draw(st.booleans()):
-            status = "JOINT" if spouse is not None else draw(st.sampled_from(STATUSES))
+    dependent_input = None
+    if dependent_inputs:
+        if roles:
+            dependent_input = [role == "DEPENDENT" for role in roles]
+        else:
+            dependent_input = draw(
+                st.lists(st.booleans(), min_size=size, max_size=size)
+            )
     return dict(
         ages=ages,
         separated=separated,
         earnings=earnings,
         roles=roles,
-        status=status,
+        dependent_input=dependent_input,
     )
 
 
@@ -106,13 +104,11 @@ def _situation(units, pin_explicitly=False):
                 person["is_tax_unit_dependent"] = {YEAR: role == "DEPENDENT"}
             elif role:
                 person["tax_unit_role_input"] = {YEAR: role}
+            if unit["dependent_input"] is not None:
+                person["is_tax_unit_dependent"] = {YEAR: unit["dependent_input"][i]}
             people[name] = person
             members.append(name)
-        group = {"members": members}
-        if unit["status"]:
-            key = "filing_status" if pin_explicitly else "filing_status_input"
-            group[key] = {YEAR: unit["status"]}
-        tax_unit_groups[f"u{u}"] = group
+        tax_unit_groups[f"u{u}"] = {"members": members}
     return {
         "people": people,
         "tax_units": tax_unit_groups,
@@ -122,11 +118,16 @@ def _situation(units, pin_explicitly=False):
     }
 
 
-def _age_rule(ages, separated):
-    # Mirrors the fallback as it stands, including its unit-wide separation
-    # gate: any separated member blocks every spouse. That gate is a known
-    # defect (#9620); update this reference when it is fixed.
+def _age_rule(ages, separated, dependent_input=None):
+    # Mirrors the fallback as it stands. Adults input as tax unit dependents
+    # are skipped unless every adult is one (#9630). Any separated member
+    # blocks every spouse; that unit-wide gate is a known defect (#9620), so
+    # update this reference when it is fixed.
     adults = [i for i, age in enumerate(ages) if age >= 18]
+    if dependent_input is not None:
+        non_dependents = [i for i in adults if not dependent_input[i]]
+        if non_dependents:
+            adults = non_dependents
     head = min(adults, key=lambda i: (-ages[i], i)) if adults else None
     candidates = [] if any(separated) else [i for i in adults if i != head]
     spouse = min(candidates, key=lambda i: (-ages[i], i)) if candidates else None
@@ -142,19 +143,24 @@ def _by_unit(units, values):
     return out
 
 
-@cache
-def _abolished(rule):
-    """A system with one eligibility rule abolished, built once per rule."""
-    reform = Reform.from_dict(
-        {f"gov.abolitions.{rule}": {"2000-01-01.2100-12-31": True}},
-        country_id="us",
-    )
-    return CountryTaxBenefitSystem(reform=reform)
+def _check_roles(units, head, spouse):
+    for unit, h, s in zip(units, _by_unit(units, head), _by_unit(units, spouse)):
+        if unit["roles"]:
+            # 2. Supplied roles hold.
+            assert h == [role == "HEAD" for role in unit["roles"]]
+            assert s == [role == "SPOUSE" for role in unit["roles"]]
+        else:
+            # 3. Fallback equals the independent age-ordering rule.
+            expected_head, expected_spouse = _age_rule(
+                unit["ages"], unit["separated"], unit["dependent_input"]
+            )
+            assert h == [i == expected_head for i in range(len(h))]
+            assert s == [i == expected_spouse for i in range(len(s))]
 
 
 @settings(max_examples=40, **SETTINGS)
 @given(st.lists(tax_units(), min_size=1, max_size=4))
-def test_roles_and_statuses_follow_supplied_values_and_otherwise_rules(units):
+def test_roles_follow_supplied_values_and_otherwise_age_ordering(units):
     simulation = Simulation(situation=_situation(units))
     head = simulation.calculate("is_tax_unit_head", YEAR).astype(bool)
     spouse = simulation.calculate("is_tax_unit_spouse", YEAR).astype(bool)
@@ -162,29 +168,29 @@ def test_roles_and_statuses_follow_supplied_values_and_otherwise_rules(units):
     status = simulation.calculate("filing_status", YEAR).decode_to_str().tolist()
     # 1. Partition.
     assert np.all(head.astype(int) + spouse.astype(int) + dependent.astype(int) == 1)
-    for unit, h, s, unit_status in zip(
-        units, _by_unit(units, head), _by_unit(units, spouse), status
-    ):
-        if unit["roles"]:
-            # 2. Supplied roles hold.
-            assert h == [role == "HEAD" for role in unit["roles"]]
-            assert s == [role == "SPOUSE" for role in unit["roles"]]
-            # 4. Supplied units file jointly exactly when they have a spouse.
-            assert (unit_status == "JOINT") == any(s)
-        else:
-            # 3. Fallback equals the independent age-ordering rule.
-            expected_head, expected_spouse = _age_rule(unit["ages"], unit["separated"])
-            assert h == [i == expected_head for i in range(len(h))]
-            assert s == [i == expected_spouse for i in range(len(s))]
-        if unit["status"]:
-            # 4. A supplied status is the status.
-            assert unit_status == unit["status"]
+    _check_roles(units, head, spouse)
+    for s, unit_status in zip(_by_unit(units, spouse), status):
+        # 4. Filing status is computed: joint exactly when there is a spouse.
+        assert (unit_status == "JOINT") == any(s)
+
+
+@settings(max_examples=40, **SETTINGS)
+@given(st.lists(tax_units(dependent_inputs=True), min_size=1, max_size=4))
+def test_supplied_roles_compose_with_input_dependents(units):
+    # Every person carries an is_tax_unit_dependent input, as a situation that
+    # sets it for anyone must. Supplied units flag exactly their supplied
+    # dependents; the others skip their flagged adults when inferring roles.
+    simulation = Simulation(situation=_situation(units))
+    head = simulation.calculate("is_tax_unit_head", YEAR).astype(bool)
+    spouse = simulation.calculate("is_tax_unit_spouse", YEAR).astype(bool)
+    assert not np.any(head & spouse)
+    _check_roles(units, head, spouse)
 
 
 @settings(max_examples=15, **SETTINGS)
-@given(st.lists(tax_units(supplied=True, every_status=True), min_size=1, max_size=3))
-def test_supplied_inputs_match_the_explicit_pin(units):
-    # 5. Differential: input variables and a complete explicit pin agree.
+@given(st.lists(tax_units(supplied=True), min_size=1, max_size=3))
+def test_supplied_roles_match_the_explicit_pin(units):
+    # 5. Differential: the role input and a complete explicit pin agree.
     supplied = Simulation(situation=_situation(units))
     pinned = Simulation(situation=_situation(units, pin_explicitly=True))
     assert (
@@ -196,40 +202,6 @@ def test_supplied_inputs_match_the_explicit_pin(units):
         pinned.calculate("income_tax", YEAR),
         atol=0.005,
     )
-
-
-@pytest.mark.parametrize(
-    "rule,status",
-    [
-        ("head_of_household_eligible", "HEAD_OF_HOUSEHOLD"),
-        ("surviving_spouse_eligible", "SURVIVING_SPOUSE"),
-    ],
-)
-@settings(max_examples=15, **SETTINGS)
-@given(data=st.data())
-def test_abolishing_a_rule_moves_only_units_supplied_with_its_status(
-    rule, status, data
-):
-    # Every example holds at least one unit supplied with the target status,
-    # beside other supplied units.
-    target = data.draw(tax_units(status=status), label="target")
-    others = data.draw(
-        st.lists(tax_units(supplied=True, every_status=True), max_size=2),
-        label="others",
-    )
-    position = data.draw(st.integers(0, len(others)), label="position")
-    units = others[:position] + [target] + others[position:]
-    assert sum(unit["status"] == status for unit in units) >= 1
-    simulation = Simulation(
-        situation=_situation(units), tax_benefit_system=_abolished(rule)
-    )
-    results = simulation.calculate("filing_status", YEAR).decode_to_str().tolist()
-    for unit, result in zip(units, results):
-        # 6. Switch-off locality.
-        if unit["status"] == status:
-            assert result != status
-        elif unit["status"]:
-            assert result == unit["status"]
 
 
 @settings(max_examples=40, **SETTINGS)
@@ -257,7 +229,7 @@ def test_supplied_roles_raise_exactly_when_malformed(roles):
     malformed = (any(supplied) and not all(supplied)) or (
         all(supplied) and (roles.count("HEAD") != 1 or roles.count("SPOUSE") > 1)
     )
-    # 7. Error contract.
+    # 6. Error contract.
     simulation = Simulation(situation=situation)
     if malformed:
         with pytest.raises(ValueError, match="tax_unit_role_input"):

@@ -1,11 +1,14 @@
-"""Tax-unit roles and filing statuses supplied by a population dataset.
+"""Tax-unit roles supplied by a population dataset.
 
 The Populace US build's tax-unit constructor (microunit, called from
 microcosm-frame) assigns every person a role - HEAD, SPOUSE or DEPENDENT - and
-every tax unit a filing status, and writes them to the person column
-``tax_unit_role_input`` and the tax-unit column ``filing_status_input``. The
-role variables and ``filing_status`` use them when supplied and fall back to
-age ordering and the filing rules when not.
+writes it to the person column ``tax_unit_role_input``. The role variables use
+it when supplied and fall back to age ordering when not.
+
+The build also writes its constructor's filing status to a tax-unit column,
+``filing_status_input``. Filing status is a policy calculation, so the model
+does not read that column: ``filing_status`` is computed from the unit's
+members, including the supplied roles, and the filing rules.
 
 The YAML tests cover household situations. These cover what the YAML runner
 cannot: the error contract, the column contract with the producer, and the
@@ -20,17 +23,11 @@ import pytest
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
 from policyengine_us.system import system
-from policyengine_us.variables.household.demographic.tax_unit.filing_status import (
-    FilingStatus,
-)
 
 YEAR = 2024
 
 
-def _situation(people: dict, filing_status_input: str | None = None) -> dict:
-    tax_unit = {"members": list(people)}
-    if filing_status_input is not None:
-        tax_unit["filing_status_input"] = {YEAR: filing_status_input}
+def _situation(people: dict) -> dict:
     return {
         "people": {
             name: {
@@ -39,31 +36,26 @@ def _situation(people: dict, filing_status_input: str | None = None) -> dict:
             }
             for name, (age, role) in people.items()
         },
-        "tax_units": {"tax_unit": tax_unit},
+        "tax_units": {"tax_unit": {"members": list(people)}},
         "households": {"household": {"members": list(people)}},
     }
 
 
-def test_supplied_inputs_carry_the_producers_column_names_and_values():
-    """The variables must match the columns the Populace build writes.
+def test_supplied_input_carries_the_producers_column_name_and_values():
+    """The role variable must match the column the Populace build writes.
 
     The loader sets a dataset column only when a variable has its exact name,
     and encodes a string column by Enum member name, so a renamed variable or
-    member would silently drop the build's roles again.
+    member would silently drop the build's roles again. The build's filing
+    status column must keep no variable of its name, so the model computes
+    filing status rather than loading it.
     """
     role = system.variables["tax_unit_role_input"]
-    status = system.variables["filing_status_input"]
     assert role.entity.key == "person"
-    assert status.entity.key == "tax_unit"
-    for variable in (role, status):
-        assert not variable.formulas  # An input, carried to every later year.
-        assert variable.default_value.name == "UNSPECIFIED"
+    assert not role.formulas  # An input, carried to every later year.
+    assert role.default_value.name == "UNSPECIFIED"
     assert {"HEAD", "SPOUSE", "DEPENDENT"} <= set(role.possible_values.__members__)
-    # Every status the rules can derive can also be supplied.
-    assert set(status.possible_values.__members__) == {
-        "UNSPECIFIED",
-        *FilingStatus.__members__,
-    }
+    assert "filing_status_input" not in system.variables
 
 
 @pytest.mark.parametrize(
@@ -85,72 +77,6 @@ def test_malformed_supplied_roles_raise(people, message):
         simulation.calculate("is_tax_unit_head", YEAR)
 
 
-@pytest.mark.parametrize(
-    "people,status",
-    [
-        ({"head": (50, "HEAD")}, "JOINT"),
-        ({"head": (50, "HEAD"), "spouse": (48, "SPOUSE")}, "SINGLE"),
-        ({"older": (50, None), "younger": (48, None)}, "HEAD_OF_HOUSEHOLD"),
-    ],
-    ids=["joint without a spouse", "spouse but not joint", "age-rule spouse"],
-)
-def test_supplied_status_must_agree_with_the_units_spouse(people, status):
-    simulation = Simulation(situation=_situation(people, status))
-    with pytest.raises(ValueError, match="filing_status_input disagrees"):
-        simulation.calculate("filing_status", YEAR)
-
-
-def _abolish(variable: str) -> dict:
-    return {f"gov.abolitions.{variable}": {"2000-01-01.2100-12-31": True}}
-
-
-@pytest.mark.parametrize(
-    "status,abolished,expected",
-    [
-        ("HEAD_OF_HOUSEHOLD", "head_of_household_eligible", "SINGLE"),
-        ("SINGLE", "head_of_household_eligible", "SINGLE"),
-        ("SURVIVING_SPOUSE", "surviving_spouse_eligible", "HEAD_OF_HOUSEHOLD"),
-        ("HEAD_OF_HOUSEHOLD", "surviving_spouse_eligible", "HEAD_OF_HOUSEHOLD"),
-    ],
-    ids=[
-        "abolished HOH re-derives a supplied HOH",
-        "abolished HOH keeps a supplied SINGLE",
-        "abolished SS re-derives a supplied SS",
-        "abolished SS keeps a supplied HOH",
-    ],
-)
-def test_abolishing_a_status_rule_re_derives_only_that_status(
-    status, abolished, expected
-):
-    """A parent of a 10-year-old, supplied with a status the rules may not give.
-
-    Abolishing an eligibility rule removes that status, so a unit supplied with
-    it is re-derived from the remaining rules; a unit supplied with another
-    status keeps it, as the rules would not otherwise differ from the input.
-    """
-    people = {"parent": (40, "HEAD"), "child": (10, "DEPENDENT")}
-    simulation = Simulation(
-        situation=_situation(people, status), reform=_abolish(abolished)
-    )
-    assert simulation.calculate("filing_status", YEAR).decode_to_str().tolist() == [
-        expected
-    ]
-
-
-@pytest.mark.parametrize(
-    "abolished", ["tax_unit_married", "is_tax_unit_spouse", "tax_unit_roles_supplied"]
-)
-def test_abolishing_a_role_variable_does_not_fail_the_status_check(abolished):
-    """The JOINT check reads the supplied roles, not the abolishable variables."""
-    people = {"head": (40, "HEAD"), "spouse": (40, "SPOUSE")}
-    simulation = Simulation(
-        situation=_situation(people, "JOINT"), reform=_abolish(abolished)
-    )
-    assert simulation.calculate("filing_status", YEAR).decode_to_str().tolist() == [
-        "JOINT"
-    ]
-
-
 def test_an_explicit_head_input_is_never_also_the_spouse():
     """Explicit role flags win over supplied roles without doubling a person."""
     situation = _situation({"a": (50, "HEAD"), "b": (48, "SPOUSE")})
@@ -162,7 +88,9 @@ def test_an_explicit_head_input_is_never_also_the_spouse():
     assert not (head & spouse).any()
 
 
-def _dataset(with_supplied_columns: bool) -> USSingleYearDataset:
+def _dataset(
+    with_supplied_roles: bool, filing_status_column: list | None = None
+) -> USSingleYearDataset:
     """Three tax units in one household, with Populace-style string columns.
 
     1. A couple headed by a 30-year-old reference person with a 60-year-old
@@ -185,13 +113,12 @@ def _dataset(with_supplied_columns: bool) -> USSingleYearDataset:
         }
     )
     tax_unit = pd.DataFrame({"tax_unit_id": [1, 2, 3]})
-    if with_supplied_columns:
+    if with_supplied_roles:
         person["tax_unit_role_input"] = pd.array(
             ["HEAD", "SPOUSE", "DEPENDENT", "HEAD", "HEAD", "DEPENDENT"], dtype="str"
         )
-        tax_unit["filing_status_input"] = pd.array(
-            ["JOINT", "SINGLE", "HEAD_OF_HOUSEHOLD"], dtype="str"
-        )
+    if filing_status_column is not None:
+        tax_unit["filing_status_input"] = pd.array(filing_status_column, dtype="str")
     return USSingleYearDataset(
         person=person,
         household=pd.DataFrame(
@@ -214,14 +141,35 @@ def _roles_and_statuses(simulation, year):
     )
 
 
+# The statuses the filing rules give the supplied roles: the couple files
+# jointly, the lone 16-year-old is single, and the parent of a full-time
+# student under 24 (a qualifying child, 26 USC 152(c)(3)(A)(ii)) is a head of
+# household (26 USC 2(b)(1)(A)(i)).
+COMPUTED_STATUSES = ["JOINT", "SINGLE", "HEAD_OF_HOUSEHOLD"]
+
+
 @pytest.mark.parametrize("year", [YEAR, 2026])
-def test_dataset_roles_and_statuses_hold_in_every_extended_year(year):
+def test_dataset_roles_hold_in_every_extended_year(year):
     simulation = Microsimulation(dataset=_dataset(True), dataset_end_year=2026)
     heads, spouses, dependents, statuses = _roles_and_statuses(simulation, year)
     assert heads == [True, False, False, True, True, False]
     assert spouses == [False, True, False, False, False, False]
     assert dependents == [False, False, True, False, False, True]
-    assert statuses == ["JOINT", "SINGLE", "HEAD_OF_HOUSEHOLD"]
+    assert statuses == COMPUTED_STATUSES
+
+
+@pytest.mark.parametrize("year", [YEAR, 2026])
+def test_a_supplied_filing_status_column_is_not_read(year):
+    """Filing status is computed from the roles, whatever the build supplies.
+
+    The column below disagrees with the filing rules for two units: it makes
+    the lone 16-year-old a surviving spouse and the parent of a full-time
+    student single. Neither holds; the rules decide.
+    """
+    dataset = _dataset(True, ["JOINT", "SURVIVING_SPOUSE", "SINGLE"])
+    simulation = Microsimulation(dataset=dataset, dataset_end_year=2026)
+    _, _, _, statuses = _roles_and_statuses(simulation, year)
+    assert statuses == COMPUTED_STATUSES
 
 
 def test_dataset_without_supplied_columns_keeps_age_ordering():

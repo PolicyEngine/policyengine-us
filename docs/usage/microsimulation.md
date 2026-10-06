@@ -141,52 +141,44 @@ sim = Microsimulation(dataset=single_year_dataset, dataset_end_year=2024)
 paths. It does not apply to an existing `USMultiYearDataset` or to the legacy
 variable-centric HDF5 format.
 
-### Tax-unit roles and filing status
+### Tax-unit roles
 
 A population file can supply the tax units its constructor built, not just
-their membership:
+their membership, through `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or
+`DEPENDENT`. The certified Populace build supplies it. When every member of a
+tax unit has a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse`
+follow it and `is_tax_unit_dependent` covers everyone else. Explicitly set
+`is_tax_unit_head`, `is_tax_unit_spouse` or `is_tax_unit_dependent` inputs
+still take precedence.
 
-- `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or `DEPENDENT`.
-- `filing_status_input` (tax unit): `SINGLE`, `JOINT`, `SEPARATE`,
-  `HEAD_OF_HOUSEHOLD` or `SURVIVING_SPOUSE`.
+Without supplied roles, a unit falls back to age ordering. The oldest adult is
+the head, skipping adults input as tax-unit dependents unless every adult in
+the unit is one. The next-oldest such adult is the spouse, unless any member of
+the unit is separated. Without dependent inputs, that pairs an adult student
+with a parent as joint filers and leaves a minor living without a parent with
+no head.
 
-The certified Populace build supplies both. When every member of a tax unit has
-a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse` follow it and
-`is_tax_unit_dependent` covers everyone else; a supplied filing status becomes
-`filing_status`. Explicitly set `is_tax_unit_head`, `is_tax_unit_spouse`,
-`is_tax_unit_dependent` or `filing_status` inputs still take precedence.
+Filing status is not supplied. It is a policy calculation, so `filing_status`
+is always computed from the unit's members, including any supplied roles, and
+the filing rules, and reforms to those rules apply to every unit. The Populace
+build also carries its constructor's filing status in a `filing_status_input`
+column. No variable has that name, so the column is not loaded.
 
-Without supplied roles, a unit falls back to age ordering: the oldest adult is
-the head, and the next-oldest adult the spouse unless any member of the unit is
-separated. That pairs an adult student with a parent as joint filers and leaves
-a minor living without a parent with no head. Without a supplied status, the
-status is derived from the unit's members and the filing rules.
-
-Supplied values fail closed rather than falling back. Each of these raises a
+Supplied roles fail closed rather than falling back. Each of these raises a
 `ValueError`:
 
 - roles supplied for only some members of a unit;
-- a unit without exactly one `HEAD`, or with more than one `SPOUSE`;
-- a `JOINT` status in a unit without a spouse, or a non-`JOINT` status in a
-  unit with one.
-
-A supplied status is a fact about the record, so parameter reforms to the head
-of household and surviving spouse rules, such as the dependent age limits, do
-not re-derive it. A reform that switches off one of those rules, by neutralizing
-`head_of_household_eligible` or `surviving_spouse_eligible` (as
-`remove_head_of_household` does) or through its `gov.abolitions` parameter,
-re-derives the units supplied with that status and leaves every other supplied
-status in place.
+- a unit without exactly one `HEAD`, or with more than one `SPOUSE`.
 
 Two consequences follow from honoring supplied roles. First, a dependent's
 income is left out of the return they are claimed on, because
-`irs_gross_income` excludes tax-unit dependents, and the model computes no
-separate return for them, so an adult dependent's earnings leave the income tax
-base. The exception is self-employment: the deductible share of a dependent's
-self-employment tax still lowers the filer's adjusted gross income through
-`self_employment_tax_ald`. Second, a minor can head a return, which programs
-that identify minor parents as a tax-unit head or spouse under 18 will treat as
-a minor parent.
+`irs_gross_income` excludes tax-unit dependents, and so are their
+above-the-line deductions. The model does not yet compute a dependent's own
+return ([#9618](https://github.com/PolicyEngine/policyengine-us/issues/9618)),
+so an adult dependent's earnings leave the income tax base. Second, a minor can
+head a return, which programs that identify minor parents as a tax-unit head or
+spouse under 18 will treat as a minor parent
+([#9619](https://github.com/PolicyEngine/policyengine-us/issues/9619)).
 
 ### Filtering by geography
 

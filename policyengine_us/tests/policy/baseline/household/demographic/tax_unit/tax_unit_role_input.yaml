@@ -141,3 +141,37 @@
     is_tax_unit_head: [false, true, false]
     is_tax_unit_spouse: [true, false, false]
     is_tax_unit_dependent: [false, false, true]
+
+- name: Without supplied roles, inference skips an input dependent; supplied roles stand beside it.
+  # The unsupplied unit's 70-year-old is input as a tax unit dependent, so the
+  # 40-year-old heads it and nobody is the spouse. Inputs set for one person
+  # cover everyone, so every person carries is_tax_unit_dependent.
+  period: 2024
+  input:
+    people:
+      supplied_head:
+        age: 30
+        tax_unit_role_input: HEAD
+        is_tax_unit_dependent: false
+      supplied_spouse:
+        age: 60
+        tax_unit_role_input: SPOUSE
+        is_tax_unit_dependent: false
+      adult:
+        age: 40
+        is_tax_unit_dependent: false
+      dependent_parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      supplied_unit:
+        members: [supplied_head, supplied_spouse]
+      unsupplied_unit:
+        members: [adult, dependent_parent]
+    households:
+      household:
+        members: [supplied_head, supplied_spouse, adult, dependent_parent]
+  output:
+    tax_unit_roles_supplied: [true, false]
+    is_tax_unit_head: [true, false, true, false]
+    is_tax_unit_spouse: [false, true, false, false]

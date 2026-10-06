@@ -240,16 +240,17 @@ def test_legacy_enhanced_cps_allocates_no_housing_share_to_an_unclassified_unit(
 
 
 def test_default_dataset_uses_its_supplied_tax_unit_roles():
-    """Every role and filing status on the certified default build is its own.
+    """Every tax-unit role on the certified default build is its own.
 
     `populace_us_2024` ships its tax-unit constructor's roles
-    (`tax_unit_role_input`) and filing statuses (`filing_status_input`). Without
-    them, age ordering made the oldest adult the head and the next-oldest the
-    spouse, pairing adult students with their parents as joint filers, heading
-    couples by the older partner rather than the reference person, and leaving
-    lone minors with no head. This checks the whole population, person by
-    person and unit by unit, in the data year and in an extended year, since
-    the loader carries the columns forward rather than the formulas.
+    (`tax_unit_role_input`). Without them, age ordering made the oldest adult
+    the head and the next-oldest the spouse, pairing adult students with their
+    parents as joint filers, heading couples by the older partner rather than
+    the reference person, and leaving lone minors with no head. This checks the
+    whole population, person by person, in the data year and in an extended
+    year, since the loader carries the column forward rather than the formulas.
+    Filing status is not checked against the build: the model computes it from
+    these roles and the filing rules.
     """
     import numpy as np
     import pandas as pd
@@ -259,9 +260,7 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
 
     with pd.HDFStore(_resolve_dataset_path(DEFAULT_DATASET), mode="r") as store:
         person = store["person"][["person_id", "tax_unit_role_input"]]
-        tax_unit = store["tax_unit"][["tax_unit_id", "filing_status_input"]]
     roles = person.set_index("person_id")["tax_unit_role_input"].astype(str)
-    statuses = tax_unit.set_index("tax_unit_id")["filing_status_input"].astype(str)
 
     simulation = Microsimulation(dataset_end_year=2026)
     for year in (2024, 2026):
@@ -279,12 +278,3 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
                 f"{variable} disagrees with tax_unit_role_input == {name} for "
                 f"{mismatched} of {role.size} people."
             )
-        tax_unit_id = np.asarray(simulation.calculate("tax_unit_id", year))
-        status = statuses.reindex(tax_unit_id).to_numpy()
-        modelled = np.asarray(simulation.calculate("filing_status", year)).astype(str)
-        mismatched = int((modelled != status).sum())
-        assert mismatched == 0, (
-            f"populace_us_2024 (certified default build), {year}: "
-            f"filing_status disagrees with filing_status_input for "
-            f"{mismatched} of {status.size} tax units."
-        )
