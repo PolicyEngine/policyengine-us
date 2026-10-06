@@ -89,7 +89,9 @@ def test_an_explicit_head_input_is_never_also_the_spouse():
 
 
 def _dataset(
-    with_supplied_roles: bool, filing_status_column: list | None = None
+    with_supplied_roles: bool,
+    filing_status_column: list | None = None,
+    empty_tax_units: int = 0,
 ) -> USSingleYearDataset:
     """Three tax units in one household, with Populace-style string columns.
 
@@ -97,6 +99,8 @@ def _dataset(
        spouse, and their 20-year-old full-time student.
     2. A 16-year-old living without a parent.
     3. A 50-year-old parent and their 21-year-old full-time student.
+
+    ``empty_tax_units`` appends tax-unit rows that no person belongs to.
     """
     ages = [30, 60, 20, 16, 50, 21]
     tax_unit_of = [1, 1, 1, 2, 3, 3]
@@ -112,7 +116,7 @@ def _dataset(
             "is_full_time_student": [False, False, True, False, False, True],
         }
     )
-    tax_unit = pd.DataFrame({"tax_unit_id": [1, 2, 3]})
+    tax_unit = pd.DataFrame({"tax_unit_id": np.arange(1, 4 + empty_tax_units)})
     if with_supplied_roles:
         person["tax_unit_role_input"] = pd.array(
             ["HEAD", "SPOUSE", "DEPENDENT", "HEAD", "HEAD", "DEPENDENT"], dtype="str"
@@ -170,6 +174,24 @@ def test_a_supplied_filing_status_column_is_not_read(year):
     simulation = Microsimulation(dataset=dataset, dataset_end_year=2026)
     _, _, _, statuses = _roles_and_statuses(simulation, year)
     assert statuses == COMPUTED_STATUSES
+
+
+def test_a_tax_unit_without_members_falls_back_rather_than_raising():
+    """A tax-unit row that no person belongs to supplies no roles.
+
+    The loader declares every tax unit in the dataset's id column, members or
+    not, and ``all`` over no members is True. Such a unit must fall back to
+    age ordering, which gives it no head, as before supplied roles existed,
+    rather than count as supplied with no HEAD and raise.
+    """
+    dataset = _dataset(True, empty_tax_units=1)
+    simulation = Microsimulation(dataset=dataset, dataset_end_year=YEAR)
+    supplied = simulation.calculate("tax_unit_roles_supplied", YEAR, use_weights=False)
+    assert np.asarray(supplied).tolist() == [True, True, True, False]
+    heads = simulation.calculate("is_tax_unit_head", YEAR, use_weights=False)
+    spouses = simulation.calculate("is_tax_unit_spouse", YEAR, use_weights=False)
+    assert np.asarray(heads).tolist() == [True, False, False, True, True, False]
+    assert np.asarray(spouses).tolist() == [False, True, False, False, False, False]
 
 
 def test_dataset_without_supplied_columns_keeps_age_ordering():

@@ -12,8 +12,10 @@ class tax_unit_roles_supplied(Variable):
         role = tax_unit.members("tax_unit_role_input", period)
         roles = role.possible_values
         supplied = role != roles.UNSPECIFIED
-        all_supplied = tax_unit.all(supplied)
-        partly_supplied = tax_unit.any(supplied) & ~all_supplied
+        any_supplied = tax_unit.any(supplied)
+        # all() is True over no members, so a unit with none supplies no roles.
+        all_supplied = tax_unit.all(supplied) & any_supplied
+        partly_supplied = any_supplied & ~all_supplied
         if partly_supplied.any():
             raise ValueError(
                 f"tax_unit_role_input is supplied for some members of "
