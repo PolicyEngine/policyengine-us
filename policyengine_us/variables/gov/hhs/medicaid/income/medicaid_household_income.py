@@ -22,8 +22,10 @@ class medicaid_household_income(Variable):
         "and siblings are read from the whole family, those relatives' "
         "amounts are added only when positive (each child's, and each "
         "couple's parents' netted), so a relative outside the household "
-        "cannot lower its income; the individual's and their spouse's are "
-        "always added signed."
+        "cannot lower its income. An adult's own amount and their spouse's "
+        "are added signed; a child's own amount and their siblings' enter "
+        "with the family's children, only when positive. Unmarried "
+        "co-resident parents are each counted only when positive."
     )
     definition_period = YEAR
     reference = (
@@ -68,8 +70,8 @@ class medicaid_household_income(Variable):
         # as a grandparent who is also a parent there. So their amounts are
         # added only when positive: each child's, and each couple's parents'
         # netted together, so married parents' losses still offset each
-        # other's income. The individual's own and their spouse's amounts are
-        # always added signed.
+        # other's income. An adult's own and their spouse's amounts are added
+        # signed; a child's own amount is among the family's children.
         family_child_income = person.family.sum(
             child_age_eligible * max_(0, member_income)
         )

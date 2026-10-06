@@ -13,8 +13,9 @@ class medicaid_adjusted_gross_income_person(Variable):
         "that belongs to one spouse, such as their IRA deduction or business "
         "loss, lowers only that spouse's amount, and the head's and spouse's "
         "amounts add up to the return's AGI. A tax unit dependent's amount is "
-        "the AGI of the dependent's own return: their own income less their "
-        "own deductions, alimony paid included. It can be negative; "
+        "their own income less their own person-level deductions, alimony "
+        "paid included; the dependent's own business and capital losses are "
+        "not modeled. It can be negative; "
         "medicaid_household_income floors the household's total, not each "
         "person's amount."
     )
