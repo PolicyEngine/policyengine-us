@@ -35,3 +35,23 @@
     adjusted_gross_income: 1_000
   output:
     oh_insured_unreimbursed_medical_care_expenses: 0
+
+- name: Negative federal AGI is entered as zero on line 6
+  period: 2025
+  input:
+    state_code: OH
+    oh_insured_unreimbursed_medical_care_expense_amount: 1_000
+    adjusted_gross_income: -20_000
+  output:
+    # Worksheet line 6 is max(-20,000, 0) = 0, so line 7 is 0 and line 8 is
+    # 1,000 - 0 = 1,000. The deduction never exceeds the expenses paid.
+    oh_insured_unreimbursed_medical_care_expenses: 1_000
+
+- name: Negative federal AGI with no expenses gives no deduction
+  period: 2025
+  input:
+    state_code: OH
+    oh_insured_unreimbursed_medical_care_expense_amount: 0
+    adjusted_gross_income: -20_000
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 0
