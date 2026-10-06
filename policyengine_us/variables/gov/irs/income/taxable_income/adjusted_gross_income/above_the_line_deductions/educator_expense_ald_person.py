@@ -10,7 +10,9 @@ class educator_expense_ald_person(Variable):
         "Each person's educator expenses, capped at the per-educator limit of "
         "26 USC 62(a)(2)(D). This is the amount for the person's own return; "
         "educator_expense_ald adds the head's and spouse's amounts for the "
-        "tax unit's return."
+        "tax unit's return. Any positive educator_expense is taken to be an "
+        "eligible educator's: kindergarten through grade 12 in every year, "
+        "and early childhood from 2026. Both groups have the same cap."
     )
     definition_period = YEAR
     reference = (
