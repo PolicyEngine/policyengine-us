@@ -1,0 +1,132 @@
+# NY Form IT-196 lines 1-4: medical and dental expenses (line 1) less 10% of
+# federal AGI (line 2, Form IT-201 or IT-203 line 19; line 3 multiplies by
+# 10% on every IT-196 from 2018 through 2025). NY Tax Law § 615(a) computes
+# NY itemized deductions as federal deductions existed immediately before
+# Public Law 115-97, so NY keeps pre-TCJA 26 U.S.C. 213(a)'s 10% floor, not
+# the federal 7.5% floor.
+
+- name: Expenses above 10% of AGI are deductible; the federal floor is lower.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    other_medical_expenses: 12_000
+  output:
+    # Line 1 = 12,000; line 3 = 100,000 * 0.10 = 10,000; line 4 = 2,000.
+    ny_medical_expense_deduction: 2_000
+    # Federal Schedule A: 12,000 - 100,000 * 0.075 = 4,500.
+    medical_expense_deduction: 4_500
+
+- name: Expenses between 7.5% and 10% of AGI give no NY deduction.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 80_000
+    other_medical_expenses: 7_000
+  output:
+    # Line 3 = 80,000 * 0.10 = 8,000 is more than line 1 (7,000), so line 4
+    # is blank.
+    ny_medical_expense_deduction: 0
+    # Federal: 7,000 - 80,000 * 0.075 = 1,000.
+    medical_expense_deduction: 1_000
+
+- name: Expenses exactly at 10% of AGI give no NY deduction.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    other_medical_expenses: 10_000
+  output:
+    # Line 4 = 10,000 - 10,000 = 0.
+    ny_medical_expense_deduction: 0
+
+- name: One dollar above the 10% floor is deductible.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    other_medical_expenses: 10_001
+  output:
+    ny_medical_expense_deduction: 1
+
+- name: Negative AGI gives a zero floor, so all expenses are deductible.
+  period: 2025
+  input:
+    state_code: NY
+    adjusted_gross_income: -20_000
+    other_medical_expenses: 3_000
+  output:
+    # positive_agi = max(-20,000, 0) = 0, so line 3 = 0 and line 4 = 3,000.
+    ny_medical_expense_deduction: 3_000
+
+- name: First IT-196 year (2018) uses the 10% floor; federal 2018 used 7.5%.
+  period: 2018
+  input:
+    state_code: NY
+    adjusted_gross_income: 50_000
+    other_medical_expenses: 8_000
+  output:
+    # 2018 Form IT-196 line 3: 50,000 * 0.10 = 5,000; line 4 = 3,000.
+    ny_medical_expense_deduction: 3_000
+    # TCJA section 11027 floor for 2018: 8,000 - 50,000 * 0.075 = 4,250.
+    medical_expense_deduction: 4_250
+
+- name: 2026 keeps the 10% floor.
+  period: 2026
+  input:
+    state_code: NY
+    adjusted_gross_income: 200_000
+    other_medical_expenses: 25_000
+  output:
+    # 25,000 - 200,000 * 0.10 = 5,000 (federal: 25,000 - 15,000 = 10,000).
+    ny_medical_expense_deduction: 5_000
+    medical_expense_deduction: 10_000
+
+- name: Filers outside New York get no NY medical expense deduction.
+  period: 2025
+  input:
+    state_code: CA
+    employment_income: 100_000
+    other_medical_expenses: 12_000
+  output:
+    ny_medical_expense_deduction: 0
+
+- name: NY itemized deductions use the 10% medical floor.
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 80_000
+    real_estate_taxes: 12_000
+    other_medical_expenses: 9_000
+  output:
+    # NY medical: 9,000 - 80,000 * 0.10 = 1,000 (federal floor would give
+    # 9,000 - 6,000 = 3,000).
+    ny_medical_expense_deduction: 1_000
+    # Real estate taxes 12,000 + NY medical 1,000. Federal AGI is below the
+    # Line 40 applicable amount and NY AGI is not over 100,000, so neither
+    # reduction applies.
+    ny_itemized_deductions_max: 13_000
+    ny_itemized_deductions_phase_out: 0
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 13_000
+
+- name: Line 40 worksheet excludes the same NY medical deduction it includes.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000_000
+    real_estate_taxes: 150_000
+    other_medical_expenses: 600_000
+  output:
+    # NY medical: 600,000 - 5,000,000 * 0.10 = 100,000.
+    ny_medical_expense_deduction: 100_000
+    # Worksheet line 1 = 150,000 + 100,000 = 250,000.
+    ny_itemized_deductions_max: 250_000
+    # Line 2 = NY medical 100,000; line 3 = 150,000; line 4 = 0.80 * 150,000
+    # = 120,000. Line 8 = 0.03 * (5,000,000 - 340,700) = 139,779.
+    # Reduction = min(120,000, 139,779) = 120,000. Excluding the federal
+    # medical deduction (225,000) instead would leave line 3 = 25,000 and a
+    # 20,000 reduction.
+    ny_itemized_deductions_phase_out: 120_000
