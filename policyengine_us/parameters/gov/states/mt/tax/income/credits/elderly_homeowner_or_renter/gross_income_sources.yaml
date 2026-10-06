@@ -10,20 +10,11 @@ metadata:
     href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/
   - title: 2024 Montana Individual Income Tax Return
     href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
-  - title: 2023 Montana Form 2 Instructions, Elderly Homeowner/Renter Credit Schedule, lines 1 and 8 (income of each member of the household)
-    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
-  - title: 2024 Montana Form 2 Instructions, Schedule 2EC, line 17 (income received by other members of your household)
-    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48
 
 values:
   2009-01-01:
     - adjusted_gross_income_person # Federal AGI baseline; covers taxable
       # pensions, IRA, wages, interest, dividends, etc.
-    # A tax unit dependent's income is on their own return, so
-    # adjusted_gross_income_person is zero for them; count their gross income
-    # directly. It includes gains but not losses, and only the taxable part
-    # of their Social Security (the rest is added in the variable formula).
-    - dependent_gross_income
     - tax_exempt_interest_income # § 15-30-2337(9)(a)(vii)
     # AGI already includes taxable IRA distributions via
     # taxable_retirement_distributions; only the tax-exempt portion

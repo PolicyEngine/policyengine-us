@@ -14,6 +14,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # 2023 Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 9
         # (renamed Schedule 2EC from 2024)
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=52",
+        # 2023 instructions, lines 1 and 8: the returns of each member of
+        # the household, and the wages of members who do not file
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51",
         # 2024 Schedule 2EC, line 17: income received by other members of
         # the household
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48",
@@ -24,9 +27,17 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
         sources = add(person, period, p.gross_income_sources)
-        # The sources count only the taxable portion of Social Security: a
-        # filer's in federal AGI, a dependent's in their own gross income.
-        # Add the untaxed portion so all SS is counted per
+        # Gross household income counts every member of the household
+        # (§ 15-30-2337(4)). A tax unit dependent's income is on their own
+        # return, not in adjusted_gross_income_person (irs_gross_income
+        # leaves dependents out), so count their gross income directly:
+        # gains but not losses, and the taxable part of their Social
+        # Security.
+        is_dependent = person("is_tax_unit_dependent", period)
+        dependent_income = is_dependent * person("dependent_gross_income", period)
+        # The income above counts only the taxable portion of Social
+        # Security: a filer's in federal AGI, a dependent's in their own
+        # gross income. Add the untaxed portion so all SS is counted per
         # § 15-30-2337(9)(a)(viii).
         social_security = person("social_security", period)
         taxable_social_security = add(
@@ -42,4 +53,4 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
-        return sources + untaxed_social_security + losses
+        return sources + dependent_income + untaxed_social_security + losses
