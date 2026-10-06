@@ -1,0 +1,98 @@
+# 26 U.S.C. 911(f)(1)(A) and the 2025 Form 1040 instructions, Foreign Earned
+# Income Tax Worksheet—Line 16: line 4 is the tax on taxable income plus the
+# excluded amount, line 5 the tax on the excluded amount, line 6 the
+# difference. Tax amounts are from the 2025 Tax Table and Tax Computation
+# Worksheet in the same instructions.
+- name: Head of household, both lookups in the 2025 Tax Table
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 30_050 # line 1
+    foreign_earned_income_exclusion: 30_025 # line 2c
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Line 3: 60,075. Line 4: Tax Table row 60,050-60,100, head of household,
+    # 6,869. Line 5: row 30,000-30,050, 3,263. Line 6: 3,606. Both rows'
+    # midpoints are the amounts taxed, so the table is exact here.
+    income_tax_main_rates: 3_606
+
+- name: The same filer without the exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 30_050
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 1,700 + 12% of 13,050. (The Tax Table row 30,050-30,100 shows 3,269,
+    # the tax on its midpoint 30,075.)
+    income_tax_main_rates: 3_266
+
+- name: The review example, 60,000 of wages and 40,000 excluded
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 36_375
+    foreign_earned_income_exclusion: 40_000
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Line 3: 76,375. Line 4: 9,977.50 (Tax Table 9,978). Line 5: 4,460.00
+    # (Tax Table row 40,000-40,050: 4,463, the tax on 40,025). Line 6:
+    # 5,517.50 (Tax Table 5,515). Without stacking the tax was 4,025.
+    income_tax_main_rates: 5_517.50
+
+- name: Joint filers on the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_income: 218_500
+    foreign_earned_income_exclusion: 260_000
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Line 3: 478,500. Line 4: 478,500 x 32% - 45,874 = 107,246. Line 5:
+    # 260,000 x 24% - 14,306 = 48,094. Line 6: 59,152. Without the exclusion:
+    # 218,500 x 24% - 14,306 = 38,134.
+    income_tax_main_rates: 59_152
+
+- name: No taxable income, no tax
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 0
+    foreign_earned_income_exclusion: 130_000
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # "If Form 1040 or 1040-SR, line 15, is zero, don't complete this
+    # worksheet."
+    income_tax_main_rates: 0
+
+- name: Capital gains come out of line 3 before the main rates
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 40_000
+    foreign_earned_income_exclusion: 30_000
+    capital_gains_excluded_from_taxable_income: 30_000
+  output:
+    # Tax on 70,000 - 30,000 = 40,000 (4,561.50) less tax on 30,000
+    # (3,361.50): the 10,000 of ordinary income is taxed at 12%, not 10%.
+    income_tax_main_rates: 1_200
+
+- name: In 2018 the same rule applies
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    filing_status: SINGLE
+    taxable_income: 20_000
+    foreign_earned_income_exclusion: 30_000
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # 2018 single schedule: 10% to 9,525, 12% to 38,700, 22% to 82,500.
+    # Tax on 50,000: 952.50 + 3,501 + 2,486 = 6,939.50. Tax on 30,000:
+    # 952.50 + 2,457 = 3,409.50. Difference: 3,530.
+    income_tax_main_rates: 3_530

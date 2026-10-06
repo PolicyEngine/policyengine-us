@@ -8,6 +8,9 @@ class marginal_tax_rate_including_health_benefits(Variable):
     label = "Marginal tax rate including health benefits"
     documentation = (
         "Fraction of marginal income gains that do not increase household net income."
+        " Simulated only where marginal_tax_rate_computed is true: for up to"
+        " simulation.marginal_tax_rate_adults adults per household, those with"
+        " the highest market income. Zero for everyone else."
     )
     entity = Person
     definition_period = YEAR

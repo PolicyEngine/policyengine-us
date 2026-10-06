@@ -184,3 +184,63 @@
   output:
     mo_tanf_countable_resources: 1_001
     mo_tanf_resources_eligible: false
+
+- name: A non-parent caretaker's spouse's resources never count
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        bank_account_assets: 5_000
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(3) lists children, parents, stepparents and an
+    # included needy NPCR or guardian; the NPCR's spouse is not among them.
+    # The needy grandparent is included.
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_countable_resources: 0
+    mo_tanf: 234.086
+
+- name: An included non-parent caretaker's resources count
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        bank_account_assets: 800
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.35: "If an NPCR is found to be needy and is
+    # included in the assistance group, count the NPCR's resources."
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_countable_resources: 800
+    mo_tanf: 234.086
