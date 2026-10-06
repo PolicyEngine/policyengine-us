@@ -3,26 +3,34 @@
 ARS 43-1072(H)(6) defines income for the credit, and A.A.C. R15-2C-502 and the
 Form 140PTC instructions (2021-2025, page 4) apply it line by line: line D is
 each member's gains and losses from the sale or exchange of property, combined,
-with a net loss limited to $1,500. Federal AGI already holds those gains, so
-az_property_tax_credit_income must count each dollar of gain once. It used to
-add capital_gains_excluded_from_taxable_income as well, which is the part of
-federal taxable income taxed at the capital gains rates (at zero taxable
-income, the adjusted net capital gain), so gains and qualified dividends
+with a net loss limited to $1,500 for each member. Federal AGI already holds
+those gains, so az_property_tax_credit_income must count each dollar of gain
+once. It used to add capital_gains_excluded_from_taxable_income as well, which
+is the part of federal taxable income taxed at the capital gains rates (at zero
+taxable income, the adjusted net capital gain), so gains and qualified dividends
 counted twice. Federal AGI leaves out dependents' income, which Arizona counts
-for every household member whether or not a dependent. Federal AGI deducts
-every member's losses, so it is not floored before dependents' income is added.
+for every household member whether or not a dependent. Federal AGI also limits
+a net capital loss to $3,000 per return rather than $1,500 per member, so line D
+replaces its capital gains and losses. Household income (line J) can be
+negative; the 2023-2025 instructions (page 5) then consider it zero for the
+Schedule 1 and 2 amounts.
 
 Invariants, checked on a seeded sample of Arizona tax units (some with a child
-dependent who has income). The sample stays where the federal and Arizona
-capital loss rules agree: each member's net capital gain is at least -$1,500
-and a tax unit's net losses total at most $3,000, the federal limit per return.
+dependent who has income) whose members' net capital gains run from well below
+-$1,500 to large gains, including units whose line J is negative:
 
 1. Differential: the model equals an independent line A + B + D + E sum over
-   every member from Form 140PTC Part 1, with Social Security excluded.
-2. Counted once: adding d to one member's long-term gains (the dependent's
-   where there is one, else the head's) raises household income by exactly d.
-3. The income does not depend on capital_gains_excluded_from_taxable_income.
-4. The credit never rises when gains rise.
+   every member from Form 140PTC Part 1, with Social Security excluded and
+   each member's line D floored at -$1,500.
+2. Counted once: adding d to a member's long-term gains changes household
+   income by exactly the change in that member's line D, which is d when the
+   member's net gain stays at or above -$1,500. The credit never rises.
+3. Loss limit: lowering a member's gains changes household income by the
+   change in that member's line D, which is 0 once the member's net gain is at
+   or below -$1,500.
+4. Schedule floor: the credit depends on line J only through max(line J, 0),
+   so a negative line J gets the zero-income schedule amount.
+5. The income does not depend on capital_gains_excluded_from_taxable_income.
 """
 
 import numpy as np
@@ -30,14 +38,38 @@ import numpy as np
 from policyengine_us import Simulation
 
 YEAR = 2025
-N = 60
+N = 80
 SEED = 43_1072
 # A.A.C. R15-2C-502(C)(3): net capital losses are limited to $1,500 for each
-# household member. The sample stays at or above it, and keeps each tax unit's
-# net losses within federal AGI's $3,000-per-return limit, so both rules give
-# the same answer.
+# household member.
 MEMBER_LOSS_LIMIT = 1_500
-RETURN_LOSS_LIMIT = 3_000
+# Form 140PTC line 13 for renters: rent times the property tax factor,
+# modeled as gov.states.az.tax.income.credits.property_tax.rent_property_tax_rate.
+RENT_PROPERTY_TAX_RATE = 0.15
+
+
+def _capital_gains(rng: np.random.Generator, can_be_large: bool) -> tuple:
+    """Long- and short-term gains for one member."""
+    draw = rng.random()
+    if draw < 0.3:
+        return 0.0, 0.0
+    if draw < 0.55:
+        # A net loss beyond the $1,500 member limit, some beyond federal AGI's
+        # $3,000 per-return limit too.
+        return (
+            round(rng.uniform(-9_000, -1_600), 2),
+            round(rng.uniform(-1_000, 500), 2),
+        )
+    # Some large gains, so federal taxable income is positive.
+    large_gain = (
+        round(rng.uniform(20_000, 80_000), 2)
+        if can_be_large and rng.random() < 0.15
+        else 0
+    )
+    return (
+        round(rng.uniform(-1_000, 6_000), 2) + large_gain,
+        round(rng.uniform(-500, 2_000), 2),
+    )
 
 
 def _sample_units(rng: np.random.Generator) -> list:
@@ -46,11 +78,7 @@ def _sample_units(rng: np.random.Generator) -> list:
         married = rng.random() < 0.4
         members = []
         for role in ["head", "spouse"] if married else ["head"]:
-            gains = rng.random() < 0.7
-            # Some large gains, so federal taxable income is positive.
-            large_gain = (
-                round(rng.uniform(20_000, 80_000), 2) if rng.random() < 0.15 else 0
-            )
+            long_term, short_term = _capital_gains(rng, can_be_large=True)
             members.append(
                 {
                     "role": role,
@@ -61,25 +89,23 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "taxable_interest_income": round(rng.uniform(0, 800), 2),
                     "tax_exempt_interest_income": round(rng.uniform(0, 500), 2),
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
-                    "long_term_capital_gains": (
-                        round(rng.uniform(-1_000, 6_000), 2) + large_gain
-                        if gains
-                        else 0.0
+                    "long_term_capital_gains": long_term,
+                    "short_term_capital_gains": short_term,
+                    "taxable_private_pension_income": float(
+                        rng.choice([0, round(rng.uniform(0, 3_000), 2)])
                     ),
-                    "short_term_capital_gains": (
-                        round(rng.uniform(-500, 2_000), 2) if gains else 0.0
+                    "tax_exempt_public_pension_income": float(
+                        rng.choice([0, round(rng.uniform(0, 3_000), 2)])
                     ),
-                    "taxable_private_pension_income": round(rng.uniform(0, 3_000), 2),
-                    "tax_exempt_public_pension_income": round(rng.uniform(0, 1_000), 2),
                     "social_security_retirement": float(
                         rng.choice([0, round(rng.uniform(0, 30_000), 2)])
                     ),
                 }
             )
         if rng.random() < 0.35:
-            # A child dependent with income of their own, sometimes with a net
-            # capital loss. A couple can already reach the federal limit, so
-            # only a single head's dependent gets a loss.
+            # A child dependent with income of their own, including net
+            # capital losses, which count up to the dependent's own limit.
+            long_term, short_term = _capital_gains(rng, can_be_large=False)
             members.append(
                 {
                     "role": "dependent",
@@ -91,10 +117,8 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "taxable_interest_income": round(rng.uniform(0, 300), 2),
                     "tax_exempt_interest_income": round(rng.uniform(0, 200), 2),
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
-                    "long_term_capital_gains": round(
-                        rng.uniform(0 if married else -1_500, 4_000), 2
-                    ),
-                    "short_term_capital_gains": round(rng.uniform(0, 1_000), 2),
+                    "long_term_capital_gains": long_term,
+                    "short_term_capital_gains": short_term,
                     "taxable_private_pension_income": 0.0,
                     "tax_exempt_public_pension_income": 0.0,
                     "social_security_survivors": float(
@@ -102,32 +126,47 @@ def _sample_units(rng: np.random.Generator) -> list:
                     ),
                 }
             )
-        for member in members:
-            net_gain = (
-                member["long_term_capital_gains"] + member["short_term_capital_gains"]
+        if rng.random() < 0.15:
+            # Little income besides a capital loss and a small tax-exempt
+            # pension, so line J can be negative (2023-2025 instructions,
+            # page 5, line J note).
+            for member in members:
+                for key in [
+                    "employment_income",
+                    "taxable_interest_income",
+                    "qualified_dividend_income",
+                    "taxable_private_pension_income",
+                ]:
+                    member[key] = 0.0
+                member["tax_exempt_interest_income"] = round(rng.uniform(0, 200), 2)
+            members[0]["long_term_capital_gains"] = round(
+                rng.uniform(-6_000, -1_000), 2
             )
-            assert net_gain >= -MEMBER_LOSS_LIMIT
-        net_losses = sum(
-            max(0, -(m["long_term_capital_gains"] + m["short_term_capital_gains"]))
-            for m in members
-        )
-        assert net_losses <= RETURN_LOSS_LIMIT
+            members[0]["tax_exempt_public_pension_income"] = round(
+                rng.uniform(0, 1_500), 2
+            )
         units.append(
             {
                 "members": members,
                 "rent": round(rng.uniform(1_000, 12_000), 2),
-                "gain_increase": round(rng.uniform(1, 5_000), 2),
+                "gain_change": round(rng.uniform(1, 5_000), 2),
             }
         )
     return units
 
 
-def _raised_role(unit: dict) -> str:
-    roles = [member["role"] for member in unit["members"]]
-    return "dependent" if "dependent" in roles else "head"
+def _with_head_gains_changed(units: list, sign: int) -> list:
+    changed = []
+    for unit in units:
+        members = [dict(m) for m in unit["members"]]
+        members[0]["long_term_capital_gains"] = round(
+            members[0]["long_term_capital_gains"] + sign * unit["gain_change"], 2
+        )
+        changed.append({**unit, "members": members})
+    return changed
 
 
-def _situation(units: list, raise_gains: bool) -> dict:
+def _situation(units: list) -> dict:
     people, tax_units, households = {}, {}, {}
     year = str(YEAR)
     for i, unit in enumerate(units):
@@ -138,10 +177,6 @@ def _situation(units: list, raise_gains: bool) -> dict:
             person = {
                 key: {year: value} for key, value in member.items() if key != "role"
             }
-            if raise_gains and member["role"] == _raised_role(unit):
-                person["long_term_capital_gains"] = {
-                    year: member["long_term_capital_gains"] + unit["gain_increase"]
-                }
             if member["role"] == "head":
                 person["rent"] = {year: unit["rent"]}
             people[name] = person
@@ -151,6 +186,15 @@ def _situation(units: list, raise_gains: bool) -> dict:
             "state_code": {year: "AZ"},
         }
     return {"people": people, "tax_units": tax_units, "households": households}
+
+
+def _net_gain(member: dict) -> float:
+    return member["long_term_capital_gains"] + member["short_term_capital_gains"]
+
+
+def _line_d(member: dict) -> float:
+    """Form 140PTC line D for one member: a net loss is limited to (1,500)."""
+    return max(_net_gain(member), -MEMBER_LOSS_LIMIT)
 
 
 def _form_140ptc_line_j(units: list) -> np.ndarray:
@@ -165,46 +209,125 @@ def _form_140ptc_line_j(units: list) -> np.ndarray:
                 + m["tax_exempt_interest_income"]
                 + m["qualified_dividend_income"]
             )
-            line_d = max(
-                m["long_term_capital_gains"] + m["short_term_capital_gains"],
-                -MEMBER_LOSS_LIMIT,
-            )
             line_e = (
                 m["taxable_private_pension_income"]
                 + m["tax_exempt_public_pension_income"]
             )
             # Social Security benefits are not income for the credit. Every
             # member counts, dependent or not (A.A.C. R15-2C-502(A)(2), (B)).
-            total += line_a + line_b + line_d + line_e
+            total += line_a + line_b + _line_d(m) + line_e
         totals.append(total)
     return np.array(totals)
 
 
 UNITS = _sample_units(np.random.default_rng(SEED))
+RAISED = _with_head_gains_changed(UNITS, sign=1)
+LOWERED = _with_head_gains_changed(UNITS, sign=-1)
+LINE_J = _form_140ptc_line_j(UNITS)
+
+
+def test_sample_covers_the_loss_limit_and_negative_line_j():
+    members = [m for unit in UNITS for m in unit["members"]]
+    beyond_limit = [m for m in members if _net_gain(m) < -MEMBER_LOSS_LIMIT]
+    assert len(beyond_limit) >= 20
+    assert any(m["role"] == "dependent" for m in beyond_limit)
+    # Units where federal AGI's capital gains and losses (non-dependents' net
+    # gains, less losses limited to $3,000 per return) differ from line D.
+    federal = np.array(
+        [
+            sum(
+                max(0, _net_gain(m))
+                for m in unit["members"]
+                if m["role"] != "dependent"
+            )
+            - min(3_000, sum(max(0, -_net_gain(m)) for m in unit["members"]))
+            for unit in UNITS
+        ]
+    )
+    line_d = np.array([sum(_line_d(m) for m in unit["members"]) for unit in UNITS])
+    assert (np.abs(federal - line_d) > 0.01).sum() >= 20
+    assert (LINE_J < 0).sum() >= 3
 
 
 def test_household_income_matches_form_140ptc_lines():
-    sim = Simulation(situation=_situation(UNITS, raise_gains=False))
+    sim = Simulation(situation=_situation(UNITS))
     income = sim.calculate("az_property_tax_credit_income", YEAR)
-    np.testing.assert_allclose(income, _form_140ptc_line_j(UNITS), atol=0.01)
+    np.testing.assert_allclose(income, LINE_J, atol=0.01)
 
 
-def test_gains_count_once():
-    base = Simulation(situation=_situation(UNITS, raise_gains=False))
-    raised = Simulation(situation=_situation(UNITS, raise_gains=True))
-    increase = np.array([unit["gain_increase"] for unit in UNITS])
+def test_gains_count_once_up_to_the_loss_limit():
+    base = Simulation(situation=_situation(UNITS))
+    raised = Simulation(situation=_situation(RAISED))
+    expected = np.array(
+        [
+            _line_d(r["members"][0]) - _line_d(u["members"][0])
+            for u, r in zip(UNITS, RAISED)
+        ]
+    )
     income_change = raised.calculate(
         "az_property_tax_credit_income", YEAR
     ) - base.calculate("az_property_tax_credit_income", YEAR)
-    np.testing.assert_allclose(income_change, increase, atol=0.01)
+    np.testing.assert_allclose(income_change, expected, atol=0.01)
+    # Where the head's net gain stays at or above the limit, the change is d.
+    stays_above = np.array(
+        [_net_gain(u["members"][0]) >= -MEMBER_LOSS_LIMIT for u in UNITS]
+    )
+    increase = np.array([unit["gain_change"] for unit in UNITS])
+    assert stays_above.sum() >= 20
+    np.testing.assert_allclose(
+        income_change[stays_above], increase[stays_above], atol=0.01
+    )
     credit_change = raised.calculate("az_property_tax_credit", YEAR) - base.calculate(
         "az_property_tax_credit", YEAR
     )
     assert (credit_change <= 0.01).all()
 
 
+def test_member_loss_limit():
+    base = Simulation(situation=_situation(UNITS))
+    lowered = Simulation(situation=_situation(LOWERED))
+    income_change = lowered.calculate(
+        "az_property_tax_credit_income", YEAR
+    ) - base.calculate("az_property_tax_credit_income", YEAR)
+    expected = np.array(
+        [
+            _line_d(w["members"][0]) - _line_d(u["members"][0])
+            for u, w in zip(UNITS, LOWERED)
+        ]
+    )
+    np.testing.assert_allclose(income_change, expected, atol=0.01)
+    # Once a member's net gain is at or below the limit, more loss is ignored.
+    at_limit = np.array(
+        [_net_gain(u["members"][0]) <= -MEMBER_LOSS_LIMIT for u in UNITS]
+    )
+    assert at_limit.sum() >= 10
+    np.testing.assert_allclose(income_change[at_limit], 0, atol=0.01)
+    # Each member's line D is bounded below by the limit.
+    line_d = base.calculate("az_property_tax_credit_capital_gains", YEAR)
+    assert (line_d >= -MEMBER_LOSS_LIMIT - 0.01).all()
+
+
+def test_credit_uses_zero_for_negative_household_income():
+    sim = Simulation(situation=_situation(UNITS))
+    credit = sim.calculate("az_property_tax_credit", YEAR)
+    floored = Simulation(situation=_situation(UNITS))
+    floored.set_input("az_property_tax_credit_income", YEAR, np.maximum(LINE_J, 0))
+    np.testing.assert_allclose(
+        credit, floored.calculate("az_property_tax_credit", YEAR), atol=0.01
+    )
+    # A negative line J gets the zero-income schedule amount ($502 on both
+    # schedules), limited by the renter's property taxes.
+    negative = LINE_J < 0
+    rent = np.array([unit["rent"] for unit in UNITS])
+    np.testing.assert_allclose(
+        credit[negative],
+        np.minimum(502, RENT_PROPERTY_TAX_RATE * rent[negative]),
+        atol=0.01,
+    )
+
+
 def test_income_does_not_read_preferential_rate_amount():
-    sim = Simulation(situation=_situation(UNITS, raise_gains=False))
+    sim = Simulation(situation=_situation(UNITS))
     rng = np.random.default_rng(SEED + 1)
     sim.set_input(
         "capital_gains_excluded_from_taxable_income",
@@ -212,4 +335,4 @@ def test_income_does_not_read_preferential_rate_amount():
         rng.uniform(0, 50_000, len(UNITS)),
     )
     income = sim.calculate("az_property_tax_credit_income", YEAR)
-    np.testing.assert_allclose(income, _form_140ptc_line_j(UNITS), atol=0.01)
+    np.testing.assert_allclose(income, LINE_J, atol=0.01)

@@ -412,3 +412,179 @@
     az_property_tax_credit_income: -1_000
     # Line 11a: Schedule 1, 0 - 1,750 -> 502. Line 13: 750.
     az_property_tax_credit: 502
+
+# Line D loss limit. A.A.C. R15-2C-502(C)(3), ITR 12-1 item (7) and the line D
+# instructions limit each member's net loss to (1,500). Federal AGI instead
+# limits a return's net loss to (3,000), so household income replaces it. A
+# negative line J is entered as is and considered zero for Schedules 1 and 2
+# (2023-2025 instructions, page 5, line J note).
+- name: Single filer's net loss counts only up to the 1,500 limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        long_term_capital_gains: -2_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line A: wages 4,000.
+    # Line D: net loss (2,000), limited to (1,500).
+    # Line J: 4,000 - 1,500 = 2,500.
+    # Federal AGI would give 4,000 - 2,000 = 2,000.
+    az_property_tax_credit_income: 2_500
+    # Line 11a: Schedule 1, 2,451 - 2,550 -> 323.
+    # Line 13: 0.15 x 5,000 = 750. Line 15: smaller of 323 and 750.
+    az_property_tax_credit: 323
+
+- name: Each spouse's net loss counts up to that spouse's own 1,500 limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 6_000
+        long_term_capital_gains: -1_500
+        rent: 5_000
+      spouse:
+        age: 68
+        short_term_capital_gains: -1_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AZ
+  output:
+    # Line A: wages 6,000 (column 1).
+    # Line D: (1,500) (column 1) + (1,500) (column 2) = (3,000).
+    # Line J: 6,000 - 3,000 = 3,000.
+    az_property_tax_credit_income: 3_000
+    # Line 11b: Schedule 2, 2,951 - 3,100 -> 412.
+    # Line 13: 750. Line 15: smaller of 412 and 750.
+    az_property_tax_credit: 412
+
+- name: One spouse's loss over the limit does not offset the other's gain
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 3_000
+        long_term_capital_gains: -4_000
+        rent: 5_000
+      spouse:
+        age: 70
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AZ
+  output:
+    # Line A: wages 3,000 (column 1).
+    # Line D: (4,000) limited to (1,500) (column 1) + 2,000 (column 2) = 500.
+    # Line J: 3,000 + 500 = 3,500.
+    # Federal AGI would net the return first: 3,000 + 2,000 - 3,000 = 2,000.
+    az_property_tax_credit_income: 3_500
+    # Line 11b: Schedule 2, 3,401 - 3,550 -> 345.
+    # Line 13: 750. Line 15: smaller of 345 and 750.
+    az_property_tax_credit: 345
+
+- name: A line D loss offsets a tax-exempt pension
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: -1_500
+        tax_exempt_public_pension_income: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line D: net loss (1,500), at the limit.
+    # Line E: Arizona public pension 3,000.
+    # Line J: 3,000 - 1,500 = 1,500. Flooring federal AGI less Social
+    # Security at zero before adding the pension would give 3,000.
+    az_property_tax_credit_agi: -1_500
+    az_property_tax_credit_income: 1_500
+    # Line 11a: Schedule 1, 0 - 1,750 -> 502.
+    # Line 13: 750. Line 15: smaller of 502 and 750.
+    az_property_tax_credit: 502
+
+- name: Negative line J with a tax-exempt pension uses zero for the schedule
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: -1_500
+        tax_exempt_public_pension_income: 1_000
+        rent: 4_000
+      spouse:
+        age: 70
+        short_term_capital_gains: -2_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AZ
+  output:
+    # Line D: (1,500) (column 1) + (2,500) limited to (1,500) (column 2)
+    # = (3,000).
+    # Line E: Arizona public pension 1,000 (column 1).
+    # Line J: 1,000 - 3,000 = (2,000), entered as a negative amount.
+    az_property_tax_credit_agi: -3_000
+    az_property_tax_credit_income: -2_000
+    # Line 11b: household income is considered zero for the schedule.
+    # Schedule 2, 0 - 2,500 -> 502.
+    # Line 13: 0.15 x 4,000 = 600. Line 15: smaller of 502 and 600.
+    az_property_tax_credit: 502
+
+- name: A dependent's net loss counts up to the dependent's own 1,500 limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 3_000
+        rent: 5_000
+      grandchild:
+        age: 15
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -2_500
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: AZ
+  output:
+    # Line A: wages 3,000 (column 1).
+    # Line D: column 3 net loss (2,500), limited to (1,500).
+    # Line J: 3,000 - 1,500 = 1,500.
+    az_property_tax_credit_agi: 3_000
+    az_property_tax_credit_dependent_income: -1_500
+    az_property_tax_credit_income: 1_500
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502.
+    # Line 13: 750. Line 15: smaller of 502 and 750.
+    az_property_tax_credit: 502
