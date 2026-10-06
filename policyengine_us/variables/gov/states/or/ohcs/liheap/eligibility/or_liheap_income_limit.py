@@ -12,6 +12,10 @@ class or_liheap_income_limit(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["or"].ohcs.liheap.eligibility
-        # Ceiling reproduces all 12 published limits; the manual does not
-        # prescribe a rounding rule. hhs_smi uses the requested year's SMI.
-        return np.ceil(spm_unit("hhs_smi", period) * p.smi_rate)
+        # Ceiling reproduces every published limit for program years 2025 to
+        # 2027; the manual does not prescribe a rounding rule. The product is
+        # rounded to cents in float64 first: float32 0.6 is slightly above 0.6,
+        # which lifts a whole-dollar product above the integer and would add $1.
+        # hhs_smi uses the requested year's SMI.
+        smi = spm_unit("hhs_smi", period).astype(np.float64)
+        return np.ceil(np.round(smi * p.smi_rate, 2))

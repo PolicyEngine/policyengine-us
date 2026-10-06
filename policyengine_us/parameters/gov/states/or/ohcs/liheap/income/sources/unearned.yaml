@@ -1,6 +1,6 @@
 description: Oregon counts these unearned income sources under the Low Income Home Energy Assistance Program.
 values:
-  2025-10-09:
+  2024-10-01:
   - rental_income
   - farm_rent_income
   - social_security
@@ -11,6 +11,9 @@ values:
   - workers_compensation
   - veterans_benefits
   - pension_income
+  # Retirement pay counts as a pension. military_retirement_pay includes
+  # survivor payments, so report a survivor annuity in only one of the two.
+  - military_retirement_pay
   - survivor_benefits
   - disability_benefits
   - alimony_income
@@ -24,5 +27,9 @@ metadata:
   period: year
   label: Oregon LIHEAP unearned income sources
   reference:
+  - title: PY2025 Energy Assistance Intake Operations and Policy Manual, PDF pages 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=31
   - title: PY2026 Energy Assistance Intake Operations and Policy Manual, PDF pages 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52
     href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=37
+  - title: PY2027 Energy Assistance Intake Operations and Policy Manual, PDF pages 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=38

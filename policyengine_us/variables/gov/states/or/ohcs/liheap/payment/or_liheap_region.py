@@ -10,8 +10,9 @@ class or_liheap_region(Variable):
     # PDF pages 78, 80.
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=78"
     documentation = (
-        "Zero denotes an unknown or out-of-state county; a county is required to "
-        "select the published schedule."
+        "Zero denotes a county reported as UNKNOWN or an out-of-state household. A "
+        "missing county input falls back to the state's first county in the enum, "
+        "Baker County, which is in Region 2."
     )
 
     def formula(spm_unit, period, parameters):
