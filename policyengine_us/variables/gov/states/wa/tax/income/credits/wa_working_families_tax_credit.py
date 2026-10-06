@@ -22,7 +22,7 @@ class wa_working_families_tax_credit(Variable):
         # reduction rates; DOR's Excise Tax Advisory ETA 3240 lists the
         # per-year, per-child-count rates and the nearest-dollar rounding rule.
         "https://apps.leg.wa.gov/wac/default.aspx?cite=458-20-285",
-        "https://dor.wa.gov/sites/default/files/2022-09/3240.pdf",
+        "https://dor.wa.gov/sites/default/files/2026-07/ETA3240.2026.pdf",
         # IRC 152(c)(3)(B), included in the federal EITC rules as in effect on
         # June 9, 2022, waives the qualifying-child age test for permanently
         # and totally disabled individuals.

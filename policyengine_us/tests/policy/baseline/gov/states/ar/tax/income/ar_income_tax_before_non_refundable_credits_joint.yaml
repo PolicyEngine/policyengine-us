@@ -199,3 +199,15 @@
   output:
     # 2024 published last row $35,001-$35,100 -> $765
     ar_income_tax_before_non_refundable_credits_joint: [765, 0, 0, 0]
+
+- name: AR 2027 indexed Act 1 of 2026 tables - joint return above the low-income tables
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_joint: 50_000
+    ar_low_income_tax_joint: 5_000
+    state_code: AR
+  output:
+    # Indexed 2027 rows start at 5,800 / 11,500 / 16,500 / 27,200 (nearest $100):
+    # 5,700 x 2% + 5,000 x 3% + 10,700 x 3.4% + (50,000 - 27,200) x 3.7% = 1,471.40
+    ar_income_tax_before_non_refundable_credits_joint: 1_471.40

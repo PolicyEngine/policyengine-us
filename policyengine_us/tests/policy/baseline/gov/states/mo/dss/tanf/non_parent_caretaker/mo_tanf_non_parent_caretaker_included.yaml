@@ -1,0 +1,81 @@
+# DSS Manual 0210.005.15: "Do not include an optional person if their
+# inclusion causes ineligibility or a reduction in the grant." The two branch
+# grants are supplied as inputs here to pin the comparison itself.
+
+- name: Equal grants with and without the caretaker include the caretaker
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+        mo_tanf_if_non_parent_caretaker_included: 200
+        mo_tanf_if_non_parent_caretaker_excluded: 200
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    # Inclusion neither causes ineligibility nor reduces the grant.
+    mo_tanf_non_parent_caretaker_needy: true
+    mo_tanf_non_parent_caretaker_included: true
+
+- name: A grant one cent lower with the caretaker excludes the caretaker
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+        mo_tanf_if_non_parent_caretaker_included: 199.99
+        mo_tanf_if_non_parent_caretaker_excluded: 200
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker_included: false
+
+- name: No grant either way leaves the caretaker out
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+        mo_tanf_if_non_parent_caretaker_included: 0
+        mo_tanf_if_non_parent_caretaker_excluded: 0
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: MO
+  output:
+    # Including the caretaker would not produce a payable grant.
+    mo_tanf_non_parent_caretaker_included: false

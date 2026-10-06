@@ -11,7 +11,7 @@ class il_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx",
+        "https://tax.illinois.gov/programs/eitc.html",
         # 35 ILCS 5/212 bases the IL EIC on the federal IRC 32 credit.
         "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K212",
         # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.

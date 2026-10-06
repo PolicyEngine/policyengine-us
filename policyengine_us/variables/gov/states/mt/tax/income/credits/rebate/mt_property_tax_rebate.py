@@ -7,7 +7,7 @@ class mt_property_tax_rebate(Variable):
     label = "Montana property tax rebate"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=5"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
