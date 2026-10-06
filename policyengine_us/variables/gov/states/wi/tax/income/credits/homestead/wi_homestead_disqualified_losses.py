@@ -20,9 +20,9 @@ class wi_homestead_disqualified_losses(Variable):
         p = parameters(period).gov.states.wi.tax.income.credits.homestead.income
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        person_losses = sum(
-            max_(0, -person(source, period)) for source in p.disqualified_loss_sources
-        )
+        person_losses = 0
+        for source in p.disqualified_loss_sources:
+            person_losses = person_losses + max_(0, -person(source, period))
         # Schedule 4, line 3: net capital loss included in income.
         capital_loss = max_(0, -tax_unit("loss_limited_net_capital_gains", period))
         return tax_unit.sum(person_losses * head_or_spouse) + capital_loss
