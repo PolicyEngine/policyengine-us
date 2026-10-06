@@ -17,8 +17,7 @@ from the model's parameters):
 
 These tests check that the parameters encode that order, and that the model's
 credits match a direct sequential application of 26 U.S.C. 26(a) in that
-order. The households take the standard deduction, so the CTC limit's no-SALT
-liability equals actual liability.
+order. The households take the standard deduction.
 """
 
 import numpy as np

@@ -686,8 +686,10 @@ def test_nothing_excluded_changes_nothing():
             "section_911_28_percent_rate_gain": get(
                 "capital_gains_28_percent_rate_gain"
             ),
+            # Schedule D line 19, net of the losses the 28 percent rate gain
+            # does not absorb.
             "section_911_unrecaptured_section_1250_gain": get(
-                "unrecaptured_section_1250_gain"
+                "schedule_d_unrecaptured_section_1250_gain"
             ),
             "section_911_adjusted_net_capital_gain": get("adjusted_net_capital_gain"),
         }
@@ -719,7 +721,10 @@ def test_nothing_excluded_changes_nothing():
             ("line_9", "dwks09"),
             ("line_10", "dwks10"),
             ("line_13", "dwks13"),
-            ("unrecaptured_section_1250_gain", "unrecaptured_section_1250_gain"),
+            (
+                "unrecaptured_section_1250_gain",
+                "schedule_d_unrecaptured_section_1250_gain",
+            ),
         ]:
             assert np.array_equal(
                 np.asarray(getattr(worksheet, line))[no_excess],
