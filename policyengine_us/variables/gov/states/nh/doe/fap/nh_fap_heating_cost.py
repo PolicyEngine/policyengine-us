@@ -7,16 +7,17 @@ class nh_fap_heating_cost(Variable):
     definition_period = YEAR
     unit = USD
     label = "New Hampshire FAP annual heating cost using actual or estimated cost"
-    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17, 18, 76, 77"
+    # PY2027 manual, pages 17, 18, 76, 77.
+    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17"
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nh.doe.fap.heating_cost
         bedrooms = spm_unit.household("bedrooms", period)
-        # Bedrooms plus a kitchen, living room and bathroom is an approved
-        # modeling approximation, not the program's measured room count.
+        # Use bedrooms alone as an approved modeling approximation,
+        # not the program's measured room count. No other rooms are inferred.
         # Zero bedrooms cannot distinguish a studio from missing information.
-        rooms = where(bedrooms > 0, bedrooms + p.additional_rooms, 0)
+        rooms = max_(bedrooms, 0)
         # Whole-household bedrooms approximate the SPM unit's dwelling;
         # private, shared and business-only room adjustments are unobserved.
         dwelling = spm_unit("nh_fap_dwelling_type", period)

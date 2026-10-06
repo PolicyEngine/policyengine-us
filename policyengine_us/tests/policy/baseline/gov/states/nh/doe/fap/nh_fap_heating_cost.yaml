@@ -1,11 +1,11 @@
 # Source: PY27 NH Fuel Assistance Program Procedures Manual, physical pages 17, 18, 76, 77.
 # https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
 # Agency service counties: https://www.capnh.org/home-old
-# Bedrooms plus three is a user-approved modeling assumption, not a statutory room definition.
+# Using bedrooms alone is a user-approved modeling approximation, not the statutory room definition.
 # Inputs and estimates are annual; actual bills and the estimated cost are not added together.
 
-# Manual p76: 2000 * 7 * 7672 / 1,000,000 * 28.881 / .78 = 3976.987754. Four bedrooms + three assumed rooms is a model approximation.
-- name: "Case 1, four bedrooms reproduce the manual seven-room oil example."
+# Manual pp76-77 formula with the approved bedroom-only proxy: 2000 * 4 * 7672 / 1,000,000 * 28.881 / .78 = 2272.564431.
+- name: "Case 1, four bedrooms produce a four-room oil estimate without added rooms."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -27,9 +27,9 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_heating_cost: 3_976.987754
+    nh_fap_heating_cost: 2_272.564431
 
-# Manual p77: single-family factor 2000 * five assumed rooms * 7672 HDD; apply each fuel price / efficiency. WOOD is cordwood; electricity has no extra 70% reduction.
+# Manual p77: single-family factor 2000 * two bedrooms * 7672 HDD; apply each fuel price / efficiency. WOOD is cordwood; electricity has no extra 70% reduction.
 - name: "Case 2, each observed fuel uses its published heating-cost conversion."
   period: 2027
   absolute_error_margin: 0.01
@@ -129,9 +129,9 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [3_460.760513, 2_840.705538, 1_403.414634, 1_461.36256, 2_636.488889, 4_964.24432, 4_179.961333]
+    nh_fap_heating_cost: [1_384.304205, 1_136.282215, 561.365854, 584.545024, 1_054.595556, 1_985.697728, 1_671.984533]
 
-# Manual p77 agency HDD and CAPNH county directory; factor 2000 * five assumed rooms * HDD / 1,000,000 * 28.881 / .78.
+# Manual p77 agency HDD and CAPNH county directory; factor 2000 * two bedrooms * HDD / 1,000,000 * 28.881 / .78.
 - name: "Case 3, all ten counties use the agency heating degree days."
   period: 2027
   absolute_error_margin: 0.01
@@ -270,10 +270,10 @@
         county_str: "GRAFTON_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [2_447.479615, 2_447.479615, 2_219.0235, 2_219.0235, 2_244.201808, 2_439.333692, 2_439.333692, 2_840.705538, 2_840.705538, 2_840.705538]
+    nh_fap_heating_cost: [978.991846, 978.991846, 887.6094, 887.6094, 897.680723, 975.733477, 975.733477, 1_136.282215, 1_136.282215, 1_136.282215]
 
 # Manual p77: dwelling factors 2000, 1800 and 1400 with Strafford HDD 6061.
-- name: "Case 4, dwelling factors change a five-room oil estimate."
+- name: "Case 4, dwelling factors change a two-bedroom oil estimate."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -320,7 +320,7 @@
         county_str: "STRAFFORD_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [2_244.201808, 2_019.781627, 1_570.941265]
+    nh_fap_heating_cost: [897.680723, 807.912651, 628.376506]
 
 # Approved model assumption: no room estimate for nonpositive bedrooms, so actual bills are retained.
 - name: "Case 5, zero or negative bedrooms preserve the actual bill fallback."
@@ -372,7 +372,7 @@
   output:
     nh_fap_heating_cost: [0, 650, 750]
 
-# Manual p18: compare actual annual cost and design heat load for best benefit; 500 is below the seven-room estimate.
+# Manual p18: compare actual annual cost and design heat load for best benefit; 500 is below the four-bedroom estimate.
 - name: "Case 6, the estimate is retained when the actual bill is lower."
   period: 2027
   absolute_error_margin: 0.01
@@ -394,9 +394,9 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_heating_cost: 3_976.987754
+    nh_fap_heating_cost: 2_272.564431
 
-# Manual p18 allows documented actual cost for high usage; 5000 exceeds 3976.987754.
+# Manual p18 allows documented actual cost for high usage; 5000 exceeds 2272.564431.
 - name: "Case 7, a larger annual bill replaces the estimate."
   period: 2027
   absolute_error_margin: 0.01
@@ -565,7 +565,7 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_heating_cost: 3_976.987754
+    nh_fap_heating_cost: 2_272.564431
 
 # With no room estimate and no positive annual cost, the component is zero.
 - name: "Case 12, negative reported bills without bedrooms have zero modeled cost."
@@ -614,7 +614,7 @@
   output:
     nh_fap_heating_cost: 500
 
-# Approved whole-household approximation: both units use five rooms; no inferred private-room allocation. Factor 1400 with Coos HDD 7672.
+# Approved whole-household approximation: both units use two bedrooms; no inferred private-room allocation. Factor 1400 with Coos HDD 7672.
 - name: "Case 14, SPM units reuse household bedrooms with their own fuel."
   period: 2027
   absolute_error_margin: 0.01
@@ -640,4 +640,4 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [1_845.542222, 982.390244]
+    nh_fap_heating_cost: [738.216889, 392.956098]

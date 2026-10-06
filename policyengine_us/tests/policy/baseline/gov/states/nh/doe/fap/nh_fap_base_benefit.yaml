@@ -2175,8 +2175,8 @@
   output:
     nh_fap_base_benefit: 0
 
-# Manual p76: assume four bedrooms + three rooms = seven; cost 3976.988 selects AA, income 45120 selects F, yielding 825 before any heat-in-rent adjustment.
-- name: "Case 82, the published two-person oil example is reachable through bedrooms."
+# Manual pp76-78 formula and matrix with four bedrooms alone: cost 2272.564 selects BB, income 45120 selects F, yielding 800 before any heat-in-rent adjustment.
+- name: "Case 82, bedrooms alone determine the two-person oil benefit cost band."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2206,11 +2206,11 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_heating_cost: 3_976.987754
+    nh_fap_heating_cost: 2_272.564431
     nh_fap_countable_income: 45_120
-    nh_fap_base_benefit: 825
+    nh_fap_base_benefit: 800
 
-# Manual pp18,77-78: two bedrooms imply five rooms, estimated cost 2840.706 selects BB/A 2350; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
+# Manual pp18,77-78: two bedrooms alone give estimated cost 1136.282, selecting CC/A 1460; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
 - name: "Case 83, the larger cost basis determines the delivered benefit."
   period: 2027
   absolute_error_margin: 0.01
@@ -2255,10 +2255,10 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [2_840.705538, 4_000]
-    nh_fap_base_benefit: [2_350, 2_500]
+    nh_fap_heating_cost: [1_136.282215, 4_000]
+    nh_fap_base_benefit: [1_460, 2_500]
 
-# Manual pp77-78: five-room Coos gas cost 1403.415 selects CC/A 1460 * .75 =1095; actual 4000 selects AA/A 2500 * .75 =1875.
+# Manual pp77-78: two-bedroom Coos gas cost 561.366 selects DD/A 750 * .75 =562.50, rounded to 563; actual 4000 selects AA/A 2500 * .75 =1875.
 - name: "Case 84, utility reduction follows the selected proxy or actual cost band."
   period: 2027
   absolute_error_margin: 0.01
@@ -2303,5 +2303,5 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 2
   output:
-    nh_fap_heating_cost: [1_403.414634, 4_000]
-    nh_fap_base_benefit: [1_095, 1_875]
+    nh_fap_heating_cost: [561.365854, 4_000]
+    nh_fap_base_benefit: [563, 1_875]
