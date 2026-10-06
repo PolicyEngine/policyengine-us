@@ -27,7 +27,8 @@ the tax unit's dependents have:
 4. Form 1040 line 7a (filer_loss_limited_net_capital_gains) is line 16, or
    the loss limit if line 16 is a larger loss, from the same lines.
 5. Changing a dependent's capital gains, losses, distributions, dividends,
-   collectibles gain or Form 4952 election changes none of the filers' tax
+   collectibles and section 1202 gain, long-term loss carryover, Schedule D
+   line 18 amounts or Form 4952 election changes none of the filers' tax
    amounts.
 6. A negative distributions input gives the same results as zero.
 7. Net capital gain never falls when a filer's LT, ST, D or Q rises, and
@@ -56,6 +57,9 @@ DEPENDENT_INPUTS = {
     **FILER_INPUTS,
     "collectibles": "collectibles_gain_or_loss",
     "line_18_collectibles": "long_term_capital_gains_on_collectibles",
+    "line_18_small_business_stock": "long_term_capital_gains_on_small_business_stock",
+    "section_1202": "section_1202_gain",
+    "carryover": "long_term_capital_loss_carryover",
     "election": "investment_income_elected_form_4952",
 }
 
@@ -183,7 +187,7 @@ def assert_dependents_change_nothing(households):
 
 
 # ---------------------------------------------------------------------------
-# A deterministic grid (runs without Hypothesis).
+# A deterministic grid.
 # ---------------------------------------------------------------------------
 
 GRID_GAINS = [-12_000, -3_000, 0, 4_000, 25_000]
@@ -195,6 +199,9 @@ GRID_DEPENDENT = {
     "dividends": 5_000,
     "collectibles": 4_000,
     "line_18_collectibles": 2_000,
+    "line_18_small_business_stock": 1_000,
+    "section_1202": 3_000,
+    "carryover": 2_000,
     "election": 3_000,
 }
 
@@ -286,6 +293,9 @@ def dependent(draw):
         "dividends": draw(NON_NEGATIVE),
         "collectibles": draw(st.one_of(st.just(0), SMALL)),
         "line_18_collectibles": draw(st.one_of(st.just(0), NON_NEGATIVE)),
+        "line_18_small_business_stock": draw(st.one_of(st.just(0), NON_NEGATIVE)),
+        "section_1202": draw(st.one_of(st.just(0), NON_NEGATIVE)),
+        "carryover": draw(st.one_of(st.just(0), NON_NEGATIVE)),
         "election": draw(st.one_of(st.just(0), NON_NEGATIVE)),
     }
 
