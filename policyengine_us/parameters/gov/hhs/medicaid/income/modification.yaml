@@ -3,12 +3,18 @@ values:
   2010-01-01:
     - foreign_earned_income_exclusion
     - tax_exempt_interest_income
-    - tax_exempt_social_security
+    # The taxpayer's own Social Security benefits not in AGI (26 USC
+    # 36B(d)(2)(B)(iii)). A dependent's benefits are the dependent's MAGI,
+    # counted only when the dependent is required to file (36B(d)(2)(A)(ii),
+    # 42 CFR 435.603(d)(2)); medicaid_magi_person gives each person their own.
+    - filer_tax_exempt_social_security
 metadata:
   unit: list
   label: Medicaid/CHIP/ACA-related MAGI additions over AGI
   reference:
     - title: 26 U.S. Code § 36B(d)(2) - Refundable credit for coverage under a qualified health plan
       href: https://www.law.cornell.edu/uscode/text/26/36B#d_2
+    - title: 42 CFR § 435.603(d)(2) - Household income of children and tax dependents
+      href: https://www.law.cornell.edu/cfr/text/42/435.603#d_2
     - title: Modified Adjusted Gross Income (MAGI)
       href: https://www.healthcare.gov/glossary/modified-adjusted-gross-income-magi
