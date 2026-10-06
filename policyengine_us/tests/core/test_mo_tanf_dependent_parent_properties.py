@@ -406,8 +406,11 @@ def test_default_input_matches_marking_the_parent():
     marked_sim = Simulation(situation=_situation(marked))
     flag = default_sim.calculate("mo_tanf_is_parent_of_dependent_child", YEAR)
     roles = [role for h in own_children for role in _roles(h)]
-    # The default is own_children_in_household > 0: the head, the dependent
-    # adult and the 16-year-old mother, nobody else.
+    # The default is own_children_in_household > 0 and being 12 to 50 years
+    # older than some dependent child in the tax unit. Here the head (55),
+    # the dependent adult (18 or 22) and the 16-year-old mother all have
+    # their own children in the home and pass the age window; nobody else
+    # has own children.
     assert flag.tolist() == [
         role in ("head", "adult", "minor_parent") for role in roles
     ]
