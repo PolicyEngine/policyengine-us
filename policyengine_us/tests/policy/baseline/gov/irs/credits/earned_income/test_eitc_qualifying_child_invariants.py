@@ -52,10 +52,11 @@ IRC 32(c)(3)(D) alone:
 13. In every year, removing a qualifying child's TIN never raises dc_eitc.
 """
 
+import gc
 import itertools
-from functools import cache
 
 import numpy as np
+import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -168,9 +169,14 @@ STATE_ROWS = [
 ]
 
 
-@cache
+@pytest.fixture(scope="module")
 def tin_rule_off_system():
-    """The tax-benefit system with qualifying_child_tin_required off, built once."""
+    """The tax-benefit system with qualifying_child_tin_required off.
+
+    Built once for this module and only read. It is released when the module
+    finishes, so the rest of the pytest process does not keep a second full
+    system resident.
+    """
     reform = Reform.from_dict(
         {
             "gov.states.dc.tax.income.credits.eitc.qualifying_child_tin_required": {
@@ -179,7 +185,8 @@ def tin_rule_off_system():
         },
         country_id="us",
     )
-    return CountryTaxBenefitSystem(reform=reform)
+    yield CountryTaxBenefitSystem(reform=reform)
+    gc.collect()
 
 
 SETTINGS = settings(
@@ -283,8 +290,8 @@ def assert_no_tin_never_raises(dc_eitc, row, context):
 
 @SETTINGS
 @given(draw=household_draw)
-def test_dc_eitc_without_tin_rule(draw):
-    sim, dependent_index = build(draw, DC_ROWS, system=tin_rule_off_system())
+def test_dc_eitc_without_tin_rule(tin_rule_off_system, draw):
+    sim, dependent_index = build(draw, DC_ROWS, system=tin_rule_off_system)
     row = index_rows(DC_ROWS)
     has_dependent = dependent_index >= 0
     for year in YEARS:
