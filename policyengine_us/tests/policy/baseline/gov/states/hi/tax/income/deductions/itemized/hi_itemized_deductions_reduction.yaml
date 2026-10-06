@@ -1,0 +1,114 @@
+- name: Case 1, separate filer above the threshold, reduction is 3% of the excess AGI.
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: SEPARATE
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 200_000
+        members: [person1, person2]
+        hi_total_itemized_deductions: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 5: (10,000 - 900) * 80% = 7,280.
+    # Line 9: (200,000 - 83,400) * 3% = 3,498.
+    hi_itemized_deductions_reduction: 3_498
+
+- name: Case 2, Hawaii AGI below the threshold, no reduction.
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 166_779
+        members: [person1, person2]
+        hi_total_itemized_deductions: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_itemized_deductions_reduction: 0
+
+- name: Case 3, excluded deductions equal the total, no reduction.
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 166_880
+        members: [person1, person2]
+        hi_total_itemized_deductions: 900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_itemized_deductions_reduction: 0
+
+- name: Case 4, joint filer in 2026 uses the $166,800 threshold, not a joint federal amount.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    # Line 5: 30,000 * 80% = 24,000.
+    # Line 9: (200,000 - 166,800) * 3% = 996.
+    hi_itemized_deductions_reduction: 996
+
+- name: Case 5, Hawaii AGI exactly at the threshold, no reduction.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 166_800
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions_reduction: 0
+
+- name: Case 6, the 80% ceiling binds at high income in 2026, not the federal 2/37 rule.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    # Line 5: 30,000 * 80% = 24,000.
+    # Line 9: (1,000,000 - 166,800) * 3% = 24,996.
+    hi_itemized_deductions_reduction: 24_000
+
+- name: Case 7, negative Hawaii AGI, no reduction.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: -50_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions_reduction: 0
