@@ -107,3 +107,41 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: false
+
+- name: Case 7, a self-employment loss does not count as unearned income.
+  # IRS Pub. 501 (2025), p. 4, Table 2: unearned income is interest,
+  # dividends, capital gain distributions, pensions and the like; earned
+  # income is wages and pay for work. Here unearned income is the 100 of
+  # interest, not 100 less the 5,000 loss, so it is not more than 1,350, and
+  # gross income, 100, is not more than 1,350. The dependent is not required
+  # to file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: -5_000
+        taxable_interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 8, wages deferred to a 401(k) plan do not hide unearned income.
+  # Box 1 wages leave out the 2,000 deferral, so gross income is 8,000 of
+  # wages and 1,500 of interest. Unearned income, 1,500, is more than 1,350
+  # (Pub. 501 (2025), Table 2), so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
