@@ -5,7 +5,7 @@ of the taxpayer for the taxable year." Form 4952 (2025), line 8: "Enter the
 smaller of line 3 or line 6." Line 7 carries forward the excess of line 3 over
 line 6. Its line 4g instructions say "don't enter more than the sum of lines
 4b and 4e." Sources: https://www.law.cornell.edu/uscode/text/26/163#d and
-https://www.irs.gov/pub/irs-pdf/f4952.pdf.
+https://www.irs.gov/pub/irs-prior/f4952--2025.pdf.
 
 For 2017, line 5 includes the smaller of investment expenses on Schedule A
 line 23 and Schedule A line 27 (Form 4952 (2017), line 5 instructions,

@@ -19,5 +19,5 @@ class investment_expenses(Variable):
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#d_4_C",
         "https://www.law.cornell.edu/uscode/text/26/163#d_4_D",
-        "https://www.irs.gov/pub/irs-pdf/f4952.pdf",
+        "https://www.irs.gov/pub/irs-prior/f4952--2025.pdf",
     ]

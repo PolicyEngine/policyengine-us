@@ -14,22 +14,28 @@ class form_4952_net_capital_gain(Variable):
     capital gain over your net short-term capital loss" and state "Capital
     gain distributions from mutual funds are treated as long-term capital
     gains." As on line 4d, every capital asset is treated as property held
-    for investment and all tax-unit members' gains are summed, matching the
-    Schedule D Tax Worksheet Form 4952 helper. Schedule D distributions
-    already belong to long_term_capital_gains; add non_sch_d_capital_gains
-    once. Capital loss carryovers have no model input and are not modeled.
+    for investment and only the head's and spouse's gains count. Schedule D
+    distributions already belong to long_term_capital_gains, so
+    distributions reported without Schedule D are added once. Capital loss
+    carryovers have no model input and are not modeled.
+
+    This is also Schedule D Tax Worksheet line 4, so the capital gains tax
+    takes a Form 4952 line 4g election from the same amount. It does not read
+    the worksheet, which reads it.
     """
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#d_4_B_ii_II",
-        "https://www.irs.gov/pub/irs-pdf/f4952.pdf",
+        "https://www.irs.gov/pub/irs-prior/f4952--2025.pdf#page=3",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf#page=15",
     ]
 
     def formula(tax_unit, period, parameters):
         net_gain = tax_unit("form_4952_net_investment_gain", period)
-        long_term_gains = add(tax_unit, period, ["long_term_capital_gains"])
-        short_term_gains = add(tax_unit, period, ["short_term_capital_gains"])
-        distributions = add(tax_unit, period, ["non_sch_d_capital_gains"])
-        net_capital_gain = max_(
-            0, long_term_gains + distributions - max_(0, -short_term_gains)
+        long_term_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["long_term_capital_gains"]
+        ) + tax_unit("form_4952_capital_gain_distributions", period)
+        short_term_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["short_term_capital_gains"]
         )
+        net_capital_gain = max_(0, long_term_gains - max_(0, -short_term_gains))
         return min_(net_gain, net_capital_gain)

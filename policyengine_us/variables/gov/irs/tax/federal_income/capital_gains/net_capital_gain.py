@@ -46,19 +46,20 @@ class net_capital_gain(Variable):
         # 26 U.S.C. 1222(11), determined without regard to section 1(h)(11).
         gain = max_(0, long_term_gain - short_term_loss)
         # Form 4952 line 4g: the net capital gain and qualified dividends
-        # elected to be included in investment income (26 U.S.C. 163(d)(4)(B)).
+        # elected to be included in investment income (26 U.S.C. 163(d)(4)(B)),
+        # the same effective amount the investment interest deduction uses.
         # The amount "is generally treated as being attributable first to net
         # capital gain ... and then to qualified dividends" (line 4g
-        # instructions). Section 1(h)(2) removes the gain part, the amount
-        # taken into account under 163(d)(4)(B)(iii); section 1(h)(11)(D)(i)
-        # removes the rest from qualified dividend income.
-        election = max_(
-            0, add(tax_unit, period, ["investment_income_elected_form_4952"])
-        )
-        gain_elected = min_(election, gain)
+        # instructions): first to Form 4952 line 4e (Schedule D Tax Worksheet
+        # line 8), then to qualified dividends (worksheet line 5). Section
+        # 1(h)(2) removes the gain part, the amount taken into account under
+        # 163(d)(4)(B)(iii); section 1(h)(11)(D)(i) removes the rest from
+        # qualified dividend income.
+        election = tax_unit("form_4952_elected_investment_income", period)
+        gain_elected = min_(election, tax_unit("form_4952_net_capital_gain", period))
         dividends_elected = election - gain_elected
         qualified_dividends = max_(
             0,
             add(tax_unit, period, ["qualified_dividend_income"]) - dividends_elected,
         )
-        return gain - gain_elected + qualified_dividends
+        return max_(0, gain - gain_elected) + qualified_dividends

@@ -17,11 +17,8 @@ class form_4952_qualified_dividends(Variable):
     """
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#d_4_B",
-        "https://www.irs.gov/pub/irs-pdf/f4952.pdf",
+        "https://www.irs.gov/pub/irs-prior/f4952--2025.pdf#page=3",
     ]
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        dividends = person("qualified_dividend_income", period)
-        return tax_unit.sum(dividends * not_dependent)
+        return tax_unit_non_dep_add(tax_unit, period, ["qualified_dividend_income"])

@@ -32,13 +32,10 @@ class form_4952_gross_investment_income(Variable):
         "https://www.law.cornell.edu/uscode/text/26/163#d_4_B_i",
         "https://www.law.cornell.edu/uscode/text/26/163#d_5",
         "https://www.law.cornell.edu/cfr/text/26/1.469-2T",
-        "https://www.irs.gov/pub/irs-pdf/f4952.pdf",
+        "https://www.irs.gov/pub/irs-prior/f4952--2025.pdf#page=3",
     ]
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        income = add(
-            person, period, ["taxable_interest_income", "ordinary_dividend_income"]
+        return tax_unit_non_dep_add(
+            tax_unit, period, ["taxable_interest_income", "ordinary_dividend_income"]
         )
-        return tax_unit.sum(income * not_dependent)

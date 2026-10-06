@@ -10,7 +10,11 @@ def section_911_net_capital_gain_other_than_dividends(tax_unit, period):
     rounded to single precision, which moved capital_gains_tax by fractions
     of a cent for filers with nothing excluded.
     """
-    qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
+    # Schedule D Tax Worksheet line 6: the qualified dividends net_capital_gain
+    # still holds after any Form 4952 line 4g election.
+    qualified_dividends = tax_unit(
+        "dividend_income_reduced_by_investment_income", period
+    )
     gain = max_(0, tax_unit("net_capital_gain", period) - qualified_dividends)
     excess = tax_unit("section_911_capital_gain_excess", period)
     return where(excess > 0, max_(0, gain - excess), gain)
