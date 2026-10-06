@@ -10,9 +10,10 @@ floored at zero. From 2024 Form 2 line 2 takes federal itemized deductions
 Each test evaluates every point of an input grid in one vectorized simulation,
 so the properties hold for all grid inputs rather than for a few examples:
 
-- 2021-2023: the medical deduction is max(0, expenses - 7.5% of the return's
-  Montana AGI), and the standard deduction is 20% of that AGI held between the
-  filing status minimum and maximum;
+- 2021-2023: the medical deduction is max(0, expenses other than premiums -
+  7.5% of the return's Montana AGI) plus the premiums deducted in full on
+  lines 2 and 3, and the standard deduction is 20% of that AGI held between
+  the filing status minimum and maximum;
 - moving an income item from one spouse to the other leaves both deductions
   unchanged, because they depend on the return's pooled Montana AGI only;
 - each deduction is held once, by the head;
@@ -154,23 +155,32 @@ def test_premises(grid, year):
 @pytest.mark.parametrize("year", STATE_YEARS)
 def test_medical_floor_uses_the_return_montana_agi(grid, year):
     sim, unit, role = grid
-    expenses = sim.calculate("itemized_medical_expenses", year)
-    expected = np.maximum(
-        expenses - MEDICAL_FLOOR * montana_agi_reference(sim, year), 0
+    # Line 1 floors expenses other than premiums; lines 2 and 3 deduct the
+    # premiums in full. The grid's age-70 single filers have modeled
+    # Medicare Part B premiums.
+    expenses = per_unit(sim, "other_medical_expenses", year, unit)
+    premiums = per_unit(
+        sim, "mt_eligible_medical_insurance_premiums", year, unit
+    ) + per_unit(sim, "long_term_health_insurance_premiums", year, unit)
+    expected = (
+        np.maximum(expenses - MEDICAL_FLOOR * montana_agi_reference(sim, year), 0)
+        + premiums
     )
     deduction = per_unit(sim, "mt_medical_expense_deduction_joint", year, unit)
     np.testing.assert_allclose(deduction, expected, atol=0.01)
     held = sim.calculate("mt_medical_expense_deduction_joint", year)
     assert np.all(held[role != "head"] == 0)
-    assert np.all(deduction >= 0)
-    assert np.all(deduction <= expenses + 0.01)
+    assert np.all(deduction >= premiums - 0.01)
+    assert np.all(deduction <= expenses + premiums + 0.01)
     spouse_side, head_side = twin_pairs()
     np.testing.assert_allclose(deduction[spouse_side], deduction[head_side])
     assert deduction.max() > 0
     # Adding each spouse's Montana AGI after flooring it at zero would change
     # the deduction somewhere on the grid.
     summed_individual = per_unit(sim, "mt_agi_indiv", year, unit)
-    unpooled = np.maximum(expenses - MEDICAL_FLOOR * summed_individual, 0)
+    unpooled = (
+        np.maximum(expenses - MEDICAL_FLOOR * summed_individual, 0) + premiums
+    )
     assert np.any(np.abs(unpooled - expected) > 1)
 
 
