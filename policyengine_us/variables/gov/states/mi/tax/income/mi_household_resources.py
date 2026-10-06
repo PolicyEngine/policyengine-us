@@ -118,13 +118,19 @@ class mi_household_resources(Variable):
         # like the dependent's income, are on the dependent's return.
         # Person-level adjustments are summed over the head and spouse, and
         # tax-unit-level ones are the filer's own: the self-employment and
-        # alimony deductions sum only the head and spouse.
+        # alimony deductions sum only the head and spouse. Amounts that are
+        # the filer's even when recorded on a dependent are summed over every
+        # member, as in above_the_line_deductions.
+        ald = parameters(period).gov.irs.ald
         deductions = [
-            deduction
-            for deduction in parameters(period).gov.irs.ald.deductions
-            if deduction != "loss_ald"
+            deduction for deduction in ald.deductions if deduction != "loss_ald"
         ]
-        adjustments = tax_unit_non_dep_add(tax_unit, period, deductions)
+        adjustments = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            deductions,
+            include_dependents=ald.filer_amounts_recorded_on_dependents,
+        )
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the

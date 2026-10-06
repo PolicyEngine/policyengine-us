@@ -311,10 +311,11 @@ def test_worked_example():
 
 
 DEPENDENT_VALUES = {
-    # Losses only for Schedule C and F: a dependent's self-employment tax
-    # deduction is a separate question (it is not on this return either).
-    "self_employment_income": [-20_000, 0],
-    "farm_operations_income": [-10_000, 0],
+    # Schedule C and F income and losses: a dependent's self-employment tax
+    # deduction is on the dependent's own return, so line 30 leaves it out
+    # (#9801).
+    "self_employment_income": [-20_000, 0, 20_000],
+    "farm_operations_income": [-10_000, 0, 10_000],
     "s_corp_income": [-20_000, 0, 15_000],
     "estate_income": [-5_000, 0, 5_000],
     "rental_income": [-20_000, 0, 15_000],
