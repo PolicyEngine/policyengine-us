@@ -1,0 +1,20 @@
+description: Montana allows a casualty and theft loss deduction on its Itemized Deductions Schedule, if this is true.
+metadata:
+  label: Montana casualty and theft loss deduction applies
+  period: year
+  unit: bool
+  reference:
+    - title: 2021 Montana Form 2 Instructions, Itemized Deductions Schedule, line 15
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=34
+    - title: 2022 Montana Form 2 Instructions, Itemized Deductions Schedule, line 15
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35
+    - title: 2023 Montana Form 2 Instructions, Itemized Deductions Schedule, line 15
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=39
+    # From 2024, Montana taxable income starts from federal taxable income and
+    # the Itemized Deductions Schedule is discontinued (SB 399).
+    - title: 2024 Montana Form 2 Instructions, Discontinued Worksheets and Schedules
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8
+
+values:
+  2021-01-01: true
+  2024-01-01: false

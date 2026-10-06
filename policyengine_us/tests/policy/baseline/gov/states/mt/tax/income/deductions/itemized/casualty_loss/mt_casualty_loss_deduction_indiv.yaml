@@ -1,0 +1,107 @@
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 15 (PDF pp. 35-36):
+# "To determine your casualty and/or theft loss, use your Montana Adjusted
+# Gross Income in place of the Federal Adjusted Gross Income. If you and your
+# spouse are filing separately, you each should complete a separate federal
+# Form 4684 to determine the amount of your separate casualty and/or theft
+# loss."
+# 2022 Form 2 instructions, Filing Separately When Married (PDF p. 11):
+# "Deductions that are attributable to only one spouse must be claimed by that
+# spouse."
+# Form 4684 allows the loss above 10% of adjusted gross income. The federal
+# suspension of losses outside federally declared disasters is modeled by
+# gov.irs.deductions.itemized.casualty.active, which these tests switch on.
+
+- name: Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 30,000 - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [24_000, 0]
+
+- name: Each spouse's loss is floored at 10% of that spouse's Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        casualty_loss: 5_000
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 30,000 - 6,000 and 5,000 - 4,000.
+    mt_casualty_loss_deduction_indiv: [24_000, 1_000]
+
+- name: A dependent's loss goes to the head, with the dependent's income
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        casualty_loss: 10_000
+        mt_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # 10,000 - 10% x 60,000, in the head's column.
+    mt_casualty_loss_deduction_indiv: [4_000, 0, 0]
+
+- name: Losses outside federally declared disasters are suspended
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_indiv: [0, 0]

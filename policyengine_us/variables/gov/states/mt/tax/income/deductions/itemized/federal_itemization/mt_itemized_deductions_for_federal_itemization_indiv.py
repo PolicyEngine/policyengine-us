@@ -28,7 +28,7 @@ class mt_itemized_deductions_for_federal_itemization_indiv(Variable):
             person,
             period,
             [
-                "mt_misc_deductions",
+                "mt_casualty_loss_deduction_indiv",
                 "mt_child_dependent_care_expense_deduction",
                 "mt_medical_expense_deduction_indiv",
                 "mt_salt_deduction",

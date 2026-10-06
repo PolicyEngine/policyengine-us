@@ -5,7 +5,7 @@
      investment_interest_expense: 265
      mt_salt_deduction: 5_000
      mt_medical_expense_deduction_indiv: 1_000
-     casualty_loss_deduction: 400
+     mt_casualty_loss_deduction_indiv: 400
      mt_child_dependent_care_expense_deduction: 123
      mt_federal_income_tax_deduction_for_federal_itemization_indiv: 2_000
      state_code: MT
@@ -19,7 +19,7 @@
      investment_interest_expense: 1_234
      mt_salt_deduction: 10_000
      mt_medical_expense_deduction_indiv: 3_000 
-     casualty_loss_deduction: 0
+     mt_casualty_loss_deduction_indiv: 0
      mt_child_dependent_care_expense_deduction: 0
      mt_federal_income_tax_deduction_for_federal_itemization_indiv: 2_000
      state_code: MT
@@ -33,7 +33,7 @@
      mortgage_interest: 34
      mt_salt_deduction: 1_035
      mt_medical_expense_deduction_indiv: 3_000
-     casualty_loss_deduction: 745
+     mt_casualty_loss_deduction_indiv: 745
      mt_child_dependent_care_expense_deduction: 1_004
      mt_federal_income_tax_deduction_for_federal_itemization_indiv: 2_000
      state_code: MT
@@ -47,20 +47,20 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        mt_misc_deductions: 100
+        mt_casualty_loss_deduction_indiv: 100
         mt_medical_expense_deduction_indiv: 200
         mt_salt_deduction: 300
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 400
       person2:
         is_tax_unit_head_or_spouse: true
-        mt_misc_deductions: 100
+        mt_casualty_loss_deduction_indiv: 100
         mt_medical_expense_deduction_indiv: 200
         mt_salt_deduction: 300
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 100
       person3:
         is_tax_unit_head_or_spouse: false
         is_tax_unit_dependent: true
-        mt_misc_deductions: 100
+        mt_casualty_loss_deduction_indiv: 100
         mt_medical_expense_deduction_indiv: 12
         mt_salt_deduction: 200
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 100
@@ -74,3 +74,35 @@
         state_code: MT
   output:
     mt_itemized_deductions_for_federal_itemization_indiv: [1_000, 700, 0]
+
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 15 (PDF pp. 35-36):
+# complete federal Form 4684 using Montana AGI in place of federal AGI; spouses
+# filing separately each complete their own Form 4684. The casualty loss is a
+# tax unit amount, so it must not be repeated for each member.
+
+- name: Only the spouse who had the casualty loss deducts it when filing separately
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 30,000 - 10% x 60,000 Montana AGI in the head's column; none for the spouse.
+    mt_itemized_deductions_for_federal_itemization_indiv: [24_000, 0]

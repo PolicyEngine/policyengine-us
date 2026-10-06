@@ -6,7 +6,7 @@
      investment_interest_expense: 265
      mt_salt_deduction: 5_000
      mt_medical_expense_deduction_joint: 1_000
-     casualty_loss_deduction: 400
+     mt_casualty_loss_deduction_joint: 400
      mt_child_dependent_care_expense_deduction_joint: 123
      mt_federal_income_tax_deduction_unit: 2_000
      state_code: MT
@@ -21,7 +21,7 @@
      mortgage_interest: 1_234
      mt_salt_deduction: 10_000
      mt_medical_expense_deduction_joint: 3_000 
-     casualty_loss_deduction: 0
+     mt_casualty_loss_deduction_joint: 0
      mt_child_dependent_care_expense_deduction_joint: 0
      mt_federal_income_tax_deduction_unit: 2_000
      state_code: MT
@@ -36,7 +36,7 @@
      mortgage_interest: 34
      mt_salt_deduction: 1_035
      mt_medical_expense_deduction_joint: 3_000
-     casualty_loss_deduction: 745
+     mt_casualty_loss_deduction_joint: 745
      mt_child_dependent_care_expense_deduction_joint: 1_004
      mt_federal_income_tax_deduction_unit: 2_000
      state_code: MT
@@ -50,18 +50,15 @@
     people:
       person1:
         is_tax_unit_head: true
-        mt_misc_deductions: 100
         mt_medical_expense_deduction_joint: 200
         mt_salt_deduction: 300
         investment_interest_expense: 100
       person2:
         is_tax_unit_head: false
-        mt_misc_deductions: 100
         mt_medical_expense_deduction_joint: 200
         mt_salt_deduction: 300
       person3:
         is_tax_unit_head: false
-        mt_misc_deductions: 100
         mt_medical_expense_deduction_joint: 12
         mt_salt_deduction: 200
     households:
@@ -72,5 +69,66 @@
       tax_unit:
         members: [person1, person2, person3]
         mt_federal_income_tax_deduction_unit: 600
+        mt_casualty_loss_deduction_joint: 100
   output:
-    mt_itemized_deductions_joint: [2_212, 0, 0]
+    mt_itemized_deductions_joint: [2_012, 0, 0]
+
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 15 (PDF pp. 35-36):
+# complete federal Form 4684 using Montana AGI in place of federal AGI; spouses
+# filing separately each complete their own Form 4684. The casualty loss is a
+# tax unit amount, so it must not be repeated for each member.
+
+- name: A couple's casualty loss counts once on a joint return
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 30,000 - 10% x 100,000 Montana AGI, counted once.
+    mt_itemized_deductions_joint: [20_000, 0]
+
+- name: A dependent in the tax unit does not repeat the joint casualty loss
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_itemized_deductions_joint: [20_000, 0, 0]
