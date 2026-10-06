@@ -246,3 +246,235 @@
     state_sales_tax: 1_000
   output:
     local_sales_tax: 0
+
+# 2015-2021: the Optional Local Sales Tax Tables and state table headings of
+# each year. Row 8 is "$80,000-$90,000". Combined rates are entered, as
+# PolicyEngine's official locality rates start in 2022.
+
+- name: Local table method, New York City, 2015
+  # 2015 Optional Local Sales Tax Tables (PDF page 18), Table A, row
+  # $80,000-$90,000, 1 exemption: 110. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 110 x 4.875 = 536.25.
+  period: 2015
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 536.25
+
+- name: Local table method, New York City, 2016
+  # 2016 Optional Local Sales Tax Tables (PDF page 18), Table A, row
+  # $80,000-$90,000, 1 exemption: 119. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 119 x 4.875 = 580.125.
+  period: 2016
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 580.125
+
+- name: Local table method, New York City, 2017
+  # 2017 Optional Local Sales Tax Tables (PDF page 19), Table A, row
+  # $80,000-$90,000, 1 exemption: 126. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 126 x 4.875 = 614.25.
+  period: 2017
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 614.25
+
+- name: Local table method, New York City, 2018
+  # 2018 Optional Local Sales Tax Tables (PDF page 18), Table A, row
+  # $80,000-$90,000, family size 1: 126. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 126 x 4.875 = 614.25.
+  period: 2018
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 614.25
+
+- name: Local table method, New York City, 2019
+  # 2019 Optional Local Sales Tax Tables (PDF page 19), Table A, row
+  # $80,000-$90,000, family size 1: 127. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 127 x 4.875 = 619.125.
+  period: 2019
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 619.125
+
+- name: Local table method, New York City, 2020
+  # 2020 Optional Local Sales Tax Tables (PDF page 18), Table A, row
+  # $80,000-$90,000, family size 1: 126. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 126 x 4.875 = 614.25.
+  period: 2020
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 614.25
+
+- name: Local table method, New York City, 2021
+  # 2021 Optional Local Sales Tax Tables (PDF page 18), Table A, row
+  # $80,000-$90,000, family size 1: 116. Line 3: 8.875% - 4% = 4.875.
+  # Line 6: 116 x 4.875 = 565.5.
+  period: 2021
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    combined_sales_tax_rate: 0.08875
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 565.5
+
+- name: Local table method, Yonkers, 2016, three exemptions
+  # 2016 Table B (Yonkers is on the "Cities:" line of the Table B row), row
+  # $100,000-$120,000, 3 exemptions: 190. The exemptions column "refers to
+  # the number of exemptions claimed on Form 1040, line 6d". Line 3: 8.875%
+  # - 4% = 4.875. Line 6: 190 x 4.875 = 926.25.
+  period: 2016
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+    combined_sales_tax_rate: 0.08875
+    tax_unit_size: 3
+    state_sales_tax_income_bracket: 10
+  output:
+    local_sales_tax: 926.25
+
+- name: Local table method, Jackson, Mississippi, 2015, Table B
+  # 2015 Table B, row $80,000-$90,000, 1 exemption: 130. Line 3: 8% - 7% = 1.
+  # Line 6: 130 x 1 = 130.
+  period: 2015
+  input:
+    state_code: MS
+    county_fips: "28049"
+    place_fips: "36000"
+    combined_sales_tax_rate: 0.08
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 130
+
+- name: Local table method, Orleans Parish, Louisiana, 2018, averaged heading rate
+  # 2018 heading 4.7227%, footnote 8: "The rate decreased during 2018 so the
+  # given rate is an average for the year." Line 3: 9.45% - 4.7227% =
+  # 4.7273. Table C, row $80,000-$90,000, family size 1: 175. Line 6:
+  # 175 x 4.7273 = 827.2775.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: LA
+    county_fips: "22071"
+    combined_sales_tax_rate: 0.0945
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 827.28
+
+- name: Local table method, Utah, 2019, line 3 entered
+  # Line 3 entered: 2.437, a 7.25% combined rate less the 2019 heading
+  # 4.8130% (footnote 7: "The rate increased during 2019 so the given rate is
+  # an average for the year."). Table A ("Any locality that imposes a local
+  # sales tax"), row $80,000-$90,000, family size 1: 127. Line 6:
+  # 127 x 2.437 = 309.499.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: UT
+    local_sales_tax_rate: 0.02437
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 309.5
+
+- name: Ratio method, California, 2015
+  # The 2015 California heading is 7.5% (footnote 3: "for a total of 7.50%").
+  # Line 3: 9% - 7.5% = 1.5. Line 5: 1.5 / 7.5. Line 6: 1,000 x 1.5 / 7.5 =
+  # 200.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.09
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 200
+
+- name: Ratio method, California, 2017
+  # The 2017 California heading is 7.25%. Line 3: 9% - 7.25% = 1.75. Line 5:
+  # 1.75 / 7.25. Line 6: 1,000 x 1.75 / 7.25 = 241.38.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.09
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 241.38
+
+- name: Ratio method, Texas, 2018
+  # The 2018 Texas heading is 6.25%. Line 3: 8.25% - 6.25% = 2. Line 5: 2 /
+  # 6.25. Line 6: 1,000 x 2 / 6.25 = 320.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    combined_sales_tax_rate: 0.0825
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 320
+
+- name: Ratio method, Kansas, 2015, the printed heading as line 4
+  # Line 4 is the 2015 Kansas heading, 6.3264%. Line 3 entered: 1.6736 (8% less
+  # that heading). Line 6: 1,000 x 1.6736 / 6.3264 = 264.54.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    local_sales_tax_rate: 0.016736
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 264.54
+
+- name: California at 7.5% in 2016, the "No" box
+  # 2016 line 3 instructions: "If you lived in California, check the 'No' box
+  # if your combined state and local general sales tax rate is 7.5000%."
+  period: 2016
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.075
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: District of Columbia, 2018, no local general sales tax
+  # 2018 worksheet: "If, for all of 2018, you lived only in ... the District of
+  # Columbia, ..., enter -0- on line 6."
+  period: 2018
+  input:
+    state_code: DC
+    combined_sales_tax_rate: 0.08
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0

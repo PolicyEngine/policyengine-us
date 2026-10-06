@@ -4,6 +4,20 @@ metadata:
   period: year
   label: States defaulting to Optional Local Sales Tax Table C
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18
+    - title: 2016 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18
+    - title: 2017 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19
+    - title: 2018 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18
+    - title: 2019 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19
+    - title: 2020 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18
+    - title: 2021 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18
     - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
     - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
@@ -14,12 +28,44 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
 # Each state's default is the table in the selector row for "Any locality that
 # imposes a local sales tax" or "... or any other locality that imposes a
-# local sales tax". Residents of the localities the IRS names in other rows
-# use those rows' tables (the county and place lists).
+# local sales tax" ("Any locality", "Any other locality" or "... or any other
+# locality" in 2015 and 2016). Residents of the localities the IRS names in
+# other rows use those rows' tables (the county and place lists).
+# The 2017 lists are from the February 2018 revision at irs-prior; the
+# original January 2018 printing has the same selector.
 # Mississippi has no such row, only "City of Jackson only" and "City of
-# Tupelo only". PolicyEngine uses the City of Jackson table: Table A in
-# 2022 and 2023, Table C in 2024 and 2025.
+# Tupelo only" (2016-2025), or in 2015 "Cities of Jackson and Tupelo only".
+# PolicyEngine uses the City of Jackson table: Table B in 2015, Table A in
+# 2016-2023, Table C in 2024 and 2025.
 values:
+  2015-01-01:
+    - AK
+  2016-01-01:
+    - AK
+  2017-01-01:
+    - AK
+  2018-01-01:
+    - AK
+  2019-01-01:
+    - AK
+    - AR
+    - LA
+    - SC
+    - TN
+    - VA
+  2020-01-01:
+    - AK
+    - AR
+    - LA
+    - SC
+  2021-01-01:
+    - AK
+    - AR
+    - GA
+    - LA
+    - MO
+    - SC
+    - TN
   2022-01-01:
     - AK
     - AR

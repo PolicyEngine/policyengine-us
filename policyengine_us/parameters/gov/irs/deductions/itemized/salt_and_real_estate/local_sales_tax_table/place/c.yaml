@@ -4,6 +4,20 @@ metadata:
   period: year
   label: Places using Optional Local Sales Tax Table C
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18
+    - title: 2016 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18
+    - title: 2017 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19
+    - title: 2018 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18
+    - title: 2019 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19
+    - title: 2020 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18
+    - title: 2021 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18
     - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
     - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
@@ -16,10 +30,41 @@ metadata:
 # GEOID (state FIPS code and place code). The 2025 selector names the same
 # localities with the same tables as the 2024 selector, so the 2024 value
 # applies to 2025. A place's row takes precedence over its county's row.
-# Georgia: the selector's "Dekalb County (excluding Atlanta)" row leaves
-# Atlanta with the state's "any other locality" table, listed here and in
-# place/b.yaml for 2024 and 2025.
+# The 2017 lists are from the February 2018 revision at irs-prior; the
+# original January 2018 printing has the same selector.
+# Georgia: the selector's "Dekalb County (excluding Atlanta)" row (2021-2025)
+# leaves Atlanta with the state's "any other locality" table, listed here for
+# 2021-2023 and in place/b.yaml for 2024 and 2025.
 values:
+  2015-01-01:
+    - "0803455"  # Arvada city, CO
+    - "0877290"  # Thornton city, CO
+    - "0883835"  # Westminster city, CO
+  2016-01-01:
+    - "0803455"  # Arvada city, CO
+    - "0877290"  # Thornton city, CO
+    - "0883835"  # Westminster city, CO
+  2017-01-01: []
+  2018-01-01: []
+  2019-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "2874840"  # Tupelo city, MS
+  2020-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "2874840"  # Tupelo city, MS
+  2021-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "1304000"  # Atlanta city, GA
+    - "2874840"  # Tupelo city, MS
   2022-01-01:
     - "0238420"  # Kenai city, AK
     - "0238970"  # Ketchikan city, AK

@@ -26,6 +26,13 @@ class local_sales_tax_table(Variable):
         "place_fips and county_fips."
     )
     reference = (
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16",

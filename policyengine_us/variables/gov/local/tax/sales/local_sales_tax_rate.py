@@ -22,11 +22,25 @@ class local_sales_tax_rate(Variable):
     )
     reference = (
         # State and Local General Sales Tax Deduction Worksheet, lines 3 and 4.
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4",
         # Line 3 instructions (California and Nevada; rates changing in-year).
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=4",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=5",
