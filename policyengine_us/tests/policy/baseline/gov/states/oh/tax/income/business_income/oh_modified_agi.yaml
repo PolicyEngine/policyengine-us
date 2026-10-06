@@ -1,0 +1,75 @@
+- name: Modified AGI adds back the business income deduction, and exemptions use it
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+      person2:
+        age: 45
+        s_corp_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 2024 MAGI worksheet (instructions p. 40): line 1 Ohio AGI 30_000 plus
+    # line 2 business income deduction 30_000 = 60_000.
+    oh_agi: 30_000
+    oh_modified_agi: 60_000
+    # The exemption is set by MAGI (R.C. 5747.025): 2 * 2_150. Ohio AGI of
+    # 30_000 would give 2 * 2_400.
+    oh_personal_exemptions: 4_300
+    # Exemption credit: MAGI less exemptions (55_700) is not under 30_000.
+    oh_exemption_credit_potential: 0
+    # Line 5 = 25_700; line 7 = 25_700, at or below 26_050: no tax.
+    oh_taxable_nonbusiness_income: 25_700
+    oh_income_tax_before_non_refundable_credits: 0
+
+- name: From 2026 the qualifying capital gain deduction is taken and added back
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        long_term_capital_gains: 500_000
+        oh_qualifying_capital_gain: 500_000
+        oh_qualifying_capital_gain_deductible_payroll: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # R.C. 5747.79(B): the lesser of the qualifying capital gain or the
+    # deductible payroll. R.C. 5747.01(II) adds it back to MAGI.
+    oh_qualifying_capital_gain_deduction: 300_000
+    oh_agi: 200_000
+    oh_modified_agi: 500_000
+
+- name: Before 2026 there is no qualifying capital gain deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        long_term_capital_gains: 500_000
+        oh_qualifying_capital_gain: 500_000
+        oh_qualifying_capital_gain_deductible_payroll: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_qualifying_capital_gain_deduction: 0
+    oh_modified_agi: 500_000

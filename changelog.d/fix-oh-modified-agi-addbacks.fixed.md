@@ -1,0 +1,1 @@
+Ohio now applies the business income deduction and the 3% tax on taxable business income, and modified adjusted gross income adds back the business income deduction and, from 2026, the qualifying capital gain deduction; personal exemptions and the exemption credit use modified adjusted gross income.
