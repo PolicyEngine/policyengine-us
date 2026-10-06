@@ -55,7 +55,7 @@
   output:
     ar_casualty_loss_deduction_indiv: 0
 
-- name: 2025, losses of both spouses are treated as one casualty
+- name: 2025, losses of both spouses from one casualty share one Form AR4684
   # 12,000 + 8,000 - 100 - 10% * (30,000 + 20,000) = 14,900
   period: 2025
   input:
@@ -72,6 +72,66 @@
     households:
       household:
         members: [person1, person2]
+        state_code: AR
+  output:
+    ar_casualty_loss_deduction_indiv: 14_900
+
+- name: 2025, a dependent's loss is not deductible on the filer's return
+  # 26 U.S.C. § 165(h), as adopted by Ark. Code § 26-51-424(b), allows the
+  # loss of the individual who sustained it, on that individual's return.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ar_agi_indiv: 30_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: false
+        ar_agi_indiv: 20_000
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        casualty_loss: 20_000
+        ar_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_casualty_loss_deduction_indiv: 0
+
+- name: 2025, spouses' losses are pooled and a dependent's loss is left out
+  # 12,000 + 8,000 - 100 - 10% * (30,000 + 20,000) = 14,900; the dependent's
+  # 5,000 is excluded.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        casualty_loss: 12_000
+        ar_agi_indiv: 30_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: false
+        casualty_loss: 8_000
+        ar_agi_indiv: 20_000
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        casualty_loss: 5_000
+        ar_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
         state_code: AR
   output:
     ar_casualty_loss_deduction_indiv: 14_900

@@ -86,3 +86,53 @@
     state_code: AR
   output:
     ar_casualty_loss_deduction_joint: 14_500
+
+- name: 2025, a dependent's loss is not deductible on the filer's return
+  # 26 U.S.C. § 165(h), as adopted by Ark. Code § 26-51-424(b), allows the
+  # loss of the individual who sustained it, on that individual's return.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ar_agi_joint: 50_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        casualty_loss: 20_000
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 0
+
+- name: 2025, only the filer's own loss counts when a dependent also has one
+  # 12,000 - 100 - 10% * 50,000 = 6,900; the dependent's 3,000 is excluded.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        casualty_loss: 12_000
+        ar_agi_joint: 50_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        casualty_loss: 3_000
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_casualty_loss_deduction_joint: 6_900

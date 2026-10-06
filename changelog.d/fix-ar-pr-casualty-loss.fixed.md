@@ -1,0 +1,1 @@
+Leave dependents' casualty losses off the filer's Arkansas return, and limit the Puerto Rico casualty loss deductions to the principal residence and capped household personal property under P.R. Code Section 1033.15(a)(10), with new Puerto Rico inputs.
