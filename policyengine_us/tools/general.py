@@ -4,7 +4,6 @@ from policyengine_us.tools.branched_simulation import BranchedSimulation
 from policyengine_us.tools.period_branch import (
     get_branch_for_period,
     get_override_branch,
-    is_input,
 )
 from pathlib import Path
 import pandas as pd

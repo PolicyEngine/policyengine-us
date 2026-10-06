@@ -73,18 +73,6 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     }
 
 
-def is_input(simulation: Simulation, variable: str, period: Period) -> bool:
-    """Whether ``set_input`` stored ``variable`` for ``period``.
-
-    That is, a dataset, situation or branch input on ``simulation`` or a
-    branch it reads, as opposed to a value its formula calculated.
-    """
-    return any(
-        name == variable and key_period == period
-        for name, _, key_period in _input_keys(simulation)
-    )
-
-
 def drop_inherited_values(branch: Simulation) -> None:
     """Delete every array ``branch`` holds except inputs.
 

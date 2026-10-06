@@ -33,8 +33,9 @@ interest. For every tax unit:
    $16.8 million the previous formula's float32 tax unit total could be off by
    a few dollars, which the direct sum corrects.)
 
-Gains are entered per person, so `net_capital_gains` is computed rather than
-supplied; the YAML cases cover a supplied tax unit amount.
+The formula reads the head's and spouse's person-level gains, never the tax
+unit's `net_capital_gains`; a YAML case pins that a supplied tax unit amount is
+not read.
 """
 
 import numpy as np
@@ -329,44 +330,3 @@ def test_seeded_population(year):
     # The population exercises both branches of each property.
     assert has_dependent.sum() > 50
     assert unchanged.sum() > 20
-
-
-def test_unsupplied_net_capital_gains_is_not_read_as_an_aggregate():
-    # net_capital_gains can hold a value that was neither supplied nor the
-    # members' current gains: abolished (gov.abolitions.net_capital_gains
-    # makes it 0), or calculated before an input changed, as here. Only a
-    # supplied amount is read as an aggregate, so the capital gain line stays
-    # the filers' own gains and the dependent's gain changes nothing. A
-    # reform simulation would cost a parameter-tree copy; the cached value
-    # reaches the same branch.
-    year = 2025
-    situation = {
-        "people": {
-            "head": {
-                "age": {year: 30},
-                "employment_income": {year: 20_000},
-                "taxable_interest_income": {year: 7_000},
-                DISTRIBUTIONS: {year: 5_000},
-            },
-            "child": {
-                "age": {year: 8},
-                "is_tax_unit_dependent": {year: True},
-                "long_term_capital_gains": {year: 0},
-            },
-        },
-        "tax_units": {"tax_unit": {"members": ["head", "child"]}},
-        "households": {
-            "household": {"members": ["head", "child"], "state_code": {year: "TX"}}
-        },
-    }
-    sim = Simulation(situation=situation)
-    # The formula lists net_capital_gains' components itself; keep them in
-    # step.
-    assert sim.tax_benefit_system.get_variable("net_capital_gains").adds == [
-        "long_term_capital_gains",
-        "short_term_capital_gains",
-    ]
-    assert sim.calculate("net_capital_gains", year)[0] == 0
-    sim.set_input("long_term_capital_gains", year, np.array([0, 5_000]))
-    # 7,000 of interest + max(0, 0 + 5,000 of distributions).
-    assert sim.calculate("eitc_relevant_investment_income", year)[0] == 12_000
