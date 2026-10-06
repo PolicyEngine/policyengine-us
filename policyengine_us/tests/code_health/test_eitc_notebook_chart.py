@@ -18,6 +18,9 @@ point of both charts, in the initial view and in each animation frame:
 - the marginal rate as `IndividualSim.deriv` computes it: forward differences
   of the unrounded credit over the wage grid, the last one repeated;
 - the wage grid itself, from the notebook's `sim.vary(...)` call.
+
+It also checks the labels a reader sees: each chart's title year, each
+curve's hover labels, and that each slider step plays the frame it names.
 """
 
 import json
@@ -32,10 +35,12 @@ REPO = Path(__file__).resolve().parents[3]
 NOTEBOOK = REPO / "docs" / "gov" / "irs" / "credits" / "eitc.ipynb"
 EITC = REPO / "policyengine_us" / "parameters" / "gov" / "irs" / "credits" / "eitc"
 PLOTLY_MIME = "application/vnd.plotly.v1+json"
-CHILD_COUNTS = {0, 1, 2, 3}
+CHILD_COUNTS = [0, 1, 2, 3]
 # Frames are named by the number of adults; two adults file jointly.
-ADULT_FRAMES = {"1", "2"}
-CREDIT_TOLERANCE = 1  # stored credits are rounded to whole dollars
+ADULT_FRAMES = ["1", "2"]
+# Stored credits are the credit rounded to whole dollars, so they sit within
+# half a dollar of the exact amount; the extra cent absorbs float32 noise.
+CREDIT_TOLERANCE = 0.51
 RATE_TOLERANCE = 1e-4  # stored rates come from float32 credits
 
 
@@ -53,12 +58,12 @@ _DateStringLoader.yaml_implicit_resolvers = {
 }
 
 
-def _value_in(node, year):
+def _value_in(node, year, uprated):
     """A leaf's value on January 1 of the year, as annual simulations read it."""
     values = node.get("values", node)
     instant = f"{year}-01-01"
     dates = [key for key in values if key != "metadata" and key <= instant]
-    uprated = "uprating" in node.get("metadata", {})
+    uprated = uprated or "uprating" in node.get("metadata", {})
     # The check cannot reproduce uprating, so an indexed amount must be
     # authored for the year itself.
     assert dates and (not uprated or instant in dates), (
@@ -70,8 +75,13 @@ def _value_in(node, year):
 
 def _by_child_count(file_name, year):
     raw = yaml.load((EITC / file_name).read_text(), Loader=_DateStringLoader)
+    # Core also applies uprating declared on the whole scale to its leaves.
+    scale_uprated = any("uprating" in key for key in raw.get("metadata", {}))
     rows = sorted(
-        (_value_in(row["threshold"], year), _value_in(row["amount"], year))
+        (
+            _value_in(row["threshold"], year, scale_uprated),
+            _value_in(row["amount"], year, scale_uprated),
+        )
         for row in raw["brackets"]
     )
 
@@ -133,25 +143,45 @@ def _notebook():
 
 def _views(chart):
     """(adults, traces) for the initial view and each animation frame."""
-    frames = {frame["name"]: frame["data"] for frame in chart["frames"]}
-    assert set(frames) == ADULT_FRAMES
     # The initial view is the first frame, before the slider moves.
-    return [("1", chart["data"])] + sorted(frames.items())
+    return [(ADULT_FRAMES[0], chart["data"])] + [
+        (frame["name"], frame["data"]) for frame in chart["frames"]
+    ]
 
 
-def _chart_errors(chart, measure, wages, credit):
+def _label_errors(chart, measure, year):
     errors = []
+    if str(year) not in chart["layout"]["title"]["text"]:
+        errors.append(f"{measure}: title does not name {year}")
+    if [frame["name"] for frame in chart["frames"]] != ADULT_FRAMES:
+        errors.append(f"{measure}: frames are not {ADULT_FRAMES}")
+    for step in chart["layout"]["sliders"][0]["steps"]:
+        if step["args"][0] != [step["label"]]:
+            errors.append(
+                f"{measure}: slider step {step['label']} plays {step['args'][0]}"
+            )
+    return errors
+
+
+def _chart_errors(chart, measure, year, wages, credit):
+    errors = _label_errors(chart, measure, year)
     for adults, traces in _views(chart):
-        assert {int(trace["name"]) for trace in traces} == CHILD_COUNTS
+        names = sorted(int(trace["name"]) for trace in traces)
+        if names != CHILD_COUNTS:
+            errors.append(f"{measure}, {adults} adult(s): curves are {names}")
+            continue
         for trace in traces:
             children = int(trace["name"])
             where = f"{measure}, {adults} adult(s), {children} children"
-            if trace["x"] != wages:
-                errors.append(f"{where}: wage axis is not the vary() grid")
+            hover = trace["hovertemplate"]
+            if f"Adults={adults}<" not in hover or f"Children={children}<" not in hover:
+                errors.append(f"{where}: hover labels read {hover!r}")
+            if trace["x"] != wages or len(trace["y"]) != len(wages):
+                errors.append(f"{where}: points are not on the vary() grid")
                 continue
             amounts = [credit(adults, children)(wage) for wage in wages]
             if measure == "eitc":
-                expected = [round(amount) for amount in amounts]
+                expected = amounts
                 tolerance = CREDIT_TOLERANCE
             else:
                 steps = [
@@ -162,7 +192,7 @@ def _chart_errors(chart, measure, wages, credit):
                 ]
                 expected = steps + steps[-1:]
                 tolerance = RATE_TOLERANCE
-            for wage, stored, wanted in zip(wages, trace["y"], expected):
+            for wage, stored, wanted in zip(wages, trace["y"], expected, strict=True):
                 if not math.isclose(stored, wanted, rel_tol=0, abs_tol=tolerance):
                     errors.append(
                         f"{where}, wages {wage:,}: stored {stored}, parameters {wanted}"
@@ -178,8 +208,8 @@ def stored():
 
 @pytest.mark.parametrize("measure", ["eitc", "mtr"])
 def test_stored_eitc_chart_matches_parameters(stored, measure):
-    _, wages, charts, credit = stored
-    errors = _chart_errors(charts[measure], measure, wages, credit)
+    year, wages, charts, credit = stored
+    errors = _chart_errors(charts[measure], measure, year, wages, credit)
 
     assert not errors, f"{len(errors)} stored points differ:\n" + "\n".join(errors[:20])
 
@@ -190,6 +220,15 @@ def _mutated(chart, change):
     return chart
 
 
+def _set_point(trace, index, value):
+    trace["y"][index] = value
+
+
+def _swap_slider_frames(chart):
+    steps = chart["layout"]["sliders"][0]["steps"]
+    steps[0]["args"][0], steps[1]["args"][0] = steps[1]["args"][0], steps[0]["args"][0]
+
+
 @pytest.mark.parametrize(
     "measure, change",
     [
@@ -197,20 +236,45 @@ def _mutated(chart, change):
         ("eitc", lambda chart: chart["frames"][1]["data"][2]["y"].reverse()),
         ("mtr", lambda chart: chart["data"][1]["y"].reverse()),
         # A wage axis that no longer matches the simulated grid.
-        (
-            "eitc",
-            lambda chart: chart["frames"][0]["data"][0]["x"].__setitem__(0, 1_000_000),
-        ),
+        ("eitc", lambda chart: chart["frames"][0]["data"][0]["x"].__setitem__(0, 1e6)),
         ("eitc", lambda chart: chart["data"][3]["x"].pop()),
-        # One point a few dollars off, as the stale joint-bonus frames were.
+        # Credits missing from a curve.
+        ("eitc", lambda chart: chart["data"][2].__setitem__("y", [])),
+        ("mtr", lambda chart: chart["frames"][1]["data"][0]["y"].pop()),
+        # One point off by a few dollars, as the stale joint-bonus frames
+        # were, or by a single dollar.
+        ("eitc", lambda chart: _set_point(chart["frames"][1]["data"][0], 152, 552)),
         (
             "eitc",
-            lambda chart: chart["frames"][1]["data"][0]["y"].__setitem__(152, 552),
+            lambda chart: _set_point(
+                chart["data"][1], 300, chart["data"][1]["y"][300] + 1
+            ),
+        ),
+        # A duplicated curve in place of another child count.
+        (
+            "eitc",
+            lambda chart: chart["frames"][1]["data"].__setitem__(
+                3, chart["frames"][1]["data"][2]
+            ),
+        ),
+        # Labels that misdescribe the curves.
+        ("eitc", _swap_slider_frames),
+        (
+            "mtr",
+            lambda chart: chart["frames"][1]["data"][0].__setitem__(
+                "hovertemplate", "Children=0<br>Adults=1<br>%{y}"
+            ),
+        ),
+        (
+            "eitc",
+            lambda chart: chart["layout"]["title"].__setitem__(
+                "text", "Earned income tax credit, 2021"
+            ),
         ),
     ],
 )
 def test_chart_check_rejects_corrupted_charts(stored, measure, change):
-    _, wages, charts, credit = stored
+    year, wages, charts, credit = stored
     chart = _mutated(charts[measure], change)
 
-    assert _chart_errors(chart, measure, wages, credit)
+    assert _chart_errors(chart, measure, year, wages, credit)
