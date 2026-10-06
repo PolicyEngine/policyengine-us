@@ -49,3 +49,37 @@
         state_code: IA
   output:
     ia_reportable_social_security: 1_500  # one-half of gross social security
+
+- name: A dependent's tax-exempt interest and benefits are on the dependent's own return
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+        tax_exempt_interest_income: 50_000
+        social_security_survivors: 10_000
+    household:
+      state_code: IA
+  output:
+    ia_reportable_social_security: 0
+
+- name: Same household without the dependent's income
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+    household:
+      state_code: IA
+  output:
+    ia_reportable_social_security: 0

@@ -1,0 +1,15 @@
+- name: A dependent's tax-exempt interest is on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 3
+        tax_exempt_interest_income: 50_000
+    household:
+      state_code: UT
+  output:
+    ut_ctc_potential: 1_000

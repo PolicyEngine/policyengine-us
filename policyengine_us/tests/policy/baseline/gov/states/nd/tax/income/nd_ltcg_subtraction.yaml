@@ -31,3 +31,68 @@
       state_code: ND
   output:
     nd_ltcg_subtraction: (7_000 - 2_000) * 0.40
+
+- name: A dependent's long-term capital gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        long_term_capital_gains: 10_000
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: 800
+
+- name: A dependent's short-term capital loss does not reduce the filer's subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        short_term_capital_gains: -1_500
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: 800
+
+- name: No exclusion when the filers have a net long-term capital loss
+  # Form ND-1 line 6 worksheet, line 1: if zero or less, no exclusion.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        long_term_capital_gains: -2_000
+        short_term_capital_gains: 5_000
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: 0
+
+- name: Capital gain distributions reported without Schedule D count
+  # Form ND-1 line 6 worksheet: enter the distributions on line 3.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        non_sch_d_capital_gains: 1_000
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: 400
