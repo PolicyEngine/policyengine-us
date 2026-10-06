@@ -1,0 +1,75 @@
+# PA total taxable income starts from federal gross income, which leaves out a
+# tax unit dependent's income, and subtracts the amounts in it that Pennsylvania
+# does not tax. A dependent files their own PA return (2025 PA-40 IN, page 3,
+# "Minors"), so only the head's and spouse's nontaxable amounts are subtracted.
+
+- name: A dependent's retirement income does not reduce the filer's PA taxable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 50_000
+      person2:
+        # A qualifying relative, such as a parent, over the 59.5 proxy
+        # retirement age.
+        age: 80
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # The dependent's pension is nontaxable for them, but it is not in the
+    # filer's federal gross income, so it does not come off the filer's.
+    pa_nontaxable_pension_income: [0, 4_000]
+    pa_total_taxable_income: 50_000
+    # 50,000 x 3.07%
+    pa_income_tax_before_forgiveness: 1_535
+
+- name: The head's and spouse's retirement income still comes off; the dependent's does not.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 30_000
+        taxable_public_pension_income: 20_000
+      person2:
+        age: 62
+        taxable_ira_distributions: 10_000
+      person3:
+        age: 75
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: [0, 10_000, 3_000]
+    # Federal gross income: 30,000 wages + 20,000 pension + 10,000 IRA
+    # distributions = 60,000. Less the head's pension and the spouse's IRA
+    # distributions, both past the 59.5 proxy age: 60,000 - 30,000 = 30,000.
+    pa_total_taxable_income: 30_000
+    # 30,000 x 3.07%
+    pa_income_tax_before_forgiveness: 921
