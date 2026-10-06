@@ -6,10 +6,13 @@ PolicyEngine has no official locality rates, it applies no local rate: the
 combined rate defaults to the state rate in the IRS state table heading, and
 users can enter their own combined or local rate.
 
-The files hold the combined state and local general sales tax rate (general
-intrastate rate) of each county's places with their own rate and of the
-county's area outside them, from 2022, with the 2020 Census population of
-each. They carry only rates and Census codes derived from the sources below,
+`rates.csv` holds the combined state and local general sales tax rate
+(general intrastate rate) of each county's places with their own rate and of
+the county's area outside them, from 2022, and `populations.csv` the 2020
+Census population of each. `state_rates.csv` holds each covered state's
+general sales tax rate (worksheet line 3 is the combined rate less it),
+except Nevada's: its files fold the state rate into county rates, and the
+IRS has Nevada residents enter the combined rate above the 6.85% heading. They carry only rates and Census codes derived from the sources below,
 not the sources' files.
 
 Retrieved 2026-10-06 (from 11:00 UTC). `scripts/local_sales_tax_rates/manifest.json` lists the
@@ -41,17 +44,33 @@ SHA-256 of every input file and the build log.
   (address, else ZIP+4, else 5-digit ZIP). Rates are evaluated on every
   quarter start from 2022 through 2026 and on every other date in that window
   on which a state's files show a change.
+- **Place codes.** A unit's place code is matched to the 2020 Census place
+  or county subdivision of its county with that code (in Vermont, whose
+  local option taxes are levied by towns, to the town). A code that matches
+  none is recoded to the Census entity of its county named like the postal
+  city of most of its records, or else to the code that the same ZIP codes
+  and postal cities carry after its records end, unless that entity has
+  records of its own on the date. Georgia codes the DeKalb County part of
+  Atlanta 05000 rather than 04000, and Vermont's 2022 records carry town
+  codes it replaced in 2023. `manifest.json` logs every recoding and every
+  code left unmatched; an unmatched code's area takes the rate of the place
+  or county around it.
 - **Blocks to places.** Each 2020 Census block takes the rate of its place's
-  unit, else its county subdivision's (Vermont's local option taxes are
-  levied by towns), else its county's unit without a place code. A place's
-  rate is the population-weighted mean of its blocks' rates, and so is the
-  rate of a county's area outside every place.
+  unit, else its county subdivision's, else its county's unit without a
+  place code. A place's rate is the population-weighted mean of its blocks'
+  rates, and so is the rate of a county's area outside every place.
 - **Pruning.** A place whose rate equals the rate outside places in its
   county at every date is dropped, and its population is added to the
   county's remainder: a household there takes the same rate.
 - **Known limits.** Iowa's boundary file has carried no place codes since its
-  2024 rebuild, so from 2024 Iowa's local option taxes, which cities and
-  unincorporated areas levy separately, are averaged over each county.
+  2024 rebuild, so from mid-2024 Iowa's local option taxes, which cities and
+  unincorporated areas levy separately, are averaged over each county: a
+  place without the tax gets part of it, and Des Moines gets Polk County's
+  6.83% rather than 7%. Vermont's town taxes reach households through Census
+  places: a household in a taxing town but outside every place takes its
+  county's population-weighted rate outside places. Utah's files, ZIP+4
+  records only, carry no city names, so a few state-assigned Utah codes stay
+  unmatched (listed in `manifest.json`).
   Wisconsin's file added address records in late 2023; before then its
   ZIP+4 records apply the lowest rate in each ZIP+4 area, as SSUTA section 305
   requires.

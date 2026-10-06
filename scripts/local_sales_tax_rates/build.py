@@ -74,6 +74,12 @@ NY_URLS = {
     "pub718.pdf": "https://www.tax.ny.gov/pdf/publications/sales/pub718.pdf",
     "pub718a.pdf": "https://www.tax.ny.gov/pdf/publications/sales/pub718a.pdf",
 }
+# The state general sales tax rates of New York (Tax Law section 1105) and
+# Virginia (Code of Virginia section 58.1-603), the same
+# throughout 2022-2026 and equal to their IRS heading rates.
+STATE_RATES = {"NY": 0.04, "VA": 0.043}
+CENSUS_CODES_URL = "https://www2.census.gov/geo/docs/reference/codes2020"
+CENSUS_CODE_FILES = ["national_place_by_county2020.txt", "national_cousub2020.txt"]
 PL_URL = (
     "https://www2.census.gov/programs-surveys/decennial/2020/data/"
     "01-Redistricting_File--PL_94-171"
@@ -138,6 +144,8 @@ def download(sources: Path) -> None:
     for name, url in NY_URLS.items():
         fetch(url, sources / "ny" / name)
     fetch(VA_URL, sources / "va" / VA_URL.rsplit("/", 1)[-1])
+    for name in CENSUS_CODE_FILES:
+        fetch(f"{CENSUS_CODES_URL}/{name}", sources / "census" / name)
     for abbr, name in STATE_NAMES.items():
         fetch(
             f"{PL_URL}/{name}/{abbr.lower()}2020.pl.zip",
@@ -206,16 +214,23 @@ def rate_lookup(rates: pd.DataFrame, when: pd.Timestamp) -> dict:
 
 
 BOUNDARY_COLUMNS = {
-    0: "rtype", 1: "begin", 2: "end", 15: "zip", 17: "zip_low",
+    0: "rtype", 1: "begin", 2: "end", 14: "city", 15: "zip", 17: "zip_low",
     22: "state", 23: "state_indicator", 24: "county", 25: "place",
 }  # fmt: skip
 for _k in range(N_SPECIAL):
     BOUNDARY_COLUMNS[30 + 3 * _k] = f"special{_k}"
     BOUNDARY_COLUMNS[31 + 3 * _k] = f"special{_k}_type"
 SPECIALS = [(f"special{k}", f"special{k}_type") for k in range(N_SPECIAL)]
-SIGNATURE = ["rtype", "begin", "end", "zip", "state_indicator", "county", "place"] + [
-    column for pair in SPECIALS for column in pair
-]
+SIGNATURE = [
+    "rtype",
+    "begin",
+    "end",
+    "city",
+    "zip",
+    "state_indicator",
+    "county",
+    "place",
+] + [column for pair in SPECIALS for column in pair]
 RECORD_TYPE_PRIORITY = {"A": 0, "4": 1, "Z": 2}
 
 
@@ -226,7 +241,7 @@ def load_sst_boundary(sources: Path, abbr: str) -> pd.DataFrame:
     its number of records. The collapsed file is cached next to the
     sources."""
     path = sst_file(sources, "boundary", abbr)
-    cache = sources / "sst" / "cache" / f"{path.name.split('.')[0]}.pkl"
+    cache = sources / "sst" / "cache" / f"{path.name.split('.')[0]}-v2.pkl"
     if cache.exists():
         return pd.read_pickle(cache)
     parts = []
@@ -246,6 +261,7 @@ def load_sst_boundary(sources: Path, abbr: str) -> pd.DataFrame:
             chunk[column] = chunk[column].str.strip()
         # Some files start with a UTF-8 byte order mark.
         chunk["rtype"] = chunk["rtype"].str.replace("ï»¿", "").str.upper()
+        chunk["city"] = chunk["city"].str.upper()
         chunk = chunk[chunk.rtype.isin(list(RECORD_TYPE_PRIORITY))]
         # The record's 5-digit ZIP code: column P for address records,
         # column R (zip code low) for ZIP records.
@@ -264,7 +280,7 @@ def load_sst_boundary(sources: Path, abbr: str) -> pd.DataFrame:
 
 def sst_unit_rates(
     sources: Path, abbr: str, dates: list[pd.Timestamp], log: list
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Combined rate of each SST taxing unit at each date.
 
     A boundary record's combined rate sums the rates of the jurisdictions it
@@ -275,8 +291,18 @@ def sst_unit_rates(
     special district covering part of a unit counts in proportion to the
     records it covers. Each unit uses its finest record type: address (A)
     records, else ZIP+4 (4), else 5-digit ZIP (Z) records.
+
+    A place code that is no 2020 Census place or county subdivision of its
+    county (Georgia codes the DeKalb County part of Atlanta 05000, not
+    04000; Vermont's 2022 records carry older town codes) is matched to the
+    Census place or county subdivision of that county named like the postal
+    city of most of its records, when that entity has no unit of its own on
+    the date (see alias_units).
+
+    Also returns the state general sales tax rate at each date.
     """
     state_fips = SST_STATES[abbr]
+    entities = census_entities(sources, state_fips)
     rates = load_sst_rates(sources, abbr)
     boundary = load_sst_boundary(sources, abbr)
     dates = change_dates(dates, [rates, boundary])
@@ -305,7 +331,8 @@ def sst_unit_rates(
             f"{coverage[first_complete]} on {first_complete.date()}; earlier "
             f"dates use the {first_complete.date()} boundaries"
         )
-    out = []
+    successors = successor_codes(boundary, entities)
+    out, state_rates, aliases = [], [], {}
     for d in dates:
         when = max(d, first_complete)
         b = boundary[(boundary.begin <= when) & (boundary.end >= when)]
@@ -345,6 +372,7 @@ def sst_unit_rates(
             {
                 "county": b.county.to_numpy(),
                 "code": b.place.to_numpy(),
+                "city": b.city.to_numpy(),
                 "priority": b.rtype.map(RECORD_TYPE_PRIORITY).to_numpy(),
                 "rate": combined,
                 "records": b.records.to_numpy(),
@@ -352,6 +380,8 @@ def sst_unit_rates(
         )
         finest = frame.groupby(["county", "code"]).priority.transform("min")
         frame = frame[frame.priority == finest]
+        frame.attrs["date"] = d
+        frame = alias_units(abbr, frame, entities, successors, aliases)
         weighted = (
             (frame.rate * frame.records).groupby([frame.county, frame.code]).sum()
         )
@@ -361,7 +391,217 @@ def sst_unit_rates(
         units = units.reset_index()
         units["date"] = d
         out.append(units)
-    return pd.concat(out, ignore_index=True)
+        state_rates.append((d, state_rate))
+    for (county, code), (target, name, first, last, n) in sorted(aliases.items()):
+        log.append(
+            f"{abbr}: place code {county or '(no county)'}/{code} "
+            f"({n} records, {first.date()} to {last.date()}) recoded to Census "
+            f"{target} ({name})"
+        )
+    units = pd.concat(out, ignore_index=True)
+    unmatched = units[
+        (units.code != "")
+        & ~np.array(
+            [
+                entities.resolves(county, code) or entities.matches(county, code)
+                for county, code in zip(units.county, units.code)
+            ],
+            dtype=bool,
+        )
+    ]
+    for (county, code), group in unmatched.groupby(["county", "code"]):
+        log.append(
+            f"{abbr}: place code {county or '(no county)'}/{code} matches no "
+            f"Census place or county subdivision ({int(group.records.max())} "
+            f"records, {group.date.min().date()} to {group.date.max().date()}, "
+            f"rate {group.rate.min():.5f}-{group.rate.max():.5f}); its blocks "
+            f"take their own place's or county's rate"
+        )
+    state = pd.DataFrame(state_rates, columns=["effective_from", "rate"])
+    return units, state
+
+
+class CensusEntities:
+    """2020 Census places (by county) and county subdivisions of one state,
+    by code and by normalized name.
+
+    In Vermont, whose local option taxes are levied by towns, a code resolves
+    only to a county subdivision (town or city). Elsewhere it resolves to a
+    place or county subdivision of its county, or, in records without a county
+    code (Tennessee and Washington code city records by city only), to a
+    place of the state."""
+
+    def __init__(self, places: pd.DataFrame, cousubs: pd.DataFrame, towns: bool):
+        self.towns = towns
+        self.codes: dict = {}
+        self.names: dict = {}
+        self.state_places: set = set(places.code)
+        self.state_cousubs: set = set(cousubs.code)
+        for kind, table in (("place", places), ("county subdivision", cousubs)):
+            for county, code, name, classfp in zip(
+                table.county, table.code, table.name, table.classfp
+            ):
+                self.codes.setdefault(county, set()).add(code)
+                # Incorporated places first, then county subdivisions, then
+                # census designated places.
+                rank = 0 if classfp.startswith("C") else 2 if kind == "place" else 1
+                entry = (rank, code, f"{name}, {kind}")
+                self.names.setdefault((county, normalize(name)), []).append(entry)
+                statewide = kind == "county subdivision" if towns else kind == "place"
+                if statewide:
+                    self.names.setdefault(("", normalize(name)), []).append(entry)
+
+    def resolves(self, county: str, code: str) -> bool:
+        """Whether blocks can be matched to the code as it is."""
+        if self.towns:
+            return code in self.state_cousubs
+        if county == "":
+            return code in self.state_places
+        return code in self.codes.get(county, set())
+
+    def matches(self, county: str, code: str) -> bool:
+        """Whether the code is any Census place or county subdivision."""
+        if county == "":
+            return code in self.state_places or code in self.state_cousubs
+        return code in self.codes.get(county, set())
+
+    def by_name(self, county: str, city: str):
+        """The highest-ranked entity named like the postal city, if exactly
+        one: of the county, or of the state for records without a county."""
+        candidates = sorted(set(self.names.get((county, normalize(city)), [])))
+        if not candidates:
+            return None
+        best = [c for c in candidates if c[0] == candidates[0][0]]
+        if len({c[1] for c in best}) != 1:
+            return None
+        return best[0][1], best[0][2]
+
+
+def normalize(name: str) -> str:
+    """A place name without its legal description, case or punctuation:
+    "St. Johnsbury town" and "SAINT JOHNSBURY" both give "STJOHNSBURY"."""
+    name = name.upper().replace("SAINT ", "ST ").replace("ST. ", "ST ")
+    name = re.sub(r"\(BALANCE\)|\(PART\)", "", name)
+    name = re.sub(
+        r"\s(CITY|TOWN|VILLAGE|BOROUGH|CDP|TOWNSHIP|CHARTER TOWNSHIP|"
+        r"METRO TOWNSHIP|CITY AND BOROUGH|METROPOLITAN GOVERNMENT|"
+        r"UNIFIED GOVERNMENT|CONSOLIDATED GOVERNMENT)$",
+        "",
+        name.strip(),
+    )
+    return re.sub(r"[^A-Z]", "", name)
+
+
+# States whose local option taxes are levied by towns (county subdivisions).
+TOWN_TAX_STATES = {"VT"}
+
+
+def census_entities(sources: Path, state_fips: str) -> CensusEntities:
+    folder = sources / "census"
+    places = pd.read_csv(
+        folder / "national_place_by_county2020.txt", sep="|", dtype=str
+    )
+    places = places[places.STATEFP == state_fips]
+    cousubs = pd.read_csv(folder / "national_cousub2020.txt", sep="|", dtype=str)
+    cousubs = cousubs[cousubs.STATEFP == state_fips]
+    return CensusEntities(
+        pd.DataFrame(
+            {
+                "county": places.STATEFP + places.COUNTYFP,
+                "code": places.PLACEFP,
+                "name": places.PLACENAME,
+                "classfp": places.CLASSFP,
+            }
+        ),
+        pd.DataFrame(
+            {
+                "county": cousubs.STATEFP + cousubs.COUNTYFP,
+                "code": cousubs.COUSUBFP,
+                "name": cousubs.COUSUBNAME,
+                "classfp": cousubs.CLASSFP,
+            }
+        ),
+        towns=state_fips in {SST_STATES[s] for s in TOWN_TAX_STATES},
+    )
+
+
+def successor_codes(boundary: pd.DataFrame, entities: CensusEntities) -> dict:
+    """For each place code that does not resolve and whose records end before
+    the window does, the resolving code that at least 80% of the next day's
+    coded records with the same county, ZIP code and postal city carry, if
+    it has from half to twice as many records (Vermont recoded its local
+    option towns on 2023-01-01)."""
+    successors = {}
+    coded = boundary[boundary.place != ""]
+    by_county = dict(tuple(boundary.groupby("county")))
+    for (county, code), group in coded.groupby(["county", "place"]):
+        if entities.resolves(county, code):
+            continue
+        end = group.end.max()
+        if end >= WINDOW_END:
+            continue
+        after = end + pd.Timedelta(days=1)
+        keys = set(zip(group.zip, group.city))
+        same = by_county[county]
+        same = same[(same.begin <= after) & (same.end >= after)]
+        in_keys = np.array([k in keys for k in zip(same.zip, same.city)], dtype=bool)
+        later = same[in_keys & (same.place != "").to_numpy()]
+        if later.empty:
+            continue
+        counts = later.groupby("place").records.sum()
+        best = counts.idxmax()
+        ratio = counts[best] / group.records[group.end == end].sum()
+        if (
+            counts[best] >= 0.8 * counts.sum()
+            and 0.5 <= ratio <= 2
+            and entities.resolves(county, best)
+        ):
+            successors[(county, code)] = best
+    return successors
+
+
+def alias_units(
+    abbr: str,
+    frame: pd.DataFrame,
+    entities: CensusEntities,
+    successors: dict,
+    aliases: dict,
+) -> pd.DataFrame:
+    """Recode place codes that do not resolve to Census entities: to the
+    entity named like most of their records' postal city, else to their
+    successor code, unless the target has records of its own on the date.
+    Records `aliases` for the log."""
+    codes = set(zip(frame.county, frame.code))
+    unresolved = {
+        (county, code)
+        for county, code in codes
+        if code and not entities.resolves(county, code)
+    }
+    if not unresolved:
+        return frame
+    frame = frame.copy()
+    when = frame.attrs.get("date")
+    for county, code in sorted(unresolved):
+        mask = (frame.county == county) & (frame.code == code)
+        cities = frame[mask & (frame.city != "")].groupby("city").records.sum()
+        match = entities.by_name(county, cities.idxmax()) if len(cities) else None
+        if match is not None:
+            match = (match[0], f"{match[1]}, named like postal city {cities.idxmax()}")
+        if match is None and (county, code) in successors:
+            match = (successors[(county, code)], "the successor code of its records")
+        if match is None or (county, match[0]) in codes:
+            continue
+        frame.loc[mask, "code"] = match[0]
+        n = int(frame.records[mask].sum())
+        previous = aliases.get((county, code))
+        aliases[(county, code)] = (
+            match[0],
+            match[1],
+            previous[2] if previous else when,
+            when,
+            max(n, previous[4]) if previous else n,
+        )
+    return frame
 
 
 def change_dates(dates: list[pd.Timestamp], tables: list[pd.DataFrame]) -> list:
@@ -618,17 +858,27 @@ def build(sources: Path, only: list[str] | None = None) -> None:
     states = [s for s in SST_STATES if s not in NO_LOCAL_TAX] + ["NY", "VA"]
     if only:
         states = [s for s in states if s in only]
+    state_tables = []
     for abbr in states:
         print(f"{abbr}...", flush=True)
+        if abbr in STATE_RATES:
+            state = pd.DataFrame(
+                {"effective_from": [dates[0]], "rate": [STATE_RATES[abbr]]}
+            )
         if abbr == "NY":
             units = ny_unit_rates(sources, dates, log)
         elif abbr == "VA":
             units = va_unit_rates(sources, dates, log)
         else:
-            units = sst_unit_rates(sources, abbr, dates, log)
+            units, state = sst_unit_rates(sources, abbr, dates, log)
         by_place = place_rates(abbr, census_blocks(sources, abbr), units, log)
         by_place["state_code"] = abbr
         tables.append(by_place)
+        # Nevada's files put its 4.6% state rate and 2.25% uniform local rate
+        # in each county's rate (the state row is 0); the IRS has Nevada
+        # residents enter only the combined rate above the 6.85% heading.
+        if abbr != "NV":
+            state_tables.append(state.assign(state_code=abbr))
     rates, populations = assemble(pd.concat(tables, ignore_index=True))
     rates["effective_from"] = rates.effective_from.dt.strftime("%Y-%m-%d")
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -636,6 +886,15 @@ def build(sources: Path, only: list[str] | None = None) -> None:
         OUTPUT / "rates.csv", index=False, float_format="%.6f"
     )
     populations.to_csv(OUTPUT / "populations.csv", index=False)
+    state_rates = pd.concat(state_tables, ignore_index=True).sort_values(
+        ["state_code", "effective_from"]
+    )
+    previous = state_rates.groupby("state_code").rate.shift()
+    state_rates = state_rates[previous.isna() | (previous != state_rates.rate)]
+    state_rates["effective_from"] = state_rates.effective_from.dt.strftime("%Y-%m-%d")
+    state_rates[["state_code", "effective_from", "rate"]].to_csv(
+        OUTPUT / "state_rates.csv", index=False, float_format="%.6f"
+    )
     retrieved = sources / "retrieved_at.txt"
     manifest = {
         "retrieved_at": retrieved.read_text().strip() if retrieved.exists() else None,
@@ -643,7 +902,8 @@ def build(sources: Path, only: list[str] | None = None) -> None:
             str(p.relative_to(sources)): sha256(p)
             for p in sorted(sources.rglob("*"))
             if p.is_file()
-            and p.suffix.lower() in {".zip", ".csv", ".pdf", ".xlsx"}
+            and p.suffix.lower() in {".zip", ".csv", ".pdf", ".xlsx", ".txt"}
+            and p.name != "retrieved_at.txt"
             and p.relative_to(sources).parts[0] in {"sst", "ny", "va", "census"}
             and "x" not in p.relative_to(sources).parts
         },

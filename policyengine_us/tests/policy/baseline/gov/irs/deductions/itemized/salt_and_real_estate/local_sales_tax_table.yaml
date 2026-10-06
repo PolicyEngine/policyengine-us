@@ -526,6 +526,15 @@
   output:
     local_sales_tax_table: A
 
+- name: Brooklyn with only its county known
+  # Kings County lies wholly within New York City ("Cities: New York" -> A).
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+  output:
+    local_sales_tax_table: A
+
 - name: Yonkers, New York
   # "Cities: Auburn, ..., White Plains, or Yonkers" -> B.
   period: 2025

@@ -12,7 +12,10 @@ class local_sales_tax(Variable):
         "(line 6), for the optional sales tax deduction of 26 U.S.C. "
         "164(b)(5)(H): the Optional Local Sales Tax Table amount times the local "
         "rate in the states whose residents use those tables, and otherwise the "
-        "state table amount times the local rate over the state rate."
+        "state table amount times the local rate over the state rate. Before "
+        "2022 PolicyEngine applies the 2022 local tables, table selector, heading "
+        "rates and locality rates (parameters extend back from their earliest "
+        "value)."
     )
     reference = (
         # State and Local General Sales Tax Deduction Worksheet.

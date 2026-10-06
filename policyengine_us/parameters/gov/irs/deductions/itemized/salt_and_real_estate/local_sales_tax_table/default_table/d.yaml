@@ -15,7 +15,7 @@ metadata:
 # Each state's default is the table in the selector row for "Any locality that
 # imposes a local sales tax" or "... or any other locality that imposes a
 # local sales tax". Residents of the localities the IRS names in other rows
-# use those rows' tables; set local_sales_tax_table to apply them.
+# use those rows' tables (the county and place lists).
 # New York's "Any other locality that imposes a local sales tax" row names
 # Table D, with the note "* Note: Local Table D is just 25% of the NY
 # State table."

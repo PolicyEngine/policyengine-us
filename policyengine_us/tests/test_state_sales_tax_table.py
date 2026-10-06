@@ -30,11 +30,11 @@ formulas that read the table:
   it.
 - state_sales_tax never falls as adjusted gross income or family size rises.
 - local_sales_tax is zero in the ten jurisdictions whose residents the
-  worksheet sends to -0- on line 6. One percentage point above the heading
-  rate, it is the Optional Local Sales Tax Table amount in the worksheet's
-  line-2 states and state_sales_tax divided by the heading rate (in points)
-  in the other states with a state table (test_local_sales_tax_worksheet.py
-  tests the worksheet in full).
+  worksheet sends to -0- on line 6. One percentage point above the state rate
+  (line 3 = 1), it is the Optional Local Sales Tax Table amount in the
+  worksheet's line-2 states and state_sales_tax divided by the heading rate
+  (in points) in the other states with a state table
+  (test_local_sales_tax_worksheet.py tests the worksheet in full).
 - state_and_local_sales_or_income_tax is the larger of the income tax (state
   withholding plus local income tax) and the sales tax (state plus local).
 
@@ -53,6 +53,9 @@ from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us.model_api import REPO
 from policyengine_us.system import system
+from policyengine_us.tools.local_sales_tax_rates import (
+    state_general_sales_tax_rates,
+)
 
 TABLE_PATH = "gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table"
 TABLE_DIR = REPO.joinpath("parameters", *TABLE_PATH.split("."))
@@ -298,10 +301,11 @@ def test_every_income_source_counts_toward_the_income_row(year):
 
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
-def test_local_sales_tax_one_point_above_the_heading_rate(year):
+def test_local_sales_tax_one_point_above_the_state_rate(year):
     """Every state, family size 1 to 8, and income row, at a combined rate one
-    percentage point above the state's heading rate, with each state's
-    default local table."""
+    percentage point above the state's general rate (the official state rate
+    where PolicyEngine has the state's rate files, else the heading rate),
+    with each state's default local table."""
     grid = list(
         product(
             sorted(IRS_JURISDICTIONS | {"AK"}),
@@ -313,12 +317,16 @@ def test_local_sales_tax_one_point_above_the_heading_rate(year):
     salt = system.parameters.gov.irs.deductions.itemized.salt_and_real_estate
     headings = salt.state_sales_tax_table.rate(f"{year}-01-01")
     heading = np.array([headings[state] for state in states])
+    official = state_general_sales_tax_rates(year)
+    state_rate = np.array(
+        [official.get(state, headings[state]) for state in states], dtype=float
+    )
     simulation = _grid_simulation(
         year,
         states,
         sizes,
         state_sales_tax_income_bracket=brackets,
-        combined_sales_tax_rate=heading + 0.01,
+        combined_sales_tax_rate=state_rate + 0.01,
     )
     state_amount = simulation.calculate("state_sales_tax", year)
     local_amount = simulation.calculate("local_sales_tax", year)

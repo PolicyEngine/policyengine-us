@@ -9,7 +9,9 @@ Schedule A (Form 1040), 2022-2025) sets line 6, the local amount, as:
 - otherwise line 1 x line 3 / line 4, where line 1 is the state table amount
   and line 4 the state rate in the state table heading.
 PolicyEngine takes line 3 (local_sales_tax_rate) as the combined state and
-local rate minus the heading rate, floored at 0. The combined rate is the
+local rate minus the state general sales tax rate (the official state rate
+where PolicyEngine has the state's rate files, else the heading rate),
+floored at 0. The combined rate is the
 official locality rate in the states with official rate files, the heading
 rate elsewhere, or the rate the user enters.
 
@@ -22,9 +24,9 @@ Invariants, each tested below:
 - I2 non-negativity: local_sales_tax >= 0 for any combined rate.
 - I3 no-local zero: local_sales_tax = 0 in the ten no-local jurisdictions.
 - I4 threshold: local_sales_tax = 0 whenever the combined rate is at or below
-  the heading rate (California at 7.25%, Nevada at 6.85%).
-- I5 linearity in line 3: f(h + k x) = k f(h + x) for heading rate h, and f
-  never falls as the combined rate rises.
+  the state rate b (California at 7.25%, Nevada at 6.85%).
+- I5 linearity in line 3: f(b + k x) = k f(b + x), and f never falls as the
+  combined rate rises.
 - I6 differential: local_sales_tax equals a pure-Python worksheet that reads
   the raw parameter YAML files, over every state, year (2022-2026, 2030),
   family size 1-8, income row, table letter, and several rates.
@@ -34,7 +36,7 @@ Invariants, each tested below:
 - I9 with no rate input, the combined rate is the heading rate and
   local_sales_tax is 0 in every state without official locality rates; in
   the states with them, the combined rate is the state's official
-  population-weighted rate and at least the heading rate.
+  population-weighted rate, above its state rate.
 - I11 entering line 3 directly (local_sales_tax_rate) gives the same amount
   as entering the combined rate it implies.
 - I10 local tables after 2025 are the 2025 tables times the IRS uprating
@@ -57,6 +59,8 @@ from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us.model_api import REPO
 from policyengine_us.system import system
+
+STATE_RATES = REPO.joinpath("data", "local_sales_tax", "state_rates.csv")
 
 SALT = REPO.joinpath(
     "parameters", "gov", "irs", "deductions", "itemized", "salt_and_real_estate"
@@ -154,6 +158,8 @@ class _ReferenceWorksheet:
             s: _dated(raw["rate"][s], table_year) if s in raw["rate"] else 0
             for s in STATES
         }
+        official = _official_state_rates(year)
+        self.base = {s: official.get(s, self.heading[s]) for s in STATES}
         self.local_table = {
             (t, size, row): _dated(raw["local_tax"][t][size][row], table_year) * factor
             for t, size, row in product(TABLES, range(1, 7), INCOME_ROWS)
@@ -169,7 +175,7 @@ class _ReferenceWorksheet:
         if state in self.no_local:
             return 0.0
         heading = self.heading[state]
-        local_rate = max(combined - heading, 0.0)
+        local_rate = max(combined - self.base[state], 0.0)
         column = min(size, 6)
         if state in self.local_states:
             # Line 2 x line 3, with line 3 in percentage points.
@@ -196,6 +202,37 @@ def _heading_rates(year):
     rates = system.parameters.gov.irs.deductions.itemized.salt_and_real_estate
     rates = rates.state_sales_tax_table.rate(f"{year}-01-01")
     return {state: float(rates[state]) for state in STATES}
+
+
+def _official_state_rates(year):
+    """Day-by-day mean over the year of each state's rate in the official
+    state rate file, read directly; each state's first rate also covers the
+    days before its first row."""
+    rows = {}
+    with STATE_RATES.open() as file:
+        next(file)
+        for line in file:
+            state, start, rate = line.strip().split(",")
+            rows.setdefault(state, []).append((date.fromisoformat(start), float(rate)))
+    means = {}
+    for state, steps in rows.items():
+        steps.sort()
+        day, total, days = date(year, 1, 1), 0.0, 0
+        while day.year == year:
+            in_force = [r for start, r in steps if start <= day] or [steps[0][1]]
+            total += in_force[-1]
+            days += 1
+            day = date.fromordinal(day.toordinal() + 1)
+        means[state] = total / days
+    return means
+
+
+def _state_rates(year):
+    """Line 3's base: the official state rate where the state's files give
+    it, else the heading rate."""
+    official = _official_state_rates(year)
+    headings = _heading_rates(year)
+    return {s: official.get(s, headings[s]) for s in STATES}
 
 
 # Hypothesis strategies: a batch of worksheet points in one year.
@@ -283,10 +320,10 @@ def test_i3_no_local_jurisdictions_are_zero(year, batch, rate):
     shares=st.lists(st.floats(0, 1), min_size=60, max_size=60),
 )
 def test_i4_zero_at_or_below_the_heading_rate(year, batch, shares):
-    """I4: combined rate = heading rate x a share in [0, 1]."""
-    headings = _heading_rates(year)
+    """I4: combined rate = state rate x a share in [0, 1]."""
+    bases = _state_rates(year)
     states, sizes, rows, tables = zip(*batch)
-    rates = [headings[s] * shares[i] for i, s in enumerate(states)]
+    rates = [bases[s] * shares[i] for i, s in enumerate(states)]
     amounts = _simulate(year, states, sizes, rows, rates, tables)
     assert (amounts == 0).all()
 
@@ -308,11 +345,11 @@ def test_i4_california_and_nevada_no_box(year):
     k=st.floats(0.5, 4),
 )
 def test_i5_linear_and_monotone_in_the_local_rate(year, batch, x, k):
-    """I5: f(h + k x) = k f(h + x), and f(h + x) <= f(h + k x) when k >= 1."""
-    headings = _heading_rates(year)
+    """I5: f(b + k x) = k f(b + x), and f(b + x) <= f(b + k x) when k >= 1."""
+    bases = _state_rates(year)
     states, sizes, rows, tables = zip(*batch)
-    base = [headings[s] + x for s in states]
-    scaled = [headings[s] + k * x for s in states]
+    base = [bases[s] + x for s in states]
+    scaled = [bases[s] + k * x for s in states]
     f_base = _simulate(year, states, sizes, rows, base, tables)
     f_scaled = _simulate(year, states, sizes, rows, scaled, tables)
     np.testing.assert_allclose(f_scaled, k * f_base, rtol=1e-4, atol=0.01)
@@ -381,10 +418,12 @@ def test_i9_no_rate_input(year):
     amounts = simulation.calculate("local_sales_tax", year)
     headings = _heading_rates(year)
     heading = np.array([headings[s] for s in states], dtype=np.float32)
+    bases = _state_rates(year)
+    base = np.array([bases[s] for s in states], dtype=np.float32)
     official = np.isin(states, OFFICIAL_RATE_STATES)
     assert (combined[~official] == heading[~official]).all()
     assert (amounts[~official] == 0).all()
-    assert (combined[official] >= heading[official] - 1e-4).all()
+    assert (combined[official] > base[official]).all()
     assert (amounts[official] > 0).all()
 
 
@@ -392,10 +431,10 @@ def test_i9_no_rate_input(year):
 @given(year=years, batch=points, x=st.floats(0, 0.05, allow_nan=False))
 def test_i11_local_rate_input_matches_combined_rate_input(year, batch, x):
     """I11: line 3 entered directly, or implied by a combined rate."""
-    headings = _heading_rates(year)
+    bases = _state_rates(year)
     states, sizes, rows, tables = zip(*batch)
     by_combined = _simulate(
-        year, states, sizes, rows, [headings[s] + x for s in states], tables
+        year, states, sizes, rows, [bases[s] + x for s in states], tables
     )
     simulation = SimulationBuilder().build_default_simulation(system, len(batch))
     simulation.set_input("state_code", year, np.array(states))

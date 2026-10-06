@@ -8,8 +8,11 @@ outside them (`place_fips` empty), as a step function of the date: a row
 applies from `effective_from` until the key's next row, and a key's last row
 applies indefinitely. Every key's first row is dated 2022-01-01 and also
 applies to earlier years. `populations.csv` holds each key's 2020 Census
-population. Both files are built by `scripts/local_sales_tax_rates/build.py`
-from the sources listed in `SOURCES.md` beside them.
+population, and `state_rates.csv` the state general sales tax rate of each
+covered state (except Nevada, whose files fold its state rate into county
+rates), in the same step form. The files are built by
+`scripts/local_sales_tax_rates/build.py` from the sources listed in
+`SOURCES.md` beside them.
 
 `locality_sales_tax_rates(year)` returns each key's rate for a tax year,
 averaged over the days of the year as the sales tax deduction worksheet's
@@ -51,6 +54,23 @@ def locality_rate_schedule() -> pd.DataFrame:
 @lru_cache(maxsize=None)
 def locality_populations() -> pd.DataFrame:
     return _read("populations.csv")
+
+
+@lru_cache(maxsize=None)
+def state_rate_schedule() -> pd.DataFrame:
+    df = _read("state_rates.csv")
+    df["effective_from"] = pd.to_datetime(df["effective_from"])
+    df["county_fips"] = df["state_code"]
+    df["place_fips"] = ""
+    return df.sort_values(["state_code", "effective_from"]).reset_index(drop=True)
+
+
+@lru_cache(maxsize=None)
+def state_general_sales_tax_rates(year: int) -> pd.Series:
+    """Day-weighted state general sales tax rate of each covered state over
+    the year, indexed by state code."""
+    annual = annual_rates(state_rate_schedule(), year)
+    return pd.Series(annual.to_numpy(), index=annual.index.get_level_values(0))
 
 
 def annual_rates(schedule: pd.DataFrame, year: int) -> pd.Series:

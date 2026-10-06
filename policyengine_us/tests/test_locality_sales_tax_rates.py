@@ -21,13 +21,17 @@ Invariants, each tested below:
   worksheet line 3 example (1% for 273 days, 1.75% for 92 days: 1.189%).
 - L4 bounds: a key's annual rate lies within its step values; a county's and
   a state's population-weighted rates lie within their keys' rates.
-- L5 heading floor: every covered locality's annual rate is at least the IRS
-  state table heading rate for its state, less the IRS rounding, so worksheet
-  line 3 is non-negative from the data, not only from its floor at 0.
+- L5 floors: every covered locality's annual rate is at least its state's
+  official general rate, and at least the IRS state table heading rate less
+  the IRS rounding, so worksheet line 3 is non-negative from the data, not
+  only from its floor at 0.
 - L6 lookup precedence: combined_sales_tax_rate returns the place rate, else
   the rate outside places when the place or census block is known, else the
   county's rate, else the state's; a county outside the household's state is
   ignored; a state without official rates gets its heading rate.
+- L8 state rates: the official state general rates cover every covered
+  state but Nevada, at the statutory rates (New York 4%, Virginia 4.3%,
+  Minnesota 6.875%), with South Dakota's cut from 4.5% to 4.2% on 2023-07-01.
 - L7 selector lists: each year's county and place lists are disjoint across
   tables, and name only counties and places in states that use the local
   tables (local_sales_tax_table.yaml tests the precedence place > county >
@@ -56,6 +60,8 @@ from policyengine_us.tools.local_sales_tax_rates import (
     locality_populations,
     locality_rate_schedule,
     locality_sales_tax_rates,
+    state_general_sales_tax_rates,
+    state_rate_schedule,
 )
 
 SALT = REPO.joinpath(
@@ -229,6 +235,32 @@ def test_l5_rates_are_at_least_the_heading_rate(year):
     ]
     below = annual[annual["rate"] < annual["heading"] - HEADING_ROUNDING]
     assert below.empty, below.head().to_dict("records")
+    official = annual["state_code"].map(state_general_sales_tax_rates(year))
+    below_state = annual[annual["rate"] < official - 1e-12]
+    assert below_state.empty, below_state.head().to_dict("records")
+
+
+def test_l8_state_rates():
+    """L8: the official state general sales tax rates."""
+    schedule = state_rate_schedule()
+    assert set(schedule["state_code"]) == set(COVERED_STATES) - {"NV"}
+    first = schedule.groupby("state_code")["effective_from"].min()
+    assert (first == pd.Timestamp("2022-01-01")).all()
+    assert ((schedule["rate"] > 0.03) & (schedule["rate"] < 0.08)).all()
+    rates = state_general_sales_tax_rates(2025)
+    assert rates["NY"] == pytest.approx(0.04)
+    assert rates["VA"] == pytest.approx(0.043)
+    assert rates["MN"] == pytest.approx(0.06875)
+    south_dakota = schedule[schedule["state_code"] == "SD"]
+    assert list(south_dakota["rate"]) == pytest.approx([0.045, 0.042])
+    assert list(south_dakota["effective_from"]) == [
+        pd.Timestamp("2022-01-01"),
+        pd.Timestamp("2023-07-01"),
+    ]
+    # 181 days at 4.5% and 184 at 4.2% in 2023.
+    assert state_general_sales_tax_rates(2023)["SD"] == pytest.approx(
+        (181 * 0.045 + 184 * 0.042) / 365
+    )
 
 
 def _households(year, **inputs):

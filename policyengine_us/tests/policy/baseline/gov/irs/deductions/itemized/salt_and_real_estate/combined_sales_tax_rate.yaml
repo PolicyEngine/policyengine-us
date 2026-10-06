@@ -99,6 +99,31 @@
   output:
     combined_sales_tax_rate: 0.0970753
 
+- name: Atlanta in DeKalb County, Georgia
+  # GAR2026Q4OCT01 and GAB2026Q4AUG20 code the DeKalb County part of Atlanta
+  # 05000, not the Census place code 04000: 4% state + 3% DeKalb County +
+  # 1.9% Atlanta = 8.9%, as in the Fulton County part.
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "04000"
+  output:
+    combined_sales_tax_rate: 0.089
+
+- name: East Middlebury, Vermont, 2022, the town's 1% local option tax
+  # VTR2026Q4AUG20 and VTB2026Q4AUG20: Middlebury's 1% local option tax
+  # (state code 00508 in 2022) applies town-wide; its 2022 records carry the
+  # Middlebury CDP code 44275, and the town's code, 44350, from 2023.
+  # East Middlebury CDP (21700) lies in the town: 6% + 1% = 7%.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50001"
+    place_fips: "21700"
+  output:
+    combined_sales_tax_rate: 0.07
+
 - name: California has no official locality rate file, so the heading rate
   # The California table heading, 7.25%, includes the uniform local rate.
   period: 2025

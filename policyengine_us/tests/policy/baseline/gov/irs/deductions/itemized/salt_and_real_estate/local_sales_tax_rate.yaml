@@ -46,11 +46,12 @@
   output:
     local_sales_tax_rate: 0.04875
 
-- name: Sioux Falls, South Dakota, 2023, heading averages the state rate cut
-  # SDR2026Q3JUN02: Sioux Falls 6.5% (4.5% state + 2% city) until June 30,
-  # 2023 and 6.2% (4.2% + 2%) from July 1: (181 x 6.5 + 184 x 6.2) / 365 =
-  # 6.34877%. The 2023 South Dakota heading, 4.35%, is "an average for the
-  # year" (2023 table footnote 7), so line 3 is 1.99877%.
+- name: Sioux Falls, South Dakota, 2023, the local rate through a state rate cut
+  # SDR2026Q3JUN02: the state rate is 4.5% until June 30, 2023 and 4.2% from
+  # July 1, and Sioux Falls's 2% local rate is unchanged, so the combined rate
+  # is 6.5% then 6.2%. Line 3 is the 2% local rate: the combined rate less
+  # the state rate, each averaged over the days of 2023. (The 2023 heading,
+  # 4.35%, is "an average for the year" and is line 4, not used here.)
   period: 2023
   absolute_error_margin: 0.000001
   input:
@@ -58,7 +59,20 @@
     county_fips: "46099"
     place_fips: "59020"
   output:
-    local_sales_tax_rate: 0.0199877
+    local_sales_tax_rate: 0.02
+
+- name: Minneapolis, 2024, the local rate above the 6.875% state rate
+  # MNR2026Q4AUG18: Minneapolis 9.025% from October 1, 2023, with the state
+  # rate 6.875%. Line 3 is 2.15. The 2024 heading prints the state rate
+  # rounded, 6.88%, which would understate line 3 by 0.005.
+  period: 2024
+  absolute_error_margin: 0.000001
+  input:
+    state_code: MN
+    county_fips: "27053"
+    place_fips: "43000"
+  output:
+    local_sales_tax_rate: 0.0215
 
 - name: A user-supplied local rate is used as entered
   period: 2025

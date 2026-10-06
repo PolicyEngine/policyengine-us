@@ -13,8 +13,11 @@ class combined_sales_tax_rate(Variable):
         "lives. In New York, Virginia and the Streamlined Sales Tax states with "
         "local sales taxes, it is the official rate of the household's place, or "
         "of its county's area outside the places with their own rate, from the "
-        "states' rate files; with only the county known, the county's "
-        "population-weighted rate; and with no county, the state's. Elsewhere "
+        "states' rate files, by county and place FIPS code (county_fips and "
+        "place_fips; the county enum is not used). A census block GEOID without "
+        "a place code places the household outside every place. With only the "
+        "county known, it is the county's population-weighted rate, and with no "
+        "county, the state's. Elsewhere "
         "PolicyEngine has no official locality rates and uses the state rate in "
         "the IRS state table heading, so the local general sales tax rate is 0. "
         "Enter the household's combined rate to use it instead."
@@ -31,6 +34,8 @@ class combined_sales_tax_rate(Variable):
         county = pd.Series(household("county_fips", period)).astype(str)
         county = county.where(county == "", county.str.zfill(5))
         place = pd.Series(household("place_fips", period)).astype(str)
+        # Accept a 7-digit place GEOID (state FIPS code and place code).
+        place = place.where(place.str.len() != 7, place.str[2:])
         place = place.where(place == "", place.str.zfill(5))
         block = pd.Series(household("block_geoid", period)).astype(str)
         # Locality rates are keyed on FIPS codes, never on the county enum,
