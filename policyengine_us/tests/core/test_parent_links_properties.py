@@ -159,9 +159,13 @@ def random_linked_households(
     Children draw zero to two co-resident parents at least 14 years older
     (teen parents included) and, when they have fewer than two, possibly an
     absent parent whose id another child can share. Every child has at least
-    one parent. ``drop_ids`` zeroes a child's recorded ids while its parents
-    still count it; ``extra_count`` adds a child no id names to an adult's
-    count; ``split_families`` spreads members over two family entities.
+    one parent. A married couple files jointly, so a child whose ids name one
+    spouse alone has the other as a step parent (42 CFR 435.603(b)); a child
+    never names one spouse and a third adult, since two id slots cannot
+    record three co-resident parents. ``drop_ids`` zeroes a child's recorded
+    ids while its parents still count it; ``extra_count`` adds a child no id
+    names to an adult's count; ``split_families`` spreads members over two
+    family entities.
     Incomes are multiples of 1/8 below 2**20, so float32 storage and float64
     sums are exact in any order.
     """
@@ -184,6 +188,9 @@ def random_linked_households(
             k = int(rng.integers(1 if not candidates else 0, 3)) if is_child else 0
             k = min(k, len(candidates))
             parents = [int(p) for p in rng.choice(candidates, size=k, replace=False)]
+            in_couple = [p for p in parents if married and p in (0, 1)]
+            if len(in_couple) == 1 and len(parents) == 2:
+                parents = [in_couple[0], 1 - in_couple[0]]
             absent = []
             if is_child and len(parents) < 2 and (not parents or rng.random() < 0.3):
                 absent = [900 + int(rng.integers(0, 3))]
@@ -205,6 +212,12 @@ def random_linked_households(
             # A married couple living together is one family.
             people[0]["spouse"], people[1]["spouse"] = 1, 0
             people[1]["family"] = people[0]["family"]
+        for person in people:
+            # Legal co-resident parents: a lone parent's spouse is a step parent.
+            legal = list(person["parents"])
+            if len(legal) == 1 and people[legal[0]]["spouse"] is not None:
+                legal.append(people[legal[0]]["spouse"])
+            person["legal"] = legal
         households.append(people)
     return households
 
@@ -262,19 +275,22 @@ def _index(members, name):
 
 
 def true_members(members, i):
-    """42 CFR 435.603(f)(3) membership from the true relationships."""
+    """42 CFR 435.603(f)(3) membership from the true relationships.
+
+    Parents, children and siblings include step relatives (435.603(b)).
+    """
     person = members[i]
     child = person["age"] < AGE_LIMIT
     result = {i}
     for m, other in enumerate(members):
         other_child = other["age"] < AGE_LIMIT
-        shared = set(person["parents"]) & set(other["parents"]) or (
+        shared = set(person["legal"]) & set(other["legal"]) or (
             set(person["absent"]) & set(other["absent"])
         )
         if (
             person["spouse"] == m
-            or (other_child and i in other["parents"])
-            or (child and m in person["parents"])
+            or (other_child and i in other["legal"])
+            or (child and m in person["legal"])
             or (child and other_child and m != i and shared)
         ):
             result.add(m)
@@ -284,19 +300,28 @@ def true_members(members, i):
 def rule_members(members, i):
     """Scalar statement of the membership rule documented for data with gaps.
 
-    Links resolve by recorded id. Main's family proxy survives only among
-    unlinked people: child-age members without ids and members reporting
-    more own children than the ids naming them.
+    Links resolve by recorded id. When the ids name exactly one co-resident
+    parent, that parent's spouse (the couple files jointly) is a step parent.
+    Main's family proxy survives only among unlinked people: child-age
+    members without ids and members reporting more own children than the ids
+    naming them.
     """
     ids = [person["recorded"] for person in members]
     by_id = {k + 1: k for k in range(len(members))}
-    parents = [
+    named = [
         {by_id[x] for x in pair if x in by_id and by_id[x] != k}
         for k, pair in enumerate(ids)
     ]
+    parents = [set(p) for p in named]
+    for k, p in enumerate(named):
+        if len(p) == 1:
+            step = members[next(iter(p))]["spouse"]
+            if step is not None and step != k and k not in named[step]:
+                parents[k].add(step)
     child = [person["age"] < AGE_LIMIT for person in members]
     unlinked = [child[k] and not any(ids[k]) for k in range(len(members))]
-    linked_children = [sum(k in p for p in parents) for k in range(len(members))]
+    # is_parent counts only the parents the ids name.
+    linked_children = [sum(k in p for p in named) for k in range(len(members))]
     reports = [
         sum(k in other["parents"] for other in members) + members[k]["extra"]
         > linked_children[k]
@@ -324,6 +349,7 @@ def rule_members(members, i):
             and child[m]
             and (
                 bool(({*ids[i]} - {0}) & ({*ids[m]} - {0}))
+                or bool(parents[i] & parents[m])
                 or (unlinked[m] and reporting_parent_in(i, family[m]))
                 or (unlinked[i] and reporting_parent_in(m, family[i]))
                 or (unlinked[i] and unlinked[m] and same_family)
@@ -611,6 +637,28 @@ def test_tax_dependent_counts_a_co_resident_spouse_exactly_once():
                 expected_income += spouse_member_income
             assert income[name] == np.float32(expected_income), name
 
+        # The spouse's own household holds the child exactly once whenever
+        # they live together as spouses, with or without the flag ((f)(4)).
+        name = f"s{s}_spouse"
+        placement = scenario["placement"]
+        lives_with_child = placement not in ("unmarried", "elsewhere")
+        if spouse_is_dependent and not non_filer[name]:
+            # Claimed into the parent's return: the parent's tax household,
+            # which already holds the child.
+            members = parent_household
+            expected_income = sum(tax_income[m] for m in parent_household)
+        else:
+            # Files alone, or a dependent under (f)(2)(i)'s non-filer rules.
+            assert spouse_is_dependent or not non_filer[name], name
+            members = {"spouse", "child"} if lives_with_child else {"spouse"}
+            expected_income = (
+                spouse_member_income if non_filer[name] else scenario["spouse_income"]
+            )
+        expected_pregnancies = sum(preg[m] for m in members)
+        assert pregnancies[name] == expected_pregnancies, name
+        assert size[name] == len(members) + expected_pregnancies, name
+        assert income[name] == np.float32(expected_income), name
+
     # Member order within every group does not change any result.
     reversed_ = Simulation(
         situation=married_dependent_situation(scenarios, reverse=True)
@@ -645,3 +693,226 @@ def test_households_without_ids_keep_their_values_next_to_linked_ones():
         in_mixed = by_name(mixed, variable)
         for name, value in by_name(alone, variable).items():
             assert in_mixed[name] == value, (variable, name)
+
+
+# Who claims: a named parent counts only as the claiming return's head or spouse.
+
+NAMED_ROLES = ["head", "spouse", "dependent", "outside"]
+
+
+def named_parent_situation(role, known_claim, co_resident):
+    """A child whose id names X, claimed by a return in which X has ``role``.
+
+    The claiming return is headed by X or by H. ``outside`` puts X on a return
+    of their own. The child is on the claiming return, or under a known
+    claiming tax unit, on a return of their own. X lives with the child or
+    elsewhere; H lives with X.
+    """
+    x_age = 17 if role == "dependent" else 40
+    people = {
+        "x": {"person_id": {PERIOD: 1}, "age": {PERIOD: x_age}},
+        "h": {"person_id": {PERIOD: 5}, "age": {PERIOD: 60}},
+        "child": {
+            "person_id": {PERIOD: 2},
+            "age": {PERIOD: 1},
+            "parent_1_id": {PERIOD: 1},
+        },
+    }
+    claiming = {
+        "head": ["x"],
+        "spouse": ["h", "x"],
+        "dependent": ["h", "x"],
+        "outside": ["h"],
+    }[role]
+    tax_units = {"claiming": {"members": claiming, "tax_unit_id": {PERIOD: 1}}}
+    if role == "spouse":
+        tax_units["claiming"]["filing_status"] = {PERIOD: "JOINT"}
+    if role == "dependent":
+        people["x"]["is_tax_unit_spouse"] = {PERIOD: False}
+    if role == "outside":
+        tax_units["x_unit"] = {"members": ["x"], "tax_unit_id": {PERIOD: 3}}
+    if role == "head":
+        tax_units["h_unit"] = {"members": ["h"], "tax_unit_id": {PERIOD: 4}}
+    if known_claim:
+        people["child"]["medicaid_claiming_tax_unit_id"] = {PERIOD: 1}
+        tax_units["child_unit"] = {"members": ["child"], "tax_unit_id": {PERIOD: 2}}
+    else:
+        tax_units["claiming"]["members"].append("child")
+    for unit in tax_units.values():
+        unit["tax_unit_is_filer"] = {PERIOD: True}
+    homes = (
+        {"home": ["x", "h", "child"]}
+        if co_resident
+        else {"adult_home": ["x", "h"], "child_home": ["child"]}
+    )
+    marital_units = {name: {"members": [name]} for name in people}
+    if role == "spouse":
+        marital_units = {
+            "couple": {"members": ["h", "x"]},
+            "child": {"members": ["child"]},
+        }
+    return {
+        "people": people,
+        "tax_units": tax_units,
+        "families": {k: {"members": v} for k, v in homes.items()},
+        "spm_units": {k: {"members": v} for k, v in homes.items()},
+        "marital_units": marital_units,
+        "households": {
+            k: {"members": v, "state_code": {PERIOD: "OH"}} for k, v in homes.items()
+        },
+    }
+
+
+def test_named_parent_must_be_claiming_head_or_spouse():
+    # 42 CFR 435.603(f)(2)(i): the exception turns on whether the taxpayer
+    # claiming the person is a parent. A named parent who is another
+    # dependent on that return (a teen parent claimed by a grandparent) or
+    # who files elsewhere is not the claiming taxpayer.
+    for role in NAMED_ROLES:
+        for known_claim in (False, True):
+            for co_resident in (False, True):
+                case = (role, known_claim, co_resident)
+                simulation = Simulation(
+                    situation=named_parent_situation(*case)
+                )
+                claimed = by_name(simulation, "medicaid_claimed_by_parent_in_tax_unit")
+                other = by_name(
+                    simulation,
+                    "medicaid_tax_dependent_exception_other_than_spouse_or_child",
+                )
+                expected = role in ("head", "spouse")
+                assert claimed["child"] == expected, case
+                if not known_claim:
+                    assert other["child"] == (not expected), case
+
+
+# Both parents: (f)(2)(ii) needs two co-resident parents, a parent's claim and
+# no joint return between those two parents.
+
+BOTH_PARENT_CASES = {
+    # arrangement: whether (f)(2)(ii) applies
+    "joint_filer": False,
+    "joint_non_filer": True,
+    "separate_filers": True,
+    "two_joint_returns": True,
+    "claimed_by_parent_elsewhere": True,
+    "claimed_by_grandparent_elsewhere": False,
+}
+
+
+def both_parent_situation(arrangement):
+    """A child whose ids name a mother and father who both live with them."""
+    people = {
+        "mother": {"person_id": {PERIOD: 1}, "age": {PERIOD: 38}},
+        "father": {"person_id": {PERIOD: 2}, "age": {PERIOD: 40}},
+        "child": {
+            "person_id": {PERIOD: 3},
+            "age": {PERIOD: 10},
+            "parent_1_id": {PERIOD: 1},
+            "parent_2_id": {PERIOD: 2},
+        },
+    }
+    home = ["mother", "father", "child"]
+    other_homes = {}
+    marital_units = {name: {"members": [name]} for name in people}
+    if arrangement in ("joint_filer", "joint_non_filer"):
+        tax_units = {
+            "unit": {
+                "members": ["mother", "father", "child"],
+                "filing_status": {PERIOD: "JOINT"},
+                "tax_unit_is_filer": {PERIOD: arrangement == "joint_filer"},
+            }
+        }
+        marital_units = {
+            "couple": {"members": ["mother", "father"]},
+            "child": {"members": ["child"]},
+        }
+    elif arrangement == "two_joint_returns":
+        # Each parent files jointly with someone else: the mother as head with
+        # her husband, the father as spouse of his wife.
+        people["husband"] = {"person_id": {PERIOD: 4}, "age": {PERIOD: 39}}
+        people["wife"] = {"person_id": {PERIOD: 5}, "age": {PERIOD: 45}}
+        home += ["husband", "wife"]
+        tax_units = {
+            "mother_unit": {
+                "members": ["mother", "husband", "child"],
+                "filing_status": {PERIOD: "JOINT"},
+                "tax_unit_is_filer": {PERIOD: True},
+            },
+            "father_unit": {
+                "members": ["wife", "father"],
+                "filing_status": {PERIOD: "JOINT"},
+                "tax_unit_is_filer": {PERIOD: True},
+            },
+        }
+        marital_units = {
+            "mother_couple": {"members": ["mother", "husband"]},
+            "father_couple": {"members": ["wife", "father"]},
+            "child": {"members": ["child"]},
+        }
+    else:
+        tax_units = {
+            "mother_unit": {"members": ["mother"], "tax_unit_id": {PERIOD: 1}},
+            "father_unit": {"members": ["father"], "tax_unit_id": {PERIOD: 2}},
+        }
+        if arrangement == "separate_filers":
+            tax_units["mother_unit"]["members"].append("child")
+        else:
+            claimant = 1
+            if arrangement == "claimed_by_grandparent_elsewhere":
+                people["grandparent"] = {"person_id": {PERIOD: 6}, "age": {PERIOD: 65}}
+                other_homes["grandparent_home"] = ["grandparent"]
+                tax_units["grandparent_unit"] = {
+                    "members": ["grandparent"],
+                    "tax_unit_id": {PERIOD: 6},
+                }
+                marital_units["grandparent"] = {"members": ["grandparent"]}
+                claimant = 6
+            # A dependent on the mother's return, claimed by a known unit.
+            tax_units["mother_unit"]["members"].append("child")
+            people["child"]["medicaid_claiming_tax_unit_id"] = {PERIOD: claimant}
+            if arrangement == "claimed_by_parent_elsewhere":
+                # The child's own return, claimed by the mother's unit.
+                tax_units["mother_unit"]["members"].remove("child")
+                tax_units["child_unit"] = {
+                    "members": ["child"],
+                    "tax_unit_id": {PERIOD: 3},
+                }
+        for unit in tax_units.values():
+            unit["tax_unit_is_filer"] = {PERIOD: True}
+    homes = {"home": home, **other_homes}
+    return {
+        "people": people,
+        "tax_units": tax_units,
+        "families": {k: {"members": v} for k, v in homes.items()},
+        "spm_units": {k: {"members": v} for k, v in homes.items()},
+        "marital_units": marital_units,
+        "households": {
+            k: {"members": v, "state_code": {PERIOD: "OH"}} for k, v in homes.items()
+        },
+    }
+
+
+def test_both_parent_joint_return_requires_same_filing_unit():
+    # Parents "do not expect to file a joint tax return" unless they are the
+    # head and spouse of one return that is filed; a known claiming unit must
+    # have a co-resident parent as its head or spouse.
+    for arrangement, expected in BOTH_PARENT_CASES.items():
+        simulation = Simulation(situation=both_parent_situation(arrangement))
+        both = by_name(
+            simulation, "medicaid_tax_dependent_exception_living_with_both_parents"
+        )
+        non_filer = by_name(simulation, "medicaid_uses_non_filer_rules")
+        assert both["child"] == expected, arrangement
+        assert not both["mother"] and not both["father"], arrangement
+        if expected:
+            assert non_filer["child"], arrangement
+        # The same household with the parents' ids swapped between slots.
+        swapped = both_parent_situation(arrangement)
+        swapped["people"]["child"]["parent_1_id"] = {PERIOD: 2}
+        swapped["people"]["child"]["parent_2_id"] = {PERIOD: 1}
+        swapped_both = by_name(
+            Simulation(situation=swapped),
+            "medicaid_tax_dependent_exception_living_with_both_parents",
+        )
+        assert swapped_both["child"] == expected, arrangement

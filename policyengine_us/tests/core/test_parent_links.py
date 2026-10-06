@@ -298,3 +298,83 @@ def test_a_repeated_id_naming_a_co_resident_does_not_match_a_claimant_elsewhere(
         simulation.calculate("medicaid_claimed_by_parent_in_tax_unit", 2026),
         [False, False, False],
     )
+
+
+def test_duplicate_ids_resolve_the_same_way_in_every_member_order():
+    # Both situations break the id contract, so they pin a fallback, not a
+    # legal identity. The fallback must not depend on member order: an id
+    # that matches two members of one group resolves to neither, and an id
+    # that names a co-resident resolves to that co-resident.
+    from itertools import permutations
+
+    outputs = [
+        "is_parent",
+        "medicaid_claimed_by_parent_in_tax_unit",
+        "medicaid_tax_dependent_exception_living_with_both_parents",
+        "medicaid_uses_non_filer_rules",
+        "medicaid_household_size",
+        "medicaid_household_income",
+    ]
+
+    def run(tax_unit_order, home_order, shared_home):
+        people = {
+            "mother": {"person_id": {"2026": 1}, "age": {"2026": 35}},
+            "grandparent": {"person_id": {"2026": 1}, "age": {"2026": 60}},
+            "child": {
+                "person_id": {"2026": 2},
+                "age": {"2026": 10},
+                "parent_1_id": {"2026": 1},
+            },
+        }
+        for name, income in [("mother", 20_000), ("grandparent", 30_000)]:
+            people[name]["employment_income"] = {"2026": income}
+        if shared_home:
+            homes = {"home": list(home_order)}
+        else:
+            homes = {
+                "home": [n for n in home_order if n != "grandparent"],
+                "grandparent_home": ["grandparent"],
+            }
+        simulation = Simulation(
+            situation={
+                "people": people,
+                "tax_units": {
+                    "unit": {
+                        "members": list(tax_unit_order),
+                        "tax_unit_is_filer": {"2026": True},
+                    }
+                },
+                "families": {k: {"members": v} for k, v in homes.items()},
+                "marital_units": {name: {"members": [name]} for name in people},
+                "households": {
+                    k: {"members": v, "state_code": {"2026": "OH"}}
+                    for k, v in homes.items()
+                },
+            }
+        )
+        return {
+            variable: dict(
+                zip(simulation.persons.ids, simulation.calculate(variable, 2026))
+            )
+            for variable in outputs
+        }
+
+    names = ["mother", "grandparent", "child"]
+    for shared_home in (False, True):
+        results = [
+            run(tax_unit_order, home_order, shared_home)
+            for tax_unit_order in permutations(names)
+            for home_order in (names, names[::-1])
+        ]
+        for result in results[1:]:
+            assert result == results[0], shared_home
+        claimed = results[0]["medicaid_claimed_by_parent_in_tax_unit"]["child"]
+        is_parent = results[0]["is_parent"]
+        if shared_home:
+            # Two co-residents share the id, so it names neither of them.
+            assert not is_parent["mother"] and not is_parent["grandparent"]
+        else:
+            # The id names the co-resident mother, not the tax unit member
+            # elsewhere who shares her id.
+            assert claimed
+            assert is_parent["mother"] and not is_parent["grandparent"]
