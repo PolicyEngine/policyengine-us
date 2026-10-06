@@ -1,3 +1,26 @@
+## [2.29.13] - 2026-10-06
+
+### Fixed
+
+- Reforms to a parameter first dated after 2015 no longer change years outside the reform's period. Parameters are now backdated to 2015 before the reform is applied (and parameters a reform adds or replaces are backdated afterwards, as before), so a reform starting on or before a parameter's first dated value is no longer copied back to 2015, and a reform ending before that value no longer leaves the years in between undefined, which dropped brackets from scales and made formulas reading the parameter raise ParameterNotFoundError. CountryTaxBenefitSystem and Simulation(reform=...) also now build with any start_instant from 2015 through 2023; they raised ParameterNotFoundError because structural-reform detection read contrib parameters first dated after the start before they were backdated.
+- Cap the federal educator expense deduction at each eligible educator's limit under 26 U.S.C. 62(a)(2)(D) and (d)(3): $250 through 2021, $300 for 2022 through 2025 and $350 for 2026, indexed after that. On a joint return each spouse is capped separately, and a tax unit dependent's expenses stay off the filer's return. Previously the raw expense input was deducted in full.
+
+
+## [2.29.12] - 2026-10-06
+
+### Fixed
+
+- Cap the regular tax at the tax on all taxable income at the ordinary rates (26 U.S.C. 1(h)(1), Schedule D Tax Worksheet line 47), and make regular_tax_before_credits, which Form 6251 line 10 uses, the regular tax the model charges (income_tax_main_rates plus capital_gains_tax) instead of a second worksheet computation. regular_tax_before_credits now includes the capital gains tax.
+
+
+## [2.29.11] - 2026-10-06
+
+### Fixed
+
+- Load parameter references that sat outside metadata, add a code-health test that every variable, reform and parameter reference entry is a single bare URL, and correct Arkansas DFA #page anchors that pointed at the wrong booklet or form page.
+- Program registry LIHEAP fixes: DC LIHEAP now points at `dc_liheap_payment` (`dc_liheap` does not exist); Riverside County LIHEAP's parameter prefix is `gov.local.ca.riv.cap.liheap`; the Oregon LIHEAP entry, which had no code on main or open PR, is removed; DC, Massachusetts and Illinois gain parameter prefixes; and Texas CEAP's note gives the SMI limit's actual years. A new registry test checks that every listed variable and parameter prefix exists.
+
+
 ## [2.29.10] - 2026-10-06
 
 ### Changed
