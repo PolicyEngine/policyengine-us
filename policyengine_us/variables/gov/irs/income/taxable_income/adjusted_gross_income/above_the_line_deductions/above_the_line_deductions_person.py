@@ -43,13 +43,6 @@ class above_the_line_deductions_person(Variable):
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         filer = ~person("is_tax_unit_dependent", period)
-        filers = tax_unit.sum(filer)
-        even_share = np.divide(
-            filer.astype(float),
-            filers,
-            out=np.zeros_like(filers, dtype=float),
-            where=filers > 0,
-        )
         total = 0
         # Sum in a fixed order so float32 results do not depend on the hash
         # seed.
@@ -63,42 +56,24 @@ class above_the_line_deductions_person(Variable):
             return_amount = tax_unit(deduction, period)
             person_variable = f"{deduction}_person"
             if person.entity.get_variable(person_variable) is None:
-                total = total + return_amount * even_share
+                equal_share = filer_share(person, period, 0 * return_amount)
+                total = total + return_amount * equal_share
                 continue
             own = person(person_variable, period)
             filer_own = filer * own
-            filer_total = tax_unit.sum(filer_own)
             # The return's amount is the sum of the head's and spouse's own
             # amounts, unless it was set directly. Any difference is divided
             # in proportion to their own amounts, or equally when neither has
             # one, so the parts always add up to the return's amount.
-            weight = where(
-                filer_total > 0,
-                np.divide(
-                    filer_own,
-                    filer_total,
-                    out=np.zeros_like(filer_total, dtype=float),
-                    where=filer_total > 0,
-                ),
-                even_share,
-            )
-            total = total + where(
-                filer, filer_own + (return_amount - filer_total) * weight, own
-            )
+            difference = return_amount - tax_unit.sum(filer_own)
+            share = filer_share(person, period, own)
+            total = total + where(filer, filer_own + difference * share, own)
         # The head's and spouse's parts add up to above_the_line_deductions.
         # If that is set directly, the difference is divided in proportion to
         # their parts, or equally when neither has any.
         filer_parts = filer * total
-        parts_total = tax_unit.sum(filer_parts)
-        weight = where(
-            parts_total > 0,
-            np.divide(
-                filer_parts,
-                parts_total,
-                out=np.zeros_like(parts_total, dtype=float),
-                where=parts_total > 0,
-            ),
-            even_share,
+        difference = tax_unit("above_the_line_deductions", period) - tax_unit.sum(
+            filer_parts
         )
-        residual = tax_unit("above_the_line_deductions", period) - parts_total
-        return where(filer, filer_parts + residual * weight, total)
+        share = filer_share(person, period, total)
+        return where(filer, filer_parts + difference * share, total)

@@ -90,6 +90,7 @@ TAX_UNIT_OUTPUTS = [
     "adjusted_gross_income",
     "above_the_line_deductions",
     "loss_ald",
+    "limited_business_loss",
     "limited_capital_loss",
     "alimony_expense_ald",
     "health_savings_account_ald",
@@ -364,13 +365,13 @@ def _reference(run):
         0, -_per_person(run, run["other_net_gain"])
     )
     capital_loss = filer * run["capital_losses"]
-    limited_capital = _per_person(run, run["limited_capital_loss"])
-    limited_business = np.maximum(
-        0, _per_person(run, run["loss_ald"]) - limited_capital
-    )
+    # loss_ald is the business loss after the Section 461(l) limit plus the
+    # capital loss deduction.
+    limited_business = _per_person(run, run["limited_business_loss"])
+    capital_deduction = _per_person(run, run["loss_ald"]) - limited_business
     losses = limited_business * _share(
         business_loss, _per_person(run, _unit_sum(run, business_loss)), even
-    ) + limited_capital * _share(
+    ) + capital_deduction * _share(
         capital_loss, _per_person(run, _unit_sum(run, capital_loss)), even
     )
     alimony = run["alimony_expense"] * (run["divorce_year"] < 2019)

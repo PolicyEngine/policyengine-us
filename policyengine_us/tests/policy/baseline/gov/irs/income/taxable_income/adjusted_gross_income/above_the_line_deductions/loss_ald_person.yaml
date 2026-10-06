@@ -19,6 +19,7 @@
         state_code: TX
   output:
     # The 2024 joint threshold is $610,000 (Rev. Proc. 2023-34).
+    limited_business_loss: 610_000
     loss_ald: 610_000
     # 610,000 x 1,000,000 / 1,200,000 and 610,000 x 200,000 / 1,200,000.
     loss_ald_person: [508_333.33, 101_666.67]
