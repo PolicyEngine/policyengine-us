@@ -58,10 +58,18 @@ class dependent_taxable_ss_magi(Variable):
         ald = [deduction for deduction in p.ald.deductions if deduction not in revoked]
         deduct_losses = "loss_ald" in ald
 
+        # Capital gain distributions net with capital gains and losses on
+        # Schedule D (line 13), inside the IRC 1211(b) limit, below.
+        net_distributions = (
+            "capital_gains" in sources and "non_sch_d_capital_gains" in sources
+        )
+
         income = 0
         for source in sources:
             components = DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES.get(source, [source])
             for component in components:
+                if net_distributions and component == "non_sch_d_capital_gains":
+                    continue
                 amount = add(person, period, [component])
                 if deduct_losses and component in BUSINESS_LOSS_SOURCES:
                     income += amount
@@ -78,7 +86,12 @@ class dependent_taxable_ss_magi(Variable):
                 capital_loss_limit["SEPARATE"],
                 capital_loss_limit["SINGLE"],
             )
-            income += max_(person("capital_gains", period), -loss_limit)
+            capital_gains = person("capital_gains", period)
+            if net_distributions:
+                capital_gains = capital_gains + max_(
+                    0, person("non_sch_d_capital_gains", period)
+                )
+            income += max_(capital_gains, -loss_limit)
 
         deductions = [
             PERSON_ABOVE_THE_LINE_DEDUCTIONS[deduction]
