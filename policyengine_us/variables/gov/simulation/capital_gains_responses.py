@@ -86,6 +86,9 @@ class marginal_tax_rate_on_capital_gains(Variable):
     label = "capital gains marginal tax rate"
     documentation = (
         "Percent of marginal capital gains that do not increase household net income."
+        " Simulated only for the two adults in each household with the largest"
+        " long-term capital gains (adult_index_cg 1 and 2), regardless of"
+        " simulation.marginal_tax_rate_adults; zero for everyone else."
     )
     entity = Person
     definition_period = YEAR
