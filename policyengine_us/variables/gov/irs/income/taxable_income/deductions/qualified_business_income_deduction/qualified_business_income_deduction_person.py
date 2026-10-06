@@ -13,9 +13,12 @@ class qualified_business_income_deduction_person(Variable):
     )
 
     def formula(person, period, parameters):
-        # Allocate the business income deduction to each person in the tax unit
-        # based on their share of per cap qualified business income deduction amount
-        qbid_amt = person("qbid_amount", period)
+        # Allocate the business income deduction to the head and spouse
+        # based on their share of per cap qualified business income deduction
+        # amount. The deduction is theirs alone, so a tax unit dependent's
+        # share is zero.
+        filer = ~person("is_tax_unit_dependent", period)
+        qbid_amt = person("qbid_amount", period) * filer
         total_qbid_amount = person.tax_unit.sum(qbid_amt)
         total_deduction_amount = person.tax_unit(
             "qualified_business_income_deduction", period
