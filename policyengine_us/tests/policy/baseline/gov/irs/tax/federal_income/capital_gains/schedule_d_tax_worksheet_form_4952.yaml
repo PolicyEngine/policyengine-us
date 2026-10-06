@@ -319,3 +319,25 @@
     dwks09: 0
     dwks10: 3_000
     net_capital_gain: 3_000
+
+- name: A tax unit net_capital_gains input reaches Schedule D line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        non_sch_d_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        net_capital_gains: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Schedule D line 15 = 1,000 (line 13); line 16 = -5,000 + 1,000 =
+    # -4,000, a loss, so neither tax worksheet applies (2025 Instructions
+    # for Form 1040, line 16) and worksheet line 7 = min(1,000, -4,000).
+    has_qdiv_or_ltcg: false
+    dwks09: 0

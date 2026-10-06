@@ -41,7 +41,8 @@ def filer_schedule_d_lines(tax_unit, period):
         tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
         + distributions
     )
-    # Line 16: lines 7 and 15 combined.
+    # Line 16: lines 7 and 15 combined, figured from net_capital_gains so a
+    # supplied tax unit amount is kept.
     dependent_gains = tax_unit.sum(
         dependent
         * (
