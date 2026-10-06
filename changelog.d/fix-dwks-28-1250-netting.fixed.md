@@ -1,0 +1,1 @@
+Net collectibles loss, the net short-term capital loss and the long-term capital loss carryover against 28 percent rate gain, and the rest against unrecaptured section 1250 gain, per 26 U.S.C. 1(h)(4) and 1(h)(6), through new inputs for those amounts before netting; amounts entered as reported on Schedule D lines 18 and 19 pass through unchanged.
