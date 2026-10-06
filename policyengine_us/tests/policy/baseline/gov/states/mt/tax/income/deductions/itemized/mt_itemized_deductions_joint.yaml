@@ -101,8 +101,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # 30,000 - 10% x 100,000 Montana AGI, counted once.
-    mt_itemized_deductions_joint: [20_000, 0]
+    # (30,000 - 100) - 10% x 100,000 Montana AGI, counted once.
+    mt_itemized_deductions_joint: [19_900, 0]
 
 - name: A dependent in the tax unit does not repeat the joint casualty loss
   period: 2022
@@ -131,4 +131,4 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_itemized_deductions_joint: [20_000, 0, 0]
+    mt_itemized_deductions_joint: [19_900, 0, 0]

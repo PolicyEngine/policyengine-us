@@ -15,6 +15,9 @@ class mt_casualty_loss_deduction_indiv(Variable):
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=36",
         # 2022 Form 2 instructions, allocation of deductions when filing separately
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11",
+        # 2022 Form 4684, lines 10-12 and 17; IRS Publication 547, $100 Rule
+        "https://www.irs.gov/pub/irs-prior/f4684--2022.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/p547--2022.pdf#page=10",
     )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
@@ -34,5 +37,8 @@ class mt_casualty_loss_deduction_indiv(Variable):
         is_head = person("is_tax_unit_head", period)
         dependents_loss = person.tax_unit.sum(is_dependent * own_loss)
         loss = ~is_dependent * own_loss + is_head * dependents_loss
+        # Spouses filing separately each reduce their own loss by $100
+        # (Form 4684 line 11), treating each column's losses as one casualty.
+        reduced_loss = max_(loss - p_casualty.per_casualty_reduction, 0)
         agi = person("mt_agi_indiv", period)
-        return p_casualty.active * max_(loss - agi * p_casualty.floor, 0)
+        return p_casualty.active * max_(reduced_loss - agi * p_casualty.floor, 0)

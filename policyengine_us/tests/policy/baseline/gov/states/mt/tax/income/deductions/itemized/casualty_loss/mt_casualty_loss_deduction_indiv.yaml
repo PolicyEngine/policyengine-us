@@ -7,9 +7,14 @@
 # 2022 Form 2 instructions, Filing Separately When Married (PDF p. 11):
 # "Deductions that are attributable to only one spouse must be claimed by that
 # spouse."
-# Form 4684 allows the loss above 10% of adjusted gross income. The federal
-# suspension of losses outside federally declared disasters is modeled by
-# gov.irs.deductions.itemized.casualty.active, which these tests switch on.
+# Form 4684 reduces each casualty by $100 (2022 Form 4684 line 11) and allows the
+# rest above 10% of adjusted gross income (line 17). IRS Publication 547 (2022,
+# PDF p. 10): "If you and your spouse have a casualty or theft loss and you file
+# separate returns, each of you must reduce your loss by $100." and "If one
+# spouse owns the property, only that spouse can claim a loss deduction on a
+# separate return." The federal suspension of losses outside federally declared
+# disasters is modeled by gov.irs.deductions.itemized.casualty.active, which
+# these tests switch on.
 
 - name: Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
   period: 2022
@@ -31,8 +36,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # 30,000 - 10% x 60,000; the spouse has no loss.
-    mt_casualty_loss_deduction_indiv: [24_000, 0]
+    # (30,000 - 100) - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [23_900, 0]
 
 - name: Each spouse's loss is floored at 10% of that spouse's Montana AGI
   period: 2022
@@ -55,8 +60,9 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # 30,000 - 6,000 and 5,000 - 4,000.
-    mt_casualty_loss_deduction_indiv: [24_000, 1_000]
+    # (30,000 - 100) - 6,000 and (5,000 - 100) - 4,000: each spouse reduces
+    # their own loss by $100.
+    mt_casualty_loss_deduction_indiv: [23_900, 900]
 
 - name: A dependent's loss goes to the head, with the dependent's income
   period: 2022
@@ -82,8 +88,8 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    # 10,000 - 10% x 60,000, in the head's column.
-    mt_casualty_loss_deduction_indiv: [4_000, 0, 0]
+    # (10,000 - 100) - 10% x 60,000, in the head's column.
+    mt_casualty_loss_deduction_indiv: [3_900, 0, 0]
 
 - name: Losses outside federally declared disasters are suspended
   period: 2022

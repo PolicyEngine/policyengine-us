@@ -1,1 +1,1 @@
-Count a Montana casualty and theft loss once on a joint return, and only in the column of the spouse who had it when spouses file separately, with the 10% floor on Montana AGI (2021-2023 Form 2 Itemized Deductions Schedule, line 15).
+Count a Montana casualty and theft loss once on a joint return, and only in the column of the spouse who had it when spouses file separately, figured as on federal Form 4684 ($100 reduction, then the 10% floor on Montana AGI) per the 2021-2023 Form 2 Itemized Deductions Schedule, line 15.

@@ -104,5 +104,6 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # 30,000 - 10% x 60,000 Montana AGI in the head's column; none for the spouse.
-    mt_itemized_deductions_for_federal_itemization_indiv: [24_000, 0]
+    # (30,000 - 100) - 10% x 60,000 Montana AGI in the head's column; none for
+    # the spouse.
+    mt_itemized_deductions_for_federal_itemization_indiv: [23_900, 0]
