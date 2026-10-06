@@ -15,15 +15,13 @@ class dc_income_subtractions(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.dc.tax.income.subtractions
-        total_subtractions = add(person, period, p.sources)
-        # A tax unit dependent's U.S. government interest is on the dependent's
-        # own return and never in the filer's federal AGI, so it is not
-        # subtracted here, where each person's amounts are summed into the
-        # filer's.
-        if "us_govt_interest_person" in p.sources:
-            dependent = person("is_tax_unit_dependent", period)
-            total_subtractions = total_subtractions - dependent * person(
-                "us_govt_interest_person", period
-            )
+        # Each person's DC AGI is summed into the filer's
+        # (dc_taxable_income_joint), so a tax unit dependent gets none of
+        # these. Each item is the dependent's own and belongs on their own
+        # return: income "included in federal gross income" or entered from
+        # the filer's federal return (D.C. Code 47-1803.02(a)(2)(A), (E), (L)
+        # and (LL); D-40 lines 9, 10 and 13), and exclusions of a disabled
+        # person's own income ((M), Form D-2440, and (V)).
+        total_subtractions = person_non_dep_add(person, period, p.sources)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

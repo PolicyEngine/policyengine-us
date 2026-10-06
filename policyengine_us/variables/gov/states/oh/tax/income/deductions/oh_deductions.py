@@ -16,14 +16,13 @@ class oh_deductions(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.deductions
-        total_subtractions = add(person, period, p.deductions)
-        # A tax unit dependent's U.S. government interest is on the dependent's
-        # own return and never in the filer's federal AGI, so it is not
-        # subtracted here, where each person's amounts are summed into the
-        # filer's.
-        if "us_govt_interest_person" in p.deductions:
-            dependent = person("is_tax_unit_dependent", period)
-            total_subtractions = total_subtractions - dependent * person(
-                "us_govt_interest_person", period
-            )
-        return total_subtractions
+        # Each person's Ohio AGI is summed into the filer's (oh_agi), so a tax
+        # unit dependent gets only the filer's amounts recorded on them, such
+        # as medical expenses the filer paid for them. The dependent's own
+        # income and expenses belong on their own return.
+        return person_non_dep_add(
+            person,
+            period,
+            p.deductions,
+            include_dependents=p.filer_amounts_recorded_on_dependents,
+        )

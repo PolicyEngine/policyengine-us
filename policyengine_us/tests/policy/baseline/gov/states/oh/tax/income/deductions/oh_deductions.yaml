@@ -16,3 +16,80 @@
       state_code: OH
   output:
     oh_deductions: [200, 0]
+
+- name: A dependent's own income and expenses are not deducted
+  # Each is the dependent's own and on the dependent's own return: section 179
+  # add-backs (R.C. 5747.01(A)(18)), uniformed services retired pay "received
+  # by the taxpayer" ((A)(23)), Pell grant amounts "included in your federal
+  # adjusted gross income" (2025 IT 1040 instructions, line 38), the educator
+  # expenses of "a taxpayer who is a qualifying Ohio educator" ((A)(31)),
+  # disability benefits "to the extent included in federal adjusted gross
+  # income" ((A)(4)) and refunds of the taxpayer's itemized deductions
+  # ((A)(11)(a)).
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        salt_refund_income: 300
+      child:
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        age: 19
+        is_full_time_college_student: true
+        oh_section_179_expense_add_back: 1_000
+        oh_uniformed_services_retirement_income_deduction: 2_000
+        pell_grant: 3_000
+        oh_educator_expense_deduction_person: 300
+        disability_benefits: 4_000
+        salt_refund_income: 500
+    household:
+      state_code: OH
+  output:
+    oh_deductions: [300, 0]
+
+- name: Medical expenses the filer paid for a dependent are deducted once
+  # R.C. 5747.01(A)(10)(b): medical care "of the taxpayer, the taxpayer's
+  # spouse, and dependents" over 7.5% of federal AGI: 9,000 - 4,500 = 4,500.
+  # The tax unit's deduction used to be given to every member.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        other_medical_expenses: 6_000
+      child:
+        age: 10
+        other_medical_expenses: 3_000
+    household:
+      state_code: OH
+  output:
+    oh_unreimbursed_medical_care_expense_deduction_person: [3_000, 1_500]
+    oh_unreimbursed_medical_care_expense_deduction: 4_500
+    oh_deductions: [3_000, 1_500]
+    oh_agi: 55_500
+
+- name: A 529 contribution recorded on a dependent is deducted
+  # The tax unit's $1,000 contribution for one beneficiary is under the
+  # $4,000 limit (R.C. 5747.01(A)(9), 5747.70).
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+      child:
+        age: 10
+        investment_in_529_plan_indv: 1_000
+        count_529_contribution_beneficiaries: 1
+    household:
+      state_code: OH
+  output:
+    oh_529_plan_deduction_person: [0, 1_000]
+    oh_deductions: [0, 1_000]
+    oh_agi: 59_000
