@@ -17,6 +17,8 @@
   output:
     regular_tax_before_credits: 328_110
     income_tax_main_rates: 328_110
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 328_110
 
 - name: Additional tax bracket is not applied.
   period: 2027
@@ -36,6 +38,8 @@
   output:
     regular_tax_before_credits: 290_114
     income_tax_main_rates: 290_114
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 290_114
 
 - name: Additional tax bracket is applied, taxable income is below the threshold.
   period: 2027
@@ -56,6 +60,8 @@
   output:
     regular_tax_before_credits: 166_046
     income_tax_main_rates: 166_046
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 166_046
 
 - name: Additional tax bracket is not applied, taxable income is below the threshold.
   period: 2027
@@ -75,6 +81,8 @@
   output:
     regular_tax_before_credits: 145_893
     income_tax_main_rates: 145_893
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 145_893
 
 # With its default parameters the reform's added bracket is unset: brackets 7
 # and 8 both have a threshold of infinity for every filing status and year.

@@ -42,5 +42,11 @@ class taxable_ss_magi(Variable):
             for deduction in above_the_line_deductions
             if deduction not in revoked_deductions
         ]
-        total_deductions = add(tax_unit, period, deductions)
+        # A tax unit dependent's deductions are on their own return.
+        total_deductions = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            deductions,
+            include_dependents=irs.ald.filer_amounts_recorded_on_dependents,
+        )
         return max_(0, gross_income - total_deductions)
