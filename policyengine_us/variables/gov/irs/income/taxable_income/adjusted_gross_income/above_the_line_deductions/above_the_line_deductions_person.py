@@ -35,8 +35,11 @@ class above_the_line_deductions_person(Variable):
         "(<deduction>_person), such as self-employment tax, alimony paid and "
         "business and capital losses. A deduction recorded only for the tax "
         "unit is divided equally between them. A tax unit dependent's amount "
-        "is their own person-level deductions, for their own return; their "
-        "losses and tax-unit-only deductions are not modeled here."
+        "is their own person-level deductions, for their own return, other "
+        "than amounts that are the filer's even when recorded on the "
+        "dependent (gov.irs.ald.filer_amounts_recorded_on_dependents), which "
+        "go to the head and spouse; the dependent's losses and tax-unit-only "
+        "deductions are not modeled here."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
@@ -44,15 +47,23 @@ class above_the_line_deductions_person(Variable):
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         filer = ~person("is_tax_unit_dependent", period)
+        p = parameters(period).gov.irs.ald
         total = 0
         # Sum in a fixed order so float32 results do not depend on the hash
         # seed.
-        for deduction in sorted(set(parameters(period).gov.irs.ald.deductions)):
+        for deduction in sorted(set(p.deductions)):
             variable = person.entity.get_variable(deduction, check_existence=True)
             if variable.entity.is_person:
                 # The person's own deduction. For the head and spouse it is
                 # their part of the return's sum over non-dependents.
-                total = total + person(deduction, period)
+                amount = person(deduction, period)
+                if deduction in p.filer_amounts_recorded_on_dependents:
+                    # The filer's amount even when recorded on a dependent, so
+                    # it is not on the dependent's own return. The head's and
+                    # spouse's parts take it up below, as
+                    # above_the_line_deductions includes it.
+                    amount = filer * amount
+                total = total + amount
                 continue
             return_amount = tax_unit(deduction, period)
             person_variable = f"{deduction}_person"
