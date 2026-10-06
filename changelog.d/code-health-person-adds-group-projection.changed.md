@@ -1,0 +1,1 @@
+Add a code-health test that fails when a person-level variable's adds or subtracts list names a tax unit, SPM unit or other group variable, which gives every member the whole group amount. It lists today's 10 cases, in 8 variables, as known bugs that may only be removed, and allows three boolean program-enrollment flags.
