@@ -1,8 +1,9 @@
 # Montana spouses who file jointly for federal purposes and separately on the
-# same form (through 2023) each claim their own deductions; the IRA deduction
-# goes to the spouse who made the contribution, and a capital loss clearly
-# attributable to one spouse goes on that spouse's return, otherwise it is
-# split equally. MCA 15-30-2110(6) and (8) (2021).
+# same form (through 2023) each claim the items attributable to them; an item
+# not clearly attributable to one spouse is divided equally (ARM 42.15.206(1);
+# MCA 15-30-2110(6) to (8), 2021). The IRA deduction goes to the spouse who made
+# the contribution, and a joint net capital loss may be divided by each
+# spouse's ownership (ARM 42.15.206(3)(a), 2010 MAR p. 621).
 
 - name: The head's IRA deduction lowers only the head's Montana AGI.
   period: 2023
@@ -26,7 +27,6 @@
   output:
     # Before: [57_000, 37_000].
     mt_agi_indiv: [54_000, 40_000]
-    mt_capital_loss_reallocation: [0, 0]
 
 - name: A capital loss of only one spouse goes on that spouse's return.
   period: 2023
@@ -48,12 +48,12 @@
         members: [head, spouse]
         state_code: MT
   output:
+    # ARM 42.15.206(3)(a): "If only one spouse owned the asset, that spouse
+    # shall report the $3,000". Before: [58_500, 38_500].
     limited_capital_loss_person: [3_000, 0]
-    mt_capital_loss_reallocation: [0, 0]
-    # Before: [58_500, 38_500].
     mt_agi_indiv: [57_000, 40_000]
 
-- name: When both spouses have capital losses, Montana splits the allowed loss equally.
+- name: A joint net capital loss is divided by each spouse's own losses.
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -74,10 +74,33 @@
         members: [head, spouse]
         state_code: MT
   output:
-    # The federal part follows each spouse's own loss, 4,000 : 2,000.
+    # The $3,000 allowed loss divided 4,000 : 2,000.
     limited_capital_loss_person: [2_000, 1_000]
-    adjusted_gross_income_person: [58_000, 39_000]
-    # Montana gives each spouse $1,500 of the $3,000.
-    mt_capital_loss_reallocation: [500, -500]
-    mt_agi_indiv: [58_500, 38_500]
-    mt_applicable_ald_deductions: [1_500, 1_500]
+    mt_agi_indiv: [58_000, 39_000]
+    mt_applicable_ald_deductions: [2_000, 1_000]
+
+- name: Each spouse's rental loss goes on their own return.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        rental_income: -8_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        rental_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # MCA 15-30-2110(7): a passive or rental loss clearly attributable to one
+    # spouse is shown on that spouse's return. Before: [55_000, 35_000].
+    loss_ald_person: [8_000, 2_000]
+    mt_agi_indiv: [52_000, 38_000]

@@ -35,7 +35,8 @@ class above_the_line_deductions_person(Variable):
         "(<deduction>_person), such as self-employment tax, alimony paid and "
         "business and capital losses. A deduction recorded only for the tax "
         "unit is divided equally between them. A tax unit dependent's amount "
-        "is the deductions they take on their own return."
+        "is their own person-level deductions, for their own return; their "
+        "losses and tax-unit-only deductions are not modeled here."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"

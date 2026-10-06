@@ -125,3 +125,27 @@
   output:
     loss_ald_person: [1_250, 1_250]
     adjusted_gross_income_person: [28_750, 18_750]
+
+- name: A loss deduction set directly below the business loss goes to the business loss.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 30_000
+        self_employment_income: -5_000
+      spouse:
+        age: 50
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    limited_business_loss: 5_000
+    loss_ald_person: [2_000, 0]

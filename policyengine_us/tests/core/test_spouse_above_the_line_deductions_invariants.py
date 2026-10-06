@@ -12,10 +12,12 @@ the District of Columbia, West Virginia's senior deduction) read these
 amounts.
 
 Hypothesis draws batches of tax units (single, joint, joint with dependents)
-in those states, with every kind of deduction input and occasional business
-losses over the Section 461(l) limit; a seeded population of 200 units adds
-breadth. Each batch runs as one vectorized simulation, once as drawn and once
-with the spouse's own deduction inputs set to zero. For every tax unit:
+in those states, with every kind of deduction input, occasional business
+losses over the Section 461(l) limit, and some tax-unit deductions
+(loss_ald, alimony_expense_ald, self_employment_tax_ald) set directly; a
+seeded population of 200 units adds breadth. Each batch runs as one vectorized
+simulation, once as drawn and once with the spouse's own deduction inputs set
+to zero. For every tax unit:
 
 1. Accounting identities. The head's and spouse's parts add up to the tax
    unit's amount: above_the_line_deductions_person to
@@ -23,14 +25,17 @@ with the spouse's own deduction inputs set to zero. For every tax unit:
    limited_capital_loss_person to limited_capital_loss and
    alimony_expense_ald_person to alimony_expense_ald. The members'
    adjusted_gross_income_person add up to adjusted_gross_income, and so do
-   the head's and spouse's Medicaid AGIs. Montana's capital loss
-   reallocation adds up to zero.
-2. Differential. above_the_line_deductions_person equals an independent numpy
-   reference built from the inputs: each person's own person-level
-   deductions, their alimony under a pre-2019 instrument, their share of the
-   limited business loss by their own business losses and of the limited
-   capital loss by their own capital losses, and an equal share of the HSA
-   and tuition and fees deductions.
+   the head's and spouse's Medicaid AGIs. This holds when a tax-unit
+   deduction is set directly too.
+2. Differential. limited_business_loss and limited_capital_loss equal numpy
+   computations of the Section 461(l) and 1211(b) limits from the inputs and
+   parameters. For units with no deduction set directly,
+   above_the_line_deductions_person equals a numpy reference built from the
+   inputs: each person's own person-level deductions, their alimony under a
+   pre-2019 instrument, their share of the numpy-limited business loss by
+   their own business losses and of the numpy-limited capital loss by their
+   own capital losses, and an equal share of the HSA and tuition and fees
+   deductions.
 3. Own deductions. The spouse's deductions never add to the head's: the
    head's above_the_line_deductions_person is never higher with the spouse's
    deduction inputs than without them. It is the same, and so is the head's
@@ -39,10 +44,12 @@ with the spouse's own deduction inputs set to zero. For every tax unit:
    unemployment compensation) taxed by reference to the couple's AGI. The
    spouse's own AGI and the couple's AGI never fall when the spouse's
    deduction inputs are removed.
+   This is checked for units with no deduction set directly.
 4. Dependents. A dependent's adjusted_gross_income_person, loss_ald_person
    and limited_capital_loss_person are zero, and their
    above_the_line_deductions_person is their own person-level deductions.
-5. Bounds. Every above_the_line_deductions_person is non-negative.
+5. Bounds. Every above_the_line_deductions_person and loss_ald_person is
+   non-negative.
 """
 
 import numpy as np
@@ -86,6 +93,8 @@ BUSINESS_SOURCES = [
     "estate_income",
     "partnership_s_corp_income",
 ]
+# Tax-unit deductions that a unit may set directly.
+DIRECT_INPUTS = ["loss_ald", "alimony_expense_ald", "self_employment_tax_ald"]
 TAX_UNIT_OUTPUTS = [
     "adjusted_gross_income",
     "above_the_line_deductions",
@@ -103,7 +112,6 @@ PERSON_OUTPUTS = [
     "loss_ald_person",
     "limited_capital_loss_person",
     "alimony_expense_ald_person",
-    "mt_capital_loss_reallocation",
     "irs_gross_income",
     "capital_losses",
     "alimony_expense",
@@ -160,6 +168,15 @@ def tax_units(draw):
         "state": draw(st.sampled_from(STATES)),
         "health_savings_account_ald": _maybe(draw, st.integers(1, 8_000).map(float)),
         "other_net_gain": _maybe(draw, st.integers(-5_000, 5_000).map(float)),
+        "direct": draw(
+            st.one_of(
+                st.none(),
+                st.tuples(
+                    st.sampled_from(DIRECT_INPUTS),
+                    st.integers(0, 8_000).map(float),
+                ),
+            )
+        ),
         "head": draw(person_amounts(dependent=False)),
         "spouse": (draw(person_amounts(dependent=False)) if kind != "single" else None),
         "dependents": [
@@ -215,6 +232,14 @@ def _seeded_units(n=200):
                     float(round(rng.uniform(-5_000, 5_000)))
                     if rng.random() < 0.2
                     else 0.0
+                ),
+                "direct": (
+                    (
+                        str(rng.choice(DIRECT_INPUTS)),
+                        float(round(rng.uniform(0, 8_000))),
+                    )
+                    if rng.random() < 0.15
+                    else None
                 ),
                 "head": _seeded_amounts(rng, dependent=False),
                 "spouse": (
@@ -285,6 +310,9 @@ def _situation(units, year, *, zero_spouse):
             "health_savings_account_ald": {year: u["health_savings_account_ald"]},
             "other_net_gain": {year: u["other_net_gain"]},
         }
+        if u["direct"] is not None:
+            name, value = u["direct"]
+            groups["tax_units"][f"tax_unit_{i}"][name] = {year: value}
         groups["households"][f"household_{i}"] = {
             "members": members,
             "state_code": {year: u["state"]},
@@ -330,6 +358,11 @@ def _run(units, year, *, zero_spouse):
     out["is_head"] = np.asarray(sim.calculate("is_tax_unit_head", year), dtype=bool)
     out["is_spouse"] = np.asarray(sim.calculate("is_tax_unit_spouse", year), dtype=bool)
     out["unit"] = sim.populations["tax_unit"].members_entity_id
+    # The Section 461(l) and 1211(b) limits for each unit's filing status.
+    filing_status = sim.calculate("filing_status", year).decode_to_str()
+    loss = tbs.parameters(f"{year}-01-01").gov.irs.ald.loss
+    out["business_loss_limit"] = np.asarray(loss.max[filing_status], dtype=float)
+    out["capital_loss_limit"] = np.asarray(loss.capital.max[filing_status], dtype=float)
     return out
 
 
@@ -351,6 +384,27 @@ def _share(amounts, totals, fallback):
     )
 
 
+def _limits(run):
+    """The limited business and capital losses of each unit, with numpy."""
+    filer = ~run["is_dependent"]
+    business = sum(run[source] for source in BUSINESS_SOURCES)
+    other_net_gain = run["other_net_gain"]
+    income = _unit_sum(run, filer * np.maximum(0, business)) + np.maximum(
+        0, other_net_gain
+    )
+    loss = _unit_sum(run, filer * np.maximum(0, -business)) + np.maximum(
+        0, -other_net_gain
+    )
+    # Business sources are summed per person before flooring here, while the
+    # model floors each source; the inputs drawn give each person at most one
+    # business source with a loss, so the two agree.
+    limited_business = np.minimum(loss, income + run["business_loss_limit"])
+    limited_capital = np.minimum(
+        run["capital_loss_limit"], _unit_sum(run, filer * run["capital_losses"])
+    )
+    return limited_business, limited_capital
+
+
 def _reference(run):
     """above_the_line_deductions_person, built from the inputs with numpy."""
     filer = ~run["is_dependent"]
@@ -365,10 +419,9 @@ def _reference(run):
         0, -_per_person(run, run["other_net_gain"])
     )
     capital_loss = filer * run["capital_losses"]
-    # loss_ald is the business loss after the Section 461(l) limit plus the
-    # capital loss deduction.
-    limited_business = _per_person(run, run["limited_business_loss"])
-    capital_deduction = _per_person(run, run["loss_ald"]) - limited_business
+    limited_business, limited_capital = _limits(run)
+    limited_business = _per_person(run, limited_business)
+    capital_deduction = _per_person(run, limited_capital)
     losses = limited_business * _share(
         business_loss, _per_person(run, _unit_sum(run, business_loss)), even
     ) + capital_deduction * _share(
@@ -397,6 +450,8 @@ def _check(units, year):
     zeroed = _run(units, year, zero_spouse=True)
     filer = ~run["is_dependent"]
     dependent = run["is_dependent"]
+    direct_unit = np.array([u["direct"] is not None for u in units])
+    direct = _per_person(run, direct_unit)
 
     # 1. Accounting identities.
     pairs = [
@@ -419,10 +474,12 @@ def _check(units, year):
         _unit_sum(run, filer * run["medicaid_adjusted_gross_income_person"]),
         run["adjusted_gross_income"],
     )
-    _close(_unit_sum(run, run["mt_capital_loss_reallocation"]), 0)
 
-    # 2. Differential against the numpy reference.
-    _close(run["above_the_line_deductions_person"], _reference(run))
+    # 2. Differential against numpy.
+    limited_business, limited_capital = _limits(run)
+    _close(run["limited_business_loss"], limited_business)
+    _close(run["limited_capital_loss"], limited_capital)
+    _close(run["above_the_line_deductions_person"][~direct], _reference(run)[~direct])
 
     # 3. The spouse's deductions never add to the head's. A head with student
     # loan interest is left out of the first check: the spouse's IRA
@@ -431,7 +488,7 @@ def _check(units, year):
     head = run["is_head"]
     spouse = run["is_spouse"]
     has_spouse = _per_person(run, _unit_sum(run, spouse.astype(float))) > 0
-    paired_head = head & has_spouse
+    paired_head = head & has_spouse & ~direct
     # Each filer's deductions as their AGI shows them.
     deductions = "deductions_in_agi"
     for r in (run, zeroed):
@@ -454,8 +511,11 @@ def _check(units, year):
     )
     unaffected = own_only & ~joint_taxed_income
     _close(run[agi][unaffected], zeroed[agi][unaffected])
-    assert _at_most(run[agi][spouse], zeroed[agi][spouse])
-    assert _at_most(run["adjusted_gross_income"], zeroed["adjusted_gross_income"])
+    assert _at_most(run[agi][spouse & ~direct], zeroed[agi][spouse & ~direct])
+    assert _at_most(
+        run["adjusted_gross_income"][~direct_unit],
+        zeroed["adjusted_gross_income"][~direct_unit],
+    )
 
     # 4. Dependents.
     for name in ["adjusted_gross_income_person", "loss_ald_person"]:
@@ -463,7 +523,8 @@ def _check(units, year):
     assert (run["limited_capital_loss_person"][dependent] == 0).all()
 
     # 5. Bounds.
-    assert (run["above_the_line_deductions_person"] >= -TOLERANCE).all()
+    for name in ["above_the_line_deductions_person", "loss_ald_person"]:
+        assert (run[name] >= -TOLERANCE).all(), name
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large
@@ -486,8 +547,8 @@ def test_own_deductions_2026(units):
 @given(st.lists(tax_units(), min_size=10, max_size=40))
 def test_own_deductions_2023(units):
     # 2023 is the last year Montana lets spouses who file jointly for federal
-    # purposes file separately on the same form, the path that reads each
-    # spouse's AGI and the Montana capital loss reallocation.
+    # purposes file separately on the same form, a path that reads each
+    # spouse's AGI.
     _check(units, 2023)
 
 

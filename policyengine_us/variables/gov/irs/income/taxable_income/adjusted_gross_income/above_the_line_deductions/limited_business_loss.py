@@ -9,8 +9,8 @@ class limited_business_loss(Variable):
     documentation = (
         "The business, farm, rental, estate and partnership losses of the "
         "head and spouse deductible from gross income, after the Section "
-        "461(l) excess business loss limit. loss_ald adds the limited "
-        "capital loss."
+        "461(l) excess business loss limit. loss_ald adds the capital loss "
+        "deduction."
     )
     definition_period = YEAR
     reference = (

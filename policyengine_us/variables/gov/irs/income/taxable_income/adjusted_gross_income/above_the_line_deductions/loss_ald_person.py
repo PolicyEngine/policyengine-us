@@ -45,9 +45,9 @@ class loss_ald_person(Variable):
         business_loss = business_loss + other_net_loss * equal_share
         business_share = filer_share(person, period, business_loss)
         capital_share = filer_share(person, period, person("capital_losses", period))
-        limited_business_loss = tax_unit("limited_business_loss", period)
-        capital_loss_deduction = tax_unit("loss_ald", period) - limited_business_loss
-        return (
-            limited_business_loss * business_share
-            + capital_loss_deduction * capital_share
-        )
+        # The business part comes first, so a loss_ald set directly below the
+        # business loss leaves no negative capital part.
+        loss_ald = tax_unit("loss_ald", period)
+        business_part = min_(tax_unit("limited_business_loss", period), loss_ald)
+        capital_part = max_(0, loss_ald - business_part)
+        return business_part * business_share + capital_part * capital_share
