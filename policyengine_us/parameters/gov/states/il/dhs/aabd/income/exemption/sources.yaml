@@ -1,9 +1,13 @@
 description: Illinois counts the following expense sources as exempted from earned income under the Aid to the Aged, Blind or Disabled program.
 values:
   2021-01-01:
-    - state_withheld_income_tax
+    # Each source must be a Person-level amount for the person's own
+    # employment. A tax-unit variable here would give every member the
+    # whole unit's amount, so the person's own state withholding is used.
+    - il_withheld_income_tax
     - employee_social_security_tax
     - il_aabd_child_care_expense_exemption
+    # Federal withholding taxes (subsection (a)(1))
     # transportation cost
     # lunch supplementation
     # Special tools and uniforms required by employment
@@ -12,7 +16,7 @@ values:
     # Group health insurance premiums
     # Retirement plan withholdings
     # The reasonable cost of items and services which are needed and used to enable a disabled person to work
- 
+
 metadata:
   unit: list
   period: year
