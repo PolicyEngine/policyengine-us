@@ -1,7 +1,9 @@
 # 89 Ill. Adm. Code 113.125(a) exempts withholding taxes and Social Security
 # tax as expenses of the person's own employment, so each earner deducts only
 # the tax withheld from their own wages.
-# 2024 Illinois withholding per person: 4.95% x max(wages - 2,775, 0).
+# The model's Illinois withholding estimate is 4.95% of the person's own AGI
+# above the personal exemption; with wages as the only income, that is
+# 4.95% x max(wages - 2,775, 0) in 2024.
 # Social Security tax: 6.2% of wages.
 
 - name: Case 1, married couple with equal wages, each deducts only their own withholding.
@@ -124,6 +126,6 @@
     il_withheld_income_tax: [318.55, 0]
     # 6,666.67 x 0.062 = 413.33; 400 x 0.062 = 24.80
     employee_social_security_tax: [413.33, 24.8]
-    # person1: 318.55 + 413.33 = 731.89
+    # person1: 318.553 + 413.333 = 731.886
     # person2: their own 24.80 Social Security tax, not the parent's 318.55 withholding
     il_aabd_expense_exemption_person: [731.89, 24.8]
