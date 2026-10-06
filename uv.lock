@@ -1818,7 +1818,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
-version = "2.23.8"
+version = "2.29.8"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -1846,7 +1846,7 @@ requires-dist = [
     { name = "build", marker = "extra == 'dev'", specifier = ">=1.2.2.post1" },
     { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.9.2" },
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2024.8.6" },
-    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.100" },
+    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.100.0" },
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=3.0" },

@@ -9,7 +9,7 @@ class dc_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.DC
     reference = (
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_Final_wLinks_030526_v1.0.pdf#page=13",
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=13",
     )
 
     def formula(tax_unit, period, parameters):

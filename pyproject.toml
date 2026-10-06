@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "2.23.8"
+version = "2.29.8"
 description = "US federal and state tax-benefit microsimulation model."
 readme = "README.md"
 authors = [
@@ -54,7 +54,7 @@ dev = [
     "setuptools>=80.9.0",
     "build>=1.2.2.post1",
     "towncrier>=24.8.0",
-    "hypothesis>=6.100",
+    "hypothesis>=6.100.0",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -1,3 +1,234 @@
+## [2.29.8] - 2026-10-06
+
+### Fixed
+
+- Stop inferring a person input as a tax unit dependent (such as an elderly parent or adult child) as the tax unit head or spouse; the oldest adult not input as a dependent is now the head, and the next oldest the spouse.
+
+
+## [2.29.7] - 2026-10-06
+
+### Fixed
+
+- Net capital gain distributions against Schedule D capital losses before the 26 U.S.C. 1211(b) $3,000 loss limit in adjusted gross income, net investment income, loss-limited capital gains (Michigan, Mississippi, Delaware and Georgia), a dependent's Social Security modified AGI and the capital gain tax worksheet test, and net spouses' gains and losses on a joint return.
+
+
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
+## [2.29.5] - 2026-10-06
+
+### Fixed
+
+- A tax bracket above an infinite threshold now adds nothing, instead of NaN, to the tax and to the taxable income taxed below 25 percent. The additional_tax_bracket contrib reform ships brackets 7 and 8 with infinite thresholds, so until a user set bracket 7 its income_tax_main_rates and regular_tax_before_credits were NaN for every household; a reform that set any of the baseline schedule's first six thresholds to infinity hit the same NaN.
+- Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
+
+
+## [2.29.4] - 2026-10-06
+
+### Fixed
+
+- Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
+
+
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
+## [2.29.0] - 2026-10-05
+
+### Added
+
+- Add North Carolina Low Income Energy Assistance Program (LIEAP) regular heating benefits.
+
+
+## [2.28.3] - 2026-10-05
+
+### Fixed
+
+- Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
+
+
+## [2.28.2] - 2026-10-05
+
+### Fixed
+
+- Tax 28 percent rate and unrecaptured section 1250 gain at the regular rates on taxable income up to the top of the 24 percent bracket, the amount taxed below 25 percent under 26 U.S.C. 1(h)(1)(A), and enter Schedule D Tax Worksheet line 21 on Form 6251 Part III line 27.
+
+
+## [2.28.1] - 2026-10-05
+
+### Changed
+
+- Test a Form 4952 line 4g election together with the section 911(f) stacked tax on generated households.
+
+
+## [2.28.0] - 2026-10-05
+
+### Added
+
+- Add Indiana Energy Assistance Program (EAP) regular heating assistance and the winter electric allowance.
+
+### Fixed
+
+- Apply the married-filing-separately 28% breakpoint (26 U.S.C. 55(b)(1)(C)) on Form 6251 Part III line 18, so separate filers with qualified dividends or capital gains no longer get the full breakpoint in the capital gains computation of the alternative minimum tax.
+- Use Louisiana's official 2026 standard deduction ($12,838 single or separate, $25,676 joint, head of household or surviving spouse) and age-65 retirement income exemption ($12,324) from LDR Revenue Information Bulletin 26-019, and project both after 2026 with La. R.S. 47:294(B) and 47:44.1(A)'s annual CPI-U adjustment, using BLS's not seasonally adjusted December CPI-U (new gov.bls.cpi.cpi_u_nsa_december) where published.
+
+
+## [2.27.0] - 2026-10-05
+
+### Added
+
+- Add Kentucky LIHEAP regular heating assistance for FY2025 and FY2026.
+
+### Fixed
+
+- Order the federal non-refundable credits as their IRS credit limit worksheets do: the elderly or disabled credit is limited only by the foreign tax and child and dependent care credits (Schedule R) and precedes the education, retirement savings and energy efficient home improvement credits (Forms 8863, 8880 and 5695); the previously owned clean vehicle credit precedes the new clean vehicle credit (Form 8936) and is now limited by tax; the foreign tax credit applies against tax before 2022; the refundable 2021 child and dependent care credit no longer reduces other credits' limits; and Oklahoma's federal Child Tax Credit applies the credits that Schedule 8812 Credit Limit Worksheet A subtracts before the CTC, not those listed before it.
+
+
+## [2.26.0] - 2026-10-05
+
+### Added
+
+- Add partial Nebraska LIHEAP regular heating assistance verified for FY2026, with single-family and multifamily schedules and assumed economic vulnerability for separately billed or rent-included heating.
+
+
+## [2.25.2] - 2026-10-05
+
+### Fixed
+
+- Apply the Form 4952 line 4g investment income election in the Schedule D Tax Worksheet (lines 3 to 10) as in net capital gain, take any election above the gain from qualified dividends (26 U.S.C. 1(h)(11)(D)(i)), and count capital gain distributions together with Schedule D gains in worksheet line 9.
+
+
+## [2.25.1] - 2026-10-05
+
+### Fixed
+
+- Replace dead reference URLs that only a browser check could confirm (New Hampshire, Utah, Louisiana, Maryland Code on Westlaw, elaws.us mirrors and others) with live successors or pinned Wayback captures, and guard against their return.
+
+
+## [2.25.0] - 2026-10-05
+
+### Added
+
+- Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.
+
+
+## [2.24.7] - 2026-10-05
+
+### Fixed
+
+- Use the SSI federal benefit rate, not 75% of the poverty guideline, as the Medicaid income limit for aged, blind, and disabled people who do not receive SSI in Colorado, Iowa, Louisiana, Montana, Ohio, Oregon, and Washington.
+
+
+## [2.24.6] - 2026-10-05
+
+### Fixed
+
+- Replace dead federal and miscellaneous reference URLs (IRS, SSA, CMS, USDA, CBO, Medicaid, KFF, Justia and others) with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Michigan Department of Treasury and Legislature reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Minnesota Department of Revenue reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Louisiana, Mississippi, Alabama, Texas and Georgia reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead South Carolina, Kentucky, Oklahoma, Florida, Ohio, Missouri, North Carolina and South Dakota reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Tax the income of filers who exclude foreign earned income at the rates it would face on top of the excluded amount, in the regular tax, the capital gains rates and the alternative minimum tax (26 U.S.C. 911(f), the Foreign Earned Income Tax Worksheet).
+
+
+## [2.24.5] - 2026-10-05
+
+### Fixed
+
+- Order the residential clean energy credit after the Child Tax Credit, as Schedule 8812 Credit Limit Worksheets A and B and Form 5695 do: the CTC's tax-liability limit subtracts that credit only when Credit Limit Worksheet B applies, the credit's own limit subtracts every other non-refundable credit (including the CTC that cannot be refunded), and it no longer precedes the energy efficient home improvement, elderly or disabled, and clean vehicle credits. Colorado's federal CTC replica uses Schedule 8812 line 13 from 2023, as the 2023 DR 0104CN does.
+
+
+## [2.24.4] - 2026-10-04
+
+### Fixed
+
+- Separated URLs that were joined in Variable reference and documentation strings, so each reference entry is one bare URL, and added a code-health test that keeps them separate.
+
+
+## [2.24.3] - 2026-10-04
+
+### Changed
+
+- Raise the Full Suite - Rest job's timeout from 60 to 90 minutes; passing runs already take 42-55 minutes.
+
+
+## [2.24.2] - 2026-10-04
+
+### Changed
+
+- Run the Full Suite - Rest job's remaining Python tests as six sequential pytest processes instead of one, each with its own JUnit and memory report, to keep each process well below the 16 GB runner's memory; a code-health test checks that the groups run every test file of the old process exactly once.
+
+
+## [2.24.1] - 2026-10-04
+
+### Fixed
+
+- Exclude medical expenses, investment interest, and casualty and theft losses from the itemized deductions that the pre-2026 section 68 80 percent ceiling applies to, per section 68(c) and the Schedule A Itemized Deductions Worksheet—Line 29.
+
+
+## [2.24.0] - 2026-10-04
+
+### Added
+
+- Add `marginal_tax_rate_computed`, which flags the people whose marginal tax rates are simulated (the top `simulation.marginal_tax_rate_adults` earners among each household's adults); the marginal tax rate variables are a placeholder zero for everyone else.
+
+### Fixed
+
+- Replace dead Maryland, DC, Delaware, Pennsylvania, Virginia, West Virginia and New Jersey reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Replace dead Vermont, Connecticut, New York Labor, Maine, Hawaii and California county reference URLs with live successors or pinned Wayback captures, and guard against their return.
+- Fix `cliff_evaluated` to rank adults by market income, as the marginal tax rate loop does, instead of by age.
+
+
+## [2.23.10] - 2026-10-04
+
+### Changed
+
+- Documented that `axiom: queued` is allowed only when the signed encoder is blocked, and that external contributors may write `axiom: needed`.
+
+### Fixed
+
+- Leave tax unit dependents' interest, dividends, rents, passive pass-through income and capital gains out of the filer's net investment income, as irs_gross_income already does for AGI; a dependent's investment income belongs on the dependent's own Form 8960 (26 USC 1411(a)(1)), and the Form 8814 election that would move a child's interest and dividends onto a parent's return is not modeled.
+
+
+## [2.23.9] - 2026-10-04
+
+### Changed
+
+- Report Codecov's project coverage as informational, since pull requests upload coverage from selected tests only; the patch check stays the coverage gate.
+
+### Fixed
+
+- Replace dead Montana, Idaho, Utah, Colorado, New Mexico, Washington and Arizona reference URLs with live successors or pinned Wayback captures, and guard against their return.
+
+
 ## [2.23.8] - 2026-10-04
 
 ### Fixed

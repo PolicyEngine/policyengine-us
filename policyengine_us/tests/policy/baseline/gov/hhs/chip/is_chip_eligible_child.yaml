@@ -309,3 +309,109 @@
     chip_enrolled: false
     per_capita_chip: 0
     chip: 0
+
+# Separate CHIP applies the five-year bar and the qualified-alien limit (8 USC
+# 1611(a) and 1613) unless the state elected the lawfully residing option in both
+# CHIP and Medicaid (42 USC 1397gg(e)(1)(Q)). Arizona did not elect it; Texas did.
+- name: Case 17, recent permanent resident child in Arizona fails CHIP inside the five-year bar and qualifies after it.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 18, temporary protected status child qualifies for CHIP in Texas but not in Arizona.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: TPS
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: TPS
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 19, refugee child in Arizona qualifies for CHIP before section 71109 applies.
+  period: 2025
+  input:
+    age: 10
+    immigration_status: REFUGEE
+    medicaid_income_level: 2.0
+    state_code: AZ
+  output:
+    is_chip_eligible_child: true
+
+# H.R.1 section 71109 applies the October 1, 2026 status limits to CHIP
+# (42 USC 1397gg(e)(1)(R)), read from 2027 in annual simulations.
+- name: Case 20, after section 71109 a refugee child keeps CHIP only in a state that elected the option.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: REFUGEE
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: REFUGEE
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 21, Georgia CHIP election for lawfully residing children applies from 2024.
+  period: 2024
+  input:
+    age: 10
+    immigration_status: TPS
+    medicaid_income_level: 2.0
+    state_code: GA
+  output:
+    is_chip_eligible_child: true
+
+- name: Case 22, Georgia CHIP election for lawfully residing children does not apply in 2023.
+  period: 2023
+  input:
+    age: 10
+    immigration_status: TPS
+    medicaid_income_level: 2.0
+    state_code: GA
+  output:
+    is_chip_eligible_child: false

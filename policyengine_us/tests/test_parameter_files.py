@@ -8,6 +8,24 @@ PARAMETERS_DIR = Path(__file__).resolve().parents[1] / "parameters"
 SOI_LONG_TERM_CAPITAL_GAINS_PATH = (
     PARAMETERS_DIR / "calibration/gov/irs/soi/long_term_capital_gains.yaml"
 )
+SOI_AGI_DIR = PARAMETERS_DIR / "calibration/gov/irs/soi/agi"
+# IRS SOI Publication 1304 Table 1.1, "$1 under $5,000" and "$10,000,000 or
+# more" rows: column 3 (AGI less deficit, published in thousands, stored here in
+# dollars) for tax year 2020 and column 1 (number of returns) for tax year 2021.
+SOI_AGI_BAND_TABLES = {
+    "total_agi.yaml": (
+        date(2020, 1, 1),
+        "https://www.irs.gov/pub/irs-soi/20in11si.xls",
+        24_087_842_000,
+        824_093_126_000,
+    ),
+    "number_of_returns.yaml": (
+        date(2021, 1, 1),
+        "https://www.irs.gov/pub/irs-soi/21in11si.xls",
+        8_487_025,
+        45_404,
+    ),
+}
 MI_INCOME_TAX_RATE_PATH = PARAMETERS_DIR / "gov/states/mi/tax/income/rate.yaml"
 SOI_LONG_TERM_CAPITAL_GAINS_ANCHORS = {
     date(2015, 1, 1): 733_313_255_000,
@@ -148,6 +166,21 @@ def test_soi_long_term_capital_gains_uses_latest_publication_1304_anchor():
     assert parameter["metadata"]["reference"][0]["href"].endswith(
         "publication-1304-basic-tables-part-1"
     )
+
+
+def test_soi_agi_bands_are_keyed_to_their_table_1_1_tax_year():
+    for filename, (period, href, lowest, highest) in SOI_AGI_BAND_TABLES.items():
+        parameter = yaml.safe_load((SOI_AGI_DIR / filename).read_text())
+        amounts = [bracket["amount"]["values"] for bracket in parameter["brackets"]]
+
+        assert len(amounts) == 18, filename
+        for index, values in enumerate(amounts):
+            assert period in values, f"{filename} bracket {index} lacks {period}"
+        assert amounts[0][period] == lowest, filename
+        assert amounts[-1][period] == highest, filename
+        reference = parameter["metadata"]["reference"][0]
+        assert reference["href"] == href, filename
+        assert f"tax year {period.year}" in reference["title"], filename
 
 
 def test_mi_2026_income_tax_rate_uses_official_annual_determination():
