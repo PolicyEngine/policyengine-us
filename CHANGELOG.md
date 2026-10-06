@@ -1,3 +1,11 @@
+## [2.29.14] - 2026-10-06
+
+### Fixed
+
+- North Carolina students who qualify for reduced-price school meals now get the free tier, because the state pays the reduced-price copay. Correct the 2025 contiguous-US paid lunch reimbursement rate to use the same under-60% category as the free and reduced-price rates. Date the school year 2025-2026 reimbursement rates to July 1, 2025. Add published school year 2026-2027 reimbursement rates for all modeled regions and apply projected rate changes only on July 1, preserving published rates through June. Update partner school-meal scenarios and expected benefits.
+- Add the published 2025 Michigan senior interest, dividends and capital gains deduction limits.
+
+
 ## [2.29.13] - 2026-10-06
 
 ### Fixed
