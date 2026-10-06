@@ -10,7 +10,11 @@ class mt_agi_indiv(Variable):
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        # Each spouse's federal AGI, with the capital loss deduction divided
+        # under Montana's rule for spouses who file separately.
+        agi = person("adjusted_gross_income_person", period) + person(
+            "mt_capital_loss_reallocation", period
+        )
         additions = person("mt_additions", period)
         subtractions = person("mt_subtractions", period)
         reduced_agi = max_(agi + additions - subtractions, 0)

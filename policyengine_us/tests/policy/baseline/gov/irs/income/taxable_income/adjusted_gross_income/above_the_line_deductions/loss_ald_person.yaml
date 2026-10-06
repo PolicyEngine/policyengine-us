@@ -1,0 +1,126 @@
+- name: Under the Section 461(l) limit, the allowed business loss is divided by each spouse's own losses.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 50
+        self_employment_income: -1_000_000
+      spouse:
+        age: 50
+        employment_income: 50_000
+        rental_income: -200_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The 2024 joint threshold is $610,000 (Rev. Proc. 2023-34).
+    loss_ald: 610_000
+    # 610,000 x 1,000,000 / 1,200,000 and 610,000 x 200,000 / 1,200,000.
+    loss_ald_person: [508_333.33, 101_666.67]
+    adjusted_gross_income_person: [-508_333.33, -51_666.67]
+
+- name: A Form 4797 loss, recorded only for the tax unit, counts equally for the head and spouse.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 30_000
+      spouse:
+        age: 50
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        other_net_gain: -4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    loss_ald: 4_000
+    loss_ald_person: [2_000, 2_000]
+
+- name: Business and capital losses are divided separately.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        self_employment_income: -5_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 50
+        employment_income: 20_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # $5,000 business loss plus the $3,000 capital loss limit.
+    loss_ald: 8_000
+    # The head has all the business loss and two-thirds of the capital loss.
+    loss_ald_person: [7_000, 1_000]
+    adjusted_gross_income_person: [73_000, 19_000]
+
+- name: A dependent's losses are on their own return.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 50_000
+        long_term_capital_gains: -1_000
+      dependent:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        self_employment_income: -3_000
+        long_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: TX
+  output:
+    loss_ald: 1_000
+    loss_ald_person: [1_000, 0]
+
+- name: A loss deduction set directly, with no person losses, is divided equally.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 30_000
+      spouse:
+        age: 50
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 2_500
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    loss_ald_person: [1_250, 1_250]
+    adjusted_gross_income_person: [28_750, 18_750]

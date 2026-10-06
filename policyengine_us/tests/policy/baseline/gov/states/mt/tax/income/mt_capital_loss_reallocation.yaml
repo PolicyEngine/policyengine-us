@@ -1,0 +1,83 @@
+# Montana spouses who file jointly for federal purposes and separately on the
+# same form (through 2023) each claim their own deductions; the IRA deduction
+# goes to the spouse who made the contribution, and a capital loss clearly
+# attributable to one spouse goes on that spouse's return, otherwise it is
+# split equally. MCA 15-30-2110(6) and (8) (2021).
+
+- name: The head's IRA deduction lowers only the head's Montana AGI.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Before: [57_000, 37_000].
+    mt_agi_indiv: [54_000, 40_000]
+    mt_capital_loss_reallocation: [0, 0]
+
+- name: A capital loss of only one spouse goes on that spouse's return.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    limited_capital_loss_person: [3_000, 0]
+    mt_capital_loss_reallocation: [0, 0]
+    # Before: [58_500, 38_500].
+    mt_agi_indiv: [57_000, 40_000]
+
+- name: When both spouses have capital losses, Montana splits the allowed loss equally.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The federal part follows each spouse's own loss, 4,000 : 2,000.
+    limited_capital_loss_person: [2_000, 1_000]
+    adjusted_gross_income_person: [58_000, 39_000]
+    # Montana gives each spouse $1,500 of the $3,000.
+    mt_capital_loss_reallocation: [500, -500]
+    mt_agi_indiv: [58_500, 38_500]
+    mt_applicable_ald_deductions: [1_500, 1_500]

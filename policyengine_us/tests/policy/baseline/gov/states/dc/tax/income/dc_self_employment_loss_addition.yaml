@@ -109,7 +109,8 @@
         state_code: DC
   output:
     adjusted_gross_income: 80_000
-    # total IRS self-employment losses are shared evenly by head and spouse
-    adjusted_gross_income_person: [45_000, 35_000, 0]
+    # Each spouse's self-employment loss lowers their own federal AGI, as each
+    # reports their own income and deductions in Calculation J.
+    adjusted_gross_income_person: [40_000, 40_000, 0]
     dc_self_employment_loss_addition: [12_000, 6_000, 0]
-    dc_agi: [57_000, 41_000, 0]
+    dc_agi: [52_000, 46_000, 0]

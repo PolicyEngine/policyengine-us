@@ -107,3 +107,27 @@
         state_code: VA
   output:
     va_agi_person: [-247, 55_728]
+
+- name: The head's IRA deduction lowers only the head's separate Virginia AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # Worksheet for Determining Separate Virginia Adjusted Gross Income,
+    # line 10 (adjustments) and line 11. Before: [57_000, 37_000].
+    va_agi_person: [54_000, 40_000]

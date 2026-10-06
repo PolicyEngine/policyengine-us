@@ -29,13 +29,7 @@ PERSON_ALDS = [
 ]
 
 
-@pytest.mark.parametrize("variable_name", FORMULAS)
-@pytest.mark.parametrize("reverse", [False, True])
-@pytest.mark.parametrize("empty", [False, True])
-def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
-    monkeypatch, variable_name, reverse, empty
-):
-    module = importlib.import_module(FORMULAS[variable_name])
+def _deductions(reverse, empty):
     deductions = (
         []
         if empty
@@ -52,6 +46,17 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     )
     if reverse:
         deductions.reverse()
+    return deductions
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("empty", [False, True])
+def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
+    monkeypatch, reverse, empty
+):
+    variable_name = "student_loan_interest_ald_magi"
+    module = importlib.import_module(FORMULAS[variable_name])
+    deductions = _deductions(reverse, empty)
     magi = SimpleNamespace(
         person_alds=PERSON_ALDS,
         excluded_alds=["student_loan_interest_ald", "puerto_rico_income"],
@@ -102,19 +107,62 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     with pytest.raises(ReachedTaxUnitSum):
         getattr(module, variable_name).formula(person, 2026, lambda period: parameters)
 
-    if empty:
-        expected = []
-    elif variable_name == "student_loan_interest_ald_magi":
-        expected = ["alimony_expense_ald", "educator_expense", "loss_ald"]
-    else:
-        expected = [
-            "alimony_expense_ald",
-            "educator_expense",
-            "loss_ald",
-            "puerto_rico_income",
-            "student_loan_interest_ald",
-        ]
+    expected = [] if empty else ["alimony_expense_ald", "educator_expense", "loss_ald"]
     assert captured == expected
+
+
+PERSON_LEVEL = {"educator_expense", "student_loan_interest_ald"}
+WITH_PERSON_AMOUNTS = {"loss_ald", "alimony_expense_ald", *PERSON_ALDS}
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("empty", [False, True])
+def test_person_deductions_are_summed_in_sorted_unique_order(reverse, empty):
+    module = importlib.import_module(
+        f"{AGI_MODULE}.above_the_line_deductions.above_the_line_deductions_person"
+    )
+    deductions = _deductions(reverse, empty)
+    parameters = SimpleNamespace(
+        gov=SimpleNamespace(
+            irs=SimpleNamespace(ald=SimpleNamespace(deductions=deductions))
+        )
+    )
+    order = []
+
+    class Variable:
+        def __init__(self, is_person):
+            self.entity = SimpleNamespace(is_person=is_person)
+
+    class Entity:
+        def get_variable(self, name, check_existence=False):
+            if name.endswith("_person"):
+                if name[: -len("_person")] in WITH_PERSON_AMOUNTS:
+                    return Variable(True)
+                return None
+            order.append(name)
+            return Variable(name in PERSON_LEVEL)
+
+    class TaxUnit:
+        def __call__(self, name, period):
+            return np.array([0], dtype=np.float32)
+
+        def sum(self, values):
+            return np.asarray(values, dtype=np.float32)
+
+    class Person:
+        entity = Entity()
+        tax_unit = TaxUnit()
+
+        def __call__(self, name, period):
+            if name == "is_tax_unit_dependent":
+                return np.array([False])
+            return np.array([0], dtype=np.float32)
+
+    module.above_the_line_deductions_person.formula(
+        Person(), 2026, lambda period: parameters
+    )
+    expected = [] if empty else sorted(set(deductions))
+    assert order == expected
 
 
 def _household_results():
