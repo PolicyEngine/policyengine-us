@@ -1,0 +1,15 @@
+description: Wyoming limits household income to this share of state median income under the Low Income Energy Assistance Program.
+# The current administrative standard is 60% SMI. The older 215% FPG
+# statutory alternative is not applied, consistent with DFS's explanation.
+values:
+  2025-10-01: 0.6
+
+metadata:
+  unit: /1
+  period: year
+  label: Wyoming LIEAP state median income rate
+  reference:
+    - title: "FY2026 State Plan, section 2.1"
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+    - title: "DFS statutory cleanup recommendations, LIEAP #page 8,9"
+      href: https://wyoleg.gov/InterimCommittee/2016/10-0825AppendixC.pdf#page=8

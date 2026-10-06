@@ -1,1 +1,1 @@
-Add a Wyoming LIEAP household-size component counting citizens and qualified noncitizens under a documented modeling assumption.
+Add Wyoming regular LIEAP heating benefits with income and household eligibility, published fuel standards, expense caps, and documented modeling assumptions for income bands, mixed-status households, income exclusions, and veterans benefits.

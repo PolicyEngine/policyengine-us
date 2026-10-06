@@ -1,0 +1,2086 @@
+# All 96 FY2026 visible workbook values independently reconciled in source research.
+# Ratios are inside the approved bands. The zero row uses 1.01 because the
+# approved convention pays the last positive fraction at exactly 1.00.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx
+
+- name: Case 1, coal published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B21:F21
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: COAL
+  output:
+    wy_lieap: 378.0
+
+- name: Case 2, coal published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: COAL
+  output:
+    wy_lieap: 354.75
+
+- name: Case 3, coal published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: COAL
+  output:
+    wy_lieap: 330.5
+
+- name: Case 4, coal published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: COAL
+  output:
+    wy_lieap: 307.25
+
+- name: Case 5, coal published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: COAL
+  output:
+    wy_lieap: 283.0
+
+- name: Case 6, coal published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: COAL
+  output:
+    wy_lieap: 259.75
+
+- name: Case 7, coal published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: COAL
+  output:
+    wy_lieap: 236.5
+
+- name: Case 8, coal published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: COAL
+  output:
+    wy_lieap: 212.25
+
+- name: Case 9, coal published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: COAL
+  output:
+    wy_lieap: 189.0
+
+- name: Case 10, coal published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: COAL
+  output:
+    wy_lieap: 165.75
+
+- name: Case 11, coal published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: COAL
+  output:
+    wy_lieap: 141.5
+
+- name: Case 12, coal published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: COAL
+  output:
+    wy_lieap: 118.25
+
+- name: Case 13, coal published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: COAL
+  output:
+    wy_lieap: 94.0
+
+- name: Case 14, coal published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: COAL
+  output:
+    wy_lieap: 70.75
+
+- name: Case 15, coal published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B35:F35
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: COAL
+  output:
+    wy_lieap: 47.5
+
+- name: Case 16, coal published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Coal 25-26 cells B36:F36
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: COAL
+  output:
+    wy_lieap: 0.0
+
+- name: Case 17, fuel_oil published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1901.0
+
+- name: Case 18, fuel_oil published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1782.00
+
+- name: Case 19, fuel_oil published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1663.0
+
+- name: Case 20, fuel_oil published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1544.00
+
+- name: Case 21, fuel_oil published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1426.0
+
+- name: Case 22, fuel_oil published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1307.00
+
+- name: Case 23, fuel_oil published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1188.0
+
+- name: Case 24, fuel_oil published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1069.00
+
+- name: Case 25, fuel_oil published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 950.0
+
+- name: Case 26, fuel_oil published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 832.00
+
+- name: Case 27, fuel_oil published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 713.0
+
+- name: Case 28, fuel_oil published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 594.00
+
+- name: Case 29, fuel_oil published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 475.0
+
+- name: Case 30, fuel_oil published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B35:F35
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 356.00
+
+- name: Case 31, fuel_oil published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B36:F36
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 238.0
+
+- name: Case 32, fuel_oil published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Heating Oil 25-26 cells B37:F37
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0.0
+
+- name: Case 33, electricity published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B21:F21
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 1233.3976
+
+- name: Case 34, electricity published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 1156.74775
+
+- name: Case 35, electricity published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 1079.0979
+
+- name: Case 36, electricity published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 1002.44805
+
+- name: Case 37, electricity published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 924.7982
+
+- name: Case 38, electricity published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 848.14835
+
+- name: Case 39, electricity published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 770.4985
+
+- name: Case 40, electricity published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 693.84865
+
+- name: Case 41, electricity published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 616.1988
+
+- name: Case 42, electricity published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 539.54895
+
+- name: Case 43, electricity published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 462.8991
+
+- name: Case 44, electricity published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 385.24925
+
+- name: Case 45, electricity published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 308.5994
+
+- name: Case 46, electricity published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 230.94955
+
+- name: Case 47, electricity published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B35:F35
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 154.2997
+
+- name: Case 48, electricity published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Electric 25-26 cells B36:F36
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: ELECTRICITY
+  output:
+    wy_lieap: 0.0000
+
+- name: Case 49, natural_gas published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B21:F21
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 1116.680
+
+- name: Case 50, natural_gas published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 1047.1375
+
+- name: Case 51, natural_gas published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 976.595
+
+- name: Case 52, natural_gas published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 907.0525
+
+- name: Case 53, natural_gas published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 837.510
+
+- name: Case 54, natural_gas published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 767.9675
+
+- name: Case 55, natural_gas published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 697.425
+
+- name: Case 56, natural_gas published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 627.8825
+
+- name: Case 57, natural_gas published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 558.340
+
+- name: Case 58, natural_gas published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 488.7975
+
+- name: Case 59, natural_gas published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 418.255
+
+- name: Case 60, natural_gas published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 348.7125
+
+- name: Case 61, natural_gas published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 279.170
+
+- name: Case 62, natural_gas published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 209.6275
+
+- name: Case 63, natural_gas published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B35:F35
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 139.085
+
+- name: Case 64, natural_gas published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Natural Gas 25-26 cells B36:F36
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: NATURAL_GAS
+  output:
+    wy_lieap: 0.000
+
+- name: Case 65, propane published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B19:F19
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: PROPANE
+  output:
+    wy_lieap: 936.0
+
+- name: Case 66, propane published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B20:F20
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 877.00
+
+- name: Case 67, propane published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B21:F21
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 819.0
+
+- name: Case 68, propane published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 760.00
+
+- name: Case 69, propane published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 702.0
+
+- name: Case 70, propane published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 643.00
+
+- name: Case 71, propane published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 585.0
+
+- name: Case 72, propane published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 526.00
+
+- name: Case 73, propane published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 468.0
+
+- name: Case 74, propane published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 409.00
+
+- name: Case 75, propane published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 351.0
+
+- name: Case 76, propane published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 292.00
+
+- name: Case 77, propane published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 234.0
+
+- name: Case 78, propane published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 175.00
+
+- name: Case 79, propane published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 117.0
+
+- name: Case 80, propane published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Propane 25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: PROPANE
+  output:
+    wy_lieap: 0.0
+
+- name: Case 81, wood published share 0.8 at ratio 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B20:F20
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: WOOD
+  output:
+    wy_lieap: 882.0
+
+- name: Case 82, wood published share 0.75 at ratio 0.25.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B21:F21
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 25000
+    heating_type: WOOD
+  output:
+    wy_lieap: 826.75
+
+- name: Case 83, wood published share 0.7 at ratio 0.3.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B22:F22
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 30000
+    heating_type: WOOD
+  output:
+    wy_lieap: 771.5
+
+- name: Case 84, wood published share 0.65 at ratio 0.35.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B23:F23
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 35000
+    heating_type: WOOD
+  output:
+    wy_lieap: 716.25
+
+- name: Case 85, wood published share 0.6 at ratio 0.4.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B24:F24
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 40000
+    heating_type: WOOD
+  output:
+    wy_lieap: 661.0
+
+- name: Case 86, wood published share 0.55 at ratio 0.45.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B25:F25
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 45000
+    heating_type: WOOD
+  output:
+    wy_lieap: 606.75
+
+- name: Case 87, wood published share 0.5 at ratio 0.5.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B26:F26
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 50000
+    heating_type: WOOD
+  output:
+    wy_lieap: 551.5
+
+- name: Case 88, wood published share 0.45 at ratio 0.55.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B27:F27
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 55000
+    heating_type: WOOD
+  output:
+    wy_lieap: 496.25
+
+- name: Case 89, wood published share 0.4 at ratio 0.6.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B28:F28
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 60000
+    heating_type: WOOD
+  output:
+    wy_lieap: 441.0
+
+- name: Case 90, wood published share 0.35 at ratio 0.65.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B29:F29
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 65000
+    heating_type: WOOD
+  output:
+    wy_lieap: 385.75
+
+- name: Case 91, wood published share 0.3 at ratio 0.7.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B30:F30
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 70000
+    heating_type: WOOD
+  output:
+    wy_lieap: 330.5
+
+- name: Case 92, wood published share 0.25 at ratio 0.75.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B31:F31
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 75000
+    heating_type: WOOD
+  output:
+    wy_lieap: 275.25
+
+- name: Case 93, wood published share 0.2 at ratio 0.8.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B32:F32
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 80000
+    heating_type: WOOD
+  output:
+    wy_lieap: 220.0
+
+- name: Case 94, wood published share 0.15 at ratio 0.85.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B33:F33
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 85000
+    heating_type: WOOD
+  output:
+    wy_lieap: 165.75
+
+- name: Case 95, wood published share 0.1 at ratio 0.95.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B34:F34
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 95000
+    heating_type: WOOD
+  output:
+    wy_lieap: 110.5
+
+- name: Case 96, wood published share 0.0 at ratio 1.01.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Wood  25-26 cells B35:F35
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 101000
+    heating_type: WOOD
+  output:
+    wy_lieap: 0.0
+
+- name: Case 97, oil at inclusive ratio boundary .21.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 21000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1901.00
+
+- name: Case 98, oil just above inclusive ratio boundary .21.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 21001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1782.00
+
+- name: Case 99, oil at inclusive ratio boundary .26.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 26000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1782.00
+
+- name: Case 100, oil just above inclusive ratio boundary .26.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 26001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1663.00
+
+- name: Case 101, oil at inclusive ratio boundary .31.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 31000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1663.00
+
+- name: Case 102, oil just above inclusive ratio boundary .31.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 31001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1544.00
+
+- name: Case 103, oil at inclusive ratio boundary .36.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 36000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1544.00
+
+- name: Case 104, oil just above inclusive ratio boundary .36.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 36001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1426.00
+
+- name: Case 105, oil at inclusive ratio boundary .41.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 41000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1426.00
+
+- name: Case 106, oil just above inclusive ratio boundary .41.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 41001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1307.00
+
+- name: Case 107, oil at inclusive ratio boundary .46.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 46000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1307.00
+
+- name: Case 108, oil just above inclusive ratio boundary .46.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 46001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1188.00
+
+- name: Case 109, oil at inclusive ratio boundary .51.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 51000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1188.00
+
+- name: Case 110, oil just above inclusive ratio boundary .51.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 51001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1069.00
+
+- name: Case 111, oil at inclusive ratio boundary .56.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 56000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1069.00
+
+- name: Case 112, oil just above inclusive ratio boundary .56.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 56001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 950.00
+
+- name: Case 113, oil at inclusive ratio boundary .61.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 61000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 950.00
+
+- name: Case 114, oil just above inclusive ratio boundary .61.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 61001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 832.00
+
+- name: Case 115, oil at inclusive ratio boundary .66.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 66000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 832.00
+
+- name: Case 116, oil just above inclusive ratio boundary .66.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 66001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 713.00
+
+- name: Case 117, oil at inclusive ratio boundary .71.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 71000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 713.00
+
+- name: Case 118, oil just above inclusive ratio boundary .71.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 71001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 594.00
+
+- name: Case 119, oil at inclusive ratio boundary .76.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 76000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 594.00
+
+- name: Case 120, oil just above inclusive ratio boundary .76.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 76001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 475.00
+
+- name: Case 121, oil at inclusive ratio boundary .81.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 81000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 475.00
+
+- name: Case 122, oil just above inclusive ratio boundary .81.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 81001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 356.00
+
+- name: Case 123, oil at inclusive ratio boundary .86.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 86000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 356.00
+
+- name: Case 124, oil just above inclusive ratio boundary .86.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 86001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 238.00
+
+- name: Case 125, oil at inclusive ratio boundary 1.00.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 100000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 238.00
+
+- name: Case 126, oil just above inclusive ratio boundary 1.00.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Approved convention; no ratio rounding.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 100001
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 127, actual expense 0 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 0
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 128, actual expense -100 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: -100
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 129, actual expense 9 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 9
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 130, actual expense 9.99 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 9.99
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 131, actual expense 10 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 10
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 10
+
+- name: Case 132, actual expense 500 with zero income.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 500
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 500
+
+- name: Case 133, unspecified has no supported FY2026 fuel standard.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Zero for unsupported fuel does not establish legal ineligibility.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: UNSPECIFIED
+  output:
+    wy_lieap: 0
+
+- name: Case 134, none has no supported FY2026 fuel standard.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Zero for unsupported fuel does not establish legal ineligibility.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: NONE
+  output:
+    wy_lieap: 0
+
+- name: Case 135, kerosene has no supported FY2026 fuel standard.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Zero for unsupported fuel does not establish legal ineligibility.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: KEROSENE
+  output:
+    wy_lieap: 0
+
+- name: Case 136, solar has no supported FY2026 fuel standard.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Zero for unsupported fuel does not establish legal ineligibility.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: SOLAR
+  output:
+    wy_lieap: 0
+
+- name: Case 137, other has no supported FY2026 fuel standard.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Zero for unsupported fuel does not establish legal ineligibility.
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: OTHER
+  output:
+    wy_lieap: 0
+
+- name: Case 138, negative countable income does not inflate the maximum.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: -10000
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 1901
+
+- name: Case 139, unsubsidized heat in rent uses its documented heating share.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 500
+    wy_lieap_countable_income: 0
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    wy_lieap: 500
+
+- name: Case 140, subsidized rent with a direct heating bill is not automatically excluded.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 500
+    wy_lieap_countable_income: 0
+    heating_type: NATURAL_GAS
+    receives_housing_assistance: true
+  output:
+    wy_lieap: 500
+
+- name: Case 141, zero qualifying members receive no award.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: WY
+    wy_lieap_household_size: 0
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 142, another state receives no Wyoming award.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: CO
+    wy_lieap_household_size: 1
+    wy_lieap_income_limit: 100000
+    heating_expense: 5000
+    wy_lieap_countable_income: 0
+    heating_type: FUEL_OIL
+  output:
+    wy_lieap: 0
+
+- name: Case 143, adult earnings and support paid determine oil benefit while minor earnings and TANF are excluded.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, employment_income: 12_000, child_support_expense: 2_400, child_support_received: 3_000, ssi: 0}
+      person2: {age: 17, employment_income: 6_000, is_full_time_student: false, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        wy_power: 6_000
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_household_size: 2
+    wy_lieap_countable_income: 9_600
+    wy_lieap_income_limit: 46_853
+    wy_lieap_eligible: true
+    heating_expense: 3_000
+    # 9,600 / 46,853 < .21; 2,640 * .8 - ROUND(211.2) = 1,901.
+    wy_lieap: 1_901
+
+- name: Case 144, two veterans share one poverty exclusion before calculating gas assistance.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1: {age: 50, veterans_benefits: 30_000, ssi: 0}
+      person2: {age: 52, veterans_benefits: 30_000, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000}
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_household_size: 2
+    wy_lieap_countable_income: 38_850
+    wy_lieap_income_limit: 46_853
+    heating_expense: 1_000
+    # Ratio .829... selects .15; 1,550.85 * .15 - 23 = 209.6275.
+    wy_lieap: 209.6275
+
+- name: Case 145, mixed-status family retains the parents income without a second award proration.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, immigration_status: UNDOCUMENTED, employment_income: 20_000, ssi: 0}
+      person2: {age: 8, immigration_status: CITIZEN, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: COAL, coal_expense: 1_000}
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 20_000
+    wy_lieap_income_limit: 35_829
+    wy_lieap_eligible: true
+    # Ratio .558... selects .45; 525 * .45 - 24 = 212.25.
+    wy_lieap: 212.25
+
+- name: Case 146, electricity assistance uses the primary bill and annual investment thresholds.
+  period: 2026
+  input:
+    age: 40
+    state_code: WY
+    ssi: 0
+    interest_income: 372
+    ordinary_dividend_income: 200
+    financial_assistance: 360
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+    gas_expense: 5_000
+  output:
+    wy_lieap_countable_income: 572
+    wy_lieap_income_limit: 35_829
+    heating_expense: 1_000
+    # Scheduled electric benefit 1,233.3976 is capped at the primary bill.
+    wy_lieap: 1_000
+
+- name: Case 147, vectorized awards keep distinct SPM units and state eligibility separate.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1: {age: 50, veterans_benefits: 30_000, ssi: 0}
+      person2: {age: 52, veterans_benefits: 30_000, ssi: 0}
+      person3: {age: 40, immigration_status: UNDOCUMENTED, ssi: 0}
+      person4: {age: 40, ssi: 0}
+      person5: {age: 40, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: NATURAL_GAS, gas_expense: 1_000}
+      spm_unit2: {members: [person3], heating_type: FUEL_OIL, fuel_oil_expense: 2_000}
+      spm_unit3: {members: [person4], heating_type: PROPANE, bottled_gas_expense: 9}
+      spm_unit4: {members: [person5], heating_type: WOOD, wood_expense: 2_000}
+    households:
+      household1: {members: [person1, person2, person3, person4], state_code: WY}
+      household2: {members: [person5], state_code: CO}
+  output:
+    wy_lieap_household_size: [2, 0, 1, 0]
+    wy_lieap_countable_income: [38_850, 0, 0, 0]
+    wy_lieap_income_limit: [46_853, 0, 35_829, 0]
+    wy_lieap: [209.6275, 0, 0, 0]

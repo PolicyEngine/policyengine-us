@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX, WY
     state_implementations:
       - state: OR
         status: in_progress
@@ -846,6 +846,15 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+
+      - state: WY
+        status: partial
+        name: Wyoming LIEAP
+        full_name: Wyoming Low Income Energy Assistance Program
+        variable: wy_lieap
+        parameter_prefix: gov.states.wy.dfs.lieap
+        verified_years: "2026"
+        notes: FY2026 regular heating only. Approved assumptions use inclusive income-band upper bounds, qualified-member household size with all otherwise countable income and no extra proration, and one poverty-guideline exclusion per SPM unit using total veterans benefits as a disability-income proxy. Under-18 earnings, TANF, child support received and identifiable lump sums are excluded, with plan-rule conflicts documented. Annual inputs cannot identify embedded exempt lump sums or all special receipts; Medicare and sponsor-income adjustments, work registration, tribal routing and administrative eligibility details remain unmodeled. Unsupported fuels or missing eligible heating costs return zero. Other years are unverified estimates; crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi

@@ -1,0 +1,15 @@
+description: Wyoming counts earnings from people at or above this age under the Low Income Energy Assistance Program.
+# Approved convention follows the plan's unchecked under-18 earnings category.
+# The adopted rule excludes only under-14 earnings or under-18 student earnings.
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Wyoming LIEAP minimum age for countable earnings
+  reference:
+    - title: "FY2026 State Plan, section 1.9"
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=6
+    - title: "LIEAP Rules, Chapter 1, section 8(a)(ii)(A)"
+      href: https://rules.wyo.gov/Search.aspx?mode=7
