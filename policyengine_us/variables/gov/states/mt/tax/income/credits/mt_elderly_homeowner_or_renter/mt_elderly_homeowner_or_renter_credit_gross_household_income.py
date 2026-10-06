@@ -12,6 +12,7 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/",
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
         # 2023 Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 9
+        # (renamed Schedule 2EC from 2024)
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=52",
     )
 
@@ -27,9 +28,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         untaxed_social_security = max_(social_security - taxable_social_security, 0)
         # Income is federal AGI "without regard to loss" (§ 15-30-2337(9)(a)),
         # so the business and capital losses deducted in computing federal
-        # AGI are added back (2023 Form 2EC line 9: "The gross household
-        # income cannot be reduced by any losses."). The return's losses are
-        # added once, to the head.
+        # AGI are added back (2023 Elderly Homeowner/Renter Credit Schedule,
+        # line 9: "The gross household income cannot be reduced by any
+        # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
         return sources + untaxed_social_security + losses

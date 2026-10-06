@@ -43,4 +43,9 @@ class mt_child_dependent_care_expense_deduction(Variable):
         married = person.tax_unit("tax_unit_married", period)
         head = person("is_tax_unit_head", period)
         share = where(married, head_or_spouse * 0.5, head * 1.0)
-        return deduction * share
+        # Married couples must file a joint return or file separately on the
+        # same form (MCA 15-30-2131(1)(c)(vi)(A)); a spouse filing on a
+        # separate form cannot take the deduction.
+        filing_status = person.tax_unit("filing_status", period)
+        separate_form = filing_status == filing_status.possible_values.SEPARATE
+        return deduction * share * ~separate_form

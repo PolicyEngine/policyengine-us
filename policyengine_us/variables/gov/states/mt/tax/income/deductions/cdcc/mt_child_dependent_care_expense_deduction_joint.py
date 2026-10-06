@@ -27,4 +27,9 @@ class mt_child_dependent_care_expense_deduction_joint(Variable):
         )
         # Line 3: the return's Montana adjusted gross income; lines 4-7.
         agi = tax_unit("mt_agi_joint", period)
-        return max_(eligible_expenses - p.phase_out.calc(agi), 0)
+        deduction = max_(eligible_expenses - p.phase_out.calc(agi), 0)
+        # A married person filing on a separate form cannot take the deduction
+        # (MCA 15-30-2131(1)(c)(vi)(A)).
+        filing_status = tax_unit("filing_status", period)
+        separate_form = filing_status == filing_status.possible_values.SEPARATE
+        return deduction * ~separate_form
