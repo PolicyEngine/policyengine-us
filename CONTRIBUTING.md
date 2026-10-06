@@ -17,6 +17,27 @@ uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policye
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
+### Memory: running suites locally
+
+`make test` runs the same suites as CI, one batched subprocess at a time
+(`policyengine_us/tests/test_batched.py`). CI sizes those batches to stay
+under about 8 GB each on 16 GB runners, so this is the safe way to run
+everything on a laptop.
+
+- One area: its `make test-yaml-*` target, or
+  `uv run python policyengine_us/tests/test_batched.py <dir> --mode per-subdir --workers 1`.
+- A few files: `uv run policyengine-core test <files> -c policyengine_us`.
+- Never give one `policyengine-core test` process a whole directory tree or
+  hundreds of files. The YAML runner keeps every case's simulation, a full
+  copy of the tax-benefit system for each distinct `reforms` /
+  dotted-parameter combination (about 1.2 GB each), and a copy of the
+  parameter tree for every date a case asked about, all for the life of the
+  process. A 1,500-file baseline run reached 118 GB on 2026-10-02.
+  PolicyEngine/policyengine-core#569 and #570 (open drafts) would bound
+  this; until they are released, keep each process to a bounded batch.
+- Run one large suite at a time: don't start several `make test-yaml-*`
+  targets, or several `test_batched.py` runs, in parallel.
+
 Python 3.9–3.14 (`requires-python = ">=3.9,<3.15"`; CI smoke-imports on every minor). Default branch: `main`.
 
 ## Writing variables and programs
