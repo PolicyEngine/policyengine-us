@@ -9,7 +9,7 @@ class ga_liheap_income(Variable):
     label = "Georgia LIHEAP annual countable household income"
     defined_for = StateCode.GA
     reference = (
-        # Manual pages 62-69; current plan pages 5-6 govern listed exclusions.
+        # Manual pages 62-69, followed where plan pages 5-6 conflict.
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62",
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5",
         # Section 1.9, page 6: Social Security "Excluding MediCare deduction".
@@ -50,6 +50,7 @@ class ga_liheap_income(Variable):
         # projecting the household award onto every member.
         household_income = add(spm_unit, period, p.sources.household)
         # Roomer/boarder expense allowances, mortgage-sale contracts, stipends,
-        # and recurring support lack the scoped handling. Current plan
-        # exclusions govern cash gifts and lump-sum receipts.
+        # recurring support and the manual's counted cash gifts lack the scoped
+        # handling. Lottery winnings follow the manual over the plan (see the
+        # person income sources parameter).
         return adult_income + interest + household_income

@@ -385,3 +385,73 @@
   output:
     tanf: [3_360, 0]
     ga_liheap_income: [3_360, 0]
+
+# Manual section 1200.7 (page 66) lists "Lottery Winnings" in the Include column; the
+# model counts them through gambling_winnings. Each source is floored at zero, and
+# income of members under 18 is excluded.
+# Household 1: $30,000 wages + $6,000 winnings = $36,000.
+# Household 2: $30,000 wages + max(-$6,000, 0) = $30,000.
+# Household 3: the parent's $30,000 wages count; the 17-year-old's $6,000 raffle prize
+# counts $0.
+- name: Case 13, adult gambling winnings count, floored at zero, and a child's winnings are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        gambling_winnings: 6_000
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        gambling_winnings: -6_000
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        ssi: 0
+      person4:
+        age: 17
+        immigration_status: CITIZEN
+        gambling_winnings: 6_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+      spm_unit3:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        ga_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+      household2:
+        members: [person2]
+        state_code: GA
+      household3:
+        members: [person3, person4]
+        state_code: GA
+  output:
+    ga_liheap_income: [36_000, 30_000, 30_000]

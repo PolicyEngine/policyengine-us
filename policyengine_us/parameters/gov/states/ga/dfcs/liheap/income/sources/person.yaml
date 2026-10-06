@@ -24,6 +24,10 @@ values:
     - railroad_benefits
     - survivor_benefits
     - veterans_benefits
+    # Plan vs manual: manual 1200.7 includes "Disability Payment" (page 65) and
+    # "Workers Compensation" (page 68), both paid by insurance companies, while
+    # FY2026 plan 1.9 (page 6) leaves "Insurance payments made directly to the
+    # insured" unchecked. This follows the manual.
     - disability_benefits
     - workers_compensation
     - strike_benefits
@@ -32,6 +36,12 @@ values:
     - farm_rent_income
     - ordinary_dividend_income
     - capital_gains
+    # Plan vs manual: manual 1200.7 (page 66) includes "Lottery Winnings", while
+    # FY2026 plan 1.9 (page 6) leaves "winnings from lotteries" unchecked. This
+    # follows the manual; the input also covers non-lottery gambling.
+    - gambling_winnings
+    # Manual 1200.7 (page 65) includes "Contribution/Cash Gift" and the plan
+    # leaves "Cash gifts" unchecked; cash gifts have no input and are not modeled.
     - alimony_income
     - child_support_received
 metadata:
