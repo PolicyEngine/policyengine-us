@@ -12,8 +12,7 @@ class mi_household_resources(Variable):
         "https://law.justia.com/codes/michigan/2022/chapter-206/"
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
     )
 
     def formula(tax_unit, period, parameters):

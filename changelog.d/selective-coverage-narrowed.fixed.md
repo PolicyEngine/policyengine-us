@@ -1,0 +1,1 @@
+Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
