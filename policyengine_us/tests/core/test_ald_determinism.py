@@ -124,7 +124,12 @@ def test_person_deductions_are_summed_in_sorted_unique_order(reverse, empty):
     deductions = _deductions(reverse, empty)
     parameters = SimpleNamespace(
         gov=SimpleNamespace(
-            irs=SimpleNamespace(ald=SimpleNamespace(deductions=deductions))
+            irs=SimpleNamespace(
+                ald=SimpleNamespace(
+                    deductions=deductions,
+                    filer_amounts_recorded_on_dependents=[],
+                )
+            )
         )
     )
     order = []
