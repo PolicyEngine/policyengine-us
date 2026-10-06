@@ -17,6 +17,8 @@
   output:
     regular_tax_before_credits: 328_110
     income_tax_main_rates: 328_110
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 328_110
 
 - name: Additional tax bracket is not applied.
   period: 2027
@@ -36,6 +38,8 @@
   output:
     regular_tax_before_credits: 290_114
     income_tax_main_rates: 290_114
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 290_114
 
 - name: Additional tax bracket is applied, taxable income is below the threshold.
   period: 2027
@@ -56,6 +60,8 @@
   output:
     regular_tax_before_credits: 166_046
     income_tax_main_rates: 166_046
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 166_046
 
 - name: Additional tax bracket is not applied, taxable income is below the threshold.
   period: 2027
@@ -75,6 +81,8 @@
   output:
     regular_tax_before_credits: 145_893
     income_tax_main_rates: 145_893
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 145_893
 
 # 26 U.S.C. 1(h)(1)(A)(ii)(I), "the amount of taxable income taxed at a rate
 # below 25 percent", follows the rate schedule in force. From 2026 the
