@@ -29,6 +29,16 @@ DC EITC (D.C. Code 47-1806.04(f)):
    child an ITIN instead of a Social Security number never raises dc_eitc.
 8. From 2023, giving a qualifying child an ITIN instead of a Social Security
    number leaves dc_eitc unchanged (D.C. Code 47-1806.04(f)(1)(D)(ii)).
+9. Schedule selection follows qualifying-child status, not identification.
+   Before 2023 a child with an ITIN or with no number at all is still a
+   qualifying child: (f)(4) adopts the IRC 32 definition, and IRC 32(c)(3)(D)
+   only keeps such a child out of the IRC 32(b) computation. IRC 32(m) treats
+   the two alike, so before 2023 a qualifying child without any TIN gives the
+   same routing and the same dc_eitc as one with an ITIN. From 2023 the DC
+   D-40 instructions require each qualifying child to have a Social Security
+   number or an ITIN, and send a filer whose children have neither to the
+   childless schedule.
+10. Removing a qualifying child's TIN never raises dc_eitc.
 """
 
 import itertools
@@ -173,13 +183,17 @@ def test_dc_eitc_invariants(draw):
             if kind in ASCENDANT_KINDS:
                 assert not qualifying[dependent_index[i]], (kind, context)
                 assert not has_child[i], (kind, context)
-        # A dependent's qualifying-child status matches its unit's routing
-        # whenever the dependent has a TIN.
+        # 9. A dependent's qualifying-child status sets its unit's routing.
+        # Before 2023 that holds whatever the dependent's identification; from
+        # 2023 a qualifying child also needs a Social Security number or ITIN.
         dep_qualifies = np.where(
             has_dependent, qualifying[np.maximum(dependent_index, 0)], False
         )
         dep_has_tin = np.array([r[1] != "none" for r in DC_ROWS]) & has_dependent
-        assert np.array_equal(has_child, dep_qualifies & dep_has_tin), context
+        if year < ITIN_START:
+            assert np.array_equal(has_child, dep_qualifies), context
+        else:
+            assert np.array_equal(has_child, dep_qualifies & dep_has_tin), context
 
         # 4 and 5. Branch structure.
         assert np.all(with_child >= 0) and np.all(without >= 0), context
@@ -208,7 +222,11 @@ def test_dc_eitc_invariants(draw):
             ):
                 ssn = row[(kind, "ssn", filer_id, "DC")]
                 itin = row[(kind, "itin", filer_id, "DC")]
+                no_tin = row[(kind, "none", filer_id, "DC")]
                 assert dc_eitc[itin] <= dc_eitc[ssn] + 1e-6, (kind, context)
+                # 9. No identification at all is treated like an ITIN.
+                assert has_child[no_tin] == has_child[itin], (kind, context)
+                assert np.isclose(dc_eitc[no_tin], dc_eitc[itin]), (kind, context)
         else:
             # 8. ITIN invariance from 2023.
             for kind, filer_id in itertools.product(
@@ -217,6 +235,20 @@ def test_dc_eitc_invariants(draw):
                 ssn = row[(kind, "ssn", filer_id, "DC")]
                 itin = row[(kind, "itin", filer_id, "DC")]
                 assert np.isclose(dc_eitc[itin], dc_eitc[ssn]), (kind, context)
+
+        # 10. Removing a qualifying child's TIN never raises the credit.
+        for kind, filer_id in itertools.product(
+            QUALIFYING_CHILD_KINDS, ["ssn", "itin"]
+        ):
+            for dep_id in ["ssn", "itin"]:
+                with_tin = row[(kind, dep_id, filer_id, "DC")]
+                no_tin = row[(kind, "none", filer_id, "DC")]
+                assert dc_eitc[no_tin] <= dc_eitc[with_tin] + 1e-6, (
+                    kind,
+                    dep_id,
+                    filer_id,
+                    context,
+                )
 
 
 @SETTINGS

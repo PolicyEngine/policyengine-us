@@ -1,0 +1,24 @@
+description: The District of Columbia treats a filer whose qualifying children all lack a Social Security number or individual taxpayer identification number as a filer without a qualifying child under its earned income tax credit if this is true.
+values:
+  # Before 2023 a qualifying child without a Social Security number stays a
+  # qualifying child (D.C. Code 47-1806.04(f)(4) and IRC 32(c)(3)(D)); the
+  # 2021 and 2022 D-40 instructions add no identification test for children.
+  2015-01-01: false
+  # From 2023 the D-40 instructions for the (f)(1)(D)(ii) ITIN extension send
+  # a filer whose children have neither number to the childless schedule.
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: DC EITC qualifying child identification requirement
+  reference:
+    - title: Code of the District of Columbia § 47–1806.04 (f)(1)(D)(ii)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(D)(ii)
+    - title: 2022 DC Form D-40 Booklet, Page 11, Taxpayers with a Qualifying Child
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=11
+    - title: 2023 DC Form D-40 Booklet, Page 10, Taxpayers with a Qualifying Child
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=10
+    - title: 2024 DC Form D-40 Booklet, Page 10, Taxpayers with a Qualifying Child
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2024_D40_Booklet_011525.pdf#page=10
+    - title: 2025 DC Form D-40 Booklet, Taxpayers with a Qualifying Child
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=13

@@ -13,18 +13,29 @@ class dc_eitc_has_qualifying_child(Variable):
         # IRC 32(c)(3)(D) keeps a child without a Social Security number out of
         # the credit computation without making it a non-qualifying child.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_D",
+        # From 2023: "If you and your spouse have SSNs or ITINs but your
+        # child(ren) do not, you need to claim the DC EITC for filers without
+        # a qualifying child."
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=10",
     )
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
         # Selects between the with-children schedule of (f)(1)(B)-(B-2) and
-        # the childless schedule of (f)(1)(C). A child with an ITIN is a
-        # qualifying child in every year: before 2023 IRC 32(c)(3)(D) only
-        # keeps such a child out of the credit computation (see
-        # dc_eitc_with_qualifying_child), and the unit still cannot use the
-        # childless schedule.
+        # the childless schedule of (f)(1)(C). Before 2023 identification plays
+        # no part: a child with an ITIN or with no number at all is still a
+        # qualifying child, since IRC 32(c)(3)(D) only keeps it out of the
+        # credit computation (see dc_eitc_with_qualifying_child) and IRC 32(m)
+        # treats the two alike, so the unit cannot use the childless schedule.
+        # From 2023 the D-40 instructions require a Social Security number or
+        # ITIN for each qualifying child claimed, and send a filer whose
+        # children have neither to the childless schedule.
         person = tax_unit.members
-        qualifying_child = person("is_eitc_qualifying_child", period) & person(
-            "has_tin", period
+        p = parameters(period).gov.states.dc.tax.income.credits.eitc
+        meets_identification = where(
+            p.qualifying_child_tin_required, person("has_tin", period), True
+        )
+        qualifying_child = (
+            person("is_eitc_qualifying_child", period) & meets_identification
         )
         return tax_unit.any(qualifying_child)

@@ -29,12 +29,15 @@ class dc_eitc_with_qualifying_child(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         child_count = tax_unit.sum(person("is_eitc_qualifying_child", period) & has_tin)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
+        # An individual who has a qualifying child is an eligible individual
+        # under IRC 32(c)(1)(A)(i), with no age test, even when no child is
+        # counted in the computation.
         itin_eitc = calculate_eitc_like_amount(
             tax_unit,
             period,
             parameters,
             child_count,
-            child_count > 0,
+            tax_unit("dc_eitc_has_qualifying_child", period),
             filer_has_tin,
         )
         p = parameters(period).gov.states.dc.tax.income.credits.eitc

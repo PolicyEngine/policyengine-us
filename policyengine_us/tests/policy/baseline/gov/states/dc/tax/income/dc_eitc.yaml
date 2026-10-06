@@ -232,6 +232,211 @@
     dc_eitc_without_qualifying_child: 0
     dc_eitc: 321.3
 
+- name: DC EITC keeps a filer whose qualifying child has no TIN on the with-child schedule before 2023 (TY2022)
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # IRC 32(m) treats a child with no TIN exactly like a child with an
+    # ITIN, and (f)(1)(D)(ii) does not apply before 2023, so this matches the
+    # ITIN case above. The child is still a qualifying child under (f)(4) and
+    # IRC 32(c)(3)(A); the 2022 D-40 worksheet says "If you have a qualifying
+    # child DO NOT USE THIS WORKSHEET". Routing on the child's TIN sent this
+    # unit to the (f)(1)(C) childless schedule and paid 560.
+    eitc: 0
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 0
+
+- name: DC EITC matches the childless federal credit for a filer whose minor qualifying child has no TIN in TY2022
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # Same routing for an ordinary minor child: 70% x the federal credit
+    # allowed, 560 - 7.65% x (20,000 - 9,160) < 0.
+    eitc: 0
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 0
+
+- name: DC EITC matches the childless federal credit for a filer whose qualifying child has no TIN in TY2022 at low earnings
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 70% x 7.65% x 6,000 = 321.30, as for the ITIN child. The childless
+    # schedule would have paid 459.
+    eitc: 459
+    dc_eitc_with_qualifying_child: 321.3
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 321.3
+
+- name: DC EITC matches the childless federal credit for a filer whose qualifying child has no TIN in TY2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 40% x the ARPA childless credit allowed, 218.33, as for the ITIN
+    # child. The childless schedule would have paid
+    # 1,502 - 8.48% x (20,000 - 19,743) = 1,480.21.
+    eitc: 218.33
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 87.33
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 87.33
+
+- name: DC EITC sends a filer whose only qualifying child has no SSN or ITIN to the childless schedule from 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # 2023 D-40 instructions, p. 10: "If you and your spouse have SSNs or
+    # ITINs but your child(ren) do not, you need to claim the DC EITC for
+    # filers without a qualifying child." (f)(1)(C): 600, below the 21,888
+    # phase-out start.
+    eitc: 0
+    dc_eitc_has_qualifying_child: false
+    dc_eitc_with_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 600
+    dc_eitc: 600
+
+- name: Without the TIN rule, a filer whose qualifying child has no TIN gets the with-child match on the self-only credit in 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    gov.states.dc.tax.income.credits.eitc.qualifying_child_tin_required: false
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # The child stays a qualifying child but is not counted in the IRC 32(b)
+    # computation, so the base is the self-only amount, 7.65% x 6,000 = 459,
+    # and the match is 70% of it.
+    dc_eitc_has_qualifying_child: true
+    dc_eitc_with_qualifying_child: 321.3
+    dc_eitc_without_qualifying_child: 0
+    dc_eitc: 321.3
+
 - name: DC EITC uses the one-child credit for an ITIN child in TY2023 at low earnings
   period: 2023
   absolute_error_margin: 0.01
