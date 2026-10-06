@@ -1,3 +1,80 @@
+## [2.29.7] - 2026-10-06
+
+### Fixed
+
+- Net capital gain distributions against Schedule D capital losses before the 26 U.S.C. 1211(b) $3,000 loss limit in adjusted gross income, net investment income, loss-limited capital gains (Michigan, Mississippi, Delaware and Georgia), a dependent's Social Security modified AGI and the capital gain tax worksheet test, and net spouses' gains and losses on a joint return.
+
+
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
+## [2.29.5] - 2026-10-06
+
+### Fixed
+
+- A tax bracket above an infinite threshold now adds nothing, instead of NaN, to the tax and to the taxable income taxed below 25 percent. The additional_tax_bracket contrib reform ships brackets 7 and 8 with infinite thresholds, so until a user set bracket 7 its income_tax_main_rates and regular_tax_before_credits were NaN for every household; a reform that set any of the baseline schedule's first six thresholds to infinity hit the same NaN.
+- Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
+
+
+## [2.29.4] - 2026-10-06
+
+### Fixed
+
+- Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
+
+
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
+## [2.29.0] - 2026-10-05
+
+### Added
+
+- Add North Carolina Low Income Energy Assistance Program (LIEAP) regular heating benefits.
+
+
+## [2.28.3] - 2026-10-05
+
+### Fixed
+
+- Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
+
+
+## [2.28.2] - 2026-10-05
+
+### Fixed
+
+- Tax 28 percent rate and unrecaptured section 1250 gain at the regular rates on taxable income up to the top of the 24 percent bracket, the amount taxed below 25 percent under 26 U.S.C. 1(h)(1)(A), and enter Schedule D Tax Worksheet line 21 on Form 6251 Part III line 27.
+
+
 ## [2.28.1] - 2026-10-05
 
 ### Changed
