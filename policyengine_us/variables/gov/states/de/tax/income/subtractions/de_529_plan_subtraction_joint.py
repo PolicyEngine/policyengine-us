@@ -18,6 +18,9 @@ class de_529_plan_subtraction_joint(Variable):
         "https://delcode.delaware.gov/title30/c011/sc02/index.html",
         # 2023 PIT-RES instructions, line 8b
         "https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=7",
+        # 2024 PIT-RES instructions, line 8b ("married filing separately combined ...
+        # whose individual federal adjusted gross income")
+        "https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=7",
     )
     defined_for = StateCode.DE
 

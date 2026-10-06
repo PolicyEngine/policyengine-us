@@ -57,7 +57,7 @@ class de_itemized_deductions_indv(Variable):
             _share(head_or_spouse * 1.0, filers * 1.0),
         )
         # Allocate each deduction to the spouse who paid the underlying expense.
-        allocated = 0
+        allocated = person.empty_array()
         for deduction in p.sources:
             expense_sources = EXPENSE_SOURCES.get(deduction)
             if expense_sources is None:
