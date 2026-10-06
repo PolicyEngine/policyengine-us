@@ -1,0 +1,1 @@
+Compute New York's 2026 child and dependent care credit under Tax Law 606(c-2), added by L.2026, ch. 59, Part A: qualifying expenses times a 55%-to-4% applicable percentage, less $20 per $1,000 of New York AGI above $750,000. The 606(c) percentage-of-federal credit now applies only before 2026.
