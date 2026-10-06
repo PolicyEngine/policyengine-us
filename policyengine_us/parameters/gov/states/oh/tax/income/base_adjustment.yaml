@@ -1,7 +1,7 @@
 description: Ohio adds this amount to the tax computed from the marginal rates when taxable nonbusiness income is more than the threshold, so the tax equals the base amount set in statute.
 brackets:
   - threshold:
-      2021-01-01: 0
+      2021-01-01: -.inf
     amount:
       2021-01-01: 0
   - threshold:
