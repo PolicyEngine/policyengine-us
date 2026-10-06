@@ -12,13 +12,15 @@ class az_property_tax_credit_capital_gains(Variable):
         "property for the Arizona property tax credit (Form 140PTC Part 1 line D): "
         "the year's gains and losses combined, including capital gain "
         "distributions, with a net loss counted only up to the per-member limit. "
-        "No prior-year capital loss carryover is used."
+        "No prior-year capital loss carryover is used: the long-term carryover "
+        "that long_term_capital_gains nets is added back."
     )
     reference = [
         "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R15-2C-502",
         "https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2012_itr12-1.pdf#page=2",
         "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTCi.pdf#page=4",
         "https://www.law.cornell.edu/uscode/text/26/852#b_3_B",
+        "https://www.law.cornell.edu/uscode/text/26/1212#b_1_B",
     ]
     defined_for = StateCode.AZ
 
@@ -31,7 +33,13 @@ class az_property_tax_credit_capital_gains(Variable):
         # Capital gain distributions reported without Schedule D are long-term
         # capital gains (26 U.S.C. 852(b)(3)(B)), so they are combined with the
         # member's other gains and losses before the limit.
-        net_capital_gain = add(
-            person, period, ["capital_gains", "non_sch_d_capital_gains"]
+        # ITR 12-1 item (7): a prior-year capital loss carryover cannot reduce
+        # the year's gains. long_term_capital_gains includes the long-term
+        # carryover (26 U.S.C. 1212(b)(1)(B)) as a loss, as Schedule D line 15
+        # does, so it is added back to give the year's own net gain or loss.
+        carryover = max_(0, person("long_term_capital_loss_carryover", period))
+        net_capital_gain = (
+            add(person, period, ["capital_gains", "non_sch_d_capital_gains"])
+            + carryover
         )
         return max_(net_capital_gain, -p.capital_loss_limit)

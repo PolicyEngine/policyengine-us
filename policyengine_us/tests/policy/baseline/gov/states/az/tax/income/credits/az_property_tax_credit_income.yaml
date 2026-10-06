@@ -922,3 +922,86 @@
     az_property_tax_credit_income: 5_600
     # Line 11b: Schedule 2 pays nothing at 5,501 or more.
     az_property_tax_credit: 0
+
+# ITR 12-1 item (7): a prior-year capital loss carryover cannot reduce the
+# year's gains. long_term_capital_gains is net of the long-term carryover (a
+# memo amount, as on Schedule D line 15), so line D adds it back.
+- name: A long-term capital loss carryover does not reduce line D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        # The year's long-term gain is 4,000; a 3,000 carryover nets it to 1,000.
+        long_term_capital_gains: 1_000
+        long_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI uses the carryover: 1,000.
+    adjusted_gross_income: 1_000
+    # Line D: the year's gain 4,000. Line J: 4,000.
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_income: 4_000
+    # Line 11a: Schedule 1 pays nothing at 3,751 or more.
+    az_property_tax_credit: 0
+
+- name: A carryover that makes a net loss is not a line D loss
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        # No sales this year; the 3,000 carryover is the whole net loss.
+        long_term_capital_gains: -3_000
+        long_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI: 4,000 - 3,000 = 1,000.
+    adjusted_gross_income: 1_000
+    # Line A: 4,000. Line D: 0. Line J: 4,000.
+    az_property_tax_credit_income: 4_000
+    # Line 11a: Schedule 1 pays nothing at 3,751 or more.
+    az_property_tax_credit: 0
+
+- name: A dependent's carryover is not a line D loss
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: 4_000
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -3_000
+        long_term_capital_loss_carryover: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line D: column 1 gain 4,000; column 3 the year's net 0. Line J: 4,000.
+    az_property_tax_credit_dependent_income: 0
+    az_property_tax_credit_income: 4_000
+    # Line 11b: Schedule 2, 3,851 - 4,000 -> 279.
+    # Line 13: 750. Line 15: smaller of 279 and 750.
+    az_property_tax_credit: 279

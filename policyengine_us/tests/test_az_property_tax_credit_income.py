@@ -22,7 +22,8 @@ dependent who has income) whose members' net capital gains run from well below
 1. Differential: the model equals an independent line A + B + D + E + F sum
    over every member from Form 140PTC Part 1, with Social Security excluded,
    rental losses netted (A.A.C. R15-2C-502(C)(2)) and each member's line D,
-   capital gain distributions included, floored at -$1,500.
+   capital gain distributions included and any prior-year carryover left out
+   (ITR 12-1 item (7)), floored at -$1,500.
 2. Counted once: adding d to a member's long-term gains changes household
    income by exactly the change in that member's line D, which is d when the
    member's net gain stays at or above -$1,500. The credit never rises.
@@ -73,6 +74,11 @@ def _capital_gains(rng: np.random.Generator, can_be_large: bool) -> tuple:
     )
 
 
+def _carryover(rng: np.random.Generator) -> float:
+    """A prior-year long-term capital loss carryover, for some members."""
+    return round(rng.uniform(0, 4_000), 2) if rng.random() < 0.15 else 0.0
+
+
 def _distributions(rng: np.random.Generator) -> float:
     """Capital gain distributions reported without Schedule D, for some members."""
     return round(rng.uniform(0, 800), 2) if rng.random() < 0.25 else 0.0
@@ -90,6 +96,7 @@ def _sample_units(rng: np.random.Generator) -> list:
         members = []
         for role in ["head", "spouse"] if married else ["head"]:
             long_term, short_term = _capital_gains(rng, can_be_large=True)
+            carryover = _carryover(rng)
             members.append(
                 {
                     "role": role,
@@ -100,7 +107,10 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "taxable_interest_income": round(rng.uniform(0, 800), 2),
                     "tax_exempt_interest_income": round(rng.uniform(0, 500), 2),
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
-                    "long_term_capital_gains": long_term,
+                    # long_term_capital_gains is net of the carryover, as
+                    # Schedule D line 15 is.
+                    "long_term_capital_gains": round(long_term - carryover, 2),
+                    "long_term_capital_loss_carryover": carryover,
                     "short_term_capital_gains": short_term,
                     "non_sch_d_capital_gains": _distributions(rng),
                     "rental_income": _rental_income(rng),
@@ -119,6 +129,7 @@ def _sample_units(rng: np.random.Generator) -> list:
             # A child dependent with income of their own, including net
             # capital losses, which count up to the dependent's own limit.
             long_term, short_term = _capital_gains(rng, can_be_large=False)
+            carryover = _carryover(rng)
             members.append(
                 {
                     "role": "dependent",
@@ -130,7 +141,10 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "taxable_interest_income": round(rng.uniform(0, 300), 2),
                     "tax_exempt_interest_income": round(rng.uniform(0, 200), 2),
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
-                    "long_term_capital_gains": long_term,
+                    # long_term_capital_gains is net of the carryover, as
+                    # Schedule D line 15 is.
+                    "long_term_capital_gains": round(long_term - carryover, 2),
+                    "long_term_capital_loss_carryover": carryover,
                     "short_term_capital_gains": short_term,
                     "non_sch_d_capital_gains": _distributions(rng),
                     "rental_income": _rental_income(rng),
@@ -206,10 +220,16 @@ def _situation(units: list) -> dict:
 
 
 def _net_gain(member: dict) -> float:
-    # Capital gain distributions are long-term capital gains (26 U.S.C.
-    # 852(b)(3)(B)), combined with the member's other gains and losses.
+    """The member's own net gain or loss for the year (Form 140PTC line D).
+
+    Capital gain distributions are long-term capital gains (26 U.S.C.
+    852(b)(3)(B)), combined with the member's other gains and losses. A
+    prior-year carryover cannot reduce them (ITR 12-1 item (7)), and the
+    long_term_capital_gains input is net of it, so it is added back.
+    """
     return (
         member["long_term_capital_gains"]
+        + member["long_term_capital_loss_carryover"]
         + member["short_term_capital_gains"]
         + member["non_sch_d_capital_gains"]
     )
@@ -289,6 +309,15 @@ def test_sample_covers_the_loss_limit_and_negative_line_j():
         for m in members
     )
     assert any(m["rental_income"] < 0 for m in members if m["role"] == "dependent")
+    # Carryovers, including some that make the input a loss beyond the limit
+    # while the year's own net gain is not.
+    assert sum(m["long_term_capital_loss_carryover"] > 0 for m in members) >= 10
+    assert any(
+        m["long_term_capital_gains"] + m["short_term_capital_gains"]
+        < -MEMBER_LOSS_LIMIT
+        <= _net_gain(m)
+        for m in members
+    )
 
 
 def test_household_income_matches_form_140ptc_lines():
