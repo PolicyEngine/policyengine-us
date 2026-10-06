@@ -51,7 +51,7 @@
         members: [parent, child]
         state_code: TX
   output:
-    # The child's wages exceed the 15,000 standard deduction, so the child is
+    # The child's wages exceed the 15,750 standard deduction, so the child is
     # required to file and counts: 40,000 + 16,000 + 500.
     medicaid_magi_person: [40_000, 16_500]
     medicaid_household_income: [56_500, 56_500]

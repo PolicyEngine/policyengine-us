@@ -18,7 +18,12 @@ class medicaid_household_income(Variable):
         "does in the couple's joint AGI. Only the total is floored at zero, "
         "as Form 8962 combines the taxpayer's and dependents' modified AGIs "
         "'even if one or both of them are negative' before entering a "
-        "negative total as zero."
+        "negative total as zero. In the non-filer household, whose parents "
+        "and siblings are read from the whole family, those relatives' "
+        "amounts are added only when positive (each child's, and each "
+        "couple's parents' netted), so a relative outside the household "
+        "cannot lower its income; the individual's and their spouse's are "
+        "always added signed."
     )
     definition_period = YEAR
     reference = (
@@ -58,17 +63,45 @@ class medicaid_household_income(Variable):
             0,
         )
         spouse_income = same_unit_spouse_income + separate_spouse_income
-        family_child_income = person.family.sum(child_age_eligible * member_income)
+        # The non-filer household's parents and siblings are read from the
+        # whole family, which can include people outside the household, such
+        # as a grandparent who is also a parent there. So their amounts are
+        # added only when positive: each child's, and each couple's parents'
+        # netted together, so married parents' losses still offset each
+        # other's income. The individual's own and their spouse's amounts are
+        # always added signed.
+        family_child_income = person.family.sum(
+            child_age_eligible * max_(0, member_income)
+        )
+        is_parent = person("is_parent", period)
+        couple_parent_income = person.marital_unit.sum(is_parent * member_income)
+        couple_parents = person.marital_unit.sum(is_parent)
+        parent_share = np.divide(
+            is_parent.astype(float),
+            couple_parents,
+            out=np.zeros_like(couple_parents, dtype=float),
+            where=couple_parents > 0,
+        )
         family_parent_income = person.family.sum(
-            person("is_parent", period) * member_income
+            parent_share * max_(0, couple_parent_income)
         )
         non_filer_household_income = where(
             child_age_eligible,
             spouse_income + family_parent_income + family_child_income,
             member_income + spouse_income + family_child_income,
         )
+        # A tax household includes the cohabiting spouse of a filer who files
+        # separately (42 CFR 435.603(f)(4)), and so do the households of that
+        # filer's dependents, which are the filer's (435.603(f)(2)).
+        filer_separate_spouse_income = where(
+            head_or_spouse | claimed_by_another_return,
+            separate_spouse_income,
+            person.tax_unit.sum(
+                person("is_tax_unit_head", period) * separate_spouse_income
+            ),
+        )
         tax_household_income = (
-            person.tax_unit.sum(tax_member_income) + separate_spouse_income
+            person.tax_unit.sum(tax_member_income) + filer_separate_spouse_income
         )
         tax_household_income = tax_household_income + medicaid_external_claimed_sum(
             person,

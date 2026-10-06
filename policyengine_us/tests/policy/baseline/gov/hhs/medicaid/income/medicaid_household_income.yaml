@@ -178,7 +178,7 @@
         state_code: TX
   output:
     # Joint AGI: 10,000 - 30,000 = -20,000 (Form 8962, line 2a). The child's
-    # wages exceed the 15,000 standard deduction, so the child is required to
+    # wages exceed the 15,750 standard deduction, so the child is required to
     # file and the child's MAGI, 25,000, is added (line 2b; 42 CFR
     # 435.603(d)(2)). Line 3 combines them even though line 2a is negative:
     # -20,000 + 25,000 = 5,000.
@@ -303,3 +303,99 @@
   output:
     medicaid_magi_person: -9_000
     medicaid_household_income: 0
+
+- name: A grandparent outside a child's non-filer household does not lower its income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandmother:
+        age: 50
+        self_employment_income: -5_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      mother:
+        age: 30
+        employment_income: 12_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      child:
+        age: 8
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [grandmother]
+        tax_unit_is_filer: false
+      tax_unit2:
+        members: [mother]
+        tax_unit_is_filer: false
+      tax_unit3:
+        members: [child]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [grandmother, mother, child]
+    marital_units:
+      grandmother_unit:
+        members: [grandmother]
+      mother_unit:
+        members: [mother]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [grandmother, mother, child]
+        state_code: TX
+  output:
+    # The child's household is the child and her mother (42 CFR
+    # 435.603(f)(3)(iii)); her grandmother is not in it, so the grandmother's
+    # loss does not offset the mother's 12,000. The grandmother's own
+    # household's total, -5,000, is floored at zero.
+    medicaid_uses_non_filer_rules: [true, true, true]
+    medicaid_household_income: [0, 12_000, 12_000]
+
+- name: A dependent's household includes the claimant's cohabiting spouse who files separately.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent_a:
+        age: 50
+        employment_income: 30_000
+      child:
+        age: 21
+        is_full_time_student: true
+        taxable_interest_income: 2_000
+        early_withdrawal_penalty: 5_000
+        is_tax_unit_dependent: true
+      parent_b:
+        age: 50
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit_a:
+        members: [parent_a, child]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+      tax_unit_b:
+        members: [parent_b]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+    marital_units:
+      couple:
+        members: [parent_a, parent_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent_a, child, parent_b]
+        state_code: TX
+  output:
+    # The child's unearned income, 2,000, exceeds 1,350, so the child is
+    # required to file, and the child's MAGI is 2,000 - 5,000 = -3,000. Parent
+    # A's household includes the child and parent B (435.603(f)(4)): 30,000
+    # - 3,000 - 20,000 = 7,000. The child is in parent A's household
+    # (435.603(f)(2)), so the child's is the same. Parent B's household is
+    # parent B and parent A: -20,000 + 30,000 = 10,000.
+    medicaid_person_is_required_to_file: [true, true, false]
+    medicaid_magi_person: [30_000, -3_000, -20_000]
+    medicaid_household_income: [7_000, 7_000, 10_000]
