@@ -131,3 +131,27 @@
     # Worksheet for Determining Separate Virginia Adjusted Gross Income,
     # line 10 (adjustments) and line 11. Before: [57_000, 37_000].
     va_agi_person: [54_000, 40_000]
+
+- name: A spouse with negative federal AGI gets no share of the additions.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        adjusted_gross_income_person: 10_000
+        va_subtractions_person: 0
+      spouse:
+        adjusted_gross_income_person: -1_000
+        va_subtractions_person: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        va_additions: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # Prorating by signed AGI would give the head 1,111.11 and the spouse
+    # -111.11 of the additions.
+    va_agi_person: [11_000, -1_000]
