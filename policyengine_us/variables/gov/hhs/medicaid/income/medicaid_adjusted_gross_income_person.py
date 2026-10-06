@@ -23,8 +23,8 @@ class medicaid_adjusted_gross_income_person(Variable):
         p = parameters(period).gov.irs.ald
         all_alds = p.deductions
         # Each listed deduction with a person-level equivalent goes to the
-        # person who has it, reconciled to the tax-unit amount (an input or a
-        # reform of it) with any difference going to the head.
+        # person who has it, reconciled to the tax-unit amount when that is an
+        # input or a reform changes it.
         ald_sum_person = 0
         for ald in all_alds:
             if ald in TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS:

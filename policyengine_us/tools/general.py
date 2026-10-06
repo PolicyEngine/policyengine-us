@@ -45,17 +45,34 @@ def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_va
     """
     Attribute a tax unit's amount to its members.
 
-    Each member gets their own person-level amount. Any difference between
-    the tax unit's amount and its head's and spouse's own amounts, as when the
-    tax-unit variable is an input or a reform changes its formula, goes to
-    the head. Dependents keep their own amounts, which a tax-unit amount that
-    describes the filer's return leaves out.
+    Dependents keep their own person-level amounts, which a tax-unit amount
+    describing the filer's return leaves out. The head and spouse get their
+    own amounts when those sum to the tax unit's amount. When the tax-unit
+    amount differs, as when it is an input or a reform changes its formula,
+    the head's and spouse's own amounts are scaled to sum to it, so neither
+    share turns negative; if they have no own amounts, the head takes it.
+    Every tax unit is assumed to have a head.
     """
+    # The person-level projector returns tax-unit values for each member.
+    tax_unit = person.tax_unit
     own = person(person_variable, period)
-    not_dependent = ~person("is_tax_unit_dependent", period)
-    filers_own = person.tax_unit.sum(own * not_dependent)
-    residual = person.tax_unit(tax_unit_variable, period) - filers_own
-    return own + person("is_tax_unit_head", period) * residual
+    filer = ~person("is_tax_unit_dependent", period)
+    filers_own = tax_unit.sum(own * filer)
+    amount = tax_unit(tax_unit_variable, period)
+    # The tax-unit amount is stored in float32, so compare in its precision.
+    matches = amount == filers_own.astype(amount.dtype)
+    has_own = filers_own > 0
+    scale = np.divide(
+        amount,
+        filers_own,
+        out=np.zeros_like(filers_own, dtype=float),
+        where=has_own,
+    )
+    reconciled = own * scale + person("is_tax_unit_head", period) * where(
+        has_own, 0, amount
+    )
+    filer_share = where(matches, own, reconciled)
+    return where(filer, filer_share, own)
 
 
 def sum_contained_tax_units(var, population, period):

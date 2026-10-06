@@ -493,3 +493,92 @@ def test_person_splits_follow_the_deduction_list():
     assert np.allclose(
         reformed.calculate("medicaid_adjusted_gross_income_person", 2025), 50_000
     )
+
+
+def _ms_couple(premiums, **tax_unit_inputs):
+    year = 2025
+    return {
+        "people": {
+            "head": {
+                "age": {year: 45},
+                "is_tax_unit_head": {year: True},
+                "employment_income": {year: 1_000},
+            },
+            "spouse": {
+                "age": {year: 43},
+                "is_tax_unit_spouse": {year: True},
+                "self_employment_income": {year: 1_000},
+                "self_employed_health_insurance_premiums": {year: premiums},
+            },
+        },
+        "tax_units": {
+            "tax_unit": {
+                "members": ["head", "spouse"],
+                **{name: {year: value} for name, value in tax_unit_inputs.items()},
+            }
+        },
+        "marital_units": {"couple": {"members": ["head", "spouse"]}},
+        "households": {
+            "household": {"members": ["head", "spouse"], "state_code": {year: "MS"}}
+        },
+    }
+
+
+SPLIT_OUTPUTS = [
+    "ms_self_employed_health_insurance_adjustment",
+    "ms_agi",
+    "medicaid_adjusted_gross_income_person",
+    "medicaid_magi_person",
+    "medicaid_household_income",
+    "adjusted_gross_income",
+]
+
+
+def _split_outputs(sim):
+    return {name: np.asarray(sim.calculate(name, 2025)) for name in SPLIT_OUTPUTS}
+
+
+@pytest.mark.parametrize("aggregate", [0, 500])
+def test_reduced_tax_unit_amount_is_shared_without_negative_shares(aggregate):
+    # A tax-unit deduction set below the spouse's own amount is shared in
+    # proportion to the filers' own amounts, so no share turns negative and
+    # the per-person floors in Mississippi AGI and Medicaid MAGI cannot add
+    # income. The result equals a couple whose own amount is that deduction.
+    reduced = Simulation(
+        situation=_ms_couple(1_000, self_employed_health_insurance_ald=aggregate)
+    )
+    control = Simulation(situation=_ms_couple(aggregate))
+    shares = reduced.calculate("ms_self_employed_health_insurance_adjustment", 2025)
+    assert (np.asarray(shares) >= 0).all()
+    assert np.allclose(shares, [0, aggregate])
+    for name, values in _split_outputs(control).items():
+        np.testing.assert_allclose(
+            _split_outputs(reduced)[name], values, atol=TOLERANCE, err_msg=name
+        )
+
+
+def test_reformed_tax_unit_amount_is_shared_like_an_input():
+    from policyengine_core.reforms import Reform
+
+    from policyengine_us.model_api import TaxUnit, Variable
+
+    class self_employed_health_insurance_ald(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = "year"
+
+        def formula(tax_unit, period, parameters):
+            return tax_unit.filled_array(0)
+
+    class repeal_self_employed_health_insurance(Reform):
+        def apply(self):
+            self.update_variable(self_employed_health_insurance_ald)
+
+    reformed = Simulation(
+        situation=_ms_couple(1_000), reform=repeal_self_employed_health_insurance
+    )
+    control = Simulation(situation=_ms_couple(0))
+    for name, values in _split_outputs(control).items():
+        np.testing.assert_allclose(
+            _split_outputs(reformed)[name], values, atol=TOLERANCE, err_msg=name
+        )
