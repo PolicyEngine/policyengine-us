@@ -87,9 +87,10 @@
   output:
     # Per MI-1040CR-7 Line 24: losses cannot exceed $3,000 for MFJ
     # loss_limited_net_capital_gains: max(-150,000, -3,000) = -3,000
-    # above_the_line_deductions includes loss_ald of 3,000
-    # Total: 50,000 + (-3,000) - 3,000 = 44,000
-    mi_household_resources: 44_000
+    # The capital loss is not a U.S. Schedule 1 adjustment (MI-1040CR line
+    # 30), so it is not subtracted a second time.
+    # Total: 50,000 + (-3,000) = 47,000
+    mi_household_resources: 47_000
 
 - name: Capital gains loss limited to 1500 for MFS
   period: 2024
@@ -101,6 +102,53 @@
   output:
     # Per MI-1040CR-7 Line 24: losses cannot exceed $1,500 for MFS
     # loss_limited_net_capital_gains: max(-100,000, -1,500) = -1,500
-    # above_the_line_deductions includes loss_ald of 1,500
-    # Total: 50,000 + (-1,500) - 1,500 = 47,000
-    mi_household_resources: 47_000
+    # Not subtracted again as a Schedule 1 adjustment (line 30).
+    # Total: 50,000 + (-1,500) = 48,500
+    mi_household_resources: 48_500
+
+- name: Capital gain distributions net against a capital loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains: -20_000
+        non_sch_d_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2025 MI-1040 book, MI-1040CR line 19: "net capital gains and losses ...
+    # from your U.S. Schedule D". Schedule D line 16 = -20,000 + 20,000
+    # (line 13) = 0. Line 30 (U.S. Schedule 1 adjustments) has none.
+    mi_household_resources: 50_000
+
+- name: Spouses' capital gains and losses net on a joint Schedule D
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains: 40_000
+      person2:
+        age: 45
+        long_term_capital_gains: -40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 19: Schedule D line 16 = 40,000 - 40,000 = 0.
+    mi_household_resources: 50_000

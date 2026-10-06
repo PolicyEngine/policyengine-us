@@ -1,3 +1,44 @@
+## [2.29.9] - 2026-10-06
+
+### Fixed
+
+- Limit the non-refundable Child Tax Credit by the actual tax liability, SALT deduction included (26 U.S.C. 26(a); Schedule 8812 Credit Limit Worksheet A, line 1), instead of a recomputation without SALT that applied or not depending on which variables were calculated first; and make the itemization, Delaware and Virginia EITC, Idaho aged or disabled, Missouri TANF caretaker and Medicaid SSI-supplement comparison branches calculate under their overridden inputs even when the simulation has already calculated those inputs, including variables it was given as inputs only for another year.
+
+
+## [2.29.8] - 2026-10-06
+
+### Fixed
+
+- Stop inferring a person input as a tax unit dependent (such as an elderly parent or adult child) as the tax unit head or spouse; the oldest adult not input as a dependent is now the head, and the next oldest the spouse.
+
+
+## [2.29.7] - 2026-10-06
+
+### Fixed
+
+- Net capital gain distributions against Schedule D capital losses before the 26 U.S.C. 1211(b) $3,000 loss limit in adjusted gross income, net investment income, loss-limited capital gains (Michigan, Mississippi, Delaware and Georgia), a dependent's Social Security modified AGI and the capital gain tax worksheet test, and net spouses' gains and losses on a joint return.
+
+
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
+## [2.29.5] - 2026-10-06
+
+### Fixed
+
+- A tax bracket above an infinite threshold now adds nothing, instead of NaN, to the tax and to the taxable income taxed below 25 percent. The additional_tax_bracket contrib reform ships brackets 7 and 8 with infinite thresholds, so until a user set bracket 7 its income_tax_main_rates and regular_tax_before_credits were NaN for every household; a reform that set any of the baseline schedule's first six thresholds to infinity hit the same NaN.
+- Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
+
+
 ## [2.29.4] - 2026-10-06
 
 ### Fixed
