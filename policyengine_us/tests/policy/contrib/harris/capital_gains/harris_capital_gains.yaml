@@ -85,3 +85,35 @@
         filing_status: JOINT
   output:
     capital_gains_tax: 892.5
+
+# 26 U.S.C. 1(h)(1)(F) taxes at 28 percent only the taxable income left after
+# the regular rate amount, the adjusted net capital gain and the unrecaptured
+# section 1250 gain. 2025, single, $200,000 of wages and $400,000 of
+# long-term gain, $100,000 of it collectibles gain: taxable income $584,250;
+# the regular rate amount is the greater of $184,250 or the lesser of
+# $197,300 and $284,250, $197,300; the adjusted net capital gain $300,000 is
+# all within the reform's 15 percent band ($45,000); the 28 percent amount is
+# $584,250 - $197,300 - $300,000 = $86,950 ($24,346), not all $100,000.
+- name: Reform applied, collectibles gain partly taxed at the regular rates
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.harris.capital_gains.harris_capital_gains.harris_capital_gains
+  input:
+    gov.contrib.harris.capital_gains.in_effect: true
+    people:
+      head:
+        age: 45
+        employment_income: 200_000
+        long_term_capital_gains: 400_000
+        long_term_capital_gains_on_collectibles: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxable_income: 584_250
+    capital_gains_excluded_from_taxable_income: 386_950
+    capital_gains_tax: 69_346

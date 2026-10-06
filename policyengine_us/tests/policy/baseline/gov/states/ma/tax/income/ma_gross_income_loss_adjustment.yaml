@@ -5,3 +5,29 @@
     state_code: MA
   output:
     ma_gross_income_loss_adjustment: -10_000
+
+- name: A dependent's Schedule C loss stays on the dependent's own Form 1
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        rental_income: 2_000
+      child:
+        age: 17
+        self_employment_income: -3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # Federal gross income leaves the child out, so the child's loss is not
+    # subtracted on the parent's line 6a: MA total 5.0% income is the
+    # parent's wages (line 3) plus rental income (line 7).
+    ma_gross_income_loss_adjustment: 0
+    ma_gross_income: 42_000

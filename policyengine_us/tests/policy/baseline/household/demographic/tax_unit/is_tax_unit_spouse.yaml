@@ -32,3 +32,74 @@
         members: [child, head, spouse, other_dep]
   output:
     is_tax_unit_spouse: [false, false, true, false]
+
+- name: An adult child input as a dependent is not the spouse of a single parent.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      adult_child:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    tax_unit_married: false
+    age_spouse: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: An elderly dependent is not the spouse when only the head is input.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+  output:
+    is_tax_unit_spouse: [false, true, false]
+    age_spouse: 38
+
+- name: Dependents of several ages leave the couple as head and spouse.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+      grandparent:
+        age: 75
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child, grandparent]
+  output:
+    is_tax_unit_head: [true, false, false, false]
+    is_tax_unit_spouse: [false, true, false, false]
+    tax_unit_dependents: 2

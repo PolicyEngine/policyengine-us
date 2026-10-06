@@ -45,7 +45,12 @@ class student_loan_interest_ald_magi(Variable):
         other_alds = sorted(
             set(p_irs.ald.deductions) - set(p.person_alds) - set(p.excluded_alds)
         )
-        ald_sum_taxunit = add(person.tax_unit, period, other_alds)
+        ald_sum_taxunit = tax_unit_non_dep_add(
+            person.tax_unit,
+            period,
+            other_alds,
+            include_dependents=p_irs.ald.filer_amounts_recorded_on_dependents,
+        )
         # Income inputs are net of the section 911 amounts; add them back in
         # full (Form 2555 lines 45 and 50; Pub. 970 Worksheet 4-1 lines 5-6).
         section_911_excluded_income = person.tax_unit(

@@ -62,6 +62,7 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
                 gross_income=SimpleNamespace(sources=[]),
                 ald=SimpleNamespace(
                     deductions=deductions,
+                    filer_amounts_recorded_on_dependents=[],
                     student_loan_interest=SimpleNamespace(magi=magi),
                 ),
             )
@@ -84,13 +85,19 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     person = Person()
 
     def capture_add(entity, period, variables):
-        if entity is person.tax_unit:
-            captured.extend(variables)
-            raise ReachedTaxUnitSum
+        # Tax-unit deductions must be summed over non-dependents only, through
+        # tax_unit_non_dep_add, never with a plain add over every member.
+        assert entity is person
         assert variables == [f"{name}_person" for name in PERSON_ALDS]
         return np.array([0], dtype=np.float32)
 
+    def capture_tax_unit_add(entity, period, variables, include_dependents=()):
+        assert entity is person.tax_unit
+        captured.extend(variables)
+        raise ReachedTaxUnitSum
+
     monkeypatch.setattr(module, "add", capture_add)
+    monkeypatch.setattr(module, "tax_unit_non_dep_add", capture_tax_unit_add)
     with pytest.raises(ReachedTaxUnitSum):
         getattr(module, variable_name).formula(person, 2026, lambda period: parameters)
 

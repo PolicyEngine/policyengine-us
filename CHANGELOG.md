@@ -1,3 +1,138 @@
+## [2.29.10] - 2026-10-06
+
+### Changed
+
+- List casetext.com in the known-dead reference URL guard so its links cannot return.
+
+### Fixed
+
+- Keep tax unit dependents' above-the-line deductions (the deductible part of self-employment tax, self-employed health insurance and retirement plans, IRA contributions, early withdrawal penalties, educator expenses and alimony paid) off the filer's AGI, Social Security and unemployment MAGIs, per-person AGI and student loan interest MAGI, and off the Missouri, Massachusetts, Minnesota property tax refund and Medicaid incomes built from them. Employer adoption assistance and education savings bond interest stay on the filer's return wherever they are recorded. A dependent's own deductions now reduce the dependent's Medicaid AGI, Massachusetts gross income no longer subtracts dependents' business losses, and Mississippi subtracts each person's own self-employed health insurance and retirement plan deductions instead of the tax unit's total for every member.
+- Michigan household resources net business and rental income within MI-1040CR lines 16 and 17 before flooring each total at zero, count only the claimant's and spouse's business and rental items on those two lines (MCL 206.508(3)), count estate and trust income and Form 4797 ordinary gains on line 16, and no longer subtract business, rental or capital losses again as Schedule 1 adjustments on line 30.
+- Fix the Arizona property tax credit Schedule 2 thresholds, which were each one dollar low: a claimant living with others with household income of exactly $2,500, $2,650, ..., $5,500 got the next band's amount ($5,500 got none) instead of the ARS 43-1072(B)(2) amount.
+- Net collectibles loss, the net short-term capital loss and the long-term capital loss carryover against 28 percent rate gain, and the rest against unrecaptured section 1250 gain, per 26 U.S.C. 1(h)(4) and 1(h)(6), through new inputs for those amounts before netting; amounts entered as reported on Schedule D lines 18 and 19 pass through unchanged.
+
+
+## [2.29.9] - 2026-10-06
+
+### Fixed
+
+- Limit the non-refundable Child Tax Credit by the actual tax liability, SALT deduction included (26 U.S.C. 26(a); Schedule 8812 Credit Limit Worksheet A, line 1), instead of a recomputation without SALT that applied or not depending on which variables were calculated first; and make the itemization, Delaware and Virginia EITC, Idaho aged or disabled, Missouri TANF caretaker and Medicaid SSI-supplement comparison branches calculate under their overridden inputs even when the simulation has already calculated those inputs, including variables it was given as inputs only for another year.
+
+
+## [2.29.8] - 2026-10-06
+
+### Fixed
+
+- Stop inferring a person input as a tax unit dependent (such as an elderly parent or adult child) as the tax unit head or spouse; the oldest adult not input as a dependent is now the head, and the next oldest the spouse.
+
+
+## [2.29.7] - 2026-10-06
+
+### Fixed
+
+- Net capital gain distributions against Schedule D capital losses before the 26 U.S.C. 1211(b) $3,000 loss limit in adjusted gross income, net investment income, loss-limited capital gains (Michigan, Mississippi, Delaware and Georgia), a dependent's Social Security modified AGI and the capital gain tax worksheet test, and net spouses' gains and losses on a joint return.
+
+
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
+## [2.29.5] - 2026-10-06
+
+### Fixed
+
+- A tax bracket above an infinite threshold now adds nothing, instead of NaN, to the tax and to the taxable income taxed below 25 percent. The additional_tax_bracket contrib reform ships brackets 7 and 8 with infinite thresholds, so until a user set bracket 7 its income_tax_main_rates and regular_tax_before_credits were NaN for every household; a reform that set any of the baseline schedule's first six thresholds to infinity hit the same NaN.
+- Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
+
+
+## [2.29.4] - 2026-10-06
+
+### Fixed
+
+- Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
+
+
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
+## [2.29.0] - 2026-10-05
+
+### Added
+
+- Add North Carolina Low Income Energy Assistance Program (LIEAP) regular heating benefits.
+
+
+## [2.28.3] - 2026-10-05
+
+### Fixed
+
+- Count estate and trust income (AR1000F line 19) and Schedule F farm income (line 20) in Arkansas gross income.
+
+
+## [2.28.2] - 2026-10-05
+
+### Fixed
+
+- Tax 28 percent rate and unrecaptured section 1250 gain at the regular rates on taxable income up to the top of the 24 percent bracket, the amount taxed below 25 percent under 26 U.S.C. 1(h)(1)(A), and enter Schedule D Tax Worksheet line 21 on Form 6251 Part III line 27.
+
+
+## [2.28.1] - 2026-10-05
+
+### Changed
+
+- Test a Form 4952 line 4g election together with the section 911(f) stacked tax on generated households.
+
+
+## [2.28.0] - 2026-10-05
+
+### Added
+
+- Add Indiana Energy Assistance Program (EAP) regular heating assistance and the winter electric allowance.
+
+### Fixed
+
+- Apply the married-filing-separately 28% breakpoint (26 U.S.C. 55(b)(1)(C)) on Form 6251 Part III line 18, so separate filers with qualified dividends or capital gains no longer get the full breakpoint in the capital gains computation of the alternative minimum tax.
+- Use Louisiana's official 2026 standard deduction ($12,838 single or separate, $25,676 joint, head of household or surviving spouse) and age-65 retirement income exemption ($12,324) from LDR Revenue Information Bulletin 26-019, and project both after 2026 with La. R.S. 47:294(B) and 47:44.1(A)'s annual CPI-U adjustment, using BLS's not seasonally adjusted December CPI-U (new gov.bls.cpi.cpi_u_nsa_december) where published.
+
+
+## [2.27.0] - 2026-10-05
+
+### Added
+
+- Add Kentucky LIHEAP regular heating assistance for FY2025 and FY2026.
+
+### Fixed
+
+- Order the federal non-refundable credits as their IRS credit limit worksheets do: the elderly or disabled credit is limited only by the foreign tax and child and dependent care credits (Schedule R) and precedes the education, retirement savings and energy efficient home improvement credits (Forms 8863, 8880 and 5695); the previously owned clean vehicle credit precedes the new clean vehicle credit (Form 8936) and is now limited by tax; the foreign tax credit applies against tax before 2022; the refundable 2021 child and dependent care credit no longer reduces other credits' limits; and Oklahoma's federal Child Tax Credit applies the credits that Schedule 8812 Credit Limit Worksheet A subtracts before the CTC, not those listed before it.
+
+
 ## [2.26.0] - 2026-10-05
 
 ### Added
