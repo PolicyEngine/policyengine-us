@@ -6,9 +6,15 @@ interest and dividends to a parent's return. State income taxes that start
 from federal AGI therefore must not subtract a dependent's pension, IRA or
 401(k) distributions, or military retirement pay from the filer's income.
 
-The tests draw a seeded random population of tax units (single or joint, with
-zero to two dependents, head and spouse aged under or over the common
-retirement-exclusion ages) and run each scenario as one vectorized simulation:
+The tests draw a seeded random population of tax units and run each scenario
+as one vectorized simulation. Each unit is single or joint, with wages,
+retirement income and Social Security for the head and spouse, who are aged
+from 35 to 80: under and over the common retirement-exclusion ages, and over
+the ages that gate credits such as Utah's retirement credit (born in 1952 or
+earlier). Each has zero to two dependents, either children or an elderly
+relative. Social Security and the older ages matter: Utah's military
+retirement credit, for example, is open only when the Social Security credit
+outweighs the age-gated retirement credit.
 
 1. `tax_unit_non_dep_add` equals a numpy reference: the head's and spouse's
    amounts of person-level variables plus tax-unit-level variables. For tax
@@ -31,6 +37,12 @@ from policyengine_core.periods import period as make_period
 SEED = 20260928
 TOLERANCE = 0.01  # dollars
 
+# Ages that reach every retirement age test, including Utah's retirement
+# credit (born in 1952 or earlier, so 73 or older in 2025).
+FILER_AGES = [35, 60, 67, 70, 75, 80]
+# A qualifying relative's gross income must stay under the exemption amount
+# ($5,200 in 2025), so an elderly dependent's draws are kept small.
+ELDERLY_DEPENDENT_SCALE = 800
 RETIREMENT_INPUTS = [
     "taxable_public_pension_income",
     "taxable_private_pension_income",
@@ -47,32 +59,46 @@ def _draw_units(n, rng):
         joint = bool(rng.random() < 0.5)
         n_dependents = int(rng.integers(0, 3))
 
+        def draw(scale):
+            return float(round(rng.choice([0.0, rng.uniform(0, scale)])))
+
         def retirement(scale):
-            return {
-                name: float(round(rng.choice([0.0, rng.uniform(0, scale)])))
-                for name in RETIREMENT_INPUTS
-            }
+            return {name: draw(scale) for name in RETIREMENT_INPUTS}
+
+        def filer():
+            return {**retirement(40_000), "social_security": draw(40_000)}
+
+        def dependent():
+            if rng.random() < 0.2:
+                # A qualifying relative, such as an elderly parent.
+                return {
+                    "age": int(rng.choice([70, 78, 85])),
+                    "income": retirement(ELDERLY_DEPENDENT_SCALE),
+                }
+            # A qualifying child (under 19), so no dependency test turns on
+            # the child's own income.
+            return {"age": int(rng.integers(1, 19)), "income": retirement(15_000)}
 
         units.append(
             {
                 "joint": joint,
-                "head_age": int(rng.choice([35, 60, 70])),
-                "spouse_age": int(rng.choice([35, 60, 70])),
+                "head_age": int(rng.choice(FILER_AGES)),
+                "spouse_age": int(rng.choice(FILER_AGES)),
                 "head_wages": float(round(rng.uniform(0, 120_000))),
-                "head": retirement(40_000),
-                "spouse": retirement(40_000) if joint else None,
-                "dependents": [
-                    {
-                        # Qualifying children (under 19), so no dependency
-                        # test turns on the child's own income.
-                        "age": int(rng.integers(1, 19)),
-                        "income": retirement(15_000),
-                    }
-                    for _ in range(n_dependents)
-                ],
+                "head": filer(),
+                "spouse": filer() if joint else None,
+                "dependents": [dependent() for _ in range(n_dependents)],
             }
         )
     return units
+
+
+def _filers(u):
+    return [u["head"]] + ([u["spouse"]] if u["spouse"] else [])
+
+
+def _filer_ages(u):
+    return [u["head_age"]] + ([u["spouse_age"]] if u["spouse"] else [])
 
 
 def _situation(units, states, year, *, zero_dependents=False):
@@ -148,11 +174,10 @@ def test_tax_unit_non_dep_add_matches_reference():
 
     expected = []
     for u in units:
-        filers = [u["head"]] + ([u["spouse"]] if u["spouse"] else [])
         expected.append(
             sum(
                 f["taxable_public_pension_income"] + f["military_retirement_pay"]
-                for f in filers
+                for f in _filers(u)
             )
         )
     expected = np.array(expected) + sim.calculate("tax_unit_social_security", year)
@@ -164,6 +189,26 @@ def test_tax_unit_non_dep_add_matches_reference():
         result[no_dependents], everyone[no_dependents], atol=TOLERANCE
     )
     assert (result <= everyone + TOLERANCE).all()
+
+
+def test_tax_unit_non_dep_add_edge_cases():
+    rng = np.random.default_rng(SEED)
+    units = _draw_units(20, rng)
+    year = 2025
+    sim = Simulation(situation=_situation(units, ["TX"], year))
+    tax_unit = sim.populations["tax_unit"]
+    period = make_period(year)
+    # An empty list still gives one value per tax unit.
+    empty = tax_unit_non_dep_add(tax_unit, period, [])
+    assert empty.shape == (len(units),)
+    assert (empty == 0).all()
+    # A variable of another group entity falls back to add.
+    np.testing.assert_allclose(
+        tax_unit_non_dep_add(tax_unit, period, ["spm_unit_size"]),
+        add(tax_unit, period, ["spm_unit_size"]),
+    )
+    with pytest.raises(ValueError):
+        tax_unit_non_dep_add(sim.populations["spm_unit"], period, ["ssi"])
 
 
 # States with an individual income tax on wages and retirement income.
@@ -202,10 +247,10 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
             > TOLERANCE
         )
     states = np.repeat(INCOME_TAX_STATES, len(units))
-    has_dependent_income = np.tile(
-        [any(any(d["income"].values()) for d in u["dependents"]) for u in units],
-        len(INCOME_TAX_STATES),
+    unit_has_dependent_income = np.array(
+        [any(any(d["income"].values()) for d in u["dependents"]) for u in units]
     )
+    has_dependent_income = np.tile(unit_has_dependent_income, len(INCOME_TAX_STATES))
 
     lowered = tax_with < tax_without - TOLERANCE
     assert not lowered.any(), sorted(set(states[lowered]))
@@ -213,5 +258,28 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
     counts_dependents = np.isin(states, list(STATES_COUNTING_DEPENDENT_INCOME))
     changed &= ~counts_dependents
     assert not changed.any(), sorted(set(states[changed]))
-    # The population must exercise the property.
+    # The population must exercise the property, including the paths gated on
+    # the filers' Social Security and on ages of 73 or more.
     assert has_dependent_income.sum() >= len(INCOME_TAX_STATES)
+    filer_social_security = np.array(
+        [any(f["social_security"] > 0 for f in _filers(u)) for u in units]
+    )
+    filer_aged_73 = np.array([max(_filer_ages(u)) >= 73 for u in units])
+    elderly_dependent = np.array(
+        [any(d["age"] >= 65 for d in u["dependents"]) for u in units]
+    )
+    assert (unit_has_dependent_income & filer_social_security).any()
+    assert (unit_has_dependent_income & filer_aged_73).any()
+    assert (unit_has_dependent_income & elderly_dependent).any()
+    # Utah's military retirement credit is open only when the retirement
+    # credit is not claimed, which needs Social Security worth more than the
+    # age-gated retirement credit.
+    dependent_military_pay = np.tile(
+        [any(d["income"]["military_retirement_pay"] > 0 for d in u["dependents"])
+         for u in units],
+        len(INCOME_TAX_STATES),
+    )  # fmt: skip
+    ut_military_credit_open = (states == "UT") & ~with_income.calculate(
+        "ut_claims_retirement_credit", year
+    )
+    assert (ut_military_credit_open & dependent_military_pay).any()
