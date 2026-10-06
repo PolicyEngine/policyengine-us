@@ -1,0 +1,161 @@
+# Kansas LIEAP household size (KEESM 13330): members who are U.S. citizens or
+# qualified noncitizens. Non-qualified members are not counted in the household
+# size, although their income still counts (see ks_liheap_countable_income.yaml).
+# Qualified aliens per KEESM 13330: legal permanent residents, refugees,
+# asylees, parolees (1+ year), deportation withheld, conditional entrants.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, single citizen counts as one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 1
+
+- name: Case 2, family of four citizens counts four.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 4
+
+- name: Case 3, five members with one undocumented adult counts four.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # KEESM 13330: the undocumented member is excluded -> 5 - 1 = 4.
+    ks_liheap_household_size: 4
+
+- name: Case 4, lawful permanent resident is a qualified noncitizen and counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        age: 44
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 2
+
+- name: Case 5, household of two undocumented members counts zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 0
+
+- name: Case 6, DACA member is not a qualified noncitizen and is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 22
+        immigration_status: DACA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # DACA is not on the KEESM 13330 qualified-alien list (8 USC 1641).
+    ks_liheap_household_size: 1
+
+- name: Case 7, refugee with a citizen child counts two.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        immigration_status: REFUGEE
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_liheap_household_size: 2

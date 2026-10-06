@@ -8,7 +8,7 @@ class gross_medicare_part_b_premium(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "is_medicare_eligible"
-    reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
+    reference = "https://www.medicare.gov/basics/costs/medicare-costs#partB"
     documentation = "Annual Medicare Part B premium before Medicare Savings Program coverage, including any income-related monthly adjustment amount. Based on modified adjusted gross income from 2 years prior."
 
     def formula(person, period, parameters):

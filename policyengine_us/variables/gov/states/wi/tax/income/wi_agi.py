@@ -8,10 +8,10 @@ class wi_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf",
     )
     defined_for = StateCode.WI
     adds = ["adjusted_gross_income", "wi_additions"]

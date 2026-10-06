@@ -7,7 +7,7 @@ class ks_tanf_resources_eligible(Variable):
     label = "Kansas TANF resource eligibility"
     definition_period = MONTH
     reference = (
-        "https://content.dcf.ks.gov/ees/keesm/current/keesm5110.htm",
+        "https://content.dcf.ks.gov/ees/keesm/current/keesm5000.htm#5110",
         "https://content.dcf.ks.gov/ees/keesm/current/keesm5000.htm",
     )
     defined_for = StateCode.KS
