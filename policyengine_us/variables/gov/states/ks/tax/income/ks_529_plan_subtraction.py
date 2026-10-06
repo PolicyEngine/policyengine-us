@@ -17,10 +17,8 @@ class ks_529_plan_subtraction(Variable):
         p = parameters(period).gov.states.ks.tax.income.agi.subtractions.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
         filing_status = tax_unit("filing_status", period)
-        beneficiaries = add(
-            tax_unit,
-            period,
-            ["count_529_contribution_beneficiaries"],
+        beneficiaries = tax_unit(
+            "tax_unit_count_529_contribution_beneficiaries", period
         )
         cap = p.cap[filing_status] * beneficiaries
         return min_(contributions, cap)

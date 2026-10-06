@@ -16,10 +16,8 @@ class ia_529_plan_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ia.tax.income.subtractions.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
-        beneficiaries = add(
-            tax_unit,
-            period,
-            ["count_529_contribution_beneficiaries"],
+        beneficiaries = tax_unit(
+            "tax_unit_count_529_contribution_beneficiaries", period
         )
         cap = p.cap * beneficiaries
         return min_(contributions, cap)

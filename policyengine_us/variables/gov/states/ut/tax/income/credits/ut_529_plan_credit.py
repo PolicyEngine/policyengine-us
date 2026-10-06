@@ -17,10 +17,8 @@ class ut_529_plan_credit(Variable):
         p = parameters(period).gov.states.ut.tax.income.credits.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
         filing_status = tax_unit("filing_status", period)
-        beneficiaries = add(
-            tax_unit,
-            period,
-            ["count_529_contribution_beneficiaries"],
+        beneficiaries = tax_unit(
+            "tax_unit_count_529_contribution_beneficiaries", period
         )
         cap = p.cap[filing_status] * beneficiaries
         eligible_contributions = min_(contributions, cap)

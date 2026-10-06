@@ -1,11 +1,13 @@
-description: Ohio caps the 529 plan contributions deduction to this amount.
+description: Ohio limits the 529 plan contribution deduction to this amount for each beneficiary, for a taxpayer and spouse combined.
 values:
   2021-01-01: 4_000
 metadata:
   unit: currency-USD
   period: year
-  label: Ohio 529 plan contribution deduction cap
+  label: Ohio 529 plan contribution deduction cap per beneficiary
   reference:
+    - title: Ohio Revised Code Section 5747.70(A)
+      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/57/5747/5747.70/4-3-2023/5747.70-4-3-2023.pdf#page=1
     - title: Ohio Revised Code Section 5747.01(A)(9)
       href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
     - title: Ohio 2021 Instructions for Filing Original and Amended - Line 31

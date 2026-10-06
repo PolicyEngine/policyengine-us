@@ -23,8 +23,11 @@ class nj_529_deduction(Variable):
         # Get the TaxUnit-level deduction cap
         total_contributions = person.tax_unit("investment_in_529_plan", period)
         unit_deduction = min_(total_contributions, p.cap)
-        # Allocate proportionally to each person
-        person_contributions = person("investment_in_529_plan_indv", period)
+        # Allocate to the head and spouse in proportion to their own
+        # contributions. A dependent's contributions are their own and are
+        # left out of investment_in_529_plan.
+        filer = ~person("is_tax_unit_dependent", period)
+        person_contributions = person("investment_in_529_plan_indv", period) * filer
         total = person.tax_unit.sum(person_contributions)
         share = np.zeros_like(total)
         mask = total != 0

@@ -46,3 +46,195 @@
         state_code: OH
   output:
     oh_529_plan_deduction: 4_000
+
+# R.C. 5747.70(A) limits the combined contributions of a taxpayer and spouse
+# to $4,000 for each beneficiary, carries the excess forward, and allows the
+# deduction only "to a taxpayer who contributes"; 2025 IT 1040 line 37.
+
+- name: The limit applies to each beneficiary, not to the pooled total
+  # $8,000 for one child is limited to $4,000; $100 for the other is under it.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        investment_in_529_plan_indv: 8_100
+        count_529_contribution_beneficiaries: 2
+      child1:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 8_000
+      child2:
+        age: 8
+        investment_in_529_plan_as_beneficiary: 100
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 4_100
+
+- name: Spouses contributing for the same child share one limit
+  # Each spouse counts the child, but the limit is per beneficiary for the
+  # taxpayer and spouse combined.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 40
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      parent2:
+        age: 40
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      child:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 4_000
+    oh_529_plan_deduction_person: [2_000, 2_000, 0]
+
+- name: Spouses filing separately also share one limit per beneficiary
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 40
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      parent2:
+        age: 40
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      child:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 4_000
+
+- name: Contributions carried forward are deducted within the limit
+  # $3,000 this year plus $2,500 carried forward for the child; $4,000 is
+  # deducted and $1,500 carries on.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      child:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 3_000
+        oh_529_plan_deduction_carryforward: 2_500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 4_000
+
+- name: Contributions carried forward are deducted in a year without new contributions
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 10
+        oh_529_plan_deduction_carryforward: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 1_500
+    oh_529_plan_deduction_person: [1_500, 0]
+
+- name: A dependent's own contribution is not deducted on the parent's return
+  # The 2025 instructions: "You may not deduct ... Amounts contributed by
+  # another person."
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 15
+        investment_in_529_plan_indv: 1_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 0
+
+- name: Contributions for beneficiaries outside the tax unit are limited by their count
+  # A grandparent gives $5,000 to each of three grandchildren in other tax
+  # units: $4,000 each.
+  period: 2025
+  input:
+    people:
+      grandparent:
+        age: 70
+        investment_in_529_plan_indv: 15_000
+        count_529_contribution_beneficiaries: 3
+    tax_units:
+      tax_unit:
+        members: [grandparent]
+    households:
+      household:
+        members: [grandparent]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 12_000
+
+- name: Beneficiaries inside and outside the tax unit
+  # $6,000 for the parent's child (limited to $4,000) and $3,000 for a niece
+  # outside the tax unit, the parent's other counted beneficiary.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        investment_in_529_plan_indv: 9_000
+        count_529_contribution_beneficiaries: 2
+      child:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction: 7_000

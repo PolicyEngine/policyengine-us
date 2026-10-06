@@ -17,19 +17,21 @@ item is the taxpayer's own:
   income" (30 Del. C. 1106(b)(4), (9), (10)) and 529 contributions made by
   the individual, or by the spouses on a joint return ((b)(11)).
 - Ohio deducts the taxpayer's own income and expenses (R.C. 5747.01(A)(4),
-  (11), (18), (23), (27), (31)), and the medical and 529 amounts the taxpayer
-  paid, including for dependents ((A)(9), (A)(10)).
+  (11), (18), (23), (27), (31)), the medical amounts the taxpayer paid,
+  including for dependents ((A)(10)), and 529 contributions, which are
+  allowed "to a taxpayer who contributes" (R.C. 5747.70(A)).
 
 So for every tax unit in these states, and any income items its dependents
 have (unemployment compensation, state tax refunds, U.S. government interest,
 D-2440 disability payments, SSI, Pell grants, disability benefits, Ohio
-section 179 add-backs, uniformed services retirement and educator expenses):
+section 179 add-backs, uniformed services retirement, educator expenses, and
+529 contributions, which investment_in_529_plan_indv records on the
+contributor):
 
 1. DC, Delaware and Ohio AGI, taxable income and tax before credits are the
    same as when the dependents have none of these items.
 2. A dependent's dc_income_subtractions and de_subtractions are zero, and
-   their oh_deductions are their shares of the filer's 529 and medical
-   deductions.
+   their oh_deductions are their shares of the filer's medical deduction.
 3. Per-return amounts are counted once over the tax unit:
    - the Ohio unreimbursed medical deduction is the members' medical expenses
      over 7.5% of federal AGI;
@@ -62,12 +64,12 @@ OWN_ITEMS = [
     "oh_section_179_expense_add_back",
     "oh_uniformed_services_retirement_income_deduction",
     "oh_educator_expense_deduction_person",
+    "investment_in_529_plan_indv",
+    "count_529_contribution_beneficiaries",
 ]
 # The filer's amounts, recorded on whoever they were for.
 FILER_ITEMS = [
     "other_medical_expenses",
-    "investment_in_529_plan_indv",
-    "count_529_contribution_beneficiaries",
 ]
 SAME_AS_WITHOUT_DEPENDENT_ITEMS = {
     "DC": [
@@ -268,12 +270,12 @@ def check(units):
     in_oh = person_state == "OH"
     assert np.all(people["dc_income_subtractions"][dependent & in_dc] == 0)
     assert np.all(people["de_subtractions"][dependent & in_de] == 0)
+    assert np.all(people["oh_529_plan_deduction_person"][dependent & in_oh] == 0)
     np.testing.assert_allclose(
         people["oh_deductions"][dependent & in_oh],
-        (
-            people["oh_529_plan_deduction_person"]
-            + people["oh_unreimbursed_medical_care_expense_deduction_person"]
-        )[dependent & in_oh],
+        people["oh_unreimbursed_medical_care_expense_deduction_person"][
+            dependent & in_oh
+        ],
         atol=TOLERANCE,
     )
 

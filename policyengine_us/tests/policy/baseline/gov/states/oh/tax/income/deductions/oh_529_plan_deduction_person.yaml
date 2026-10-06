@@ -36,7 +36,8 @@
   output:
     oh_529_plan_deduction_person: [1_000, 0]
 
-- name: No people with investment amounts
+- name: Without contributions this year the head takes the deduction
+  # As for a deduction of contributions carried forward.
   period: 2021
   input:
     people: 
@@ -53,4 +54,25 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_529_plan_deduction_person: [0, 0]
+    oh_529_plan_deduction_person: [1_000, 0]
+
+- name: A dependent's own contributions get no share
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        investment_in_529_plan_indv: 600
+      child:
+        age: 15
+        investment_in_529_plan_indv: 200
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        oh_529_plan_deduction: 600
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    oh_529_plan_deduction_person: [600, 0]

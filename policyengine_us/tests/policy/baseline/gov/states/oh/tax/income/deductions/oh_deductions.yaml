@@ -73,9 +73,9 @@
     oh_deductions: [3_000, 1_500]
     oh_agi: 55_500
 
-- name: A 529 contribution recorded on a dependent is deducted
-  # The tax unit's $1,000 contribution for one beneficiary is under the
-  # $4,000 limit (R.C. 5747.01(A)(9), 5747.70).
+- name: A dependent's own 529 contribution is not deducted
+  # Ohio allows the deduction "to a taxpayer who contributes" (R.C.
+  # 5747.70(A)); the child deducts their own contribution on their own return.
   period: 2025
   input:
     people:
@@ -90,6 +90,26 @@
     household:
       state_code: OH
   output:
-    oh_529_plan_deduction_person: [0, 1_000]
-    oh_deductions: [0, 1_000]
+    oh_529_plan_deduction_person: [0, 0]
+    oh_deductions: [0, 0]
+    oh_agi: 60_000
+
+- name: A parent's 529 contribution for a child is recorded on the parent
+  # $1,000 for one beneficiary is under the $4,000 limit (R.C. 5747.70(A)).
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        investment_in_529_plan_indv: 1_000
+      child:
+        age: 10
+        investment_in_529_plan_as_beneficiary: 1_000
+    household:
+      state_code: OH
+  output:
+    oh_529_plan_deduction_person: [1_000, 0]
+    oh_deductions: [1_000, 0]
     oh_agi: 59_000
