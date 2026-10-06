@@ -772,9 +772,7 @@ def test_named_parent_must_be_claiming_head_or_spouse():
         for known_claim in (False, True):
             for co_resident in (False, True):
                 case = (role, known_claim, co_resident)
-                simulation = Simulation(
-                    situation=named_parent_situation(*case)
-                )
+                simulation = Simulation(situation=named_parent_situation(*case))
                 claimed = by_name(simulation, "medicaid_claimed_by_parent_in_tax_unit")
                 other = by_name(
                     simulation,
