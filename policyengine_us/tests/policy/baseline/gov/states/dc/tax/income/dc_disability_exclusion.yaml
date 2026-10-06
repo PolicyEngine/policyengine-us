@@ -2,7 +2,7 @@
 # your spouse, and line 10 subtracts federal AGI less taxable Social Security
 # less $15,000. Each filer gets a share of the line 10 exclusion in proportion
 # to their capped payments, so the return's exclusion is counted once.
-- name: disability payments are over the cap,and the reduced income is positive
+- name: disability payments are over the cap, and the reduced income is positive
   period: 2021
   absolute_error_margin: 0.01
   input:

@@ -92,7 +92,7 @@ def person_non_dep_add(person, period, variables, include_dependents=()):
     must be person-level; `add` rejects others.
     """
     filer = ~person("is_tax_unit_dependent", period)
-    total = 0
+    total = np.zeros(person.count)
     for variable in variables:
         amount = add(person, period, [variable])
         if variable in include_dependents:
