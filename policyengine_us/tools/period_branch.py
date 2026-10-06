@@ -22,7 +22,8 @@ calculates:
   parent's cache is then safe to share; this is the usual case, where a
   formula branches while its parent is still calculating the variable the
   branch overrides. Otherwise the branch drops every array it copied except
-  inputs, and calculates the rest itself.
+  inputs, each for the periods it was set for, and calculates the rest
+  itself.
 - A branch reused within its period with different inputs is created again.
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
@@ -30,10 +31,10 @@ change the tax-benefit system rather than inputs: the caller swaps the system
 and deletes the variables it recalculates.
 """
 
-from typing import Dict, Tuple, Union
+from typing import Dict, Set, Tuple, Union
 
 import numpy as np
-from policyengine_core.periods import Period
+from policyengine_core.periods import ETERNITY, Period
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations import Simulation
 
@@ -56,23 +57,41 @@ def _is_known(simulation: Simulation, variable: str, period: Period) -> bool:
     return holder.get_array(period, simulation.branch_name) is not None
 
 
+def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
+    """The (variable, branch name, period) keys ``branch`` reads as inputs.
+
+    policyengine-core records each key that ``set_input`` stores, whether
+    from the dataset, the situation or a branch, in one set shared by a
+    simulation and all its branches. ``branch`` reads its own keys and its
+    ancestors'.
+    """
+    visible_branches = set(branch._get_visible_branch_names())
+    return {
+        key
+        for key in getattr(branch, "_user_input_keys", set())
+        if key[1] in visible_branches
+    }
+
+
 def drop_inherited_values(branch: Simulation) -> None:
     """Delete every array ``branch`` holds except inputs.
 
-    Inputs are the variables the simulation was built with and each value set
-    through ``set_input`` on a branch this one reads.
+    An array is kept only if ``set_input`` stored it, on this branch or one it
+    reads, for that variable and period. A value calculated for one period is
+    dropped even when the same variable is an input for another period.
     """
-    input_variables = set(branch.input_variables)
-    user_input_keys = getattr(branch, "_user_input_keys", set())
-    visible_branches = set(branch._get_visible_branch_names())
+    input_keys = _input_keys(branch)
+    # An eternal variable stores every period under one key, while the input
+    # key records the period it was set for, so match it by branch only.
+    eternal_inputs = {(name, branch_name) for name, branch_name, _ in input_keys}
     for population in branch.populations.values():
         for name, holder in population._holders.items():
-            if name in input_variables:
-                continue
+            eternal = holder.variable.definition_period == ETERNITY
             for branch_name, known_period in holder.get_known_branch_periods():
                 if (
-                    branch_name in visible_branches
-                    and (name, branch_name, known_period) in user_input_keys
+                    (name, branch_name) in eternal_inputs
+                    if eternal
+                    else (name, branch_name, known_period) in input_keys
                 ):
                     continue
                 # Exact key: ``Holder.delete_arrays`` would also delete any

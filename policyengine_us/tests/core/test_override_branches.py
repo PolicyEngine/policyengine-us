@@ -32,11 +32,15 @@ A seeded sample of households shares one simulation; the tests check:
    against the reference path).
 4. The same holds when the parent has already calculated the overridden
    input, and when an earlier year was calculated first.
+5. When the branch drops what it copied, it keeps exactly the values set as
+   inputs, each for the period it was set for: a variable that is an input in
+   one year is calculated again in the others (Hypothesis, over random mixes
+   of input years and formula years).
 """
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import period
 
@@ -350,6 +354,193 @@ def test_branch_after_parent_calculated_the_overridden_input(households):
     assert not np.allclose(itemizing, not_itemizing)
 
 
+YEARS = (2025, YEAR)
+# Formula variables between itemization and income tax that a situation can
+# also supply as inputs, here for one year only.
+MIXED_YEAR_INPUTS = [
+    "taxable_income",
+    "income_tax_main_rates",
+    "adjusted_gross_income",
+    "salt_deduction",
+    "ctc",
+]
+# The household from review r2 of PolicyEngine/policyengine-us#9741.
+REVIEW_HOUSEHOLD = dict(
+    state="CA",
+    married=True,
+    children=2,
+    earnings=160_000,
+    spouse_share=0,
+    mortgage=30_000,
+    property_tax=14_000,
+    charity=0,
+    aged_parent=False,
+)
+
+
+def _with_tax_unit_inputs(situation, inputs):
+    """Add each ``variable: (year, value)`` to every tax unit, for that year."""
+    for unit in situation["tax_units"].values():
+        for variable, (year, value) in inputs.items():
+            unit[variable] = {year: value}
+    return situation
+
+
+def test_branch_recalculates_a_variable_that_is_an_input_in_another_year():
+    # taxable_income is an input for 2025 only, so its 2026 value is
+    # calculated: by the parent, without itemizing. The itemizing branch has
+    # to calculate its own. Before the branch kept inputs by key and period,
+    # it answered with the parent's ($13,140 of income tax instead of the
+    # $8,191.05 an itemizing simulation gives).
+    situation = _with_tax_unit_inputs(
+        _situation([REVIEW_HOUSEHOLD], years=YEARS, itemizes=[False]),
+        {"taxable_income": (2025, 1)},
+    )
+    simulation = Simulation(situation=situation)
+    not_itemizing = simulation.calculate("income_tax", YEAR)
+    itemizing = simulation.calculate("tax_liability_if_itemizing", YEAR)
+    fresh = Simulation(situation=situation)
+    fresh.set_input("tax_unit_itemizes", YEAR, np.array([True]))
+    np.testing.assert_allclose(
+        itemizing, fresh.calculate("income_tax", YEAR), atol=0.01
+    )
+    assert not np.allclose(itemizing, not_itemizing)
+
+
+@settings(
+    max_examples=4,
+    deadline=None,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+@given(
+    households=st.lists(household_strategy, min_size=1, max_size=4),
+    inputs=st.dictionaries(
+        st.sampled_from(MIXED_YEAR_INPUTS),
+        st.tuples(st.sampled_from(YEARS), st.integers(0, 100_000)),
+        min_size=1,
+    ),
+    year=st.sampled_from(YEARS),
+    first=st.sampled_from(["income_tax", "taxable_income", "household_net_income"]),
+    first_year=st.sampled_from(YEARS),
+    parent_itemizes=st.sampled_from([None, False, True]),
+)
+@example(
+    households=[REVIEW_HOUSEHOLD],
+    inputs={"income_tax_main_rates": (2025, 1)},
+    year=YEAR,
+    first="income_tax",
+    first_year=YEAR,
+    parent_itemizes=False,
+)
+def test_branches_with_inputs_in_other_years_match_fresh_simulations(
+    households, inputs, year, first, first_year, parent_itemizes
+):
+    # Each variable in ``inputs`` is an input in one year and a formula in
+    # the other; tax_unit_itemizes is an input too unless parent_itemizes is
+    # None. Both comparison branches equal a simulation with the same inputs
+    # that sets itemization before calculating anything.
+    n = len(households)
+    itemizes = None if parent_itemizes is None else [parent_itemizes] * n
+    situation = _with_tax_unit_inputs(
+        _situation(households, years=YEARS, itemizes=itemizes), inputs
+    )
+    simulation = Simulation(situation=situation)
+    simulation.calculate(first, first_year)
+    for comparison, itemizing in (
+        ("tax_liability_if_itemizing", True),
+        ("tax_liability_if_not_itemizing", False),
+    ):
+        fresh = Simulation(situation=situation)
+        fresh.set_input("tax_unit_itemizes", year, np.full(n, itemizing))
+        np.testing.assert_allclose(
+            simulation.calculate(comparison, year),
+            fresh.calculate("income_tax", year),
+            atol=0.01,
+            err_msg=f"{comparison} for {year} after {first} for {first_year}",
+        )
+
+
+@settings(
+    max_examples=6,
+    deadline=None,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+@given(
+    households=st.lists(household_strategy, min_size=1, max_size=3),
+    situation_inputs=st.dictionaries(
+        st.sampled_from(MIXED_YEAR_INPUTS), st.sampled_from(YEARS)
+    ),
+    branch_inputs=st.dictionaries(
+        st.sampled_from(MIXED_YEAR_INPUTS + ["tax_unit_itemizes"]),
+        st.sampled_from(YEARS),
+    ),
+    calculated=st.lists(
+        st.tuples(
+            st.sampled_from(["income_tax", "taxable_income", "tax_unit_itemizes"]),
+            st.sampled_from(YEARS),
+        ),
+        min_size=1,
+        max_size=3,
+    ),
+    head_input=st.sampled_from([None, "situation", "branch"]),
+)
+def test_drop_inherited_values_keeps_exactly_the_input_keys(
+    households, situation_inputs, branch_inputs, calculated, head_input
+):
+    # Inputs in random years, on the simulation (from the situation) and on
+    # a branch of it; values calculated in random years on both. A branch of
+    # that branch, after drop_inherited_values, holds each input for the
+    # period it was set for, the nearer branch's first, and nothing else.
+    n = len(households)
+    situation = _with_tax_unit_inputs(
+        _situation(households, years=YEARS),
+        {variable: (year, 1_000) for variable, year in situation_inputs.items()},
+    )
+    heads = np.array([name.startswith("h") for name in situation["people"]])
+    if head_input == "situation":
+        for name in situation["people"]:
+            if name.startswith("h"):
+                situation["people"][name]["is_household_head"] = {YEAR: True}
+    simulation = Simulation(situation=situation)
+    for variable, year in calculated:
+        simulation.calculate(variable, year)
+    parent = simulation.get_branch("parent")
+    expected = {
+        (variable, year): np.full(n, 1_000.0)
+        for variable, year in situation_inputs.items()
+    }
+    for variable, year in branch_inputs.items():
+        value = np.ones(n, dtype=bool) if variable == "tax_unit_itemizes" else 2_000.0
+        parent.set_input(variable, year, np.broadcast_to(value, (n,)).copy())
+        expected[(variable, year)] = np.broadcast_to(value, (n,))
+    if head_input == "branch":
+        parent.set_input("is_household_head", YEAR, heads)
+    for variable, year in calculated:
+        parent.calculate(variable, year)
+    child = parent.get_branch("child")
+    drop_inherited_values(child)
+    for variable in MIXED_YEAR_INPUTS + [
+        "tax_unit_itemizes",
+        "income_tax",
+        "income_tax_before_credits",
+    ]:
+        for year in YEARS:
+            kept = child.get_array(variable, year)
+            if (variable, year) in expected:
+                np.testing.assert_array_equal(
+                    kept, expected[(variable, year)], err_msg=f"{variable} {year}"
+                )
+            else:
+                assert kept is None, f"calculated {variable} {year} was kept"
+    # An eternal variable is stored once for every period.
+    for year in YEARS:
+        head = child.get_array("is_household_head", year)
+        if head_input is None:
+            assert head is None
+        else:
+            np.testing.assert_array_equal(head, heads)
+
+
 def test_later_year_branches_match_single_year_simulation(households):
     years = (2025, YEAR)
     simulation = Simulation(situation=_situation(households, years=years))
@@ -417,10 +608,11 @@ def test_drop_inherited_values_keeps_inputs_only(households):
     parent.set_input("tax_unit_itemizes", YEAR, itemizes)
     child = parent.get_branch("child")
     drop_inherited_values(child)
-    # Inputs survive: the situation's and the one set on the parent branch.
+    # Inputs survive: the situation's (its employment income is stored as
+    # employment_income_before_lsr) and the one set on the parent branch.
     np.testing.assert_array_equal(
-        child.get_array("employment_income", YEAR),
-        simulation.get_array("employment_income", YEAR),
+        child.get_array("employment_income_before_lsr", YEAR),
+        simulation.get_array("employment_income_before_lsr", YEAR),
     )
     np.testing.assert_array_equal(child.get_array("tax_unit_itemizes", YEAR), itemizes)
     # Calculated values are gone, and are calculated again from the inputs.
