@@ -1,0 +1,37 @@
+# HBIS counts income with the AABD methodology, so each senior's earned income
+# is reduced only by the employment expenses of their own job
+# (89 Ill. Adm. Code 113.125).
+
+- name: Case 1, working senior couple, each deducts only their own withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 24_000  # $2,000/month
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        employment_income: 24_000  # $2,000/month
+        takes_up_ssi_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # IL withholding: (24,000 - 2,775) x 0.0495 / 12 = 87.55 each
+    # Social Security tax: 2,000 x 0.062 = 124 each
+    # Exemption: 87.55 + 124 = 211.55 each
+    il_aabd_expense_exemption_person: [211.55, 211.55]
+    # 2,000 - 211.55 - 25 (flat) - 50 (20 + 0.5 x 60) = 1,713.45
+    il_hbi_senior_countable_income: [1_713.45, 1_713.45]

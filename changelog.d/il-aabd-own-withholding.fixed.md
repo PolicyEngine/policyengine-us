@@ -1,0 +1,1 @@
+Count only a person's own Illinois withholding as an Illinois AABD employment expense, instead of giving every tax unit member the whole unit's withholding (89 Ill. Adm. Code 113.125(a)). This also corrects HBWD countable income and premiums and HBIS countable income.
