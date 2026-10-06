@@ -28,13 +28,13 @@ everything on a laptop.
   `uv run python policyengine_us/tests/test_batched.py <dir> --mode per-subdir --workers 1`.
 - A few files: `uv run policyengine-core test <files> -c policyengine_us`.
 - Never give one `policyengine-core test` process a whole directory tree or
-  hundreds of files. Until PolicyEngine/policyengine-core#569 and #570, the
-  YAML runner kept every case's simulation, a full copy of the tax-benefit
-  system for each distinct `reforms` / dotted-parameter combination (about
-  1.2 GB each), and a copy of the parameter tree for every date a case
-  asked about, all for the life of the process. A 1,500-file baseline run
-  reached 118 GB on 2026-10-02. Even with those fixes, one process holds
-  the baseline system plus up to two reform systems at once.
+  hundreds of files. The YAML runner keeps every case's simulation, a full
+  copy of the tax-benefit system for each distinct `reforms` /
+  dotted-parameter combination (about 1.2 GB each), and a copy of the
+  parameter tree for every date a case asked about, all for the life of the
+  process. A 1,500-file baseline run reached 118 GB on 2026-10-02.
+  PolicyEngine/policyengine-core#569 and #570 (open drafts) would bound
+  this; until they are released, keep each process to a bounded batch.
 - Run one large suite at a time: don't start several `make test-yaml-*`
   targets, or several `test_batched.py` runs, in parallel.
 
