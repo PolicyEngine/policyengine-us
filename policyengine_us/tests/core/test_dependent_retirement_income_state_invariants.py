@@ -120,6 +120,12 @@ def _filer_ages(u):
     return [u["head_age"]] + ([u["spouse_age"]] if u["spouse"] else [])
 
 
+def _service_years(income):
+    # Military retirement pay usually follows 20 years of service, which is
+    # also North Carolina's test for deducting it.
+    return 20 if income["military_retirement_pay"] > 0 else 0
+
+
 def _situation(units, states, year, *, zero_dependents=False):
     # Every group entity gets one instance per unit. Core puts every person in
     # a single instance of any group entity the situation leaves out, which
@@ -137,6 +143,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                 "is_tax_unit_spouse": {year: False},
                 "is_tax_unit_dependent": {year: False},
                 "employment_income": {year: u["head_wages"]},
+                "years_in_military": {year: _service_years(u["head"])},
                 **{name: {year: value} for name, value in u["head"].items()},
             }
             couple = [head]
@@ -149,6 +156,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                     "is_tax_unit_head": {year: False},
                     "is_tax_unit_spouse": {year: True},
                     "is_tax_unit_dependent": {year: False},
+                    "years_in_military": {year: _service_years(u["spouse"])},
                     **{name: {year: value} for name, value in u["spouse"].items()},
                 }
             marital_units[f"mu_{key}"] = {"members": couple}
@@ -162,6 +170,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                     "is_tax_unit_head": {year: False},
                     "is_tax_unit_spouse": {year: False},
                     "is_tax_unit_dependent": {year: True},
+                    "years_in_military": {year: _service_years(dependent["income"])},
                     **{
                         name: {year: factor * value}
                         for name, value in dependent["income"].items()
@@ -322,3 +331,12 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
         "ut_claims_retirement_credit", year
     )
     assert (ut_military_credit_open & dependent_military_pay).any()
+    # North Carolina's military deduction needs 20 years of service or a
+    # medical retirement.
+    nc_military_deduction_open = (states == "NC") & (
+        with_income.calculate(
+            "nc_military_retirement_deduction_eligible", year, map_to="tax_unit"
+        )
+        > 0
+    )
+    assert (nc_military_deduction_open & dependent_military_pay).any()

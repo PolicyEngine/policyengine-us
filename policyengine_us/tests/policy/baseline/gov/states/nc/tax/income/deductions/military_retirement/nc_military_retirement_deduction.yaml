@@ -15,3 +15,90 @@
      state_code: NC
   output:
     nc_military_retirement_deduction: 0
+
+# G.S. 105-153.5(b) allows only items included in the taxpayer's adjusted gross
+# income, and (b)(5a)a. only the pay of a retired member with 20 years of
+# service or a medical retirement. A tax unit dependent's pay is not in the
+# filer's federal AGI (the dependent files their own return).
+
+- name: A dependent's military retirement pay is not deducted from the filer's income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        # An elderly parent claimed as a qualifying relative.
+        age: 80
+        is_tax_unit_dependent: true
+        years_in_military: 25
+        military_retirement_pay: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 0
+
+- name: The head's qualifying pay is deducted and the dependent's is not.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 22
+        military_retirement_pay: 20_000
+      person2:
+        age: 78
+        is_tax_unit_dependent: true
+        years_in_military: 20
+        military_retirement_pay: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 20_000
+
+- name: A spouse's pay counts only if the spouse meets the service test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 20
+        military_retirement_pay: 20_000
+      person2:
+        age: 48
+        years_in_military: 4
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # The spouse served 4 years and was not medically retired.
+    nc_military_retirement_deduction: 20_000
