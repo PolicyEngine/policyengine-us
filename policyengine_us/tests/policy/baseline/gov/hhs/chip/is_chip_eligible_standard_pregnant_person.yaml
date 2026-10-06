@@ -154,3 +154,37 @@
         state_code: CO
   output:
     is_chip_eligible_standard_pregnant_person: [false, false, true, true, true]
+
+# Colorado elected the lawfully residing option for pregnant individuals in both
+# Medicaid and CHIP; Missouri did not. Income of 230% FPL is above both states'
+# Medicaid pregnancy limits (200% and 201%) and below their CHIP limits.
+- name: Case 8, recent permanent resident pregnant applicant qualifies for standard CHIP in Colorado but not Missouri, where FCEP still applies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 2.3
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 2.3
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: MO
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_standard_pregnant_person: [true, false]
+    # FCEP covers the unborn child, so it has no immigration test; both states
+    # offer it (Colorado since October 30, 2023).
+    is_chip_fcep_eligible_person: [true, true]
+    is_chip_eligible_pregnant: [true, true]

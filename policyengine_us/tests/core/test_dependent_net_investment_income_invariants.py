@@ -217,10 +217,20 @@ def units():
     return _draw_units()
 
 
+@pytest.fixture(scope="module")
+def reference_parameters():
+    # The reference calculations only read policy. Build an independent model
+    # once per module instead of rebuilding it for each assertion and year.
+    return CountryTaxBenefitSystem().parameters
+
+
 @pytest.fixture(scope="module", params=YEARS)
-def runs(request, units):
+def runs(request, units, reference_parameters):
     year = request.param
-    out = {"year": year}
+    out = {
+        "year": year,
+        "irs": reference_parameters(f"{year}-01-01").gov.irs,
+    }
     for name, kwargs in {"with": {}, "no_dependent": {"zero_dependents": True}}.items():
         sim = Simulation(situation=_situation(units, year, **kwargs))
         out[name] = {
@@ -242,12 +252,8 @@ def _unit_sum(runs, person_values):
     )
 
 
-def _irs(runs):
-    return CountryTaxBenefitSystem().parameters(f"{runs['year']}-01-01").gov.irs
-
-
 def _loss_limit(runs):
-    return _irs(runs).capital_gains.loss_limit[runs["with"]["filing_status"]]
+    return runs["irs"].capital_gains.loss_limit[runs["with"]["filing_status"]]
 
 
 def test_dependent_flags_match_the_draw(runs, units):
@@ -318,7 +324,7 @@ def test_units_without_dependents_match_all_member_formula(runs, units):
 
 
 def test_niit_within_statutory_bounds(runs):
-    p = _irs(runs).investment.net_investment_income_tax
+    p = runs["irs"].investment.net_investment_income_tax
     threshold = p.threshold[runs["with"]["filing_status"]]
     nii = runs["with"]["net_investment_income"]
     excess_magi = np.maximum(0, runs["with"]["niit_magi"] - threshold)

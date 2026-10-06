@@ -388,3 +388,35 @@
     net_investment_income: 0
     has_qdiv_or_ltcg: false
 
+
+- name: Netted distributions are taxed at ordinary rates
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        long_term_capital_gains: -8_000
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # With PolicyEngine/policyengine-us#9781 (section 1(h)) on main, AGI and
+    # the rate schedule agree. Schedule D line 13 = 5,000; line 15 = -3,000
+    # = line 16; line 21 = -3,000.
+    adjusted_gross_income: 97_000
+    # 97,000 - 15,750.
+    taxable_income: 81_250
+    # Lines 15 and 16 are losses: no net capital gain (26 U.S.C. 1222(11)),
+    # so the distributions get no preferential rate.
+    net_capital_gain: 0
+    capital_gains_tax: 0
+    # 2025 single brackets: 1,192.50 + 12% x 36,550 + 22% x (81,250 - 48,475)
+    # = 1,192.50 + 4,386 + 7,210.50.
+    income_tax_main_rates: 12_789
