@@ -1,12 +1,19 @@
 description: The District of Columbia treats a filer whose qualifying children all lack a Social Security number or individual taxpayer identification number as a filer without a qualifying child under its earned income tax credit if this is true.
 values:
-  # Before 2023 a qualifying child without a Social Security number stays a
-  # qualifying child (D.C. Code 47-1806.04(f)(4) and IRC 32(c)(3)(D)); the
-  # 2021 and 2022 D-40 instructions add no identification test for children.
-  2015-01-01: false
-  # From 2023 the D-40 instructions for the (f)(1)(D)(ii) ITIN extension send
-  # a filer whose children have neither number to the childless schedule.
-  2023-01-01: true
+  # From 2023 the D-40 Line 27a instructions require each qualifying child to
+  # have a Social Security number or ITIN and send a filer whose children have
+  # neither to the childless schedule. No DC source settles earlier years;
+  # the 2021 and 2022 booklets' qualifying-child rules have no identification
+  # test. Read alone, D.C. Code 47-1806.04(f)(4) and IRC 32(c)(3)(D) keep such
+  # a child a qualifying child, which closes the (f)(1)(C) childless
+  # schedule; setting this to false applies that reading. ARPA section 9622,
+  # "Taxpayer eligible for childless earned income credit in case of
+  # qualifying children who fail to meet certain identification
+  # requirements", struck former IRC 32(c)(1)(F) from 2021, and the 2021
+  # booklet's "New for 2021" note repeats it. PolicyEngine applies the
+  # childless treatment in every year, so a child with neither number never
+  # counts.
+  2015-01-01: true
 metadata:
   unit: bool
   period: year
@@ -14,6 +21,14 @@ metadata:
   reference:
     - title: Code of the District of Columbia § 47–1806.04 (f)(1)(D)(ii)
       href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(D)(ii)
+    - title: Code of the District of Columbia § 47–1806.04 (f)(4)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(4)
+    - title: American Rescue Plan Act of 2021, Pub. L. 117-2, § 9622, 135 Stat. 153
+      href: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf#page=151
+    - title: 2021 DC Form D-40 Booklet, Page 3, New for 2021, Earned Income Tax Credit
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=3
+    - title: 2021 DC Form D-40 Booklet, Page 12, Qualifying Child for EITC Purposes
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=12
     - title: 2022 DC Form D-40 Booklet, Page 11, Taxpayers with a Qualifying Child
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=11
     - title: 2023 DC Form D-40 Booklet, Page 10, Taxpayers with a Qualifying Child
