@@ -27,19 +27,17 @@ Two kinds of test:
 
 Households live in Texas; some itemize.
 
-Two limits of the model set the scope of these tests, and neither comes
-from section 911:
+The model takes the section 1(h)(1) cap at the tax on all taxable income
+at ordinary rates (worksheet line 25, "the smaller of line 23 or line 24"),
+so it is compared with line 25. The cap binds only where the 15% rate
+applies inside the 12% bracket, a band of $100 to $250 of income in 2025,
+so line 25 is checked to be within $7.50 of line 23.
 
-- `capital_gains_tax` omits the section 1(h)(1) cap at the tax on all
-  taxable income at ordinary rates (worksheet line 25, "the smaller of line
-  23 or line 24"). The cap binds only where the 15% rate applies inside the
-  12% bracket, a band of $100 to $250 of income. The model is therefore
-  compared with worksheet line 23, and checked to be within $7.50 of line
-  25.
-- `capital_gains_tax` taxes 28-percent rate gain in full even when it
-  exceeds taxable income, so the households here have no 28-percent rate
-  or unrecaptured section 1250 gain. YAML unit tests cover how the capital
-  gain excess reduces those two amounts.
+One limit of the model sets the scope of these tests, and it does not come
+from section 911: `capital_gains_tax` taxes 28-percent rate gain in full
+even when it exceeds taxable income, so the households here have no
+28-percent rate or unrecaptured section 1250 gain. YAML unit tests cover how
+the capital gain excess reduces those two amounts.
 """
 
 import numpy as np
@@ -167,9 +165,10 @@ def foreign_earned_income_tax_worksheet(
 ):
     """2025 Form 1040 instructions, page 37.
 
-    Returns line 6 figured with line 23 of the capital gains worksheet (what
-    the model computes), line 6 figured with its line 25 (what the form
-    says), and line 5 of the capital gains worksheet, which Form 6251 needs.
+    Returns line 6 figured with line 23 of the capital gains worksheet (the
+    tax before the section 1(h)(1) cap), line 6 figured with its line 25
+    (what the form says and the model computes), and line 5 of the capital
+    gains worksheet, which Form 6251 needs.
     A filer with no exclusion gets the ordinary line 16 tax.
     """
     line_1 = taxable_income
@@ -394,12 +393,14 @@ def assert_matches_worksheets(households, law):
         )
         regular_tax = float(law["regular_tax"][i])
         stacked_income = taxable_income + h["exclusion"]
-        assert regular_tax == pytest.approx(line_6, abs=tolerance(stacked_income)), (
-            i,
-            h,
-        )
-        # The form's line 25 cap, which the model's section 1(h) formulas omit.
-        cap_gaps.append(regular_tax - line_6_capped)
+        assert float(law["regular_tax_before_credits"][i]) == pytest.approx(
+            regular_tax, abs=tolerance(stacked_income)
+        ), (i, h)
+        assert regular_tax == pytest.approx(
+            line_6_capped, abs=tolerance(stacked_income)
+        ), (i, h)
+        # The form's line 25 cap takes at most $7.50 off line 23.
+        cap_gaps.append(line_6 - line_6_capped)
         line_7 = form_6251_line_7(
             float(law["amt_income_less_exemptions"][i]),
             h["exclusion"],
@@ -411,7 +412,7 @@ def assert_matches_worksheets(households, law):
         assert -tolerance(stacked_income) <= cap_gaps[-1], (i, h)
         assert cap_gaps[-1] <= 7.5 + tolerance(stacked_income), (i, h)
         # Form 6251 lines 9 to 11 with no foreign tax credit.
-        amt = max(0, line_7 - line_6)
+        amt = max(0, line_7 - line_6_capped)
         taxable_excess = float(
             law["amt_income_less_exemptions_plus_section_911_exclusion"][i]
         )
@@ -686,8 +687,10 @@ def test_nothing_excluded_changes_nothing():
             "section_911_28_percent_rate_gain": get(
                 "capital_gains_28_percent_rate_gain"
             ),
+            # Schedule D line 19, net of the losses the 28 percent rate gain
+            # does not absorb.
             "section_911_unrecaptured_section_1250_gain": get(
-                "unrecaptured_section_1250_gain"
+                "schedule_d_unrecaptured_section_1250_gain"
             ),
             "section_911_adjusted_net_capital_gain": get("adjusted_net_capital_gain"),
         }
@@ -719,7 +722,10 @@ def test_nothing_excluded_changes_nothing():
             ("line_9", "dwks09"),
             ("line_10", "dwks10"),
             ("line_13", "dwks13"),
-            ("unrecaptured_section_1250_gain", "unrecaptured_section_1250_gain"),
+            (
+                "unrecaptured_section_1250_gain",
+                "schedule_d_unrecaptured_section_1250_gain",
+            ),
         ]:
             assert np.array_equal(
                 np.asarray(getattr(worksheet, line))[no_excess],
