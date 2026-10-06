@@ -307,17 +307,21 @@ def _check(units, year):
     capital = np.maximum(0, filer_sum(CAPITAL_INPUTS) + distributions)
     passive = np.maximum(0, filer_sum(PASSIVE_INPUTS) - filer_sum([OVERLAP]))
     expected = portfolio + capital + passive
-    # Units whose eligibility turns on farm rent or the overlap input, so the
-    # seeded population shows both terms are exercised.
-    without_new_terms = (
+    # Units whose eligibility turns on farm rent alone, or on the overlap input
+    # alone, so the seeded population shows each term is exercised.
+    eligible = expected <= run["limit"]
+    without_farm_rent = (
         portfolio
         + capital
         + np.maximum(
             0,
-            filer_sum([n for n in PASSIVE_INPUTS if n != "farm_rent_income"]),
+            filer_sum([n for n in PASSIVE_INPUTS if n != "farm_rent_income"])
+            - filer_sum([OVERLAP]),
         )
     )
-    new_terms_decide = (expected <= run["limit"]) != (without_new_terms <= run["limit"])
+    without_overlap = portfolio + capital + np.maximum(0, filer_sum(PASSIVE_INPUTS))
+    farm_rent_decides = eligible != (without_farm_rent <= run["limit"])
+    overlap_decides = eligible != (without_overlap <= run["limit"])
     investment_income = run["eitc_relevant_investment_income"]
     np.testing.assert_allclose(investment_income, expected, atol=TOLERANCE)
     np.testing.assert_array_equal(
@@ -360,7 +364,7 @@ def _check(units, year):
     np.testing.assert_allclose(
         investment_income[unchanged], all_member[unchanged], atol=TOLERANCE
     )
-    return has_dependent, unchanged, new_terms_decide
+    return has_dependent, unchanged, farm_rent_decides, overlap_decides
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large
@@ -381,8 +385,11 @@ def test_dependent_investment_income_stays_off_the_filers_eitc_test(units):
 
 @pytest.mark.parametrize("year", [2021, 2025])
 def test_seeded_population(year):
-    has_dependent, unchanged, new_terms_decide = _check(_seeded_units(), year)
+    has_dependent, unchanged, farm_rent_decides, overlap_decides = _check(
+        _seeded_units(), year
+    )
     # The population exercises both branches of each property.
     assert has_dependent.sum() > 50
     assert unchanged.sum() > 20
-    assert new_terms_decide.sum() > 5
+    assert farm_rent_decides.sum() > 2
+    assert overlap_decides.sum() > 2

@@ -751,6 +751,11 @@
     # The spouse's 8,000 is earned: 5,000 + max(0, 8,000 - 8,000) = 5,000.
     eitc_relevant_investment_income: 5_000
     eitc_investment_income_eligible: true
+    # Self-employment tax 8,000 x 0.9235 x 0.153 = 1,130.364, half deducted.
+    # Earned income 22,434.818 reaches the 17,880 earned income amount, so the
+    # phase-in gives the 7,152 maximum; AGI 27,434.818 is under the 30,470
+    # joint phase-out start, so there is no reduction.
+    eitc: 7_152
 
 - name: A dependent's overlap input does not remove the filer's passive income
   period: 2025

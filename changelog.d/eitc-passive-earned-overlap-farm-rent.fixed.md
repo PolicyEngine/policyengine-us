@@ -1,1 +1,1 @@
-The EITC investment income test now includes farm rental income and losses in the passive basket, and leaves out passive partnership and S corporation income or loss that is also earned income (26 U.S.C. 32(i)(2)(E)), entered through the new eitc_passive_income_also_in_earned_income input.
+The EITC investment income test now includes farm rental income and losses in the passive basket, and leaves out passive partnership income or loss that is also earned income (26 U.S.C. 32(i)(2)(E)), entered through the new eitc_passive_income_also_in_earned_income input.
