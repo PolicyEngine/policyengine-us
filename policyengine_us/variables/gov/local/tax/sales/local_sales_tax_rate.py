@@ -15,7 +15,8 @@ class local_sales_tax_rate(Variable):
         "deduction worksheet: the part of the combined state and local rate above "
         "the state general sales tax rate, or 0 when the combined rate is not "
         "above it. The state rate comes from the official state rate files where "
-        "PolicyEngine has them, and otherwise from the state table heading. The "
+        "PolicyEngine has them (their 2022 rates also apply before 2022), and "
+        "otherwise from the state table heading. The "
         "California and Nevada headings include their uniform local rates, and "
         "there line 3 is only the part of the combined rate above the heading: "
         "7.5% in California in 2015 and 2016 and 7.25% from 2017, and 6.85% in "
@@ -38,6 +39,7 @@ class local_sales_tax_rate(Variable):
         # Line 3 instructions (California and Nevada; rates changing in-year).
         "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=4",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=6",

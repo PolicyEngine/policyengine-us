@@ -248,8 +248,9 @@
     local_sales_tax: 0
 
 # 2015-2021: the Optional Local Sales Tax Tables and state table headings of
-# each year. Row 8 is "$80,000-$90,000". Combined rates are entered, as
-# PolicyEngine's official locality rates start in 2022.
+# each year. Row 8 is "$80,000-$90,000". Most cases enter a combined rate or
+# line 3, as PolicyEngine's official locality rates start in 2022; the two
+# default-path cases enter neither.
 
 - name: Local table method, New York City, 2015
   # 2015 Optional Local Sales Tax Tables (PDF page 18), Table A, row
