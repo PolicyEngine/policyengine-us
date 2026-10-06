@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+import policyengine_us.variables.gov.simulation.behavioral_response_measurements as measurements_module
 import policyengine_us.variables.gov.simulation.capital_gains_responses as capital_gains_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.income_elasticity_lsr as income_lsr_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.labor_supply_behavioral_response as labor_supply_module
@@ -11,6 +12,7 @@ import policyengine_us.variables.gov.simulation.labor_supply_response.sstb_self_
 import policyengine_us.variables.gov.simulation.labor_supply_response.substitution_elasticity_lsr as substitution_lsr_module
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
+    BEHAVIORAL_RESPONSE_CACHE_ATTR,
     BEHAVIORAL_RESPONSE_INPUT_VARIABLES,
     BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
@@ -100,7 +102,7 @@ class FakeSimulation:
         if name not in self.branches:
             if name == BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH:
                 self.branches[name] = self.measurement_branch
-            elif name == "baseline":
+            elif name == BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH:
                 self.branches[name] = self.baseline_branch
             else:
                 raise AssertionError(f"Unexpected branch lookup: {name}")
@@ -157,7 +159,7 @@ def make_parameters(
     )
 
 
-def test_behavioral_response_measurements_use_one_neutralized_pass():
+def test_behavioral_response_measurements_use_one_neutralized_pass(monkeypatch):
     period = 2026
     reform_measurement = FakeBranch(
         FakePopulation(
@@ -173,13 +175,21 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
             capital_gains_mtr=np.array([0.15, 0.2]),
         )
     )
-    baseline_parent = FakeBranch(
-        child_branches={
-            BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH: baseline_measurement
-        }
-    )
-    simulation = FakeSimulation(reform_measurement, baseline_parent)
+    simulation = FakeSimulation(reform_measurement, baseline_measurement)
     person = FakePerson(simulation)
+    # The baseline branch's construction needs a real simulation; it is
+    # tested in test_behavioral_response_measurement_copies.py.
+    built_from = []
+
+    def baseline_measurement_branch(simulation):
+        built_from.append(simulation)
+        return simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
+
+    monkeypatch.setattr(
+        measurements_module,
+        "_baseline_measurement_branch",
+        baseline_measurement_branch,
+    )
 
     measurements = get_behavioral_response_measurements(person, period)
 
@@ -187,13 +197,12 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
     assert np.array_equal(
         measurements["baseline_capital_gains_mtr"], np.array([0.15, 0.2])
     )
+    # Both measurement branches are branches of the measured simulation.
     assert simulation.get_branch_calls == [
         (BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True),
-        ("baseline", False),
+        (BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, False),
     ]
-    assert baseline_parent.get_branch_calls == [
-        (BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True)
-    ]
+    assert built_from == [simulation]
     for branch in (reform_measurement, baseline_measurement):
         assert branch.tax_benefit_system.neutralized_variables == list(
             NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES
@@ -201,20 +210,40 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
         assert [call[0] for call in branch.input_calls] == list(
             BEHAVIORAL_RESPONSE_INPUT_VARIABLES
         )
+    assert (
+        baseline_measurement.tax_benefit_system.parameters.simulation
+        is reform_measurement.tax_benefit_system.parameters.simulation
+    )
 
     assert simulation.macro_cache_read is False
     assert simulation.macro_cache_write is False
-    assert BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in simulation.branches
-    assert (
-        BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in baseline_parent.branches
-    )
+    assert simulation.branches == {}
 
     cached = get_behavioral_response_measurements(person, period)
     assert cached is measurements
-    assert simulation.get_branch_calls == [
-        (BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True),
-        ("baseline", False),
-    ]
+    assert simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] == {"2026": measurements}
+    assert len(simulation.get_branch_calls) == 2
+
+
+def test_behavioral_response_measurement_branches_are_removed_on_failure(
+    monkeypatch,
+):
+    simulation = FakeSimulation(FakeBranch(), FakeBranch())
+    person = FakePerson(simulation)
+
+    def failing_baseline_measurement_branch(simulation):
+        simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
+        raise RuntimeError("baseline measurement failed")
+
+    monkeypatch.setattr(
+        measurements_module,
+        "_baseline_measurement_branch",
+        failing_baseline_measurement_branch,
+    )
+    with pytest.raises(RuntimeError, match="baseline measurement failed"):
+        get_behavioral_response_measurements(person, 2026)
+    assert simulation.branches == {}
+    assert simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] == {}
 
 
 def test_measurement_helper_calculations_clip_expected_values():
