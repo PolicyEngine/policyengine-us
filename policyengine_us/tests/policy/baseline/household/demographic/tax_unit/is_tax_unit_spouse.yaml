@@ -178,6 +178,9 @@
     is_tax_unit_spouse: [false, false]
     tax_unit_married: false
 
+# Which co-resident adult is the filer's spouse is an age-order inference, not a
+# rule of law. When the would-be spouse is separated, no younger adult is
+# promoted into the role, as before separation was limited to head and spouse.
 - name: A separated second-oldest adult is not the spouse, and no younger adult takes the role.
   period: 2024
   input:
@@ -225,3 +228,60 @@
     is_tax_unit_head: [true, false, false, true, false]
     is_tax_unit_spouse: [false, true, false, false, false]
     tax_unit_married: [true, false]
+
+- name: A younger separated adult does not stop the next-oldest adult being the spouse.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      separated_adult:
+        age: 25
+        is_separated: true
+      other_adult:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, separated_adult, other_adult]
+  output:
+    is_tax_unit_spouse: [false, false, true]
+
+- name: A separated dependent does not remove the spouse when the head is an input.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+      dependent:
+        age: 19
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+  output:
+    is_tax_unit_spouse: [false, true, false]
+
+- name: With every adult input as a dependent, a third adult's separation leaves the spouse.
+  period: 2024
+  input:
+    people:
+      oldest:
+        age: 40
+        is_tax_unit_dependent: true
+      second:
+        age: 38
+        is_tax_unit_dependent: true
+      third:
+        age: 20
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [oldest, second, third]
+  output:
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]

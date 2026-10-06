@@ -259,10 +259,11 @@
       head:
         age: 40
         is_tax_unit_dependent: false
-        employment_income: 80_000
+        employment_income: 50_000
       spouse:
         age: 38
         is_tax_unit_dependent: false
+        employment_income: 30_000
       dependent:
         age: 18
         is_tax_unit_dependent: true
@@ -284,7 +285,7 @@
     tax_unit_married: true
     # Rev. Proc. 2023-34: 2024 joint standard deduction is 29,200.
     standard_deduction: 29_200
-    # 80,000 - 29,200.
+    # Both spouses' wages, 50,000 + 30,000, less 29,200.
     taxable_income: 50_800
     # 2024 joint brackets: 10% of 23,200 plus 12% of (50,800 - 23,200).
     income_tax_before_credits: 5_632
