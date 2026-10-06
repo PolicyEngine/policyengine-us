@@ -31,9 +31,13 @@ class section_911_unrecaptured_section_1250_gain(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
-        unrecaptured_gain = tax_unit("unrecaptured_section_1250_gain", period)
+        unrecaptured_gain = tax_unit(
+            "schedule_d_unrecaptured_section_1250_gain", period
+        )
         rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
         excess = tax_unit("section_911_capital_gain_excess", period)
+        # Schedule D lines 18 and 19 are already net of the other losses, so
+        # line 19 falls by the part of the excess line 18 does not absorb.
         excess_over_rate_gain = max_(0, excess - rate_gain)
         return where(
             excess > 0,
