@@ -8,7 +8,7 @@
     state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
       NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   output:
     sd_liheap_income_threshold: [18224, 24652, 31076, 37500, 43924, 50352, 56776, 63200, 69624, 76052, 82476, 88900,
       95324, 101752, 108176]
@@ -20,17 +20,18 @@
   input:
     state_code: [SD, SD, SD, SD, SD]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    spm_unit_size: [1, 2, 9, 10, 15]
+    sd_liheap_household_size: [1, 2, 9, 10, 15]
   output:
     sd_liheap_income_threshold: [19564, 26436, 74564, 81436, 115812]
 
-# Fully qualified ordinary-household scope and state/size guards; size1 annualizedMid4891*4=19564.
+# A household size of 0 and another state get no threshold; size 1 Mid is
+# $4,891 x 4 = $19,564.
 - name: Case 3, zero size and another state do not receive a South Dakota tier threshold.
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: [SD, ND, SD]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    spm_unit_size: [0, 1, 1]
+    sd_liheap_household_size: [0, 1, 1]
   output:
     sd_liheap_income_threshold: [0, 0, 19564]

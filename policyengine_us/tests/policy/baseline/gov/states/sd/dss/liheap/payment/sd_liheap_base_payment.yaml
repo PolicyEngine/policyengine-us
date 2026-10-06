@@ -45,6 +45,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_region: [1, 1, 1, 1, 1]
     spm_unit_size: [1, 1, 2, 2, 2]
+    sd_liheap_household_size: [1, 1, 2, 2, 2]
     sd_liheap_countable_income: [18224, 18224.01, 24650, 24652, 24652.01]
   output:
     sd_liheap_income_threshold: [18224, 18224, 24652, 24652, 24652]
@@ -76,7 +77,9 @@
   output:
     sd_liheap_base_payment: [0, 0, 0, 0, 0, 0, 0, 0]
 
-# Wholly qualified households: size1Mid19564 puts20000in tier2; size2Mid26436 puts identicalincome in tier1. Region1gas retains792/880; size does not independently multiply the payment.
+# Size 1 Mid $19,564 puts $20,000 in tier 2; size 2 Mid $26,436 puts the same
+# income in tier 1. Region 1 gas pays $792 and $880; size does not multiply the
+# payment.
 - name: Case 6, actual household membership changes the tier while leaving the regional fuel schedule shared.
   period: 2026
   absolute_error_margin: 0.01
@@ -115,3 +118,22 @@
   output:
     sd_liheap_income_threshold: [19564, 26436]
     sd_liheap_base_payment: [792, 880]
+
+# FY2022 and FY2023 matrices print the same cells. 2023 size 1 Mid: 125% x 2022
+# FPG $13,590 / 4 = $4,246.875, rounded half up to $4,247 x 4 = $16,988, so $0
+# is tier 1 and $20,000 is tier 2. Electricity r2 t1 $1,281, r4 t2 $1,328; fuel
+# oil r3 t1 $2,157, r4 t2 $2,062; kerosene uses fuel oil r2 t2 $1,810; propane
+# r2 t1 $1,772, r3 t2 $1,701; natural gas r4 t1 $1,058 and coal r3 t2 $730 are
+# unchanged from FY2026.
+- name: Case 7, 2023 base payments use the FY2022 and FY2023 matrix cells.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [ELECTRICITY, ELECTRICITY, FUEL_OIL, FUEL_OIL, KEROSENE, PROPANE, PROPANE, NATURAL_GAS, COAL]
+    sd_liheap_region: [2, 4, 3, 4, 2, 2, 3, 4, 3]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    sd_liheap_countable_income: [0, 20_000, 0, 20_000, 20_000, 0, 20_000, 0, 20_000]
+  output:
+    sd_liheap_income_threshold: [16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988]
+    sd_liheap_base_payment: [1_281, 1_328, 2_157, 2_062, 1_810, 1_772, 1_701, 1_058, 730]

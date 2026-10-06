@@ -34,7 +34,7 @@ class sd_liheap(Variable):
         direct_payment = where(cash_payment, base_payment, min_(base_payment, expense))
         # Heat-in-rent uses a steady tenant share for all seven eligible months;
         # changes in rent, already-paid months and prior awards are not tracked.
-        # Mixed-status households and unpriced fuels remain outside coverage.
+        # Unpriced fuels remain outside coverage.
         return where(
             spm_unit("heat_expense_included_in_rent", period),
             spm_unit("sd_liheap_heat_in_rent_payment", period),

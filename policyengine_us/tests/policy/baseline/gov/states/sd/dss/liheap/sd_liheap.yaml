@@ -12,7 +12,7 @@
     heating_expense: [500, 2000, 500, 2000, 500, 3000, 500, 4000]
     employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
-    sd_tanf: [0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0, 0, 0, 0, 0]
     county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD,
@@ -31,7 +31,7 @@
     heating_expense: [1, 1, 1]
     employment_income: [0, 0, 0]
     ssi: [0, 0, 0]
-    sd_tanf: [0, 0, 0]
+    tanf: [0, 0, 0]
     snap:
       2026-01: [0, 0, 0]
     county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
@@ -48,7 +48,7 @@
     heating_expense: [2000, 2000, 2000, 0]
     employment_income: [20000, 31300, 31300.01, 0]
     ssi: [0, 0, 0, 0]
-    sd_tanf: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0]
     county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
@@ -65,7 +65,7 @@
     heating_expense: [0, 0, 0, 0, 0]
     employment_income: [0, 0, 0, 0, 0]
     ssi: [0, 0, 0, 0, 0]
-    sd_tanf: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0, 0]
     heat_expense_included_in_rent: [true, true, true, true, true]
@@ -84,7 +84,7 @@
     heating_expense: [2000, 2000, 2000]
     employment_income: [0, 0, 0]
     ssi: [0, 0, 0]
-    sd_tanf: [0, 0, 0]
+    tanf: [0, 0, 0]
     snap:
       2026-01: [0, 0, 0]
     has_heating_expense: [true, true, true]
@@ -103,7 +103,7 @@
     heating_expense: [-100, 0, 100]
     employment_income: [0, 0, 0]
     ssi: [0, 0, 0]
-    sd_tanf: [0, 0, 0]
+    tanf: [0, 0, 0]
     snap:
       2026-01: [0, 0, 0]
     has_heating_expense: [true, true, true]
@@ -111,3 +111,221 @@
   output:
     sd_liheap_eligible: [true, true, true]
     sd_liheap: [0, 0, 0]
+
+# 2024-2025 published table (DSS page archived January 14, 2025): size 4 limit
+# $15,858 a quarter x 4 = $63,432; $63,000 of wages is under it. The rule alone
+# would cap size 4 at 200% x 2024 FPG $31,200 = $62,400. Mid: 125% x $31,200 =
+# $39,000, so tier 2. Lincoln County is region 1: natural gas tier 2 = $792;
+# min($792, $1,000 unpaid charges) = $792.
+- name: Case 7, a four-person household under the published 2025 limit receives the tier two gas award.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 63_000
+        ssi: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_000
+        tanf: 0
+        snap:
+          2025-01: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SD
+        county: LINCOLN_COUNTY_SD
+  output:
+    sd_liheap_countable_income: 63_000
+    sd_liheap_income_limit: 63_432
+    sd_liheap_income_threshold: 39_000
+    sd_liheap_region: 1
+    sd_liheap_eligible: true
+    sd_liheap_base_payment: 792
+    sd_liheap: 792
+
+# FY2022 and FY2023 matrices, region 1. 2023 size 1: limit 200% x 2022 FPG
+# $13,590 = $27,180; Mid 125% x $13,590 / 4 = $4,246.875, rounded half up to
+# $4,247 x 4 = $16,988. Tier 1: propane $1,666, fuel oil and kerosene $1,905,
+# electricity $1,210; $20,000 of wages is tier 2: propane $1,499. Vendor fuels
+# pay min(cell, $3,000); kerosene pays its cell in full.
+- name: Case 8, 2023 direct payments use the FY2022 and FY2023 matrix amounts.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [PROPANE, FUEL_OIL, KEROSENE, ELECTRICITY, PROPANE]
+    heating_expense: [3_000, 3_000, 3_000, 3_000, 3_000]
+    employment_income: [0, 0, 0, 0, 20_000]
+    ssi: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    snap:
+      2023-01: [0, 0, 0, 0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_income_limit: [27_180, 27_180, 27_180, 27_180, 27_180]
+    sd_liheap_income_threshold: [16_988, 16_988, 16_988, 16_988, 16_988]
+    sd_liheap_eligible: [true, true, true, true, true]
+    sd_liheap: [1_666, 1_905, 1_905, 1_210, 1_499]
+
+# The FY2024 matrix prints the FY2026 cells, so 2024 region 1 tier 1 pays
+# propane $2,499, fuel oil $2,858 and electricity $1,331, each below the $3,000
+# unpaid charges. 2024 size 1 limit $29,160.
+- name: Case 9, 2024 direct payments already use the current matrix amounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [PROPANE, FUEL_OIL, ELECTRICITY]
+    heating_expense: [3_000, 3_000, 3_000]
+    employment_income: [0, 0, 0]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    snap:
+      2024-01: [0, 0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_income_limit: [29_160, 29_160, 29_160]
+    sd_liheap_eligible: [true, true, true]
+    sd_liheap: [2_499, 2_858, 1_331]
+
+# Rule 67:15:01:18(12); manual page 28. 2026 Part B premium $202.90 x 12 =
+# $2,434.80. $32,000 - $2,434.80 = $29,565.20 <= $31,300 limit and > $19,564
+# Mid: tier 2 gas $792. $21,000 - $2,434.80 = $18,565.20 <= Mid: tier 1 $880.
+# Both are below the $2,000 unpaid charges.
+- name: Case 10, Social Security net of the Medicare premium sets eligibility and the tier.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD]
+    age: [70, 70]
+    immigration_status: [CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [2_000, 2_000]
+    social_security: [32_000, 21_000]
+    medicare_part_b_premium: [2_434.8, 2_434.8]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    snap:
+      2026-01: [0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_countable_income: [29_565.2, 18_565.2]
+    sd_liheap_eligible: [true, true]
+    sd_liheap: [792, 880]
+
+# Manual page 25 counts retirement payments. $35,000 of military retirement
+# pay exceeds the $31,300 size 1 limit, so no award.
+- name: Case 11, military retirement pay above the limit makes the household ineligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD]
+    age: [50]
+    immigration_status: [CITIZEN]
+    heating_type: [NATURAL_GAS]
+    heating_expense: [2_000]
+    military_retirement_pay: [35_000]
+    ssi: [0]
+    tanf: [0]
+    snap:
+      2026-01: [0]
+    county_str: [CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_countable_income: [35_000]
+    sd_liheap_eligible: [false]
+    sd_liheap: [0]
+
+# Rule 67:15:01:18.01; manual page 25. The rental loss counts as zero:
+# ($26,400 - $2,434.80 Part B premium) + $9,000 pension + $0 = $32,965.20,
+# above the $31,300 limit. Letting the loss offset would give $28,965.20 and a
+# $792 award.
+- name: Case 12, a rental loss does not offset a retiree's other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD]
+    age: [68]
+    immigration_status: [CITIZEN]
+    heating_type: [NATURAL_GAS]
+    heating_expense: [1_200]
+    social_security: [26_400]
+    medicare_part_b_premium: [2_434.8]
+    pension_income: [9_000]
+    rental_income: [-4_000]
+    ssi: [0]
+    tanf: [0]
+    snap:
+      2026-01: [0]
+    county_str: [CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_countable_income: [32_965.2]
+    sd_liheap_eligible: [false]
+    sd_liheap: [0]
+
+# Manual page 9: mixed households are eligible; only the two citizens count, so
+# size 2. Page 17 prorates ineligible members' income through an unpublished
+# calculator, so the undocumented adult's wages count in full: $18,000 +
+# $9,000 = $27,000 <= size 2 limit $42,300 (200% x 2025 FPG $21,150). Mid: 125%
+# x $21,150 / 4 = $6,609.375, rounded half up to $6,609 x 4 = $26,436, so tier
+# 2: gas $792 = min($792, $1,200). Size 3 would give Mid $33,312, tier 1, $880.
+- name: Case 13, a mixed-status household is sized by its qualified members and receives an award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 18_000
+        ssi: 0
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 9_000
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county: CUSTER_COUNTY_SD
+  output:
+    sd_liheap_household_size: 2
+    sd_liheap_countable_income: 27_000
+    sd_liheap_income_limit: 42_300
+    sd_liheap_income_threshold: 26_436
+    sd_liheap_eligible: true
+    sd_liheap: 792

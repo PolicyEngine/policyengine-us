@@ -1,9 +1,14 @@
 description: South Dakota counts these unearned income sources for members of all ages under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
-    - social_security
+    # Social Security is counted in the formula, net of the Medicare Part B
+    # premium (rule 67:15:01:18(12)), and TANF through the take-up-gated tanf.
     - ssi
     - pension_income
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
+    - military_retirement_pay
     - railroad_benefits
     - survivor_benefits
     - unemployment_compensation
@@ -14,9 +19,15 @@ values:
     - farm_rent_income
     - strike_benefits
     - general_assistance
-    - sd_tanf
-# State TANF is counted once at SPM level. Pension/SSA subcomponents are not
-# added again. Interest, dividends, capital gains, and cash gifts are excluded.
+    # The manual (page 25) counts trust income ("Trusts", Y).
+    - estate_income
+    # The manual (page 27) counts "Lottery or gaming winnings" in full: "If
+    # received in the 3 month LIEAP time frame count entire amount." The FY2026
+    # plan, section 1.9 (page 6), leaves "One-time lump-sum payments, such as
+    # rebates/credits, winnings from lotteries" unchecked. The manual is followed.
+    - gambling_winnings
+# Pension and Social Security subcomponents are not added again. Interest,
+# dividends, capital gains and cash gifts are excluded.
 metadata:
   unit: list
   period: year
@@ -26,3 +37,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=5
     - title: South Dakota Administrative Rule 67:15:01:18, Income exclusions
       href: https://sdlegislature.gov/Rules/Administrative/67:15:01:18
+    - title: "South Dakota LIEAP Policy and Procedures Manual (2018), countable income table, #page 25,27,28"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=25

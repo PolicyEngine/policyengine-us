@@ -17,9 +17,8 @@ class sd_liheap_income_threshold(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.liheap
-        size = spm_unit("spm_unit_size", period)
-        # Use total size for wholly qualified households; the mixed-status
-        # citizenship calculator's allocation is not established by the sources.
+        # Only citizens and eligible aliens count toward household size.
+        size = spm_unit("sd_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(
             max_(size, 1),

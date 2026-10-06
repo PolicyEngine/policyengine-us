@@ -1,110 +1,139 @@
-description: South Dakota provides these direct-heating base payments by fuel, heating region, and income tier under the Low Income Energy Assistance Program. These are table ceilings before unpaid-charge limits and final eligibility.
+description: South Dakota provides this amount as the direct-heating base payment under the Low Income Energy Assistance Program.
 
+# The FY2022 and FY2023 matrices print the same cells, as do the FY2024 and
+# FY2026 matrices. No FY2025 matrix is published; the FY2025 plan's $668
+# minimum and $3,437 maximum (section 2.6, SD_Plan_2025.pdf#page=9) match the
+# FY2024 cells. Coal and wood and natural gas cells are unchanged from FY2022
+# through FY2026.
 coal_wood:
   1:
     1:
-      2025-10-01: 742
+      2021-10-01: 742
     2:
-      2025-10-01: 668
+      2021-10-01: 668
   2:
     1:
-      2025-10-01: 770
+      2021-10-01: 770
     2:
-      2025-10-01: 694
+      2021-10-01: 694
   3:
     1:
-      2025-10-01: 812
+      2021-10-01: 812
     2:
-      2025-10-01: 730
+      2021-10-01: 730
   4:
     1:
-      2025-10-01: 854
+      2021-10-01: 854
     2:
-      2025-10-01: 768
+      2021-10-01: 768
 electricity:
   1:
     1:
-      2025-10-01: 1331
+      2021-10-01: 1_210
+      2023-10-01: 1_331
     2:
-      2025-10-01: 1198
+      2021-10-01: 1_089
+      2023-10-01: 1_198
   2:
     1:
-      2025-10-01: 1410
+      2021-10-01: 1_281
+      2023-10-01: 1_410
     2:
-      2025-10-01: 1270
+      2021-10-01: 1_154
+      2023-10-01: 1_270
   3:
     1:
-      2025-10-01: 1516
+      2021-10-01: 1_378
+      2023-10-01: 1_516
     2:
-      2025-10-01: 1369
+      2021-10-01: 1_244
+      2023-10-01: 1_369
   4:
     1:
-      2025-10-01: 1626
+      2021-10-01: 1_478
+      2023-10-01: 1_626
     2:
-      2025-10-01: 1461
+      2021-10-01: 1_328
+      2023-10-01: 1_461
 fuel_oil:
   1:
     1:
-      2025-10-01: 2858
+      2021-10-01: 1_905
+      2023-10-01: 2_858
     2:
-      2025-10-01: 2573
+      2021-10-01: 1_715
+      2023-10-01: 2_573
   2:
     1:
-      2025-10-01: 3018
+      2021-10-01: 2_012
+      2023-10-01: 3_018
     2:
-      2025-10-01: 2715
+      2021-10-01: 1_810
+      2023-10-01: 2_715
   3:
     1:
-      2025-10-01: 3236
+      2021-10-01: 2_157
+      2023-10-01: 3_236
     2:
-      2025-10-01: 2910
+      2021-10-01: 1_940
+      2023-10-01: 2_910
   4:
     1:
-      2025-10-01: 3437
+      2021-10-01: 2_291
+      2023-10-01: 3_437
     2:
-      2025-10-01: 3093
+      2021-10-01: 2_062
+      2023-10-01: 3_093
 natural_gas:
   1:
     1:
-      2025-10-01: 880
+      2021-10-01: 880
     2:
-      2025-10-01: 792
+      2021-10-01: 792
   2:
     1:
-      2025-10-01: 938
+      2021-10-01: 938
     2:
-      2025-10-01: 844
+      2021-10-01: 844
   3:
     1:
-      2025-10-01: 1007
+      2021-10-01: 1_007
     2:
-      2025-10-01: 907
+      2021-10-01: 907
   4:
     1:
-      2025-10-01: 1058
+      2021-10-01: 1_058
     2:
-      2025-10-01: 953
+      2021-10-01: 953
 propane:
   1:
     1:
-      2025-10-01: 2499
+      2021-10-01: 1_666
+      2023-10-01: 2_499
     2:
-      2025-10-01: 2249
+      2021-10-01: 1_499
+      2023-10-01: 2_249
   2:
     1:
-      2025-10-01: 2658
+      2021-10-01: 1_772
+      2023-10-01: 2_658
     2:
-      2025-10-01: 2394
+      2021-10-01: 1_596
+      2023-10-01: 2_394
   3:
     1:
-      2025-10-01: 2834
+      2021-10-01: 1_889
+      2023-10-01: 2_834
     2:
-      2025-10-01: 2552
+      2021-10-01: 1_701
+      2023-10-01: 2_552
   4:
     1:
-      2025-10-01: 3066
+      2021-10-01: 2_044
+      2023-10-01: 3_066
     2:
-      2025-10-01: 2762
+      2021-10-01: 1_841
+      2023-10-01: 2_762
 
 metadata:
   unit: currency-USD
@@ -116,5 +145,11 @@ metadata:
     - range(1, 3)
   propagate_metadata_to_children: true
   reference:
+    - title: South Dakota FY2022 LIHEAP Benefit Matrix, Own and Rent Cases
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_BenefitMatrix_2022.pdf#page=1
+    - title: South Dakota FY2023 LIHEAP Benefit Matrix, Own and Rent Cases
+      href: https://liheapch.acf.gov/docs/2023/benefits-matricies/SD_BenefitMatrix_2023.pdf#page=1
+    - title: South Dakota FY2024 LIHEAP Benefit Matrix, Own and Rent Cases
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1
     - title: South Dakota FY2026 LIHEAP Benefit Matrix, Own and Rent Cases
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf#page=1

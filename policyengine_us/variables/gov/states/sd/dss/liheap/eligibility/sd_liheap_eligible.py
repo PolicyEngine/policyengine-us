@@ -12,23 +12,26 @@ class sd_liheap_eligible(Variable):
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:09",
         # Sections 1.4a and 17.3: SNAP recipients and qualified noncitizens.
         "https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf",
+        # Physical pages 9 and 17: mixed households and ineligible members.
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=9",
     )
 
     def formula(spm_unit, period, parameters):
-        size = spm_unit("spm_unit_size", period)
-        qualified_members = add(spm_unit, period, ["is_citizen_or_legal_immigrant"])
-        # The mixed-status income worksheet is unavailable. False for a mixed
-        # household marks unsupported coverage, not a legal denial of LIEAP.
-        supported_household = (size > 0) & (qualified_members == size)
+        # Manual physical page 9: "Mixed households are eligible for assistance."
+        # At least one citizen or eligible alien must be in the household.
+        has_qualified_member = spm_unit("sd_liheap_household_size", period) > 0
         income = spm_unit("sd_liheap_countable_income", period)
         limit = spm_unit("sd_liheap_income_limit", period)
         # All application members must receive SNAP for categorical income
         # eligibility. January receipt and SNAP unit size approximate a stable
         # application-month caseload; a benefit for only some members is not
-        # enough. SNAP-specific member exclusions do not gate ordinary LIEAP.
+        # enough. A member ineligible for SNAP, such as an ineligible alien,
+        # sends the household to the income worksheet (physical page 17), so
+        # SNAP unit size is compared with every member.
         receives_snap = spm_unit("snap", period.first_month) > 0
         all_receive_snap = (
-            spm_unit("snap_unit_size", period.first_month) == size
+            spm_unit("snap_unit_size", period.first_month)
+            == spm_unit("spm_unit_size", period)
         ) & receives_snap
         income_eligible = (income <= limit) | all_receive_snap
         heating_type = spm_unit("heating_type", period)
@@ -43,4 +46,4 @@ class sd_liheap_eligible(Variable):
         # with required heating/landlord verification and no duplicate tribal
         # award. Existing inputs cannot establish tribal service-area routing,
         # institutional residence, or completed administrative verification.
-        return supported_household & income_eligible & has_heat & responsible_for_heat
+        return has_qualified_member & income_eligible & has_heat & responsible_for_heat

@@ -11,7 +11,7 @@
     heating_expense: [2000, 2000, 2000]
     employment_income: [0, 31300, 31300.01]
     ssi: [0, 0, 0]
-    sd_tanf: [0, 0, 0]
+    tanf: [0, 0, 0]
     snap:
       2026-01: [0, 0, 0]
   output:
@@ -29,7 +29,7 @@
     heating_expense: [100, 0, 0, 0, 1000]
     employment_income: [0, 0, 0, 0, 0]
     ssi: [0, 0, 0, 0, 0]
-    sd_tanf: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0, 0]
     heat_expense_included_in_rent: [false, false, true, true, false]
@@ -47,7 +47,7 @@
     heating_expense: [2000, 2000, 2000, 2000]
     employment_income: [0, 0, 0, 0]
     ssi: [0, 0, 0, 0]
-    sd_tanf: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0]
   output:
@@ -80,7 +80,7 @@
         members: &id001 [adult1, child1]
         heating_type: NATURAL_GAS
         heating_expense: 2000
-        sd_tanf: 0
+        tanf: 0
         snap:
           2026-01: 100
         snap_unit_size:
@@ -89,7 +89,7 @@
         members: &id002 [adult2, child2]
         heating_type: NATURAL_GAS
         heating_expense: 2000
-        sd_tanf: 0
+        tanf: 0
         snap:
           2026-01: 100
         snap_unit_size:
@@ -104,7 +104,11 @@
   output:
     sd_liheap_countable_income: [100000, 100000]
     sd_liheap_eligible: [true, false]
-- name: Case 5, mixed-status households return unsupported coverage rather than asserting legal denial.
+# Manual physical page 9: mixed households are eligible, and only citizens and
+# eligible aliens count as members. Size 1 (the child): limit $31,300, Mid
+# $19,564; $0 income is tier 1, so Custer County (region 1) gas pays
+# min($880, $2,000) = $880.
+- name: Case 5, a mixed-status household is eligible and counts only its qualified member.
   period: 2026
   absolute_error_margin: 0.001
   input:
@@ -122,16 +126,19 @@
         members: [adult, child]
         heating_type: NATURAL_GAS
         heating_expense: 2000
-        sd_tanf: 0
+        tanf: 0
         snap:
           2026-01: 0
     households:
       household:
         members: [adult, child]
         state_code: SD
+        county: CUSTER_COUNTY_SD
   output:
-    sd_liheap_eligible: false
-    sd_liheap: 0
+    sd_liheap_household_size: 1
+    sd_liheap_income_limit: 31_300
+    sd_liheap_eligible: true
+    sd_liheap: 880
 - name: Case 6, another state does not receive South Dakota eligibility.
   period: 2026
   absolute_error_margin: 0.001
@@ -143,9 +150,78 @@
     heating_expense: [2000]
     employment_income: [0]
     ssi: [0]
-    sd_tanf: [0]
+    tanf: [0]
     snap:
       2026-01: [0]
   output:
     sd_liheap_eligible: [false]
     sd_liheap: [0]
+
+# 2024-2025 published table (DSS page archived January 14, 2025): size 4 limit
+# $15,858 a quarter x 4 = $63,432. Income at the limit is eligible; one cent
+# above is not.
+- name: Case 7, four-person households in 2025 include the published limit and exclude one cent above.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 63_432
+        ssi: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 63_432.01
+        ssi: 0
+      person6:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      person7:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      person8:
+        age: 7
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_000
+        tanf: 0
+        snap:
+          2025-01: 0
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_000
+        tanf: 0
+        snap:
+          2025-01: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SD
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: SD
+  output:
+    sd_liheap_income_limit: [63_432, 63_432]
+    sd_liheap_countable_income: [63_432, 63_432.01]
+    sd_liheap_eligible: [true, false]

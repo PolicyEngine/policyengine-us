@@ -13,14 +13,14 @@ class sd_liheap_income_limit(Variable):
     reference = (
         # Pages 1-5 publish three-month limits for sizes 1-15.
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1",
+        "https://web.archive.org/web/20250114001211/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
         "https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.liheap.income
-        size = spm_unit("spm_unit_size", period)
-        # This component supports wholly qualified households. The citizenship
-        # calculator's mixed-status size and income allocation remain unresolved.
+        # Only citizens and eligible aliens count toward household size.
+        size = spm_unit("sd_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(
             max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag
@@ -37,4 +37,12 @@ class sd_liheap_income_limit(Variable):
         # three-month maximum. Annualize the rounded quarter, not its unrounded
         # annual equivalent. Sizes 11+ carry the FY2024 rule forward; earlier
         # backfilled years are unverified and FY2022 used different rounding.
-        return where(size > 0, 4 * np.floor(annual_limit / 4), 0)
+        limit = 4 * np.floor(annual_limit / 4)
+        if p.limits.table.in_effect:
+            # The published 2024-2025 limits exceed the rule for sizes 4-7 and
+            # follow no consistent rounding, so the printed table applies to
+            # the sizes it lists.
+            table = p.limits.table.amount
+            in_table = size <= table.thresholds[-1]
+            limit = where(in_table, 4 * table.calc(size), limit)
+        return where(size > 0, limit, 0)

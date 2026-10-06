@@ -802,15 +802,8 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, SD, TX
     state_implementations:
-      - state: SD
-        status: in_progress
-        name: South Dakota LIHEAP
-        full_name: South Dakota Low Income Home Energy Assistance Program
-        variable: sd_liheap
-        parameter_prefix: gov.states.sd.dss.liheap
-        notes: Supported wholly qualified households receive an FY2026 regular heating estimate. Vendor payments assume heating_expense reports qualifying unpaid seasonal charges; wood, coal and kerosene use the historical manual's full-payment method. Heat-in-rent assumes seven eligible months of steady tenant rent. Mixed-status arithmetic and unpriced direct fuels remain unsupported, and tribal routing and administrative verification are assumed. Current Mid thresholds and household sizes above ten rely on documented historical patterns. Historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP
@@ -846,6 +839,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: SD
+        status: partial
+        name: South Dakota LIHEAP
+        full_name: South Dakota Low Income Home Energy Assistance Program
+        variable: sd_liheap
+        parameter_prefix: gov.states.sd.dss.liheap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only. Crisis, cooling and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
