@@ -49,13 +49,6 @@ DISTRIBUTIONS = "non_sch_d_capital_gains"
 # passive_partnership_s_corp_income is the passive subset of
 # partnership_s_corp_income; both are drawn together below.
 PASSIVE_INPUTS = ["rental_income", "passive_partnership_s_corp_income"]
-INVESTMENT_INPUTS = (
-    PORTFOLIO_INPUTS
-    + CAPITAL_INPUTS
-    + [DISTRIBUTIONS]
-    + PASSIVE_INPUTS
-    + ["partnership_s_corp_income"]
-)
 # The filer's amounts, which a dependent's income must not change.
 FILER_OUTPUTS = [
     "eitc_relevant_investment_income",
@@ -134,9 +127,7 @@ def _seeded_units(n=200):
             {
                 "head_wages": float(round(rng.uniform(0, 40_000))),
                 "head": _seeded_amounts(rng),
-                "spouse": (
-                    _seeded_amounts(rng) if kind.startswith("joint") else None
-                ),
+                "spouse": (_seeded_amounts(rng) if kind.startswith("joint") else None),
                 "dependents": [
                     {"age": int(rng.integers(1, 18)), **_seeded_amounts(rng)}
                     for _ in range(n_dependents)
@@ -223,7 +214,9 @@ def _by_person(units, key):
 
 def _unit_sum(run, values):
     return np.bincount(
-        run["unit"], weights=values, minlength=len(run["eitc_relevant_investment_income"])
+        run["unit"],
+        weights=values,
+        minlength=len(run["eitc_relevant_investment_income"]),
     )
 
 
@@ -279,8 +272,7 @@ def _check(units, year):
         _unit_sum(run, sum(_by_person(units, n) for n in PORTFOLIO_INPUTS))
         + np.maximum(
             0,
-            run["net_capital_gains"]
-            + _unit_sum(run, _by_person(units, DISTRIBUTIONS)),
+            run["net_capital_gains"] + _unit_sum(run, _by_person(units, DISTRIBUTIONS)),
         )
         + np.maximum(
             0, _unit_sum(run, sum(_by_person(units, n) for n in PASSIVE_INPUTS))
