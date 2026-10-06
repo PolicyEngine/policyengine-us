@@ -13,7 +13,9 @@ child care rates in a 2025-2027 run over the enhanced CPS; carrying over the
 latest calculated value (core master) left a branch at ``UNKNOWN`` whenever
 it had calculated a later year first.
 
-These pass on both core versions.
+These pass on both core versions. The order tests enumerate every order of
+three requests; the Hypothesis test draws longer request sequences on trees
+that grow as they are asked.
 """
 
 from itertools import permutations
@@ -21,6 +23,8 @@ from itertools import permutations
 import numpy as np
 import pandas as pd
 import pytest
+from hypothesis import HealthCheck, example, given, settings
+from hypothesis import strategies as st
 
 from policyengine_core.periods import period as as_period
 from policyengine_us import Microsimulation
@@ -161,6 +165,66 @@ def test_county_does_not_depend_on_the_order_of_requests(stored, requests):
     for label, each in simulations.items():
         for year in YEARS:
             assert _counties(each, year) == EXPECTED, (label, year)
+
+
+# Each step either branches from a simulation already in the tree or asks one
+# of them for a year's county; index 0 is the simulation and branch i is
+# index i + 1, so a branch can be created after its parent has calculated.
+REQUEST_YEARS = range(DATASET_YEAR, DATASET_YEAR + 5)
+MAX_BRANCHES = 4
+
+
+@st.composite
+def request_sequences(draw):
+    stored = draw(st.sampled_from(["county_fips", "county"]))
+    steps = []
+    size = 1
+    for _ in range(draw(st.integers(1, 10))):
+        if size <= MAX_BRANCHES and draw(st.booleans()):
+            steps.append(("branch", draw(st.integers(0, size - 1))))
+            size += 1
+        else:
+            index = draw(st.integers(0, size - 1))
+            steps.append(("ask", index, draw(st.sampled_from(REQUEST_YEARS))))
+    return stored, steps
+
+
+@settings(
+    max_examples=8,
+    deadline=None,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(request_sequences())
+# The enhanced CPS order: the simulation's first year, then branches created
+# from it that calculate the next year and are reused for the one after.
+@example(
+    (
+        "county",
+        [
+            ("ask", 0, 2025),
+            ("branch", 0),
+            ("branch", 1),
+            ("ask", 1, 2026),
+            ("ask", 2, 2026),
+            ("ask", 0, 2027),
+            ("ask", 1, 2027),
+            ("ask", 2, 2027),
+        ],
+    )
+)
+def test_county_stays_the_households_county_whatever_the_requests(case):
+    stored, steps = case
+    simulations = [_simulation(stored)]
+    for step in steps:
+        if step[0] == "branch":
+            parent = simulations[step[1]]
+            simulations.append(parent.get_branch(f"branch_{len(simulations)}"))
+        else:
+            _, index, year = step
+            assert _counties(simulations[index], year) == EXPECTED, step
+    for index, simulation in enumerate(simulations):
+        for year in REQUEST_YEARS:
+            assert _counties(simulation, year) == EXPECTED, (index, year)
 
 
 def test_a_period_only_another_branch_can_read_is_skipped():
