@@ -2,7 +2,7 @@
 # casetext.com shut down. Statute, regulation and case pages, and every other
 # path tried except the root, return HTTP 410 Gone to a GET request with a
 # "This service is no longer available" notice; the root redirects to a
-# Thomson Reuters product page with no legal text. #9627 replaced all 197
+# Thomson Reuters product page with no legal text. #9627 removed all 197
 # links (55 distinct URLs).
 # See test_known_dead_reference_urls.py for the format.
 
