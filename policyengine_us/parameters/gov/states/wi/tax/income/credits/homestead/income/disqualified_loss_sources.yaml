@@ -1,0 +1,21 @@
+description: Wisconsin adds back the losses from these person-level income sources to household income for the homestead credit.
+values:
+  2021-01-01:
+    - self_employment_income # Schedule 4, line 2: net business loss from a sole proprietorship
+    - rental_income # line 4: net rental real estate and royalty loss
+    - partnership_s_corp_income # lines 5 and 6: net loss from a partnership or tax-option (S) corporation
+    - estate_income # line 7: net loss from a trust or estate
+    - farm_income # line 10: net farm loss
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin homestead credit disqualified loss sources
+  reference:
+    - title: 2021 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf#page=4
+    - title: 2023 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleH.pdf#page=4
+    - title: 2025 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH.pdf#page=4
+    - title: 2023 Wisconsin Schedule H instructions, definition F.3 (page 7) and line 11j (page 16)
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleH-inst.pdf#page=16

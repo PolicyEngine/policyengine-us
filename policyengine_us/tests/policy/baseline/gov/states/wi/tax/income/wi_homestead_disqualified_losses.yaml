@@ -1,0 +1,44 @@
+- name: Losses from each Schedule 4 source are added back; gains are not netted
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        self_employment_income: -2_000 # line 2
+        rental_income: -1_000 # line 4
+        partnership_s_corp_income: 500 # a gain, not a loss
+        farm_income: -300 # line 10
+    tax_units:
+      tax_unit:
+        members: [head]
+        loss_limited_net_capital_gains: -3_000 # line 3
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # 2,000 + 1,000 + 300 + 3,000 = 6,300 (Schedule 4, line 11)
+    wi_homestead_disqualified_losses: 6_300
+
+- name: A dependent's loss is not part of household income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        loss_limited_net_capital_gains: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    wi_homestead_disqualified_losses: 0

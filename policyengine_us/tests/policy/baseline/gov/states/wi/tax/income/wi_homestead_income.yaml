@@ -17,3 +17,28 @@
     state_code: WI
   output:
     wi_homestead_income: 400  # = 900 - 500
+
+- name: Net capital loss is added back to household income (Schedule H line 11j, Schedule 4 line 3)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 84
+        social_security_retirement: 11_033
+        short_term_capital_gains: -7_594
+        long_term_capital_gains: -624
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Federal AGI is the $3,000 allowed capital loss (no social security is taxable).
+    # Household income = -3,000 + 11,033 nontaxable social security + 3,000 add-back.
+    adjusted_gross_income: -3_000
+    wi_homestead_disqualified_losses: 3_000
+    wi_homestead_income: 11_033
