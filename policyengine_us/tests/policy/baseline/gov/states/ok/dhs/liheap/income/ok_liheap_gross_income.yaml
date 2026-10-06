@@ -141,3 +141,43 @@
         state_code: OK
   output:
     ok_liheap_gross_income: 12_000
+
+# Same household as Case 3, but it does not take up TANF, so the take-up-gated tanf aggregate is 0 and the
+# 3,600 Oklahoma TANF entitlement is not counted: 6,000 wages + 1,200 SSI + 1,200 child Social Security = 8,400.
+- name: Case 5, an Oklahoma TANF entitlement the family does not take up is not counted as income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 1_200
+        employment_income: 6_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 3_600
+        takes_up_tanf_if_eligible: false
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    tanf: 0
+    ok_liheap_gross_income: 8_400

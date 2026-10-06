@@ -34,9 +34,8 @@ class ok_liheap_income_limit(Variable):
         )
         monthly_base = guideline * p.fpg_rate / MONTHS_IN_YEAR
         monthly_increment = additional_guideline * p.fpg_rate / MONTHS_IN_YEAR
-        # Ceiling the base and increment separately reconciles published
-        # FY2026/FY2027 limits. FY2026's $596 additional-person amount is a
-        # reconciled extension; the announcement only prints sizes 1-8.
+        # Ceiling the base and increment separately reconciles the published
+        # FY2025-FY2027 limits and additional-person amounts in Appendix C-7.
         rounding = p.rounding_increment
         rounded_base = np.ceil(monthly_base / rounding) * rounding
         rounded_increment = np.ceil(monthly_increment / rounding) * rounding

@@ -26,7 +26,8 @@ class ok_liheap_income_deductions(Variable):
         )
         # is_disabled approximates the incorporated SNAP disability test.
         # Use the existing nonpremium aggregate without overlapping detailed
-        # medical inputs; Medicare/premium treatment remains deferred.
+        # medical inputs. The Medicare Part B premium is netted from Social
+        # Security in countable income, so it is not deducted again here.
         medical_deduction = (
             max_(person("other_medical_expenses", period), 0) * medical_eligible
         )

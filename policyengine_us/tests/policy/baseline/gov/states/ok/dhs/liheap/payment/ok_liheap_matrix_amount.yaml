@@ -32,20 +32,23 @@
     ok_liheap_matrix_amount: [365, 402, 430, 265, 292, 312, 235, 259, 277, 425, 468, 500, 350, 385, 412,
       280, 308, 330, 150, 165, 180, 110, 120, 135, 100, 110, 125, 70, 0, 0, 50, 0, 0, 40, 0, 0]
 
-# C7Amonthlylowerbounds0,401,701. Annualvalues represent0,400,400.01,400.99,401,700,700.01,700.99,701; fractional convention keepscurrentbanduntilnextprintedlowerbound.
-- name: Case 2, printed monthly lower bounds preserve fractional cents until four hundred one and seven
-    hundred one.
+# C-7-A bands start at $0, $401 and $701; OAC 340:20-1-11(a) rounds monthly income to the nearest dollar (half up).
+# Annual net /12 = 0, 400, 400.01, 400.49, 400.50, 400.99, 401, 700, 700.01, 700.49, 700.50, 700.99, 701
+# -> rounded 0, 400, 400, 400, 401, 401, 401, 700, 700, 700, 701, 701, 701 -> size 1 ordinary 365 (band 1), 265 (band 2), 235 (band 3).
+- name: Case 2, monthly net income rounds half up to the nearest dollar before the four hundred one and seven
+    hundred one band starts.
   period: 2026
   absolute_error_margin: 0.01
   input:
-    state_code: [OK, OK, OK, OK, OK, OK, OK, OK, OK]
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK, OK, OK, OK, OK, OK]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
-      NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    ok_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
-    ok_liheap_net_income: [0, 4_800, 4800.12, 4811.88, 4_812, 8_400, 8400.12, 8411.88, 8_412]
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ok_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ok_liheap_net_income: [0, 4_800, 4_800.12, 4_805.88, 4_806, 4_811.88, 4_812, 8_400, 8_400.12, 8_405.88, 8_406,
+      8_411.88, 8_412]
   output:
-    ok_liheap_matrix_amount: [365, 365, 365, 365, 265, 265, 265, 265, 235]
+    ok_liheap_matrix_amount: [365, 365, 365, 365, 265, 265, 265, 265, 265, 265, 235, 235, 235]
 
 # C7A ordinaryfuelmonthly500 row: sizes1-3=>265,4-6=>292,7+=>312.
 - name: Case 3, household group boundaries three four six and seven use the correct column.
@@ -108,3 +111,22 @@
     ok_liheap_net_income: [0, 0]
   output:
     ok_liheap_matrix_amount: [0, 0]
+
+# C-7-A prices only natural gas, electricity, wood and coal (ordinary) and propane, fuel oil and kerosene (delivered).
+# Paid directly (heat not in rent), OTHER, SOLAR and UNSPECIFIED have no priced column -> 0.
+# Natural gas control: size 1, net 0 -> band 1 ordinary 365.
+- name: Case 7, unpriced direct heating fuels receive no matrix amount while natural gas is paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK, OK, OK]
+    heating_type: [OTHER, SOLAR, UNSPECIFIED, NATURAL_GAS]
+    other_heating_fuel_expense: [600, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 600, 0, 0]
+    gas_expense: [0, 0, 0, 600]
+    heat_expense_included_in_rent: [false, false, false, false]
+    ok_liheap_dwelling_type: [STANDARD, STANDARD, STANDARD, STANDARD]
+    ok_liheap_household_size: [1, 1, 1, 1]
+    ok_liheap_net_income: [0, 0, 0, 0]
+  output:
+    ok_liheap_matrix_amount: [0, 0, 0, 365]

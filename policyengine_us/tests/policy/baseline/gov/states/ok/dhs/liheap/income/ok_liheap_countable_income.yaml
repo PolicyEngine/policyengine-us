@@ -49,3 +49,73 @@
         state_code: OK
   output:
     ok_liheap_countable_income: [15000, 2400]
+
+# Plan Section 1.9 nets the Medicare Part B premium from Social Security only, floored at zero:
+# max(1,200 - 2,434.80 (202.90 x 12), 0) = 0, so the excess premium does not reduce the 12,000 pension. Countable 12,000.
+- name: Case 2, a Part B premium above the Social Security benefit floors that benefit at zero without reducing other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        social_security: 1_200
+        medicare_part_b_premium: 2_434.80
+        pension_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: 12_000
+    ok_liheap_gross_income: 12_000
+
+# Each unearned source is floored at zero before summing, so losses cannot offset other income:
+# person1 12,000 wages + max(-6,000 rental, 0) = 12,000; person2 5,000 pension + max(-3,000 farm rent, 0) + max(-2,000 estate, 0) = 5,000.
+# Gross 12,000 + 5,000 = 17,000.
+- name: Case 3, rental farm rent and estate losses do not offset wages or pension income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: -6_000
+      person2:
+        age: 62
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        pension_income: 5_000
+        farm_rent_income: -3_000
+        estate_income: -2_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: [12_000, 5_000]
+    ok_liheap_gross_income: 17_000

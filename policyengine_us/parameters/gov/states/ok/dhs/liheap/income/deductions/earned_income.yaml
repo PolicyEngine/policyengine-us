@@ -1,22 +1,19 @@
 description: Oklahoma deducts up to this monthly amount from each employed member's earned income under the Low Income Home Energy Assistance Program.
 # Eligible members receive this deduction after the gross income test.
 # Ineligible members receive it within deeming before that test.
-# Quest operational guidance updated August 12, 2026 states $240 per worker;
-# this is the earliest recovered evidence date, not a proven policy start.
-# C-7 independently confirms $240 effective October 1, 2026. Earlier periods,
-# including annual 2026 evaluated at January 1, remain backfilled estimates.
+# The 10/1/2024, 10/1/2025 and 10/1/2026 editions of Appendix C-7 all print
+# $240.
 values:
-  2026-08-12: 240
-  2026-10-01: 240
+  2024-10-01: 240
 
 metadata:
   unit: currency-USD
   period: month
   label: Oklahoma LIHEAP monthly earned income deduction
   reference:
-    - title: Quest LIHEAP Eligibility - Income, Income deductions, updated August 12, 2026
-      href: https://fsquest.oucpm.org/2022/programs/liheap-ecap/eligibility-income/
-    - title: OKDHS Appendix C-7, Earned income deduction
+    - title: OKDHS Appendix C-7, Earned income deduction, 10/1/2024 edition
+      href: https://web.archive.org/web/20241207141659id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
+    - title: OKDHS Appendix C-7, Earned income deduction, 10/1/2026 edition
       href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
     - title: OAC 340:20-1-11(c)(3), September 2025 permanent adoption
       href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=581

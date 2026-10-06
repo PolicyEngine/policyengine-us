@@ -535,3 +535,69 @@
   output:
     ok_liheap_deemed_income: [1284, 0, 0]
     ok_liheap_gross_income: 1284
+
+# C-1 1/1/2025 Schedule IX-B children only, size 2 need 380: 3,600 + 2,400 survivor benefits - 380 x 12 = 1,440 deemed.
+# Gross 6,000 eligible wages + 1,440 = 7,440 (620/mo <= 1,632, the 2025 size 1 limit 19,584/yr).
+# Net 7,440 - 2,880 (C-7 10/1/2024 $240 x 12) = 4,560 -> 380/mo, band 1 -> natural gas 365.
+- name: Case 8, the 2025 child only need standard and earned deduction apply to a represented child only unit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 3_600
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 2_400
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [1_440, 0]
+    ok_liheap_household_size: 1
+    ok_liheap_gross_income: 7_440
+    ok_liheap_income_limit: 19_584
+    ok_liheap_net_income: 4_560
+    ok_liheap_eligible: true
+    ok_liheap: 365

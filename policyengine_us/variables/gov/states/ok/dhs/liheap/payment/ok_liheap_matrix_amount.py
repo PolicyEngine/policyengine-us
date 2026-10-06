@@ -9,6 +9,8 @@ class ok_liheap_matrix_amount(Variable):
     label = "Oklahoma LIHEAP winter heating matrix amount"
     defined_for = StateCode.OK
     reference = (
+        # OAC 340:20-1-11(a), (d).
+        "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=1",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/OK_BenefitMatrix_2026.docx",
     )
@@ -16,8 +18,10 @@ class ok_liheap_matrix_amount(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ok.dhs.liheap.payment
         size = spm_unit("ok_liheap_household_size", period)
-        monthly_income = spm_unit("ok_liheap_net_income", period) / MONTHS_IN_YEAR
-        # Keep cents until the printed next lower bound: $401 or $701.
+        # OAC 340:20-1-11(a) rounds monthly income to the nearest dollar, and
+        # Appendix C-7-A prints whole-dollar bands, so round half up first.
+        net_income = spm_unit("ok_liheap_net_income", period)
+        monthly_income = np.floor(net_income / MONTHS_IN_YEAR + 0.5)
         band = p.income_band.calc(max_(monthly_income, 0)).astype(int)
         size_group = p.household_size_group.calc(max_(size, 1)).astype(int)
         fuel = spm_unit("heating_type", period)
@@ -47,7 +51,8 @@ class ok_liheap_matrix_amount(Variable):
             p.matrix.roomer[band][size_group],
             p.matrix.renter[band][size_group],
         )
-        # Heat-in-rent schedules cover every fuel, including an unknown fuel.
+        # Heat-in-rent schedules cover every fuel. Eligibility separately needs
+        # a positive surcharge bill, which an unknown fuel cannot carry.
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         amount = where(heat_in_rent, rent_payment, direct_payment)
         # The matrix has no actual-expense cap. Gross eligibility and heating

@@ -90,8 +90,10 @@
     ok_liheap_eligible: true
     ok_liheap: 280
 
-# Current340:20-1-10(f)-(g) plus C7Ap1:0net,size1 renter150,roomer70; subsidizedpositive surcharge retains150, zero surcharge ineligible. Roomer written-agreement fact is assumed under documented input limitation.
-- name: Case 3, renter roomer and subsidized surcharge routes link eligibility to their heating schedules.
+# OAC 340:20-1-19(d) pays heat-in-rent renters and roomers only when they pay a surcharge (positive fuel bill).
+# Size 1, net 0: C-7-A renter 150, roomer 70. Unsubsidized renter and roomer with no surcharge -> 0; subsidized renter
+# with a 10 surcharge -> 150; subsidized renter with no surcharge -> 0.
+- name: Case 3, heat in rent renters and roomers are paid only with a surcharge whether or not the rent is subsidized.
   period: 2027
   input:
     state_code: [OK, OK, OK, OK]
@@ -108,8 +110,8 @@
     gas_expense: [0, 0, 10, 0]
     has_heating_expense: [false, false, false, false]
   output:
-    ok_liheap_eligible: [true, true, true, false]
-    ok_liheap: [150, 70, 150, 0]
+    ok_liheap_eligible: [false, false, true, false]
+    ok_liheap: [0, 0, 150, 0]
 
 # Current340:20-1-11(a)(4),(c), C1p4/C7p1: ineligible12000-2880-600medical-1200support-4776need=2544. Gross2544+6000eligible+1200annualTANF=9744. Net9744-2880eligibleallowance-600eligiblesupport-600annualCCScopay=5664=472monthly; C7Ap1 ordinary,size2=>265. No duplicate ineligible deductions or SPM transfers.
 - name: Case 4, ineligible person deductions TANF and the household copay are each applied once.
@@ -246,3 +248,102 @@
     ok_ccs_copay: [0, 0, 0]
   output:
     ok_liheap: [365, 0, 0]
+
+# Plan Section 1.9 counts Social Security "Excluding MediCare deduction". Both retirees get $1,780/mo (21,360/yr).
+# Person 1 pays the 2026 standard Part B premium 202.90 x 12 = 2,434.80: countable 21,360 - 2,434.80 = 18,925.20
+# -> 1,577.10/mo rounds to 1,577 <= 1,696 (2026 size 1 limit 20,352/yr); no deductions, net band 3 -> natural gas 235.
+# Person 2 pays no premium: 21,360/12 = 1,780 > 1,696 -> ineligible, 0.
+- name: Case 7, Social Security net of the Medicare Part B premium decides eligibility for a retiree.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [70, 70]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    social_security: [21_360, 21_360]
+    medicare_part_b_premium: [2_434.80, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ok_tanf: [0, 0]
+    ok_child_care_subsidies: [0, 0]
+    ok_ccs_copay: [0, 0]
+  output:
+    ok_liheap_countable_income: [18_925.20, 21_360]
+    ok_liheap_gross_income: [18_925.20, 21_360]
+    ok_liheap_income_limit: [20_352, 20_352]
+    ok_liheap_eligible: [true, false]
+    ok_liheap_net_income: [18_925.20, 21_360]
+    ok_liheap: [235, 0]
+
+# Military retirement pay is a separate input from pension_income and counts as unearned income.
+# 24,000/12 = 2,000 > 1,696 (2026 size 1 limit) -> ineligible, 0.
+# 12,000/12 = 1,000 <= 1,696 -> eligible; no deductions, net 1,000/mo is band 3 -> natural gas 235.
+- name: Case 8, military retirement pay counts toward the gross limit and the payment band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [62, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    military_retirement_pay: [24_000, 12_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ok_tanf: [0, 0]
+    ok_child_care_subsidies: [0, 0]
+    ok_ccs_copay: [0, 0]
+  output:
+    ok_liheap_countable_income: [24_000, 12_000]
+    ok_liheap_gross_income: [24_000, 12_000]
+    ok_liheap_eligible: [false, true]
+    ok_liheap_net_income: [24_000, 12_000]
+    ok_liheap: [0, 235]
+
+# OAC 340:20-1-11(a) rounds monthly income to the nearest dollar; 2026 size 1 limit is 1,696/mo (20,352/yr).
+# Wages 20,355/12 = 1,696.25 -> 1,696 <= 1,696, eligible; net 20,355 - 2,880 = 17,475 -> 1,456.25 -> 1,456, band 3 -> 235.
+# Wages 20,358/12 = 1,696.50 -> rounds half up to 1,697 > 1,696 -> ineligible, 0 (net 20,358 - 2,880 = 17,478).
+- name: Case 9, monthly gross income within fifty cents of the limit rounds to the nearest dollar before the test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    employment_income: [20_355, 20_358]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ok_tanf: [0, 0]
+    ok_child_care_subsidies: [0, 0]
+    ok_ccs_copay: [0, 0]
+  output:
+    ok_liheap_gross_income: [20_355, 20_358]
+    ok_liheap_income_limit: [20_352, 20_352]
+    ok_liheap_eligible: [true, false]
+    ok_liheap_net_income: [17_475, 17_478]
+    ok_liheap: [235, 0]
+
+# OAC 340:20-1-19(d)(1)-(2): heat-in-rent renters and roomers who pay a verified surcharge are paid. A 300 surcharge
+# ($50 a month in six high-usage months) is the positive primary fuel bill. Size 1, net 0 -> C-7-A renter 150,
+# roomer 70. The responsibility flag with no surcharge bill does not qualify -> ineligible, 0 (matrix still 150).
+- name: Case 10, a surcharge bill pays unsubsidized heat in rent renters and roomers but the responsibility flag alone
+    does not.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true]
+    ok_liheap_dwelling_type: [STANDARD, ROOMER, STANDARD]
+    gas_expense: [300, 300, 0]
+    has_heating_expense: [false, false, true]
+    ok_tanf: [0, 0, 0]
+    ok_child_care_subsidies: [0, 0, 0]
+    ok_ccs_copay: [0, 0, 0]
+  output:
+    ok_liheap_eligible: [true, true, false]
+    ok_liheap_matrix_amount: [150, 70, 150]
+    ok_liheap: [150, 70, 0]

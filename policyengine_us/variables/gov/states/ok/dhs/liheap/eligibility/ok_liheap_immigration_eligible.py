@@ -8,25 +8,23 @@ class ok_liheap_immigration_eligible(Variable):
     label = "Meets Oklahoma LIHEAP citizenship and immigration requirements"
     defined_for = StateCode.OK
     reference = (
-        # Current OAC 340:20-1-10(d) incorporates 340:50-5-67(a), which
-        # expressly references 7 CFR 273.4. The printed citation omits 5.
+        # OAC 340:20-1-10(d) and 340:50-5-67(a).
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
         "https://www.ecfr.gov/current/title-7/section-273.4",
+        "https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm",
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ok.dhs.liheap.eligibility
-        status = person("immigration_status", period).decode_to_str()
-        allowed_status = np.isin(status, p.eligible_immigration_statuses)
-        # Reuse the incorporated CFR waiting rule independently of SNAP's
-        # additional post-OBBB statutory status exclusions. The retrieved
-        # FY2026/FY2027 CFR text retains refugee/asylee eligibility. No
-        # LIHEAP instruction extending SNAP's new exclusions was found.
-        waiting_period = person(
-            "meets_snap_qualified_alien_waiting_period", period.first_month
-        )
-        # Annual eligibility uses the first month's circumstances. Existing
-        # waiting-rule proxies and missing enum categories (including
-        # noncitizen nationals, trafficking and battered-alien categories)
-        # remain input limitations; no new immigration input is introduced.
-        return allowed_status & waiting_period
+        # OAC 340:20-1-10(d)(3) admits "an alien who is both qualified and
+        # eligible, per OAC 340:50-67". That cites the SNAP rule 340:50-5-67(a):
+        # "Per Section 273.4 of Title 7 of the Code of Federal Regulations ...
+        # to be eligible for food benefits a person must be:" the same four
+        # categories as 340:20-1-10(d)(1)-(4). LIHEAP therefore follows SNAP
+        # alien eligibility, including P.L. 119-21 sec. 10108, which limits
+        # 7 U.S.C. 2015(f) to citizens and nationals, permanent residents,
+        # Cuban and Haitian entrants and COFA residents from July 2025.
+        # NOTE: The eCFR text of 7 CFR 273.4(a)(6) still lists refugees and
+        # asylees; reading that unamended text would keep them eligible.
+        # Noncitizen nationals and 273.4(a)(3)-(5) groups have no status value.
+        # Annual eligibility uses the first month's circumstances.
+        return person("is_snap_immigration_status_eligible", period.first_month)

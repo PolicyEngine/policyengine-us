@@ -1,24 +1,30 @@
 # Source-derived Oklahoma ordinary heating cases under contract v1.3.
 # Current C1 need and C7 earned amounts are tested in2027.
 
-# Current340:20-1-10(h)(2), C7p1:1person1729*12=20748 inclusive gross ceiling. Current ordinary program has no asset test.
-- name: Case 1, the ordinary gross ceiling is inclusive and assets do not change it.
+# OAC 340:20-1-10(h)(2), 340:20-1-11(a); C-7 size 1 limit $1,729/mo (20,748/yr), inclusive. Monthly gross rounds half up:
+# 20,748/12 = 1,729.00 -> eligible; 20,753/12 = 1,729.42 -> 1,729, eligible; 20,754/12 = 1,729.50 -> 1,730 > 1,729, ineligible.
+# The ordinary program has no asset test.
+- name: Case 1, the gross ceiling compares monthly income rounded to the nearest dollar and assets do not change it.
   period: 2027
   input:
-    state_code: [OK, OK]
-    age: [40, 40]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
-    immigration_status: [CITIZEN, CITIZEN]
-    ok_liheap_gross_income: [20748, 20749]
-    has_heating_expense: [true, true]
-    bank_account_assets: [1000000, 1000000]
-    ssi: [0, 0]
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ok_liheap_gross_income: [20_748, 20_753, 20_754]
+    has_heating_expense: [true, true, true]
+    bank_account_assets: [1_000_000, 1_000_000, 1_000_000]
+    ssi: [0, 0, 0]
   output:
-    ok_liheap_income_limit: [20748, 20748]
-    ok_liheap_eligible: [true, false]
+    ok_liheap_income_limit: [20_748, 20_748, 20_748]
+    ok_liheap_eligible: [true, true, false]
 
-# Current340:20-1-10(e)-(h): unsubsidized included heat qualifies; subsidized included heat requires verified surcharge, modeled by positive primary heating expense. Explicit responsibility cannot bypass zero surcharge. Public housing is a subsidy proxy.
-- name: Case 2, subsidized heat in rent needs a positive excess charge despite a responsibility flag.
+# OAC 340:20-1-19(d) pays heat-in-rent renters who pay a surcharge, and 340:20-1-10(h) denies unverified
+# responsibility; a positive primary fuel bill represents the surcharge. Subsidy status no longer matters:
+# unsubsidized and subsidized with no bill -> false; the responsibility flag alone (subsidized or public housing)
+# -> false; subsidized with a 1 bill -> true.
+- name: Case 2, heat in rent needs a positive surcharge whether or not the rent is subsidized and the flag alone does
+    not qualify.
   period: 2027
   input:
     state_code: [OK, OK, OK, OK, OK]
@@ -33,7 +39,7 @@
     has_heating_expense: [false, false, true, false, true]
     ssi: [0, 0, 0, 0, 0]
   output:
-    ok_liheap_eligible: [true, false, false, true, false]
+    ok_liheap_eligible: [false, false, false, true, false]
 
 # Current340:20-1-10(e),(h)(1) includes total or partial responsibility. Direct obligation may be reported with existing has_heating_expense or demonstrated by a positive primary bill.
 - name: Case 3, direct responsibility can be reported or established by a positive primary bill.

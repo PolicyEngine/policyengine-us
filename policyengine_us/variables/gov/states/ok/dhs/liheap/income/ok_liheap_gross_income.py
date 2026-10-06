@@ -11,6 +11,8 @@ class ok_liheap_gross_income(Variable):
     reference = (
         # OAC 340:20-1-11(a)(4), (b): deeming precedes the gross test.
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
+        # Section 1.9 (page 6) counts TANF benefits.
+        "https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6",
     )
 
     def formula(spm_unit, period, parameters):
@@ -25,7 +27,9 @@ class ok_liheap_gross_income(Variable):
         deemed_income = spm_unit.sum(
             person.tax_unit("ok_liheap_deemed_income", period) * representative
         )
-        # Oklahoma TANF is SPMUnit/MONTH. Count the cash aggregate once;
-        # existing inputs do not allocate it to individual recipients.
-        tanf = spm_unit("ok_tanf", period, options=[ADD])
+        # The annual tanf aggregate includes ok_tanf and applies take-up;
+        # ok_tanf alone is the monthly entitlement and would count benefits
+        # a nonrecipient could get. Count the cash aggregate once; existing
+        # inputs do not allocate it to individual recipients.
+        tanf = spm_unit("tanf", period)
         return max_(eligible_income + deemed_income + tanf, 0)

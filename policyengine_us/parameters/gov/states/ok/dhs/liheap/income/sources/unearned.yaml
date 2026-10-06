@@ -7,16 +7,20 @@ description: Oklahoma counts these unearned income sources for fully qualified h
 # distinguish every exclusion, including irregular small gifts, qualified
 # educational/VA aid, restricted tribal trust receipts, redirected support
 # and third-party payments. Those detailed pathways remain unverified.
-# Pension income includes military pensions. military_retirement_pay is a
-# tax classification and is not independently added. State SSP receipts are
-# not modeled; SSI is federal, and OK TANF is added once at SPMUnit level.
+# State SSP receipts are not modeled; SSI is federal, and TANF is added once
+# at SPMUnit level through the take-up-gated tanf aggregate.
 values:
   2025-09-15:
     - unemployment_compensation
     - strike_benefits
-    - social_security
+    # Social Security is counted in the formula, net of the Medicare Part B
+    # premium (plan Section 1.9).
     - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
     - pension_income
+    - military_retirement_pay
     - survivor_benefits
     - railroad_benefits
     - workers_compensation
@@ -40,3 +44,5 @@ metadata:
       href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
     - title: OAC 340:50-7-22, Incorporated SNAP income exclusions
       href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22
+    - title: Oklahoma FY2026 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6

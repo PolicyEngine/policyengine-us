@@ -70,8 +70,9 @@
     ok_liheap_gross_income: 7_200
     ok_liheap_net_income: 6_000
 
-# C7 FY2027 size1 limit1729*12=20748. Gross20749 stays above it; net20749-2880=17869. No finaleligibility output is asserted.
-- name: Case 3, FY2027 gross income remains above its limit even when benefit net income is below.
+# C-7 FY2027 size 1 limit 1,729 x 12 = 20,748. Gross 20,754/12 = 1,729.50 rounds half up to 1,730, above the limit;
+# net 20,754 - 2,880 = 17,874 is below it. No final eligibility output is asserted.
+- name: Case 3, FY2027 gross income that rounds above its monthly limit still has a lower benefit net income.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -83,7 +84,7 @@
         is_in_k12_school: false
         is_disabled: false
         ssi: 0
-        employment_income: 20_749
+        employment_income: 20_754
     spm_units:
       spm_unit:
         members: [person1]
@@ -97,9 +98,9 @@
         members: [person1]
         state_code: OK
   output:
-    ok_liheap_gross_income: 20_749
+    ok_liheap_gross_income: 20_754
     ok_liheap_income_limit: 20_748
-    ok_liheap_net_income: 17_869
+    ok_liheap_net_income: 17_874
 
 # Registerpp580-581 permits age60+ or disabled person costs.30000-2880 workerallowance-2400 eldermedical-1200 disabledmedical=23520. Age59 nondisabled medical3600 is not deductible.
 - name: Case 4, FY2027 medical deduction follows each elderly or disabled person separately.
