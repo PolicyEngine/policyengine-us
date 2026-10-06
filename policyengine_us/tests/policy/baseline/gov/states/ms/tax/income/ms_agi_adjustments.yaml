@@ -2,9 +2,9 @@
   period: 2025
   input:
     state_code: MS
-    self_employed_pension_contribution_ald: 100
+    self_employed_pension_contribution_ald_person: 100
     early_withdrawal_penalty: 50
-    self_employed_health_insurance_ald: 200
+    self_employed_health_insurance_ald_person: 200
     health_savings_account_ald: 150
   output:
     ms_agi_adjustments: 500

@@ -16,24 +16,28 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
     )
 
 
-def tax_unit_non_dep_add(tax_unit, period, variables):
+def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     """
     Add variables over a tax unit's head and spouse, leaving out dependents.
 
     Like `add`, but a person-level variable is summed only over members who
     are not tax unit dependents, whose items belong on their own returns. A
     tax-unit-level variable is added as is, so it must already describe the
-    filer's own return.
+    filer's own return. Person-level variables named in `include_dependents`
+    are summed over every member: they are the filer's amounts even when
+    recorded on a dependent. Variables are added in the order given.
     """
     total = 0
     for variable in variables:
         variable_entity = tax_unit.entity.get_variable(
             variable, check_existence=True
         ).entity
-        if variable_entity.is_person:
-            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
-        else:
+        if not variable_entity.is_person:
             total = total + tax_unit(variable, period)
+        elif variable in include_dependents:
+            total = total + tax_unit.sum(tax_unit.members(variable, period))
+        else:
+            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
     return total
 
 

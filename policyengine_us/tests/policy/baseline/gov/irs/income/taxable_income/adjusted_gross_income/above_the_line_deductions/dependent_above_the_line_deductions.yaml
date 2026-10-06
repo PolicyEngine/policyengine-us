@@ -18,6 +18,12 @@
 #   instructions: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=32
 #   and #page=99.
 # The model does not round Schedule SE lines to cents, so the margin is 0.01.
+#
+# Three amounts stay on the filer's return whatever member they are recorded
+# on (the last three cases): a dependent's tuition in the tuition and fees
+# deduction (Form 8917, through 2020), employer adoption assistance recorded on
+# the adopted child, and education savings bond interest recorded on the
+# student (gov.irs.ald.filer_amounts_recorded_on_dependents).
 
 - name: Child's Schedule C income and self-employment tax stay off the head of household parent's return
   period: 2025
@@ -239,3 +245,93 @@
     student_loan_interest_ald: [1_500, 0]
     # Form 1040: line 9 = 91,000; line 10 = 1,500; line 11 = 89,500.
     adjusted_gross_income: 89_500
+
+- name: A dependent student's tuition stays in the parent's tuition and fees deduction
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        qualified_tuition_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # Form 8917 (Rev. January 2020), on the parent's return, which claims the
+    # student as a dependent: line 1(c) = line 2 = 3,000; line 3 = 50,000;
+    # line 4 = 0; line 5 = 50,000, not more than 65,000, so line 6 = the
+    # smaller of 3,000 or 4,000 = 3,000.
+    capped_qualified_tuition_expenses_ald: 3_000
+    above_the_line_deductions: 3_000
+    adjusted_gross_income: 47_000
+
+- name: Employer adoption assistance recorded on the adopted child stays on the parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The 26 USC 137(a) exclusion is the adopting employee's.
+    above_the_line_deductions: 5_000
+    adjusted_gross_income: 45_000
+
+- name: Education savings bond interest recorded on the student stays on the parent's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+        taxable_interest_income: 2_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        us_bonds_for_higher_ed: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # A bond issued in the name of a child under 24 does not qualify (Form
+    # 8815, 2025, p. 3), so the exclusion is the parent's: 52,000 - 1,000.
+    above_the_line_deductions: 1_000
+    adjusted_gross_income: 51_000
+

@@ -71,3 +71,34 @@
     # line 9 = 6,000 + 500 = 6,500; Schedule 1, line 11 = 300, line 18 = 100,
     # line 20 = 2,000, line 26 = 2,400; line 11 = 4,100.
     medicaid_adjusted_gross_income_person: [50_000, 4_100]
+
+- name: Case 4, a dependent's pre-2019 alimony reduces the dependent's own AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 72
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 4_000
+        alimony_expense: 3_000
+        divorce_year: 2010
+    tax_units:
+      tax_unit:
+        members: [filer, mother]
+    households:
+      household:
+        members: [filer, mother]
+        state_code: TX
+  output:
+    # Each person's own Form 1040 line 11. Filer: 50,000. Mother: pension
+    # 4,000 less alimony paid under a 2010 divorce (Schedule 1, line 19a)
+    # 3,000 = 1,000.
+    alimony_expense_ald_person: [0, 3_000]
+    medicaid_adjusted_gross_income_person: [50_000, 1_000]

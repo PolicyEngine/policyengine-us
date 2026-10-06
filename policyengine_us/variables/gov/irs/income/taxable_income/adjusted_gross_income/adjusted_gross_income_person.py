@@ -23,9 +23,15 @@ class adjusted_gross_income_person(Variable):
         person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
         ald_sum_person = not_dependent * add(person, period, person_ald_vars)
         # split other alds evenly between head and spouse
-        all_alds = parameters(period).gov.irs.ald.deductions
+        p = parameters(period).gov.irs.ald
+        all_alds = p.deductions
         other_alds = sorted(set(all_alds) - set(PERSON_ALDS))
-        ald_sum_taxunit = tax_unit_non_dep_add(person.tax_unit, period, other_alds)
+        ald_sum_taxunit = tax_unit_non_dep_add(
+            person.tax_unit,
+            period,
+            other_alds,
+            include_dependents=p.filer_amounts_recorded_on_dependents,
+        )
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         fstatus = person.tax_unit("filing_status", period)

@@ -22,6 +22,7 @@ PERSON_ABOVE_THE_LINE_DEDUCTIONS = {
     "educator_expense": "educator_expense",
     "early_withdrawal_penalty": "early_withdrawal_penalty",
     "traditional_ira_contributions": "traditional_ira_contributions",
+    "alimony_expense_ald": "alimony_expense_ald_person",
 }
 
 
@@ -37,8 +38,8 @@ class dependent_taxable_ss_magi(Variable):
     221, 911, 931 and 933, plus tax-exempt interest. Unlike the qualifying
     relative gross income test, losses and above-the-line deductions reduce
     it. Above-the-line deductions the model records only for the tax unit
-    (alimony paid, health savings account contributions) are not attributed
-    to dependents, and the IRC 461(l) excess business loss limit is not
+    (health savings account contributions) are not attributed to
+    dependents, and the IRC 461(l) excess business loss limit is not
     applied.
     """
     definition_period = YEAR

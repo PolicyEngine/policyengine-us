@@ -7,10 +7,15 @@ the penalty on early withdrawal of savings, educator expenses, alimony paid)
 are figured with the dependent's own income. `irs_gross_income` already
 leaves dependents' income off the filer's return, so every sum of
 above-the-line deductions over a tax unit must leave dependents out too.
+Three amounts are the filer's whatever member they are recorded on, and are
+summed over every member: employer adoption assistance and education savings
+bond interest (`gov.irs.ald.filer_amounts_recorded_on_dependents`), and,
+through 2020, a dependent's tuition in the tuition and fees deduction.
 
 Hypothesis draws batches of tax units (single, head of household with
-dependents, joint with and without dependents, in Texas, Missouri and
-Massachusetts), and a seeded population of 200 such units adds breadth. Each
+dependents, joint with and without dependents, in Texas, Missouri,
+Massachusetts and Minnesota), and a seeded population of 200 such units adds
+breadth. Each
 batch runs as one vectorized simulation, twice: with
 the dependents' deduction inputs as drawn and with them set to zero. For
 every tax unit:
@@ -18,13 +23,14 @@ every tax unit:
 1. The dependents' deduction inputs never change the filer's AGI,
    above-the-line deductions, any tax-unit deduction aggregate, the Social
    Security and unemployment compensation MAGIs, taxable Social Security,
-   Massachusetts gross income and Part B AGI, or the head's and spouse's
-   per-person AGI,
-   student loan interest MAGI and deduction, Medicaid AGI and Missouri AGI.
+   Massachusetts gross income and Part B AGI, Minnesota property tax refund
+   household income, or the head's and spouse's per-person AGI, student loan
+   interest MAGI and deduction, Medicaid AGI and Missouri AGI.
 2. Accounting identities: the per-person AGIs of the members sum to the tax
    unit's AGI, and so do the head's and spouse's Medicaid AGIs.
 3. Differential: `above_the_line_deductions` and each aggregate equal an
-   independent numpy sum over the head and spouse. For units without
+   independent numpy sum over the head and spouse (plus the three filer
+   amounts over every member). For units without
    dependents this is also the previous all-member sum, so they see no change;
    for others it is between 0 and that sum.
 4. Each person's own deduction amounts are still computed for dependents
@@ -52,20 +58,22 @@ DEPENDENT_DEDUCTION_INPUTS = [
     "early_withdrawal_penalty",
     "educator_expense",
     "alimony_expense",
-    "qualified_adoption_assistance_expense",
-    "us_bonds_for_higher_ed",
     "student_loan_interest",
 ]
-# Person-level deduction amounts that make up above_the_line_deductions,
-# other than loss_ald and alimony_expense_ald.
+# Person-level deduction amounts in above_the_line_deductions that belong on
+# each person's own return.
 PERSON_DEDUCTIONS = [
     "self_employment_tax_ald_person",
     "self_employed_health_insurance_ald_person",
     "self_employed_pension_contribution_ald_person",
+    "alimony_expense_ald_person",
     "student_loan_interest_ald",
     "early_withdrawal_penalty",
     "educator_expense",
     "traditional_ira_contributions",
+]
+# Person-level amounts that are the filer's wherever they are recorded.
+FILER_AMOUNTS = [
     "qualified_adoption_assistance_expense",
     "us_bonds_for_higher_ed",
 ]
@@ -73,18 +81,20 @@ AGGREGATES = {
     "self_employment_tax_ald": "self_employment_tax_ald_person",
     "self_employed_health_insurance_ald": "self_employed_health_insurance_ald_person",
     "self_employed_pension_contribution_ald": "self_employed_pension_contribution_ald_person",
+    "alimony_expense_ald": "alimony_expense_ald_person",
 }
 TAX_UNIT_OUTPUTS = [
     "adjusted_gross_income",
     "above_the_line_deductions",
     *AGGREGATES,
-    "alimony_expense_ald",
     "loss_ald",
+    "capped_qualified_tuition_expenses_ald",
     "taxable_ss_magi",
     "taxable_uc_agi",
     "tax_unit_taxable_social_security",
     "ma_gross_income",
     "ma_part_b_agi",
+    "mn_homestead_credit_refund_household_income",
 ]
 # Per-person outputs whose head and spouse values must not depend on the
 # dependents' deductions.
@@ -98,6 +108,7 @@ FILER_PERSON_OUTPUTS = [
 PERSON_OUTPUTS = [
     *FILER_PERSON_OUTPUTS,
     *PERSON_DEDUCTIONS,
+    *FILER_AMOUNTS,
     "self_employment_tax",
     "alimony_expense",
     "divorce_year",
@@ -128,6 +139,7 @@ def person_amounts(draw, *, dependent):
         "qualified_adoption_assistance_expense": draw(small),
         "us_bonds_for_higher_ed": draw(small),
         "student_loan_interest": draw(st.integers(0, 3_000).map(float)),
+        "qualified_tuition_expenses": draw(small),
         "taxable_interest_income": draw(st.integers(0, 2_000).map(float)),
         "social_security_retirement": (
             0.0 if dependent else draw(st.one_of(st.just(0.0), amount))
@@ -146,7 +158,7 @@ def tax_units(draw):
     kind = draw(st.sampled_from(["single", "hoh", "joint", "joint_dependents"]))
     n_dependents = draw(st.integers(1, 2)) if kind in ("hoh", "joint_dependents") else 0
     return {
-        "state": draw(st.sampled_from(["TX", "MO", "MA"])),
+        "state": draw(st.sampled_from(["TX", "MO", "MA", "MN"])),
         "head": draw(person_amounts(dependent=False)),
         "spouse": (
             draw(person_amounts(dependent=False)) if kind.startswith("joint") else None
@@ -183,6 +195,7 @@ def _seeded_amounts(rng, *, dependent):
         "qualified_adoption_assistance_expense": some(7_000, 0.2),
         "us_bonds_for_higher_ed": some(7_000, 0.2),
         "student_loan_interest": some(3_000),
+        "qualified_tuition_expenses": some(7_000, 0.3),
         "taxable_interest_income": some(2_000),
         "social_security_retirement": 0.0 if dependent else some(40_000, 0.3),
         "taxable_private_pension_income": 0.0 if dependent else some(40_000, 0.3),
@@ -200,7 +213,7 @@ def _seeded_units(n=200):
         )
         units.append(
             {
-                "state": str(rng.choice(["TX", "MO", "MA"])),
+                "state": str(rng.choice(["TX", "MO", "MA", "MN"])),
                 "head": _seeded_amounts(rng, dependent=False),
                 "spouse": (
                     _seeded_amounts(rng, dependent=False)
@@ -322,9 +335,10 @@ def _check(units, year):
     # 3. Differential against numpy sums over the head and spouse. Alimony
     # is deductible for divorces before 2019 (26 USC 215, repealed by Pub. L.
     # 115-97 sec. 11051 for later instruments).
-    alimony = run["alimony_expense"] * (run["divorce_year"] < 2019)
     np.testing.assert_allclose(
-        run["alimony_expense_ald"], _unit_sum(run, filer * alimony), atol=TOLERANCE
+        run["alimony_expense_ald_person"],
+        run["alimony_expense"] * (run["divorce_year"] < 2019),
+        atol=TOLERANCE,
     )
     for aggregate, person_amount in AGGREGATES.items():
         np.testing.assert_allclose(
@@ -334,13 +348,15 @@ def _check(units, year):
             err_msg=aggregate,
         )
     person_total = sum(run[name] for name in PERSON_DEDUCTIONS)
-    reference = run["loss_ald"] + _unit_sum(run, filer * (person_total + alimony))
+    filer_amounts = sum(run[name] for name in FILER_AMOUNTS)
+    unit_level = run["loss_ald"] + run["capped_qualified_tuition_expenses_ald"]
+    reference = unit_level + _unit_sum(run, filer * person_total + filer_amounts)
     np.testing.assert_allclose(
         run["above_the_line_deductions"], reference, atol=TOLERANCE
     )
     # Units without dependents: the previous all-member sum, unchanged.
     # Units with dependents: never more than it, and never negative.
-    all_members = run["loss_ald"] + _unit_sum(run, person_total + alimony)
+    all_members = unit_level + _unit_sum(run, person_total + filer_amounts)
     assert (run["above_the_line_deductions"] >= -TOLERANCE).all()
     assert (run["above_the_line_deductions"] <= all_members + TOLERANCE).all()
     np.testing.assert_allclose(
