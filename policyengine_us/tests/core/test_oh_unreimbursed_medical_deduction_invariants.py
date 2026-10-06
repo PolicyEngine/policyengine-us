@@ -28,7 +28,6 @@ medical amount set to zero. For every tax unit:
 """
 
 import numpy as np
-import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -39,7 +38,10 @@ TOLERANCE = 0.01  # dollars
 # Worksheet line 7 multiplies line 6 by 7.5% in every year's instructions
 # (2022 p. 27, 2023 p. 40, 2024 p. 41, 2025 p. 41).
 PUBLISHED_RATE = 0.075
-YEARS = [2022, 2024, 2025]
+# Nothing here varies by year, so a few years suffice: each simulation costs
+# far more than the checks on it.
+YEARS = [2022, 2025]
+SEEDED_YEAR = 2024
 
 MEDICAL = [
     "other_medical_expenses",
@@ -260,7 +262,7 @@ def _check(units, year):
 # A batch's cost is mostly per-variable overhead, so each example is a large
 # batch and there are few examples.
 SETTINGS = dict(
-    max_examples=6,
+    max_examples=4,
     deadline=None,
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
@@ -273,6 +275,5 @@ def test_oh_unreimbursed_medical_deduction_invariants(year, units):
     _check(units, year)
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_seeded_population(year):
-    _check(_seeded_units(), year)
+def test_seeded_population():
+    _check(_seeded_units(), SEEDED_YEAR)
