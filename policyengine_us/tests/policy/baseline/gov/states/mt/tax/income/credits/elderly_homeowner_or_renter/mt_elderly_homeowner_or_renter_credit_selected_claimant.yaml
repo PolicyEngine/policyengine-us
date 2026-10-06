@@ -1,0 +1,224 @@
+- name: Case 1, two eligible tax units in one household; the larger credit claims.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 100
+      person2:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 460
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+
+- name: Case 2, equal credits; the first tax unit in member order claims.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 280
+      person2:
+        age: 72
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 280
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+
+- name: Case 3, an ineligible tax unit is never selected, whatever its amount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 58
+        mt_elderly_homeowner_or_renter_credit_eligible: false
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 900
+      person2:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 100
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+
+- name: Case 4, no eligible tax unit in the household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        mt_elderly_homeowner_or_renter_credit_eligible: false
+      person2:
+        age: 50
+        mt_elderly_homeowner_or_renter_credit_eligible: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, false]
+
+- name: Case 5, three eligible tax units; the largest credit claims wherever it is listed.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 100
+      person2:
+        age: 80
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 900
+      person3:
+        age: 75
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 460
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true, false]
+
+- name: Case 6, the limit is per household; each household selects its own claimant.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 1_150
+      person2:
+        age: 75
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 900
+      person3:
+        age: 66
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 300
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: MT
+      household2:
+        members: [person2, person3]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, true, false]
+
+- name: Case 7, a joint couple is one tax unit and one claim.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 1_150
+      person2:
+        age: 66
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: true
+
+- name: Case 8, a dependent in an eligible tax unit is not a separate claimant.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 500
+      person2:
+        age: 12
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 0
+      person3:
+        age: 67
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 200
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+
+- name: Case 9, outside Montana no tax unit is selected.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: false
