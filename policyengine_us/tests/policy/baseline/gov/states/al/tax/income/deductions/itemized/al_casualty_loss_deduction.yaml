@@ -149,3 +149,13 @@
   output:
     # (5,000 - 100) - 10% x 20,000 = 4,900 - 2,000
     al_casualty_loss_deduction: 2_900
+
+- name: Case 12, a negative Alabama AGI with no loss gives no deduction.
+  period: 2017
+  input:
+    state_code: AL
+    casualty_loss: 0
+    al_agi: -10_000
+  output:
+    # Nothing to deduct: max(0 - 100, 0) = 0, whatever the AGI.
+    al_casualty_loss_deduction: 0
