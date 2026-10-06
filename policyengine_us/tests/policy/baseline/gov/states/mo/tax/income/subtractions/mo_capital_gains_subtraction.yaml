@@ -109,3 +109,192 @@
   output:
     mo_capital_gains_subtraction: 8_000
     mo_capital_gains_subtraction_person: [8_000, 0]
+
+- name: A dependent's capital loss does not reduce the head's subtraction
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # The head's Form 1040 line 7a is 10,000; the child's loss is on the
+    # child's own return. Pooled, the unit nets to 6,000.
+    mo_capital_gains_subtraction: 10_000
+    mo_capital_gains_subtraction_person: [10_000, 0]
+
+- name: A dependent's capital gain gets no share of the subtraction
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # Line 7a = 10,000, all the head's. Pooled, the unit total was 15,000,
+    # with 5,000 allocated to the child.
+    mo_capital_gains_subtraction: 10_000
+    mo_capital_gains_subtraction_person: [10_000, 0]
+
+- name: Joint filers net their gains, and a dependent's gain stays out
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      spouse:
+        age: 40
+        short_term_capital_gains: -2_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    # Line 7a = 10,000 - 2,000 = 8,000, entered for the head, the spouse
+    # with the gain. Pooled: 13,000, with 10/15 x 13,000 = 8,666.67 to the
+    # head and 4,333.33 to the child.
+    mo_capital_gains_subtraction: 8_000
+    mo_capital_gains_subtraction_person: [8_000, 0, 0]
+
+- name: Capital gain distributions are reported as capital gain
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        non_sch_d_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Form 1040 line 7a holds capital gain distributions reported without
+    # Schedule D, so line 7a = 3,000.
+    mo_capital_gains_subtraction: 3_000
+    mo_capital_gains_subtraction_person: [3_000]
+
+- name: Capital gain distributions net with a capital loss on Schedule D
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        long_term_capital_gains: -1_000
+        non_sch_d_capital_gains: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Schedule D line 13 takes the 4,000 of distributions, so line 16 and
+    # Form 1040 line 7a = -1,000 + 4,000 = 3,000.
+    mo_capital_gains_subtraction: 3_000
+    mo_capital_gains_subtraction_person: [3_000]
+
+- name: A net capital loss gives no subtraction
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -10_000
+        non_sch_d_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 7a = max(-3,000, -10,000 + 2,000) = -3,000, a loss.
+    mo_capital_gains_subtraction: 0
+    mo_capital_gains_subtraction_person: [0]
+
+- name: A dependent's capital gain distributions stay off the filer's subtraction
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 2_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 2_000
+    mo_capital_gains_subtraction_person: [2_000, 0]
+
+- name: No subtraction before 2025, with or without a dependent's loss
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 0
+    mo_capital_gains_subtraction_person: [0, 0]
