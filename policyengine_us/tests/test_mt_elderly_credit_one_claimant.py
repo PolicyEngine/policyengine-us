@@ -248,13 +248,52 @@ if hypothesis is not None:
             "rent": draw(amount(12_000)),
         }
 
-    @hypothesis.settings(max_examples=15, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(
+        max_examples=15, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
     @hypothesis.given(
         st.lists(
             st.lists(tax_unit(), min_size=1, max_size=3),
             min_size=1,
             max_size=4,
         )
+    )
+    # Both tax units reach the $1,150 cap (line 18 = 20,000; line 22 = 259;
+    # line 27 = 2,741 and 1,741): one claim of 1,150.
+    @hypothesis.example(
+        [
+            [
+                {
+                    "adults": [adult(70, pension=10_000)],
+                    "property_tax": 3_000,
+                    "rent": 0,
+                },
+                {
+                    "adults": [adult(66, pension=10_000)],
+                    "property_tax": 2_000,
+                    "rent": 0,
+                },
+            ]
+        ]
+    )
+    # A renter paying 6,000 (line 26 = 900) and an owner billed 1,000 (line
+    # 26 = 1,000): the owner's 741 is paid, not the renter's 641, although
+    # the renter pays more for housing.
+    @hypothesis.example(
+        [
+            [
+                {
+                    "adults": [adult(70, pension=10_000)],
+                    "property_tax": 0,
+                    "rent": 6_000,
+                },
+                {
+                    "adults": [adult(66, pension=10_000)],
+                    "property_tax": 1_000,
+                    "rent": 0,
+                },
+            ]
+        ]
     )
     def test_properties(households):
         assert_properties(households)
