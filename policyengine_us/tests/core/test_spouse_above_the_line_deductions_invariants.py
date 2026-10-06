@@ -15,9 +15,11 @@ Hypothesis draws batches of tax units (single, joint, joint with dependents)
 in those states, with every kind of deduction input, occasional business
 losses over the Section 461(l) limit, and some tax-unit deductions
 (loss_ald, alimony_expense_ald, self_employment_tax_ald) set directly; a
-seeded population of 200 units adds breadth. Each batch runs as one vectorized
-simulation, once as drawn and once with the spouse's own deduction inputs set
-to zero. For every tax unit:
+seeded population of 200 units adds breadth. Each batch runs as vectorized
+simulations, once as drawn and once with the spouse's own deduction inputs set
+to zero. Units that set the same tax-unit deduction directly share a
+simulation, and units that set none share another: an input given for one
+tax unit is an input for every unit in its simulation. For every tax unit:
 
 1. Accounting identities. The head's and spouse's parts add up to the tax
    unit's amount: above_the_line_deductions_person to
@@ -26,16 +28,19 @@ to zero. For every tax unit:
    alimony_expense_ald_person to alimony_expense_ald. The members'
    adjusted_gross_income_person add up to adjusted_gross_income, and so do
    the head's and spouse's Medicaid AGIs. This holds when a tax-unit
-   deduction is set directly too.
+   deduction is set directly too, except that alimony_expense_ald_person
+   stays each payer's own alimony when alimony_expense_ald is set directly
+   (above_the_line_deductions_person divides the difference).
 2. Differential. limited_business_loss and limited_capital_loss equal numpy
    computations of the Section 461(l) and 1211(b) limits from the inputs and
    parameters. For units with no deduction set directly,
    above_the_line_deductions_person equals a numpy reference built from the
    inputs: each person's own person-level deductions, their alimony under a
    pre-2019 instrument, their share of the numpy-limited business loss by
-   their own business losses and of the numpy-limited capital loss by their
-   own capital losses, and an equal share of the HSA and tuition and fees
-   deductions.
+   their own business losses and of the capital loss deduction (losses up
+   to the filers' capital gains and distributions, plus the net loss up to
+   the 1211(b) limit) by their own capital losses, and an equal share of the
+   HSA and tuition and fees deductions.
 3. Own deductions. The spouse's deductions never add to the head's: the
    head's above_the_line_deductions_person is never higher with the spouse's
    deduction inputs than without them. It is the same, and so is the head's
@@ -114,6 +119,8 @@ PERSON_OUTPUTS = [
     "alimony_expense_ald_person",
     "irs_gross_income",
     "capital_losses",
+    "capital_gains",
+    "non_sch_d_capital_gains",
     "alimony_expense",
     "divorce_year",
     "student_loan_interest",
@@ -324,7 +331,35 @@ def _situation(units, year, *, zero_spouse):
     return {"people": people, **groups}
 
 
+def _direct_name(unit):
+    return unit["direct"][0] if unit["direct"] is not None else ""
+
+
+def _grouped(units):
+    """The units ordered so those setting the same variable directly are together.
+
+    A variable given as an input for one tax unit becomes an input for every
+    tax unit in the simulation, at its default value for the others, so a
+    loss_ald set directly for one unit would set every other unit's loss_ald
+    to zero. Each group therefore runs as its own simulation.
+    """
+    names = sorted({_direct_name(u) for u in units})
+    return [[u for u in units if _direct_name(u) == name] for name in names]
+
+
 def _run(units, year, *, zero_spouse):
+    """Run each group of _grouped(units) and join the results in that order."""
+    runs = [
+        _run_group(group, year, zero_spouse=zero_spouse) for group in _grouped(units)
+    ]
+    offset = 0
+    for run in runs:
+        run["unit"] = run["unit"] + offset
+        offset += len(run["adjusted_gross_income"])
+    return {key: np.concatenate([run[key] for run in runs]) for key in runs[0]}
+
+
+def _run_group(units, year, *, zero_spouse):
     sim = Simulation(situation=_situation(units, year, zero_spouse=zero_spouse))
     tbs = sim.tax_benefit_system
     deductions = tbs.parameters(f"{year}-01-01").gov.irs.ald.deductions
@@ -345,6 +380,16 @@ def _run(units, year, *, zero_spouse):
             own_names.append(f"{deduction}_person")
         else:
             shared_names.append(deduction)
+    # Amounts that are the filer's even when recorded on a dependent.
+    out["filer_amounts"] = sum(
+        (
+            np.asarray(sim.calculate(name, year), dtype=float)
+            for name in tbs.parameters(
+                f"{year}-01-01"
+            ).gov.irs.ald.filer_amounts_recorded_on_dependents
+        ),
+        np.zeros(len(out["adjusted_gross_income_person"])),
+    )
     out["own_direct"] = sum(
         np.asarray(sim.calculate(name, year), dtype=float) for name in own_names
     )
@@ -387,22 +432,32 @@ def _share(amounts, totals, fallback):
 def _limits(run):
     """The limited business and capital losses of each unit, with numpy."""
     filer = ~run["is_dependent"]
-    business = sum(run[source] for source in BUSINESS_SOURCES)
+    # Section 461(l)(3)(A) compares the aggregate deductions of the trades or
+    # businesses with their aggregate gross income or gain, so each source's
+    # gain and loss count separately, not netted for the person first.
+    gains = sum(np.maximum(0, run[source]) for source in BUSINESS_SOURCES)
+    losses = sum(np.maximum(0, -run[source]) for source in BUSINESS_SOURCES)
     other_net_gain = run["other_net_gain"]
-    income = _unit_sum(run, filer * np.maximum(0, business)) + np.maximum(
-        0, other_net_gain
-    )
-    loss = _unit_sum(run, filer * np.maximum(0, -business)) + np.maximum(
-        0, -other_net_gain
-    )
-    # Business sources are summed per person before flooring here, while the
-    # model floors each source; the inputs drawn give each person at most one
-    # business source with a loss, so the two agree.
+    income = _unit_sum(run, filer * gains) + np.maximum(0, other_net_gain)
+    loss = _unit_sum(run, filer * losses) + np.maximum(0, -other_net_gain)
     limited_business = np.minimum(loss, income + run["business_loss_limit"])
-    limited_capital = np.minimum(
-        run["capital_loss_limit"], _unit_sum(run, filer * run["capital_losses"])
+    # 26 USC 1211(b): capital losses are allowed to the extent of capital
+    # gains, each filer's net gain and capital gain distributions (Schedule D
+    # lines 13 and 16), plus a net loss up to the limit (line 21).
+    capital_losses = _unit_sum(run, filer * run["capital_losses"])
+    capital_gains = _unit_sum(
+        run,
+        filer
+        * (
+            np.maximum(0, run["capital_gains"])
+            + np.maximum(0, run["non_sch_d_capital_gains"])
+        ),
     )
-    return limited_business, limited_capital
+    allowed_against_gains = np.minimum(capital_losses, capital_gains)
+    limited_capital = np.minimum(
+        run["capital_loss_limit"], capital_losses - allowed_against_gains
+    )
+    return limited_business, limited_capital, allowed_against_gains
 
 
 def _reference(run):
@@ -419,9 +474,9 @@ def _reference(run):
         0, -_per_person(run, run["other_net_gain"])
     )
     capital_loss = filer * run["capital_losses"]
-    limited_business, limited_capital = _limits(run)
+    limited_business, limited_capital, allowed_against_gains = _limits(run)
     limited_business = _per_person(run, limited_business)
-    capital_deduction = _per_person(run, limited_capital)
+    capital_deduction = _per_person(run, allowed_against_gains + limited_capital)
     losses = limited_business * _share(
         business_loss, _per_person(run, _unit_sum(run, business_loss)), even
     ) + capital_deduction * _share(
@@ -430,10 +485,18 @@ def _reference(run):
     alimony = run["alimony_expense"] * (run["divorce_year"] < 2019)
     # Tax-unit deductions with no person amounts are divided equally.
     shared = _per_person(run, run["shared"]) * even
+    # A filer amount recorded on a dependent (gov.irs.ald.
+    # filer_amounts_recorded_on_dependents) is not on the dependent's own
+    # return; the head and spouse divide it equally.
+    dependent_filer_amounts = _per_person(
+        run, _unit_sum(run, run["is_dependent"] * run["filer_amounts"])
+    )
+    filer_part = run["own_direct"] + alimony + losses + shared
+    filer_part = filer_part + dependent_filer_amounts * even
     return np.where(
         filer,
-        run["own_direct"] + alimony + losses + shared,
-        run["own_direct"] + alimony,
+        filer_part,
+        run["own_direct"] + alimony - run["filer_amounts"],
     )
 
 
@@ -446,6 +509,8 @@ def _at_most(lower, upper):
 
 
 def _check(units, year):
+    # The order in which _run returns the units.
+    units = [u for group in _grouped(units) for u in group]
     run = _run(units, year, zero_spouse=False)
     zeroed = _run(units, year, zero_spouse=True)
     filer = ~run["is_dependent"]
@@ -460,10 +525,15 @@ def _check(units, year):
         ("limited_capital_loss_person", "limited_capital_loss"),
         ("alimony_expense_ald_person", "alimony_expense_ald"),
     ]
+    set_directly = np.array([_direct_name(u) for u in units])
     for person_name, unit_name in pairs:
+        # alimony_expense_ald_person is each payer's own alimony, so it adds up
+        # to alimony_expense_ald unless that is set directly;
+        # above_the_line_deductions_person reconciles the difference.
+        kept = set_directly != unit_name
         _close(
-            _unit_sum(run, filer * run[person_name]),
-            run[unit_name],
+            _unit_sum(run, filer * run[person_name])[kept],
+            run[unit_name][kept],
             err_msg=person_name,
         )
     _close(
@@ -476,7 +546,7 @@ def _check(units, year):
     )
 
     # 2. Differential against numpy.
-    limited_business, limited_capital = _limits(run)
+    limited_business, limited_capital, _ = _limits(run)
     _close(run["limited_business_loss"], limited_business)
     _close(run["limited_capital_loss"], limited_capital)
     _close(run["above_the_line_deductions_person"][~direct], _reference(run)[~direct])
