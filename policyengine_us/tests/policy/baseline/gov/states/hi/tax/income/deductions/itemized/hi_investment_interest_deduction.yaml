@@ -1,0 +1,210 @@
+- name: Case 1, qualified dividends count as investment income in Hawaii.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        taxable_interest_income: 2_000
+        qualified_dividend_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # N-158 line 4a: $2,000 interest + $1,000 ordinary dividends = $3,000.
+    hi_investment_interest_deduction: 3_000
+
+- name: Case 2, interest expense below investment income is fully deductible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 1_000
+        taxable_interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 1_000
+
+- name: Case 3, net short-term gain counts as investment income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        short_term_capital_gains: 4_000
+        long_term_capital_gains_before_response: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Line 4b $14,000; line 4c $10,000; line 4d $4,000.
+    hi_investment_interest_deduction: 4_000
+
+- name: Case 4, net capital gain alone is not investment income without the election.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        long_term_capital_gains_before_response: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 5, investment expenses reduce net investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        taxable_interest_income: 6_000
+        investment_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 4_000
+
+- name: Case 6, a net short-term loss does not reduce other investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        taxable_interest_income: 2_000
+        short_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 2_000
+
+- name: Case 7, net investment income is floored at zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 2_000
+        taxable_interest_income: 1_000
+        investment_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 8, a long-term loss leaves the short-term gain as investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 5_000
+        short_term_capital_gains: 6_000
+        long_term_capital_gains_before_response: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Line 4b $4,000; net capital gain $0, so line 4d is $4,000.
+    hi_investment_interest_deduction: 4_000
+
+- name: Case 9, joint filers pool investment income and interest expense.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        investment_interest_expense: 3_000
+        taxable_interest_income: 1_000
+      person2:
+        age: 45
+        non_qualified_dividend_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 2_500
+
+- name: Case 10, no investment interest expense means no deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        taxable_interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0

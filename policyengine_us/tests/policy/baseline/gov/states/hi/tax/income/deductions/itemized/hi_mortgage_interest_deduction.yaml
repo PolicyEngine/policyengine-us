@@ -1,0 +1,267 @@
+- name: Case 1, a 2023 mortgage over the limits keeps the pre-TCJA limits in Hawaii.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 90_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2023
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Federal: $750,000 / $1,500,000 * $90,000 = $45,000.
+    deductible_mortgage_interest_tax_unit: 45_000
+    # Hawaii (2017 Pub 936 Table 1): $1,000,000 acquisition debt plus
+    # $100,000 of the excess as home equity debt.
+    # $1,100,000 / $1,500,000 * $90,000 = $66,000.
+    hi_mortgage_interest_deduction: 66_000
+
+- name: Case 2, a post-TCJA mortgage under $1 million is fully deductible in Hawaii.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2018
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Federal: $750,000 / $900,000 * $45,000 = $37,500.
+    deductible_mortgage_interest_tax_unit: 37_500
+    hi_mortgage_interest_deduction: 45_000
+
+- name: Case 3, married filing separately uses the $500,000 and $50,000 limits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 600_000
+        first_home_mortgage_origination_year: 2019
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Federal: $375,000 / $600,000 * $30,000 = $18,750.
+    deductible_mortgage_interest_tax_unit: 18_750
+    # Hawaii: ($500,000 + $50,000) / $600,000 * $30,000 = $27,500.
+    hi_mortgage_interest_deduction: 27_500
+
+- name: Case 4, joint filers with two mortgages apply the limits to the combined balance.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 40_000
+      person2:
+        age: 45
+        home_mortgage_interest: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        first_home_mortgage_balance: 800_000
+        first_home_mortgage_origination_year: 2017
+        second_home_mortgage_balance: 500_000
+        second_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Federal: $800,000 / $1,300,000 * $65,000 = $40,000.
+    deductible_mortgage_interest_tax_unit: 40_000
+    # Hawaii: $1,100,000 / $1,300,000 * $65,000 = $55,000.
+    hi_mortgage_interest_deduction: 55_000
+
+- name: Case 5, debt exactly at the combined $1.1 million limit is fully deductible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 55_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_100_000
+        first_home_mortgage_origination_year: 2024
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 55_000
+
+- name: Case 6, debt between $1 million and $1.1 million is fully deductible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 52_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_050_000
+        first_home_mortgage_origination_year: 2024
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 52_500
+
+- name: Case 7, head of household in 2018, the first year Hawaii decoupled.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 100_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        first_home_mortgage_balance: 2_000_000
+        first_home_mortgage_origination_year: 2018
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # $1,100,000 / $2,000,000 * $100,000 = $55,000.
+    hi_mortgage_interest_deduction: 55_000
+
+- name: Case 8, surviving spouse uses the $1 million and $100,000 limits.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        home_mortgage_interest: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        first_home_mortgage_balance: 1_200_000
+        first_home_mortgage_origination_year: 2019
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # $1,100,000 / $1,200,000 * $60,000 = $55,000.
+    hi_mortgage_interest_deduction: 55_000
+
+- name: Case 9, interest without a reported balance is fully deductible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 10_000
+
+- name: Case 10, a directly supplied deductible mortgage interest input is kept.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        deductible_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 20_000
+
+- name: Case 11, no mortgage means no deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 0
+
+- name: Case 12, a very large mortgage is limited to $1.1 million of debt.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        first_home_mortgage_balance: 3_000_000
+        first_home_mortgage_origination_year: 2010
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # $1,100,000 / $3,000,000 * $150,000 = $55,000.
+    hi_mortgage_interest_deduction: 55_000
