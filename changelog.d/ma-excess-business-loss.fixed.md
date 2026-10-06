@@ -1,1 +1,1 @@
-Add the federal excess business loss back to Massachusetts 5.0% income from 2022 (Schedule X, line 6), with a new excess_business_loss variable.
+Add the excess business loss back to Massachusetts 5.0% income for tax years 2022 through 2028 (Schedule X, line 6), measured from 2026 against a Massachusetts threshold that does not adopt the OBBBA reset, with new excess_business_loss and net_business_loss variables.

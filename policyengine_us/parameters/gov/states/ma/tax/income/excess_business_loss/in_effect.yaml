@@ -1,21 +1,39 @@
-description: Massachusetts adds the federal excess business loss back to 5.0% income if this is true.
+description: Massachusetts adds the excess business loss back to 5.0% income if this is true.
 
 values:
   2018-01-01: false
   # Massachusetts conforms to the Code as amended on January 1, 2022 for tax
-  # years beginning on or after January 1, 2022, including Section 461(l).
+  # years beginning on or after January 1, 2022 (St. 2022, c. 126, ss. 30 and
+  # 189), including Section 461(l) (TIR 23-5), and to the Code as amended on
+  # January 1, 2024 from tax year 2024 (St. 2024, c. 140, ss. 100 and 251).
   2022-01-01: true
+  # The Code as amended on January 1, 2024 limits excess business losses
+  # through the 2028 taxable year (TIR 24-14). Massachusetts does not conform
+  # to the OBBBA extension of the limitation (TIR 26-4).
+  2029-01-01: false
 
 metadata:
   unit: bool
   period: year
   label: Massachusetts excess business loss add-back in effect
   reference:
+    - title: M.G.L. c. 62, s. 1(c), definition of Code
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section1
+    - title: TIR 23-1, Tax Provisions in the Fiscal Year 2023 Budget, Including Massachusetts Personal Income Tax Code Update (Code section 461(l))
+      href: https://www.mass.gov/technical-information-release/working-draft-tir-tax-provisions-in-the-fiscal-year-2023-budget-including-massachusetts-personal-income-tax-code-update
+    - title: TIR 23-5, Chapter 62 Conformity to Select Provisions of the 2022 Internal Revenue Code (Code section 461(l))
+      href: https://www.mass.gov/technical-information-release/tir-23-5-chapter-62-conformity-to-select-provisions-of-the-2022-internal-revenue-code
+    - title: TIR 24-14, Tax Provisions in the Fiscal Year 2025 Budget, II.A.1 Limitation on Noncorporate Excess Business Losses
+      href: https://www.mass.gov/technical-information-release/tir-24-14-tax-provisions-in-the-fiscal-year-2025-budget
+    - title: TIR 26-4, Massachusetts Conformity to Certain Provisions in Public Law No. 119-21 (Sec. 70601)
+      href: https://www.mass.gov/technical-information-release/tir-26-4-massachusetts-conformity-to-certain-provisions-in-public-law-no-119-21
     - title: 2022 Form 1 instructions, Updated IRC Conformity Date ("Code Update")
-      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2022/dor-2022-inc_form-1_instructions.pdf#page=4
+      href: https://web.archive.org/web/20230616200742/https://www.mass.gov/doc/2022-form-1-instructions/download#page=4
     - title: 2022 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
-      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2022/dor-2022-inc_form-1_instructions.pdf#page=20
+      href: https://web.archive.org/web/20230616200742/https://www.mass.gov/doc/2022-form-1-instructions/download#page=20
+    - title: 2023 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=20
     - title: 2024 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
-      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2024/dor-2024-inc-form-1-inst_1.pdf#page=20
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=20
     - title: 2025 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
-      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-form-1-inst.pdf#page=19
+      href: https://www.mass.gov/doc/2025-form-1-instructions/download#page=21

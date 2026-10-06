@@ -1,0 +1,108 @@
+description: Massachusetts treats business losses above business income plus this threshold as an excess business loss, under Section 461(l) of the Code as Massachusetts adopts it; only joint returns receive twice the nonjoint threshold.
+metadata:
+  propagate_metadata_to_children: true
+  label: Massachusetts excess business loss threshold
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  reference:
+    - title: M.G.L. c. 62, s. 1(c), definition of Code (as amended on January 1, 2024)
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section1
+    - title: TIR 26-4, Massachusetts Conformity to Certain Provisions in Public Law No. 119-21 (Sec. 70601, no conformity)
+      href: https://www.mass.gov/technical-information-release/tir-26-4-massachusetts-conformity-to-certain-provisions-in-public-law-no-119-21
+    - title: Revenue Procedure 2021-45, section 3.32 (2022 threshold)
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=19
+    - title: Revenue Procedure 2022-38, section 3.32 (2023 threshold)
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
+    - title: Revenue Procedure 2023-34, section 3.32 (2024 threshold)
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=17
+    - title: Revenue Procedure 2024-40, section 2.32 (2025 threshold)
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=17
+    - title: 2022 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://web.archive.org/web/20230616200742/https://www.mass.gov/doc/2022-form-1-instructions/download#page=20
+    - title: 2024 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=20
+    - title: 2025 Form 1 instructions, Schedule X, line 6 Excess Business Loss Adjustment
+      href: https://www.mass.gov/doc/2025-form-1-instructions/download#page=21
+# Through 2025 the Massachusetts threshold is the federal threshold: Schedule X,
+# line 6 is the excess business loss on U.S. Form 1040, Schedule 1, line 8p.
+# The 2023 Form 1 instructions still print $270,000 / $540,000, but line 8p
+# uses the 2023 federal $289,000 / $578,000 (Rev. Proc. 2022-38).
+# From 2026 the federal threshold uses the OBBBA reset ($256,000 / $512,000,
+# Rev. Proc. 2025-32, section 4.31), which Massachusetts does not adopt
+# (TIR 26-4). The 2026 values are the 2025 values, pending the Massachusetts
+# Department of Revenue's 2026 figure under the pre-OBBBA indexing of
+# Section 461(l)(3)(B).
+HEAD_OF_HOUSEHOLD:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+  values:
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2025-01-01: 313_000
+    # Pending the Massachusetts Department of Revenue's 2026 figure.
+    2026-01-01: 313_000
+JOINT:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        # Twice the rounded nonjoint threshold under section 461(l)(3).
+        type: nearest
+        interval: 2_000
+  values:
+    2022-01-01: 540_000
+    2023-01-01: 578_000
+    2024-01-01: 610_000
+    2025-01-01: 626_000
+    # Pending the Massachusetts Department of Revenue's 2026 figure.
+    2026-01-01: 626_000
+SEPARATE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+  values:
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2025-01-01: 313_000
+    # Pending the Massachusetts Department of Revenue's 2026 figure.
+    2026-01-01: 313_000
+SINGLE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+  values:
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2025-01-01: 313_000
+    # Pending the Massachusetts Department of Revenue's 2026 figure.
+    2026-01-01: 313_000
+SURVIVING_SPOUSE:
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+  # Section 461(l)(3)(A) doubles the threshold only for a joint return.
+  values:
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2025-01-01: 313_000
+    # Pending the Massachusetts Department of Revenue's 2026 figure.
+    2026-01-01: 313_000
