@@ -71,6 +71,7 @@
     # line 9 = 6,000 + 500 = 6,500; Schedule 1, line 11 = 300, line 18 = 100,
     # line 20 = 2,000, line 26 = 2,400; line 11 = 4,100.
     medicaid_adjusted_gross_income_person: [50_000, 4_100]
+<<<<<<< HEAD
 
 - name: Case 4, a dependent's pre-2019 alimony reduces the dependent's own AGI.
   period: 2025
@@ -123,3 +124,5 @@
   output:
     adjusted_gross_income: 47_000
     medicaid_adjusted_gross_income_person: 47_000
+=======
+>>>>>>> 9bf3df0e73 (Leave Medicaid AGI to a separate fix)

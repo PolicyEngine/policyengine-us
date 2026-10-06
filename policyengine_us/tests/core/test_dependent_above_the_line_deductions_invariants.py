@@ -36,7 +36,7 @@ every tax unit:
 4. Each person's own deduction amounts are still computed for dependents
    (half of each person's self-employment tax, for example), so a
    dependent's own return can use them, and a dependent's Medicaid AGI is
-   their own gross income less their own deductions, alimony paid included.
+   their own gross income less their own person-level deductions.
 """
 
 import numpy as np
@@ -377,9 +377,7 @@ def _check(units, year):
         atol=TOLERANCE,
     )
     dependent = run["is_dependent"]
-    # Alimony a dependent pays under a pre-2019 instrument is one of their own
-    # deductions too.
-    own_person_deductions = person_total - run["student_loan_interest_ald"] + alimony
+    own_person_deductions = person_total - run["student_loan_interest_ald"]
     np.testing.assert_allclose(
         run["medicaid_adjusted_gross_income_person"][dependent],
         (run["medicaid_irs_gross_income"] - own_person_deductions)[dependent],
