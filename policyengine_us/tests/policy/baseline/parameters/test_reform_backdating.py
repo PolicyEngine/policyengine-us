@@ -16,7 +16,7 @@ so any ``start_instant`` from 2015 through 2023 raised
 ``ParameterNotFoundError`` while the system was built.
 
 Backdating now runs before the reform is applied, on the baseline values, and
-again afterwards for any parameter the reform added.
+again afterwards for any parameter the reform added or replaced.
 """
 
 import datetime
@@ -378,7 +378,10 @@ def test_shifted_moves_february_29_to_february_28():
 
 
 def backdated_first_date(parameter):
-    # Backdating inserts a copy of the first dated value at 2015-01-01.
+    # Backdating inserts a copy of the first dated value at 2015-01-01. A
+    # parameter whose YAML dates 2015-01-01 itself, with the same value as its
+    # next date, looks the same and is selected too; the invariants hold for
+    # it as well.
     values = parameter.values_list
     if (
         len(values) > 1
@@ -401,7 +404,8 @@ def perturbed(value):
 def every_backdated_parameter():
     """Reform every backdated numeric or boolean parameter at once.
 
-    Parameters cycle through three windows: the year from the first dated
+    The selection also takes the few parameters that only look backdated (see
+    ``backdated_first_date``). Parameters cycle through three windows: the year from the first dated
     value, the year before it, and from a year before it to 2100 (the app's
     format). ``gov.contrib`` is left out because its switches trigger
     structural reforms.
