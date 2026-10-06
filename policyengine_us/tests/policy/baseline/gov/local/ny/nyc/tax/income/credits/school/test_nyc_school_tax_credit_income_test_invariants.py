@@ -19,7 +19,9 @@ evaluates a grid of tax units in one vectorized simulation and checks that:
    distributions and non-IRA retirement distributions, whether AGI is an input
    or computed from income sources; when AGI is computed, the subtraction never
    exceeds the retirement distributions AGI includes, even if a negative
-   401(k) input offsets an IRA distribution; and
+   401(k) input offsets an IRA distribution, which relies on every listed IRA
+   distribution source being part of taxable_retirement_distributions, a
+   federal gross income source; and
 4. outside NYC, income is zero and the rate reduction amount is ineligible.
 """
 
@@ -28,6 +30,7 @@ import itertools
 import numpy as np
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
 
 YEAR = 2025
 LIMIT = 500_000
@@ -252,6 +255,22 @@ def test_income_matches_computed_agi_less_ira_distributions():
     )
     assert np.allclose(agi - income, subtracted)
     assert (income <= agi).all()
+
+
+def test_ira_distribution_sources_are_in_capped_gross_income_source():
+    # nyc_school_credit_income caps the subtraction at the head's or spouse's
+    # taxable_retirement_distributions, the amount federal gross income
+    # includes for them. That is exact only while each listed source is one of
+    # that variable's components and it is itself a gross income source.
+    components = set(system.variables["taxable_retirement_distributions"].adds)
+    for year in range(2022, YEAR + 2):
+        parameters = system.parameters(f"{year}-01-01")
+        school = parameters.gov.local.ny.nyc.tax.income.credits.school
+        assert set(school.ira_distribution_sources) <= components
+        assert (
+            "taxable_retirement_distributions"
+            in parameters.gov.irs.gross_income.sources
+        )
 
 
 def test_outside_nyc_income_is_zero_and_rate_reduction_ineligible():
