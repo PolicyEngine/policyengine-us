@@ -487,8 +487,8 @@
   output:
     nh_fap_countable_income: 1_400
 
-# User-approved omission: the ambiguous investment deduction is disabled; 50 + 50 = 100.
-- name: "Case 17, interest and dividends are counted without the deferred deduction."
+# User-approved convention: one $50 annual exclusion per SPM unit; 50 + 50 - 50 = 50.
+- name: "Case 17, interest and dividends share one fifty-dollar exclusion."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -512,10 +512,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 100
+    nh_fap_countable_income: 50
 
-# Skipping the ambiguous deduction counts the full 51 + 51 = 102.
-- name: "Case 18, investment receipts above fifty dollars remain fully countable."
+# Apply the $50 exclusion once to combined interest and dividends: 51 + 51 - 50 = 52.
+- name: "Case 18, combined investment receipts above the shared exclusion are countable."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -539,10 +539,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 102
+    nh_fap_countable_income: 52
 
-# With no investment deduction, both household members contribute their full receipts: 40 + 20 + 40 + 40 = 140.
-- name: "Case 19, investment receipts are counted for every household member without deductions."
+# Both members share one SPM-unit exclusion: 40 + 20 + 40 + 40 - 50 = 90.
+- name: "Case 19, members of one SPM unit share one investment exclusion."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -572,9 +572,9 @@
         members: ["person1", "person2"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 140
+    nh_fap_countable_income: 90
 
-# The canonical ordinary_dividend_income includes both dividend components; the deferred deduction is not applied.
+# The canonical ordinary_dividend_income includes both dividend components; 100 + 100 - 50 = 150.
 - name: "Case 20, qualified and nonqualified dividends feed the canonical ordinary aggregate."
   period: 2027
   absolute_error_margin: 0.01
@@ -599,7 +599,7 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: 200
+    nh_fap_countable_income: 150
 
 # Manual p15; annual SSI receipts count once. Medicare reconstruction is expressly deferred.
 - name: "Case 21, gross Social Security and adult SSI are both countable."
@@ -940,3 +940,48 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: [38_400, 12_000]
+
+# Each SPM unit in the same household gets its own $50 exclusion.
+# Unit 1: 40 + 40 - 50 = 30. Unit 2: 25 + 25 - 50 = 0.
+# Unit 3: investment income of 10 + 20 is fully excluded; the unused $20
+# of the allowance does not offset $10,000 of earnings.
+- name: "Case 33, each SPM unit receives its own exclusion limited to investment income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 40
+        ordinary_dividend_income: 40
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        interest_income: 25
+        ordinary_dividend_income: 25
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+        interest_income: 10
+        ordinary_dividend_income: 20
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+      spm_unit2:
+        members: ["person2"]
+        nh_fanf: 0
+      spm_unit3:
+        members: ["person3"]
+        nh_fanf: 0
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: [30, 0, 10_000]

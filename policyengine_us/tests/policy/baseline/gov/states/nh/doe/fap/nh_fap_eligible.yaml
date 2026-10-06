@@ -1109,10 +1109,9 @@
   output:
     nh_fap_eligible: [true, false, false, false, false, false, false, false, true]
 
-# The user-approved omission counts all $25 of interest; 48,713 + 25 = 48,738
-# exceeds the one-person income limit. Previously the investment disregard
-# excluded this interest and left the household eligible at the limit.
-- name: "Case 28, interest below fifty dollars can put income above the limit when the deduction is deferred."
+# The shared $50 investment exclusion leaves $25 of $75 interest countable;
+# 48,713 + 25 = 48,738 exceeds the one-person income limit.
+- name: "Case 28, interest remaining after the SPM-unit exclusion can put income above the limit."
   period: 2027
   input:
     people:
@@ -1121,7 +1120,7 @@
         immigration_status: "CITIZEN"
         ssi: 0
         employment_income: 48_713
-        interest_income: 25
+        interest_income: 75
     spm_units:
       spm_unit1:
         members: ["person1"]

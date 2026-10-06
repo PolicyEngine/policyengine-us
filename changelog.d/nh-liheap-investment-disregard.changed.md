@@ -1,1 +1,1 @@
-Defer the ambiguous New Hampshire FAP investment-income deduction and count interest and dividends without that deduction pending clarification.
+Apply one $50 annual New Hampshire FAP investment-income exclusion per SPM unit to combined interest and dividends, documenting the modeled basis.

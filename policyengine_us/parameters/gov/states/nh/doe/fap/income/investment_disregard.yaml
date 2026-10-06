@@ -1,17 +1,18 @@
-description: PolicyEngine applies this modeled annual investment-income disregard per source when calculating countable income under the New Hampshire Fuel Assistance Program.
-# Modeling omission: skip this deduction for now, as requested by the user.
+description: PolicyEngine applies this annual exclusion once to each SPM unit's combined interest and dividend income under the New Hampshire Fuel Assistance Program.
+# Modeling convention: apply one $50 annual exclusion per SPM unit to
+# combined interest and dividends, as requested by the user.
 # The PY2027 manual lists the first $50 of interest and dividends separately
 # on pages 15-16, but page 17 combines them as interest "and/or" dividends.
 # It does not specify whether the allowance applies per person or household.
-# Zero deliberately disables the deduction; it is not the published policy
-# amount. Revisit both the amount and its application when clarified.
+# The combined-source, SPM-unit basis is an explicit modeling assumption
+# pending agency clarification.
 values:
-  2026-10-01: 0
+  2026-10-01: 50
 
 metadata:
   unit: currency-USD
   period: year
-  label: New Hampshire FAP modeled annual investment income disregard
+  label: New Hampshire FAP annual investment income exclusion per SPM unit
   reference:
     - title: "PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Countable and Non-countable Income and Allowable Expenses #page 15,16,17"
       href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=15
