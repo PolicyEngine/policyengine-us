@@ -10,6 +10,7 @@ examples:
   exclusion, rise with expenses or losses, and fall with Arkansas AGI;
 - the joint and separate variants agree on the same inputs;
 - they do not depend on the year across the federal TCJA suspension;
+- a dependent's casualty loss never changes the filer's casualty deduction;
 - before 2018, the Arkansas miscellaneous deduction equals the federal one
   when Arkansas AGI equals federal AGI, since both apply one 2% floor.
 """
@@ -156,3 +157,46 @@ def test_misc_deduction_matches_federal_before_2018(year):
         sim.calculate("ar_misc_deduction_joint", year),
         sim.calculate("misc_deduction", year),
     )
+
+
+DEPENDENT_LOSSES = [0, 100, 5_000, 250_000]
+
+
+@pytest.mark.parametrize("year", [2010, 2025])
+def test_casualty_loss_deduction_ignores_dependents_losses(year):
+    """26 U.S.C. § 165(h), as adopted by Ark. Code § 26-51-424(b), allows the
+    loss of the individual who sustained it, so a dependent's loss belongs on
+    the dependent's own return. Each tax unit holds a head and a dependent."""
+    grid = list(itertools.product(AMOUNTS, AGIS, DEPENDENT_LOSSES))
+    situation = {"people": {}, "tax_units": {}, "households": {}}
+    for i, (head_loss, agi, dependent_loss) in enumerate(grid):
+        head, dependent = f"h{i}", f"d{i}"
+        for person, loss, person_agi, is_dependent in (
+            (head, head_loss, agi, False),
+            (dependent, dependent_loss, 0, True),
+        ):
+            situation["people"][person] = {
+                "age": {year: 10 if is_dependent else 40},
+                "is_tax_unit_head": {year: not is_dependent},
+                "is_tax_unit_dependent": {year: is_dependent},
+                "casualty_loss": {year: loss},
+                "ar_agi_joint": {year: person_agi},
+                "ar_agi_indiv": {year: person_agi},
+            }
+        situation["tax_units"][f"t{i}"] = {"members": [head, dependent]}
+        situation["households"][f"hh{i}"] = {
+            "members": [head, dependent],
+            "state_code": {year: "AR"},
+        }
+    sim = Simulation(situation=situation)
+    head_loss = np.array([g[0] for g in grid], dtype=float)
+    agi = np.array([g[1] for g in grid], dtype=float)
+    expected = casualty_reference(head_loss, agi, year)
+    for variable in (
+        "ar_casualty_loss_deduction_joint",
+        "ar_casualty_loss_deduction_indiv",
+    ):
+        np.testing.assert_allclose(sim.calculate(variable, year), expected)
+    # Guard against a vacuous pass: some dependents have losses that would
+    # raise the deduction if they were counted.
+    assert max(DEPENDENT_LOSSES) > 0 and expected.max() > 0
