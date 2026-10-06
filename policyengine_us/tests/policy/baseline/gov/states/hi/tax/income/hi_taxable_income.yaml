@@ -67,3 +67,29 @@
     hi_exemptions: 2_288
     # 200,000 - 29,004 - 2,288 = 168,708.
     hi_taxable_income: 168_708
+
+- name: Case 5, Hawaii does not adopt the federal senior or overtime deductions in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # The federal return gets both deductions.
+    additional_senior_deduction: 6_000
+    overtime_income_deduction: 5_000
+    # Act 35 keeps sections 151 and 225 inoperative for Hawaii.
+    hi_deductions: 8_000
+    # Regular plus aged exemption: 2 * 1,144 = 2,288.
+    hi_exemptions: 2_288
+    # 50,000 - 8,000 - 2,288 = 39,712.
+    hi_taxable_income: 39_712
