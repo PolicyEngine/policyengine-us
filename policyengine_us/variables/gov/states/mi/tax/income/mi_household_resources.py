@@ -50,24 +50,17 @@ class mi_household_resources(Variable):
         # MCL 206.508(3): "'Household' means a claimant and spouse." A
         # dependent's business and rental items belong on the dependent's own
         # return, so they neither add to nor net against lines 16 and 17, as
-        # loss_ald leaves them off this return.
-        person = tax_unit.members
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        variables = tax_unit.simulation.tax_benefit_system.variables
-
+        # loss_ald leaves them off this return. tax_unit_non_dep_add sums a
+        # person-level source over the head and spouse and takes a
+        # tax-unit-level one (other_net_gain) as is.
         business_income = 0
         rental_income = 0
         other_income = 0
         for source in p.household_resources:
-            if source in business_sources | rental_sources:
-                if variables[source].entity.is_person:
-                    amount = tax_unit.sum(person(source, period) * not_dependent)
-                else:
-                    amount = tax_unit(source, period)
-                if source in business_sources:
-                    business_income += amount
-                else:
-                    rental_income += amount
+            if source in business_sources:
+                business_income += tax_unit_non_dep_add(tax_unit, period, [source])
+            elif source in rental_sources:
+                rental_income += tax_unit_non_dep_add(tax_unit, period, [source])
             else:
                 other_income += add(tax_unit, period, [source])
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
