@@ -30,6 +30,8 @@ from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 from policyengine_us.system import COUNTRY_DIR, CountryTaxBenefitSystem, system
+from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
+from policyengine_us.tools.per_capita_uprating import DERIVED_FROM
 
 PARAMETERS = COUNTRY_DIR / "parameters"
 
@@ -78,7 +80,7 @@ ADDED_PARAMETER = f"gov.contrib.{ADDED_NAME}"
 ADDED_YEAR = 2025
 ADDED_VALUE = 7
 
-YEARS = range(2015, 2031)
+YEARS = range(FIRST_MODELED_YEAR, 2031)
 
 TIPS = 45_000
 AUTO_LOAN_INTEREST = 8_000
@@ -290,7 +292,7 @@ def test_simulation_reform_leaves_earlier_years():
         },
     }
     baseline = Simulation(situation=situation)
-    reformed = Simulation(
+    reformed_simulation = Simulation(
         situation=situation,
         reform={
             RANGE_PARAMETER: {f"{RANGE_START_YEAR}-01-01.2100-12-31": RANGE_VALUE},
@@ -299,7 +301,7 @@ def test_simulation_reform_leaves_earlier_years():
     )
 
     # The simulation's own tree, independent of how any formula gates by year.
-    cap = reformed.tax_benefit_system.parameters.get_child(RANGE_PARAMETER)
+    cap = reformed_simulation.tax_benefit_system.parameters.get_child(RANGE_PARAMETER)
     baseline_cap = system.parameters.get_child(RANGE_PARAMETER)
     before = RANGE_START_YEAR - 1
     assert cap(f"{before}-01-01") == baseline_cap(f"{before}-01-01")
@@ -310,8 +312,10 @@ def test_simulation_reform_leaves_earlier_years():
     # Guard: a leaked cap only shows while the baseline computes the
     # deduction before the cap's first dated year, below the reformed cap.
     assert 0 < tip_deduction(baseline, before) < min(TIPS, RANGE_VALUE)
-    assert tip_deduction(reformed, before) == tip_deduction(baseline, before)
-    assert tip_deduction(reformed, RANGE_START_YEAR) == min(TIPS, RANGE_VALUE)
+    assert tip_deduction(reformed_simulation, before) == tip_deduction(baseline, before)
+    assert tip_deduction(reformed_simulation, RANGE_START_YEAR) == min(
+        TIPS, RANGE_VALUE
+    )
 
     def auto_loan_deduction(simulation, year):
         return simulation.calculate("auto_loan_interest_deduction", year)[0]
@@ -320,8 +324,11 @@ def test_simulation_reform_leaves_earlier_years():
     # raised ParameterNotFoundError; the year before it received the reform.
     for year in (EARLY_SCALAR_YEAR - 1, EARLY_SCALAR_YEAR + 1):
         assert auto_loan_deduction(baseline, year) == AUTO_LOAN_INTEREST
-        assert auto_loan_deduction(reformed, year) == AUTO_LOAN_INTEREST
-    assert auto_loan_deduction(reformed, EARLY_SCALAR_YEAR) == EARLY_SCALAR_VALUE
+        assert auto_loan_deduction(reformed_simulation, year) == AUTO_LOAN_INTEREST
+    assert (
+        auto_loan_deduction(reformed_simulation, EARLY_SCALAR_YEAR)
+        == EARLY_SCALAR_VALUE
+    )
 
 
 def test_structural_reform_detected_at_start_instant_before_2024():
@@ -349,14 +356,25 @@ def test_structural_reform_detected_at_start_instant_before_2024():
     assert formula_files(simulation.tax_benefit_system) == {SWITCH_REFORM_FILE}
 
 
-BACKDATED_FROM = "2015-01-01"
-CHECKED_YEARS = range(2015, 2036)
+BACKDATED_FROM = f"{FIRST_MODELED_YEAR}-01-01"
+CHECKED_YEARS = range(FIRST_MODELED_YEAR, 2036)
 
 
 def shifted(instant, years=0, days=0):
     date = datetime.date.fromisoformat(instant)
-    date = date.replace(year=date.year + years) + datetime.timedelta(days=days)
-    return date.isoformat()
+    try:
+        date = date.replace(year=date.year + years)
+    except ValueError:  # Feb 29 in a non-leap year
+        date = date.replace(year=date.year + years, day=28)
+    return (date + datetime.timedelta(days=days)).isoformat()
+
+
+def test_shifted_moves_february_29_to_february_28():
+    # A parameter first dated on Feb 29 must not crash the window builder.
+    assert shifted("2024-02-29", years=1) == "2025-02-28"
+    assert shifted("2024-02-29", years=-1, days=-1) == "2023-02-27"
+    assert shifted("2024-02-29", years=4) == "2028-02-29"
+    assert shifted("2025-01-01", days=-1) == "2024-12-31"
 
 
 def backdated_first_date(parameter):
@@ -408,6 +426,9 @@ def every_backdated_parameter():
         else:
             start, stop = shifted(first, years=-1), "2100-12-31"
         windows[parameter.name] = (start, stop, value)
+    # Guard: the tests using this fixture would pass vacuously on an empty
+    # selection.
+    assert len(windows) > 1_000
     reform = {
         name: {f"{start}.{stop}": value}
         for name, (start, stop, value) in windows.items()
@@ -431,15 +452,16 @@ def test_every_backdated_parameter_changes_only_in_its_reform_period(
     # Invariant: from 2015 on, a reformed parameter equals the reform value
     # inside the reform's period and its baseline value everywhere else.
     windows, constructed, _ = every_backdated_parameter
-    assert len(windows) > 1_000
     violations = []
     for name, (start, stop, value) in windows.items():
         baseline = system.parameters.get_child(name)
-        reformed = constructed.get_child(name)
+        reformed_parameter = constructed.get_child(name)
         for instant in checked_instants(start, stop):
             expected = value if start <= instant <= stop else baseline(instant)
-            if reformed(instant) != expected:
-                violations.append((name, instant, reformed(instant), expected))
+            if reformed_parameter(instant) != expected:
+                violations.append(
+                    (name, instant, reformed_parameter(instant), expected)
+                )
                 break
     assert not violations, f"{len(violations)} parameters, e.g. {violations[:5]}"
 
@@ -460,4 +482,51 @@ def test_reform_at_construction_matches_reform_applied_afterwards(
                     (name, instant, at_construction(instant), afterwards(instant))
                 )
                 break
+    assert not violations, f"{len(violations)} parameters, e.g. {violations[:5]}"
+
+
+def same_value(a, b):
+    # NaN never equals itself, so two NaN values count as the same.
+    return a == b or (
+        isinstance(a, float)
+        and isinstance(b, float)
+        and math.isnan(a)
+        and math.isnan(b)
+    )
+
+
+def same_values_list(left, right):
+    return [(v.instant_str, v.value) for v in left.values_list] == [
+        (v.instant_str, v.value) for v in right.values_list
+    ]
+
+
+def test_reform_at_construction_matches_afterwards_for_every_parameter(
+    every_backdated_parameter,
+):
+    # The differential above, over the whole tree rather than only the
+    # parameters the reform sets. The derived ``<national total>_per_capita``
+    # series are the expected exception: construction rebuilds them from the
+    # reformed totals (``add_per_capita_uprating``), while
+    # ``Reform.from_dict`` sets values through ``Parameter.update`` alone.
+    _, constructed, applied_afterwards = every_backdated_parameter
+    instants = [f"{year}-{day}" for year in CHECKED_YEARS for day in ("01-01", "07-01")]
+    checked = 0
+    violations = []
+    for parameter in constructed.get_descendants():
+        if not isinstance(parameter, Parameter):
+            continue
+        if parameter.metadata.get(DERIVED_FROM):
+            continue
+        checked += 1
+        afterwards = applied_afterwards.get_child(parameter.name)
+        if same_values_list(parameter, afterwards):
+            continue
+        for instant in instants:
+            if not same_value(parameter(instant), afterwards(instant)):
+                violations.append(
+                    (parameter.name, instant, parameter(instant), afterwards(instant))
+                )
+                break
+    assert checked > 10_000
     assert not violations, f"{len(violations)} parameters, e.g. {violations[:5]}"
