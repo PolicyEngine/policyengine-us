@@ -30,9 +30,10 @@ class oh_qualifying_capital_gain_deduction(Variable):
         # The lesser of the qualifying capital gain or the deductible payroll.
         # The model counts capital gains as nonbusiness income, so none of
         # this gain is also deducted as business income under (A)(28).
-        # The qualifying gain must be included in federal adjusted gross
-        # income (R.C. 5747.79(A)(1)), so it cannot exceed the capital gains
-        # reported.
+        # A qualifying capital gain counts only "to the extent that such
+        # capital gain is not otherwise deducted or excluded in computing
+        # federal or Ohio adjusted gross income" (R.C. 5747.79(A)(1)); as a
+        # stand-in, it cannot exceed the capital gains reported.
         gain = min_(
             max_(person("oh_qualifying_capital_gain", period), 0),
             max_(person("capital_gains", period), 0),
