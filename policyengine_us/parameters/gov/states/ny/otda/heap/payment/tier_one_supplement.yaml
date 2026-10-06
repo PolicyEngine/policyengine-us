@@ -1,10 +1,17 @@
-description: New York adds this amount to direct heating payments for Tier I households under the Home Energy Assistance Program.
+description: New York provides this Tier I supplement to direct heating payments under the Home Energy Assistance Program.
 values:
-  2025-10-01: 61
+  2022-10-01: 41
+  2024-10-01: 61
 metadata:
   unit: currency-USD
   period: year
   label: New York HEAP Tier I supplement
   reference:
+  - title: 2022-2023 HEAP Direct Heating Regular Base Benefit Levels, Tier I add-on
+    href: https://liheapch.acf.gov/docs/2023/benefits-matricies/NY_BenefitMatrix_2023.pdf#page=1
+  - title: 2023-2024 HEAP Direct Heating Regular Base Benefit Levels, Tier I add-on
+    href: https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
+  - title: 2024-2025 HEAP Direct Heating Regular Base Benefit Levels, Tier I add-on
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/NY_BenefitMatrix_2025.docx
   - title: FY2026 LIHEAP State Plan, regular heating assistance, PDF page 10
     href: https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=10

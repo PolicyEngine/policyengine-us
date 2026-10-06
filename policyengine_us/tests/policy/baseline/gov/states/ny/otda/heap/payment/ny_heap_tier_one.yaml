@@ -11,8 +11,9 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
     ny_heap_household_size: [2, 4, 6, 8, 10, 12, 2, 4, 6, 8, 10, 12]
-    # Even sizes 2, 4, 6, 8, 10 and 12; eligibility/ny_heap_income_limit.yaml
-    # covers the odd sizes of the same matrix. Published monthly Tier I
+    # Even sizes 2, 4, 6, 8, 10 and 12 (the odd Tier I maximums are not
+    # asserted; eligibility/ny_heap_income_limit.yaml tests the Tier II column
+    # at the odd sizes). Published monthly Tier I
     # maximums 2,291; 3,482; 4,674; 5,866; 7,057; 8,249 (benefit matrix Tier I
     # column; State Plan, page 10) x 12, then one more monthly dollar for each
     # size (x 12).
@@ -35,3 +36,45 @@
     # State Plan page 10: the Tier I add-on "is also applied to Regular heater
     # benefits received by CE households".
     ny_heap_tier_one: true
+
+- name: Case 3, size fourteen follows the poverty rate rather than the matrix increment.
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY]
+    ny_heap_household_size: [14, 14]
+    # 130% of the 2025 guideline for 14 (87,150): floor(1.3 x 87,150 / 12) =
+    # 9,441 a month, then one more monthly dollar. The matrix's 14+ row adds
+    # 595 to the size-13 maximum instead (9,440).
+    ny_heap_countable_income: [113_292, 113_304]
+    ny_heap_categorically_eligible: [false, false]
+  output:
+    ny_heap_tier_one: [true, false]
+
+# 2024-2025 and 2023-2024 HEAP Monthly Income Eligibility Guidelines
+# (Clearinghouse benefit matrices), Tier I column.
+# https://liheapch.acf.gov/docs/2025/benefits-matricies/NY_BenefitMatrix_2025.docx
+# https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
+- name: Case 4, the FY2025 and FY2024 one-person Tier I maximums are inclusive.
+  period: 2025
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY]
+    ny_heap_household_size: [1, 1]
+    # 2024-2025 Tier I maximum 1,631 x 12, then one more monthly dollar.
+    ny_heap_countable_income: [19_572, 19_584]
+    ny_heap_categorically_eligible: [false, false]
+  output:
+    ny_heap_tier_one: [true, false]
+
+- name: Case 5, the FY2024 one-person Tier I maximum is inclusive.
+  period: 2024
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY]
+    ny_heap_household_size: [1, 1]
+    # 2023-2024 Tier I maximum 1,579 x 12, then one more monthly dollar.
+    ny_heap_countable_income: [18_948, 18_960]
+    ny_heap_categorically_eligible: [false, false]
+  output:
+    ny_heap_tier_one: [true, false]

@@ -153,6 +153,9 @@
     ny_heap_categorically_eligible: [false, false]
     age: [40, 40]
     ny_heap_dwelling_type: [ELIGIBLE_GROUP_RESIDENCE, INELIGIBLE_RESIDENCE]
+    # The group residence needs no bill of its own; the ineligible residence
+    # pays a gas bill and is still denied.
+    gas_expense: [0, 1_500]
   output:
     # Chapter 8 F.3 (pages 45 to 46): the listed group residences receive a
     # Regular benefit of $21; F.4 (pages 46 to 47): the listed arrangements are
@@ -223,7 +226,8 @@
     heating_type: UNSPECIFIED
   output:
     # The benefit matrix pays by fuel group; a household whose fuel is unknown
-    # cannot be placed in a row, so no direct heating payment is made.
+    # cannot be placed in a row, so no direct heating payment is made. This is
+    # a coverage gap: the UNSPECIFIED default is tracked in issue 9754.
     ny_heap: 0
 
 - name: Case 13, a SNAP recipient's household above the income limit is paid with the Tier I supplement.
@@ -291,3 +295,38 @@
     # page 46) instead of the Tier I heat-included $50; a public housing tenant
     # who pays the gas utility directly receives Utility 400 + 61 = 461.
     ny_heap: [21, 461]
+
+- name: Case 15, a vulnerable member adds nothing to the heat-included payments.
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    ny_heap_countable_income: [0, 24_000]
+    ny_heap_categorically_eligible: [false, false]
+    age: [65, 65]
+    heat_expense_included_in_rent: [true, true]
+    heating_type: [UNSPECIFIED, UNSPECIFIED]
+  output:
+    # State Plan page 9: the $35 is added "to their base Regular heater
+    # benefit", so a 65-year-old with heat included in rent receives the Heat
+    # Included levels alone: Tier I $50 and Tier II $45 (2,000 a month is
+    # above the one-person Tier I maximum of 1,695).
+    ny_heap: [50, 45]
+
+# 2023-2024 HEAP Direct Heating Regular Base Benefit Levels (Clearinghouse
+# benefit matrix): the same base amounts with a $41 Tier I add-on.
+# https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
+- name: Case 16, the FY2024 Tier I add-on was $41.
+  period: 2024
+  input:
+    state_code: [NY, NY]
+    ny_heap_countable_income: [0, 0]
+    ny_heap_categorically_eligible: [false, false]
+    age: [40, 40]
+    heating_type: [NATURAL_GAS, FUEL_OIL]
+    gas_expense: [1_500, 0]
+    # About 700 gallons of heating oil at $4.00 a gallon.
+    fuel_oil_expense: [0, 2_800]
+  output:
+    # 2023-2024 matrix, Tier I add-on column: Utility 400 + 41 = 441; Oil,
+    # Kerosene, and Propane 900 + 41 = 941.
+    ny_heap: [441, 941]

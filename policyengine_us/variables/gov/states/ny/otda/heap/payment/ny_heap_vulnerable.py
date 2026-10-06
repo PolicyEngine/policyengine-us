@@ -7,8 +7,8 @@ class ny_heap_vulnerable(Variable):
     definition_period = YEAR
     label = "New York HEAP qualified vulnerable member"
     defined_for = StateCode.NY
-    # PDF pages 44, 45, 49.
-    reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=44",)
+    # Chapter 9 B.3(b), PDF page 49; qualified members, pages 44, 45.
+    reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=49",)
     documentation = (
         "The manual adopts the SNAP benefit-receipt disability criteria. Reuses the "
         "existing USDA calculation, including its qualifying veteran and survivor "

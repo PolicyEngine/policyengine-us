@@ -16,8 +16,11 @@ class ny_heap_dwelling_type(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "New York HEAP dwelling arrangement"
-    # PDF pages 45, 46, 47.
-    reference = "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45"
+    # PDF pages 45, 46, 47; 18 NYCRR 393.4(c)(3)-(4).
+    reference = (
+        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=45",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-393.4",
+    )
     documentation = (
         "Eligible group residences are the treatment, enriched housing, "
         "supervised/supportive living and other settings listed in Chapter 8 F.3 "

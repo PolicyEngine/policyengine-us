@@ -72,3 +72,34 @@
     ny_heap_household_size: 1
     # Chapter 9 B.3(b) (page 49): aged 10, so not under six, and no SSI receipt.
     ny_heap_vulnerable: false
+
+- name: Case 3, reported SSI receipt in the federal Code C arrangement excludes a child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        # Full-time wages of $2,000 a month.
+        employment_income: 24_000
+        ssi: 0
+      person2:
+        age: 10
+        ssi: 0
+        receives_ssi: true
+        ssi_federal_living_arrangement:
+          2026-01: CHILD_IN_PARENTAL_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # D.4(a)(5) (page 36): the child is an SSI recipient by reported receipt,
+    # so only the adult counts.
+    ny_heap_household_size: 1

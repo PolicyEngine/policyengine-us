@@ -7,8 +7,11 @@ class ny_heap_household_size(Variable):
     definition_period = YEAR
     label = "New York HEAP qualified household size"
     defined_for = StateCode.NY
-    # Chapter 8 D.4 and D.9, PDF pages 34, 36, 37, 44.
-    reference = ("https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34",)
+    # Chapter 8 D.4 and D.9, PDF pages 34, 36, 37, 44; 18 NYCRR 393.4(b).
+    reference = (
+        "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-393.4",
+    )
     documentation = (
         "SPM members who are citizens or federally qualified noncitizens. Nonqualified "
         "members' income still counts in full. Foster members and federal Code C SSI "

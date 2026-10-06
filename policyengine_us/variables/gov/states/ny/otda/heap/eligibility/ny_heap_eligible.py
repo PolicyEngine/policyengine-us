@@ -10,6 +10,7 @@ class ny_heap_eligible(Variable):
     reference = (
         # PDF pages 34, 37, 44, 45, 46, 47, 48.
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=34",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-393.4",
     )
     documentation = (
         "Regular heating has no resource test. SPM units approximate energy-sharing "

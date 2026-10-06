@@ -1,4 +1,7 @@
 description: New York uses the poverty guidelines from this many years before the model year under the Home Energy Assistance Program.
+# Model period Y uses the FFY Y matrix, whose Tier I lines are 130% of the
+# guidelines published in January of Y-1: floor(1.3 x 15,650 / 12) = 1,695 for
+# one person in FY2026. The FY2025 and FY2024 lines reproduce the same way.
 values:
   2025-10-01: 1
 metadata:
@@ -8,3 +11,5 @@ metadata:
   reference:
   - title: 2025-2026 HEAP monthly income guidelines
     href: https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+  - title: 2025 HHS poverty guidelines, 90 FR 5733, January 17, 2025
+    href: https://www.govinfo.gov/content/pkg/FR-2025-01-17/pdf/2025-01377.pdf#page=1

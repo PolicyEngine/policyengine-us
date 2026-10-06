@@ -5,16 +5,15 @@
 # the TANF box unchecked.
 # https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=6
 
-- name: Case 1, Social Security counts gross and monthly household income rounds down.
+- name: Case 1, Social Security counts net of the Medicare Part B premium and monthly household income rounds down.
   period: 2026
   input:
     heating_type: NATURAL_GAS
     state_code: NY
     ny_heap_countable_earned_income: 12_001
     social_security: 12_000
-    # D.12(a)(6) (page 38) counts Social Security after the Medicare premium;
-    # medicare_part_b_premium is not wired in yet, so the premium reported here
-    # must not reduce the total.
+    # D.12(a)(6) (page 38) counts Social Security after the Medicare premium,
+    # so the $100 a month of Part B premium reduces the total.
     medicare_part_b_premium: 1_200
     railroad_benefits: 600
     pension_income: 240
@@ -32,11 +31,11 @@
     estate_income: 120
     ssi: 0
   output:
-    # 12,001 earnings + 12,600 Social Security and railroad benefits (D.12(a)(6)
-    # and (8), page 38) + 4,440 from the other counted sources in D.12(a)(10) to
-    # (28) (pages 38 to 39) = 29,041. D.14(c) (page 43): floor(29,041 / 12) =
-    # 2,420 a month, annualized 29,040.
-    ny_heap_countable_income: 29_040
+    # 12,001 earnings + 12,600 Social Security and railroad benefits less the
+    # 1,200 Part B premium (D.12(a)(6) and (8), page 38) + 4,440 from the other
+    # counted sources in D.12(a)(10) to (28) (pages 38 to 39) = 27,841. D.14(c)
+    # (page 43): floor(27,841 / 12) = 2,320 a month, annualized 27,840.
+    ny_heap_countable_income: 27_840
 
 - name: Case 2, TANF cash assistance is not counted as income.
   period: 2026
@@ -109,3 +108,49 @@
     # Oil base $900 + $35 for a member aged 60 or older (2025-2026 HEAP Direct
     # Heating Regular Base Benefit Levels, vulnerable add-on column) = $935.
     ny_heap: 935
+
+- name: Case 4, a rental loss does not offset wages.
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+    age: 40
+    # Full-time wages of $3,600 a month.
+    ny_heap_countable_earned_income: 43_200
+    rental_income: -6_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    # D.14(b)(7) (page 41) converts negative income to zero and lists net loss
+    # as a deduction that is not allowed, so the loss counts as 0 and the
+    # wages count in full: 3,600 a month.
+    ny_heap_countable_income: 43_200
+    # 3,600 a month exceeds the one-person Tier II maximum of 3,473.
+    ny_heap: 0
+
+- name: Case 5, the Medicare Part B premium brings a retiree under the income limit.
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+    age: 70
+    # Social Security retirement of $3,600 a month.
+    social_security: 43_200
+    # The standard 2026 Part B premium of $202.90 a month, not covered by a
+    # Medicare Savings Program at this income.
+    medicare_part_b_premium: 2_434.8
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    # D.14(b)(4) (page 41): the benefit after the Part B premium is counted,
+    # 43,200 - 2,434.80 = 40,765.20; D.14(c): floor(40,765.20 / 12) = 3,397 a
+    # month, annualized 40,764.
+    ny_heap_countable_income: 40_764
+    # 3,397 a month is within the one-person Tier II maximum of 3,473 and
+    # above the Tier I maximum of 1,695: Utility 400 + 35 for a member aged 60
+    # or older (Chapter 9 B.3(b)(2), page 49) = 435.
+    ny_heap: 435
