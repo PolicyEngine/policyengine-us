@@ -17,8 +17,8 @@ unit:
 1. Differential: gross income equals an independent numpy sum of the
    members' input amounts plus the unit's CalWORKs grant.
 2. Counted once: raising the CalWORKs grant by d raises gross income by
-   exactly d, and net income by max(gross + d - withholdings, 0) less
-   max(gross - withholdings, 0).
+   exactly d and leaves withholdings unchanged, and net income is
+   max(gross - withholdings, 0) before and after the raise.
 3. Member invariance: adding a person with no income leaves gross income and
    net income unchanged.
 4. Bounds: 0 <= net income <= gross income.
@@ -159,6 +159,12 @@ def _run(units, *, raise_tanf=False, add_person=False):
     }
 
 
+def _net(gross, withholdings):
+    # The model subtracts in float32, so match its rounding at large amounts.
+    difference = gross.astype(np.float32) - withholdings.astype(np.float32)
+    return np.maximum(difference, np.float32(0)).astype(float)
+
+
 def _check(units):
     base = _run(units)
     gross = base["la_general_relief_gross_income"]
@@ -182,10 +188,10 @@ def _check(units):
     np.testing.assert_allclose(
         raised["spm_unit_paycheck_withholdings"], withholdings, atol=TOLERANCE
     )
+    np.testing.assert_allclose(net, _net(gross, withholdings), atol=TOLERANCE)
     np.testing.assert_allclose(
-        raised["la_general_relief_net_income"] - net,
-        np.maximum(gross + delta - withholdings, 0)
-        - np.maximum(gross - withholdings, 0),
+        raised["la_general_relief_net_income"],
+        _net(gross + delta, withholdings),
         atol=TOLERANCE,
     )
 
