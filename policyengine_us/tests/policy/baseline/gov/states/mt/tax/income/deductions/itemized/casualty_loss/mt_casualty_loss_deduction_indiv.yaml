@@ -12,9 +12,10 @@
 # PDF p. 10): "If you and your spouse have a casualty or theft loss and you file
 # separate returns, each of you must reduce your loss by $100." and "If one
 # spouse owns the property, only that spouse can claim a loss deduction on a
-# separate return." The federal suspension of losses outside federally declared
-# disasters is modeled by gov.irs.deductions.itemized.casualty.active, which
-# these tests switch on.
+# separate return." The model has no input that distinguishes federally declared
+# disaster losses; like the federal deduction, it allows no personal casualty
+# loss from 2018 unless gov.irs.deductions.itemized.casualty.active is switched
+# on, as these tests do.
 
 - name: Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
   period: 2022
@@ -64,22 +65,23 @@
     # their own loss by $100.
     mt_casualty_loss_deduction_indiv: [23_900, 900]
 
-- name: A dependent's loss goes to the head, with the dependent's income
+- name: A dependent's loss stays off the parents' columns, like the dependent's income
   period: 2022
   input:
     gov.irs.deductions.itemized.casualty.active: true
     people:
       person1:
         age: 40
-        mt_agi_indiv: 60_000
+        employment_income: 60_000
+        casualty_loss: 30_000
       person2:
         age: 40
-        mt_agi_indiv: 40_000
+        employment_income: 40_000
       person3:
-        age: 10
+        age: 17
         is_tax_unit_dependent: true
+        employment_income: 5_000
         casualty_loss: 10_000
-        mt_agi_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -88,10 +90,37 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    # (10,000 - 100) - 10% x 60,000, in the head's column.
-    mt_casualty_loss_deduction_indiv: [3_900, 0, 0]
+    # The dependent's wages are not in the head's Montana AGI (60,000), and the
+    # dependent's loss belongs on the dependent's own return:
+    # (30,000 - 100) - 10% x 60,000 for the head.
+    mt_casualty_loss_deduction_indiv: [23_900, 0, 0]
 
-- name: Losses outside federally declared disasters are suspended
+- name: Spouses filing separately on one form in 2024 have no Montana casualty line
+  period: 2024
+  input:
+    # Allowing filing status 2a in 2024 (as a reform would) reaches the
+    # separate path; the discontinued schedule still gives no deduction.
+    gov.states.mt.tax.income.married_filing_separately_on_same_return_allowed: true
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_indiv: [0, 0]
+
+- name: No loss is deductible while the federal casualty deduction is suspended
   period: 2022
   input:
     people:

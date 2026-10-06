@@ -1,5 +1,6 @@
 description: The IRS reduces each casualty or theft loss of personal-use property by this amount before applying the income floor.
 values:
+  2008-01-01: 100
   2009-01-01: 500
   2010-01-01: 100
 metadata:
@@ -9,6 +10,10 @@ metadata:
   reference:
     - title: 26 U.S.C. § 165(h)(1)
       href: https://www.law.cornell.edu/uscode/text/26/165#h_1
+    - title: 2008 Form 4684, line 11
+      href: https://www.irs.gov/pub/irs-prior/f4684--2008.pdf#page=1
+    - title: 2009 Form 4684, line 11
+      href: https://www.irs.gov/pub/irs-prior/f4684--2009.pdf#page=1
     - title: 2022 Form 4684, line 11
       href: https://www.irs.gov/pub/irs-prior/f4684--2022.pdf#page=1
     - title: IRS Publication 547 (2022), $100 Rule

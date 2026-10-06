@@ -8,18 +8,20 @@ properties hold for all grid inputs rather than for a few examples:
 
 - both variants match a closed-form reference of Form 4684 lines 11-12 and
   17-18: the loss less $100, above 10% of Montana AGI;
-- a joint return counts the unit's loss once, however many members the tax
-  unit has, and Montana's joint itemized deductions add it once;
-- filing separately, each spouse deducts only their own loss (dependents'
-  losses go to the head), floored at their own Montana AGI;
+- a joint return counts the spouses' losses once, however many members the
+  tax unit has, and Montana's joint itemized deductions add it once;
+- filing separately, each spouse deducts only their own loss, floored at their
+  own Montana AGI;
+- a dependent's loss is left to the dependent's own return on both paths;
 - the deductions are non-negative, never exceed the loss less $100, rise with
   the loss and fall with Montana AGI;
 - for a single filer the joint and separate variants agree;
 - the deduction ends in 2024, when Montana discontinued its Itemized
   Deductions Schedule.
 
-The federal suspension of losses outside federally declared disasters is
-modeled by gov.irs.deductions.itemized.casualty.active; a reform switches it
+The model has no input that distinguishes federally declared disaster losses,
+so, like the federal deduction, it allows no personal casualty loss from 2018
+unless gov.irs.deductions.itemized.casualty.active is on; a reform switches it
 on so the properties are not vacuous.
 """
 
@@ -127,10 +129,11 @@ def couple_arrays():
 @pytest.mark.parametrize("year", [2021, 2022, 2023])
 def test_joint_return_counts_the_unit_loss_once(grid, year):
     sim, unit, role = grid
-    l1, l2, a1, a2, _, dep_loss = couple_arrays()
+    l1, l2, a1, a2, _, _ = couple_arrays()
     n = len(COUPLE_GRID)
     joint = sim.calculate("mt_casualty_loss_deduction_joint", year)[:n]
-    np.testing.assert_allclose(joint, reference(l1 + l2 + dep_loss, a1 + a2))
+    # A dependent's loss is left to the dependent's own return.
+    np.testing.assert_allclose(joint, reference(l1 + l2, a1 + a2))
     # Montana's joint itemized deductions add it once, at the head, however
     # many members the tax unit has.
     itemized = sim.calculate("mt_itemized_deductions_joint", year)
@@ -138,7 +141,7 @@ def test_joint_return_counts_the_unit_loss_once(grid, year):
     np.testing.assert_allclose(per_unit, joint)
     assert np.all(itemized[(role != "head") & (role != "single")] == 0)
     assert np.all(joint >= 0)
-    assert np.all(joint <= np.maximum(l1 + l2 + dep_loss - REDUCTION, 0))
+    assert np.all(joint <= np.maximum(l1 + l2 - REDUCTION, 0))
     # Guard against a vacuous pass.
     assert joint.max() > 0
 
@@ -146,19 +149,19 @@ def test_joint_return_counts_the_unit_loss_once(grid, year):
 @pytest.mark.parametrize("year", [2021, 2022, 2023])
 def test_separate_filers_deduct_only_their_own_loss(grid, year):
     sim, unit, role = grid
-    l1, l2, a1, a2, _, dep_loss = couple_arrays()
+    l1, l2, a1, a2, _, _ = couple_arrays()
     indiv = sim.calculate("mt_casualty_loss_deduction_indiv", year)
     itemized = sim.calculate("mt_itemized_deductions_indiv", year)
     head = indiv[role == "head"]
     spouse = indiv[role == "spouse"]
     # Each spouse's own Form 4684, on their own Montana AGI; a dependent's
-    # loss is in the head's column.
-    np.testing.assert_allclose(head, reference(l1 + dep_loss, a1))
+    # loss is in neither column.
+    np.testing.assert_allclose(head, reference(l1, a1))
     np.testing.assert_allclose(spouse, reference(l2, a2))
     assert np.all(indiv[role == "dependent"] == 0)
     # A spouse without a loss deducts nothing, whatever the other spouse lost.
     assert np.all(spouse[l2 == 0] == 0)
-    assert np.all(head[l1 + dep_loss == 0] == 0)
+    assert np.all(head[l1 == 0] == 0)
     # The separate itemized deductions carry each spouse's own amount.
     np.testing.assert_allclose(itemized[role == "head"], head)
     np.testing.assert_allclose(itemized[role == "spouse"], spouse)
