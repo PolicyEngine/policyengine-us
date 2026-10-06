@@ -490,6 +490,109 @@
     # WFC base only: min($10,000, $9,480) * 0.04 = $379.20, no older-child bonus.
     mn_child_and_working_families_credits: 379.2
 
+# Minn. Stat. 290.0671, subd. 1a: a qualifying older child is an IRC 32(c)
+# qualifying child that "attained at least the age of 18". Schedule M1DQC
+# (2023-2025, page 3) step 4 sends a child who is not under 18 at the end of
+# the year to steps 5-8; step 7 checks row 11 for a full-time student and
+# step 8 checks row 11 for a child under 19, so every 18-year-old qualifying
+# child is a qualifying older child. The next four cases share one 2025
+# household: a head of household with $10,000 of wages and one dependent.
+- name: 2025 an 18-year-old full-time student is a qualifying older child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # WFC base: 4% of the first $9,480 of earned income = $379.20.
+    # One qualifying older child (M1DQC step 7): + $1,000.
+    # No CTC (not under 18); AGI $10,000 is below the $31,950 threshold.
+    mn_child_and_working_families_credits: 379.2 + 1_000
+
+- name: 2025 an 18-year-old who is not a student is a qualifying older child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Under 19 at the end of the year (M1DQC step 8, IRC 152(c)(3)(A)), so
+    # the same $379.20 + $1,000 as the full-time student above.
+    mn_child_and_working_families_credits: 379.2 + 1_000
+
+- name: 2025 a 17-year-old gets the child tax credit and no older-child amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Under 18 at the end of the year (M1DQC step 4, row 10): CTC $1,750
+    # plus the $379.20 WFC base, no qualifying older child amount.
+    mn_child_and_working_families_credits: 379.2 + 1_750
+
+- name: 2025 a 19-year-old who is not a student is not a qualifying older child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Not a student and not under 19 (M1DQC step 8): WFC base $379.20 only.
+    mn_child_and_working_families_credits: 379.2
+
 # Minnesota decouples from IRC 32(m) (Minn. Stat. 290.0661/290.0671), so an
 # ITIN child (ssn_card_type OTHER_NON_CITIZEN, no SSN valid for employment)
 # receives the same MN CTC as a citizen child. This mirrors the "2025 Joint
