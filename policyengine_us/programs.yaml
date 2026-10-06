@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, OH, TX
     state_implementations:
       - state: OH
         status: partial
@@ -810,7 +810,8 @@ programs:
         full_name: Ohio Low Income Home Energy Assistance Program
         variable: oh_liheap
         parameter_prefix: gov.states.oh.odjfs.liheap
-        notes: Regular heating eligibility and a non-PIPP payment estimate using final 2023 workbook values, dated from 2023 and carried forward pending an updated final schedule. Formula extension above the printed 150% poverty payment range is an approved estimate; the workbook's cover allows 175%. PIPP enrollment and its payment reduction are unmodeled. Some gas/electric table cells differ by one dollar from the printed fuel ratio. Unpriced fuels and unknown counties remain unsupported. Income limits follow the stated FPG/SMI rates with the published large-household discrepancy documented. Earlier-year backfills and later-year payments are unverified estimates; complete historical-year coverage is not claimed.
+        verified_years: "2025"
+        notes: FY2025 regular heating only, from the 2024-25 application and the 2025 benefit workbook. Crisis, cooling and weatherization assistance are out of scope.
       - state: OR
         status: in_progress
         name: LIHEAP

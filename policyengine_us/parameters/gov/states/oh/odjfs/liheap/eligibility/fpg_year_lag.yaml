@@ -1,11 +1,17 @@
 description: Ohio uses federal poverty guidelines from this many years before the modeled benefit year under the Home Energy Assistance Program.
-# Model year 2026 represents the July 2025-May 2026 program season.
+# Model year 2026 represents the July 2025-May 2026 program season. The
+# 2022-2023 Guidelines print 175% of the 2022 guidelines ($8,260 per added
+# member), and the 2024-2025 application prints 175% of the 2024 guidelines.
 values:
-  2025-07-01: 1
+  2022-07-01: 1
 metadata:
   unit: year
   period: year
   label: Ohio HEAP federal poverty guideline year lag
   reference:
-    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026, page 1 (2025 poverty guidelines)
+    - title: Ohio 2022-2023 Energy Assistance Programs Guidelines, section E-2.2
+      href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
+    - title: Ohio Energy Assistance Programs Application, July 2024-May 2025
+      href: https://clevelandohio.gov/sites/clevelandohio/files/aging/2024-2025_HEAP_application_B_W_1.pdf#page=1
+    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026
       href: https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=1

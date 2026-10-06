@@ -1,11 +1,24 @@
-description: Ohio counts these unearned income sources for household members of all ages under the Home Energy Assistance Program.
+description: Ohio counts these unearned income sources, except for dependent minors, under the Home Energy Assistance Program.
 values:
   2025-07-01:
     - unemployment_compensation
     - strike_benefits
-    - social_security
+    # Social Security is counted in the formula, including a dependent
+    # minor's benefit paid to an adult payee (Guidelines section E-2.2).
     - ssi
     - pension_income
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other. Appendix XXIII lists military pensions.
+    - military_retirement_pay
+    # Railroad Retirement is a retirement benefit that is not on the excluded
+    # income list; section E-2.3 counts any income not listed elsewhere.
+    - railroad_benefits
+    # The FY2026 plan, section 1.9 (page 6), leaves "General Assistance
+    # benefits" unchecked. The Guidelines list it as neither countable nor
+    # excluded (pages 73-76), and E-2.3 (page 8) states "Other Countable Income
+    # includes any income not listed above." The Guidelines govern.
+    - general_assistance
     - survivor_benefits
     # The current application excludes VA disabilities, but this aggregate
     # cannot separate them from other VA receipts. Its inclusion is provisional
@@ -25,13 +38,14 @@ values:
 # Retirement account withdrawals are distinct from pension income in the model.
 # The manual explicitly counts capital gains and estate/trust settlements, not
 # merely asset sale proceeds. Those inputs do not capture every principal payout.
-# Current plan excludes TANF, general assistance, child support, and cash gifts.
+# TANF, child support received and gifts are excluded (Guidelines pages 75-76;
+# unchecked in the FY2026 plan).
 metadata:
   unit: list
   period: year
   label: Ohio HEAP unearned income sources
   reference:
-    - title: Ohio 2022-2023 Energy Assistance Programs Guidelines, sections E-2.2-2.3 and Appendix XXIII, pages 7-8 and 73-74
+    - title: "Ohio 2022-2023 Energy Assistance Programs Guidelines, sections E-2.2-2.3 and Appendix XXIII, pages 7-8 and 73-76"
       href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
     - title: Ohio FY2026 LIHEAP State Plan, revision 2, section 1.9, pages 5-6 (current income inclusions and exclusions)
       href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5

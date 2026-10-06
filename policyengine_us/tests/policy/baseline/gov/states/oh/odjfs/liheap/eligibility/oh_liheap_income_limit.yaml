@@ -13,17 +13,21 @@
   output:
     oh_liheap_income_limit: [27_387, 37_012, 46_637, 56_262, 65_887, 75_512, 85_137, 94_762]
 
-# Unverified2025 estimate uses2024FPG15060 and52720, multiplied by1.75; no frozen2025guideline.
-- name: Case 2, historical backfill uses its requested year federal guideline.
+# 2024-2025 application p1: 175% of the 2024 FPG through size seven: 15,060 x 1.75 = 26,355;
+# (15,060 + 6 x 5,380) x 1.75 = 82,845. With no SMI lag before the 2026-2027 season,
+# sizes 8 and 9 use the HHS FFY2025 order: floor(0.6 x 109,319) = 65,591, then
+# 65,591 x 1.38 = 90,515.58 -> 90,515; 65,591 x 1.41 = 92,483.31 -> 92,483.
+- name: Case 2, the 2025 limits switch from the poverty guideline to same year state median income at
+    size eight.
   period: 2025
   absolute_error_margin: 0.01
   input:
-    state_code: [OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200]
-    oh_liheap_household_size: [1, 8]
+    state_code: [OH, OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200]
+    oh_liheap_household_size: [1, 7, 8, 9]
   output:
-    oh_liheap_income_limit: [26_355, 92_260]
+    oh_liheap_income_limit: [26_355, 82_845, 90_515, 92_483]
 
 # Safe intermediate behavior for a household with no qualified members.
 - name: Case 3, zero qualified size has zero income limit.
@@ -49,11 +53,56 @@
   output:
     oh_liheap_income_limit: [27_930, 37_870, 47_810, 57_750, 67_690, 77_630, 87_570]
 
-# The form expressly switches to 60% SMI above seven people but prints no SMI dollar table.
-# Federal FY2027 four-person SMI117810 with factors1.38 and1.41 gives97546.68/99667.26.
-# Whole-dollar annual limits are the documented model approximation, not printed state amounts.
-- name: Case 5, the 2027 eighth household member switches to the explicit SMI rule.
+# The form switches to 60% SMI above seven people. With the one-year lag, the 2026-2027
+# limits use the FFY2026 Ohio SMI of 114,593 in the HHS order: floor(0.6 x 114,593) =
+# 68,755, then x 1.38/1.41/1.44/1.47/1.50 = 94,881.9/96,944.55/99,007.2/101,069.85/
+# 103,132.5, each floored. The Consumers' Counsel sheet matches sizes 8, 11 and 12 but
+# prints $96,946 and $99,010 for sizes 9 and 10, which no rounding order reproduces (they
+# exceed unrounded 60% of SMI); the model follows the HHS table.
+- name: Case 5, the 2027 limits for eight to twelve members use the prior year state median income.
   period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    oh_liheap_household_size: [8, 9, 10, 11, 12]
+  output:
+    oh_liheap_income_limit: [94_881, 96_944, 99_007, 101_069, 103_132]
+
+# 2022-2023 Guidelines E-2.2 (p7): 175% of the 2022 FPG for every size, adding $8,260 per
+# member above eight; no SMI switch. 13,590 x 1.75 = 23,782.5; (13,590 + 7 x 4,720) x 1.75
+# = 81,602.5; + 8,260 = 89,862.5; + 8,260 = 98,122.5; each floored to whole dollars.
+- name: Case 6, the 2023 limits use the poverty guideline for every household size.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200]
+    oh_liheap_household_size: [1, 8, 9, 10]
+  output:
+    oh_liheap_income_limit: [23_782, 81_602, 89_862, 98_122]
+
+# No 2023-2024 rule was found, so model year 2024 keeps the all-sizes rule with the 2023
+# FPG: 14,580 x 1.75 = 25,515; (14,580 + 7 x 5,140) x 1.75 = 88,480;
+# (14,580 + 8 x 5,140) x 1.75 = 97,475.
+- name: Case 7, the 2024 limits keep the poverty guideline rule for large households.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    oh_liheap_household_size: [1, 8, 9]
+  output:
+    oh_liheap_income_limit: [25_515, 88_480, 97_475]
+
+# 2025-2026 application p1: FPG through size eight: (15,650 + 7 x 5,500) x 1.75 = 94,762.5.
+# With no SMI lag before the 2026-2027 season, size nine uses the HHS FFY2026 order:
+# floor(0.6 x 114,593) = 68,755, then 68,755 x 1.41 = 96,944.55 -> 96,944.
+- name: Case 8, the 2026 limits switch to same year state median income at size nine.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH]
@@ -61,4 +110,4 @@
     gas_expense: [1_200, 1_200]
     oh_liheap_household_size: [8, 9]
   output:
-    oh_liheap_income_limit: [97_546, 99_667]
+    oh_liheap_income_limit: [94_762, 96_944]

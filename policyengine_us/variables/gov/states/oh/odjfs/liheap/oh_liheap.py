@@ -10,8 +10,13 @@ class oh_liheap(Variable):
     label = "Ohio HEAP regular heating assistance"
     defined_for = "oh_liheap_eligible"
     reference = (
+        # Final 2021 workbook, physical pages 1, 8, 9 and 11.
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=1",
         # Physical pages 1,8-11,15-16,19-20,29: factors, counties and formula.
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=1",
+        # 2024 and 2025 draft workbook covers.
+        "https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1",
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1",
         # Sections E-1, E-2, E-2.10 and E-4: income, disability and heating facts.
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=5",
     )
@@ -31,12 +36,13 @@ class oh_liheap(Variable):
         poverty_percentage = 100 * max_(
             income / guideline, payment.formula.minimum_poverty_ratio
         )
-        # The final 2023 workbook's filled coefficients are used from 2023,
-        # carrying forward until an updated final schedule is available. Its
-        # cover allows 175% FPG but detailed tables end at 150%; extending the
-        # formula above 150% is an explicitly approved estimate, not a sourced
-        # payment rule. Annual income approximates the favorable 30-day/12-month
-        # comparison. Guidelines still follow the requested year and state lag.
+        # Coefficients follow the final 2021 and 2023 workbooks and the 2024
+        # and 2025 draft workbooks; the 2025 values carry into 2026 and later as
+        # unverified estimates (no 2026 workbook was found). Covers allow
+        # 175% FPG but detailed tables end at 150%; extending the formula above
+        # 150% is an explicitly approved estimate, not a sourced payment rule.
+        # Annual income approximates the favorable 30-day/12-month comparison.
+        # Guidelines still follow the requested year and state lag.
         base = max_(
             payment.formula.intercept - payment.formula.slope * poverty_percentage,
             0,
@@ -69,18 +75,24 @@ class oh_liheap(Variable):
             [1 + regional.adjustment, 1 - regional.adjustment, 1],
             default=0,
         )
+        targeting = payment.targeted
         age = spm_unit.members("age", period)
         # is_disabled approximates verified permanent and total disability.
-        targeted = spm_unit.any(
-            (age >= payment.targeted.elderly_age)
-            | (age <= payment.targeted.young_child_age)
-            | spm_unit.members("is_disabled", period)
+        targeted_member = (age >= targeting.elderly_age) | spm_unit.members(
+            "is_disabled", period
         )
-        multiplier = where(targeted, payment.targeted.multiplier, 1)
+        if targeting.young_child_in_effect:
+            targeted_member = targeted_member | (age <= targeting.young_child_age)
+        targeted = spm_unit.any(targeted_member)
+        multiplier = where(targeted, targeting.multiplier, 1)
         # No existing input identifies PIPP enrollment: estimate the non-PIPP
-        # award and leave its 75% reduction unmodeled. Unknown county or unpriced
-        # fuel returns an unsupported zero, not a finding of legal ineligibility.
-        # The published gas ratio has four decimals; some table cells differ by
+        # award and leave its 75% reduction unmodeled. Unpriced fuel or an
+        # explicit UNKNOWN or non-Ohio county returns an unsupported zero, not a
+        # finding of legal ineligibility. An omitted county cannot be detected:
+        # the county input then defaults to the state's alphabetically first
+        # county, Adams, a southern county, so the estimate uses the 6% southern
+        # reduction.
+        # The 2023 gas ratio has four decimals; some 2023 table cells differ by
         # $1. Final half-up rounding matches the other printed fuel calculations;
         # do not round a component before the regional and targeted adjustments.
         return np.floor(base * fuel_ratio * regional_factor * multiplier + 0.5)

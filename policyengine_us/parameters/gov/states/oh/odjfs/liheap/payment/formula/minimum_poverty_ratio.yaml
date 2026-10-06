@@ -1,11 +1,14 @@
 description: Ohio uses at least this federal poverty ratio when calculating payments under the Home Energy Assistance Program.
-# Final 2023 workbook; carried forward pending an updated final schedule.
 values:
-  2023-01-01: 0.5
+  2021-01-01: 0.5
 metadata:
   unit: /1
   period: year
   label: Ohio HEAP minimum poverty ratio for payments
   reference:
+    - title: "Ohio 2021 FINAL HEAP Benefit Matrix, #page 1"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=1
     - title: "Ohio 2023 FINAL LIHEAP Benefit Matrix, #page 1"
       href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=1
+    - title: "Ohio 2025 DRAFT LIHEAP Benefit Matrix, #page 1"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1

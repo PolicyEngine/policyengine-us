@@ -325,3 +325,72 @@
         is_in_public_housing: true
   output:
     oh_liheap_eligible: true
+
+# 2022-2023 Guidelines E-2.2 (p7) apply 175% FPG to every size: size 9 limit
+# (13,590 + 8 x 4,720) x 1.75 = 89,862.5 -> 89,862. Wages 50,000 + 30,000 = 80,000 qualify;
+# 60% SMI (floor(0.6 x 93,649) = 56,189 x 1.41 = 79,226) would have denied them.
+- name: Case 14, a nine member household in 2023 uses the poverty guideline limit.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 42
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 50_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person4:
+        age: 15
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person5:
+        age: 13
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person6:
+        age: 11
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person7:
+        age: 9
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person8:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person9:
+        age: 3
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: OH
+  output:
+    oh_liheap_household_size: 9
+    oh_liheap_countable_income: 80_000
+    oh_liheap_income_limit: 89_862
+    oh_liheap_eligible: true

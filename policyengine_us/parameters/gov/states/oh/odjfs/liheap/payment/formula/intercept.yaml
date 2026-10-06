@@ -1,11 +1,36 @@
 description: Ohio starts the payment formula with this intercept under the Home Energy Assistance Program.
-# Final 2023 workbook; carried forward pending an updated final schedule.
+# The 2021 values carry through 2022; no final 2022 workbook was found.
+# The 2024 and 2025 draft workbooks print only their maximum and minimum
+# credit percentages (46%/38% and 25%/22%). Applying the 2023 workbook's
+# page 11 method with its $950 high winter cost gives 0.50 x 950 = 475 and
+# 0.265 x 950 = 251.75. These reproduce the printed credit percentages and
+# every printed fuel maximum, including the $811 and $441 maximums in the
+# FY2025 and FY2026 plans. The printed minimum dollar amounts ($41 and $24)
+# include a further factor of about 0.2 that the model does not apply.
+# The 2025 draft values carry into 2026 and later. The FY2027 draft plan's
+# section 2.6 reports the unpublished 2026 matrix at a $31 minimum and $546
+# maximum, so 2026 and later payments are unverified estimates.
 values:
+  2021-01-01: 593.2133
   2023-01-01: 731.5
+  2024-01-01: 475
+  2025-01-01: 251.75
 metadata:
   unit: currency-USD
   period: year
   label: Ohio HEAP payment intercept
   reference:
+    - title: "Ohio 2021 FINAL HEAP Benefit Matrix, #page 11"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=11
     - title: "Ohio 2023 FINAL LIHEAP Benefit Matrix, #page 11"
       href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=11
+    - title: "Ohio 2024 DRAFT LIHEAP Benefit Matrix, #page 1"
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1
+    - title: "Ohio 2025 DRAFT LIHEAP Benefit Matrix, #page 1"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1
+    - title: Ohio FY2025 LIHEAP State Plan, section 2.6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OH_Plan_2025.pdf#page=9
+    - title: Ohio FY2026 LIHEAP State Plan, revision 2, section 2.6
+      href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=9
+    - title: Ohio FY2027 LIHEAP State Plan draft, section 2.6
+      href: https://dam.assets.ohio.gov/image/upload/v1783702985/jfs.ohio.gov/Energy%20and%20Community%20Assistance/2026-2027_Draft_HEAP_State_Plan.pdf#page=9

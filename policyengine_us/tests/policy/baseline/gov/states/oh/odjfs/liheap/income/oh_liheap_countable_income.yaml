@@ -85,8 +85,10 @@
   output:
     oh_liheap_countable_income: 6_360
 
-# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
-- name: Case 4, age 17 dependent income follows the earned exemption boundary.
+# Guidelines E-2.2 (p7): a dependent minor's income is excluded except SS/SSDI paid to an
+# adult payee. Parent wages 12,000 + child Social Security 1,200 = 13,200; the child's
+# SSI 2,400, wages 6,000 and net business 1,200 are excluded.
+- name: Case 4, age 17 dependent income is excluded except Social Security.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -115,10 +117,11 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_liheap_countable_income: 15_600
+    oh_liheap_countable_income: 13_200
 
-# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
-- name: Case 5, age 17 nondependent income follows the earned exemption boundary.
+# A 17-year-old who is not a dependent minor has all income counted:
+# 12,000 + 2,400 SSI + 6,000 wages + 1,200 net business + 1,200 Social Security = 22,800.
+- name: Case 5, age 17 nondependent income follows the dependent minor boundary.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -149,8 +152,9 @@
   output:
     oh_liheap_countable_income: 22_800
 
-# Manual pp7–8,76: only earned income of dependent minors is excluded. Child SSI2400 and SSA1200 remain included; otherwise wages6000 and netbusiness1200 count too.
-- name: Case 6, age 18 dependent income follows the earned exemption boundary.
+# Guidelines E-2.2 (p7) count members 18 or older, so an 18-year-old dependent's income all
+# counts: 12,000 + 2,400 + 6,000 + 1,200 + 1,200 = 22,800.
+- name: Case 6, age 18 dependent income follows the adult age boundary.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -208,8 +212,11 @@
   output:
     oh_liheap_countable_income: 13_800
 
-# Current plan p6 checkbox selections: TANF/general assistance/child support excluded, alimony included. SNAP is noncash excluded income.
-- name: Case 8, TANF general assistance and child support are excluded while alimony counts.
+# Guidelines pp75-76 exclude TANF (OWF) and child support received; SNAP is a noncash
+# benefit and is not an income source; alimony counts (p73).
+# General assistance is on neither list, so the E-2.3 catch-all (p8) counts it; the FY2026
+# plan (p6) leaves it unchecked. 12,000 wages + 1,200 alimony + 1,200 GA = 14,400.
+- name: Case 8, TANF and child support are excluded while alimony and general assistance count.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -240,7 +247,7 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_liheap_countable_income: 13_200
+    oh_liheap_countable_income: 14_400
 
 # Current FY2026 application physical p7 and manual physical p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
 - name: Case 9, child support paid changes an otherwise over limit household to eligible.
@@ -324,3 +331,143 @@
         state_code: OH
   output:
     oh_liheap_countable_income: 11_400
+
+# Guidelines Appendix XXIII (p74), the 2025-2026 application (p7) and the FY2026 plan (p6)
+# deduct Medicare premiums. 2026 standard Part B premium 202.90 x 12 = 2,434.80:
+# 28,000 Social Security - 2,434.80 = 25,565.20.
+- name: Case 12, the Medicare Part B premium is deducted from an elderly member's Social Security income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security: 28_000
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 25_565.2
+
+# Guidelines Appendix XXIII (p73) lists military pensions, and E-2.3 (p8) counts income not
+# listed elsewhere, including Railroad Retirement. Each 30,000 counts in full and exceeds
+# the 27,387 one-person limit.
+- name: Case 13, military retirement pay and railroad retirement benefits count.
+  period: 2026
+  input:
+    state_code: [OH, OH]
+    age: [62, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    ssi: [0, 0]
+    military_retirement_pay: [30_000, 0]
+    railroad_benefits: [0, 30_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    oh_liheap_countable_income: [30_000, 30_000]
+    oh_liheap_income_limit: [27_387, 27_387]
+    oh_liheap_eligible: [false, false]
+
+# Guidelines E-2.2 (p7) count only members 18 or older plus a minor's SS/SSDI. The child's
+# 1,500 of dividends and 9,000 of SSI are excluded: countable 30,000 <= 37,012 (size 2).
+- name: Case 14, a dependent child's dividends and SSI are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 9_000
+        ordinary_dividend_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 30_000
+    oh_liheap_income_limit: 37_012
+    oh_liheap_eligible: true
+
+# A minor's Social Security paid to an adult payee counts (Guidelines E-2.2, p7): an $800
+# monthly survivor benefit adds 9,600: 30,000 + 9,600 = 39,600 > 37,012.
+- name: Case 15, a dependent child's Social Security survivor benefit counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 39_600
+    oh_liheap_income_limit: 37_012
+    oh_liheap_eligible: false
+
+# Each source is floored at zero, so rental, farm rent and capital losses cannot offset
+# other income: 12,000 wages + 600 interest = 12,600 (offsetting would give 1,200).
+- name: Case 16, rental farm rent and capital losses do not offset other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: -6_000
+        farm_rent_income: -2_400
+        capital_gains: -3_000
+        interest_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 12_600
