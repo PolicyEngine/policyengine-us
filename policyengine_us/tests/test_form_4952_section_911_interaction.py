@@ -595,10 +595,12 @@ def assert_matches_2025_forms(households, law):
         stacked_income = taxable_income + h["exclusion"]
         slack = tolerance(stacked_income)
         regular_tax = float(law["regular_tax"][i])
-        assert regular_tax == pytest.approx(line_6_feitw, abs=slack), (i, h)
-        # The line 47 cap, which the model's section 1(h) formulas omit,
-        # binds by at most the rate overlap.
-        cap_gap = regular_tax - line_6_capped
+        assert float(law["regular_tax_before_credits"][i]) == pytest.approx(
+            regular_tax, abs=slack
+        ), (i, h)
+        assert regular_tax == pytest.approx(line_6_capped, abs=slack), (i, h)
+        # The line 47 cap binds by at most the rate overlap.
+        cap_gap = line_6_feitw - line_6_capped
         assert -slack <= cap_gap <= law["rate_overlap"][i] + slack, (i, h)
         gain = section_1222_gain(h)
         if status == "SEPARATE" and h["dividends"] + gain > 0:
@@ -613,7 +615,7 @@ def assert_matches_2025_forms(households, law):
             ordinary_income,
             status,
         )
-        amt = max(0, line_7 - line_6_feitw)
+        amt = max(0, line_7 - line_6_capped)
         assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
             amt, abs=tolerance(stacked_income, taxable_excess)
         ), (i, h)
