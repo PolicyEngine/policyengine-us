@@ -717,6 +717,19 @@ def test_random_households_match_worksheet(batch, year):
     st.sampled_from([2018, 2021, 2024, 2025, 2026, 2027, 2030, 2035]),
     st.integers(1, 50_000),
 )
+# Capital gain distributions with a Schedule D net loss. Before #9788, gross
+# income added the distributions outside the Schedule D loss limit, while
+# net_capital_gain nets them on Schedule D line 13, so $1 more long-term gain
+# raised net capital gain but not taxable income and cut this 2018 single
+# filer's regular tax by $0.12.
+@hypothesis.example(
+    [
+        household("SINGLE"),
+        household("SINGLE", short_term=-40_273, distributions=50_000),
+    ],
+    2018,
+    1,
+)
 def test_random_households_keep_the_properties(batch, year, more):
     """Properties 1 to 7 in years without a transcription."""
     count = len(batch)
@@ -732,20 +745,8 @@ def test_random_households_keep_the_properties(batch, year, more):
     tol = tolerance(law["taxable_income"].astype(float)).reshape(4, count)
     # 6. More wages, long-term gain or dividends never lower the regular tax.
     # (Raising a long-term loss to a gain is also more income.)
-    # A known defect, not an intended exception, sets aside households with
-    # capital gain distributions and a Schedule D net loss for long-term gain:
-    # gross income adds non_sch_d_capital_gains outside the Schedule D loss
-    # limit, while net_capital_gain nets the distributions on Schedule D line
-    # 13. More long-term gain then raises net capital gain but not taxable
-    # income: $50,000 of distributions, a $40,273 short-term loss and $1 of
-    # long-term gain lower a 2018 single filer's tax by $0.12. No tax unit in
-    # the default dataset has both.
-    netted = np.array(
-        [h["distributions"] > 0 and h["long_term"] + h["short_term"] < 0 for h in batch]
-    )
     for k in (1, 2, 3):
-        keep = ~netted if k == 2 else np.ones(count, dtype=bool)
-        assert (regular[k] >= regular[0] - tol[k])[keep].all(), k
+        assert (regular[k] >= regular[0] - tol[k]).all(), k
     # 7. The same households in reverse order give the same results.
     reverse = calculate(batch[::-1], year)
     for v in OUTPUTS:
