@@ -46,23 +46,50 @@ class wic_category(Variable):
         # and an infant in a tax unit without a mother to one of the family's
         # remaining mothers, taking breastfeeding mothers first, then the
         # youngest.
-        tax_unit_rank = _rank_mothers(person, tax_unit, age, breastfeeding, mother)
         tax_unit_has_mother = tax_unit.any(mother)
+        in_motherless_tax_unit = ~tax_unit_has_mother
 
-        def is_matched_to_infant_under(age_limit):
-            infant = age < age_limit
-            in_tax_unit = mother & (tax_unit_rank < tax_unit.sum(infant))
-            unmatched_infants = family.sum(infant & ~tax_unit_has_mother)
-            remaining = mother & ~in_tax_unit
+        def match(eligible, tax_unit_infants, family_infants):
+            tax_unit_rank = _rank_mothers(
+                person, tax_unit, age, breastfeeding, eligible
+            )
+            in_tax_unit = eligible & (tax_unit_rank < tax_unit_infants)
+            remaining = eligible & ~in_tax_unit
             family_rank = _rank_mothers(person, family, age, breastfeeding, remaining)
-            in_family = remaining & (family_rank < unmatched_infants)
-            return in_tax_unit | in_family
+            in_family = remaining & (family_rank < family_infants)
+            return in_tax_unit, in_family
+
+        infant = age < 1
+        young_infant = age < 0.5
+        older_infant = infant & ~young_infant
+        bf_tax_unit, bf_family = match(
+            mother,
+            tax_unit.sum(infant),
+            family.sum(infant & in_motherless_tax_unit),
+        )
+        breastfeeding_woman = breastfeeding & (bf_tax_unit | bf_family)
+        # Breastfeeding women take the infants aged six months to one year
+        # first; the remaining infants under six months make one other mother
+        # postpartum each.
+        young_tax_unit = tax_unit.sum(young_infant) - max_(
+            0,
+            tax_unit.sum(breastfeeding & bf_tax_unit) - tax_unit.sum(older_infant),
+        )
+        young_family = family.sum(young_infant & in_motherless_tax_unit) - max_(
+            0,
+            family.sum(breastfeeding & bf_family)
+            - family.sum(older_infant & in_motherless_tax_unit),
+        )
+        pp_tax_unit, pp_family = match(
+            mother & ~breastfeeding_woman, young_tax_unit, young_family
+        )
+        postpartum = pp_tax_unit | pp_family
 
         return select(
             [
                 pregnant,
-                breastfeeding & is_matched_to_infant_under(1),
-                is_matched_to_infant_under(0.5),
+                breastfeeding_woman,
+                postpartum,
                 age < 1,
                 age < 5,
             ],

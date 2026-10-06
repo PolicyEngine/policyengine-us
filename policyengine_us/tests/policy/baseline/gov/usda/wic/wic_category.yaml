@@ -305,3 +305,97 @@
         state_code: TX
   output:
     wic_category: [NONE, BREASTFEEDING, INFANT]
+
+- name: A breastfeeding mother of an older infant does not take the postpartum match of another mother's younger infant
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 38
+        is_female: true
+        own_children_in_household: 2
+        is_breastfeeding: true
+      mother:
+        age: 17
+        is_female: true
+        own_children_in_household: 1
+      aunt:
+        age: 0.8
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, aunt, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, aunt, infant]
+    families:
+      family:
+        members: [grandmother, mother, aunt, infant]
+    households:
+      household:
+        members: [grandmother, mother, aunt, infant]
+        state_code: TX
+  output:
+    wic_category: [BREASTFEEDING, POSTPARTUM, INFANT, INFANT]
+
+- name: Two mothers with their own infants in one tax unit are both postpartum
+  period: 2025
+  input:
+    people:
+      mother_a:
+        age: 24
+        is_female: true
+        own_children_in_household: 1
+      infant_a:
+        age: 0.3
+      mother_b:
+        age: 21
+        is_female: true
+        own_children_in_household: 1
+      infant_b:
+        age: 0.1
+    tax_units:
+      tax_unit:
+        members: [mother_a, infant_a, mother_b, infant_b]
+    spm_units:
+      spm_unit:
+        members: [mother_a, infant_a, mother_b, infant_b]
+    families:
+      family:
+        members: [mother_a, infant_a, mother_b, infant_b]
+    households:
+      household:
+        members: [mother_a, infant_a, mother_b, infant_b]
+        state_code: TX
+  output:
+    wic_category: [POSTPARTUM, INFANT, POSTPARTUM, INFANT]
+
+- name: Father with an infant has no postpartum woman
+  period: 2025
+  input:
+    people:
+      father:
+        age: 30
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+  output:
+    wic_category: [NONE, INFANT]
+
+- name: Mother of an infant aged 0.6 who is not breastfeeding is not postpartum
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.6
+  output:
+    wic_category: [NONE, NONE, INFANT]
