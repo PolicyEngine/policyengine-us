@@ -1,3 +1,17 @@
+## [2.29.10] - 2026-10-06
+
+### Changed
+
+- List casetext.com in the known-dead reference URL guard so its links cannot return.
+
+### Fixed
+
+- Keep tax unit dependents' above-the-line deductions (the deductible part of self-employment tax, self-employed health insurance and retirement plans, IRA contributions, early withdrawal penalties, educator expenses and alimony paid) off the filer's AGI, Social Security and unemployment MAGIs, per-person AGI and student loan interest MAGI, and off the Missouri, Massachusetts, Minnesota property tax refund and Medicaid incomes built from them. Employer adoption assistance and education savings bond interest stay on the filer's return wherever they are recorded. A dependent's own deductions now reduce the dependent's Medicaid AGI, Massachusetts gross income no longer subtracts dependents' business losses, and Mississippi subtracts each person's own self-employed health insurance and retirement plan deductions instead of the tax unit's total for every member.
+- Michigan household resources net business and rental income within MI-1040CR lines 16 and 17 before flooring each total at zero, count only the claimant's and spouse's business and rental items on those two lines (MCL 206.508(3)), count estate and trust income and Form 4797 ordinary gains on line 16, and no longer subtract business, rental or capital losses again as Schedule 1 adjustments on line 30.
+- Fix the Arizona property tax credit Schedule 2 thresholds, which were each one dollar low: a claimant living with others with household income of exactly $2,500, $2,650, ..., $5,500 got the next band's amount ($5,500 got none) instead of the ARS 43-1072(B)(2) amount.
+- Net collectibles loss, the net short-term capital loss and the long-term capital loss carryover against 28 percent rate gain, and the rest against unrecaptured section 1250 gain, per 26 U.S.C. 1(h)(4) and 1(h)(6), through new inputs for those amounts before netting; amounts entered as reported on Schedule D lines 18 and 19 pass through unchanged.
+
+
 ## [2.29.9] - 2026-10-06
 
 ### Fixed
