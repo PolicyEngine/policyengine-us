@@ -13,6 +13,9 @@ class ok_federal_ctc(Variable):
         "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92568",
         # 2025 Form 511 packet, pages 11 and 25.
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=11",
+        # 2025 Instructions for Schedule 8812, Credit Limit Worksheet A.
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4",
+        "https://www.law.cornell.edu/uscode/text/26/25D#c",
     )
     documentation = (
         "Federal Child Tax Credit allowed for Oklahoma's Child Care/Child "
@@ -21,7 +24,8 @@ class ok_federal_ctc(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        non_refundable_credits = parameters(period).gov.irs.credits.non_refundable
+        credits = parameters(period).gov.irs.credits
+        non_refundable_credits = credits.non_refundable
         refundable_ctc = tax_unit("refundable_ctc", period)
         # NOTE: Fully-refundable-CTC reforms (e.g. the American Family Act
         # contrib) drop non_refundable_ctc from the federal list, so there is
@@ -32,9 +36,21 @@ class ok_federal_ctc(Variable):
         # choice); the baseline keeps the ODC inside ctc, so it is unaffected.
         if "non_refundable_ctc" not in non_refundable_credits:
             return refundable_ctc
-        ctc_index = non_refundable_credits.index("non_refundable_ctc")
-        credits_before_ctc = non_refundable_credits[:ctc_index]
-        preceding_credits = add(tax_unit, period, credits_before_ctc)
+        # The credits applied before the CTC are those Schedule 8812 Credit
+        # Limit Worksheet A subtracts, not those listed before it in the
+        # non-refundable list: line 2, and on line 4 the residential clean
+        # energy credit only when Credit Limit Worksheet B applies. Otherwise
+        # that credit follows the CTC (26 U.S.C. 25D(c)).
+        limit = credits.ctc_tax_liability_limit
+
+        def applied(credit_list):
+            credit_list = [c for c in credit_list if c in non_refundable_credits]
+            return add(tax_unit, period, credit_list) if credit_list else 0
+
+        worksheet_b_applies = tax_unit("ctc_credit_limit_worksheet_b_applies", period)
+        preceding_credits = applied(limit.preceding_credits) + where(
+            worksheet_b_applies, applied(limit.subsequent_credits), 0
+        )
 
         non_refundable_ctc = tax_unit("non_refundable_ctc", period)
         total_non_refundable_credits = tax_unit(

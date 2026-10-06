@@ -8,7 +8,7 @@ class wic(Variable):
     documentation = "Benefit value for the Special Supplemental Nutrition Program for Women, Infants and Children (WIC)"
     label = "WIC"
     reference = (
-        "https://fns-prod.azureedge.net/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf#page=2",
+        "https://www.fns.usda.gov/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf#page=2",
         "https://www.law.cornell.edu/cfr/text/7/246.7",
         "https://www.law.cornell.edu/cfr/text/7/246.10",
         "https://www.fns.usda.gov/wic/food-packages",

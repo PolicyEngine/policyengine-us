@@ -64,7 +64,9 @@ def parse_entries(name: str, text: str) -> list[tuple[str, str, str]]:
         prefix, verified, replacement = (
             entry[key] for key in ("prefix", "verified", "replacement")
         )
-        head = isinstance(prefix, str) and re.match(r"(https?://[^/\s]+)/\S*$", prefix)
+        head = isinstance(prefix, str) and re.fullmatch(
+            r"(https?://[^/\s]+)/\S*", prefix
+        )
         if not head:
             raise ValueError(f"{name}: not an http(s) URL with a path: {prefix!r}")
         if not head.group(1).isascii() or head.group(1) != head.group(1).lower():
@@ -177,6 +179,41 @@ def find_dead_urls(text: str, by_host=None, order=None) -> list[tuple[int, str, 
     return hits
 
 
+def join_split_string_literals(text: str) -> str:
+    """Apply Python's implicit concatenation to string literals that end
+    one line and continue on the next, so a URL split across them reads
+    whole on the first line. Consumed lines become empty, which keeps every
+    later line number."""
+    lines = text.split("\n")
+    target = None
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if (
+            target is not None
+            and stripped[:1] in {'"', "'"}
+            and lines[target].rstrip()[-1:] in {'"', "'"}
+        ):
+            lines[target] = lines[target].rstrip()[:-1] + stripped[1:]
+            lines[index] = ""
+        else:
+            target = index
+    return "\n".join(lines)
+
+
+def find_dead_urls_in_file(
+    text: str, suffix: str, by_host=None, order=None
+) -> list[tuple[int, str, str]]:
+    """`find_dead_urls`, plus, for Python, URLs split across literals."""
+    hits = find_dead_urls(text, by_host, order)
+    if suffix == ".py":
+        hits += [
+            hit
+            for hit in find_dead_urls(join_split_string_literals(text), by_host, order)
+            if hit not in hits
+        ]
+    return sorted(hits, key=lambda hit: hit[0])
+
+
 def test_known_dead_url_entries_are_well_formed():
     prefixes = [prefix for prefix, _, _ in KNOWN_DEAD_URL_PREFIXES]
     assert prefixes, "no entries loaded from " + str(DATA_DIR)
@@ -198,6 +235,11 @@ def test_known_dead_url_entries_are_well_formed():
         "# https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdf",
         "href: HTTPS://WWW.TAX.NY.GOV/pit/child-earned-payments.htm#amount",
         '"[IT-201-I](https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf)"',
+        # casetext.com is listed as a whole host: statute, regulation and case
+        # pages are all flagged.
+        "# http://www.casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual",
+        "href: https://casetext.com/regulation/new-jersey-administrative-code/title-18-treasury-taxation/chapter-35-new-jersey-gross-income-tax/subchapter-2-exclusions-and-deductions/section-1835-29-medical-expenses-deduction",
+        '"[Marbury v. Madison](https://casetext.com/case/marbury-v-madison)"',
     ],
 )
 def test_dead_urls_are_flagged(text):
@@ -215,6 +257,7 @@ def test_dead_urls_are_flagged(text):
         "href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=25",
         "href: https://www.tax.ny.gov/pdf/current_forms/it/it558i.pdfx",
         "href: https://www.tax.ny.gov/pit/inflation-refund-checks-faq.htm",
+        "href: https://web.archive.org/web/2023/https://casetext.com/case/marbury-v-madison",
     ],
 )
 def test_archived_and_live_urls_are_not_flagged(text):
@@ -277,6 +320,38 @@ def test_fast_scan_matches_naive_scan_across_hosts():
         ), repr(text)
 
 
+def test_urls_split_across_python_string_literals_are_flagged():
+    _, by_host, order = build_index(SYNTHETIC_ENTRIES)
+    source = (
+        "reference = (\n"
+        '    "https://www.tax.ny.gov/a/"\n'
+        '    "b.pdf#page=3",\n'
+        '    "https://www.tax.ny.gov/a/b.pdfx"\n'
+        ")\n"
+    )
+    assert find_dead_urls(source, by_host, order) == []
+    assert find_dead_urls_in_file(source, ".py", by_host, order) == [
+        (2, "https://www.tax.ny.gov/a/b.pdf", "https://example.org/")
+    ]
+    # Other file types are scanned line by line only.
+    assert find_dead_urls_in_file(source, ".yaml", by_host, order) == []
+
+
+def test_joining_split_literals_keeps_line_numbers():
+    source = 'x = (\n    "a"\n    "b"\n    \'c\'  \n\n    "d"\n)\ny = "e"\n'
+    assert join_split_string_literals(source).split("\n") == [
+        "x = (",
+        "    \"abc'",
+        "",
+        "",
+        "",
+        '    "d"',
+        ")",
+        'y = "e"',
+        "",
+    ]
+
+
 GOOD_ENTRY = (
     '[[dead]]\nprefix = "https://www.example.gov/a.pdf"\n'
     'verified = "2026-09-30"\nreplacement = "https://example.org/"\n'
@@ -294,6 +369,9 @@ GOOD_ENTRY = (
         GOOD_ENTRY + 'notes = "x"\n',
         GOOD_ENTRY.replace('"https://www.example.gov/a.pdf"', "5"),
         GOOD_ENTRY.replace("https://www.example.gov/a.pdf", "https://www.example.gov"),
+        GOOD_ENTRY.replace(
+            '"https://www.example.gov/a.pdf"', '"https://www.example.gov/a.pdf\\n"'
+        ),
         GOOD_ENTRY.replace("https://www.example.gov", "https://WWW.Example.gov"),
         GOOD_ENTRY.replace("2026-09-30", "2026-13-45"),
         GOOD_ENTRY.replace('"https://example.org/"', '" "'),
@@ -339,7 +417,9 @@ def test_package_and_docs_have_no_known_dead_reference_urls():
     violations = []
     for path in scanned_files():
         text = path.read_text(encoding="utf-8", errors="replace")
-        for number, prefix, replacement in find_dead_urls(text):
+        for number, prefix, replacement in find_dead_urls_in_file(
+            text, path.suffix.lower()
+        ):
             violations.append(
                 f"{path.relative_to(REPO.parent)}:{number} cites {prefix} "
                 f"(dead); use {replacement}"

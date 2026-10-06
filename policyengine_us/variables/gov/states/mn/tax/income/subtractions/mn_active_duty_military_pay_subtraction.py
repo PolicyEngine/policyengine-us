@@ -9,7 +9,7 @@ class mn_active_duty_military_pay_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.12",  # Subd. 12 - Armed forces active duty compensation
-        "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1m-25.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf",
     )
     defined_for = StateCode.MN
     adds = ["military_service_income"]

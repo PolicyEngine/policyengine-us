@@ -8,7 +8,7 @@ class nd_529_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/section-57-38-30-3/",
+        "https://ndlegis.gov/cencode/t57c38.pdf#page=34",
         "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/2025-individual-income-tax-booklet.pdf#page=14",
     )
     defined_for = StateCode.ND

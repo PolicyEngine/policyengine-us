@@ -12,41 +12,73 @@ class mi_household_resources(Variable):
         "https://law.justia.com/codes/michigan/2022/chapter-206/"
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508",
+        "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        # 2025 MI-1040 book: "Total Household Resources" (page 26) and
+        # MI-1040CR lines 16 and 17 (page 31), 19 and 30 (page 32).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income
-        # Per form instructions, only certain income sources must be
-        # floored at 0 if negative. Capital gains have special loss limitation.
-        income_sources = p.household_resources
-
-        # Sources that must be floored at 0 per form instructions:
-        # "Net business income (including net farm income). If negative, enter 0"
-        # "Net royalty or rent income. If negative, enter 0"
-        floored_sources = {
-            "farm_operations_income",
+        # MCL 206.508(4) increases income by "(a) Any net business loss after
+        # netting all business income and loss" and "(b) Any net rental or
+        # royalty loss". The MI-1040CR nets each group and floors the total
+        # at zero, so a loss offsets income only within its own line.
+        # Line 16: U.S. Schedule C, Form 4797 Part II, Schedule E Parts II
+        # and III, and Schedule F. "If the total is negative enter 0."
+        business_sources = {
             "total_self_employment_income",
+            "other_net_gain",
             "partnership_s_corp_income",
+            "estate_income",
+            "farm_operations_income",
+        }
+        # Line 17: U.S. Schedule E Parts I, IV and V (rents, royalties, REMIC
+        # income, which has no input here, and farm rental income). "If the
+        # total is negative enter 0."
+        rental_sources = {
             "rental_income",
             "farm_rent_income",
         }
 
-        # Iterate through each source, applying flooring only to
-        # sources that require it per form instructions
-        total = 0
-        for source in income_sources:
-            if source in floored_sources:
-                # Per MI-1040CR instructions: "If negative, enter 0"
-                total += max_(add(tax_unit, period, [source]), 0)
+        # MCL 206.508(3): "'Household' means a claimant and spouse." A
+        # dependent's business and rental items belong on the dependent's own
+        # return, so they neither add to nor net against lines 16 and 17, as
+        # loss_ald leaves them off this return. tax_unit_non_dep_add sums a
+        # person-level source over the head and spouse and takes a
+        # tax-unit-level one (other_net_gain) as is.
+        business_income = 0
+        rental_income = 0
+        other_income = 0
+        for source in p.household_resources:
+            if source in business_sources:
+                business_income += tax_unit_non_dep_add(tax_unit, period, [source])
+            elif source in rental_sources:
+                rental_income += tax_unit_non_dep_add(tax_unit, period, [source])
             else:
-                # Other sources are added as-is without flooring
-                total += add(tax_unit, period, [source])
+                other_income += add(tax_unit, period, [source])
+        total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
-        above_the_line_deductions = tax_unit("above_the_line_deductions", period)
-        return max_(
-            0,
-            total - health_insurance_premiums - above_the_line_deductions,
+        # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
+        # Business, rental and capital losses are income items (Schedule 1
+        # Part I and Schedule D), not Part II adjustments. They are netted
+        # and floored on lines 16, 17 and 19 above, so loss_ald, which holds
+        # them, is left out.
+        adjustments = add(
+            tax_unit,
+            period,
+            [
+                deduction
+                for deduction in parameters(period).gov.irs.ald.deductions
+                if deduction != "loss_ald"
+            ],
         )
+        # Line 31: health insurance premiums.
+        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        return max_(0, total - adjustments - health_insurance_premiums)
