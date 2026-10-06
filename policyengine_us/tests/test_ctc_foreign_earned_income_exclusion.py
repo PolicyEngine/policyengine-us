@@ -48,6 +48,7 @@ OUTPUTS = [
     "ctc",
     "ctc_refundable_maximum",
     "refundable_ctc_barred_by_section_911_exclusion",
+    "ctc_credit_limit_worksheet_b_applies",
     "refundable_ctc",
     "non_refundable_ctc",
     "income_tax_capped_non_refundable_credits",
@@ -115,6 +116,12 @@ def assert_invariants(law, no_bar):
     # Section 32(c)(1)(C): no EITC for a section 911 claimant, bar or not.
     assert (law["eitc"][excludes] == 0).all()
     assert (no_bar["eitc"][excludes] == 0).all()
+    # Schedule 8812: a filer the bar denies the refund skips Credit Limit
+    # Worksheet B. With the bar switched off, excluders complete it as other
+    # filers do, so the bar is its only Form 2555 test.
+    worksheet_b = "ctc_credit_limit_worksheet_b_applies"
+    assert not (law[worksheet_b] & law[barred]).any()
+    assert np.array_equal(law[worksheet_b], no_bar[worksheet_b] & ~law[barred])
     # Filers without the exclusion are untouched, bit for bit.
     for v in [
         "refundable_ctc",

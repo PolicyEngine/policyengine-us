@@ -8,7 +8,8 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
     documentation = (
         "Whether section 24(d)(3) denies the refundable Child Tax Credit "
         "because the filer elects to exclude foreign earned income or housing "
-        "amounts from gross income under section 911 (Form 2555)."
+        "amounts from gross income under section 911 (Form 2555). These "
+        "filers also skip Schedule 8812 Credit Limit Worksheet B."
     )
     definition_period = YEAR
     reference = (
