@@ -7,7 +7,7 @@ class fl_liheap_household_size(Variable):
     definition_period = YEAR
     label = "Florida LIHEAP household size"
     defined_for = StateCode.FL
-    reference = "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=41"
+    reference = "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=42"
 
     # Ineligible members are excluded from size, but their otherwise countable
     # income remains included in full. SPM membership approximates the energy

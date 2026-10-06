@@ -1,4 +1,7 @@
-# Accepted plan pp5,8 and manual pp23,41-43: ordinary/categorical income conditions, qualified household, heating responsibility. Housing verification uses the documented existing-input approximation.
+# Accepted FY2026 plan pages 5 and 8 and manual pages 23 and 41-43: ordinary
+# and categorical income conditions, a qualified household and heating
+# responsibility. Housing verification uses existing inputs as an
+# approximation.
 
 - name: Case 1, the ordinary income ceiling is inclusive without an asset test.
   period: 2026
@@ -25,17 +28,17 @@
     - 0
     - 0
     employment_income:
-    - 32155
-    - 32155.01
+    - 32_155
+    - 32_155.01
     heating_type:
     - NATURAL_GAS
     - NATURAL_GAS
     heating_expense:
-    - 1200
-    - 1200
+    - 1_200
+    - 1_200
     spm_unit_assets:
-    - 1000000
-    - 1000000
+    - 1_000_000
+    - 1_000_000
   output:
     fl_liheap_eligible:
     - true
@@ -66,33 +69,33 @@
     ssi:
     - 0
     - 0
-    - 1200
+    - 1_200
     - 0
     fl_tca:
     - 0
-    - 1200
+    - 1_200
     - 0
     - 0
     snap:
-    - 1200
+    - 1_200
     - 0
     - 0
     - 0
     employment_income:
-    - 100000
-    - 100000
-    - 100000
-    - 100000
+    - 100_000
+    - 100_000
+    - 100_000
+    - 100_000
     heating_type:
     - NATURAL_GAS
     - NATURAL_GAS
     - NATURAL_GAS
     - NATURAL_GAS
     heating_expense:
-    - 1200
-    - 1200
-    - 1200
-    - 1200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
   output:
     fl_liheap_eligible:
     - true
@@ -133,10 +136,10 @@
     - 0
     - 0
     snap:
-    - 1200
-    - 1200
-    - 1200
-    - 1200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
     employment_income:
     - 0
     - 0
@@ -301,3 +304,24 @@
     fl_liheap_eligible:
     - true
     - false
+
+# Boundary amounts. FY2025 matrix: the size-1 maximum income value,
+# 98_038 x 52% x 60% = 30_587.856, is printed rounded to 30_588. The size-9
+# value is 150% of the 2024 guideline, 58_100 x 1.5 = 87_150. Income at each
+# printed value qualifies; one more cent does not.
+- name: Case 6, fiscal year 2025 income at the printed maximum income value qualifies.
+  period: 2025
+  input:
+    state_code: [FL, FL, FL, FL]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false]
+    ssi: [0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    employment_income: [30_588, 30_588.01, 87_150, 87_150.01]
+    fl_liheap_household_size: [1, 1, 9, 9]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap_eligible: [true, false, true, false]

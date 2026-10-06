@@ -1,4 +1,6 @@
-# Current FY2026 matrix p1 literal sizes1-12. Its stated60%SMI rule gives94610 at size13; printed157686 is documented as an anomaly, not a legal100%SMI category.
+# FY2026 matrix, sizes 1-12 as printed. Its stated 60% of state median income
+# rule gives 94_610 at size 13; the printed 157_686 is treated as an anomaly,
+# not a separate 100% of state median income category.
 
 - name: Case 1, all twelve consistent published heating limits match the current matrix.
   period: 2026
@@ -121,18 +123,18 @@
     - NATURAL_GAS
     - NATURAL_GAS
     heating_expense:
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
-    - 1200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
     fl_liheap_household_size:
     - 1
     - 2
@@ -148,18 +150,18 @@
     - 12
   output:
     fl_liheap_income_limit:
-    - 32155
-    - 42049
-    - 51943
-    - 61837
-    - 71730
-    - 81624
-    - 83479
-    - 85335
-    - 87190
-    - 89045
-    - 90900
-    - 92755
+    - 32_155
+    - 42_049
+    - 51_943
+    - 61_837
+    - 71_730
+    - 81_624
+    - 83_479
+    - 85_335
+    - 87_190
+    - 89_045
+    - 90_900
+    - 92_755
 - name: Case 2, size thirteen follows the stated sixty percent SMI rule despite the anomalous printed
     row.
   period: 2026
@@ -183,9 +185,35 @@
     heating_type:
     - NATURAL_GAS
     heating_expense:
-    - 1200
+    - 1_200
     fl_liheap_household_size:
     - 13
   output:
     fl_liheap_income_limit:
-    - 94610
+    - 94_610
+
+# FY2025 matrix footnote and accepted FY2025 plan section 2.1, page 8: the
+# limit is the greater of 60% of state median income and 150% of the 2024
+# poverty guidelines. State median income: 98_038 x size share x 60%, with
+# shares 52%, 68%, 100%, 132% and 138% for sizes 1, 2, 4, 6 and 8, giving
+# 30_587.856, 39_999.504, 58_822.8, 77_646.096 and 81_175.464 (printed
+# 30_588, 40_000, 58_823, 77_646 and 81_175). Guidelines: 15_060 + 5_380 per
+# additional person, times 1.5, give 87_150, 111_360 and 175_920 for sizes 9,
+# 12 and 20, above the state median income amounts (82_940.148 at size 9).
+- name: Case 3, fiscal year 2025 limits use the greater of state median income and poverty guideline amounts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    fl_liheap_household_size: [1, 2, 4, 6, 8, 9, 12, 20]
+  output:
+    fl_liheap_income_limit: [30_587.856, 39_999.504, 58_822.8, 77_646.096, 81_175.464, 87_150, 111_360, 175_920]

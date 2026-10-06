@@ -1,6 +1,7 @@
 # Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
 
-# Manual pp49-50/current planpp5-6:12000+2400+600+1200+1200=17400 under existing net-business input approximation.
+# Manual pages 49-50 and FY2026 plan pages 5-6: 12_000 + 2_400 + 600 + 1_200 +
+# 1_200 = 17_400 from the existing net business inputs.
 - name: Case 1, adult wages and existing net business income count without a second expense deduction.
   period: 2026
   absolute_error_margin: 0.01
@@ -30,8 +31,10 @@
   output:
     fl_liheap_countable_income: 17_400
 
-# Contract current-input approximation preserves signed netbusiness:12000-6000+600=6600. Source lacks an express individual loss floor; this is not a new business deduction.
-- name: Case 2, existing signed business inputs offset other income before the household floor.
+# FY2026 plan section 1.8, page 5, counts gross income, and manual 1200.01B,
+# page 49, counts "the gross amount of income", so each source is floored at
+# zero: 12_000 wages + max(-6_000, 0) + 600 partnership income = 12_600.
+- name: Case 2, a self-employment loss does not offset wages or partnership income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -56,10 +59,10 @@
         members: [person1]
         state_code: FL
   output:
-    fl_liheap_countable_income: 6_600
+    fl_liheap_countable_income: 12_600
 
-# Approved household floor: max(1200-6000,0)=0; no negative countable income.
-- name: Case 3, negative combined income is floored at zero.
+# Each source is floored at zero: 1_200 wages + max(-6_000, 0) = 1_200.
+- name: Case 3, a self-employment loss larger than wages leaves the wages counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -83,9 +86,11 @@
         members: [person1]
         state_code: FL
   output:
-    fl_liheap_countable_income: 0
+    fl_liheap_countable_income: 1_200
 
-# Current FY2026 plan p6 leaves UI/cash gifts unselected.30000 wages remain30000; UI6000, gifts2400 and SNAP6000 do not count.
+# FY2026 plan page 6 leaves unemployment compensation and cash gifts
+# unselected. Wages of 30_000 count; 6_000 of unemployment compensation, 2_400
+# of gifts and 6_000 of SNAP do not.
 - name: Case 4, current plan excludes unemployment and cash gifts.
   period: 2026
   absolute_error_margin: 0.01
@@ -113,8 +118,14 @@
   output:
     fl_liheap_countable_income: 30_000
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 5, age 15 nonstudent follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, applies one age and student test to all income:
+# members 18 and older count, and so do 16- and 17-year-olds who do not attend
+# school full time. The model follows it over plan item 1.9, page 6, which
+# leaves earned income of a child under 18 unchecked. Plan page 7 counts net
+# gambling and periodic estate receipts. At 15 the young member's 6_000 wages
+# + 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
+# gambling = 9_800 is excluded, leaving the parent's 12_000.
+- name: Case 5, a 15-year-old nonstudent's income is excluded under the manual's age and student test.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -150,8 +161,11 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 6, age 16 nonstudent follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, counts all income of a 16- or 17-year-old who does
+# not attend school full time; the model follows it over plan item 1.9, page 6.
+# Parent 12_000 + young member 6_000 wages + 1_200 self-employment + 1_200
+# Social Security + 900 estate + (600 - 100) gambling = 21_800.
+- name: Case 6, a 16-year-old nonstudent's earned and unearned income both count.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -185,10 +199,13 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 14_600
+    fl_liheap_countable_income: 21_800
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 7, age 16 full time student follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, counts a 16- or 17-year-old's income only when the
+# member does not attend school full time. The young member's 6_000 wages +
+# 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
+# gambling = 9_800 is excluded, leaving the parent's 12_000.
+- name: Case 7, a 16-year-old full-time student's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -224,8 +241,11 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 8, age 17 nonstudent follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, counts all income of a 16- or 17-year-old who does
+# not attend school full time; the model follows it over plan item 1.9, page 6.
+# Parent 12_000 + young member 6_000 wages + 1_200 self-employment + 1_200
+# Social Security + 900 estate + (600 - 100) gambling = 21_800.
+- name: Case 8, a 17-year-old nonstudent's earned and unearned income both count.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -259,10 +279,13 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 14_600
+    fl_liheap_countable_income: 21_800
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 9, age 17 full time student follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, counts a 16- or 17-year-old's income only when the
+# member does not attend school full time. The young member's 6_000 wages +
+# 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
+# gambling = 9_800 is excluded, leaving the parent's 12_000.
+- name: Case 9, a 17-year-old full-time student's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -298,8 +321,11 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Current plan p6 excludes earnings under 18; manual p49 counts unearned income at 18 or 16/17 if not a full-time student. Plan p7 includes periodic estate receipts and net gambling. Parent 12_000; young member 6_000 wages + 1_200 business + 1_200 SSA + 900 estate + (600 - 100) gambling when all included.
-- name: Case 10, age 18 full time student follows separate earned and unearned age rules.
+# Manual 1200.01D, page 49, counts any income of a member 18 and older,
+# whether or not a full-time student: parent 12_000 + young member 6_000
+# wages + 1_200 self-employment + 1_200 Social Security + 900 estate +
+# (600 - 100) gambling = 21_800.
+- name: Case 10, an 18-year-old full-time student's earned and unearned income both count.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -335,7 +361,9 @@
   output:
     fl_liheap_countable_income: 21_800
 
-# Current planp6 rent and retirement categories:30000+1200ordinaryrent+5000farmrent+1200survivor=37400; no assumed rental loss or extra allowance.
+# FY2026 plan page 6 rent and retirement categories: 30_000 wages + 1_200
+# rent + 5_000 farm rent + 1_200 survivor benefits = 37_400, with no added
+# allowance.
 - name: Case 11, rental and survivor inputs count independently in full.
   period: 2026
   absolute_error_margin: 0.01
@@ -364,7 +392,12 @@
   output:
     fl_liheap_countable_income: 37_400
 
-# Current plan pp6-7: prior disjoint receipts 27_360 + 2_400 periodic estate income = 29_760. Estate receipts exclude inherited principal and separately reported interest/dividends; annual SSI, pension and SSA count once.
+# FY2026 plan pages 6-7: 1_200 SSI + 18_000 Social Security + 2_400 pension +
+# 1_200 survivor + 600 workers' compensation + 600 disability + 600 veterans +
+# 300 general assistance + 300 strike + 1_200 child support + 600 alimony +
+# 120 interest + 240 dividends = 27_360, plus 2_400 of periodic estate income
+# = 29_760. Estate receipts exclude inherited principal and separately reported
+# interest and dividends; each source counts once.
 - name: Case 12, disjoint covered unearned receipts and canonical dividends count once.
   period: 2026
   absolute_error_margin: 0.01
@@ -402,7 +435,9 @@
   output:
     fl_liheap_countable_income: 29_760
 
-# Current planp6 expressly marks SSA including Medicare deduction; manualp50 adds premiums back to net checks. Gross24000 remains24000, not21600.
+# FY2026 plan page 6 counts Social Security "Including MediCare deduction";
+# manual page 50 adds premiums back to net checks. Gross 24_000 counts, not
+# 21_600.
 - name: Case 13, gross Social Security remains counted before Medicare premiums.
   period: 2026
   absolute_error_margin: 0.01
@@ -429,7 +464,9 @@
   output:
     fl_liheap_countable_income: 24_000
 
-# Current planp6 counts TANF:6000 adult wages+3600 annual Florida TCA=9600. Child SSA1200 excluded by the older detailed age rule; monthly state grant is added once perfamily.
+# FY2026 plan page 6 counts TANF: 6_000 adult wages + 3_600 annual Florida
+# TCA = 9_600. The child's 1_200 of Social Security is excluded by the manual's
+# age rule; the monthly state grant is added once per family.
 - name: Case 14, state cash assistance is annualized once for the family.
   period: 2026
   absolute_error_margin: 0.01
@@ -461,7 +498,9 @@
   output:
     fl_liheap_countable_income: 9_600
 
-# Manualp42 retains all nonqualified adult income despite size1; minor SSA excluded under manualp49 age detail. No proration.
+# Manual page 42 retains all of a nonqualified adult's income although the
+# household size is 1; the minor's Social Security is excluded under the
+# manual page 49 age rule. No proration.
 - name: Case 15, nonqualified adult income is retained in full for a qualified child household.
   period: 2026
   absolute_error_margin: 0.01
@@ -494,7 +533,8 @@
     fl_liheap_household_size: 1
     fl_liheap_countable_income: 20_000
 
-# Accepted FY2026 plan section 1.9, physical p7: net gambling or lottery winnings. Confirmed review C1: 40_000 winnings - 30_000 associated losses = 10_000.
+# Accepted FY2026 plan section 1.9, page 7: net gambling or lottery winnings.
+# 40_000 winnings - 30_000 losses = 10_000.
 - name: Case 16, gambling winnings count net of associated losses.
   period: 2026
   absolute_error_margin: 0.01
@@ -521,9 +561,10 @@
   output:
     fl_liheap_countable_income: 10_000
 
-# Plan p7 requires net gambling; contract v1.2 preserves only the household floor.
-# max(1_200 + 4_000 - losses, 0) = 1_200, 200, 0; no per-source loss floor.
-- name: Case 17, net gambling losses offset income before the household floor.
+# Plan section 1.9, page 7, counts net gambling winnings, so losses offset only
+# winnings: 1_200 wages + max(4_000 - losses, 0) = 1_200 for losses of 4_000,
+# 5_000 and 10_000.
+- name: Case 17, gambling losses offset only gambling winnings.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -540,4 +581,123 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     gas_expense: [1_200, 1_200, 1_200]
   output:
-    fl_liheap_countable_income: [1_200, 200, 0]
+    fl_liheap_countable_income: [1_200, 1_200, 1_200]
+
+# FY2026 plan section 1.9, page 6, counts retirement and pension benefits.
+# Military retirement pay and railroad retirement benefits are separate inputs
+# from pension_income: 24_000 military retirement pay + 6_000 private pension
+# + 18_000 railroad retirement benefits = 48_000.
+- name: Case 18, military retirement pay and railroad retirement benefits count beside pensions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        military_retirement_pay: 24_000
+        taxable_private_pension_income: 6_000
+      person2:
+        age: 63
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        railroad_benefits: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 48_000
+
+# FY2026 plan section 1.8, page 5, counts gross income, so each earned and
+# unearned source is floored at zero and a loss in one source or member cannot
+# offset another. Counted: 30_000 wages + 500 interest = 30_500. Floored to
+# zero: farm operations -2_500 and farm rent -4_000 (person1); self-employment
+# -8_000, partnership -1_000, rental -3_000 and estate -1_500 (person2).
+- name: Case 19, losses in business, rental, farm rent and estate sources are each floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 30_000
+        farm_operations_income: -2_500
+        farm_rent_income: -4_000
+      person2:
+        age: 44
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        self_employment_income: -8_000
+        partnership_s_corp_income: -1_000
+        rental_income: -3_000
+        estate_income: -1_500
+        interest_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 30_500
+
+# FY2026 plan section 1.9, page 6, counts TANF received. Florida TCA for a
+# family of three with a shelter obligation over $50 is 303 a month, or
+# 303 x 12 = 3_636 a year. The take-up-gated tanf total counts it when the
+# family takes up TCA (first household) and adds 0 when it does not (second).
+- name: Case 20, Florida cash assistance counts only when the family takes it up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, ssi: 0}
+      person2: {age: 7, ssi: 0}
+      person3: {age: 4, ssi: 0}
+      person4: {age: 30, ssi: 0}
+      person5: {age: 7, ssi: 0}
+      person6: {age: 4, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 3_636
+        takes_up_tanf_if_eligible: true
+        snap: 0
+      spm_unit2:
+        members: [person4, person5, person6]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 3_636
+        takes_up_tanf_if_eligible: false
+        snap: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: FL
+      household2:
+        members: [person4, person5, person6]
+        state_code: FL
+  output:
+    tanf: [3_636, 0]
+    fl_liheap_countable_income: [3_636, 0]

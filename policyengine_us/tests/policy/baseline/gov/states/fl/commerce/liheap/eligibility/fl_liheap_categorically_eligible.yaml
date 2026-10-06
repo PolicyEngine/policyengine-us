@@ -1,6 +1,8 @@
 # Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
 
-# Current planp5/manualp50 any positive SNAP receipt waives income eligibility. High reported wages do not negate this component; no final award or band is asserted.
+# FY2026 plan page 5 and manual page 50: any positive SNAP receipt waives the
+# income test. High reported wages do not negate this component; no final
+# award or band is asserted.
 - name: Case 1, positive SNAP receipt establishes only the categorical income exemption.
   period: 2026
   input:
@@ -25,7 +27,8 @@
   output:
     fl_liheap_categorically_eligible: true
 
-# Current planp5/manualp50 TANF receipt qualifies; use family Florida TCA annual3600, not a national TANF aggregate.
+# FY2026 plan page 5 and manual page 50: TANF receipt qualifies. The family's
+# Florida TCA of 3_600 a year is used, not a national TANF aggregate.
 - name: Case 2, positive Florida cash assistance establishes the categorical income exemption.
   period: 2026
   input:
@@ -54,7 +57,9 @@
   output:
     fl_liheap_categorically_eligible: true
 
-# Current planp5 any household member SSI receipt qualifies. ChildSSI1200 is excluded from income by manualp49 age detail; adult wages12000 count.
+# FY2026 plan page 5: SSI receipt by any household member qualifies. The
+# child's 1_200 of SSI is excluded from income by the manual page 49 age rule;
+# the adult's 12_000 of wages count.
 - name: Case 3, a child SSI receipt qualifies categorically even when excluded from income.
   period: 2026
   input:
@@ -85,7 +90,8 @@
     fl_liheap_countable_income: 12_000
     fl_liheap_categorically_eligible: true
 
-# Current planp5 requires receipt, not the is_ssi_eligible demographic/resource flag; SSI,SNAP,TCA are explicitly0.
+# FY2026 plan page 5 requires receipt, not the is_ssi_eligible demographic and
+# resource flag; SSI, SNAP and TCA are explicitly 0.
 - name: Case 4, SSI demographic eligibility without any qualifying receipt does not establish categorical
     status.
   period: 2026
@@ -111,7 +117,8 @@
   output:
     fl_liheap_categorically_eligible: false
 
-# State-defined Florida categorical component returnsfalse outside Florida; no final heating award is evaluated.
+# The Florida categorical component returns false outside Florida; no final
+# heating award is evaluated.
 - name: Case 5, out of state categorical receipts do not establish Florida status.
   period: 2026
   input:
@@ -134,3 +141,46 @@
         state_code: GA
   output:
     fl_liheap_categorically_eligible: false
+
+# FY2026 plan page 5: TANF receipt waives the income test. A grandparent with
+# 48_000 of wages cares for a grandchild who gets a child-only Florida TCA
+# grant of 180 a month (180 x 12 = 2_160). Countable income is 48_000 +
+# 2_160 = 50_160 with take-up and 48_000 without, both above the 42_049
+# two-person limit, so only the categorical route can qualify. TCA is the only
+# qualifying receipt: it counts when taken up (first household) and not when
+# it is not (second).
+- name: Case 6, Florida cash assistance establishes categorical status only when taken up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 55, ssi: 0, employment_income: 48_000}
+      person2: {age: 8, ssi: 0}
+      person3: {age: 55, ssi: 0, employment_income: 48_000}
+      person4: {age: 8, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 2_160
+        takes_up_tanf_if_eligible: true
+        snap: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        fl_tca: 2_160
+        takes_up_tanf_if_eligible: false
+        snap: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: FL
+      household2:
+        members: [person3, person4]
+        state_code: FL
+  output:
+    tanf: [2_160, 0]
+    fl_liheap_countable_income: [50_160, 48_000]
+    fl_liheap_categorically_eligible: [true, false]

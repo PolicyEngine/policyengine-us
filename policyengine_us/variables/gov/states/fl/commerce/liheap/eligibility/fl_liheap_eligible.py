@@ -16,7 +16,8 @@ class fl_liheap_eligible(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("fl_liheap_household_size", period)
         income = spm_unit("fl_liheap_countable_income", period)
-        limit = spm_unit("fl_liheap_income_limit", period)
+        # The matrices print the maximum income value in whole dollars.
+        limit = np.floor(spm_unit("fl_liheap_income_limit", period) + 0.5)
         categorical = spm_unit("fl_liheap_categorically_eligible", period)
         heating_expense = spm_unit("heating_expense", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)

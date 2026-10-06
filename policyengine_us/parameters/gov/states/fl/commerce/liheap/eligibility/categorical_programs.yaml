@@ -1,8 +1,12 @@
 description: Florida waives the LIHEAP income test for households receiving a positive amount from any of these programs.
 values:
-  2025-10-01:
+  # The FY2025 plan also lists means-tested veterans programs, which no
+  # existing input identifies.
+  2024-10-01:
+    # Each entry is take-up gated, so it reflects receipt rather than
+    # entitlement; tanf includes Florida Temporary Cash Assistance (fl_tca).
     - snap
-    - fl_tca
+    - tanf
     - ssi
 metadata:
   unit: list
@@ -13,3 +17,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5
     - title: Florida LIHEAP Policies and Procedures Manual, May 27 2022, part 1200.01G(9), page 50
       href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=50
+    - title: Florida FY2025 LIHEAP State Plan, Sections 1.4-1.6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=5

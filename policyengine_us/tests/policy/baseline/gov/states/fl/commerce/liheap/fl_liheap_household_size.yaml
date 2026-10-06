@@ -1,6 +1,7 @@
 # Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
 
-# Manual pp41-42 counts citizens and qualified noncitizens, excludes nonqualified people from size; does not import SNAP-specific waiting bars.
+# Manual pages 41-42 count citizens and qualified noncitizens and exclude
+# nonqualified people from the size; SNAP-specific waiting periods do not apply.
 - name: Case 1, qualified adults and children count without a SNAP waiting bar.
   period: 2026
   input:
@@ -44,7 +45,8 @@
   output:
     fl_liheap_household_size: 3
 
-# Manual pp41-42 requires at least one qualified member for final program eligibility; this independent size component returns0.
+# Manual pages 41-42 require at least one qualified member for final program
+# eligibility; this size component returns 0.
 - name: Case 2, only nonqualified members produce a zero household size.
   period: 2026
   input:
