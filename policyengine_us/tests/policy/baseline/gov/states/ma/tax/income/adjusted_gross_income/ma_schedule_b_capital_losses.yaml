@@ -1,7 +1,10 @@
 # Massachusetts Schedule B applies a short-term loss first against up to
 # $2,000 of dividends (line 20), then against long-term gains (line 22).
-# Expected tax values match the NBER TAXSIM-35 MA tax before credits
-# (staxbc) for the same returns.
+# Expected tax values in the first five cases match the NBER TAXSIM-35 MA
+# tax before credits (staxbc) for the same returns. The later cases are
+# computed line by line from the 2022 and 2023 Schedules B and D.
+# With 60,000 of wages and no other 5.0% income, Part B taxable income is
+# 60,000 - 2,000 (Form 1, line 11a) - 8,800 (joint exemption) = 49,200.
 
 - name: Short-term loss below the dividends leaves the net dividends as Part A income
   period: 2022
@@ -138,3 +141,135 @@
     ma_part_c_agi: 4_000
     # 5% x (59,000 Part B + 0 Part A + 4,000 Part C).
     ma_income_tax_before_credits: 3_150
+
+- name: A short-term loss above the long-term gain leaves only the rest of the gain in Part C
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 3_000
+        short_term_capital_gains: -5_000
+        long_term_capital_gains: 4_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Schedule B: line 19c = -5,000; line 20 = min(3,000, 5,000, 2,000)
+    # = 2,000; line 21 = -5,000 + 2,000 = -3,000.
+    ma_short_term_loss_against_dividends: 2_000
+    # Schedule B, line 33 = 3,000 - 2,000 = 1,000 (line 38 = 1,000).
+    ma_part_a_taxable_dividend_income: 1_000
+    # Schedule D: line 13 = 4,000; line 14 = Schedule B, line 22
+    # = min(3,000, 4,000) = 3,000; line 15 = 4,000 - 3,000 = 1,000.
+    ma_part_c_agi: 1_000
+    # 5% x (49,200 + 1,000) + 5% x 1,000 = 2,510 + 50.
+    ma_income_tax_before_credits: 2_560
+
+- name: A short-term loss above a smaller long-term gain leaves no Part C income
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 3_000
+        short_term_capital_gains: -5_000
+        long_term_capital_gains: 1_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Schedule B: line 20 = 2,000; line 21 = -3,000.
+    ma_short_term_loss_against_dividends: 2_000
+    ma_part_a_taxable_dividend_income: 1_000
+    # Schedule D: line 14 = Schedule B, line 22 = min(3,000, 1,000)
+    # = 1,000; line 15 = 1,000 - 1,000 = 0. Schedule B, line 23
+    # carries over -3,000 + 1,000 = -2,000.
+    ma_part_c_agi: 0
+    # 5% x (49,200 + 1,000).
+    ma_income_tax_before_credits: 2_510
+
+- name: Short-term and long-term losses share the $2,000 cap against dividends
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 3_000
+        short_term_capital_gains: -1_500
+        long_term_capital_gains: -1_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Schedule B: line 20 = min(3,000, 1,500, 2,000) = 1,500; line 21 = 0.
+    ma_short_term_loss_against_dividends: 1_500
+    # Schedule D, line 15 = -1,000. Line 32 worksheet: line 2 =
+    # min(3,000, 2,000) = 2,000; line 4 = 2,000 - 1,500 = 500;
+    # line 5 = 1,000; line 6 = min(500, 1,000) = 500.
+    ma_long_term_loss_against_dividends: 500
+    # Schedule B, line 33 = 3,000 - 1,500 - 500 = 1,000.
+    ma_part_a_adjusted_dividends: 1_000
+    ma_part_a_taxable_dividend_income: 1_000
+    ma_part_c_agi: 0
+    # 5% x (49,200 + 1,000).
+    ma_income_tax_before_credits: 2_510
+
+- name: Short-term gains in 2023 are taxed at 8.5% and the long-term gain stays in Part C
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 1_000
+        short_term_capital_gains: 2_000
+        long_term_capital_gains: 4_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Schedule B: line 19c = 2,000, so lines 20 through 23 are omitted.
+    ma_short_term_loss_against_dividends: 0
+    ma_long_term_loss_against_dividends: 0
+    # Line 33 = 1,000; line 34 = line 28 = 2,000; line 37 = 3,000;
+    # line 38 = line 9 = 1,000; line 39 = 3,000 - 1,000 = 2,000.
+    ma_part_a_adjusted_dividends: 1_000
+    ma_part_a_taxable_dividend_income: 1_000
+    ma_part_a_taxable_capital_gains_income: 2_000
+    # Schedule D: line 14 = 0; line 15 = 4,000; line 21 = 4,000.
+    ma_part_c_agi: 4_000
+    # 5% x (49,200 + 1,000) + 8.5% x 2,000 + 5% x 4,000
+    # = 2,510 + 170 + 200.
+    ma_income_tax_before_credits: 2_880

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_part_a_adjusted_dividends(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA Part A adjusted interest and dividends"
+    label = "MA Part A adjusted dividends"
     documentation = (
         "Massachusetts Schedule B, line 33: dividends less the short-term "
         "(line 20) and long-term (line 32) losses applied against them."

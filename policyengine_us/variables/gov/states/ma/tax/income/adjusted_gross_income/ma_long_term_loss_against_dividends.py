@@ -4,15 +4,17 @@ from policyengine_us.model_api import *
 class ma_long_term_loss_against_dividends(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA long-term capital losses applied against interest and dividends"
+    label = "MA long-term capital losses applied against dividends"
     documentation = (
         "Massachusetts Schedule B, line 32: long-term losses left after "
-        "short-term gains, up to $2,000 of interest and dividends less the "
-        "short-term losses already applied in line 20."
+        "short-term gains, up to $2,000 of dividends less the short-term "
+        "losses already applied in line 20."
     )
     unit = USD
     definition_period = YEAR
     reference = (
+        # (c)(2)(b) and (c)(4)
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section2",
         "https://taxsim.nber.org/historical_state_tax_forms/MA/2024/dor-2024-inc-sch-b-(form-1).pdf#page=2",
         "https://www.mass.gov/doc/2024-form-1-instructions/download#page=25",
     )
