@@ -7,9 +7,12 @@ the provisions of 15-30-2337 through 15-30-2341 is entitled to relief." The
 household claiming this credit". Gross household income (line 18) covers
 everyone in the household, so every tax unit in a household with a member
 aged 62 or older computes its credit on the same net household income (line
-22) and multiplier (line 29); the credits differ only by each tax unit's own
-property tax (line 23) and rent (line 24). The model pays the tax unit whose
-credit is largest.
+22) and multiplier (line 29); the credits differ only by each tax unit's
+property tax billed (line 23) and rent (line 24). A tax unit billed no
+property tax lives in a home in another member's name, whose property tax
+"can qualify as rent only" (ARM 42.4.302(2)(b)): its line 24 is the larger
+of the rent it paid and the property tax billed to the household's other
+tax units. The model pays the tax unit whose credit is largest.
 
 A reference written here from the schedule's lines is compared with the
 model for random Montana households of one to three tax units (single or
@@ -25,6 +28,15 @@ rent; no earned income, so no refundable credit enters line 8):
    one is paid its whole credit.
 5. Reversing the order of the tax units in a household does not change the
    household's credit.
+
+A second test raises the property tax billed to one tax unit and checks:
+
+6. No other tax unit's credit before the limit falls, and neither does that
+   tax unit's own credit if it was already billed property tax. (A tax unit
+   newly billed property tax can lose credit: it stops counting the other
+   members' bill as rent and counts only its own bill.)
+7. The household's credit does not fall unless the raised tax unit was billed
+   nothing before.
 
 The model computes in single precision, so comparisons allow one cent or
 eight float32 spacings at the household's total income, whichever is larger.
@@ -110,11 +122,18 @@ def reference(units):
     net = reduced * float(P.net_household_income.reduction_rate.calc(reduced))
     # Line 29.
     multiplier = float(P.multiplier.calc(gross))
+    household_property_tax = sum(unit["property_tax"] for unit in units)
     credits = []
     for unit in units:
         eligible = max(adult["age"] for adult in unit["adults"]) >= P.age_threshold
+        # Line 24: a tax unit billed no property tax may use the property tax
+        # billed to the household's other tax units as rent, in place of the
+        # rent it paid if that is larger (ARM 42.4.302(2)(b)).
+        rent = unit["rent"]
+        if unit["property_tax"] == 0 and P.property_tax_in_another_name_as_rent:
+            rent = max(rent, household_property_tax)
         # Lines 23-28.
-        housing = unit["property_tax"] + unit["rent"] * P.rent_equivalent_tax_rate
+        housing = unit["property_tax"] + rent * P.rent_equivalent_tax_rate
         capped = min(max(housing - net, 0), P.cap)
         credits.append(eligible * capped * multiplier)
     return gross, credits
@@ -212,6 +231,71 @@ def test_worked_example():
     assert_properties(households)
 
 
+PARENT_IN_CHILDS_HOME = [
+    {"adults": [adult(80, pension=14_000)], "property_tax": 0, "rent": 0},
+    {"adults": [adult(45, interest=6_000)], "property_tax": 4_000, "rent": 0},
+]
+
+
+def test_property_tax_in_another_name_worked_example():
+    """2024 Schedule 2EC: a parent, 80, with a 14,000 pension lives in the
+    home of an adult child, 45, who has 6,000 of interest and is billed 4,000
+    of property tax; each files their own return. Line 18 = 20,000; line 22
+    = 7,400 x 0.035 = 259. The home is in the child's name, so its property
+    tax "can qualify as rent only" on the parent's schedule (ARM
+    42.4.302(2)(b)): line 24 = 4,000, line 25 = 600, line 27 = 341. The child
+    is under 62 and cannot claim."""
+    households = [PARENT_IN_CHILDS_HOME]
+    result = calculate(households)
+    assert result["pre_one_claimant"] == pytest.approx([341, 0, 0, 341], abs=TOLERANCE)
+    assert result["selected"].tolist() == [True, False, False, True]
+    assert result["credit"] == pytest.approx([341, 0, 0, 341], abs=TOLERANCE)
+    assert_properties(households)
+
+
+def raise_property_tax(units, index, increase):
+    """The household with `increase` more property tax billed to the head of
+    tax unit `index`."""
+    raised = list(units)
+    raised[index] = {
+        **units[index],
+        "property_tax": units[index]["property_tax"] + increase,
+    }
+    return raised
+
+
+def assert_raising_a_bill(units, index, increase):
+    """Invariants 6 and 7."""
+    result = calculate([units, raise_property_tax(units, index, increase)])
+    n = len(units)
+    tol = tolerance(reference(units)[0])
+    # build_situation lays out each household forward, then reversed; compare
+    # the forward copies.
+    before = result["pre_one_claimant"][:n]
+    after = result["pre_one_claimant"][2 * n : 3 * n]
+    already_billed = units[index]["property_tax"] > 0
+    for j in range(n):
+        if j != index or already_billed:
+            assert after[j] >= before[j] - tol, (units, index, increase)
+    if already_billed:
+        household_before = result["credit"][:n].sum()
+        household_after = result["credit"][2 * n : 3 * n].sum()
+        assert household_after >= household_before - tol, (units, index, increase)
+
+
+def test_newly_billed_tax_unit_can_lose_credit():
+    """The exception in invariant 6, which follows the form's reading of line
+    23 ("the property tax you were billed"). Billing the parent 100 of
+    property tax makes the home theirs too: line 23 = 100 and line 24 = 0,
+    so line 27 = max(100 - 259, 0) = 0 instead of 341. Line 22 is unchanged
+    at 259. The child's bill still counts for no one but the child."""
+    result = calculate(
+        [PARENT_IN_CHILDS_HOME, raise_property_tax(PARENT_IN_CHILDS_HOME, 0, 100)]
+    )
+    assert result["pre_one_claimant"][[0, 4]] == pytest.approx([341, 0], abs=TOLERANCE)
+    assert_raising_a_bill(PARENT_IN_CHILDS_HOME, 1, 500)
+
+
 try:
     import hypothesis
     import hypothesis.strategies as st
@@ -295,5 +379,34 @@ if hypothesis is not None:
             ]
         ]
     )
+    # A parent in an adult child's home: the child's bill is the parent's
+    # rent (line 24 = 4,000; line 27 = 600 - 259 = 341).
+    @hypothesis.example([PARENT_IN_CHILDS_HOME])
+    # The same parent paying the child 2,400 of rent: line 24 is the larger
+    # bill, 4,000, not 2,400 + 4,000.
+    @hypothesis.example(
+        [
+            [
+                {**PARENT_IN_CHILDS_HOME[0], "rent": 2_400},
+                PARENT_IN_CHILDS_HOME[1],
+            ]
+        ]
+    )
     def test_properties(households):
         assert_properties(households)
+
+    @st.composite
+    def raised_bill(draw):
+        units = draw(st.lists(tax_unit(), min_size=1, max_size=3))
+        index = draw(st.integers(min_value=0, max_value=len(units) - 1))
+        increase = draw(st.integers(min_value=1, max_value=4_000))
+        return units, index, increase
+
+    @hypothesis.settings(
+        max_examples=10, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
+    @hypothesis.given(raised_bill())
+    # Raising the child's bill raises the parent's rent and credit.
+    @hypothesis.example((PARENT_IN_CHILDS_HOME, 1, 500))
+    def test_raising_a_bill(case):
+        assert_raising_a_bill(*case)

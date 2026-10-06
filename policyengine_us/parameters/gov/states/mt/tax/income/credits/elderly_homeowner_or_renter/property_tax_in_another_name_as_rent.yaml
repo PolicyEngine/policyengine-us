@@ -1,0 +1,24 @@
+description: Montana counts the property tax billed for a home in another person's name as the claimant's rent under the elderly homeowner or renter credit, if this is true.
+values:
+  # The 2009 and 2010 instructions let only property tax billed to an
+  # irrevocable or family trust "qualify as rent only"; the 2011
+  # instructions first extend this to any property "in a name other than
+  # your own", the wording of ARM 42.4.302(2)(b).
+  2009-01-01: false
+  2011-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Montana elderly homeowner or renter credit property tax in another name as rent
+  reference:
+  - title: ARM 42.4.302(2)(b), Computation of Elderly Homeowner/Renter Tax Credit
+    href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302
+  - title: 2010 Montana Form 2 Instructions, Form 2EC line 6 (property tax billed to a trust qualifies as rent only)
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2010/2010-2-Booklet.pdf#page=42
+  - title: 2011 Montana Form 2 Instructions, Form 2EC line 6 (property in a name other than your own)
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2011/Form_2_Booklet_2011.pdf-1.pdf#page=54
+  - title: 2024 Montana Form 2 Instructions, Schedule 2EC line 23
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48
+  - title: 2025 Montana Form 2 Instructions, Schedule 2EC line 23
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
