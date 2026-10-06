@@ -48,7 +48,9 @@ values:
     # received, or expenses paid on your behalf ... by parents, relatives, or
     # friends" (the first $300 is household_resources_gift_exclusion). Gifts
     # are excluded from federal gross income (IRC 102) but are total
-    # household resources (MCL 206.510(1)).
+    # household resources (MCL 206.510(1)). financial_assistance is cash
+    # only; expenses others pay on the claimant's behalf (gifts in kind) have
+    # no input.
     - financial_assistance
     # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits

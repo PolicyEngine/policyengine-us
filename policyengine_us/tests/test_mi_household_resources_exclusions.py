@@ -279,6 +279,52 @@ def test_premiums_move_to_line_31_without_the_federal_deduction():
     assert result == pytest.approx([41_467.61, 37_788.06], abs=TOLERANCE)
 
 
+def with_exclusions(amount):
+    """A reform that sets both $300 exclusions to amount."""
+
+    class reform(Reform):
+        def apply(self):
+            def modify(parameters):
+                p = parameters.gov.states.mi.tax.income
+                for node in (
+                    p.household_resources_gambling_exclusion,
+                    p.household_resources_gift_exclusion,
+                ):
+                    node.update(
+                        start=instant(f"{YEAR}-01-01"),
+                        stop=instant(f"{YEAR}-12-31"),
+                        value=amount,
+                    )
+                return parameters
+
+            self.modify_parameters(modify)
+
+    return reform
+
+
+def test_exclusions_read_the_parameters():
+    """The formula reads the two exclusion parameters, not a fixed 300:
+    raising both to 500 changes what counts."""
+    h = {
+        "head": person(
+            employment_income_before_lsr=20_000,
+            gambling_winnings=400,
+            financial_assistance=600,
+        )
+    }
+    situation = build_situation([h])
+    baseline = Simulation(situation=situation)
+    reformed = Simulation(situation=situation, reform=with_exclusions(500))
+    # $300: 100 of winnings and 300 of gifts count.
+    assert baseline.calculate("mi_household_resources", YEAR)[0] == pytest.approx(
+        20_400, abs=TOLERANCE
+    )
+    # $500: no winnings and 100 of gifts count.
+    assert reformed.calculate("mi_household_resources", YEAR)[0] == pytest.approx(
+        20_100, abs=TOLERANCE
+    )
+
+
 @pytest.mark.parametrize("name", ["gambling_winnings", "financial_assistance"])
 def test_exclusion_grid(name):
     """For single and joint claimants, every step from 0 to $1,000 in $100s:
