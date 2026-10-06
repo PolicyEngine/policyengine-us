@@ -8,7 +8,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     label = "Vermont retirement income exemption eligibility status"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )

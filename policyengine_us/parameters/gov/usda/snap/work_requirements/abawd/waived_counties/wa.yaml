@@ -2,7 +2,13 @@ description: Counties in Washington with an approved USDA FNS waiver of the SNAP
 
 values:
   2018-01-01: []
-  2025-02-01:
+  # FY2024 waiver (2024-02-01 through 2025-01-31; modeled from 2024-11-01,
+  # the waiver parameters' modeling start date) and FY2025 waiver
+  # (2025-02-01 through 2026-01-31, plus one reservation area not modeled)
+  # cover the same 38 counties, every county except King. The FY2025 waiver
+  # was terminated November 2, 2025 and reinstated through its original
+  # expiration date (USDA February 26, 2026 memorandum, Appendix A).
+  2024-11-01:
     - ADAMS_COUNTY_WA # FIPS 53001
     - ASOTIN_COUNTY_WA # FIPS 53003
     - BENTON_COUNTY_WA # FIPS 53005
@@ -48,5 +54,22 @@ metadata:
   period: month
   label: SNAP ABAWD waived counties in Washington
   reference:
-    - title: USDA FNS Washington FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2025.pdf
+    - title: USDA FNS Washington ABAWD Waiver Response, January 24, 2024 - requested area (38 counties)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Washington ABAWD Waiver Response, January 24, 2024 - county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Washington ABAWD Waiver Response, January 24, 2024 - county list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2024.pdf#page=5
+    - title: USDA FNS Washington ABAWD Waiver Response, January 24, 2024 - county list (end), implementation date (2024-02-01), and expiration date (2025-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2024.pdf#page=6
+    - title: USDA FNS Washington ABAWD Waiver Response, December 16, 2024 - requested area (38 counties and one reservation area) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Washington ABAWD Waiver Response, December 16, 2024 - county list (Chelan through Yakima)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Washington ABAWD Waiver Response, December 16, 2024 - implementation date (2025-02-01) and expiration date (2026-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wa-abawd-response-fy2025.pdf#page=4
+    # Appendix A is file page 2 of the 2-page Google Drive copy of this
+    # memo, but that page's page label reads "Page 3 of 3", so the canonical
+    # usda.gov PDF (which returns 403) may place it on #page=3.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, Washington through 2026-01-31)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2

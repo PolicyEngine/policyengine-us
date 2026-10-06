@@ -64,3 +64,23 @@
     # CBO-uprated projection: 11 x $5,561.10 = $61,172.06. Total $66,600.79.
     # Regression guard: uprating past the table end would give $69,935.79.
     la_ccap_smi: 66_600.79
+
+- name: Case 4, two-person household in January 2015 uses the FY 2014 estimates.
+  period: 2015-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 2013-10-01 table: $68,964 x 0.68 / 12 = $3,907.96.
+    la_ccap_smi: 3_907.96

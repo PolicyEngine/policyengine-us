@@ -8,9 +8,7 @@ class il_income_tax_rebate_eligible(Variable):
     defined_for = StateCode.IL
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://codes.findlaw.com/il/chapter-35-revenue/il-st-sect-35-5-212-1.html"
-    )
+    reference = "https://www.ilga.gov/Documents/legislation/publicacts/102/PDF/102-0700.pdf#page=131"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.tax.income.credits.income_tax_rebate

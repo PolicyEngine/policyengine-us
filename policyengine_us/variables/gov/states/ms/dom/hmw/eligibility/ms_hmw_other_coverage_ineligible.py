@@ -30,11 +30,8 @@ class ms_hmw_other_coverage_ineligible(Variable):
         age = person("age", period)
         p = parameters(period).gov.hhs.chip.child
         income_limit = p.income_limit[state_code]
-        istatus = person("immigration_status", period)
-        undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        daca = istatus == istatus.possible_values.DACA
-        # Mirror the immigration gate in is_chip_eligible_child.
-        immigration_eligible = ~(undocumented | daca)
+        # Share the CHIP immigration test with is_chip_eligible_child.
+        immigration_eligible = person("is_chip_immigration_status_eligible", period)
         potentially_chip_child_eligible = (
             (age < p.max_age)
             & (income_limit > 0)

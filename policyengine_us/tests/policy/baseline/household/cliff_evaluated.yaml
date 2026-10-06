@@ -65,3 +65,25 @@
         members: [person1, person2, person3]
   output:
     cliff_evaluated: [true, true, true]
+
+- name: cliff_evaluated follows earnings rank, not age, like marginal_tax_rate
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 40
+        employment_income: 80_000
+      person3:
+        age: 38
+        employment_income: 50_000
+      person4:
+        age: 22
+        employment_income: 30_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    cliff_evaluated: [false, true, true, false]

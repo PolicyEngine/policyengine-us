@@ -13,10 +13,14 @@ class id_income_tax_if_receiving_aged_or_disabled_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        branch = simulation.get_branch("id_receives_aged_or_disabled_deduction_branch")
-        branch.set_input(
-            "id_receives_aged_or_disabled_credit",
+        branch = get_override_branch(
+            simulation,
+            "id_receives_aged_or_disabled_deduction_branch",
             period,
-            np.zeros((tax_unit.count,), dtype=bool),
+            {
+                "id_receives_aged_or_disabled_credit": np.zeros(
+                    (tax_unit.count,), dtype=bool
+                )
+            },
         )
         return branch.calculate("id_income_tax", period)
