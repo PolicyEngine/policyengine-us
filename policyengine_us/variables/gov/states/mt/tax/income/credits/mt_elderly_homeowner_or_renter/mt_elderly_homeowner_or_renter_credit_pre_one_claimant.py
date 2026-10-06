@@ -11,6 +11,9 @@ class mt_elderly_homeowner_or_renter_credit_pre_one_claimant(Variable):
     reference = (
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html",
+        # ARM 42.4.302(1): property tax billed on the owned part plus the
+        # rent-equivalent tax on the rented part
+        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302",
         # 2024 Form 2, Schedule 2EC
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10",
     )
@@ -36,9 +39,13 @@ class mt_elderly_homeowner_or_renter_credit_pre_one_claimant(Variable):
             period,
             ["mt_elderly_homeowner_or_renter_credit_net_household_income"],
         )
-        # Credit Computation
-        property_tax = add(person.tax_unit, period, ["real_estate_taxes"])
-        rent = add(person.tax_unit, period, ["rent"])
+        # Credit Computation: Schedule 2EC lines 23 to 26
+        property_tax = person.tax_unit(
+            "mt_elderly_homeowner_or_renter_credit_property_tax_billed", period
+        )
+        rent = person.tax_unit(
+            "mt_elderly_homeowner_or_renter_credit_gross_rent", period
+        )
         countable_rent = rent * p.rent_equivalent_tax_rate
         countable_rent_and_property_tax = property_tax + countable_rent
         uncapped_credit_unit = max_(
