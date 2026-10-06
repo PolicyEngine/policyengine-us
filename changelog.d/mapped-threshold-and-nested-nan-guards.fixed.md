@@ -1,0 +1,1 @@
+The married-filing-separately 33% bracket in the additional tax bracket contrib reform now ends at half the joint threshold for 2026-2035, as main's schedule does, instead of a copy of the joint threshold that inverted it; tests now check that federal-style bracket thresholds strictly increase and that no parameter value holds NaN, including inside list values.
