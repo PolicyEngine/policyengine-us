@@ -378,3 +378,58 @@ def test_income_does_not_read_preferential_rate_amount():
         base.calculate("az_property_tax_credit_income", YEAR),
         atol=0.01,
     )
+
+
+def test_line_d_survives_a_loss_deduction_without_capital_losses():
+    """A reform whose loss_ald holds only rental losses leaves line J whole.
+
+    az_property_tax_credit_agi adds back only the capital part of loss_ald
+    (loss_ald less limited_business_loss), so a federal loss deduction with no
+    capital loss in it is not reversed as one.
+    """
+    from policyengine_core.reforms import Reform
+    from policyengine_us.model_api import YEAR as ANNUAL
+    from policyengine_us.model_api import TaxUnit, USD, Variable, max_
+
+    class rental_losses_only(Reform):
+        def apply(self):
+            class loss_ald(Variable):
+                value_type = float
+                entity = TaxUnit
+                label = "Rental losses only"
+                unit = USD
+                definition_period = ANNUAL
+
+                def formula(tax_unit, period, parameters):
+                    person = tax_unit.members
+                    not_dependent = ~person("is_tax_unit_dependent", period)
+                    rental_loss = max_(0, -person("rental_income", period))
+                    return tax_unit.sum(not_dependent * rental_loss)
+
+            self.update_variable(loss_ald)
+
+    year = str(YEAR)
+    situation = {
+        "people": {
+            "head": {
+                "age": {year: 70},
+                "employment_income": {year: 4_000},
+                "long_term_capital_gains": {year: -5_000},
+                "rental_income": {year: -1_000},
+                "rent": {year: 5_000},
+            }
+        },
+        "tax_units": {"tax_unit": {"members": ["head"]}},
+        "households": {"household": {"members": ["head"], "state_code": {year: "AZ"}}},
+    }
+    sim = Simulation(situation=situation, reform=rental_losses_only)
+    # Federal AGI takes the rental loss only: 4,000 - 1,000.
+    assert sim.calculate("adjusted_gross_income", YEAR)[0] == 3_000
+    # Form 140PTC: line A 4,000 + line D (1,500) + line F (1,000) = 1,500.
+    np.testing.assert_allclose(
+        sim.calculate("az_property_tax_credit_income", YEAR), [1_500], atol=0.01
+    )
+    # Schedule 1, 0 - 1,750 -> 502; property taxes 0.15 x 5,000 = 750.
+    np.testing.assert_allclose(
+        sim.calculate("az_property_tax_credit", YEAR), [502], atol=0.01
+    )

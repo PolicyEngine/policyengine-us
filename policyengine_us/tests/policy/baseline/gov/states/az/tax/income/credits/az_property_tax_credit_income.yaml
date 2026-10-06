@@ -836,3 +836,56 @@
     az_property_tax_credit_income: 3_000
     # Line 11a: Schedule 1, 2,951 - 3,050 -> 212. Line 13: 750.
     az_property_tax_credit: 212
+
+- name: A rental loss and a capital loss beyond the limit together
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        long_term_capital_gains: -5_000
+        rental_income: -1_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI: 4,000 - rental loss 1,000 - capital loss 3,000 = 0.
+    adjusted_gross_income: 0
+    # Line A: 4,000. Line D: (5,000) limited to (1,500). Line F: (1,000).
+    # Line J: 4,000 - 1,500 - 1,000 = 1,500.
+    az_property_tax_credit_income: 1_500
+    # Line 11a: Schedule 1, 0 - 1,750 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+- name: A supplied loss deduction holding only the rental loss is not read as a capital deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        long_term_capital_gains: -5_000
+        rental_income: -1_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        # Federal AGI takes the rental loss only.
+        loss_ald: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 3_000
+    # Line A: 4,000. Line D: (5,000) limited to (1,500). Line F: (1,000).
+    # Line J: 1,500, as when federal AGI takes both losses.
+    az_property_tax_credit_income: 1_500
+    # Line 11a: Schedule 1, 0 - 1,750 -> 502. Line 13: 750.
+    az_property_tax_credit: 502

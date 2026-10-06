@@ -78,12 +78,15 @@ class az_property_tax_credit_agi(Variable):
                 capital_gains_in_agi += max_(0, person(source, period))
         federal_capital_gains = tax_unit.sum(not_dependent * capital_gains_in_agi)
         if "loss_ald" in p.ald.deductions:
-            # loss_ald is the business loss allowed under section 461(l) plus
-            # limited_capital_loss, so it covers the capital part unless
-            # loss_ald itself is replaced.
-            federal_capital_loss = min_(
+            # loss_ald adds limited_business_loss (section 461(l)) and
+            # limited_capital_loss. Its capital part is what remains after the
+            # business part, so a replaced or supplied loss_ald that holds
+            # business losses only is not read as a capital deduction.
+            federal_capital_loss = clip(
+                tax_unit("loss_ald", period)
+                - tax_unit("limited_business_loss", period),
+                0,
                 tax_unit("limited_capital_loss", period),
-                tax_unit("loss_ald", period),
             )
         else:
             federal_capital_loss = 0
