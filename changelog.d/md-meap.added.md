@@ -1,1 +1,1 @@
-Add Maryland MEAP regular heating assistance for state FY2026.
+Add Maryland MEAP regular heating assistance for state FY25 to FY27.

@@ -1,6 +1,8 @@
 description: Maryland uses the poverty guideline from this many years before the model year under the Maryland Energy Assistance Program.
+# Inferred: no sheet states the lag. The FY2026 limits equal twice the 2025
+# poverty guideline and the FY25 band tops twice the 2024 guideline.
 values:
-  2025-07-01: 1
+  2024-07-01: 1
 metadata:
   unit: year
   period: year
@@ -8,3 +10,5 @@ metadata:
   reference:
   - title: FY2026 OHEP Income Guidelines
     href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+  - title: FY2025 MEAP Benefit Matrix, income band table
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf

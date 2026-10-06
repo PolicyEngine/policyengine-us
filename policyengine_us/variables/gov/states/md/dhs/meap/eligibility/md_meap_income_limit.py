@@ -12,14 +12,16 @@ class md_meap_income_limit(Variable):
     reference = (
         "https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf",
         "https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9",
+        # PDF pages 2, 5.
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=5",
     )
     documentation = (
         "The published annual 200% FPG amounts control sizes 1-10 rather than the "
         "plan's truncated equivalent SMI percentages or its inconsistent "
         "additional-member line. Annual inputs are compared with annual limits; the "
-        "printed monthly amounts are rounded separately. Large-household dollar "
-        "amounts are calculated from the stated SMI rule, not independently published "
-        "FY26 dollar rows."
+        "printed monthly amounts are rounded separately. Sizes 11 and above use 60% "
+        "SMI and reproduce the dollar rows ACF LIHEAP IM 2025-02 Attachment 4 prints "
+        "for sizes 7 to 12."
     )
 
     def formula(spm_unit, period, parameters):
@@ -28,8 +30,8 @@ class md_meap_income_limit(Variable):
         state = spm_unit.household("state_code_str", period)
         base = parameters(period).gov.hhs.smi.amount[state]
         factor = smi(size, state, period, parameters) / base
-        # Federal 60% SMI table ordering; FY26 publishes the large-household
-        # rule, but no dollar rows at sizes 11 and above.
+        # ACF LIHEAP IM 2025-02 Attachment 4 (page 5) floors 60% of the
+        # four-person SMI, then floors each size's share of it.
         smi_limit = np.floor(factor * np.floor(base * p.smi_rate))
         poverty_limit = spm_unit("md_meap_fpg", period) * p.fpg_rate
         return where(size >= p.smi_min_size, smi_limit, poverty_limit)

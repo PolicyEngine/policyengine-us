@@ -11,6 +11,7 @@ class md_meap_level(Variable):
         "https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf",
         # PDF pages 62, 63.
         "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=62",
+        "https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9",
     )
     documentation = (
         "Submetered and subsidized homes use Level 6. The over-200% categorical "
@@ -21,10 +22,13 @@ class md_meap_level(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.dhs.meap.payment
-        ratio = spm_unit("md_meap_countable_income", period) / spm_unit(
-            "md_meap_fpg", period
-        )
+        income = spm_unit("md_meap_countable_income", period)
+        fpg = spm_unit("md_meap_fpg", period)
+        # md_meap_fpg is zero outside Maryland; the substitute divisor avoids
+        # 0 / 0 on rows that defined_for masks afterwards.
+        ratio = income / where(fpg > 0, fpg, 1)
         # Inclusive band tops resolve the gaps between integer percentage labels.
+        # The top bracket is Level 7, which nominal_level also names.
         income_level = p.income_level.calc(ratio, right=True)
         subsidized = spm_unit(
             "receives_housing_assistance", period

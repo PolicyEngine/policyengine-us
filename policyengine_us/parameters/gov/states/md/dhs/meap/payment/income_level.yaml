@@ -1,29 +1,31 @@
 description: Maryland uses these inclusive poverty-ratio band tops to assign regular heating payment levels under the Maryland Energy Assistance Program.
 brackets:
 - threshold:
-    2025-07-01: -.inf
+    2024-07-01: -.inf
   amount:
-    2025-07-01: 1
+    2024-07-01: 1
 - threshold:
-    2025-07-01: 0.25
+    2024-07-01: 0.25
   amount:
-    2025-07-01: 2
+    2024-07-01: 2
 - threshold:
-    2025-07-01: 0.5
+    2024-07-01: 0.5
   amount:
-    2025-07-01: 3
+    2024-07-01: 3
 - threshold:
-    2025-07-01: 1
+    2024-07-01: 1
   amount:
-    2025-07-01: 4
+    2024-07-01: 4
 - threshold:
-    2025-07-01: 1.5
+    2024-07-01: 1.5
   amount:
-    2025-07-01: 5
+    2024-07-01: 5
 - threshold:
-    2025-07-01: 2
+    2024-07-01: 2
+  # Over 200 percent is Level 7, the nominal level in nominal_level.yaml;
+  # the two must agree.
   amount:
-    2025-07-01: 7
+    2024-07-01: 7
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -31,5 +33,9 @@ metadata:
   period: year
   label: Maryland MEAP income payment levels
   reference:
+  - title: FY2025 MEAP Benefit Matrix
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
   - title: FY26 MEAP Benefit Matrix
     href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+  - title: FY27 MEAP Benefit Matrices, statewide table, PDF page 1
+    href: https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1

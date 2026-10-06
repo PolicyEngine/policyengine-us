@@ -21,5 +21,6 @@ class md_meap_dwelling_type(Variable):
     documentation = (
         "Submetered homes use the published Level 6 payment; assisted-living "
         "applicants are ineligible under COMAR 07.03.21.06D(3)(k). Ordinary subsidized "
-        "homes use the existing housing-assistance inputs."
+        "homes use the existing housing-assistance inputs. If omitted, the model "
+        "assumes a standard residence."
     )

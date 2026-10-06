@@ -8,19 +8,21 @@ class md_meap_countable_earned_income(Variable):
     label = "Maryland MEAP countable earnings"
     unit = USD
     defined_for = StateCode.MD
-    reference = ("https://regs.maryland.gov/us/md/exec/comar/07.03.21.04",)
+    reference = ("https://regs.maryland.gov/us/md/exec/comar/07.03.21.04#E(3)",)
     documentation = (
         "Uses existing net business income without an additional expense deduction. "
-        "MEAP depreciation add-backs are unsupported. Flooring losses is a modeling "
-        "convention because the sources do not specify their treatment."
+        "MEAP depreciation add-backs are unsupported. Each source is floored at zero, "
+        "so a loss in one source cannot offset another."
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.md.dhs.meap.income
+        p = parameters(period).gov.states.md.dhs.meap
         earned = 0
-        for source in p.sources.earned:
+        for source in p.income.sources.earned:
             earned = earned + max_(person(source, period), 0)
-        counted = (person("age", period) >= p.earned_income_min_age) & ~person(
+        # COMAR 07.03.21.04E(3) excludes the employment income of a child
+        # younger than 18 or of a full-time student.
+        counted = (person("age", period) >= p.adult_age) & ~person(
             "is_full_time_student", period
         )
         return where(counted, earned, 0)

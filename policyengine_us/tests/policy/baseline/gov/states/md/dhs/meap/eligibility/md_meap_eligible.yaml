@@ -1,12 +1,17 @@
 # Sources for the expected values in this file:
 # - FY2026 OHEP Income Guidelines (one page):
 #   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
-# - OHEP Operations Manual (May 2025), pages 16 (general eligibility), 39 (automatic
-#   denials), 62-63 (categorical eligibility) and 108 (ineligible members):
+# - OHEP Operations Manual (May 2025), pages 16 (general eligibility), 38 (categorical
+#   eligibility denials), 39 (automatic denials), 62-63 (categorical eligibility) and
+#   108 (ineligible members):
 #   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=16
 # - FY2026 LIHEAP State Plan, page 9 (renters in subsidized housing):
 #   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9
-# - COMAR 07.03.21.03 (residence), .04C (nonqualified members) and .06D(3) (denials):
+# - COMAR 07.03.21.03 (residence):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.03
+# - COMAR 07.03.21.04C (nonqualified members):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
+# - COMAR 07.03.21.06D(3) (denials):
 #   https://regs.maryland.gov/us/md/exec/comar/07.03.21.06
 
 - name: Case 1, one-person household at and one dollar above the annual income limit.
@@ -37,23 +42,25 @@
     # household heats with gas but has no gas bill.
     md_meap_eligible: [true, false]
 
-- name: Case 3, heat included in rent is denied only in subsidized housing.
+- name: Case 3, heat included in rent is denied in subsidized housing, with or without categorical eligibility.
   period: 2026
   input:
-    state_code: [MD, MD]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     # Set directly to show that the subsidized heat-in-rent denial does not depend on
     # a reported heating cost.
-    has_heating_expense: [true, true]
-    md_meap_countable_income: [0, 0]
-    md_meap_categorically_eligible: [false, false]
-    heat_expense_included_in_rent: [true, true]
-    receives_housing_assistance: [false, true]
+    has_heating_expense: [true, true, true]
+    md_meap_countable_income: [0, 0, 0]
+    md_meap_categorically_eligible: [false, false, true]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, true]
   output:
     # Manual page 16: heating costs may be paid as an undesignated component of rent.
     # COMAR 07.03.21.06D(3)(i) and manual page 39 deny an applicant in public or
-    # subsidized housing where heat is included in the rent.
-    md_meap_eligible: [true, false]
+    # subsidized housing where heat is included in the rent. Manual page 38:
+    # categorical eligibility applications "may be denied for other eligibility
+    # issues", so the third household is denied too.
+    md_meap_eligible: [true, false, false]
 
 - name: Case 4, a qualified member is required even with categorical eligibility.
   period: 2026
@@ -65,9 +72,9 @@
     md_meap_categorically_eligible: true
     immigration_status: UNDOCUMENTED
   output:
-    # COMAR 07.03.21.04C(1) and manual page 108: a member who is not a citizen or
-    # qualified alien is not counted, and the household must have at least one
-    # eligible member.
+    # Manual page 108: the household must have at least one eligible (citizen or
+    # qualified alien) member; COMAR 07.03.21.04C(1) likewise does not count the
+    # member.
     md_meap_eligible: false
 
 - name: Case 5, other states receive no Maryland benefit.
@@ -109,9 +116,9 @@
     md_meap_categorically_eligible: [false, false]
   output:
     # Income Guidelines footnote: "Households of 11+ must be based on 60% of the State
-    # Median Income." No dollar row is printed; the limit is 60% of the FFY2026
-    # Maryland four-person median income, floor(0.6 x $154,117) = $92,470, times the
-    # 45 CFR 96.85(b) size factor for eleven, 1.47 (52% + 5 x 16% + 5 x 3%):
-    # floor($135,930.90) = $135,930. $135,931 is over the limit although it is below
-    # 200% of the eleven-person guideline ($141,300).
+    # Median Income." The limit is 60% of the FFY2026 Maryland four-person median
+    # income, floor(0.6 x $154,117) = $92,470, times the 45 CFR 96.85(b) size factor
+    # for eleven, 1.47 (52% + 5 x 16% + 5 x 3%): floor($135,930.90) = $135,930, the
+    # row ACF LIHEAP IM 2025-02 Attachment 4 (page 5) prints. $135,931 is over the
+    # limit although it is below 200% of the eleven-person guideline ($141,300).
     md_meap_eligible: [true, false]

@@ -1,10 +1,17 @@
-description: Maryland assigns categorically eligible households above the highest income band to this payment level under the Maryland Energy Assistance Program.
+description: Maryland sets this payment level for categorically eligible households above 200 percent of the poverty guideline under the Maryland Energy Assistance Program.
+# Level 7 is also the top bracket of income_level.yaml; the two must agree.
 values:
-  2025-07-01: 7
+  2024-07-01: 7
 metadata:
   unit: /1
   period: year
   label: Maryland MEAP nominal payment level
   reference:
+  - title: FY2025 MEAP Benefit Matrix
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
   - title: FY26 MEAP Benefit Matrix
     href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+  - title: FY27 MEAP Benefit Matrices, statewide table, PDF page 1
+    href: https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1
+  - title: OHEP Operations Manual (May 2025), section 6.0, nominal benefit
+    href: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=63

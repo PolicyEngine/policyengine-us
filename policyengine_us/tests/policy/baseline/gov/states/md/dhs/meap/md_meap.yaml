@@ -1,16 +1,26 @@
 # Sources for the expected values in this file:
 # - FY26 MEAP Benefit Matrix (one page), "the matrix" below:
 #   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+# - FY2025 MEAP Benefit Matrix (one page; Cases 11 and 12):
+#   https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
+# - FY27 MEAP Benefit Matrices, page 1 (statewide and Garrett County tables; Cases
+#   13 and 14, the Oil/Kerosene row label and the Garrett rounding):
+#   https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1
 # - FY2026 OHEP Income Guidelines (one page):
 #   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
 # - FY2026 LIHEAP State Plan, item 2.5 on page 11 (Garrett County multiplier):
 #   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=11
-# - FY27 MEAP Benefit Matrices, page 1 (Oil/Kerosene row label, Garrett County table):
-#   https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1
-# - OHEP Operations Manual (May 2025), page 63 (nominal benefit above 200% FPL):
+# - FY2025 LIHEAP State Plan, item 2.5 on page 11 (the same multiplier):
+#   https://liheapch.acf.gov/docs/2025/state-plans/MD_Plan_2025.pdf#page=11
+# - OHEP Operations Manual (May 2025), page 6 (solar subscriptions), page 38
+#   (categorical eligibility denials) and page 63 (nominal benefit above 200% FPL):
 #   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=63
-# - COMAR 07.03.21.03 and 07.03.21.06:
+# - COMAR 07.03.21.03 (eligibility):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.03
+# - COMAR 07.03.21.06 (denials):
 #   https://regs.maryland.gov/us/md/exec/comar/07.03.21.06
+# A model year reads the parameters at January 1, inside state FY (July to June) of
+# the same number: period 2025 is FY25, 2026 is FY26 and 2027 is FY27.
 
 - name: Case 1, electric heat at each FY26 matrix level.
   period: 2026
@@ -69,7 +79,8 @@
     md_meap_level: [1, 2, 3, 4, 5, 6, 7]
     county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
   output:
-    # Matrix, Wood/Coal row, Levels 1 to 7: $550, $475, $400, $360, $300, $225, $25.
+    # Matrix, Wood/Coal row, Levels 1 to 7: $550, $475, $400, $360, $300, $225, $25,
+    # the same as the FY26 Gas row (the FY25 and FY27 rows differ).
     md_meap: [550, 475, 400, 360, 300, 225, 25]
 
 - name: Case 6, Garrett County multiplier rounds half up and leaves the nominal grant flat.
@@ -89,11 +100,11 @@
     #   Oil, Level 1: $1,100 x 1.1 = $1,210.
     #   Oil, Level 7: the $25 nominal grant, no multiplier.
     # No FY26 Garrett County dollar table is published. Half-up rounding and the flat
-    # Level 7 amount are inferred from the FY27 Garrett County table (FY27 matrices,
-    # page 1), where every Level 7 cell is $25.
+    # Level 7 amount follow the FY27 Garrett County table (FY27 matrices, page 1),
+    # where every Level 7 cell is $25.
     md_meap: [523, 798, 248, 1_210, 25]
 
-- name: Case 7, kerosene and coal rows and fuels without a matrix row.
+- name: Case 7, kerosene, coal and solar rows and fuels without a matrix row.
   period: 2026
   input:
     state_code: [MD, MD, MD, MD, MD, MD]
@@ -103,33 +114,37 @@
   output:
     # Matrix, Level 1 cells. Kerosene is paid from the Oil row, $1,100 (the FY26 matrix
     # has no kerosene row; the FY27 matrix, page 1, labels the row Oil/Kerosene).
-    # Coal is paid from the Wood/Coal row, $550. Solar, other fuels and no heating
-    # have no matrix row, $0. An unspecified fuel pays $0 because heating_type is a
-    # required input and the amount depends on the fuel.
-    md_meap: [1_100, 550, 0, 0, 0, 0]
+    # Coal is paid from the Wood/Coal row, $550. A grid-tied solar home pays an
+    # electricity bill (manual page 6 lists solar subscriptions), so it is paid from
+    # the Electric row, $100. Other fuels and no heating have no matrix row, $0. An
+    # unspecified fuel pays $0 as a coverage gap: the amount depends on the fuel and
+    # the unspecified default is tracked in #9754.
+    md_meap: [1_100, 550, 100, 0, 0, 0]
 
-- name: Case 8, submetered home at Level 6 and assisted living denial.
+- name: Case 8, submetered home at Level 6 and the assisted living denial with and without categorical eligibility.
   period: 2026
   input:
-    state_code: [MD, MD, MD, MD]
-    county: [MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_150, 1_150, 1_150, 1_150]
-    md_meap_countable_income: [0, 0, 0, 40_000]
-    md_meap_categorically_eligible: [false, false, false, true]
-    md_meap_dwelling_type: [STANDARD, SUB_METERED, ASSISTED_LIVING, SUB_METERED]
+    state_code: [MD, MD, MD, MD, MD]
+    county: [MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD, MONTGOMERY_COUNTY_MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_150, 1_150, 1_150, 1_150, 1_150]
+    md_meap_countable_income: [0, 0, 0, 40_000, 40_000]
+    md_meap_categorically_eligible: [false, false, false, true, true]
+    md_meap_dwelling_type: [STANDARD, SUB_METERED, ASSISTED_LIVING, SUB_METERED, ASSISTED_LIVING]
   output:
     # COMAR 07.03.21.06D(3)(k) denies an applicant who resides in an assisted living
     # facility. The fourth household is over the $31,300 one-person limit (Income
-    # Guidelines) but categorically eligible, so the income test is waived.
-    md_meap_eligible: [true, true, false, true]
+    # Guidelines) but categorically eligible, so the income test is waived. The fifth
+    # is categorically eligible too, but manual page 38 lets such applications be
+    # denied "for other eligibility issues", so assisted living still denies it.
+    md_meap_eligible: [true, true, false, true, false]
     # Matrix columns: no income is Level 1 (0-25% FPL); a submetered home is Level 6
     # (Subsidized/Sub metered); $40,000 for one person is 256% of the $15,650
     # guideline, Level 7 (Over 200% FPL), which the manual (page 63) pays as the
     # nominal benefit ahead of the submetered level.
-    md_meap_level: [1, 6, 1, 7]
+    md_meap_level: [1, 6, 1, 7, 7]
     # Matrix, Gas row: Level 1 $550, Level 6 $225, Level 7 $25. Ineligible: $0.
-    md_meap: [550, 225, 0, 25]
+    md_meap: [550, 225, 0, 25, 0]
 
 - name: Case 9, Maryland household and Virginia household in the same simulation.
   period: 2026
@@ -160,10 +175,8 @@
     state_code: MD
     county: BALTIMORE_COUNTY_MD
     age: 45
-    immigration_status: CITIZEN
     employment_income: 24_000
     farm_rent_income: 12_000
-    rental_income: 0
     ssi: 0
     tanf: 0
     snap: 0
@@ -177,3 +190,67 @@
     md_meap_categorically_eligible: false
     md_meap_eligible: false
     md_meap: 0
+
+# FY2025 MEAP Benefit Matrix ("*Flat Rates"), Level 1 (0-25% FPL) and Level 6
+# (Subsidized/Sub metered) by row:
+#   Electric: $102, $102.   Gas: $301, $102.   Oil: $750, $102.
+#   Propane: $644, $102.    Wood/Coal: $418, $102.
+# Level 6 is $102 for every fuel in FY25; the FY25 plan (page 11) prints the $750
+# maximum, the oil Level 1 cell.
+- name: Case 11, FY25 matrix rows at Levels 1 and 6 in period 2025.
+  period: 2025
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD, ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD]
+    md_meap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    md_meap_level: [1, 1, 1, 1, 1, 6, 6, 6, 6, 6]
+  output:
+    md_meap: [102, 301, 750, 644, 418, 102, 102, 102, 102, 102]
+
+- name: Case 12, FY25 Garrett County multiplier in period 2025.
+  period: 2025
+  input:
+    state_code: [MD, MD, MD]
+    county: [GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD]
+    heating_type: [FUEL_OIL, NATURAL_GAS, PROPANE]
+    md_meap_eligible: [true, true, true]
+    md_meap_level: [1, 5, 7]
+  output:
+    # FY2025 plan item 2.5 (page 11) applies the same 1.1 multiplier. FY25 matrix
+    # cells times 1.1: Oil, Level 1: $750 x 1.1 = $825. Gas, Level 5: $150 x 1.1 =
+    # $165. Propane, Level 7: the $25 nominal grant, no multiplier.
+    md_meap: [825, 165, 25]
+
+# FY27 MEAP Benefit Matrix, statewide table (page 1), Level 1 and Level 6 by row:
+#   Electric: $100, $100.   Gas: $700, $315.   Oil/Kerosene: $1,225, $550.
+#   Propane: $1,325, $595.  Wood/Coal: $550, $245.
+- name: Case 13, FY27 matrix rows at Levels 1 and 6 in period 2027.
+  period: 2027
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    county: [BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD, BALTIMORE_COUNTY_MD]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD, ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD]
+    md_meap_eligible: [true, true, true, true, true, true, true, true, true, true]
+    md_meap_level: [1, 1, 1, 1, 1, 6, 6, 6, 6, 6]
+  output:
+    md_meap: [100, 700, 1_225, 1_325, 550, 100, 315, 550, 595, 245]
+
+- name: Case 14, FY27 Garrett County table in period 2027.
+  period: 2027
+  input:
+    state_code: [MD, MD, MD, MD, MD]
+    county: [GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD, GARRETT_COUNTY_MD]
+    heating_type: [ELECTRICITY, NATURAL_GAS, WOOD, FUEL_OIL, FUEL_OIL]
+    md_meap_eligible: [true, true, true, true, true]
+    md_meap_level: [1, 2, 5, 4, 7]
+  output:
+    # FY27 Garrett County table (page 1) against the statewide cells times 1.1:
+    #   Electric, Level 1: $100 x 1.1 = $110, printed $110.
+    #   Gas, Level 2: $665 x 1.1 = $731.50, rounded half up to $732, printed $732.
+    #   Wood/Coal, Level 5: $355 x 1.1 = $390.50, rounded half up to $391, printed $391.
+    #   Oil, Level 4: $980 x 1.1 = $1,078. The table prints $1,210 in this one cell
+    #   (1.1 x the FY26 oil Level 1), which no other cell supports; the model keeps
+    #   the plan's multiplier.
+    #   Oil, Level 7: the $25 nominal grant, printed $25.
+    md_meap: [110, 732, 391, 1_078, 25]

@@ -1,34 +1,53 @@
-# Source for the expected values in this file: FY2026 OHEP Income Guidelines (one
-# page), annual 200% FPG table and the 60% SMI footnote for households of 11 or more:
-# https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+# Sources for the expected values in this file:
+# - FY2026 OHEP Income Guidelines (one page), annual 200% FPG table and the 60% SMI
+#   footnote for households of 11 or more:
+#   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+# - FY2025 MEAP Benefit Matrix, income band table (monthly tops of the 151-200% FPL
+#   band, Case 3):
+#   https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
+# - ACF LIHEAP IM 2025-02, Attachment 4, page 5 (60% SMI rows for sizes 7 to 12):
+#   https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=5
 
-- name: Case 1, published annual limits at the odd sizes one to nine.
+- name: Case 1, published annual limits for sizes one to ten.
   period: 2026
   input:
-    state_code: [MD, MD, MD, MD, MD]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    md_meap_household_size: [1, 3, 5, 7, 9]
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    md_meap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   output:
-    # Income Guidelines FY2026, annual table: sizes 1, 3, 5 and 7 print $31,300,
-    # $53,300, $75,300 and $97,300, each 200% of the 2025 HHS poverty guideline
-    # ($15,650 plus $5,500 per additional person). Size 9 has no printed row;
-    # 200% of the guideline gives $119,300, where the page's "for each additional
-    # HH member add $11,004" line would give $119,304; the model follows the 200%
-    # rate (noted in the variable documentation). Even sizes are exercised by the
-    # integration cases; the 60% SMI rule from size 11 is Case 2.
-    md_meap_income_limit: [31_300, 53_300, 75_300, 97_300, 119_300]
+    # Income Guidelines FY2026, annual table: sizes 1 to 8 print $31,300, $42,300,
+    # $53,300, $64,300, $75,300, $86,300, $97,300 and $108,300, each 200% of the
+    # 2025 HHS poverty guideline ($15,650 plus $5,500 per additional person). Sizes
+    # 9 and 10 have no printed row; 200% of the guideline gives $119,300 and
+    # $130,300, where the page's "for each additional HH member add $11,004" line
+    # would give $4 and $8 more; the model follows the 200% rate (noted in the
+    # variable documentation). The 60% SMI rule from size 11 is Case 2.
+    md_meap_income_limit: [31_300, 42_300, 53_300, 64_300, 75_300, 86_300, 97_300, 108_300, 119_300, 130_300]
 
 - name: Case 2, sizes eleven and twelve use 60 percent of state median income.
   period: 2026
   input:
     state_code: [MD, MD]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
     md_meap_household_size: [11, 12]
   output:
     # Income Guidelines footnote: "Households of 11+ must be based on 60% of the State
-    # Median Income." No FY26 dollar rows are printed. 60% of the FFY2026 Maryland
-    # four-person median income, floor(0.6 x $154,117) = $92,470, times the
-    # 45 CFR 96.85(b) size factors (52% + 5 x 16% + 3% per member above six):
+    # Median Income." 60% of the FFY2026 Maryland four-person median income,
+    # floor(0.6 x $154,117) = $92,470, times the 45 CFR 96.85(b) size factors (52% +
+    # 5 x 16% + 3% per member above six):
     #   size 11: 1.47 x $92,470 = $135,930.90, floored to $135,930;
     #   size 12: 1.50 x $92,470 = $138,705.
+    # Both rows are printed in ACF LIHEAP IM 2025-02 Attachment 4 (page 5). 200% of
+    # the ten-person guideline ($130,300) is below 60% SMI for ten ($133,156), so
+    # the switch at eleven is the federal ceiling at work.
     md_meap_income_limit: [135_930, 138_705]
+
+- name: Case 3, FY25 limits in period 2025 are twice the 2024 guideline.
+  period: 2025
+  input:
+    state_code: [MD, MD, MD]
+    md_meap_household_size: [1, 4, 8]
+  output:
+    # FY2025 MEAP Benefit Matrix, income band table, monthly tops of the 151-200% FPL
+    # band: size 1 $2,510, size 4 $5,200, size 8 $8,787. Twice the 2024 HHS poverty
+    # guideline ($15,060 plus $5,380 per additional person): $30,120, $62,400 and
+    # $105,440, whose twelfths are $2,510, $5,200 and $8,786.67 (printed rounded).
+    md_meap_income_limit: [30_120, 62_400, 105_440]
