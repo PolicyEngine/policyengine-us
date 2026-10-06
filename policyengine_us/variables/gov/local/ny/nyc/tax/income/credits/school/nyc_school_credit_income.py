@@ -30,11 +30,16 @@ class nyc_school_credit_income(Variable):
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.school
         person = tax_unit.members
         # Federal gross income excludes dependents' income, so only the
-        # head's and spouse's distributions are included in AGI. Taxable
-        # distributions are non-negative, so the floor only guards inputs.
+        # head's and spouse's distributions are included in AGI. It counts
+        # each member's taxable retirement distributions (IRA, SEP, 401(k),
+        # 403(b) and Keogh) as one source floored at zero, so the subtraction
+        # is capped at that included amount. Taxable distributions are
+        # non-negative, so the floor and cap only guard inputs.
         not_dependent = ~person("is_tax_unit_dependent", period)
         ira_distributions = add(person, period, p.ira_distribution_sources)
+        retirement_distributions = person("taxable_retirement_distributions", period)
         included_ira_distributions = tax_unit.sum(
-            not_dependent * max_(0, ira_distributions)
+            not_dependent
+            * min_(max_(0, ira_distributions), max_(0, retirement_distributions))
         )
         return agi - included_ira_distributions

@@ -62,3 +62,49 @@
     adjusted_gross_income: 300_000
   output:
     nyc_school_credit_income: 0
+
+- name: A negative 401(k) input that partly offsets an IRA distribution caps the subtraction at the retirement distributions AGI includes.
+  period: 2025
+  input:
+    people:
+      head:
+        employment_income: 300_000
+        taxable_ira_distributions: 50_000
+        taxable_401k_distributions: -20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal gross income counts taxable retirement distributions as one
+    # source floored at zero: max(0, 50,000 - 20,000) = 30,000, so AGI is
+    # 330,000. Only that 30,000 of the IRA distribution is included in AGI:
+    # 330,000 - min(50,000, 30,000) = 300,000.
+    adjusted_gross_income: 330_000
+    nyc_school_credit_income: 300_000
+
+- name: A negative 401(k) input that fully offsets an IRA distribution leaves nothing to subtract.
+  period: 2025
+  input:
+    people:
+      head:
+        employment_income: 300_000
+        taxable_ira_distributions: 50_000
+        taxable_401k_distributions: -60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    # max(0, 50,000 - 60,000) = 0, so AGI includes none of the IRA
+    # distribution and income equals AGI.
+    adjusted_gross_income: 300_000
+    nyc_school_credit_income: 300_000

@@ -17,7 +17,9 @@ evaluates a grid of tax units in one vectorized simulation and checks that:
 3. school tax credit income equals federal AGI minus the head's and spouse's
    IRA and SEP distributions, is never above AGI, and ignores dependents'
    distributions and non-IRA retirement distributions, whether AGI is an input
-   or computed from income sources; and
+   or computed from income sources; when AGI is computed, the subtraction never
+   exceeds the retirement distributions AGI includes, even if a negative
+   401(k) input offsets an IRA distribution; and
 4. outside NYC, income is zero and the rate reduction amount is ineligible.
 """
 
@@ -213,6 +215,9 @@ def test_income_matches_computed_agi_less_ira_distributions():
         itertools.product(
             [0, 200_000, 480_000],  # head wages
             [0, 100_000],  # head IRA distributions
+            # Head 401(k) distributions. Taxable amounts cannot be negative;
+            # the negative input checks the cap on the subtraction.
+            [0, 50_000, -150_000],
             [0, 30_000],  # spouse SEP distributions
             [0, 5_000],  # dependent IRA distributions
         )
@@ -223,18 +228,27 @@ def test_income_matches_computed_agi_less_ira_distributions():
             head={
                 "employment_income": {YEAR: wages},
                 "taxable_ira_distributions": {YEAR: head_ira},
+                "taxable_401k_distributions": {YEAR: head_401k},
             },
             spouse={"taxable_sep_distributions": {YEAR: spouse_sep}},
             dependent={"taxable_ira_distributions": {YEAR: dependent_ira}},
             tax_unit_inputs={},
         )
-        for i, (wages, head_ira, spouse_sep, dependent_ira) in enumerate(grid)
+        for i, (wages, head_ira, head_401k, spouse_sep, dependent_ira) in enumerate(
+            grid
+        )
     ]
     sim = build(families)
     agi = sim.calculate("adjusted_gross_income", YEAR)
     income = sim.calculate("nyc_school_credit_income", YEAR)
+    # Federal gross income counts each member's retirement distributions as
+    # one source floored at zero, so only that much of the IRA distribution
+    # is included in AGI.
     subtracted = np.array(
-        [head_ira + spouse_sep for _, head_ira, spouse_sep, _ in grid]
+        [
+            min(head_ira, max(0, head_ira + head_401k)) + spouse_sep
+            for _, head_ira, head_401k, spouse_sep, _ in grid
+        ]
     )
     assert np.allclose(agi - income, subtracted)
     assert (income <= agi).all()
