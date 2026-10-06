@@ -593,6 +593,54 @@
     # Not a student and not under 19 (M1DQC step 8): WFC base $379.20 only.
     mn_child_and_working_families_credits: 379.2
 
+- name: 2025 a disabled 18-year-old is a qualifying older child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Disabled and not under 18 (M1DQC step 4 sends the child to row 11).
+    mn_child_and_working_families_credits: 379.2 + 1_000
+
+- name: 2025 an 18-year-old older child above the phase-out start
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # $379.20 + $1,000, less 9% of the income above the $31,950 phase-out
+    # start (2025 Schedule M1CWFC): 1,379.20 - 0.09 x 8,050 = 654.70.
+    mn_child_and_working_families_credits: 654.7
+
 # Minnesota decouples from IRC 32(m) (Minn. Stat. 290.0661/290.0671), so an
 # ITIN child (ssn_card_type OTHER_NON_CITIZEN, no SSN valid for employment)
 # receives the same MN CTC as a citizen child. This mirrors the "2025 Joint
