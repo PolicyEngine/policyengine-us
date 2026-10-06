@@ -1,0 +1,22 @@
+description: Rhode Island deducts these reported expenses from income under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    # Amounts approximate verified court orders. Existing inputs cannot
+    # establish the allowable court-ordered maximum or whether every payment
+    # was made.
+    - child_support_expense
+    - alimony_expense
+    # Manual Section III.H, page 21, deducts "All Medicare expenses, including
+    # prescriptions"; FY2026 plan Section 1.9, page 6, counts Social Security
+    # "Including MediCare deduction". This follows the manual. The Part B
+    # premium is the only Medicare expense with an input, so prescription and
+    # other Medicare costs are not deducted.
+    - medicare_part_b_premium
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP income deduction sources
+  reference:
+    - title: Rhode Island LIHEAP Manual, Section III.H Deductions from Income
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=21

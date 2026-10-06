@@ -30,7 +30,10 @@ class ri_liheap_base_payment(Variable):
         subsidized = spm_unit.household("is_in_public_housing", period) | spm_unit(
             "receives_housing_assistance", period
         )
-        primary_bill = spm_unit("heating_expense", period) > 0
+        # Same primary heating obligation test as ri_liheap_eligible.
+        primary_bill = spm_unit("has_heating_expense", period) | (
+            spm_unit("heating_expense", period) > 0
+        )
         # Matrix row F uses the lowest payment for subsidized households
         # responsible for their primary heating bill, regardless of income band.
         band = where(subsidized & primary_bill, len(p.fpg_rates) + 1, band)
@@ -66,4 +69,7 @@ class ri_liheap_base_payment(Variable):
         # This ungated primary payment has no actual-expense cap. It does not
         # calculate the unresolved HIR routes or establish final eligibility.
         size = spm_unit("ri_liheap_household_size", period)
-        return where(size > 0, amount + enhancement, 0)
+        # Payment amounts are sourced from FY2026 onward. Before October 1,
+        # 2025, in_effect is false and the modeled payment is zero rather
+        # than the different, unlocated FY2025 schedule.
+        return where((size > 0) & p.in_effect, amount + enhancement, 0)

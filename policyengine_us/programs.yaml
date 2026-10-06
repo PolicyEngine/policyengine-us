@@ -802,7 +802,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, KS, MS, TX
+    coverage: OR, DC, Riverside County, MA, IL, KS, MS, RI, TX
     state_implementations:
       - state: RI
         status: partial
@@ -811,7 +811,7 @@ programs:
         variable: ri_liheap
         parameter_prefix: gov.states.ri.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 ordinary direct-heating award combines eligibility and the primary schedule, including the enhancement for assumed qualifying gas/electric accounts. Heat-in-rent eligibility is modeled but its payment is not; zero is not a legal denial. Unlisted fuel mappings, current student-head treatment and provider/account identity remain documented limitations. FY2027 income limits are verified separately; later payment carry-forward and historical backfills are unverified. Regular heating only.
+        notes: FY2026 regular heating only, with payments starting October 2025 and no modeled award for heat-in-rent households. Crisis, cooling and weatherization assistance are out of scope.
       - state: OR
         status: in_progress
         name: LIHEAP

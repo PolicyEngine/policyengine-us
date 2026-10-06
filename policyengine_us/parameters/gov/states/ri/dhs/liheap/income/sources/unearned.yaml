@@ -1,8 +1,7 @@
 description: Rhode Island counts these unearned income sources under the Low Income Home Energy Assistance Program.
-# Interest and rental receipts have separate allowances; RI Works is added
-# once at its SPMUnit entity, so none of those sources is duplicated here.
-# pension_income includes public/military pensions; military_retirement_pay
-# is a tax-classification input and must not be added independently.
+# Interest and rental receipts have separate allowances, and TANF (RI Works)
+# is added once through the SPM-unit tanf aggregate, so none of those
+# sources is duplicated here. Each listed source is floored at zero.
 # SSI is the federal benefit; a separate RI state supplement is not modeled.
 # disability_benefits approximates employment-related TDI/TCI receipts.
 # The manual expressly counts workers compensation in Section III.E.
@@ -15,7 +14,12 @@ values:
     - strike_benefits
     - social_security
     - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
     - pension_income
+    - military_retirement_pay
+    - retirement_distributions
     - survivor_benefits
     - railroad_benefits
     - alimony_income
@@ -27,6 +31,10 @@ values:
     - veterans_benefits
     # Manual Section III.E, Estate or Trust Income, page 17.
     - estate_income
+    # Manual Section III.E, page 17, lists "Cash Prizes and Lottery Winnings"
+    # as income; FY2026 plan Section 1.9, page 6, leaves "winnings from
+    # lotteries" unchecked. This follows the manual.
+    - gambling_winnings
 
 metadata:
   unit: list

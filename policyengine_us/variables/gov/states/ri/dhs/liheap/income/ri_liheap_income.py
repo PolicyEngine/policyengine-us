@@ -31,11 +31,14 @@ class ri_liheap_income(Variable):
         counted_person = (age >= p.minimum_income_age) & ~exempt_student
         # Existing net business receipts approximate the gross-receipts rule.
         # No additional 40% business deduction or new expense input is used.
+        # Each source is floored at zero, so a loss in one source cannot
+        # offset another.
         earnings = 0
         for source in p.sources.earned:
             earnings = earnings + max_(person(source, period), 0)
-        # ADD annualizes monthly SSI before applying person-level exclusions.
-        other_income = add(person, period, p.sources.unearned, options=[ADD])
+        other_income = 0
+        for source in p.sources.unearned:
+            other_income = other_income + max_(person(source, period), 0)
         rental_income = (
             max_(person("rental_income", period), 0)
             + max_(person("farm_rent_income", period), 0)
@@ -45,17 +48,20 @@ class ri_liheap_income(Variable):
         household_income = spm_unit.sum(
             (earnings + other_income + rental_income) * counted_person
         )
-        interest = spm_unit.sum(person("interest_income", period) * counted_person)
+        interest = spm_unit.sum(
+            max_(person("interest_income", period), 0) * counted_person
+        )
         countable_interest = max_(interest - p.interest_exclusion, 0)
-        # RI Works is a household grant, counted once, not once per member.
-        # There is no RI state SSI supplement variable in the current model.
-        works = spm_unit("ri_works", period, options=[ADD])
-        income = household_income + countable_interest + works
-        # These reported amounts approximate verified court-ordered payments.
-        dependent_expenses = add(spm_unit, period, p.dependent_expense_sources)
+        # The annual tanf aggregate includes ri_works and applies take-up;
+        # ri_works alone is the entitlement a nonrecipient could get. The
+        # household grant is counted once, not once per member.
+        tanf = spm_unit("tanf", period)
+        income = household_income + countable_interest + tanf
+        deductions = add(spm_unit, period, p.deduction_sources)
         childcare = spm_unit("childcare_expenses", period)
         subsidies = spm_unit("child_care_subsidies", period)
         childcare_deduction = where(subsidies == 0, childcare, 0)
         # Adult daycare/nursing-home attribution cannot be isolated reliably
-        # from broader care inputs. Medicare deductions are user-deferred.
-        return max_(income - dependent_expenses - childcare_deduction, 0)
+        # from broader care inputs, and Medicare prescription costs have no
+        # input.
+        return max_(income - deductions - childcare_deduction, 0)
