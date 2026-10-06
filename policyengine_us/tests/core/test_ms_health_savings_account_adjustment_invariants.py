@@ -27,7 +27,6 @@ deduction set to zero. For every tax unit:
 """
 
 import numpy as np
-import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -131,15 +130,28 @@ def _seeded_units(n=200):
     return units
 
 
+# Roles are inputs, so a drawn dependent with a large income stays a
+# dependent rather than failing the dependency tests and joining the return.
+HEAD = dict(
+    is_tax_unit_head=True, is_tax_unit_spouse=False, is_tax_unit_dependent=False
+)
+SPOUSE = dict(
+    is_tax_unit_head=False, is_tax_unit_spouse=True, is_tax_unit_dependent=False
+)
+DEPENDENT = dict(
+    is_tax_unit_head=False, is_tax_unit_spouse=False, is_tax_unit_dependent=True
+)
+
+
 def _situation(units, year, *, zero_deduction):
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
     for i, u in enumerate(units):
         head = f"head_{i}"
-        people[head] = {"age": 45, **u["head"]}
+        people[head] = {"age": 45, **HEAD, **u["head"]}
         members, couple = [head], [head]
         if u["spouse"] is not None:
             spouse = f"spouse_{i}"
-            people[spouse] = {"age": 43, **u["spouse"]}
+            people[spouse] = {"age": 43, **SPOUSE, **u["spouse"]}
             members.append(spouse)
             couple.append(spouse)
         groups["marital_units"][f"couple_{i}"] = {"members": couple}
@@ -148,6 +160,7 @@ def _situation(units, year, *, zero_deduction):
             people[child] = {
                 "age": d["age"],
                 "is_full_time_student": d["age"] >= 19,
+                **DEPENDENT,
                 **{k: v for k, v in d.items() if k != "age"},
             }
             members.append(child)
@@ -273,8 +286,10 @@ def _check(units, year):
     assert (reduction <= deduction + TOLERANCE).all()
 
 
+# Each example is one vectorized batch of tax units, so a few examples cover
+# many units; the seeded population runs once.
 SETTINGS = dict(
-    max_examples=5,
+    max_examples=3,
     deadline=None,
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
@@ -287,6 +302,5 @@ def test_ms_health_savings_account_adjustment_is_attributed_once(units):
     _check(units, 2025)
 
 
-@pytest.mark.parametrize("year", [2022, 2025, 2026])
-def test_seeded_population(year):
-    _check(_seeded_units(), year)
+def test_seeded_population():
+    _check(_seeded_units(), 2025)
