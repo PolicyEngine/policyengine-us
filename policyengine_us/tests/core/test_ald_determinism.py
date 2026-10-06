@@ -63,6 +63,7 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
                 gross_income=SimpleNamespace(sources=[]),
                 ald=SimpleNamespace(
                     deductions=deductions,
+                    filer_amounts_recorded_on_dependents=[],
                     student_loan_interest=SimpleNamespace(magi=magi),
                 ),
             )
@@ -91,7 +92,7 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
         assert variables == [f"{name}_person" for name in PERSON_ALDS]
         return np.array([0], dtype=np.float32)
 
-    def capture_tax_unit_add(entity, period, variables):
+    def capture_tax_unit_add(entity, period, variables, include_dependents=()):
         assert entity is person.tax_unit
         captured.extend(variables)
         raise ReachedTaxUnitSum
