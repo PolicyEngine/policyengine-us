@@ -6,24 +6,28 @@ each spouse's adjustments in their own column. The model's deduction,
 `health_savings_account_ald`, is a tax-unit amount, so it must reach the
 members' Mississippi adjustments once, not once per member.
 
-Hypothesis draws batches of Mississippi tax units (single, married filing
-separately, head of household with dependents, joint with and without
-dependents), with the tax unit's deduction either equal to the head's and
-spouse's own `health_savings_account_ald_person` amounts, different from
-them, or given without them; a seeded population adds breadth. Each batch runs
-as one vectorized simulation, twice: as drawn and with the tax unit's
-deduction set to zero. For every tax unit:
+The YAML cases pin the attribution for specific households. This test checks
+what YAML cannot: that the deduction is subtracted once for every household
+shape and input combination, through `ms_agi_adjustments` and the floors in
+`ms_agi`. Hypothesis draws batches of Mississippi tax units (single, married
+filing separately, head of household with dependents, joint with and without
+dependents). Every member, dependents included, may have their own
+`health_savings_account_ald_person`; the tax unit's deduction is the head's
+and spouse's own amounts, a different amount, or zero. A seeded population
+adds breadth. Each batch runs as one vectorized simulation, twice: as drawn
+and with the tax unit's deduction set to zero. For every tax unit:
 
 1. Conservation: the members' `ms_health_savings_account_adjustment` sum to
    the tax unit's `health_savings_account_ald`, and the deduction appears in
-   the members' `ms_agi_adjustments` exactly once.
+   the members' `ms_agi_adjustments` exactly once. (On main it appeared once
+   per member.)
 2. Bounds: no share is negative or above the tax unit's deduction, and a
-   dependent's is zero.
-3. Differential: each share equals an independent numpy attribution (own
-   amounts scaled to the tax unit's deduction; the head takes it without
-   them), which is each filer's own amount when those sum to the deduction.
+   dependent's is zero whatever their own amount.
+3. Attribution: when the head's and spouse's own amounts sum to the
+   deduction, each gets their own amount; when they have none, the head gets
+   all of it.
 4. The deduction lowers the members' total Mississippi AGI by at least zero
-   and at most the deduction itself.
+   and at most the deduction itself. (On main it could lower it by more.)
 """
 
 import numpy as np
@@ -49,7 +53,8 @@ def person_amounts(draw, *, dependent):
         "traditional_ira_contributions": draw(
             st.one_of(st.just(0.0), st.integers(1, 7_000).map(float))
         ),
-        "health_savings_account_ald_person": 0.0 if dependent else draw(hsa),
+        # A dependent's own amount must not reach the return.
+        "health_savings_account_ald_person": draw(hsa),
     }
 
 
@@ -97,7 +102,7 @@ def _seeded_units(n=200):
             "employment_income": some(60_000, 0.7),
             "self_employment_income": some(40_000, 0.3, low=-5_000),
             "traditional_ira_contributions": some(7_000, 0.3),
-            "health_savings_account_ald_person": 0.0 if dependent else some(8_550),
+            "health_savings_account_ald_person": some(8_550, 0.2 if dependent else 0.5),
         }
 
     units = []
@@ -224,22 +229,6 @@ def _unit_sum(person, values, n):
     return np.bincount(person["unit"], weights=values, minlength=n)
 
 
-def _reference_shares(person, deduction):
-    """Attribution of the tax unit's deduction, computed independently."""
-    unit = person["unit"]
-    filer = ~person["is_dependent"]
-    own = person["health_savings_account_ald_person"] * filer
-    filers_own = np.bincount(unit, weights=own, minlength=len(deduction))
-    scaled = np.divide(
-        own * deduction[unit],
-        filers_own[unit],
-        out=np.zeros_like(own),
-        where=filers_own[unit] > 0,
-    )
-    head_takes_it = person["is_head"] * (filers_own[unit] == 0) * deduction[unit]
-    return np.where(filer, scaled + head_takes_it, 0.0)
-
-
 def _check(units, year):
     person, deduction = _run(units, year, zero_deduction=False)
     without, _ = _run(units, year, zero_deduction=True)
@@ -262,11 +251,8 @@ def _check(units, year):
     assert (shares <= deduction[unit] + TOLERANCE).all()
     assert (shares[person["is_dependent"]] == 0).all()
 
-    # 3. Differential against an independent attribution, which honours each
-    # filer's own amount whenever those sum to the deduction.
-    np.testing.assert_allclose(
-        shares, _reference_shares(person, deduction), atol=TOLERANCE
-    )
+    # 3. Attribution: own amounts when they sum to the deduction; otherwise,
+    # without any, the head's.
     filer = ~person["is_dependent"]
     filers_own = _unit_sum(
         person, person["health_savings_account_ald_person"] * filer, n
@@ -276,6 +262,10 @@ def _check(units, year):
         shares[matches],
         person["health_savings_account_ald_person"][matches],
         atol=TOLERANCE,
+    )
+    no_own_head = (filers_own == 0)[unit] & person["is_head"]
+    np.testing.assert_allclose(
+        shares[no_own_head], deduction[unit][no_own_head], atol=TOLERANCE
     )
 
     # 4. The deduction lowers total Mississippi AGI by no more than itself.

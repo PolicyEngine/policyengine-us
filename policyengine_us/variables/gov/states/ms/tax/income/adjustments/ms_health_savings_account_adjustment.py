@@ -15,7 +15,8 @@ class ms_health_savings_account_adjustment(Variable):
         "to the account holders, rather than repeated for every member. The "
         "head and spouse get their own health_savings_account_ald_person "
         "amounts, scaled to sum to the tax unit's deduction; without them, the "
-        "head takes it. A tax unit dependent has no deduction on this return."
+        "head takes it, as on a joint return with one income column. A tax unit "
+        "dependent has no deduction on this return."
     )
     definition_period = YEAR
     reference = (
@@ -34,6 +35,7 @@ class ms_health_savings_account_adjustment(Variable):
             "health_savings_account_ald",
             "health_savings_account_ald_person",
         )
-        # The tax unit's deduction is the head's and spouse's; a dependent
-        # takes no health savings account deduction (26 USC 223(b)(6)).
+        # The tax unit's deduction is the head's and spouse's. A dependent who
+        # holds an account reports it on their own Mississippi return, not
+        # this one (and has no federal deduction, 26 USC 223(b)(6)).
         return where(person("is_tax_unit_dependent", period), 0, filer_share)
