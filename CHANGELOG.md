@@ -1,3 +1,11 @@
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
 ## [2.29.1] - 2026-10-06
 
 ### Changed
