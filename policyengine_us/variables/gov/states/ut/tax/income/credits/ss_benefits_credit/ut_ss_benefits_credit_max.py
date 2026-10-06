@@ -22,7 +22,9 @@ class ut_ss_benefits_credit_max(Variable):
         # Skip line 3 (muncipal bond interest)
         # Skip line 4 (subtract line 3 from line 2)
 
-        tax_exempt_interest = add(
+        # The head's and spouse's municipal bond interest, as Utah total
+        # income leaves out a tax unit dependent's income.
+        tax_exempt_interest = tax_unit_non_dep_add(
             tax_unit, period, ["tax_exempt_interest_income"]
         )  # Line 5
         modified_agi = total_income + tax_exempt_interest  # Line 6

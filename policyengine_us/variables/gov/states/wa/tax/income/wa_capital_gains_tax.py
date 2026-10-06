@@ -13,7 +13,10 @@ class wa_capital_gains_tax(Variable):
         in_effect = parameters(period).gov.states.wa.tax.income.in_effect
         if in_effect:
             p = parameters(period).gov.states.wa.tax.income.capital_gains
-            ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+            # The tax is on each individual's (and spouses' combined) long-term
+            # capital gains from the federal return. A tax unit dependent's
+            # gains are on the dependent's own return.
+            ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
             # Deduct charitable contributions.
             charitable_contributions = add(
                 tax_unit,

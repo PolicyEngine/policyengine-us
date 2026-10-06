@@ -14,10 +14,13 @@ class wi_capital_gain_loss_subtraction(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
+        # Schedule WD starts from the filer's federal Schedule D. A tax unit
+        # dependent's gains are on the dependent's own return, so only the
+        # head's and spouse's gains count.
         # calculate Schedule WD, Line 8
-        stcg_net = add(tax_unit, period, ["short_term_capital_gains"])
+        stcg_net = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         # calculate Schedule WD, Line 17
-        ltcg_net = add(tax_unit, period, ["long_term_capital_gains"])
+        ltcg_net = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
         # calculate Schedule WD, Line 18
         totcg = max_(0, stcg_net + ltcg_net)
         # calculate Schedule WD, Line 20, the capital gain reduction

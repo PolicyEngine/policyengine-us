@@ -14,8 +14,10 @@ class oh_unreimbursed_medical_care_expense_deduction_person(Variable):
     )
     defined_for = StateCode.OH
 
+    # Each person's share of the tax unit's insured expense deduction, so the
+    # one deduction per return is not repeated for every member.
     adds = [
-        "oh_insured_unreimbursed_medical_care_expenses",
+        "oh_insured_unreimbursed_medical_care_expenses_person",
         "oh_uninsured_unreimbursed_medical_care_expenses",
         "long_term_health_insurance_premiums",
     ]

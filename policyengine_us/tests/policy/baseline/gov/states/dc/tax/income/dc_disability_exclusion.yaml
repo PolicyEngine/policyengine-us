@@ -1,5 +1,10 @@
+# Form D-2440 is one per return: line 4 adds the capped payments of you and
+# your spouse, and line 10 subtracts federal AGI less taxable Social Security
+# less $15,000. Each filer gets a share of the line 10 exclusion in proportion
+# to their capped payments, so the return's exclusion is counted once.
 - name: disability payments are over the cap,and the reduced income is positive
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -19,7 +24,9 @@
         members: [person1, person2]
         state_code: DC
   output:
-    dc_disability_exclusion: 200
+    # Line 4: 5,200 + 4,000 = 9,200. Line 9: 30,000 - 6,000 - 15,000 = 9,000.
+    # Line 10: 200, split 5,200:4,000.
+    dc_disability_exclusion: [113.04, 86.96]
 
 - name: disability payments are over the cap, and the reduced income is negative
   period: 2021
@@ -42,7 +49,8 @@
         members: [person1, person2]
         state_code: DC
   output:
-    dc_disability_exclusion: 10_400
+    # Line 10: 5,200 + 5,200 = 10,400, as 20,000 - 6,000 - 15,000 < 0.
+    dc_disability_exclusion: [5_200, 5_200]
 
 - name: disability payments are under the cap, and the reduced income is negative
   period: 2021
@@ -65,4 +73,55 @@
         members: [person1, person2]
         state_code: DC
   output:
-    dc_disability_exclusion: 7_000
+    dc_disability_exclusion: [4_000, 3_000]
+
+- name: The exclusion is counted once in DC AGI
+  # Line 9: 18,000 - 15,000 = 3,000, so line 10 is 5,000 - 3,000 = 2,000.
+  # It used to go to every member, so a household of three subtracted 6,000.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 50
+        employment_income: 18_000
+        total_disability_payments: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 50
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: DC
+  output:
+    dc_disability_exclusion: [2_000, 0, 0]
+    dc_income_subtractions: [2_000, 0, 0]
+    dc_agi: [16_000, 0, 0]
+
+- name: A dependent's disability payments are on their own return
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        total_disability_payments: 4_000
+      child:
+        is_tax_unit_dependent: true
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: 20_000
+        tax_unit_taxable_social_security: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # Line 4 is the head's 4,000. Line 9: 20,000 - 15,000 = 5,000. Line 10: 0.
+    dc_disability_exclusion: [0, 0]
