@@ -11,8 +11,11 @@ class ma_part_a_gross_income(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        dividends = add(tax_unit, period, ["dividend_income"])
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, whose interest, dividends and gains are on their
+        # own returns, so Parts A and C count only the head's and spouse's.
+        dividends = tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
         nonnegative_short_term_capital_gains = max_(
-            0, add(tax_unit, period, ["short_term_capital_gains"])
+            0, tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         )
         return dividends + nonnegative_short_term_capital_gains

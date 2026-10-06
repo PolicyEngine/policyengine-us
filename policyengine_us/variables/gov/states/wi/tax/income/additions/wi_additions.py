@@ -14,4 +14,11 @@ class wi_additions(Variable):
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleAD-Inst.pdf",
     )
     defined_for = StateCode.WI
-    adds = "gov.states.wi.tax.income.additions.sources"
+
+    def formula(tax_unit, period, parameters):
+        # Wisconsin adds these items to federal adjusted gross income, which
+        # leaves out a tax unit dependent's income (the dependent files their
+        # own return), so only the head's and spouse's amounts count, such as
+        # their interest on other states' and municipalities' obligations.
+        p = parameters(period).gov.states.wi.tax.income.additions
+        return tax_unit_non_dep_add(tax_unit, period, p.sources)

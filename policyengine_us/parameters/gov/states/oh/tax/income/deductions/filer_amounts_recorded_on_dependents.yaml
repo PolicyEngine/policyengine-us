@@ -1,0 +1,21 @@
+description: Ohio deducts these per-person amounts from the filer's federal adjusted gross income even when they are recorded on a tax unit dependent, as they are the filer's amounts. Other deductions on a dependent are the dependent's own and belong on their own return.
+values:
+  2021-01-01:
+    # The filer's 529 contributions. oh_529_plan_deduction caps the tax unit's
+    # contributions at $4,000 per beneficiary, and each person's share
+    # follows the contributions recorded on them, as in the other states'
+    # 529 deductions.
+    - oh_529_plan_deduction_person
+    # Premiums and medical care the taxpayer paid "for the taxpayer, the
+    # taxpayer's spouse, and dependents" (R.C. 5747.01(A)(10)), recorded on
+    # the person they covered.
+    - oh_unreimbursed_medical_care_expense_deduction_person
+metadata:
+  unit: list
+  period: year
+  label: Ohio deductions summed over dependents
+  reference:
+    - title: Ohio Revised Code 5747.01(A)(9) and (A)(10)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    - title: Ohio 2025 IT 1040 Instructions, Schedule of Adjustments lines 37 and 44
+      href: https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=24

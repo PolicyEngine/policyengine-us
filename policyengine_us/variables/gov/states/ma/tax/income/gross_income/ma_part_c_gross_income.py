@@ -11,10 +11,13 @@ class ma_part_c_gross_income(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, whose interest, dividends and gains are on their
+        # own returns, so Parts A and C count only the head's and spouse's.
         # Long-term capital gains
-        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+        ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
         # Short-term capital gains (can be negative)
-        stcg = add(tax_unit, period, ["short_term_capital_gains"])
+        stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         # Per MA Schedule B line 22, short-term losses offset long-term gains
         stcg_losses = min_(0, stcg)
         return max_(0, ltcg + stcg_losses)
