@@ -11,8 +11,9 @@ class medicaid_ltss_needs_based_income(Variable):
     documentation = (
         "Trusted portion of QIT-adjusted income that comes from needs-based "
         "sources. The Delaware general income disregard is not applied to "
-        "this portion. The model does not classify or allocate income "
-        "sources."
+        "this portion. It has no effect when "
+        "medicaid_ltss_income_disregards_already_applied is true. The model "
+        "does not classify or allocate income sources."
     )
     reference = (
         "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=1",

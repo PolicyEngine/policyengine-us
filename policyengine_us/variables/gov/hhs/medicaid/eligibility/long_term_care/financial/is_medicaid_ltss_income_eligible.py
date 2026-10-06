@@ -24,7 +24,12 @@ class is_medicaid_ltss_income_eligible(Variable):
         "so the institutional setting should not be used for a hospitalized "
         "Delaware applicant. Delaware's $20 disregard, with the needs-based "
         "carve-out and one disregard per couple, follows DSSM 20240.1 and "
-        "20990."
+        "20990; it is skipped when "
+        "medicaid_ltss_income_disregards_already_applied marks the income "
+        "input as final countable income, which earned income of an "
+        "applicant without a community spouse requires because DSSM 20240.3 "
+        "deducts the $20 before the $65 and one-half earned-income "
+        "disregards."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.236",
@@ -56,8 +61,11 @@ class is_medicaid_ltss_income_eligible(Variable):
             non_needs_based_income,
             p.de.income.general_disregard,
         )
+        disregards_already_applied = person(
+            "medicaid_ltss_income_disregards_already_applied", period
+        )
         income_after_disregard = where(
-            state == states.DE,
+            (state == states.DE) & ~disregards_already_applied,
             max_(income - delaware_disregard, 0),
             income,
         )

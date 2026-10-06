@@ -25,7 +25,9 @@ class medicaid_ltss_home_equity_eligible(Variable):
         "agricultural-land limit in the separate annual "
         "is_medicaid_long_term_care_home_equity_eligible chassis is not "
         "modeled here; that chassis applies the federal maximum in every "
-        "state."
+        "state, so it passes Texas or Delaware equity between the federal "
+        "minimum and maximum that this screen bars (follow-up: "
+        "https://github.com/PolicyEngine/policyengine-us/issues/9895)."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396p#f",

@@ -312,8 +312,8 @@
   output:
     medicaid_ltss_mmmna: [4_066.5, 4_066.5, 0, 0]
 
-- name: Case 8, January through June 2026 use the July 2025 federal minimum and the January 2026 maximum.
-  period: 2026-03
+- name: Case 8, January 2026 uses the July 2025 federal minimum and the January 2026 maximum.
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

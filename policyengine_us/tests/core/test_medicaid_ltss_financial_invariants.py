@@ -97,6 +97,9 @@ def _situation(people, **overrides):
             "medicaid_ltss_waiver": month(person["waiver"]),
             "medicaid_ltss_assistance_unit_size": month(person["unit_size"]),
             "medicaid_ltss_qit_adjusted_income": month(person["income"]),
+            "medicaid_ltss_income_disregards_already_applied": month(
+                bool(person.get("disregards_applied", False))
+            ),
             "medicaid_ltss_needs_based_income": month(person["needs_based_income"]),
             "medicaid_ltss_medically_needy_expenses": month(
                 person["medically_needy_expenses"]
@@ -158,6 +161,9 @@ def population():
             people, market_value=column("market_value") + 100 * deltas
         ),
         "shelter": _calculate(people, shelter=column("shelter") + deltas),
+        "disregards_applied": _calculate(
+            people, disregards_applied=np.ones(len(people), dtype=bool)
+        ),
     }
     return people, column, base, shifted
 
@@ -251,6 +257,34 @@ def test_screens_never_start_passing_when_a_countable_amount_rises(
     _, _, base, shifted = population
     newly_passing = shifted[shift][variable] & ~base[variable]
     assert not newly_passing.any(), np.flatnonzero(newly_passing)[:5]
+
+
+def test_final_income_flag_only_removes_the_delaware_disregard(population):
+    _, column, base, shifted = population
+    final = shifted["disregards_applied"]
+    delaware = column("state") == "DE"
+    income_screens = [
+        "is_medicaid_ltss_income_eligible",
+        "is_medicaid_ltss_financial_threshold_eligible",
+    ]
+    for variable in OUTPUTS:
+        if variable in income_screens:
+            # Only Delaware applies a disregard, so the flag changes nothing
+            # elsewhere, and skipping it can only make the screens harder.
+            np.testing.assert_array_equal(
+                final[variable][~delaware], base[variable][~delaware]
+            )
+            assert not (final[variable] & ~base[variable]).any(), variable
+        else:
+            np.testing.assert_array_equal(final[variable], base[variable])
+    # With the flag, Delaware compares the supplied income itself.
+    special = delaware & (base["medicaid_ltss_financial_pathway"] == "SPECIAL_INCOME")
+    assert special.any()
+    np.testing.assert_array_equal(
+        final["is_medicaid_ltss_income_eligible"][special],
+        column("income")[special]
+        <= base["medicaid_ltss_special_income_limit"][special],
+    )
 
 
 def test_mmmna_is_non_decreasing_in_shelter_expenses(population):

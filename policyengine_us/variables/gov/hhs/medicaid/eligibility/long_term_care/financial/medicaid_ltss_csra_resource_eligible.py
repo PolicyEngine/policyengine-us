@@ -26,6 +26,7 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-358-323",
         "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-26-2.pdf#page=465",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
+        "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=2",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=69",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1350",
         "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3",
