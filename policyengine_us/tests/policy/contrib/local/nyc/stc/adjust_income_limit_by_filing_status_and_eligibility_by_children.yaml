@@ -5,7 +5,10 @@
 # reform's filing-status income limit even when federal AGI is over it.
 # TY2025 rates (IT-201-I 2025, line 69 and 69a): fixed amount $63 single, $125
 # joint; rate reduction 0.171% of city taxable income up to $12,000 (single) or
-# $21,600 (joint), then 0.228% above it.
+# $21,600 (joint), then 0.228% above it. Above the first band the form prints
+# rounded base amounts ($21 single, $37 joint) while the model carries in the
+# first band at the marginal rate (12,000 x 0.171% = $20.52; 21,600 x 0.171% =
+# $36.936), and the expected values below follow the model; that gap is #8947.
 
 - name: Case 1, single retiree whose IRA distribution puts AGI over the limit but school credit income under it.
   period: 2025
