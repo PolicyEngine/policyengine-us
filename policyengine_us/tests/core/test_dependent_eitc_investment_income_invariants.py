@@ -307,6 +307,17 @@ def _check(units, year):
     capital = np.maximum(0, filer_sum(CAPITAL_INPUTS) + distributions)
     passive = np.maximum(0, filer_sum(PASSIVE_INPUTS) - filer_sum([OVERLAP]))
     expected = portfolio + capital + passive
+    # Units whose eligibility turns on farm rent or the overlap input, so the
+    # seeded population shows both terms are exercised.
+    without_new_terms = (
+        portfolio
+        + capital
+        + np.maximum(
+            0,
+            filer_sum([n for n in PASSIVE_INPUTS if n != "farm_rent_income"]),
+        )
+    )
+    new_terms_decide = (expected <= run["limit"]) != (without_new_terms <= run["limit"])
     investment_income = run["eitc_relevant_investment_income"]
     np.testing.assert_allclose(investment_income, expected, atol=TOLERANCE)
     np.testing.assert_array_equal(
@@ -349,7 +360,7 @@ def _check(units, year):
     np.testing.assert_allclose(
         investment_income[unchanged], all_member[unchanged], atol=TOLERANCE
     )
-    return has_dependent, unchanged
+    return has_dependent, unchanged, new_terms_decide
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large
@@ -370,7 +381,8 @@ def test_dependent_investment_income_stays_off_the_filers_eitc_test(units):
 
 @pytest.mark.parametrize("year", [2021, 2025])
 def test_seeded_population(year):
-    has_dependent, unchanged = _check(_seeded_units(), year)
+    has_dependent, unchanged, new_terms_decide = _check(_seeded_units(), year)
     # The population exercises both branches of each property.
     assert has_dependent.sum() > 50
     assert unchanged.sum() > 20
+    assert new_terms_decide.sum() > 5

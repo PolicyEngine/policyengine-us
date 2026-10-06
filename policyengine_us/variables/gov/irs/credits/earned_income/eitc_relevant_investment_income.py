@@ -18,7 +18,13 @@ class eitc_relevant_investment_income(Variable):
         "are the head's and spouse's own long_term_capital_gains and "
         "short_term_capital_gains; a net_capital_gains amount supplied for "
         "the tax unit, or a capital_gains amount set directly on a person, "
-        "is not read."
+        "is not read. The passive basket (lines 11-13) nets rental income, "
+        "farm rental income and passive partnership and S corporation income, "
+        "less eitc_passive_income_also_in_earned_income, then floors the "
+        "result at zero. All rental and farm rental income is treated as "
+        "passive: the model has no input for a real estate professional's "
+        "nonpassive farm rental, whose loss Form 4835 says is not subject to "
+        "the passive activity loss limitations."
     )
     unit = USD
     definition_period = YEAR

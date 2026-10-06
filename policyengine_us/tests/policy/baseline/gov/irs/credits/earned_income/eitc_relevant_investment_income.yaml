@@ -713,3 +713,76 @@
     eitc_relevant_investment_income: 11_951
     eitc_investment_income_eligible: false
     eitc: 0
+
+- name: A spouse's passive share that is also earned income is left out on a joint return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        taxable_interest_income: 5_000
+      spouse:
+        age: 33
+        partnership_income: 8_000
+        passive_partnership_s_corp_income: 8_000
+        partnership_self_employment_net_earnings: 8_000
+        eitc_passive_income_also_in_earned_income: 8_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child1_unit:
+        members: [child1]
+      child2_unit:
+        members: [child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    # The spouse's 8,000 is earned: 5,000 + max(0, 8,000 - 8,000) = 5,000.
+    eitc_relevant_investment_income: 5_000
+    eitc_investment_income_eligible: true
+
+- name: A dependent's overlap input does not remove the filer's passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        partnership_income: 4_000
+        passive_partnership_s_corp_income: 4_000
+      child1:
+        age: 15
+        is_tax_unit_dependent: true
+        partnership_income: 4_000
+        passive_partnership_s_corp_income: 4_000
+        partnership_self_employment_net_earnings: 4_000
+        eitc_passive_income_also_in_earned_income: 4_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # The head is a limited partner with 4,000 of passive income; the child's
+    # amounts, overlap included, are on the child's own return:
+    # 9,000 + 4,000 = 13,000. Counting the child's overlap would give 9,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0

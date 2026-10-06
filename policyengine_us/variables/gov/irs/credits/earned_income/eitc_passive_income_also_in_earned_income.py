@@ -4,19 +4,26 @@ from policyengine_us.model_api import *
 class eitc_passive_income_also_in_earned_income(Variable):
     value_type = float
     entity = Person
-    label = "Passive income or loss also included in EITC earned income"
+    label = "Passive partnership income or loss also included in EITC earned income"
     unit = USD
     documentation = (
-        "The part of the person's passive partnership and S corporation income "
-        "or loss (passive_partnership_s_corp_income) that is also included in "
-        "earned income under 26 USC 32(c)(2). An example is a general "
-        "partner's distributive share from a partnership in which they do not "
-        "materially participate: it is passive under section 469 and net "
-        "earnings from self-employment under section 1402(a). Enter income as "
-        "a positive amount and a loss as a negative amount. 26 USC "
-        "32(i)(2)(E) determines passive income and losses without regard to "
-        "any amount included in earned income, so this amount is removed from "
-        "the passive basket of the EITC investment income test. It classifies "
+        "The part of the person's passive_partnership_s_corp_income that is "
+        "also included in earned income under 26 USC 32(c)(2): a partnership "
+        "distributive share that is passive under section 469 and net earnings "
+        "from self-employment under section 1402(a), as for a general partner "
+        "who does not materially participate. The same amount must also be "
+        "included in partnership_self_employment_net_earnings, which is what "
+        "puts it in EITC earned income; nothing here checks that. An S "
+        "corporation share is never net earnings from self-employment, so it "
+        "has no such part. Enter income as a positive amount and a loss as a "
+        "negative amount. It is a sum over the person's activities, so it can "
+        "exceed the person's net passive income or net partnership "
+        "self-employment earnings, or have the opposite sign, when those net "
+        "earned and unrelated passive amounts together; do not limit it to "
+        "them. 26 USC 32(i)(2)(E) determines passive income and losses without "
+        "regard to amounts included in earned income, so the head's and "
+        "spouse's amounts are removed from the passive basket of the EITC "
+        "investment income test; a dependent's are not read. It classifies "
         "part of passive_partnership_s_corp_income and is not additional "
         "income."
     )
