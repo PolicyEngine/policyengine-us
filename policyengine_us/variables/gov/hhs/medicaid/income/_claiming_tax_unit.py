@@ -89,6 +89,11 @@ def medicaid_known_claim_by_named_parent(person, period):
     person_id wherever they live, unless it names a co-resident, in which
     case that co-resident must be the head or spouse. Both are false for
     everyone when no parent id is set.
+
+    Matching a claimant elsewhere by person_id relies on the id contract in
+    _parent_links: with a known claiming tax unit, person ids must be
+    distinct across the simulation. When they collide, the co-resident
+    preference is a fallback, not a recovered identity.
     """
     parent_1 = person("parent_1_id", period)
     parent_2 = person("parent_2_id", period)

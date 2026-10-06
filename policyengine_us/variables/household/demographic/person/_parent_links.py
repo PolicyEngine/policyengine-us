@@ -4,11 +4,22 @@ Rules shared by every formula that reads the links:
 
 - Each id names the person_id of one of the person's parents (natural,
   adoptive or step); 0 means unknown, so real person ids must be nonzero.
+- Id contract. Person ids must be nonzero int32 values, distinct within
+  every household and every tax unit. When a tax unit spans households or a
+  medicaid_claiming_tax_unit_id is set, an id can resolve outside the
+  household, so person ids must then be distinct across the whole
+  simulation. Reusing ids across households is safe only when every tax unit
+  lies inside one household and no known claiming tax unit is set.
 - Parenthood is identity and residence is a separate condition. Ids resolve
   against the members of one group: the household when a rule requires
   living together, the claiming tax unit when a rule asks who claims the
-  person. An id that names a co-resident names that person, wherever else
-  the same person_id appears.
+  person. An id that names a co-resident resolves to that co-resident: it
+  can then match a tax unit member elsewhere only if that member is the
+  co-resident. Under the contract this changes nothing; when ids collide
+  across households it is a tie-break, not a recovered identity.
+- Input that breaks the contract gets a defined, member-order-free fallback,
+  not a legal identity: an id that matches two members of one group
+  resolves to neither, so it acts as an absent parent.
 - A person is a parent when own_children_in_household is positive or when a
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep
@@ -60,7 +71,9 @@ def _parent_indices(person, period, group):
     """Resolve both parent slots among the members of ``group``.
 
     Unresolved slots are -1. A second slot that repeats the first names no
-    second parent, so each resolved parent appears once per person.
+    second parent, so each resolved parent appears once per person. A slot
+    whose id matches more than one other member breaks the id contract and
+    resolves to no one, whatever the member order.
     """
     parent_1 = person("parent_1_id", period)
     parent_2 = person("parent_2_id", period)
@@ -71,15 +84,19 @@ def _parent_indices(person, period, group):
 
     person_id = person("person_id", period)
     own_index = np.arange(person.count)
+    first_matches = np.zeros(person.count, dtype=int)
+    second_matches = np.zeros(person.count, dtype=int)
     for member in group_member_indices(group):
         valid = (member >= 0) & (member != own_index)
         member_id = person_id[member]
-        first = np.where(
-            valid & (parent_1 != 0) & (parent_1 == member_id), member, first
-        )
-        second = np.where(
-            valid & (parent_2 != 0) & (parent_2 == member_id), member, second
-        )
+        names_first = valid & (parent_1 != 0) & (parent_1 == member_id)
+        names_second = valid & (parent_2 != 0) & (parent_2 == member_id)
+        first = np.where(names_first, member, first)
+        second = np.where(names_second, member, second)
+        first_matches += names_first
+        second_matches += names_second
+    first = np.where(first_matches == 1, first, -1)
+    second = np.where(second_matches == 1, second, -1)
     second = np.where(second == first, -1, second)
     return first, second
 
@@ -94,13 +111,20 @@ def tax_unit_parent_indices(person, period):
 
     A parent who claims the person is recognized wherever either one lives.
     An id that names a co-resident names that person, so a tax unit member
-    elsewhere who shares the person_id is not the parent.
+    elsewhere who shares the person_id is not the parent: the slot is the
+    co-resident when they belong to the tax unit and unresolved otherwise.
     """
     first, second = _parent_indices(person, period, person.tax_unit)
     home_first, home_second = co_resident_parent_indices(person, period)
-    first = np.where((home_first >= 0) & (first != home_first), -1, first)
-    second = np.where((home_second >= 0) & (second != home_second), -1, second)
-    return first, second
+    tax_unit = person.tax_unit.reference_entity.members_entity_id
+
+    def prefer_co_resident(slot, home):
+        in_unit = np.where(tax_unit[home] == tax_unit, home, -1)
+        return np.where(home >= 0, in_unit, slot)
+
+    return prefer_co_resident(first, home_first), prefer_co_resident(
+        second, home_second
+    )
 
 
 def linked_child_count(person, period):

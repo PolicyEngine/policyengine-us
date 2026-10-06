@@ -1,6 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._medicaid_parents import (
+    medicaid_parent_indices,
+)
 from policyengine_us.variables.household.demographic.person._parent_links import (
-    co_resident_parent_indices,
     has_parent_ids,
     unlinked_parent,
 )
@@ -29,7 +31,9 @@ class medicaid_tax_dependent_exception_living_with_both_parents(Variable):
             return claimed_child & proxy
 
         # Living with both parents requires both to resolve in the household.
-        first, second = co_resident_parent_indices(person, period)
+        # 42 CFR 435.603(b) counts step parents, so a lone named parent's
+        # established co-resident spouse is the other parent.
+        first, second = medicaid_parent_indices(person, period)
         two_parents = (first >= 0) & (second >= 0)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)

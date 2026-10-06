@@ -4,6 +4,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_external_claimed_sum,
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
     medicaid_non_filer_member_sum,
     medicaid_tax_dependent_spouse_sum,
 )
@@ -69,6 +70,11 @@ class medicaid_household_income(Variable):
         )
         tax_household_income = (
             person.tax_unit.sum(tax_member_income) + separate_spouse_income
+        )
+        # With parent links, add the co-resident spouse outside the unit whom
+        # medicaid_household_size adds to the unit's tax household.
+        tax_household_income = tax_household_income + person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, member_income)
         )
         tax_household_income = tax_household_income + medicaid_external_claimed_sum(
             person,

@@ -4,6 +4,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_external_claimed_sum,
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
     medicaid_non_filer_member_sum,
     medicaid_tax_dependent_spouse_sum,
 )
@@ -106,6 +107,11 @@ class ca_medicaid_household_pregnancies(Variable):
         tax_pregnancies = person.tax_unit.sum(
             pregnancies + head_or_spouse * separate_spouse
         )
+        # With parent links, add the pregnancies of the co-resident spouse
+        # outside the unit whom medicaid_household_size adds.
+        tax_pregnancies += person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, pregnancies)
+        ).astype(int)
         tax_pregnancies += medicaid_external_claimed_sum(
             person, period, person.tax_unit("tax_unit_id", period), pregnancies
         ).astype(int)

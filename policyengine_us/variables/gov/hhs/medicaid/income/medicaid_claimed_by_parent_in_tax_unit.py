@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
     medicaid_known_claim_by_named_parent,
 )
+from policyengine_us.variables.gov.hhs.medicaid.income._medicaid_parents import (
+    medicaid_step_parent_index,
+)
 from policyengine_us.variables.household.demographic.person._parent_links import (
     has_parent_ids,
     tax_unit_parent_indices,
@@ -46,8 +49,19 @@ class medicaid_claimed_by_parent_in_tax_unit(Variable):
         claimed_elsewhere, claimed_elsewhere_by_parent = (
             medicaid_known_claim_by_named_parent(person, period)
         )
+        # 42 CFR 435.603(b) counts step parents: a lone named co-resident
+        # parent's established co-resident spouse is a parent too, so their
+        # claim is a parent's claim.
+        step = medicaid_step_parent_index(person, period)
+        tax_unit = person.tax_unit.reference_entity.members_entity_id
+        tax_unit_id = person.tax_unit("tax_unit_id", period)
+        claiming_tax_unit_id = person("medicaid_claiming_tax_unit_id", period)
+        step_claims = (step >= 0) & head_or_spouse[step]
         linked_parent = where(
-            claimed_elsewhere, claimed_elsewhere_by_parent, linked_parent
+            claimed_elsewhere,
+            claimed_elsewhere_by_parent
+            | (step_claims & (tax_unit_id[step] == claiming_tax_unit_id)),
+            linked_parent | (step_claims & (tax_unit[step] == tax_unit)),
         )
         return dependent & where(
             has_parent_ids(person, period), linked_parent, inferred_parent

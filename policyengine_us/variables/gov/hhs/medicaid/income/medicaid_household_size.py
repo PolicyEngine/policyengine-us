@@ -4,6 +4,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_external_claimed_sum,
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
     medicaid_non_filer_member_sum,
     medicaid_tax_dependent_spouse_sum,
 )
@@ -59,6 +60,12 @@ class medicaid_household_size(Variable):
         tax_household_size = person.tax_unit("tax_unit_size", period) + (
             cohabitating_separate.astype(int)
         )
+        # With parent links, a head's or spouse's co-resident spouse outside
+        # the unit joins the unit's tax household, which its dependents and
+        # claimants elsewhere share (42 CFR 435.603(f)(2) and (f)(4)).
+        tax_household_size = tax_household_size + person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, np.ones(person.count))
+        ).astype(int)
         person_count = np.ones_like(person.tax_unit("tax_unit_id", period))
         tax_household_size = tax_household_size + medicaid_external_claimed_sum(
             person,
