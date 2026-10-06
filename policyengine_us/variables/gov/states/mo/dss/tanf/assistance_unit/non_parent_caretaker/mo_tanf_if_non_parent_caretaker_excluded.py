@@ -19,12 +19,16 @@ class mo_tanf_if_non_parent_caretaker_excluded(Variable):
         # mo_tanf_if_non_parent_caretaker_included.
         simulation = spm_unit.simulation
         branch_name = f"{simulation.branch_name}_mo_tanf_npcr_excluded_{period}"
-        branch = simulation.get_branch(branch_name)
         try:
-            branch.set_input(
-                "mo_tanf_non_parent_caretaker_included",
+            branch = get_override_branch(
+                simulation,
+                branch_name,
                 period,
-                np.zeros(spm_unit.count, dtype=bool),
+                {
+                    "mo_tanf_non_parent_caretaker_included": np.zeros(
+                        spm_unit.count, dtype=bool
+                    )
+                },
             )
             return branch.calculate("mo_tanf", period)
         finally:
