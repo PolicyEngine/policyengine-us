@@ -75,10 +75,8 @@ class hi_modified_agi(Variable):
         )
         # Match hi_subtractions: a dependent's income (e.g. a pension) is not
         # in federal AGI, so it is not subtracted here either.
-        other_subtractions_amount = (
-            tax_unit_non_dep_add(tax_unit, period, other_subtractions)
-            if other_subtractions
-            else 0
+        other_subtractions_amount = tax_unit_non_dep_add(
+            tax_unit, period, other_subtractions
         )
         federal_student_loan_interest_deduction = add(
             tax_unit, period, ["student_loan_interest_ald"]

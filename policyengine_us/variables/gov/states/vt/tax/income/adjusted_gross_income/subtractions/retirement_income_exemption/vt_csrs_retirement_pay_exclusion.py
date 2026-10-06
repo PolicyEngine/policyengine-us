@@ -15,11 +15,10 @@ class vt_csrs_retirement_pay_exclusion(Variable):
     documentation = "Vermont Civil Service Retirement System (CSRS) retirement benefits exempt from Vermont taxation."
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.csrs
-        # Get retirement amount from military retirement system
+        # Get retirement amount from the Civil Service Retirement System
         # Dependents' income is not in federal AGI; they report it on their
         # own return, so only the head's and spouse's pay counts.
         tax_unit_csrs_retirement_pay = tax_unit_non_dep_sum(
