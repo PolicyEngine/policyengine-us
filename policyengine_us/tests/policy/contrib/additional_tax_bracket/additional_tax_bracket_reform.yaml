@@ -17,6 +17,8 @@
   output:
     regular_tax_before_credits: 328_110
     income_tax_main_rates: 328_110
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 328_110
 
 - name: Additional tax bracket is not applied.
   period: 2027
@@ -36,6 +38,8 @@
   output:
     regular_tax_before_credits: 290_114
     income_tax_main_rates: 290_114
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 290_114
 
 - name: Additional tax bracket is applied, taxable income is below the threshold.
   period: 2027
@@ -56,6 +60,8 @@
   output:
     regular_tax_before_credits: 166_046
     income_tax_main_rates: 166_046
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 166_046
 
 - name: Additional tax bracket is not applied, taxable income is below the threshold.
   period: 2027
@@ -75,6 +81,62 @@
   output:
     regular_tax_before_credits: 145_893
     income_tax_main_rates: 145_893
+    # No gains: line 46 is the tax at the main rates on the same schedule.
+    tax_on_taxable_income_at_main_rates: 145_893
+
+# With its default parameters the reform's added bracket is unset: brackets 7
+# and 8 both have a threshold of infinity for every filing status and year.
+# Bracket 8 then runs from infinity to infinity, and the clip form
+# clip(x, inf, inf) - inf = inf - inf made every household's tax NaN,
+# whatever its income. An unset bracket must add nothing, so the reform's tax
+# is the tax at the first seven brackets of its own schedule.
+- name: Unset added bracket, default 2026 parameters, joint filer.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 1_000_000
+    filing_status: JOINT
+  output:
+    # The reform's own 2026 joint schedule, bracket tops 24,300, 98,600,
+    # 199,000, 303,250, 541,550 and 611,750, rates 10, 15, 25, 28, 33, 35 and
+    # 39.6%. Its parameter file sets these from 2026; they are not current
+    # law, whose 2026 rates are 10, 12, 22, 24, 32, 35 and 37%:
+    # 0.10 * 24,300 + 0.15 * 74,300 + 0.25 * 100,400 + 0.28 * 104,250
+    # + 0.33 * 238,300 + 0.35 * 70,200 + 0.396 * (1,000,000 - 611,750)
+    # = 2,430 + 11,145 + 25,100 + 29,190 + 78,639 + 24,570 + 153,747
+    # = 324,821.
+    regular_tax_before_credits: 324_821
+    income_tax_main_rates: 324_821
+
+- name: Unset added bracket, default 2026 parameters, no taxable income.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 0
+    filing_status: SINGLE
+  output:
+    regular_tax_before_credits: 0
+    income_tax_main_rates: 0
+
+- name: Unset added bracket, default 2025 parameters, joint filer.
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 1_000_000
+    filing_status: JOINT
+  output:
+    # The reform's 2025 brackets are the enacted 2025 brackets, so this is
+    # the 2025 joint rate table (Rev. Proc. 2024-40, section 2.01, Table 1):
+    # $202,154.50 plus 37% of the excess over $751,600
+    # = 202,154.50 + 0.37 * 248,400 = 294,062.50.
+    regular_tax_before_credits: 294_062.5
+    income_tax_main_rates: 294_062.5
 
 # 26 U.S.C. 1(h)(1)(A)(ii)(I), "the amount of taxable income taxed at a rate
 # below 25 percent", follows the rate schedule in force. From 2026 the

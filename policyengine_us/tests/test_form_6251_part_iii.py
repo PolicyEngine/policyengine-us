@@ -35,10 +35,11 @@ Households with 28-percent rate or unrecaptured section 1250 gain go through
 the Schedule D Tax Worksheet. Its 2025 lines 1 to 47 are transcribed below
 too, and for those households the model is compared with:
 
-- line 47, the regular tax (`income_tax_main_rates` plus
-  `capital_gains_tax`), which taxes at the regular rates the greater of line
-  18 or line 20 (line 21), where line 19 is the taxable income taxed at a
-  rate below 25 percent (26 U.S.C. 1(h)(1)(A)(ii)(I));
+- line 47, the regular tax (`regular_tax_before_credits`, which is
+  `income_tax_main_rates` plus `capital_gains_tax`), which taxes at the
+  regular rates the greater of line 18 or line 20 (line 21), where line 19 is
+  the taxable income taxed at a rate below 25 percent (26 U.S.C.
+  1(h)(1)(A)(ii)(I)), and is never more than line 46;
 - Form 6251 lines 38 to 40 and 11, with line 14 from Schedule D line 19,
   line 15 capped by worksheet line 10, line 27 from worksheet line 21 and
   lines 35 to 37 taxing the rest of the unrecaptured gain at 25 percent.
@@ -303,6 +304,7 @@ OUTPUTS = [
     "dwks14",
     "dwks19",
     "income_tax_main_rates",
+    "tax_on_taxable_income_at_main_rates",
     "regular_tax_before_credits",
     "capital_gains_tax",
     "amt_income_less_exemptions",
@@ -401,10 +403,9 @@ def assert_matches_form_6251(households, law):
         base = float(law["amt_base_tax"][i])
         assert part_iii == pytest.approx(line_38, abs=tolerance(line_12)), (i, h)
         assert base == pytest.approx(line_39, abs=tolerance(line_12)), (i, h)
-        # Lines 9 to 11, with no foreign tax credit and no Form 4972.
-        line_10 = float(law["regular_tax_before_credits"][i]) + float(
-            law["capital_gains_tax"][i]
-        )
+        # Lines 9 to 11, with no foreign tax credit and no Form 4972. Line 10
+        # is the regular tax, gains included.
+        line_10 = float(law["regular_tax_before_credits"][i])
         amt = max(0, line_40 - line_10)
         assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
             amt, abs=tolerance(line_12, line_10)
@@ -445,6 +446,9 @@ def assert_matches_schedule_d_tax_worksheet(households, law):
         regular_tax = float(law["income_tax_main_rates"][i]) + float(
             law["capital_gains_tax"][i]
         )
+        assert float(law["regular_tax_before_credits"][i]) == pytest.approx(
+            regular_tax, abs=tolerance(line_1)
+        ), (i, h)
         if line_1 <= 0:
             assert regular_tax == 0, (i, h)
             continue
@@ -458,10 +462,9 @@ def assert_matches_schedule_d_tax_worksheet(households, law):
                 assert float(law[model_line][i]) == pytest.approx(
                     worksheet[worksheet_line], abs=tolerance(line_1)
                 ), (i, h, model_line)
-        # Line 45. The model does not take the smaller of lines 45 and 46,
-        # which differ only when a little gain taxed at 15 percent sits where
-        # the regular rate is 12 percent.
-        assert regular_tax == pytest.approx(worksheet[45], abs=tolerance(line_1)), (
+        # Line 47, the smaller of lines 45 and 46. They differ when a little
+        # gain taxed at 15 percent sits where the regular rate is 12 percent.
+        assert regular_tax == pytest.approx(worksheet[47], abs=tolerance(line_1)), (
             i,
             h,
             worksheet,
@@ -483,9 +486,9 @@ def assert_matches_schedule_d_tax_worksheet(households, law):
         assert float(law["amt_base_tax"][i]) == pytest.approx(
             line_39, abs=tolerance(line_12)
         ), (i, h)
-        # Line 11, with line 10 the worksheet's regular tax (line 45, as
+        # Line 11, with line 10 the worksheet's regular tax (line 47, as
         # above) and no foreign tax credit.
-        amt = max(0, line_40 - worksheet[45])
+        amt = max(0, line_40 - worksheet[47])
         assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
             amt, abs=tolerance(line_12, line_1)
         ), (i, h)
@@ -514,6 +517,11 @@ def assert_schedule_d_properties(households, law):
         ]
     )
     assert np.array_equal(line_21[plain], line_14[plain])
+    # Line 47 is never more than line 46, the tax on all taxable income at the
+    # regular rates (26 U.S.C. 1(h)(1), "shall not exceed").
+    regular_tax = law["regular_tax_before_credits"].astype(float)
+    line_46 = law["tax_on_taxable_income_at_main_rates"].astype(float)
+    assert (regular_tax <= line_46 + tol).all()
 
 
 # ---------------------------------------------------------------------------

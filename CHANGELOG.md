@@ -1,3 +1,102 @@
+## [2.29.12] - 2026-10-06
+
+### Fixed
+
+- Cap the regular tax at the tax on all taxable income at the ordinary rates (26 U.S.C. 1(h)(1), Schedule D Tax Worksheet line 47), and make regular_tax_before_credits, which Form 6251 line 10 uses, the regular tax the model charges (income_tax_main_rates plus capital_gains_tax) instead of a second worksheet computation. regular_tax_before_credits now includes the capital gains tax.
+
+
+## [2.29.11] - 2026-10-06
+
+### Fixed
+
+- Load parameter references that sat outside metadata, add a code-health test that every variable, reform and parameter reference entry is a single bare URL, and correct Arkansas DFA #page anchors that pointed at the wrong booklet or form page.
+- Program registry LIHEAP fixes: DC LIHEAP now points at `dc_liheap_payment` (`dc_liheap` does not exist); Riverside County LIHEAP's parameter prefix is `gov.local.ca.riv.cap.liheap`; the Oregon LIHEAP entry, which had no code on main or open PR, is removed; DC, Massachusetts and Illinois gain parameter prefixes; and Texas CEAP's note gives the SMI limit's actual years. A new registry test checks that every listed variable and parameter prefix exists.
+
+
+## [2.29.10] - 2026-10-06
+
+### Changed
+
+- List casetext.com in the known-dead reference URL guard so its links cannot return.
+
+### Fixed
+
+- Keep tax unit dependents' above-the-line deductions (the deductible part of self-employment tax, self-employed health insurance and retirement plans, IRA contributions, early withdrawal penalties, educator expenses and alimony paid) off the filer's AGI, Social Security and unemployment MAGIs, per-person AGI and student loan interest MAGI, and off the Missouri, Massachusetts, Minnesota property tax refund and Medicaid incomes built from them. Employer adoption assistance and education savings bond interest stay on the filer's return wherever they are recorded. A dependent's own deductions now reduce the dependent's Medicaid AGI, Massachusetts gross income no longer subtracts dependents' business losses, and Mississippi subtracts each person's own self-employed health insurance and retirement plan deductions instead of the tax unit's total for every member.
+- Michigan household resources net business and rental income within MI-1040CR lines 16 and 17 before flooring each total at zero, count only the claimant's and spouse's business and rental items on those two lines (MCL 206.508(3)), count estate and trust income and Form 4797 ordinary gains on line 16, and no longer subtract business, rental or capital losses again as Schedule 1 adjustments on line 30.
+- Fix the Arizona property tax credit Schedule 2 thresholds, which were each one dollar low: a claimant living with others with household income of exactly $2,500, $2,650, ..., $5,500 got the next band's amount ($5,500 got none) instead of the ARS 43-1072(B)(2) amount.
+- Net collectibles loss, the net short-term capital loss and the long-term capital loss carryover against 28 percent rate gain, and the rest against unrecaptured section 1250 gain, per 26 U.S.C. 1(h)(4) and 1(h)(6), through new inputs for those amounts before netting; amounts entered as reported on Schedule D lines 18 and 19 pass through unchanged.
+
+
+## [2.29.9] - 2026-10-06
+
+### Fixed
+
+- Limit the non-refundable Child Tax Credit by the actual tax liability, SALT deduction included (26 U.S.C. 26(a); Schedule 8812 Credit Limit Worksheet A, line 1), instead of a recomputation without SALT that applied or not depending on which variables were calculated first; and make the itemization, Delaware and Virginia EITC, Idaho aged or disabled, Missouri TANF caretaker and Medicaid SSI-supplement comparison branches calculate under their overridden inputs even when the simulation has already calculated those inputs, including variables it was given as inputs only for another year.
+
+
+## [2.29.8] - 2026-10-06
+
+### Fixed
+
+- Stop inferring a person input as a tax unit dependent (such as an elderly parent or adult child) as the tax unit head or spouse; the oldest adult not input as a dependent is now the head, and the next oldest the spouse.
+
+
+## [2.29.7] - 2026-10-06
+
+### Fixed
+
+- Net capital gain distributions against Schedule D capital losses before the 26 U.S.C. 1211(b) $3,000 loss limit in adjusted gross income, net investment income, loss-limited capital gains (Michigan, Mississippi, Delaware and Georgia), a dependent's Social Security modified AGI and the capital gain tax worksheet test, and net spouses' gains and losses on a joint return.
+
+
+## [2.29.6] - 2026-10-06
+
+### Changed
+
+- Make `make test` run the same batched suites as CI, one bounded subprocess at a time, instead of the whole policy tree in one `policyengine-core test` process, and document the safe local invocation.
+
+### Fixed
+
+- Fixed the SPM county input check to judge each simulation branch by the `county_fips` that branch itself reads. An integer county set only on a branch is now rejected in that branch (it was accepted), a branch that corrects its county to text is no longer rejected for its parent's input, and neither changes what the parent simulation accepts.
+- Add the foreign earned income excluded under 26 U.S.C. 911(a)(1) to modified adjusted gross income for the net investment income tax, as 26 U.S.C. 1411(d) requires, through a new niit_magi_section_911_addition variable. It defaults to foreign_earned_income_exclusion; a filer with housing amounts or itemized deductions disallowed under section 911(d)(6) can enter the Form 8960 worksheet amount directly.
+
+
+## [2.29.5] - 2026-10-06
+
+### Fixed
+
+- A tax bracket above an infinite threshold now adds nothing, instead of NaN, to the tax and to the taxable income taxed below 25 percent. The additional_tax_bracket contrib reform ships brackets 7 and 8 with infinite thresholds, so until a user set bracket 7 its income_tax_main_rates and regular_tax_before_credits were NaN for every household; a reform that set any of the baseline schedule's first six thresholds to infinity hit the same NaN.
+- Keyed the IRS SOI AGI-by-size calibration amounts to 2020, the tax year of the IRS SOI Table 1.1 values they hold, instead of 2015, where uprating had put the 2020 amounts 40% above the published table and every later year 40% above its correctly uprated value; and corrected the source citations for the SOI AGI and return-count scales.
+
+
+## [2.29.4] - 2026-10-06
+
+### Fixed
+
+- Leave changed source files out of Quick Feedback coverage when none of their mapped tests run there (deferred slow directories or a broad change narrowed to its changed tests), so codecov/project no longer counts their untouched lines as a coverage drop.
+
+
+## [2.29.3] - 2026-10-06
+
+### Fixed
+
+- Count partnership self-employment earnings, not S-corporation income, as earned income for the Wisconsin married couple credit.
+
+
+## [2.29.2] - 2026-10-06
+
+### Fixed
+
+- Exempt Ohio taxable nonbusiness income equal to the exemption threshold, as ORC 5747.02(A)(3) says ("equal to or less than").
+- Add the statutory $18.695 step in Ohio's 2025 tax above $100,000 (ORC 5747.02(A)(3)(b): $2,394.32 base).
+
+
+## [2.29.1] - 2026-10-06
+
+### Changed
+
+- Move SPM simulation compatibility tests to a separate process on the existing Microsimulation runner, add timing and memory reports, reduce redundant reference-model construction, and document test-cost guidance without adding CI jobs or removing regression tests. Allow expensive test steps to stop on workflow cancellation while retaining diagnostic uploads.
+
+
 ## [2.29.0] - 2026-10-05
 
 ### Added

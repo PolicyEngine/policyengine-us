@@ -808,27 +808,26 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
     state_implementations:
-      - state: OR
-        status: in_progress
-        name: LIHEAP
-        full_name: Low Income Home Energy Assistance Program (Oregon)
       - state: DC
         status: complete
         name: DC LIHEAP
         full_name: DC Low Income Home Energy Assistance Program
-        variable: dc_liheap
+        variable: dc_liheap_payment
+        parameter_prefix: gov.states.dc.doee.liheap
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
+        parameter_prefix: gov.states.ma.doer.liheap
       - state: IL
         status: complete
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+        parameter_prefix: gov.states.il.dceo.liheap
       - state: IN
         status: partial
         name: Indiana EAP
@@ -883,7 +882,7 @@ programs:
         full_name: Texas Comprehensive Energy Assistance Program
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
-        notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+        notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
 
   # --- SSA programs ---
   - id: ssi
@@ -1724,7 +1723,7 @@ programs:
     status: complete
     coverage: Riverside County
     variable: ca_riv_liheap_eligible
-    parameter_prefix: gov.local.ca.riv.liheap
+    parameter_prefix: gov.local.ca.riv.cap.liheap
     notes: Only includes eligibility rules
 
   - id: share
