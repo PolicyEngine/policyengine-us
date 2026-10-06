@@ -1,0 +1,26 @@
+description: The Bureau of Labor Statistics publishes this December value of the Consumer Price Index for All Urban Consumers, not seasonally adjusted, from which it reports the index's December-over-December percentage change.
+values:
+  # BLS series CUUR0000SA0 (U.S. city average, all items, 1982-84=100).
+  2012-12-01: 229.601
+  2013-12-01: 233.049
+  2014-12-01: 234.812
+  2015-12-01: 236.525
+  2016-12-01: 241.432
+  2017-12-01: 246.524
+  2018-12-01: 251.233
+  2019-12-01: 256.974
+  2020-12-01: 260.474
+  2021-12-01: 278.802
+  2022-12-01: 296.797
+  2023-12-01: 306.746
+  2024-12-01: 315.605
+  2025-12-01: 324.054
+metadata:
+  unit: currency-USD
+  label: CPI-U, not seasonally adjusted, December
+  economy: false
+  reference:
+    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
+    - title: Consumer Price Index News Release - 2025 M12 Results
+      href: https://www.bls.gov/news.release/archives/cpi_01132026.htm

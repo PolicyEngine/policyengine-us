@@ -39,7 +39,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         label = "Pregnant Mothers Credit"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
+        reference = "https://www.govinfo.gov/content/pkg/BILLS-118s5256is/pdf/BILLS-118s5256is.pdf"
 
         def formula(tax_unit, period, parameters):
             p = parameters(
@@ -58,7 +58,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         definition_period = YEAR
         unit = "/1"
         label = "Pregnant mothers credit phase-in rate"
-        reference = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
+        reference = "https://www.govinfo.gov/content/pkg/BILLS-118s5256is/pdf/BILLS-118s5256is.pdf"
 
         def formula(tax_unit, period, parameters):
             income = tax_unit("adjusted_gross_income", period)
