@@ -37,7 +37,9 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
             cdcc_max = tax_unit("ny_cdcc_max", period)
             ny_rate = tax_unit("ny_cdcc_rate", period)
             federal_rate = tax_unit("ny_cdcc_federal_rate", period)
-            standard_ny_cdcc = cdcc_max * federal_rate * ny_rate
+            # Same IRC 21(e)(2) and (4) filing status gate as baseline ny_cdcc.
+            eligible = tax_unit("cdcc_filing_status_eligible", period)
+            standard_ny_cdcc = eligible * cdcc_max * federal_rate * ny_rate
 
             # Use enhanced credit if reform is in effect and income is
             # at or below the threshold

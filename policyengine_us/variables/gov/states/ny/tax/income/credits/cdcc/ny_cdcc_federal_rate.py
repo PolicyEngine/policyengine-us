@@ -15,8 +15,10 @@ class ny_cdcc_federal_rate(Variable):
 
     def formula(tax_unit, period, parameters):
         # Form IT-216 line 10 takes this decimal from the Table for line 10,
-        # based on recomputed federal AGI (IT-201 line 19a). New York does not
-        # use the federal Form 2441 rate, so the 2021 ARPA rates do not apply.
+        # based on line 9: recomputed federal AGI (IT-201 line 19a) for 2020
+        # to 2022 and federal AGI (IT-201 line 19) from 2023. We use federal
+        # AGI for all years. New York does not use the federal Form 2441
+        # rate, so the 2021 ARPA rates do not apply.
         p = parameters(period).gov.states.ny.tax.income.credits.cdcc.federal_rate
         agi = tax_unit("adjusted_gross_income", period)
         steps = np.ceil(max_(0, agi - p.start) / p.increment)
