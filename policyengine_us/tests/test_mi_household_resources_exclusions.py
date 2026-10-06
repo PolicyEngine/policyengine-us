@@ -25,6 +25,9 @@ So for every household:
    most $300, and when they were positive they rise by the change in
    winnings over $300.
 3. The same holds for gifts.
+4. A reform that drops the self-employed health insurance deduction from the
+   federal list moves those premiums from line 30 to line 31 and leaves
+   household resources unchanged.
 
 The households have a head, an optional spouse and an optional dependent, who
 may be self-employed and pay premiums. SSI and the Family Independence
@@ -35,6 +38,9 @@ the household's absolute amounts, as in test_mi_household_resources_losses.py.
 
 import numpy as np
 import pytest
+
+from policyengine_core.periods import instant
+from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 
@@ -210,6 +216,67 @@ def test_self_employed_premiums_subtracted_once():
         for p in members(h):
             p["is_self_employed"] = p["self_employment_income"] > 0
     assert_premiums_subtracted_once(households)
+
+
+def without_self_employed_health_insurance_ald():
+    """A reform that removes the self-employed health insurance deduction
+    from gov.irs.ald.deductions."""
+
+    class reform(Reform):
+        def apply(self):
+            def modify(parameters):
+                deductions = parameters.gov.irs.ald.deductions
+                values = [
+                    d
+                    for d in deductions(f"{YEAR}-01-01")
+                    if d != "self_employed_health_insurance_ald"
+                ]
+                deductions.update(
+                    start=instant(f"{YEAR}-01-01"),
+                    stop=instant(f"{YEAR}-12-31"),
+                    value=values,
+                )
+                return parameters
+
+            self.modify_parameters(modify)
+
+    return reform
+
+
+def test_premiums_move_to_line_31_without_the_federal_deduction():
+    """Without the federal deduction, line 30 no longer subtracts the
+    premiums, so line 31 does: household resources are unchanged, and the
+    premiums still come off once."""
+    households = [
+        {"head": person(self_employment_income=50_000, **{PREMIUMS: 5_000})},
+        {
+            "head": person(
+                employment_income_before_lsr=40_000,
+                self_employment_income=3_000,
+                **{PREMIUMS: 5_000},
+            )
+        },
+    ]
+    for h in households:
+        h["head"]["is_self_employed"] = True
+    situation = build_situation(households)
+    baseline = Simulation(situation=situation)
+    reformed = Simulation(
+        situation=situation, reform=without_self_employed_health_insurance_ald()
+    )
+    # The reform takes the deduction (5,000 and 3,000) out of federal AGI.
+    deduction = baseline.calculate("self_employed_health_insurance_ald", YEAR)
+    assert deduction == pytest.approx([5_000, 3_000], abs=TOLERANCE)
+    agi_change = reformed.calculate("adjusted_gross_income", YEAR) - baseline.calculate(
+        "adjusted_gross_income", YEAR
+    )
+    assert agi_change == pytest.approx(deduction, abs=TOLERANCE)
+    expected = baseline.calculate("mi_household_resources", YEAR)
+    result = reformed.calculate("mi_household_resources", YEAR)
+    assert result == pytest.approx(expected, abs=TOLERANCE)
+    # Line 33 from the form: 50,000 - 3,532.39 - 5,000 and
+    # 43,000 - 211.94 - 5,000.
+    assert result == pytest.approx([41_467.61, 37_788.06], abs=TOLERANCE)
 
 
 @pytest.mark.parametrize("name", ["gambling_winnings", "financial_assistance"])
