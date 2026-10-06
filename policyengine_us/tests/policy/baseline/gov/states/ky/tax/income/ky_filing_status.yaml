@@ -7,7 +7,7 @@
   output:
     ky_filing_status: SINGLE
 
-- name: Joint 
+- name: Joint
   period: 2023
   input:
     is_tax_unit_spouse: true
@@ -16,7 +16,7 @@
   output:
     ky_filing_status: JOINT
 
-- name: Joint 
+- name: Separated filer with no spouse in the tax unit
   period: 2023
   input:
     is_tax_unit_spouse: false
@@ -24,3 +24,106 @@
     state_code: KY
   output:
     ky_filing_status: SEPARATE
+
+- name: A separated dependent does not make a single parent file separately.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [parent, dependent]
+        american_opportunity_credit: 2_000
+        lifetime_learning_credit: 0
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: KY
+  output:
+    # KRS 141.066(1)(d) uses the IRC 7703 marital status of the filer. The
+    # parent is unmarried, so Form 740 Filing Status 1 (Single) applies.
+    ky_filing_status: SINGLE
+    ky_tuition_tax_credit_eligible: true
+    # 25% of the 2,000 federal education credit.
+    ky_tuition_tax_credit_potential: 500
+
+- name: A separated parent who files federal head of household uses Kentucky Filing Status 1.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 38
+        is_tax_unit_head: true
+        is_separated: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # IRC 7703(b) treats the parent as unmarried, so the parent files as head of household.
+    filing_status: HEAD_OF_HOUSEHOLD
+    # Form 740 instructions: Filing Status 1 (Single) covers federal head of household filers.
+    ky_filing_status: SINGLE
+    ky_tuition_tax_credit_eligible: true
+
+- name: A separated filer with only a qualifying relative files separately.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_separated: true
+      grandparent:
+        age: 78
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, grandparent]
+    households:
+      household:
+        members: [head, grandparent]
+        state_code: KY
+  output:
+    # IRC 7703(b) needs a child, so the head stays married and files separately.
+    filing_status: SEPARATE
+    ky_filing_status: SEPARATE
+    ky_tuition_tax_credit_eligible: false
+
+- name: A separated dependent does not stop a married couple filing jointly.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+        is_tax_unit_spouse: true
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: KY
+  output:
+    # Roles are inputs, so this case tests Kentucky filing status alone.
+    ky_filing_status: JOINT
+    ky_tuition_tax_credit_eligible: true
