@@ -48,6 +48,7 @@
     # KRS 141.066(1)(d) uses the IRC 7703 marital status of the filer. The
     # parent is unmarried, so Form 740 Filing Status 1 (Single) applies.
     ky_filing_status: SINGLE
+    # KRS 141.069(4) limits the tuition credit only for a married taxpayer.
     ky_tuition_tax_credit_eligible: true
     # 25% of the 2,000 federal education credit.
     ky_tuition_tax_credit_potential: 500
