@@ -15,19 +15,21 @@ runs as one vectorized simulation, twice: with the dependents' business
 inputs as drawn and with them set to zero. For every tax unit:
 
 1. The dependents' business inputs never change the filer's deduction, its
-   per-person shares, the head's and spouse's per-person amounts, the
-   Missouri business income deduction or the Iowa deduction.
-2. Conservation: the members' shares sum to the deduction, a dependent's
-   share is zero, and the members' Iowa deductions sum to Iowa's fraction of
-   the federal deduction.
-3. Differential: the deduction equals an independent numpy computation of
-   the lesser of the head's and spouse's per-person amounts and 20% of
-   taxable income less net capital gain, raised from 2026 to the 199A(i)
-   minimum on the head's and spouse's eligible QBI; Missouri's equals its
-   rate times the head's and spouse's positive QBI.
-4. Bounds: the deduction is never negative, never above 20% of taxable
-   income less net capital gain (before the minimum), and never above the
-   previous all-member sum.
+   per-person shares, the head's and spouse's per-person amounts (so the
+   loss netting is the spouses' alone), the Missouri business income
+   deduction or the Iowa deduction. This is the property main violated.
+2. Conservation: the members' shares sum to the deduction (including one
+   that comes only from the 199A(i) minimum), a dependent's share is zero,
+   and the members' Iowa deductions sum to Iowa's fraction of the federal
+   deduction.
+3. Aggregation: the deduction is the lesser of the sum of the head's and
+   spouse's per-person amounts and 20% of taxable income less net capital
+   gain, raised from 2026 to the 199A(i) minimum on their eligible QBI,
+   recomputed in numpy from the model's per-person values. Missouri's
+   deduction is its rate times the head's and spouse's positive QBI. The
+   per-person amounts themselves are pinned by the YAML cases.
+4. Bounds: the deduction is never negative, and never above 20% of taxable
+   income less net capital gain, or the minimum when that is larger.
 """
 
 import numpy as np
@@ -251,26 +253,24 @@ def _check(units, year):
 
     # 2. Conservation.
     shares = run["qualified_business_income_deduction_person"]
-    has_amounts = _unit_sum(run, filer * run["qbid_amount"]) > 0
-    np.testing.assert_allclose(
-        _unit_sum(run, shares)[has_amounts], deduction[has_amounts], atol=TOLERANCE
-    )
+    np.testing.assert_allclose(_unit_sum(run, shares), deduction, atol=TOLERANCE)
     assert (shares[~filer] == 0).all()
     is_ia = run["state"] == "IA"
     if is_ia.any():
         np.testing.assert_allclose(
-            _unit_sum(run, run["ia_qbi_deduction"])[is_ia & has_amounts],
-            (run["ia_fraction"] * deduction)[is_ia & has_amounts],
+            _unit_sum(run, run["ia_qbi_deduction"])[is_ia],
+            (run["ia_fraction"] * deduction)[is_ia],
             atol=TOLERANCE,
         )
 
-    # 3. Differential against numpy over the head and spouse.
+    # 3. Aggregation over the head and spouse, recomputed in numpy.
     p = run["p"]
     cap = p.max.rate * np.maximum(
         0, run["taxable_income_less_qbid"] - run["adjusted_net_capital_gain"]
     )
     pre_floor = np.minimum(_unit_sum(run, filer * run["qbid_amount"]), cap)
     reference = pre_floor
+    ceiling = cap
     if p.deduction_floor.in_effect:
         legacy = run["business_is_sstb"] > 0
         qbi = run["qualified_business_income"]
@@ -279,6 +279,7 @@ def _check(units, year):
         eligible = non_sstb + sstb * _applicable_rate(run)[run["unit"]]
         floor = p.deduction_floor.amount.calc(_unit_sum(run, filer * eligible))
         reference = np.maximum(pre_floor, floor)
+        ceiling = np.maximum(cap, floor)
     np.testing.assert_allclose(deduction, reference, atol=TOLERANCE)
     is_mo = run["state"] == "MO"
     positive_qbi = np.maximum(
@@ -292,9 +293,7 @@ def _check(units, year):
 
     # 4. Bounds.
     assert (deduction >= -TOLERANCE).all()
-    assert (pre_floor <= cap + TOLERANCE).all()
-    all_members = np.minimum(_unit_sum(run, run["qbid_amount"]), cap)
-    assert (pre_floor <= all_members + TOLERANCE).all()
+    assert (deduction <= ceiling + TOLERANCE).all()
 
 
 # Each example is one vectorized batch of tax units, so a few examples cover
