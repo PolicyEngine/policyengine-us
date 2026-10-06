@@ -11,10 +11,10 @@ class va_income_tax_if_claiming_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        refundable_branch = simulation.get_branch("va_refundable_eitc")
-        refundable_branch.set_input(
-            "va_claims_refundable_eitc",
+        refundable_branch = get_override_branch(
+            simulation,
+            "va_refundable_eitc",
             period,
-            np.ones((tax_unit.count,), dtype=bool),
+            {"va_claims_refundable_eitc": np.ones((tax_unit.count,), dtype=bool)},
         )
         return refundable_branch.calculate("va_income_tax", period)

@@ -39,3 +39,44 @@
     ny_yonkers_nonresident_earnings: 40_000
   output:
     ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%; nonresident term gated off
+
+# Tax Law §§ 1321 and 1340 (as last extended by Chapter 159 of 2025) authorize
+# both Yonkers taxes only for taxable years beginning before 2028. TY2027 is
+# the last year of the authorization; both taxes lapse in TY2028.
+- name: Yonkers resident pays the surcharge in 2027, the last authorized year
+  period: 2027
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%
+
+- name: Yonkers resident surcharge lapses in 2028
+  period: 2028
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 0  # Tax Law § 1321: taxable years before 2028 only
+
+- name: Yonkers nonresident pays the earnings tax in 2027, the last authorized year
+  period: 2027
+  input:
+    state_code: NY
+    in_yonkers: false
+    ny_income_tax: 1_000
+    ny_yonkers_nonresident_earnings: 40_000
+  output:
+    ny_yonkers_income_tax: 200  # 40,000 * 0.5%
+
+- name: Yonkers nonresident earnings tax lapses in 2028
+  period: 2028
+  input:
+    state_code: NY
+    in_yonkers: false
+    ny_income_tax: 1_000
+    ny_yonkers_nonresident_earnings: 40_000
+  output:
+    ny_yonkers_income_tax: 0  # Tax Law § 1340: taxable years before 2028 only

@@ -7,10 +7,10 @@ class is_medicare_eligible(Variable):
     label = "Person is eligible for Medicare"
     definition_period = YEAR
     documentation = (
-        "CMS, Original Medicare (Part A and B) Eligibility and Enrollment"
-        "https://www.cms.gov/medicare/enrollment-renewal/health-plans/original-part-a-b"
-        "Above link includes the following text:"
-        "  Part A coverage begins the month the individual turns age 65"
+        "CMS, Original Medicare (Part A and B) Eligibility and Enrollment\n"
+        "https://www.cms.gov/medicare/enrollment-renewal/health-plans/original-part-a-b\n"
+        "Above link includes the following text:\n"
+        "  Part A coverage begins the month the individual turns age 65\n"
         "Only the age-65 and 24-month SSDI routes are modeled. The immediate "
         "entitlement routes for ALS (42 U.S.C. 426(h)) and ESRD "
         "(42 U.S.C. 426-1) are not, as the model has no inputs for those "
