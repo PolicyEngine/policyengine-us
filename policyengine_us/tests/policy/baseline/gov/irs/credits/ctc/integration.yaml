@@ -532,12 +532,14 @@
     ctc: 3_500  # 3000 for 10-year-old + 500 for 18-year-old (ODC)
     ctc_adult_individual_maximum: [0, 0, 500]  # ODC for 18-year-old under ARPA
 
-# The two cases below have zero taxable income, so the Foreign Earned Income
-# Tax Worksheet (Form 1040 line 16), which applies section 911(f), is skipped
-# and the tax is $0; the first case in this file has a Form 2555 filer with
-# positive taxable income. non_refundable_ctc is the credit before the section
-# 26(a) limit; the limited amount is income_tax_capped_non_refundable_credits
-# (Schedule 8812 line 14, here $0).
+# Both cases below have zero taxable income and $0 of tax before credits. For
+# the Form 2555 filer, the Foreign Earned Income Tax Worksheet (Form 1040 line
+# 16), which applies section 911(f), is skipped when taxable income is zero;
+# the first case in this file has a Form 2555 filer with positive taxable
+# income.
+# non_refundable_ctc is the credit before the section 26(a) limit; the limited
+# amount is income_tax_capped_non_refundable_credits, which equals Schedule
+# 8812 line 14 here because the CTC is the only non-refundable credit ($0).
 - name: Head of household with two children and a section 911 exclusion gets no additional child tax credit in 2025.
   period: 2025
   absolute_error_margin: 0.01
