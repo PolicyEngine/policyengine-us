@@ -495,7 +495,8 @@
     # Line A: wages 3,000 (column 1).
     # Line D: (4,000) limited to (1,500) (column 1) + 2,000 (column 2) = 500.
     # Line J: 3,000 + 500 = 3,500.
-    # Federal AGI would net the return first: 3,000 + 2,000 - 3,000 = 2,000.
+    # The federal model's AGI is 3,000 + 2,000 - 3,000 = 2,000 (netting the
+    # return's gains and losses first would give 1,000); neither is line D.
     az_property_tax_credit_income: 3_500
     # Line 11b: Schedule 2, 3,401 - 3,550 -> 345.
     # Line 13: 750. Line 15: smaller of 345 and 750.
@@ -588,3 +589,250 @@
     # Line 11b: Schedule 2, 0 - 2,500 -> 502.
     # Line 13: 750. Line 15: smaller of 502 and 750.
     az_property_tax_credit: 502
+
+# Losses beyond the member limit with tax-exempt income. Federal AGI deducts
+# up to 3,000 of capital loss, which would offset the tax-exempt interest and
+# pensions household income adds; line D allows (1,500).
+- name: A loss beyond the limit does not offset tax-exempt interest
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        tax_exempt_interest_income: 5_500
+        long_term_capital_gains: -3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line B: tax-exempt interest 5,500.
+    # Line D: net loss (3,000), limited to (1,500).
+    # Line J: 5,500 - 1,500 = 4,000. Federal AGI would give 5,500 - 3,000.
+    az_property_tax_credit_income: 4_000
+    # Line 11a: Schedule 1 pays nothing at 3,751 or more.
+    az_property_tax_credit: 0
+
+- name: A loss beyond the limit with taxable and tax-exempt pensions
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 1_500
+        tax_exempt_public_pension_income: 3_000
+        long_term_capital_gains: -3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line D: net loss (3,000), limited to (1,500).
+    # Line E: pensions 1,500 + 3,000 = 4,500.
+    # Line J: 4,500 - 1,500 = 3,000.
+    az_property_tax_credit_agi: 0
+    az_property_tax_credit_income: 3_000
+    # Line 11a: Schedule 1, 2,951 - 3,050 -> 212.
+    # Line 13: 750. Line 15: smaller of 212 and 750.
+    az_property_tax_credit: 212
+
+- name: A dependent's loss beyond the limit does not offset the claimant's interest
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        tax_exempt_interest_income: 7_100
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line B: column 1 tax-exempt interest 7,100.
+    # Line D: column 3 net loss (3,000), limited to (1,500).
+    # Line J: 7,100 - 1,500 = 5,600.
+    az_property_tax_credit_dependent_income: -1_500
+    az_property_tax_credit_income: 5_600
+    # Line 11b: Schedule 2 pays nothing at 5,501 or more.
+    az_property_tax_credit: 0
+
+# Capital gain distributions are long-term capital gains (26 U.S.C.
+# 852(b)(3)(B)), so they combine with the member's other gains and losses on
+# line D before the (1,500) limit.
+- name: Capital gain distributions net against the member's capital loss
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        non_sch_d_capital_gains: 1_000
+        long_term_capital_gains: -4_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line A: wages 4,000.
+    # Line D: distributions 1,000 + net loss (4,000) = (3,000), limited to
+    # (1,500).
+    # Line J: 4,000 - 1,500 = 2,500. Federal AGI is 4,000 + 1,000 - 3,000.
+    adjusted_gross_income: 2_000
+    az_property_tax_credit_income: 2_500
+    # Line 11a: Schedule 1, 2,451 - 2,550 -> 323.
+    # Line 13: 750. Line 15: smaller of 323 and 750.
+    az_property_tax_credit: 323
+
+- name: A dependent's capital gain distributions count once on line D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 3_400
+        non_sch_d_capital_gains: 1_000
+        long_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line A: column 3 wages 3,400.
+    # Line D: column 3 distributions 1,000 + net loss (4,000) = (3,000),
+    # limited to (1,500).
+    # Line J: 3,400 - 1,500 = 1,900.
+    az_property_tax_credit_dependent_income: 1_900
+    az_property_tax_credit_income: 1_900
+    # Line 11b: Schedule 2, 0 - 2,500 -> 502. Line 13: 750.
+    az_property_tax_credit: 502
+
+# Line G: estate and trust income counts, and line F nets a rental loss.
+- name: Estate income and a rental loss with tax-exempt interest
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        estate_income: 2_000
+        rental_income: -1_000
+        tax_exempt_interest_income: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line B: tax-exempt interest 3,000. Line F: rent loss (1,000).
+    # Line G: estate income 2,000.
+    # Line J: 3,000 - 1,000 + 2,000 = 4,000.
+    az_property_tax_credit_income: 4_000
+    # Line 11a: Schedule 1 pays nothing at 3,751 or more.
+    az_property_tax_credit: 0
+
+# Federal AGI's capital amounts are swapped for line D only where AGI holds
+# them, so a reform that changes federal AGI's capital treatment leaves line D
+# whole.
+- name: Line D is unchanged when federal AGI takes no capital loss deduction
+  period: 2025
+  input:
+    # The 2025 above-the-line deductions without loss_ald.
+    gov.irs.ald.deductions: [self_employment_tax_ald, student_loan_interest_ald, early_withdrawal_penalty, alimony_expense_ald, educator_expense, health_savings_account_ald, self_employed_health_insurance_ald, self_employed_pension_contribution_ald, traditional_ira_contributions, qualified_adoption_assistance_expense, us_bonds_for_higher_ed, specified_possession_income, puerto_rico_income]
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        long_term_capital_gains: -5_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI: wages 4,000, with no capital loss deducted.
+    adjusted_gross_income: 4_000
+    # Line A: 4,000. Line D: (5,000) limited to (1,500). Line J: 2,500.
+    az_property_tax_credit_income: 2_500
+    # Line 11a: Schedule 1, 2,451 - 2,550 -> 323. Line 13: 750.
+    az_property_tax_credit: 323
+
+- name: Line D is unchanged when the federal loss deduction is zero
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 4_000
+        long_term_capital_gains: -5_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        loss_ald: 0
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 4_000
+    # Line A: 4,000. Line D: (5,000) limited to (1,500). Line J: 2,500.
+    az_property_tax_credit_income: 2_500
+    # Line 11a: Schedule 1, 2,451 - 2,550 -> 323. Line 13: 750.
+    az_property_tax_credit: 323
+
+- name: Gains left out of federal gross income still count on line D
+  period: 2025
+  input:
+    # ARS 43-1072(H)(6)(b) adds capital gains excluded from adjusted gross
+    # income. The 2025 gross income sources without capital_gains.
+    gov.irs.gross_income.sources: [irs_employment_income, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income]
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 0
+    # Line D: gain 3,000. Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    # Line 11a: Schedule 1, 2,951 - 3,050 -> 212. Line 13: 750.
+    az_property_tax_credit: 212

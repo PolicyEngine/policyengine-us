@@ -19,9 +19,10 @@ Invariants, checked on a seeded sample of Arizona tax units (some with a child
 dependent who has income) whose members' net capital gains run from well below
 -$1,500 to large gains, including units whose line J is negative:
 
-1. Differential: the model equals an independent line A + B + D + E sum over
-   every member from Form 140PTC Part 1, with Social Security excluded and
-   each member's line D floored at -$1,500.
+1. Differential: the model equals an independent line A + B + D + E + F sum
+   over every member from Form 140PTC Part 1, with Social Security excluded,
+   rental losses netted (A.A.C. R15-2C-502(C)(2)) and each member's line D,
+   capital gain distributions included, floored at -$1,500.
 2. Counted once: adding d to a member's long-term gains changes household
    income by exactly the change in that member's line D, which is d when the
    member's net gain stays at or above -$1,500. The credit never rises.
@@ -72,6 +73,16 @@ def _capital_gains(rng: np.random.Generator, can_be_large: bool) -> tuple:
     )
 
 
+def _distributions(rng: np.random.Generator) -> float:
+    """Capital gain distributions reported without Schedule D, for some members."""
+    return round(rng.uniform(0, 800), 2) if rng.random() < 0.25 else 0.0
+
+
+def _rental_income(rng: np.random.Generator) -> float:
+    """Net rent and royalty income or loss (Form 140PTC line F), for some members."""
+    return round(rng.uniform(-3_000, 3_000), 2) if rng.random() < 0.2 else 0.0
+
+
 def _sample_units(rng: np.random.Generator) -> list:
     units = []
     for _ in range(N):
@@ -91,6 +102,8 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
                     "long_term_capital_gains": long_term,
                     "short_term_capital_gains": short_term,
+                    "non_sch_d_capital_gains": _distributions(rng),
+                    "rental_income": _rental_income(rng),
                     "taxable_private_pension_income": float(
                         rng.choice([0, round(rng.uniform(0, 3_000), 2)])
                     ),
@@ -119,6 +132,8 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "qualified_dividend_income": round(rng.uniform(0, 1_500), 2),
                     "long_term_capital_gains": long_term,
                     "short_term_capital_gains": short_term,
+                    "non_sch_d_capital_gains": _distributions(rng),
+                    "rental_income": _rental_income(rng),
                     "taxable_private_pension_income": 0.0,
                     "tax_exempt_public_pension_income": 0.0,
                     "social_security_survivors": float(
@@ -135,6 +150,8 @@ def _sample_units(rng: np.random.Generator) -> list:
                     "employment_income",
                     "taxable_interest_income",
                     "qualified_dividend_income",
+                    "non_sch_d_capital_gains",
+                    "rental_income",
                     "taxable_private_pension_income",
                 ]:
                     member[key] = 0.0
@@ -189,7 +206,13 @@ def _situation(units: list) -> dict:
 
 
 def _net_gain(member: dict) -> float:
-    return member["long_term_capital_gains"] + member["short_term_capital_gains"]
+    # Capital gain distributions are long-term capital gains (26 U.S.C.
+    # 852(b)(3)(B)), combined with the member's other gains and losses.
+    return (
+        member["long_term_capital_gains"]
+        + member["short_term_capital_gains"]
+        + member["non_sch_d_capital_gains"]
+    )
 
 
 def _line_d(member: dict) -> float:
@@ -213,9 +236,11 @@ def _form_140ptc_line_j(units: list) -> np.ndarray:
                 m["taxable_private_pension_income"]
                 + m["tax_exempt_public_pension_income"]
             )
+            # A rental loss counts in full (A.A.C. R15-2C-502(C)(2)).
+            line_f = m["rental_income"]
             # Social Security benefits are not income for the credit. Every
             # member counts, dependent or not (A.A.C. R15-2C-502(A)(2), (B)).
-            total += line_a + line_b + _line_d(m) + line_e
+            total += line_a + line_b + _line_d(m) + line_e + line_f
         totals.append(total)
     return np.array(totals)
 
@@ -231,22 +256,35 @@ def test_sample_covers_the_loss_limit_and_negative_line_j():
     beyond_limit = [m for m in members if _net_gain(m) < -MEMBER_LOSS_LIMIT]
     assert len(beyond_limit) >= 20
     assert any(m["role"] == "dependent" for m in beyond_limit)
-    # Units where federal AGI's capital gains and losses (non-dependents' net
-    # gains, less losses limited to $3,000 per return) differ from line D.
-    federal = np.array(
-        [
-            sum(
-                max(0, _net_gain(m))
-                for m in unit["members"]
-                if m["role"] != "dependent"
-            )
-            - min(3_000, sum(max(0, -_net_gain(m)) for m in unit["members"]))
-            for unit in UNITS
-        ]
-    )
+
+    # Units where federal AGI's capital gains and losses (non-dependents'
+    # positive gains and distributions, less their losses limited to $3,000
+    # per return) differ from every member's line D.
+    def federal_capital(unit: dict) -> float:
+        filers = [m for m in unit["members"] if m["role"] != "dependent"]
+        gains = sum(
+            max(0, m["long_term_capital_gains"] + m["short_term_capital_gains"])
+            + m["non_sch_d_capital_gains"]
+            for m in filers
+        )
+        losses = sum(
+            max(0, -(m["long_term_capital_gains"] + m["short_term_capital_gains"]))
+            for m in filers
+        )
+        return gains - min(3_000, losses)
+
+    federal = np.array([federal_capital(unit) for unit in UNITS])
     line_d = np.array([sum(_line_d(m) for m in unit["members"]) for unit in UNITS])
     assert (np.abs(federal - line_d) > 0.01).sum() >= 20
     assert (LINE_J < 0).sum() >= 3
+    # Distributions alongside a net capital loss, and rental losses, including
+    # dependents'.
+    assert any(
+        m["non_sch_d_capital_gains"] > 0
+        and m["long_term_capital_gains"] + m["short_term_capital_gains"] < 0
+        for m in members
+    )
+    assert any(m["rental_income"] < 0 for m in members if m["role"] == "dependent")
 
 
 def test_household_income_matches_form_140ptc_lines():
@@ -327,6 +365,7 @@ def test_credit_uses_zero_for_negative_household_income():
 
 
 def test_income_does_not_read_preferential_rate_amount():
+    base = Simulation(situation=_situation(UNITS))
     sim = Simulation(situation=_situation(UNITS))
     rng = np.random.default_rng(SEED + 1)
     sim.set_input(
@@ -334,5 +373,8 @@ def test_income_does_not_read_preferential_rate_amount():
         YEAR,
         rng.uniform(0, 50_000, len(UNITS)),
     )
-    income = sim.calculate("az_property_tax_credit_income", YEAR)
-    np.testing.assert_allclose(income, LINE_J, atol=0.01)
+    np.testing.assert_allclose(
+        sim.calculate("az_property_tax_credit_income", YEAR),
+        base.calculate("az_property_tax_credit_income", YEAR),
+        atol=0.01,
+    )

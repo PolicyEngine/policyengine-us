@@ -16,9 +16,10 @@ class az_property_tax_credit_agi(Variable):
         "unemployment is not removed. Unlike regular Arizona income tax, this does "
         "NOT exclude pension income, capital gains, or Arizona exemptions. "
         "Capital gains and losses are each member's Form 140PTC line D amount, with "
-        "a net loss limited per member, instead of federal AGI's net capital gain "
-        "less a capital loss limited per return. Covers members who are not "
-        "dependents, as federal AGI does, and can be negative."
+        "a net loss limited per member, in place of the capital gains and capital "
+        "loss deduction that federal AGI holds. Dependents' income, including their "
+        "line D amounts, is in az_property_tax_credit_dependent_income. Can be "
+        "negative."
     )
     reference = [
         "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072
@@ -55,22 +56,39 @@ class az_property_tax_credit_agi(Variable):
         # - US Government interest should be INCLUDED per ITR 12-1 item (2)
         # - Arizona exemptions (aged, blind) should NOT be subtracted
 
-        # Capital gains and losses (Form 140PTC Part 1 line D). Federal AGI
-        # adds each non-dependent's net capital gain (irs_gross_income) and
-        # subtracts the capital loss deduction, limited to $3,000 per return
-        # (limited_capital_loss, part of loss_ald). A.A.C. R15-2C-502(C)(3)
-        # and ITR 12-1 item (7) instead limit each member's net loss to
-        # $1,500, so the federal amounts are replaced by each member's line D
-        # amount. Dependents' line D amounts are in
-        # az_property_tax_credit_dependent_income, with their other income.
+        # Capital gains and losses (Form 140PTC Part 1 line D). A.A.C.
+        # R15-2C-502(C)(3) and ITR 12-1 item (7) count each member's net
+        # capital gain or loss, with a net loss limited to $1,500 for each
+        # member. Federal AGI instead adds each non-dependent's positive
+        # capital gains (irs_gross_income) and subtracts a capital loss
+        # deduction limited per return (limited_capital_loss, within
+        # loss_ald). Those federal amounts are taken out and each
+        # non-dependent's line D amount is put in. Only what federal AGI
+        # actually holds is taken out: a reform that drops a source from
+        # gross income or the loss deduction from the above-the-line list
+        # leaves nothing to reverse. Line D still counts gains left out of
+        # federal AGI, as ARS 43-1072(H)(6)(b) adds them back.
+        p = parameters(period).gov.irs
         person = tax_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
-        federal_capital_gains = tax_unit.sum(
-            ~is_dependent * max_(0, person("capital_gains", period))
-        )
-        federal_capital_loss = tax_unit("limited_capital_loss", period)
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        gross_income_sources = p.gross_income.sources
+        capital_gains_in_agi = 0
+        for source in ["capital_gains", "non_sch_d_capital_gains"]:
+            if source in gross_income_sources:
+                capital_gains_in_agi += max_(0, person(source, period))
+        federal_capital_gains = tax_unit.sum(not_dependent * capital_gains_in_agi)
+        if "loss_ald" in p.ald.deductions:
+            # loss_ald is the business loss allowed under section 461(l) plus
+            # limited_capital_loss, so it covers the capital part unless
+            # loss_ald itself is replaced.
+            federal_capital_loss = min_(
+                tax_unit("limited_capital_loss", period),
+                tax_unit("loss_ald", period),
+            )
+        else:
+            federal_capital_loss = 0
         line_d = tax_unit.sum(
-            ~is_dependent * person("az_property_tax_credit_capital_gains", period)
+            not_dependent * person("az_property_tax_credit_capital_gains", period)
         )
 
         # Not floored at zero: household income (Form 140PTC line J) can be

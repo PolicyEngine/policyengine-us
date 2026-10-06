@@ -19,6 +19,7 @@ class az_property_tax_credit_dependent_income(Variable):
     reference = [
         "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072(H)(4)-(6), (I)
         "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R15-2C-502",
+        "https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2012_itr12-1.pdf#page=2",
         "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTCi.pdf#page=4",
     ]
     defined_for = StateCode.AZ
@@ -42,8 +43,13 @@ class az_property_tax_credit_dependent_income(Variable):
         income = 0
         for source in sources:
             # ARS 43-1072(I): Social Security benefits are not income.
-            # Capital gains and losses are added below as line D.
-            if source in ("taxable_social_security", "capital_gains"):
+            # Capital gains and losses, including capital gain distributions,
+            # are added below as line D.
+            if source in (
+                "taxable_social_security",
+                "capital_gains",
+                "non_sch_d_capital_gains",
+            ):
                 continue
             income += add(person, period, [source])
         # Form 140PTC line D: a dependent is a household member like any
