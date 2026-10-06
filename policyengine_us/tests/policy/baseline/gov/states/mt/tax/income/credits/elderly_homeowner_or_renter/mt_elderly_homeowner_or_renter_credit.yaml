@@ -223,3 +223,34 @@
     # Same household, larger exclusion ($12,600) leaves a smaller expected
     # contribution, so the credit is higher: $539.67.
     mt_elderly_homeowner_or_renter_credit: 539.67
+
+- name: 2023 Form 2EC worked case, a capital loss does not reduce gross household income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -3_000
+        social_security_retirement: 10_000
+        real_estate_taxes: 2_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 1 federal AGI 17_000 (Social Security untaxed: 17_000 + 5_000 is
+    # under the 25_000 base); line 5 untaxed Social Security 10_000; line 9
+    # losses 3_000; line 10 gross household income 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+    # Line 12 = 30_000 - 12_600 = 17_400; line 13 multiplier 0.05;
+    # line 14 = 870.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 870
+    # Line 18 = 2_000; line 19 = 1_130; line 20 = min(1_130, 1_150);
+    # line 21 = 100% (under 35_000); line 22 = 1_130.
+    mt_elderly_homeowner_or_renter_credit: 1_130

@@ -1,8 +1,11 @@
 description: Montana counts these sources as miscellaneous deductions. 
+# The child and dependent care expense deduction is also a miscellaneous
+# deduction (Form 2 Itemized Deductions Schedule, line 14). It is added
+# separately because its income limit uses the return's own Montana AGI, which
+# differs between a joint return and separate columns (Form 2441-M line 3).
 values:
   2021-01-01:
-    - mt_child_dependent_care_expense_deduction  
-    - casualty_loss_deduction  
+    - casualty_loss_deduction
   2024-01-01: []
     
 metadata:
