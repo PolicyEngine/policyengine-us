@@ -1,0 +1,1 @@
+Move citations that policyengine-core was dropping, or that sat in variable `documentation`, into `reference`: a Pell Grant value under a misspelled `refrence:` key and the URLs of 39 variables, including the doubled URL in `az_taxable_income`. Add code-health checks that catch both, and stop the reference URL checks accepting a second URL fused after a fragment `=`.
