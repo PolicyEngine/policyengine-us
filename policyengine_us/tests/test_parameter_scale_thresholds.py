@@ -273,14 +273,18 @@ def test_parameter_scales_have_no_duplicate_thresholds():
 
 
 def _mapped_threshold_tables():
+    # A rate schedule's `thresholds` node sits beside the `rates` node that
+    # `tax_at_main_rates` reads with it, and maps bracket numbers 1..N.
     return [
-        node
+        node.children["thresholds"]
         for node in system.parameters.get_descendants()
         if isinstance(node, ParameterNode)
-        and node.name.rsplit(".", 1)[-1] == "thresholds"
-        and node.children
-        and sorted(node.children)
-        == sorted(str(i) for i in range(1, len(node.children) + 1))
+        and "rates" in node.children
+        and isinstance(node.children.get("thresholds"), ParameterNode)
+        and sorted(node.children["thresholds"].children)
+        == sorted(
+            str(i) for i in range(1, len(node.children["thresholds"].children) + 1)
+        )
     ]
 
 
@@ -355,6 +359,28 @@ def test_mapped_threshold_guard_flags_repeats_and_inversions():
     ]
 
 
+def test_mapped_threshold_guard_flags_negative_infinity_repeats_and_nan():
+    table = _mapped_table(
+        {
+            1: {"SINGLE": {"2024-01-01": -math.inf}, "JOINT": {"2024-01-01": 100}},
+            2: {
+                "SINGLE": {"2024-01-01": -math.inf},
+                "JOINT": {"2024-01-01": math.nan},
+            },
+            3: {"SINGLE": {"2024-01-01": 300}, "JOINT": {"2024-01-01": 600}},
+        }
+    )
+
+    assert _mapped_threshold_errors(table) == [
+        "root.thresholds.*.SINGLE: bracket 2 threshold -inf does not exceed "
+        "bracket 1 threshold -inf at 2024-01-01",
+        "root.thresholds.*.JOINT: bracket 2 threshold nan does not exceed "
+        "bracket 1 threshold 100 at 2024-01-01",
+        "root.thresholds.*.JOINT: bracket 3 threshold 600 does not exceed "
+        "bracket 2 threshold nan at 2024-01-01",
+    ]
+
+
 def test_mapped_threshold_guard_ignores_only_parked_positive_infinity():
     def table_with_top(top):
         return _mapped_table(
@@ -420,11 +446,16 @@ def test_nan_guard_flags_nan_in_scalars_and_nested_lists():
 
 
 def test_parameter_values_are_not_nan():
-    errors = [
-        f"{parameter.name}: {error}"
+    parameters = [
+        parameter
         for parameter in system.parameters.get_descendants()
         if isinstance(parameter, Parameter)
+    ]
+    errors = [
+        f"{parameter.name}: {error}"
+        for parameter in parameters
         for error in _nan_values(parameter)
     ]
 
+    assert parameters
     assert not errors, "\n".join(errors)

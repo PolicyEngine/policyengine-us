@@ -194,15 +194,18 @@ def test_mixed_statuses_only_the_separate_row_responds(inverted_bracket_system):
 
 
 def test_shipped_additional_tax_bracket_reform_is_clamped():
-    # The contrib reform replaces both bracket loops and its parameter
-    # tree still carries the expiration projection's inverted SEPARATE
-    # thresholds (bracket 5 top 541,550 above bracket 6 top 305,875),
-    # so it must clamp too: before the fix a zero-income 2026 MFS filer
-    # owed a flat −$82,486 under this shipped reform. The reform's
-    # user-supplied extra bracket is filled as in its own yaml tests;
-    # brackets 1–6 stay at the shipped (inverted) values.
+    # The contrib reform replaces both bracket loops, so it must clamp too.
+    # Its parameter tree used to carry the expiration projection's inverted
+    # SEPARATE thresholds (bracket 5 top 541,550 above bracket 6 top
+    # 305,875), and before the clamp a zero-income 2026 MFS filer owed a flat
+    # −$82,486 under the shipped reform. The file now has the correct
+    # 270,775, so this reform recreates that inversion. The reform's
+    # user-supplied extra bracket is filled as in its own yaml tests.
     fill_extra_bracket = Reform.from_dict(
         {
+            "gov.contrib.additional_tax_bracket.bracket.thresholds.5.SEPARATE": {
+                "2026-01-01.2026-12-31": 541_550
+            },
             "gov.contrib.additional_tax_bracket.bracket.thresholds.7.SEPARATE": {
                 "2026-01-01.2026-12-31": 800_000
             },
