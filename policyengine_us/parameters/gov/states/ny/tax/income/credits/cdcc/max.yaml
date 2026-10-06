@@ -1,25 +1,28 @@
 description: New York sets this maximum CDCC based on the number of qualifying dependents.
 brackets:
   - threshold:
-      2019-01-01: 1
+      2003-01-01: 1
     amount:
-      2019-01-01: 3_000
+      2003-01-01: 3_000
   - threshold:
-      2019-01-01: 2
+      2003-01-01: 2
     amount:
-      2019-01-01: 6_000
+      2003-01-01: 6_000
   - threshold:
-      2019-01-01: 3
+      2003-01-01: 3
     amount:
-      2019-01-01: 7_500
+      2003-01-01: 6_000
+      2018-01-01: 7_500
   - threshold:
-      2019-01-01: 4
+      2003-01-01: 4
     amount:
-      2019-01-01: 8_500
+      2003-01-01: 6_000
+      2018-01-01: 8_500
   - threshold:
-      2019-01-01: 5
+      2003-01-01: 5
     amount:
-      2019-01-01: 9_000
+      2003-01-01: 6_000
+      2018-01-01: 9_000
   
 metadata:
   type: single_amount
@@ -36,3 +39,9 @@ metadata:
       href: https://www.tax.ny.gov/pdf/current_forms/it/it216_fill_in.pdf
     - title: 2025 Form IT-201-I Instructions
       href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=26
+    - title: 2003 Form IT-216, line 5 (page 1)
+      href: https://www.tax.ny.gov/pdf/2003/inc/it216_2003_fill_in.pdf#page=1
+    - title: 2017 Form IT-216, line 5 (page 1)
+      href: https://www.tax.ny.gov/pdf/2017/inc/it216_2017_fill_in.pdf#page=1
+    - title: 2018 Form IT-216, line 5 (page 1)
+      href: https://www.tax.ny.gov/pdf/2018/inc/it216_2018_fill_in.pdf#page=1

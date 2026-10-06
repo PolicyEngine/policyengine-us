@@ -290,3 +290,48 @@
     # take the credit".
     ny_cdcc_max: 0
     ny_cdcc: 0
+
+- name: 2017 three children use the 6,000 cap, before the 2018 New York limits
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2, child3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3]
+        state_code: NY
+  output:
+    # 2017 Form IT-216 line 5: "Enter the smallest of: line 3a above; or
+    # federal Form 2441, line 3; or 3,000 if one qualifying person, or 6,000
+    # if two or more qualifying persons". 2017 Form 2441 line 3: "Don't enter
+    # more than $3,000 for one qualifying person or $6,000 for two or more
+    # persons".
+    # Line 3a = 9,000; Form 2441 line 3 = 6,000; line 5 = 6,000;
+    # line 6 = 100,000; line 7 = 60,000; line 8 = 6,000;
+    # line 9 (FAGI 160,000): "43,000 - No limit .20", line 10 = .20;
+    # line 11 = 1,200; line 13 (NYAGI 160,000): "65,000 - No Limit 0.200";
+    # line 14 = 1,200 x .200 = 240.
+    ny_cdcc_max: 6_000
+    ny_cdcc: 240
