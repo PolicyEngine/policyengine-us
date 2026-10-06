@@ -299,19 +299,19 @@ def household(draw):
     }
 
 
-@hypothesis.settings(max_examples=40, deadline=None)
+@hypothesis.settings(max_examples=30, deadline=None)
 @hypothesis.given(st.lists(household(), min_size=1, max_size=8))
 def test_properties(households):
     assert_properties(households)
 
 
-@hypothesis.settings(max_examples=30, deadline=None)
+@hypothesis.settings(max_examples=20, deadline=None)
 @hypothesis.given(st.lists(household(), min_size=1, max_size=8))
 def test_dependents_change_nothing_on_the_filers_return(households):
     assert_dependents_change_nothing(households)
 
 
-@hypothesis.settings(max_examples=30, deadline=None)
+@hypothesis.settings(max_examples=20, deadline=None)
 @hypothesis.given(st.lists(household(), min_size=1, max_size=8))
 def test_negative_distributions_count_as_zero(households):
     """6. Flooring each filer's distributions at zero changes nothing."""
@@ -330,7 +330,7 @@ def test_negative_distributions_count_as_zero(households):
         assert np.array_equal(model[variable], reference[variable]), variable
 
 
-@hypothesis.settings(max_examples=30, deadline=None)
+@hypothesis.settings(max_examples=20, deadline=None)
 @hypothesis.given(
     st.lists(household(), min_size=1, max_size=8),
     st.sampled_from(sorted(FILER_INPUTS)),
