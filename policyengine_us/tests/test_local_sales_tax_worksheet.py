@@ -90,7 +90,7 @@ FOOTNOTE_2 = {
     2023: set("AL AR AZ CO GA IL KS LA MO MS NC NY SC TN UT VA".split()),
 }
 # Footnote 1: "Use the Ratio Method to determine your local sales tax
-# deduction." Footnotes 3 and 5 send California and Nevada residents with a
+# deduction" (2015-2018 add the same clause). Footnotes 3 and 5 send California and Nevada residents with a
 # larger local tax to the Ratio Method too.
 FOOTNOTE_1 = {
     2015: set("AL FL HI IA ID KS MN ND NE NM OH OK PA SD TX VT WA WI WV WY".split()),
@@ -253,8 +253,10 @@ points = st.lists(
 years = st.sampled_from(CHECKED_YEARS)
 # A fixed seed and no example database keep CI runs reproducible and leave no
 # files behind; the grid tests below cover the finite dimensions exhaustively.
+# About four examples per checked year, as when the years were 2022-2026 and
+# 2030 at 25 examples.
 HYPOTHESIS_SETTINGS = settings(
-    max_examples=25,
+    max_examples=4 * len(CHECKED_YEARS),
     deadline=None,
     derandomize=True,
     database=None,

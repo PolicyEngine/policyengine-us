@@ -84,13 +84,14 @@
 
 # 2015-2021 heading rates.
 
-- name: California with no rate input, 2015
+- name: California at 7.5%, 2015, the "No" box
   # 2015 line 3 instructions: "check the 'No' box if your combined state and
   # local general sales tax rate is 7.5000%." The 2015 heading is 7.5%.
   period: 2015
   absolute_error_margin: 0.000001
   input:
     state_code: CA
+    combined_sales_tax_rate: 0.075
   output:
     local_sales_tax_rate: 0
 

@@ -33,8 +33,10 @@ metadata:
 # The 2017 lists are from the February 2018 revision at irs-prior; the
 # original January 2018 printing has the same selector.
 # Georgia: the selector's "Dekalb County (excluding Atlanta)" row (2021-2025)
-# leaves Atlanta with the state's "any other locality" table, listed here for
-# 2021-2023 and in place/b.yaml for 2024 and 2025.
+# leaves Atlanta with the table of the state's other localities ("Any
+# locality that imposes a local sales tax" in 2021, "Any other locality that
+# imposes a local sales tax" in 2022), listed here for 2021-2023 and in
+# place/b.yaml for 2024 and 2025.
 values:
   2015-01-01:
     - "0803455"  # Arvada city, CO

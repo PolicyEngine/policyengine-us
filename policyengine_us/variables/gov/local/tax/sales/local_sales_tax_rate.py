@@ -17,7 +17,9 @@ class local_sales_tax_rate(Variable):
         "above it. The state rate comes from the official state rate files where "
         "PolicyEngine has them, and otherwise from the state table heading. The "
         "California and Nevada headings include their uniform local rates, and "
-        "there line 3 is only the part of the combined rate above 7.25% or 6.85%. "
+        "there line 3 is only the part of the combined rate above the heading: "
+        "7.5% in California in 2015 and 2016 and 7.25% from 2017, and 6.85% in "
+        "Nevada. "
         "Enter the household's local rate to use it instead."
     )
     reference = (

@@ -457,6 +457,32 @@
   output:
     local_sales_tax: 264.54
 
+- name: Beadle County, South Dakota, 2015, outside places, no local tax by default
+  # The official files give this area the bare state rate from 2022, and
+  # line 3 subtracts the official state rate, so line 3 is 0 although the
+  # 2015 heading (4%) is below that rate.
+  period: 2015
+  input:
+    state_code: SD
+    county_fips: "46005"
+    block_geoid: "460050000001000"
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: Butler County, Kansas, 2015, outside places, no local tax by default
+  # The official files give this area the bare state rate from 2022, and
+  # line 3 subtracts the official state rate, so line 3 is 0 although the
+  # 2015 heading (6.3264%) is below that rate.
+  period: 2015
+  input:
+    state_code: KS
+    county_fips: "20015"
+    block_geoid: "200150000001000"
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
 - name: California at 7.5% in 2016, the "No" box
   # 2016 line 3 instructions: "If you lived in California, check the 'No' box
   # if your combined state and local general sales tax rate is 7.5000%."
