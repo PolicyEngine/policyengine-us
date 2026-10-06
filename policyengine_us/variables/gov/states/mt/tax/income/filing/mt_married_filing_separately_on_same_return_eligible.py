@@ -9,7 +9,7 @@ class mt_married_filing_separately_on_same_return_eligible(Variable):
     defined_for = StateCode.MT
     reference = (
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.15.322",
-        "https://leg.mt.gov/bills/2021/SB0399/SB0399_3.pdf#page=31",
+        "https://docs.legmt.gov/download-ticket?ticketId=2f0614a3-8bb9-4b4e-93de-21647c203b7c#page=31",
     )
 
     def formula(person, period, parameters):

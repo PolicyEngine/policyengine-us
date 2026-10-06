@@ -1,30 +1,38 @@
 description: Louisiana caps the retirement income exemption at this amount for filers, based on age.
 
 brackets:
-  - threshold: 
+  - threshold:
       2021-01-01: 0
-    amount: 
+    amount:
       2021-01-01: 0
   - threshold:
       2001-01-01: 65
     amount:
       2001-01-01: 6_000
       2025-01-01: 12_000
+      # RIB 26-019 applies a 2.7% CPI-U multiplier (BLS reported the December
+      # 2024 to December 2025 increase as 2.7%): 12,000 * 1.027 = 12,324.
+      # Later years follow R.S. 47:44.1(A)'s annual CPI-U adjustment,
+      # computed by extend_la_cpi_u_indexed_amounts in
+      # policyengine_us/parameters/uprating_extensions.py.
+      2026-01-01: 12_324
 
 metadata:
   reference:
     - title: Louisiana statutes, RS 47:44.1 - Annual retirement or disability income; exemption from taxation (A)
       href: https://www.legis.la.gov/legis/Law.aspx?d=102133
+    - title: Louisiana Department of Revenue, Revenue Information Bulletin 26-019 (September 28, 2026), Inflation Adjustment to Standard Deduction and Retirement Income Exemption
+      href: https://dam.ldr.la.gov/lawspolicies/RIB%2026-019.pdf#page=1
     - title: 2025 Louisiana Resident Income Tax Return Instructions, What's New - Code 6E
       href: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=1
     - title: 2024 Louisiana Resident Income Tax Return
       href: https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=7
     - title: 2023 Louisiana Resident Income Tax Return Instructions, Exemption Code 06E
-      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2023)D1.pdf#page=7
+      href: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=7
     - title: 2022 Louisiana Resident Income Tax Return Instructions, Exemption Code 06E
-      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=6
+      href: https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=6
   threshold_unit: year
-  amount_unit: currency-USD  
+  amount_unit: currency-USD
   type: single_amount
   period: year
   label: Louisiana retirement income exemption cap

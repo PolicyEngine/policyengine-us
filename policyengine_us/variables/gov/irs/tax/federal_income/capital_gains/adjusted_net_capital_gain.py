@@ -7,7 +7,9 @@ class adjusted_net_capital_gain(Variable):
     label = "Adjusted net capital gain"
     unit = USD
     documentation = (
-        "The excess of net long-term capital gain over net short-term capital loss."
+        "Net capital gain other than qualified dividends, reduced by "
+        "unrecaptured section 1250 gain and 28-percent rate gain, plus "
+        "qualified dividends not elected as investment income."
     )
     definition_period = YEAR
     reference = dict(
@@ -24,13 +26,18 @@ class adjusted_net_capital_gain(Variable):
         # definition here, but it's a good enough approximation. See 26 U.S. Code § 1(h)(11)(B) for the
         # definition of 'net capital gain' for the above variable, and 26 U.S. Code § 1(h)(3) for the definition
         # of adjusted net capital gain (this variable).
-        qualified_dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
+        # Qualified dividend income as defined in paragraph (11), which
+        # excludes dividends elected as investment income (§ 1(h)(11)(D)(i)).
+        # net_capital_gain takes a Form 4952 election from the gain before
+        # the dividends, so the dividends it still holds are the smaller of
+        # the two amounts.
+        qualified_dividend_income = min_(
+            max_(0, add(tax_unit, period, ["qualified_dividend_income"])),
+            net_capital_gain,
+        )
         unrecaptured_s_1250_gain = tax_unit("unrecaptured_section_1250_gain", period)
         cg_28_pct_rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
-        net_gains_less_dividends = max_(
-            0,
-            net_capital_gain - qualified_dividend_income,
-        )
+        net_gains_less_dividends = net_capital_gain - qualified_dividend_income
         reduced_capital_gains = max_(
             net_gains_less_dividends - (unrecaptured_s_1250_gain + cg_28_pct_rate_gain),
             0,

@@ -1,7 +1,18 @@
+# The credit is the tentative tax under the 26 U.S.C. 2001(c) rate schedule on
+# the applicable exclusion amount (26 U.S.C. 2010(c)), not the exclusion amount.
+
 - name: Not deceased
   period: 2022
   input:
     is_deceased: false
+  output:
+    estate_tax_credit: 0
+
+- name: Not deceased with a deceased spousal unused exclusion amount
+  period: 2024
+  input:
+    is_deceased: false
+    deceased_spousal_unused_exclusion_amount: 5_000_000
   output:
     estate_tax_credit: 0
 
@@ -10,25 +21,73 @@
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 5_000_000
+    # 35% top rate for 2011-2012 (Pub. L. 111-312, 302(a)(2)).
+    # 155,800 + 0.35 * (5,000,000 - 500,000) = 1,730,800
+    estate_tax_credit: 1_730_800
+
+- name: Died 2012
+  period: 2012
+  input:
+    is_deceased: true
+  output:
+    # 155,800 + 0.35 * (5,120,000 - 500,000) = 1,772,800
+    estate_tax_credit: 1_772_800
+
+- name: Died 2013
+  period: 2013
+  input:
+    is_deceased: true
+  output:
+    # 40% top rate from 2013 (Pub. L. 112-240, 101(c)(1)).
+    # 345,800 + 0.40 * (5,250,000 - 1,000,000) = 2,045,800
+    estate_tax_credit: 2_045_800
 
 - name: Died 2017
   period: 2017
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 5_490_000
+    # 345,800 + 0.40 * (5,490,000 - 1,000,000) = 2,141,800
+    estate_tax_credit: 2_141_800
 
 - name: Died 2018
   period: 2018
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 11_180_000
+    # 345,800 + 0.40 * (11,180,000 - 1,000,000) = 4,417,800
+    estate_tax_credit: 4_417_800
 
 - name: Died 2024
   period: 2024
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 13_610_000
+    # 345,800 + 0.40 * (13,610,000 - 1,000,000) = 5,389,800
+    estate_tax_credit: 5_389_800
+
+- name: Died 2025
+  period: 2025
+  input:
+    is_deceased: true
+  output:
+    # 345,800 + 0.40 * (13,990,000 - 1,000,000) = 5,541,800
+    estate_tax_credit: 5_541_800
+
+- name: Died 2026
+  period: 2026
+  input:
+    is_deceased: true
+  output:
+    # 345,800 + 0.40 * (15,000,000 - 1,000,000) = 5,945,800
+    estate_tax_credit: 5_945_800
+
+- name: Died 2024 with a deceased spousal unused exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    deceased_spousal_unused_exclusion_amount: 5_000_000
+  output:
+    # Applicable exclusion amount = 13,610,000 + 5,000,000 = 18,610,000.
+    # 345,800 + 0.40 * (18,610,000 - 1,000,000) = 7,389,800
+    estate_tax_credit: 7_389_800
