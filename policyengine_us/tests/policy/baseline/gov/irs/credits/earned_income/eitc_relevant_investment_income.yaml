@@ -376,3 +376,67 @@
     # 20,000,004, so taking the child's gain out of it would give 11,951.
     eitc_relevant_investment_income: 11_950
     eitc_investment_income_eligible: true
+
+# A supplied net_capital_gains that equals the members' own gains and losses
+# in float32 adds nothing to them, so the head's and spouse's gains are summed
+# exactly rather than taking the dependents' gains out of the rounded total.
+# Intended: aggregate minus dependents is then the filers' own gains, and the
+# exact sum avoids the float32 cancellation the two cases above guard against.
+
+- name: A supplied aggregate equal to the members' gains in float32 keeps the head's own gain (rounded down)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_950
+        long_term_capital_gains: 1
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        # float32(20,000,001) = 20,000,000.
+        net_capital_gains: 20_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,950 + the head's 1. Subtracting the child's 20,000,000 from the
+    # stored 20,000,000 would give 0.
+    eitc_relevant_investment_income: 11_951
+    eitc_investment_income_eligible: false
+
+- name: A supplied aggregate equal to the members' gains in float32 keeps the head's own gain (rounded up)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_947
+        long_term_capital_gains: 3
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        # float32(20,000,003) = 20,000,004.
+        net_capital_gains: 20_000_004
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,947 + the head's 3. Subtracting the child's 20,000,000 from the
+    # stored 20,000,004 would give 4.
+    eitc_relevant_investment_income: 11_950
+    eitc_investment_income_eligible: true

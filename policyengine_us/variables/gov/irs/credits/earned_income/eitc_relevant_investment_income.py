@@ -53,7 +53,10 @@ class eitc_relevant_investment_income(Variable):
         # taken out. It counts as supplied only where it was set as an input
         # and differs from the members' own gains and losses (its adds), so an
         # abolished or stale net_capital_gains is not read as supplied. A
-        # supplied amount is stored in float32, like any input. Otherwise the
+        # supplied amount equal to the members' own gains and losses in
+        # float32 adds nothing to them: aggregate minus dependents is then the
+        # filers' own gains, which are summed exactly instead. A supplied
+        # amount is stored in float32, like any input. Otherwise the
         # head's and spouse's gains are summed directly: net_capital_gains is
         # stored in float32, and subtracting a dependent's gain from the
         # rounded total could move the filers' amount once the total passes

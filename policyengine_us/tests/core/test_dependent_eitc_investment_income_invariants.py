@@ -29,7 +29,9 @@ interest. For every tax unit:
    raises it by exactly $1,000.
 4. For tax units without dependents and without a negative distributions
    input, it equals the previous all-member formula, so leaving dependents out
-   changes nothing for them.
+   changes nothing for them. (With filer gains in the drawn range. Past about
+   $16.8 million the previous formula's float32 tax unit total could be off by
+   a few dollars, which the direct sum corrects.)
 
 Gains are entered per person, so `net_capital_gains` is computed rather than
 supplied; the YAML cases cover a supplied tax unit amount.
