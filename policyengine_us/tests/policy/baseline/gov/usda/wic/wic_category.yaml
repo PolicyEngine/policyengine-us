@@ -119,3 +119,189 @@
     age: 5
   output:
     wic_category: NONE
+
+# 7 CFR 246.2: postpartum women are "women up to six months after termination
+# of pregnancy" and breastfeeding women are "women up to one year postpartum
+# who are breastfeeding their infants", so an infant makes only its own mother
+# postpartum or breastfeeding, not a grandmother who has her own child at home.
+- name: Three generations in separate tax units, only the infant's mother is postpartum
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      grandmother_tax_unit:
+        members: [grandmother]
+      mother_tax_unit:
+        members: [mother, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, POSTPARTUM, INFANT]
+
+- name: Three generations in one tax unit, only the youngest mother is postpartum
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, POSTPARTUM, INFANT]
+
+- name: Mother living alone with her infant is postpartum
+  period: 2025
+  input:
+    people:
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [mother, infant]
+    spm_units:
+      spm_unit:
+        members: [mother, infant]
+    families:
+      family:
+        members: [mother, infant]
+    households:
+      household:
+        members: [mother, infant]
+        state_code: TX
+  output:
+    wic_category: [POSTPARTUM, INFANT]
+
+- name: Infant in a tax unit without a mother is matched to the family's youngest mother
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 47
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 22
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      adults_tax_unit:
+        members: [grandmother, mother]
+      infant_tax_unit:
+        members: [infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, POSTPARTUM, INFANT]
+
+- name: Breastfeeding mother of an infant aged 0.8 is breastfeeding, the grandmother is not
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+        is_breastfeeding: true
+      infant:
+        age: 0.8
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, BREASTFEEDING, INFANT]
+
+- name: Breastfeeding mother of an infant aged 0.2 is breastfeeding, the grandmother is not postpartum
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        own_children_in_household: 1
+        is_breastfeeding: true
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, BREASTFEEDING, INFANT]
