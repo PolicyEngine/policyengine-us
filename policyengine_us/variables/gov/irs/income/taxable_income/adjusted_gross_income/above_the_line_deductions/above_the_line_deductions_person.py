@@ -38,8 +38,8 @@ class above_the_line_deductions_person(Variable):
         "is their own person-level deductions, for their own return, other "
         "than amounts that are the filer's even when recorded on the "
         "dependent (gov.irs.ald.filer_amounts_recorded_on_dependents), which "
-        "go to the head and spouse; the dependent's losses and tax-unit-only "
-        "deductions are not modeled here."
+        "the head and spouse divide equally; the dependent's losses and "
+        "tax-unit-only deductions are not modeled here."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
@@ -59,10 +59,12 @@ class above_the_line_deductions_person(Variable):
                 amount = person(deduction, period)
                 if deduction in p.filer_amounts_recorded_on_dependents:
                     # The filer's amount even when recorded on a dependent, so
-                    # it is not on the dependent's own return. The head's and
-                    # spouse's parts take it up below, as
-                    # above_the_line_deductions includes it.
-                    amount = filer * amount
+                    # it is not on the dependent's own return. Which of the
+                    # head and spouse it belongs to is not recorded, so a
+                    # dependent's amount is divided equally between them.
+                    on_dependents = tax_unit.sum(~filer * amount)
+                    equal_share = filer_share(person, period, 0 * amount)
+                    amount = filer * amount + on_dependents * equal_share
                 total = total + amount
                 continue
             return_amount = tax_unit(deduction, period)
