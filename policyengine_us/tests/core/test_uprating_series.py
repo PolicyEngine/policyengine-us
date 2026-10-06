@@ -43,6 +43,10 @@ EXPECTED = {
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
+    "long_term_capital_loss_carryover": CAPITAL_GAINS,
+    "collectibles_gain_or_loss": CAPITAL_GAINS,
+    "section_1202_gain": CAPITAL_GAINS,
+    "unrecaptured_section_1250_gain_before_losses": CAPITAL_GAINS,
     "unrecaptured_section_1250_gain": CAPITAL_GAINS,
     "non_sch_d_capital_gains": CAPITAL_GAINS,
     "schedule_d_capital_gain_distributions": CAPITAL_GAINS,
