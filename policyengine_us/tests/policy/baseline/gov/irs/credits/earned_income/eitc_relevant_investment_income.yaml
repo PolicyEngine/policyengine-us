@@ -284,3 +284,39 @@
     adjusted_gross_income: 31_000
     # 4,328 - 15.98% x (31,000 - 30,470) = 4,328 - 84.694
     eitc: 4_243.31
+
+- name: A tax unit net capital gains input still counts
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    net_capital_gains: 12_000
+  output:
+    # A tax unit amount supplied for net_capital_gains is kept, as before.
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false
+
+- name: A supplied tax unit net capital gains amount covers every member
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 10_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied 10,000 is read as the whole unit's net gain, including the
+    # child's 3,000, which is then taken out: 10,000 - 3,000 = 7,000.
+    eitc_relevant_investment_income: 7_000
+    eitc_investment_income_eligible: true

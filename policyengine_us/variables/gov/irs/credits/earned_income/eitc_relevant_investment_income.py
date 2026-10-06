@@ -11,7 +11,9 @@ class eitc_relevant_investment_income(Variable):
         "interest, dividends, rents, passive income and capital gains are on "
         "the dependent's own return, as in irs_gross_income. The worksheet "
         "picks up a child's interest and dividends only through a Form 8814 "
-        "election (lines 2 and 4), which is not modeled."
+        "election (lines 2 and 4), which is not modeled. A net_capital_gains "
+        "amount supplied for the tax unit is read as covering every member, "
+        "before any dependent's gains and losses are taken out."
     )
     unit = USD
     definition_period = YEAR
@@ -35,8 +37,27 @@ class eitc_relevant_investment_income(Variable):
             ],
         )
         # Worksheet 1 line 5: Form 1040 line 7a, the head and spouse's
-        # Schedule D gain with capital gain distributions, or zero if a loss.
-        capital_gains = tax_unit("filer_loss_limited_net_capital_gains", period)
+        # Schedule D gain with capital gain distributions (line 13), or zero
+        # if a loss. Start from net_capital_gains so a tax unit amount
+        # supplied there is kept; it is read as covering every member, and
+        # any dependent's gains and losses are then taken out. Capital gain
+        # distributions (Form 1099-DIV box 2a) are not negative, so each
+        # filer's input is floored at zero, as in irs_gross_income.
+        person = tax_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        dependent_gains = tax_unit.sum(
+            dependent
+            * (
+                person("long_term_capital_gains", period)
+                + person("short_term_capital_gains", period)
+            )
+        )
+        distributions = tax_unit.sum(
+            ~dependent * max_(0, person("non_sch_d_capital_gains", period))
+        )
+        capital_gains = (
+            tax_unit("net_capital_gains", period) - dependent_gains + distributions
+        )
         # The model's undifferentiated rental input is treated as passive
         # rental income, consistently with its NIIT income mapping. Net the
         # passive amounts across the head and spouse before applying the zero
