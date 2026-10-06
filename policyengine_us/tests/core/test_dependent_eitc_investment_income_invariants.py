@@ -17,8 +17,7 @@ investment income inputs set to zero; and with $1,000 more of the head's
 interest. For every tax unit:
 
 1. The dependents' investment income, of any size or sign, never changes the
-   filer's
-   `eitc_relevant_investment_income`, `eitc_investment_income_eligible`,
+   filer's `eitc_relevant_investment_income`, `eitc_investment_income_eligible`,
    `eitc`, `filer_loss_limited_net_capital_gains` or AGI.
 2. Differential: `eitc_relevant_investment_income` equals an independent numpy
    computation of Worksheet 1 over the head and spouse: interest, tax-exempt
@@ -71,7 +70,8 @@ INTEREST_SHIFT = 1_000.0
 
 nonnegative = st.one_of(st.just(0.0), st.integers(1, 8_000).map(float))
 signed = st.one_of(st.just(0.0), st.integers(-12_000, 12_000).map(float))
-# $16 million to $64 million, in multiples of 16 so float32 holds them exactly.
+# Up to $64 million either way, in multiples of 16 so float32 holds them
+# exactly; a tax unit total above about $16.8 million rounds in float32.
 very_large = st.integers(-4_000_000, 4_000_000).map(lambda x: 16.0 * x)
 
 
