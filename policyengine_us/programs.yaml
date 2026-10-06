@@ -808,8 +808,9 @@ programs:
         status: in_progress
         name: South Dakota LIHEAP
         full_name: South Dakota Low Income Home Energy Assistance Program
+        variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
-        notes: Income, county, heat-in-rent and direct-payment components use the latest supported threshold rules and FY2026 matrix. Mixed-status income arithmetic remains unresolved; existing expense inputs do not identify unpaid balances or eligible billing dates. Regular heating only; historical backfills do not establish verified coverage.
+        notes: Supported wholly qualified households receive an FY2026 regular heating estimate. Vendor payments assume heating_expense reports qualifying unpaid seasonal charges; wood, coal and kerosene use the historical manual's full-payment method. Heat-in-rent assumes seven eligible months of steady tenant rent. Mixed-status arithmetic and unpriced direct fuels remain unsupported, and tribal routing and administrative verification are assumed. Current Mid thresholds and household sizes above ten rely on documented historical patterns. Historical backfills do not establish verified coverage.
       - state: OR
         status: in_progress
         name: LIHEAP

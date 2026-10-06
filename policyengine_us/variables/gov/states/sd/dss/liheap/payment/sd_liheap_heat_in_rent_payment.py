@@ -31,8 +31,9 @@ class sd_liheap_heat_in_rent_payment(Variable):
         # The fuel-neutral heat-in-rent schedule permits unknown primary fuel;
         # no separate heating bill is required. Subsidy does not disqualify a
         # positive tenant share, while zero share yields zero through the cap.
-        # This is not final eligibility or a full award: income, immigration,
-        # tribal routing, landlord verification, and prior payments remain needed.
+        # sd_liheap applies supported eligibility. This annual estimate assumes
+        # seven eligible months of steady rent and completed landlord verification;
+        # prior payments, changes in rent, and tribal routing are not observed.
         return where(
             supported_region & heat_in_rent & has_heat,
             min_(maximum, cap),

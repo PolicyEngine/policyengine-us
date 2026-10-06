@@ -1,1 +1,1 @@
-Add South Dakota LIHEAP income, income thresholds, county regions, and direct-heating and heat-in-rent payment components.
+Add South Dakota LIHEAP income, eligibility, county regions, and regular heating estimates for supported wholly qualified households, with seasonal expense assumptions and documented coverage limitations.

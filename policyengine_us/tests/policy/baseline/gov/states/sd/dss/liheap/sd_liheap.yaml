@@ -1,0 +1,113 @@
+# FY2026 matrix page 1; current application page 2; 2018 manual physical pages 30-32.
+# Vendor cases use the approved eligible-unpaid-expense assumption. Cash-fuel
+# payments carry forward the manual method; heat-in-rent assumes seven eligible months.
+- name: Case 1, vendor fuels pay the smaller of the schedule and qualifying unpaid seasonal charges.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, ELECTRICITY, ELECTRICITY, PROPANE, PROPANE, FUEL_OIL, FUEL_OIL]
+    heating_expense: [500, 2000, 500, 2000, 500, 3000, 500, 4000]
+    employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    sd_tanf: [0, 0, 0, 0, 0, 0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0, 0, 0, 0, 0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD,
+      CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_eligible: [true, true, true, true, true, true, true, true]
+    sd_liheap: [500, 880, 500, 1331, 500, 2499, 500, 2858]
+- name: Case 2, wood coal and kerosene pay the full schedule directly to the household.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [WOOD, COAL, KEROSENE]
+    heating_expense: [1, 1, 1]
+    employment_income: [0, 0, 0]
+    ssi: [0, 0, 0]
+    sd_tanf: [0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap: [742, 742, 2858]
+- name: Case 3, income changes the payment tier and final eligibility gates the award.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD, SD]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [2000, 2000, 2000, 0]
+    employment_income: [20000, 31300, 31300.01, 0]
+    ssi: [0, 0, 0, 0]
+    sd_tanf: [0, 0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0, 0]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap: [792, 792, 0, 0]
+- name: Case 4, heat-in-rent applies the regional ceiling and seven months of thirty percent tenant rent.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [UNSPECIFIED, NATURAL_GAS, ELECTRICITY, NATURAL_GAS, NONE]
+    heating_expense: [0, 0, 0, 0, 0]
+    employment_income: [0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0]
+    sd_tanf: [0, 0, 0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    rent: [1200, 6000, 6000, 0, 1200]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, HARDING_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap: [210, 800, 850, 0, 0]
+- name: Case 5, unpriced direct fuels retain unsupported zero payments despite modeled eligibility.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [SOLAR, OTHER, UNSPECIFIED]
+    heating_expense: [2000, 2000, 2000]
+    employment_income: [0, 0, 0]
+    ssi: [0, 0, 0]
+    sd_tanf: [0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0]
+    has_heating_expense: [true, true, true]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_eligible: [true, true, true]
+    sd_liheap: [0, 0, 0]
+- name: Case 6, vendor balances floor at zero and unknown regions remain unsupported.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [-100, 0, 100]
+    employment_income: [0, 0, 0]
+    ssi: [0, 0, 0]
+    sd_tanf: [0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0]
+    has_heating_expense: [true, true, true]
+    county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, UNKNOWN]
+  output:
+    sd_liheap_eligible: [true, true, true]
+    sd_liheap: [0, 0, 0]

@@ -1,0 +1,151 @@
+# ARSD 67:15:01:01 and :09; FY2026 plan sections 1.4a and 17.3.
+# Ordinary size-one annual income limit is 4 x published quarterly $7,825.
+- name: Case 1, ordinary income includes the published limit and excludes one cent above.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [2000, 2000, 2000]
+    employment_income: [0, 31300, 31300.01]
+    ssi: [0, 0, 0]
+    sd_tanf: [0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0]
+  output:
+    sd_liheap_countable_income: [0, 31300, 31300.01]
+    sd_liheap_income_limit: [31300, 31300, 31300]
+    sd_liheap_eligible: [true, true, false]
+- name: Case 2, heating responsibility permits positive tenant rent without a separate bill.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
+    heating_expense: [100, 0, 0, 0, 1000]
+    employment_income: [0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0]
+    sd_tanf: [0, 0, 0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [false, false, true, true, false]
+    rent: [0, 0, 1200, 0, 0]
+  output:
+    sd_liheap_eligible: [true, false, true, false, false]
+- name: Case 3, ordinary LIEAP uses federal qualification without SNAP-specific immigrant bars.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [SD, SD, SD, SD]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, UNDOCUMENTED]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [2000, 2000, 2000, 2000]
+    employment_income: [0, 0, 0, 0]
+    ssi: [0, 0, 0, 0]
+    sd_tanf: [0, 0, 0, 0]
+    snap:
+      2026-01: [0, 0, 0, 0]
+  output:
+    sd_liheap_eligible: [true, true, true, false]
+- name: Case 4, categorical income eligibility requires every household member to receive SNAP.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 100000
+        ssi: 0
+      child1:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+      adult2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 100000
+        ssi: 0
+      child2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      unit1:
+        members: &id001 [adult1, child1]
+        heating_type: NATURAL_GAS
+        heating_expense: 2000
+        sd_tanf: 0
+        snap:
+          2026-01: 100
+        snap_unit_size:
+          2026-01: 2
+      unit2:
+        members: &id002 [adult2, child2]
+        heating_type: NATURAL_GAS
+        heating_expense: 2000
+        sd_tanf: 0
+        snap:
+          2026-01: 100
+        snap_unit_size:
+          2026-01: 1
+    households:
+      household1:
+        members: *id001
+        state_code: SD
+      household2:
+        members: *id002
+        state_code: SD
+  output:
+    sd_liheap_countable_income: [100000, 100000]
+    sd_liheap_eligible: [true, false]
+- name: Case 5, mixed-status households return unsupported coverage rather than asserting legal denial.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      adult:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      unit:
+        members: [adult, child]
+        heating_type: NATURAL_GAS
+        heating_expense: 2000
+        sd_tanf: 0
+        snap:
+          2026-01: 0
+    households:
+      household:
+        members: [adult, child]
+        state_code: SD
+  output:
+    sd_liheap_eligible: false
+    sd_liheap: 0
+- name: Case 6, another state does not receive South Dakota eligibility.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [ND]
+    age: [40]
+    immigration_status: [CITIZEN]
+    heating_type: [NATURAL_GAS]
+    heating_expense: [2000]
+    employment_income: [0]
+    ssi: [0]
+    sd_tanf: [0]
+    snap:
+      2026-01: [0]
+  output:
+    sd_liheap_eligible: [false]
+    sd_liheap: [0]

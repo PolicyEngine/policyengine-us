@@ -42,10 +42,8 @@ class sd_liheap_base_payment(Variable):
             default=0,
         )
         # This is an ungated table ceiling, separate from heat-in-rent payments.
-        # Final income/immigration eligibility and actual unpaid charges are not
-        # applied here. Gas/electric meter dates must fall in October 1-May 15;
-        # oil/propane fills in July 1-April 30. Paid charges are not reimbursable.
-        # Annual heating_expense cannot identify balances or charge dates.
+        # sd_liheap applies supported eligibility and the approved assumption
+        # that heating_expense reports eligible unpaid seasonal vendor charges.
         # Unknown region or unpriced fuel returns an unsupported-component zero,
         # not a finding that the household is legally ineligible.
         size = spm_unit("spm_unit_size", period)
