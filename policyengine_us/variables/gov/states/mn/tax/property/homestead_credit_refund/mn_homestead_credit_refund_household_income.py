@@ -41,7 +41,10 @@ class mn_homestead_credit_refund_household_income(Variable):
             max_(0, social_security - taxable_social_security) * ~is_dependent
         )
 
-        retirement_contributions = add(
+        # Line 1 is the filer's federal AGI, which leaves out tax unit
+        # dependents, so the retirement add-backs, contributions and
+        # compensation count the head and spouse only.
+        retirement_contributions = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
@@ -54,7 +57,7 @@ class mn_homestead_credit_refund_household_income(Variable):
                 "self_employed_pension_contributions",
             ],
         )
-        retirement_additions = add(
+        retirement_additions = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
@@ -64,7 +67,7 @@ class mn_homestead_credit_refund_household_income(Variable):
                 "self_employed_pension_contributions",
             ],
         )
-        compensation = add(
+        compensation = tax_unit_non_dep_add(
             tax_unit, period, ["employment_income", "self_employment_income"]
         )
         retirement_subtraction = min_(
