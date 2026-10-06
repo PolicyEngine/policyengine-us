@@ -160,3 +160,178 @@
     # line 7: "do not include any capital losses". Wages 10_000 count; the
     # 3_000 loss does not reduce them.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [0, 10_000]
+
+- name: A household member's federal and Montana EITC count once, on their own return
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 40
+        employment_income: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC line 8: "Combine all the refundable credits received
+    # by all household members in 2024. Refundable credits include the
+    # federal and Montana earned income tax credits". Rev. Proc. 2023-34, no
+    # qualifying child: 10_000 is above the 8_260 earned income amount and
+    # under the 10_330 phaseout threshold, so the maximum 632; the Montana
+    # EITC is 10% of it, 63.20. The member's 10_000 + 632 + 63.20.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [0, 632]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_695.20]
+
+- name: A parent's federal EITC and refundable child tax credit count in gross household income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 30
+        employment_income: 10_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC line 8 counts "the refundable portion of the federal
+    # child tax credit". Federal EITC 34% x 10_000 = 3_400; refundable CTC
+    # min(1_700, 15% x 7_500) = 1_125; Montana EITC 340. The parent:
+    # 10_000 + 3_400 + 1_125 + 340 = 14_865.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 14_865, 0]
+
+- name: The elderly homeowner/renter credit received during the year counts
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        mt_elderly_homeowner_or_renter_credit_received: 1_150
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC line 8: "including your elderly homeowner/renter
+    # credit received in 2024". 20_000 + 1_150.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_150
+
+- name: The rebate for 2023 property taxes, received in 2024, counts
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes:
+          2023: 2_000
+          2024: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2023: MT
+          2024: MT
+  output:
+    # 2024 Schedule 2EC line 8 lists "the 2023 Montana property tax rebate":
+    # min(675, 2_000) = 675. 20_000 + 675.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_675
+
+- name: The rebate for 2022 property taxes does not count on the 2023 schedule
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes:
+          2022: 2_000
+          2023: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2022: MT
+          2023: MT
+  output:
+    # The 2023 instructions' line 7 list (federal and Montana EITC, federal
+    # child tax credits, unlocking public land credit, elderly
+    # homeowner/renter credit) has no property tax rebate, though the 675
+    # rebate for 2022 property taxes was claimed in August-October 2023.
+    mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 675
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+
+- name: Federal refundable credits count from 2017
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # ARM 42.4.301(2)(b), effective 11/10/2017: "federal refundable credits
+    # received"; 2017 Form 2EC worksheet item 4: "Any federal or state
+    # refundable credits". Rev. Proc. 2016-55, no qualifying child:
+    # 510 - 7.65% x (10_000 - 8_340) = 383.01.
+    eitc: 383.01
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_383.01
+
+- name: Federal refundable credits do not count before 2017
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # The 2004-2017 ARM 42.4.301(2)(b) counted federal refunds only "to the
+    # extent that the amount recovered reduced the claimant's Montana income
+    # tax in a prior year".
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000

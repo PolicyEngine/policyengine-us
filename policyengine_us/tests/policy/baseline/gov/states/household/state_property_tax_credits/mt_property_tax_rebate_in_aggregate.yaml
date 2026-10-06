@@ -24,3 +24,45 @@
     # contributor to the aggregate is the $675 property tax rebate.
     mt_property_tax_rebate: 675
     taxsim_state_property_tax_credit: 675
+
+- name: The tax year 2024 MT property tax rebate of 400 flows into the aggregate
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    # Ch. 767, L. 2025 (SB 542), sec. 3(1): $400 for tax year 2024. Before
+    # the rebate amount was dated, the model carried 675 into 2024.
+    mt_property_tax_rebate: 400
+    taxsim_state_property_tax_credit: 400
+
+- name: No MT property tax rebate in the aggregate for tax year 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    mt_property_tax_rebate: 0
+    taxsim_state_property_tax_credit: 0
