@@ -26,7 +26,8 @@ pensions. Properties that hold for every household:
    change past its own floor, so by exactly D where neither floor binds. The
    same holds when the exclusion rises and no addback is entered.
 3. Gross income is never negative, is zero while B + addback is at most
-   zero, and never falls as the addback rises.
+   zero, equals B + addback where the addback lifts a negative B above zero,
+   and never falls as the addback rises.
 4. An entered addback, including zero, replaces the default. An entered zero
    beside a positive exclusion gives the Massachusetts gross income results
    of a household with no exclusion, and an entered amount gives the same
@@ -416,6 +417,13 @@ def check_addition_respects_zero_floor(households, year):
     assert (law["ma_part_b_gross_income"] >= 0).all()
     floored = ma & (base + addback <= 0)
     assert not law["ma_gross_income"][floored].any()
+    # The addition offsets losses before the floor applies: where B is
+    # negative but B + addback is not, gross income is B + addback.
+    lifted = ma & (base < 0) & (base + addback > 0)
+    slack = tolerance(base, addback, law["ma_gross_income"])
+    assert (
+        np.abs(law["ma_gross_income"] - (base + addback))[lifted] <= slack[lifted]
+    ).all()
     # Gross income never falls as the addback rises. Rounding is monotone,
     # so this holds exactly.
     steps = [(0, 0), (0.5, 0), (1, 0), (1, 10_000), (2, 50_000)]
@@ -428,7 +436,7 @@ def check_addition_respects_zero_floor(households, year):
     )
     for lower, higher, step in zip(scaled, scaled[1:], steps[1:]):
         assert (higher["ma_gross_income"] >= lower["ma_gross_income"]).all(), step
-    return floored, ma & (base < 0) & (base + addback > 0)
+    return floored, lifted
 
 
 def check_entered_addback_overrides_default(households, year):
