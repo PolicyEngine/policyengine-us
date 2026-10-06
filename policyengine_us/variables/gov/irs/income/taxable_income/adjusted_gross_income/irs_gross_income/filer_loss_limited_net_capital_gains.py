@@ -13,7 +13,10 @@ class filer_loss_limited_net_capital_gains(Variable):
         "13), with a net loss limited under 26 USC 1211(b). This is Form 8960 "
         "line 5a without Schedule 1 line 4. A tax unit dependent's gains and "
         "losses are on the dependent's own return. Unlike "
-        "loss_limited_net_capital_gains, this leaves dependents out."
+        "loss_limited_net_capital_gains, this leaves dependents out. It "
+        "starts from net_capital_gains, so a tax unit amount supplied there "
+        "is kept; that amount is read as covering every member, and any "
+        "dependent's person-level gains and losses are then taken out."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/1211#b",
