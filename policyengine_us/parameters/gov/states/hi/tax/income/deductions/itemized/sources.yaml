@@ -1,11 +1,12 @@
 description: Hawaii deducts the following itemized deductions.
 values:
   2018-01-01:
-    - charitable_deduction
+    - hi_charitable_deduction
     - hi_medical_expense_deduction
     - hi_interest_deduction
     - hi_casualty_loss_deduction
     - hi_salt_deduction
+    - hi_misc_deduction
 metadata:
   unit: list
   period: year
@@ -24,4 +25,6 @@ metadata:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-2.4
       href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=10
     - title: 2025 Hawaii N-11 Instructions Itemized Deductions
-      href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=17
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=17
+    - title: 2025 Hawaii N-11 Instructions, Itemized Deductions Worksheet, line 32
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=34
