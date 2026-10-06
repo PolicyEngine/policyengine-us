@@ -16,11 +16,12 @@ a reachable bottom row, so duplicates there are flagged.
 """
 
 import math
+import re
 from collections import defaultdict
 from datetime import date
 
 import pytest
-from policyengine_core.parameters import ParameterNode, ParameterScale
+from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
@@ -212,15 +213,65 @@ def test_duplicate_threshold_guard_reads_tied_dates_like_core():
     assert _duplicate_threshold_errors(distinct) == []
 
 
+# Several parameter files key a value at 0000-01-01 to mean "since the
+# beginning of time" (see tests/code_health/test_uprating_placement.py). Python
+# dates have no year zero, so it is the one instant that is not a calendar date.
+YEAR_ZERO_SENTINEL = "0000-01-01"
+
+
 def _is_calendar_date(instant_str):
-    # Core's public lookup parses the instant, which fails for padded
-    # 0000-01-01 entries and for 2021-06-31 in
-    # gov.states.ny.nyserda.drive_clean.amount.
+    # Core compares instants as strings and its INSTANT_PATTERN checks only the
+    # digit ranges, so an impossible day such as 2021-06-31 loads and sorts
+    # without error while naming no date.
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", instant_str) is None:
+        return False
     try:
         date.fromisoformat(instant_str)
     except ValueError:
         return False
     return True
+
+
+def _non_calendar_instants(parameter):
+    return [
+        value_at_instant.instant_str
+        for value_at_instant in parameter.values_list
+        if value_at_instant.instant_str != YEAR_ZERO_SENTINEL
+        and not _is_calendar_date(value_at_instant.instant_str)
+    ]
+
+
+def test_calendar_date_guard_flags_impossible_dates_only():
+    parameter = Parameter(
+        "test_parameter",
+        {
+            "values": {
+                YEAR_ZERO_SENTINEL: 0,
+                "2021-06-30": 1,
+                "2021-06-31": 2,
+                "2024-02-29": 3,
+                "2025-02-29": 4,
+                "2025-04-31": 5,
+            }
+        },
+    )
+
+    assert sorted(_non_calendar_instants(parameter)) == [
+        "2021-06-31",
+        "2025-02-29",
+        "2025-04-31",
+    ]
+
+
+def test_parameter_instants_are_calendar_dates():
+    errors = [
+        f"{parameter.name}: {instant_str}"
+        for parameter in system.parameters.get_descendants()
+        if isinstance(parameter, Parameter)
+        for instant_str in _non_calendar_instants(parameter)
+    ]
+
+    assert not errors, "\n".join(errors)
 
 
 def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypatch):
@@ -240,7 +291,8 @@ def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypat
     mismatches = []
     for scale in _all_scales():
         for instant_str in _change_instants(scale):
-            if not _is_calendar_date(instant_str):
+            if instant_str == YEAR_ZERO_SENTINEL:
+                # Core's public lookup cannot parse year zero.
                 continue
             passed.clear()
             scale(instant_str)
