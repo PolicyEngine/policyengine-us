@@ -177,18 +177,20 @@
   output:
     mt_elderly_homeowner_or_renter_credit_selected_claimant: true
 
-- name: Case 8, a dependent in an eligible tax unit is not a separate claimant.
+- name: Case 8, only tax unit heads are ranked; another member's amount does not count.
   period: 2024
   input:
     people:
       person1:
         age: 70
         mt_elderly_homeowner_or_renter_credit_eligible: true
-        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 500
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 100
       person2:
+        # A dependent: the model holds a tax unit's credit on its head, so
+        # this amount, set here only to test the ranking, is ignored.
         age: 12
         mt_elderly_homeowner_or_renter_credit_eligible: true
-        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 0
+        mt_elderly_homeowner_or_renter_credit_pre_one_claimant: 900
       person3:
         age: 67
         mt_elderly_homeowner_or_renter_credit_eligible: true
@@ -203,7 +205,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
 
 - name: Case 9, outside Montana no tax unit is selected.
   period: 2024

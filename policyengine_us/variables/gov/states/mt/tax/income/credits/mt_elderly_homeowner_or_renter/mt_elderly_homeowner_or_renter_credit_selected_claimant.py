@@ -12,6 +12,10 @@ class mt_elderly_homeowner_or_renter_credit_selected_claimant(Variable):
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0410/0150-0300-0230-0410.html",
         # § 15-30-2337(7): household
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
+        # ARM 42.4.302 (implementing § 15-30-2341): property tax billed to
+        # another counts as rent; married couples living apart receive only
+        # one credit per year
+        "https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E4%2E302",
         # 2025 Schedule 2EC attestation: "I am the only member of my
         # household claiming this credit"
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2/2025_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10",
@@ -25,8 +29,9 @@ class mt_elderly_homeowner_or_renter_credit_selected_claimant(Variable):
 
     def formula(tax_unit, period, parameters):
         # "Only one claimant per household in a claim period ... is entitled
-        # to relief" (§ 15-30-2341(1)). The law does not say which member
-        # claims. Every eligible tax unit in a household has the same gross
+        # to relief" (§ 15-30-2341(1)). Neither the statute nor ARM 42.4.302
+        # says which member claims. Every eligible tax unit in a household has
+        # the same gross
         # and net household income, so their credits differ only by each
         # one's own property tax billed and rent paid (Schedule 2EC line 24
         # is "the rent that you paid"; property in another's name "can
@@ -37,7 +42,10 @@ class mt_elderly_homeowner_or_renter_credit_selected_claimant(Variable):
         # tax unit has exactly one selected. A joint return is one tax unit
         # and one claim; the 2025 instructions name the spouse listed as the
         # taxpayer as the claimant when both qualify, and the model holds
-        # that credit on the tax unit head.
+        # that credit on the tax unit head. ARM 42.4.302(3)(a) also allows
+        # married couples living apart only one credit a year; a separated
+        # spouse in another tax unit is not linked to the other spouse, so
+        # that limit is not modeled.
         person = tax_unit.members
         head = person("is_tax_unit_head", period)
         eligible = person("mt_elderly_homeowner_or_renter_credit_eligible", period)

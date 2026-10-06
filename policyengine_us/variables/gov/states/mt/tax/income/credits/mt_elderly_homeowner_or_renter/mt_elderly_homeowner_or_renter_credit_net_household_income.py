@@ -20,7 +20,8 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
         # Only one claimant per household is entitled to relief
         # (§ 15-30-2341(1)); mt_elderly_homeowner_or_renter_credit_selected_claimant
-        # picks that claimant.
+        # picks the claimant. Married couples living apart may receive only
+        # one credit per year (ARM 42.4.302(3)(a)).
         standard_exclusion = p.net_household_income.standard_exclusion
         # Gross household income counts every member of the household,
         # including those outside the claimant's return (§ 15-30-2337(4);
