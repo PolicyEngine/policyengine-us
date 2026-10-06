@@ -46,7 +46,8 @@ from hypothesis import strategies as st
 
 from policyengine_us import Simulation
 
-TOLERANCE = 0.01  # dollars
+# Dollars; the model computes in float32 and unit amounts reach about $100,000.
+TOLERANCE = 0.05
 FORM_FLOOR = 0.075  # Itemized Deductions Schedule line 1c
 STATE_YEARS = [2021, 2022, 2023]
 FEDERAL_YEARS = [2024, 2025]
