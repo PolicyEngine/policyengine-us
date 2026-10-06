@@ -421,6 +421,24 @@ def grid_situation(year):
 GRID_SIZE = len(STATUSES) * len(ORDINARY_INCOMES) * len(PREFERENTIAL_INCOME)
 
 
+def default_system_state():
+    """The loaded default system's variables that the reform replaces, and its
+    values of the reform's schedule, which no simulation here may change."""
+    bracket = baseline_system.parameters(
+        f"{YEAR}-01-01"
+    ).gov.contrib.additional_tax_bracket.bracket
+    variables = [baseline_system.variables[name] for name in REFORM_VARIABLES]
+    values = [float(bracket.rates[str(i)]) for i in range(1, N_BRACKETS + 1)] + [
+        float(bracket.thresholds[str(i)][status])
+        for i in range(1, N_BRACKETS + 1)
+        for status in STATUSES
+    ]
+    return variables, values
+
+
+DEFAULT_SYSTEM_STATE = default_system_state()
+
+
 def calculate(variables, year, reforms=None):
     """The grid's values of some variables, under the reform and any parameter
     changes, or under the baseline when ``reforms`` is None.
@@ -443,6 +461,12 @@ def calculate(variables, year, reforms=None):
     }
     del sim
     gc.collect()
+    # The reform and its parameter changes apply to the clone only.
+    variables_now, values_now = default_system_state()
+    assert all(
+        now is before for now, before in zip(variables_now, DEFAULT_SYSTEM_STATE[0])
+    )
+    assert values_now == DEFAULT_SYSTEM_STATE[1]
     return values
 
 
