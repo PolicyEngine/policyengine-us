@@ -1,0 +1,1 @@
+Add foreign earned income excluded under section 911 to Massachusetts gross income (M.G.L. c. 62 s. 2(a)(1)(C)) instead of subtracting it, through a new ma_foreign_earned_income_exclusion_addback input that defaults to foreign_earned_income_exclusion.

@@ -1,0 +1,118 @@
+# M.G.L. c. 62 s. 2(a)(1)(C) adds foreign earned income excluded under
+# section 911 of the Code to Massachusetts gross income, and s. 2(b)(2) puts
+# it in Part B. Other income inputs are the amounts left after the exclusion.
+
+- name: Excluded foreign wages enter Part B and preserve Parts A and C
+  period: 2025
+  input:
+    state_code: MA
+    age: 35
+    employment_income: 32_000
+    foreign_earned_income_exclusion: 10_000
+    dividend_income: 6_000
+    short_term_capital_gains: 3_000
+    long_term_capital_gains: 4_000
+    ma_part_b_taxable_income_deductions: 0
+    ma_part_b_taxable_income_exemption: 4_400
+  output:
+    # Federal: 32,000 + 6,000 + 3,000 + 4,000.
+    irs_gross_income: 45_000
+    ma_foreign_earned_income_exclusion_addback: 10_000
+    # MA: 45,000 + 10,000.
+    ma_gross_income: 55_000
+    ma_part_a_gross_income: 9_000
+    ma_part_c_gross_income: 4_000
+    ma_part_b_gross_income: 42_000
+    ma_part_b_taxable_income: 37_600
+    # (37,600 + 6,000 + 4,000) * 5% + 3,000 * 8.5%.
+    ma_income_tax_before_credits: 2_635
+
+- name: Fully excluded foreign wages remain Massachusetts income
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 0
+    foreign_earned_income_exclusion: 10_000
+  output:
+    # 0 + 10,000.
+    ma_gross_income: 10_000
+    ma_part_b_gross_income: 10_000
+
+- name: Foreign earnings addition preserves loss adjustment
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 50_000
+    foreign_earned_income_exclusion: 10_000
+    ma_gross_income_loss_adjustment: -15_000
+  output:
+    # 50,000 - 15,000 + 10,000.
+    ma_gross_income: 45_000
+    ma_part_b_gross_income: 45_000
+
+- name: Foreign earnings addition preserves existing Massachusetts exclusions
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 60_000
+    foreign_earned_income_exclusion: 20_000
+    taxable_social_security: 7_500
+    salt_refund_income: 2_000
+    taxable_public_pension_income: 10_000
+  output:
+    # 60,000 + 20,000 - 7,500 - 2,000 - 10,000.
+    ma_gross_income: 60_500
+    ma_part_b_gross_income: 60_500
+
+- name: Gross exclusion differs from net federal stacking
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 45_000
+    foreign_earned_income_exclusion: 8_000
+    ma_foreign_earned_income_exclusion_addback: 10_000
+    dividend_income: 6_000
+    short_term_capital_gains: 3_000
+    long_term_capital_gains: 4_000
+  output:
+    # No housing deduction or allocable ALD; disallowed itemized expenses 2,000.
+    # Stacking = 10,000 - 2,000; MA gross = 45,000 + 10,000.
+    ma_gross_income: 55_000
+    ma_part_a_gross_income: 9_000
+    ma_part_c_gross_income: 4_000
+    ma_part_b_gross_income: 42_000
+
+- name: An entered zero addition replaces the federal stacking default
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 50_000
+    foreign_earned_income_exclusion: 10_000
+    ma_foreign_earned_income_exclusion_addback: 0
+  output:
+    ma_foreign_earned_income_exclusion_addback: 0
+    # 50,000 + 0.
+    ma_gross_income: 50_000
+    ma_part_b_gross_income: 50_000
+
+- name: The addition applies only in Massachusetts
+  period: 2025
+  input:
+    state_code: NY
+    irs_gross_income: 50_000
+    foreign_earned_income_exclusion: 10_000
+  output:
+    ma_foreign_earned_income_exclusion_addback: 0
+    ma_gross_income: 0
+
+- name: The addition counts against losses before the zero floor
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 10_000
+    foreign_earned_income_exclusion: 25_000
+    ma_gross_income_loss_adjustment: -30_000
+  output:
+    # max(0, 10,000 - 30,000 + 25,000).
+    ma_gross_income: 5_000
+    ma_part_b_gross_income: 5_000
