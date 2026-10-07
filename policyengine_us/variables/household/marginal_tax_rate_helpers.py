@@ -7,10 +7,7 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 # Behavioral responses to a reform, which each aggregate in
 # PRE_RESPONSE_INPUTS adds to its pre-response input. A perturbed branch holds
 # them at their values in the simulation.
-HELD_BEHAVIORAL_RESPONSE_VARIABLES = (
-    *NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
-    "weekly_hours_worked_behavioural_response",
-)
+HELD_BEHAVIORAL_RESPONSE_VARIABLES = NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES
 
 
 def create_perturbed_branch(simulation, period, branch_name, increments):

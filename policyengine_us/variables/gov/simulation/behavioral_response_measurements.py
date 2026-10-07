@@ -10,6 +10,10 @@ NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES = (
     "self_employment_income_behavioral_response",
     "sstb_self_employment_income_behavioral_response",
     "capital_gains_behavioral_response",
+    # Marginal-rate branches also hold hours responses. Neutralizing hours
+    # here keeps measurements independent of the order responses are queried:
+    # a capital-gains-first query must not restart labor-supply measurements.
+    "weekly_hours_worked_behavioural_response",
 )
 # Situations and datasets name these aggregates, but each aggregate adds a
 # behavioral response to a pre-response input. Simulations store the value on
