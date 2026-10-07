@@ -40,11 +40,15 @@ JOINT:
   metadata:
     unit: currency-USD
     period: year
+    # The federal method makes the joint amount twice the single amount
+    # (26 U.S.C. 63(c)(2)(A)). With a 2026 joint amount of twice the single
+    # amount, a $100 round-down equals twice the single amount's $50
+    # round-down.
     uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
-        interval: 50
+        interval: 100
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 18_800
