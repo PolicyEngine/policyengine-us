@@ -1,4 +1,5 @@
 from policyengine_core.model_api import *
+from policyengine_core.projectors import Projector
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
 from policyengine_us.tools.period_branch import (
@@ -38,6 +39,10 @@ def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
         )
     # float32 like the model's values, so the sum rounds as `add`'s does.
     total = np.zeros(tax_unit.count, dtype=np.float32)
+    # A person.tax_unit projector reports the underlying tax-unit count,
+    # but its calculations and sums return one value per person.
+    if isinstance(tax_unit, Projector):
+        total = tax_unit.transform_and_bubble_up(total)
     for variable in variables:
         variable_entity = tax_unit.entity.get_variable(
             variable, check_existence=True
