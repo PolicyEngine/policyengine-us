@@ -12,7 +12,9 @@ class ms_agi(Variable):
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf",  # Line 66
         # Combined return: one spouse's income in Column A, the other's in B
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=5",
-        # Parents filing separately: the parent with the greater taxable income
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
         "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
         "https://www.irs.gov/instructions/i8814",
     )
@@ -25,8 +27,10 @@ class ms_agi(Variable):
         # A spouse's column can be negative on a joint or combined return;
         # the tax computation combines it with the other column.
         net_income = gross_income - adjustments
-        # Each spouse's column holds their own income. Dependents' positive
-        # income goes on the column of the spouse with the greater income.
+        # Each spouse's column holds their own income. The dependents'
+        # positive income the model counts here goes on the column of the
+        # spouse with the greater income (a modelling convention; see the
+        # helper).
         is_dependent = person("is_tax_unit_dependent", period)
         return move_dependent_amounts_to_filer(
             person, period, where(is_dependent, max_(net_income, 0), net_income)

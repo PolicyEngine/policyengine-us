@@ -10,7 +10,9 @@ class de_agi_indiv(Variable):
     reference = (
         # Filing Status 3 or 4: each spouse reports their own income
         "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=5",
-        # Parents filing separately: the parent with the greater taxable income
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
         "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
         "https://www.irs.gov/instructions/i8814",
     )
@@ -23,6 +25,7 @@ class de_agi_indiv(Variable):
         )
         net_income = max_(pre_exclusions_agi - indv_exclusions, 0)
         # On a combined separate return each spouse reports their own income.
-        # Dependents' income goes on the return of the spouse with the
-        # greater income.
+        # The dependents' income the model counts here goes on the return of
+        # the spouse with the greater income (a modelling convention; see the
+        # helper).
         return move_dependent_amounts_to_filer(person, period, net_income)

@@ -11,7 +11,9 @@ class ar_agi_indiv(Variable):
         "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14",
         # Filing Status 4: the primary's income in column A, the spouse's in B
         "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
-        # Parents filing separately: the parent with the greater taxable income
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
         "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
         "https://www.irs.gov/instructions/i8814",
     )
@@ -21,6 +23,7 @@ class ar_agi_indiv(Variable):
         gross_income = person("ar_gross_income_indiv", period)
         income_exemptions = person("ar_exemptions", period)
         net_income = max_(gross_income - income_exemptions, 0)
-        # Each spouse's column holds their own income. Dependents' income goes
-        # on the column of the spouse with the greater income.
+        # Each spouse's column holds their own income. The dependents' income
+        # the model counts here goes on the column of the spouse with the
+        # greater income (a modelling convention; see the helper).
         return move_dependent_amounts_to_filer(person, period, net_income)

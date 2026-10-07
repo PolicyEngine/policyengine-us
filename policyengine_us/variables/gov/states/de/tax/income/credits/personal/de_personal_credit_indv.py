@@ -18,7 +18,8 @@ class de_personal_credit_indv(Variable):
         # own column, and only the DEPENDENT credits may be split between
         # columns. We allocate the dependent increments to maximise total
         # credits used (i.e. minimise tax); the taxpayer may choose any
-        # dependent split, so the optimal one is the tax-minimising one.
+        # dependent split, so the optimal one is the tax-minimising one,
+        # including the EITC applied afterwards (Line 34).
         p = parameters(period).gov.states.de.tax.income.credits
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
@@ -43,26 +44,42 @@ class de_personal_credit_indv(Variable):
         # Dependent increments: exemptions beyond the two spouses.
         dep_units = max_(total_units - 2, 0)
 
-        # Optimal dependent split: try proportional floor and ceil, pick
-        # whichever maximises effective credits (min of alloc vs
-        # remaining capacity in each column).
-        total_capacity = head_capacity + spouse_capacity
-        ratio = where(total_capacity > 0, head_capacity / total_capacity, 0)
+        # PIT-RES Line 34 applies the non-refundable EITC only to the column
+        # of the spouse with the higher Line 23 taxable income; with equal
+        # incomes either column qualifies.
+        taxable = person("de_taxable_income_indv", period)
+        head_taxable = person.tax_unit.sum(is_head * taxable)
+        spouse_taxable = person.tax_unit.sum(is_spouse * taxable)
 
-        n_low = np.floor(dep_units * ratio)
-        n_high = n_low + 1
-        n_low = max_(min_(n_low, dep_units), 0)
-        n_high = max_(min_(n_high, dep_units), 0)
+        # Try every split of the dependent increments. Keep the one that uses
+        # the most credits, then the one that leaves the most tax in the
+        # column the EITC can reduce. Both criteria treat the spouses alike,
+        # so the result does not depend on which one is labelled head, and
+        # together they minimise the column taxes after the EITC.
+        best_n = np.zeros_like(head_capacity)
+        best_used = np.full_like(head_capacity, -np.inf)
+        best_eitc_room = np.full_like(head_capacity, -np.inf)
+        for n in range(int(dep_units.max(initial=0)) + 1):
+            valid = n <= dep_units
+            head_used = min_(n * credit_per, head_capacity)
+            spouse_used = min_((dep_units - n) * credit_per, spouse_capacity)
+            used = head_used + spouse_used
+            head_room = head_capacity - head_used
+            spouse_room = spouse_capacity - spouse_used
+            eitc_room = select(
+                [head_taxable > spouse_taxable, head_taxable < spouse_taxable],
+                [head_room, spouse_room],
+                max_(head_room, spouse_room),
+            )
+            better = valid & (
+                (used > best_used)
+                | ((used == best_used) & (eitc_room > best_eitc_room))
+            )
+            best_n = where(better, n, best_n)
+            best_used = where(better, used, best_used)
+            best_eitc_room = where(better, eitc_room, best_eitc_room)
 
-        eff_low = min_(n_low * credit_per, head_capacity) + min_(
-            (dep_units - n_low) * credit_per, spouse_capacity
-        )
-        eff_high = min_(n_high * credit_per, head_capacity) + min_(
-            (dep_units - n_high) * credit_per, spouse_capacity
-        )
-
-        n_head_dep = where(eff_high > eff_low, n_high, n_low)
-        head_alloc = credit_per + n_head_dep * credit_per
-        spouse_alloc = credit_per + (dep_units - n_head_dep) * credit_per
+        head_alloc = credit_per + best_n * credit_per
+        spouse_alloc = credit_per + (dep_units - best_n) * credit_per
 
         return is_head_or_spouse * where(is_head, head_alloc, spouse_alloc)

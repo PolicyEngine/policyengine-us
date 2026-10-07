@@ -8,31 +8,37 @@ Mississippi's combined return, Montana Filing Status 2a). So exchanging the
 two adults' `is_tax_unit_head` and `is_tax_unit_spouse` labels, with every
 other input kept, must leave each state's income tax unchanged.
 
-Arkansas, Delaware, Iowa, Mississippi and Montana counted dependents' income
-on the head's column before taxing each column separately, Montana's joint
-itemized deductions counted only the head's mortgage and investment interest,
-and Oklahoma's property tax credit counted only the head's disability.
-Dependents' income now goes on the column of the spouse with the greater
-income of their own, and an exact tie splits it equally, as parents filing
-separately report a child's income on the return of the parent with the
-greater taxable income (26 U.S.C. 1(g)(5)(B); IRS Form 8814 instructions).
+On main these depended on the label:
+- Arkansas, Delaware, Iowa, Mississippi and Montana put the dependents' income
+  the model counts on the head's column before taxing each column separately.
+  It now goes on the column of the spouse with the greater income of their
+  own, and an exact tie splits it (move_dependent_amounts_to_filer).
+- Delaware's combined separate return sent the EITC, the dependent care
+  credit and the dependent personal credits to the head's column on ties.
+- Montana's joint itemized deductions counted only the head's mortgage and
+  investment interest.
+- Minnesota's child and dependent care credit and Montana's dependent care
+  deduction accepted an incapacitated spouse but not an incapacitated head.
+- Missouri's property tax credit tested the survivor pathway, and Oklahoma's
+  the disability pathway, on the head only.
 
 Hypothesis draws batches of married couples, with and without dependents
-(who may have income), in the six states above for 2021-2026. A seeded
+(who may have income), in the eight states above for 2021-2026. A seeded
 population of those states, with crafted edge cases (offsetting incomes,
-spouses with equal income, one disabled or elderly spouse, interest paid by
-one spouse), adds breadth in every year, and three seeded couples in every
-state guard current law (2026) everywhere else. Each batch runs as one
-vectorized simulation that holds every couple twice, as drawn and with the
-head and spouse labels exchanged. For each couple:
+spouses with equal income, one disabled, incapacitated, elderly or surviving
+spouse, interest paid by one spouse), adds breadth in every year, and three
+seeded couples in every state guard current law (2026) everywhere else. Each
+batch runs as one vectorized simulation that holds every couple twice, as
+drawn and with the head and spouse labels exchanged. For each couple:
 
 1. Swap invariance: state income tax, before and after refundable credits,
-   is the same to the cent.
+   is finite and the same to the cent.
 2. The per-person columns (`ar_agi_indiv`, `de_agi_indiv`, `ia_net_income`,
-   `ms_agi`, `mt_agi_indiv`) are the same for each person.
+   `ms_agi`, `mt_agi_indiv`) are the same for each person, to the cent.
 3. Differential: in Arkansas, Delaware, Iowa and Mississippi those columns
    equal an independent numpy allocation of each person's own amount, which
-   conserves the tax unit's total.
+   conserves the tax unit's total. Montana's own amounts are not
+   reconstructed, so it is checked by 1 and 2 only.
 """
 
 import numpy as np
@@ -44,8 +50,11 @@ from policyengine_us import Simulation
 from policyengine_us.model_api import STATES
 
 TOLERANCE = 0.01  # dollars: the same to the cent
+# The differential compares float32 model values with float64 numpy sums of
+# them, so it also allows float32 rounding.
+FLOAT32_RTOL = 1e-6
 YEARS = [2021, 2022, 2023, 2024, 2025, 2026]
-AFFECTED = ["AR", "DE", "IA", "MS", "MT", "OK"]
+AFFECTED = ["AR", "DE", "IA", "MN", "MO", "MS", "MT", "OK"]
 ALL_STATES = [s for s in STATES if s not in ("PR", "VI")]
 TAX_UNIT_OUTPUTS = [
     "state_income_tax",
@@ -86,6 +95,10 @@ def adults(draw):
         "investment_interest_expense": draw(money(5_000)),
         "charitable_cash_donations": draw(money(8_000)),
         "other_medical_expenses": draw(money(15_000)),
+        "is_incapable_of_self_care": draw(st.booleans()),
+        "pre_subsidy_care_expenses": draw(money(6_000)),
+        "social_security_survivors": draw(money(20_000)),
+        "is_fully_disabled_service_connected_veteran": draw(st.booleans()),
     }
 
 
@@ -101,6 +114,10 @@ def dependents(draw):
         "qualified_dividend_income": draw(money(3_000)),
         "long_term_capital_gains": draw(gain_or_loss(-2_000, 5_000)),
         "pre_subsidy_childcare_expenses": draw(money(10_000)),
+        # The model counts these on the filers' return in Delaware and
+        # Montana; no formula computes them.
+        "de_additions": draw(money(3_000)),
+        "mt_additions": draw(money(3_000)),
     }
 
 
@@ -146,6 +163,10 @@ def _seeded_adult(rng):
         "investment_interest_expense": some(5_000, 0.08),
         "charitable_cash_donations": some(8_000, 0.3),
         "other_medical_expenses": some(15_000, 0.2),
+        "is_incapable_of_self_care": bool(rng.random() < 0.05),
+        "pre_subsidy_care_expenses": some(6_000, 0.05),
+        "social_security_survivors": some(20_000, 0.05 if age >= 55 else 0.0),
+        "is_fully_disabled_service_connected_veteran": bool(rng.random() < 0.03),
     }
 
 
@@ -163,6 +184,8 @@ def _seeded_dependent(rng):
         "qualified_dividend_income": some(3_000, 0.15),
         "long_term_capital_gains": some(5_000, 0.08),
         "pre_subsidy_childcare_expenses": some(10_000, 0.5 if age < 13 else 0.0),
+        "de_additions": some(3_000, 0.1),
+        "mt_additions": some(3_000, 0.1),
     }
 
 
@@ -255,6 +278,43 @@ def _edge_cases(states):
             [
                 adult(80, social_security_retirement=20_000.0, is_blind=True),
                 adult(30, employment_income=25_000.0),
+            ],
+            [],
+        ),
+        # One incapacitated spouse with care expenses; the other earns and
+        # pays property tax (review of #9981).
+        (
+            [
+                adult(employment_income=20_000.0, real_estate_taxes=12_000.0),
+                adult(
+                    is_incapable_of_self_care=True, pre_subsidy_care_expenses=4_000.0
+                ),
+            ],
+            [],
+        ),
+        # Equal incomes, different ages and a child without income: credit
+        # routing on ties (review of #9981).
+        (
+            [
+                adult(60, employment_income=20_000.0),
+                adult(45, employment_income=20_000.0),
+            ],
+            [{"age": 10}],
+        ),
+        # A surviving spouse aged 60 with a low-income spouse who pays
+        # property tax (review of #9981).
+        (
+            [
+                adult(60, employment_income=6_000.0, real_estate_taxes=900.0),
+                adult(60, social_security_survivors=6_000.0),
+            ],
+            [],
+        ),
+        # One spouse a 100% disabled veteran, low income, rent.
+        (
+            [
+                adult(55, employment_income=8_000.0, rent=7_200.0),
+                adult(55, is_fully_disabled_service_connected_veteran=True),
             ],
             [],
         ),
@@ -387,8 +447,9 @@ def _check(units, year):
     # 1. Swap invariance of each state's income tax.
     for name in TAX_UNIT_OUTPUTS:
         values = np.asarray(sim.calculate(name, year), dtype=float)
+        assert np.isfinite(values).all(), f"{name} in {year} is not finite"
         drawn, swapped = values[0::2], values[1::2]
-        differs = np.abs(swapped - drawn) > TOLERANCE
+        differs = ~(np.abs(swapped - drawn) <= TOLERANCE)
         assert not differs.any(), (
             f"{name} in {year} changes when the head and spouse labels are "
             f"exchanged: "
@@ -409,11 +470,14 @@ def _check(units, year):
     first_copy = unit % 2 == 0
     for column in COLUMNS:
         values = np.asarray(sim.calculate(column, year), dtype=float)
+        assert np.isfinite(values).all(), f"{column} in {year} is not finite"
         # 2. Each person's column is the same under either labelling.
         np.testing.assert_allclose(
             values[~first_copy],
             values[first_copy],
+            rtol=0,
             atol=TOLERANCE,
+            equal_nan=False,
             err_msg=f"{column} in {year}",
         )
         if column == "mt_agi_indiv":
@@ -426,7 +490,9 @@ def _check(units, year):
         np.testing.assert_allclose(
             values[in_state],
             reference[in_state],
+            rtol=FLOAT32_RTOL,
             atol=TOLERANCE,
+            equal_nan=False,
             err_msg=f"{column} in {year}",
         )
 
@@ -452,5 +518,5 @@ def test_seeded_population(year):
 
 def test_every_state_under_current_law():
     # Simulating every state's earlier years makes this the costliest batch,
-    # so the guard outside the five states runs for one year.
+    # so the guard outside the eight states runs for one year.
     _check(_seeded_couples(ALL_STATES, per_state=3), 2026)

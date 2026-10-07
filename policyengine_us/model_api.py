@@ -58,14 +58,20 @@ def allocate_joint_amount_to_minimize_combined_tax(
 def move_dependent_amounts_to_filer(person, period, amount):
     """Puts the tax unit dependents' `amount` on a filer's own column.
 
-    Some states count dependents' income on their filers' return. When spouses
-    file separately on one return, each column is a separate return, and a
-    child's income that parents filing separately report goes on the return
+    Some states' formulas count dependents' income on their filers' return,
+    although a dependent mostly reports it on their own return, which the
+    model does not compute. Where spouses file separately on one return, this
+    is a modelling convention for which column gets those amounts, not a state
+    rule: the spouse whose own `amount` is greater takes the dependents'
+    total, and an exact tie splits it equally, so the result does not depend
+    on which spouse is labelled head. It borrows the federal rule that a
+    child's income reported by parents who file separately goes on the return
     of the parent with the greater taxable income (26 U.S.C. 1(g)(5)(B); IRS
-    Form 8814 instructions). The spouse whose own `amount` is greater takes
-    the dependents' total, and an exact tie splits it equally, so the result
-    does not depend on which spouse is labelled head. Without a spouse the
-    head takes it. Dependents keep nothing of their own.
+    Form 8814 instructions). Without a spouse the head takes it. Dependents
+    keep nothing of their own.
+
+    Assumes each tax unit has one head and at most one spouse, as the role
+    variables assign; with two spouses the total would not be conserved.
     """
     tax_unit = person.tax_unit
     is_dependent = person("is_tax_unit_dependent", period)

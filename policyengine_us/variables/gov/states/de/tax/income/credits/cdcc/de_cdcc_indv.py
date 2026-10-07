@@ -15,15 +15,25 @@ class de_cdcc_indv(Variable):
         # the tax imposed on the spouse with the lower taxable
         # income reported on Line 23."  Locked to the lower-income
         # spouse's column under combined separate filing.
-        # Tie-break: when taxable incomes are equal, head is treated
-        # as the higher-income spouse, so CDCC routes to spouse.
+        # With equal taxable incomes either spouse has the lower income, so
+        # the credit goes to the column with more tax left after that
+        # spouse's aged credit (each column's own $110 personal credit is the
+        # same), whichever spouse is labelled head.
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
 
         person_taxable = person("de_taxable_income_indv", period)
         head_taxable = person.tax_unit.sum(is_head * person_taxable)
         spouse_taxable = person.tax_unit.sum(is_spouse * person_taxable)
-        head_higher = head_taxable >= spouse_taxable
 
-        is_lower_income = (is_head & ~head_higher) | (is_spouse & head_higher)
+        room = person(
+            "de_income_tax_before_non_refundable_credits_indv", period
+        ) - person("de_aged_personal_credit_indv", period)
+        head_room = person.tax_unit.sum(is_head * room)
+        spouse_room = person.tax_unit.sum(is_spouse * room)
+        head_takes = (head_taxable < spouse_taxable) | (
+            (head_taxable == spouse_taxable) & (head_room > spouse_room)
+        )
+
+        is_lower_income = (is_head & head_takes) | (is_spouse & ~head_takes)
         return is_lower_income * person.tax_unit("de_cdcc", period)
