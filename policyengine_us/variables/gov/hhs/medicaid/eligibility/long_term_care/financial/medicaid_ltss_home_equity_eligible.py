@@ -19,7 +19,10 @@ class medicaid_ltss_home_equity_eligible(Variable):
         "that amount, and higher equity fails closed. This screen is not "
         "gated on the financial pathway because the payment bar applies to "
         "every long-term care applicant; the composite screen applies the "
-        "pathway gate. A person with no equity interest always passes, and "
+        "pathway gate. Delaware treats spouses as one owner (DSSM "
+        "20320.7.C), so their individual shares in the marital unit are "
+        "combined even when their income/resources are budgeted separately. "
+        "A person with no applicable equity interest passes, and "
         "a resident spouse or child exception or a granted hardship waiver "
         "passes regardless of the equity amount or ownership share. The "
         "agricultural-land limit in the separate annual "
@@ -57,6 +60,23 @@ class medicaid_ltss_home_equity_eligible(Variable):
         encumbrances = person("medicaid_ltss_home_encumbrances", period)
         ownership_share = person("medicaid_ltss_home_ownership_share", period)
         valid_ownership_share = (ownership_share >= 0) & (ownership_share <= 1)
+        # DSSM 20320.7.C: spouses are one owner. These inputs remain each
+        # spouse's individual share in the same home, not repeated couple
+        # totals. Third-party owners' shares are not in the marital unit.
+        marital_ownership_share = person.marital_unit.sum(ownership_share)
+        valid_marital_ownership_share = (
+            (person.marital_unit.sum(~valid_ownership_share) == 0)
+            & (marital_ownership_share >= 0)
+            & (marital_ownership_share <= 1)
+        )
+        valid_ownership_share = where(
+            state == states.DE,
+            valid_marital_ownership_share,
+            valid_ownership_share,
+        )
+        ownership_share = where(
+            state == states.DE, marital_ownership_share, ownership_share
+        )
         applicant_home_equity = max_(home_value - encumbrances, 0) * ownership_share
         # 42 USC 1396p(f)(2) and (f)(4) make the payment bar inapplicable
         # regardless of the equity amount, so these exceptions do not depend
