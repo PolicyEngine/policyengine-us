@@ -7,7 +7,11 @@ class free_school_meals(Variable):
     definition_period = YEAR
     label = "free school meals"
     unit = USD
-    documentation = "Value of free school meals."
+    documentation = (
+        "Modeled value of meals with no family charge, including state-paid "
+        "reduced-price copays. This is not a count of federally certified "
+        "free-meal students or an estimate of state spending."
+    )
 
     def formula(spm_unit, period, parameters):
         tier = spm_unit("school_meal_tier", period)
