@@ -1,3 +1,55 @@
+## [2.30.2] - 2026-10-07
+
+### Changed
+
+- Test the regular tax with 28-percent rate gain, unrecaptured section 1250 gain and a Form 4952 election against the 2025 Schedule D Tax Worksheet, extend the section 911(f) and Form 4952 tests to those gains, and pin a case where an election lawfully lowers the tax by moving gain from the 28 to the 25 percent rate.
+
+### Fixed
+
+- Limit the DC EITC ITIN extension to tax years from 2023 (D.C. Code 47-1806.04(f)(1)(D), added by D.C. Law 24-167 section 7012, not D.C. Law 23-149), cite the D-40 Line 27a instructions for sending a DC filer whose qualifying children have no Social Security number or ITIN to the childless schedule, and stop counting a disabled parent or grandparent dependent as an EITC qualifying child under IRC 152(c)(2) in the federal, CA, CO, DC, IL, MN and WA credits.
+- County and has_tin read stored values with the asking branch's name, so a branch reused for a later year keeps the household's county instead of falling to County.UNKNOWN, and a branch's own has_itin input reaches has_tin.
+- Mississippi subtracts a tax unit's health savings account deduction once, from the account holder, rather than once per member.
+- The qualified business income deduction, and the Iowa and Missouri deductions built on it, count only the head's and spouse's business income; a dependent's is on the dependent's own return.
+- Use optional parent identifiers (`parent_1_id`, `parent_2_id`) for Medicaid MAGI household composition. In households that supply them, each non-filer's household counts the applicant, a co-resident spouse, their own children under the age limit and, for a child-age applicant, co-resident parents and child-age siblings, each once, and California's unborn-child count follows the same members. When the ids name exactly one parent a person lives with, that parent's co-resident spouse, shown by a joint return or by a two-person marital unit with the cohabiting-spouses flag, counts as a step parent. On the tax-filer route, a tax unit's household also counts, once, a co-resident spouse of its head or spouse who files separately, and a tax dependent counts, once, a co-resident spouse the claiming taxpayer's household lacks. `is_parent` combines the child count with the links. The claimed-by-parent test resolves ids within the claiming tax unit, including a known claiming tax unit elsewhere, and an id that names a co-resident resolves to that co-resident. The both-parents exception of 42 CFR 435.603(f)(2)(ii) uses the co-resident parents the ids identify. Person ids must be nonzero and distinct within each household and tax unit, and distinct across the simulation when a tax unit spans households or a known claiming tax unit is set. Simulations in which every parent identifier is zero keep their existing outputs; that guarantee covers the whole simulation, not a zero-id household inside a simulation with ids elsewhere.
+
+  Prevent inferred tax roles from treating named parents and children as spouses when resolving stepparents. Share a flagged separately filing spouse's income across the linked tax household, and count a flagged spouse already included through a tax-unit membership or external claim once in household size, income and California pregnancies.
+- Add back income excluded under 26 U.S.C. 911, 931 and 933 where a modified AGI requires it: the student loan interest deduction (which now also counts all unemployment compensation, because section 221(b)(2)(C) disregards only the section 85(c) exclusion), the child tax credit, the education credits, the saver's credit, the clean vehicle credits, the SALT cap phase-down, and the tip, overtime and car loan interest deductions. Taxable Social Security adds back the section 911 exclusion, and Medicare IRMAA adds back sections 135, 911, 931 and 933, summing person-level amounts over the members adjusted gross income counts: a dependent's own tax-exempt interest no longer counts, while a section 135 exclusion recorded on a dependent, which adjusted gross income deducts, is added back. Modified AGIs, including the Medicaid and ACA modified AGI, add back the full section 911 amount (Form 2555 lines 45 and 50, new input `section_911_excluded_income`), not the smaller amount the section 911(f) rate stacking uses. The clean vehicle credits accept the preceding year's modified AGI and filing status (`clean_vehicle_credit_prior_year_magi`, `clean_vehicle_credit_prior_year_filing_status`) and are allowed when either year's modified AGI is within the limit.
+- Apply the unmarried IRC section 129 dependent care exclusion cap to separate filers treated as unmarried under IRC section 21(e)(4), in the federal exclusion and the Hawaii child and dependent care credit.
+
+
+## [2.30.1] - 2026-10-07
+
+### Fixed
+
+- Deny the NYC school tax credit rate reduction amount when school tax credit income (federal AGI minus IRA distributions) exceeds $500,000, in addition to when city taxable income does, and subtract the head's and spouse's IRA and SEP distributions included in federal AGI from school tax credit income, per NY Tax Law § 606(ggg)(2) and (4-b). Parameter meaning change: `gov.local.ny.nyc.tax.income.credits.school.rate_reduction.income_limit` now caps school tax credit income instead of NYC taxable income, and the NYC taxable income cap it used to hold moves to the new `gov.local.ny.nyc.tax.income.credits.school.rate_reduction.taxable_income_limit`; a saved reform that raised `income_limit` to widen the rate reduction must now raise `taxable_income_limit` as well. The contributed `adjust_income_limit_and_min_children_by_filing_status` reform, which reads school tax credit income, now applies its filing-status limits to federal AGI minus IRA distributions.
+
+
+## [2.30.0] - 2026-10-07
+
+### Added
+
+- Add the Massachusetts 2021 qualified unemployment deduction (Schedule Y line 9c).
+
+### Fixed
+
+- The refundable child tax credit's social security taxes (26 U.S.C. 24(d)(2)) and the Additional Medicare Tax (Form 8959) now count only the head's and spouse's wages and self-employment income, not a tax unit dependent's. The CRFB AGI surtax's expanded base now adds only the head's and spouse's contributions, exclusions and tax-exempt Social Security.
+- Hawaii alternative tax on capital gains now uses the federal Schedule D net capital gain, which excludes qualified dividends.
+- Include the Idaho $10 permanent building fund tax in state_income_tax, as id_income_tax already does.
+- Give the Illinois 2021 income tax rebate base amount to filers with negative federal AGI.
+- Subtract each spouse's Massachusetts Schedule C, farm, rental, partnership and S corporation losses, so one spouse's loss offsets the other spouse's income.
+- Use federal EIC earned income (both spouses combined, net of a self-employment loss) in the Minnesota child and working family credits.
+- Subtract the EITC in the Missouri federal income tax deduction base, as on the MO-1040 Line 9 worksheet.
+- Mississippi joint and combined returns now combine a negative spouse column with the other column, as the Form 80-100 instructions require.
+- Apply the 2025 Arkansas rule for net taxable income over $100,000: $3,809 plus 3.9% of the excess.
+- Hawaii Act 115 refund is now multiplied by the number of qualified exemptions and is available to filers with negative federal AGI.
+- Idaho child tax credit no longer counts 17-year-olds in 2021; Idaho uses the IRC 24(c) under-17 test.
+- Use the 2025 Michigan home heating credit standard allowances from Table A of the MI-1040CR-7 instructions.
+- Correct the 2024 Minnesota single third and head of household second bracket thresholds.
+- Start the New Jersey child tax credit in tax year 2022 (no credit in 2021).
+- New York 2021 EITC now uses the pre-ARPA 2021 federal amounts (Rev. Proc. 2020-45) instead of the 2020 amounts.
+- Use the 2025 Wisconsin 4.4% bracket tops from the Form 1 instructions ($50,480 single and head of household, $67,300 joint, $33,650 separate).
+
+
 ## [2.29.14] - 2026-10-06
 
 ### Fixed
