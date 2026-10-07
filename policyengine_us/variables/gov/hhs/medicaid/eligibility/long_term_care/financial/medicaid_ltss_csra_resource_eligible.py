@@ -14,7 +14,11 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "community spouse, the initial CSRA is the greater of the applicable "
         "floor or the fixed statutory one-half of the couple's snapshot "
         "resources under 42 USC 1396r-5(c)(1)(A)(ii) and (f)(2)(A), capped "
-        "at the federal maximum. Texas uses the federal minimum as its "
+        "at the federal maximum. Texas and Delaware use the first-period "
+        "snapshot; Washington uses the first day of the beginning month "
+        "of the most recent continuous period under WAC 182-513-1355(2)-(4), "
+        "with a new determination after a break of at least 30 consecutive "
+        "days under WAC 182-513-1350(3)(b)(vi)(A). Texas uses the federal minimum as its "
         "floor; Delaware's $25,000 state spousal share (DSSM 20910.10) sits "
         "below the federal minimum, which therefore governs; Washington's "
         "state spousal resource standard sits above it. Initial eligibility "
@@ -38,6 +42,7 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=69",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1350",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1355",
         "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3",
     )
 
@@ -80,9 +85,16 @@ class medicaid_ltss_csra_resource_eligible(Variable):
             ],
             default=0,
         )
-        snapshot_resources = person(
-            "medicaid_ltss_couple_countable_resources_at_first_institutionalization",
-            period,
+        snapshot_resources = where(
+            state == states.WA,
+            person(
+                "wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization",
+                period,
+            ),
+            person(
+                "medicaid_ltss_couple_countable_resources_at_first_institutionalization",
+                period,
+            ),
         )
         csra = min_(
             max_(snapshot_resources / 2, state_csra_minimum),

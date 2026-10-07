@@ -370,7 +370,7 @@
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_500
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_529
       above_state_standard:
@@ -381,7 +381,7 @@
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_500
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_530
     households:
@@ -427,3 +427,29 @@
     medicaid_ltss_home_equity_eligible: false
     medicaid_ltss_mmmna: 0
     is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Case 11, Washington re-entry passes every financial screen using its new period snapshot.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_500
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # 2024 first episode, followed by a qualifying break and July 2026 re-entry.
+    # Use July 1 resources, rather than the 2024 or September current resources.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_csra_resource_eligible: true
+    medicaid_ltss_home_equity_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true

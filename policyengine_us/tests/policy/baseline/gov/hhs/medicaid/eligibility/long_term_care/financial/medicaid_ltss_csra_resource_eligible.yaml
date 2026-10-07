@@ -505,7 +505,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 145_058
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 145_058
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_529
       above_tie:
@@ -515,7 +515,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 145_058
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 145_058
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_530
     tax_units:
@@ -723,7 +723,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_529
       above_allowance:
@@ -733,7 +733,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 72_530
     households:
@@ -755,7 +755,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 200_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 200_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 100_000
       above_allowance:
@@ -765,7 +765,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 200_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 200_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 100_001
     households:
@@ -787,7 +787,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 162_660
       above_allowance:
@@ -797,7 +797,7 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
         medicaid_ltss_countable_resources: 2_000
         medicaid_ltss_community_spouse_countable_resources: 162_661
     households:
@@ -930,8 +930,8 @@
     medicaid_ltss_is_initial_eligibility_determination: true
     # First episode in 2024; a break of at least 30 consecutive days precedes
     # the July 2026 episode, whose beginning-month snapshot is $400,000.
-    # The old input contract instead requires this first-ever snapshot.
     medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
     # By the September initial determination, lawful depletion leaves these
     # current resources. The new period's CSRA is capped at $162,660.
     medicaid_ltss_countable_resources: 2_000
@@ -954,7 +954,59 @@
     # Same 2024 first episode and July 2026 re-entry as Case 24, with fewer
     # community-spouse resources at the September determination.
     medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
     medicaid_ltss_countable_resources: 2_000
     medicaid_ltss_community_spouse_countable_resources: 72_529
   output:
     medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 26, only Washington replaces the first-period snapshot after re-entry.
+  period: 2026-09
+  input:
+    people:
+      at_wa_floor: &wa_reentry_applicant
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        # A smaller snapshot after a qualifying break must also replace
+        # the earlier snapshot, rather than preserve its larger allowance.
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 72_529
+      above_wa_floor:
+        <<: *wa_reentry_applicant
+        medicaid_ltss_community_spouse_countable_resources: 72_530
+      at_tx_half: &first_period_applicant
+        <<: *wa_reentry_applicant
+        # TX/DE keep the first-period snapshot even if a newer one differs.
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+        medicaid_ltss_community_spouse_countable_resources: 50_000
+      above_tx_half:
+        <<: *first_period_applicant
+        medicaid_ltss_community_spouse_countable_resources: 50_001
+      at_de_half:
+        <<: *first_period_applicant
+      above_de_half:
+        <<: *first_period_applicant
+        medicaid_ltss_community_spouse_countable_resources: 50_001
+    households:
+      wa_household:
+        members: [at_wa_floor, above_wa_floor]
+        state_code:
+          2026: WA
+      tx_household:
+        members: [at_tx_half, above_tx_half]
+        state_code:
+          2026: TX
+      de_household:
+        members: [at_de_half, above_de_half]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false, true, false, true, false]

@@ -94,6 +94,11 @@ def _situation(people, **overrides):
         # every person in one default marital unit.
         situation["marital_units"][name] = {"members": [name]}
         situation["households"][person["state"]]["members"].append(name)
+        snapshot_variable = (
+            "wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization"
+            if person["state"] == "WA"
+            else "medicaid_ltss_couple_countable_resources_at_first_institutionalization"
+        )
         situation["people"][name] = {
             "is_ssi_aged_blind_disabled": {YEAR: person["aged_blind_disabled"]},
             "medicaid_ltss_setting": month(person["setting"]),
@@ -110,9 +115,7 @@ def _situation(people, **overrides):
             "medicaid_ltss_cost_of_care": month(person["cost_of_care"]),
             "medicaid_ltss_countable_resources": month(person["resources"]),
             "medicaid_ltss_has_community_spouse": month(person["has_community_spouse"]),
-            "medicaid_ltss_couple_countable_resources_at_first_institutionalization": month(
-                person["snapshot"]
-            ),
+            snapshot_variable: month(person["snapshot"]),
             "medicaid_ltss_community_spouse_countable_resources": month(
                 person["spouse_resources"]
             ),
