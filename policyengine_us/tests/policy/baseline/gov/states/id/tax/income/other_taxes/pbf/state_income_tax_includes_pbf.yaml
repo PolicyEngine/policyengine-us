@@ -1,0 +1,30 @@
+- name: Idaho permanent building fund tax reaches state income tax
+  period: 2023
+  input:
+    id_income_tax_before_refundable_credits: 2_000
+    id_refundable_credits: 120
+    id_pbf_liable: true
+    state_code: ID
+  output:
+    id_income_tax: 1_890  # = 2_000 + 10 - 120
+    state_income_tax: 1_890  # Form 40 adds the $10 PBF tax before the grocery credit
+
+- name: No permanent building fund tax when not liable
+  period: 2023
+  input:
+    id_income_tax_before_refundable_credits: 2_000
+    id_refundable_credits: 120
+    id_pbf_liable: false
+    state_code: ID
+  output:
+    id_income_tax: 1_880
+    state_income_tax: 1_880
+
+- name: Permanent building fund tax is not added outside Idaho
+  period: 2023
+  input:
+    employment_income: 60_000
+    state_code: MT
+  output:
+    id_pbf_liable: false
+    id_pbf: 0
