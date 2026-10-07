@@ -915,3 +915,46 @@
     medicaid_ltss_community_spouse_countable_resources: 0
   output:
     medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 24, Washington re-entry uses the July 2026 snapshot after a qualifying break.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # First episode in 2024; a break of at least 30 consecutive days precedes
+    # the July 2026 episode, whose beginning-month snapshot is $400,000.
+    # The old input contract instead requires this first-ever snapshot.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    # By the September initial determination, lawful depletion leaves these
+    # current resources. The new period's CSRA is capped at $162,660.
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 25, Washington re-entry control passes even against the earlier snapshot allowance.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # Same 2024 first episode and July 2026 re-entry as Case 24, with fewer
+    # community-spouse resources at the September determination.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 72_529
+  output:
+    medicaid_ltss_csra_resource_eligible: true
