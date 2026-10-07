@@ -949,10 +949,26 @@ class SPMSimulationMixin:
 
     def subsample(self, *args, **kwargs):
         result = super().subsample(*args, **kwargs)
-        # Core rebuilds the baseline arm from the subsampled population, then
-        # hands it the previous arm's policy and so its provider, which
-        # recorded the counties the previous arm read. Record what every
-        # simulation in the family reads now.
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            # Core rebuilds the baseline arm by branching this simulation, so
+            # the new arm starts out as a copy of this one: its holders hold
+            # this simulation's variables, a reform's neutralized or replaced
+            # ones included, and its own ``baseline`` is the arm it replaces,
+            # on the population from before subsampling. Core then hands it
+            # the replaced arm's policy; before 3.32.21 it does not rebind the
+            # holders to that policy, and it never claims the policy for the
+            # new arm or primes the policy's private parameter-tracing root,
+            # which are this package's state. Give it what construction gives
+            # a baseline arm: no baseline of its own, so it computes no
+            # behavioural responses, holders bound to its own policy, and that
+            # policy's tracing primed for this arm.
+            baseline.baseline = None
+            baseline._rebind_holders()
+            baseline._isolate_parameter_tracing()
+        # Core hands the rebuilt baseline arm the previous arm's policy and so
+        # its provider, which recorded the counties the previous arm read.
+        # Record what every simulation in the family reads now.
         self._record_county_input_types()
         return result
 
