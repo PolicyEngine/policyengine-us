@@ -31,10 +31,10 @@ change the tax-benefit system rather than inputs: the caller swaps the system
 and deletes the variables it recalculates.
 """
 
-from typing import Dict, Set, Tuple, Union
+from typing import Dict, Tuple, Union
 
 import numpy as np
-from policyengine_core.periods import ETERNITY, Period
+from policyengine_core.periods import Period
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations import Simulation
 
@@ -57,22 +57,6 @@ def _is_known(simulation: Simulation, variable: str, period: Period) -> bool:
     return holder.get_array(period, simulation.branch_name) is not None
 
 
-def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
-    """The (variable, branch name, period) keys ``branch`` reads as inputs.
-
-    policyengine-core records each key that ``set_input`` stores, whether
-    from the dataset, the situation or a branch, in one set shared by a
-    simulation and all its branches. ``branch`` reads its own keys and its
-    ancestors'.
-    """
-    visible_branches = set(branch._get_visible_branch_names())
-    return {
-        key
-        for key in getattr(branch, "_user_input_keys", set())
-        if key[1] in visible_branches
-    }
-
-
 def drop_inherited_values(branch: Simulation) -> None:
     """Delete every array ``branch`` holds except inputs.
 
@@ -80,29 +64,7 @@ def drop_inherited_values(branch: Simulation) -> None:
     reads, for that variable and period. A value calculated for one period is
     dropped even when the same variable is an input for another period.
     """
-    input_keys = _input_keys(branch)
-    # An eternal variable stores every period under one key, while the input
-    # key records the period it was set for, so match it by branch only.
-    eternal_inputs = {(name, branch_name) for name, branch_name, _ in input_keys}
-    for population in branch.populations.values():
-        for name, holder in population._holders.items():
-            eternal = holder.variable.definition_period == ETERNITY
-            for branch_name, known_period in holder.get_known_branch_periods():
-                if (
-                    (name, branch_name) in eternal_inputs
-                    if eternal
-                    else (name, branch_name, known_period) in input_keys
-                ):
-                    continue
-                # Exact key: ``Holder.delete_arrays`` would also delete any
-                # input stored at a sub-period of ``known_period``.
-                key = f"{branch_name}:{known_period}"
-                holder._memory_storage._arrays.pop(key, None)
-                if holder._disk_storage is not None:
-                    holder._disk_storage._files.pop(
-                        f"{branch_name}_{known_period}", None
-                    )
-    branch._fast_cache = {}
+    branch.clear_calculated_results()
 
 
 def get_override_branch(

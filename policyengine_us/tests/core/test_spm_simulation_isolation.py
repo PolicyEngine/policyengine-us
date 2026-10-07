@@ -206,29 +206,7 @@ def test_reform_added_variable_accepts_input_on_an_ordinary_simulation():
 
 @pytest.mark.parametrize("period", [2033, 2034])
 def test_traced_simulations_record_their_own_parameter_accesses(period):
-    """Core marks the parameter tree with the requesting simulation's tracer.
-
-    On a shared tree the second traced request reused the first request's
-    cached tracing node, so its parameter accesses were recorded against the
-    first request's tracer - or, with that request's trace frame closed,
-    recorded nowhere - and the shared tree kept a finished request's tracer for
-    every simulation that read it afterwards.
-
-    The isolation is keyed on ``trace``: setting it re-primes this request's
-    root with an empty at-instant cache. Replacing a tracer in place afterwards
-    is not covered - neither a bare ``simulation.tracer = ...`` write nor a
-    ``parameters.tracer`` write on a system - because core memoises the
-    ``TracingParameterNodeAtInstant`` in the root's ``_at_instant_cache`` bound
-    to whichever tracer built it, and core's per-formula soft recast in
-    ``Simulation._run_formula`` refreshes the root's own ``trace``/``tracer``
-    fields without rebuilding that memo. #9448's
-    ``test_cached_formula_trace_binds_replacement_tracer`` and
-    ``test_system_parameter_lookup_does_not_cache_tracer`` assert that case;
-    both fail against this mechanism and are not carried, because passing them
-    means rebinding the memo at lookup, which is #9448's mechanism rather than
-    this one. The only bare tracer write left in this package is
-    ``tools/branched_simulation.py``, which nothing constructs.
-    """
+    """Call-local tracing records accesses without modifying shared policy."""
     first = Simulation(situation=earner_situation())
     first.trace = True
     first.calculate("spm_unit_fpg", period)
@@ -248,13 +226,14 @@ def test_traced_simulations_record_their_own_parameter_accesses(period):
     assert set(parameter_accesses(second.tracer)) == expected
     # The first simulation's trace did not grow when the second one calculated.
     assert parameter_accesses(first.tracer) == first_accesses
-    # Each traced request owns the root node core writes its tracer onto.
+    # Both requests retain the shared ordinary tree; neither stores trace state
+    # in it or in its dated-view cache.
     first_root = first.tax_benefit_system.parameters
     second_root = second.tax_benefit_system.parameters
-    assert first_root is not second_root
-    assert first_root._at_instant_cache is not second_root._at_instant_cache
-    assert first_root.tracer is first.tracer
-    assert second_root.tracer is second.tracer
+    assert first_root is second_root is system.parameters
+    assert first_root.trace is False
+    assert first_root.tracer is None
+    assert first_root.branch_name is None
 
 
 def test_tracing_leaves_the_shared_parameter_tree_untraced():
@@ -262,7 +241,7 @@ def test_tracing_leaves_the_shared_parameter_tree_untraced():
     traced.trace = True
     traced.calculate("spm_unit_fpg", 2035)
 
-    assert traced.tax_benefit_system.parameters is not system.parameters
+    assert traced.tax_benefit_system.parameters is system.parameters
     assert system.parameters.trace is False
     assert system.parameters.tracer is None
     assert system.parameters.branch_name is None

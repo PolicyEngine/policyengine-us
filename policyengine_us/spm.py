@@ -427,10 +427,10 @@ class SharedParameterPolicy:
         # Clear the barrier first: cloning reads the tree through core, and
         # that read must not re-enter this method.
         self.__dict__["detaching_shared_parameters"] = False
-        self.__dict__["shared_parameters"] = unmark_tree_shared(tree.clone())
+        private_tree = unmark_tree_shared(tree.clone())
         # The lender keeps its warm at-instant cache; this system starts cold
         # because its parameter values are about to differ.
-        self._parameters_at_instant_cache = {}
+        self.replace_parameters(private_tree)
         return True
 
     @contextmanager
@@ -541,57 +541,6 @@ def bind_private_entities(policy):
     return policy
 
 
-def isolate_parameter_tracing(system, tracer, branch_name):
-    """Give ``system`` its own root parameter node, primed for ``tracer``.
-
-    Core marks a traced request by writing that request's tracer, trace flag
-    and branch name onto the root node of the parameter tree, and the root then
-    caches the resulting ``TracingParameterNodeAtInstant`` in its own
-    at-instant cache. On a shared tree the second request reuses the first
-    request's cached tracing node, so its parameter accesses are recorded
-    against the first request's tracer - or, once that request's trace frame
-    has closed, recorded nowhere at all - and the shared tree is left holding a
-    finished request's tracer for every simulation that reads it afterwards.
-
-    Only the root carries those fields: children are wrapped on the fly from
-    the root's tracing node and cache plain at-instant nodes. A shallow copy of
-    the root - the same children, its own at-instant cache and its own trace
-    fields - therefore isolates a request's parameter receipts completely, and
-    costs microseconds rather than the seconds a full tree clone takes. The
-    children stay shared, so a later reform still detaches the whole tree.
-
-    Prime the copy as traced rather than waiting for core to mark it. Core sets
-    those fields in ``_run_formula``, but ``_calculate`` reads
-    ``parameters(period).gov.abolitions`` first, so the at-instant node for
-    each period is built and cached before the tree is ever marked as traced
-    and no parameter access is recorded at all.
-    """
-    root = system.parameters
-    if root is None:
-        return None
-    if tree_is_shared(root):
-        private = copy(root)
-        private._at_instant_cache = {}
-        # The copy shares the original's children, and each child's parent
-        # still points at the original root, so an edit made through a child
-        # would clear the original's at-instant cache and leave this one
-        # stale. Mark the copy shared: any write detaches a real clone first.
-        mark_tree_shared(private)
-        system.parameters = private
-        system._parameters_at_instant_cache = {}
-        root = private
-    else:
-        # Nobody else reads this tree, so it can be marked traced where it
-        # stands - and leaving it in place keeps each parameter's parent
-        # pointing at the root whose at-instant cache an edit has to clear.
-        root._at_instant_cache = {}
-        system._parameters_at_instant_cache = {}
-    root.trace = True
-    root.tracer = tracer
-    root.branch_name = branch_name
-    return root
-
-
 def share_spm_policy(system):
     """Isolate receipts and variable registration without rebuilding policy.
 
@@ -621,6 +570,7 @@ def share_spm_policy(system):
     reads it: see :class:`SharedParameterPolicy`.
     """
     policy = copy(system)
+    policy.share_parameters_from(system)
     policy.variables = dict(system.variables)
     bind_private_entities(policy)
     with_parameter_barrier(policy)
@@ -679,40 +629,9 @@ class SPMSimulationMixin:
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
         self._rebind_holders()
-        # Core sets ``trace`` before this simulation owns its policy state.
-        self._isolate_parameter_tracing()
         # Every input path - situation builder, dataset loader, direct
         # set_input - has landed in the holder by now.
         self._record_county_input_types()
-
-    @property
-    def trace(self):
-        return CoreSimulation.trace.fget(self)
-
-    @trace.setter
-    def trace(self, trace):
-        CoreSimulation.trace.fset(self, trace)
-        self._isolate_parameter_tracing()
-
-    def _isolate_parameter_tracing(self):
-        """Stop a traced request writing its tracer onto shared parameters."""
-        if not self.trace:
-            return
-        policy = getattr(self, "tax_benefit_system", None)
-        # Core sets ``trace`` before a new simulation owns its policy state,
-        # both while constructing one and while cloning one, so leave the
-        # original's system alone until this simulation has claimed its own.
-        if policy is not None and getattr(policy, "simulation", None) is self:
-            isolate_parameter_tracing(policy, self.tracer, self.branch_name)
-        for branch in getattr(self, "branches", {}).values():
-            branch._isolate_parameter_tracing()
-
-    def get_branch(self, name="branch", clone_system=False):
-        branch = super().get_branch(name, clone_system)
-        # Core names the branch and hands it this simulation's tracer after
-        # cloning, so re-prime the branch's root with what it ended up holding.
-        branch._isolate_parameter_tracing()
-        return branch
 
     def _rebind_holders(self):
         """Bind populations and cached holders to their branch's policy state."""
@@ -729,9 +648,9 @@ class SPMSimulationMixin:
                     del population._holders[name]
         # Core shallow-copies this metadata; detach it before pruning inputs
         # that exist only in the reform, so later cache invalidation is valid.
-        self._user_input_keys = {
-            key for key in self._user_input_keys if key[0] in variables
-        }
+        self.result_cache.replace_supplied_inputs(
+            {key for key in self.result_cache.supplied_inputs if key[0] in variables}
+        )
         self.input_variables = [
             name for name in self.input_variables if name in variables
         ]
@@ -753,9 +672,6 @@ class SPMSimulationMixin:
         with detaching():
             super().apply_reform(reform)
         self._adopt_detached_parameters(previous_children)
-        # A detached tree is a fresh root, carrying none of the trace state
-        # core wrote onto the one it replaced.
-        self._isolate_parameter_tracing()
         self._rebind_holders()
 
     def _adopt_detached_parameters(self, previous_children):
@@ -767,16 +683,13 @@ class SPMSimulationMixin:
         unreformed tree.
 
         Branches are recognised by the children of their root node rather than
-        by the root itself, because a traced branch holds a shallow copy of the
-        root with those same children (see ``isolate_parameter_tracing``) and
-        would never match on identity. An adopting branch keeps sharing - the
-        tree now has more than one reader, so its own reform must detach rather
-        than rewrite its parent's policy.
+        by the root itself. An adopting branch keeps sharing - the tree now has
+        more than one reader, so its own reform must detach rather than rewrite
+        its parent's policy.
         """
         detached = self.tax_benefit_system.parameters
         if detached is None or detached.children is previous_children:
             return
-        cache = self.tax_benefit_system._parameters_at_instant_cache
         for name, branch in self.branches.items():
             if name == "baseline":
                 # The baseline branch holds unreformed policy by construction.
@@ -786,12 +699,7 @@ class SPMSimulationMixin:
             if tree is not None and tree.children is previous_children:
                 # The detached tree now has a second reader.
                 mark_tree_shared(detached)
-                policy.parameters = detached
-                policy._parameters_at_instant_cache = cache
-                # A traced branch needs its own root back, with its own
-                # at-instant cache, or its parameter receipts rejoin the
-                # parent's.
-                branch._isolate_parameter_tracing()
+                policy.share_parameters_from(self.tax_benefit_system)
             branch._adopt_detached_parameters(previous_children)
 
     @property
@@ -870,7 +778,6 @@ class SPMSimulationMixin:
             )
         cloned._rebind_holders()
         self._rebind_method_aliases(cloned)
-        cloned._isolate_parameter_tracing()
         return cloned
 
     def _rebind_method_aliases(self, cloned):
