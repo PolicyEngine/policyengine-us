@@ -105,6 +105,17 @@
     ma_foreign_earned_income_exclusion_addback: 0
     ma_gross_income: 0
 
+- name: A negative federal exclusion cannot reduce Massachusetts gross income
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 50_000
+    foreign_earned_income_exclusion: -5_000
+  output:
+    ma_foreign_earned_income_exclusion_addback: 0
+    ma_gross_income: 50_000
+    ma_part_b_gross_income: 50_000
+
 - name: The addition counts against losses before the zero floor
   period: 2025
   input:

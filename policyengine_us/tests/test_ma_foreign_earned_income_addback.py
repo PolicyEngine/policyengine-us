@@ -6,21 +6,20 @@ foreign sources excluded under section nine hundred and eleven of the Code",
 and s. 2(b)(2) makes Part B gross income the Massachusetts gross income "not
 included in Part A or Part C gross income". The excluded amount is
 `ma_foreign_earned_income_exclusion_addback` (Form 2555 line 43). It defaults
-to `foreign_earned_income_exclusion` and can be entered
-directly. Before this
-change, `ma_gross_income` subtracted the exclusion instead.
+to `foreign_earned_income_exclusion`, floored at zero, and can be entered
+directly. Before this change, `ma_gross_income` subtracted the exclusion instead.
 
 Write B for federal gross income plus `ma_gross_income_loss_adjustment`, less
 taxable Social Security, state and local tax refunds and exempt public
-pensions. Properties that hold for every household:
+pensions. Properties for nonnegative exclusions and entered addbacks:
 
 1. Massachusetts gross income is max(0, B + addback), where the addback is
-   the entered amount or, when none is entered, the exclusion. Against the
-   formula before this change, max(0, B - exclusion), gross income rises by
-   the addback plus the exclusion wherever neither zero floor binds. Outside
-   Massachusetts, or with no exclusion and no entered addback, gross income,
-   Part B and the taxes are bit-for-bit unchanged. Massachusetts tax before
-   credits never falls.
+   the entered amount or, when none is entered, the nonnegative exclusion.
+   Against the formula before this change, max(0, B - exclusion), gross income
+   rises by the addback plus the exclusion wherever neither zero floor binds.
+   Outside Massachusetts, or with no exclusion and no entered addback, gross
+   income, Part B and the taxes are bit-for-bit unchanged. Massachusetts tax
+   before credits never falls.
 2. Raising the addback by D leaves federal gross income, the loss adjustment
    and Parts A and C unchanged, and leaves AGI unchanged for these
    households, none of which has an AGI item that reads the exclusion. It
