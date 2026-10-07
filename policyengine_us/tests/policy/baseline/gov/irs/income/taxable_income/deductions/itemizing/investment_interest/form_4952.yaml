@@ -11,7 +11,7 @@
     taxable_interest_income: 10_000
     investment_interest_expense: 6_000
   output:
-    form_4952_total_investment_interest_expense: 6_000 # line 3 = line 1 6,000 + unmodeled line 2 0
+    form_4952_total_investment_interest_expense: 6_000 # line 3 = line 1 6,000 + default line 2 0
     form_4952_gross_investment_income: 10_000 # line 4a = taxable interest 10,000 + dividends 0
     form_4952_qualified_dividends: 0 # line 4b = qualified dividends 0
     form_4952_net_investment_gain: 0 # line 4d = max(0, gains 0)
@@ -157,7 +157,7 @@
     form_4952_elected_investment_income: 8_000 # line 4g = min(10,000, 4b 0 + 4e 8,000)
     investment_interest_expense_deduction: 8_000 # line 8 = min(3 12,000, 6 8,000)
 
-- name: Joint income excludes dependent interest and dividends while expenses preserve existing membership
+- name: Joint Form 4952 excludes dependent income and investment debt
   period: 2025
   input:
     people:
@@ -182,12 +182,12 @@
       unit:
         members: [head, spouse, child]
   output:
-    form_4952_total_investment_interest_expense: 10_500 # line 3 = 6,000 + 4,000 + 500 (all members)
+    form_4952_total_investment_interest_expense: 10_000 # line 3 = filer debt 6,000 + 4,000
     form_4952_gross_investment_income: 12_000 # line 4a = filers' interest 7,000 + ordinary dividends 5,000
     form_4952_qualified_dividends: 3_000 # line 4b = filers' qualified dividends 1,000 + 2,000
     form_4952_investment_income: 9_000 # line 4c = 4a 12,000 - 4b 3,000; 4f = 4g = 0
-    investment_interest_expense_deduction: 9_000 # line 8 = min(3 10,500, 6 9,000)
-    form_4952_investment_interest_carryforward: 1_500 # line 7 = 3 10,500 - 6 9,000
+    investment_interest_expense_deduction: 9_000 # line 8 = min(3 10,000, 6 9,000)
+    form_4952_investment_interest_carryforward: 1_000 # line 7 = 3 10,000 - 6 9,000
 
 - name: Alaska Permanent Fund dividends and business property gains stay out of line 4a and 4d
   period: 2025
@@ -309,3 +309,80 @@
     # + (120,000 - 103,350) * 24% = 1,192.50 + 4,386 + 12,072.50 + 3,996 = 21,647.
     # Source: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=6
     income_tax: 21_647 # federal tax after credits = regular tax 21,647 + AMT/NIIT 0 - credits 0
+
+- name: Carryover adds to the deduction without reducing mortgage interest
+  period: 2025
+  input:
+    deductible_mortgage_interest: 10_000
+    investment_interest_expense: 2_000
+    form_4952_disallowed_investment_interest_expense_prior_year: 4_000
+    taxable_interest_income: 3_000
+  output:
+    form_4952_total_investment_interest_expense: 6_000
+    investment_interest_expense_deduction: 3_000
+    form_4952_investment_interest_carryforward: 3_000
+    interest_deduction: 13_000 # 12,000 current aggregate - 2,000 current debt + 3,000 allowed
+
+- name: Carryover alone can be deducted
+  period: 2026
+  input:
+    form_4952_disallowed_investment_interest_expense_prior_year: 4_000
+    taxable_interest_income: 5_000
+  output:
+    investment_interest_expense_deduction: 4_000
+    form_4952_investment_interest_carryforward: 0
+    interest_deduction: 4_000
+
+- name: Dependent investments stay off the parent Form 4952
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        taxable_interest_income: 1_000
+        investment_interest_expense: 5_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        taxable_interest_income: 50_000
+        qualified_dividend_income: 10_000
+        short_term_capital_gains: 9_000
+        long_term_capital_gains: 10_000
+        investment_income_elected_form_4952: 20_000
+        investment_interest_expense: 5_000
+    tax_units:
+      unit:
+        members: [head, child]
+  output:
+    form_4952_total_investment_interest_expense: 5_000
+    form_4952_gross_investment_income: 1_000
+    form_4952_qualified_dividends: 0
+    form_4952_net_investment_gain: 0
+    form_4952_net_capital_gain: 0
+    form_4952_elected_investment_income: 0
+    investment_interest_expense_deduction: 1_000
+    form_4952_investment_interest_carryforward: 4_000
+    interest_deduction: 1_000 # Remove both members' current raw debt from aggregate.
+    net_capital_gain: 0
+    dividend_income_reduced_by_investment_income: 0
+
+- name: Dependent miscellaneous fees do not increase filer Form 4952 line 5
+  period: 2017
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_expenses: 3_000
+        taxable_interest_income: 12_000
+        investment_interest_expense: 20_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_expenses: 3_000
+    tax_units:
+      unit:
+        members: [head, child]
+        adjusted_gross_income: 100_000
+  output:
+    form_4952_investment_expenses: 1_000 # Filer pool 3,000 - 2% * 100,000.
+    investment_interest_expense_deduction: 11_000

@@ -15,11 +15,9 @@ miscellaneous itemized deductions after 2017. The independent calculation
 uses raw inputs, without reading model outputs or parameters.
 
 Each case builds one Simulation containing seeded random single and joint
-returns, including dependents. Interest and dividends exclude dependents,
-matching irs_gross_income; expenses, gains and elections retain the existing
-all-member aggregation. Prior-year disallowed investment interest has no
-input, so line 3 contains current-year interest only. Comparison cohorts
-share one Simulation, avoiding dependence on computed-value invalidation.
+returns, including dependents. All Form 4952 amounts belong to filers;
+line 3 also includes explicit prior-year carryover. Comparison cohorts share
+one Simulation, avoiding computed-value invalidation.
 """
 
 import numpy as np
@@ -40,6 +38,7 @@ PERSON_INPUTS = (
     "investment_income_elected_form_4952",
     "investment_interest_expense",
     "investment_expenses",
+    "schedule_d_capital_gain_distributions",
     "unreimbursed_business_employee_expenses",
     "tax_preparation_fees",
     "deductible_mortgage_interest",
@@ -73,6 +72,7 @@ def _draw(seed):
         "present": present,
         "filers": filers,
         "adjusted_gross_income": np.round(rng.uniform(0, 400_000, N), 2),
+        "carryover": np.round(rng.uniform(0, 40_000, N), 2),
     }
     for name in PERSON_INPUTS:
         if name in ("long_term_capital_gains", "short_term_capital_gains"):
@@ -123,6 +123,9 @@ def _simulate(year, raw):
             "members": members,
             "filing_status": {period: "JOINT" if raw["present"][i, 1] else "SINGLE"},
             "adjusted_gross_income": {period: float(raw["adjusted_gross_income"][i])},
+            "form_4952_disallowed_investment_interest_expense_prior_year": {
+                period: float(raw["carryover"][i])
+            },
         }
         households[f"h{i}"] = {"members": members}
     simulation = Simulation(
@@ -133,14 +136,22 @@ def _simulate(year, raw):
             "marital_units": marital_units,
         }
     )
-    outputs = (*LINES.values(), "interest_deduction", "misc_deduction")
+    outputs = (
+        *LINES.values(),
+        "interest_deduction",
+        "misc_deduction",
+        "net_capital_gain",
+        "dividend_income_reduced_by_investment_income",
+        "dwks09",
+        "dwks10",
+    )
     return {name: simulation.calculate(name, period) for name in outputs}
 
 
 def _restatement(year, raw):
     """Form 4952 lines 3-8, independently restated from person inputs."""
     filer = raw["filers"]
-    line_3 = raw["investment_interest_expense"].sum(axis=1)
+    line_3 = (raw["investment_interest_expense"] * filer).sum(axis=1) + raw["carryover"]
     line_4a = (
         (
             raw["taxable_interest_income"]
@@ -150,23 +161,23 @@ def _restatement(year, raw):
         * filer
     ).sum(axis=1)
     line_4b = (raw["qualified_dividend_income"] * filer).sum(axis=1)
-    long_term = raw["long_term_capital_gains"].sum(axis=1)
-    short_term = raw["short_term_capital_gains"].sum(axis=1)
-    distributions = raw["non_sch_d_capital_gains"].sum(axis=1)
+    long_term = (raw["long_term_capital_gains"] * filer).sum(axis=1)
+    short_term = (raw["short_term_capital_gains"] * filer).sum(axis=1)
+    distributions = (np.maximum(0, raw["non_sch_d_capital_gains"]) * filer).sum(axis=1)
     line_4d = np.maximum(0, long_term + short_term + distributions)
     line_4e = np.minimum(
         line_4d,
         np.maximum(0, long_term + distributions - np.maximum(0, -short_term)),
     )
     line_4g = np.minimum(
-        np.maximum(0, raw["investment_income_elected_form_4952"].sum(axis=1)),
+        np.maximum(0, (raw["investment_income_elected_form_4952"] * filer).sum(axis=1)),
         line_4b + line_4e,
     )
     line_4h = line_4a - line_4b + line_4d - line_4e + line_4g
-    expenses = raw["investment_expenses"].sum(axis=1)
+    expenses = (raw["investment_expenses"] * filer).sum(axis=1)
     if year == 2017:
         schedule_a_line_24 = (
-            expenses
+            raw["investment_expenses"].sum(axis=1)
             + raw["unreimbursed_business_employee_expenses"].sum(axis=1)
             + raw["tax_preparation_fees"].sum(axis=1)
         )
@@ -174,7 +185,20 @@ def _restatement(year, raw):
             0,
             schedule_a_line_24 - 0.02 * np.maximum(0, raw["adjusted_gross_income"]),
         )
-        line_5 = np.minimum(expenses, schedule_a_line_27)
+        filer_misc = sum(
+            (raw[name] * filer).sum(axis=1)
+            for name in (
+                "investment_expenses",
+                "unreimbursed_business_employee_expenses",
+                "tax_preparation_fees",
+            )
+        )
+        line_5 = np.minimum(
+            expenses,
+            np.maximum(
+                0, filer_misc - 0.02 * np.maximum(0, raw["adjusted_gross_income"])
+            ),
+        )
     else:
         schedule_a_line_27 = np.zeros_like(expenses)
         line_5 = np.zeros_like(expenses)
@@ -203,8 +227,10 @@ def _restatement(year, raw):
 
 
 def _scale(raw):
-    return raw["adjusted_gross_income"] + sum(
-        np.abs(raw[name]).sum(axis=1) for name in PERSON_INPUTS
+    return (
+        raw["adjusted_gross_income"]
+        + raw["carryover"]
+        + sum(np.abs(raw[name]).sum(axis=1) for name in PERSON_INPUTS)
     )
 
 
@@ -291,3 +317,76 @@ def test_investment_interest_limit_is_monotone(year):
         assert np.all(actual[LINES["8"]][cohort] >= base_allowed - slack), name
         if name == "investment_interest_expense":
             assert np.all(actual[LINES["7"]][cohort] >= base_carried - slack)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_dependent_investments_do_not_change_filer_form_4952(year):
+    base = _draw(seed=year + 30)
+    changed = {key: value.copy() for key, value in base.items()}
+    for name in PERSON_INPUTS:
+        if name != "deductible_mortgage_interest":
+            changed[name][:, 2] += 50_000
+    combined = {key: np.concatenate([base[key], changed[key]], axis=0) for key in base}
+    actual = _simulate(year, combined)
+    scale = _scale(combined)
+    for name in (
+        *LINES.values(),
+        "interest_deduction",
+        "net_capital_gain",
+        "dividend_income_reduced_by_investment_income",
+        "dwks09",
+        "dwks10",
+    ):
+        _close(actual[name][N:], actual[name][:N], scale[:N] + scale[N:], name)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_carryforward_is_available_and_conserved(year):
+    base = _draw(seed=year + 40)
+    base["investment_interest_expense"][:] = 0
+    base["carryover"][:] = 0
+    changed = {key: value.copy() for key, value in base.items()}
+    changed["carryover"][:] = 4_000
+    combined = {key: np.concatenate([base[key], changed[key]], axis=0) for key in base}
+    actual = _simulate(year, combined)
+    expected = _restatement(year, combined)
+    scale = _scale(combined)
+    for name in (LINES["3"], LINES["7"], LINES["8"], "interest_deduction"):
+        _close(actual[name], expected[name], scale, name)
+    _close(
+        actual[LINES["7"]] + actual[LINES["8"]],
+        combined["carryover"],
+        scale,
+        "carryover conservation",
+    )
+    assert np.any(actual[LINES["8"]][N:] > 0)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_effective_election_agrees_across_deduction_and_tax_worksheets(year):
+    raw = _draw(seed=year + 50)
+    actual = _simulate(year, raw)
+    expected = _restatement(year, raw)
+    scale = _scale(raw)
+    election = expected[LINES["4g"]]
+    investment_gain = expected[LINES["4e"]]
+    residual_dividends = np.maximum(
+        0, expected[LINES["4b"]] - np.maximum(0, election - investment_gain)
+    )
+    residual_gain = np.maximum(0, investment_gain - election)
+    _close(
+        actual["dividend_income_reduced_by_investment_income"],
+        residual_dividends,
+        scale,
+        "worksheet line 6",
+    )
+    _close(actual["dwks09"], residual_gain, scale, "worksheet line 9")
+    _close(
+        actual["dwks10"], residual_gain + residual_dividends, scale, "worksheet line 10"
+    )
+    _close(
+        actual["net_capital_gain"],
+        residual_gain + residual_dividends,
+        scale,
+        "statutory net gain",
+    )

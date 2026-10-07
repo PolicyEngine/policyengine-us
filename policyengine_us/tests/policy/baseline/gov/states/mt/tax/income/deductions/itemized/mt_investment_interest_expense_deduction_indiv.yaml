@@ -1,0 +1,125 @@
+# Montana 2023 Form 2 instructions, page 31, line 10, require spouses filing
+# separately to compute their investment interest deductions separately.
+# https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=38
+
+- name: Montana separate returns use separate investment income limits
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 300
+        taxable_interest_income: 600
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 900
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_itemized_deductions_indiv: [300, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [300, 0]
+    mt_itemized_deductions_joint: [600, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [600, 0]
+    # Separate: min(300,600)=300; min(900,0)=0.
+    # Joint: min(300+900,600)=600.
+
+- name: Montana separate limits net each spouse's gains and cap only their own election
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_interest_expense: 1_000
+        taxable_interest_income: 200
+        qualified_dividend_income: 40
+        short_term_capital_gains: -100
+        long_term_capital_gains: 500
+        non_sch_d_capital_gains: -300
+        investment_income_elected_form_4952: 50
+        investment_expenses: 1_000
+      spouse:
+        is_tax_unit_spouse: true
+        investment_interest_expense: 200
+        qualified_dividend_income: 10
+        short_term_capital_gains: 100
+        long_term_capital_gains: -20
+        investment_income_elected_form_4952: 500
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_interest_expense: 9_000
+        taxable_interest_income: 50_000
+        qualified_dividend_income: 10_000
+        short_term_capital_gains: 9_000
+        long_term_capital_gains: 10_000
+        investment_income_elected_form_4952: 20_000
+    tax_units:
+      unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # Head: negative distributions are floored; the 400 net long-term gain
+    # counts only through the 50 election. Income is 200+50=250. Investment
+    # fees are not deductible under the modeled federal post-2017 rules.
+    # Spouse: 80 net short-term gain counts without election; the 500
+    # election is capped at 10 qualified dividends, giving income of 90.
+    mt_investment_interest_expense_deduction_indiv: [250, 90, 0]
+
+- name: Montana 2024 uses the pooled federal limit and excludes dependent debt from shares
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_interest_expense: 300
+        taxable_interest_income: 600
+      spouse:
+        is_tax_unit_spouse: true
+        investment_interest_expense: 900
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_interest_expense: 9_000
+        taxable_interest_income: 50_000
+    tax_units:
+      unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    investment_interest_expense_deduction: 600
+    mt_investment_interest_expense_deduction_indiv: [150, 450, 0]

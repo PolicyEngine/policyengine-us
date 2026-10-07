@@ -36,5 +36,13 @@ class form_4952_investment_expenses(Variable):
         if not parameters(period).gov.irs.deductions.itemized.misc.applies:
             return 0
         expenses = tax_unit_non_dep_add(tax_unit, period, ["investment_expenses"])
-        allowed_misc_deduction = tax_unit("misc_deduction", period)
+        p = parameters(period).gov.irs.deductions.itemized.misc
+        # Dependent expenses cannot increase the filer's Schedule A line 27.
+        filer_misc_expenses = tax_unit_non_dep_add(tax_unit, period, p.sources)
+        filer_misc_deduction = max_(
+            0, filer_misc_expenses - p.floor * tax_unit("positive_agi", period)
+        )
+        allowed_misc_deduction = min_(
+            tax_unit("misc_deduction", period), filer_misc_deduction
+        )
         return min_(expenses, allowed_misc_deduction)

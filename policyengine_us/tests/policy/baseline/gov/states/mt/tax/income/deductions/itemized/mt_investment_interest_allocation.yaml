@@ -1,13 +1,13 @@
 # 2023 Form 2 instructions, line 10: "following the computation on federal
 # Form 4952 but include any Montana adjustments to income."
-# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=31
+# https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=31
 # 2024 Worksheet A line 1: "Enter your total federal itemized deductions from
 # Form 1040, line 12."
 # https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=7
 # Federal Form 4952 line 8: "Enter the smaller of line 3 or line 6."
 # https://www.irs.gov/pub/irs-prior/f4952--2025.pdf
 
-- name: Montana allocates limited interest by each spouse's paid share and handles zero totals
+- name: Montana separate investment interest limits handle zero debt and spouse-only debt
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -113,13 +113,13 @@
     form_4952_net_investment_income: [600, 0, 500]
     # Line 8 = min(line 3, line 6) = [600, 0, 500].
     investment_interest_expense_deduction: [600, 0, 500]
-    # Partial: 600 * [300/1,200, 900/1,200] = [150, 450].
-    # Zero: zero paid gives zero shares. Spouse-only: 500 * [0/1,200, 1,200/1,200].
-    mt_itemized_deductions_indiv: [150, 450, 0, 0, 0, 500]
+    # Separate limits: [min(300, 600), min(900, 0)] = [300, 0].
+    # Zero debt remains zero; only the spouse can use the spouse's own income.
+    mt_itemized_deductions_indiv: [300, 0, 0, 0, 0, 500]
     # Each tax unit's full line 8 is assigned to its head, including spouse interest.
     mt_itemized_deductions_joint: [600, 0, 0, 0, 500, 0]
-    # The federal-itemization allocation uses the same paid shares and limited amounts.
-    mt_itemized_deductions_for_federal_itemization_indiv: [150, 450, 0, 0, 0, 500]
+    # Federal-itemization uses the same separate limits.
+    mt_itemized_deductions_for_federal_itemization_indiv: [300, 0, 0, 0, 0, 500]
     # Federal-itemization joint totals assign line 8 to the head as well.
     mt_itemized_deductions_for_federal_itemization_joint: [600, 0, 0, 0, 500, 0]
 

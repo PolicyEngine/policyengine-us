@@ -29,9 +29,11 @@ class adjusted_net_capital_gain(Variable):
         # Qualified dividend income as defined in paragraph (11), which
         # excludes dividends elected as investment income (§ 1(h)(11)(D)(i)):
         # Schedule D Tax Worksheet line 6, the dividends net_capital_gain
-        # still holds after the Form 4952 line 4g election.
-        qualified_dividend_income = tax_unit(
-            "dividend_income_reduced_by_investment_income", period
+        # still holds after the Form 4952 line 4g election. Cap this part at
+        # net_capital_gain to preserve a directly supplied net gain amount.
+        qualified_dividend_income = min_(
+            max_(0, tax_unit("dividend_income_reduced_by_investment_income", period)),
+            net_capital_gain,
         )
         unrecaptured_s_1250_gain = tax_unit(
             "schedule_d_unrecaptured_section_1250_gain", period

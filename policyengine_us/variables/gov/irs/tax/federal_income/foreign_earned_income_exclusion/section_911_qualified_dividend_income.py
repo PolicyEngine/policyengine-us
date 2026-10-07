@@ -35,9 +35,11 @@ class section_911_qualified_dividend_income(Variable):
         # Qualified dividend income as section 1(h)(11) defines it, without
         # dividends elected as investment income (§ 1(h)(11)(D)(i)): Schedule
         # D Tax Worksheet line 6, the dividends net_capital_gain still holds
-        # after the Form 4952 line 4g election.
-        qualified_dividends = tax_unit(
-            "dividend_income_reduced_by_investment_income", period
+        # after the Form 4952 line 4g election. A directly supplied net gain
+        # can contain fewer dividends than this independently computed line.
+        qualified_dividends = min_(
+            max_(0, tax_unit("dividend_income_reduced_by_investment_income", period)),
+            net_capital_gain,
         )
         excess = tax_unit("section_911_capital_gain_excess", period)
         # Net capital gain determined without regard to section 1(h)(11).

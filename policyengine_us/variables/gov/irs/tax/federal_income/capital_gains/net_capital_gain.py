@@ -36,13 +36,14 @@ class net_capital_gain(Variable):
     def formula(tax_unit, period, parameters):
         # Capital gain distributions, including those reported without
         # Schedule D (Form 1040 line 7 with the box checked), are long-term
-        # capital gains under IRC 852(b)(3)(B).
-        long_term_gain = add(
-            tax_unit,
-            period,
-            ["long_term_capital_gains", "non_sch_d_capital_gains"],
+        # capital gains under IRC 852(b)(3)(B). Only the head's and spouse's
+        # gains belong on this return, as on their Form 4952.
+        long_term_gain = tax_unit_non_dep_add(
+            tax_unit, period, ["long_term_capital_gains"]
+        ) + tax_unit("form_4952_capital_gain_distributions", period)
+        short_term_loss = max_(
+            0, -tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         )
-        short_term_loss = max_(0, -add(tax_unit, period, ["short_term_capital_gains"]))
         # 26 U.S.C. 1222(11), determined without regard to section 1(h)(11).
         gain = max_(0, long_term_gain - short_term_loss)
         # Form 4952 line 4g: the net capital gain and qualified dividends
@@ -60,6 +61,6 @@ class net_capital_gain(Variable):
         dividends_elected = election - gain_elected
         qualified_dividends = max_(
             0,
-            add(tax_unit, period, ["qualified_dividend_income"]) - dividends_elected,
+            tax_unit("form_4952_qualified_dividends", period) - dividends_elected,
         )
         return max_(0, gain - gain_elected) + qualified_dividends

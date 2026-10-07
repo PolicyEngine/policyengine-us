@@ -27,18 +27,24 @@ def schedule_d_tax_worksheet_form_4952_lines(tax_unit, period):
     footnote), so the election is attributed first to net capital gain and
     then to qualified dividends, as the line 4g instructions do by default.
 
-    Line 7 keeps the Schedule D amounts the rest of the capital gains tax
-    uses. Capital gain distributions reported without Schedule D
+    Line 7 keeps the head's and spouse's Schedule D amounts the rest of the
+    capital gains tax uses, independently of Form 4952 line 4e. Capital gain
+    distributions reported without Schedule D
     (non_sch_d_capital_gains) belong on Schedule D line 13 (2025 Instructions
     for Schedule D, "Capital Gain Distributions"), so they enter lines 15 and
     16.
     """
-    long_term_gains = add(tax_unit, period, ["long_term_capital_gains"])
-    distributions = add(tax_unit, period, ["non_sch_d_capital_gains"])
+    long_term_gains = tax_unit_non_dep_add(
+        tax_unit, period, ["long_term_capital_gains"]
+    )
+    short_term_gains = tax_unit_non_dep_add(
+        tax_unit, period, ["short_term_capital_gains"]
+    )
+    distributions = tax_unit("form_4952_capital_gain_distributions", period)
     # Schedule D line 15 (net long-term gain or loss, with line 13) and line
     # 16 (Schedule D line 7 plus line 15).
     schedule_d_line_15 = long_term_gains + distributions
-    schedule_d_line_16 = tax_unit("net_capital_gains", period) + distributions
+    schedule_d_line_16 = schedule_d_line_15 + short_term_gains
     return ScheduleDTaxWorksheetForm4952Lines(
         line_3=tax_unit("form_4952_elected_investment_income", period),
         line_4=tax_unit("form_4952_net_capital_gain", period),
