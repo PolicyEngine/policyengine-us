@@ -12,14 +12,25 @@ class hi_dependent_care_benefits(Variable):
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=46",
         "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=1",
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28",
+        "https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2",
+        "https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2021/SLH2021_Act89.pdf#page=1",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
         ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
+        # Line 11 is the IRC section 129(a)(2)(A) cap as Hawaii adopts it.
+        # For 2021 Hawaii followed the IRC as amended as of December 31, 2020
+        # (Act 89, SLH 2021), before ARPA section 9632 raised the federal cap
+        # to $10,500 ($5,250) for 2021, so the 2021 Schedule X line 11 still
+        # reads $5,000 ($2,500).
+        if period.start.year == 2021:
+            instant_str = "2020-01-01"
+        else:
+            instant_str = period
         p_irs = parameters(
-            period
+            instant_str
         ).gov.irs.gross_income.dependent_care_assistance_programs
         # Schedule X PART II:
         # line 2:

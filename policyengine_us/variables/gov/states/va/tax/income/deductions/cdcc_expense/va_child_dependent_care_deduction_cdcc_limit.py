@@ -7,15 +7,21 @@ class va_child_dependent_care_deduction_cdcc_limit(Variable):
     label = "Federal CDCC-relevant care expense limit for Virginia tax purposes"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=29"
+    reference = (
+        # 2021 Form 760 instructions as revised after 2022 Va. Acts ch. 3.
+        "https://web.archive.org/web/20230604090116/https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=29",
+        "https://www.tax.virginia.gov/sites/default/files/inline-files/tb-22-1-irc-conformity-advanced.pdf#page=1",
+        "https://lis.virginia.gov/cgi-bin/legp604.exe?221+ful+CHAP0003",
+    )
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        if period.start.year == 2021:
-            instant_str = f"2020-01-01"
-        else:
-            instant_str = period
-        p = parameters(instant_str).gov.irs.credits.cdcc
+        # 2022 Va. Acts ch. 3 (HB 971) advanced Virginia's IRC conformity to
+        # December 31, 2021 with effect for 2021 returns, so 2021 uses the
+        # ARPA $8,000 / $16,000 limit and the $10,500 IRC section 129 cap.
+        # The revised 2021 Form 760 code 101 instructions say "up to $8,000
+        # for one dependent and $16,000 for two or more" (Tax Bulletin 22-1).
+        p = parameters(period).gov.irs.credits.cdcc
         capped_count_cdcc_eligible = tax_unit("capped_count_cdcc_eligible", period)
         dollar_limit = p.max * capped_count_cdcc_eligible
         # Va. Code § 58.1-322.03(3) deducts "the amount of employment-related

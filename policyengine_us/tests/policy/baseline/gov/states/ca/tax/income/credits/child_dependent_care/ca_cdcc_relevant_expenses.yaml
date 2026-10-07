@@ -117,3 +117,111 @@
     dependent_care_assistance_exclusion: 4_000
     # min(10_000 expenses, $6,000 two-child cap - $4,000 exclusion, 38_000) = 2_000.
     ca_cdcc_relevant_expenses: 2_000
+
+# 2021: the federal exclusion uses the $10,500 cap, but FTB 3506 line 22 keeps
+# California's $5,000, so the California base subtracts only $5,000.
+- name: The 2021 California base subtracts the $5,000-capped exclusion
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 55_000
+        dependent_care_employer_benefits: 9_000
+      parent2:
+        age: 38
+        employment_income: 40_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+  output:
+    # Federal: min($9,000, $10,500, $40,000) = $9,000.
+    dependent_care_assistance_exclusion: 9_000
+    # California: min($9,000, $5,000) = $5,000.
+    ca_dependent_care_assistance_exclusion: 5_000
+    # min($12,000, $6,000 two-person 2020 limit - $5,000, $40,000) = $1,000.
+    ca_cdcc_relevant_expenses: 1_000
+    # AGI $95,000: the 2020 rate is 35% less 1 point per $2,000 over $15,000,
+    # floored at 20%. $1,000 x 20% = $200.
+    ca_federal_cdcc: 200
+    # California matches 34% for AGI over $70,000 and not over $100,000.
+    ca_cdcc: 68
+
+- name: A 2021 separate filer living apart from their spouse subtracts at most $5,000
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_separated: true
+        employment_income: 50_000
+        dependent_care_employer_benefits: 6_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: CA
+  output:
+    # Treated as unmarried: federal min($6,000, $10,500, $50,000) = $6,000.
+    # California line 22 is $5,000 (FTB 3506 line 20 instructions), so the
+    # state exclusion is $5,000 and its remaining limit is $1,000.
+    # The federal $16,000 - $6,000 limit does not further reduce the base.
+    dependent_care_assistance_exclusion: 6_000
+    ca_dependent_care_assistance_exclusion: 5_000
+    ca_cdcc_relevant_expenses: 1_000
+
+- name: The 2026 federal ceiling exhausts a positive California limit
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 55_000
+        dependent_care_employer_benefits: 7_000
+      parent2:
+        age: 38
+        employment_income: 40_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+  output:
+    # Federal: min($7,000 benefits, $7,500 cap, $40,000 earnings) = $7,000.
+    dependent_care_assistance_exclusion: 7_000
+    # California retains $5,000, leaving $6,000 - $5,000 = $1,000.
+    ca_dependent_care_assistance_exclusion: 5_000
+    # Federal Form 2441 line 31 is zero: max($6,000 - $7,000, 0) = 0.
+    # FTB 3506 lines 32-33 cap the otherwise positive state limit at zero.
+    cdcc_limit: 0
+    ca_cdcc_relevant_expenses: 0
+    ca_federal_cdcc: 0
+    ca_cdcc: 0
