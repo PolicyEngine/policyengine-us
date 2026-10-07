@@ -59,10 +59,10 @@
     employment_income: 100_000
     casualty_loss: 15_000
   output:
-    # Casualty loss: 15,000
+    # Casualty loss: 15,000, less $100 per casualty = 14,900
     # AGI floor (10%): 100,000 * 0.10 = 10,000
-    # Deduction: 15,000 - 10,000 = 5,000
-    ny_casualty_loss_deduction: 5_000
+    # Deduction: 14,900 - 10,000 = 4,900
+    ny_casualty_loss_deduction: 4_900
 
 - name: NY itemized deductions max includes all pre-TCJA components
   period: 2024
@@ -81,6 +81,6 @@
     # Medical: 10,000 - (100,000 * 0.075) = 2,500
     # NY SALT: 12,000 real estate only (sales tax 3,000 added back per s.615(c)(1))
     # NY Misc: 4,000 - (100,000 * 0.02) = 2,000
-    # NY Casualty: 15,000 - (100,000 * 0.10) = 5,000
-    # Total: 5,000 + 2,500 + 12,000 + 2,000 + 5,000 = 26,500
-    ny_itemized_deductions_max: 26_500
+    # NY Casualty: (15,000 - 100) - (100,000 * 0.10) = 4,900
+    # Total: 5,000 + 2,500 + 12,000 + 2,000 + 4,900 = 26,400
+    ny_itemized_deductions_max: 26_400

@@ -1,0 +1,205 @@
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 15 (PDF pp. 35-36):
+# "You may deduct a casualty and theft loss from a federally declared disaster
+# (other than net qualified disaster losses). If you have a casualty and/or
+# theft loss, complete federal Form 4684 to figure the amount of the Montana
+# loss that you can enter on this line. To determine your casualty and/or theft
+# loss, use your Montana Adjusted Gross Income in place of the Federal Adjusted
+# Gross Income." and "Deductions for all other casualty and theft losses are
+# suspended until tax years beginning after December 31, 2025."
+# Form 4684 reduces each casualty by $100 (2022 Form 4684 line 11) and allows the
+# rest above 10% of adjusted gross income (line 17). IRS Publication 547 (2022,
+# PDF p. 10): "If you and your spouse file a joint return, you are treated as one
+# individual in applying the $100 rule." The model has no input that
+# distinguishes federally declared disaster losses; like the federal deduction,
+# it allows no personal casualty loss from 2018 unless
+# gov.irs.deductions.itemized.casualty.active is switched on, as these tests do.
+
+- name: A joint return deducts the couple's loss once, above 10% of Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 100,000
+    mt_casualty_loss_deduction_joint: 19_900
+
+- name: Both spouses' losses are pooled on a joint return
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+      person2:
+        age: 40
+        casualty_loss: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (35,000 - 100) - 10% x 100,000; the joint return reduces by $100 once.
+    mt_casualty_loss_deduction_joint: 24_900
+
+- name: A dependent's loss is left to the dependent's own return
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+      person2:
+        age: 40
+        employment_income: 40_000
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 5_000
+        casualty_loss: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Montana AGI is the spouses' 100,000 (the dependent's wages are on the
+    # dependent's own return), and so is the dependent's loss:
+    # (30,000 - 100) - 10% x 100,000.
+    mt_casualty_loss_deduction_joint: 19_900
+
+- name: The 10% floor uses Montana AGI, not federal AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        casualty_loss: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 80_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 80,000. A federal AGI floor would give 19,900.
+    mt_casualty_loss_deduction_joint: 21_900
+
+- name: A loss whose excess over $100 equals 10% of Montana AGI is not deductible
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 10_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 0
+
+- name: One dollar above the floor is deductible
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 10_101
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 1
+
+- name: A loss under $100 is not deductible even with no Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 80
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 0
+
+- name: No loss is deductible while the federal casualty deduction is suspended
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 0
+
+- name: Montana discontinued its Itemized Deductions Schedule in 2024
+  period: 2024
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 0

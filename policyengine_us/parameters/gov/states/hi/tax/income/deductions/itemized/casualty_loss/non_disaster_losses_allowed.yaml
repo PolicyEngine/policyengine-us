@@ -1,0 +1,19 @@
+description: Hawaii allows personal casualty and theft losses that are not attributable to a declared disaster, if this is true.
+values:
+  2018-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii non-disaster casualty losses allowed
+  reference:
+    - title: HRS § 235-2.4(l)(3) (unofficial compilation as of December 31, 2025)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=12
+    - title: Act 35, SLH 2026 (HB 2329 CD1), striking HRS § 235-2.4(l)(3)
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=23
+    - title: Act 35, SLH 2026 (HB 2329 CD1), effective date
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=34
+    - title: Hawaii Department of Taxation Announcement No. 2026-06
+      href: https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=2
+    - title: 2025 Hawaii Form N-11 Instructions, Casualty and Theft Losses
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=18

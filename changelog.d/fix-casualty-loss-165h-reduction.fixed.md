@@ -1,0 +1,1 @@
+Apply the Form 4684 $100 per-casualty reduction (26 U.S.C. 165(h)(1)) before the 10% floor, and leave tax unit dependents' losses off the filer's return, in the federal, New York, Alabama and Hawaii casualty loss deductions. Limit Alabama's deduction to declared-disaster losses from 2018, as federal law does, and Hawaii's from 2026 (Act 35, SLH 2026).
