@@ -158,11 +158,12 @@ the unit is separated. Without dependent inputs, that pairs an adult student
 with a parent as joint filers and leaves a minor living without a parent with
 no head.
 
-Filing status is not supplied. It is a policy calculation, so `filing_status`
-is always computed from the unit's members, including any supplied roles, and
-the filing rules, and reforms to those rules apply to every unit. The Populace
-build also carries its constructor's filing status in a `filing_status_input`
-column. No variable has that name, so the column is not loaded.
+The Populace build carries its constructor's filing status in a
+`filing_status_input` column. No variable has that name, so the column is
+ignored. By default, `filing_status` is computed from the unit's members,
+including any supplied roles, and the filing rules. Reforms to those rules
+apply when the formula computes the status. A direct `filing_status` input
+supplied by a caller still overrides the formula.
 
 Supplied roles fail closed rather than falling back. Each of these raises a
 `ValueError`:
