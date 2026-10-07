@@ -33,6 +33,20 @@ def simulation():
                 "joint": {"members": names[:3], "filing_status": {year: "JOINT"}},
                 "single": {"members": names[3:], "filing_status": {year: "SINGLE"}},
             },
+            "marital_units": {
+                "couple": {"members": names[:2]},
+                "child": {"members": [names[2]]},
+                "single": {"members": [names[3]]},
+                "dependent": {"members": [names[4]]},
+            },
+            "families": {
+                "joint": {"members": names[:3]},
+                "single": {"members": names[3:]},
+            },
+            "spm_units": {
+                "joint": {"members": names[:3]},
+                "single": {"members": names[3:]},
+            },
             "households": {
                 "joint": {"members": names[:3]},
                 "single": {"members": names[3:]},

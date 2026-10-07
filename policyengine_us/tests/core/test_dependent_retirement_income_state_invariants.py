@@ -22,6 +22,8 @@ credit, and Pennsylvania excludes retirement income only past age 59.5.
 Each person also draws a military record: retired after 20 years, retired
 early, medically retired, the Survivor Benefit Plan beneficiary of a member
 who qualified for North Carolina's deduction, or none of these.
+Two fixed joint households replace random draws to guarantee mixed military
+eligibility and a civilian qualifying survivor in both test years.
 
 1. `tax_unit_non_dep_add` equals a numpy reference: the head's and spouse's
    amounts of person-level variables plus tax-unit-level variables. For tax
@@ -155,6 +157,44 @@ def _draw_units(n, rng):
         u["spouse_military"] = _draw_military(rng) if u["spouse"] else None
         for dependent in u["dependents"]:
             dependent["military"] = _draw_military(rng)
+    return units
+
+
+def _nc_coverage_units():
+    # Guarantee mixed own-pay eligibility and a civilian qualifying survivor
+    # without depending on a particular seed's military-record draws. Keep
+    # the population budget fixed by replacing two draws in the state test.
+    units = []
+    for spouse_record in (MILITARY_RECORDS[1], MILITARY_RECORDS[3]):
+        units.append(
+            {
+                "joint": True,
+                "head_age": 75,
+                "spouse_age": 60,
+                "head_wages": 20_000.0,
+                "head": {
+                    **dict.fromkeys(RETIREMENT_INPUTS, 0.0),
+                    "military_retirement_pay": 20_000.0,
+                    "taxable_public_pension_income": 20_000.0,
+                    "social_security": 20_000.0,
+                },
+                "spouse": {
+                    **dict.fromkeys(RETIREMENT_INPUTS, 0.0),
+                    "military_retirement_pay": 10_000.0,
+                    "taxable_public_pension_income": 10_000.0,
+                    "social_security": 0.0,
+                },
+                "head_military": MILITARY_RECORDS[0].copy(),
+                "spouse_military": spouse_record.copy(),
+                "dependents": [
+                    {
+                        "age": 78,
+                        "income": dict.fromkeys(RETIREMENT_INPUTS, 500.0),
+                        "military": MILITARY_RECORDS[0].copy(),
+                    }
+                ],
+            }
+        )
     return units
 
 
@@ -335,6 +375,7 @@ YEARS = [2025, 2026]
 def test_dependents_retirement_income_never_reduces_state_income_tax(year):
     rng = np.random.default_rng(SEED + year)
     units = _draw_units(12, rng)
+    units[:2] = _nc_coverage_units()
     with_income = Simulation(situation=_situation(units, INCOME_TAX_STATES, year))
     without_income = Simulation(
         situation=_situation(units, INCOME_TAX_STATES, year, zero_dependents=True)
