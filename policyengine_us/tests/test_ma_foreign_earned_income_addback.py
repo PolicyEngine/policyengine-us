@@ -6,7 +6,7 @@ foreign sources excluded under section nine hundred and eleven of the Code",
 and s. 2(b)(2) makes Part B gross income the Massachusetts gross income "not
 included in Part A or Part C gross income". The excluded amount is
 `ma_foreign_earned_income_exclusion_addback` (Form 2555 line 43). It defaults
-to `foreign_earned_income_exclusion` floored at zero and can be entered
+to `foreign_earned_income_exclusion` and can be entered
 directly. Before this
 change, `ma_gross_income` subtracted the exclusion instead.
 
@@ -287,11 +287,10 @@ def in_massachusetts(households):
 
 
 def expected_addback(households):
-    """The entered addback, or else the exclusion floored at zero
-    (Massachusetts only)."""
+    """The entered addback, or else the exclusion (Massachusetts only)."""
     return np.array(
         [
-            (max(0, h["exclusion"]) if h["entered"] is None else h["entered"])
+            (h["exclusion"] if h["entered"] is None else h["entered"])
             if h["state"] == "MA"
             else 0
             for h in households
@@ -484,7 +483,7 @@ def check_entered_addback_overrides_default(households, year):
     # The default follows the exclusion.
     assert np.array_equal(
         default["ma_foreign_earned_income_exclusion_addback"],
-        np.where(ma, np.maximum(0, exclusions(households)), 0),
+        np.where(ma, exclusions(households), 0),
     )
 
 

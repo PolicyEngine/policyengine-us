@@ -17,7 +17,7 @@ class ma_foreign_earned_income_exclusion_addback(Variable):
         "deduction rather than an exclusion. Other income inputs must already "
         "exclude this amount. When not provided, it equals "
         "foreign_earned_income_exclusion, the 911(f) stacking amount on "
-        "worksheet line 2c, floored at zero. That default equals line 43 when "
+        "worksheet line 2c. That default equals line 43 when "
         "Form 2555 lines 44 and 50 and worksheet line 2b are zero, or more "
         "generally when line 50 equals line 44 plus line 2b. An entered "
         "amount, including zero, replaces the default."
@@ -37,7 +37,4 @@ class ma_foreign_earned_income_exclusion_addback(Variable):
         "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=37",
     )
     defined_for = StateCode.MA
-
-    def formula(tax_unit, period, parameters):
-        # Worksheet line 2c is never below zero.
-        return max_(0, tax_unit("foreign_earned_income_exclusion", period))
+    adds = ["foreign_earned_income_exclusion"]
