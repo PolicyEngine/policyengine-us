@@ -4,7 +4,8 @@
 reports it on their own return, and 26 USC 1(g)(7) can move only a child's
 interest and dividends to a parent's return. State income taxes that start
 from federal AGI therefore must not subtract a dependent's pension, IRA or
-401(k) distributions, or military retirement pay from the filer's income.
+401(k) distributions, military retirement pay or survivor benefits from the
+filer's income.
 
 The tests draw a seeded random population of tax units and run each scenario
 as one vectorized simulation. Each unit is single or joint, with wages,
@@ -18,6 +19,9 @@ elderly relative. Social Security, moderate incomes and the older ages all
 matter: Utah's military retirement credit, for example, is open only when
 the income-limited Social Security credit outweighs the age-gated retirement
 credit, and Pennsylvania excludes retirement income only past age 59.5.
+Each person also draws a military record: retired after 20 years, retired
+early, medically retired, the Survivor Benefit Plan beneficiary of a member
+who qualified for North Carolina's deduction, or none of these.
 
 1. `tax_unit_non_dep_add` equals a numpy reference: the head's and spouse's
    amounts of person-level variables plus tax-unit-level variables. For tax
@@ -31,6 +35,10 @@ credit, and Pennsylvania excludes retirement income only past age 59.5.
 3. A unit whose dependents have no income has the same inputs in both
    populations, so its state income tax, AGI and taxable income are the same
    in both: no unit's results depend on another unit's inputs.
+4. North Carolina's military retirement deduction is the head's and spouse's
+   qualifying pay, each judged on their own record: their retirement pay if
+   they served 20 years or were medically retired, and Survivor Benefit Plan
+   payments if the deceased member did (G.S. 105-153.5(b)(5a)).
 """
 
 import numpy as np
@@ -60,10 +68,41 @@ RETIREMENT_INPUTS = [
     "taxable_public_pension_income",
     "taxable_private_pension_income",
     "military_retirement_pay",
+    "military_retirement_pay_survivors",
+    "pension_survivors",
     "taxable_ira_distributions",
     "taxable_401k_distributions",
     "taxable_403b_distributions",
 ]
+
+# Military records, drawn for every person. North Carolina deducts the
+# retirement pay of a member who served 20 years or was medically retired, and
+# Survivor Benefit Plan payments to the beneficiary of such a member.
+NC_MINIMUM_SERVICE_YEARS = 20
+MILITARY_RECORDS = [
+    # Retired after 20 or more years.
+    {"years": 22, "medically_retired": False, "nc_survivor": False},
+    # Retired early, without 20 years or a medical retirement.
+    {"years": 15, "medically_retired": False, "nc_survivor": False},
+    # Medically retired.
+    {"years": 8, "medically_retired": True, "nc_survivor": False},
+    # The Survivor Benefit Plan beneficiary of a member who qualified.
+    {"years": 0, "medically_retired": False, "nc_survivor": True},
+    # No service, or survivor benefits from a member who did not qualify.
+    {"years": 0, "medically_retired": False, "nc_survivor": False},
+]
+
+
+def _draw_military(rng):
+    return MILITARY_RECORDS[int(rng.integers(len(MILITARY_RECORDS)))]
+
+
+def _military_inputs(record, year):
+    return {
+        "years_in_military": {year: record["years"]},
+        "is_permanently_disabled_veteran": {year: record["medically_retired"]},
+        "nc_military_retirement_survivor_eligible": {year: record["nc_survivor"]},
+    }
 
 
 def _draw_units(n, rng):
@@ -109,6 +148,13 @@ def _draw_units(n, rng):
                 "dependents": [dependent() for _ in range(n_dependents)],
             }
         )
+    # Military records come after the incomes, so drawing them does not
+    # change the incomes.
+    for u in units:
+        u["head_military"] = _draw_military(rng)
+        u["spouse_military"] = _draw_military(rng) if u["spouse"] else None
+        for dependent in u["dependents"]:
+            dependent["military"] = _draw_military(rng)
     return units
 
 
@@ -120,10 +166,19 @@ def _filer_ages(u):
     return [u["head_age"]] + ([u["spouse_age"]] if u["spouse"] else [])
 
 
-def _service_years(income):
-    # Military retirement pay usually follows 20 years of service, which is
-    # also North Carolina's test for deducting it.
-    return 20 if income["military_retirement_pay"] > 0 else 0
+def _filer_military(u):
+    return [u["head_military"]] + ([u["spouse_military"]] if u["spouse"] else [])
+
+
+def _nc_qualifying_military_pay(income, record):
+    retiree_qualifies = (
+        record["years"] >= NC_MINIMUM_SERVICE_YEARS or record["medically_retired"]
+    )
+    own_pay_counts = retiree_qualifies or record["nc_survivor"]
+    return (
+        income["military_retirement_pay"] * own_pay_counts
+        + income["military_retirement_pay_survivors"] * record["nc_survivor"]
+    )
 
 
 def _situation(units, states, year, *, zero_dependents=False):
@@ -143,7 +198,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                 "is_tax_unit_spouse": {year: False},
                 "is_tax_unit_dependent": {year: False},
                 "employment_income": {year: u["head_wages"]},
-                "years_in_military": {year: _service_years(u["head"])},
+                **_military_inputs(u["head_military"], year),
                 **{name: {year: value} for name, value in u["head"].items()},
             }
             couple = [head]
@@ -156,7 +211,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                     "is_tax_unit_head": {year: False},
                     "is_tax_unit_spouse": {year: True},
                     "is_tax_unit_dependent": {year: False},
-                    "years_in_military": {year: _service_years(u["spouse"])},
+                    **_military_inputs(u["spouse_military"], year),
                     **{name: {year: value} for name, value in u["spouse"].items()},
                 }
             marital_units[f"mu_{key}"] = {"members": couple}
@@ -170,7 +225,7 @@ def _situation(units, states, year, *, zero_dependents=False):
                     "is_tax_unit_head": {year: False},
                     "is_tax_unit_spouse": {year: False},
                     "is_tax_unit_dependent": {year: True},
-                    "years_in_military": {year: _service_years(dependent["income"])},
+                    **_military_inputs(dependent["military"], year),
                     **{
                         name: {year: factor * value}
                         for name, value in dependent["income"].items()
@@ -331,12 +386,50 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
         "ut_claims_retirement_credit", year
     )
     assert (ut_military_credit_open & dependent_military_pay).any()
-    # North Carolina's military deduction needs 20 years of service or a
-    # medical retirement.
-    nc_military_deduction_open = (states == "NC") & (
+    # North Carolina's military deduction needs 20 years of service, a
+    # medical retirement or a qualifying member's survivor benefits.
+    nc = states == "NC"
+    nc_military_deduction_open = nc & (
         with_income.calculate(
             "nc_military_retirement_deduction_eligible", year, map_to="tax_unit"
         )
         > 0
     )
     assert (nc_military_deduction_open & dependent_military_pay).any()
+
+    # Property 4: each head's and spouse's own record decides whether their
+    # military pay counts, whatever the other members' records.
+    expected_nc_deduction = np.array(
+        [
+            sum(
+                _nc_qualifying_military_pay(income, record)
+                for income, record in zip(_filers(u), _filer_military(u))
+            )
+            for u in units
+        ]
+    )
+    np.testing.assert_allclose(
+        with_income.calculate("nc_military_retirement_deduction", year)[nc],
+        expected_nc_deduction,
+        atol=TOLERANCE,
+    )
+    # The draws must reach a filer whose military pay does not count next to
+    # one whose pay does, and a qualifying survivor without service.
+    filer_pay_counts = [
+        [
+            _nc_qualifying_military_pay(income, record) > 0
+            for income, record in zip(_filers(u), _filer_military(u))
+            if income["military_retirement_pay"] > 0
+        ]
+        for u in units
+    ]
+    assert any(any(c) and not all(c) for c in filer_pay_counts)
+    assert any(
+        record["nc_survivor"]
+        and record["years"] == 0
+        and income["military_retirement_pay"]
+        + income["military_retirement_pay_survivors"]
+        > 0
+        for u in units
+        for income, record in zip(_filers(u), _filer_military(u))
+    )
