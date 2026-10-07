@@ -125,3 +125,29 @@
     # neither is counted although the household's interest totals $300: a
     # per-member reading, which the manual does not specify.
     or_liheap_countable_income: 0
+
+- name: Case 6, each member's rental loss is floored before the household sum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        rental_income: 6_000
+        ssi: 0
+      person2:
+        age: 38
+        rental_income: -6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Each member's rental income is floored at zero before the household sum
+    # (page 35 sends landlords to the self-employment form), so the second
+    # member's $6,000 loss does not offset the first member's $6,000 of rent.
+    or_liheap_countable_income: 6_000

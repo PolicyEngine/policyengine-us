@@ -573,3 +573,28 @@
     # Region 1 (page 72): Electricity $475 then $370, Natural Gas $660.
     # Region 2 (page 74): Electricity $510.
     or_liheap: [475, 370, 660, 510]
+
+- name: Case 25, program year 2027 pays the size 12 rows of the Region 2 matrix.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [12, 12, 12, 12, 12, 12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, FUEL_OIL]
+    # About $125 a month for electric heat, $80 a month for gas heat and 600
+    # gallons of heating oil a year.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 0, 0]
+    gas_expense: [0, 0, 0, 0, 960, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 2_400]
+    # PY2027 size 12 rows (page 75): "$0 $29,082", "$29,083 $58,163",
+    # "$58,164 $87,244", "$87,245 $116,325": the first dollar of each row, then
+    # the last row for gas and oil.
+    or_liheap_countable_income: [0, 29_083, 58_164, 87_245, 87_245, 87_245]
+  output:
+    # PY2027 size 12 limit $116,325 (page 71).
+    or_liheap_income_limit: [116_325, 116_325, 116_325, 116_325, 116_325, 116_325]
+    or_liheap_income_band: [1, 2, 3, 4, 4, 4]
+    # Region 2, size 12 (page 75): Electricity $750, $615, $515, $370; Natural
+    # Gas $380 and Heating Oil $535 in the last row. Sizes 7 to 12 print the
+    # size 6 amounts.
+    or_liheap: [750, 615, 515, 370, 380, 535]

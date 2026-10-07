@@ -38,3 +38,13 @@
     # median is $129,250, so these products are exact dollars (129,250 x 0.68
     # x 0.6 = 52,734) and a float32 ceiling would add $1 to each.
     or_liheap_income_limit: [52_734, 65_142, 102_366, 107_019, 111_672, 116_325]
+
+- name: Case 4, published FY2026 annual income limits for the even household sizes 2 to 12.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [2, 4, 6, 8, 10, 12]
+  output:
+    # FY2026 page 77: size 2 $50,196, size 4 $73,817, size 6 $97,438, size 8
+    # $101,867, size 10 $106,296, size 12 $110,725.
+    or_liheap_income_limit: [50_196, 73_817, 97_438, 101_867, 106_296, 110_725]

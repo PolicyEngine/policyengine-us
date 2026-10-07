@@ -8,8 +8,14 @@ class or_liheap(Variable):
     label = "Oregon LIHEAP regular heating benefit"
     unit = USD
     defined_for = "or_liheap_eligible"
-    # PDF pages 61, 62, 67, 78, 79, 80, 81, 93, 94.
-    reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=61"
+    reference = (
+        # PDF pages 47, 58-59.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58",
+        # PDF pages 61-62, 67, 78-81, 93-94.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=61",
+        # PDF pages 59, 72-75.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72",
+    )
     documentation = (
         "Annual regular heating assistance, verified for program years 2025 to 2027. "
         "Earlier years use parameter backfilling and are unverified historical "
