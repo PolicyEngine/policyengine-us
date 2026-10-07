@@ -12,7 +12,8 @@ class ma_part_a_cg_excess_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         part_a_agi = tax_unit("ma_part_a_agi", period)
-        dividends = add(tax_unit, period, ["dividend_income"])
+        # The head's and spouse's dividends, as in ma_part_a_gross_income.
+        dividends = tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
         stcg_agi = part_a_agi - dividends
         div_excess_exemption = tax_unit("ma_part_a_div_excess_exemption", period)
         return max_(0, div_excess_exemption - stcg_agi)
