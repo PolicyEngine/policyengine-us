@@ -17,13 +17,18 @@ class mt_loss_ald_reallocation(Variable):
         "PolicyEngine did before each spouse's own deductions were "
         "attributed to them. Adding this amount to a spouse's federal AGI "
         "gives that equal division. Other deductions stay with the spouse "
-        "who has them."
+        "who has them. It applies through 2023: from 2024 spouses no longer "
+        "file separately on the same form, and Montana no longer allocates "
+        "losses between them."
     )
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
     reference = (
         "https://sosmt.gov/wp-content/uploads/attachments/MAR10-05.pdf#page=35",
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=23",
+        # 2024 Form 2 instructions, page i: "Capital losses, passive losses,
+        # and excess business losses will no longer be allocated by spouse".
+        "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5",
     )
 
     def formula(person, period, parameters):

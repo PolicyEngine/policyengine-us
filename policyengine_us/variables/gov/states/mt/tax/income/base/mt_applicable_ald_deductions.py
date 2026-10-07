@@ -9,10 +9,11 @@ class mt_applicable_ald_deductions(Variable):
     documentation = (
         "Each spouse's own federal adjustments to income, for their column of "
         "the Taxable Social Security Benefits Schedule (Form 2, line 7, before "
-        "removing student loan interest)."
+        "removing student loan interest). Through 2023, while spouses could "
+        "file separately on the same form."
     )
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
     reference = (
         # 2023 Form 2 instructions, page 6: deductions attributable to only one
         # spouse, the student loan interest deduction included, must be claimed

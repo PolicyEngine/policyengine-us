@@ -233,3 +233,59 @@
     # all deductions equally would give [3_500, 3_500] and [56_500, 36_500].
     mt_applicable_ald_deductions: [2_000, 5_000]
     mt_agi_indiv: [58_000, 35_000]
+
+- name: From 2024 Montana no longer divides anything between spouses.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Married filing separately on the same form ended after 2023, and the
+    # return starts from the couple's federal taxable income.
+    mt_married_filing_separately_on_same_return_eligible: [false, false]
+    mt_loss_ald_reallocation: [0, 0]
+    mt_applicable_ald_deductions: [0, 0]
+    mt_agi_indiv: [0, 0]
+    # The same as main, and the same when the spouse has the loss and the IRA
+    # deduction (next case).
+    mt_income_tax: 3_154.20
+
+- name: From 2024 Montana's tax does not depend on which spouse has the deductions.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: -4_000
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_loss_ald_reallocation: [0, 0]
+    mt_applicable_ald_deductions: [0, 0]
+    mt_income_tax: 3_154.20

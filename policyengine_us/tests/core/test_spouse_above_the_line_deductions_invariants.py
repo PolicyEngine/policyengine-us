@@ -55,6 +55,16 @@ tax unit is an input for every unit in its simulation. For every tax unit:
    above_the_line_deductions_person is their own person-level deductions.
 5. Bounds. Every above_the_line_deductions_person and loss_ald_person is
    non-negative.
+6. DC separate filing on the same return. For the head and spouse of a joint
+   DC return with no deduction set directly,
+   dc_separate_capital_loss_adjustment equals their share of the federal
+   capital loss deduction less their own capital losses up to their own
+   capital gains and distributions plus the $1,500 separate limit; it is zero
+   for everyone else. Each couple's adjustments add up to zero or more:
+   filing separately never deducts more capital loss than the joint return.
+   (The YAML tests check that the joint DC computation is unaffected.)
+7. Montana from 2024. Spouses no longer file separately on the same form, so
+   mt_loss_ald_reallocation and mt_applicable_ald_deductions are zero.
 """
 
 import numpy as np
@@ -126,6 +136,9 @@ PERSON_OUTPUTS = [
     "student_loan_interest",
     "social_security",
     "unemployment_compensation",
+    "dc_separate_capital_loss_adjustment",
+    "mt_loss_ald_reallocation",
+    "mt_applicable_ald_deductions",
     *BUSINESS_SOURCES,
 ]
 
@@ -408,6 +421,11 @@ def _run_group(units, year, *, zero_spouse):
     loss = tbs.parameters(f"{year}-01-01").gov.irs.ald.loss
     out["business_loss_limit"] = np.asarray(loss.max[filing_status], dtype=float)
     out["capital_loss_limit"] = np.asarray(loss.capital.max[filing_status], dtype=float)
+    out["separate_capital_loss_limit"] = np.full(
+        len(filing_status), float(loss.capital.max["SEPARATE"])
+    )
+    out["joint"] = filing_status == "JOINT"
+    out["state"] = np.array([u["state"] for u in units])
     return out
 
 
@@ -460,28 +478,40 @@ def _limits(run):
     return limited_business, limited_capital, allowed_against_gains
 
 
+def _even(run):
+    """An equal share for each filer of a unit."""
+    filer = ~run["is_dependent"]
+    filers = _per_person(run, _unit_sum(run, filer.astype(float)))
+    return np.divide(
+        filer.astype(float), filers, out=np.zeros_like(filers), where=filers > 0
+    )
+
+
+def _capital_deduction_person(run):
+    """Each filer's share of the capital loss deduction, by their own losses."""
+    capital_loss = ~run["is_dependent"] * run["capital_losses"]
+    _, limited_capital, allowed_against_gains = _limits(run)
+    capital_deduction = _per_person(run, allowed_against_gains + limited_capital)
+    return capital_deduction * _share(
+        capital_loss, _per_person(run, _unit_sum(run, capital_loss)), _even(run)
+    )
+
+
 def _reference(run):
     """above_the_line_deductions_person, built from the inputs with numpy."""
     filer = ~run["is_dependent"]
-    filers = _per_person(run, _unit_sum(run, filer.astype(float)))
-    even = np.divide(
-        filer.astype(float), filers, out=np.zeros_like(filers), where=filers > 0
-    )
+    even = _even(run)
     business_loss = filer * sum(
         np.maximum(0, -run[source]) for source in BUSINESS_SOURCES
     )
     business_loss = business_loss + even * np.maximum(
         0, -_per_person(run, run["other_net_gain"])
     )
-    capital_loss = filer * run["capital_losses"]
-    limited_business, limited_capital, allowed_against_gains = _limits(run)
+    limited_business, _, _ = _limits(run)
     limited_business = _per_person(run, limited_business)
-    capital_deduction = _per_person(run, allowed_against_gains + limited_capital)
     losses = limited_business * _share(
         business_loss, _per_person(run, _unit_sum(run, business_loss)), even
-    ) + capital_deduction * _share(
-        capital_loss, _per_person(run, _unit_sum(run, capital_loss)), even
-    )
+    ) + _capital_deduction_person(run)
     alimony = run["alimony_expense"] * (run["divorce_year"] < 2019)
     # Tax-unit deductions with no person amounts are divided equally.
     shared = _per_person(run, run["shared"]) * even
@@ -595,6 +625,27 @@ def _check(units, year):
     # 5. Bounds.
     for name in ["above_the_line_deductions_person", "loss_ald_person"]:
         assert (run[name] >= -TOLERANCE).all(), name
+
+    # 6. DC separate filing on the same return.
+    adjustment = run["dc_separate_capital_loss_adjustment"]
+    dc_unit = run["state"] == "DC"
+    dc_joint = _per_person(run, dc_unit & run["joint"]) & (head | spouse)
+    own_gains = np.maximum(0, run["capital_gains"]) + np.maximum(
+        0, run["non_sch_d_capital_gains"]
+    )
+    separate = np.minimum(
+        run["capital_losses"],
+        own_gains + _per_person(run, run["separate_capital_loss_limit"]),
+    )
+    expected = dc_joint * (_capital_deduction_person(run) - separate)
+    _close(adjustment[~direct], expected[~direct])
+    assert (adjustment[~dc_joint] == 0).all()
+    assert (_unit_sum(run, adjustment) >= -TOLERANCE).all()
+
+    # 7. Montana from 2024.
+    if year >= 2024:
+        for name in ["mt_loss_ald_reallocation", "mt_applicable_ald_deductions"]:
+            assert (run[name] == 0).all(), name
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large
