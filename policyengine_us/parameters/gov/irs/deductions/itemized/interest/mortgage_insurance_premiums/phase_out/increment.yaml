@@ -1,0 +1,22 @@
+description: The IRS reduces the qualified mortgage insurance premiums deduction for each of these amounts, or fraction thereof, by which adjusted gross income exceeds the phase-out start, based on filing status.
+SINGLE:
+  2007-01-01: 1_000
+JOINT:
+  2007-01-01: 1_000
+SEPARATE:
+  2007-01-01: 500
+HEAD_OF_HOUSEHOLD:
+  2007-01-01: 1_000
+SURVIVING_SPOUSE:
+  2007-01-01: 1_000
+metadata:
+  propagate_metadata_to_children: true
+  breakdown: filing_status
+  unit: currency-USD
+  period: year
+  label: IRS mortgage insurance premiums deduction phase-out increment
+  reference:
+    - title: 26 U.S. Code § 163(h)(3)(E)(ii) - Phaseout
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_3_E_ii
+    - title: 2021 Instructions for Schedule A (Form 1040), Mortgage Insurance Premiums Deduction Worksheet line 4
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=10
