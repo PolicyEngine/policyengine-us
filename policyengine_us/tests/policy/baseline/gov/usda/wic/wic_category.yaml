@@ -399,3 +399,133 @@
         age: 0.6
   output:
     wic_category: [NONE, NONE, INFANT]
+
+# A woman reported as breastfeeding is matched before the tax-unit heuristic:
+# here the grandmother claims the infant, and the infant's mother files alone.
+- name: Breastfeeding mother in her own tax unit keeps her infant claimed by the grandmother
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 45
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 20
+        is_female: true
+        is_breastfeeding: true
+      infant:
+        age: 0.3
+    tax_units:
+      grandmother_tax_unit:
+        members: [grandmother, infant]
+      mother_tax_unit:
+        members: [mother]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, BREASTFEEDING, INFANT]
+
+# Limitation: a pregnant mother can take the postpartum match (she stays
+# PREGNANT, which comes first), so the other mother is not postpartum.
+- name: Pregnant younger mother takes the match and stays pregnant
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 50
+        is_female: true
+        own_children_in_household: 1
+      mother:
+        age: 25
+        is_female: true
+        is_pregnant: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, infant]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, infant]
+    families:
+      family:
+        members: [grandmother, mother, infant]
+    households:
+      household:
+        members: [grandmother, mother, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, PREGNANT, INFANT]
+
+# Limitation: one infant makes one woman breastfeeding (the youngest).
+- name: Two breastfeeding women and one infant, only the younger is breastfeeding
+  period: 2025
+  input:
+    people:
+      woman_1:
+        age: 30
+        is_female: true
+        is_breastfeeding: true
+      woman_2:
+        age: 25
+        is_female: true
+        is_breastfeeding: true
+      infant:
+        age: 0.5
+    tax_units:
+      tax_unit:
+        members: [woman_1, woman_2, infant]
+    spm_units:
+      spm_unit:
+        members: [woman_1, woman_2, infant]
+    families:
+      family:
+        members: [woman_1, woman_2, infant]
+    households:
+      household:
+        members: [woman_1, woman_2, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, BREASTFEEDING, INFANT]
+
+# Limitation: in a couple of two women who are both the infant's parents, only
+# one can be postpartum (the younger).
+- name: Two mothers and one infant in one tax unit, only the younger is postpartum
+  period: 2025
+  input:
+    people:
+      parent_1:
+        age: 32
+        is_female: true
+        own_children_in_household: 1
+      parent_2:
+        age: 30
+        is_female: true
+        own_children_in_household: 1
+      infant:
+        age: 0.2
+    tax_units:
+      tax_unit:
+        members: [parent_1, parent_2, infant]
+    spm_units:
+      spm_unit:
+        members: [parent_1, parent_2, infant]
+    families:
+      family:
+        members: [parent_1, parent_2, infant]
+    households:
+      household:
+        members: [parent_1, parent_2, infant]
+        state_code: TX
+  output:
+    wic_category: [NONE, POSTPARTUM, INFANT]

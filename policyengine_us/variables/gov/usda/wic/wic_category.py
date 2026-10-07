@@ -10,15 +10,6 @@ class WICCategory(Enum):
     NONE = "None"
 
 
-def _rank_mothers(person, entity, age, breastfeeding, eligible):
-    # Rank the eligible mothers in each entity: breastfeeding mothers first,
-    # then from youngest to oldest. Only use the rank together with eligible.
-    breastfeeding_rank = person.get_rank(entity, age, eligible & breastfeeding)
-    other_rank = person.get_rank(entity, age, eligible & ~breastfeeding)
-    breastfeeding_mothers = entity.sum(eligible & breastfeeding)
-    return where(breastfeeding, breastfeeding_rank, breastfeeding_mothers + other_rank)
-
-
 class wic_category(Variable):
     value_type = Enum
     entity = Person
@@ -42,48 +33,51 @@ class wic_category(Variable):
         # 7 CFR 246.2 defines postpartum and breastfeeding women by the time
         # since their own pregnancy (up to six months and one year), so an
         # infant makes only its mother postpartum or breastfeeding. Without
-        # parent-child links, match each infant to one mother in its tax unit,
-        # and an infant in a tax unit without a mother to one of the family's
-        # remaining mothers, taking breastfeeding mothers first, then the
-        # youngest.
-        tax_unit_has_mother = tax_unit.any(mother)
-        in_motherless_tax_unit = ~tax_unit_has_mother
-
-        def match(eligible, tax_unit_infants, family_infants):
-            tax_unit_rank = _rank_mothers(
-                person, tax_unit, age, breastfeeding, eligible
-            )
-            in_tax_unit = eligible & (tax_unit_rank < tax_unit_infants)
-            remaining = eligible & ~in_tax_unit
-            family_rank = _rank_mothers(person, family, age, breastfeeding, remaining)
-            in_family = remaining & (family_rank < family_infants)
-            return in_tax_unit, in_family
-
+        # parent-child links, match each infant to at most one woman.
         infant = age < 1
         young_infant = age < 0.5
-        older_infant = infant & ~young_infant
-        bf_tax_unit, bf_family = match(
-            mother,
-            tax_unit.sum(infant),
-            family.sum(infant & in_motherless_tax_unit),
+        in_motherless_tax_unit = ~tax_unit.any(mother)
+
+        # 1. A woman reported as breastfeeding is feeding an infant, so match
+        # her first: to an infant in her tax unit, else to any remaining infant
+        # in her family (youngest breastfeeding women first).
+        bf_rank_tax_unit = person.get_rank(tax_unit, age, breastfeeding)
+        bf_in_tax_unit = breastfeeding & (bf_rank_tax_unit < tax_unit.sum(infant))
+        bf_rest = breastfeeding & ~bf_in_tax_unit
+        bf_rank_family = person.get_rank(family, age, bf_rest)
+        family_infants_left = family.sum(infant) - family.sum(bf_in_tax_unit)
+        bf_in_family = bf_rest & (bf_rank_family < family_infants_left)
+        breastfeeding_woman = bf_in_tax_unit | bf_in_family
+
+        # Take the matched infants out of the pools, oldest first, so that
+        # breastfeeding women count against infants aged six months to one
+        # year before younger ones (inputs cannot tell which infant is whose:
+        # a breastfeeding woman and another mother in one tax unit are assumed
+        # to have the older and the younger infant). Family matches take
+        # infants from tax units without a mother first.
+        infant_rank_tax_unit = person.get_rank(tax_unit, -age, infant)
+        taken = infant & (infant_rank_tax_unit < tax_unit.sum(bf_in_tax_unit))
+        left = infant & ~taken
+        infant_rank_family = person.get_rank(
+            family, where(in_motherless_tax_unit, 0, 2) - age, left
         )
-        breastfeeding_woman = breastfeeding & (bf_tax_unit | bf_family)
-        # Breastfeeding women take the infants aged six months to one year
-        # first; the remaining infants under six months make one other mother
-        # postpartum each.
-        young_tax_unit = tax_unit.sum(young_infant) - max_(
-            0,
-            tax_unit.sum(breastfeeding & bf_tax_unit) - tax_unit.sum(older_infant),
+        taken = taken | (left & (infant_rank_family < family.sum(bf_in_family)))
+        free_young_infant = young_infant & ~taken
+
+        # 2. Match each remaining infant under six months to one other mother
+        # in its tax unit, youngest first, and an infant in a tax unit without
+        # a mother to one of the family's remaining mothers.
+        candidate = mother & ~breastfeeding_woman
+        pp_rank_tax_unit = person.get_rank(tax_unit, age, candidate)
+        pp_in_tax_unit = candidate & (
+            pp_rank_tax_unit < tax_unit.sum(free_young_infant)
         )
-        young_family = family.sum(young_infant & in_motherless_tax_unit) - max_(
-            0,
-            family.sum(breastfeeding & bf_family)
-            - family.sum(older_infant & in_motherless_tax_unit),
+        pp_rest = candidate & ~pp_in_tax_unit
+        pp_rank_family = person.get_rank(family, age, pp_rest)
+        pp_in_family = pp_rest & (
+            pp_rank_family < family.sum(free_young_infant & in_motherless_tax_unit)
         )
-        pp_tax_unit, pp_family = match(
-            mother & ~breastfeeding_woman, young_tax_unit, young_family
-        )
-        postpartum = pp_tax_unit | pp_family
+        postpartum = pp_in_tax_unit | pp_in_family
 
         return select(
             [
