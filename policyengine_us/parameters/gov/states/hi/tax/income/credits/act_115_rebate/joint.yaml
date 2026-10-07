@@ -1,17 +1,19 @@
-description: Hawaii provides this ACT 115 rebate amount for joint filers, based on federal adjusted gross income.
+description: Hawaii provides this ACT 115 rebate amount per qualified exemption for joint filers and surviving spouses, based on federal adjusted gross income.
 metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: year
   type: single_amount
-  label: Hawaii ACT 115 Rebate joint amount
+  label: Hawaii ACT 115 Rebate joint amount per exemption
   reference:
-    - title: Hawaii Senate Bill 514, 2022, Section 1 (1)
+    - title: Hawaii Senate Bill 514, 2022, Section 3 (a)
       href: https://www.capitol.hawaii.gov/sessions/session2022/bills/SB514_CD2_.pdf
+    - title: Hawaii Department of Taxation Announcement No. 2022-03, Act 115 Income Tax Refunds
+      href: https://files.hawaii.gov/tax/news/announce/ann22-03.pdf#page=2
 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2021-01-01: -.inf
     amount:
       2021-01-01: 300
   - threshold:
