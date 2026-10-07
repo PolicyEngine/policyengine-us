@@ -9,7 +9,7 @@ class ca_cc_general_assistance_countable_vehicle_value(Variable):
     definition_period = YEAR
     label = "Contra Costa County General Assistance countable vehicle value"
     defined_for = "in_cc"
-    reference = "https://ehsd.org/wp-content/uploads/2024/08/GA-Brochure_ENGLISH_July2024_FA_Digital.pdf#page=2"
+    reference = "https://ehsd.org/wp-content/uploads/2025/05/GA-Brochure_ENGLISH_Apr2025_FA_Digital.pdf#page=2"
 
     def formula(spm_unit, period, parameters):
         # One vehicle is exempt only if valued within the limit; a vehicle

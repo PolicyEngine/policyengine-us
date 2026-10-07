@@ -7,7 +7,7 @@ class sd_cca_income_eligible(Variable):
     label = "South Dakota CCA income eligible"
     definition_period = MONTH
     defined_for = StateCode.SD
-    reference = "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8"
+    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.cca.income
