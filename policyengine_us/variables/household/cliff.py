@@ -9,10 +9,9 @@ class cliff_evaluated(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        adult_index_values = person("adult_index", period)
-        mtr_adult_count = parameters(period).simulation.marginal_tax_rate_adults
-        is_adult = person("is_adult", period)
-        return is_adult & (adult_index_values <= mtr_adult_count)
+        # The cliff gap comes from marginal_tax_rate, so it is simulated
+        # exactly where the marginal tax rate is.
+        return person("marginal_tax_rate_computed", period)
 
 
 class cliff_gap(Variable):

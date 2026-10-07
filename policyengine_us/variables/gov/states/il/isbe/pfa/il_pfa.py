@@ -8,7 +8,7 @@ class il_pfa(Variable):
     definition_period = YEAR
     unit = USD
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://gov-pritzker-newsroom.prezly.com/gov-pritzker-announces-5150-new-preschool-seats-through-smart-start-initiative",
     )
     defined_for = "il_pfa_eligible"

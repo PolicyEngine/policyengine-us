@@ -8,8 +8,8 @@ class mn_wfc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/2021/cite/290.0671"
-        "https://www.revisor.mn.gov/statutes/cite/290.0671"
+        "https://www.revisor.mn.gov/statutes/2021/cite/290.0671",
+        "https://www.revisor.mn.gov/statutes/cite/290.0671",
     )
     defined_for = StateCode.MN
 
@@ -17,8 +17,9 @@ class mn_wfc(Variable):
         p = parameters(period).gov.states.mn.tax.income.credits.cwfc
         # determine count of eligible dependents using EITC rules
         count = tax_unit("eitc_child_count", period)
-        # determine pre-phaseout credit amount using EITC earnings
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # determine pre-phaseout credit amount using EITC earned income
+        # (both spouses combined, net of a self-employment loss)
+        earnings = tax_unit("eitc_earned_income", period)
         capped_earn = min_(
             earnings,
             p.wfc.pre_cwfc_legislation.phase_in.earnings_maximum.calc(count),
