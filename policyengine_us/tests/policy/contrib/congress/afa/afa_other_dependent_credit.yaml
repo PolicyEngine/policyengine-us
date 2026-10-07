@@ -322,6 +322,7 @@
         state_code: TX
   output:
     eitc: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
     refundable_ctc: 0
 
 # The bill has no section 911 bar and no sunset, so the bar applies only to
@@ -349,4 +350,32 @@
         members: [head, child1]
         state_code: TX
   output:
+    refundable_ctc_barred_by_section_911_exclusion: false
     refundable_ctc: 825
+
+# Section 24A(d) includes Puerto Rico. Its refund must survive even after
+# the reform's fully_refundable parameter expires, just like the federal one.
+- name: Puerto Rico section 911 filer keeps the AFA refund after 2039
+  period: 2040
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 40
+        employment_income: 8_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        foreign_earned_income_exclusion: 1_000
+    households:
+      household:
+        members: [head, child1]
+        state_code: PR
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: false
+    refundable_ctc: 825
+    pr_refundable_ctc: 825

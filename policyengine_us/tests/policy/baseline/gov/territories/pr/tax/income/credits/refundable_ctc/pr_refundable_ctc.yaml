@@ -60,3 +60,25 @@
     foreign_earned_income_exclusion: 30_000
   output:
     pr_refundable_ctc: 2_000
+
+- name: Puerto Rico section 911 filer remains barred in 2040 under current law
+  period: 2040
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 8_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        foreign_earned_income_exclusion: 1_000
+    households:
+      household:
+        members: [head, child1]
+        state_code: PR
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: true
+    refundable_ctc: 0
+    pr_refundable_ctc: 0
