@@ -84,3 +84,19 @@
     # (900 + 300) * 0.9 = 1,080, of which the second residence's 300 * 0.9.
     deductible_mortgage_insurance_premiums: 1_080
     ky_disallowed_second_residence_interest: 270
+
+- name: Kentucky disallows second-residence points beside legacy structured interest
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    first_home_mortgage_interest: 8_000
+    second_residence_mortgage_points: 400
+  output:
+    # The structured 8,000 stands in for principal-residence interest, and
+    # the second residence's 400 of points join the fully deductible pool.
+    home_mortgage_interest_tax_unit: 8_000
+    deductible_mortgage_interest_tax_unit: 8_400
+    ky_disallowed_second_residence_interest: 400

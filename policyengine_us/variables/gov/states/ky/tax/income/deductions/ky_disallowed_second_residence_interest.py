@@ -14,12 +14,13 @@ class ky_disallowed_second_residence_interest(Variable):
         "is capped at the interest and points paid on the principal "
         "residence. The deprecated structured interest inputs count as "
         "principal-residence interest. Mortgage insurance premiums on the "
-        "second residence are removed after the federal phase-out. When the "
-        "combined debt is within the federal limit, or both loans carry the "
-        "same rate, the cap equals a recomputation on the principal "
-        "residence alone. Otherwise it can differ in either direction, "
-        "because the model does not record which loan secures which "
-        "residence."
+        "second residence are removed after the federal phase-out. The cap "
+        "equals a recomputation on the principal residence alone when the "
+        "combined debt is within the federal limit, or when both loans carry "
+        "the same rate, fall under the same debt limit and carry points in "
+        "proportion to their debt (or none). Otherwise it can differ in "
+        "either direction, because the model does not record which loan "
+        "secures which residence."
     )
     reference = (
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57914#page=4",  # (2)(j)
