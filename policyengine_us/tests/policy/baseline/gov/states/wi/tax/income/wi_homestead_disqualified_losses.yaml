@@ -1,4 +1,4 @@
-- name: Losses from each Schedule 4 source are added back; gains are not netted
+- name: Case 1, sole proprietorship, rental and Schedule F losses with a net capital loss; a partnership gain is not netted.
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -7,8 +7,8 @@
         age: 70
         self_employment_income: -2_000 # line 2
         rental_income: -1_000 # line 4
-        partnership_s_corp_income: 500 # a gain, not a loss
-        farm_income: -300 # line 10
+        partnership_income: 500 # a gain, not a loss
+        farm_operations_income: -300 # line 10
     tax_units:
       tax_unit:
         members: [head]
@@ -18,10 +18,131 @@
         members: [head]
         state_code: WI
   output:
-    # 2,000 + 1,000 + 300 + 3,000 = 6,300 (Schedule 4, line 11)
+    # Schedule 4: line 2 2,000 + line 3 3,000 + line 4 1,000 + line 10 300
+    # = 6,300 (line 11). Line 12 is 0, so line 13 = 6,300.
     wi_homestead_disqualified_losses: 6_300
 
-- name: A dependent's loss is not part of household income
+- name: Case 2, SSTB sole proprietorship loss.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        sstb_self_employment_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Schedule 4, line 2: net business loss from a sole proprietorship = 5,000.
+    wi_homestead_disqualified_losses: 5_000
+
+- name: Case 3, Form 4835 farm rental loss.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        farm_rent_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Wis. Stat. 71.52(1e)(d) and (e): net loss from rental real estate or
+    # net farm loss = 5,000.
+    wi_homestead_disqualified_losses: 5_000
+
+- name: Case 4, Form 4797 loss from the sale of business property.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [head]
+        other_net_gain: -5_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Schedule 4, line 9: net loss from the sale of business property = 5,000.
+    wi_homestead_disqualified_losses: 5_000
+
+- name: Case 5, partnership loss is not netted against S corporation income.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        partnership_income: -5_000
+        s_corp_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Schedule 4, line 5: net loss from a partnership = 5,000. Line 6 is 0;
+    # the S corporation gain is not netted ("Do not net a business with a
+    # gain against a business with a loss", 2023 instructions, page 16).
+    wi_homestead_disqualified_losses: 5_000
+
+- name: Case 6, combined partnership and S corporation loss set directly.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        partnership_s_corp_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Schedule 4, line 5 or 6: one pass-through net loss = 5,000.
+    wi_homestead_disqualified_losses: 5_000
+
+- name: Case 7, Schedule J farm income is not a loss included in income.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        farm_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # farm_income is the Schedule J income-averaging amount, which does not
+    # enter adjusted gross income. Schedule 4, line 10 takes the Schedule F
+    # loss (farm_operations_income), which is 0 here.
+    wi_homestead_disqualified_losses: 0
+
+- name: Case 8, a dependent's loss is not part of household income.
   period: 2023
   absolute_error_margin: 0.01
   input:

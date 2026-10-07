@@ -1,4 +1,4 @@
-- name: wi_homestead_income unit test 1
+- name: Case 1, no dependents.
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -8,7 +8,7 @@
   output:
     wi_homestead_income: 900
 
-- name: wi_homestead_income unit test 2
+- name: Case 2, one dependent exemption.
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -18,7 +18,7 @@
   output:
     wi_homestead_income: 400  # = 900 - 500
 
-- name: Net capital loss is added back to household income (Schedule H line 11j, Schedule 4 line 3)
+- name: Case 3, net capital loss is added back (Schedule H line 11j, Schedule 4 line 3).
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -42,3 +42,60 @@
     adjusted_gross_income: -3_000
     wi_homestead_disqualified_losses: 3_000
     wi_homestead_income: 11_033
+
+- name: Case 4, Schedule F, SSTB, Form 4835, Form 4797 and partnership losses are added back.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        farm_operations_income: -1_000
+        sstb_self_employment_income: -2_000
+        farm_rent_income: -3_000
+        partnership_income: -5_000
+        s_corp_income: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        other_net_gain: -4_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Income (Schedule H line 7): -1,000 Schedule F - 2,000 Schedule C
+    # - 3,000 Form 4835 - 4,000 Form 4797 + (-5,000 + 5,000) Schedule E
+    # partnership and S corporation = -10,000.
+    # Schedule 4: line 2 2,000 + Form 4835 3,000 + line 5 5,000 + line 6 0
+    # + line 9 4,000 + line 10 1,000 = 15,000 (line 13, to line 11j).
+    # Household income = -10,000 + 15,000 = 5,000, the S corporation gain.
+    adjusted_gross_income: -10_000
+    wi_homestead_disqualified_losses: 15_000
+    wi_homestead_income: 5_000
+
+- name: Case 5, SSTB sole proprietorship gain and non-SSTB sole proprietorship loss.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        self_employment_income: -5_000
+        sstb_self_employment_income: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Two Schedule C businesses (2023 instructions, page 16, Example 1):
+    # Schedule 1 line 3 = 5,000 - 5,000 = 0, and Schedule 4 line 2 adds back
+    # the 5,000 loss without netting. Household income = 0 + 5,000 = 5,000.
+    # loss_ald deducts the loss of total_self_employment_income (0 here), so
+    # the add-back follows that total and household income is the same.
+    wi_homestead_income: 5_000
