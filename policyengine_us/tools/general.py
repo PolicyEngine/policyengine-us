@@ -1,7 +1,10 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
-from policyengine_us.tools.period_branch import get_branch_for_period
+from policyengine_us.tools.period_branch import (
+    get_branch_for_period,
+    get_override_branch,
+)
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
@@ -16,31 +19,71 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
     )
 
 
-def tax_unit_non_dep_add(tax_unit, period, variables):
+def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     """
     Add variables over a tax unit's head and spouse, leaving out dependents.
 
     Like `add`, but a person-level variable is summed only over members who
     are not tax unit dependents, whose items belong on their own returns
     (irs_gross_income leaves them out of the filer's federal AGI the same
-    way). A variable of any other entity falls back to `add`, so a
+    way). Person-level variables named in `include_dependents` are summed
+    over every member: they are the filer's amounts even when recorded on a
+    dependent. A variable of any other entity falls back to `add`, so a
     tax-unit-level variable is added as is and must already describe the
-    filer's own return.
+    filer's own return. Variables are added in the order given.
     """
     if tax_unit.entity.key != "tax_unit":
         raise ValueError(
             f"tax_unit_non_dep_add needs a tax unit, not a {tax_unit.entity.key}."
         )
-    total = np.zeros(tax_unit.count)
+    # float32 like the model's values, so the sum rounds as `add`'s does.
+    total = np.zeros(tax_unit.count, dtype=np.float32)
     for variable in variables:
         variable_entity = tax_unit.entity.get_variable(
             variable, check_existence=True
         ).entity
-        if variable_entity.is_person:
-            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
-        else:
+        if not variable_entity.is_person:
             total = total + add(tax_unit, period, [variable])
+        elif variable in include_dependents:
+            total = total + tax_unit.sum(tax_unit.members(variable, period))
+        else:
+            total = total + tax_unit_non_dep_sum(variable, tax_unit, period)
     return total
+
+
+def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_variable):
+    """
+    Attribute a tax unit's amount to its members.
+
+    Dependents keep their own person-level amounts, which a tax-unit amount
+    describing the filer's return leaves out. The head and spouse get their
+    own amounts when those sum to the tax unit's amount. When the tax-unit
+    amount differs, as when it is an input or a reform changes its formula,
+    the head's and spouse's own amounts are scaled to sum to it; if they have
+    no own amounts, the head takes it. With non-negative own amounts and a
+    non-negative tax-unit amount, as for deductions, no share is negative.
+    Every tax unit is assumed to have a head.
+    """
+    # The person-level projector returns tax-unit values for each member.
+    tax_unit = person.tax_unit
+    own = person(person_variable, period)
+    filer = ~person("is_tax_unit_dependent", period)
+    filers_own = tax_unit.sum(own * filer)
+    amount = tax_unit(tax_unit_variable, period)
+    # The tax-unit amount is stored in float32, so compare in its precision.
+    matches = amount == filers_own.astype(amount.dtype)
+    has_own = filers_own > 0
+    scale = np.divide(
+        amount,
+        filers_own,
+        out=np.zeros_like(filers_own, dtype=float),
+        where=has_own,
+    )
+    reconciled = own * scale + person("is_tax_unit_head", period) * where(
+        has_own, 0, amount
+    )
+    filer_share = where(matches, own, reconciled)
+    return where(filer, filer_share, own)
 
 
 def sum_contained_tax_units(var, population, period):

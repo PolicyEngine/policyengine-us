@@ -35,7 +35,9 @@ class adjusted_net_capital_gain(Variable):
             max_(0, add(tax_unit, period, ["qualified_dividend_income"])),
             net_capital_gain,
         )
-        unrecaptured_s_1250_gain = tax_unit("unrecaptured_section_1250_gain", period)
+        unrecaptured_s_1250_gain = tax_unit(
+            "schedule_d_unrecaptured_section_1250_gain", period
+        )
         cg_28_pct_rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
         net_gains_less_dividends = net_capital_gain - qualified_dividend_income
         reduced_capital_gains = max_(

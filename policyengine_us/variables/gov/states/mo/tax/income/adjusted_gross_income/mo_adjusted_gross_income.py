@@ -23,8 +23,12 @@ class mo_adjusted_gross_income(Variable):
             "self_employed_pension_contribution_ald_person",
         ]
         tax_unit = person.tax_unit
-        ind_total_personal_alds = add(person, period, PERSONAL_ALDS)
-        unit_total_personal_alds = add(tax_unit, period, PERSONAL_ALDS)
+        # A tax unit dependent's deductions are on their own return, and are
+        # left out of above_the_line_deductions, as their income is left out
+        # of irs_gross_income.
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        ind_total_personal_alds = not_dependent * add(person, period, PERSONAL_ALDS)
+        unit_total_personal_alds = tax_unit.sum(ind_total_personal_alds)
         # ... subtract remaining ALDs by adhoc allocation between spouses
         unit_total_alds = tax_unit("above_the_line_deductions", period)
         unit_remaining_alds = unit_total_alds - unit_total_personal_alds

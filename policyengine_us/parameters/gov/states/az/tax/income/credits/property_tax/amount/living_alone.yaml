@@ -1,21 +1,33 @@
 description: Arizona provides this property tax credit amount for filers living alone, based on income.
 metadata:
   reference:
-    - title: 2024 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
-    - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
-    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
+    - title: 2025 Property Tax Refund (Credit) Claim Form 140PTC, page 2, Schedule 1
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTC_f.pdf#page=2
+    - title: 2024 Property Tax Refund (Credit) Claim Form 140PTC, page 2, Schedule 1
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140PTC_f.pdf#page=2
+    - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC, page 2, Schedule 1
+      href: https://azdor.gov/sites/default/files/2023-12/FORMS_INDIVIDUAL_2023_140PTC_f.pdf#page=2
+    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC, page 2, Schedule 1
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTC.pdf#page=2
+    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC, page 2, Schedule 1
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
-    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
-    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older - (B) (1)
+    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older - (A)(3)(a), (B)(1)
       href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
   threshold_unit: currency-USD
   rate_unit: currency-USD
   type: single_amount
   period: year
-  label: Arizona property tax credit living alone amount 
+  label: Arizona property tax credit living alone amount
+# Each threshold is the lower bound of a band in ARS 43-1072(B)(1), and a
+# band runs up to, but not including, the next band's lower bound. The
+# statute lists whole-dollar bands ($0-1,750, 1,751-1,850, ...) and sets
+# the income limit in (A)(3)(a) as "less than" $3,751, one dollar above the
+# last band's upper bound, so the last band covers every income below $3,751.
+# Reading every band the same way puts cents between two whole-dollar bands
+# in the lower one: $1,750.50 gets the $0-1,750 amount, as if the cents
+# were dropped. Form 140PTC line 10 takes whole dollars, and the 2025 Form
+# 140 instructions (page 4) round to the nearest dollar, which would instead
+# move 50 cents or more into the next band.
 brackets:
   - threshold:
       2021-01-01: 0

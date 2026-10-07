@@ -2,3 +2,32 @@
   period: 2022
   output:
     school_meal_paid_daily_subsidy: 0.35 + 0.33
+
+# Calendar 2025 reads the SY 2024-25 rates in force on January 1, 2025:
+# under-60% NSLP and non-severe-need SBP.
+# https://www.federalregister.gov/documents/2024/07/10/2024-15175/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+- name: Contiguous US paid subsidy uses the under-60-percent lunch rate in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+  output:
+    school_meal_paid_daily_subsidy: 0.81  # 0.42 NSLP + 0.39 SBP
+
+# The published July rates continue through the following June; see the
+# Federal Register sources in school_meal_daily_subsidy.yaml.
+- name: Calendar 2026 paid reimbursements use published SY 2025-26 rates.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, AK, HI]
+  output:
+    school_meal_paid_daily_subsidy: [0.84, 1.33, 1.08]
+
+- name: Calendar 2027 paid reimbursements use published SY 2026-27 rates.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, AK, HI]
+  output:
+    school_meal_paid_daily_subsidy: [0.87, 1.38, 1.11]
