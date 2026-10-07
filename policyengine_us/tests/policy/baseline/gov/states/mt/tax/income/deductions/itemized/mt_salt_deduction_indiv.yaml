@@ -1,0 +1,149 @@
+# Form 2, Itemized Deductions Schedule, line 5 (2021-2023): "Add lines 5a
+# through 5d, enter the total here, but not more than $10,000 if your status
+# is single, head of household or married filing jointly; or $5,000 if you are
+# married filing separately." Spouses filing separately on the same form
+# (filing status 2a) allocate between columns A and B, "with each column
+# constituting its own return" (2023 instructions, PDF p. 12). So each
+# spouse's column is capped at $5,000.
+
+- name: Each spouse's column is capped at the married filing separately amount
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(8,000, 5,000); column B: min(8,000, 5,000).
+    mt_salt_deduction_indiv: [5_000, 5_000]
+    # No income, so the federal income tax deduction (line 4) is zero and
+    # line 5 is each column's only itemized deduction.
+    mt_itemized_deductions_indiv: [5_000, 5_000]
+
+- name: A spouse below the cap deducts their own taxes
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(8,000, 5,000); column B: 2,000.
+    mt_salt_deduction_indiv: [5_000, 2_000]
+
+- name: The couple's general sales taxes are divided equally between the columns
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 4_800
+      person2:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_sales_tax: 1_000
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5a: 1,000 / 2 = 500 in each column.
+    # Column A: min(4,800 + 500, 5,000) = 5,000; column B: 500.
+    mt_salt_deduction_indiv: [5_000, 500]
+
+- name: A dependent has no column
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 3_000
+      person2:
+        age: 45
+        real_estate_taxes: 1_000
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_salt_deduction_indiv: [3_000, 1_000, 0]
+
+- name: A single filer's one column takes the single cap
+  period: 2023
+  input:
+     filing_status: SINGLE
+     real_estate_taxes: 12_000
+     state_code: MT
+  output:
+     # min(12,000, 10,000)
+     mt_salt_deduction_indiv: 10_000
+
+- name: A single filer below the single cap deducts all taxes
+  period: 2022
+  input:
+     filing_status: SINGLE
+     real_estate_taxes: 8_000
+     state_code: MT
+  output:
+     mt_salt_deduction_indiv: 8_000
+
+- name: A married person filing on a separate form takes the separate cap
+  period: 2021
+  input:
+     filing_status: SEPARATE
+     real_estate_taxes: 6_000
+     state_code: MT
+  output:
+     # min(6,000, 5,000)
+     mt_salt_deduction_indiv: 5_000
+
+- name: No separate columns from 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # SB 399 ended filing separately on the same form after 2023.
+    mt_salt_deduction_indiv: [0, 0]
