@@ -1,0 +1,1 @@
+Test the regular tax with 28-percent rate gain, unrecaptured section 1250 gain and a Form 4952 election against the 2025 Schedule D Tax Worksheet, extend the section 911(f) and Form 4952 tests to those gains, and pin a case where an election lawfully lowers the tax by moving gain from the 28 to the 25 percent rate.

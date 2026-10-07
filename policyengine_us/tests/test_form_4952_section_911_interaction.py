@@ -61,10 +61,14 @@ election leaves. The properties, for every generated household:
    to the top of the 12% bracket (2025: $48,350 to $48,475 single), gain is
    taxed at 15% and ordinary income at 12%, so a dollar elected there lowers
    the tax by 3 cents, on the return as in the model
-   (test_election_can_lower_the_tax_where_15_percent_exceeds_12). The tax
-   (each of the three) falls by at most the 3 points times the width of that
-   band ($3.75 single, $7.50 joint in 2025), which `rate_overlap` computes
-   from the parameters.
+   (test_election_can_lower_the_tax_where_15_percent_exceeds_12). And where
+   the top of the 24% bracket sets the regular rate amount, an election can
+   move 28-percent rate gain to the 25% rate of unrecaptured section 1250
+   gain (test_section_1h_regular_tax.py). The tax (each of the three) falls
+   by at most the 3 points times the width of that band ($3.75 single, $7.50
+   joint in 2025), which `rate_overlap` computes from the parameters, plus 3
+   points (28 less 25) of the smaller of the extra amount elected and the
+   unrecaptured section 1250 gain.
 5. Worksheet lines. dwks10 equals net_capital_gain exactly for whole-dollar
    amounts and within single-precision rounding for amounts with cents; the
    model's lines 6, 9 and 10 equal the transcription in
@@ -75,8 +79,10 @@ election leaves. The properties, for every generated household:
    test_section_911_tax_stacking.py). With Schedule D lines 18 and 19 zero,
    Schedule D Tax Worksheet lines 14 to 47 are the Qualified Dividends and
    Capital Gain Tax Worksheet with worksheet line 6 for its line 2 and line 9
-   for its line 3, and Form 6251 line 27 equals line 20. The model's regular
-   tax and AMT match.
+   for its line 3, and Form 6251 line 27 equals line 20. Otherwise the whole
+   Schedule D Tax Worksheet (transcribed in test_form_6251_part_iii.py) is
+   used, with the election on lines 3 and 4 and the footnote's four
+   modifications. The model's regular tax and AMT match.
 
 Amounts are whole dollars below 2**24 except where a household is drawn with
 cents. For every whole-dollar household the gains and the model's worksheet
@@ -85,16 +91,12 @@ income (or Form 6251 line 6) is whole dollars too, as taxable income is
 without itemized deductions. The rest are checked within single-precision
 rounding.
 
-The scope limits of test_section_911_tax_stacking.py apply to the tax
-comparisons (properties 4 and 6), which therefore use households without
-28-percent rate gain or unrecaptured section 1250 gain. The model omits the
-section 1(h)(1) cap at the tax on all taxable income at ordinary rates. It
-uses the 26%/28% breakpoint of other filers for married filing separately on
-Form 6251 line 18. And capital_gains_tax taxes 28-percent rate gain at 28% in
-full, even where it exceeds taxable income or the net capital gain an election
-leaves (Schedule D Tax Worksheet line 12 limits it to line 9): $10,000 of
-collectibles gain and no taxable income gives $2,800 of tax. The households
-are 45, so the exclusion does not reach the senior deduction.
+The Schedule D Tax Worksheet transcription takes Schedule D lines 18 and 19
+as entered, without the short-term loss netting of the 28% Rate Gain and
+Unrecaptured Section 1250 Gain Worksheets (1(h)(4)(B), 1(h)(6)), so property
+6 compares households with either gain only when they have no short-term
+loss. The
+households are 45, so the exclusion does not reach the senior deduction.
 """
 
 import numpy as np
@@ -103,12 +105,15 @@ from policyengine_core.periods import period as make_period
 
 from policyengine_us import Simulation
 from policyengine_us.tests.test_form_4952_election_worksheet import (
+    form_4952_line_4e,
     schedule_d_tax_worksheet,
 )
 from policyengine_us.tests.test_section_911_tax_stacking import (
     STATUSES,
     foreign_earned_income_tax_worksheet,
+    foreign_earned_income_tax_worksheet_schedule_d,
     form_6251_line_7,
+    form_6251_line_7_schedule_d,
     qualified_dividends_and_capital_gain_tax_worksheet,
     reduce_by_capital_gain_excess,
     tax_rate_schedule,
@@ -330,6 +335,11 @@ def calculate(households, year, with_election=True, with_exclusion=True):
     }
     results["rate_overlap"] = np.array(
         [overlaps[status] for status in results["filing_status"]]
+    )
+    gains = parameters.gov.irs.capital_gains
+    results["rate_gain_rate_difference"] = np.full(
+        len(households),
+        float(gains.other_cg_rate) - float(gains.unrecaptured_s_1250_rate),
     )
     return results
 
@@ -568,51 +578,70 @@ def assert_gain_invariants(households, law):
         assert not law[variable][~excludes].any(), variable
 
 
-def plain(households):
-    """Households inside the scope of the tax comparisons (see the module
-    docstring): no 28-percent rate or unrecaptured section 1250 gain."""
-    return (column(households, "section_1250") == 0) & (
-        column(households, "rate_gain_28") == 0
+def schedule_d_items(h):
+    """Schedule D Tax Worksheet amounts other than line 1 (see
+    test_form_6251_part_iii.py), with the election on lines 3 and 4."""
+    schedule_d_line_15 = h["long_term"] + h["distributions"]
+    return dict(
+        qualified_dividends=h["dividends"],
+        form_4952_line_4g=h["election"],
+        form_4952_line_4e=form_4952_line_4e(h),
+        schedule_d_line_15=schedule_d_line_15,
+        schedule_d_line_16=schedule_d_line_15 + h["short_term"],
+        schedule_d_line_18=h["rate_gain_28"],
+        schedule_d_line_19=h["section_1250"],
     )
 
 
 def assert_matches_2025_forms(households, law):
     """Property 6: the model against the transcribed 2025 forms."""
     for i, h in enumerate(households):
-        if h["section_1250"] or h["rate_gain_28"]:
+        schedule_d = bool(h["section_1250"] or h["rate_gain_28"])
+        if schedule_d and h["short_term"] < 0:
+            # See the module docstring.
             continue
         status = law["filing_status"][i]
         assert status == h["status"], (i, status)
         taxable_income = float(law["taxable_income"][i])
-        # Schedule D Tax Worksheet lines 6 and 9 take the place of lines 2
-        # and 3 of the Qualified Dividends and Capital Gain Tax Worksheet.
-        line_6, line_9, _ = schedule_d_tax_worksheet(h)
-        line_6_feitw, line_6_capped, ordinary_income = (
-            foreign_earned_income_tax_worksheet(
-                taxable_income, h["exclusion"], line_6, line_9, status
+        taxable_excess = float(law["amt_income_less_exemptions"][i])
+        if schedule_d:
+            items = schedule_d_items(h)
+            line_6_feitw, worksheet = foreign_earned_income_tax_worksheet_schedule_d(
+                taxable_income, h["exclusion"], items, status
             )
-        )
+            line_7 = form_6251_line_7_schedule_d(
+                taxable_excess, h["exclusion"], items, worksheet, status
+            )
+        else:
+            # Schedule D Tax Worksheet lines 6 and 9 take the place of lines 2
+            # and 3 of the Qualified Dividends and Capital Gain Tax Worksheet.
+            line_6, line_9, _ = schedule_d_tax_worksheet(h)
+            line_6_uncapped, line_6_feitw, ordinary_income = (
+                foreign_earned_income_tax_worksheet(
+                    taxable_income, h["exclusion"], line_6, line_9, status
+                )
+            )
+            # The line 47 cap binds by at most the rate overlap.
+            cap_gap = line_6_uncapped - line_6_feitw
+            cap_slack = tolerance(taxable_income + h["exclusion"])
+            assert -cap_slack <= cap_gap <= law["rate_overlap"][i] + cap_slack, (i, h)
+            line_7 = form_6251_line_7(
+                taxable_excess,
+                h["exclusion"],
+                line_6,
+                line_9,
+                ordinary_income,
+                status,
+            )
         stacked_income = taxable_income + h["exclusion"]
         slack = tolerance(stacked_income)
+        # Line 6 with the final line of the capital gains worksheet (line 25,
+        # or line 47 of the Schedule D Tax Worksheet).
         regular_tax = float(law["regular_tax"][i])
+        assert float(law["regular_tax_before_credits"][i]) == pytest.approx(
+            regular_tax, abs=slack
+        ), (i, h)
         assert regular_tax == pytest.approx(line_6_feitw, abs=slack), (i, h)
-        # The line 47 cap, which the model's section 1(h) formulas omit,
-        # binds by at most the rate overlap.
-        cap_gap = regular_tax - line_6_capped
-        assert -slack <= cap_gap <= law["rate_overlap"][i] + slack, (i, h)
-        gain = section_1222_gain(h)
-        if status == "SEPARATE" and h["dividends"] + gain > 0:
-            # Form 6251 line 18 (see the module docstring).
-            continue
-        taxable_excess = float(law["amt_income_less_exemptions"][i])
-        line_7 = form_6251_line_7(
-            taxable_excess,
-            h["exclusion"],
-            line_6,
-            line_9,
-            ordinary_income,
-            status,
-        )
         amt = max(0, line_7 - line_6_feitw)
         assert float(law["alternative_minimum_tax"][i]) == pytest.approx(
             amt, abs=tolerance(stacked_income, taxable_excess)
@@ -708,7 +737,6 @@ def assert_monotone(households, groups):
     fall = law["net_capital_gain"] - groups["more_elected"]["net_capital_gain"]
     assert (fall <= more + slack).all()
 
-    inside = plain(households)
     excluded = np.maximum(
         column(households, "exclusion"),
         groups["more_excluded"]["foreign_earned_income_exclusion"],
@@ -719,7 +747,6 @@ def assert_monotone(households, groups):
             "amt_income_less_exemptions_plus_section_911_exclusion"
         ],
     )
-    overlap = law["rate_overlap"]
     no_dependents = np.array([h["status"] != "HEAD_OF_HOUSEHOLD" for h in households])
     for v in ["regular_tax", "income_tax_before_credits", "income_tax"]:
         # tax_unit_itemizes treats liabilities within $0.01 as equal.
@@ -729,14 +756,23 @@ def assert_monotone(households, groups):
 
         def rows(lower, higher):
             if v == "income_tax":
-                return inside & no_dependents
-            return inside & same_choice(lower, higher)
+                return no_dependents
+            return same_choice(lower, higher)
 
-        # More elected: the tax falls by at most the rate overlap.
-        for lower, higher in election_pairs:
+        # More elected: the tax falls by at most the rate overlap plus 3
+        # points of what the election can move from the 28 to the 25 percent
+        # rate (see the module docstring). The step from no election moves at
+        # most the election itself.
+        for (lower, higher), elected in zip(
+            election_pairs, [column(households, "election"), more]
+        ):
             dip = lower[v] - higher[v]
             mask = rows(lower, higher)
-            assert (dip[mask] <= (overlap + margin)[mask]).all(), v
+            bound = law["rate_overlap"] + law["rate_gain_rate_difference"] * np.minimum(
+                elected, column(households, "section_1250")
+            )
+            bad = np.flatnonzero(mask & (dip > bound + margin))
+            assert not bad.size, (v, bad[:3], dip[bad[:3]], bound[bad[:3]])
         # Stacking never lowers the tax, and the tax never falls as the
         # excluded amount rises.
         for lower, higher in exclusion_pairs:
@@ -745,7 +781,7 @@ def assert_monotone(households, groups):
             assert (dip[mask] <= margin[mask]).all(), v
     # Section 911(f)(1)(A) applies "if such taxpayer has taxable income".
     for name in VARIANTS:
-        no_income = inside & (groups[name]["taxable_income"] == 0)
+        no_income = groups[name]["taxable_income"] == 0
         assert not groups[name]["regular_tax"][no_income].any(), name
 
 
@@ -831,6 +867,19 @@ def grid():
         }
         for row in rows[::7]
     ]
+    # With no wages the capital gain excess (15,750, or less what is
+    # elected) is more than the 28-percent rate gain, so modification 4
+    # lowers Schedule D line 19.
+    rows += [
+        household(
+            long_term=50_000,
+            section_1250=30_000,
+            rate_gain_28=10_000,
+            election=election,
+            exclusion=40_025,
+        )
+        for election in (0, 4_000)
+    ]
     return rows
 
 
@@ -859,6 +908,21 @@ def test_grid():
     assert (both & (law["capital_gains_tax"] > 0)).any()
     assert (both & (law["taxable_income"] == 0)).any()
     assert (both & (law["amt_section_911_capital_gain_excess"] > 0)).any()
+    # Modification 4 changes worksheet line 12, with and without an
+    # election, for households compared with the forms: the excess is beyond
+    # the 28-percent rate gain, and line 9 after modification 1 is above the
+    # unrecaptured section 1250 gain after modification 4.
+    rate_gain = column(GRID, "rate_gain_28")
+    line_9 = law["dwks09"] - excess
+    reduced_1250 = np.maximum(0, column(GRID, "section_1250") - (excess - rate_gain))
+    reaches_1250 = (
+        (column(GRID, "section_1250") > 0)
+        & (column(GRID, "short_term") >= 0)
+        & (excess > rate_gain)
+        & (line_9 > reduced_1250)
+    )
+    assert (reaches_1250 & elects).any()
+    assert (reaches_1250 & ~elects).any()
     # Electing more and stacking each raise the tax of some households.
     assert (groups["more_elected"]["regular_tax"] > law["regular_tax"] + 1).any()
     assert (law["regular_tax"] > groups["unstacked"]["regular_tax"] + 1).any()
