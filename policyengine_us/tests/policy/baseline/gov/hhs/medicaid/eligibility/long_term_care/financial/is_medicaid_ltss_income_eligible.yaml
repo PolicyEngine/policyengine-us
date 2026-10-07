@@ -983,3 +983,134 @@
     medicaid_ltss_countable_income: [2_485, 3_000, 3_000]
     is_medicaid_ltss_income_eligible: [true, false, false]
     is_medicaid_ltss_financial_threshold_eligible: [true, false, false]
+
+- name: Delaware deducts impairment-related work expenses before halving earnings
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    age:
+      2026: 60
+    meets_ssi_disability_criteria:
+      2026: true
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_reported_gross_earned_income: 5455
+    medicaid_ltss_impairment_related_work_expenses: 400
+  output:
+    # (5,455 - 20 - 65 - 400) / 2 = 2,485, exactly the SIL.
+    medicaid_ltss_individual_countable_income: 2485
+    medicaid_ltss_countable_income: 2485
+    is_medicaid_ltss_income_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true
+
+- name: Delaware combines each disabled spouse's work expenses before halving
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income: 3970
+        medicaid_ltss_impairment_related_work_expenses: 200
+      spouse:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income: 3970
+        medicaid_ltss_impairment_related_work_expenses: 200
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 5
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code:
+          2026: DE
+  output:
+    # (7,940 - 20 - 65 - 400) / 2 = 3,727.50, one set of exclusions.
+    medicaid_ltss_assistance_unit_size: [2, 2]
+    medicaid_ltss_couple_countable_income: [3727.5, 3727.5]
+    medicaid_ltss_countable_income: [3727.5, 3727.5]
+    is_medicaid_ltss_income_eligible: [true, true]
+
+- name: Texas QIT opening month excludes a covered pension despite a partial deposit
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    taxable_pension_income:
+      2026: 48000
+    medicaid_ltss_unearned_income_deposited_to_qit: 500
+    medicaid_ltss_qit_opening_year: 2026
+    medicaid_ltss_qit_opening_month: 7
+    medicaid_ltss_qit_covered_unearned_income: 4000
+    medicaid_ltss_qit_covered_unearned_income_deposited: 500
+    medicaid_ltss_qit_subsequent_full_deposits_verified: true
+  output:
+    medicaid_ltss_gross_unearned_income: 4000
+    medicaid_ltss_qit_adjusted_unearned_income: 0
+    medicaid_ltss_countable_income: 0
+    is_medicaid_ltss_income_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true
+
+- name: Texas QIT later month subtracts actual deposits rather than the whole source
+  period: 2026-08
+  input:
+    state_code:
+      2026: TX
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    taxable_pension_income:
+      2026: 48000
+    medicaid_ltss_unearned_income_deposited_to_qit: 500
+    medicaid_ltss_qit_opening_year: 2026
+    medicaid_ltss_qit_opening_month: 7
+    medicaid_ltss_qit_covered_unearned_income: 4000
+    medicaid_ltss_qit_covered_unearned_income_deposited: 500
+    medicaid_ltss_qit_subsequent_full_deposits_verified: true
+  output:
+    medicaid_ltss_qit_adjusted_unearned_income: 3500
+    medicaid_ltss_countable_income: 3500
+    is_medicaid_ltss_income_eligible: false
+
+- name: Texas QIT opening month also excludes a covered earnings source
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    employment_income:
+      2026: 48000
+    medicaid_ltss_earned_income_deposited_to_qit: 500
+    medicaid_ltss_qit_opening_year: 2026
+    medicaid_ltss_qit_opening_month: 7
+    medicaid_ltss_qit_covered_earned_income: 4000
+    medicaid_ltss_qit_covered_earned_income_deposited: 500
+    medicaid_ltss_qit_subsequent_full_deposits_verified: true
+  output:
+    medicaid_ltss_gross_earned_income: 4000
+    medicaid_ltss_qit_adjusted_earned_income: 0
+    medicaid_ltss_countable_income: 0
+    is_medicaid_ltss_income_eligible: true
