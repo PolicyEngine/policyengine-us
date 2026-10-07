@@ -1,5 +1,33 @@
 # Microsimulation
 
+## Marital membership and tax roles
+
+Dataset `person_marital_unit_id` and `marital_unit_id` columns define marital
+membership. Loading the dataset and extending its years preserve those IDs.
+Microcosm constructs these units from source spouse pointers; policyengine-us
+does not reconstruct them from ages or tax-unit roles.
+
+For household situations, an explicit `marital_units` mapping is also
+authoritative. An empty mapping assigns each person their own unit using
+core's existing unallocated-person behavior. A married couple may share a
+marital unit while belonging to separate tax units.
+
+When an entity-form situation omits `marital_units`, the model pairs only an
+unambiguous, explicitly supplied `is_tax_unit_head` / `is_tax_unit_spouse`
+pair in the same tax unit and household. Their true role inputs must overlap
+in period, neither may be input as a dependent or separated, and changing
+roles require an explicit marital mapping because population membership is
+static. Other people receive singleton units. A singleton synthesized without
+relationship inputs does not establish that the person is unmarried.
+
+The model never uses calculated tax roles to construct marital units. When
+marital membership was explicitly supplied, inferred tax spouses must share
+the head's marital unit as well as their tax unit. When membership was omitted,
+the existing tax-role fallback is retained. Direct tax-role inputs still
+override formulas. These construction rules apply to both Python household
+simulations and entity-form YAML tests; variable-only tests retain core's
+singleton defaults.
+
 The `Microsimulation` class is the primary tool for population-level policy analysis in PolicyEngine US. It combines representative survey microdata with PolicyEngine's tax-benefit model to estimate how policies affect the entire US population.
 
 ## Getting started

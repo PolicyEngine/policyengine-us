@@ -30,6 +30,34 @@
   output:
     ssi_marital_earned_income: [10, 20]
 
+- name: Omitted marital units infer two explicit couples separately within one household.
+  period: 2023
+  input:
+    people:
+      first_head:
+        is_tax_unit_head: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 10
+      first_spouse:
+        is_tax_unit_spouse: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 20
+      second_head:
+        is_tax_unit_head: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 100
+      second_spouse:
+        is_tax_unit_spouse: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 200
+    tax_units:
+      first_tax_unit:
+        members: [first_head, first_spouse]
+      second_tax_unit:
+        members: [second_head, second_spouse]
+  output:
+    ssi_marital_earned_income: [30, 30, 300, 300]
+
 - name: Earned income is shared if head has income
   period: 2023
   input:
@@ -45,6 +73,51 @@
         members: [head, spouse]
   output:
     ssi_marital_earned_income: [10, 10]
+
+- name: Omitted marital units pair explicit spouses and exclude their dependents.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 10
+      spouse:
+        age: 38
+        is_tax_unit_spouse: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 20
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 100
+      parent:
+        age: 75
+        is_tax_unit_dependent: true
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 200
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child, parent]
+  output:
+    ssi_marital_earned_income: [30, 30, 100, 200]
+
+- name: Omitted marital units do not pair adults solely by age.
+  period: 2023
+  input:
+    people:
+      older:
+        age: 45
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 10
+      younger:
+        age: 20
+        ssi_couple_computation_applies: true
+        ssi_earned_income: 20
+  output:
+    ssi_marital_earned_income: [10, 20]
 
 - name: Earned income is shared if spouse has income
   period: 2023
