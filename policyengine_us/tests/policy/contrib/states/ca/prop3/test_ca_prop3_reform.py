@@ -31,7 +31,7 @@ import functools
 
 import numpy as np
 import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import HealthCheck, given, settings, strategies as st
 from policyengine_core.parameters import ParameterNode
 from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
@@ -372,7 +372,13 @@ UPDATES = st.lists(
 )
 
 
-@settings(max_examples=300, deadline=None)
+# Input generation can be descheduled on shared hosts; keep every example and
+# assertion without treating that wall-clock delay as a test failure.
+@settings(
+    max_examples=300,
+    deadline=None,
+    suppress_health_check=[HealthCheck.too_slow],
+)
 @given(updates=UPDATES)
 def test_ca_prop3_windows_match_dated_in_effect(updates):
     in_effect, boundaries = _toggle(updates)
