@@ -4,8 +4,7 @@
     filing_status: JOINT
     hi_alternative_tax_on_capital_gains_eligible: true
     hi_taxable_income: 6_000
-    long_term_capital_gains: 1_000
-    net_capital_gain: 4_000
+    hi_capital_gain_for_alternative_tax: 1_000
   output:
     hi_taxable_income_for_alternative_tax: 6_000
 
@@ -15,8 +14,7 @@
     filing_status: JOINT
     hi_alternative_tax_on_capital_gains_eligible: true
     hi_taxable_income: 100_000
-    long_term_capital_gains: 50_000
-    net_capital_gain: 50_000
+    hi_capital_gain_for_alternative_tax: 50_000
   output:
     hi_taxable_income_for_alternative_tax: 50_000
 
@@ -26,8 +24,7 @@
     filing_status: SINGLE
     hi_alternative_tax_on_capital_gains_eligible: true
     hi_taxable_income: 48_000
-    long_term_capital_gains: 50_000
-    net_capital_gain: 1_000
+    hi_capital_gain_for_alternative_tax: 1_000
   output:
     hi_taxable_income_for_alternative_tax: 47_000
 
@@ -37,8 +34,7 @@
     filing_status: JOINT
     hi_alternative_tax_on_capital_gains_eligible: true
     hi_taxable_income: 50_000
-    long_term_capital_gains: 50_000
-    net_capital_gain: 50_000
+    hi_capital_gain_for_alternative_tax: 50_000
   output:
     hi_taxable_income_for_alternative_tax: 48_000
 

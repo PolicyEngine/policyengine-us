@@ -19,6 +19,8 @@ def rate_gains_less_losses(tax_unit, period):
     The worksheets are the head and spouse's: a tax unit dependent's gains
     and losses are on the dependent's own return.
     """
+    # These taxpayer-specific worksheets include only the head and spouse's
+    # gains and losses, as on their Schedule D and Form 4952.
     # Collectibles gain or (loss); a net collectibles loss is negative.
     collectibles = tax_unit_non_dep_add(tax_unit, period, ["collectibles_gain_or_loss"])
     section_1202_gain = max_(

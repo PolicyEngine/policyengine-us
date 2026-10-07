@@ -157,3 +157,70 @@
   output:
     # Line 15 is the head's Schedule D line 7 loss: none, so line 18 = 20,000.
     schedule_d_unrecaptured_section_1250_gain: 20_000
+
+# The 2025 Schedule D instructions' 28% Rate Gain Worksheet (page 11) and
+# Unrecaptured Section 1250 Gain Worksheet (page 13) apply to the filer's
+# return. Include a joint filer's spouse, but exclude dependent amounts.
+# https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf
+
+- name: A dependent's raw gains do not absorb the filer's excess loss on the section 1250 worksheet
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        collectibles_gain_or_loss: -3_000
+        section_1202_gain: 4_000
+        short_term_capital_gains: -2_000
+        long_term_capital_loss_carryover: 2_000
+      dependent:
+        age: 12
+        is_tax_unit_dependent: true
+        collectibles_gain_or_loss: 10_000
+        section_1202_gain: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        unrecaptured_section_1250_gain_before_losses: 10_000
+    marital_units:
+      head:
+        members: [head]
+      dependent:
+        members: [dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    # Losses exceed the filer's specialty gains by 3,000, reducing line 19.
+    capital_gains_28_percent_rate_gain: 0
+    schedule_d_unrecaptured_section_1250_gain: 7_000
+
+- name: A dependent's short-term gain does not offset the filer's short-term loss
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        collectibles_gain_or_loss: 10_000
+        short_term_capital_gains: -15_000
+      dependent:
+        age: 12
+        is_tax_unit_dependent: true
+        short_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        unrecaptured_section_1250_gain_before_losses: 20_000
+    marital_units:
+      head:
+        members: [head]
+      dependent:
+        members: [dependent]
+    households:
+      household:
+        members: [head, dependent]
+  output:
+    capital_gains_28_percent_rate_gain: 0
+    schedule_d_unrecaptured_section_1250_gain: 15_000
