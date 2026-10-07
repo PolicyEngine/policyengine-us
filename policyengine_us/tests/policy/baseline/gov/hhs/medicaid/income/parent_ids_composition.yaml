@@ -2055,3 +2055,176 @@
     medicaid_uses_non_filer_rules: [false, true, false]
     medicaid_household_size: [1, 2, 2]
     medicaid_household_income: [20_000, 20_000, 30_000]
+
+# Additional linked-household membership regressions from the recovery audit.
+
+- name: A grandparent inferred as the teen parent's tax spouse is not a stepparent
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 40_000
+      teen:
+        person_id: 2
+        age: 18
+        parent_1_id: 1
+      baby:
+        person_id: 3
+        age: 1
+        parent_1_id: 2
+    tax_units:
+      adult_return:
+        members: [grandparent, teen]
+        tax_unit_is_filer: true
+      baby_unit:
+        members: [baby]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [grandparent, teen, baby]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      teen:
+        members: [teen]
+      baby:
+        members: [baby]
+    households:
+      home:
+        members: [grandparent, teen, baby]
+        state_code: OH
+  output:
+    # The default tax roles label the two adults as head and spouse, but the
+    # parent links show that they are parent and child. That role inference
+    # cannot establish a marriage or make the grandparent the baby's step
+    # parent. The baby uses non-filer rules and counts only baby plus teen.
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 2, 2]
+    medicaid_household_income: [40_000, 40_000, 0]
+
+- name: A flagged separately filing spouse's income joins the filer's adult dependent household
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      parent_unit:
+        members: [parent, child]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [parent, child, spouse]}
+    marital_units:
+      couple: {members: [parent, spouse]}
+      child: {members: [child]}
+    households:
+      home: {members: [parent, child, spouse], state_code: OH}
+  output:
+    # The child is over the non-filer child age limit. The parent and child
+    # share the parent's tax household, including the parent's separately
+    # filing spouse. The spouse's household contains only spouse plus parent.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 2]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: California propagates a flagged filer spouse's income and pregnancy to the adult dependent
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 40
+        employment_income: 40_000
+        current_pregnancies: 1
+    tax_units:
+      parent_unit:
+        members: [parent, child]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [parent, child, spouse]}
+    marital_units:
+      couple: {members: [parent, spouse]}
+      child: {members: [child]}
+    households:
+      home: {members: [parent, child, spouse], state_code: CA}
+  output:
+    # ACWDL 20-10 counts the pregnant spouse's unborn child in all three
+    # households; income follows those same household memberships.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_size: [4, 4, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: A flagged filer's spouse claimed into the filer's unit counts once in California
+  period: 2026
+  input:
+    people:
+      filer:
+        person_id: 1
+        age: 40
+        employment_income: 40_000
+        parent_1_id: 9
+      spouse:
+        person_id: 2
+        age: 41
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+        current_pregnancies: 1
+    tax_units:
+      filer_unit:
+        members: [filer]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [filer, spouse]}
+    marital_units:
+      couple: {members: [filer, spouse]}
+    households:
+      home: {members: [filer, spouse], state_code: CA}
+  output:
+    # The external claim already includes the spouse. The flag must not add
+    # that spouse or pregnancy again. A dependent who need not file remains
+    # excluded from the taxpayer's income even when filing voluntarily.
+    medicaid_uses_non_filer_rules: [false, false]
+    ca_medicaid_household_pregnancies: [1, 1]
+    medicaid_household_size: [3, 3]
+    medicaid_household_income: [40_000, 40_000]

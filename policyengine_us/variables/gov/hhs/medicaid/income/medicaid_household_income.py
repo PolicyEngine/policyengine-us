@@ -68,8 +68,17 @@ class medicaid_household_income(Variable):
             medicaid_non_filer_member_sum(person, period, member_income),
             non_filer_household_income,
         )
-        tax_household_income = (
-            person.tax_unit.sum(tax_member_income) + separate_spouse_income
+        tax_member_income_sum = person.tax_unit.sum(tax_member_income)
+        tax_household_income = tax_member_income_sum + separate_spouse_income
+        # With parent links, every dependent shares the taxpayer's
+        # household, including that taxpayer's flagged separately filing
+        # spouse. Propagate the head's spouse income once across the unit,
+        # keeping the original expression in households without links.
+        tax_household_income = where(
+            household_has_parent_ids(person, period),
+            tax_member_income_sum
+            + person.tax_unit.sum(head_or_spouse * separate_spouse_income),
+            tax_household_income,
         )
         # With parent links, add the co-resident spouse outside the unit whom
         # medicaid_household_size adds to the unit's tax household.

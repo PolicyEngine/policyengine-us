@@ -229,21 +229,24 @@ def medicaid_tax_dependent_spouse_sum(person, period, values):
 
 
 def medicaid_filer_spouse_sum(person, period, values):
-    """Sum ``values`` over a head's or spouse's co-resident spouse outside their tax unit.
+    """Correct a head's or spouse's tax-household spouse membership.
 
     Callers add each tax unit's total of this to every member's tax household,
     before claimants elsewhere look that household up. Under 42 CFR
     435.603(f)(1) a taxpayer's household is the taxpayer and the dependents
     they claim, (f)(4) adds a spouse the taxpayer lives with whether or not
     they file jointly, and under (f)(2) a dependent's household is the
-    claiming taxpayer's. So, in households with parent links, a head or spouse
-    counts the co-resident spouse _spouse_rule finds unless that spouse is
-    already in the tax household: on the same return, or claimed into it from
-    another unit. A unit whose cohabiting-spouses flag already adds its single
-    head's separately filing spouse keeps that channel alone. It is zero for
-    everyone else.
+    claiming taxpayer's. In households with parent links, _spouse_rule
+    identifies the co-resident spouse. Without a cohabiting-spouses flag,
+    add their values only when they are missing from the tax household.
 
-    Values accumulate in float64.
+    The single-head flagged channel already adds a separately filing spouse.
+    When that spouse is on the same return or claimed into it from another
+    unit, subtract their values to cancel the flag's duplicate contribution.
+    Otherwise keep that channel alone. If no spouse can be identified, the
+    original flag fallback remains. The correction is zero for everyone else.
+
+    Signed values accumulate in float64.
     """
     values = np.asarray(values, dtype=np.float64)
     total = np.zeros(person.count, dtype=np.float64)
@@ -255,10 +258,8 @@ def medicaid_filer_spouse_sum(person, period, values):
     flagged = person.tax_unit("cohabitating_spouses", period) & (
         person.tax_unit("head_spouse_count", period) == 1
     )
-    applies = (
-        household_has_parent_ids(person, period)
-        & person("is_tax_unit_head_or_spouse", period)
-        & ~flagged
+    applies = household_has_parent_ids(person, period) & person(
+        "is_tax_unit_head_or_spouse", period
     )
     if not np.any(applies):
         return total
@@ -275,6 +276,9 @@ def medicaid_filer_spouse_sum(person, period, values):
         in_tax_household = (tax_unit[member] == tax_unit) | (
             claimed_elsewhere[member] & (claiming_tax_unit_id[member] == tax_unit_id)
         )
-        included = (member >= 0) & applies & is_spouse(member) & ~in_tax_household
-        total += np.where(included, values[member], 0.0)
+        included = (member >= 0) & applies & is_spouse(member)
+        adjustment = (~flagged & ~in_tax_household).astype(int) - (
+            flagged & in_tax_household
+        ).astype(int)
+        total += np.where(included, adjustment * values[member], 0.0)
     return total

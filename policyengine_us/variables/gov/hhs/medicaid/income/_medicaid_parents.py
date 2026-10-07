@@ -31,9 +31,11 @@ def medicaid_established_spouse_indices(person, period):
     """Row of each person's established co-resident spouse, or -1.
 
     A joint return or a two-person marital unit with the cohabiting-spouses
-    flag on either partner's tax unit shows the marriage. A person with more
-    than one such candidate has none.
+    flag on either partner's tax unit shows the marriage. Parent-child links
+    rule out a candidate even when inferred tax roles suggest a marriage.
+    A person with more than one such candidate has none.
     """
+    first, second = co_resident_parent_indices(person, period)
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
     tax_unit = person.tax_unit.reference_entity.members_entity_id
     joint = head_or_spouse & (person.tax_unit("head_spouse_count", period) == 2)
@@ -44,9 +46,15 @@ def medicaid_established_spouse_indices(person, period):
     spouse = np.full(person.count, -1, dtype=int)
     candidates = np.zeros(person.count, dtype=int)
     for member in household_member_indices(person):
+        # Tax roles can infer an adult child as the head's spouse. Raw
+        # parent links rule out that marriage, as in _spouse_rule.
+        names_applicant = (first[member] == own_index) | (second[member] == own_index)
+        named_by_applicant = (first == member) | (second == member)
         shown = (
             (member >= 0)
             & (member != own_index)
+            & ~names_applicant
+            & ~named_by_applicant
             & (
                 (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
                 | (
