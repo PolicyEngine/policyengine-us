@@ -177,7 +177,7 @@ def _restatement(year, raw):
     expenses = (raw["investment_expenses"] * filer).sum(axis=1)
     if year == 2017:
         schedule_a_line_24 = (
-            raw["investment_expenses"].sum(axis=1)
+            expenses
             + raw["unreimbursed_business_employee_expenses"].sum(axis=1)
             + raw["tax_preparation_fees"].sum(axis=1)
         )

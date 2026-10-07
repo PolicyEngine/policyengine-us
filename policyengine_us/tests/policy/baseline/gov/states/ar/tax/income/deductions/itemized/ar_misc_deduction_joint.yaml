@@ -78,3 +78,27 @@
     ar_misc_deduction_joint: 1_500 # AR3 line 25 = 3,500 - 2% * 100,000
     misc_deduction: 0 # Federal section 67(h) disallows miscellaneous deductions after 2017
     form_4952_investment_expenses: 0 # Form 4952 line 5 = 0 when federal misc.applies is false
+
+- name: AR excludes dependent investment fees from the filer miscellaneous pool
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        investment_expenses: 3_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_expenses: 50_000
+    tax_units:
+      unit:
+        members: [head, child]
+        ar_agi_joint: 100_000
+    households:
+      household:
+        members: [head, child]
+        state_code: AR
+  output:
+    total_misc_deductions: 3_000
+    ar_misc_deduction_joint: 1_000 # Filer fees 3,000 - 2% * AGI 100,000.

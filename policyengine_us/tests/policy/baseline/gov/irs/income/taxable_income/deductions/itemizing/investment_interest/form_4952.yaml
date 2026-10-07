@@ -385,5 +385,7 @@
         members: [head, child]
         adjusted_gross_income: 100_000
   output:
+    total_misc_deductions: 3_000 # Only the filer investment fees belong on Schedule A.
+    misc_deduction: 1_000
     form_4952_investment_expenses: 1_000 # Filer pool 3,000 - 2% * 100,000.
     investment_interest_expense_deduction: 11_000

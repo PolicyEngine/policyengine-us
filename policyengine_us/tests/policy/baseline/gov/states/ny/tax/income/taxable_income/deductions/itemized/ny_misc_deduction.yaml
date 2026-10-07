@@ -1,0 +1,25 @@
+# Investment fees belong only to the filer whose income they produce.
+
+- name: NY excludes dependent investment fees from the filer miscellaneous pool
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        investment_expenses: 3_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_expenses: 50_000
+    tax_units:
+      unit:
+        members: [head, child]
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    total_misc_deductions: 3_000
+    ny_misc_deduction: 1_000 # Filer fees 3,000 - 2% * AGI 100,000.
