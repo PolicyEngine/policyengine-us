@@ -82,7 +82,7 @@
   output:
     hi_investment_interest_deduction: 0
 
-- name: Case 5, investment expenses reduce net investment income.
+- name: Case 5, allowed investment expenses after the two-percent floor reduce income.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -101,7 +101,8 @@
         members: [person1]
         state_code: HI
   output:
-    hi_investment_interest_deduction: 4_000
+    # HI AGI is $6,000; allowed expenses are $2,000 - $120 = $1,880.
+    hi_investment_interest_deduction: 4_120
 
 - name: Case 6, a net short-term loss does not reduce other investment income.
   period: 2025
@@ -208,3 +209,367 @@
         state_code: HI
   output:
     hi_investment_interest_deduction: 0
+
+- name: Case 11, investment expenses below the shared two-percent floor are not allowed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    # $1,000 expenses are below the $2,000 floor, so N-158 line 5 is zero.
+    hi_investment_interest_deduction: 5000
+
+- name: Case 12, dependent interest income does not belong on the parent return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        taxable_interest_income: 5000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 13, dependent capital losses do not erase the parent investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        short_term_capital_gains: 5000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -10000
+        long_term_capital_gains_before_response: -10000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 5000
+
+- name: Case 14, dependent investment expenses are excluded from the parent return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 1000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_expenses: 2000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 5000
+
+- name: Case 15, dependent interest expense does not create a deduction for the parent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        taxable_interest_income: 10000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_interest_expense: 5000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 16, person-level Treasury interest is exempt from Hawaii investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        us_govt_interest_person: 5000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 17, an existing tax-unit Treasury-interest input is also excluded.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+        us_govt_interest: 5000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 18, dependent Treasury interest does not erase the parent taxable interest.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        taxable_interest_income: 5000
+        us_govt_interest_person: 5000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 5000
+
+- name: Case 19, employee expenses share the two-percent floor with investment expenses.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 1000
+        unreimbursed_business_employee_expenses: 2000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    # A-6 line 29 is $3,000 - $2,000 = $1,000; N-158 line 5 is $1,000.
+    hi_investment_interest_deduction: 4000
+
+- name: Case 20, tax-preparation fees share the floor but cannot raise allowed investment expenses.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 800
+        tax_preparation_fees: 2500
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    # A-6 line 29 is $1,300; N-158 line 5 uses the smaller $800 investment expense.
+    hi_investment_interest_deduction: 4200
+
+- name: Case 21, dependent employee expenses do not consume the parent shared floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 1000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        unreimbursed_business_employee_expenses: 2000
+        tax_preparation_fees: 1000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 5000
+
+- name: Case 22, dependent positive capital gains do not create parent investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        short_term_capital_gains: 5000
+        non_sch_d_capital_gains: 1000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 23, dependent ordinary dividends do not create parent investment income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 3000
+        non_qualified_dividend_income: 2000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 0
+
+- name: Case 24, Hawaii AGI below zero does not create a negative expense floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 5000
+        investment_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: -100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    hi_investment_interest_deduction: 4000
+
+- name: Case 25, exempt interest cannot offset ordinary dividends when it exceeds reported taxable interest.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        investment_interest_expense: 5000
+        taxable_interest_income: 0
+        us_govt_interest_person: 5000
+        non_qualified_dividend_income: 5000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+        hi_agi: 100000
+    households:
+      household:
+        members: [parent]
+        state_code: HI
+  output:
+    # Only the taxable-interest component is reduced, with a zero floor.
+    hi_investment_interest_deduction: 5000

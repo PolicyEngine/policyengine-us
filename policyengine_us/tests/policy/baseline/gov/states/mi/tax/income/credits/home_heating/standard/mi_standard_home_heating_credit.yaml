@@ -65,3 +65,33 @@
     state_code: MI
   output: # (1_433 + (8 - 6) * 182 - 50_000 * 0.035) * 0.5
     mi_standard_home_heating_credit: 23.5
+
+- name: 2025 standard allowance, 1 exemption, Table A
+  period: 2025
+  input:
+    mi_exemptions_count: 1
+    mi_household_resources: 10_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output: # 604 - 10_000 * 0.035
+    mi_standard_home_heating_credit: 254
+
+- name: 2025 standard allowance, 3 exemptions, Table A
+  period: 2025
+  input:
+    mi_exemptions_count: 3
+    mi_household_resources: 20_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output: # 1_027 - 20_000 * 0.035
+    mi_standard_home_heating_credit: 327
+
+- name: 2025 standard allowance, 7 exemptions, Table A
+  period: 2025
+  input:
+    mi_exemptions_count: 7
+    mi_household_resources: 30_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output: # 1_662 + (7 - 6) * 212 - 30_000 * 0.035
+    mi_standard_home_heating_credit: 824
