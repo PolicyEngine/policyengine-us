@@ -133,6 +133,7 @@
     tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
     households: {household: {members: [parent, child1, child2], state_name: WI}}
   # End-to-end: removing the dependent portion (amount 0) drops the base
-  # exemption from $2,100 to $700 ($1,400 of taxable income added), raising WI
-  # income tax from 2,032.42 to 2,094.02 (about +61.60).
-  output: {wi_income_tax: 2094.02}
+  # exemption from $2,100 to $700, so taxable income rises from 49,194 to
+  # 50,594. Wis. Stat. 71.06(1r): 3.5% x 14,680 + 4.4% x (50,480 - 14,680)
+  # + 5.3% x (50,594 - 50,480) = 2,095.04 (baseline 2,032.42).
+  output: {wi_income_tax: 2095.04}

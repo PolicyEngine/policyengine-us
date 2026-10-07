@@ -285,3 +285,83 @@
     # two qualifying persons (2023) = 20_000; net = 20_000 - 1 = 19_999.
     # Return min(19_999, 5_000) = 5_000.
     hi_dependent_care_benefits: 5_000
+
+- name: Case 14, separate filer treated as unmarried uses the $5,000 line 11 cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 10 = min(4_000 benefits, 12_000 expenses, 38_000 earnings) = 4_000.
+    # Line 11 = 5_000: IRC 129(a)(2)(C) and HRS 235-55.6(e)(4) treat the
+    # filer as unmarried. Line 14 = min(4_000, 5_000) = 4_000.
+    # Line 19 = 10_000 one-person limit - 4_000 = 6_000.
+    # Line 22 = min(6_000, 12_000) = 6_000.
+    hi_dependent_care_benefits: 6_000
+
+- name: Case 15, separate filer treated as unmarried uses the $7,500 line 11 cap in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 8_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 10 = min(8_000 benefits, 12_000 expenses, 38_000 earnings) = 8_000.
+    # Line 14 = min(8_000, 7_500) = 7_500; line 19 = 10_000 - 7_500 = 2_500.
+    # The $3,750 MFS cap would give 6_250 and a $5,000 cap 5_000.
+    hi_dependent_care_benefits: 2_500
+
+- name: Case 16, separate filer not living apart keeps the $2,500 line 11 cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 14 = min(4_000, 2_500) = 2_500; line 19 = 10_000 - 2_500 = 7_500.
+    hi_dependent_care_benefits: 7_500

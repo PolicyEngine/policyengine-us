@@ -29,23 +29,25 @@ class mn_child_and_working_families_credits(Variable):
         base_ctc_amount = qualifying_children * p.ctc.amount
         # Working Family Credit computation:
         wfc_eligible = tax_unit("mn_wfc_eligible", period)
-        # The credit is phased in based on earnings
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # The credit is phased in based on earned income. Schedule M1CWFC,
+        # line 2 takes it from federal EIC Worksheet B: both spouses'
+        # earnings combined, with a net self-employment loss subtracted,
+        # and not less than zero.
+        earnings = tax_unit("eitc_earned_income", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
         # Minn. Stat. 290.0671, subd. 1a defines a qualifying older child as
         # an IRC 32(c) qualifying child that attained at least age 18; the
         # IRC 32(c)(3) definition incorporates IRC 152(c)(3)(B), which waives
         # the age (and student) test for permanently and totally disabled
-        # individuals. Schedule M1DQC step 4 routes a disabled dependent aged
-        # 18 or older directly to the qualifying-older-child row (row 11)
-        # without the full-time-student test.
+        # individuals, and the IRC 152(c)(2) relationship test. Schedule M1DQC
+        # step 4 routes a disabled dependent aged 18 or older directly to the
+        # qualifying-older-child row (row 11) without the full-time-student
+        # test.
         is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
             "is_permanently_and_totally_disabled", period
         )
-        qualifying_child = (
-            person("is_qualifying_child_dependent", period) | is_disabled_dependent
-        )
+        qualifying_child = person("is_eitc_qualifying_child", period)
         age = person("age", period)
         full_time_student = person("is_full_time_student", period)
         qualifying_older_child = (

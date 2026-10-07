@@ -99,7 +99,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 11_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     alternative_minimum_tax: 0
 
@@ -112,7 +111,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 11_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     alternative_minimum_tax: 1_000
 
@@ -168,7 +166,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 30_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     # Line 3 = 280,000. Line 4 = 280,000 x 28% - 4,782 = 73,618. Line 5 =
     # 130,000 x 26% = 33,800. Line 6 = 39,818, which goes on Form 6251 line 7.
@@ -187,7 +184,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 30_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     # Form 6251 line 7 = 150,000 x 26% = 39,000.
     alternative_minimum_tax: 9_000
@@ -203,7 +199,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 0
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     # Line 3 = 180,000. Line 4 = 180,000 x 28% - 2,391 = 48,009. Line 5 =
     # 130,000 x 28% - 2,391 = 34,009. Line 6 = 14,000.
@@ -219,9 +214,9 @@
     amt_part_iii_required: true
     amt_tax_including_cg: 57_785
     foreign_tax_credit: 0
-    regular_tax_before_credits: 0
+    # Form 6251 line 10: the regular tax, all of it capital gains tax.
+    regular_tax_before_credits: 42_637.50
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 42_637.50
   output:
     # Form 6251 line 39 = 311,900 x 28% - 4,782 = 82,550, line 38 = 57,785,
     # line 40 = 57,785. Worksheet line 5 = 100,000 x 26% = 26,000, line 6 =
@@ -238,6 +233,5 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 0
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     alternative_minimum_tax: 0

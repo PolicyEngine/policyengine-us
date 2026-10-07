@@ -284,17 +284,16 @@
     # Standard deduction (indiv): $2,470
     # Taxable income (indiv): $150,000 - $2,470 = $147,530
     # Rate: 3.9% ($26,400+ bracket)
-    # Pre-reduction: 0.039 * $147,530 = $5,753.67
-    # Reduction at $97,901: $89
-    # Tax before NR credits (indiv): $5,753.67 - $89 = $5,664.67
+    # 2025 Indexed Tax Brackets: "For $100,001 and over, $3,809 + 3.9% of the excess over $100,000."
+    # Tax before NR credits (indiv): $3,809 + 0.039 * $47,530 = $5,662.67
     ar_taxable_income_indiv: [147_530]
-    ar_income_tax_before_non_refundable_credits_indiv: [5_664.67]
+    ar_income_tax_before_non_refundable_credits_indiv: [5_662.67]
     ar_files_separately: false
     # Personal credits: 1 * $29 = $29
     # No additional tax credit (income >> $27,600)
     ar_non_refundable_credits: 29
-    # Tax: $5,664.67 - $29 = $5,635.67
-    ar_income_tax: 5_635.67
+    # Tax: $5,662.67 - $29 = $5,633.67
+    ar_income_tax: 5_633.67
 
 - name: Case 10, 2024 joint filer where low income table is cheaper and joint path wins.
   absolute_error_margin: 1

@@ -117,3 +117,34 @@
     taxable_income: 584_250
     capital_gains_excluded_from_taxable_income: 386_950
     capital_gains_tax: 69_346
+
+# 26 U.S.C. 1(h)(1), "shall not exceed": as in the baseline, the regular tax
+# is at most the tax on all taxable income at the regular rates. The
+# reform's 0% amount for single filers ($47,025) ends $1,450 below the top
+# of the 2025 12% bracket ($48,475). 2025, single, $62,775 of wages and
+# $1,450 of long-term gain: taxable income $48,475, of which $47,025 is
+# ordinary income (12% of it less $238.50 = $5,404.50). The reform taxes the
+# gain at 15% ($217.50), but the tax on all $48,475 is $5,578.50, so the
+# capital gains tax is $174.
+- name: Reform applied, the regular tax is limited to the tax on all taxable income
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.harris.capital_gains.harris_capital_gains.harris_capital_gains
+  input:
+    gov.contrib.harris.capital_gains.in_effect: true
+    people:
+      head:
+        age: 45
+        employment_income: 62_775
+        long_term_capital_gains: 1_450
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxable_income: 48_475
+    income_tax_main_rates: 5_404.50
+    capital_gains_tax: 174

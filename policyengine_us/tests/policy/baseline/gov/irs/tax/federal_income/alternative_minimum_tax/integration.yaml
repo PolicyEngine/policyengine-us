@@ -54,8 +54,9 @@
     # $759,250 = $151,850; line 22 tax on $134,250 = $25,067; line 25
     # $201,779.50.
     taxable_income: 1_059_250
-    regular_tax_before_credits: 25_067
+    income_tax_main_rates: 25_067
     capital_gains_tax: 176_712.5
+    regular_tax_before_credits: 201_779.5
     # Form 6251: line 1 $1,059,250; line 2a $15,750; line 4 $1,075,000 plus
     # 25% * ($1,075,000 - $900,350) = $43,662.50 for married filing
     # separately (line 4 instructions) = $1,118,662.50. Line 5: $68,500 -
