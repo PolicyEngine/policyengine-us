@@ -113,24 +113,33 @@ class home_mortgage_interest_tax_unit(Variable):
     documentation = (
         "Total home mortgage interest on the principal and second residences. "
         "The person-level home_mortgage_interest and "
-        "second_residence_mortgage_interest inputs are canonical; the "
-        "deprecated structured first/second interest inputs are used only "
-        "when no person-level interest is reported (existing datasets still "
-        "supply them — see issue #9275)."
+        "second_residence_mortgage_interest inputs are canonical. The "
+        "deprecated structured first/second interest inputs stand in for "
+        "principal-residence interest when no person-level "
+        "home_mortgage_interest is reported (existing datasets still supply "
+        "them — see issue #9275)."
     )
 
     def formula(tax_unit, period, parameters):
-        reported_interest = add(
-            tax_unit,
-            period,
-            ["home_mortgage_interest", "second_residence_mortgage_interest"],
-        )
+        principal_residence_interest = add(tax_unit, period, ["home_mortgage_interest"])
         structured_interest = add(
             tax_unit,
             period,
             ["first_home_mortgage_interest", "second_home_mortgage_interest"],
         )
-        return where(reported_interest > 0, reported_interest, structured_interest)
+        second_residence_interest = add(
+            tax_unit, period, ["second_residence_mortgage_interest"]
+        )
+        # The structured inputs record loans, not residences, so they stand in
+        # for principal-residence interest only.
+        return (
+            where(
+                principal_residence_interest > 0,
+                principal_residence_interest,
+                structured_interest,
+            )
+            + second_residence_interest
+        )
 
 
 class deductible_mortgage_interest_tax_unit(Variable):

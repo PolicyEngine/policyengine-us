@@ -19,5 +19,5 @@ class second_residence_mortgage_points(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/461#g",
-        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=6",
+        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=8",
     ]

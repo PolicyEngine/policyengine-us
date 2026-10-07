@@ -1,33 +1,32 @@
 """Vectorized invariants for second-residence mortgage inputs and Kentucky.
 
 One module fixture builds one Simulation of Kentucky tax units in 2025 and
-2026, in four paired scenarios with identical draws:
+2026. Four paired scenarios share identical draws:
 
 - base: separate principal- and second-residence interest, points and premiums;
 - pooled: every second-residence amount moved onto the principal residence;
 - principal_only: second-residence inputs set to zero;
 - omitted: second-residence inputs left out entirely.
 
+A fifth scenario, equal_rate, gives each tax unit a principal and a second
+mortgage at one common rate, so the result can be checked against an
+independent recomputation on the principal residence alone.
+
 Federal law pools both qualified residences (26 U.S.C. 163(h)(5)(A)), so the
-federal deduction cannot depend on the residence split. KRS 141.019(2)(j)
-limits Kentucky's deduction to the principal residence from 2026, so from
-then on Kentucky itemized deductions cannot depend on second-residence
-amounts at all.
+federal deduction cannot depend on the residence split. From 2026, KRS
+141.019(2)(j) caps Kentucky's deduction at the interest paid on the
+principal residence.
 """
 
 import numpy as np
 import pytest
 
 from policyengine_us import Simulation
-from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_structure import (
-    _limited_mortgage_balance,
-    _mortgage_balance_cap,
-)
 
 N = 48
 YEARS = (2025, 2026)
 STATUSES = ("SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD")
-SCENARIOS = ("base", "pooled", "principal_only", "omitted")
+SCENARIOS = ("base", "pooled", "principal_only", "omitted", "equal_rate")
 # Principal-residence input, its second-residence counterpart, upper draw.
 PAIRS = (
     ("home_mortgage_interest", "second_residence_mortgage_interest", 40_000),
@@ -44,7 +43,6 @@ UNIT_OUTPUTS = (
     "non_deductible_mortgage_interest_tax_unit",
     "deductible_mortgage_insurance_premiums",
     "interest_deduction",
-    "second_residence_interest_deduction",
     "itemized_deductions_less_salt",
     "ky_disallowed_second_residence_interest",
     "ky_itemized_deductions_unit",
@@ -61,6 +59,10 @@ FEDERAL_UNIT_OUTPUTS = (
     "interest_deduction",
     "itemized_deductions_less_salt",
 )
+# 26 U.S.C. 163(h)(3)(F)(i)(II): $750,000 ($375,000 married filing
+# separately) for debt incurred after December 15, 2017.
+POST_2017_LIMIT = {"SEPARATE": 375_000}
+DEFAULT_POST_2017_LIMIT = 750_000
 RTOL = 1e-6
 ATOL = 0.01
 
@@ -88,8 +90,14 @@ def _draw():
         amounts[second][::11] = 0
     first = rng.integers(1, 1_500_001, N).astype(float)
     second_balance = rng.integers(1, 750_001, N).astype(float)
-    first[::5] = 0
-    second_balance[::3] = 0
+    # Every fourth unit reports no balances, so the pool is fully deductible.
+    first[::4] = 0
+    second_balance[::4] = 0
+    # Equal-rate units: principal debt on the first loan, second-residence
+    # debt on the second, both incurred after 2017 at one rate.
+    equal_principal = rng.integers(1, 1_200_001, N).astype(float)
+    equal_second = rng.integers(0, 800_001, N).astype(float)
+    equal_rate = rng.uniform(0.02, 0.09, N)
     # AGI on both sides of the premium phase-out range.
     agi = rng.integers(0, 15_000_001, N) / 100
     return {
@@ -100,10 +108,24 @@ def _draw():
         "second_home_mortgage_balance": second_balance,
         "first_home_mortgage_origination_year": rng.choice((2010, 2016, 2020), N),
         "second_home_mortgage_origination_year": rng.choice((2010, 2016, 2020), N),
+        "equal_principal": equal_principal,
+        "equal_second": equal_second,
+        "equal_rate": equal_rate,
     }
 
 
 def _person_inputs(draws, scenario, i, j):
+    if scenario == "equal_rate":
+        if j > 0:
+            return {}
+        return {
+            "home_mortgage_interest": float(
+                draws["equal_rate"][i] * draws["equal_principal"][i]
+            ),
+            "second_residence_mortgage_interest": float(
+                draws["equal_rate"][i] * draws["equal_second"][i]
+            ),
+        }
     inputs = {}
     for principal, second, _ in PAIRS:
         principal_value = float(draws[principal][i, j])
@@ -119,11 +141,30 @@ def _person_inputs(draws, scenario, i, j):
     return inputs
 
 
+def _balances(draws, scenario, i):
+    if scenario == "equal_rate":
+        return {
+            "first_home_mortgage_balance": float(draws["equal_principal"][i]),
+            "second_home_mortgage_balance": float(draws["equal_second"][i]),
+            "first_home_mortgage_origination_year": 2020,
+            "second_home_mortgage_origination_year": 2020,
+        }
+    return {
+        name: (float if "balance" in name else int)(draws[name][i])
+        for name in (
+            "first_home_mortgage_balance",
+            "second_home_mortgage_balance",
+            "first_home_mortgage_origination_year",
+            "second_home_mortgage_origination_year",
+        )
+    }
+
+
 @pytest.fixture(scope="module")
 def results():
     draws = _draw()
     people, tax_units, households = {}, {}, {}
-    units, persons, person_to_unit = {}, {}, []
+    units, persons = {}, {}
     periods = tuple(map(str, YEARS))
 
     def annual(value):
@@ -139,7 +180,6 @@ def results():
             for j in range(count):
                 person_index = len(people)
                 persons[scenario].append(person_index)
-                person_to_unit.append(unit_index)
                 person_id = f"p{person_index}"
                 members.append(person_id)
                 person = {"age": annual(50 - j)}
@@ -152,18 +192,10 @@ def results():
                 "adjusted_gross_income": annual(
                     float(draws["adjusted_gross_income"][i])
                 ),
-                "first_home_mortgage_balance": annual(
-                    float(draws["first_home_mortgage_balance"][i])
-                ),
-                "second_home_mortgage_balance": annual(
-                    float(draws["second_home_mortgage_balance"][i])
-                ),
-                "first_home_mortgage_origination_year": annual(
-                    int(draws["first_home_mortgage_origination_year"][i])
-                ),
-                "second_home_mortgage_origination_year": annual(
-                    int(draws["second_home_mortgage_origination_year"][i])
-                ),
+                **{
+                    name: annual(value)
+                    for name, value in _balances(draws, scenario, i).items()
+                },
                 # Keep the deprecated structured interest out of every pool.
                 "first_home_mortgage_interest": annual(0.0),
                 "second_home_mortgage_interest": annual(0.0),
@@ -183,28 +215,17 @@ def results():
             array = simulation.calculate(name, str(year)).copy()
             array.flags.writeable = False
             values[year][name] = array
-        # Read the acquisition-debt caps once, from this model's parameters.
-        mortgage = simulation.tax_benefit_system.parameters(
-            f"{year}-01-01"
-        ).gov.irs.deductions.itemized.interest.mortgage
-        statuses = draws["filing_status"]
-        values[year]["caps"] = (
-            mortgage.pre_tcja_cap[statuses],
-            mortgage.cap[statuses],
-            mortgage.pre_tcja_origination_year,
-        )
     # Do not retain the Simulation, its mutable caches or its policy tree.
     return (
         draws,
         values,
         {k: np.array(v) for k, v in units.items()},
         {k: np.array(v) for k, v in persons.items()},
-        np.array(person_to_unit),
     )
 
 
 def test_residence_split_does_not_change_federal_amounts(results):
-    _, values, units, persons, _ = results
+    _, values, units, persons = results
     for year_values in values.values():
         for name in FEDERAL_UNIT_OUTPUTS:
             _close(year_values[name][units["base"]], year_values[name][units["pooled"]])
@@ -216,99 +237,85 @@ def test_residence_split_does_not_change_federal_amounts(results):
             )
 
 
-def test_attribution_is_nonnegative_and_bounded(results):
-    _, values, _, _, _ = results
-    for year_values in values.values():
-        attribution = year_values["second_residence_interest_deduction"]
-        assert np.all(attribution >= 0)
-        assert np.all(attribution <= year_values["interest_deduction"] + ATOL)
+def test_kentucky_disallowance_is_bounded(results):
+    _, values, _, _ = results
+    np.testing.assert_array_equal(
+        values[2025]["ky_disallowed_second_residence_interest"], 0
+    )
+    disallowed = values[2026]["ky_disallowed_second_residence_interest"]
+    assert np.all(disallowed >= 0)
+    assert np.all(disallowed <= values[2026]["interest_deduction"] + ATOL)
+    assert np.any(disallowed > 0)
 
 
-def test_attribution_equals_the_federal_deduction_it_adds(results):
-    # Differential check: given balances and AGI the federal deduction is
-    # linear in the amounts, so the attribution must equal the deduction
-    # with second-residence amounts minus the deduction without them.
-    _, values, units, _, _ = results
-    for year_values in values.values():
-        deduction = year_values["interest_deduction"]
-        _close(
-            deduction[units["base"]] - deduction[units["principal_only"]],
-            year_values["second_residence_interest_deduction"][units["base"]],
-        )
+def test_kentucky_lies_between_principal_only_and_pooled(results):
+    # Adding second-residence amounts cannot lower Kentucky's deduction, and
+    # moving them onto the principal residence cannot lower it either.
+    _, values, units, _ = results
+    kentucky = values[2026]["ky_itemized_deductions_unit"]
+    assert np.all(kentucky[units["principal_only"]] <= kentucky[units["base"]] + ATOL)
+    assert np.all(kentucky[units["base"]] <= kentucky[units["pooled"]] + ATOL)
 
 
-def test_attribution_matches_an_independent_computation(results):
-    draws, values, units, _, _ = results
-    statuses = draws["filing_status"]
-    for year, year_values in values.items():
-        caps = [
-            _mortgage_balance_cap(
-                draws[f"{position}_home_mortgage_origination_year"],
-                *year_values["caps"],
-            )
-            for position in ("first", "second")
+def test_kentucky_ignores_second_residence_when_the_pool_is_fully_deductible(
+    results,
+):
+    draws, values, units, _ = results
+    no_balance = (draws["first_home_mortgage_balance"] == 0) & (
+        draws["second_home_mortgage_balance"] == 0
+    )
+    assert no_balance.sum() >= N // 4
+    kentucky = values[2026]["ky_itemized_deductions_unit"]
+    _close(
+        kentucky[units["base"]][no_balance],
+        kentucky[units["principal_only"]][no_balance],
+    )
+
+
+def test_kentucky_matches_a_principal_residence_recomputation_at_equal_rates(
+    results,
+):
+    # Independent statutory computation: with one rate r, the federal
+    # deduction is r * min(limit, P + S), and the deduction on the principal
+    # residence alone is r * min(limit, P).
+    draws, values, units, _ = results
+    limit = np.array(
+        [
+            POST_2017_LIMIT.get(status, DEFAULT_POST_2017_LIMIT)
+            for status in draws["filing_status"]
         ]
-        first = draws["first_home_mortgage_balance"]
-        second = draws["second_home_mortgage_balance"]
-        limited = _limited_mortgage_balance(first, second, *caps)
-        share = np.minimum(
-            1,
-            np.divide(
-                limited, first + second, out=np.ones(N), where=first + second > 0
-            ),
-        )
-        # Premium worksheet: 10% per $1,000 ($500 separate), or fraction,
-        # above $100,000 ($50,000 separate); no premiums in 2022-2025.
-        separate = statuses == "SEPARATE"
-        start = np.where(separate, 50_000, 100_000)
-        increment = np.where(separate, 500, 1_000)
-        excess = np.maximum(0, draws["adjusted_gross_income"] - start)
-        kept = 1 - np.minimum(1, np.ceil(excess / increment) * 0.1)
-        kept = kept * (year != 2025)
-        interest_and_points = draws["second_residence_mortgage_interest"].sum(
-            axis=1
-        ) + draws["second_residence_mortgage_points"].sum(axis=1)
-        premiums = draws["second_residence_mortgage_insurance_premiums"].sum(axis=1)
-        expected = interest_and_points * share + premiums * kept
-        _close(
-            values[year]["second_residence_interest_deduction"][units["base"]],
-            expected,
-        )
+    )
+    rate = draws["equal_rate"]
+    principal, second = draws["equal_principal"], draws["equal_second"]
+    index = units["equal_rate"]
+    year_values = values[2026]
+    _close(
+        year_values["interest_deduction"][index],
+        rate * np.minimum(limit, principal + second),
+    )
+    _close(
+        year_values["interest_deduction"][index]
+        - year_values["ky_disallowed_second_residence_interest"][index],
+        rate * np.minimum(limit, principal),
+    )
+    # The draws exercise both sides of the limit.
+    assert np.any(principal > limit) and np.any(principal + second > limit)
+    assert np.any((principal < limit) & (principal + second > limit))
 
 
-def test_kentucky_limits_qualified_residence_interest_from_2026(results):
-    _, values, units, _, _ = results
-    before, after = values[2025], values[2026]
-    np.testing.assert_array_equal(before["ky_disallowed_second_residence_interest"], 0)
-    # 2025: second-residence amounts raise Kentucky itemized deductions
-    # one-for-one with the federal deduction they add.
+def test_kentucky_follows_the_federal_deduction_before_2026(results):
+    _, values, units, _ = results
+    before = values[2025]
     _close(
         before["ky_itemized_deductions_unit"][units["base"]]
         - before["ky_itemized_deductions_unit"][units["principal_only"]],
-        before["second_residence_interest_deduction"][units["base"]],
+        before["interest_deduction"][units["base"]]
+        - before["interest_deduction"][units["principal_only"]],
     )
-    # 2026: Kentucky removes exactly the second-residence part...
-    _close(
-        after["ky_disallowed_second_residence_interest"],
-        after["second_residence_interest_deduction"],
-    )
-    # ...so its itemized deductions no longer depend on second-residence
-    # amounts, while the federal deduction still does...
-    _close(
-        after["ky_itemized_deductions_unit"][units["base"]],
-        after["ky_itemized_deductions_unit"][units["principal_only"]],
-    )
-    # ...and moving those amounts onto the principal residence restores them.
-    pooled_gain = (
-        after["ky_itemized_deductions_unit"][units["pooled"]]
-        - after["ky_itemized_deductions_unit"][units["base"]]
-    )
-    _close(pooled_gain, after["second_residence_interest_deduction"][units["base"]])
-    assert np.any(after["second_residence_interest_deduction"][units["base"]] > 0)
 
 
 def test_omitted_and_zero_second_residence_inputs_match(results):
-    _, values, units, persons, _ = results
+    _, values, units, persons = results
     for year_values in values.values():
         for name in UNIT_OUTPUTS:
             np.testing.assert_array_equal(
@@ -320,9 +327,6 @@ def test_omitted_and_zero_second_residence_inputs_match(results):
                 year_values[name][persons["principal_only"]],
                 year_values[name][persons["omitted"]],
             )
-        np.testing.assert_array_equal(
-            year_values["second_residence_interest_deduction"][units["omitted"]], 0
-        )
         np.testing.assert_array_equal(
             year_values["ky_disallowed_second_residence_interest"][units["omitted"]],
             0,

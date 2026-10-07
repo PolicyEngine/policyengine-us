@@ -18,5 +18,5 @@ class second_residence_mortgage_interest(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#h_5_A",
-        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=3",
+        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=4",
     ]
