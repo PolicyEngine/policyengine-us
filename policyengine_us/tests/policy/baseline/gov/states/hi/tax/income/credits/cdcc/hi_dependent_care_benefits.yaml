@@ -323,7 +323,7 @@
       person1:
         age: 35
         employment_income: 38_000
-        dependent_care_employer_benefits: 4_000
+        dependent_care_employer_benefits: 8_000
         is_separated: true
       person2:
         age: 5
@@ -337,8 +337,10 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Line 14 = min(4_000, 7_500) = 4_000; line 19 = 10_000 - 4_000 = 6_000.
-    hi_dependent_care_benefits: 6_000
+    # Line 10 = min(8_000 benefits, 12_000 expenses, 38_000 earnings) = 8_000.
+    # Line 14 = min(8_000, 7_500) = 7_500; line 19 = 10_000 - 7_500 = 2_500.
+    # The $3,750 MFS cap would give 6_250 and a $5,000 cap 5_000.
+    hi_dependent_care_benefits: 2_500
 
 - name: Case 16, separate filer not living apart keeps the $2,500 line 11 cap.
   period: 2025
