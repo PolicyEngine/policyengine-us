@@ -1,0 +1,19 @@
+description: Pennsylvania issues this one-time Low Income Home Energy Assistance Program supplement to vulnerable Cash recipient households, recorded in the calendar year of issuance.
+values:
+  2025-01-01: 100
+  2026-01-01: 100
+  2027-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Pennsylvania LIHEAP one-time vulnerable household supplement
+  reference:
+    - title: Pennsylvania Operations Memorandum 25-08-01, August 4, 2025, pages 1-2
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2024-2025%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Supplemental%20Payments.pdf#page=1
+    - title: Pennsylvania Operations Memorandum 26-07-01, July 9, 2026, pages 1-2
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2025-2026%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29.pdf#page=1
+
+# The August 2025 payment (2024-2025 season) is recorded in 2025 and the July
+# 2026 payment (2025-2026 season) in 2026, each the year of issuance and of the
+# season's model year. 2027 stays 0 because no 2026-2027 supplement directive
+# exists as of October 6, 2026.

@@ -808,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, PA, TX
     state_implementations:
+      - state: PA
+        status: partial
+        name: Pennsylvania LIHEAP
+        full_name: Pennsylvania Low Income Home Energy Assistance Program
+        variable: pa_liheap
+        parameter_prefix: gov.states.pa.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating only, from the FY2025 and FY2026 benefit matrices and the current benefit lookup. Crisis, cooling and weatherization assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

@@ -1,0 +1,375 @@
+# Pennsylvania LIHEAP regular heating assistance, end to end.
+# Sources: FY2026 and FY2027 final state plans (income limits, sections
+# 601.41-601.84), the FY2025 and FY2026 county benefit charts, the current
+# benefit lookup (FY2027) and Operations Memorandum 26-07-01 (July 2026
+# supplement). Wages use the Pennsylvania and federal minimum wage of 7.25 an
+# hour. The fuel bill amounts establish a heating obligation; they do not
+# change the payment.
+
+- name: Case 1, Philadelphia TANF family of three heating with natural gas.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 7
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Philadelphia is in TANF county group 2, whose family size allowance
+        # for three is 403 a month (55 Pa. Code 183.91): 403 * 12 = 4,836.
+        pa_tanf: 4_836
+        takes_up_tanf_if_eligible: true
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        county: PHILADELPHIA_COUNTY_PA
+  output:
+    pa_liheap_household_size: 3
+    # 2025 guideline (one-year lag) for three: 26,650 * 1.5 = 39,975.
+    pa_liheap_income_limit: 39_975
+    # The family takes up TANF, so the take-up-gated aggregate carries the grant.
+    tanf: 4_836
+    # Section 601.82(4)(i) counts the public assistance grant.
+    pa_liheap_income: 4_836
+    # No wages, so no 20% benefit-only disregard.
+    pa_liheap_benefit_income: 4_836
+    heating_expense: 1_500
+    pa_liheap_eligible: true
+    # Dated FY2026 matrix page 352, Philadelphia natural gas, 4,000-4,999,
+    # size 3: 664.
+    pa_liheap_matrix_amount: 664
+    # The three-year-old is under five (OPS 26-07-01 page 2).
+    pa_liheap_supplement: 100
+    # 664 + 100 = 764.
+    pa_liheap: 764
+
+- name: Case 2, Bradford County retired couple heating with fuel oil qualifies after Medicare premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        # 1,900 a month in Social Security retirement benefits.
+        social_security_retirement: 22_800
+        # 2026 standard Part B premium: 202.90 * 12 = 2,434.80. The couple's
+        # 2,900 a month is above the Medicare Savings Program limits.
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+      person2:
+        age: 69
+        immigration_status: CITIZEN
+        # 1,000 a month in Social Security retirement benefits.
+        social_security_retirement: 12_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        county: BRADFORD_COUNTY_PA
+  output:
+    pa_liheap_household_size: 2
+    # 2025 guideline for two: 21,150 * 1.5 = 31,725.
+    pa_liheap_income_limit: 31_725
+    # Section 601.84(10): (22,800 - 2,434.80) + (12,000 - 2,434.80) = 29,930.40.
+    # Gross Social Security of 34,800 would exceed 31,725.
+    pa_liheap_income: 29_930.4
+    pa_liheap_benefit_income: 29_930.4
+    heating_expense: 2_400
+    has_heating_expense: true
+    pa_liheap_eligible: true
+    # Above the printed income range, the final band applies. Dated FY2026
+    # matrix page 56, Bradford fuel oil, 22,000-22,999, size 2: 200.
+    pa_liheap_matrix_amount: 200
+    # Both members are 60 or older.
+    pa_liheap_supplement: 100
+    # 200 + 100 = 300.
+    pa_liheap: 300
+
+- name: Case 3, Elk County SSI recipient with a disability heating with kerosene.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        immigration_status: CITIZEN
+        is_disabled: true
+        # 2026 federal SSI benefit rate: 994 * 12 = 11,928.
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        heating_type: KEROSENE
+        # Kerosene is billed through the fuel oil expense input.
+        fuel_oil_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county: ELK_COUNTY_PA
+  output:
+    pa_liheap_household_size: 1
+    # 2025 guideline for one: 15,650 * 1.5 = 23,475.
+    pa_liheap_income_limit: 23_475
+    # SSI counts as unearned income (section 601.82(4)).
+    pa_liheap_income: 11_928
+    pa_liheap_benefit_income: 11_928
+    heating_expense: 1_800
+    has_heating_expense: true
+    pa_liheap_eligible: true
+    # Dated FY2026 matrix page 165, Elk kerosene, 11,000-11,999, size 1: 400
+    # (Elk fuel oil pays 355 in the same cell).
+    pa_liheap_matrix_amount: 400
+    # SSI received because of a disability is financial assistance for
+    # disability (OPS 26-07-01 page 2).
+    pa_liheap_supplement: 100
+    # 400 + 100 = 500.
+    pa_liheap: 500
+
+- name: Case 4, Lackawanna County single parent with child support heating with electricity.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        # 7.25 an hour, 30 hours a week: 7.25 * 1,560 = 11,310.
+        employment_income: 11_310
+        # A 350 a month child support order for two children.
+        child_support_received: 4_200
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # The family does not receive TANF.
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        county: LACKAWANNA_COUNTY_PA
+  output:
+    pa_liheap_household_size: 3
+    pa_liheap_income_limit: 39_975
+    pa_liheap_countable_employment_income: [11_310, 0, 0]
+    # Section 601.84(15): two children allow up to 200 a month of child
+    # support to be excluded: min(4,200, 200 * 12 = 2,400) = 2,400.
+    # 11,310 + 4,200 - 2,400 = 13,110.
+    pa_liheap_income: 13_110
+    # Section 601.41(2): 13,110 - 20% * 11,310 (2,262) = 10,848.
+    pa_liheap_benefit_income: 10_848
+    heating_expense: 1_800
+    pa_liheap_eligible: true
+    # Lackawanna is in heating region 1. Dated FY2026 matrix page 241,
+    # electric, 10,000-10,999, size 3: 330.
+    pa_liheap_matrix_amount: 330
+    # No member is 60 or older or under five, and none receives disability
+    # assistance.
+    pa_liheap_supplement: 0
+    pa_liheap: 330
+
+- name: Case 5, Chester County mixed-status family of four heating with natural gas.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        # 7.25 an hour, 40 hours a week: 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+        ssi: 0
+      person2:
+        age: 33
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_tax_unit_dependent: false
+        ssi: 0
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # The family does not receive TANF.
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_320
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+        county: CHESTER_COUNTY_PA
+  output:
+    spm_unit_size: 4
+    # Section 601.41(1): the nonqualified parent does not count toward size.
+    pa_liheap_household_size: 3
+    pa_liheap_income_limit: 39_975
+    # The nonqualified parent's wages still count in full.
+    pa_liheap_countable_employment_income: [15_080, 0, 0, 0]
+    pa_liheap_income: 15_080
+    # 15,080 - 20% * 15,080 = 12,064.
+    pa_liheap_benefit_income: 12_064
+    pa_liheap_eligible: true
+    # The size-3 column applies. Dated FY2026 matrix page 102, Chester natural
+    # gas, 12,000-12,999, size 3: 205.
+    pa_liheap_matrix_amount: 205
+    # The four-year-old is under five.
+    pa_liheap_supplement: 100
+    # 205 + 100 = 305.
+    pa_liheap: 305
+
+- name: Case 6, FY2025 Schuylkill County family of four heating with coal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        # 7.25 an hour, 40 hours a week: 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+        ssi: 0
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person4:
+        age: 9
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # The family does not receive TANF.
+        tanf: 0
+        heating_type: COAL
+        coal_expense: 1_500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+        county: SCHUYLKILL_COUNTY_PA
+  output:
+    pa_liheap_household_size: 4
+    # 2024 guideline (one-year lag) for four: 31,200 * 1.5 = 46,800, the
+    # size-4 limit printed in the FY2025 chart header.
+    pa_liheap_income_limit: 46_800
+    pa_liheap_countable_employment_income: [15_080, 0, 0, 0]
+    pa_liheap_income: 15_080
+    # 15,080 - 20% * 15,080 = 12,064.
+    pa_liheap_benefit_income: 12_064
+    heating_expense: 1_500
+    pa_liheap_eligible: true
+    # FY2025 chart (Energy Year 2024-2025) page 375, Schuylkill coal,
+    # 12,000-12,999, size 4: 220 (the FY2026 chart pays 216).
+    pa_liheap_matrix_amount: 220
+    # No member is 60 or older, under five, or receiving disability
+    # assistance, so no OPS 25-08-01 supplement.
+    pa_liheap_supplement: 0
+    pa_liheap: 220
+
+- name: Case 7, FY2027 Allegheny County grandparent with a military survivor annuity and a rental loss.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        # A 1,000 a month military Survivor Benefit Plan annuity, which the
+        # military retirement pay input includes.
+        military_retirement_pay: 12_000
+        # A 1,800 net loss on a small rental property.
+        rental_income: -1_800
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # The household does not receive TANF.
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        county: ALLEGHENY_COUNTY_PA
+  output:
+    pa_liheap_household_size: 2
+    # FY2027 final plan page 9: 2026 guideline for two, 21,640 * 1.5 = 32,460.
+    pa_liheap_income_limit: 32_460
+    # Section 601.82(2)(ii): the rental loss cannot offset the annuity.
+    # 12,000 + max(-1,800, 0) = 12,000.
+    pa_liheap_income: 12_000
+    pa_liheap_benefit_income: 12_000
+    heating_expense: 1_200
+    pa_liheap_eligible: true
+    # Current lookup (FY2027), Allegheny natural gas, 12,000-12,999, size 2:
+    # 223. Adams, in the same heating region, pays 256; FY2026 Allegheny paid 214.
+    pa_liheap_matrix_amount: 223
+    # The July 2026 supplement does not recur in 2027.
+    pa_liheap_supplement: 0
+    pa_liheap: 223

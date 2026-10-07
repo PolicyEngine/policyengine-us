@@ -1,0 +1,678 @@
+# Source-supported Pennsylvania income and eligibility components only; no final award is asserted.
+
+# FY2026 final plan pages 49-50: 12,000 wages + 2,400 + 1,200 + 600 + 1,200 existing net profits = 17,400. No second business expense adjustment.
+- name: Case 1, adult wages and existing positive business sources count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_400
+        sstb_self_employment_income: 1_200
+        farm_operations_income: 600
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 17_400
+
+# FY2026 final plan page 50 prohibits offsetting another source: 12,000 + 0 + 600 + 0 + 1,200 = 13,800.
+- name: Case 2, one business source loss cannot offset another source or wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: -2_400
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pages 50-51: 1,200 rent + 2,400 farm rent + 600 survivor + 1,200 pension + 3,600 SSA + 2,400 annual SSI = 11,400.
+# SSI is annualized once. The 40-year-old has no Medicare premium to deduct from Social Security.
+- name: Case 3, rental survivor pension Social Security and SSI receipts remain distinct.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        rental_income: 1_200
+        farm_rent_income: 2_400
+        survivor_benefits: 600
+        pension_income: 1_200
+        social_security: 3_600
+        medicare_part_b_premium: 0
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 11_400
+
+# FY2026 final plan pages 50-51 and federal plan page 6: 3,600 + 600 + 600 + 1,200
+# + 1,200 + 1,200 + 1,200 = 9,600. IRA withdrawals, general assistance and strike
+# pay count. Handbook 650.3(9) counts interest and dividends over 25 a month
+# (300 a year): max(120 + 240 - 300, 0) = 60. 9,600 + 60 = 9,660.
+# The 25 applies to interest and dividends combined, which 650.3(9) lists as one
+# item; applying it to each separately would count 0 of each and give 9,600.
+- name: Case 4, other disjoint unearned sources count with canonical dividends.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        interest_income: 120
+        ordinary_dividend_income: 240
+        retirement_distributions: 3_600
+        general_assistance: 600
+        strike_benefits: 600
+        unemployment_compensation: 1_200
+        workers_compensation: 1_200
+        disability_benefits: 1_200
+        veterans_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 9_660
+
+# FY2026 final plan page 50 counts public assistance. 6,000 wages + 600 general assistance + 1,200 child SSA + 3,600 PA TANF = 11,400.
+# pa_tanf reaches income through the take-up-gated tanf aggregate (take-up defaults to true) and is counted once for the SPM unit.
+- name: Case 5, Pennsylvania TANF is annualized once for the family.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 6_000
+        general_assistance: 600
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 1_200
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 11_400
+
+# FY2026 final plan page 53 exempts dependent wages only: 12,000 parent wages + 1,200 child business + 600 child SSA = 13,800.
+- name: Case 6, dependent child wages are excluded but child business and unearned income count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 600
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pages 42 and 49: size 1 for the citizen child; full 18,000 parent wages + 600 SSA = 18,600, below 23,475. No income proration.
+- name: Case 7, nonqualified parent income counts fully for a citizen child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 600
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 1
+    pa_liheap_income: 18_600
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: true
+
+# FY2026 final plan pages 52-53: with no children under 18, only min(1,200 alimony, 600) is excluded. 12,000 + 1,200 + 1,200 - 600 = 13,800.
+- name: Case 8, no child under eighteen means no child support exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 1_200
+        alimony_income: 1_200
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 13_800
+
+# FY2026 final plan pages 52-53: 12,000 + 3,600 + 1,200 - max(1,200 child cap, 600 spouse cap) = 15,600; do not add both exclusions.
+- name: Case 9, one child support and spousal support use the larger capped exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 3_600
+        alimony_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 15_600
+
+# FY2026 final plan pages 52-53: the cap counts children under 18 in the household. 12,000 + 3,600 + 1,200 - max(2,400, 600) = 14,400. A nonqualified child affects the cap, not the grant size.
+- name: Case 10, two children allow the larger child support cap including a nonqualified child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 3_600
+        alimony_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_liheap_household_size: 2
+    pa_liheap_income: 14_400
+
+# FY2026 final plan pages 52-53: 12,000 + 240 + 480 - max(min(240, 1,200), min(480, 600)) = 12,240.
+- name: Case 11, support exclusions cannot exceed receipts and still use only the larger one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 240
+        alimony_income: 480
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 12_240
+
+# FY2026 final plan page 52 excludes SNAP. 12,000 of wages remains 12,000 despite 6,000 of SNAP; no unsupported refund input is invented.
+- name: Case 12, excluded SNAP receipts do not enter countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 12_000
+
+# FY2026 final plan page 51 counts cash gifts and contributions; federal plan page 6 also marks gifts included.
+# 23,400 wages + 1,200 regular cash help = 24,600, above the one-person opening limit of 23,475.
+- name: Case 13, cash help from relatives raises otherwise eligible income above the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 23_400
+        financial_assistance: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 24_600
+    pa_liheap_income_limit: 23_475
+    pa_liheap_eligible: false
+
+# FY2026 final plan page 52, section 601.84(10), and federal plan page 6 exclude
+# Medicare premiums deducted from Social Security. The 2026 standard Part B
+# premium is 202.90 a month (2,434.80 a year); both incomes are above the
+# Medicare Savings Program limits, so each person pays it.
+# Household 1: 24,000 - 2,434.80 = 21,565.20, under the 23,475 limit.
+# Household 2: a 1,700 a month pension (20,400) and a 150 a month Social
+# Security benefit; max(1,800 - 2,434.80, 0) = 0, so the premium cannot reduce
+# the pension. 20,400 + 0 = 20,400.
+- name: Case 14, Social Security counts net of the Medicare Part B premium without offsetting other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    age: [67, 70]
+    immigration_status: [CITIZEN, CITIZEN]
+    social_security_retirement: [24_000, 1_800]
+    pension_income: [0, 20_400]
+    medicare_part_b_premium: [2_434.8, 2_434.8]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    pa_liheap_income: [21_565.2, 20_400]
+    pa_liheap_income_limit: [23_475, 23_475]
+    pa_liheap_eligible: [true, true]
+
+# FY2026 final plan page 51, section 601.82(4)(viii), counts pensions. Military
+# retirement pay and railroad retirement annuities are separate inputs from
+# pension_income. Household 1: a 2,500 a month military retirement annuity,
+# 30,000, is over the 23,475 limit. Household 2: a 1,850 a month railroad
+# annuity, 22,200. Handbook 650.6(10) excludes Medicare premiums deducted from
+# Railroad Retirement; plan section 601.84(10) names only Social Security, and
+# the handbook governs. With the 2026 standard Part B premium of 2,434.80 a
+# year: 22,200 - 2,434.80 = 19,765.20, under the 23,475 limit.
+- name: Case 15, military and railroad annuities count as pensions, railroad net of the Medicare premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    age: [62, 67]
+    immigration_status: [CITIZEN, CITIZEN]
+    military_retirement_pay: [30_000, 0]
+    railroad_benefits: [0, 22_200]
+    medicare_part_b_premium: [0, 2_434.8]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    pa_liheap_income: [30_000, 19_765.2]
+    pa_liheap_eligible: [false, true]
+
+# FY2026 final plan page 50, section 601.82(2)(ii): a loss from one source of
+# income cannot offset another source. Household 1: 26,000 of wages and a
+# 4,000 loss on a rented house; max(-4,000, 0) = 0, so income stays 26,000,
+# over the 23,475 limit. Household 2: a 1,200 a month pension (14,400), 500 of
+# interest and a 1,000 farm rent loss. Handbook 650.3(9) counts interest over
+# 25 a month (300 a year): 14,400 + max(500 - 300, 0) + max(-1,000, 0) = 14,600.
+- name: Case 16, rental and farm rent losses do not offset wages, pensions or interest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    age: [40, 63]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    employment_income: [26_000, 0]
+    rental_income: [-4_000, 0]
+    pension_income: [0, 14_400]
+    interest_income: [0, 500]
+    farm_rent_income: [0, -1_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    pa_liheap_income: [26_000, 14_600]
+    pa_liheap_eligible: [false, true]
+
+# FY2026 final plan page 50, section 601.82(4)(i), counts public assistance
+# grants received. Both parents could get the Philadelphia (county group 2)
+# family size allowance for two, 316 a month (3,792 a year; 55 Pa. Code
+# 183.91). The first family takes up TANF, so tanf = 3,792 counts; the second
+# does not, so tanf = 0 and the unreceived grant is not income.
+- name: Case 17, only TANF the family takes up counts as income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        tanf_if_takes_up: 3_792
+        takes_up_tanf_if_eligible: true
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+      spm_unit2:
+        members: [person3, person4]
+        tanf_if_takes_up: 3_792
+        takes_up_tanf_if_eligible: false
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: PA
+        county: PHILADELPHIA_COUNTY_PA
+      household2:
+        members: [person3, person4]
+        state_code: PA
+        county: PHILADELPHIA_COUNTY_PA
+  output:
+    tanf: [3_792, 0]
+    pa_liheap_income: [3_792, 0]
+
+# Handbook 650.3(9) counts interest and dividends "of more than $25 per month";
+# plan section 601.82(4)(ix) sets no threshold, and the handbook governs. 25 a
+# month is 300 a year: max(300 - 300, 0) = 0, so interest of exactly 25 a month
+# is not counted.
+- name: Case 18, interest of exactly twenty-five dollars a month is not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        interest_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 0
+
+# Handbook 650.1 tests household income, so the handbook 650.3(9) disregard of
+# 25 a month (300 a year) applies once to the household's combined interest and
+# dividends, not once per member: 300 + 300 - 300 = 300. A per-member reading
+# would give 0.
+- name: Case 19, the interest disregard applies once to the household's combined interest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        interest_income: 300
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        interest_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_liheap_income: 300
+
+# Handbook 650.6(10) excludes Medicare premiums deducted from Social Security and
+# Railroad Retirement. A retiree with 1,000 a month of Social Security and 500 a
+# month of railroad retirement pays one 2026 standard Part B premium, 202.90 a
+# month (2,434.80 a year), pinned as for an enrollee without Medicare Savings
+# Program help. The premium comes off the combined benefits once:
+# 12,000 + 6,000 - 2,434.80 = 15,565.20, not 18,000 - 2 * 2,434.80 = 13,130.40.
+- name: Case 20, one Medicare premium is deducted once from Social Security and railroad retirement combined.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security_retirement: 12_000
+        railroad_benefits: 6_000
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 15_565.2
+
+# Handbook 650.6(10) excludes the Medicare premium only from the benefits it is
+# deducted from. Social Security and railroad retirement of 50 a month each
+# (1,200 a year combined) are below the 2,434.80 standard premium, pinned as for
+# an enrollee without Medicare Savings Program help: max(1,200 - 2,434.80, 0) = 0.
+# The remaining 1,234.80 does not reduce the 10,000 pension: 0 + 10,000 = 10,000.
+- name: Case 21, a Medicare premium larger than the benefits does not reduce a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security_retirement: 600
+        railroad_benefits: 600
+        medicare_part_b_premium: 2_434.8
+        pension_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_income: 10_000

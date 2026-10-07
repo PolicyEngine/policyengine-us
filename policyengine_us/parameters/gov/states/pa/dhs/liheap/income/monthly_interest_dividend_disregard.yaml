@@ -1,0 +1,16 @@
+description: Pennsylvania excludes this amount of monthly interest and dividends from countable income under the Low Income Home Energy Assistance Program.
+# Handbook 650.3(9) counts interest and dividends "of more than $25 per month"
+# (example: $25 of $50 counts). Plan section 601.82(4)(ix) (FY2026 page 51,
+# FY2027 page 48) sets no threshold; the handbook governs.
+values:
+  2025-11-03: 25
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania LIHEAP monthly interest and dividend disregard
+  reference:
+    - title: Pennsylvania LIHEAP Handbook section 650.3(9), edition updated August 15, 2025
+      href: http://services.dpw.state.pa.us/OIMPolicyManuals/OIMArchive/2026-2/LIHEAP/650_Income/650.3_Countable_Unearned_Income.htm
+    - title: Pennsylvania LIHEAP Handbook section 650.3(9), edition updated August 5, 2026
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/650_Income/650.3_Countable_Unearned_Income.htm

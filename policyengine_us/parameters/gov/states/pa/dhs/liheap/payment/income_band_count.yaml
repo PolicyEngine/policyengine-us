@@ -1,0 +1,11 @@
+description: Pennsylvania publishes this many annual income bands in the regular heating payment matrix under the Low Income Home Energy Assistance Program.
+# This is the source table's coverage, not the program's income eligibility limit.
+values:
+  2025-11-03: 23
+metadata:
+  unit: int
+  period: year
+  label: Pennsylvania LIHEAP published payment-table income bands
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP benefit matrix, income bands through $22,000-$22,999
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf

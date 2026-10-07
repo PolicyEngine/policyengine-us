@@ -1,0 +1,41 @@
+description: Pennsylvania counts these unearned income sources before the support disregard under the Low Income Home Energy Assistance Program.
+# The formula counts Social Security and railroad retirement net of the
+# Medicare premium (handbook 650.6(10)), interest and dividends over the
+# monthly disregard (handbook 650.3(9)) and the take-up-gated tanf aggregate.
+# It floors each source listed here at zero (section 601.82(2)(ii)).
+values:
+  2025-11-03:
+    - ssi
+    # pension_income already adds its taxable and tax-exempt components.
+    - pension_income
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other. It includes military survivor benefits, which are
+    # not reported again in survivor_benefits.
+    - military_retirement_pay
+    - survivor_benefits
+    - unemployment_compensation
+    - strike_benefits
+    - workers_compensation
+    - disability_benefits
+    - veterans_benefits
+    - general_assistance
+    - financial_assistance
+    - child_support_received
+    - alimony_income
+    - rental_income
+    - farm_rent_income
+    # Actual IRA distributions are counted; capital gains are not a proxy for
+    # the source's broader CD withdrawals and stock sale proceeds.
+    - retirement_distributions
+metadata:
+  unit: list
+  period: year
+  label: Pennsylvania LIHEAP unearned income sources
+  reference:
+    - title: Pennsylvania FY2026 LIHEAP State Plan, section 601.82(4), pages 50-51
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=50
+    - title: Pennsylvania FY2027 LIHEAP State Plan, section 601.82(4), page 48
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=48
+    - title: Pennsylvania FY2026 federally filed LIHEAP plan, section 1.9, page 6 (strike pay and General Assistance counted)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/PA_Plan_2026.pdf#page=6

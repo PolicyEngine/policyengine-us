@@ -1,0 +1,223 @@
+# OPS 26-07-01, July 9, 2026, physical pages 1-2: one 100 payment per
+# vulnerable Cash-recipient household. These annual-model cases assume
+# eligible households received Cash and retained their residence at issuance.
+# Application-date age, actual Cash receipt and address history are unavailable.
+
+# Memo pages 1-2: age 60, financial assistance for disability and a child under 5
+# establish vulnerability, but three vulnerable members still produce only 100.
+- name: Case 1, multiple vulnerable members receive one household supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 35
+        immigration_status: CITIZEN
+        is_disabled: true
+        disability_benefits: 1_200
+        ssi: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_liheap_eligible: true
+    pa_liheap_supplement: 100
+
+# Memo page 2 says under five; the July 30 public release's under six conflicts.
+# The operative issuance memo governs the age 4 and 5 boundary in this model.
+- name: Case 2, a child qualifies before the fifth birthday but not at age five.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+      person3:
+        age: 35
+        ssi: 0
+      person4:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        pa_liheap_eligible: true
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        pa_liheap_eligible: true
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: PA
+      household2:
+        members: [person3, person4]
+        state_code: PA
+  output:
+    pa_liheap_supplement: [100, 0]
+
+# Memo page 2 includes age 60 or older. All other vulnerability routes are absent.
+- name: Case 3, the older adult supplement begins at age sixty.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    age: [59, 60]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    pa_liheap_eligible: [true, true]
+    ssi: [0, 0]
+    is_disabled: [false, false]
+    is_blind: [false, false]
+    social_security_disability: [0, 0]
+    disability_benefits: [0, 0]
+  output:
+    pa_liheap_supplement: [0, 100]
+
+# Memo page 2 defines disability through financial assistance. A flag alone is
+# insufficient; SSDI, disability payments, and disabled or blind SSI qualify.
+# Positive SSI without disability or blindness is not a disability-receipt route.
+- name: Case 4, actual disability assistance qualifies while a disability flag alone does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA, PA, PA, PA, PA]
+    age: [40, 40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    pa_liheap_eligible: [true, true, true, true, true, true]
+    is_disabled: [true, false, false, true, false, false]
+    is_blind: [false, false, false, false, true, false]
+    social_security_disability: [0, 1_200, 0, 0, 0, 0]
+    disability_benefits: [0, 0, 1_200, 0, 0, 0]
+    ssi: [0, 0, 0, 1_200, 1_200, 1_200]
+  output:
+    pa_liheap_supplement: [0, 100, 100, 100, 100, 0]
+
+# Memo page 2 independently qualifies an older person; nondisabled aged SSI
+# need not be misclassified as disability assistance to receive the supplement.
+- name: Case 5, an aged nondisabled SSI recipient qualifies through age.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    heating_type: NATURAL_GAS
+    pa_liheap_eligible: true
+    is_disabled: false
+    is_blind: false
+    social_security_disability: 0
+    disability_benefits: 0
+    ssi: 1_200
+  output:
+    pa_liheap_supplement: 100
+
+# The aggregate veterans input cannot identify disability compensation.
+# Zero here is documented input-scope behavior, not a legal VA exclusion.
+- name: Case 6, aggregate veterans benefits alone do not identify disability assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 40
+    heating_type: NATURAL_GAS
+    pa_liheap_eligible: true
+    is_disabled: true
+    is_blind: false
+    veterans_benefits: 1_200
+    social_security_disability: 0
+    disability_benefits: 0
+    ssi: 0
+  output:
+    pa_liheap_supplement: 0
+
+# Memo pages 1-2 restrict payment to Cash recipients. Under the annual receipt
+# approximation, income of 23,476 exceeds the FY2026 single-person limit of 23,475.
+- name: Case 7, an older adult over the Cash income limit receives no supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        employment_income: 23_476
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_liheap_eligible: false
+    pa_liheap_supplement: 0
+
+# OPS 25-08-01 (August 4, 2025): 100 issued August 15, 2025 to each 2024-2025
+# Cash household with a member aged 60 or older; recorded in 2025.
+- name: Case 8, an older adult receives the August 2025 supplement for the 2024-2025 season.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 60
+    heating_type: NATURAL_GAS
+    pa_liheap_eligible: true
+    ssi: 0
+  output:
+    pa_liheap_supplement: 100
+
+# This is an issuance-year scope convention, not a finding that later
+# supplements are legally prohibited. No 2027 directive has been verified.
+- name: Case 9, the one-time supplement does not recur automatically in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 60
+    heating_type: NATURAL_GAS
+    pa_liheap_eligible: true
+    ssi: 0
+  output:
+    pa_liheap_supplement: 0
+
+# Memo pages 1-2 require a Pennsylvania Cash household; final plan pages 38 and 40
+# support the state and primary-heating gates. Heating NONE cannot qualify.
+- name: Case 10, the supplement follows Pennsylvania and primary heating eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, NJ, PA]
+    age: [60, 60, 60]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NONE]
+    has_heating_expense: [true, true, true]
+    pa_liheap_income: [0, 0, 0]
+    ssi: [0, 0, 0]
+  output:
+    pa_liheap_eligible: [true, false, false]
+    pa_liheap_supplement: [100, 0, 0]
