@@ -17,9 +17,11 @@ class ms_agi(Variable):
         p = parameters(period).gov.states.ms.tax.income
         gross_income = add(person, period, p.income_sources)
         adjustments = person("ms_agi_adjustments", period)
-        net_income = max_(gross_income - adjustments, 0)
+        # A spouse's column can be negative on a joint or combined return;
+        # the tax computation combines it with the other column.
+        net_income = gross_income - adjustments
         # Allocate income from dependents to tax unit head.
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
+        sum_dep_net_income = person.tax_unit.sum(is_dependent * max_(net_income, 0))
         is_head = person("is_tax_unit_head", period)
         return ~is_dependent * net_income + is_head * sum_dep_net_income
