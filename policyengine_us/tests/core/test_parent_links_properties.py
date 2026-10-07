@@ -455,7 +455,9 @@ def random_married_dependents(seed, n=60):
 
     The parent claims the child either on the parent's own return or, as a
     known claiming tax unit, from the child's separate unit. Every tax unit
-    gets a distinct tax_unit_id. Incomes are multiples of 1/8 below 2**20.
+    gets a distinct tax_unit_id. Person ids are distinct across the simulation,
+    as required when tax units span households or claiming units are known.
+    Incomes are multiples of 1/8 below 2**20.
     A spouse off the parent's return heads a return of their own, at any age.
     """
     rng = np.random.default_rng(seed)
@@ -476,7 +478,7 @@ def random_married_dependents(seed, n=60):
 
 
 def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix="s"):
-    """Scenarios as a situation; ``prefix`` keeps names and tax unit ids apart."""
+    """Scenarios as a situation; ``prefix`` keeps names and all ids apart."""
     people, households, families, tax_units, marital_units = {}, {}, {}, {}, {}
     id_offset = 0 if prefix == "s" else 10_000
 
@@ -485,6 +487,7 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
 
     for s, scenario in enumerate(scenarios):
         name = f"{prefix}{s}"
+        scenario_id_offset = id_offset + 10 * s
         parent, child, spouse = f"{name}_parent", f"{name}_child", f"{name}_spouse"
         placement = scenario["placement"]
         spouse_income = scenario["spouse_income"]
@@ -522,7 +525,7 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
         ]:
             people[name] = {
                 "age": {PERIOD: age},
-                "person_id": {PERIOD: person_id},
+                "person_id": {PERIOD: scenario_id_offset + person_id},
                 "is_tax_unit_head": {PERIOD: heads},
                 "is_tax_unit_spouse": {PERIOD: False},
                 "medicaid_magi_person": {PERIOD: magi},
@@ -531,7 +534,7 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
                 "current_pregnancies": {PERIOD: scenario["pregnancies"][person_id - 1]},
             }
         if with_ids:
-            people[child]["parent_1_id"] = {PERIOD: 1}
+            people[child]["parent_1_id"] = {PERIOD: scenario_id_offset + 1}
         parent_unit_id = id_offset + 10 * s + 1
 
         # The parent's return, and the child's own unit under a known claim.
