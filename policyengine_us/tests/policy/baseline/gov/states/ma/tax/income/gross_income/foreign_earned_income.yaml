@@ -1,6 +1,6 @@
 # M.G.L. c. 62 s. 2(a)(1)(C) adds foreign earned income excluded under
 # section 911 of the Code to Massachusetts gross income, and s. 2(b)(2) puts
-# it in Part B. Other income inputs are the amounts left after the exclusion.
+# it in Part B. Other income inputs must already exclude the excluded amount.
 
 - name: Excluded foreign wages enter Part B and preserve Parts A and C
   period: 2025
@@ -116,3 +116,16 @@
     # max(0, 10,000 - 30,000 + 25,000).
     ma_gross_income: 5_000
     ma_part_b_gross_income: 5_000
+
+- name: A negative federal stacking amount adds nothing
+  period: 2025
+  input:
+    state_code: MA
+    irs_gross_income: 50_000
+    foreign_earned_income_exclusion: -5_000
+  output:
+    # Worksheet line 2c is never below zero: max(0, -5,000).
+    ma_foreign_earned_income_exclusion_addback: 0
+    # 50,000 + 0.
+    ma_gross_income: 50_000
+    ma_part_b_gross_income: 50_000
