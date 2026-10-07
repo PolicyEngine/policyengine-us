@@ -10,7 +10,8 @@ class dc_separate_capital_loss_adjustment(Variable):
         "For the head and spouse of a joint federal return, the amount added "
         "to their DC AGI when they file separately on the same DC return. "
         "Each spouse's federal AGI includes their share of the couple's "
-        "capital loss deduction, in proportion to their own capital losses. "
+        "capital loss deduction (the capital part of loss_ald_person), in "
+        "proportion to their own capital losses. "
         "Filing separately, each spouse instead deducts their own capital "
         "losses up to their own capital gains plus $1,500, the limit for "
         "married people filing separately. The adjustment is the first amount "
@@ -37,26 +38,27 @@ class dc_separate_capital_loss_adjustment(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.irs
         capital_losses = person("capital_losses", period)
-        # The spouse's part of the federal capital loss deduction, as in
-        # loss_ald_person: losses against gains plus the net loss up to
-        # $3,000, in proportion to each spouse's own capital losses.
-        capital_share = filer_share(person, period, capital_losses)
-        federal = (
-            person("limited_capital_loss_person", period)
-            + tax_unit("capital_losses_allowed_against_gains", period) * capital_share
-        )
-        # As in capital_losses_allowed_against_gains: no capital loss
-        # deduction when a reform takes capital gains out of gross income.
-        sources = p.gross_income.sources
-        if "capital_gains" not in sources:
-            return 0 * federal
+        # The capital part of the spouse's loss_ald_person, which is what
+        # their federal AGI includes: loss_ald less the business loss, in
+        # proportion to each spouse's own capital losses. When computed, that
+        # is the losses against gains plus the net loss up to $3,000; it also
+        # follows a loss_ald set directly.
+        loss_ald = tax_unit("loss_ald", period)
+        business_part = min_(tax_unit("limited_business_loss", period), loss_ald)
+        capital_part = max_(0, loss_ald - business_part)
+        federal = capital_part * filer_share(person, period, capital_losses)
         # Filing separately, the spouse's own capital gains, including capital
         # gain distributions, absorb their own losses first, and the net loss
-        # deductible is at most $1,500.
-        gains = 0
-        for source in ["capital_gains", "non_sch_d_capital_gains"]:
-            if source in sources:
-                gains = gains + max_(0, person(source, period))
-        separate_limit = p.ald.loss.capital.max["SEPARATE"]
-        separate = min_(capital_losses, gains + separate_limit)
+        # deductible is at most $1,500. As in
+        # capital_losses_allowed_against_gains, there is no capital loss
+        # deduction when a reform takes capital gains out of gross income.
+        sources = p.gross_income.sources
+        separate = 0 * federal
+        if "capital_gains" in sources:
+            gains = 0
+            for source in ["capital_gains", "non_sch_d_capital_gains"]:
+                if source in sources:
+                    gains = gains + max_(0, person(source, period))
+            separate_limit = p.ald.loss.capital.max["SEPARATE"]
+            separate = min_(capital_losses, gains + separate_limit)
         return joint * head_or_spouse * (federal - separate)
