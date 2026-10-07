@@ -48,8 +48,10 @@ election leaves. The properties, for every generated household:
    test_form_4952_election_worksheet.py), whatever the other households in
    the batch elect or exclude. With no capital gain excess, every amount that
    section 911(f) replaces equals its original, bit for bit.
-4. Monotonicity. E and X change taxable income only through the choice to
-   itemize (see assert_monotone). As E rises, net_capital_gain and dwks10
+4. Monotonicity. E changes taxable income only through the choice to
+   itemize (see assert_monotone). X can also reduce the SALT deduction
+   through its modified AGI add-back, raising taxable income even while
+   the choice holds. As E rises, net_capital_gain and dwks10
    never rise, and net capital gain falls by at most the extra amount
    elected. While the choice to itemize holds, the section 911 net capital
    gain and qualified dividends and both capital gain excesses never rise
@@ -214,6 +216,10 @@ OUTPUTS = [
     "alternative_minimum_tax",
     "income_tax_before_credits",
     "tax_unit_itemizes",
+    "itemized_taxable_income_deductions",
+    "agi_plus_section_911_931_933_exclusions",
+    "salt_cap",
+    "salt_deduction",
     "income_tax",
 ]
 
@@ -644,8 +650,11 @@ def split_variants(results, count):
 def assert_monotone(households, groups):
     """Property 4.
 
-    For these households, the election and the exclusion reach taxable
-    income only through the choice to itemize. The model itemizes when that gives the lower
+    For these households, the election reaches taxable income only through
+    the choice to itemize. The exclusion can also reduce the SALT deduction:
+    section 164(b)(7)(B)(iv) adds section 911 income back to SALT MAGI (2025
+    Schedule A instructions, page 7, worksheet lines 3b and 3c).
+    The model itemizes when that gives the lower
     income_tax (tax_unit_itemizes), and an AMT filer can lower the tax by
     itemizing deductions smaller than the standard deduction, which reduce
     alternative minimum taxable income. An election or exclusion that raises
@@ -663,6 +672,11 @@ def assert_monotone(households, groups):
     itemizes = law["tax_unit_itemizes"]
     for name in VARIANTS:
         same = groups[name]["tax_unit_itemizes"] == itemizes
+        if name in ("more_excluded", "unstacked"):
+            same &= ~itemizes | (
+                groups[name]["itemized_taxable_income_deductions"]
+                == law["itemized_taxable_income_deductions"]
+            )
         assert np.array_equal(
             groups[name]["taxable_income"][same], taxable_income[same]
         ), name
@@ -689,6 +703,12 @@ def assert_monotone(households, groups):
 
     def same_choice(lower, higher):
         return lower["tax_unit_itemizes"] == higher["tax_unit_itemizes"]
+
+    # More excluded cannot lower taxable income while the itemization
+    # choice holds, including when the SALT MAGI add-back reduces deductions.
+    for lower, higher in exclusion_pairs:
+        rows = same_choice(lower, higher)
+        assert (higher["taxable_income"] >= lower["taxable_income"])[rows].all()
 
     # More elected: the gains never rise, net capital gain falls by at most
     # the extra amount elected, and amounts limited by taxable income or
@@ -834,7 +854,23 @@ def grid():
     return rows
 
 
-GRID = grid()
+# 2025 Schedule A instructions, page 7, State and Local Tax Deduction
+# Worksheet lines 2 to 10: AGI of $480,000 plus $100,000 from Form 2555
+# raises MAGI to $580,000. The $40,000 SALT cap falls by 30% of $80,000
+# to $16,000. Both returns itemize, but taxable income rises by $24,000.
+# https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=7
+SALT_PHASE_OUT_CASES = [
+    household(
+        wages=450_000,
+        long_term=30_000,
+        election=10_000,
+        real_estate_taxes=60_000,
+        exclusion=x,
+    )
+    for x in (0, 100_000)
+]
+
+GRID = grid() + SALT_PHASE_OUT_CASES
 
 
 def test_grid():
@@ -862,6 +898,17 @@ def test_grid():
     # Electing more and stacking each raise the tax of some households.
     assert (groups["more_elected"]["regular_tax"] > law["regular_tax"] + 1).any()
     assert (law["regular_tax"] > groups["unstacked"]["regular_tax"] + 1).any()
+
+    # The SALT cases also exercise the variants and independent form
+    # comparisons above, reusing the grid's simulation.
+    salt = {v: values[-len(SALT_PHASE_OUT_CASES) :] for v, values in law.items()}
+    assert salt["tax_unit_itemizes"].all()
+    assert salt["agi_plus_section_911_931_933_exclusions"] == pytest.approx(
+        [480_000, 580_000]
+    )
+    assert salt["salt_cap"] == pytest.approx([40_000, 16_000])
+    assert salt["salt_deduction"] == pytest.approx([40_000, 16_000])
+    assert salt["taxable_income"] == pytest.approx([440_000, 464_000])
 
 
 def test_election_can_lower_the_tax_where_15_percent_exceeds_12():
