@@ -44,7 +44,10 @@ def test_every_job_is_skipped_for_drafts():
         return all(reaches_guarded_root(n, seen + (name,)) for n in _needs(job))
 
     for name, job in jobs.items():
-        # A job that runs despite a skipped dependency would defeat the guard.
-        condition = str(job.get("if", ""))
-        assert "always()" not in condition, name
+        # A job-level status function other than success() (always(),
+        # !cancelled(), failure(), cancelled()) runs the job even when a
+        # needed job was skipped, which would defeat the guard.
+        condition = str(job.get("if", "")).replace(" ", "")
+        for status_function in ("always()", "cancelled()", "failure()"):
+            assert status_function not in condition, (name, condition)
         assert reaches_guarded_root(name), name
