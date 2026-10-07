@@ -1,0 +1,25 @@
+# 26 U.S.C. 911(f)(1)(B)(i); 2025 Form 6251 instructions, Foreign Earned
+# Income Tax Worksheet—Line 7, lines 1 to 3.
+- name: Line 3 is Form 6251 line 6 plus the excluded amount
+  period: 2025
+  input:
+    amt_income_less_exemptions: 150_000 # line 1
+    foreign_earned_income_exclusion: 130_000 # line 2c
+  output:
+    amt_income_less_exemptions_plus_section_911_exclusion: 280_000 # line 3
+
+- name: The worksheet is skipped when Form 6251 line 6 is zero
+  period: 2025
+  input:
+    amt_income_less_exemptions: 0
+    foreign_earned_income_exclusion: 130_000
+  output:
+    amt_income_less_exemptions_plus_section_911_exclusion: 0
+
+- name: No exclusion leaves the taxable excess unchanged
+  period: 2025
+  input:
+    amt_income_less_exemptions: 150_000
+    foreign_earned_income_exclusion: 0
+  output:
+    amt_income_less_exemptions_plus_section_911_exclusion: 150_000

@@ -6,8 +6,12 @@ metadata:
   rate_unit: /1
   label: Wisconsin joint income tax rate
   reference:
-    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
-      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: eFile.com, Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions (third party, archived January 2025; the only cited source for 2021)
+      href: https://web.archive.org/web/20250119123144/https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: Wisconsin Department of Revenue, Tax Exemption Devices 2023-25, Individual Income Tax (2022 tax year)
+      href: https://www.revenue.wi.gov/DORReports/23sumrpt.pdf#page=13
+    - title: Wisconsin Department of Revenue, Tax Exemption Devices 2025-27, Individual Income Tax (2024 tax year)
+      href: https://www.revenue.wi.gov/DORReports/25sumrpt.pdf#page=9
     - title: State of Wisconsin Department of Revenue
       href: https://www.revenue.wi.gov/Pages/FAQS/pcs-taxrates.aspx
       # The tax form only shows the tax brackets, not the exact rates.
@@ -15,10 +19,12 @@ metadata:
       href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=39
     - title: 2024 Form 1 instructions
       href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1-inst.pdf#page=38
-    - title: 2025 Form 1 instructions
+    - title: 2025 Form 1 instructions (pages 38 and 44)
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=38
+    - title: Wis. Stat. § 71.06(2)(k) (joint returns, taxable years beginning after December 31, 2024)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/06
     - title: 2026 Form 1-ES instructions
-      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=7
+      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=3
 brackets:
   - threshold:
       2021-01-01: 0
@@ -48,7 +54,7 @@ brackets:
         2022-01-01: 34_030
         2023-01-01: 36_840
         2024-01-01: 38_190
-        2025-01-01: 68_170
+        2025-01-01: 67_300
         2026-01-01: 69_260
       metadata:
         uprating:

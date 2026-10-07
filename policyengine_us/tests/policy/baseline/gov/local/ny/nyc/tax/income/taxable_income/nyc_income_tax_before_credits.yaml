@@ -25,3 +25,232 @@
   output:
     # Would be flat $3 with rounding rules incorporated (below and after 50 cents).
     nyc_income_tax_before_credits: 3.078
+
+# Chapter 127 of 2026 (A.11561, Part D) extends the NYC resident rate schedule
+# (Tax Law 1304(a), NYC Admin Code 11-1701(a)) and the 14% additional tax
+# (Tax Law 1304-B, NYC Admin Code 11-1704.1) through taxable years beginning
+# before 2030, so 2027 to 2029 use the 2026 combined rates of 3.078%, 3.762%,
+# 3.819% and 3.876%. From 2030, only the 1304(b) rates of 1.18%, 1.435%,
+# 1.455% and 1.48% apply.
+# https://legislation.nysenate.gov/pdf/bills/2025/A11561#page=5
+- name: Single filer in 2027 pays the extended rates.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    nyc_taxable_income: 100_000
+  output:
+    # 12,000 * 3.078% + 13,000 * 3.762% + 25,000 * 3.819% + 50,000 * 3.876%
+    # = 369.36 + 489.06 + 954.75 + 1,938 = 3,751.17
+    # The 2025 IT-201-I schedule rounds the bracket base to whole dollars:
+    # $1,813 plus 3.876% of the excess over $50,000 = $3,751.
+    nyc_income_tax_before_credits: 3_751.17
+
+- name: Joint filer in 2027 pays the extended rates.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    nyc_taxable_income: 150_000
+  output:
+    # 21,600 * 3.078% + 23,400 * 3.762% + 45,000 * 3.819% + 60,000 * 3.876%
+    # = 664.848 + 880.308 + 1,718.55 + 2,325.6 = 5,589.306
+    nyc_income_tax_before_credits: 5_589.306
+
+- name: Head of household in 2027 pays the extended rates.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    nyc_taxable_income: 80_000
+  output:
+    # 14,400 * 3.078% + 15,600 * 3.762% + 30,000 * 3.819% + 20,000 * 3.876%
+    # = 443.232 + 586.872 + 1,145.7 + 775.2 = 2,951.004
+    nyc_income_tax_before_credits: 2_951.004
+
+- name: Separate filer in 2028 pays the extended rates.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    nyc_taxable_income: 40_000
+  output:
+    # 12,000 * 3.078% + 13,000 * 3.762% + 15,000 * 3.819% = 1,431.27
+    nyc_income_tax_before_credits: 1_431.27
+
+- name: Surviving spouse in 2029, the last extended year, pays the extended rates.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    nyc_taxable_income: 200_000
+  output:
+    # 21,600 * 3.078% + 23,400 * 3.762% + 45,000 * 3.819% + 110,000 * 3.876%
+    # = 664.848 + 880.308 + 1,718.55 + 4,263.6 = 7,527.306
+    nyc_income_tax_before_credits: 7_527.306
+
+- name: Single filer in 2030 pays the base rates without the additional tax.
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    nyc_taxable_income: 100_000
+  output:
+    # 12,000 * 1.18% + 13,000 * 1.435% + 25,000 * 1.455% + 50,000 * 1.48%
+    # = 141.6 + 186.55 + 363.75 + 740 = 1,431.9
+    # Tax Law 1304(b)(3) rounds the bracket base to whole dollars:
+    # $692 plus 1.48% of the excess over $50,000 = $1,432.
+    nyc_income_tax_before_credits: 1_431.9
+
+- name: Joint filer in 2030 pays the base rates without the additional tax.
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    nyc_taxable_income: 150_000
+  output:
+    # 21,600 * 1.18% + 23,400 * 1.435% + 45,000 * 1.455% + 60,000 * 1.48%
+    # = 254.88 + 335.79 + 654.75 + 888 = 2,133.42
+    # Tax Law 1304(b)(1) rounds the bracket base to whole dollars:
+    # $1,245 plus 1.48% of the excess over $90,000 = $2,133.
+    nyc_income_tax_before_credits: 2_133.42
+
+- name: Head of household in 2030 pays the base rates without the additional tax.
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    nyc_taxable_income: 80_000
+  output:
+    # 14,400 * 1.18% + 15,600 * 1.435% + 30,000 * 1.455% + 20,000 * 1.48%
+    # = 169.92 + 223.86 + 436.5 + 296 = 1,126.28
+    nyc_income_tax_before_credits: 1_126.28
+
+- name: Separate filer in 2030 pays the base rates without the additional tax.
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    nyc_taxable_income: 40_000
+  output:
+    # 12,000 * 1.18% + 13,000 * 1.435% + 15,000 * 1.455% = 546.4
+    nyc_income_tax_before_credits: 546.4
+
+- name: Surviving spouse in 2030 pays the base rates without the additional tax.
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    nyc_taxable_income: 200_000
+  output:
+    # 21,600 * 1.18% + 23,400 * 1.435% + 45,000 * 1.455% + 110,000 * 1.48%
+    # = 254.88 + 335.79 + 654.75 + 1,628 = 2,873.42
+    nyc_income_tax_before_credits: 2_873.42
+
+# Invariant: the brackets are not indexed and the rates are unchanged through
+# 2029, so the same nominal wages give the same NYC tax in 2026 and 2027.
+# NY taxable income = $275,000 - $8,000 NY standard deduction = $267,000.
+# 12,000 * 3.078% + 13,000 * 3.762% + 25,000 * 3.819% + 217,000 * 3.876%
+# = 369.36 + 489.06 + 954.75 + 8,410.92 = 10,224.09
+- name: Single filer with $275,000 of wages in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 275_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_taxable_income: 267_000
+    nyc_income_tax_before_credits: 10_224.09
+
+- name: Single filer with the same $275,000 of wages in 2027 owes the same NYC tax.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 275_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_taxable_income: 267_000
+    nyc_income_tax_before_credits: 10_224.09
+
+# NY taxable income = $200,000 - $16,050 NY standard deduction = $183,950.
+# 21,600 * 3.078% + 23,400 * 3.762% + 45,000 * 3.819% + 93,950 * 3.876%
+# = 664.848 + 880.308 + 1,718.55 + 3,641.502 = 6,905.208
+- name: Joint filers with $200,000 of wages in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 200_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+        in_nyc: true
+  output:
+    filing_status: JOINT
+    nyc_taxable_income: 183_950
+    nyc_income_tax_before_credits: 6_905.208
+
+- name: Joint filers with the same $200,000 of wages in 2027 owe the same NYC tax.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 200_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+        in_nyc: true
+  output:
+    filing_status: JOINT
+    nyc_taxable_income: 183_950
+    nyc_income_tax_before_credits: 6_905.208
