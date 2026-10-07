@@ -99,7 +99,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 11_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     alternative_minimum_tax: 0
 
@@ -112,7 +111,6 @@
     foreign_tax_credit: 0
     regular_tax_before_credits: 11_000
     form_4972_lumpsum_distributions: 0
-    capital_gains_tax: 0
   output:
     alternative_minimum_tax: 1_000
 
@@ -150,5 +148,90 @@
       household:
         members: [head, spouse]
         state_code: NM
+  output:
+    alternative_minimum_tax: 0
+
+# 26 U.S.C. 911(f)(1)(B) and the 2025 Form 6251 instructions, Foreign Earned
+# Income Tax Worksheet—Line 7: line 4 is the tax on Form 6251 line 6 plus the
+# excluded amount, line 5 the tax at the AMT rates on the excluded amount,
+# line 6 the difference.
+- name: A Form 2555 filer subtracts the AMT on the excluded amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 150_000 # worksheet line 1
+    foreign_earned_income_exclusion: 130_000 # worksheet line 2c
+    amt_part_iii_required: false
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 30_000
+    form_4972_lumpsum_distributions: 0
+  output:
+    # Line 3 = 280,000. Line 4 = 280,000 x 28% - 4,782 = 73,618. Line 5 =
+    # 130,000 x 26% = 33,800. Line 6 = 39,818, which goes on Form 6251 line 7.
+    # Form 6251 line 11 = 39,818 - 30,000.
+    amt_base_tax: 73_618
+    alternative_minimum_tax: 9_818
+
+- name: The same filer without the exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 150_000
+    foreign_earned_income_exclusion: 0
+    amt_part_iii_required: false
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 30_000
+    form_4972_lumpsum_distributions: 0
+  output:
+    # Form 6251 line 7 = 150,000 x 26% = 39,000.
+    alternative_minimum_tax: 9_000
+
+- name: A separate filer's excluded amount crosses the halved breakpoint
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    amt_income_less_exemptions: 50_000
+    foreign_earned_income_exclusion: 130_000
+    amt_part_iii_required: false
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 0
+    form_4972_lumpsum_distributions: 0
+  output:
+    # Line 3 = 180,000. Line 4 = 180,000 x 28% - 2,391 = 48,009. Line 5 =
+    # 130,000 x 28% - 2,391 = 34,009. Line 6 = 14,000.
+    alternative_minimum_tax: 14_000
+
+- name: With Part III the smaller tax on line 3 is reduced by the tax on the excluded amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 211_900
+    foreign_earned_income_exclusion: 100_000
+    amt_part_iii_required: true
+    amt_tax_including_cg: 57_785
+    foreign_tax_credit: 0
+    # Form 6251 line 10: the regular tax, all of it capital gains tax.
+    regular_tax_before_credits: 42_637.50
+    form_4972_lumpsum_distributions: 0
+  output:
+    # Form 6251 line 39 = 311,900 x 28% - 4,782 = 82,550, line 38 = 57,785,
+    # line 40 = 57,785. Worksheet line 5 = 100,000 x 26% = 26,000, line 6 =
+    # 31,785. That is below the regular tax of 42,637.50.
+    alternative_minimum_tax: 0
+
+- name: No AMT stacking when Form 6251 line 6 is zero
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 0
+    foreign_earned_income_exclusion: 130_000
+    amt_part_iii_required: false
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 0
+    form_4972_lumpsum_distributions: 0
   output:
     alternative_minimum_tax: 0
