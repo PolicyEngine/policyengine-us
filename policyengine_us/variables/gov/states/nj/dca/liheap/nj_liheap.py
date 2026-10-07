@@ -22,11 +22,12 @@ class nj_liheap(Variable):
     )
     documentation = (
         "Annual regular heating payment, verified for FY2026 and FY2027. Earlier "
-        "years use backfilled parameters and are unverified historical estimates. "
-        "Amounts preserve the published grid anomalies, except that the FY2027 "
-        "matrix prints 474 in one of the three identical low-income rows of the "
-        "Warren and Sussex renters column for 13 or more members, where the band "
-        "keeps 471; no expense cap applies. A household with a rent subsidy or in "
+        "years back to FY2022 use backfilled parameters and are unverified estimates; "
+        "before FY2022 the program is not modeled (eligibility/in_effect). Amounts "
+        "preserve the published grid anomalies, including the FY2027 renters cell "
+        "for Warren and Sussex households of 13 or more at $2,001 to $6,439 a month "
+        "(474 against 471 in FY2026); no expense cap applies. A household with a "
+        "rent subsidy or in "
         "public housing that pays its own heating bill receives the renters level "
         "under N.J.A.C. 5:49-2.2(d)1.i. Region 1 holds nineteen of the twenty-one "
         "counties. Other and unspecified direct fuels return zero as a coverage "

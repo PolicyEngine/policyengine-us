@@ -23,8 +23,8 @@ class nj_liheap_income_limit(Variable):
         "than the codified 175%-FPG ceiling. Chapter 5:49 was readopted without "
         "change effective September 22, 2025; the readoption does not reconcile the "
         "conflict, and the model follows the handbooks. The 60% SMI test began in "
-        "FY2022 (BPU announcement of October 19, 2021); earlier periods carry it "
-        "back and are unverified. Annualized monthly limits control this "
+        "FY2022 (BPU announcement of October 19, 2021); earlier periods are not "
+        "modeled (eligibility/in_effect). Annualized monthly limits control this "
         "monthly-income eligibility test."
     )
 

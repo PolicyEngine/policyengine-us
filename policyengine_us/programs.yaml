@@ -883,7 +883,7 @@ programs:
         variable: nj_liheap
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid; the FY2027 grid repeats FY2026 except one printed renters cell. Crisis, cooling and equipment assistance are out of scope.
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

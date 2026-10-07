@@ -14,15 +14,18 @@ class nj_liheap_eligible(Variable):
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=5",
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-2",
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-3",
+        "https://www.nj.gov/bpu/newsroom/2021/approved/20211019.html",
     )
     documentation = (
         "Automatic enrollment does not waive the income test, and regular heating has "
-        "no asset test. Striker and institutional-residence exclusions, full "
+        "no asset test. The program is modeled from FY2022, when the 60% SMI standard "
+        "began; earlier periods return false. Striker and institutional-residence exclusions, full "
         "utility-allowance coverage and payments by people outside the household need "
         "inputs not available here. Unknown county is unsupported, not a legal denial."
     )
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.nj.dca.liheap.eligibility
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         # Handbook 2.2 (page 6) and N.J.A.C. 5:49-2.3(b)1-2 deny public housing
         # and rent-subsidy households only when the subsidy covers the heat.
@@ -34,8 +37,11 @@ class nj_liheap_eligible(Variable):
             person("is_full_time_student", period)
             & person("is_tax_unit_dependent", period)
         )
+        # The modeled 60% SMI rules begin with FY2022 (BPU, October 19, 2021);
+        # the earlier poverty-level standard is not encoded.
         return (
-            (spm_unit("has_heating_expense", period) | heat_in_rent)
+            p.in_effect
+            & (spm_unit("has_heating_expense", period) | heat_in_rent)
             & ~(heat_in_rent & subsidized)
             & ~dependent_students_only
             & (spm_unit("nj_liheap_household_size", period) > 0)

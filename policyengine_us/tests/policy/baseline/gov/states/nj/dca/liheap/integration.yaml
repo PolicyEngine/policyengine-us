@@ -50,7 +50,7 @@
     # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
     nj_liheap_income_limit: 50_004
     # $1,000 a month is in the printed row "$0 - $1000". Band 1 covers the
-    # first three printed rows, which pay the same amounts.
+    # first two printed rows, which pay the same amounts.
     nj_liheap_income_band: 1
     # Sussex is in the "Warren & Sussex Counties" column.
     nj_liheap_region: 2
@@ -189,8 +189,8 @@
     nj_liheap_countable_income: 86_004
     # Five people: $9,296 a month (fact sheet, page 2); 9,296 * 12 = 111_552.
     nj_liheap_income_limit: 111_552
-    # $7,167 a month is in the printed row "$6440 - $8886", which is band 2.
-    nj_liheap_income_band: 2
+    # $7,167 a month is in the printed row "$6440 - $8886", which is band 3.
+    nj_liheap_income_band: 3
     # Middlesex is in the "All Other (19) counties" column.
     nj_liheap_region: 1
     # 7,167 does not exceed 9,296 (section 2.3.A, page 7). The same income

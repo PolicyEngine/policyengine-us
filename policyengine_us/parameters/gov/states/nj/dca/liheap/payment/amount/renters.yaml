@@ -11,6 +11,15 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 411
   2:
     1:
+      2025-10-01: 234
+    2:
+      2025-10-01: 312
+    3:
+      2025-10-01: 374
+    4:
+      2025-10-01: 411
+  3:
+    1:
       2025-10-01: 196
     2:
       2025-10-01: 262
@@ -18,7 +27,7 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 312
     4:
       2025-10-01: 343
-  3:
+  4:
     1:
       2025-10-01: 156
     2:
@@ -27,7 +36,7 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 250
     4:
       2025-10-01: 275
-  4:
+  5:
     1:
       2025-10-01: 118
     2:
@@ -44,11 +53,21 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 360
     3:
       2025-10-01: 428
-    # The FY2027 matrix prints 474 in the $2,001 to $6,439 row of this cell
-    # and 471 in the band's other two rows; the combined band keeps 471.
     4:
       2025-10-01: 471
   2:
+    1:
+      2025-10-01: 267
+    2:
+      2025-10-01: 360
+    3:
+      2025-10-01: 428
+    # The FY2027 matrix prints 474 in this cell, the $2,001 to $6,439 row of
+    # the Warren and Sussex column for 13 or more members; FY2026 prints 471.
+    4:
+      2025-10-01: 471
+      2026-10-01: 474
+  3:
     1:
       2025-10-01: 222
     2:
@@ -57,7 +76,7 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 358
     4:
       2025-10-01: 394
-  3:
+  4:
     1:
       2025-10-01: 179
     2:
@@ -66,7 +85,7 @@ description: New Jersey provides this annual regular heating benefit to househol
       2025-10-01: 286
     4:
       2025-10-01: 315
-  4:
+  5:
     1:
       2025-10-01: 134
     2:
@@ -81,7 +100,7 @@ metadata:
   label: New Jersey LIHEAP renters payment
   breakdown:
   - range(1, 3)
-  - range(1, 5)
+  - range(1, 6)
   - range(1, 5)
   reference:
   - title: FY2026 Benefit Matrix

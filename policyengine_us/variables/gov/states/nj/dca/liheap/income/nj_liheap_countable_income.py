@@ -11,8 +11,8 @@ class nj_liheap_countable_income(Variable):
     reference = (
         # PDF pages 6, 9, 10.
         "https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=9",
-        # PDF pages 6, 10, 11.
-        "https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=10",
+        # PDF pages 6, 9, 11.
+        "https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=9",
     )
     documentation = (
         "Annual inputs approximate the four-week verification period. The summed "
@@ -24,7 +24,10 @@ class nj_liheap_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         # The annual TANF aggregate applies take-up to WFNJ entitlement.
-        # Benefits received are counted once at the household level.
+        # Benefits received are counted once at the household level. Handbook
+        # 2.2 (page 6) counts TANF and GA grants toward the standard; the FY2027
+        # plan 1.9 (page 6) leaves TANF, General Assistance and Strike Pay
+        # unchecked where the FY2026 plan checks them, and the handbook controls.
         income = add(spm_unit, period, ["nj_liheap_countable_income_person", "tanf"])
         # Handbook 2.3.F (page 9): "Cents shall be rounded to the nearest
         # dollar"; an exact half dollar rounds up.

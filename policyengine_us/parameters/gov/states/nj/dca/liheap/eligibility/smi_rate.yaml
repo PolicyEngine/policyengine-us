@@ -1,9 +1,9 @@
 description: New Jersey limits monthly income to this share of state median income under the Low Income Home Energy Assistance Program.
 # In force since FY2022, when the test moved from a poverty-level standard to
-# 60% SMI (BPU announcement of October 19, 2021). Earlier periods carry the
-# rate back as unverified estimates.
+# 60% SMI (BPU announcement of October 19, 2021). Earlier periods are not
+# modeled (eligibility/in_effect).
 values:
-  2025-10-01: 0.6
+  2021-10-01: 0.6
 metadata:
   unit: /1
   period: year

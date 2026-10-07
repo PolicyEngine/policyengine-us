@@ -2,6 +2,10 @@ description: New Jersey uses these sources as unearned income under the Low Inco
 values:
   2025-10-01:
   - unemployment_compensation
+  # The FY2027 plan (1.9, page 6) leaves Strike Pay and General Assistance
+  # unchecked where the FY2026 plan checks them; handbook 2.2 (page 6) counts GA
+  # grants toward the standard and 2.2.3 makes striker households ineligible,
+  # so the handbook controls and both stay listed.
   - strike_benefits
   - ssi
   - pension_income

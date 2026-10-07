@@ -15,9 +15,9 @@ class nj_liheap_income_band(Variable):
     )
     documentation = (
         "The grid does not label the income period; monthly follows the handbook "
-        "income test and the historical monthly thresholds used in the grid. Three "
-        "identical initial rows are combined; the one FY2027 cell that breaks that "
-        "pattern is noted in the renters table."
+        "income test and the historical monthly thresholds used in the grid. The two "
+        "lowest rows pay the same in every cell and are combined; the $2,001 to "
+        "$6,439 row is its own band because one FY2027 renters cell differs there."
     )
 
     def formula(spm_unit, period, parameters):

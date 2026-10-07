@@ -8,7 +8,7 @@
 #   (page 11) and 3.2.F (page 12):
 #   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=5
 # - FY2027 Benefit Matrix (one page; identical to FY2026 except one Warren &
-#   Sussex renters cell, Case 18):
+#   Sussex renters cell, Cases 18 and 19):
 #   https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20Benefit%20Matrix.png
 # - N.J.A.C. 5:49-2.2(d)1.i, the renter's level for subsidized direct payers
 #   (Case 13): https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-2-2
@@ -19,7 +19,8 @@
 # - Monthly income is 0, 77_280 / 12 = 6,440, 106_644 / 12 = 8,887 and
 #   115_920 / 12 = 9,660: the first dollar of the printed rows "$0 - $1000",
 #   "$6440 - $8886", "$8887 - $9659" and "$9660 +". The rows "$1001 - $2000"
-#   and "$2001 - $6439" print the same amounts as "$0 - $1000" (Case 10).
+#   and "$2001 - $6439" print the same amounts as "$0 - $1000" (Case 10); the
+#   model keeps "$2001 - $6439" as its own band for the FY2027 cell of Case 18.
 # - Sizes 2, 6, 10 and 14 are the smallest even sizes in the printed columns
 #   "1 to 4", "5 to 8", "9 to 12" and "13 or More". One even size stands for
 #   each size group here; Case 15 crosses the column edges at sizes 8, 9, 12
@@ -380,10 +381,9 @@
 
 # FY2027 Benefit Matrix, Renters panel, "Warren & Sussex Counties", column
 # "13 or More": the rows "$0 - $1000" and "$1001 - $2000" print 471 and the
-# row "$2001 - $6439" prints 474, where every other year prints 471 in all
-# three. The model combines the three rows and keeps 471 for all of them.
-# Monthly incomes 12_000 / 12 = 1,000 and 36_000 / 12 = 3,000.
-- name: Case 18, FY2027 Warren and Sussex renters with 13 members keep the combined band value.
+# row "$2001 - $6439" prints 474, where FY2026 prints 471 in all three. Monthly
+# incomes 12_000 / 12 = 1,000 (band 1) and 36_000 / 12 = 3,000 (band 2).
+- name: Case 18, FY2027 Warren and Sussex renters with 13 members read 474 in the $2,001 to $6,439 row.
   period: 2027
   input:
     state_code: [NJ, NJ]
@@ -394,5 +394,42 @@
     heating_type: [UNSPECIFIED, UNSPECIFIED]
     heat_expense_included_in_rent: [true, true]
   output:
-    nj_liheap_income_band: [1, 1]
-    nj_liheap: [471, 471]
+    nj_liheap_income_band: [1, 2]
+    nj_liheap: [471, 474]
+
+# The same household in FY2026 reads the FY2026 Benefit Matrix, whose
+# "$2001 - $6439" row prints 471 in that cell.
+- name: Case 19, FY2026 Warren and Sussex renters with 13 members read 471 in the $2,001 to $6,439 row.
+  period: 2026
+  input:
+    state_code: NJ
+    county: WARREN_COUNTY_NJ
+    nj_liheap_eligible: true
+    nj_liheap_household_size: 13
+    nj_liheap_countable_income: 36_000
+    heating_type: UNSPECIFIED
+    heat_expense_included_in_rent: true
+  output:
+    nj_liheap_income_band: 2
+    nj_liheap: 471
+
+# The modeled rules begin with FY2022, when the income test moved to 60% of
+# state median income (BPU announcement of October 19, 2021); the earlier
+# poverty-level standard is not encoded (parameter eligibility/in_effect), so
+# a household that would qualify under the FY2026 rules receives nothing in
+# period 2021. Essex County adult, $12,000 of wages, natural gas billed in
+# their own name (about $1,300 a year).
+- name: Case 20, periods before FY2022 are not modeled.
+  period: 2021
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    age: 40
+    employment_income: 12_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_300
+  output:
+    nj_liheap_eligible: false
+    nj_liheap: 0
