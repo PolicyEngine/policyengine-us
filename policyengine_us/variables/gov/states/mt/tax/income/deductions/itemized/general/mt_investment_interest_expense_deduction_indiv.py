@@ -28,7 +28,9 @@ class mt_investment_interest_expense_deduction_indiv(Variable):
 
     From 2024, Montana uses federal itemized deductions. This variable
     preserves the allocation of the federal deduction by filer interest
-    shares; Montana no longer permits separate filing on the same return.
+    shares. When no current interest was paid, the head carries any allowed
+    federal carryover, matching the joint-return reporting convention.
+    Montana no longer permits separate filing on the same return.
     """
 
     def formula(person, period, parameters):
@@ -72,6 +74,13 @@ class mt_investment_interest_expense_deduction_indiv(Variable):
             total_interest,
             out=np.zeros_like(interest),
             where=total_interest > 0,
+        )
+        # Preserve a carryover-only federal deduction using the existing
+        # joint-return reporting convention, without assigning ownership.
+        interest_share = where(
+            total_interest > 0,
+            interest_share,
+            person("is_tax_unit_head", period),
         )
         return (
             person.tax_unit("investment_interest_expense_deduction", period)

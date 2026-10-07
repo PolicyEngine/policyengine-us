@@ -123,3 +123,42 @@
   output:
     investment_interest_expense_deduction: 600
     mt_investment_interest_expense_deduction_indiv: [150, 450, 0]
+
+- name: Montana 2024 preserves a carryover-only federal deduction on the head
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_interest_expense: 0
+        taxable_interest_income: 5_000
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+      spouse:
+        is_tax_unit_spouse: true
+        investment_interest_expense: 0
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        form_4952_disallowed_investment_interest_expense_prior_year: 4_000
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    investment_interest_expense_deduction: 4_000
+    mt_investment_interest_expense_deduction_indiv: [4_000, 0]
+    mt_itemized_deductions_joint: [4_000, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [4_000, 0]
+    # The head allocation is reporting bookkeeping for the federal total;
+    # Montana no longer computes separate limits on a joint federal return.

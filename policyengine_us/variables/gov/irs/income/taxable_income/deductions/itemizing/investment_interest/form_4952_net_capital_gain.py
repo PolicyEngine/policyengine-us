@@ -16,8 +16,8 @@ class form_4952_net_capital_gain(Variable):
     gains." As on line 4d, every capital asset is treated as property held
     for investment and only the head's and spouse's gains count. Schedule D
     distributions already belong to long_term_capital_gains, so
-    distributions reported without Schedule D are added once. Capital loss
-    carryovers have no model input and are not modeled.
+    distributions reported without Schedule D are added once. The long_term_capital_loss_carryover input is a memo amount already
+    reflected in long_term_capital_gains; it is not subtracted again.
 
     This is also Schedule D Tax Worksheet line 4, so the capital gains tax
     takes a Form 4952 line 4g election from the same amount. It does not read

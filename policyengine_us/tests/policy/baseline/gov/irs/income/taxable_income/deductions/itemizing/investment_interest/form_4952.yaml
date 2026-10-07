@@ -319,6 +319,7 @@
     taxable_interest_income: 3_000
   output:
     form_4952_total_investment_interest_expense: 6_000
+    investment_income_form_4952: 3_000 # Legacy CA federal line 8 alias defaults to allowed interest.
     investment_interest_expense_deduction: 3_000
     form_4952_investment_interest_carryforward: 3_000
     interest_deduction: 13_000 # 12,000 current aggregate - 2,000 current debt + 3,000 allowed
