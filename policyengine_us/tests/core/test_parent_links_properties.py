@@ -456,6 +456,7 @@ def random_married_dependents(seed, n=60):
     The parent claims the child either on the parent's own return or, as a
     known claiming tax unit, from the child's separate unit. Every tax unit
     gets a distinct tax_unit_id. Incomes are multiples of 1/8 below 2**20.
+    A spouse off the parent's return heads a return of their own, at any age.
     """
     rng = np.random.default_rng(seed)
     return [
@@ -491,9 +492,24 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
         spouse_member_income = spouse_income * (
             scenario["spouse_must_file"] or scenario["spouse_age"] >= AGE_LIMIT
         )
-        for name, person_id, age, magi, member_income, must_file in [
-            (parent, 1, 45, scenario["parent_income"], scenario["parent_income"], True),
-            (child, 2, scenario["child_age"], 0, 0, False),
+        # Heads are inputs because PE infers only an adult (18 or over) as a
+        # head, so a spouse under 18 who files alone would head no return and
+        # count as a non-filing dependent. Everyone else keeps the inferred
+        # role: the parent heads their return, and a child on a return of
+        # their own heads it only as an adult.
+        child_heads = scenario["known_claim"] and scenario["child_age"] >= 18
+        spouse_heads = placement != "same_return"
+        for name, person_id, age, magi, member_income, must_file, heads in [
+            (
+                parent,
+                1,
+                45,
+                scenario["parent_income"],
+                scenario["parent_income"],
+                True,
+                True,
+            ),
+            (child, 2, scenario["child_age"], 0, 0, False, child_heads),
             (
                 spouse,
                 3,
@@ -501,11 +517,13 @@ def married_dependent_situation(scenarios, reverse=False, with_ids=True, prefix=
                 spouse_income,
                 spouse_member_income,
                 scenario["spouse_must_file"],
+                spouse_heads,
             ),
         ]:
             people[name] = {
                 "age": {PERIOD: age},
                 "person_id": {PERIOD: person_id},
+                "is_tax_unit_head": {PERIOD: heads},
                 "is_tax_unit_spouse": {PERIOD: False},
                 "medicaid_magi_person": {PERIOD: magi},
                 "medicaid_household_income_member": {PERIOD: member_income},
