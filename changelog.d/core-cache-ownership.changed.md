@@ -1,3 +1,5 @@
-Use PolicyEngine Core's public parameter-sharing and simulation-result cache APIs
-for SPM simulations and period branches, preserving simulation-specific tracing
-without modifying shared parameter trees or cache internals.
+Use Core's public cache and policy-rebinding APIs throughout US construction and
+SPM branching, remove inherited-result and clone-alias workarounds, and refresh
+only explicitly linked policy results while preserving branch input snapshots
+and immutable override-comparison values; refresh formula branches after their
+parent's supplied inputs change.

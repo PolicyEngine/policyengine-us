@@ -100,7 +100,7 @@ def test_parameter_reform_leaves_every_other_simulation_unreformed():
     # An existing simulation, recomputed from its own inputs. Use the same
     # purge apply_reform performs: deleting one variable's arrays leaves the
     # cached intermediates that a contaminated tree would have to flow through.
-    unrelated._invalidate_all_caches()
+    unrelated.clear_calculated_results()
     assert unrelated.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     assert unrelated.calculate("standard_deduction", 2024)[0] < 100_000
     # And one built after the reform.
@@ -114,14 +114,14 @@ def test_parameter_reform_detaches_the_shared_tree_and_its_warm_caches():
     simulation = Simulation(situation=earner_situation())
     policy = simulation.tax_benefit_system
     assert policy.parameters is system.parameters
-    assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
+    shared_view = system.get_parameters_at_instant("2024-01-01")
+    assert policy.get_parameters_at_instant("2024-01-01") is shared_view
 
     simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
 
     assert policy.parameters is not system.parameters
-    assert policy._parameters_at_instant_cache is not (
-        system._parameters_at_instant_cache
-    )
+    assert policy.get_parameters_at_instant("2024-01-01") is not shared_view
+    assert system.get_parameters_at_instant("2024-01-01") is shared_view
     assert not policy.shares_parameters
 
 
@@ -454,7 +454,7 @@ def test_lending_a_detached_tree_stops_the_lender_writing_to_it():
     lender.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 7_777}})
 
     assert lender.calculate("standard_deduction", 2024)[0] == 7_777
-    borrower._invalidate_all_caches()
+    borrower.clear_calculated_results()
     assert borrower.calculate("standard_deduction", 2024)[0] == 100_000
 
 
@@ -551,13 +551,13 @@ def test_a_branch_variable_reform_is_not_isolated_from_its_parent():
     child = parent.get_branch("child")
     sibling = parent.get_branch("sibling")
     assert parent.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
+    assert sibling.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
 
     child.apply_reform(NeutralizeIncomeTax)
 
     assert child.calculate("income_tax", 2024)[0] == 0
     assert parent.tax_benefit_system.variables is child.tax_benefit_system.variables
     for member in (parent, sibling):
-        member._invalidate_all_caches()
         assert member.calculate("income_tax", 2024)[0] == 0
 
     # A branch that asked for its own system keeps the reform to itself.

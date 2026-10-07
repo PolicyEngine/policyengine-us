@@ -2,6 +2,11 @@
 
 Follow the repository guidance in `CLAUDE.md` for commands, style, changelog entries, and PolicyEngine modeling conventions.
 
+Before changing cache access, policy sharing, tracing, or branch ownership, read
+[Core cache ownership](docs/engineering/cache_ownership.md). Use Core's public
+operations and retain the documented distinction between input snapshots and
+deliberately linked policy changes.
+
 ## Test cost and CI capacity
 
 Follow [Test design and CI cost](CLAUDE.md#test-design-and-ci-cost) before adding or expanding tests. Use variable-named YAML tests for policy calculations; reserve Python tests for behavior YAML cannot exercise. Preserve Core/data compatibility and isolation coverage, avoid repeated full-model construction, and do not add CI runners or parallel heavy processes without explicit authorization. Document the purpose and measured cost of new simulation-heavy Python tests in the PR.

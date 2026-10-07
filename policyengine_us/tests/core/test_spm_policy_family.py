@@ -111,7 +111,7 @@ def test_changed_structural_start_detaches_before_parameter_mutation(
     source = system.parameters
     children = source.children
     before = source("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
-    cached = dict(source.gov._at_instant_cache)
+    cached = {year: source.gov(year) for year in (2023, 2024, 2025)}
 
     def mutate(parameters):
         assert parameters.children is not children
@@ -141,8 +141,8 @@ def test_changed_structural_start_detaches_before_parameter_mutation(
     )
     assert source.gov.irs.deductions.standard.amount.SINGLE(2024) == before
     assert source.children is children
-    for instant, node in cached.items():
-        assert source.gov._at_instant_cache[instant] is node
+    for year, node in cached.items():
+        assert source.gov(year) is node
 
 
 @pytest.mark.parametrize(
@@ -158,16 +158,12 @@ def test_supplied_prepared_system_retains_warm_policy_children(
     if reform_wrapper:
         source = VariableOnlyReform(source)
     source.parameters("2024-01-01").gov.irs.deductions.standard.amount.SINGLE
-    cached = dict(source.parameters.gov._at_instant_cache)
+    cached = {year: source.parameters.gov(year) for year in (2023, 2024, 2025)}
     children = source.parameters.children
     simulation = Simulation(tax_benefit_system=source, situation=earning_household())
     assert simulation.tax_benefit_system.parameters.children is children
-    assert source.parameters.gov._at_instant_cache
-    for instant, node in cached.items():
-        assert (
-            simulation.tax_benefit_system.parameters.gov._at_instant_cache[instant]
-            is node
-        )
+    for year, node in cached.items():
+        assert simulation.tax_benefit_system.parameters.gov(year) is node
 
 
 def test_a_systems_parameter_view_refreshes_after_an_in_place_leaf_update():

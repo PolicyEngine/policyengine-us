@@ -1,30 +1,16 @@
 """Formula branches that calculate one period, under overridden inputs.
 
-A policyengine-core branch starts from every array its parent has cached when
-the branch is created and never sees the parent's later calculations, and
-``set_input`` on the branch stores the new value without clearing anything
-that was calculated from the old one. A branch therefore answers any variable
-its parent had already calculated with the parent's value, whatever the
-branch's inputs say. A branch kept from another period also answers this
-period from a copy taken before any of this period was calculated, unlike the
-branch a simulation calculating only this period would create, so a later
-year came out differently when an earlier year had been calculated first.
-
-``get_override_branch`` makes the override reach every value the branch
-calculates:
+A Core branch snapshots its parent's inputs and results. Core's ``set_input``
+invalidates calculated results in that branch while preserving its supplied
+inputs, so this module does not inspect or clear Core storage. It controls the
+lifetime of formula-specific branches:
 
 - A branch serves one period. Asked for another period, it is created again
   from the parent as the parent stands then, as a simulation calculating only
   that period would create it.
-- When the branch is created, it keeps the parent's cache only if the parent
-  has no value yet for any overridden variable and period. A cached value
-  cannot have been calculated from a value that did not exist, so the
-  parent's cache is then safe to share; this is the usual case, where a
-  formula branches while its parent is still calculating the variable the
-  branch overrides. Otherwise the branch drops every array it copied except
-  inputs, each for the periods it was set for, and calculates the rest
-  itself.
 - A branch reused within its period with different inputs is created again.
+- A formula branch is created again if its parent's supplied-input revision
+  changes. Existing named branch snapshots are otherwise left untouched.
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
@@ -34,6 +20,7 @@ and deletes the variables it recalculates.
 from typing import Dict, Tuple, Union
 
 import numpy as np
+from policyengine_core.data_storage import CachedArrayEntry
 from policyengine_core.periods import Period
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations import Simulation
@@ -48,23 +35,6 @@ def _overrides(period: Period, inputs: Dict[str, Override]):
             yield variable, to_period(input_period), np.asarray(value)
         else:
             yield variable, period, np.asarray(value)
-
-
-def _is_known(simulation: Simulation, variable: str, period: Period) -> bool:
-    holder = simulation.get_holder(variable)
-    if holder.variable.is_neutralized:
-        return False
-    return holder.get_array(period, simulation.branch_name) is not None
-
-
-def drop_inherited_values(branch: Simulation) -> None:
-    """Delete every array ``branch`` holds except inputs.
-
-    An array is kept only if ``set_input`` stored it, on this branch or one it
-    reads, for that variable and period. A value calculated for one period is
-    dropped even when the same variable is an input for another period.
-    """
-    branch.clear_calculated_results()
 
 
 def get_override_branch(
@@ -89,22 +59,22 @@ def get_override_branch(
     branch = simulation.branches.get(name)
     if branch is not None and (
         getattr(branch, "branch_period", None) != period
+        or getattr(branch, "branch_parent_input_revision", None)
+        != simulation.input_revision
         or not _same_overrides(branch, overrides)
     ):
         del simulation.branches[name]
         branch = None
     if branch is None:
-        parent_knows_override = any(
-            _is_known(simulation, variable, input_period)
-            for variable, input_period, _ in overrides
-        )
         branch = simulation.get_branch(name)
         branch.branch_period = period
-        if parent_knows_override:
-            drop_inherited_values(branch)
+        branch.branch_parent_input_revision = simulation.input_revision
         for variable, input_period, value in overrides:
             branch.set_input(variable, input_period, value)
-        branch.branch_overrides = overrides
+        branch.branch_overrides = tuple(
+            (variable, input_period, CachedArrayEntry.from_value(value).read())
+            for variable, input_period, value in overrides
+        )
     return branch
 
 

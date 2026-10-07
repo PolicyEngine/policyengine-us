@@ -9,6 +9,9 @@ tax-benefit system.
 import numpy as np
 import pandas as pd
 import pytest
+from policyengine_core.entities import Entity
+from policyengine_core.simulations import Simulation as CoreSimulation
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
 from policyengine_us.data.dataset_schema import USSingleYearDataset
 
@@ -282,18 +285,23 @@ def make_mock_super_init(system_module, captured=None):
         ds = kwargs.get("dataset")
         if captured is not None:
             captured[0] = ds
+        # Initialize Core through its real constructor, without loading the
+        # intercepted dataset or rebuilding the full US variable registry.
+        minimal = TaxBenefitSystem([Entity("person", "people", "Person", "")])
+        previous_default = self.default_dataset
+        self.default_dataset = None
+        try:
+            CoreSimulation.__init__(
+                self,
+                tax_benefit_system=minimal,
+                populations=minimal.instantiate_entities(),
+            )
+        finally:
+            self.default_dataset = previous_default
         self.dataset = ds
         self.tax_benefit_system = kwargs.get("tax_benefit_system", system_module.system)
-        self.populations = self.tax_benefit_system.instantiate_entities()
-        for population in self.populations.values():
-            population.simulation = self
-        self._user_input_keys = set()
-        # Core's __init__ sets these before the country's __init__ resumes.
-        self.trace = False
-        self.branches = {}
-        self.baseline = None
+        self.build_from_populations(self.tax_benefit_system.instantiate_entities())
         self.is_over_dataset = True
-        self.input_variables = []
         self.get_holder = lambda name: MockHolder()
         self.set_input = lambda *a, **kw: None
         self.apply_reform = lambda r: None

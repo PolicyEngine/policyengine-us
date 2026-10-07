@@ -170,7 +170,9 @@ def test_ordinary_simulation_shares_default_policy_state():
     # Same parameter tree and the same warm at-instant caches: no clone ran.
     assert policy is not system
     assert policy.parameters is system.parameters
-    assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
+    assert policy.get_parameters_at_instant("2024-01-01") is (
+        system.get_parameters_at_instant("2024-01-01")
+    )
     # Entities are private and bound to this simulation's own registry: an
     # entity resolves variable names through the system it is bound to, so
     # sharing the shared instance's entities would send every holder lookup to
@@ -216,10 +218,8 @@ def test_ordinary_simulation_shares_default_policy_state():
     later = Simulation(situation=single_person_situation())
     assert later.spm_provenance()["years"] == {}
     # The second simulation reads the at-instant tree the first one built.
-    assert system.parameters._at_instant_cache
-    assert (
-        later.tax_benefit_system.parameters._at_instant_cache
-        is system.parameters._at_instant_cache
+    assert later.tax_benefit_system.parameters("2024-01-01") is (
+        system.parameters("2024-01-01")
     )
 
 
@@ -277,7 +277,7 @@ def test_clone_can_add_a_variable_without_mutating_original():
     assert branch.calculate("clone_only_income", 2024)[0] == 456
     assert clone.calculate("clone_only_income", 2024)[0] == 123
     assert "clone_only_income" not in original.tax_benefit_system.variables
-    assert not any(key[0] == "clone_only_income" for key in original._user_input_keys)
+    assert original.supplied_input_periods("clone_only_income") == []
 
 
 def test_reform_only_input_does_not_leak_into_baseline_cache_invalidation():
@@ -289,7 +289,7 @@ def test_reform_only_input_does_not_leak_into_baseline_cache_invalidation():
     assert simulation.calculate("clone_only_income", 2024)[0] == 123
     baseline = simulation.baseline
     assert "clone_only_income" not in baseline.input_variables
-    assert not any(key[0] == "clone_only_income" for key in baseline._user_input_keys)
+    assert baseline.supplied_input_periods("clone_only_income") == []
     baseline.apply_reform(())
     assert baseline.calculate("income_tax", 2024)[0] == 4_016
     assert simulation.calculate("clone_only_income", 2024)[0] == 123

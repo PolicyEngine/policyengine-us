@@ -114,15 +114,15 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables(*build_policyengine_variables())
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
-        self.parameters = set_irs_uprating_parameter(self.parameters)
-        self.parameters = homogenize_parameter_structures(
-            self.parameters, self.variables
+        self.replace_parameters(set_irs_uprating_parameter(self.parameters))
+        self.replace_parameters(
+            homogenize_parameter_structures(self.parameters, self.variables)
         )
-        self.parameters = propagate_parameter_metadata(self.parameters)
-        self.parameters = interpolate_parameters(self.parameters)
+        self.replace_parameters(propagate_parameter_metadata(self.parameters))
+        self.replace_parameters(interpolate_parameters(self.parameters))
         add_per_capita_parameters_for_parameter_uprating(self.parameters)
-        self.parameters = uprate_parameters(self.parameters)
-        self.parameters = propagate_parameter_metadata(self.parameters)
+        self.replace_parameters(uprate_parameters(self.parameters))
+        self.replace_parameters(propagate_parameter_metadata(self.parameters))
         add_default_uprating(self)
 
         # Backdated before any reform is applied. Backdating copies each
@@ -131,8 +131,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # value that starts on or before that first date back to that year,
         # and a reform ending before that date would leave the years between
         # the two undefined.
-        self.parameters = backdate_parameters(
-            self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+        self.replace_parameters(
+            backdate_parameters(
+                self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+            )
         )
 
         if reform:
@@ -148,8 +150,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             # Those it only updated already have a value dated by the start of
             # FIRST_MODELED_YEAR, and ``Parameter.update`` never removes
             # values dated before the period it sets, so they keep it.
-            self.parameters = backdate_parameters(
-                self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+            self.replace_parameters(
+                backdate_parameters(
+                    self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+                )
             )
 
         structural_reform = create_structural_reforms_from_parameters(

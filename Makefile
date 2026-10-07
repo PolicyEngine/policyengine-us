@@ -19,7 +19,8 @@ TESTS := policyengine_us/tests
 # files and runs every other Python test in REST_PYTHON_GROUPS below.
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
-	$(TESTS)/core/test_spm_system.py
+	$(TESTS)/core/test_spm_system.py \
+	$(TESTS)/core/test_core_cache_contract.py
 # The remaining Python tests run as one pytest process per group, one after
 # another, so each exit releases its heap before the next group starts. As a
 # single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M

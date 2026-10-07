@@ -201,6 +201,15 @@ def test_groups_collect_each_file_of_the_old_single_process_once(groups, referen
     assert not problems, "\n".join(problems)
 
 
+def test_core_cache_contract_runs_only_in_the_spm_process(groups):
+    path = "policyengine_us/tests/core/test_core_cache_contract.py"
+    (spm,) = dry_run("test-other-python-spm")
+    assert spm.count(path) == 1
+    assert collected_files(spm[1:]).count(path) == 1
+    for group in groups.values():
+        assert f"--ignore={path}" in group["args"]
+
+
 def test_each_group_writes_reports_the_rest_job_uploads(groups, report_dir):
     reports = [report for spec in groups.values() for report in spec["reports"]]
     assert len(set(reports)) == len(reports), reports

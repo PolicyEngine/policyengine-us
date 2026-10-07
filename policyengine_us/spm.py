@@ -10,7 +10,7 @@ from collections.abc import Mapping
 from contextlib import contextmanager
 from copy import copy, deepcopy
 from functools import lru_cache
-from inspect import ismethod, signature
+from inspect import signature
 
 from policyengine_core import periods as periods_
 from policyengine_core.simulations import Simulation as CoreSimulation
@@ -387,7 +387,7 @@ class SharedParameterPolicy:
     directly, bypassing ``Reform.__init__``'s defensive clone - and a mutated
     shared tree changes unrelated simulations, including ones already built.
 
-    So the tree is copy-on-write. Reform application arms the read barrier;
+    So the tree is copy-on-write. Reform application enables a read check;
     the first read of ``parameters`` inside that window takes a private clone
     through core, leaving the lending system's tree and warm caches untouched.
     Cloning rebuilds every node of a 130,000-parameter tree and takes seconds,
@@ -435,7 +435,7 @@ class SharedParameterPolicy:
 
     @contextmanager
     def detaching_parameters(self):
-        """Arm the copy-on-write barrier for the duration of a reform."""
+        """Enable copy-on-write parameter access for the duration of a reform."""
         previous = self.__dict__.get("detaching_shared_parameters", False)
         self.__dict__["detaching_shared_parameters"] = True
         try:
@@ -484,7 +484,7 @@ class SharedParameterPolicy:
         policy.__dict__.pop("shares_parameters_with_lender", None)
         policy.__dict__.pop("detaching_shared_parameters", None)
         policy.__class__ = type(self).shared_policy_base
-        policy.parameters = tree
+        policy.replace_parameters(tree)
         return policy
 
 
@@ -628,51 +628,59 @@ class SPMSimulationMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
-        self._rebind_holders()
+        self._rebind_policy_family()
         # Every input path - situation builder, dataset loader, direct
         # set_input - has landed in the holder by now.
         self._record_county_input_types()
 
-    def _rebind_holders(self):
-        """Bind populations and cached holders to their branch's policy state."""
-        self.tax_benefit_system.simulation = self
-        variables = self.tax_benefit_system.variables
-        for entity in self.tax_benefit_system.entities:
-            population = self.populations[entity.key]
-            population.entity = entity
-            for name, holder in list(population._holders.items()):
-                if name in variables:
-                    holder.variable = variables[name]
-                else:
-                    # A reform-only variable has no holder in baseline policy.
-                    del population._holders[name]
-        # Core shallow-copies this metadata; detach it before pruning inputs
-        # that exist only in the reform, so later cache invalidation is valid.
-        self.result_cache.replace_supplied_inputs(
-            {key for key in self.result_cache.supplied_inputs if key[0] in variables}
-        )
-        self.input_variables = [
-            name for name in self.input_variables if name in variables
-        ]
-        for branch in self.branches.values():
-            branch._rebind_holders()
+    def _rebind_policy_family(self):
+        """Use Core's ownership API after this family's policy systems change."""
+        for simulation in self._simulation_family():
+            simulation.rebind_tax_benefit_system(set_simulation_backreference=True)
 
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
+        previous_variables = dict(policy.variables)
         detaching = getattr(policy, "detaching_parameters", None)
         if detaching is None or policy.detaching_shared_parameters:
             # Either an ordinary system, or core recursing through a tuple of
             # reforms into this override again. Reading ``parameters`` inside
-            # the armed window would itself trip the barrier and clone the
+            # the active mutation context would itself clone the
             # tree, which is exactly what a variable-only reform must not pay.
             super().apply_reform(reform)
-            self._rebind_holders()
+            self._rebind_policy_family()
+            self._refresh_shared_variable_policies(previous_variables)
             return
         previous_children = getattr(policy.parameters, "children", None)
         with detaching():
             super().apply_reform(reform)
         self._adopt_detached_parameters(previous_children)
-        self._rebind_holders()
+        self._rebind_policy_family()
+        self._refresh_shared_variable_policies(previous_variables)
+
+    def _refresh_shared_variable_policies(self, previous_variables):
+        """Invalidate only simulations using this deliberately shared registry.
+
+        Core owns each simulation's results independently. A variable reform
+        still updates the registry shared by US formula branches, so the
+        country explicitly names the simulations that must use its new rules.
+        Parameter-only changes do not invalidate their independent input and
+        result snapshots through this path.
+        """
+        variables = self.tax_benefit_system.variables
+        if variables.keys() == previous_variables.keys() and all(
+            variable is previous_variables[name] for name, variable in variables.items()
+        ):
+            return
+        root = self
+        while getattr(root, "parent_branch", None) is not None:
+            root = root.parent_branch
+        for simulation in root._simulation_family():
+            if simulation is not self and (
+                simulation.tax_benefit_system.variables is variables
+            ):
+                simulation.rebind_tax_benefit_system(set_simulation_backreference=True)
+                simulation.clear_calculated_results()
 
     def _adopt_detached_parameters(self, previous_children):
         """Move branches off the pre-reform tree onto the detached copy.
@@ -700,6 +708,7 @@ class SPMSimulationMixin:
                 # The detached tree now has a second reader.
                 mark_tree_shared(detached)
                 policy.share_parameters_from(self.tax_benefit_system)
+                branch.clear_calculated_results()
             branch._adopt_detached_parameters(previous_children)
 
     @property
@@ -768,6 +777,7 @@ class SPMSimulationMixin:
             # Core branches may share policy state, but each calculation's
             # receipt belongs to that simulation's provider.
             cloned.tax_benefit_system = copy(self.tax_benefit_system)
+            cloned.tax_benefit_system.share_parameters_from(self.tax_benefit_system)
             # Two systems now read this tree, so neither may write to it in
             # place: a branch's reform must not rewrite its parent's policy.
             mark_tree_shared(getattr(cloned.tax_benefit_system, "parameters", None))
@@ -776,26 +786,8 @@ class SPMSimulationMixin:
                     copy_receipts=True
                 )
             )
-        cloned._rebind_holders()
-        self._rebind_method_aliases(cloned)
+        cloned._rebind_policy_family()
         return cloned
-
-    def _rebind_method_aliases(self, cloned):
-        """Point copied bound-method aliases at the clone, not the original.
-
-        Core keeps backwards-compatibility aliases as bound methods on the
-        instance (``self.calc = self.calculate``, ``self.df =
-        self.calculate_dataframe``) and its ``clone`` copies the instance
-        dictionary verbatim, so every alias on the clone still called the
-        original simulation. ``clone.calc(...)`` therefore returned the
-        original's values under the original's policy, and recorded the
-        original's SPM receipts, while ``clone.calculate(...)`` - documented as
-        the same call - returned the clone's. Rebind by method name so an alias
-        core adds later is repaired too.
-        """
-        for name, value in list(cloned.__dict__.items()):
-            if ismethod(value) and value.__self__ is self:
-                cloned.__dict__[name] = getattr(cloned, value.__func__.__name__)
 
     def _record_county_input_types(self, period=None):
         """Tell this simulation's providers which counties were not text.

@@ -4,12 +4,10 @@ Several formulas compare a tax unit's liability under alternative choices by
 calculating it in a branch with one input overridden: itemizing or not
 (``tax_unit_itemizes``), Delaware and Virginia EITC refundability, the Idaho
 aged or disabled credit or deduction, Missouri TANF caretaker inclusion and
-Medicaid for SSI state supplements. A policyengine-core branch starts as a copy
-of every array its parent has cached, and setting an input on it clears none
-of them, so a value the parent calculated from the old input answers for the
-branch. ``get_override_branch`` drops the copied values when the parent has
-already calculated the overridden input, and creates the branch again for each
-period; ``get_branch_for_period`` is the same without inputs.
+Medicaid for SSI state supplements. A Core branch snapshots its parent's inputs
+and results. Core now invalidates calculated values when an input changes;
+``get_override_branch`` controls branch reuse for the requested period and
+overrides. ``get_branch_for_period`` is the same without inputs.
 
 The non-refundable CTC used to be limited by the tax liability recomputed
 without the SALT deduction, in a "no_salt" branch. The branch usually inherited
@@ -46,7 +44,6 @@ from policyengine_core.periods import period
 
 from policyengine_us import Simulation
 from policyengine_us.tools.period_branch import (
-    drop_inherited_values,
     get_branch_for_period,
     get_override_branch,
 )
@@ -484,12 +481,12 @@ def test_branches_with_inputs_in_other_years_match_fresh_simulations(
     ),
     head_input=st.sampled_from([None, "situation", "branch"]),
 )
-def test_drop_inherited_values_keeps_exactly_the_input_keys(
+def test_clear_calculated_results_keeps_exactly_the_input_keys(
     households, situation_inputs, branch_inputs, calculated, head_input
 ):
     # Inputs in random years, on the simulation (from the situation) and on
     # a branch of it; values calculated in random years on both. A branch of
-    # that branch, after drop_inherited_values, holds each input for the
+    # that branch, after clear_calculated_results, holds each input for the
     # period it was set for, the nearer branch's first, and nothing else.
     n = len(households)
     situation = _with_tax_unit_inputs(
@@ -518,7 +515,7 @@ def test_drop_inherited_values_keeps_exactly_the_input_keys(
     for variable, year in calculated:
         parent.calculate(variable, year)
     child = parent.get_branch("child")
-    drop_inherited_values(child)
+    child.clear_calculated_results()
     for variable in MIXED_YEAR_INPUTS + [
         "tax_unit_itemizes",
         "income_tax",
@@ -598,7 +595,7 @@ def test_get_branch_for_period_is_the_branch_without_inputs(households):
     assert get_branch_for_period(later, "pinned_branch", 2025) is later
 
 
-def test_drop_inherited_values_keeps_inputs_only(households):
+def test_clear_calculated_results_keeps_inputs_only(households):
     n = len(households)
     itemizes = np.ones(n, dtype=bool)
     simulation = Simulation(situation=_situation(households))
@@ -607,7 +604,7 @@ def test_drop_inherited_values_keeps_inputs_only(households):
     parent = simulation.get_branch("parent_with_input")
     parent.set_input("tax_unit_itemizes", YEAR, itemizes)
     child = parent.get_branch("child")
-    drop_inherited_values(child)
+    child.clear_calculated_results()
     # Inputs survive: the situation's (its employment income is stored as
     # employment_income_before_lsr) and the one set on the parent branch.
     np.testing.assert_array_equal(
