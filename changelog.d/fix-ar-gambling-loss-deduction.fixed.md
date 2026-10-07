@@ -1,0 +1,1 @@
+Count gambling winnings in Arkansas gross income and deduct Arkansas gambling losses up to those winnings, outside the 2% floor on miscellaneous itemized deductions (Ark. Code § 26-51-424(a)(2)(B), Act 155 of 2017).
