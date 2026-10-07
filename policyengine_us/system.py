@@ -242,6 +242,10 @@ def _rebuild_baseline_branch(simulation):
     rebuilt.trace = simulation.trace
     rebuilt.tracer = simulation.tracer
     rebuilt.tax_benefit_system = baseline.tax_benefit_system
+    # Cloning bound holders to reform variables. Restoring policy must also
+    # restore those bindings and remove inputs that exist only in the reform.
+    rebuilt._rebind_holders()
+    rebuilt._isolate_parameter_tracing()
     simulation.baseline = rebuilt
 
 

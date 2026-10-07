@@ -134,6 +134,26 @@ def test_reform_baseline_and_clones_calculate_original_tax(simulation_type):
         assert clone.tax_benefit_system.simulation is clone
 
 
+def test_rebuilt_baseline_preserves_tracing_isolation():
+    situation = single_person_situation()
+    situation["people"]["person"]["employment_income"] = {2024: 50_000}
+    changed = Simulation(situation=situation, reform=UserReform, trace=True)
+    baseline = changed.baseline
+    policy = baseline.tax_benefit_system
+
+    assert policy.simulation is baseline
+    assert baseline.trace
+    assert baseline.tracer is changed.tracer
+    assert policy.parameters is not changed.tax_benefit_system.parameters
+    assert policy.parameters.trace
+    assert policy.parameters.tracer is baseline.tracer
+    assert policy.parameters.branch_name == "baseline"
+    assert system.parameters.trace is False
+    assert system.parameters.tracer is None
+    np.testing.assert_array_equal(baseline.calculate("income_tax", 2024), 4_016)
+    np.testing.assert_array_equal(changed.calculate("income_tax", 2024), 0)
+
+
 def _parameter_fingerprint(system):
     """Digest every authored parameter value, so a shared-tree edit is visible."""
     digest = hashlib.sha256()
