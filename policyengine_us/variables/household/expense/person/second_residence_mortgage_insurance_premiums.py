@@ -17,5 +17,5 @@ class second_residence_mortgage_insurance_premiums(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#h_3_E",
-        "https://www.law.cornell.edu/uscode/text/26/163#h_4_A",
+        "https://www.law.cornell.edu/uscode/text/26/163#h_5_A",
     ]

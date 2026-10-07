@@ -17,7 +17,7 @@ class second_residence_interest_deduction(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#h_3",
-        "https://www.law.cornell.edu/uscode/text/26/163#h_4_A",
+        "https://www.law.cornell.edu/uscode/text/26/163#h_5_A",
         "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=16",
     ]
 

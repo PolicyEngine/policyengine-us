@@ -8,7 +8,7 @@ One module fixture builds one Simulation of Kentucky tax units in 2025 and
 - principal_only: second-residence inputs set to zero;
 - omitted: second-residence inputs left out entirely.
 
-Federal law pools both qualified residences (26 U.S.C. 163(h)(4)(A)), so the
+Federal law pools both qualified residences (26 U.S.C. 163(h)(5)(A)), so the
 federal deduction cannot depend on the residence split. KRS 141.019(2)(j)
 limits Kentucky's deduction to the principal residence from 2026, so from
 then on Kentucky itemized deductions cannot depend on second-residence

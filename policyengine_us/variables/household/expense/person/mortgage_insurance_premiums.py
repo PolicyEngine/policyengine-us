@@ -20,5 +20,5 @@ class mortgage_insurance_premiums(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/163#h_3_E",
-        "https://www.law.cornell.edu/uscode/text/26/163#h_4_E",
+        "https://www.law.cornell.edu/uscode/text/26/163#h_5_E",
     ]
