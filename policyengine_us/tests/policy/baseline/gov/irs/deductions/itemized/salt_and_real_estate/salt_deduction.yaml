@@ -113,3 +113,20 @@
         state_and_local_sales_or_income_tax: 0
   output:
     salt_deduction: 11_000
+
+- name: Income excluded under section 911 counts toward the cap phase-down
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 490_000
+        foreign_earned_income_exclusion: 20_000
+  output:
+    # 26 U.S.C. 164(b)(7)(B)(iv): modified AGI 510,000; 40,000 - 30% x 10,000.
+    salt_cap: 37_000
+    salt_deduction: 37_000

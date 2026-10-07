@@ -19,9 +19,11 @@ class salt_cap(Variable):
         p = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate
         max_cap = p.cap[filing_status]
         if p.phase_out.in_effect:
-            agi = tax_unit("adjusted_gross_income", period)
-            agi_excess = max_(0, agi - p.phase_out.threshold[filing_status])
-            phase_out = p.phase_out.rate * agi_excess
+            # 26 U.S.C. 164(b)(7)(B)(iv): modified adjusted gross income adds
+            # back income excluded under sections 911, 931 and 933.
+            magi = tax_unit("agi_plus_section_911_931_933_exclusions", period)
+            magi_excess = max_(0, magi - p.phase_out.threshold[filing_status])
+            phase_out = p.phase_out.rate * magi_excess
             # 26 USC 164(b)(6)(B) halves a separate filer's applicable
             # limitation amount after 164(b)(7)(B) reduces and floors it; only
             # the threshold is halved first (Schedule A SALT worksheet lines 5
