@@ -7,7 +7,8 @@ class medicaid_ltss_csra_resource_eligible(Variable):
     label = "Meets modeled Medicaid LTSS resource threshold"
     definition_period = MONTH
     documentation = (
-        "Tests trusted comprehensive LTSS countable-resource inputs. Texas "
+        "Tests comprehensive LTSS resources derived from each person's "
+        "own countable-resource inventory. Texas "
         "and Delaware use the SSI resource limits (1 TAC 358.323 and "
         "358.437; DSSM 20100.2.2 and 20300); Washington uses its own "
         "resource standard (WAC 182-513-1350). For an applicant with a "

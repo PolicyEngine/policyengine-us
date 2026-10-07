@@ -7,7 +7,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
 
@@ -20,7 +20,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+
   output:
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
 
@@ -33,8 +33,8 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_982
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 2_982
   output:
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
 
@@ -47,8 +47,8 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_983
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 2_983
   output:
     medicaid_ltss_financial_pathway: INSTITUTIONAL_MEDICALLY_NEEDY
 
@@ -61,8 +61,8 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: WA_COPES
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_982
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 2_982
   output:
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
 
@@ -75,15 +75,15 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_NEW_FREEDOM
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_982
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_982
       rsw_applicant:
         medicaid_ltss_setting: HCBS
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_RSW
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 4_000
         medicaid_ltss_medically_needy_expenses: 500
         medicaid_ltss_cost_of_care: 2_506
     families:
@@ -130,7 +130,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: UNKNOWN
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: UNMODELED
     is_medicaid_ltss_income_eligible: false
@@ -148,7 +148,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: WA_COPES
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: UNMODELED
     is_medicaid_ltss_financial_threshold_eligible: false
@@ -162,7 +162,7 @@
     is_ssi_aged_blind_disabled:
       2026: false
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: UNMODELED
     is_medicaid_ltss_financial_threshold_eligible: false
@@ -176,7 +176,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: UNMODELED
 
@@ -189,7 +189,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
   output:
     medicaid_ltss_financial_pathway: UNMODELED
     is_medicaid_ltss_financial_threshold_eligible: false
@@ -203,7 +203,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 0
+    medicaid_ltss_non_delaware_assistance_unit_size: 0
   output:
     medicaid_ltss_financial_pathway: UNMODELED
     is_medicaid_ltss_income_eligible: false
@@ -217,26 +217,38 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
       hcbs_named_waiver:
         medicaid_ltss_setting: HCBS
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_COPES
-        medicaid_ltss_assistance_unit_size: 1
       hcbs_no_waiver:
         medicaid_ltss_setting: HCBS
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+      institutional_couple_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
+        medicaid_ltss_individual_countable_resources: 0
     households:
       household:
-        members: [institutional_couple, hcbs_named_waiver, hcbs_no_waiver]
+        members: [institutional_couple, hcbs_named_waiver, hcbs_no_waiver, institutional_couple_spouse]
         state_code:
           2026: DE
+    marital_units:
+      institutional_couple:
+        members: [institutional_couple, institutional_couple_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+      hcbs_named_waiver:
+        members: [hcbs_named_waiver]
+      hcbs_no_waiver:
+        members: [hcbs_no_waiver]
   output:
-    medicaid_ltss_financial_pathway: [SPECIAL_INCOME, UNMODELED, UNMODELED]
+    medicaid_ltss_financial_pathway: [SPECIAL_INCOME, UNMODELED, UNMODELED, SPECIAL_INCOME]
 
 - name: Case 14, assistance-unit sizes above two or below zero are unmodeled.
   period: 2026-07
@@ -247,13 +259,13 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 3
+        medicaid_ltss_non_delaware_assistance_unit_size: 3
       negative_unit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: -1
+        medicaid_ltss_non_delaware_assistance_unit_size: -1
     households:
       household:
         members: [three_person_unit, negative_unit]
@@ -272,13 +284,13 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_COPES
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
       new_freedom:
         medicaid_ltss_setting: HCBS
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_NEW_FREEDOM
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
     households:
       household:
         members: [copes, new_freedom]

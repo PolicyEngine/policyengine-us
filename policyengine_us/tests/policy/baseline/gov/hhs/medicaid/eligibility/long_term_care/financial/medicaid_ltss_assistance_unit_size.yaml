@@ -1,0 +1,239 @@
+- name: Case 1, Delaware institutional units derive from duration and the favorable joint income-resource budget.
+  period: 2026-09
+  input:
+    people:
+      five_month_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      five_month_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      six_month_income_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      six_month_income_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      couple_income_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 3_000
+        medicaid_ltss_individual_countable_resources: 500
+      couple_income_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 0
+        medicaid_ltss_individual_countable_resources: 500
+      individual_resources_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 1_900
+      individual_resources_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 1_900
+      couple_resources_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 2_500
+      couple_resources_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 500
+      mixed_budget_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 3_000
+        medicaid_ltss_individual_countable_resources: 500
+      mixed_budget_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 0
+        medicaid_ltss_individual_countable_resources: 2_500
+      reversed_mixed_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 0
+        medicaid_ltss_individual_countable_resources: 2_500
+      reversed_mixed_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 3_000
+        medicaid_ltss_individual_countable_resources: 500
+      tie_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      tie_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_unearned_income: 1_000
+        medicaid_ltss_individual_countable_resources: 1_000
+    marital_units:
+      five_month:
+        members: [five_month_a, five_month_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 5
+      six_month_income:
+        members: [six_month_income_a, six_month_income_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      couple_income:
+        members: [couple_income_a, couple_income_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      individual_resources:
+        members: [individual_resources_a, individual_resources_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      couple_resources:
+        members: [couple_resources_a, couple_resources_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      mixed_budget:
+        members: [mixed_budget_a, mixed_budget_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      reversed_mixed:
+        members: [reversed_mixed_b, reversed_mixed_a]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+      tie:
+        members: [tie_a, tie_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 6
+    households:
+      delaware:
+        members:
+          [five_month_a, five_month_b, six_month_income_a, six_month_income_b,
+           couple_income_a, couple_income_b, individual_resources_a,
+           individual_resources_b, couple_resources_a, couple_resources_b,
+           mixed_budget_a, mixed_budget_b, reversed_mixed_b, reversed_mixed_a,
+           tie_a, tie_b]
+        state_code:
+          2026: DE
+  output:
+    # At five months couple budgeting is compulsory even if both individual
+    # budgets would pass. At exactly six months the favorable election applies.
+    medicaid_ltss_assistance_unit_size:
+      [2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1]
+    medicaid_ltss_countable_income:
+      [3_980, 3_980, 1_980, 1_980, 2_980, 2_980, 980, 980,
+       1_980, 1_980, 2_980, 2_980, 2_980, 2_980, 980, 980]
+    medicaid_ltss_countable_resources:
+      [2_000, 2_000, 1_000, 1_000, 1_000, 1_000, 1_900, 1_900,
+       3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 1_000, 1_000]
+    medicaid_ltss_special_income_limit:
+      [3_727.5, 3_727.5, 2_485, 2_485, 3_727.5, 3_727.5, 2_485, 2_485,
+       3_727.5, 3_727.5, 3_727.5, 3_727.5, 3_727.5, 3_727.5, 2_485, 2_485]
+
+    is_medicaid_ltss_income_eligible:
+      [false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    medicaid_ltss_csra_resource_eligible:
+      [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    is_medicaid_ltss_financial_threshold_eligible:
+      [false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+
+- name: Case 2, Delaware same-address HCBS couples use a couple budget regardless of institutional duration.
+  period: 2026-09
+  input:
+    people:
+      same_address_a:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+        is_ssi_aged_blind_disabled:
+          2026: true
+      same_address_b:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+        is_ssi_aged_blind_disabled:
+          2026: true
+      different_address_a:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+        is_ssi_aged_blind_disabled:
+          2026: true
+      different_address_b:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+        is_ssi_aged_blind_disabled:
+          2026: true
+    marital_units:
+      same_address:
+        members: [same_address_a, same_address_b]
+        medicaid_ltss_spouses_requesting_or_receiving_hcbs_at_same_address: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 12
+      different_address:
+        members: [different_address_a, different_address_b]
+        medicaid_ltss_spouses_requesting_or_receiving_hcbs_at_same_address: false
+    households:
+      delaware:
+        members: [same_address_a, same_address_b, different_address_a, different_address_b]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_assistance_unit_size: [2, 2, 1, 1]
+    medicaid_ltss_countable_income: [3_980, 3_980, 1_980, 1_980]
+    medicaid_ltss_countable_resources: [2_000, 2_000, 1_000, 1_000]
+    # The statutory budget unit does not add Delaware HCBS pathway coverage.
+    medicaid_ltss_financial_pathway: [UNMODELED, UNMODELED, UNMODELED, UNMODELED]
+
+- name: Case 3, Delaware defaults to individuals without shared-service facts and cannot create a couple from a single person.
+  period: 2026-09
+  input:
+    people:
+      married_a: {}
+      married_b: {}
+      single: {}
+      duration_unspecified_a: {}
+      duration_unspecified_b: {}
+    marital_units:
+      married:
+        members: [married_a, married_b]
+      single:
+        members: [single]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_requesting_or_receiving_hcbs_at_same_address: true
+      duration_unspecified:
+        members: [duration_unspecified_a, duration_unspecified_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+    households:
+      delaware:
+        members: [married_a, married_b, single, duration_unspecified_a, duration_unspecified_b]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_assistance_unit_size: [1, 1, 1, 2, 2]

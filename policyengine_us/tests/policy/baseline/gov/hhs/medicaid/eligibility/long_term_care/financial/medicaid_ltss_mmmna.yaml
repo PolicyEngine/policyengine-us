@@ -8,7 +8,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 0
       at_shelter_threshold:
@@ -16,7 +16,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 811.5
       high_shelter:
@@ -24,7 +24,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 2_173
     tax_units:
@@ -74,7 +74,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 0
       shelter_threshold:
@@ -82,7 +81,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 811.5
       maximum:
@@ -90,7 +88,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 2_173
     tax_units:
@@ -140,7 +137,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_811.5
       cent_below_threshold:
@@ -148,7 +145,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 811.49
     tax_units:
@@ -189,7 +186,6 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_has_community_spouse: false
     medicaid_ltss_community_spouse_shelter_expenses: 2_000
   output:
@@ -205,7 +201,7 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     medicaid_ltss_has_community_spouse: true
     medicaid_ltss_community_spouse_shelter_expenses: 2_000
   output:
@@ -222,7 +218,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_000
       delaware_spouse:
@@ -230,7 +226,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_000
     tax_units:
@@ -270,7 +265,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 3_000
       delaware_cent_above_cap:
@@ -278,7 +272,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 2_173.01
       texas_no_spouse:
@@ -286,7 +279,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: false
         medicaid_ltss_community_spouse_shelter_expenses: 2_000
       washington_no_spouse:
@@ -294,7 +287,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: false
         medicaid_ltss_community_spouse_shelter_expenses: 2_000
     households:
@@ -323,7 +316,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 0
       delaware_base:
@@ -331,7 +324,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 0
       washington_excess_shelter:
@@ -339,7 +331,7 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_000
     households:
@@ -369,7 +361,6 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_000
     households:

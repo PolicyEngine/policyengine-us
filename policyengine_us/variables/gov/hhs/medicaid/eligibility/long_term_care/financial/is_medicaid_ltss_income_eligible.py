@@ -8,7 +8,8 @@ class is_medicaid_ltss_income_eligible(Variable):
     definition_period = MONTH
     documentation = (
         "Tests only the income threshold for the selected modeled Medicaid "
-        "LTSS financial pathway. QIT-adjusted income and Washington medically "
+        "LTSS financial pathway. Gross earned and unearned income and QIT "
+        "deposits determine income after trust treatment; Washington medically "
         "needy expenses and cost of care are trusted inputs; this variable "
         "does not validate a trust, expense, service, or facility rate. The "
         "Washington institutional branch models the WAC 182-513-1395(4) "
@@ -22,14 +23,13 @@ class is_medicaid_ltss_income_eligible(Variable):
         "applies only to nursing facility residents (DSSM 20100.2.2); "
         "Delaware's 100%-of-SSI standard for hospital stays is unmodeled, "
         "so the institutional setting should not be used for a hospitalized "
-        "Delaware applicant. Delaware's $20 disregard, with the needs-based "
-        "carve-out and one disregard per couple, follows DSSM 20240.1 and "
-        "20990; it is skipped when "
-        "medicaid_ltss_income_disregards_already_applied marks the income "
-        "input as final countable income, which earned income of an "
-        "applicant without a community spouse requires because DSSM 20240.3 "
-        "deducts the $20 before the $65 and one-half earned-income "
-        "disregards."
+        "Delaware applicant. Delaware computes the $20 general exclusion "
+        "from non-needs-based unearned income first, carries any unused "
+        "part to earnings, "
+        "deducts $65, and counts half the earnings remainder (DSSM "
+        "20240.1 and 20240.3). There is one exclusion per couple budget. "
+        "Applicants with a community spouse receive only the eligible "
+        "$20 deduction (DSSM 20990)."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.236",
@@ -37,6 +37,7 @@ class is_medicaid_ltss_income_eligible(Variable):
         "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=1",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=1",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508",
     )
@@ -55,21 +56,8 @@ class is_medicaid_ltss_income_eligible(Variable):
         # keeps an unmodeled person from passing with zero income.
         special_income_limit = person("medicaid_ltss_special_income_limit", period)
 
-        needs_based_income = person("medicaid_ltss_needs_based_income", period)
-        non_needs_based_income = max_(income - needs_based_income, 0)
-        delaware_disregard = min_(
-            non_needs_based_income,
-            p.de.income.general_disregard,
-        )
-        disregards_already_applied = person(
-            "medicaid_ltss_income_disregards_already_applied", period
-        )
-        income_after_disregard = where(
-            (state == states.DE) & ~disregards_already_applied,
-            max_(income - delaware_disregard, 0),
-            income,
-        )
-        special_income_eligible = income_after_disregard <= special_income_limit
+        countable_income = person("medicaid_ltss_countable_income", period)
+        special_income_eligible = countable_income <= special_income_limit
 
         medically_needy_expenses = person(
             "medicaid_ltss_medically_needy_expenses", period

@@ -7,43 +7,43 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_981
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2981
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_982
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2982
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_983
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2983
       couple_below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 5_963
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 5963
       couple_at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 5_964
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 5964
       couple_above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 5_965
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 5965
     tax_units:
       tax_unit_below_limit:
         members: [below_limit]
@@ -109,36 +109,39 @@
         state_code:
           2026: TX
   output:
-    is_medicaid_ltss_income_eligible:
-      [true, true, false, true, true, false]
+    is_medicaid_ltss_income_eligible: [true, true, false, true, true, false]
 
-- name: Case 2, Texas valid QIT is sufficient when trusted adjusted income is at the limit.
+- name: Case 2, Texas income after actual QIT deposits can equal the limit.
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_982
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     state_code:
       2026: TX
+    medicaid_ltss_reported_gross_unearned_income: 4000
+    medicaid_ltss_unearned_income_deposited_to_qit: 1018
   output:
     is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_qit_adjusted_income: 2982
 
-- name: Case 3, Texas valid QIT is insufficient when trusted adjusted income remains above the limit.
+- name: Case 3, Texas income after actual QIT deposits above the limit fails.
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_983
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     state_code:
       2026: TX
+    medicaid_ltss_reported_gross_unearned_income: 4000
+    medicaid_ltss_unearned_income_deposited_to_qit: 1017
   output:
     is_medicaid_ltss_income_eligible: false
+    medicaid_ltss_qit_adjusted_income: 2983
 
 - name: Case 4, Delaware needs-based income receives no general disregard.
   period: 2026-07
@@ -149,49 +152,61 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_484
-        medicaid_ltss_needs_based_income: 2_484
+        medicaid_ltss_needs_based_income: 2484
+        medicaid_ltss_reported_gross_unearned_income: 2484
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_485
-        medicaid_ltss_needs_based_income: 2_485
+        medicaid_ltss_needs_based_income: 2485
+        medicaid_ltss_reported_gross_unearned_income: 2485
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_486
-        medicaid_ltss_needs_based_income: 2_486
+        medicaid_ltss_needs_based_income: 2486
+        medicaid_ltss_reported_gross_unearned_income: 2486
       couple_below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_727
-        medicaid_ltss_needs_based_income: 3_727
+        medicaid_ltss_needs_based_income: 3727
+        medicaid_ltss_reported_gross_unearned_income: 3727
       couple_at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_727.5
-        medicaid_ltss_needs_based_income: 3_727.5
+        medicaid_ltss_needs_based_income: 3727.5
+        medicaid_ltss_reported_gross_unearned_income: 3727.5
       couple_above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_728
-        medicaid_ltss_needs_based_income: 3_728
+        medicaid_ltss_needs_based_income: 3728
+        medicaid_ltss_reported_gross_unearned_income: 3728
+      couple_below_limit_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
+      couple_at_limit_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
+      couple_above_limit_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
     tax_units:
       tax_unit_below_limit:
         members: [below_limit]
@@ -200,11 +215,11 @@
       tax_unit_above_limit:
         members: [above_limit]
       tax_unit_couple_below_limit:
-        members: [couple_below_limit]
+        members: [couple_below_limit, couple_below_limit_spouse]
       tax_unit_couple_at_limit:
-        members: [couple_at_limit]
+        members: [couple_at_limit, couple_at_limit_spouse]
       tax_unit_couple_above_limit:
-        members: [couple_above_limit]
+        members: [couple_above_limit, couple_above_limit_spouse]
     marital_units:
       marital_unit_below_limit:
         members: [below_limit]
@@ -213,11 +228,14 @@
       marital_unit_above_limit:
         members: [above_limit]
       marital_unit_couple_below_limit:
-        members: [couple_below_limit]
+        members: [couple_below_limit, couple_below_limit_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
       marital_unit_couple_at_limit:
-        members: [couple_at_limit]
+        members: [couple_at_limit, couple_at_limit_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
       marital_unit_couple_above_limit:
-        members: [couple_above_limit]
+        members: [couple_above_limit, couple_above_limit_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
     spm_units:
       spm_unit_below_limit:
         members: [below_limit]
@@ -226,11 +244,11 @@
       spm_unit_above_limit:
         members: [above_limit]
       spm_unit_couple_below_limit:
-        members: [couple_below_limit]
+        members: [couple_below_limit, couple_below_limit_spouse]
       spm_unit_couple_at_limit:
-        members: [couple_at_limit]
+        members: [couple_at_limit, couple_at_limit_spouse]
       spm_unit_couple_above_limit:
-        members: [couple_above_limit]
+        members: [couple_above_limit, couple_above_limit_spouse]
     households:
       household_below_limit:
         members: [below_limit]
@@ -245,20 +263,19 @@
         state_code:
           2026: DE
       household_couple_below_limit:
-        members: [couple_below_limit]
+        members: [couple_below_limit, couple_below_limit_spouse]
         state_code:
           2026: DE
       household_couple_at_limit:
-        members: [couple_at_limit]
+        members: [couple_at_limit, couple_at_limit_spouse]
         state_code:
           2026: DE
       household_couple_above_limit:
-        members: [couple_above_limit]
+        members: [couple_above_limit, couple_above_limit_spouse]
         state_code:
           2026: DE
   output:
-    is_medicaid_ltss_income_eligible:
-      [true, true, false, true, true, false]
+    is_medicaid_ltss_income_eligible: [true, true, false, true, true, false, true, true, false]
 
 - name: Case 5, Delaware applies the general disregard to ordinary income.
   period: 2026-07
@@ -269,49 +286,61 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_504
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 2504
       at_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_505
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 2505
       above_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_506
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 2506
       couple_below_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_747
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 3747
       couple_at_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_747.5
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 3747.5
       couple_above_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 2
-        medicaid_ltss_qit_adjusted_income: 3_748
         medicaid_ltss_needs_based_income: 0
+        medicaid_ltss_reported_gross_unearned_income: 3748
+      couple_below_limit_after_disregard_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
+      couple_at_limit_after_disregard_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
+      couple_above_limit_after_disregard_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 0
     tax_units:
       tax_unit_below_limit_after_disregard:
         members: [below_limit_after_disregard]
@@ -320,11 +349,11 @@
       tax_unit_above_limit_after_disregard:
         members: [above_limit_after_disregard]
       tax_unit_couple_below_limit_after_disregard:
-        members: [couple_below_limit_after_disregard]
+        members: [couple_below_limit_after_disregard, couple_below_limit_after_disregard_spouse]
       tax_unit_couple_at_limit_after_disregard:
-        members: [couple_at_limit_after_disregard]
+        members: [couple_at_limit_after_disregard, couple_at_limit_after_disregard_spouse]
       tax_unit_couple_above_limit_after_disregard:
-        members: [couple_above_limit_after_disregard]
+        members: [couple_above_limit_after_disregard, couple_above_limit_after_disregard_spouse]
     marital_units:
       marital_unit_below_limit_after_disregard:
         members: [below_limit_after_disregard]
@@ -333,11 +362,14 @@
       marital_unit_above_limit_after_disregard:
         members: [above_limit_after_disregard]
       marital_unit_couple_below_limit_after_disregard:
-        members: [couple_below_limit_after_disregard]
+        members: [couple_below_limit_after_disregard, couple_below_limit_after_disregard_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
       marital_unit_couple_at_limit_after_disregard:
-        members: [couple_at_limit_after_disregard]
+        members: [couple_at_limit_after_disregard, couple_at_limit_after_disregard_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
       marital_unit_couple_above_limit_after_disregard:
-        members: [couple_above_limit_after_disregard]
+        members: [couple_above_limit_after_disregard, couple_above_limit_after_disregard_spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
     spm_units:
       spm_unit_below_limit_after_disregard:
         members: [below_limit_after_disregard]
@@ -346,11 +378,11 @@
       spm_unit_above_limit_after_disregard:
         members: [above_limit_after_disregard]
       spm_unit_couple_below_limit_after_disregard:
-        members: [couple_below_limit_after_disregard]
+        members: [couple_below_limit_after_disregard, couple_below_limit_after_disregard_spouse]
       spm_unit_couple_at_limit_after_disregard:
-        members: [couple_at_limit_after_disregard]
+        members: [couple_at_limit_after_disregard, couple_at_limit_after_disregard_spouse]
       spm_unit_couple_above_limit_after_disregard:
-        members: [couple_above_limit_after_disregard]
+        members: [couple_above_limit_after_disregard, couple_above_limit_after_disregard_spouse]
     households:
       household_below_limit_after_disregard:
         members: [below_limit_after_disregard]
@@ -365,20 +397,19 @@
         state_code:
           2026: DE
       household_couple_below_limit_after_disregard:
-        members: [couple_below_limit_after_disregard]
+        members: [couple_below_limit_after_disregard, couple_below_limit_after_disregard_spouse]
         state_code:
           2026: DE
       household_couple_at_limit_after_disregard:
-        members: [couple_at_limit_after_disregard]
+        members: [couple_at_limit_after_disregard, couple_at_limit_after_disregard_spouse]
         state_code:
           2026: DE
       household_couple_above_limit_after_disregard:
-        members: [couple_above_limit_after_disregard]
+        members: [couple_above_limit_after_disregard, couple_above_limit_after_disregard_spouse]
         state_code:
           2026: DE
   output:
-    is_medicaid_ltss_income_eligible:
-      [true, true, false, true, true, false]
+    is_medicaid_ltss_income_eligible: [true, true, false, true, true, false, true, true, false]
 
 - name: Case 6, Delaware does not disregard needs-based income above the limit.
   period: 2026-07
@@ -387,11 +418,10 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 2_505
-    medicaid_ltss_needs_based_income: 2_505
+    medicaid_ltss_needs_based_income: 2505
     state_code:
       2026: DE
+    medicaid_ltss_reported_gross_unearned_income: 2505
   output:
     is_medicaid_ltss_income_eligible: false
 
@@ -404,22 +434,22 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_981
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2981
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_982
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2982
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_983
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2983
     tax_units:
       tax_unit_below_limit:
         members: [below_limit]
@@ -455,8 +485,7 @@
         state_code:
           2026: WA
   output:
-    medicaid_ltss_financial_pathway:
-      [SPECIAL_INCOME, SPECIAL_INCOME, INSTITUTIONAL_MEDICALLY_NEEDY]
+    medicaid_ltss_financial_pathway: [SPECIAL_INCOME, SPECIAL_INCOME, INSTITUTIONAL_MEDICALLY_NEEDY]
     is_medicaid_ltss_income_eligible: [true, true, false]
 
 - name: Case 8, Washington institutional medically needy income can equal cost of care.
@@ -466,12 +495,12 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 4_000
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     medicaid_ltss_medically_needy_expenses: 500
-    medicaid_ltss_cost_of_care: 3_500
+    medicaid_ltss_cost_of_care: 3500
     state_code:
       2026: WA
+    medicaid_ltss_reported_gross_unearned_income: 4000
   output:
     is_medicaid_ltss_income_eligible: true
 
@@ -482,12 +511,12 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 4_000
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     medicaid_ltss_medically_needy_expenses: 500
-    medicaid_ltss_cost_of_care: 3_499
+    medicaid_ltss_cost_of_care: 3499
     state_code:
       2026: WA
+    medicaid_ltss_reported_gross_unearned_income: 4000
   output:
     is_medicaid_ltss_income_eligible: false
 
@@ -500,8 +529,8 @@
     is_ssi_aged_blind_disabled:
       2026: true
     medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 0
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 0
   output:
     is_medicaid_ltss_income_eligible: true
 
@@ -514,17 +543,15 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_480
-        medicaid_ltss_needs_based_income: 2_470
+        medicaid_ltss_needs_based_income: 2470
+        medicaid_ltss_reported_gross_unearned_income: 2480
       fails_with_partial_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_496
-        medicaid_ltss_needs_based_income: 2_486
+        medicaid_ltss_needs_based_income: 2486
+        medicaid_ltss_reported_gross_unearned_income: 2496
     tax_units:
       passes_with_partial_disregard_tax_unit:
         members: [passes_with_partial_disregard]
@@ -561,19 +588,19 @@
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_COPES
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_medically_needy_expenses: 500
-        medicaid_ltss_cost_of_care: 2_506
+        medicaid_ltss_cost_of_care: 2506
+        medicaid_ltss_reported_gross_unearned_income: 4000
       above_income_level:
         medicaid_ltss_setting: HCBS
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: WA_COPES
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_medically_needy_expenses: 500
-        medicaid_ltss_cost_of_care: 2_505
+        medicaid_ltss_cost_of_care: 2505
+        medicaid_ltss_reported_gross_unearned_income: 4000
     tax_units:
       at_income_level_tax_unit:
         members: [at_income_level]
@@ -599,8 +626,7 @@
         state_code:
           2026: WA
   output:
-    medicaid_ltss_financial_pathway:
-      [INSTITUTIONAL_MEDICALLY_NEEDY, INSTITUTIONAL_MEDICALLY_NEEDY]
+    medicaid_ltss_financial_pathway: [INSTITUTIONAL_MEDICALLY_NEEDY, INSTITUTIONAL_MEDICALLY_NEEDY]
     is_medicaid_ltss_income_eligible: [true, false]
 
 - name: Washington COPES medically needy income level follows SSI uprating in 2027.
@@ -612,63 +638,348 @@
     is_ssi_aged_blind_disabled:
       2027: true
     medicaid_ltss_waiver: WA_COPES
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_qit_adjusted_income: 4_000
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
     medicaid_ltss_medically_needy_expenses: 500
-    medicaid_ltss_cost_of_care: 2_500
+    medicaid_ltss_cost_of_care: 2500
+    medicaid_ltss_reported_gross_unearned_income: 4000
   output:
     medicaid_ltss_financial_pathway: INSTITUTIONAL_MEDICALLY_NEEDY
-    # Net income 4_000 - 500 - 2_500 = 1_000 exceeds the 2026 standard
-    # of 994 but is below the uprated one-person SSI federal benefit rate.
     is_medicaid_ltss_income_eligible: true
 
-- name: Case 13, final Delaware countable income receives no second disregard.
+- name: Case 13, Delaware computes ordered exclusions from raw earnings.
   period: 2026-07
   input:
     people:
       earned_at_limit:
-        # Gross earnings 5_055: (5_055 - 20 - 65) / 2 = 2_485.
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_485
-        medicaid_ltss_income_disregards_already_applied: true
+        # (5_055 - 20 - 65) / 2 = 2_485, exactly the individual limit.
+        medicaid_ltss_reported_gross_earned_income: 5_055
       earned_above_limit:
-        # Gross earnings 5_057: (5_057 - 20 - 65) / 2 = 2_486. Subtracting
-        # another $20 would give 2_466 and wrongly pass.
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_486
-        medicaid_ltss_income_disregards_already_applied: true
+        # (5_057 - 20 - 65) / 2 = 2_486, above the individual limit.
+        medicaid_ltss_reported_gross_earned_income: 5_057
       community_spouse_case:
-        # DSSM 20990: gross earnings 5_055 - 20 = 5_035, the sole deduction.
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
-        medicaid_ltss_qit_adjusted_income: 5_035
-        medicaid_ltss_income_disregards_already_applied: true
+        # DSSM 20990 permits only 5_055 - 20 = 5_035 for a community spouse case.
+        medicaid_ltss_reported_gross_earned_income: 5_055
       raw_unearned:
-        # 2_505 - 20 = 2_485.
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_waiver: NONE
-        medicaid_ltss_assistance_unit_size: 1
-        medicaid_ltss_qit_adjusted_income: 2_505
-        medicaid_ltss_income_disregards_already_applied: false
+        medicaid_ltss_reported_gross_unearned_income: 2505
+      community_spouse:
+        medicaid_ltss_reported_gross_unearned_income: 10000
     households:
       delaware:
-        members:
-          [earned_at_limit, earned_above_limit, community_spouse_case, raw_unearned]
+        members: [earned_at_limit, earned_above_limit, community_spouse_case, raw_unearned, community_spouse]
+        state_code:
+          2026: DE
+    marital_units:
+      earned_at_limit_unit:
+        members: [earned_at_limit]
+      earned_above_limit_unit:
+        members: [earned_above_limit]
+      community_spouses:
+        members: [community_spouse_case, community_spouse]
+      raw_unearned_unit:
+        members: [raw_unearned]
+  output:
+    is_medicaid_ltss_income_eligible: [true, false, false, true, false]
+    medicaid_ltss_countable_income: [2485, 2486, 5035, 2485, 9980]
+
+- name: Delaware excludes ordinary unearned income before halving earnings
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 1000
+    medicaid_ltss_reported_gross_unearned_income: 100
+    medicaid_ltss_needs_based_income: 0
+  output:
+    medicaid_ltss_individual_countable_income: 547.5
+    medicaid_ltss_countable_income: 547.5
+    is_medicaid_ltss_income_eligible: true
+
+- name: Delaware carries unused general exclusion to earnings before the earned exclusion
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 1000
+    medicaid_ltss_reported_gross_unearned_income: 10
+    medicaid_ltss_needs_based_income: 0
+  output:
+    medicaid_ltss_individual_countable_income: 462.5
+    medicaid_ltss_countable_income: 462.5
+    is_medicaid_ltss_income_eligible: true
+
+- name: Delaware does not apply general exclusion to needs-based unearned income
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 1000
+    medicaid_ltss_reported_gross_unearned_income: 100
+    medicaid_ltss_needs_based_income: 100
+  output:
+    medicaid_ltss_individual_countable_income: 557.5
+    medicaid_ltss_countable_income: 557.5
+    is_medicaid_ltss_income_eligible: true
+
+- name: Delaware clips small earnings after ordered exclusions
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 80
+    medicaid_ltss_reported_gross_unearned_income: 0
+    medicaid_ltss_needs_based_income: 0
+  output:
+    medicaid_ltss_individual_countable_income: 0
+    medicaid_ltss_countable_income: 0
+    is_medicaid_ltss_income_eligible: true
+
+- name: Raw earned and unearned components default to existing annual income sources
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    employment_income:
+      2026: 12000
+    taxable_pension_income:
+      2026: 1200
+  output:
+    medicaid_ltss_gross_earned_income: 1000
+    medicaid_ltss_gross_unearned_income: 100
+    medicaid_ltss_countable_income: 547.5
+
+- name: Source-specific QIT deposits precede Delaware income exclusions
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 2000
+    medicaid_ltss_reported_gross_unearned_income: 500
+    medicaid_ltss_earned_income_deposited_to_qit: 1000
+    medicaid_ltss_unearned_income_deposited_to_qit: 400
+  output:
+    medicaid_ltss_qit_adjusted_income: 1100
+    medicaid_ltss_countable_income: 547.5
+
+- name: Delaware couple raw earnings include the exact limit after one set of exclusions
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 3770
+        medicaid_ltss_reported_gross_unearned_income: 0
+      spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 3770
+        medicaid_ltss_reported_gross_unearned_income: 0
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 5
+    households:
+      household:
+        members: [applicant, spouse]
         state_code:
           2026: DE
   output:
-    is_medicaid_ltss_income_eligible: [true, false, false, true]
+    medicaid_ltss_assistance_unit_size: [2, 2]
+    medicaid_ltss_couple_countable_income: [3727.5, 3727.5]
+    medicaid_ltss_countable_income: [3727.5, 3727.5]
+    is_medicaid_ltss_income_eligible: [true, true]
+
+- name: Delaware couple raw earnings above the limit fail after one set of exclusions
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 3771
+        medicaid_ltss_reported_gross_unearned_income: 0
+      spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 3771
+        medicaid_ltss_reported_gross_unearned_income: 0
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 5
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_assistance_unit_size: [2, 2]
+    # (3_771 + 3_771 - 20 - 65) / 2 = 3_728.5, above the 3_727.5 limit.
+    medicaid_ltss_couple_countable_income: [3728.5, 3728.5]
+    medicaid_ltss_countable_income: [3728.5, 3728.5]
+    is_medicaid_ltss_income_eligible: [false, false]
+
+- name: Delaware mixed-income couple shares one general and earned exclusion
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 2800
+        medicaid_ltss_reported_gross_unearned_income: 500
+      spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income: 2800
+        medicaid_ltss_reported_gross_unearned_income: 500
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 5
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_assistance_unit_size: [2, 2]
+    medicaid_ltss_couple_countable_income: [3747.5, 3747.5]
+    medicaid_ltss_countable_income: [3747.5, 3747.5]
+    is_medicaid_ltss_income_eligible: [false, false]
+
+- name: Delaware derives remaining needs-based income from raw QIT source deposits
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 1000
+    medicaid_ltss_reported_gross_unearned_income: 500
+    medicaid_ltss_needs_based_income: 300
+    medicaid_ltss_unearned_income_deposited_to_qit: 400
+    medicaid_ltss_needs_based_income_deposited_to_qit: 250
+  output:
+    medicaid_ltss_qit_adjusted_unearned_income: 100
+    medicaid_ltss_qit_adjusted_needs_based_income: 50
+    medicaid_ltss_countable_income: 547.5
+
+- name: Delaware preserves the needs-based carve-out when QIT classifications are incomplete
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_reported_gross_earned_income: 1000
+    medicaid_ltss_reported_gross_unearned_income: 500
+    medicaid_ltss_needs_based_income: 300
+    medicaid_ltss_unearned_income_deposited_to_qit: 400
+    medicaid_ltss_needs_based_income_deposited_to_qit: 0
+  output:
+    medicaid_ltss_qit_adjusted_unearned_income: 100
+    medicaid_ltss_qit_adjusted_needs_based_income: 100
+    medicaid_ltss_countable_income: 557.5
+
+- name: Reported monthly income preserves other people's annual-source defaults
+  period: 2026-07
+  input:
+    people:
+      delaware_reported:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        employment_income:
+          2026: 60_000
+        taxable_pension_income:
+          2026: 12_000
+        medicaid_ltss_reported_gross_earned_income: 5_055
+        # An explicit zero overrides this person's annual pension default.
+        medicaid_ltss_reported_gross_unearned_income: 0
+      texas_annual_earned:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        employment_income:
+          2026: 36_000
+      washington_annual_unearned:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        taxable_pension_income:
+          2026: 36_000
+    marital_units:
+      delaware:
+        members: [delaware_reported]
+      texas:
+        members: [texas_annual_earned]
+      washington:
+        members: [washington_annual_unearned]
+    households:
+      delaware:
+        members: [delaware_reported]
+        state_code:
+          2026: DE
+      texas:
+        members: [texas_annual_earned]
+        state_code:
+          2026: TX
+      washington:
+        members: [washington_annual_unearned]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_gross_earned_income: [5_055, 3_000, 0]
+    medicaid_ltss_gross_unearned_income: [0, 0, 3_000]
+    medicaid_ltss_countable_income: [2_485, 3_000, 3_000]
+    is_medicaid_ltss_income_eligible: [true, false, false]
+    is_medicaid_ltss_financial_threshold_eligible: [true, false, false]
