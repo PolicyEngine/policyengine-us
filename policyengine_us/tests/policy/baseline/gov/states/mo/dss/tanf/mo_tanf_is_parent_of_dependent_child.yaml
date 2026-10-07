@@ -1,0 +1,109 @@
+- name: An explicit annual parent flag leaves other years using the default
+  period: 2026
+  input:
+    people:
+      head:
+        age:
+          2025: 45
+          2026: 45
+          2027: 45
+        own_children_in_household:
+          2025: 1
+          2026: 1
+          2027: 1
+      mother:
+        age:
+          2025: 25
+          2026: 25
+          2027: 25
+        is_tax_unit_dependent:
+          2025: true
+          2026: true
+          2027: true
+        own_children_in_household:
+          2025: 1
+          2026: 1
+          2027: 1
+        mo_tanf_is_parent_of_dependent_child:
+          2026: false
+      child:
+        age:
+          2025: 5
+          2026: 5
+          2027: 5
+        is_tax_unit_dependent:
+          2025: true
+          2026: true
+          2027: true
+    tax_units:
+      tax_unit:
+        members: [head, mother, child]
+    spm_units:
+      spm_unit:
+        members: [head, mother, child]
+    households:
+      household:
+        members: [head, mother, child]
+        state_code:
+          2025: MO
+          2026: MO
+          2027: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child:
+      2025: [true, true, false]
+      # Providing one person's flag fills unset people with false only for
+      # that year; it does not suppress their formulas in other years.
+      2026: [false, false, false]
+      2027: [true, true, false]
+
+- name: January's parent snapshot remains in use after a child ages out
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age:
+          2026-01: 40
+          2026-07: 40
+      dependent_adult:
+        age: 60
+        monthly_age:
+          2026-01: 60
+          2026-07: 60
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      older_child:
+        age: 17
+        monthly_age:
+          2026-01: 17
+          2026-07: 18
+        is_tax_unit_dependent: true
+        is_in_secondary_school: false
+      younger_child:
+        age: 0
+        monthly_age:
+          2026-01: 0
+          2026-07: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent_adult, older_child, younger_child]
+    spm_units:
+      spm_unit:
+        members: [head, dependent_adult, older_child, younger_child]
+    households:
+      household:
+        members: [head, dependent_adult, older_child, younger_child]
+        state_code: MO
+  output:
+    mo_tanf_dependent_child:
+      2026-01: [false, false, true, true]
+      2026-07: [false, false, false, true]
+    mo_tanf_is_parent_of_dependent_child:
+      2026: [false, true, false, false]
+    mo_tanf_is_assistance_unit_member:
+      2026-01: [true, true, true, true]
+      # January's 43-year gap still establishes the adult's parent flag.
+      # Recomputing against July's remaining infant would fail the window
+      # because the age gap is 60, but the annual snapshot stays in force.
+      2026-07: [true, true, false, true]

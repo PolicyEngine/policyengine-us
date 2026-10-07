@@ -568,3 +568,43 @@
     mo_tanf_is_assistance_unit_member: [true, true, false]
     mo_tanf_assistance_unit_size: 2
     mo_tanf: 234.08628
+
+- name: A real second parent filing separately stays excluded despite an explicit true parent flag
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      father:
+        age: 35
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        mo_tanf_is_parent_of_dependent_child: true
+    tax_units:
+      mother_and_child:
+        members: [mother, child]
+      father_return:
+        members: [father]
+    spm_units:
+      spm_unit:
+        members: [mother, child, father]
+    households:
+      household:
+        members: [mother, child, father]
+        state_code: MO
+  output:
+    # The father is the child's biological parent and legally mandatory
+    # under 13 CSR 40-2.300(5)(C), but child grouping uses each person's own
+    # tax unit. The explicit flag remains true without attaching the child
+    # from the mother's return: this unmodeled cross-tax-unit relationship
+    # leaves size 2 and 678 * 0.34526 = 234.08628 rather than size 3.
+    # Annual explicit input also sets unspecified people's parent flags to
+    # false; the mother still qualifies as the head with a dependent child.
+    mo_tanf_is_parent_of_dependent_child: [false, false, true]
+    mo_tanf_is_assistance_unit_member: [true, true, false]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.08628

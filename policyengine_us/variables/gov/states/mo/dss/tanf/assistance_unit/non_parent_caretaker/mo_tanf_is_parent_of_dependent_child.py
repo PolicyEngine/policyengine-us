@@ -24,7 +24,12 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "value for that year, so set it for every parent it applies to; other "
         "years still use the default. Heads and spouses not marked as "
         "non-parent caretakers are always treated as parents; this input "
-        "applies to other tax-unit members."
+        "applies to other tax-unit members. This input cannot associate a "
+        "parent filing a separate tax return with a child in another tax "
+        "unit: even an explicit true leaves that parent excluded when their "
+        "own tax unit has no dependent child. The assistance-unit formulas "
+        "use tax-unit child grouping, so mandatory parent membership across "
+        "tax units is not modeled."
     )
     definition_period = YEAR
     reference = (

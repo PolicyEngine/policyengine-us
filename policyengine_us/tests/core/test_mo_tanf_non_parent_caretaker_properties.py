@@ -182,7 +182,7 @@ def _payment(size):
     return STANDARD_OF_NEED.get(size, 0) * PAYMENT_PERCENTAGE
 
 
-def test_unflagged_households_follow_the_pre_npcr_rule(unflagged_sim):
+def test_unflagged_households_include_dependent_parents(unflagged_sim):
     member = _calc(unflagged_sim, "mo_tanf_is_assistance_unit_member")
     assert not _calc(unflagged_sim, "mo_tanf_non_parent_caretaker").any()
     assert not _calc(unflagged_sim, "mo_tanf_non_parent_caretaker_included").any()

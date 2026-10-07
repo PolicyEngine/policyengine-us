@@ -69,9 +69,12 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # dependent, such as a 20-year-old mother claimed by her own mother,
         # is a member too. These are the same people
         # mo_tanf_non_parent_caretaker treats as a parent in the home, less
-        # those on SSI. The parent's own tax unit must have a dependent
-        # child, so an explicit true input alone does not add someone whose
-        # tax unit has none.
+        # those on SSI. The formulas group children within tax units; the
+        # boolean parent input cannot attach a child in another tax unit.
+        # The parent's own tax unit must therefore have a dependent child,
+        # so even an explicit true excludes a real parent filing separately
+        # when their own tax unit has none. Mandatory membership for that
+        # parent under 13 CSR 40-2.300(5)(C) remains an unmodeled limitation.
         # A parent who is a dependent child is a member as an eligible child
         # instead, with their own parent as the caretaker. For a minor
         # parent (under 18, including the month of turning 18), the
