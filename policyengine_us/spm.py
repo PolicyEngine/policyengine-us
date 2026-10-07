@@ -970,6 +970,25 @@ class SPMSimulationMixin:
                 "Use primitive inputs and retain observed outputs under report-only names."
             )
         result = super().set_input(variable_name, period, value)
+        # Core snapshots input_variables during construction, but later
+        # explicit inputs must also survive counterfactual branches. Keep
+        # only stored inputs; neutralized and expired writes are ignored.
+        input_variables = getattr(self, "input_variables", None)
+        if input_variables is not None and variable_name not in input_variables:
+            holder = self.get_holder(variable_name)
+            variable = holder.variable
+            input_period = periods_.period(period)
+            if (
+                not variable.is_neutralized
+                and (variable.end is None or input_period.start.date <= variable.end)
+                and any(
+                    branch_name == self.branch_name
+                    for branch_name, _ in holder.get_known_branch_periods()
+                )
+            ):
+                # Core shallow-copies metadata when branching. Assign a new
+                # list so this input cannot change another branch's registry.
+                self.input_variables = [*input_variables, variable_name]
         if variable_name == "county_fips":
             self._record_county_input_types(period)
         return result

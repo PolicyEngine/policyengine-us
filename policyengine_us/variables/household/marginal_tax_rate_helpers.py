@@ -39,6 +39,8 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     Returns:
         The branch simulation.
     """
+    # US wrappers also register explicit set_input calls after construction,
+    # including identification and other inputs set on the measuring branch.
     input_variables = set(simulation.input_variables)
     variables = simulation.tax_benefit_system.variables
     responses = {

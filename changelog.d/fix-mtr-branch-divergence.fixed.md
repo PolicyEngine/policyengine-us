@@ -3,3 +3,5 @@ Make branch-measured marginal tax rates match fresh re-simulation. Household sim
 Restoring a rebuilt baseline's policy also rebinds its holders, removes reform-only inputs, and preserves tracing isolation, so neutralized reform variables cannot corrupt baseline comparisons.
 
 Behavioral-response measurements also neutralize hours responses, avoiding recursion when capital gains are queried before labor supply with both elasticities enabled.
+
+Inputs explicitly set after construction, including identification inputs on a measuring branch, now remain inputs in its raised branch. This prevents earnings raises from restoring child or ACA premium tax credits denied in the base simulation, and also preserves branch inputs in health-inclusive rates and behavioral-response measurements.

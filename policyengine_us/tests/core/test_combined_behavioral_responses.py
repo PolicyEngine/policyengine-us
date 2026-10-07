@@ -5,11 +5,13 @@ import pytest
 from policyengine_core.periods import period as make_period
 from policyengine_core.reforms import Reform
 
+import policyengine_us.variables.household.marginal_tax_rate_helpers as marginal_rate_helpers
 from policyengine_us import Simulation
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     BEHAVIORAL_RESPONSE_CACHE_ATTR,
     BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
     BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
+    get_behavioral_response_measurements,
 )
 
 YEAR = 2026
@@ -58,6 +60,91 @@ def combined_simulation(fixed_net_income=False):
     if fixed_net_income:
         situation["households"]["household"]["household_net_income"] = {YEAR: 60_000}
     return Simulation(situation=situation, reform=policy)
+
+
+def test_combined_measurements_keep_inputs_set_on_baseline_and_reform(monkeypatch):
+    """Measurement branches and their raised branches retain identification.
+
+    Fixed net income skips benefit calculations while real measurement and
+    rate branches expose the input-preservation invariant. Independent Texas
+    federal and health MTR tests cover the actual CTC policy consequences.
+    The one-person setup and fixed income limit additional CI cost.
+    """
+    identification = np.array([False])
+    simulation = combined_simulation(fixed_net_income=True)
+    for current in (simulation, simulation.baseline):
+        current.set_input("has_itin", YEAR, identification)
+    caller_arrays = [
+        (
+            current,
+            {
+                variable: current.get_array(variable, YEAR).copy()
+                for variable in (
+                    "has_itin",
+                    "employment_income_before_lsr",
+                    "long_term_capital_gains_before_response",
+                    "weekly_hours_worked_before_lsr",
+                    "household_net_income",
+                )
+            },
+        )
+        for current in (simulation, simulation.baseline)
+    ]
+    observed = {}
+    create_branch = marginal_rate_helpers.create_perturbed_branch
+
+    def observe_raised_branch(parent, period, branch_name, increments):
+        branch = create_branch(parent, period, branch_name, increments)
+        assert branch.parent_branch is parent
+        assert branch.branch_name == branch_name
+        np.testing.assert_array_equal(
+            parent.get_array("has_itin", YEAR), identification
+        )
+        kind = (
+            "capital_gains" if "long_term_capital_gains" in increments else "earnings"
+        )
+        value = branch.get_array("has_itin", YEAR)
+        observed.setdefault((parent.branch_name, kind), []).append(
+            None if value is None else value.copy()
+        )
+        return branch
+
+    # Earnings imports the helper module; Core dynamically loads the capital
+    # gains formula, whose helper binding lives in its actual globals.
+    monkeypatch.setattr(
+        marginal_rate_helpers, "create_perturbed_branch", observe_raised_branch
+    )
+    for current in (simulation, simulation.baseline):
+        formula = current.tax_benefit_system.variables[
+            "marginal_tax_rate_on_capital_gains"
+        ].get_formula(make_period(YEAR))
+        monkeypatch.setitem(
+            formula.__globals__, "create_perturbed_branch", observe_raised_branch
+        )
+    measurements = get_behavioral_response_measurements(
+        simulation.person, make_period(YEAR)
+    )
+    expected_paths = {
+        (parent, kind)
+        for parent in (
+            BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
+            BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
+        )
+        for kind in ("earnings", "capital_gains")
+    }
+    assert set(observed) == expected_paths
+    for path, arrays in observed.items():
+        for value in arrays:
+            np.testing.assert_array_equal(value, identification, err_msg=str(path))
+    for name in ("baseline", "reform"):
+        np.testing.assert_array_equal(measurements[f"{name}_net_income"], [60_000])
+        np.testing.assert_array_equal(measurements[f"{name}_mtr"], [1])
+        np.testing.assert_array_equal(measurements[f"{name}_capital_gains_mtr"], [1])
+    for current, arrays in caller_arrays:
+        for variable, value in arrays.items():
+            np.testing.assert_array_equal(current.get_array(variable, YEAR), value)
+        assert BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in current.branches
+        assert BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in current.branches
 
 
 @pytest.mark.parametrize(

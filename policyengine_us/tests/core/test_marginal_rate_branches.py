@@ -22,6 +22,8 @@ for every household and every adult the rate measures:
 6. A reformed simulation's baseline branch, and the baseline and reform
    branches that measure behavioral responses, equal fresh simulations of the
    baseline and of the reform without responses.
+7. Inputs explicitly set on a measuring branch survive its raised branch,
+   with only the raised earnings changed; calculated caches are recomputed.
 
 Invariant 4 is what the branches rely on. The ``Simulation`` and
 ``Microsimulation`` wrappers move ``employment_income`` and similar inputs onto
@@ -36,10 +38,13 @@ These tests use the Python wrappers because the YAML runner skips the moves.
 """
 
 import copy
+from itertools import count
 
 import numpy as np
 import pandas as pd
 import pytest
+from hypothesis import HealthCheck, Phase, given, settings
+from hypothesis import strategies as st
 from policyengine_core.periods import period as make_period
 from policyengine_core.reforms import Reform
 
@@ -51,6 +56,7 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 )
 from policyengine_us.variables.household.marginal_tax_rate_helpers import (
     HELD_BEHAVIORAL_RESPONSE_VARIABLES,
+    create_perturbed_branch,
 )
 
 YEAR = 2026
@@ -316,6 +322,200 @@ TEXAS_GAINS_FILER = (
     },
     [],
 )
+BRANCH_NAMES = count()
+
+
+@pytest.fixture(scope="module")
+def branch_input_simulation():
+    """A read-only source model; each case mutates only its own branches."""
+    return Simulation(
+        situation=situation(
+            [("TX", {"parent": {"age": 30, "employment_income": 80_000}}, [4, 8])]
+        )
+    )
+
+
+@pytest.fixture(scope="module")
+def branch_identification_rates():
+    """Fresh references share the same identification inputs at both wages."""
+    base_situation = situation(
+        [("TX", {"parent": {"age": 30, "employment_income": 80_000}}, [4, 8])]
+    )
+    for person, has_itin in zip(base_situation["people"].values(), [False, True, True]):
+        person["has_itin"] = {YEAR: has_itin}
+    raised_situation = copy.deepcopy(base_situation)
+    raised_situation["people"]["h0_parent"]["employment_income"] = {YEAR: 81_000}
+    base = Simulation(situation=base_situation)
+    raised = Simulation(situation=raised_situation)
+    # Identification denies the $4,400 CTC at both earnings levels.
+    for reference in (base, raised):
+        np.testing.assert_array_equal(reference.calculate("ctc", YEAR), [0])
+    return {
+        "federal_marginal_tax_rate": (
+            raised.calculate("income_tax", YEAR)[0]
+            - base.calculate("income_tax", YEAR)[0]
+        )
+        / DELTA,
+        "marginal_tax_rate_including_health_benefits": 1
+        - (
+            raised.calculate("household_net_income_including_health_benefits", YEAR)[0]
+            - base.calculate("household_net_income_including_health_benefits", YEAR)[0]
+        )
+        / DELTA,
+    }
+
+
+@pytest.mark.parametrize(
+    "rate",
+    ["federal_marginal_tax_rate", "marginal_tax_rate_including_health_benefits"],
+)
+def test_rates_keep_identification_inputs_set_on_the_measuring_branch(
+    branch_input_simulation, branch_identification_rates, rate
+):
+    """A $1,000 raise cannot restore CTC denied by the parent's branch input.
+
+    Core does not add branch set_input calls to input_variables. Keeping only
+    that construction-time list erased has_itin from the raised branch, so
+    the federal rate included a spurious $4,400 credit increase.
+    """
+    simulation = branch_input_simulation
+    branch = simulation.get_branch(f"identification_{rate}")
+    branch.set_input("has_itin", YEAR, [False, True, True])
+    try:
+        np.testing.assert_array_equal(branch.calculate("ctc", YEAR), [0])
+        actual = branch.calculate(rate, YEAR)
+        assert actual[0] == pytest.approx(
+            branch_identification_rates[rate], abs=TOLERANCE
+        )
+        np.testing.assert_array_equal(actual[1:], [0, 0])
+        raised = create_perturbed_branch(
+            branch,
+            make_period(YEAR),
+            "identification_ctc_with_raise",
+            {"employment_income": np.array([DELTA, 0, 0])},
+        )
+        np.testing.assert_array_equal(
+            raised.get_array("has_itin", YEAR), [False, True, True]
+        )
+        np.testing.assert_array_equal(raised.calculate("ctc", YEAR), [0])
+    finally:
+        simulation.branches.pop(branch.branch_name)
+
+
+@settings(
+    max_examples=8,
+    derandomize=True,
+    database=None,
+    deadline=None,
+    # Cloning real-model branches makes failure shrinking expensive. The
+    # retained-array assertion already identifies the lost input and value.
+    phases=[Phase.generate],
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(
+    tin=st.booleans(),
+    state=st.sampled_from(["TX", "OH", "CA"]),
+    zip_code=st.sampled_from(["77001", "44101", "90001"]),
+    interest=st.integers(1, 20_000),
+    incarcerated=st.booleans(),
+    head=st.booleans(),
+    earnings=st.integers(0, 100_000),
+    increment=st.integers(1, 2_000),
+    nested=st.booleans(),
+)
+def test_raised_branch_preserves_explicit_inputs_and_isolation(
+    branch_input_simulation,
+    tin,
+    state,
+    zip_code,
+    interest,
+    incarcerated,
+    head,
+    earnings,
+    increment,
+    nested,
+):
+    """Invariant 7 across input types, periods and one nested branch.
+
+    All examples use branches of one read-only model, and calculate only the
+    earnings aggregate; policy outputs are covered by the fresh references.
+    """
+    simulation = branch_input_simulation
+    name = f"input_property_{next(BRANCH_NAMES)}"
+    parent = simulation.get_branch(name)
+    sibling = simulation.get_branch(f"{name}_sibling")
+    original_inputs = list(simulation.input_variables)
+    original_earnings = simulation.get_array(
+        "employment_income_before_lsr", YEAR
+    ).copy()
+    parent.set_input("has_itin", YEAR, [tin, True, True])
+    sibling.set_input("has_itin", YEAR, [not tin, True, True])
+    measuring = parent.get_branch(f"{name}_nested") if nested else parent
+    explicit = (
+        ("has_itin", YEAR, [tin, True, True]),
+        ("state_code", YEAR, [state]),
+        ("zip_code", YEAR, [zip_code]),
+        ("taxable_interest_income", YEAR, [interest, 0, 0]),
+        ("is_incarcerated", f"{YEAR}-06", [incarcerated, False, False]),
+        ("is_household_head", YEAR, [head, False, False]),
+        ("employment_income_before_lsr", YEAR, [earnings, 0, 0]),
+    )
+    try:
+        for variable, input_period, value in explicit[1:]:
+            measuring.set_input(variable, input_period, value)
+        expected = {
+            (variable, input_period): measuring.get_array(variable, input_period).copy()
+            for variable, input_period, _ in explicit
+        }
+        cached_earnings = measuring.calculate("employment_income", YEAR).copy()
+        raised = create_perturbed_branch(
+            measuring,
+            make_period(YEAR),
+            f"{name}_raised",
+            {"employment_income": np.array([increment, 0, 0])},
+        )
+
+        # employment_income is calculated from the explicitly supplied
+        # pre-response earnings, so the raised branch must clear its cache.
+        assert raised.get_array("employment_income", YEAR) is None
+        for (variable, input_period), value in expected.items():
+            raised_value = (
+                value + [increment, 0, 0]
+                if variable == "employment_income_before_lsr"
+                else value
+            )
+            np.testing.assert_array_equal(
+                raised.get_array(variable, input_period),
+                raised_value,
+                err_msg=f"{variable} {input_period}",
+            )
+            np.testing.assert_array_equal(
+                measuring.get_array(variable, input_period), value, err_msg=variable
+            )
+        np.testing.assert_array_equal(
+            raised.calculate("employment_income", YEAR),
+            cached_earnings + [increment, 0, 0],
+        )
+        np.testing.assert_array_equal(
+            measuring.get_array("employment_income", YEAR), cached_earnings
+        )
+        # Eternal inputs retain their value when read through another year.
+        np.testing.assert_array_equal(
+            raised.get_array("is_household_head", YEAR - 1),
+            expected[("is_household_head", YEAR)],
+        )
+        np.testing.assert_array_equal(
+            sibling.get_array("has_itin", YEAR), [not tin, True, True]
+        )
+        np.testing.assert_array_equal(
+            simulation.get_array("employment_income_before_lsr", YEAR),
+            original_earnings,
+        )
+        assert simulation.get_array("has_itin", YEAR) is None
+        assert simulation.input_variables == original_inputs
+    finally:
+        simulation.branches.pop(name)
+        simulation.branches.pop(sibling.branch_name)
 
 
 def test_ohio_parent_marginal_tax_rate_matches_fresh_simulations():
