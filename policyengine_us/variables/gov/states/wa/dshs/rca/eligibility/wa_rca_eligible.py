@@ -10,7 +10,7 @@ class wa_rca_eligible(Variable):
     reference = (
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0030",
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-466-0120",
-        "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-D/section-400.47",
+        "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-E/section-400.53",
         "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-J/section-400.211",
     )
     # Two WAC 388-400-0030 exclusions are not tracked at the moment:
